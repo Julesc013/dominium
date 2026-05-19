@@ -4,7 +4,7 @@ OWNERSHIP & RESPONSIBILITY
 ENGINE:
 - None (policy docs only).
 GAME:
-- Enforcement integrations and runtime usage (via tools/validation).
+- Enforcement integrations and runtime usage (via tools/validators).
 SCHEMA:
 - Policy references only; no runtime logic here.
 TOOLS:

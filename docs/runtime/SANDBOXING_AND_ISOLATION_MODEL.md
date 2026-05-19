@@ -48,7 +48,7 @@ Repo-grounded extension surfaces already exist and must be treated as evidence r
 - `runtime/shell/lifecycle/readonly_adapter.c`
 - `runtime/shell/lifecycle/readonly_format.c`
 - `process/capsules/capsule_executor.py`
-- `tools/governance/control_plane_engine.py`
+- `tools/repo/governance/control_plane_engine.py`
 - `client/local_server/local_server_controller.py`
 - `tools/validators/network/policies/policy_server_authoritative.py`
 - `tools/xstack/testx/tests/test_renderer_truth_isolation.py`

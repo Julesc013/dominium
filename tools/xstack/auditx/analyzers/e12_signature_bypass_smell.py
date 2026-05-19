@@ -12,8 +12,8 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E12_SIGNATURE_BYPASS_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/net_handshake.py",
-    "tools/security/tool_securex_verify_pack.py",
-    "tools/security/tool_securex_verify_lockfile.py",
+    "tools/validators/security/model/tool_securex_verify_pack.py",
+    "tools/validators/security/model/tool_securex_verify_lockfile.py",
     "contracts/registry/securex_policy_registry.json",
 )
 
@@ -144,8 +144,8 @@ def run(graph, repo_root, changed_files=None):
                     related_invariants=["INV-RANKED-REQUIRES-SECUREX-STRICT"],
                     related_paths=[
                         handshake_rel,
-                        "tools/security/tool_securex_verify_pack.py",
-                        "tools/security/tool_securex_verify_lockfile.py",
+                        "tools/validators/security/model/tool_securex_verify_pack.py",
+                        "tools/validators/security/model/tool_securex_verify_lockfile.py",
                     ],
                 )
             )

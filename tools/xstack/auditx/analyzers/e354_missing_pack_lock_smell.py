@@ -8,10 +8,10 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E354_MISSING_PACK_LOCK_SMELL"
-WATCH_PREFIXES = ("tools/mvp/", "data/session_templates/", "profiles/bundles/", "locks/")
+WATCH_PREFIXES = ("tools/release/mvp/", "data/session_templates/", "profiles/bundles/", "locks/")
 REQUIRED_FILES = {
-    "tools/mvp/runtime_entry.py": ("--pack_lock", "pack_lock_path="),
-    "tools/mvp/runtime_bundle.py": ("build_pack_lock_payload(", "pack_lock_hash", "MVP_PACK_LOCK_REL"),
+    "tools/release/mvp/runtime_entry.py": ("--pack_lock", "pack_lock_path="),
+    "tools/release/mvp/runtime_bundle.py": ("build_pack_lock_payload(", "pack_lock_hash", "MVP_PACK_LOCK_REL"),
     "content/templates/session/session.mvp_default.json": ("pack_lock_hash", "profile.bundle.mvp_default"),
     "content/profiles/bundles/bundle.mvp_default.json": ("pack_lock.mvp_default", "profile.bundle.mvp_default"),
 }

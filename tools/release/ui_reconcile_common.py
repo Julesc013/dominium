@@ -11,7 +11,16 @@ from typing import Iterable, Mapping
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
@@ -79,11 +88,13 @@ _GOVERNED_SURFACES = (
 _LEGACY_SURFACE_GLOBS = (
     "tools/codegen/ui/launcher/**/*.py",
     "tools/codegen/ui/setup/**/*.py",
-    "tools/ui_shared/**/*",
+    "runtime/ui/dui/**/*",
+    "runtime/ui/include/**/*",
+    "runtime/ui/ir/**/*",
     "apps/workbench/module/ui/preview/**/*",
     "apps/workbench/module/ui/editor/**/*",
     "apps/workbench/module/ui/preview/native/**/*",
-    "tools/gui/**/*",
+    "apps/workbench/module/tooling/host/win32/**/*",
     "tools/xstack/sessionx/ui_host.py",
 )
 _COMMAND_SIGNAL_TOKENS = (
@@ -188,7 +199,7 @@ def _platform_dependency(rel_path: str) -> str:
 
 def _legacy_status(rel_path: str) -> str:
     token = _norm(rel_path)
-    if token.startswith("tools/ui_shared/") or token.startswith("apps/workbench/module/ui/preview/"):
+    if token.startswith(("runtime/ui/dui/", "runtime/ui/include/", "runtime/ui/ir/")) or token.startswith("apps/workbench/module/ui/preview/"):
         return "legacy_reference_only"
     if token.startswith("tools/xstack/sessionx/"):
         return "contradictory_legacy_host"
@@ -197,8 +208,8 @@ def _legacy_status(rel_path: str) -> str:
 
 def _legacy_purpose(rel_path: str) -> str:
     token = _norm(rel_path)
-    if token.startswith("tools/ui_shared/"):
-        return "Legacy cross-platform UI support library and adapter scaffolding."
+    if token.startswith(("runtime/ui/dui/", "runtime/ui/include/", "runtime/ui/ir/")):
+        return "Legacy cross-platform UI support library and adapter scaffolding under runtime UI ownership."
     if token.startswith("apps/workbench/module/ui/preview/"):
         return "Preview host scaffolding for platform UI experiments."
     if token.startswith("tools/xstack/sessionx/"):
@@ -207,7 +218,7 @@ def _legacy_purpose(rel_path: str) -> str:
         return "Launcher native UI scaffold kept outside the governed MVP runtime surface."
     if token.startswith("tools/codegen/ui/setup/"):
         return "Setup native UI scaffold kept outside the governed MVP runtime surface."
-    if token.startswith("apps/workbench/module/ui/editor/") or token.startswith("apps/workbench/module/ui/preview/native/") or token.startswith("tools/gui/"):
+    if token.startswith("apps/workbench/module/ui/editor/") or token.startswith("apps/workbench/module/ui/preview/native/") or token.startswith("apps/workbench/module/tooling/host/win32/"):
         return "Editor or tooling UI scaffold kept outside the governed MVP runtime surface."
     return "Legacy or preview UI surface pending post-MVP formalization."
 

@@ -16,7 +16,7 @@ WATCH_PREFIXES = (
     "docs/logic/",
     "contracts/registry/instrument_type_registry.json",
     "game/domain/logic/",
-    "tools/logic/",
+    "tools/domain/logic/",
 )
 
 _TRUTH_PATTERN = re.compile(r"\b(truth_model|universe_state|render_model)\b", re.IGNORECASE)

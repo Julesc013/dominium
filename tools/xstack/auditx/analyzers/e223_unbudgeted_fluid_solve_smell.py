@@ -49,7 +49,7 @@ def run(graph, repo_root, changed_files=None):
         "max_failure_events",
     )
     allowed_files = {
-        "tools/fluid/tool_run_fluid_stress.py",
+        "tools/domain/fluids/tool_run_fluid_stress.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):
@@ -89,7 +89,7 @@ def run(graph, repo_root, changed_files=None):
                         related_invariants=[
                             "INV-FLUID-BUDGETED",
                         ],
-                        related_paths=[rel_path, "tools/fluid/tool_run_fluid_stress.py", "game/domain/fluids/network/fluid_network_engine.py"],
+                        related_paths=[rel_path, "tools/domain/fluids/tool_run_fluid_stress.py", "game/domain/fluids/network/fluid_network_engine.py"],
                     )
                 )
     return sorted(

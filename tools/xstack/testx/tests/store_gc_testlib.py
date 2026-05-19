@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 
 from tools.package.libraries.store import DEFAULT_GC_POLICY_ID, REFUSAL_GC_EXPLICIT_FLAG, build_store_reachability_report, run_store_gc
-from tools.lib.store_gc_common import BASELINE_DOC_REL, GC_REPORT_JSON_REL, VERIFY_REPORT_JSON_REL, build_store_gc_fixture, build_store_gc_report, write_store_gc_outputs
+from tools.package.libraries.store.store_gc_common import BASELINE_DOC_REL, GC_REPORT_JSON_REL, VERIFY_REPORT_JSON_REL, build_store_gc_fixture, build_store_gc_report, write_store_gc_outputs
 
 
 def ensure_assets(repo_root: str) -> dict:

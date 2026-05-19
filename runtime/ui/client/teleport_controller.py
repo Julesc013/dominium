@@ -14,7 +14,7 @@ from game.domain.worldgen.mw.system_query_engine import (
     list_systems_in_cell,
     query_nearest_system,
 )
-from tools.mvp.runtime_bundle import (
+from tools.release.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
     MVP_PROFILE_BUNDLE_REL,
     build_default_universe_identity,

@@ -37,8 +37,8 @@ Expected registry files in `archive/generated/dist/registries/`:
 - `ui.registry.json`
 
 ## Build Entry
-- `tools/setup/build --bundle bundle.base.lab --out dist`
-- Implementation: `tools/setup/build.py`
+- `tools/package/setup/build --bundle bundle.base.lab --out dist`
+- Implementation: `tools/package/setup/build.py`
 - Internal engine: `tools/xstack/packagingx/dist_build.py`
 
 ## Deterministic Rules
@@ -96,8 +96,8 @@ If binary payloads are not bundled in this repository checkout, deterministic gu
 
 ## Example
 ```text
-tools/setup/build --bundle bundle.base.lab --out dist
-tools/launcher/launch run --dist dist --session saves/save.demo/session_spec.json
+tools/package/setup/build --bundle bundle.base.lab --out dist
+tools/package/launcher/launch run --dist dist --session saves/save.demo/session_spec.json
 ```
 
 ## TODO

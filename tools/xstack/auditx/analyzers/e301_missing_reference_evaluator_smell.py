@@ -21,7 +21,7 @@ REQUIRED_EVALUATOR_IDS = (
 )
 REQUIRED_PATHS = (
     "tools/repo/meta/reference/reference_engine.py",
-    "tools/meta/tool_run_reference_suite.py",
+    "tools/repo/meta/audit/tool_run_reference_suite.py",
 )
 
 

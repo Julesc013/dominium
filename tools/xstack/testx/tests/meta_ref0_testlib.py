@@ -218,7 +218,7 @@ def _logic_reference_fixture_state(repo_root: str) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.logic.tool_replay_logic_window import replay_logic_window_from_payload
+    from tools.domain.logic.tool_replay_logic_window import replay_logic_window_from_payload
     from tools.xstack.testx.tests._logic_eval_test_utils import load_eval_inputs, seed_signal_requests
     from tools.xstack.testx.tests._logic_network_test_utils import binding_row, edge_row, graph_row, node_row
 

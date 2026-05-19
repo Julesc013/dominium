@@ -17,7 +17,7 @@ def ensure_repo_on_path(repo_root: str) -> None:
 def launch_spec(repo_root: str, *, suffix: str) -> dict:
     ensure_repo_on_path(repo_root)
     from client.local_server import build_local_server_launch_spec
-    from tools.mvp.runtime_bundle import MVP_PACK_LOCK_REL, MVP_PROFILE_BUNDLE_REL
+    from tools.release.mvp.runtime_bundle import MVP_PACK_LOCK_REL, MVP_PROFILE_BUNDLE_REL
 
     return build_local_server_launch_spec(
         repo_root=repo_root,
@@ -30,20 +30,20 @@ def launch_spec(repo_root: str, *, suffix: str) -> dict:
 
 def run_window(repo_root: str, *, suffix: str, ticks: int = 6) -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.server.server_mvp1_probe import run_local_singleplayer_window
+    from tools.test.server.server_mvp1_probe import run_local_singleplayer_window
 
     return run_local_singleplayer_window(repo_root, save_suffix=suffix, ticks=ticks)
 
 
 def verify_replay(repo_root: str) -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.server.server_mvp1_probe import verify_local_singleplayer_replay
+    from tools.test.server.server_mvp1_probe import verify_local_singleplayer_replay
 
     return verify_local_singleplayer_replay(repo_root)
 
 
 def crash_diag(repo_root: str) -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.server.server_mvp1_probe import crash_diag_report
+    from tools.test.server.server_mvp1_probe import crash_diag_report
 
     return crash_diag_report(repo_root)

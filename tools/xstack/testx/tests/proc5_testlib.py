@@ -75,7 +75,7 @@ def run_proc5_capsule_case(
     from game.domain.processes.capsules import execute_process_capsule, generate_process_capsule
     from game.domain.processes.maturity import build_process_maturity_record_row, build_process_metrics_state_row
     from game.domain.systems.statevec import build_state_vector_definition_row
-    from tools.process.tool_replay_capsule_window import verify_capsule_replay_window
+    from tools.domain.processes.tool_replay_capsule_window import verify_capsule_replay_window
 
     tolerance_registry = _load_json(repo_root, "contracts/registry/tolerance_policy_registry.json")
     compiled_type_registry = _load_json(repo_root, "contracts/registry/compiled_type_registry.json")

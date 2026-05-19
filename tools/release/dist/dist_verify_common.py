@@ -10,7 +10,7 @@ import sys
 from typing import Iterable, Mapping, Sequence
 
 from tools.release import DEFAULT_RELEASE_MANIFEST_REL, load_release_manifest, verify_release_manifest
-from tools.dist.dist_tree_common import (
+from tools.release.dist.dist_tree_common import (
     DEFAULT_OUTPUT_ROOT,
     DEFAULT_PLATFORM_TAG,
     DEFAULT_RELEASE_CHANNEL,
@@ -68,8 +68,8 @@ FORBIDDEN_FILE_NAMES = frozenset({".gitattributes", ".gitignore", ".gitkeep"})
 FORBIDDEN_FILE_SUFFIXES = (".bak", ".log", ".pdb", ".py", ".pyi", ".tmp")
 FORBIDDEN_PATH_PREFIXES = (
     "tools/xstack/auditx",
-    "tools/convergence",
-    "tools/dist",
+    "tools/migration/convergence",
+    "tools/release/dist",
     "tools/release",
     "tools/xstack/auditx",
     "tools/xstack/controlx",

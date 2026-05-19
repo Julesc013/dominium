@@ -18,7 +18,7 @@ extern "C" {
 #include "domino/core/types.h"
 }
 
-/* Purpose: Temporary facade for package/manifest structures used by Dominium tools/launcher.
+/* Purpose: Temporary facade for package/manifest structures used by Dominium tools/package/launcher.
  *
  * Notes:
  * - This header now exposes a minimal POD placeholder until a stable ABI is published.

@@ -23,7 +23,7 @@ def _run_eval(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.models import model_type_rows_by_id
+    from tools.repo.models import model_type_rows_by_id
     from engine.time import evaluate_time_mappings
 
     temporal_payload, temporal_error = _load_json(repo_root, "contracts/registry/temporal_domain_registry.json")

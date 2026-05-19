@@ -37,7 +37,7 @@ def run(graph, repo_root, changed_files=None):
     collapse_rel = "game/domain/systems/system_collapse_engine.py"
     expand_rel = "game/domain/systems/system_expand_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    stress_rel = "tools/system/tool_run_sys_stress.py"
+    stress_rel = "tools/domain/systems/tool_run_sys_stress.py"
 
     collapse_text = _read_text(repo_root, collapse_rel)
     expand_text = _read_text(repo_root, expand_rel)

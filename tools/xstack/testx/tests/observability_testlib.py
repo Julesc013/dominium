@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 import tempfile
 
-from tools.meta.observability_common import build_observability_report
+from tools.repo.meta.audit.observability_common import build_observability_report
 
 
 _CACHE: dict[str, dict] = {}

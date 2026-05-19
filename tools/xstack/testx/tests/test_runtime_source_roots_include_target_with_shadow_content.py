@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "dist", "windows", "regression", "xi5a"]
 
 
 def run(repo_root: str):
-    from tools.dist.dist_tree_common import _runtime_source_roots
+    from tools.release.dist.dist_tree_common import _runtime_source_roots
 
     temp_parent = os.path.join(repo_root, "build", "tmp")
     os.makedirs(temp_parent, exist_ok=True)

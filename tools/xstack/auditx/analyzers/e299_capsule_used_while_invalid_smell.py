@@ -31,7 +31,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    rel_path = "tools/process/tool_run_proc_stress.py"
+    rel_path = "tools/domain/processes/tool_run_proc_stress.py"
     text = _read_text(repo_root, rel_path)
     if not text:
         return []

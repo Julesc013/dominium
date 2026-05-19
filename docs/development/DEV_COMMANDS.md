@@ -26,24 +26,24 @@ Wrapper entrypoint:
 
 Acceleration entrypoint:
 
-- `python tools/dev/dev.py`
-- `tools/dev/dev` (cross-platform launcher)
-- `tools/dev/dev.cmd` (Windows convenience)
+- `python tools/repo/dev/dev.py`
+- `tools/repo/dev/dev` (cross-platform launcher)
+- `tools/repo/dev/dev.cmd` (Windows convenience)
 
 Prompt 19 command surface:
 
-- `python tools/dev/dev.py impact-graph`
-- `python tools/dev/dev.py impacted-tests`
-- `python tools/dev/dev.py impacted-build`
-- `python tools/dev/dev.py run observer`
-- `python tools/dev/dev.py run galaxy`
-- `python tools/dev/dev.py run sol`
-- `python tools/dev/dev.py run earth`
-- `python tools/dev/dev.py audit`
-- `python tools/dev/dev.py verify`
-- `python tools/dev/dev.py profile`
-- `python tools/dev/tool_profile_capture.py --session-id session.dev.profile --scenario-id scenario.lab.galaxy_nav`
-- `python tools/dev/tool_profile_report.py --trace docs/audit/perf/profile_trace.sample.json`
+- `python tools/repo/dev/dev.py impact-graph`
+- `python tools/repo/dev/dev.py impacted-tests`
+- `python tools/repo/dev/dev.py impacted-build`
+- `python tools/repo/dev/dev.py run observer`
+- `python tools/repo/dev/dev.py run galaxy`
+- `python tools/repo/dev/dev.py run sol`
+- `python tools/repo/dev/dev.py run earth`
+- `python tools/repo/dev/dev.py audit`
+- `python tools/repo/dev/dev.py verify`
+- `python tools/repo/dev/dev.py profile`
+- `python tools/repo/dev/tool_profile_capture.py --session-id session.dev.profile --scenario-id scenario.lab.galaxy_nav`
+- `python tools/repo/dev/tool_profile_report.py --trace docs/audit/perf/profile_trace.sample.json`
 
 Notes:
 

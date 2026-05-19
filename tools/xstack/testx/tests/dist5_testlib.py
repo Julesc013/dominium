@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 
-from tools.dist.ux_smoke_common import build_ux_smoke_report, load_ux_smoke_report
+from tools.release.dist.ux_smoke_common import build_ux_smoke_report, load_ux_smoke_report
 
 
 def load_report(repo_root: str) -> dict:

@@ -23,7 +23,7 @@ from tools.package.libraries.save import (
     deterministic_fingerprint as save_deterministic_fingerprint,
     normalize_save_manifest,
 )
-from tools.lib.content_store import (
+from tools.package.libraries.store.content_store import (
     build_install_ref,
     build_pack_lock_payload,
     build_profile_bundle_payload,

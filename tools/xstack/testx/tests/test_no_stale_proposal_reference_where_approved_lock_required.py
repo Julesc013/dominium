@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "xi", "restructure", "reports"]
 
 
 def run(repo_root: str):
-    from tools.review.xi4z_structure_approval_common import (
+    from tools.audit.review.xi4z_structure_approval_common import (
         SRC_DOMAIN_MAPPING_LOCK_APPROVED_REL,
         XI4Z_DECISION_MANIFEST_REL,
         XI5_READINESS_CONTRACT_REL,

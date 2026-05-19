@@ -195,13 +195,13 @@ Overrides:
 ## I) OPS / Orchestration
 
 ## INV-OPS-COMPAT-REPORT — Compat report produced for ops actions
-- Scope: tools/ops, tools/launcher, setup
+- Scope: tools/package/ops, tools/package/launcher, setup
 - Enforcement: `tests/contract/compat_report_presence_contracts.py`
 - Failure format: `INV-OPS-COMPAT-REPORT: <reason>`
 - Overrides: allowed via LOCKLIST_OVERRIDES.json (expiry required)
 
 ## INV-OPS-TRANSACTIONAL — Install/remove/update operations are plan/stage/commit/rollback
-- Scope: tools/ops, setup, launcher
+- Scope: tools/package/ops, setup, launcher
 - Enforcement: contract tests + ops validation
 - Failure format: `INV-OPS-TRANSACTIONAL: <reason>`
 - Overrides: allowed via LOCKLIST_OVERRIDES.json (expiry required)

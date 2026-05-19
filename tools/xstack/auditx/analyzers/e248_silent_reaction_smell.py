@@ -75,7 +75,7 @@ def run(graph, repo_root, changed_files=None):
                 related_invariants=[
                     "INV-ALL-REACTIONS-LEDGERED",
                 ],
-                related_paths=[runtime_rel, "tools/chem/tool_run_chem_stress.py"],
+                related_paths=[runtime_rel, "tools/domain/chemistry/tool_run_chem_stress.py"],
             )
         )
 
@@ -92,9 +92,9 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         runtime_rel,
-        "tools/chem/tool_run_chem_stress.py",
-        "tools/chem/tool_replay_chem_window.py",
-        "tools/chem/tool_generate_chem_stress.py",
+        "tools/domain/chemistry/tool_run_chem_stress.py",
+        "tools/domain/chemistry/tool_replay_chem_window.py",
+        "tools/domain/chemistry/tool_generate_chem_stress.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):

@@ -22,12 +22,12 @@ VALIDATION_SHIM_ROWS = stable_rows(
     (
         {
             "shim_id": "shim.validation.validate_all_py",
-            "legacy_surface": "tools/ci/validate_all.py",
+            "legacy_surface": "tools/validators/ci/validate_all.py",
             "replacement_surface": "validate --all --profile FAST|STRICT|FULL",
             "message_key": VALIDATION_WARNING_KEY,
             "stability": build_shim_stability(
                 rationale="Legacy aggregate validation entrypoint remains callable while validation surfaces converge.",
-                replacement_target="Remove tools/ci/validate_all.py after VALIDATION-UNIFY convergence and v0.0.1 cleanup.",
+                replacement_target="Remove tools/validators/ci/validate_all.py after VALIDATION-UNIFY convergence and v0.0.1 cleanup.",
             ),
             "sunset_target": SHIM_SUNSET_TARGET,
         },
@@ -68,7 +68,7 @@ def run_legacy_validate_all(
         shim_id="shim.validation.validate_all_py",
         warning_code="deprecated_validator_usage",
         message_key=VALIDATION_WARNING_KEY,
-        original_surface="tools/ci/validate_all.py",
+        original_surface="tools/validators/ci/validate_all.py",
         replacement_surface="validate --all --profile {}".format(profile_token),
         details={"ignored_exe_path": _token(ignored_exe_path)},
     )
@@ -85,7 +85,7 @@ def run_legacy_validate_all(
     report = dict(report)
     extensions = dict(report.get("extensions") or {})
     extensions["legacy_shim"] = {
-        "legacy_surface": "tools/ci/validate_all.py",
+        "legacy_surface": "tools/validators/ci/validate_all.py",
         "replacement_surface": "validate --all --profile {}".format(profile_token),
         "written_outputs": {key: str(value).replace("\\", "/") for key, value in sorted(written.items(), key=lambda item: str(item[0]))},
         "canonical_report_json_path": VALIDATION_REPORT_JSON_TEMPLATE.format(profile=profile_token),

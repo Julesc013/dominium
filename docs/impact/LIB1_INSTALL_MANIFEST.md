@@ -13,9 +13,9 @@ Touched Paths:
 - appshell/bootstrap.py
 - appshell/config_loader.py
 - tools/package/libraries/install/install_validator.py
-- tools/launcher/launcher_cli.py
-- tools/ops/ops_cli.py
-- tools/setup/setup_cli.py
+- tools/package/launcher/launcher_cli.py
+- tools/package/ops/ops_cli.py
+- tools/package/setup/setup_cli.py
 
 Demand IDs:
 - cyber.firmware_flashing_pipeline_integration

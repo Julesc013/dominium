@@ -90,7 +90,7 @@ ctest --preset vs2026-x64-debug
   `tools/validators/suite/fixtures`.
 - Root CMake registers `launcher_help` and `setup_help` CTest entries when
   those components are built.
-- `check_arch` runs `tools/ci/arch_checks.py` for static architecture rules.
+- `check_arch` runs `tools/validators/ci/arch_checks.py` for static architecture rules.
 
 ## Running tests
 ```

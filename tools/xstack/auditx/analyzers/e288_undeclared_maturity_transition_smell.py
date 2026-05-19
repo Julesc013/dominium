@@ -55,9 +55,9 @@ def run(graph, repo_root, changed_files=None):
         "game/domain/processes/maturity/maturity_engine.py",
         "game/domain/processes/maturity/__init__.py",
         "game/domain/processes/capsules/capsule_builder.py",
-        "tools/process/tool_replay_maturity_window.py",
-        "tools/process/tool_generate_proc_stress.py",
-        "tools/process/tool_run_proc_stress.py",
+        "tools/domain/processes/tool_replay_maturity_window.py",
+        "tools/domain/processes/tool_generate_proc_stress.py",
+        "tools/domain/processes/tool_run_proc_stress.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

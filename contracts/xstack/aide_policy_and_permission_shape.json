@@ -51,8 +51,8 @@
     "appshell/commands/command_engine.py",
     "appshell/pack_verifier_adapter.py",
     "tools/xstack/sessionx/pipeline_contract.py",
-    "tools/launcher/launch.py",
-    "tools/setup/setup_cli.py",
+    "tools/package/launcher/launch.py",
+    "tools/package/setup/setup_cli.py",
     "server/server_boot.py",
     "server/net/loopback_transport.py",
     "client/interaction/affordance_generator.py"
@@ -321,8 +321,8 @@
     },
     {
       "surface": [
-        "tools/setup/setup_cli.py",
-        "tools/launcher/launch.py",
+        "tools/package/setup/setup_cli.py",
+        "tools/package/launcher/launch.py",
         "server/server_boot.py",
         "server/net/loopback_transport.py",
         "tools/xstack/sessionx/pipeline_contract.py"

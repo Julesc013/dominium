@@ -27,7 +27,7 @@ from tools.package.libraries.instance import (
     validate_instance_manifest,
 )
 from tools.validators.identity import IDENTITY_KIND_INSTALL, IDENTITY_KIND_INSTANCE, attach_universal_identity_block
-from tools.governance import (
+from tools.repo.governance import (
     DEFAULT_GOVERNANCE_PROFILE_REL,
     governance_profile_hash,
     load_governance_profile,
@@ -42,7 +42,7 @@ from tools.release import (
     write_release_manifest,
 )
 from tools.release.update_model_common import build_release_index_payload
-from tools.lib.content_store import (
+from tools.package.libraries.store.content_store import (
     STORE_ROOT_MANIFEST,
     build_install_ref,
     build_store_locator,
@@ -75,12 +75,12 @@ PREFERRED_RUNTIME_LOCKS = (
 )
 
 PRODUCT_SPECS = (
-    {"product_id": "engine", "module": "tools.appshell.product_stub_cli", "callable": "main", "prefix": ["--product-id", "engine", "--"]},
-    {"product_id": "game", "module": "tools.appshell.product_stub_cli", "callable": "main", "prefix": ["--product-id", "game", "--"]},
-    {"product_id": "client", "module": "tools.mvp.runtime_entry", "callable": "client_main", "prefix": []},
-    {"product_id": "server", "module": "tools.mvp.runtime_entry", "callable": "server_main", "prefix": []},
-    {"product_id": "setup", "module": "tools.setup.setup_cli", "callable": "main", "prefix": []},
-    {"product_id": "launcher", "module": "tools.launcher.launch", "callable": "main", "prefix": []},
+    {"product_id": "engine", "module": "tools.validators.shell.product_stub_cli", "callable": "main", "prefix": ["--product-id", "engine", "--"]},
+    {"product_id": "game", "module": "tools.validators.shell.product_stub_cli", "callable": "main", "prefix": ["--product-id", "game", "--"]},
+    {"product_id": "client", "module": "tools.release.mvp.runtime_entry", "callable": "client_main", "prefix": []},
+    {"product_id": "server", "module": "tools.release.mvp.runtime_entry", "callable": "server_main", "prefix": []},
+    {"product_id": "setup", "module": "tools.package.setup.setup_cli", "callable": "main", "prefix": []},
+    {"product_id": "launcher", "module": "tools.package.launcher.launch", "callable": "main", "prefix": []},
 )
 PRODUCT_IDS = tuple(str(row["product_id"]) for row in PRODUCT_SPECS)
 NATIVE_PRODUCT_OUTPUTS = ("setup", "launcher", "client", "server", "tools")
@@ -95,8 +95,8 @@ DEFAULT_RUNTIME_SOURCE_ROOTS = ("src", "tools", "apps", "game")
 EXCLUDED_RUNTIME_TOP_LEVEL = {"app", "attic", "build", "data", "dist", "docs", "legacy", "libs", "schema", "schemas", "scripts", "tests", "tmp"}
 EXCLUDED_RUNTIME_PREFIXES = (
     "tools/xstack/auditx",
-    "tools/convergence",
-    "tools/dist",
+    "tools/migration/convergence",
+    "tools/release/dist",
     "tools/release",
     "tools/xstack/ci",
     "tools/xstack/auditx",
@@ -534,7 +534,7 @@ def _wrapper_script_text(product_spec: Mapping[str, object]) -> str:
             "PRODUCT_ID = {!r}".format(product_id),
             "if BUNDLE_ROOT not in sys.path:",
             "    sys.path.insert(0, BUNDLE_ROOT)",
-            "from tools.import_bridge import install_src_aliases",
+            "from tools.migration.import_bridge import install_src_aliases",
             "install_src_aliases(BUNDLE_ROOT)",
             "sys.argv[0] = PORTABLE_EXECUTABLE_PATH",
             "BUILD_FILE = os.path.join(BUNDLE_ROOT, 'manifests', 'build_number.txt')",

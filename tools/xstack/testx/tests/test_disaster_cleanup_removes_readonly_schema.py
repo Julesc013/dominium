@@ -14,7 +14,7 @@ TEST_TAGS = ["fast", "omega", "disaster", "cleanup"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.mvp.disaster_suite_common import _safe_rmtree
+    from tools.release.mvp.disaster_suite_common import _safe_rmtree
 
     output_root_abs = os.path.join(
         repo_root,

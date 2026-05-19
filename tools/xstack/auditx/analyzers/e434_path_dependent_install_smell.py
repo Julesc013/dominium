@@ -14,17 +14,17 @@ REQUIRED_TOKENS = {
         "store_root_ref",
         "product_builds",
     ),
-    "tools/setup/setup_cli.py": (
+    "tools/package/setup/setup_cli.py": (
         "\"install_root\": \".\"",
         "store_root_ref",
         "install_mode",
     ),
-    "tools/launcher/launcher_cli.py": (
+    "tools/package/launcher/launcher_cli.py": (
         "resolve_install_root(",
         "compare_required_product_builds(",
         "compare_required_contract_ranges(",
     ),
-    "tools/ops/ops_cli.py": (
+    "tools/package/ops/ops_cli.py": (
         "resolve_install_root(",
         "required_product_builds",
         "required_contract_ranges",

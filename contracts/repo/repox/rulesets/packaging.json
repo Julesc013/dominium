@@ -33,7 +33,7 @@
     {
       "rule_id": "INV-DERIVED-PKG-INDEX-FRESHNESS",
       "severity": "FAIL",
-      "scope_paths": ["archive/generated/dist/pkg", "archive/generated/dist/meta", "tools/distribution"],
+      "scope_paths": ["archive/generated/dist/pkg", "archive/generated/dist/meta", "tools/package/distribution"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-derived-pkg-index-freshness",
       "exemption_policy": "allow_with_expiry"
     },
@@ -75,14 +75,14 @@
     {
       "rule_id": "INV-MODE-BACKEND-SELECTION",
       "severity": "FAIL",
-      "scope_paths": ["launcher", "client", "setup", "app", "tools/launcher", "tools/setup", "contracts/registry/mode_backend.json"],
+      "scope_paths": ["launcher", "client", "setup", "app", "tools/package/launcher", "tools/package/setup", "contracts/registry/mode_backend.json"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-mode-backend-selection",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-PORTABLE-RUN-CONTRACT",
       "severity": "FAIL",
-      "scope_paths": ["tools/launcher/launcher_cli.py", "tools/setup/setup_cli.py", "docs/development/PORTABLE_TESTING.md"],
+      "scope_paths": ["tools/package/launcher/launcher_cli.py", "tools/package/setup/setup_cli.py", "docs/development/PORTABLE_TESTING.md"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-portable-run-contract",
       "exemption_policy": "allow_with_expiry"
     },

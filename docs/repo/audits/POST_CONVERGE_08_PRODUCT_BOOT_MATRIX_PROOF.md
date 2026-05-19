@@ -42,11 +42,11 @@ The canonical verify lane remains the build path from POST-CONVERGE-07. No fallb
 
 | Product | Command | Result | Status | Notes |
 | --- | --- | --- | --- | --- |
-| setup | `python tools/setup/setup_cli.py --help` | fail | blocked | import-time `TypeError` from Python 3.10-style union annotation under local Python 3.8 |
-| launcher | `python tools/launcher/launch.py --help` | pass | partial | AppShell help emitted for `product_id: launcher` |
-| client | `python tools/mvp/runtime_entry.py client --help` | pass | partial | AppShell help emitted for `product_id: client` |
+| setup | `python tools/package/setup/setup_cli.py --help` | fail | blocked | import-time `TypeError` from Python 3.10-style union annotation under local Python 3.8 |
+| launcher | `python tools/package/launcher/launch.py --help` | pass | partial | AppShell help emitted for `product_id: launcher` |
+| client | `python tools/release/mvp/runtime_entry.py client --help` | pass | partial | AppShell help emitted for `product_id: client` |
 | client | `python archive/generated/dist/bin/dominium_client --help` | pass | partial | tracked wrapper emits AppShell help for `product_id: client` |
-| server | `python tools/mvp/runtime_entry.py server --help` | pass | partial | AppShell help emitted for `product_id: server` |
+| server | `python tools/release/mvp/runtime_entry.py server --help` | pass | partial | AppShell help emitted for `product_id: server` |
 | server | `python archive/generated/dist/bin/dominium_server --help` | pass | partial | tracked wrapper emits AppShell help for `product_id: server` |
 | server | `python apps/server/server_main.py --help` | pass with wrong surface | partial | exits 0 but enters the default AppShell TUI because script args are not forwarded |
 | tools | `python tools/validators/shell/product_stub_cli.py --product-id tool.attach_console_stub --help` | pass | partial | AppShell help emitted for the attach-console tool stub |
@@ -95,10 +95,10 @@ These results prove script/wrapper help surfaces for launcher, client, server, a
 | `cmake --preset verify` | fail | `Visual Studio 17 2022` generator instance is missing locally |
 | `cmake --build --preset verify` | not run | configure failed |
 | `ctest --preset verify` | not run | configure failed |
-| `python tools/setup/setup_cli.py --help` | fail | Python 3.8 import-time annotation failure |
-| `python tools/launcher/launch.py --help` | pass | AppShell launcher help |
-| `python tools/mvp/runtime_entry.py client --help` | pass | AppShell client help |
-| `python tools/mvp/runtime_entry.py server --help` | pass | AppShell server help |
+| `python tools/package/setup/setup_cli.py --help` | fail | Python 3.8 import-time annotation failure |
+| `python tools/package/launcher/launch.py --help` | pass | AppShell launcher help |
+| `python tools/release/mvp/runtime_entry.py client --help` | pass | AppShell client help |
+| `python tools/release/mvp/runtime_entry.py server --help` | pass | AppShell server help |
 | `python apps/server/server_main.py --help` | partial | exits 0 but enters TUI, not help |
 | `python tools/validators/shell/product_stub_cli.py --product-id tool.attach_console_stub --help` | pass | AppShell tool-stub help |
 | `python archive/generated/dist/bin/dominium_client --help` | pass | tracked client wrapper help |
@@ -128,7 +128,7 @@ Targeted product/AppShell/build remediation before POST-CONVERGE-09:
 
 - install or expose the Visual Studio 17 2022 verify lane, or provide accepted CI proof
 - run configure/build/CTest through `verify`
-- fix or classify setup Python 3.8 compatibility for `tools/setup/setup_cli.py`
+- fix or classify setup Python 3.8 compatibility for `tools/package/setup/setup_cli.py`
 - repair or retire the tracked `archive/generated/dist/bin/dom` wrapper target
 - fix or classify `apps/server/server_main.py` CLI argument forwarding
 - rerun POST-CONVERGE-08 after those blockers are resolved or explicitly accepted

@@ -13,7 +13,7 @@ TOOL_SHIM_ROWS = stable_rows(
     (
         {
             "shim_id": "shim.tool.pack_validate",
-            "legacy_surface": "tools/pack/pack_validate.py",
+            "legacy_surface": "tools/package/pack/pack_validate.py",
             "replacement_surface": "dom pack validate-manifest",
             "message_key": TOOL_WARNING_KEY,
             "stability": build_shim_stability(
@@ -24,7 +24,7 @@ TOOL_SHIM_ROWS = stable_rows(
         },
         {
             "shim_id": "shim.tool.pack_migrate_capability_gating",
-            "legacy_surface": "tools/pack/migrate_capability_gating.py",
+            "legacy_surface": "tools/package/pack/migrate_capability_gating.py",
             "replacement_surface": "dom pack migrate-capability-gating",
             "message_key": TOOL_WARNING_KEY,
             "stability": build_shim_stability(

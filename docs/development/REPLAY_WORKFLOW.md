@@ -34,8 +34,8 @@ server --replay <file> --replay-pause
 
 ## Tooling
 - `dominium-tools replay <file>` reads and summarizes replay files.
-- `tools/playtest/replay_diff.py` compares replay outputs across runs.
-- `tools/playtest/replay_metrics.py` summarizes replay-derived metrics.
+- `tools/test/playtest/replay_diff.py` compares replay outputs across runs.
+- `tools/test/playtest/replay_metrics.py` summarizes replay-derived metrics.
 
 ## Recommended workflow
 1. Run headless server to generate replay and compat_report.

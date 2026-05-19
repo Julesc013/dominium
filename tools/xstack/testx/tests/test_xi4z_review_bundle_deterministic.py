@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "xi", "restructure", "determinism"]
 
 
 def run(repo_root: str):
-    from tools.review.xi4z_structure_approval_common import TMP_BUNDLE_MANIFEST_REL, TMP_BUNDLE_REL, XI4Z_DECISION_MANIFEST_REL
+    from tools.audit.review.xi4z_structure_approval_common import TMP_BUNDLE_MANIFEST_REL, TMP_BUNDLE_REL, XI4Z_DECISION_MANIFEST_REL
     from tools.xstack.testx.tests.xi4z_structure_approval_testlib import committed_manifest, fresh_hashes, fresh_snapshot
 
     committed = committed_manifest(repo_root)

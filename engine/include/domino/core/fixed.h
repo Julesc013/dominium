@@ -150,7 +150,7 @@ i64    d_q48_16_to_int(q48_16 value);
  * Returns:
  *   Floating-point approximation. Not for deterministic paths.
  */
-double d_q4_12_to_double(q4_12 value);     /* NOTE: tools/tests only */
+double d_q4_12_to_double(q4_12 value);     /* NOTE: tools/test only */
 /* d_q4_12_from_double
  * Purpose: Convert double to Q4.12 for UI/debug tools.
  * Parameters:
@@ -158,7 +158,7 @@ double d_q4_12_to_double(q4_12 value);     /* NOTE: tools/tests only */
  * Returns:
  *   Quantized Q4.12 value. Not for deterministic paths.
  */
-q4_12  d_q4_12_from_double(double value);  /* NOTE: tools/tests only */
+q4_12  d_q4_12_from_double(double value);  /* NOTE: tools/test only */
 
 /* d_q16_16_to_double
  * Purpose: Convert Q16.16 to double for UI/debug tools.
@@ -167,7 +167,7 @@ q4_12  d_q4_12_from_double(double value);  /* NOTE: tools/tests only */
  * Returns:
  *   Floating-point approximation. Not for deterministic paths.
  */
-double d_q16_16_to_double(q16_16 value);     /* NOTE: tools/tests only */
+double d_q16_16_to_double(q16_16 value);     /* NOTE: tools/test only */
 /* d_q16_16_from_double
  * Purpose: Convert double to Q16.16 for UI/debug tools.
  * Parameters:
@@ -175,7 +175,7 @@ double d_q16_16_to_double(q16_16 value);     /* NOTE: tools/tests only */
  * Returns:
  *   Quantized Q16.16 value. Not for deterministic paths.
  */
-q16_16 d_q16_16_from_double(double value);   /* NOTE: tools/tests only */
+q16_16 d_q16_16_from_double(double value);   /* NOTE: tools/test only */
 
 /* d_q24_8_to_double
  * Purpose: Convert Q24.8 to double for UI/debug tools.
@@ -184,7 +184,7 @@ q16_16 d_q16_16_from_double(double value);   /* NOTE: tools/tests only */
  * Returns:
  *   Floating-point approximation. Not for deterministic paths.
  */
-double d_q24_8_to_double(q24_8 value);     /* NOTE: tools/tests only */
+double d_q24_8_to_double(q24_8 value);     /* NOTE: tools/test only */
 /* d_q24_8_from_double
  * Purpose: Convert double to Q24.8 for UI/debug tools.
  * Parameters:
@@ -192,7 +192,7 @@ double d_q24_8_to_double(q24_8 value);     /* NOTE: tools/tests only */
  * Returns:
  *   Quantized Q24.8 value. Not for deterministic paths.
  */
-q24_8  d_q24_8_from_double(double value);  /* NOTE: tools/tests only */
+q24_8  d_q24_8_from_double(double value);  /* NOTE: tools/test only */
 
 /* d_q48_16_to_double
  * Purpose: Convert Q48.16 to double for UI/debug tools.
@@ -201,7 +201,7 @@ q24_8  d_q24_8_from_double(double value);  /* NOTE: tools/tests only */
  * Returns:
  *   Floating-point approximation. Not for deterministic paths.
  */
-double d_q48_16_to_double(q48_16 value);     /* NOTE: tools/tests only */
+double d_q48_16_to_double(q48_16 value);     /* NOTE: tools/test only */
 /* d_q48_16_from_double
  * Purpose: Convert double to Q48.16 for UI/debug tools.
  * Parameters:
@@ -209,7 +209,7 @@ double d_q48_16_to_double(q48_16 value);     /* NOTE: tools/tests only */
  * Returns:
  *   Quantized Q48.16 value. Not for deterministic paths.
  */
-q48_16 d_q48_16_from_double(double value);   /* NOTE: tools/tests only */
+q48_16 d_q48_16_from_double(double value);   /* NOTE: tools/test only */
 
 /*------------------------------------------------------------
  * Basic arithmetic (saturating)

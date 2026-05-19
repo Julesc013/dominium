@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.series_execution_strategy_common import (
+from tools.audit.review.series_execution_strategy_common import (
     FOUNDATION_PHASES_REL,
     MANUAL_REVIEW_GATES_REL,
     SERIES_EXECUTION_STRATEGY_REL,

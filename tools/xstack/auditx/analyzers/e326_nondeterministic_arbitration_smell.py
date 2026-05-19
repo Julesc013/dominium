@@ -48,7 +48,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    replay_rel = "tools/logic/tool_replay_protocol_window.py"
+    replay_rel = "tools/domain/logic/tool_replay_protocol_window.py"
     replay_text = _read_text(repo_root, replay_rel)
     for token in ("logic_protocol_frame_hash_chain", "logic_protocol_event_hash_chain", "logic_arbitration_state_hash_chain"):
         if token in replay_text:

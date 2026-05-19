@@ -12,37 +12,37 @@ The launcher runs in CLI/TUI/GUI modes. CLI is the canonical entrypoint and is
 shared with TUI/GUI intent APIs.
 
 Install and instance management are delegated to the OPS CLI
-(`tools/ops/ops_cli.py`) via the `ops` command. The OPS CLI returns structured
+(`tools/package/ops/ops_cli.py`) via the `ops` command. The OPS CLI returns structured
 compatibility reports and refusal payloads.
 
 ## Top-level
 - `dom_launcher --ui=none|tui|gui` (default: CLI with `--ui=none`).
 
 ## Commands
-- `version`  
+- `version`
   Show launcher version.
-- `list-profiles`  
+- `list-profiles`
   List known profiles.
-- `capabilities`  
+- `capabilities`
   Report platform + renderer availability.
-- `new-world`  
+- `new-world`
   Create a new world (template-driven; may be unavailable).
-- `load-world`  
+- `load-world`
   Load a world save (may be unavailable).
-- `inspect-replay`  
+- `inspect-replay`
   Inspect a replay (may be unavailable).
-- `ops <args>`  
+- `ops <args>`
   Pass-through to OPS CLI for install/instance enumeration and lifecycle:
   `installs list`, `instances list`, `instances create`, `instances clone`,
   `instances fork`, `instances activate`.
-- `share <args>`  
+- `share <args>`
   Pass-through to share CLI for bundle export/import/inspect:
   `export`, `inspect`, `import`.
-- `tools`  
+- `tools`
   Open tools shell (handoff).
-- `settings`  
+- `settings`
   Show current UI settings.
-- `exit`  
+- `exit`
   Exit launcher.
 
 ## Data & contracts

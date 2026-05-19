@@ -41,7 +41,7 @@ Checked failures: 9.
 - `contract.arch.module_registry.v1`: Module registry semantics for Xi-6 module roots, ownership, domain classification, and deterministic module inventory.
 - `contract.arch.single_engine_registry.v1`: Single-engine registry semantics for Xi-6 architecture consolidation and engine ownership review.
 
-Classification: `accepted_current_missing_metadata` for all four contract IDs. Authority basis is the existing architecture JSON artifacts, `docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md`, and `tools/review/xi6_common.py`.
+Classification: `accepted_current_missing_metadata` for all four contract IDs. Authority basis is the existing architecture JSON artifacts, `docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md`, and `tools/audit/review/xi6_common.py`.
 
 ## Changes Made
 

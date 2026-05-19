@@ -119,5 +119,5 @@ Named RNG is allowed only by explicit profile gate and must be proof-logged.
   - `reverse_engineering_record_hash_chain`
   - `candidate_promotion_hash_chain`
 - Replay tools:
-  - `tools/process/tool_replay_experiment_window`
-  - `tools/process/tool_replay_reverse_engineering_window`
+  - `tools/domain/processes/tool_replay_experiment_window`
+  - `tools/domain/processes/tool_replay_reverse_engineering_window`

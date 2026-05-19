@@ -13,9 +13,9 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.thermal.tool_generate_therm_stress_scenario import generate_therm_stress_scenario
-    from tools.thermal.tool_replay_therm_window import verify_therm_replay_window
-    from tools.thermal.tool_run_therm_stress import run_therm_stress_scenario
+    from tools.domain.thermal.tool_generate_therm_stress_scenario import generate_therm_stress_scenario
+    from tools.domain.thermal.tool_replay_therm_window import verify_therm_replay_window
+    from tools.domain.thermal.tool_run_therm_stress import run_therm_stress_scenario
 
     scenario = generate_therm_stress_scenario(
         seed=7804,

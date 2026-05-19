@@ -27,7 +27,7 @@ def _write_json(path: str, payload: dict) -> None:
 def _run_export(repo_root: str, argv_tail):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.net import tool_export_ranked_proof_bundle as export_tool
+    from tools.test.network import tool_export_ranked_proof_bundle as export_tool
 
     old_argv = list(sys.argv)
     try:

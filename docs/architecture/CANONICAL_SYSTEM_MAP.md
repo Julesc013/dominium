@@ -174,7 +174,7 @@ Forbidden dependencies:
 - launcher/setup/tools -> game (no rule mutation)
 
 
-- client/server -> tools/launcher/setup
+- client/server -> tools/package/launcher/setup
 
 
 - tools -> authoritative mutation outside ToolIntents

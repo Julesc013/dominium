@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.architecture_graph_bootstrap_common import (
+from tools.audit.review.architecture_graph_bootstrap_common import (
     ARCHITECTURE_GRAPH_REL,
     MODULE_REGISTRY_REL,
     SYMBOL_INDEX_REL,

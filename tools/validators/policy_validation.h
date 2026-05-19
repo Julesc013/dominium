@@ -3,7 +3,7 @@ FILE: tools/validators/policy_validation.h
 MODULE: Dominium
 LAYER / SUBSYSTEM: Tools / validate
 RESPONSIBILITY: Policy documentation validation for FINAL0 governance.
-ALLOWED DEPENDENCIES: tools/validation helpers and C++98 standard headers.
+ALLOWED DEPENDENCIES: tools/validators helpers and C++98 standard headers.
 FORBIDDEN DEPENDENCIES: Engine/game internal headers; OS/platform headers.
 THREADING MODEL: No internal synchronization; callers must serialize access.
 ERROR MODEL: Reported via ValidationReport; no exceptions.

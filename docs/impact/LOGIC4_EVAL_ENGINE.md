@@ -9,7 +9,7 @@ Replacement Target: legacy reference surface retained without current binding au
 
 Touched Paths:
 - contracts/registry/process_registry.json
-- tools/governance/proof/control_proof_bundle.py
+- tools/repo/governance/proof/control_proof_bundle.py
 - logic/__init__.py
 - logic/eval/__init__.py
 - logic/eval/common.py
@@ -19,8 +19,8 @@ Touched Paths:
 - logic/eval/commit_engine.py
 - logic/eval/propagate_engine.py
 - logic/eval/logic_eval_engine.py
-- tools/logic/tool_replay_logic_window.py
-- tools/logic/tool_run_logic_eval_stress.py
+- tools/domain/logic/tool_replay_logic_window.py
+- tools/domain/logic/tool_run_logic_eval_stress.py
 - tools/xstack/sessionx/process_runtime.py
 
 Demand IDs:

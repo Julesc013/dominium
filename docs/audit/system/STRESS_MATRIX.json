@@ -1,7 +1,7 @@
 {
   "artifact_class": "CANONICAL",
   "record": {
-    "baseline_state_sha256": "95b7ed7a16a15551d4d2418a947e5a67f5700e074a5781162e01f72c14d3176a",
+    "baseline_state_sha256": "7c97e306fb3a82baa78dbac7a216199b2d9ec3ebe2213069a59ea72bde3006e7",
     "extensions": {},
     "matrix_id": "anb-omega.stress",
     "scenarios": [

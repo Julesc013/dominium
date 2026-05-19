@@ -7,7 +7,7 @@ import os
 import tempfile
 from contextlib import contextmanager
 
-from tools.dist.dist_verify_common import (
+from tools.release.dist.dist_verify_common import (
     DEFAULT_BUNDLE_REL,
     build_distribution_verify_report,
     load_distribution_verify_report,

@@ -29,7 +29,7 @@ POST-CONVERGE-07 attempted canonical local runtime proof and is blocked:
 
 POST-CONVERGE-08 attempted product boot matrix proof at the user's request and is partial:
 
-- launcher AppShell help boots through `python tools/launcher/launch.py --help`
+- launcher AppShell help boots through `python tools/package/launcher/launch.py --help`
 - client AppShell help boots through `python archive/generated/dist/bin/dominium_client --help`
 - server AppShell help boots through `python archive/generated/dist/bin/dominium_server --help`
 - the attach-console tool stub help boots through `python tools/validators/shell/product_stub_cli.py --product-id tool.attach_console_stub --help`

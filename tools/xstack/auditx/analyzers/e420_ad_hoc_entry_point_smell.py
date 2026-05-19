@@ -20,7 +20,7 @@ REQUIRED_TOKENS = {
         "build_root_command_descriptors(",
         "format_help_text(",
     ),
-    "tools/mvp/runtime_entry.py": (
+    "tools/release/mvp/runtime_entry.py": (
         "from runtime.shell import appshell_main",
         "def appshell_product_bootstrap(",
         "def client_main(",
@@ -32,12 +32,12 @@ REQUIRED_TOKENS = {
         "def appshell_product_bootstrap(",
         "product_bootstrap=appshell_product_bootstrap",
     ),
-    "tools/setup/setup_cli.py": (
+    "tools/package/setup/setup_cli.py": (
         "from runtime.shell import appshell_main",
         "def appshell_product_bootstrap(",
         "product_bootstrap=appshell_product_bootstrap",
     ),
-    "tools/launcher/launch.py": (
+    "tools/package/launcher/launch.py": (
         "from runtime.shell import appshell_main",
         "def appshell_product_bootstrap(",
         "product_bootstrap=appshell_product_bootstrap",
@@ -49,10 +49,10 @@ REQUIRED_TOKENS = {
         "server_main(sys.argv[1:])",
     ),
     "archive/generated/dist/bin/launcher": (
-        "from tools.launcher.launch import main",
+        "from tools.package.launcher.launch import main",
     ),
     "archive/generated/dist/bin/setup": (
-        "from tools.setup.setup_cli import main",
+        "from tools.package.setup.setup_cli import main",
     ),
     "archive/generated/dist/bin/engine": (
         "product_stub_cli.py",

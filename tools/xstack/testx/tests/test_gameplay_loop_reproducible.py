@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "omega", "gameplay", "determinism"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.mvp.gameplay_loop_common import run_gameplay_loop
+    from tools.release.mvp.gameplay_loop_common import run_gameplay_loop
 
     first = dict(dict(run_gameplay_loop(repo_root, output_root_rel="build/tmp/testx_omega3_gameplay_a", write_outputs=False) or {}).get("snapshot_payload") or {})
     second = dict(dict(run_gameplay_loop(repo_root, output_root_rel="build/tmp/testx_omega3_gameplay_b", write_outputs=False) or {}).get("snapshot_payload") or {})

@@ -61,8 +61,8 @@ def run(graph, repo_root, changed_files=None):
 
     required_files = (
         (DOCTRINE_REL, "MVP stress doctrine is missing."),
-        ("tools/mvp/tool_run_all_stress.py", "MVP stress orchestrator is missing."),
-        ("tools/mvp/tool_verify_proofs.py", "MVP stress proof verifier is missing."),
+        ("tools/release/mvp/tool_run_all_stress.py", "MVP stress orchestrator is missing."),
+        ("tools/release/mvp/tool_verify_proofs.py", "MVP stress proof verifier is missing."),
         (HASHES_REL, "MVP stress hash artifact is missing."),
         (REPORT_REL, "MVP stress report artifact is missing."),
         (PROOF_REL, "MVP stress proof report artifact is missing."),

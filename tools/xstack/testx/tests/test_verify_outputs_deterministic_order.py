@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "dist", "release", "determinism"]
 
 
 def run(repo_root: str):
-    from tools.dist.dist_verify_common import build_distribution_verify_report
+    from tools.release.dist.dist_verify_common import build_distribution_verify_report
     from tools.xstack.testx.tests.dist2_testlib import bundle_root
 
     root = bundle_root(repo_root)

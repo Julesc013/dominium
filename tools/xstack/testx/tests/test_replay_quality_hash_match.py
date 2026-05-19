@@ -16,7 +16,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.process.tool_replay_quality_window import verify_quality_replay_window
+    from tools.domain.processes.tool_replay_quality_window import verify_quality_replay_window
     from tools.xstack.testx.tests.proc2_testlib import run_proc2_quality_case
 
     first = run_proc2_quality_case(

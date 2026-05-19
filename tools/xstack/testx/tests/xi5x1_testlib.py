@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.xi5x1_common import (
+from tools.audit.review.xi5x1_common import (
     XI5X1_BATCH_PLAN_REL,
     XI5X1_CLASSIFICATION_LOCK_REL,
     XI5X1_EXECUTION_LOG_REL,

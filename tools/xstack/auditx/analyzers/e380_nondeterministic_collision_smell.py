@@ -10,8 +10,8 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E380_NONDETERMINISTIC_COLLISION_SMELL"
 COLLISION_PROVIDER_REL = "game/domain/embodiment/collision/macro_heightfield_provider.py"
 PROCESS_RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
-PROBE_REL = "tools/embodiment/earth6_probe.py"
-REPLAY_REL = "tools/embodiment/tool_replay_movement_window.py"
+PROBE_REL = "tools/domain/embodiment/earth6_probe.py"
+REPLAY_REL = "tools/domain/embodiment/tool_replay_movement_window.py"
 DOC_REL = "docs/embodiment/TERRAIN_COLLISION_MODEL.md"
 REQUIRED_TOKENS = {
     COLLISION_PROVIDER_REL: (

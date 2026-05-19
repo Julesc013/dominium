@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 
-from tools.security.trust_strict_common import load_trust_strict_baseline, run_trust_strict_suite
+from tools.validators.security.model.trust_strict_common import load_trust_strict_baseline, run_trust_strict_suite
 from tools.xstack.compatx.canonical_json import canonical_json_text
 
 

@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
     from tools.validators.identity.identity_validator import validate_identity_block
-    from tools.mvp.baseline_universe_common import BASELINE_INSTANCE_MANIFEST_REL, load_baseline_instance_manifest
+    from tools.release.mvp.baseline_universe_common import BASELINE_INSTANCE_MANIFEST_REL, load_baseline_instance_manifest
 
     manifest_payload = load_baseline_instance_manifest(repo_root)
     identity_block = dict(manifest_payload.get("universal_identity_block") or {})

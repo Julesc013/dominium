@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "omega", "baseline_universe", "anchors"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.mvp.baseline_universe_common import verify_baseline_universe
+    from tools.release.mvp.baseline_universe_common import verify_baseline_universe
 
     report = verify_baseline_universe(repo_root)
     if not bool(report.get("matches_snapshot")):

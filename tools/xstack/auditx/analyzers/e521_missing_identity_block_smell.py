@@ -6,13 +6,22 @@ import os
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 
 from analyzers.base import make_finding
-from tools.meta.identity_common import RULE_WARN, STRICT_MISSING_POLICY_ACTIVE, identity_violations
+from tools.repo.meta.audit.identity_common import RULE_WARN, STRICT_MISSING_POLICY_ACTIVE, identity_violations
 
 
 ANALYZER_ID = "E521_MISSING_IDENTITY_BLOCK_SMELL"
@@ -44,7 +53,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-PLANNED",
                 recommended_action="ADD_UNIVERSAL_IDENTITY_BLOCK_WITH_CANONICAL_FIELDS",
                 related_invariants=[RULE_WARN],
-                related_paths=[rel_path or "tools/validators/identity/identity_validator.py", "tools/meta/identity_common.py"],
+                related_paths=[rel_path or "tools/validators/identity/identity_validator.py", "tools/repo/meta/audit/identity_common.py"],
             )
         )
     return findings

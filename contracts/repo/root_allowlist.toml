@@ -135,7 +135,7 @@ safety = { classification = "transitional_contract_root", target_or_review = "co
 security = { classification = "transitional_contract_root", target_or_review = "contracts/security or docs/security", retire_by_phase = "CONVERGE-06", notes = "Security and trust surfaces are protected and review-sensitive." }
 specs = { classification = "transitional_contract_root", target_or_review = "contracts/specs", retire_by_phase = "CONVERGE-06", notes = "Normative specs must retain authority during convergence." }
 templates = { classification = "transitional_content_root", target_or_review = "content/templates", retire_by_phase = "CONVERGE-09", notes = "Templates may be authored content, contract inputs, or generated inputs." }
-validation = { classification = "transitional_tooling_root", target_or_review = "tools/validation", retire_by_phase = "CONVERGE-03", notes = "Validation tooling belongs under tools unless it is contract law." }
+validation = { classification = "transitional_tooling_root", target_or_review = "tools/validators", retire_by_phase = "CONVERGE-03", notes = "Validation tooling belongs under tools unless it is contract law." }
 
 [forbidden_root_patterns]
 patterns = ["new_domain_root", "new_product_root_outside_apps", "new_schema_root_outside_contracts", "new_runtime_adapter_root_outside_runtime", "generated_output_without_exception"]

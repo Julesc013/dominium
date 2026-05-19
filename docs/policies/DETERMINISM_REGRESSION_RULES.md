@@ -16,7 +16,7 @@ verifies state, not what the state “means”.
 
 ## Scan-enforced subset
 
-The following rules are enforced by `tools/ci/arch_checks.py` (via the
+The following rules are enforced by `tools/validators/ci/arch_checks.py` (via the
 `check_arch` target):
 
 **Scope (deterministic core only)**

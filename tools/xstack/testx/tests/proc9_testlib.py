@@ -21,7 +21,7 @@ def make_stress_scenario(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.process.tool_generate_proc_stress import generate_proc_stress_scenario
+    from tools.domain.processes.tool_generate_proc_stress import generate_proc_stress_scenario
 
     return generate_proc_stress_scenario(
         seed=int(seed),
@@ -44,7 +44,7 @@ def run_stress_report(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.process.tool_run_proc_stress import run_proc_stress
+    from tools.domain.processes.tool_run_proc_stress import run_proc_stress
 
     return run_proc_stress(
         repo_root=repo_root,

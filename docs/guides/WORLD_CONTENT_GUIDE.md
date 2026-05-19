@@ -42,16 +42,16 @@ flow through sensors, reports, and communications per INF specs.
 ## Validation
 Run the Sol dataset validator:
 ```
-python tools/ci/validate_sol_data.py --repo-root=.
+python tools/validators/ci/validate_sol_data.py --repo-root=.
 ```
 This is a structural check only; it does not apply gameplay logic.
 
 Run the Earth dataset validator:
 ```
-python tools/ci/validate_earth_data.py --repo-root=.
+python tools/validators/ci/validate_earth_data.py --repo-root=.
 ```
 
 Run the Milky Way dataset validator:
 ```
-python tools/ci/validate_milky_way_data.py --repo-root=.
+python tools/validators/ci/validate_milky_way_data.py --repo-root=.
 ```

@@ -211,7 +211,7 @@
     "schema/release/release_manifest.schema",
     "schema/identity/artifact_identity.schema",
     "schema/meta/universal_identity_block.schema",
-    "tools/governance/governance_profile.py",
+    "tools/repo/governance/governance_profile.py",
     "tools/release/build_id_engine.py",
     "tools/release/update_resolver.py",
     "tools/release/release_manifest_engine.py"

@@ -1,7 +1,7 @@
 /*
 FILE: source/dominium/tools/validators/validator_checks.cpp
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / tools/validator
+LAYER / SUBSYSTEM: Dominium impl / tools/validators
 RESPONSIBILITY: Implements bundle validation checks and report formatting.
 */
 #include "validator_checks.h"

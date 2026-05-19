@@ -21,7 +21,7 @@ EXPECTED_SCENARIO_CATEGORIES = [
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.mvp.disaster_suite_common import (
+    from tools.release.mvp.disaster_suite_common import (
         DISASTER_CASES_SCHEMA_ID,
         disaster_cases_record_hash,
         load_disaster_suite_cases,

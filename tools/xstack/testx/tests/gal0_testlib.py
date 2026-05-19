@@ -15,7 +15,7 @@ def _ensure_repo_root(repo_root: str) -> str:
 @lru_cache(maxsize=4)
 def _replay(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.worldgen.gal0_probe import verify_galaxy_proxy_window_replay
+    from tools.domain.worldgen.gal0_probe import verify_galaxy_proxy_window_replay
 
     return verify_galaxy_proxy_window_replay(normalized)
 
@@ -23,7 +23,7 @@ def _replay(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _regions(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.worldgen.gal0_probe import region_threshold_report
+    from tools.domain.worldgen.gal0_probe import region_threshold_report
 
     return region_threshold_report(normalized)
 

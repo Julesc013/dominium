@@ -16,7 +16,7 @@ REQUIRED_TOKENS = {
         "_local_authority_gate(",
         "start_local_singleplayer(",
     ),
-    "tools/mvp/runtime_entry.py": (
+    "tools/release/mvp/runtime_entry.py": (
         "--local-singleplayer",
         "start_local_singleplayer(",
     ),

@@ -44,8 +44,8 @@ Enforcement and implementation surfaces:
 - `tests/schema/schema_version_immutability_tests.py`
 - `tests/contract/schema_change_notes_required.py`
 - `tests/schema/schema_unknown_field_tests.py`
-- `tools/ci/validate_world_definition.py`
-- `tools/worldgen_offline/world_definition_lib.py`
+- `tools/validators/ci/validate_world_definition.py`
+- `tools/domain/worldgen/offline/world_definition_lib.py`
 
 These checks and validators enforce:
 - Schema version immutability expectations.
@@ -60,8 +60,8 @@ no automatic background migration. When a migration is absent or unsafe, the
 tools refuse with a deterministic error.
 
 Examples of explicit refusal behavior on unsupported versions:
-- `tools/worldgen_offline/world_definition_lib.py` (refuses unknown schema_version)
-- `tools/ci/validate_world_definition.py` (validates and refuses incompatible versions)
+- `tools/domain/worldgen/offline/world_definition_lib.py` (refuses unknown schema_version)
+- `tools/validators/ci/validate_world_definition.py` (validates and refuses incompatible versions)
 
 ## Authoritative procedure to add schema versions and migrations
 

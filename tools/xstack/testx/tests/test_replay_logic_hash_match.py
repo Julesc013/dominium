@@ -14,7 +14,7 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     from game.domain.logic.signal import process_signal_set
-    from tools.logic.tool_replay_logic_window import replay_logic_window_from_payload
+    from tools.domain.logic.tool_replay_logic_window import replay_logic_window_from_payload
     from tools.xstack.testx.tests._logic_eval_test_utils import make_chain_network, load_eval_inputs
 
     inputs = load_eval_inputs(repo_root)

@@ -19,7 +19,7 @@ REQUIRED_TOKENS = {
         "artifact_kind_id",
         "migration_refs",
     ),
-    "tools/share/share_cli.py": (
+    "tools/export/share/share_cli.py": (
         "SHAREABLE_ARTIFACT_MANIFEST_NAME",
         "_build_bundle_artifact_manifest(",
         "validate_bundle_artifact(",

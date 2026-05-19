@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.dev.impact_graph import build_graph, compute_impacted_sets
+    from tools.repo.dev.impact_graph import build_graph, compute_impacted_sets
 
     changed_files = ["contracts/schema/session_spec.schema.json"]
     graph = build_graph(repo_root=repo_root, changed_files=changed_files)

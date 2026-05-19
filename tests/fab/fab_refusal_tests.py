@@ -21,7 +21,7 @@ def main():
 
     bad_path = os.path.join(repo_root, "tests", "fab", "fixtures", "fab_pack_bad_interface.json")
 
-    validate_out = run_tool(repo_root, "tools/fab/fab_validate.py", bad_path)
+    validate_out = run_tool(repo_root, "tools/domain/fabrication/fab_validate.py", bad_path)
     if validate_out.get("ok"):
         print("fab_refusal: expected validation failure")
         return 1
@@ -30,7 +30,7 @@ def main():
         print("fab_refusal: expected integrity refusal")
         return 1
 
-    inspect_out = run_tool(repo_root, "tools/fab/fab_inspect.py", bad_path)
+    inspect_out = run_tool(repo_root, "tools/domain/fabrication/fab_inspect.py", bad_path)
     edges = inspect_out.get("edges", [])
     if not edges:
         print("fab_refusal: expected edges to inspect")

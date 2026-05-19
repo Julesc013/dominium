@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.dev.impact_graph import build_graph_and_write
+    from tools.repo.dev.impact_graph import build_graph_and_write
 
     changed = [
         "contracts/schema/session_spec.schema.json",

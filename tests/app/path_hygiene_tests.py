@@ -40,7 +40,7 @@ SKIP_PREFIXES = (
 
 ALLOWLIST = {
     "setup/cli/setup_cli_main.c",
-    "tools/tools_host_main.c",
+    "tools/build/host/tools_host_main.c",
 }
 
 ABS_PATH_RE = re.compile(r"[A-Za-z]:\\\\")

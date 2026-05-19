@@ -8,8 +8,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E357_DIRECT_SYSTEM_SPAWN_SMELL"
-WATCH_PREFIXES = ("game/domain/worldgen/mw/", "game/domain/geology/worldgen/", "tools/xstack/sessionx/", "tools/worldgen/", "tools/mvp/")
-SCAN_ROOTS = ("game/domain/worldgen/mw", "game/domain/geology/worldgen", "tools/xstack/sessionx", "tools/worldgen", "tools/mvp")
+WATCH_PREFIXES = ("game/domain/worldgen/mw/", "game/domain/geology/worldgen/", "tools/xstack/sessionx/", "tools/domain/worldgen/", "tools/release/mvp/")
+SCAN_ROOTS = ("game/domain/worldgen/mw", "game/domain/geology/worldgen", "tools/xstack/sessionx", "tools/domain/worldgen", "tools/release/mvp")
 SCAN_EXTS = (".py",)
 ALLOWLIST = {
     "game/domain/worldgen/mw/mw_cell_generator.py",

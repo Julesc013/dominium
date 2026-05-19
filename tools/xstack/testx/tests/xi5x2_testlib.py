@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.xi5x2_common import (
+from tools.audit.review.xi5x2_common import (
     XI5X2_BATCH_PLAN_REL,
     XI5X2_BLOCKER_DELTA_REL,
     XI5X2_BLOCKED_PRECONDITIONS_REL,

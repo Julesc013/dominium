@@ -7,7 +7,16 @@ import re
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
@@ -21,7 +30,7 @@ SCAN_FILES = (
     "runtime/shell/logging/log_engine.py",
     "runtime/shell/bootstrap.py",
     "runtime/shell/command/command_engine.py",
-    "tools/setup/setup_cli.py",
+    "tools/package/setup/setup_cli.py",
     "runtime/shell/supervisor/supervisor_engine.py",
 )
 SECRET_RE = re.compile(r"(password|private_key|signing_key|auth_token|credential|secret)", re.IGNORECASE)

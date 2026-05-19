@@ -11,16 +11,25 @@ import tempfile
 from typing import Mapping, Sequence
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from tools.import_bridge import install_src_aliases
+from tools.migration.import_bridge import install_src_aliases
 install_src_aliases(REPO_ROOT_HINT)
 
 from tools.validators.compatibility.migration_lifecycle import load_migration_policy_registry
-from tools.governance import governance_profile_hash, load_governance_profile
+from tools.repo.governance import governance_profile_hash, load_governance_profile
 from tools.release import (
     DEFAULT_RELEASE_INDEX_REL,
     DEFAULT_RELEASE_MANIFEST_REL,
@@ -751,7 +760,7 @@ def _stable_subcheck_fingerprint(payload: Mapping[str, object]) -> str:
 
 
 def _verify_worldgen_subcheck(repo_root: str, extracted_root: str) -> dict:
-    from tools.worldgen.worldgen_lock_common import verify_worldgen_lock
+    from tools.domain.worldgen.worldgen_lock_common import verify_worldgen_lock
 
     seed_text = _read_text(os.path.join(extracted_root, ARCHIVE_BASELINES_DIR, "worldgen", "baseline_seed.txt")).strip()
     snapshot_path = os.path.join(extracted_root, ARCHIVE_BASELINES_DIR, "worldgen", "baseline_worldgen_snapshot.json")
@@ -775,7 +784,7 @@ def _verify_worldgen_subcheck(repo_root: str, extracted_root: str) -> dict:
 
 
 def _verify_baseline_universe_subcheck(repo_root: str, extracted_root: str) -> dict:
-    from tools.mvp.baseline_universe_common import verify_baseline_universe
+    from tools.release.mvp.baseline_universe_common import verify_baseline_universe
 
     seed_text = _read_text(os.path.join(extracted_root, ARCHIVE_BASELINES_DIR, "worldgen", "baseline_seed.txt")).strip()
     snapshot_path = os.path.join(extracted_root, ARCHIVE_BASELINES_DIR, "universe", "baseline_universe_snapshot.json")
@@ -799,7 +808,7 @@ def _verify_baseline_universe_subcheck(repo_root: str, extracted_root: str) -> d
 
 
 def _verify_gameplay_subcheck(repo_root: str, extracted_root: str) -> dict:
-    from tools.mvp.gameplay_loop_common import verify_gameplay_loop
+    from tools.release.mvp.gameplay_loop_common import verify_gameplay_loop
 
     seed_text = _read_text(os.path.join(extracted_root, ARCHIVE_BASELINES_DIR, "worldgen", "baseline_seed.txt")).strip()
     snapshot_path = os.path.join(extracted_root, ARCHIVE_BASELINES_DIR, "gameplay", "gameplay_loop_snapshot.json")
@@ -814,7 +823,7 @@ def _verify_gameplay_subcheck(repo_root: str, extracted_root: str) -> dict:
 
 
 def _verify_disaster_subcheck(repo_root: str) -> dict:
-    from tools.mvp.disaster_suite_common import run_disaster_suite
+    from tools.release.mvp.disaster_suite_common import run_disaster_suite
 
     report = run_disaster_suite(repo_root, output_root_rel=os.path.join("build", "tmp", "o8_oadv"), write_outputs=False)
     return {

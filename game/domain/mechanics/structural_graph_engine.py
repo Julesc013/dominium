@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict, List, Mapping
 
 from runtime.capability.effects import get_effective_modifier
-from tools.models.model_engine import aggregate_structural_edge_metrics
+from tools.repo.models.model_engine import aggregate_structural_edge_metrics
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

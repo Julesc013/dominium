@@ -34,6 +34,6 @@ def load_refusal_to_exit_registry(repo_root: str) -> dict:
 
 def generate_cli_reference_text(repo_root: str) -> str:
     ensure_repo_on_path(repo_root)
-    from tools.appshell.tool_generate_command_docs import generate_cli_reference
+    from tools.codegen.shell.tool_generate_command_docs import generate_cli_reference
 
     return str(generate_cli_reference(repo_root))

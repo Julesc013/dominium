@@ -11,7 +11,7 @@ Touched Paths:
 - contracts/registry/explain_contract_registry.json
 - docs/audit/LOGIC_PROTOCOL_BASELINE.md
 - docs/logic/PROTOCOL_SHARD_RULES.md
-- tools/governance/proof/control_proof_bundle.py
+- tools/repo/governance/proof/control_proof_bundle.py
 - logic/__init__.py
 - logic/debug/debug_engine.py
 - logic/eval/__init__.py
@@ -25,9 +25,9 @@ Touched Paths:
 - tools/xstack/auditx/analyzers/e326_nondeterministic_arbitration_smell.py
 - tools/xstack/auditx/analyzers/e327_protocol_security_bypass_smell.py
 - tools/xstack/auditx/analyzers/e328_protocol_bypass_smell.py
-- tools/logic/tool_replay_logic_window.py
-- tools/logic/tool_replay_protocol_window.py
-- tools/logic/tool_run_logic_protocol_stress.py
+- tools/domain/logic/tool_replay_logic_window.py
+- tools/domain/logic/tool_replay_protocol_window.py
+- tools/domain/logic/tool_run_logic_protocol_stress.py
 - tools/xstack/repox/check.py
 - tools/xstack/sessionx/process_runtime.py
 - tools/xstack/testx/tests/_logic_eval_test_utils.py

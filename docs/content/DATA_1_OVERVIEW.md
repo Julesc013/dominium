@@ -20,26 +20,26 @@ Scope: data-only packs that stress FAB-0/1 without adding code.
 
 ## Pack List and Maturity
 
-- org.dominium.core.materials.extended — PARAMETRIC  
+- org.dominium.core.materials.extended — PARAMETRIC
   Stress: wide trait ranges, conflicts, sensitivity, degradation parameters.
-- org.dominium.core.parts.extended — STRUCTURAL  
+- org.dominium.core.parts.extended — STRUCTURAL
   Stress: multiple interfaces, asymmetry, capacity mismatches, tolerances.
-- org.dominium.core.assemblies.extended — STRUCTURAL  
+- org.dominium.core.assemblies.extended — STRUCTURAL
   Stress: deep nesting, shared subassemblies, cycles, multiple hosted processes.
-- org.dominium.core.processes.extended — PARAMETRIC  
+- org.dominium.core.processes.extended — PARAMETRIC
   Stress: multi-input/output chains, losses, parameter sensitivity, failures.
-- org.dominium.core.quality.extended — PARAMETRIC  
+- org.dominium.core.quality.extended — PARAMETRIC
   Stress: tolerance classes, inspection methods, degradation effects, batch lots.
-- org.dominium.core.standards.extended — STRUCTURAL  
+- org.dominium.core.standards.extended — STRUCTURAL
   Stress: competing standards and overlapping scopes.
-- org.dominium.core.instruments.extended — STRUCTURAL  
+- org.dominium.core.instruments.extended — STRUCTURAL
   Stress: limited accuracy/precision, calibration drift, standards dependencies.
-- org.dominium.core.hazards.extended — INCOMPLETE  
+- org.dominium.core.hazards.extended — INCOMPLETE
   Stress: trigger conditions, cascading effects, mitigation references.
 
 ## What Works Today
 
-- Packs validate via `tools/fab/fab_validate.py` when merged with dependencies.
+- Packs validate via `tools/domain/fabrication/fab_validate.py` when merged with dependencies.
 - Capability discovery and compat checks are deterministic via pack manifests.
 - Assemblies, processes, qualities, and hazards are expressible as data-only
   records without new engine/game code.

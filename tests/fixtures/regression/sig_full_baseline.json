@@ -10,9 +10,9 @@
       "trust_updates_logged": true
     },
     "tooling": {
-      "generator_tool": "tools/signals/tool_generate_sig_stress_scenario.py",
-      "replay_tool": "tools/signals/tool_replay_sig_window.py",
-      "stress_tool": "tools/signals/tool_run_sig_stress.py"
+      "generator_tool": "tools/domain/signals/tool_generate_sig_stress_scenario.py",
+      "replay_tool": "tools/domain/signals/tool_replay_sig_window.py",
+      "stress_tool": "tools/domain/signals/tool_run_sig_stress.py"
     }
   },
   "fixed_seed_scenario": {

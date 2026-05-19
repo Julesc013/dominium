@@ -90,8 +90,8 @@ def run(graph, repo_root, changed_files=None):
         "game/domain/processes/research/inference_engine.py",
         "game/domain/processes/research/experiment_engine.py",
         "game/domain/processes/research/__init__.py",
-        "tools/process/tool_replay_experiment_window.py",
-        "tools/process/tool_replay_reverse_engineering_window.py",
+        "tools/domain/processes/tool_replay_experiment_window.py",
+        "tools/domain/processes/tool_replay_reverse_engineering_window.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

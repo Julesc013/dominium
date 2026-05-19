@@ -1,7 +1,7 @@
 /*
 FILE: tools/codegen/ui/launcher/user/ui_launcher_ui_actions_user.h
 MODULE: Repository
-LAYER / SUBSYSTEM: tools/launcher/ui
+LAYER / SUBSYSTEM: tools/package/launcher/ui
 RESPONSIBILITY: Declares user-owned UI action stubs for the launcher UI; does NOT define generated IDs or dispatch tables.
 ALLOWED DEPENDENCIES: Project-local headers; C89/C++98 standard headers.
 FORBIDDEN DEPENDENCIES: N/A.

@@ -15,7 +15,7 @@ REQUIRED_TOKENS = {
         "for attempt in range(1, LOCAL_READY_POLL_ITERATIONS + 1):",
         "accept_loopback_connection(",
     ),
-    "tools/mvp/runtime_entry.py": (
+    "tools/release/mvp/runtime_entry.py": (
         "--local-singleplayer",
         "start_local_singleplayer(",
     ),
@@ -26,7 +26,7 @@ REQUIRED_TOKENS = {
 }
 FORBIDDEN_TOKENS = {
     "apps/client/local_server/local_server_controller.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
-    "tools/server/server_mvp1_probe.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
+    "tools/test/server/server_mvp1_probe.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
 }
 
 

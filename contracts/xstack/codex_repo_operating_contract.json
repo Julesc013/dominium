@@ -46,15 +46,15 @@
     "docs/xstack/AIDE_ADAPTER_CONTRACT.md",
     "contracts/xstack/aide_adapter_contract.json",
     "CMakePresets.json",
-    "tools/launcher/launch.py",
-    "tools/setup/setup_cli.py",
+    "tools/package/launcher/launch.py",
+    "tools/package/setup/setup_cli.py",
     "tools/xstack/session_create.py",
     "tools/xstack/session_boot.py",
     "tools/xstack/sessionx/creator.py",
     "tools/xstack/sessionx/runner.py",
     "tools/xstack/testx_all.py",
     "tools/validators/suite/tool_run_validation.py",
-    "tools/mvp/runtime_entry.py",
+    "tools/release/mvp/runtime_entry.py",
     "server/server_main.py",
     "client/local_server/local_server_controller.py",
     "server/net/loopback_transport.py",
@@ -164,8 +164,8 @@
         "step": 2,
         "action": "prefer Python/AppShell shells as operator-facing surfaces",
         "commands": [
-          "python tools/setup/setup_cli.py ...",
-          "python tools/launcher/launch.py ..."
+          "python tools/package/setup/setup_cli.py ...",
+          "python tools/package/launcher/launch.py ..."
         ]
       },
       {
@@ -222,7 +222,7 @@
     "must_not_assume_yet": [
       "raw python server/server_main.py is not the canonical public playtest path",
       "python -m server.server_main is not a safe canonical substitute",
-      "python tools/mvp/runtime_entry.py --local-singleplayer is transitional and not the canonical operator path",
+      "python tools/release/mvp/runtime_entry.py --local-singleplayer is transitional and not the canonical operator path",
       "alternate save roots are not end-to-end supported just because session_create.py accepts --saves-root",
       "non-loopback multiplayer, installed-mode assumptions, and native launcher/setup parity are not baseline-ready"
     ]
@@ -271,8 +271,8 @@
       "category": "runtime_and_baseline_assembly_roots",
       "paths": [
         "appshell/**",
-        "tools/launcher/**",
-        "tools/setup/**",
+        "tools/package/launcher/**",
+        "tools/package/setup/**",
         "tools/xstack/**",
         "server/**",
         "client/local_server/**",
@@ -363,7 +363,7 @@
       "native launcher/setup shell completion work that does not directly unblock the baseline path",
       "release/publication/archive/trust policy changes unrelated to the active task",
       "doctrine rewrites under docs/canon/** or AGENTS.md without an explicit doctrine-facing prompt",
-      "promotion of tools/mvp/runtime_entry.py into the canonical public playtest path without an explicit task",
+      "promotion of tools/release/mvp/runtime_entry.py into the canonical public playtest path without an explicit task",
       "wrapper proliferation that creates another official startup flow"
     ],
     "exception_rule": {
@@ -454,7 +454,7 @@
     "inventing a second canonical playtest path",
     "claiming validation success without running the relevant validation",
     "treating experimental or transitional wrappers as canonical operator surfaces without evidence",
-    "silently promoting raw server/server_main.py or tools/mvp/runtime_entry.py into the public playtest path",
+    "silently promoting raw server/server_main.py or tools/release/mvp/runtime_entry.py into the public playtest path",
     "competing with the playable-baseline path by expanding into large AIDE runtime or platform work",
     "flattening verified, likely, partial, and blocked into one status label",
     "silently rebinding ownership-sensitive roots because one side is easier to consume"

@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "mvp", "smoke", "determinism"]
 
 
 def run(repo_root: str):
-    from tools.mvp.mvp_smoke_common import DEFAULT_MVP_SMOKE_SEED, generate_mvp_smoke_scenario
+    from tools.release.mvp.mvp_smoke_common import DEFAULT_MVP_SMOKE_SEED, generate_mvp_smoke_scenario
     from tools.xstack.testx.tests.mvp_smoke_testlib import load_scenario
 
     recorded = load_scenario(repo_root)

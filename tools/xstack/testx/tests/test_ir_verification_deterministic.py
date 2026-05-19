@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.governance import verify_control_ir
+    from tools.repo.governance import verify_control_ir
     from tools.xstack.compatx.canonical_json import canonical_sha256
     from tools.xstack.testx.tests.control_ir_testlib import (
         authority_context,

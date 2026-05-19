@@ -17,7 +17,7 @@ WATCH_PREFIXES = (
     "contracts/schema/logic/debug_sampling_policy.schema",
     "contracts/registry/debug_sampling_policy_registry.json",
     "game/domain/logic/debug/debug_engine.py",
-    "tools/logic/tool_replay_trace_window.py",
+    "tools/domain/logic/tool_replay_trace_window.py",
 )
 
 
@@ -126,7 +126,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    replay_rel = "tools/logic/tool_replay_trace_window.py"
+    replay_rel = "tools/domain/logic/tool_replay_trace_window.py"
     replay_text = _read_text(repo_root, replay_rel)
     for token in ("logic_debug_trace_hash_chain", "samples", "sample_count"):
         if token in replay_text:

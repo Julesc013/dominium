@@ -11,10 +11,10 @@ LIB-2 deterministic instance manifests, instance kinds, save associations, and p
 
 Touched Paths:
 - tools/package/libraries/instance/instance_validator.py
-- tools/ops/ops_cli.py
-- tools/launcher/launcher_cli.py
-- tools/share/share_cli.py
-- tools/setup/setup_cli.py
+- tools/package/ops/ops_cli.py
+- tools/package/launcher/launcher_cli.py
+- tools/export/share/share_cli.py
+- tools/package/setup/setup_cli.py
 
 Demand IDs:
 - cyber.firmware_flashing_pipeline_integration

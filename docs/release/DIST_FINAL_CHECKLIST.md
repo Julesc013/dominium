@@ -10,34 +10,34 @@ Replacement Target: Ω-11 execution ledger and final mock signoff
 
 ## Preconditions
 
-- [ ] Run `python tools/convergence/tool_run_convergence_gate.py --repo-root . --skip-cross-platform --prefer-cached-heavy`
+- [ ] Run `python tools/migration/convergence/tool_run_convergence_gate.py --repo-root . --skip-cross-platform --prefer-cached-heavy`
   Expected outputs: convergence report under `docs/audit/convergence_steps/`
   Pass criteria: result `complete`
 - [ ] Run `python tools/audit/tool_run_arch_audit.py --repo-root .`
   Expected outputs: `docs/audit/ARCH_AUDIT_REPORT.md`, `archive/generated/audit/arch_audit_report.json`
   Pass criteria: result `complete`
-- [ ] Run `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
+- [ ] Run `python tools/domain/worldgen/tool_verify_worldgen_lock.py --repo-root .`
   Expected outputs: `docs/audit/WORLDGEN_LOCK_VERIFY.md`, `archive/generated/audit/worldgen_lock_verify.json`
   Pass criteria: result `complete`
-- [ ] Run `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
+- [ ] Run `python tools/release/mvp/tool_verify_baseline_universe.py --repo-root .`
   Expected outputs: `docs/audit/BASELINE_UNIVERSE_VERIFY.md`, `tests/fixtures/audit/baseline_universe_verify.json`
   Pass criteria: result `complete`
-- [ ] Run `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
+- [ ] Run `python tools/release/mvp/tool_verify_gameplay_loop.py --repo-root .`
   Expected outputs: `docs/audit/MVP_GAMEPLAY_VERIFY.md`, `archive/generated/audit/gameplay_verify.json`
   Pass criteria: result `complete`
-- [ ] Run `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
+- [ ] Run `python tools/release/mvp/tool_run_disaster_suite.py --repo-root .`
   Expected outputs: `docs/audit/DISASTER_SUITE_RUN.md`, `archive/generated/audit/disaster_suite_run.json`
   Pass criteria: result `complete`
-- [ ] Run `python tools/mvp/tool_verify_ecosystem.py --repo-root .`
+- [ ] Run `python tools/release/mvp/tool_verify_ecosystem.py --repo-root .`
   Expected outputs: `docs/audit/ECOSYSTEM_VERIFY_RUN.md`, `archive/generated/audit/ecosystem_verify_run.json`
   Pass criteria: result `complete`
-- [ ] Run `python tools/mvp/tool_run_update_sim.py --repo-root .`
+- [ ] Run `python tools/release/mvp/tool_run_update_sim.py --repo-root .`
   Expected outputs: `docs/audit/UPDATE_SIM_RUN.md`, `archive/generated/audit/update_sim_run.json`
   Pass criteria: result `complete`
-- [ ] Run `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
+- [ ] Run `python tools/validators/security/model/tool_run_trust_strict_suite.py --repo-root .`
   Expected outputs: `docs/audit/TRUST_STRICT_SUITE_RUN.md`, `archive/generated/audit/trust_strict_run.json`
   Pass criteria: result `complete`
-- [ ] Run `python tools/perf/tool_run_performance_envelope.py --repo-root . --platform-tag win64`
+- [ ] Run `python tools/performance/envelope/tool_run_performance_envelope.py --repo-root . --platform-tag win64`
   Expected outputs: `docs/audit/PERFORMANCE_ENVELOPE_BASELINE.md`
   Pass criteria: result `complete`
 
@@ -64,7 +64,7 @@ Replacement Target: Ω-11 execution ledger and final mock signoff
 - [ ] Verify the tools bundle with `python tools/release/dist/tool_verify_distribution.py --repo-root . --platform-tag win64 --dist-root build/dist.final/tools`
   Expected outputs: distribution verify report for the tools staging root
   Pass criteria: result `complete`
-- [ ] Run store verification with `python tools/setup/setup_cli.py packs verify --root archive/generated/dist/v0.0.0-mock/win64/dominium`
+- [ ] Run store verification with `python tools/package/setup/setup_cli.py packs verify --root archive/generated/dist/v0.0.0-mock/win64/dominium`
   Expected outputs: offline verification result on stdout or bundle-local logs
   Pass criteria: no refusal, no contract drift
 - [ ] Run clean-room verification with `python tools/release/dist/tool_run_clean_room.py --repo-root . --dist-root dist --platform-tag win64 --mode-policy cli`

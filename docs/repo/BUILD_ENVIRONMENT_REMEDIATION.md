@@ -26,7 +26,7 @@ Current verify lane summary:
 - binary dir: `${sourceDir}/out/build/vs2026/${presetName}`
 - build mode: `Debug`
 - tests: `DOM_BUILD_TESTS=ON`
-- tools/setup/launcher/game: enabled
+- tools/package/setup/launcher/game: enabled
 - C language: C89, required, no extensions
 - C++ language: C++98, required, no extensions
 - platform/backend defaults from `msvc-base`: `DOM_PLATFORM=sdl2`, `DOM_BACKEND_SDL2=ON`, `DOM_BACKEND_DX9=ON`, `DOM_BACKEND_GL2=ON`

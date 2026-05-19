@@ -60,7 +60,7 @@
       "blockers": "launcher status exposed a prior server child exit_code 3 and attach refusal, so supervision stability is not fully green.",
       "build_status": "verified",
       "evidence": "compat-status, profiles list, packs list, and launcher status all ran successfully.",
-      "path": "python tools/launcher/launch.py",
+      "path": "python tools/package/launcher/launch.py",
       "run_status": "verified",
       "subject": "launcher AppShell",
       "test_status": "likely"
@@ -69,7 +69,7 @@
       "blockers": "Audit did not execute install apply/update apply against a real install root.",
       "build_status": "verified",
       "evidence": "help, compat-status, profiles list, and packs list all ran successfully.",
-      "path": "python tools/setup/setup_cli.py",
+      "path": "python tools/package/setup/setup_cli.py",
       "run_status": "verified",
       "subject": "setup AppShell",
       "test_status": "likely"

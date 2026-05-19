@@ -11,7 +11,7 @@ import sys
 import tempfile
 from typing import Iterable, Mapping, Sequence
 
-from tools.dist.dist_tree_common import DEFAULT_OUTPUT_ROOT, DEFAULT_PLATFORM_TAG, DEFAULT_RELEASE_CHANNEL
+from tools.release.dist.dist_tree_common import DEFAULT_OUTPUT_ROOT, DEFAULT_PLATFORM_TAG, DEFAULT_RELEASE_CHANNEL
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -338,7 +338,7 @@ def _inline_teleport_script(seed: str) -> str:
             "from client.ui.teleport_controller import build_teleport_plan",
             "from worldgen.mw.sol_anchor import resolve_sol_anchor_cell_key",
             "from worldgen.mw.system_query_engine import list_systems_in_cell",
-            "from tools.mvp.runtime_bundle import build_default_universe_identity",
+            "from tools.release.mvp.runtime_bundle import build_default_universe_identity",
             "",
             "seed = {!r}".format(str(seed)),
             "identity = build_default_universe_identity(repo_root='.', seed=seed, authority_mode='dev')",
@@ -391,7 +391,7 @@ def _inline_tool_session_script() -> str:
     return "\n".join(
         [
             "import json",
-            "from tools.embodiment.emb1_probe import build_tool_session_report",
+            "from tools.domain.embodiment.emb1_probe import build_tool_session_report",
             "payload = build_tool_session_report('.')",
             "print(json.dumps(payload, indent=2, sort_keys=True))",
         ]

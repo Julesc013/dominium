@@ -105,17 +105,17 @@ events_end
 
 **Tools**
 Use the playtest tools for headless analysis:
-- `tools/playtest/replay_run.py` computes deterministic event hashes.
-- `tools/playtest/replay_diff.py` compares replays (meta, variants, or events).
-- `tools/playtest/replay_metrics.py` summarizes event-derived metrics.
-- `tools/playtest/replay_timeline.py` emits a macro/micro timeline.
+- `tools/test/playtest/replay_run.py` computes deterministic event hashes.
+- `tools/test/playtest/replay_diff.py` compares replays (meta, variants, or events).
+- `tools/test/playtest/replay_metrics.py` summarizes event-derived metrics.
+- `tools/test/playtest/replay_timeline.py` emits a macro/micro timeline.
 
 Examples:
 ```text
-python tools/playtest/replay_run.py --input data/saves/session.replay --format json
-python tools/playtest/replay_diff.py --left a.replay --right b.replay --compare events --fail-on-diff
-python tools/playtest/replay_metrics.py --input data/saves/session.replay --format text
-python tools/playtest/replay_timeline.py --input data/saves/session.replay --format csv
+python tools/test/playtest/replay_run.py --input data/saves/session.replay --format json
+python tools/test/playtest/replay_diff.py --left a.replay --right b.replay --compare events --fail-on-diff
+python tools/test/playtest/replay_metrics.py --input data/saves/session.replay --format text
+python tools/test/playtest/replay_timeline.py --input data/saves/session.replay --format csv
 ```
 
 **Refusals and Metrics**

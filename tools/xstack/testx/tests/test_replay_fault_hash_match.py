@@ -23,7 +23,7 @@ def run(repo_root: str):
 
     from game.domain.logic.fault import process_logic_fault_set
     from game.domain.logic.signal import process_signal_set
-    from tools.logic.tool_replay_fault_window import replay_fault_window_from_payload
+    from tools.domain.logic.tool_replay_fault_window import replay_fault_window_from_payload
     from tools.xstack.testx.tests._logic_eval_test_utils import load_eval_inputs, make_chain_network, make_scalar_comparator_network
 
     inputs = load_eval_inputs(repo_root)

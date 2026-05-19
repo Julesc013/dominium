@@ -10,14 +10,23 @@ from typing import Mapping, Sequence
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
 from runtime.shell.rendered_stub import build_rendered_stub
 from runtime.shell.tui.tui_engine import build_tui_surface, render_tui_text
-from tools.appshell.tool_generate_command_docs import generate_cli_reference
+from tools.codegen.shell.tool_generate_command_docs import generate_cli_reference
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -152,7 +161,7 @@ def _refusal_rows(repo_root: str) -> list[dict]:
         "dominium_client",
         ["compat-status", "--peer-descriptor-file", "build/tmp/missing_descriptor.json"],
     )
-    launcher_refusal = _run_subprocess(repo_root, ["tools/launcher/launch.py", "install", "status"])
+    launcher_refusal = _run_subprocess(repo_root, ["tools/package/launcher/launch.py", "install", "status"])
     for surface_id, report in (
         ("client.compat_status.invalid_peer", client_refusal),
         ("launcher.install_status.missing_install", launcher_refusal),
@@ -176,8 +185,8 @@ def _status_rows(repo_root: str) -> list[dict]:
     rows = []
     probes = (
         ("client.compat_status", _run_wrapper(repo_root, "dominium_client", ["compat-status", "--mode", "cli"]), False),
-        ("launcher.install_status", _run_subprocess(repo_root, ["tools/launcher/launch.py", "install", "status", "--json"]), True),
-        ("setup.install_status", _run_subprocess(repo_root, ["tools/setup/setup_cli.py", "install", "status", "--json"]), True),
+        ("launcher.install_status", _run_subprocess(repo_root, ["tools/package/launcher/launch.py", "install", "status", "--json"]), True),
+        ("setup.install_status", _run_subprocess(repo_root, ["tools/package/setup/setup_cli.py", "install", "status", "--json"]), True),
     )
     for surface_id, report, json_requested in probes:
         payload = dict(report.get("payload") or {})
@@ -323,7 +332,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
                 {
                     "code": "status_payload_not_json",
                     "message": "status surface did not emit a JSON payload for {}".format(_token(row.get("surface_id"))),
-                    "file_path": "tools/launcher/launch.py" if "launcher" in _token(row.get("surface_id")) else "tools/setup/setup_cli.py",
+                    "file_path": "tools/package/launcher/launch.py" if "launcher" in _token(row.get("surface_id")) else "tools/package/setup/setup_cli.py",
                     "rule_id": RULE_REMEDIATION_ID,
                 }
             )
@@ -332,7 +341,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
                 {
                     "code": "status_payload_missing_summary",
                     "message": "status surface is missing message or summary fields for {}".format(_token(row.get("surface_id"))),
-                    "file_path": "tools/launcher/launch.py" if "launcher" in _token(row.get("surface_id")) else "tools/setup/setup_cli.py",
+                    "file_path": "tools/package/launcher/launch.py" if "launcher" in _token(row.get("surface_id")) else "tools/package/setup/setup_cli.py",
                     "rule_id": RULE_REMEDIATION_ID,
                 }
             )

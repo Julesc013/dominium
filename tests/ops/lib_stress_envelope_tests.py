@@ -8,7 +8,7 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from tools.lib.lib_stress_common import DEFAULT_LIB7_SEED, generate_lib_stress_scenario, run_lib_stress
+from tools.package.libraries.stress.lib_stress_common import DEFAULT_LIB7_SEED, generate_lib_stress_scenario, run_lib_stress
 
 
 _SCENARIO_CACHE: dict[tuple[str, str], dict] = {}

@@ -18,7 +18,7 @@ REQUIRED_TOKENS = {
         "endpoint_descriptor_hash",
         "REFUSAL_INSTALL_HASH_MISMATCH",
     ),
-    "tools/setup/setup_cli.py": (
+    "tools/package/setup/setup_cli.py": (
         "descriptor_relpath",
         "endpoint_descriptor_hash",
         "product_build_descriptors",

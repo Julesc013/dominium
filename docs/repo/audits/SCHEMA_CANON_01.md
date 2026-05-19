@@ -99,7 +99,7 @@ All moved tracked files were moved with `git mv`.
 - `tests/tools/compatx_pack_matrix_tests.py`
 - `tests/tools/compatx_save_replay_tests.py`
 - `tests/tools/compatx_schema_diff_tests.py`
-- `tools/ci/phase6_audit_checks.py`
+- `tools/validators/ci/phase6_audit_checks.py`
 - `tools/release/dist/dist_tree_common.py`
 - `tools/validators/check_repo_layout.py`
 - `tools/validators/repo/check_path_terms.py`

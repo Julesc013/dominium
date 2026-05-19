@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "xi", "restructure", "determinism"]
 
 
 def run(repo_root: str):
-    from tools.review.xi4b_src_domain_mapping_common import TMP_BUNDLE_MANIFEST_REL, TMP_BUNDLE_REL, XI4B_REVIEW_MANIFEST_REL, SRC_DOMAIN_MAPPING_REL
+    from tools.audit.review.xi4b_src_domain_mapping_common import TMP_BUNDLE_MANIFEST_REL, TMP_BUNDLE_REL, XI4B_REVIEW_MANIFEST_REL, SRC_DOMAIN_MAPPING_REL
     from tools.xstack.testx.tests.xi4b_src_domain_mapping_testlib import committed_review_manifest, committed_src_domain_mapping, fresh_hashes, fresh_snapshot
 
     committed_mapping = committed_src_domain_mapping(repo_root)

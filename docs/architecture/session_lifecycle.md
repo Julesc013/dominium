@@ -31,7 +31,7 @@ Define deterministic session lifecycle flow for lab bootstrap and scripted execu
      - `saves/<save_id>/universe_identity.json`
      - `saves/<save_id>/universe_state.json`
 3. **Setup/packaging (optional but required for reproducible dist launch)**
-   - `tools/setup/build --bundle bundle.base.lab --out dist`
+   - `tools/package/setup/build --bundle bundle.base.lab --out dist`
    - Emits deterministic dist artifacts:
      - `archive/generated/dist/manifest.json`
      - `archive/generated/dist/lockfile.json`
@@ -100,9 +100,9 @@ Refusal payload shape:
 ## Example Commands
 ```text
 tools/xstack/session_create --save-id save.lab.bootstrap --bundle bundle.base.lab --rng-seed-string seed.lab.bootstrap
-tools/setup/build --bundle bundle.base.lab --out dist
+tools/package/setup/build --bundle bundle.base.lab --out dist
 tools/xstack/session_boot saves/save.lab.bootstrap/session_spec.json --bundle bundle.base.lab
-tools/launcher/launch run --dist dist --session saves/save.lab.bootstrap/session_spec.json
+tools/package/launcher/launch run --dist dist --session saves/save.lab.bootstrap/session_spec.json
 tools/xstack/session_script_run saves/save.lab.bootstrap/session_spec.json tools/xstack/testdata/session/script.camera_nav.fixture.json --workers 1 --logical-shards 1
 tools/xstack/srz_status saves/save.lab.bootstrap/session_spec.json
 ```

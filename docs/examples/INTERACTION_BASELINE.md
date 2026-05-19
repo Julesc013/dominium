@@ -70,9 +70,9 @@ Interactions are stored in saves and replays:
 ## Tooling
 Inspect saved interactions or replay events:
 ```
-python tools/inspect/interaction_inspector.py --save data/saves/interaction.save --format text
-python tools/inspect/interaction_inspector.py --replay data/replays/interaction.replay --format text
-python tools/inspect/interaction_inspector.py --diff data/replays/a.replay data/replays/b.replay --format text
+python apps/workbench/module/inspection/inspector/interaction_inspector.py --save data/saves/interaction.save --format text
+python apps/workbench/module/inspection/inspector/interaction_inspector.py --replay data/replays/interaction.replay --format text
+python apps/workbench/module/inspection/inspector/interaction_inspector.py --diff data/replays/a.replay data/replays/b.replay --format text
 ```
 
 ## What This Does Not Include

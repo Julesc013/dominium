@@ -149,7 +149,7 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `ui` | `runtime/ui` | `move` | `false` | `false` | `completed` | `CONVERGE-07` | `medium` | Completed in CONVERGE-07; root-level ui/ moved under runtime/ui/. |
 | `universe` | `game/domain/universe` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level universe/ implementation moved under game/domain/universe/. No schemas, registries, content data, or docs were found in that root during th... |
 | `updates` | `release_or_ops_review` | `split` | `true` | `false` | `not_started` | `review` | `high` | Update metadata belongs to release/control-plane ownership after review. |
-| `validation` | `tools/validation` | `review` | `false` | `false` | `review` | `review` | `review` | Validation tooling belongs under tools unless it is contract law. |
+| `validation` | `tools/validators` | `review` | `false` | `false` | `review` | `review` | `review` | Validation tooling belongs under tools unless it is contract law. |
 | `VERSION_CLIENT` | `VERSION_CLIENT` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `VERSION_ENGINE` | `VERSION_ENGINE` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `VERSION_GAME` | `VERSION_GAME` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |

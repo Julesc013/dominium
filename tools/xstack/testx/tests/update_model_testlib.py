@@ -11,7 +11,7 @@ from tools.release import (
     load_release_index,
     resolve_update_plan,
 )
-from tools.dist.dist_tree_common import build_dist_tree
+from tools.release.dist.dist_tree_common import build_dist_tree
 from tools.release.update_model_common import REPORT_JSON_REL, build_update_model_report, update_model_violations
 
 

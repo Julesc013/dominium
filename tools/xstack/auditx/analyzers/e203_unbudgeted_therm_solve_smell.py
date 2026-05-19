@@ -35,7 +35,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    stress_tool_rel = "tools/thermal/tool_run_therm_stress.py"
+    stress_tool_rel = "tools/domain/thermal/tool_run_therm_stress.py"
     stress_tool_text = _read_text(repo_root, stress_tool_rel)
     required_tokens = (
         "max_cost_units_per_tick",

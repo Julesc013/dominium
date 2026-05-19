@@ -14,9 +14,9 @@ Replacement Target: legacy reference surface retained without current binding au
 - `schema/package/artifact/artifact_reference.schema`
 - `tools/package/libraries/artifact/__init__.py`
 - `tools/package/libraries/artifact/artifact_validator.py`
-- `tools/lib/content_store.py`
-- `tools/share/share_cli.py`
-- `tools/launcher/launcher_cli.py`
+- `tools/package/libraries/store/content_store.py`
+- `tools/export/share/share_cli.py`
+- `tools/package/launcher/launcher_cli.py`
 
 ## Demand IDs
 

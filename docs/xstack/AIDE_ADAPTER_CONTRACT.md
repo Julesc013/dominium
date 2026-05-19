@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: Codex repo operating contract, AIDE extraction review
 Replacement Target: later explicit portable adapter-contract checkpoint or replacement artifact only
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `archive/generated/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `archive/generated/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `contracts/xstack/aide_capability_profile_shape.json`, `tools/validators/compatibility/data_format_loader.py`, `tools/validators/compatibility/handshake/handshake_engine.py`, `tools/validators/compatibility/shims/tool_shims.py`, `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `appshell/ipc/ipc_transport.py`, `appshell/ipc/ipc_client.py`, `tools/tool_surface_adapter.py`, `tools/setup/setup_cli.py`, `tools/import_bridge.py`, `tools/xstack/controlx/core/remediation_bridge.py`, `client/render/render_model_adapter.py`, `geo/projection/view_adapters.py`, `tools/validators/suite/validation_engine.py`, `schemas/tool_adapter_output.schema.json`, `docs/development/templates/adapter_template.md`, `contracts/registry/reality/cross_domain_bridge_registry.json`, `tools/xstack/testx/tests/test_tool_adapter_offline.py`, `tools/xstack/testx/tests/test_tool_adapter_uses_virtual_paths.py`, `tools/xstack/testx/tests/test_native_adapter_only_calls_command_engine.py`, `tools/xstack/testx/tests/test_shims_emit_deterministic_warnings.py`, `tools/xstack/testx/tests/test_attach_requires_negotiation.py`, `tools/xstack/testx/tests/test_unnegotiated_attach_refused.py`, `tools/xstack/testx/tests/test_tool_incompatibility_refusal.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `archive/generated/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `archive/generated/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `contracts/xstack/aide_capability_profile_shape.json`, `tools/validators/compatibility/data_format_loader.py`, `tools/validators/compatibility/handshake/handshake_engine.py`, `tools/validators/compatibility/shims/tool_shims.py`, `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `appshell/ipc/ipc_transport.py`, `appshell/ipc/ipc_client.py`, `tools/repo/tool_surface_adapter.py`, `tools/package/setup/setup_cli.py`, `tools/migration/import_bridge.py`, `tools/xstack/controlx/core/remediation_bridge.py`, `client/render/render_model_adapter.py`, `geo/projection/view_adapters.py`, `tools/validators/suite/validation_engine.py`, `schemas/tool_adapter_output.schema.json`, `docs/development/templates/adapter_template.md`, `contracts/registry/reality/cross_domain_bridge_registry.json`, `tools/xstack/testx/tests/test_tool_adapter_offline.py`, `tools/xstack/testx/tests/test_tool_adapter_uses_virtual_paths.py`, `tools/xstack/testx/tests/test_native_adapter_only_calls_command_engine.py`, `tools/xstack/testx/tests/test_shims_emit_deterministic_warnings.py`, `tools/xstack/testx/tests/test_attach_requires_negotiation.py`, `tools/xstack/testx/tests/test_unnegotiated_attach_refused.py`, `tools/xstack/testx/tests/test_tool_incompatibility_refusal.py`
 
 # AIDE Adapter Contract
 
@@ -90,14 +90,14 @@ Those implementations are evidence for the contract shape, but their existence d
 ### Wrapper, Shim, and Transitional Surface
 
 A wrapper may invoke or package deeper logic without being the canonical translation contract.
-`appshell/compat_adapter.py` is a thin wrapper over product descriptor surfaces, and `tools/tool_surface_adapter.py` emits stable wrapper rows around governed subprocess tools.
+`appshell/compat_adapter.py` is a thin wrapper over product descriptor surfaces, and `tools/repo/tool_surface_adapter.py` emits stable wrapper rows around governed subprocess tools.
 `tools/validators/compatibility/shims/tool_shims.py` is explicitly a deprecation shim surface.
 These are real and useful surfaces, but wrapper or shim status must remain explicit instead of being promoted into portable adapter truth by naming convenience.
 
 ### Product-Shell Command Surface
 
 Launcher, setup, and AppShell command surfaces may expose adapters or adapter-shaped outputs, but a CLI command is not automatically a portable adapter contract.
-For example, `tools/setup/setup_cli.py` uses `bridge_engine_payload` to re-express import and export engine results for command consumers.
+For example, `tools/package/setup/setup_cli.py` uses `bridge_engine_payload` to re-express import and export engine results for command consumers.
 That is a shell-facing bridge, not portable adapter law.
 
 ### Runtime Service Boundary
@@ -201,7 +201,7 @@ Portable extraction may reuse the former before it reuses the latter.
 ### Adapter Versus Wrapper
 
 A wrapper exposes or packages an implementation for a consumer surface.
-`tools/tool_surface_adapter.py` and `appshell/compat_adapter.py` show stable wrappers that are still local to AppShell and tool command surfaces.
+`tools/repo/tool_surface_adapter.py` and `appshell/compat_adapter.py` show stable wrappers that are still local to AppShell and tool command surfaces.
 A wrapper may embody an adapter path, but wrapper identity is not enough to define portable adapter law.
 
 ### Adapter Versus Shim
@@ -324,7 +324,7 @@ The portable minimum frozen here is grounded in live repo evidence rather than f
 - `appshell/compat_adapter.py` shows a thin wrapper around deeper compat surfaces.
   It proves that adapter naming alone is insufficient and that wrapper layers must remain distinguishable from portable adapter law.
 
-- `tools/tool_surface_adapter.py`, `schemas/tool_adapter_output.schema.json`, `tools/xstack/testx/tests/test_tool_adapter_offline.py`, and `tools/xstack/testx/tests/test_tool_adapter_uses_virtual_paths.py` prove that the repo already uses stable adapter-shaped rows and adapter output payloads.
+- `tools/repo/tool_surface_adapter.py`, `schemas/tool_adapter_output.schema.json`, `tools/xstack/testx/tests/test_tool_adapter_offline.py`, and `tools/xstack/testx/tests/test_tool_adapter_uses_virtual_paths.py` prove that the repo already uses stable adapter-shaped rows and adapter output payloads.
   They also show why those rows are still local wrappers: they are offline-only, subprocess-bound, command-engine mediated, and virtual-path constrained.
 
 - `tools/validators/compatibility/shims/tool_shims.py` and `tools/xstack/testx/tests/test_shims_emit_deterministic_warnings.py` prove that the repo distinguishes shims from real adapters.
@@ -339,10 +339,10 @@ The portable minimum frozen here is grounded in live repo evidence rather than f
 - `client/render/render_model_adapter.py` and `geo/projection/view_adapters.py` prove that real model-to-model adapters exist in the repo.
   They are still tied to Dominium-specific truth, perceived, render, and projected-view layers, so they support the shape without proving current portability.
 
-- `tools/setup/setup_cli.py` uses `bridge_engine_payload` to re-express engine outputs as shell-facing results.
+- `tools/package/setup/setup_cli.py` uses `bridge_engine_payload` to re-express engine outputs as shell-facing results.
   That is evidence for adapter-shaped bridging behavior, but it is a product-shell bridge, not portable adapter law.
 
-- `tools/import_bridge.py`, `tools/xstack/controlx/core/remediation_bridge.py`, and `contracts/registry/reality/cross_domain_bridge_registry.json` prove that bridges are broader than portable adapters.
+- `tools/migration/import_bridge.py`, `tools/xstack/controlx/core/remediation_bridge.py`, and `contracts/registry/reality/cross_domain_bridge_registry.json` prove that bridges are broader than portable adapters.
   The bridge registry explicitly warns that a bridge is not equivalent to a runtime service boundary or shared code path, which reinforces the need for a narrow adapter contract.
 
 - `tools/validators/suite/validation_engine.py` inventories live validation surfaces by `adapter_mode`, `active_adapter`, and `coverage_adapter`.
@@ -370,14 +370,14 @@ The following elements are portable and worth freezing now:
 
 The following remain Dominium-owned and must not be treated as portable adapter runtime now:
 
-- AppShell command surfaces and subprocess tool adapters under `tools/tool_surface_adapter.py`
+- AppShell command surfaces and subprocess tool adapters under `tools/repo/tool_surface_adapter.py`
 - tool wrapper output payload execution semantics under `schemas/tool_adapter_output.schema.json`
 - `appshell/compat_adapter.py` and other shell-facing wrappers
 - `appshell/pack_verifier_adapter.py` execution flow and output writing
 - negotiated IPC and attach flows in `appshell/ipc/ipc_client.py`, `appshell/ipc/ipc_transport.py`, and related handshake helpers
 - render and view adapters in `client/render/render_model_adapter.py` and `geo/projection/view_adapters.py`
-- setup bridge payload translation in `tools/setup/setup_cli.py`
-- import alias bridges in `tools/import_bridge.py`
+- setup bridge payload translation in `tools/package/setup/setup_cli.py`
+- import alias bridges in `tools/migration/import_bridge.py`
 - ControlX remediation bridges in `tools/xstack/controlx/core/remediation_bridge.py`
 - validation adapter inventories and coverage adapters in `tools/validators/suite/validation_engine.py`
 - deprecation shims in `tools/validators/compatibility/shims/tool_shims.py`

@@ -67,7 +67,7 @@ Each budget MUST be measured by a PERF3 regression fixture:
 - Fixture defines workload and world size.
 - Fixture records per-tick and per-frame timing.
 - Fixture emits structured results under `run_root/perf/budgets/`.
-- Reports are validated by `tools/ci/perf_budget_check.py` (PERF-BUDGET-002).
+- Reports are validated by `tools/validators/ci/perf_budget_check.py` (PERF-BUDGET-002).
 
 ## Budget Data (machine-readable)
 

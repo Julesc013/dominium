@@ -49,27 +49,27 @@ It documents the exact inputs, commands, outputs, gates, inclusion rules, archiv
 All of the following must pass before Ω-11 signoff is accepted:
 
 - `CONVERGENCE-GATE-0`
-  - `python tools/convergence/tool_run_convergence_gate.py --repo-root . --skip-cross-platform --prefer-cached-heavy`
+  - `python tools/migration/convergence/tool_run_convergence_gate.py --repo-root . --skip-cross-platform --prefer-cached-heavy`
 - `ARCH-AUDIT-2`
   - `python tools/audit/tool_run_arch_audit.py --repo-root .`
 - WORLDGEN-LOCK verify
-  - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
+  - `python tools/domain/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - BASELINE-UNIVERSE verify
-  - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
+  - `python tools/release/mvp/tool_verify_baseline_universe.py --repo-root .`
 - MVP-GAMEPLAY verify
-  - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
+  - `python tools/release/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - DISASTER suite pass
-  - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
+  - `python tools/release/mvp/tool_run_disaster_suite.py --repo-root .`
 - ECOSYSTEM verify pass
-  - `python tools/mvp/tool_verify_ecosystem.py --repo-root .`
+  - `python tools/release/mvp/tool_verify_ecosystem.py --repo-root .`
 - UPDATE simulation pass
-  - `python tools/mvp/tool_run_update_sim.py --repo-root .`
+  - `python tools/release/mvp/tool_run_update_sim.py --repo-root .`
 - TRUST strict suite pass when strict publication policy is exercised
-  - `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
+  - `python tools/validators/security/model/tool_run_trust_strict_suite.py --repo-root .`
 - STORE verify pass on the assembled authoritative release bundle
-  - `python tools/setup/setup_cli.py packs verify --root archive/generated/dist/v0.0.0-mock/win64/dominium`
+  - `python tools/package/setup/setup_cli.py packs verify --root archive/generated/dist/v0.0.0-mock/win64/dominium`
 - PERFORMANCE baseline capture retained and current
-  - `python tools/perf/tool_run_performance_envelope.py --repo-root . --platform-tag win64`
+  - `python tools/performance/envelope/tool_run_performance_envelope.py --repo-root . --platform-tag win64`
   - retained supporting baseline: `docs/audit/performance/PERFORMX_BASELINE.json`
 
 ## B) Target Selection
@@ -319,10 +319,10 @@ The following remain frozen:
 
 Required reruns after manual polish:
 
-- `python tools/convergence/tool_run_convergence_gate.py --repo-root . --skip-cross-platform --prefer-cached-heavy`
-- `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
-- `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
-- `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
+- `python tools/migration/convergence/tool_run_convergence_gate.py --repo-root . --skip-cross-platform --prefer-cached-heavy`
+- `python tools/domain/worldgen/tool_verify_worldgen_lock.py --repo-root .`
+- `python tools/release/mvp/tool_verify_baseline_universe.py --repo-root .`
+- `python tools/release/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/release/tool_dist_final_dryrun.py --repo-root .`
 - if bundle contents changed:
   - rerun DIST-2 verification

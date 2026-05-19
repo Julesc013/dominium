@@ -10,11 +10,11 @@ Replacement Target: legacy reference surface retained without current binding au
 
 ## Changed
 
-- `tools/lib/lib_stress_common.py`
-- `tools/lib/tool_generate_lib_stress.py`
-- `tools/lib/tool_run_lib_stress.py`
-- `tools/lib/tool_replay_save_open.py`
-- `tools/launcher/launcher_cli.py`
+- `tools/package/libraries/stress/lib_stress_common.py`
+- `tools/package/libraries/stress/tool_generate_lib_stress.py`
+- `tools/package/libraries/stress/tool_run_lib_stress.py`
+- `tools/package/libraries/save/tool_replay_save_open.py`
+- `tools/package/launcher/launcher_cli.py`
 - `tools/import/import_engine.py`
 - `tools/xstack/repox/check.py`
 - `tools/xstack/auditx/analyzers/e444_nondeterministic_bundle_smell.py`

@@ -23,7 +23,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.governance.tool_topology_generate import (
+    from tools.repo.governance.tool_topology_generate import (
         TOPOLOGY_MAP_BUDGET_BYTES,
         generate_topology_map,
         topology_payload_json_size_bytes,

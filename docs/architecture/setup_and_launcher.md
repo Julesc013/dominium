@@ -15,8 +15,8 @@ Define deterministic setup/launch tooling for reproducible Lab Galaxy test build
 
 ## Setup Tool
 Command:
-- `tools/setup/build --bundle bundle.base.lab --out dist`
-- Windows wrapper: `tools/setup/build.cmd`
+- `tools/package/setup/build --bundle bundle.base.lab --out dist`
+- Windows wrapper: `tools/package/setup/build.cmd`
 
 Responsibilities:
 1. Validate requested bundle profile.
@@ -24,19 +24,19 @@ Responsibilities:
 3. Build deterministic dist layout.
 4. Validate dist layout hashes and lockfile consistency.
 5. Optionally run SecureX verification tools when strict server profiles are targeted:
-   - `tools/security/tool_securex_verify_pack.py`
-   - `tools/security/tool_securex_verify_lockfile.py`
+   - `tools/validators/security/model/tool_securex_verify_pack.py`
+   - `tools/validators/security/model/tool_securex_verify_lockfile.py`
 5. Emit deterministic JSON summary.
 
 No duplicated pack-resolution logic is allowed in setup; setup delegates to tooling in `tools/xstack/*`.
 
 ## Launcher Tool
 Commands:
-- `tools/launcher/launch list-builds --root dist`
-- `tools/launcher/launch list-saves --saves-root saves`
-- `tools/launcher/launch create-session --save-id <id> --bundle bundle.base.lab --pipeline-id pipeline.client.default`
-- `tools/launcher/launch run --dist dist --session saves/<save_id>/session_spec.json [--script <script.json>]`
-- Windows wrapper: `tools/launcher/launch.cmd`
+- `tools/package/launcher/launch list-builds --root dist`
+- `tools/package/launcher/launch list-saves --saves-root saves`
+- `tools/package/launcher/launch create-session --save-id <id> --bundle bundle.base.lab --pipeline-id pipeline.client.default`
+- `tools/package/launcher/launch run --dist dist --session saves/<save_id>/session_spec.json [--script <script.json>]`
+- Windows wrapper: `tools/package/launcher/launch.cmd`
 
 Responsibilities:
 1. Validate dist lockfile + registries.
@@ -82,8 +82,8 @@ Session boot/script tooling must consume those paths directly and must not silen
 
 ## Example
 ```text
-tools/setup/build --bundle bundle.base.lab --out dist
-tools/launcher/launch run --dist dist --session saves/save.example/session_spec.json --script tools/xstack/testdata/session/script.region_traversal.fixture.json
+tools/package/setup/build --bundle bundle.base.lab --out dist
+tools/package/launcher/launch run --dist dist --session saves/save.example/session_spec.json --script tools/xstack/testdata/session/script.region_traversal.fixture.json
 ```
 
 ## TODO

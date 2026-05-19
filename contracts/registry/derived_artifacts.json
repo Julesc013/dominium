@@ -294,9 +294,9 @@
           "Deterministic by design."
         ],
         "path": "docs/audit/identity_fingerprint.json",
-        "producer": "tools/ci/tool_identity_fingerprint.py",
+        "producer": "tools/validators/ci/tool_identity_fingerprint.py",
         "regenerable": true,
-        "regeneration_tool": "tools/ci/tool_identity_fingerprint.py",
+        "regeneration_tool": "tools/validators/ci/tool_identity_fingerprint.py",
         "used_for_gating": true,
         "write_root": "docs_audit",
         "stability": {

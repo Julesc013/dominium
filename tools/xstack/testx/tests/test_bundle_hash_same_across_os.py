@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "mvp", "cross-platform", "bundles"]
 
 
 def run(repo_root: str):
-    from tools.mvp.cross_platform_gate_common import build_mvp_cross_platform_baseline
+    from tools.release.mvp.cross_platform_gate_common import build_mvp_cross_platform_baseline
     from tools.xstack.testx.tests.mvp_cross_platform_testlib import first_mismatch, load_baseline, load_report
 
     report, error = load_report(repo_root)

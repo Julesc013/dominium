@@ -12,7 +12,7 @@ def run(graph, repo_root, changed_files=None):
     del graph
     del changed_files
     try:
-        from tools.appshell.supervisor_hardening_common import supervisor_hardening_violations
+        from tools.validators.shell.supervisor_hardening_common import supervisor_hardening_violations
     except Exception as exc:
         return [
             make_finding(

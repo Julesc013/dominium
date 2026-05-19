@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "xi", "restructure", "determinism"]
 
 
 def run(repo_root: str):
-    from tools.review.xi4z_fix1_common import XI4Z_FIX1_REPORT_JSON_REL, artifact_hashes, build_xi4z_fix1_snapshot
+    from tools.audit.review.xi4z_fix1_common import XI4Z_FIX1_REPORT_JSON_REL, artifact_hashes, build_xi4z_fix1_snapshot
     from tools.xstack.testx.tests.xi4z_fix1_testlib import committed_fix1_report
 
     committed = committed_fix1_report(repo_root)

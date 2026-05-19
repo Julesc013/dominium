@@ -15,7 +15,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.launcher.launch import cmd_create_session
+    from tools.package.launcher.launch import cmd_create_session
 
     save_id = "save.testx.launcher.create_session_pipeline"
     created = cmd_create_session(

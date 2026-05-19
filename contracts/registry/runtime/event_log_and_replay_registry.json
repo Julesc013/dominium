@@ -78,7 +78,7 @@
     "engine/include/domino/snapshot.h",
     "app/ui_event_log.c",
     "app/include/dominium/app/ui_event_log.h",
-    "tools/governance/control_plane_engine.py",
+    "tools/repo/governance/control_plane_engine.py",
     "tools/validators/network/anti_cheat/anti_cheat_engine.py",
     "server/server_console.py"
   ],

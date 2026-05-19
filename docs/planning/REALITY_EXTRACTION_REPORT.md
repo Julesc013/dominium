@@ -135,7 +135,7 @@ The toolchain surface is large and active:
 - `CMakePresets.json` contains modern dev, verify, release, platform-specific, and legacy projection families
 - `cmake/toolchains/**` and `cmake/ide/**` show explicit multi-target and IDE projection support
 - `.github/workflows/ci.yml` runs repo sanity, xstack FAST/STRICT/FULL profiles, projection sanity, docs sanity, and matrix build/test jobs
-- `scripts/**` and `tools/ci/**` contain a wide set of verification scripts
+- `scripts/**` and `tools/validators/ci/**` contain a wide set of verification scripts
 - `setup/packages/scripts/**` contains packaging, staging, schema freeze, layer-check, and launcher invariant automation
 - `tools/xstack/out/**`, `archive/generated/artifacts/toolchain_runs/**`, and many `build/**` subtrees show generated output and audit residue
 

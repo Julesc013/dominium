@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "mvp", "smoke", "baseline"]
 
 
 def run(repo_root: str):
-    from tools.mvp.mvp_smoke_common import build_mvp_smoke_baseline
+    from tools.release.mvp.mvp_smoke_common import build_mvp_smoke_baseline
     from tools.xstack.testx.tests.mvp_smoke_testlib import first_mismatch, load_baseline, load_complete_report
 
     report, error = load_complete_report(repo_root)

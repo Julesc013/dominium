@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.logic.tool_replay_trace_window import replay_trace_window_from_payload
+    from tools.domain.logic.tool_replay_trace_window import replay_trace_window_from_payload
     from tools.xstack.testx.tests._logic_eval_test_utils import load_eval_inputs, seed_signal_requests
 
     inputs = load_eval_inputs(repo_root)

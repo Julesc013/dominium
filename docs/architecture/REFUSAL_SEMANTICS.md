@@ -273,7 +273,7 @@ Rules:
 - SP/MP/MMO MUST use identical refusal meaning for identical conditions.
 
 
-- CLI/TUI/GUI/tools/network MUST surface identical codes and payload shape.
+- CLI/TUI/GUI/tools/test/network MUST surface identical codes and payload shape.
 
 
 - Presentation may change, semantics may not.

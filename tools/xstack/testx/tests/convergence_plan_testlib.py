@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.convergence_plan_common import (
+from tools.audit.review.convergence_plan_common import (
     CONVERGENCE_ACTIONS_REL,
     CONVERGENCE_PLAN_REL,
     CONVERGENCE_RISK_MAP_REL,

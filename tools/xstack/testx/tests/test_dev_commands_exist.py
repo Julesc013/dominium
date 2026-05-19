@@ -27,7 +27,7 @@ def run(repo_root: str):
     cli = [sys.executable, os.path.join(repo_root, "tools", "dev", "dev.py"), "--repo-root", "."]
     top = _run(repo_root, cli + ["--help"])
     if int(top.returncode) != 0:
-        return {"status": "fail", "message": "tools/dev/dev.py --help failed"}
+        return {"status": "fail", "message": "tools/repo/dev/dev.py --help failed"}
     top_text = str(top.stdout or "")
     for token in (
         "impact-graph",
@@ -43,7 +43,7 @@ def run(repo_root: str):
 
     run_help = _run(repo_root, cli + ["run", "--help"])
     if int(run_help.returncode) != 0:
-        return {"status": "fail", "message": "tools/dev/dev.py run --help failed"}
+        return {"status": "fail", "message": "tools/repo/dev/dev.py run --help failed"}
     run_text = str(run_help.stdout or "")
     for token in ("observer", "galaxy", "sol", "earth"):
         if token not in run_text:

@@ -25,7 +25,7 @@ REQUIRED_TOKENS = {
         "REFUSAL_CLIENT_READ_ONLY",
         "COMPAT_MODE_READ_ONLY",
     ),
-    "tools/compat/tool_replay_negotiation.py": (
+    "tools/package/compatibility/tool_replay_negotiation.py": (
         "verify_recorded_negotiation(",
         '"negotiation_record_hash"',
     ),

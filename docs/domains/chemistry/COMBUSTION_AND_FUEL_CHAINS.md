@@ -126,7 +126,7 @@ Combustion truth surfaces must expose deterministic chains:
 Control proof bundles include these chains for tick windows where combustion rows are present.
 Replay verification tool:
 
-- `tools/chem/tool_replay_combustion_window` (plus `.py`/`.cmd`)
+- `tools/domain/chemistry/tool_replay_combustion_window` (plus `.py`/`.cmd`)
 
 ## 11) Enforcement Hooks
 

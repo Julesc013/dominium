@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.xi4b_src_domain_mapping_common import (
+from tools.audit.review.xi4b_src_domain_mapping_common import (
     SRC_DOMAIN_MAPPING_LOCK_PROPOSAL_REL,
     SRC_DOMAIN_MAPPING_REL,
     TMP_BUNDLE_MANIFEST_REL,

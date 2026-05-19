@@ -17,7 +17,7 @@ def _ensure_repo_root(repo_root: str) -> None:
 @lru_cache(maxsize=4)
 def _stress_report_cached(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from tools.worldgen.mw4_probe import run_refinement_stress
+    from tools.domain.worldgen.mw4_probe import run_refinement_stress
 
     return dict(run_refinement_stress(repo_root))
 

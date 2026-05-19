@@ -10,8 +10,8 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E381_NONDETERMINISTIC_WIND_SMELL"
 WIND_ENGINE_REL = "game/domain/worldgen/earth/wind/wind_field_engine.py"
 PROCESS_RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
-WIND_PROBE_REL = "tools/worldgen/earth7_probe.py"
-WIND_REPLAY_REL = "tools/worldgen/tool_replay_wind_window.py"
+WIND_PROBE_REL = "tools/domain/worldgen/earth7_probe.py"
+WIND_REPLAY_REL = "tools/domain/worldgen/tool_replay_wind_window.py"
 WIND_DOC_REL = "docs/domains/worldgen/EARTH_WIND_PROXY_MODEL.md"
 WIND_PARAMS_REGISTRY_REL = "contracts/registry/wind_params_registry.json"
 REQUIRED_TOKENS = {

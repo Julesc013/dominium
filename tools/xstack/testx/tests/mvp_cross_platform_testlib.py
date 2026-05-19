@@ -6,7 +6,7 @@ from typing import Any
 
 
 def load_report(repo_root: str) -> tuple[dict, str]:
-    from tools.mvp.cross_platform_gate_common import DEFAULT_REPORT_REL, load_json_if_present, maybe_load_cached_mvp_cross_platform_report
+    from tools.release.mvp.cross_platform_gate_common import DEFAULT_REPORT_REL, load_json_if_present, maybe_load_cached_mvp_cross_platform_report
 
     report = maybe_load_cached_mvp_cross_platform_report(repo_root, report_path=DEFAULT_REPORT_REL)
     if not report:
@@ -19,7 +19,7 @@ def load_report(repo_root: str) -> tuple[dict, str]:
 
 
 def load_baseline(repo_root: str) -> dict:
-    from tools.mvp.cross_platform_gate_common import DEFAULT_BASELINE_REL, load_json_if_present
+    from tools.release.mvp.cross_platform_gate_common import DEFAULT_BASELINE_REL, load_json_if_present
 
     return load_json_if_present(repo_root, DEFAULT_BASELINE_REL)
 

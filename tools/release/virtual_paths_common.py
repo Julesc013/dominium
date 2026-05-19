@@ -9,7 +9,16 @@ from typing import Mapping
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
@@ -29,8 +38,8 @@ SCAN_ROOTS = (
     "src/lib",
     "src/ui",
     "src/diag",
-    "tools/setup",
-    "tools/launcher",
+    "tools/package/setup",
+    "tools/package/launcher",
 )
 TARGET_EXTENSIONS = {".py"}
 ROOT_TOKENS = ("dist", "packs", "profiles", "locks", "instances", "saves", "exports", "runtime", "logs", "build")
@@ -40,7 +49,7 @@ ALLOWED_SCAN_PATHS = {
     "tools/release/virtual_paths_common.py",
 }
 PACKAGING_LAYOUT_PATHS = {
-    "tools/setup/setup_cli.py",
+    "tools/package/setup/setup_cli.py",
     "tools/import/import_engine.py",
     "tools/export/export_engine.py",
 }
@@ -116,17 +125,17 @@ INTEGRATION_TARGETS = (
         "surface": "ui_model",
     },
     {
-        "file_path": "tools/launcher/launch.py",
+        "file_path": "tools/package/launcher/launch.py",
         "markers": ("VROOT_SAVES", "vpath_resolve_existing(", "get_current_virtual_paths("),
         "surface": "launcher_runtime",
     },
     {
-        "file_path": "tools/launcher/launcher_cli.py",
+        "file_path": "tools/package/launcher/launcher_cli.py",
         "markers": ("VROOT_LOGS", "VROOT_PACKS", "VROOT_PROFILES", "vpath_candidate_roots(", "vpath_resolve("),
         "surface": "launcher_cli",
     },
     {
-        "file_path": "tools/setup/setup_cli.py",
+        "file_path": "tools/package/setup/setup_cli.py",
         "markers": ("VROOT_INSTANCES", "VROOT_PACKS", "vpath_candidate_roots(", "vpath_init("),
         "surface": "setup_cli",
     },

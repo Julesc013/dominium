@@ -28,7 +28,7 @@ from tools.package.libraries.save import (
     save_semantic_contract_registry_hash,
     validate_save_manifest,
 )
-from tools.lib.content_store import (
+from tools.package.libraries.store.content_store import (
     JSON_PAYLOAD,
     load_instance_json_artifact,
     load_json,
@@ -628,7 +628,7 @@ def export_pack_bundle(
     with tempfile.TemporaryDirectory(prefix="dominium_bundle_pack_") as tmp_root:
         staged_store_root = os.path.join(tmp_root, "store_root")
         ensure_dir(staged_store_root)
-        from tools.lib.content_store import initialize_store_root, store_add_tree_artifact
+        from tools.package.libraries.store.content_store import initialize_store_root, store_add_tree_artifact
 
         initialize_store_root(staged_store_root)
         add_result = store_add_tree_artifact(staged_store_root, PACK_STORE_CATEGORY, abs_pack_root)

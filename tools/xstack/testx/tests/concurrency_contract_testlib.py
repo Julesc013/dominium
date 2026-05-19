@@ -8,7 +8,7 @@ from engine.concurrency.canonical_merge import (
     build_field_sort_key,
     canonical_merge_mapping_groups,
 )
-from tools.engine.concurrency_contract_common import build_concurrency_contract_report
+from tools.validators.engine.concurrency_contract_common import build_concurrency_contract_report
 
 
 _CACHE: dict[str, dict] = {}

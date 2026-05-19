@@ -8,7 +8,7 @@ from runtime.capability.effects import get_effective_modifier
 from tools.validators.core.flow import flow_transfer, normalize_flow_channel, normalize_flow_transfer_event
 from tools.validators.core.graph.network_graph_engine import normalize_network_graph
 from tools.repo.meta.explain import generate_explain_artifact
-from tools.models.model_engine import (
+from tools.repo.models.model_engine import (
     cache_policy_rows_by_id,
     evaluate_model_bindings,
     model_type_rows_by_id,

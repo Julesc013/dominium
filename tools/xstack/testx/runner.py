@@ -16,12 +16,21 @@ from typing import Dict, List, Optional, Set, Tuple
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from tools.dev.impact_graph import build_graph_and_write, compute_impacted_sets, detect_changed_files
-from tools.governance.tool_semantic_impact import compute_semantic_impact
+from tools.repo.dev.impact_graph import build_graph_and_write, compute_impacted_sets, detect_changed_files
+from tools.repo.governance.tool_semantic_impact import compute_semantic_impact
 
 
 TESTS_ROOT_REL = "tools/xstack/testx/tests"

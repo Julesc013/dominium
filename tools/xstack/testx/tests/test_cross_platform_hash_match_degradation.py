@@ -39,7 +39,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.chem.tool_replay_degradation_window import verify_degradation_window
+    from tools.domain.chemistry.tool_replay_degradation_window import verify_degradation_window
 
     first = _run_once(repo_root)
     second = _run_once(repo_root)

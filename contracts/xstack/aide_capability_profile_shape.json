@@ -47,8 +47,8 @@
     "tools/validators/compatibility/capability_negotiation.py",
     "appshell/ui_mode_selector.py",
     "appshell/command_registry.py",
-    "tools/launcher/launch.py",
-    "tools/setup/setup_cli.py",
+    "tools/package/launcher/launch.py",
+    "tools/package/setup/setup_cli.py",
     "server/server_boot.py",
     "server/net/loopback_transport.py",
     "client/interaction/affordance_generator.py",
@@ -278,8 +278,8 @@
       "surface": [
         "appshell/ui_mode_selector.py",
         "appshell/command_registry.py",
-        "tools/launcher/launch.py",
-        "tools/setup/setup_cli.py"
+        "tools/package/launcher/launch.py",
+        "tools/package/setup/setup_cli.py"
       ],
       "supports": [
         "canonical_profile_vs_ui_or_cli_summaries",

@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.xi6_common import (
+from tools.audit.review.xi6_common import (
     ARCHITECTURE_GRAPH_V1_REL,
     MODULE_BOUNDARY_RULES_V1_REL,
     SINGLE_ENGINE_REGISTRY_REL,

@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "mvp", "stress", "orchestrator"]
 
 
 def run(repo_root: str):
-    from tools.mvp.stress_gate_common import GATE_SUITE_ORDER
+    from tools.release.mvp.stress_gate_common import GATE_SUITE_ORDER
     from tools.xstack.testx.tests.mvp_stress_testlib import load_report
 
     report, error = load_report(repo_root)

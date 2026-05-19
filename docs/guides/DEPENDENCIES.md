@@ -93,7 +93,7 @@ top-level components. It complements:
 Public header boundaries and ABI rules are defined in `docs/specs/CONTRACTS.md`.
 
 
-Include rules are enforced by `tools/ci/arch_checks.py`.
+Include rules are enforced by `tools/validators/ci/arch_checks.py`.
 
 
 
@@ -117,7 +117,7 @@ Include rules are enforced by `tools/ci/arch_checks.py`.
 - CMake boundary checks: root `CMakeLists.txt` uses `dom_assert_no_link(...)`.
 
 
-- Include/scan checks: `tools/ci/arch_checks.py` (ARCH-DEP-001/002, ARCH-INC-001/002).
+- Include/scan checks: `tools/validators/ci/arch_checks.py` (ARCH-DEP-001/002, ARCH-INC-001/002).
 
 
 

@@ -16,7 +16,7 @@ from tools.validators.compatibility.migration_lifecycle import (
 )
 import os
 
-from tools.compat.migration_lifecycle_common import BASELINE_DOC_REL, REPORT_JSON_REL, build_migration_lifecycle_report, write_migration_lifecycle_outputs
+from tools.package.compatibility.migration_lifecycle_common import BASELINE_DOC_REL, REPORT_JSON_REL, build_migration_lifecycle_report, write_migration_lifecycle_outputs
 
 
 def ensure_assets(repo_root: str) -> dict:

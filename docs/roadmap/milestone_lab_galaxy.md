@@ -89,8 +89,8 @@ This milestone is documentation and substrate focused.
    - `tools/xstack/session_script_run` executes via SRZ phase pipeline and emits deterministic hash anchors.
    - `tools/xstack/srz_status` reports `shard.0` ownership and last hash anchor deterministically.
 11. Packaging checkpoint complete:
-   - `tools/setup/build --bundle bundle.base.lab --out dist` produces deterministic `manifest.json` and `lockfile.json`.
-   - `tools/launcher/launch run --dist dist --session ...` enforces lockfile compatibility.
+   - `tools/package/setup/build --bundle bundle.base.lab --out dist` produces deterministic `manifest.json` and `lockfile.json`.
+   - `tools/package/launcher/launch run --dist dist --session ...` enforces lockfile compatibility.
    - repeated build + launch traversal yields identical final composite hash anchors.
 
 ## Milestone Completion Checklist

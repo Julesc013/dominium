@@ -432,7 +432,7 @@ def seed_switch_handoff_state() -> dict:
 
 
 def attach_speed_cap_effect(state: dict, *, vehicle_id: str, max_speed_permille: int) -> dict:
-    from tools.governance.effects import build_effect
+    from tools.repo.governance.effects import build_effect
 
     out = dict(state)
     out["effect_rows"] = [

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from tools.review.doc_inventory_common import (
+from tools.audit.review.doc_inventory_common import (
     build_doc_inventory,
     missing_stability_header_entries,
     superseded_without_replacement_entries,

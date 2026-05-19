@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.chem.tool_verify_entropy_monotonicity import verify_chem_entropy
+    from tools.domain.chemistry.tool_verify_entropy_monotonicity import verify_chem_entropy
     from tools.xstack.testx.tests.chem4_testlib import make_stress_scenario, run_stress_report
 
     scenario = make_stress_scenario(

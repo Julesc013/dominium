@@ -105,7 +105,7 @@ keep the engine isolated and prevent cross-layer leakage.
 - `scripts/verify_cmake_no_global_includes.py`
 
 
-- `tools/ci/arch_checks.py` (via `check_arch` target)
+- `tools/validators/ci/arch_checks.py` (via `check_arch` target)
 
 
 

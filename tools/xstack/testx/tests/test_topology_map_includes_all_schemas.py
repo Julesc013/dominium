@@ -32,7 +32,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.governance.tool_topology_generate import generate_topology_map
+    from tools.repo.governance.tool_topology_generate import generate_topology_map
 
     topology = generate_topology_map(repo_root=repo_root, commit_hash="", generated_tick=0)
     declared = sorted(

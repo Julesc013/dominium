@@ -159,7 +159,7 @@ def _targeted_base_properties(
 
 def load_sol_pack_fixture_payloads(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from tools.mvp.runtime_bundle import (
+    from tools.release.mvp.runtime_bundle import (
         build_default_universe_identity,
         build_pack_lock_payload,
         build_profile_bundle_payload,

@@ -19,12 +19,12 @@ REQUIRED_TOKENS = {
         "REFUSAL_ARTIFACT_HASH_MISMATCH",
         "evaluate_artifact_load(",
     ),
-    "tools/launcher/launcher_cli.py": (
+    "tools/package/launcher/launcher_cli.py": (
         "evaluate_artifact_load(",
         "profile bundle verification failed",
         "\"profile_bundle_open\": profile_bundle_open",
     ),
-    "tools/share/share_cli.py": (
+    "tools/export/share/share_cli.py": (
         "validate_bundle_artifact(",
         "artifact manifest validation failed",
     ),

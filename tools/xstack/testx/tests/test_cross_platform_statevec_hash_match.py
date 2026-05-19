@@ -52,7 +52,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.system.tool_verify_statevec_roundtrip import verify_statevec_roundtrip
+    from tools.domain.systems.tool_verify_statevec_roundtrip import verify_statevec_roundtrip
 
     state_a = _build_state(repo_root, reorder=False)
     state_b = _build_state(repo_root, reorder=True)

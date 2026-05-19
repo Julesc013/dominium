@@ -14,7 +14,7 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     from game.domain.worldgen.refinement.refinement_scheduler import build_scheduler_plan
-    from tools.worldgen.mw4_probe import refinement_request_for
+    from tools.domain.worldgen.mw4_probe import refinement_request_for
 
     rows = [
         refinement_request_for(

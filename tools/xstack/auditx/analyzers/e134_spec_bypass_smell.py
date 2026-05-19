@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E134_SPEC_BYPASS_SMELL"
 RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
-CONTROL_REL = "tools/governance/control_plane_engine.py"
+CONTROL_REL = "tools/repo/governance/control_plane_engine.py"
 SPEC_ENGINE_REL = "specs/spec_engine.py"
 
 

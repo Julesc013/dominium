@@ -21,7 +21,7 @@ REQUIRED_TOKENS = {
         '"canonical_event_hash"',
         '"log_window_hash"',
     ),
-    "tools/diag/tool_replay_bundle.py": (
+    "tools/diagnostics/tool_replay_bundle.py": (
         "Replay a deterministic DIAG-0 repro bundle.",
         "replay_diag0_bundle(",
     ),
@@ -31,7 +31,7 @@ REQUIRED_TOKENS = {
 }
 FORBIDDEN_TOKENS = {
     "runtime/diagnostics/repro_bundle_builder.py": ("random.", "uuid.uuid4(", "os.urandom(", "time.time(", "datetime.utcnow("),
-    "tools/diag/tool_replay_bundle.py": ("random.", "uuid.uuid4(", "os.urandom("),
+    "tools/diagnostics/tool_replay_bundle.py": ("random.", "uuid.uuid4(", "os.urandom("),
 }
 
 

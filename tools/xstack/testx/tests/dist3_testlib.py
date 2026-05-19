@@ -7,7 +7,7 @@ import shutil
 import tempfile
 from contextlib import contextmanager
 
-from tools.dist.clean_room_common import (
+from tools.release.dist.clean_room_common import (
     DEFAULT_MODE_POLICY,
     DEFAULT_SEED,
     _scan_generated_outputs,
@@ -15,7 +15,7 @@ from tools.dist.clean_room_common import (
     build_clean_room_step_plan,
     load_clean_room_report,
 )
-from tools.dist.dist_tree_common import DEFAULT_OUTPUT_ROOT, DEFAULT_PLATFORM_TAG, DEFAULT_RELEASE_CHANNEL
+from tools.release.dist.dist_tree_common import DEFAULT_OUTPUT_ROOT, DEFAULT_PLATFORM_TAG, DEFAULT_RELEASE_CHANNEL
 
 
 DEFAULT_BUNDLE_REL = os.path.join(

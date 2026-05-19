@@ -19,8 +19,8 @@ Define deterministic bundle composition output for pack resolution and derived r
 - CLI producers/consumers:
   - `tools/xstack/lockfile_build.cmd`
   - `tools/xstack/lockfile_validate.cmd`
-  - `tools/setup/build` (packages lockfile into dist)
-  - `tools/launcher/launch` (enforces lockfile at launch)
+  - `tools/package/setup/build` (packages lockfile into dist)
+  - `tools/package/launcher/launch` (enforces lockfile at launch)
 
 ## XStack Invocation
 `tools/xstack/run` integrates lockfile lifecycle in deterministic order:
@@ -86,7 +86,7 @@ Validation rejects deterministically on:
 - `pack_lock_hash` mismatch
 
 `tools/xstack/lockfile_validate.cmd` emits deterministic refusal messages and stable-sorted errors.
-`tools/launcher/launch` additionally refuses incompatible save/session combinations with:
+`tools/package/launcher/launch` additionally refuses incompatible save/session combinations with:
 - `LOCKFILE_MISMATCH`
 - `PACK_INCOMPATIBLE`
 - `REGISTRY_MISMATCH`

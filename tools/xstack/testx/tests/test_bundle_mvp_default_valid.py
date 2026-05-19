@@ -15,7 +15,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.mvp.runtime_bundle import MVP_PROFILE_BUNDLE_REL, validate_profile_bundle_payload
+    from tools.release.mvp.runtime_bundle import MVP_PROFILE_BUNDLE_REL, validate_profile_bundle_payload
 
     bundle_path = os.path.join(repo_root, MVP_PROFILE_BUNDLE_REL.replace("/", os.sep))
     if not os.path.isfile(bundle_path):

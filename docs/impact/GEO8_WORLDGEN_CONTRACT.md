@@ -17,7 +17,7 @@ Touched Paths:
 - `tools/xstack/sessionx/script_runner.py`
 - `geo/projection/projection_engine.py`
 - `system/roi/system_roi_scheduler.py`
-- `tools/governance/proof/control_proof_bundle.py`
+- `tools/repo/governance/proof/control_proof_bundle.py`
 - `tools/validators/network/policies/policy_server_authoritative.py`
 - `tools/validators/network/srz/shard_coordinator.py`
 

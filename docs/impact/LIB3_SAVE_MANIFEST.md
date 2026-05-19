@@ -15,7 +15,7 @@ Replacement Target: legacy reference surface retained without current binding au
 - `schema/save.manifest.schema`
 - `tools/package/libraries/save/__init__.py`
 - `tools/package/libraries/save/save_validator.py`
-- `tools/launcher/launcher_cli.py`
+- `tools/package/launcher/launcher_cli.py`
 
 ## Demand IDs
 

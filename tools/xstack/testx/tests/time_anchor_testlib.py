@@ -4,7 +4,7 @@ from __future__ import annotations
 
 
 def load_verify_report(repo_root: str) -> tuple[dict, str]:
-    from tools.time.time_anchor_common import load_or_run_verify_report, verify_longrun_ticks, write_time_anchor_outputs
+    from tools.domain.time.time_anchor_common import load_or_run_verify_report, verify_longrun_ticks, write_time_anchor_outputs
 
     report = load_or_run_verify_report(repo_root)
     if str(report.get("result", "")).strip() != "complete":
@@ -16,7 +16,7 @@ def load_verify_report(repo_root: str) -> tuple[dict, str]:
 
 
 def load_compaction_report(repo_root: str) -> tuple[dict, str]:
-    from tools.time.time_anchor_common import load_or_run_compaction_report, verify_compaction_anchor_alignment, write_time_anchor_outputs
+    from tools.domain.time.time_anchor_common import load_or_run_compaction_report, verify_compaction_anchor_alignment, write_time_anchor_outputs
 
     report = load_or_run_compaction_report(repo_root)
     if str(report.get("result", "")).strip() != "complete":

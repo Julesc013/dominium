@@ -35,5 +35,5 @@ observable state.
 
 ## Current implementations
 - Client windowed + TUI loops: `apps/client/main_client.c`
-- Tools TUI loop: `tools/tools_host_main.c`
+- Tools TUI loop: `tools/build/host/tools_host_main.c`
 - Server/launcher/setup CLI commands: init/probe/work/shutdown without a loop

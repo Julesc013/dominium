@@ -67,8 +67,8 @@ The 10D CTest blockers were:
 | `schemas` | `tools/release/dist/dist_tree_common.py` | generated bundle projection | preserved | destination only; not reintroduced as source authority |
 | `apps` runtime source | `tools/release/dist/dist_tree_common.py` | convergence root | fixed | portable wrapper smoke needs current product Python modules |
 | `game` runtime source | `tools/release/dist/dist_tree_common.py` | convergence root | fixed | portable wrapper smoke needs current game package imports |
-| `dict | None` annotations | `tools/setup/setup_cli.py` | Python 3.9 compatibility blocker | fixed | postponed annotation evaluation; no behavior change |
-| `verify_release_manifest` exception | `tools/mvp/ecosystem_verify_common.py` | generated manifest absence surfaced as crash | fixed | now returns deterministic refused result with blocking error |
+| `dict | None` annotations | `tools/package/setup/setup_cli.py` | Python 3.9 compatibility blocker | fixed | postponed annotation evaluation; no behavior change |
+| `verify_release_manifest` exception | `tools/release/mvp/ecosystem_verify_common.py` | generated manifest absence surfaced as crash | fixed | now returns deterministic refused result with blocking error |
 | `unit.mass_energy.stub` | `contracts/schema/quantity.schema.json` | unit registry drift | classified | not changed in this task |
 | `unit.schema` | `contracts/schema/domain/materials/unit.schema` | false-positive unit-token/path-string drift | classified | not changed in this task |
 
@@ -79,8 +79,8 @@ The 10D CTest blockers were:
 | `tools/package/distribution/distribution_lib.py` | adds repo root to `sys.path` before importing `compat.shims` | direct CTest subprocesses run from build test directories | no |
 | `tools/release/dist/dist_tree_common.py` | copies canonical `contracts/schema/` into generated `schema/` and `schemas/` bundle projections | avoid retired root `schema` as source while preserving bundle layout | no |
 | `tools/release/dist/dist_tree_common.py` | includes `apps` and `game` in runtime source roots | current portable wrapper smoke imports converged roots | no |
-| `tools/setup/setup_cli.py` | adds postponed annotations | generated wrapper smoke runs under Python 3.9 | no |
-| `tools/mvp/ecosystem_verify_common.py` | wraps missing/unreadable release manifest verification as deterministic refused result | AuditX reports blocker instead of crashing | no |
+| `tools/package/setup/setup_cli.py` | adds postponed annotations | generated wrapper smoke runs under Python 3.9 | no |
+| `tools/release/mvp/ecosystem_verify_common.py` | wraps missing/unreadable release manifest verification as deterministic refused result | AuditX reports blocker instead of crashing | no |
 
 ## Configure / Build / Test Result
 
@@ -123,8 +123,8 @@ Canonical `verify` also produced `setup.exe`, `launcher.exe`, `client.exe`, and 
 - Added `docs/repo/audits/POST_CONVERGE_10E_CTEST_AUDITX_REMEDIATION.md`.
 - Updated `tools/package/distribution/distribution_lib.py`.
 - Updated `tools/release/dist/dist_tree_common.py`.
-- Updated `tools/setup/setup_cli.py`.
-- Updated `tools/mvp/ecosystem_verify_common.py`.
+- Updated `tools/package/setup/setup_cli.py`.
+- Updated `tools/release/mvp/ecosystem_verify_common.py`.
 - Updated POST-CONVERGE-10/10D build proof docs.
 - Updated build verification, build environment remediation, FAST remediation, native binary proof, and next-step docs.
 - Refreshed `.aide/context/latest-task-packet.md`.
@@ -136,7 +136,7 @@ Canonical `verify` also produced `setup.exe`, `launcher.exe`, `client.exe`, and 
 | `python .aide/scripts/aide_lite.py doctor` | pass | warnings only |
 | `python .aide/scripts/aide_lite.py validate` | pass | warnings only |
 | `python .aide/scripts/aide_lite.py pack --task "POST-CONVERGE-10E CTest AuditX remediation"` | pass | task packet updated |
-| `python -m py_compile tools/build/build_contract_common.py tools/build/probe_toolchains.py tools/build/generate_user_presets.py tools/build/validate_build_contract.py tools/build/run_tuple.py tools/mvp/ecosystem_verify_common.py tools/package/distribution/distribution_lib.py tools/release/dist/dist_tree_common.py tools/setup/setup_cli.py` | pass | build and touched tools parse |
+| `python -m py_compile tools/build/build_contract_common.py tools/build/probe_toolchains.py tools/build/generate_user_presets.py tools/build/validate_build_contract.py tools/build/run_tuple.py tools/release/mvp/ecosystem_verify_common.py tools/package/distribution/distribution_lib.py tools/release/dist/dist_tree_common.py tools/package/setup/setup_cli.py` | pass | build and touched tools parse |
 | `python tests/tools/tools_coverage_inspect_tests.py --repo-root .` | pass | `coverage_inspect OK` |
 | `python tests/tools/tools_refusal_explain_tests.py --repo-root .` | pass | `refusal_explain OK` |
 | `python tools/build/validate_build_contract.py --repo-root . --strict` | pass | build contract valid |

@@ -16,7 +16,7 @@ def _report_result(report: dict) -> str:
 
 
 def load_report(repo_root: str) -> tuple[dict, str]:
-    from tools.mvp.stress_gate_common import DEFAULT_REPORT_REL, load_json_if_present, maybe_load_cached_mvp_stress_report
+    from tools.release.mvp.stress_gate_common import DEFAULT_REPORT_REL, load_json_if_present, maybe_load_cached_mvp_stress_report
 
     report = maybe_load_cached_mvp_stress_report(repo_root, report_path=DEFAULT_REPORT_REL)
     if not report:
@@ -29,7 +29,7 @@ def load_report(repo_root: str) -> tuple[dict, str]:
 
 
 def load_proof_report(repo_root: str, report: dict | None = None) -> tuple[dict, str]:
-    from tools.mvp.stress_gate_common import DEFAULT_PROOF_REPORT_REL, load_json_if_present, maybe_load_cached_mvp_stress_proof_report
+    from tools.release.mvp.stress_gate_common import DEFAULT_PROOF_REPORT_REL, load_json_if_present, maybe_load_cached_mvp_stress_proof_report
 
     active_report = dict(report or {})
     if not active_report:
@@ -47,7 +47,7 @@ def load_proof_report(repo_root: str, report: dict | None = None) -> tuple[dict,
 
 
 def load_baseline(repo_root: str) -> dict:
-    from tools.mvp.stress_gate_common import DEFAULT_BASELINE_REL, load_json_if_present
+    from tools.release.mvp.stress_gate_common import DEFAULT_BASELINE_REL, load_json_if_present
 
     return load_json_if_present(repo_root, DEFAULT_BASELINE_REL)
 

@@ -18,7 +18,7 @@ Goals:
 - no build-system leakage in paths
 - runtime payload separated from symbols
 
-Validation is performed by `verify_dist` using `tools/validate_dist.cmake`.
+Validation is performed by `verify_dist` using `tools/validators/distribution/validate_dist.cmake`.
 
 ## Frozen Directory Spec
 
@@ -185,7 +185,7 @@ Filenames:
 
 ## Role-Based Binary Naming (Frozen; Extension Platform-Native)
 
-These names are enforced by `tools/validate_dist.cmake` when `verify_dist` runs.
+These names are enforced by `tools/validators/distribution/validate_dist.cmake` when `verify_dist` runs.
 
 - launcher exe: `launch_dominium.<ext>`
 - game exe: `game_dominium.<ext>`

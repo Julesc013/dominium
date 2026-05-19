@@ -15,7 +15,7 @@ def run(repo_root: str):
     if not validation_id.startswith("validation.pipeline."):
         return {"status": "fail", "message": "legacy validation shim did not return the unified validation result schema"}
     shim = dict(dict(report.get("extensions") or {}).get("legacy_shim") or {})
-    if str(shim.get("legacy_surface", "")).strip() != "tools/ci/validate_all.py":
+    if str(shim.get("legacy_surface", "")).strip() != "tools/validators/ci/validate_all.py":
         return {"status": "fail", "message": "legacy validation shim metadata is missing the legacy surface id"}
     if "validate --all" not in str(shim.get("replacement_surface", "")):
         return {"status": "fail", "message": "legacy validation shim metadata is missing the canonical replacement surface"}

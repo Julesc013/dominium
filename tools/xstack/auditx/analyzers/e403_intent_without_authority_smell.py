@@ -22,7 +22,7 @@ REQUIRED_TOKENS = {
         '"authority_context": authority_context',
         "join_client_midstream(",
     ),
-    "tools/server/server_mvp0_probe.py": (
+    "tools/test/server/server_mvp0_probe.py": (
         "unauthorized_intent_report(",
         '"reason_code"',
         '"refusal.client.unauthorized"',

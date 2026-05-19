@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.system.tool_verify_template_reproducible import verify_template_reproducible
+    from tools.domain.systems.tool_verify_template_reproducible import verify_template_reproducible
 
     report = verify_template_reproducible(
         repo_root=repo_root,

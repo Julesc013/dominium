@@ -49,9 +49,9 @@ Related lifecycle commands:
 - `tools/xstack/session_server saves/<save_id>/session_spec.json --from-stage stage.session_ready --to-stage stage.session_running`
 - `tools/xstack/session_script_run saves/<save_id>/session_spec.json <script.json> [--workers N] [--logical-shards N]`
 - `tools/xstack/srz_status saves/<save_id>/session_spec.json`
-- `tools/setup/build --bundle bundle.base.lab --out dist`
-- `tools/launcher/launch run --dist dist --session saves/<save_id>/session_spec.json`
-- `tools/launcher/launch create-session --save-id <id> --bundle bundle.base.lab --pipeline-id pipeline.client.default`
+- `tools/package/setup/build --bundle bundle.base.lab --out dist`
+- `tools/package/launcher/launch run --dist dist --session saves/<save_id>/session_spec.json`
+- `tools/package/launcher/launch create-session --save-id <id> --bundle bundle.base.lab --pipeline-id pipeline.client.default`
 - `tools/xstack/ui_bind --check`
 
 ## Deterministic Step Order
@@ -97,7 +97,7 @@ Scope:
     - securex/server-profile changes trigger ranked governance suites
 - PerformX and SecureX placeholder checks
 - Packaging smoke check:
-  - deterministic dist build/validation via `tools/setup/build` backend (`tools/xstack/packagingx`)
+  - deterministic dist build/validation via `tools/package/setup/build` backend (`tools/xstack/packagingx`)
 
 ## STRICT
 Scope:

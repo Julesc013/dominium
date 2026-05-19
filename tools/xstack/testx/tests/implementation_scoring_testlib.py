@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.implementation_scoring_common import (
+from tools.audit.review.implementation_scoring_common import (
     DUPLICATE_CLUSTER_RANKINGS_REL,
     IMPLEMENTATION_SCORES_REL,
     build_implementation_scoring_snapshot,

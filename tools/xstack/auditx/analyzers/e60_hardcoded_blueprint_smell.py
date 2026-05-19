@@ -47,7 +47,7 @@ def run(graph, repo_root, changed_files=None):
                 continue
             candidate_files.append(rel_path)
     else:
-        for root in ("src", "tools/materials", "tools/xstack/sessionx"):
+        for root in ("src", "tools/domain/materials", "tools/xstack/sessionx"):
             abs_root = os.path.join(repo_root, root.replace("/", os.sep))
             if not os.path.isdir(abs_root):
                 continue

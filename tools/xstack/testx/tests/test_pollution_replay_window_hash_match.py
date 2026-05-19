@@ -16,7 +16,7 @@ def run(repo_root: str):
 
     from game.domain.fields import build_field_cell
     from game.domain.pollution.dispersion_engine import concentration_field_id_for_pollutant
-    from tools.pollution.tool_replay_exposure_window import verify_exposure_replay_window
+    from tools.domain.pollution.tool_replay_exposure_window import verify_exposure_replay_window
     from tools.xstack.testx.tests.pollution_dispersion_testlib import (
         build_pollution_field_inputs,
         execute_pollution_dispersion_tick,

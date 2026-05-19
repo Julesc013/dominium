@@ -11,20 +11,29 @@ from typing import Iterable, Mapping
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from tools.engine.numeric_discipline_common import build_numeric_discipline_report  # noqa: E402
-from tools.review.xi6_common import (  # noqa: E402
+from tools.validators.engine.numeric_discipline_common import build_numeric_discipline_report  # noqa: E402
+from tools.audit.review.xi6_common import (  # noqa: E402
     ARCH_UPDATE_TAG,
     build_architecture_drift_report,
     build_boundary_findings,
     build_single_engine_findings,
     build_ui_truth_leak_findings,
 )
-from tools.review.xi8_common import (  # noqa: E402
+from tools.audit.review.xi8_common import (  # noqa: E402
     build_arch_graph_matches_repo_violations,
     build_repository_structure_violations,
 )

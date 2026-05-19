@@ -128,7 +128,7 @@
           "observed_paths": [
             "client/interaction/affordance_generator.py",
             "client/interaction/interaction_dispatch.py",
-            "tools/governance/control_plane_engine.py"
+            "tools/repo/governance/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -817,7 +817,7 @@
             "worldgen/earth/tide_field_engine.py",
             "worldgen/earth/water/water_view_engine.py",
             "worldgen/earth/wind/wind_field_engine.py",
-            "tools/worldgen/earth1_probe.py"
+            "tools/domain/worldgen/earth1_probe.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1014,7 +1014,7 @@
           "legacy_alias_for": "boundary_flux_event_rows",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/chem/tool_verify_energy_conservation.py"
+            "tools/domain/chemistry/tool_verify_energy_conservation.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1214,7 +1214,7 @@
           "legacy_alias_for": "capability_overrides",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/mvp/toolchain_matrix_common.py"
+            "tools/release/mvp/toolchain_matrix_common.py"
           ],
           "source": "POST-CONVERGE-REPOX-CLOSEOUT"
         },
@@ -1242,7 +1242,7 @@
           "legacy_alias_for": "canonical_abi_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/mvp/toolchain_matrix_common.py"
+            "tools/release/mvp/toolchain_matrix_common.py"
           ],
           "source": "POST-CONVERGE-REPOX-CLOSEOUT"
         },
@@ -1270,7 +1270,7 @@
           "legacy_alias_for": "canonical_arch_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/mvp/toolchain_matrix_common.py"
+            "tools/release/mvp/toolchain_matrix_common.py"
           ],
           "source": "POST-CONVERGE-REPOX-CLOSEOUT"
         },
@@ -1298,7 +1298,7 @@
           "legacy_alias_for": "canonical_os_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/mvp/toolchain_matrix_common.py"
+            "tools/release/mvp/toolchain_matrix_common.py"
           ],
           "source": "POST-CONVERGE-REPOX-CLOSEOUT"
         },
@@ -1326,7 +1326,7 @@
           "legacy_alias_for": "dist_root_rel",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/mvp/toolchain_matrix_common.py"
+            "tools/release/mvp/toolchain_matrix_common.py"
           ],
           "source": "POST-CONVERGE-REPOX-CLOSEOUT"
         },
@@ -1354,7 +1354,7 @@
           "legacy_alias_for": "release_manifest_rel",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/mvp/toolchain_matrix_common.py"
+            "tools/release/mvp/toolchain_matrix_common.py"
           ],
           "source": "POST-CONVERGE-REPOX-CLOSEOUT"
         },
@@ -1382,7 +1382,7 @@
           "legacy_alias_for": "target_matrix_target_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/mvp/toolchain_matrix_common.py"
+            "tools/release/mvp/toolchain_matrix_common.py"
           ],
           "source": "POST-CONVERGE-REPOX-CLOSEOUT"
         },
@@ -1408,7 +1408,7 @@
         "extension_key": "official.platform_capability_ids",
         "extensions": {
           "observed_paths": [
-            "tools/mvp/toolchain_matrix_common.py"
+            "tools/release/mvp/toolchain_matrix_common.py"
           ],
           "official.description": "Deterministic interpretation contract for toolchain platform capability lists.",
           "official.source": "POST-CONVERGE-REPOX-CLOSEOUT"
@@ -1975,7 +1975,7 @@
           "legacy_alias_for": "cycle_policy",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/fab/fab_validate.py"
+            "tools/domain/fabrication/fab_validate.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2602,7 +2602,7 @@
           "legacy_alias_for": "energy_ledger_rows",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/chem/tool_verify_energy_conservation.py"
+            "tools/domain/chemistry/tool_verify_energy_conservation.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2658,7 +2658,7 @@
           "legacy_alias_for": "entropy_by_equipment",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/chem/tool_verify_entropy_monotonicity.py"
+            "tools/domain/chemistry/tool_verify_entropy_monotonicity.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2686,7 +2686,7 @@
           "legacy_alias_for": "entropy_event_rows",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/chem/tool_verify_entropy_monotonicity.py"
+            "tools/domain/chemistry/tool_verify_entropy_monotonicity.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2714,7 +2714,7 @@
           "legacy_alias_for": "entropy_reset_event_rows",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/chem/tool_verify_entropy_monotonicity.py"
+            "tools/domain/chemistry/tool_verify_entropy_monotonicity.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2742,7 +2742,7 @@
           "legacy_alias_for": "entropy_state_rows",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/chem/tool_verify_entropy_monotonicity.py"
+            "tools/domain/chemistry/tool_verify_entropy_monotonicity.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2940,7 +2940,7 @@
           "legacy_alias_for": "event_rows",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/materials/tool_reenact_generate.py",
+            "tools/domain/materials/tool_reenact_generate.py",
             "tools/xstack/sessionx/process_runtime.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -3226,7 +3226,7 @@
           "legacy_alias_for": "final_state_snapshot",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/pollution/tool_verify_poll_mass_balance.py"
+            "tools/domain/pollution/tool_verify_poll_mass_balance.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3598,7 +3598,7 @@
             "embodiment/collision/macro_heightfield_provider.py",
             "worldgen/earth/climate_field_engine.py",
             "worldgen/earth/hydrology_engine.py",
-            "tools/worldgen/earth1_probe.py",
+            "tools/domain/worldgen/earth1_probe.py",
             "tools/xstack/sessionx/process_runtime.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -3683,7 +3683,7 @@
           "legacy_alias_for": "hydrology_window_fingerprint",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/worldgen/earth1_probe.py"
+            "tools/domain/worldgen/earth1_probe.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4028,7 +4028,7 @@
             "worldgen/earth/climate_field_engine.py",
             "worldgen/earth/tide_field_engine.py",
             "worldgen/earth/wind/wind_field_engine.py",
-            "tools/worldgen/earth7_probe.py"
+            "tools/domain/worldgen/earth7_probe.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4462,7 +4462,7 @@
           "legacy_alias_for": "max_control_fidelity",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/governance/control_plane_engine.py"
+            "tools/repo/governance/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5687,7 +5687,7 @@
           "legacy_alias_for": "reaction_event_rows",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/chem/tool_verify_mass_conservation.py"
+            "tools/domain/chemistry/tool_verify_mass_conservation.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5941,7 +5941,7 @@
           "legacy_alias_for": "replay_only",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/governance/control_plane_engine.py"
+            "tools/repo/governance/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7050,7 +7050,7 @@
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
             "client/interaction/interaction_dispatch.py",
-            "tools/governance/control_plane_engine.py"
+            "tools/repo/governance/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -8038,7 +8038,7 @@
           "legacy_alias_for": "validation",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/governance/control_plane_engine.py"
+            "tools/repo/governance/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -8154,7 +8154,7 @@
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
             "worldgen/earth/wind/wind_field_engine.py",
-            "tools/worldgen/earth7_probe.py"
+            "tools/domain/worldgen/earth7_probe.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -8259,7 +8259,7 @@
         "extensions": {
           "observed_paths": [
             "tools/package/libraries/install/install_validator.py",
-            "tools/lib/lib_stress_common.py"
+            "tools/package/libraries/stress/lib_stress_common.py"
           ],
           "official.description": "Deterministic binary-relative path recorded in install and product build descriptors.",
           "official.source": "OMEGA-PREP"
@@ -8662,7 +8662,7 @@
         "extensions": {
           "observed_paths": [
             "tools/package/libraries/install/install_validator.py",
-            "tools/lib/lib_stress_common.py"
+            "tools/package/libraries/stress/lib_stress_common.py"
           ],
           "official.description": "Deterministic descriptor-relative path recorded in install and product build descriptors.",
           "official.source": "OMEGA-PREP"
@@ -8689,7 +8689,7 @@
         "extension_key": "official.deterministic_invocation",
         "extensions": {
           "observed_paths": [
-            "tools/setup/setup_cli.py"
+            "tools/package/setup/setup_cli.py"
           ],
           "official.description": "Boolean marker that a setup operation used deterministic invocation constraints.",
           "official.source": "OMEGA-PREP"
@@ -8946,10 +8946,10 @@
           "observed_paths": [
             "tools/release/update_resolver.py",
             "tools/release/dist/dist_tree_common.py",
-            "tools/launcher/launch.py",
+            "tools/package/launcher/launch.py",
             "tools/release/release_index_policy_common.py",
             "tools/release/update_model_common.py",
-            "tools/setup/setup_cli.py",
+            "tools/package/setup/setup_cli.py",
             "tools/xstack/testx/tests/test_update_refuses_on_contract_mismatch.py",
             "tools/xstack/testx/tests/update_model_testlib.py"
           ],
@@ -8978,8 +8978,8 @@
         "extension_key": "official.install_resolution_policy_id",
         "extensions": {
           "observed_paths": [
-            "tools/launcher/launch.py",
-            "tools/setup/setup_cli.py"
+            "tools/package/launcher/launch.py",
+            "tools/package/setup/setup_cli.py"
           ],
           "official.description": "Install resolution policy selected for deterministic install or update planning.",
           "official.source": "OMEGA-PREP"
@@ -9108,7 +9108,7 @@
         "extension_key": "official.payload_ref",
         "extensions": {
           "observed_paths": [
-            "tools/share/share_cli.py"
+            "tools/export/share/share_cli.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.payload_ref' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -9247,9 +9247,9 @@
             "tools/validators/identity/identity_validator.py",
             "tools/release/release_manifest_engine.py",
             "tools/release/dist/dist_tree_common.py",
-            "tools/mvp/runtime_bundle.py",
+            "tools/release/mvp/runtime_bundle.py",
             "tools/release/update_model_common.py",
-            "tools/setup/setup_cli.py",
+            "tools/package/setup/setup_cli.py",
             "tools/xstack/testx/tests/identity_testlib.py"
           ],
           "official.description": "Repository-relative or dist-relative path recorded in deterministic identity metadata.",
@@ -9482,9 +9482,9 @@
             "contracts/abi/store/reachability_engine.py",
             "tools/release/update_resolver.py",
             "tools/release/dist/dist_tree_common.py",
-            "tools/lib/store_gc_common.py",
-            "tools/perf/performance_envelope_common.py",
-            "tools/setup/setup_cli.py"
+            "tools/package/libraries/store/store_gc_common.py",
+            "tools/performance/envelope/performance_envelope_common.py",
+            "tools/package/setup/setup_cli.py"
           ],
           "official.description": "Deterministically ordered selected component descriptor rows for an install plan.",
           "official.source": "OMEGA-PREP"
@@ -9512,7 +9512,7 @@
         "extensions": {
           "observed_paths": [
             "tools/release/dist/dist_tree_common.py",
-            "tools/setup/setup_cli.py"
+            "tools/package/setup/setup_cli.py"
           ],
           "official.description": "Deterministically ordered selected component identifiers for an install plan.",
           "official.source": "OMEGA-PREP"
@@ -9565,9 +9565,9 @@
           "observed_paths": [
             "tools/package/libraries/install/install_validator.py",
             "tools/release/dist/dist_tree_common.py",
-            "tools/lib/lib_stress_common.py",
-            "tools/lib/store_gc_common.py",
-            "tools/setup/setup_cli.py"
+            "tools/package/libraries/stress/lib_stress_common.py",
+            "tools/package/libraries/store/store_gc_common.py",
+            "tools/package/setup/setup_cli.py"
           ],
           "official.description": "Reference to the bundled semantic contract registry used during install validation.",
           "official.source": "OMEGA-PREP"
@@ -9748,7 +9748,7 @@
         "extension_key": "official.tool_surface",
         "extensions": {
           "observed_paths": [
-            "tools/tool_surface_adapter.py"
+            "tools/repo/tool_surface_adapter.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.tool_surface' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -9801,8 +9801,8 @@
           "observed_paths": [
             "tools/validators/security/trust/trust_verifier.py",
             "tools/release/update_model_common.py",
-            "tools/security/trust_model_common.py",
-            "tools/setup/setup_cli.py"
+            "tools/validators/security/model/trust_model_common.py",
+            "tools/package/setup/setup_cli.py"
           ],
           "official.description": "Trust policy recorded in deterministic install and update metadata.",
           "official.source": "OMEGA-PREP"

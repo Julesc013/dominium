@@ -196,13 +196,13 @@ def _bin_stub_rows() -> List[Tuple[str, str]]:
             "bin/setup",
             "#!/usr/bin/env python3\n"
             "# Dist setup entrypoint.\n"
-            "print('invoke repo tool: tools/setup/build --bundle bundle.base.lab --out dist')\n",
+            "print('invoke repo tool: tools/package/setup/build --bundle bundle.base.lab --out dist')\n",
         ),
         (
             "bin/launcher",
             "#!/usr/bin/env python3\n"
             "# Dist launcher entrypoint.\n"
-            "print('invoke repo tool: tools/launcher/launch run --dist dist --session <session_spec>')\n",
+            "print('invoke repo tool: tools/package/launcher/launch run --dist dist --session <session_spec>')\n",
         ),
         (
             "bin/setup.cmd",

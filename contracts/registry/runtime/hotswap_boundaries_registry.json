@@ -110,7 +110,7 @@
     "tools/release/update_resolver.py",
     "tools/validators/security/trust/trust_verifier.py",
     "tools/xstack/controlx/core/execution_router.py",
-    "tools/review/series_execution_strategy_common.py",
+    "tools/audit/review/series_execution_strategy_common.py",
     "contracts/repo/release_policy.toml",
     "contracts/registry/release_channel_registry.json",
     "contracts/registry/target_matrix_registry.json",

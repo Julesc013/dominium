@@ -140,7 +140,7 @@
     },
     {
       "name": "distribution tooling",
-      "path": "tools/distribution",
+      "path": "tools/package/distribution",
       "surface_kind": "packaging_distribution_and_smoke_tooling",
       "status_class": "authoritative",
       "canonicality_assessment": "likely canonical",

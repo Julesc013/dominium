@@ -20,7 +20,7 @@ Includes:
   - `check_ui_shell_purity`
 - UI bind freshness (`ui_bind_phase` on Windows)
 - bounded CTest labels: `smoke|portability|buildmeta`
-- app/tool smoke probe (`tools/ci/smoke_run_apps.py`)
+- app/tool smoke probe (`tools/validators/ci/smoke_run_apps.py`)
 
 Target:
 

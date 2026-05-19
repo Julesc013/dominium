@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.logic.logic10_stress_common import generate_logic_stress_scenario
+    from tools.domain.logic.logic10_stress_common import generate_logic_stress_scenario
 
     first = generate_logic_stress_scenario(
         repo_root=repo_root,

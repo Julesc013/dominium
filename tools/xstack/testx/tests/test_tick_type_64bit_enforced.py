@@ -9,7 +9,7 @@ TEST_TAGS = ["fast", "time", "tick", "repox"]
 
 def run(repo_root: str):
     from engine.time.tick_t import TICK_BITS, TICK_MAX
-    from tools.time.time_anchor_common import scan_tick_width_violations
+    from tools.domain.time.time_anchor_common import scan_tick_width_violations
     from tools.xstack.testx.tests.time_anchor_testlib import load_verify_report
 
     if int(TICK_BITS) != 64:

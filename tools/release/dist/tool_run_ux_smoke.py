@@ -10,13 +10,22 @@ import sys
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from tools.appshell.tool_generate_command_docs import main as generate_command_docs_main  # noqa: E402
-from tools.dist.ux_smoke_common import (  # noqa: E402
+from tools.codegen.shell.tool_generate_command_docs import main as generate_command_docs_main  # noqa: E402
+from tools.release.dist.ux_smoke_common import (  # noqa: E402
     DIST5_FINAL_PATH,
     build_ux_smoke_report,
     write_ux_smoke_outputs,

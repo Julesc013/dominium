@@ -15,7 +15,7 @@ def _ensure_repo_root(repo_root: str) -> str:
 @lru_cache(maxsize=4)
 def _replay(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.astro.sol2_runtime_common import orbit_replay_report
+    from tools.domain.astronomy.sol2_runtime_common import orbit_replay_report
 
     return orbit_replay_report(normalized)
 

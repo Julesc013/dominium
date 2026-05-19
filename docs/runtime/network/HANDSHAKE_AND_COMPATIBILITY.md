@@ -85,11 +85,11 @@ Rules:
 
 ## CLI Surfaces
 
-1. `tools/net/net_cli.py --session-spec <path> net.connect --endpoint <endpoint>`
-2. `tools/net/net_cli.py --session-spec <path> net.handshake --policy <policy_id> --anti-cheat <policy_id>`
-3. `tools/net/net_cli.py --session-spec <path> net.status`
-4. `tools/net/net_cli.py --session-spec <path> net.disconnect`
-5. `tools/net/tool_net_loopback_sim.py --session-spec <path> --clients <N>`
+1. `tools/test/network/net_cli.py --session-spec <path> net.connect --endpoint <endpoint>`
+2. `tools/test/network/net_cli.py --session-spec <path> net.handshake --policy <policy_id> --anti-cheat <policy_id>`
+3. `tools/test/network/net_cli.py --session-spec <path> net.status`
+4. `tools/test/network/net_cli.py --session-spec <path> net.disconnect`
+5. `tools/test/network/tool_net_loopback_sim.py --session-spec <path> --clients <N>`
 
 ## Refusal Codes (Compatibility)
 

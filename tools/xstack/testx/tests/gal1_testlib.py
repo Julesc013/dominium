@@ -15,7 +15,7 @@ def _ensure_repo_root(repo_root: str) -> str:
 @lru_cache(maxsize=4)
 def _replay(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.worldgen.gal1_probe import verify_galaxy_object_replay
+    from tools.domain.worldgen.gal1_probe import verify_galaxy_object_replay
 
     return verify_galaxy_object_replay(normalized)
 
@@ -23,7 +23,7 @@ def _replay(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _central_black_hole(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.worldgen.gal1_probe import central_black_hole_report
+    from tools.domain.worldgen.gal1_probe import central_black_hole_report
 
     return central_black_hole_report(normalized)
 
@@ -31,7 +31,7 @@ def _central_black_hole(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _bounded_generation(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.worldgen.gal1_probe import bounded_generation_report
+    from tools.domain.worldgen.gal1_probe import bounded_generation_report
 
     return bounded_generation_report(normalized)
 
@@ -50,6 +50,6 @@ def bounded_galaxy_object_generation_report(repo_root: str) -> dict:
 
 def galaxy_object_replay_hash(repo_root: str) -> str:
     normalized = _ensure_repo_root(repo_root)
-    from tools.worldgen.gal1_probe import galaxy_object_hash
+    from tools.domain.worldgen.gal1_probe import galaxy_object_hash
 
     return str(galaxy_object_hash(normalized)).strip()

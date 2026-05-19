@@ -14,7 +14,7 @@ WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/__init__.py",
     "docs/logic/DEBUG_AND_INSTRUMENTATION.md",
     "game/domain/logic/debug/",
-    "tools/logic/tool_replay_trace_window.py",
+    "tools/domain/logic/tool_replay_trace_window.py",
 )
 
 _LEAK_PATTERNS = (

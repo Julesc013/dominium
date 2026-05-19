@@ -60,8 +60,8 @@ def run(graph, repo_root, changed_files=None):
 
     required_files = (
         (DOCTRINE_REL, "MVP smoke doctrine is missing."),
-        ("tools/mvp/tool_generate_mvp_smoke.py", "MVP smoke scenario generator is missing."),
-        ("tools/mvp/tool_run_mvp_smoke.py", "MVP smoke harness is missing."),
+        ("tools/release/mvp/tool_generate_mvp_smoke.py", "MVP smoke scenario generator is missing."),
+        ("tools/release/mvp/tool_run_mvp_smoke.py", "MVP smoke harness is missing."),
         (HASHES_REL, "MVP smoke expected-hash artifact is missing."),
         (REPORT_REL, "MVP smoke report artifact is missing."),
         (BASELINE_REL, "MVP smoke regression baseline is missing."),

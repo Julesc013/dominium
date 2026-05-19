@@ -18,6 +18,7 @@ check_no_src_source_dirs.py
 check_path_terms.py
 check_app_thinness.py
 check_workbench_module_names.py
+check_tools_taxonomy.py
 check_directory_naming.py
 check_file_naming.py
 ```
@@ -25,6 +26,12 @@ check_file_naming.py
 Default mode is audit mode. It exits zero and classifies current debt so the repo can record existing conflicts without weakening any existing validator.
 
 `--strict` is available. In NAME-00 it fails only for blocker-class findings in validators that define blockers. Directory and file naming are warning-only until a later reviewed enforcement task decides which existing debts become hard failures.
+
+`check_tools_taxonomy.py` is the TOOLS-FOLD-01 enforcement surface. It fails in
+strict mode when active tracked files recreate broad first-level `tools/` roots
+such as `tools/validator`, `tools/gui`, `tools/render`, `tools/world_editor`, or
+other source/product/runtime/domain mirrors. It inspects tracked paths and ignores
+untracked, generated, and archive material by default.
 
 ## Example
 

@@ -6,7 +6,7 @@ import json
 import os
 from typing import Mapping, Sequence
 
-from tools.governance import governance_profile_hash, load_governance_profile
+from tools.repo.governance import governance_profile_hash, load_governance_profile
 from tools.release import (
     DEFAULT_RELEASE_INDEX_REL,
     DEFAULT_RELEASE_MANIFEST_REL,
@@ -228,7 +228,7 @@ def _archive_root(bundle_root: str) -> str:
 
 
 def _ensure_bundle(repo_root: str, platform_tag: str) -> str:
-    from tools.dist.dist_tree_common import build_dist_tree
+    from tools.release.dist.dist_tree_common import build_dist_tree
     from tools.release.update_model_common import build_release_index_payload
     import shutil
 

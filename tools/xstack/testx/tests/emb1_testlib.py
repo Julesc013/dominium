@@ -84,6 +84,6 @@ def property_origin_result() -> dict:
 
 
 def tool_session_report(repo_root: str) -> dict:
-    from tools.embodiment.emb1_probe import build_tool_session_report
+    from tools.domain.embodiment.emb1_probe import build_tool_session_report
 
     return build_tool_session_report(repo_root)

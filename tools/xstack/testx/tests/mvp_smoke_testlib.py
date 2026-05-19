@@ -6,7 +6,7 @@ from typing import Any
 
 
 def load_scenario(repo_root: str) -> dict:
-    from tools.mvp.mvp_smoke_common import DEFAULT_SCENARIO_REL, DEFAULT_MVP_SMOKE_SEED, generate_mvp_smoke_scenario, load_json_if_present
+    from tools.release.mvp.mvp_smoke_common import DEFAULT_SCENARIO_REL, DEFAULT_MVP_SMOKE_SEED, generate_mvp_smoke_scenario, load_json_if_present
 
     scenario = load_json_if_present(repo_root, DEFAULT_SCENARIO_REL)
     if scenario:
@@ -15,13 +15,13 @@ def load_scenario(repo_root: str) -> dict:
 
 
 def load_expected_hashes(repo_root: str) -> dict:
-    from tools.mvp.mvp_smoke_common import DEFAULT_HASHES_REL, load_json_if_present
+    from tools.release.mvp.mvp_smoke_common import DEFAULT_HASHES_REL, load_json_if_present
 
     return load_json_if_present(repo_root, DEFAULT_HASHES_REL)
 
 
 def load_complete_report(repo_root: str) -> tuple[dict, str]:
-    from tools.mvp.mvp_smoke_common import DEFAULT_HASHES_REL, DEFAULT_REPORT_REL, load_json_if_present, maybe_load_cached_mvp_smoke_report
+    from tools.release.mvp.mvp_smoke_common import DEFAULT_HASHES_REL, DEFAULT_REPORT_REL, load_json_if_present, maybe_load_cached_mvp_smoke_report
 
     scenario = load_scenario(repo_root)
     expected_hashes = load_expected_hashes(repo_root)
@@ -43,7 +43,7 @@ def load_complete_report(repo_root: str) -> tuple[dict, str]:
 
 
 def load_baseline(repo_root: str) -> dict:
-    from tools.mvp.mvp_smoke_common import DEFAULT_BASELINE_REL, load_json_if_present
+    from tools.release.mvp.mvp_smoke_common import DEFAULT_BASELINE_REL, load_json_if_present
 
     return load_json_if_present(repo_root, DEFAULT_BASELINE_REL)
 

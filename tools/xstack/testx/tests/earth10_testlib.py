@@ -15,7 +15,7 @@ def _ensure_repo_root(repo_root: str) -> str:
 @lru_cache(maxsize=4)
 def _replay(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.worldgen.earth10_probe import verify_material_proxy_window_replay
+    from tools.domain.worldgen.earth10_probe import verify_material_proxy_window_replay
 
     return verify_material_proxy_window_replay(normalized)
 
@@ -23,7 +23,7 @@ def _replay(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _flags(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.worldgen.earth10_probe import surface_flag_consistency_report
+    from tools.domain.worldgen.earth10_probe import surface_flag_consistency_report
 
     return surface_flag_consistency_report(normalized)
 
@@ -31,7 +31,7 @@ def _flags(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _albedo(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.worldgen.earth10_probe import albedo_proxy_range_report
+    from tools.domain.worldgen.earth10_probe import albedo_proxy_range_report
 
     return albedo_proxy_range_report(normalized)
 
@@ -39,7 +39,7 @@ def _albedo(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _hash(repo_root: str) -> str:
     normalized = _ensure_repo_root(repo_root)
-    from tools.worldgen.earth10_probe import material_proxy_hash
+    from tools.domain.worldgen.earth10_probe import material_proxy_hash
 
     return str(material_proxy_hash(normalized)).strip()
 

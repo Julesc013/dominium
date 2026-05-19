@@ -31,7 +31,7 @@ Any new user-facing domain capability must:
 4. Route all interaction-originated commands through `ControlIntent` and `build_control_resolution(...)`.
 5. Use negotiation/fidelity kernels for downgrade/refusal handling under RS-5 constraints.
 6. Emit deterministic decision-log artifacts for every control resolution (allowed or refused).
-7. Declare topology dependency on `module:tools/governance/control_plane_engine.py` when control APIs are consumed.
+7. Declare topology dependency on `module:tools/repo/governance/control_plane_engine.py` when control APIs are consumed.
 
 ## Compatibility and Proof Obligations
 

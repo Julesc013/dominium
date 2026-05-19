@@ -124,7 +124,7 @@ dom_add_testx(NAME slice2_hardcoded_roles
 )
 
 dom_add_testx(NAME world_definition_contracts
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/ci/validate_world_definition.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/validators/ci/validate_world_definition.py
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_SMOKE}
 )
@@ -155,7 +155,7 @@ dom_add_testx(NAME build_abi_boundaries
 )
 
 dom_add_testx(NAME build_arch_checks
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/ci/arch_checks.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/validators/ci/arch_checks.py
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )

@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.system.tool_replay_certification_window import verify_certification_replay_window
+    from tools.domain.systems.tool_replay_certification_window import verify_certification_replay_window
     from tools.xstack.testx.tests.sys5_testlib import (
         base_state,
         execute_system_certification,

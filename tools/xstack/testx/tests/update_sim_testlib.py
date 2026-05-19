@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 
-from tools.mvp.update_sim_common import load_update_sim_baseline, run_update_sim
+from tools.release.mvp.update_sim_common import load_update_sim_baseline, run_update_sim
 from tools.xstack.compatx.canonical_json import canonical_json_text
 
 

@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
 
     scheduler_rel = "game/domain/systems/roi/system_roi_scheduler.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    stress_rel = "tools/system/tool_run_sys_stress.py"
+    stress_rel = "tools/domain/systems/tool_run_sys_stress.py"
 
     scheduler_text = _read_text(repo_root, scheduler_rel)
     runtime_text = _read_text(repo_root, runtime_rel)

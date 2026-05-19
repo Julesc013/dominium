@@ -15,9 +15,9 @@ Superseded By: none
 | Product | Mode | Command | Result | Notes |
 | --- | --- | --- | --- | --- |
 | setup | cli | `setup --help` | blocked | CMake target `setup_cli` outputs `setup`, but no local binary exists. |
-| setup | Python bridge | `python tools/setup/setup_cli.py --help` | blocked | Fails before help on local Python 3.8 due import-time union annotation. |
+| setup | Python bridge | `python tools/package/setup/setup_cli.py --help` | blocked | Fails before help on local Python 3.8 due import-time union annotation. |
 | launcher | cli | `launcher --help` | blocked | CMake target `launcher_cli` outputs `launcher`, but no local binary exists. |
-| launcher | Python AppShell bridge | `python tools/launcher/launch.py --help` | partial | AppShell help emits for `product_id: launcher`; native binary not proven. |
+| launcher | Python AppShell bridge | `python tools/package/launcher/launch.py --help` | partial | AppShell help emits for `product_id: launcher`; native binary not proven. |
 | client | cli/rendered/tui | `client --help` | blocked | CMake target `dominium_client` outputs `client`, but no local binary exists. |
 | client | tracked wrapper | `python archive/generated/dist/bin/dominium_client --help` | partial | AppShell help emits for `product_id: client`; native binary not proven. |
 | server | headless/cli/tui | `server --help` | blocked | CMake target `dominium_server` outputs `server`, but no local binary exists. |

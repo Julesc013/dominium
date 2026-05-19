@@ -54,7 +54,7 @@ def run(graph, repo_root, changed_files=None):
         "game/domain/processes/software/pipeline_engine.py",
         "game/domain/processes/software/__init__.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "tools/process/tool_replay_pipeline_window.py",
+        "tools/domain/processes/tool_replay_pipeline_window.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

@@ -24,12 +24,12 @@ REQUIRED_TOKENS = {
         "REFUSAL_INSTANCE_MISSING_PROFILE_BUNDLE",
         "pack_lock_hash",
     ),
-    "tools/launcher/launcher_cli.py": (
+    "tools/package/launcher/launcher_cli.py": (
         "resolve_pack_lock(",
         "profile bundle artifact missing",
         "pack lock hash does not match instance manifest",
     ),
-    "tools/ops/ops_cli.py": (
+    "tools/package/ops/ops_cli.py": (
         "pack_lock_hash",
         "profile_bundle_hash",
         "build_instance_manifest_payload(",

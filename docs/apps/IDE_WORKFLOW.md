@@ -20,7 +20,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - `server_main` in `apps/server/main_server.c`
 - `launcher_main` in `apps/launcher/cli/launcher_cli_main.c`
 - `setup_main` in `apps/setup/cli/setup_cli_main.c`
-- `tools_main` in `tools/tools_host_main.c`
+- `tools_main` in `tools/build/host/tools_host_main.c`
 
 Individual tool executables continue to use `dom_tool_*_main` entrypoints.
 

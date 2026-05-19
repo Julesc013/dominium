@@ -15,7 +15,7 @@ WATCH_PREFIXES = (
     "contracts/schema/logic/security_policy.schema",
     "contracts/registry/logic_security_policy_registry.json",
     "game/domain/logic/eval/sense_engine.py",
-    "tools/logic/tool_replay_fault_window.py",
+    "tools/domain/logic/tool_replay_fault_window.py",
 )
 
 
@@ -124,7 +124,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    replay_rel = "tools/logic/tool_replay_fault_window.py"
+    replay_rel = "tools/domain/logic/tool_replay_fault_window.py"
     replay_text = _read_text(repo_root, replay_rel)
     if "logic_security_fail_hash_chain" not in replay_text:
         findings.append(

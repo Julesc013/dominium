@@ -147,7 +147,7 @@ Enforcement is done via target-scoped includes and configure-time assertions:
 - **Build-time**: illegal includes fail compilation due to missing include paths (ARCH-INC-001/002).
 
 
-- **Static checks**: `tools/ci/arch_checks.py` enforces repo-wide guards (ARCH-TOP-001, ARCH-RENDER-001, UI-BYPASS-001, EPIS-*).
+- **Static checks**: `tools/validators/ci/arch_checks.py` enforces repo-wide guards (ARCH-TOP-001, ARCH-RENDER-001, UI-BYPASS-001, EPIS-*).
 
 
 - **Data validation**: `data_validate` and `engine_data_validate` validate data invariants (see `docs/guides/DATA_VALIDATION_GUIDE.md`).
@@ -165,7 +165,7 @@ Enforcement is done via target-scoped includes and configure-time assertions:
 ```
 
 
-python tools/ci/arch_checks.py --repo-root .
+python tools/validators/ci/arch_checks.py --repo-root .
 
 
 cmake --build <build-dir> --target check_arch
@@ -222,7 +222,7 @@ cmake --build <build-dir> --target validate_all
 ```
 
 
-python tools/ci/arch_checks.py --repo-root .
+python tools/validators/ci/arch_checks.py --repo-root .
 
 
 <build-dir>\\bin\\validate_all --repo-root=. --strict=1
@@ -321,7 +321,7 @@ python scripts/verify_includes_sanity.py
 python scripts/verify_cmake_no_global_includes.py
 
 
-python tools/ci/arch_checks.py --repo-root .
+python tools/validators/ci/arch_checks.py --repo-root .
 
 
 cmake -S . -B <build-dir>

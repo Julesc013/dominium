@@ -15,7 +15,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.data.tool_spice_import import run_import
+    run_import = __import__("tools.import.data.tool_spice_import", fromlist=["run_import"]).run_import
 
     temp_root = tempfile.mkdtemp(prefix="dominium_source_missing_")
     missing_source = os.path.join(temp_root, "missing", "org.dominium.sol.spice")

@@ -19,17 +19,17 @@ REQUIRED_TOKENS = {
         "must not be embedded",
         "instance bundle",
     ),
-    "tools/ops/ops_cli.py": (
+    "tools/package/ops/ops_cli.py": (
         "clone_ignore_entries",
         "\"saves\"",
         "save_refs",
     ),
-    "tools/share/share_cli.py": (
+    "tools/export/share/share_cli.py": (
         "save_refs",
         "copy_tree(bundle_instance_root, args.out)",
         "linked_manifest[\"embedded_builds\"] = {}",
     ),
-    "tools/launcher/launcher_cli.py": (
+    "tools/package/launcher/launcher_cli.py": (
         "selected_save_id",
         "save_refs",
         "requested save is not associated with this instance",

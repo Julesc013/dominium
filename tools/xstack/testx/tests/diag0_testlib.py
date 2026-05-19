@@ -120,7 +120,7 @@ def capture_bundle(
 
     from tools.validators.compatibility import emit_product_descriptor
     from runtime.diagnostics import write_repro_bundle
-    from tools.mvp.runtime_bundle import MVP_PACK_LOCK_REL
+    from tools.release.mvp.runtime_bundle import MVP_PACK_LOCK_REL
 
     descriptor = emit_product_descriptor(repo_root, product_id="client")
     server_descriptor = emit_product_descriptor(repo_root, product_id="server")

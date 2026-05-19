@@ -12,7 +12,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "D2_SEED_POLICY"
 WATCH_PREFIXES = (
     "game/domain/worldgen/",
-    "tools/worldgen_offline/",
+    "tools/domain/worldgen/offline/",
     "tools/xstack/sessionx/",
     "packs/",
     "contracts/schema/worldgen_constraints.schema.json",
@@ -22,7 +22,7 @@ SOURCE_PATHS = (
     "game/domain/worldgen/core/constraint_solver.py",
     "game/domain/worldgen/core/constraint_commands.py",
     "game/domain/worldgen/core/pipeline.py",
-    "tools/worldgen_offline/constraints_cli.py",
+    "tools/domain/worldgen/offline/constraints_cli.py",
     "tools/xstack/sessionx/creator.py",
 )
 

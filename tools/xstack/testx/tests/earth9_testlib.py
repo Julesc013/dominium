@@ -18,7 +18,7 @@ def _ensure_repo_root(repo_root: str) -> str:
 @lru_cache(maxsize=4)
 def _scenario(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.earth.earth9_stress_common import generate_earth_mvp_stress_scenario
+    from tools.domain.worldgen.earth_stress.earth9_stress_common import generate_earth_mvp_stress_scenario
 
     return generate_earth_mvp_stress_scenario(repo_root=normalized)
 
@@ -26,7 +26,7 @@ def _scenario(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _stress_report(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.earth.earth9_stress_common import verify_earth_mvp_stress_scenario
+    from tools.domain.worldgen.earth_stress.earth9_stress_common import verify_earth_mvp_stress_scenario
 
     return verify_earth_mvp_stress_scenario(repo_root=normalized, scenario=_scenario(normalized))
 
@@ -34,7 +34,7 @@ def _stress_report(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _view_replay(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.earth.earth9_stress_common import replay_earth_view_window
+    from tools.domain.worldgen.earth_stress.earth9_stress_common import replay_earth_view_window
 
     return replay_earth_view_window(repo_root=normalized, scenario=_scenario(normalized))
 
@@ -42,7 +42,7 @@ def _view_replay(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _physics_replay(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from tools.earth.earth9_stress_common import replay_earth_physics_window
+    from tools.domain.worldgen.earth_stress.earth9_stress_common import replay_earth_physics_window
 
     return replay_earth_physics_window(repo_root=normalized)
 

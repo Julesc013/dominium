@@ -13,7 +13,7 @@ This document enumerates the canonical build presets defined in
 
 ## Primary Windows presets (MSVC)
 - `vs2026-x64-debug` / `vs2026-x64-release`:
-  full product build with tools/tests enabled, `DOM_PLATFORM=sdl2`,
+  full product build with tools/test enabled, `DOM_PLATFORM=sdl2`,
   `DOM_BACKEND_GL2=ON`, `DOM_BACKEND_DX9=ON`, `DOM_FETCH_SDL2=ON`.
 - `baseline-debug` / `baseline-release`:
   strict baseline (C90/C++98), `DOM_ENABLE_MODERN=OFF`, `DOM_PLATFORM=sdl2`,

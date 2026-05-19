@@ -17,7 +17,7 @@ def make_stress_scenario(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.system.tool_generate_sys_stress import generate_sys_stress_scenario
+    from tools.domain.systems.tool_generate_sys_stress import generate_sys_stress_scenario
 
     return generate_sys_stress_scenario(
         seed=int(seed),
@@ -44,7 +44,7 @@ def run_stress_report(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.system.tool_run_sys_stress import run_sys_stress
+    from tools.domain.systems.tool_run_sys_stress import run_sys_stress
 
     return run_sys_stress(
         scenario=copy.deepcopy(dict(scenario or {})),

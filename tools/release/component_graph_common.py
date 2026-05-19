@@ -27,7 +27,7 @@ from tools.release.component_graph_resolver import (
     deterministic_fingerprint,
     platform_targets_for_tag,
 )
-from tools.import_bridge import resolve_repo_path_equivalent
+from tools.migration.import_bridge import resolve_repo_path_equivalent
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -416,8 +416,8 @@ def component_graph_violations(repo_root: str) -> list[dict]:
         violations.append({"code": "missing_required_file", "message": message, "file_path": effective_rel if effective_rel != _norm_rel(rel_path) else rel_path, "rule_id": rule_id})
     for rel_path, token, message, rule_id in (
         ("tools/release/dist/dist_tree_common.py", "build_default_component_install_plan", "dist assembly must resolve bundle composition through the component graph", RULE_HARDCODED),
-        ("tools/setup/setup_cli.py", "build_default_component_install_plan", "setup must emit an install plan derived from the component graph", RULE_INSTALL),
-        ("tools/launcher/launch.py", "validate_instance_against_install_plan", "launcher must validate instances against the component graph install plan", RULE_INSTALL),
+        ("tools/package/setup/setup_cli.py", "build_default_component_install_plan", "setup must emit an install plan derived from the component graph", RULE_INSTALL),
+        ("tools/package/launcher/launch.py", "validate_instance_against_install_plan", "launcher must validate instances against the component graph install plan", RULE_INSTALL),
         ("tools/release/release_manifest_engine.py", "component_graph_hash", "release manifest generation must include the component graph hash", RULE_INSTALL),
     ):
         text = ""

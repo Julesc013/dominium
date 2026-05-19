@@ -35,7 +35,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 ## Ingestion Workflow
 
 1. Capture evidence clip or voice note.
-2. Run `tools/bugreport/ingest.py` with explicit metadata.
+2. Run `tools/diagnostics/bugreport/ingest.py` with explicit metadata.
 3. Validate generated JSON against schema.
 4. Add regression test or mark deferred with explicit reason.
 
@@ -50,7 +50,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 ## Minimal Command Example
 
 ```powershell
-python tools/bugreport/ingest.py `
+python tools/diagnostics/bugreport/ingest.py `
   --id BR-001 `
   --expected "observer mode denied without entitlement" `
   --observed "observer mode accepted in normal play" `

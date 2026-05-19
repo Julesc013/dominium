@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "dist", "windows", "regression"]
 
 
 def run(repo_root: str):
-    from tools.dist.runtime_compile_helper import _compile_runtime_tree, _fs_path
+    from tools.release.dist.runtime_compile_helper import _compile_runtime_tree, _fs_path
 
     temp_parent = os.path.join(repo_root, "build", "tmp")
     os.makedirs(temp_parent, exist_ok=True)

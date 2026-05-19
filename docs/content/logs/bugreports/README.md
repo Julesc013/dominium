@@ -2,7 +2,7 @@
 
 This directory stores machine-ingested bug observations created by:
 
-- `tools/bugreport/ingest.py`
+- `tools/diagnostics/bugreport/ingest.py`
 
 Files are expected to follow:
 

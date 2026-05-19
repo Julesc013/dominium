@@ -6,13 +6,22 @@ import os
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 
 from analyzers.base import make_finding
-from tools.mvp.prod_gate0_common import product_boot_matrix_violations
+from tools.release.mvp.prod_gate0_common import product_boot_matrix_violations
 
 
 ANALYZER_ID = "E485_PRODUCT_STANDALONE_FAILURE_SMELL"
@@ -38,7 +47,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REGENERATE_AND_FIX_PRODUCT_BOOT_MATRIX",
                 related_invariants=[str(item.get("rule_id", "")).strip() or "INV-PROD-GATE-0-MUST-PASS-BEFORE-RELEASE"],
-                related_paths=[rel_path or "contracts/audit/product_boot_matrix.json", "tools/mvp/tool_run_product_boot_matrix.py"],
+                related_paths=[rel_path or "contracts/audit/product_boot_matrix.json", "tools/release/mvp/tool_run_product_boot_matrix.py"],
             )
         )
     return findings

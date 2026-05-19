@@ -11,14 +11,23 @@ from typing import Iterable, Mapping
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
 from runtime.shell.paths import clear_current_virtual_paths, set_current_virtual_paths, vpath_init  # noqa: E402
 from runtime.shell.supervisor import SupervisorEngine, build_supervisor_run_spec, canonicalize_args  # noqa: E402
-from tools.appshell.appshell6_probe import run_supervisor_probe, verify_supervisor_replay  # noqa: E402
+from tools.validators.shell.appshell6_probe import run_supervisor_probe, verify_supervisor_replay  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 

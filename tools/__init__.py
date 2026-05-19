@@ -1,6 +1,6 @@
 """Unified tool surface exports."""
 
-from .tool_surface_adapter import (
+from .repo.tool_surface_adapter import (
     DOM_PRODUCT_ID,
     TOOL_REFERENCE_PATH,
     TOOL_SURFACE_FINAL_PATH,

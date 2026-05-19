@@ -119,7 +119,7 @@ static int dsu_resolve_setup_script(char* out, size_t cap, const char* argv0)
             return 1;
         }
     }
-    strncpy(out, "tools/setup/setup_cli.py", cap - 1u);
+    strncpy(out, "tools/package/setup/setup_cli.py", cap - 1u);
     out[cap - 1u] = '\0';
     return 1;
 }

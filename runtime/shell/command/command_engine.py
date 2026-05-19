@@ -254,7 +254,7 @@ def _run_descriptor_command(repo_root: str, product_id: str, args: Sequence[str]
 
 def _run_setup_legacy_command(repo_root: str, args: Sequence[str]) -> dict:
     del repo_root
-    from tools.setup import setup_cli as setup_cli_module
+    from tools.package.setup import setup_cli as setup_cli_module
 
     buffer = io.StringIO()
     with contextlib.redirect_stdout(buffer):

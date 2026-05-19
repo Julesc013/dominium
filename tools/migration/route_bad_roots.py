@@ -668,7 +668,7 @@ class Router:
             if has_any(source, {token}):
                 return join_target(prefix, rest), "core {0} ownership".format(token), "canonical"
         if is_python(source):
-            return join_target("tools/core", rest), "core Python tool", "canonical"
+            return join_target("tools/repo/core", rest), "core Python tool", "canonical"
         if is_markdown(source):
             return join_target("docs/architecture/core", rest), "core documentation", "canonical"
         return None, "core role unclear", "quarantine"
@@ -689,7 +689,7 @@ class Router:
         if is_policy(source):
             return join_target("contracts/governance", rest), "control policy", "canonical"
         if is_python(source):
-            return join_target("tools/governance", rest), "control governance tool", "canonical"
+            return join_target("tools/repo/governance", rest), "control governance tool", "canonical"
         if is_markdown(source):
             return join_target("docs/runtime/control", rest), "control documentation", "canonical"
         return None, "control role unclear", "quarantine"
@@ -702,7 +702,7 @@ class Router:
         if has_any(source, {"capability"}):
             return join_target("contracts/capability/network", rest), "network capability", "canonical"
         if is_python(source):
-            return join_target("tools/network", rest), "network tool", "canonical"
+            return join_target("tools/validators/network", rest), "network tool", "canonical"
         if is_markdown(source):
             return join_target("docs/runtime/network", rest), "network documentation", "canonical"
         if is_code(source) or has_any(source, {"runtime", "transport", "server", "client"}):
@@ -719,7 +719,7 @@ class Router:
         if has_any(source, {"runtime"}):
             return join_target("runtime", rest), "runtime library", "canonical"
         if is_python(source) or has_any(source, {"tool"}):
-            return join_target("tools/libraries", rest), "library tool", "canonical"
+            return join_target("tools/package/libraries", rest), "library tool", "canonical"
         if is_markdown(source):
             return join_target("docs/development/libraries", rest), "library documentation", "canonical"
         return None, "library role unclear", "quarantine"
@@ -737,7 +737,7 @@ class Router:
         if has_any(source, {"runtime"}):
             return join_target("runtime", rest), "runtime library", "canonical"
         if is_python(source) or has_any(source, {"tool"}):
-            return join_target("tools/libraries", rest), "library tool", "canonical"
+            return join_target("tools/package/libraries", rest), "library tool", "canonical"
         if is_markdown(source):
             return join_target("docs/development/libraries", rest), "library documentation", "canonical"
         return None, "libs role unclear", "quarantine"

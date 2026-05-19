@@ -1011,7 +1011,7 @@
       "prerequisite_artifacts": [
         "release",
         "tools/release",
-        "tools/distribution",
+        "tools/package/distribution",
         "tools/xstack"
       ],
       "expected_outputs": [
@@ -1070,7 +1070,7 @@
         "updates/stable.json",
         "updates/beta.json",
         "updates/nightly.json",
-        "tools/distribution"
+        "tools/package/distribution"
       ],
       "expected_outputs": [
         "publication models policy",

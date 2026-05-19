@@ -5345,7 +5345,7 @@
         "explicit-invocation-only"
       ],
       "extensions": {
-        "implementation_ref": "tools/schema_migration/schema_migration_runner.py::migrate_pack_manifest_1_0_0_to_2_0_0"
+        "implementation_ref": "tools/migration/schema/schema_migration_runner.py::migrate_pack_manifest_1_0_0_to_2_0_0"
       },
       "failure_modes": [
         "SCHEMA-MIGRATION-REFUSE"
@@ -5403,7 +5403,7 @@
         "explicit-invocation-only"
       ],
       "extensions": {
-        "implementation_ref": "tools/schema_migration/schema_migration_runner.py::migrate_pack_manifest_2_1_0_to_2_2_0"
+        "implementation_ref": "tools/migration/schema/schema_migration_runner.py::migrate_pack_manifest_2_1_0_to_2_2_0"
       },
       "failure_modes": [
         "SCHEMA-MIGRATION-REFUSE"
@@ -5461,7 +5461,7 @@
         "explicit-invocation-only"
       ],
       "extensions": {
-        "implementation_ref": "tools/schema_migration/schema_migration_runner.py::migrate_pack_manifest_2_2_0_to_2_3_0"
+        "implementation_ref": "tools/migration/schema/schema_migration_runner.py::migrate_pack_manifest_2_2_0_to_2_3_0"
       },
       "failure_modes": [
         "SCHEMA-MIGRATION-REFUSE"

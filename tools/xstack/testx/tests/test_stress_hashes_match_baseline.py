@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "mvp", "stress", "baseline"]
 
 
 def run(repo_root: str):
-    from tools.mvp.stress_gate_common import build_mvp_stress_baseline
+    from tools.release.mvp.stress_gate_common import build_mvp_stress_baseline
     from tools.xstack.testx.tests.mvp_stress_testlib import first_mismatch, load_baseline, load_proof_report, load_report
 
     report, error = load_report(repo_root)

@@ -19,13 +19,13 @@ REQUIRED_TOKENS = {
         "forward- and backslash-shaped scenarios keep identical bundle hashes",
         "`tool_verify_bundle` returns `result=complete`",
     ),
-    "tools/lib/lib_stress_common.py": (
+    "tools/package/libraries/stress/lib_stress_common.py": (
         "\"bundle_hash_stable\"",
         "\"projection_hashes\"",
         "\"bundle_verifications\"",
         "\"tool_verify_bundle.py\"",
     ),
-    "tools/lib/tool_run_lib_stress.py": (
+    "tools/package/libraries/stress/tool_run_lib_stress.py": (
         "Run the LIB-7 deterministic library stress harness.",
         "--slash-mode",
         "--baseline-out",
@@ -37,8 +37,8 @@ REQUIRED_TOKENS = {
     ),
 }
 FORBIDDEN_TOKENS = {
-    "tools/lib/lib_stress_common.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "random.", "os.path.getmtime("),
-    "tools/lib/tool_run_lib_stress.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "random."),
+    "tools/package/libraries/stress/lib_stress_common.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "random.", "os.path.getmtime("),
+    "tools/package/libraries/stress/tool_run_lib_stress.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "random."),
 }
 
 

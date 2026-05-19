@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "meta", "model", "rng"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.models.model_engine import evaluate_model_bindings
+    from tools.repo.models.model_engine import evaluate_model_bindings
 
     model_rows = [
         {

@@ -24,7 +24,7 @@ REQUIRED_TOKENS = {
         "allow_save_migration",
         "REFUSAL_SAVE_MIGRATION_REQUIRED",
     ),
-    "tools/launcher/launcher_cli.py": (
+    "tools/package/launcher/launcher_cli.py": (
         "--allow-save-migration",
         "--save-migration-id",
         "--migration-tick",

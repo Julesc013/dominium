@@ -528,7 +528,7 @@ retire_by_phase = "CONVERGE-09"
 notes = "Templates may be authored content, contracts, or generated inputs."
 
 [transitional_aliases.validation]
-target = "tools/validation"
+target = "tools/validators"
 action = "classify_before_move"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-03"

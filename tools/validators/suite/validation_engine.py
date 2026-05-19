@@ -13,7 +13,16 @@ from typing import Callable, Iterable, Mapping
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
@@ -33,14 +42,14 @@ from tools.xstack.compatx.core.semantic_contract_validator import (  # noqa: E40
     validate_semantic_contract_registry,
     validate_universe_contract_bundle,
 )
-from tools.mvp import build_pack_lock_payload, validate_pack_lock_payload  # noqa: E402
-from tools.mvp.cross_platform_gate_common import maybe_load_cached_mvp_cross_platform_report  # noqa: E402
-from tools.review.repo_inventory_common import load_or_run_inventory_report  # noqa: E402
-from tools.time.time_anchor_common import verify_compaction_anchor_alignment, verify_longrun_ticks  # noqa: E402
-from tools.meta.identity_common import BASELINE_DOC_REL as IDENTITY_BASELINE_DOC_REL  # noqa: E402
-from tools.meta.identity_common import REPORT_JSON_REL as IDENTITY_REPORT_JSON_REL  # noqa: E402
-from tools.meta.identity_common import STRICT_MISSING_POLICY_ACTIVE  # noqa: E402
-from tools.meta.identity_common import write_identity_artifacts  # noqa: E402
+from tools.release.mvp import build_pack_lock_payload, validate_pack_lock_payload  # noqa: E402
+from tools.release.mvp.cross_platform_gate_common import maybe_load_cached_mvp_cross_platform_report  # noqa: E402
+from tools.audit.review.repo_inventory_common import load_or_run_inventory_report  # noqa: E402
+from tools.domain.time.time_anchor_common import verify_compaction_anchor_alignment, verify_longrun_ticks  # noqa: E402
+from tools.repo.meta.audit.identity_common import BASELINE_DOC_REL as IDENTITY_BASELINE_DOC_REL  # noqa: E402
+from tools.repo.meta.audit.identity_common import REPORT_JSON_REL as IDENTITY_REPORT_JSON_REL  # noqa: E402
+from tools.repo.meta.audit.identity_common import STRICT_MISSING_POLICY_ACTIVE  # noqa: E402
+from tools.repo.meta.audit.identity_common import write_identity_artifacts  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 from tools.xstack.compatx.check import run_compatx_check  # noqa: E402
 from tools.xstack.compatx.validator import validate_instance  # noqa: E402
@@ -124,7 +133,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
     },
     {
         "surface_id": "legacy.coredata_validate",
-        "path": "tools/coredata_validate/coredata_validate_main.cpp",
+        "path": "tools/validators/content/coredata/coredata_validate_main.cpp",
         "purpose": "Legacy coredata validation executable.",
         "inputs": ["authoring roots", "pack roots"],
         "outputs": ["process exit code", "stdout report"],
@@ -136,7 +145,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
     },
     {
         "surface_id": "legacy.data_validate_c",
-        "path": "tools/data_validate/data_validate_main.c",
+        "path": "tools/validators/content/data/data_validate_main.c",
         "purpose": "Legacy data TLV validation entrypoint.",
         "inputs": ["binary payload", "schema id", "schema version"],
         "outputs": ["process exit code", "stdout report"],
@@ -148,7 +157,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
     },
     {
         "surface_id": "legacy.ci_validate_all_py",
-        "path": "tools/ci/validate_all.py",
+        "path": "tools/validators/ci/validate_all.py",
         "purpose": "Legacy wrapper that locates and shells out to validate_all.",
         "inputs": ["compiled validate_all binary"],
         "outputs": ["subprocess exit code", "stdout passthrough"],
@@ -196,7 +205,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
     },
     {
         "surface_id": "legacy.fab_validate",
-        "path": "tools/fab/fab_validate.py",
+        "path": "tools/domain/fabrication/fab_validate.py",
         "purpose": "Legacy fabrication authoring validator.",
         "inputs": ["fabrication JSON payload"],
         "outputs": ["json to stdout"],
@@ -208,7 +217,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
     },
     {
         "surface_id": "legacy.worldgen_validation_checker",
-        "path": "tools/worldgen_offline/validation_checker.py",
+        "path": "tools/domain/worldgen/offline/validation_checker.py",
         "purpose": "Legacy output comparison validator for offline worldgen tooling.",
         "inputs": ["expected JSON", "actual JSON"],
         "outputs": ["mismatch report"],
@@ -268,7 +277,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
     },
     {
         "surface_id": "legacy.time_verify",
-        "path": "tools/time/tool_verify_longrun_ticks.py",
+        "path": "tools/domain/time/tool_verify_longrun_ticks.py",
         "purpose": "TIME-ANCHOR long-run verification entrypoint.",
         "inputs": ["time anchor policy", "anchor artifacts"],
         "outputs": ["json verification report"],
@@ -280,7 +289,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
     },
     {
         "surface_id": "legacy.time_compaction_check",
-        "path": "tools/time/tool_compaction_anchor_check.py",
+        "path": "tools/domain/time/tool_compaction_anchor_check.py",
         "purpose": "TIME-ANCHOR compaction boundary verifier.",
         "inputs": ["provenance windows", "anchor rows"],
         "outputs": ["json compaction report"],
@@ -940,7 +949,7 @@ def _adapt_pack_suite(repo_root: str, suite_row: Mapping[str, object], profile: 
         errors.append(
             _finding_row(
                 code="refusal.validation.pack_lock_rebuild_exception",
-                path="tools/mvp/runtime_bundle.py",
+                path="tools/release/mvp/runtime_bundle.py",
                 message="rebuilt runtime pack lock generation failed: {}".format(str(exc).strip() or type(exc).__name__),
                 suite_id=_token(suite_row.get("suite_id")),
             )
@@ -951,7 +960,7 @@ def _adapt_pack_suite(repo_root: str, suite_row: Mapping[str, object], profile: 
         errors.append(
             _finding_row(
                 code=_token(token) or "refusal.validation.pack_lock_rebuild",
-                path="tools/mvp/runtime_bundle.py",
+                path="tools/release/mvp/runtime_bundle.py",
                 message="rebuilt runtime pack lock validation failed",
                 suite_id=_token(suite_row.get("suite_id")),
             )
@@ -960,13 +969,13 @@ def _adapt_pack_suite(repo_root: str, suite_row: Mapping[str, object], profile: 
         warnings.append(
             _finding_row(
                 code="warn.validation.pack_lock_rebuild_unavailable",
-                path="tools/mvp/runtime_bundle.py",
+                path="tools/release/mvp/runtime_bundle.py",
                 message="rebuilt runtime pack lock was unavailable after adapter execution",
                 suite_id=_token(suite_row.get("suite_id")),
                 severity="warn",
             )
         )
-    checked_paths.append("tools/mvp/runtime_bundle.py")
+    checked_paths.append("tools/release/mvp/runtime_bundle.py")
 
     if pack_lock_payload and rebuilt_pack_lock:
         if _token(pack_lock_payload.get("pack_lock_hash")) != _token(rebuilt_pack_lock.get("pack_lock_hash")):

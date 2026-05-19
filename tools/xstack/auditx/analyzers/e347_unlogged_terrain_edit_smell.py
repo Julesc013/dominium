@@ -27,7 +27,7 @@ REQUIRED_FILES = {
         "geometry_edit_event_hash_chain",
         "stable_across_repeated_runs",
     ),
-    "tools/governance/proof/control_proof_bundle.py": (
+    "tools/repo/governance/proof/control_proof_bundle.py": (
         "geometry_edit_policy_registry_hash",
         "geometry_state_hash_chain",
         "geometry_edit_event_hash_chain",

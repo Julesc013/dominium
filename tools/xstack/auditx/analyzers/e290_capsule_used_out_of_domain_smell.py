@@ -53,7 +53,7 @@ def run(graph, repo_root, changed_files=None):
         "game/domain/processes/capsules/capsule_builder.py",
         "game/domain/processes/capsules/capsule_executor.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "tools/process/tool_replay_capsule_window.py",
+        "tools/domain/processes/tool_replay_capsule_window.py",
         "tools/xstack/repox/check.py",
     }
     required_validity_tokens = (

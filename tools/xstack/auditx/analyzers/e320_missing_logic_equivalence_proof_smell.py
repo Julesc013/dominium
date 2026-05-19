@@ -15,7 +15,7 @@ WATCH_PREFIXES = (
     "game/domain/logic/compile/logic_compiler.py",
     "game/domain/logic/compile/logic_proof_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
-    "tools/logic/tool_replay_compiled_logic_window.py",
+    "tools/domain/logic/tool_replay_compiled_logic_window.py",
 )
 
 
@@ -129,7 +129,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    replay_rel = "tools/logic/tool_replay_compiled_logic_window.py"
+    replay_rel = "tools/domain/logic/tool_replay_compiled_logic_window.py"
     replay_text = _read_text(repo_root, replay_rel)
     for token in ("equivalence_proof_hash_chain", "compile_result_hash_chain", "logic_compile_policy_hash_chain"):
         if token in replay_text:

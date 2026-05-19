@@ -24,7 +24,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.chem.tool_replay_process_run import verify_process_run_window
+    from tools.domain.chemistry.tool_replay_process_run import verify_process_run_window
 
     first = _run_once(repo_root)
     second = _run_once(repo_root)

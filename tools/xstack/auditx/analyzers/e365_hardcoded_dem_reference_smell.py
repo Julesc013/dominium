@@ -11,7 +11,7 @@ ANALYZER_ID = "E365_HARDCODED_DEM_REFERENCE_SMELL"
 EARTH_GENERATOR_REL = "game/domain/worldgen/earth/earth_surface_generator.py"
 EARTH_PARAMS_REL = "contracts/registry/earth_surface_params_registry.json"
 DOC_REL = "docs/domains/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md"
-VERIFY_TOOL_REL = "tools/worldgen/tool_verify_earth_surface.py"
+VERIFY_TOOL_REL = "tools/domain/worldgen/tool_verify_earth_surface.py"
 REQUIRED_GENERATOR_TOKENS = (
     "generate_earth_surface_tile_plan(",
     "continent_count_target",

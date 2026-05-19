@@ -48,7 +48,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    stress_rel = "tools/logic/tool_run_logic_stress.py"
+    stress_rel = "tools/domain/logic/tool_run_logic_stress.py"
     stress_text = _read_text(repo_root, stress_rel)
     for token in ("loop_refusal_deterministic", "no_unbounded_loops", "determinism_across_thread_counts"):
         if token in stress_text:
@@ -69,7 +69,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    replay_rel = "tools/logic/tool_replay_logic_window.py"
+    replay_rel = "tools/domain/logic/tool_replay_logic_window.py"
     replay_text = _read_text(repo_root, replay_rel)
     for token in ("reason_code", "logic_eval_record_hash_chain", "forced_expand_event_hash_chain"):
         if token in replay_text:

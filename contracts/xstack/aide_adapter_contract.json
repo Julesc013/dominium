@@ -43,9 +43,9 @@
     "appshell/pack_verifier_adapter.py",
     "appshell/ipc/ipc_transport.py",
     "appshell/ipc/ipc_client.py",
-    "tools/tool_surface_adapter.py",
-    "tools/setup/setup_cli.py",
-    "tools/import_bridge.py",
+    "tools/repo/tool_surface_adapter.py",
+    "tools/package/setup/setup_cli.py",
+    "tools/migration/import_bridge.py",
     "tools/xstack/controlx/core/remediation_bridge.py",
     "client/render/render_model_adapter.py",
     "geo/projection/view_adapters.py",
@@ -282,7 +282,7 @@
       "why_it_matters": "Shows a thin wrapper that must remain distinguishable from portable adapter law."
     },
     {
-      "path": "tools/tool_surface_adapter.py",
+      "path": "tools/repo/tool_surface_adapter.py",
       "why_it_matters": "Shows stable wrapper rows and adapter-shaped metadata for governed offline tool surfaces."
     },
     {
@@ -310,7 +310,7 @@
       "why_it_matters": "Shows deterministic view adapters tied to Dominium-specific projection layers."
     },
     {
-      "path": "tools/setup/setup_cli.py",
+      "path": "tools/package/setup/setup_cli.py",
       "why_it_matters": "Shows shell bridge payload translation and refusal mapping that remain local to setup surfaces."
     },
     {
@@ -341,14 +341,14 @@
     "the rule that adapter existence does not imply runtime availability, lawful use, or implementation completeness"
   ],
   "dominium_retained_now": [
-    "AppShell command surfaces and subprocess tool adapters under tools/tool_surface_adapter.py",
+    "AppShell command surfaces and subprocess tool adapters under tools/repo/tool_surface_adapter.py",
     "tool wrapper output payload execution semantics under schemas/tool_adapter_output.schema.json",
     "appshell/compat_adapter.py and other shell-facing wrappers",
     "appshell/pack_verifier_adapter.py execution flow and output writing",
     "negotiated IPC and attach flows in appshell/ipc/ipc_client.py and appshell/ipc/ipc_transport.py",
     "render and view adapters in client/render/render_model_adapter.py and geo/projection/view_adapters.py",
-    "setup bridge payload translation in tools/setup/setup_cli.py",
-    "import alias bridges in tools/import_bridge.py",
+    "setup bridge payload translation in tools/package/setup/setup_cli.py",
+    "import alias bridges in tools/migration/import_bridge.py",
     "ControlX remediation bridges in tools/xstack/controlx/core/remediation_bridge.py",
     "validation adapter inventories and coverage adapters in tools/validators/suite/validation_engine.py",
     "deprecation shims in tools/validators/compatibility/shims/tool_shims.py"

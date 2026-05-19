@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.mvp.runtime_entry import build_parser
+    from tools.release.mvp.runtime_entry import build_parser
 
     parser = build_parser()
     args = parser.parse_args(

@@ -21,7 +21,7 @@ if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
 from tools.validators.suite.validation_engine import _adapt_schema_suite, _suite_row_by_id
-from tools.time.time_anchor_common import verify_compaction_anchor_alignment, verify_longrun_ticks
+from tools.domain.time.time_anchor_common import verify_compaction_anchor_alignment, verify_longrun_ticks
 
 suites = _suite_row_by_id(repo_root)
 schema_result = _adapt_schema_suite(repo_root, suites["validate.schemas"], "FAST")

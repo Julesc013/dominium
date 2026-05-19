@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.fluid.tool_generate_fluid_stress import generate_fluid_stress_scenario
+    from tools.domain.fluids.tool_generate_fluid_stress import generate_fluid_stress_scenario
 
     a = generate_fluid_stress_scenario(
         seed=9701,

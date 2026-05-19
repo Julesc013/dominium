@@ -24,7 +24,7 @@ REQUIRED_TOKENS = {
         "\"bundle_hash_mismatch\"",
         "\"bundle_hash_index_mismatch\"",
     ),
-    "tools/lib/tool_verify_bundle.py": (
+    "tools/package/libraries/bundle/tool_verify_bundle.py": (
         "verify_bundle_directory(",
         "return 0 if str(result.get(\"result\", \"\")).strip() == \"complete\" else 3",
     ),

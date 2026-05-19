@@ -214,7 +214,7 @@ rules = [
 rules = [
   "validation python -> tools/validators/suite/",
   "meta identity/stability python -> tools/validators/identity or tools/validators/stability/",
-  "governance python -> tools/governance/",
+  "governance python -> tools/repo/governance/",
   "performance python -> tools/performance/",
   "core deterministic/kernel/time/id/math/state/replay/proof/execution/memory -> engine owners",
   "core domain/rule/process -> game owners",

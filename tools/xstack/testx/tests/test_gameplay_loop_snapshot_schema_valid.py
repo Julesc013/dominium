@@ -24,7 +24,7 @@ EXPECTED_CHECKPOINT_IDS = ["T0", "T1", "T2", "T3"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.mvp.gameplay_loop_common import MVP_GAMEPLAY_SCHEMA_ID, gameplay_snapshot_record_hash, load_gameplay_snapshot
+    from tools.release.mvp.gameplay_loop_common import MVP_GAMEPLAY_SCHEMA_ID, gameplay_snapshot_record_hash, load_gameplay_snapshot
 
     payload = load_gameplay_snapshot(repo_root)
     record = dict(payload.get("record") or {})

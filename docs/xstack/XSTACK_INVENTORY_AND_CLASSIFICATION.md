@@ -46,7 +46,7 @@ Classification in this artifact is based on the following evidence types:
 - binding canon and governance sources named above
 - `X-0` scope-freeze artifacts
 - post-`Ζ` closure and ultra audit artifacts
-- direct inspection of live implementation roots under `tools/xstack/`, `appshell/`, `tools/validators/suite/`, `validation/`, `tools/launcher/`, `tools/setup/`, `runtime/`, `release/`, `security/`, `server/`, and `client/`
+- direct inspection of live implementation roots under `tools/xstack/`, `appshell/`, `tools/validators/suite/`, `validation/`, `tools/package/launcher/`, `tools/package/setup/`, `runtime/`, `release/`, `security/`, `server/`, and `client/`
 - direct inspection of current entrypoint modules, READMEs, and CLI docstrings
 - repo search evidence showing imports, cross-surface references, wrapper patterns, stub language, and generated-evidence roots
 
@@ -206,14 +206,14 @@ This ledger also uses a descriptive usage field:
 ### `xinv.gate_and_review_bridges`
 
 - Name: Repo gate and review bridge scripts that materially consume XStack
-- Repo Paths: `scripts/dev/gate.py`, `scripts/ci/check_repox_rules.py`, `tools/review/xi8_common.py`
+- Repo Paths: `scripts/dev/gate.py`, `scripts/ci/check_repox_rules.py`, `tools/audit/review/xi8_common.py`
 - Purpose: Bridge repo-wide gate execution, review policies, and CI invariants onto XStack planning, cache, and rule surfaces.
 - Role: `ops_concern`
 - Maturity: `implemented_and_used`
 - Extraction: `defer_until_post_baseline`
 - Current Usage Status: `transitional_bridge`
 - Major Dependencies: `tools/xstack/core/**`, `tools/xstack/repox/**`, `tools/xstack/sessionx/**`, `tools/xstack/compatx/**`, `tools/xstack/ci/**`
-- Evidence Notes: `scripts/dev/gate.py` imports the XStack core planner and cache store; `scripts/ci/check_repox_rules.py` hardcodes many `tools/xstack/*` paths and includes `check_runtime_no_xstack_imports`; `tools/review/xi8_common.py` references `tools/xstack/ci/xstack_ci_entrypoint.py`.
+- Evidence Notes: `scripts/dev/gate.py` imports the XStack core planner and cache store; `scripts/ci/check_repox_rules.py` hardcodes many `tools/xstack/*` paths and includes `check_runtime_no_xstack_imports`; `tools/audit/review/xi8_common.py` references `tools/xstack/ci/xstack_ci_entrypoint.py`.
 - Recommended Treatment: Keep as XStack-adjacent bridge surfaces. Do not treat these repo scripts as portable AIDE ownership.
 
 ### `xinv.session_create_pipeline`
@@ -264,7 +264,7 @@ This ledger also uses a descriptive usage field:
 - Maturity: `implemented_and_used`
 - Extraction: `maybe_extractable_later`
 - Current Usage Status: `wired_to_entrypoints`
-- Major Dependencies: `tools/dev/impact_graph`, `tools/governance/tool_semantic_impact.py`, `tools/xstack/testdata/**`, and many repo surfaces under test
+- Major Dependencies: `tools/repo/dev/impact_graph`, `tools/repo/governance/tool_semantic_impact.py`, `tools/xstack/testdata/**`, and many repo surfaces under test
 - Evidence Notes: audit classifies `testx_all.py` as canonical and present; `ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md` groups validation, TestX, CTest, and playtest suites as `implemented_and_used`; `testx_all.py` itself is a convenience wrapper on the stronger `testx/runner.py`.
 - Recommended Treatment: Reuse to gate baseline assembly. Defer any extraction discussion until the suite mix is better separated from Dominium-specific tests.
 
@@ -290,7 +290,7 @@ This ledger also uses a descriptive usage field:
 - Maturity: `stub_wrapper_or_transitional`
 - Extraction: `maybe_extractable_later`
 - Current Usage Status: `active_wrapper`
-- Major Dependencies: `tools/review/xi6_common.py`, `tools/review/xi8_common.py`, repo structure rules, path allowlists
+- Major Dependencies: `tools/audit/review/xi6_common.py`, `tools/audit/review/xi8_common.py`, repo structure rules, path allowlists
 - Evidence Notes: docstring labels it a minimal deterministic RepoX policy scan; scan roots and dependencies are heavily repo-specific; rule docs live under `docs/governance/REPOX_*`.
 - Recommended Treatment: Preserve as an operational bridge and defer extraction claims.
 
@@ -356,7 +356,7 @@ This ledger also uses a descriptive usage field:
 - Extraction: `retain_in_dominium`
 - Current Usage Status: `transitional_bridge`
 - Major Dependencies: `pack_loader`, `registry_compile`, `session_create`, `sessionx.runner`, `sessionx.script_runner`
-- Evidence Notes: `dist_build.py` imports session creation, session boot, intent-script execution, and pack/registry compile helpers; `tools/setup/build.py` imports PackagingX directly.
+- Evidence Notes: `dist_build.py` imports session creation, session boot, intent-script execution, and pack/registry compile helpers; `tools/package/setup/build.py` imports PackagingX directly.
 - Recommended Treatment: Keep in Dominium. PackagingX is useful now, but it is too tied to the current release/dist layout to serve as present AIDE material.
 
 ### `xinv.validation_unified_surface`
@@ -375,14 +375,14 @@ This ledger also uses a descriptive usage field:
 ### `xinv.launcher_setup_python_shells`
 
 - Name: Python/AppShell launcher and setup command surfaces
-- Repo Paths: `tools/launcher/launch.py`, `tools/launcher/launcher_cli.py`, `tools/setup/setup_cli.py`, `tools/setup/build.py`
+- Repo Paths: `tools/package/launcher/launch.py`, `tools/package/launcher/launcher_cli.py`, `tools/package/setup/setup_cli.py`, `tools/package/setup/build.py`
 - Purpose: Expose the strongest live repo-local shells for packs, profiles, compat status, install/update/trust operations, and local product supervision.
 - Role: `dominium_only`
 - Maturity: `implemented_and_used`
 - Extraction: `retain_in_dominium`
 - Current Usage Status: `active_product_shell`
 - Major Dependencies: `appshell/**`, `release/**`, `security/trust/**`, `tools/xstack/sessionx/**`, `tools/xstack/packagingx/**`, `tools/xstack/registry_compile/constants.py`
-- Evidence Notes: audit identifies `tools/launcher/launch.py` and `tools/setup/setup_cli.py` as canonical repo-local shells; both successfully ran compat-status, profiles list, and packs list.
+- Evidence Notes: audit identifies `tools/package/launcher/launch.py` and `tools/package/setup/setup_cli.py` as canonical repo-local shells; both successfully ran compat-status, profiles list, and packs list.
 - Recommended Treatment: Support the playable baseline with these surfaces now. Do not treat them as AIDE candidates.
 
 ### `xinv.compiled_launcher_setup_wrappers`
@@ -407,7 +407,7 @@ This ledger also uses a descriptive usage field:
 - Maturity: `implemented_and_used`
 - Extraction: `retain_in_dominium`
 - Current Usage Status: `active_product_shell`
-- Major Dependencies: `compat`, `release`, `validation`, `tools`, `tools/setup/setup_cli.py`, `tools/launcher/launch.py`
+- Major Dependencies: `compat`, `release`, `validation`, `tools`, `tools/package/setup/setup_cli.py`, `tools/package/launcher/launch.py`
 - Evidence Notes: audit classifies AppShell as `implemented_and_used`; `bootstrap.py` and `product_bootstrap.py` are real shared infrastructure; however, `rendered_stub.py`, `tui_stub.py`, and several fallback paths prove that parts of AppShell still intentionally preserve stub behavior.
 - Recommended Treatment: Keep AppShell Dominium-owned and baseline-relevant. Do not classify it as XStack portable core.
 
@@ -569,8 +569,8 @@ Current Dominium retention is still strongest in session/runtime, launcher/setup
 - `tools/xstack/sessionx/**`
 - `tools/xstack/session_boot.py`
 - `appshell/**`
-- `tools/launcher/launch.py`
-- `tools/setup/setup_cli.py`
+- `tools/package/launcher/launch.py`
+- `tools/package/setup/setup_cli.py`
 - `server/server_boot.py`
 - `client/local_server/local_server_controller.py`
 - `release/**` and `security/trust/**`
@@ -581,7 +581,7 @@ These are all too bound to current Dominium product, baseline, release, or runti
 
 ### XStack-Related Surfaces That Help The Baseline Now
 
-- `tools/launcher/launch.py` and `tools/setup/setup_cli.py`
+- `tools/package/launcher/launch.py` and `tools/package/setup/setup_cli.py`
   - audit identifies these as canonical repo-local shells
 - `appshell/**`
   - shared shell/supervisor/compat infrastructure beneath launcher and setup
@@ -662,7 +662,7 @@ The following changes require explicit follow-up rather than silent drift:
 
 Current fact-base answer:
 
-1. Live XStack/AIDE-relevant surfaces exist primarily under `tools/xstack/**`, with strong adjacent bridges in `scripts/dev/gate.py`, `validation/**`, `tools/launcher/**`, `tools/setup/**`, `appshell/**`, `server/server_boot.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `release/**`, and `security/trust/**`.
+1. Live XStack/AIDE-relevant surfaces exist primarily under `tools/xstack/**`, with strong adjacent bridges in `scripts/dev/gate.py`, `validation/**`, `tools/package/launcher/**`, `tools/package/setup/**`, `appshell/**`, `server/server_boot.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `release/**`, and `security/trust/**`.
 2. The strongest `portable_core` surfaces are `tools/xstack/core/**` and low-level `tools/xstack/compatx/**`.
 3. The strongest `runtime_concern` surfaces are `session_create`, `session_boot`, and `tools/xstack/sessionx/**`.
 4. The strongest `ops_concern` surfaces are `controlx`, `testx`, `auditx`, `repox`, `securex`, `performx`, and `ci`.

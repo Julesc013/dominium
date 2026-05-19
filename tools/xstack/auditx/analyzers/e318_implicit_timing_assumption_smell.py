@@ -15,7 +15,7 @@ WATCH_PREFIXES = (
     "docs/logic/TIMING_AND_OSCILLATION_MODEL.md",
     "game/domain/logic/timing/",
     "game/domain/logic/eval/",
-    "tools/logic/tool_replay_timing_window.py",
+    "tools/domain/logic/tool_replay_timing_window.py",
 )
 
 _SUSPECT_PATTERNS = (

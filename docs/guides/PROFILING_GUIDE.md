@@ -66,7 +66,7 @@ Profiling emits:
 - Budgets: `run_root/perf/budgets/PERF-BUDGET-002_<fixture>_<seq>.json`
 
 Telemetry is JSON Lines (one entry per lane per tick). Budget reports use
-deterministic keys and are enforced by `tools/ci/perf_budget_check.py`.
+deterministic keys and are enforced by `tools/validators/ci/perf_budget_check.py`.
 
 ## Running PERF3 fixtures locally
 

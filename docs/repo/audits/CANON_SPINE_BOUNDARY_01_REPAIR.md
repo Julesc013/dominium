@@ -6,8 +6,8 @@ This repair closed the active boundary/import/build failures left after the cano
 
 ## Changes
 
-- Moved capability runtime implementation from `tools/governance/**` into `runtime/capability/**`.
-- Left compatibility shims in `tools/governance/**` for old tool imports.
+- Moved capability runtime implementation from `tools/repo/governance/**` into `runtime/capability/**`.
+- Left compatibility shims in `tools/repo/governance/**` for old tool imports.
 - Moved Win32 shell/UI implementation files under `runtime/platform/win32/**`.
 - Rewired CMake targets to use `runtime_shell` and `runtime_platform_win32_ui`.
 - Repaired engine test, server shard test, validator, modpack, and UI IR include paths.

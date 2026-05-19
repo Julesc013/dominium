@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.electric.tool_generate_elec_stress_scenario import generate_elec_stress_scenario
+    from tools.domain.electricity.tool_generate_elec_stress_scenario import generate_elec_stress_scenario
 
     one = generate_elec_stress_scenario(
         seed=5501,

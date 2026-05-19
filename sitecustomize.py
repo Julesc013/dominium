@@ -24,7 +24,7 @@ if os.path.isdir(SRC_ROOT):
     sys.path.insert(1, SRC_ROOT)
 
 try:
-    from tools.import_bridge import install_src_aliases
+    from tools.migration.import_bridge import install_src_aliases
 except Exception:
     install_src_aliases = None
 

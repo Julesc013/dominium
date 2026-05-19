@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.process.tool_replay_process_window import verify_process_replay_window
+    from tools.domain.processes.tool_replay_process_window import verify_process_replay_window
 
     state = {
         "process_run_record_rows": [

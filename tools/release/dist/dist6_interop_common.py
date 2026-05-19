@@ -11,7 +11,16 @@ from typing import Iterable, Mapping, Sequence
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
@@ -37,7 +46,7 @@ from runtime.platform.platform_probe import (
     project_feature_capabilities_for_platform,
 )
 from game.domain.universe.universe_identity_builder import build_universe_contract_bundle_payload
-from tools.dist.dist_tree_common import (
+from tools.release.dist.dist_tree_common import (
     DEFAULT_PLATFORM_TAG,
     DEFAULT_RELEASE_CHANNEL,
     build_dist_tree,

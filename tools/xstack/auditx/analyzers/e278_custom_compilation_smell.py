@@ -83,7 +83,7 @@ def run(graph, repo_root, changed_files=None):
         _norm(compile_engine_rel),
         _norm(runtime_rel),
         _norm("game/domain/processes/capsules/capsule_builder.py"),
-        _norm("tools/meta/tool_verify_compiled_model.py"),
+        _norm("tools/repo/meta/audit/tool_verify_compiled_model.py"),
         _norm("tools/xstack/repox/check.py"),
         _norm("tools/xstack/testx/tests/test_compile_engine_deterministic.py"),
         _norm("tools/xstack/testx/tests/test_recompile_matches_hash.py"),

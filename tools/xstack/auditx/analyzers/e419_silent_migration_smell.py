@@ -15,7 +15,7 @@ REQUIRED_TOKENS = {
         "\"read_only_applied\"",
         "REFUSAL_FORMAT_READ_ONLY_UNAVAILABLE",
     ),
-    "tools/compat/tool_replay_migration.py": (
+    "tools/package/compatibility/tool_replay_migration.py": (
         "\"migration_events\"",
         "\"read_only_applied\"",
         "load_versioned_artifact(",

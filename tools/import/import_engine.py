@@ -33,7 +33,7 @@ from tools.package.libraries.save import (
     validate_save_manifest,
 )
 from tools.validators.package.compatibility_payload import verify_pack_set
-from tools.lib.content_store import (
+from tools.package.libraries.store.content_store import (
     ARTIFACT_MANIFEST,
     JSON_PAYLOAD,
     TREE_PAYLOAD_DIR,

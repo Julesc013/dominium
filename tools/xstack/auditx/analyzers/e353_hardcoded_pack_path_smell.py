@@ -12,7 +12,7 @@ WATCH_PREFIXES = ("apps/client/", "apps/server/", "apps/launcher/", "apps/setup/
 SCAN_ROOTS = ("client", "server", "launcher", "setup", "tools", "scripts")
 SCAN_EXTS = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp", ".cmd", ".bat", ".ps1", ".sh")
 ALLOWLIST = {
-    "tools/mvp/runtime_bundle.py",
+    "tools/release/mvp/runtime_bundle.py",
 }
 PATH_TOKENS = (
     "archive/generated/dist/packs/",
@@ -92,7 +92,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-MVP-PACKS-MINIMAL", "INV-PACK-LOCK-REQUIRED"],
-                    related_paths=[rel_path, "tools/mvp/runtime_bundle.py", "contracts/package/locks/pack_lock.mvp_default.json"],
+                    related_paths=[rel_path, "tools/release/mvp/runtime_bundle.py", "contracts/package/locks/pack_lock.mvp_default.json"],
                 )
             )
             break

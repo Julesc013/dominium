@@ -12,7 +12,7 @@ from tools.repo.meta.reference.geo_small_reference import (
     evaluate_reference_overlay_merge_small,
 )
 from tools.repo.meta.reference.logic_small_reference import evaluate_reference_logic_eval_small
-from tools.models import (
+from tools.repo.models import (
     evaluate_model_bindings,
     normalize_constitutive_model_rows,
     normalize_model_binding_rows,

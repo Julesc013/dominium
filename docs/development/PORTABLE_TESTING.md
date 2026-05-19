@@ -50,10 +50,10 @@ required refusal identifiers:
 ## Example Commands (WinNT x86_64 build output)
 
 ```
-python tools/setup/setup_cli.py --help
-python tools/launcher/launcher_cli.py --help
-python tools/setup/setup_cli.py detect --install-root C:/tmp/dominium_install
-python tools/launcher/launcher_cli.py preflight --install-manifest install.manifest.json --instance-manifest instance.manifest.json
+python tools/package/setup/setup_cli.py --help
+python tools/package/launcher/launcher_cli.py --help
+python tools/package/setup/setup_cli.py detect --install-root C:/tmp/dominium_install
+python tools/package/launcher/launcher_cli.py preflight --install-manifest install.manifest.json --instance-manifest instance.manifest.json
 ```
 
 All commands must behave deterministically for the same inputs.

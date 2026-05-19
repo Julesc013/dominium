@@ -11,8 +11,8 @@ ANALYZER_ID = "E375_NONDETERMINISTIC_TIDE_SMELL"
 TIDE_PHASE_ENGINE_REL = "game/domain/worldgen/earth/tide_phase_engine.py"
 TIDE_FIELD_ENGINE_REL = "game/domain/worldgen/earth/tide_field_engine.py"
 PROCESS_RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
-TIDE_PROBE_REL = "tools/worldgen/earth3_probe.py"
-TIDE_REPLAY_REL = "tools/worldgen/tool_replay_tide_window.py"
+TIDE_PROBE_REL = "tools/domain/worldgen/earth3_probe.py"
+TIDE_REPLAY_REL = "tools/domain/worldgen/tool_replay_tide_window.py"
 TIDE_DOC_REL = "docs/domains/worldgen/EARTH_TIDE_PROXY_MODEL.md"
 REQUIRED_TOKENS = {
     TIDE_PHASE_ENGINE_REL: (

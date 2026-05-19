@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
     from tools.audit.arch_audit_common import load_json_if_present
-    from tools.mvp.disaster_suite_common import DISASTER_CASES_REL, DISASTER_RUN_JSON_REL
+    from tools.release.mvp.disaster_suite_common import DISASTER_CASES_REL, DISASTER_RUN_JSON_REL
 
     cases_payload = load_json_if_present(repo_root, DISASTER_CASES_REL)
     run_payload = load_json_if_present(repo_root, DISASTER_RUN_JSON_REL)

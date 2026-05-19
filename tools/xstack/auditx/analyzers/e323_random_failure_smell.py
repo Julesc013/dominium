@@ -16,7 +16,7 @@ WATCH_PREFIXES = (
     "game/domain/logic/fault/",
     "game/domain/logic/noise/",
     "game/domain/logic/eval/sense_engine.py",
-    "tools/logic/tool_replay_fault_window.py",
+    "tools/domain/logic/tool_replay_fault_window.py",
 )
 
 _NONDETERMINISTIC_PATTERNS = (

@@ -241,7 +241,7 @@ def run_store_gc(
             "result": "refused",
             "refusal_code": REFUSAL_GC_VERIFY_FAILED,
             "message": "store verification failed before GC",
-            "remediation": "Run `python tools/lib/tool_store_verify.py --store-root {}` and repair the reported corruption before retrying GC.".format(_norm_rel(target_root)),
+            "remediation": "Run `python tools/package/libraries/store/tool_store_verify.py --store-root {}` and repair the reported corruption before retrying GC.".format(_norm_rel(target_root)),
             "store_verify_report": verify_report,
         }
 

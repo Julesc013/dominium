@@ -181,7 +181,7 @@ The lock is enforced by:
 - `contracts/registry/worldgen_lock_registry.json`
 - `tests/fixtures/baselines/worldgen/baseline_seed.txt`
 - `tests/fixtures/baselines/worldgen/baseline_worldgen_snapshot.json`
-- `tools/worldgen/tool_generate_worldgen_baseline`
-- `tools/worldgen/tool_verify_worldgen_lock`
+- `tools/domain/worldgen/tool_generate_worldgen_baseline`
+- `tools/domain/worldgen/tool_verify_worldgen_lock`
 - `docs/audit/WORLDGEN_LOCK_VERIFY.md`
 - `docs/audit/WORLDGEN_LOCK_BASELINE.md`

@@ -11,8 +11,8 @@ ANALYZER_ID = "E377_NONDETERMINISTIC_STARFIELD_SMELL"
 ASTRONOMY_REL = "game/domain/worldgen/earth/sky/astronomy_proxy_engine.py"
 STARFIELD_REL = "game/domain/worldgen/earth/sky/starfield_generator.py"
 SKY_VIEW_REL = "game/domain/worldgen/earth/sky/sky_view_engine.py"
-PROBE_REL = "tools/worldgen/earth4_probe.py"
-REPLAY_REL = "tools/worldgen/tool_replay_sky_view.py"
+PROBE_REL = "tools/domain/worldgen/earth4_probe.py"
+REPLAY_REL = "tools/domain/worldgen/tool_replay_sky_view.py"
 DOC_REL = "docs/domains/worldgen/EARTH_SKY_STARFIELD_MODEL.md"
 REQUIRED_TOKENS = {
     ASTRONOMY_REL: (

@@ -8,8 +8,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E384_TRUTH_LEAK_SMELL"
-STRESS_COMMON_REL = "tools/earth/earth9_stress_common.py"
-VIEW_REPLAY_REL = "tools/earth/tool_replay_earth_view_window.py"
+STRESS_COMMON_REL = "tools/domain/worldgen/earth_stress/earth9_stress_common.py"
+VIEW_REPLAY_REL = "tools/domain/worldgen/earth_stress/tool_replay_earth_view_window.py"
 FINAL_AUDIT_REL = "docs/audit/EARTH_MVP_FINAL_BASELINE.md"
 REQUIRED_TOKENS = {
     STRESS_COMMON_REL: (

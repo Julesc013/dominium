@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.xi4z_fix_common import (
+from tools.audit.review.xi4z_fix_common import (
     XI4Z_FIX_REPORT_JSON_REL,
     artifact_hashes,
     build_xi4z_fix_snapshot,

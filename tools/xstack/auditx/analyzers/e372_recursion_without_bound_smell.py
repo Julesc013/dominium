@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E372_RECURSION_WITHOUT_BOUND_SMELL"
 HYDROLOGY_ENGINE_REL = "game/domain/worldgen/earth/hydrology_engine.py"
 HYDROLOGY_DOC_REL = "docs/domains/worldgen/EARTH_HYDROLOGY_MODEL.md"
-HYDROLOGY_PROBE_REL = "tools/worldgen/earth1_probe.py"
+HYDROLOGY_PROBE_REL = "tools/domain/worldgen/earth1_probe.py"
 REQUIRED_ENGINE_TOKENS = (
     "analysis_radius",
     "max_window_tiles",

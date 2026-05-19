@@ -11,7 +11,7 @@ ANALYZER_ID = "E121_PLAN_BYPASS_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/process_runtime.py",
     "runtime/ui/client/interaction/inspection_overlays.py",
-    "tools/governance/planning/plan_engine.py",
+    "tools/repo/governance/planning/plan_engine.py",
 )
 
 
@@ -74,7 +74,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="INVALID",
                 recommended_action="REWRITE",
                 related_invariants=["INV-NO-DIRECT-STRUCTURE-INSTALL", "INV-GHOST-IS-DERIVED"],
-                related_paths=[runtime_rel, "tools/governance/planning/plan_engine.py"],
+                related_paths=[runtime_rel, "tools/repo/governance/planning/plan_engine.py"],
             )
         )
 

@@ -171,7 +171,7 @@
       "notes": "Includes arch checks, perf budget checks, smoke-run apps, and content validation scripts."
     },
     {
-      "path": "tools/distribution",
+      "path": "tools/package/distribution",
       "surface_kind": "packaging_and_distribution_automation",
       "status_class": "authoritative",
       "notes": "Contains packaging, verify, index, and smoke helpers."

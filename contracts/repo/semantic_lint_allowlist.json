@@ -964,7 +964,7 @@
     {
       "context_sha256": "a79b1f742f828fbbe59dfd90d881bd657fe7a26248c05ed257c4f26b2b384639",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/tool_surface_adapter.py",
+      "file": "tools/repo/tool_surface_adapter.py",
       "line": 31,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -976,7 +976,7 @@
     {
       "context_sha256": "fcfe36741744bbde13d8251f77e814a7f74cd46ae7189fd7ae567394d79269c8",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/tool_surface_adapter.py",
+      "file": "tools/repo/tool_surface_adapter.py",
       "line": 32,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -988,7 +988,7 @@
     {
       "context_sha256": "0269da6a440491c259f6f397c1e4c9f1893c59af668fb740a6335a48089308a7",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/tool_surface_adapter.py",
+      "file": "tools/repo/tool_surface_adapter.py",
       "line": 48,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1000,7 +1000,7 @@
     {
       "context_sha256": "4cdc5731eb81ce4c5bddaa90c4578cf5a46c2858410dd7a0aa52c33a6b74b0c6",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/tool_surface_adapter.py",
+      "file": "tools/repo/tool_surface_adapter.py",
       "line": 49,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1012,7 +1012,7 @@
     {
       "context_sha256": "b602ae42375c95cad74b1b65661575b6d9c1b85d5c6a64104865e5f512205f28",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/tool_surface_adapter.py",
+      "file": "tools/repo/tool_surface_adapter.py",
       "line": 65,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1024,7 +1024,7 @@
     {
       "context_sha256": "ab055b2dddc2f9724992a9ea4afade2e832da25493537ad1a7fca3c6516aebe3",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/tool_surface_adapter.py",
+      "file": "tools/repo/tool_surface_adapter.py",
       "line": 66,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1036,7 +1036,7 @@
     {
       "context_sha256": "42dc701c989030cac42607f7eeff3bcfb44cef22afa6d99ea5b932cd03d9d860",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/tool_surface_adapter.py",
+      "file": "tools/repo/tool_surface_adapter.py",
       "line": 67,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1048,7 +1048,7 @@
     {
       "context_sha256": "b9a6815ea73779773972279f6826c6e06dc26adcc33f4dd236998151848f6e0e",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol1_audit_common.py",
+      "file": "tools/domain/astronomy/sol1_audit_common.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1060,7 +1060,7 @@
     {
       "context_sha256": "ce5951615b4724b1d48f14449c3a328d0328409c07352620126d8491498394fe",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol1_audit_common.py",
+      "file": "tools/domain/astronomy/sol1_audit_common.py",
       "line": 11,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1072,7 +1072,7 @@
     {
       "context_sha256": "8a63ecde2b2db5734553ff1828d442569291e2008051c5d5a5e306685fb2838e",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol1_audit_common.py",
+      "file": "tools/domain/astronomy/sol1_audit_common.py",
       "line": 12,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1084,7 +1084,7 @@
     {
       "context_sha256": "79cc6d6e61667a534ae5212fe258571dde90ab3251e78b3c4b34b7b85e0558ae",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol1_audit_common.py",
+      "file": "tools/domain/astronomy/sol1_audit_common.py",
       "line": 19,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1096,7 +1096,7 @@
     {
       "context_sha256": "23aab867b2160487bc4624fc99e8ad46de94aff15782b171ec15b389fec48574",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol1_audit_common.py",
+      "file": "tools/domain/astronomy/sol1_audit_common.py",
       "line": 20,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1108,7 +1108,7 @@
     {
       "context_sha256": "080ceb371262a530700780b8c484d577ce4c31d330ece9d8dcbe565aa9e8dd87",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol1_audit_common.py",
+      "file": "tools/domain/astronomy/sol1_audit_common.py",
       "line": 21,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1120,7 +1120,7 @@
     {
       "context_sha256": "cb51f2b887a7e4617144c9f1524880e132ebe8535cea007cdd428da806ead79f",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol1_audit_common.py",
+      "file": "tools/domain/astronomy/sol1_audit_common.py",
       "line": 50,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1132,7 +1132,7 @@
     {
       "context_sha256": "7039e63ca105f25f91b18d6eb1f4a0fd27938740311f6b574e87fc1f29b4c016",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol1_audit_common.py",
+      "file": "tools/domain/astronomy/sol1_audit_common.py",
       "line": 62,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1144,7 +1144,7 @@
     {
       "context_sha256": "7896f47f800b816cad71f609174fa7c4a3bde075b06e53a09662aea7abc0b4dc",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol2_audit_common.py",
+      "file": "tools/domain/astronomy/sol2_audit_common.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1156,7 +1156,7 @@
     {
       "context_sha256": "62d6759b12860e356c7f0e91ba0eb0a358fc0996142e90b9be717cf3a2f9556a",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol2_runtime_common.py",
+      "file": "tools/domain/astronomy/sol2_runtime_common.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1168,7 +1168,7 @@
     {
       "context_sha256": "8fd3d08b1781132f11c7634a7594024fc61b503378561d891a27fe60ac79f477",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol2_runtime_common.py",
+      "file": "tools/domain/astronomy/sol2_runtime_common.py",
       "line": 13,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1180,7 +1180,7 @@
     {
       "context_sha256": "27c8cf65d4d19a7b53992af9404286cb41fbfc310031f901f342759eac5a292b",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol2_runtime_common.py",
+      "file": "tools/domain/astronomy/sol2_runtime_common.py",
       "line": 14,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1192,7 +1192,7 @@
     {
       "context_sha256": "e82bfbcf66f5fb6b0acdc3d51cf4c91809d3f522e7176cf7ded0cf081c5d8da2",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol2_runtime_common.py",
+      "file": "tools/domain/astronomy/sol2_runtime_common.py",
       "line": 15,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1204,7 +1204,7 @@
     {
       "context_sha256": "884cf00f791fffb57bfb6bdfb3966a60629a610fc78ce676e233cf4932101c50",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol2_runtime_common.py",
+      "file": "tools/domain/astronomy/sol2_runtime_common.py",
       "line": 152,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1216,7 +1216,7 @@
     {
       "context_sha256": "91c236f41ba6ab666c814af68262f12c49cc11ff6fa768d93b5cd2857fba4351",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/sol2_runtime_common.py",
+      "file": "tools/domain/astronomy/sol2_runtime_common.py",
       "line": 156,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1228,7 +1228,7 @@
     {
       "context_sha256": "c5dc442fb3510eb118e8a1ed834d90428666126f6f184bb019db9e227b2b1e4c",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/tool_replay_illumination_view.py",
+      "file": "tools/domain/astronomy/tool_replay_illumination_view.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1240,7 +1240,7 @@
     {
       "context_sha256": "5e17ac9ce83b8b7bb510bf5d0db74d835ed30778c37eca1b2abab72207e688a2",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/tool_replay_illumination_view.py",
+      "file": "tools/domain/astronomy/tool_replay_illumination_view.py",
       "line": 22,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1252,7 +1252,7 @@
     {
       "context_sha256": "4650cc1431b997b2c79996bf9cc0ed46a24198f7f3673f2e67b53dece4b0acf1",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/tool_replay_orbit_view.py",
+      "file": "tools/domain/astronomy/tool_replay_orbit_view.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -1264,7 +1264,7 @@
     {
       "context_sha256": "e54bf8620ab14312d3ca5922d73db293161fe2cfcf32595b008e9317c09c19b9",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/astro/tool_replay_orbit_view.py",
+      "file": "tools/domain/astronomy/tool_replay_orbit_view.py",
       "line": 22,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3184,7 +3184,7 @@
     {
       "context_sha256": "3dbf5a721584e337b4dae7396339343206f5f65c36e2f02d828e9ad6f4867b8a",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/data/tool_spice_import.py",
+      "file": "tools/import/data/tool_spice_import.py",
       "line": 25,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3196,7 +3196,7 @@
     {
       "context_sha256": "043947153923df3b2c4ff2ec131cf5acc0f9211e8456425c457db5658baa5ee8",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/data/tool_spice_import.py",
+      "file": "tools/import/data/tool_spice_import.py",
       "line": 26,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3208,7 +3208,7 @@
     {
       "context_sha256": "b069549f0f6a971cb91fd2503052f42f031b5478a769adc4b0bdc6fc80445263",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/data/tool_spice_import.py",
+      "file": "tools/import/data/tool_spice_import.py",
       "line": 301,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3220,7 +3220,7 @@
     {
       "context_sha256": "085a585a61e33043dbac579f8e2cb2a74ca7783e23165caf2ccd3f66581c8345",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/data/tool_spice_import.py",
+      "file": "tools/import/data/tool_spice_import.py",
       "line": 314,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3232,7 +3232,7 @@
     {
       "context_sha256": "5739642a173c565f1a5a27fa53d8ef7d3761f3000cfd20b38538c689d61d57cf",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/data/tool_spice_import.py",
+      "file": "tools/import/data/tool_spice_import.py",
       "line": 318,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3244,7 +3244,7 @@
     {
       "context_sha256": "cb9d79a97acfe83924d58ce101e3c5d83bef1457242e3f8fe10a81809c5b2265",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/data/tool_srtm_import.py",
+      "file": "tools/import/data/tool_srtm_import.py",
       "line": 25,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3256,7 +3256,7 @@
     {
       "context_sha256": "3e59a137f2156869ad68b3e684ac76673ee643c477521df0c35141638687eea3",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/data/tool_srtm_import.py",
+      "file": "tools/import/data/tool_srtm_import.py",
       "line": 26,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3268,7 +3268,7 @@
     {
       "context_sha256": "f7dd85c902904464ed1b294ccbf605ccdc88044a935734baee54073966852112",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/data/tool_srtm_import.py",
+      "file": "tools/import/data/tool_srtm_import.py",
       "line": 366,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3280,7 +3280,7 @@
     {
       "context_sha256": "39fbeed9b0dc7339ef6e8a894af3d853dbbe9ed0177b869aa56dc6e66a7611c9",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/data/tool_srtm_import.py",
+      "file": "tools/import/data/tool_srtm_import.py",
       "line": 379,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3292,7 +3292,7 @@
     {
       "context_sha256": "fdb1b81cc92f578f7a620728b108cf3a69ccc68bb70314f2938fa4c770ab2237",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/data/tool_srtm_import.py",
+      "file": "tools/import/data/tool_srtm_import.py",
       "line": 383,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3304,7 +3304,7 @@
     {
       "context_sha256": "60e6e8c004607dfacd40e346f36b639fbabc171507bfc283c105a88d03410153",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/dev/dev.py",
+      "file": "tools/repo/dev/dev.py",
       "line": 163,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3316,7 +3316,7 @@
     {
       "context_sha256": "6acd6b158d9a69b60fc10e33daa271713e2cfc7c996b099c0d178935a4c6ee51",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/dev/dev.py",
+      "file": "tools/repo/dev/dev.py",
       "line": 164,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3328,7 +3328,7 @@
     {
       "context_sha256": "b7294c45210e80422d78dfd2634bec6cf14e4f8325d8285a9cb31687e4d5335e",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/dev/dev.py",
+      "file": "tools/repo/dev/dev.py",
       "line": 450,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3340,7 +3340,7 @@
     {
       "context_sha256": "9c4bdd9cdb1a153520751f37027eff41a29ad27ede8aedf2fc1e5dfcf1b2aae1",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/dev/impact_graph/engine.py",
+      "file": "tools/repo/dev/impact_graph/engine.py",
       "line": 528,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3352,7 +3352,7 @@
     {
       "context_sha256": "b02e52918cb19aa3042525053b607e3ec6902c463832a9baa7cb55479fd6b2d9",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/dev/impact_graph/engine.py",
+      "file": "tools/repo/dev/impact_graph/engine.py",
       "line": 529,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3388,7 +3388,7 @@
     {
       "context_sha256": "465633a11d762d613243e49470e94554193d960aa5c7fbfc8ba2cfecb04ed621",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3400,7 +3400,7 @@
     {
       "context_sha256": "6dedd1a21d8130fb53f1992e30b6acd8a421e7f2cedb11b55f506eb312de13cc",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 15,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3412,7 +3412,7 @@
     {
       "context_sha256": "f6f0fe53717b58d38fee3c33db251774c66ddce23e34d612e9cce6601234562e",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 16,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3424,7 +3424,7 @@
     {
       "context_sha256": "c4159e41b33e76df89ee27945565376e1d8facd26b1927a76f68ecc821c111aa",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 92,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3436,7 +3436,7 @@
     {
       "context_sha256": "b67df72c2c977f62869e15e01655af230aa6038864ddc9ce679106e17cdb6bc8",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 93,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3448,7 +3448,7 @@
     {
       "context_sha256": "301d460d3468bc8f0228d5dbbc7b85f38283a178915178b9c9cfb43d1b22f635",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 94,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3460,7 +3460,7 @@
     {
       "context_sha256": "5b9107742b16c4d51619914a3f817d1ed4d836815b4ec2982b6b4175c43461cc",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 95,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3472,7 +3472,7 @@
     {
       "context_sha256": "b0ee79cfc789c3292123194b9d534f8f03ee7c91bba05cdb949e9632894015c6",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 280,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3484,7 +3484,7 @@
     {
       "context_sha256": "7b30a429989cb7997abde7549bfb40fc7fe3c62d3c93d4814a5285dd7ba7e2e3",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 326,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3496,7 +3496,7 @@
     {
       "context_sha256": "b98cfc5c6e4247ec9991a852d0850a5fd20679ac4ee537e849d6f5baec892954",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 327,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3508,7 +3508,7 @@
     {
       "context_sha256": "b2cccbecd317322e72c1534bf89485f0894db35a4473e353a47bc4f393f2b326",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 1281,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3520,7 +3520,7 @@
     {
       "context_sha256": "0d3e84f636aee1fe2060e730021a9dc9efc0810bbb2a570b8c16ae15b1b0b347",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 1282,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3532,7 +3532,7 @@
     {
       "context_sha256": "4fc613a05b178ea4442c792e649b81317da4e13d76e00db21299d72b2ecdac34",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 1335,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3544,7 +3544,7 @@
     {
       "context_sha256": "9f74a03fff82be5c62b20973b2e3f9d557721fd1c8b7340a6959c25145ac9660",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/earth9_stress_common.py",
+      "file": "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
       "line": 1336,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3556,7 +3556,7 @@
     {
       "context_sha256": "27ebfcbe33681af00a5e8afdcf076a70b2b3f440ea368440219c719900dc5bd2",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_generate_earth_mvp_stress.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_generate_earth_mvp_stress.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3568,7 +3568,7 @@
     {
       "context_sha256": "0fa5413b5b767a7b55c11fa18be26a7e1d26c5d8a84c3422e6b56646b6da3772",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_generate_earth_mvp_stress.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_generate_earth_mvp_stress.py",
       "line": 17,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3580,7 +3580,7 @@
     {
       "context_sha256": "1b9b798cf179c6767431f718185a0f691ace8e79158f8b62ee329a4e6fc4628a",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_generate_earth_mvp_stress.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_generate_earth_mvp_stress.py",
       "line": 26,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3592,7 +3592,7 @@
     {
       "context_sha256": "99b5c18335fa2c051b238cac097e8a3b821493fcd55484cf39c4fd4c9c29d7bc",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_replay_earth_physics_window.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_replay_earth_physics_window.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3604,7 +3604,7 @@
     {
       "context_sha256": "0fa5413b5b767a7b55c11fa18be26a7e1d26c5d8a84c3422e6b56646b6da3772",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_replay_earth_physics_window.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_replay_earth_physics_window.py",
       "line": 18,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3616,7 +3616,7 @@
     {
       "context_sha256": "812c950e54f6445f8863ca6b6dd89973997f14b72a78ee6b36a7ccb6fec695eb",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_replay_earth_physics_window.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_replay_earth_physics_window.py",
       "line": 27,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3628,7 +3628,7 @@
     {
       "context_sha256": "67e5490ebda2a4c3093152b4a0230324b68722b12849a69a2ef1dce2953763c7",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_replay_earth_view_window.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_replay_earth_view_window.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3640,7 +3640,7 @@
     {
       "context_sha256": "0fa5413b5b767a7b55c11fa18be26a7e1d26c5d8a84c3422e6b56646b6da3772",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_replay_earth_view_window.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_replay_earth_view_window.py",
       "line": 18,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3652,7 +3652,7 @@
     {
       "context_sha256": "b9cca9d54e0e5587aafdbe4e95d7d04909323946c0c595d90532c883bf038d4c",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_replay_earth_view_window.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_replay_earth_view_window.py",
       "line": 28,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3664,7 +3664,7 @@
     {
       "context_sha256": "3fa723d21c28f535acfdc9dd029323dedf4a2a2cefdcbac16579e2ba90b0c705",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_run_earth_mvp_stress.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_run_earth_mvp_stress.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3676,7 +3676,7 @@
     {
       "context_sha256": "0fa5413b5b767a7b55c11fa18be26a7e1d26c5d8a84c3422e6b56646b6da3772",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_run_earth_mvp_stress.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_run_earth_mvp_stress.py",
       "line": 18,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3688,7 +3688,7 @@
     {
       "context_sha256": "255051bd9b9722ef3606caa98eb827f3ed59abd35cdd8532b7967cdd9d17e31b",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/earth/tool_run_earth_mvp_stress.py",
+      "file": "tools/domain/worldgen/earth_stress/tool_run_earth_mvp_stress.py",
       "line": 28,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3700,7 +3700,7 @@
     {
       "context_sha256": "28454319a55fdfde552c3197ea2c720b402174a8cd2c43e2ea9e9942b13bcbc3",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/earth6_probe.py",
+      "file": "tools/domain/embodiment/earth6_probe.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3712,7 +3712,7 @@
     {
       "context_sha256": "326bccf206188b15c906591647b4748755b68dfbab0441389255deaff8ea74e2",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/earth6_probe.py",
+      "file": "tools/domain/embodiment/earth6_probe.py",
       "line": 53,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3724,7 +3724,7 @@
     {
       "context_sha256": "e4abdf6540567c6517c4c14424a9d4c0ad4db90d2f300a003e4791c4fbf9a28d",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/earth6_probe.py",
+      "file": "tools/domain/embodiment/earth6_probe.py",
       "line": 54,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3736,7 +3736,7 @@
     {
       "context_sha256": "326bccf206188b15c906591647b4748755b68dfbab0441389255deaff8ea74e2",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/earth6_probe.py",
+      "file": "tools/domain/embodiment/earth6_probe.py",
       "line": 63,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3748,7 +3748,7 @@
     {
       "context_sha256": "ee9a10a9d274a431e6d42e8300a2a482c11fc794f237e8b144c8a05f6609f832",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/emb1_probe.py",
+      "file": "tools/domain/embodiment/emb1_probe.py",
       "line": 31,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3760,7 +3760,7 @@
     {
       "context_sha256": "6096c14c33e4d90e0fbbce0748a13a0618d59993482e1e1922729b536e59ecc7",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/emb1_probe.py",
+      "file": "tools/domain/embodiment/emb1_probe.py",
       "line": 51,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3772,7 +3772,7 @@
     {
       "context_sha256": "44ec4e1b060aa6595c9e75388fa186d56f6af0d3960c841b6772e0d096e82cd7",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/emb1_probe.py",
+      "file": "tools/domain/embodiment/emb1_probe.py",
       "line": 56,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3784,7 +3784,7 @@
     {
       "context_sha256": "dc021d81f187e03028392693027005feb78111c5e308452ecf66f742cd8e854a",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/emb1_probe.py",
+      "file": "tools/domain/embodiment/emb1_probe.py",
       "line": 57,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3796,7 +3796,7 @@
     {
       "context_sha256": "37496b245220553aa609ae1f24bd044d9b9c86f1483efce540c128660abc9027",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/emb1_probe.py",
+      "file": "tools/domain/embodiment/emb1_probe.py",
       "line": 196,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3808,7 +3808,7 @@
     {
       "context_sha256": "37496b245220553aa609ae1f24bd044d9b9c86f1483efce540c128660abc9027",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/toolbelt_cli.py",
+      "file": "tools/domain/embodiment/toolbelt_cli.py",
       "line": 141,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3820,7 +3820,7 @@
     {
       "context_sha256": "80eb190d72d578d80dee1369eebb744fcf6e1e208994ca07398d71c61e322fa2",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/tool_replay_movement_window.py",
+      "file": "tools/domain/embodiment/tool_replay_movement_window.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3832,7 +3832,7 @@
     {
       "context_sha256": "868057e585620ab8dde2501497a3cc52a33f0e809135840a0f6e86039ff2b36a",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/embodiment/tool_replay_movement_window.py",
+      "file": "tools/domain/embodiment/tool_replay_movement_window.py",
       "line": 22,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3952,7 +3952,7 @@
     {
       "context_sha256": "47fa3d5b172602f8cea781866fdaf2ec2343da7377a2575b94a49ec20c13ca26",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/lib/lib_stress_common.py",
+      "file": "tools/package/libraries/stress/lib_stress_common.py",
       "line": 85,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3964,7 +3964,7 @@
     {
       "context_sha256": "f86a5cc2ae735926e3b9b91b8317b3079bbc4159c9489f339ee68b9074d69914",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/baseline_universe_common.py",
+      "file": "tools/release/mvp/baseline_universe_common.py",
       "line": 78,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3976,7 +3976,7 @@
     {
       "context_sha256": "f6faa556e363f71ef9ebed47958d78d89b55eb5e9c6a490aa9320543a7ce2a14",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/baseline_universe_common.py",
+      "file": "tools/release/mvp/baseline_universe_common.py",
       "line": 584,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -3988,7 +3988,7 @@
     {
       "context_sha256": "a8668da8135ba3134b3bb28d2795649335a9cbda6fb38a6b894d86ea7ca90b9c",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 341,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4000,7 +4000,7 @@
     {
       "context_sha256": "73dee14a6c454d52f81d4823a5007a850bbb60ba360e8f009b998d2c5c5a79ba",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 342,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4012,7 +4012,7 @@
     {
       "context_sha256": "751ab9b9e0ab8f69384e9a7cdf25be52b45d44c5d73231b98a111fba2a4655da",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 345,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4024,7 +4024,7 @@
     {
       "context_sha256": "e37a38317585fc7a1f8bf19cb4e39b3f64df5e0c8cf37b13afe4b9394258cfec",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 346,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4036,7 +4036,7 @@
     {
       "context_sha256": "f813b980bf38d073011632aac93b9b3b2e27809be725d9b3d48c44d55a49449b",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 420,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4048,7 +4048,7 @@
     {
       "context_sha256": "e49ec91063b630d255e58b7f99c8c2c816e352636b52600096caf443e177c2aa",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 421,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4060,7 +4060,7 @@
     {
       "context_sha256": "751ab9b9e0ab8f69384e9a7cdf25be52b45d44c5d73231b98a111fba2a4655da",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 425,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4072,7 +4072,7 @@
     {
       "context_sha256": "e37a38317585fc7a1f8bf19cb4e39b3f64df5e0c8cf37b13afe4b9394258cfec",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 426,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4084,7 +4084,7 @@
     {
       "context_sha256": "77d8e59fcf1175464a91f6a5971d4fa79051e8ea989f6359ca655fd37e65991b",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 607,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4096,7 +4096,7 @@
     {
       "context_sha256": "01aa42ebd5f0ff2c26687933c619ffdffc25eaf6368813b5a02781b05c06a343",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 610,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4108,7 +4108,7 @@
     {
       "context_sha256": "5b51f11be90280302baadb5a71db44c9af47cf656990f2cea2991fe4dfdb4b8b",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 620,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4120,7 +4120,7 @@
     {
       "context_sha256": "37496b245220553aa609ae1f24bd044d9b9c86f1483efce540c128660abc9027",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/gameplay_loop_common.py",
+      "file": "tools/release/mvp/gameplay_loop_common.py",
       "line": 623,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4132,7 +4132,7 @@
     {
       "context_sha256": "0fa5413b5b767a7b55c11fa18be26a7e1d26c5d8a84c3422e6b56646b6da3772",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 32,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4144,7 +4144,7 @@
     {
       "context_sha256": "723a09374e9288a5678d41a9423e5c9c2f48c75e6b8d1ed419a22ce81d892107",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 82,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4156,7 +4156,7 @@
     {
       "context_sha256": "05f973681d5c7c670302cc680ec0538ded0bfc8d7da42237787236c4c0893e28",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 83,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4168,7 +4168,7 @@
     {
       "context_sha256": "a419d0ca32e5548c04da771d2de3e1846c877fd00662a884aea0466b2183a10f",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 84,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4180,7 +4180,7 @@
     {
       "context_sha256": "c8d2069afe90391ce968afddb703529c47f42c84493f2841737dd68fc4359d17",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 495,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4192,7 +4192,7 @@
     {
       "context_sha256": "56dcd7a566f987c2fcb201934631fcecd88e3b8b556fac309ea1022ed085cac0",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 509,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4204,7 +4204,7 @@
     {
       "context_sha256": "ced37cad38008c8538d1f1057f193e7fc6e1fd1ac4746fee32771f8bb3b0ff52",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 511,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4216,7 +4216,7 @@
     {
       "context_sha256": "07a0aa8ad0e41f2e11182e940a809976795b3b2d641c871cc5fac35aeee76d60",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 512,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4228,7 +4228,7 @@
     {
       "context_sha256": "cd7ba9916011dfae2dbc1c4c9cce1a960e21f3f2157366e7ab1e634ba3569353",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 852,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4240,7 +4240,7 @@
     {
       "context_sha256": "a79b1f742f828fbbe59dfd90d881bd657fe7a26248c05ed257c4f26b2b384639",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 870,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4252,7 +4252,7 @@
     {
       "context_sha256": "a1efc483a472a7c65501bd2c870a128c70a1546890f49ec100597bc7c9dc81cf",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 902,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4264,7 +4264,7 @@
     {
       "context_sha256": "8b31e7a3cd841f4e6770664d45cd5c66e986cdc23163ee78c717e6e0183e396d",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 907,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4276,7 +4276,7 @@
     {
       "context_sha256": "daadb6c9c2cda043a2bf3db0d61b63f89f60eb87dcc3452ea371218984480890",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 908,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4288,7 +4288,7 @@
     {
       "context_sha256": "ae1bb7b4bb4f46f4a9f63e31233f4d5af7c45c9f952970971aacc868fe32ffda",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 925,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4300,7 +4300,7 @@
     {
       "context_sha256": "815c69e60e2a60647458924efdb6dc0a039a3639e23f84c187fa01229f3a071c",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 926,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4312,7 +4312,7 @@
     {
       "context_sha256": "8931cb5ba3065ee9cc5672e6d9ec3c56e625d1ef191eb6b2cb49053bdc3f3012",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 927,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4324,7 +4324,7 @@
     {
       "context_sha256": "447d64f0f2953e18ae2e28dfced53692e142f600cdfc4c2692afdb9fec1bc441",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 1013,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4336,7 +4336,7 @@
     {
       "context_sha256": "36662a083a0f20470573dae25ce1c29526699b7c76c330c38e16cdd3d6643704",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 1528,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4348,7 +4348,7 @@
     {
       "context_sha256": "d2bad4143af892de1be1fcc274c8f3904a90dfd262ded79a668ba632db2e289c",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/mvp_smoke_common.py",
+      "file": "tools/release/mvp/mvp_smoke_common.py",
       "line": 1566,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4360,7 +4360,7 @@
     {
       "context_sha256": "3eca222886bd38ea700ad3b52e6077c650c9ffa506a3c7c4ddcec404733cf619",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 72,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4372,7 +4372,7 @@
     {
       "context_sha256": "d43bd2ed8f49ea0123694ee6d9afc44c550c64abb5ddbc7b4542b67d316b5715",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 75,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4384,7 +4384,7 @@
     {
       "context_sha256": "3eca222886bd38ea700ad3b52e6077c650c9ffa506a3c7c4ddcec404733cf619",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 78,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4396,7 +4396,7 @@
     {
       "context_sha256": "6ec3256dbbeae01ff8f16fe3f71b73c876a0d56234fd1dc6cd524efda9011079",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 79,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4408,7 +4408,7 @@
     {
       "context_sha256": "fb6123bd4a3ab0a30323c85993219654b9c754810c981bf353e047cdbbea9397",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 84,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4420,7 +4420,7 @@
     {
       "context_sha256": "ddf74c2b865d0004fbb3e987574facc8fdf19188119a6ec868695ad10651002c",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 87,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4432,7 +4432,7 @@
     {
       "context_sha256": "40333bedfe3fc18cb8727cc63ee4d5f9999a50b0f13d192d49fc4bb3f8a8632f",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 90,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4444,7 +4444,7 @@
     {
       "context_sha256": "b67d2cc133e659ccf5a322292c4c07cbb731eac4287a705ba705dfe275bdcbfd",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 91,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4456,7 +4456,7 @@
     {
       "context_sha256": "a419d0ca32e5548c04da771d2de3e1846c877fd00662a884aea0466b2183a10f",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 758,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4468,7 +4468,7 @@
     {
       "context_sha256": "0df4153fbf700c05956d5f699f6d54d7c5c933e4673073f375a5789c98a5de1f",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 759,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4480,7 +4480,7 @@
     {
       "context_sha256": "a419d0ca32e5548c04da771d2de3e1846c877fd00662a884aea0466b2183a10f",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 802,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4492,7 +4492,7 @@
     {
       "context_sha256": "0df4153fbf700c05956d5f699f6d54d7c5c933e4673073f375a5789c98a5de1f",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 803,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4504,7 +4504,7 @@
     {
       "context_sha256": "7908a6317aab7e26c1cc0c7023b68270af3de2333cdda0a9cb2c364f2f191a7c",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 847,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4516,7 +4516,7 @@
     {
       "context_sha256": "6f7974d1a6b3abb7788a5fa01c3c72faf25515066b97ff9528bdd3692e3bc0fb",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/runtime_bundle.py",
+      "file": "tools/release/mvp/runtime_bundle.py",
       "line": 848,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4528,7 +4528,7 @@
     {
       "context_sha256": "f765950f4837015a2e0fcc72fca8e261c17487ae92d9910b5df9aeb622b66b5f",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/stress_gate_common.py",
+      "file": "tools/release/mvp/stress_gate_common.py",
       "line": 28,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4540,7 +4540,7 @@
     {
       "context_sha256": "9b797c7390bd5f1089cee24b77a367196d3ccaa7333286c8c9003afbb1b842dc",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/stress_gate_common.py",
+      "file": "tools/release/mvp/stress_gate_common.py",
       "line": 87,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4552,7 +4552,7 @@
     {
       "context_sha256": "f33c96cbb5f0fdaf7f9ca3e257460a3eb784dc7231822534bdd688fe637ce5a1",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/stress_gate_common.py",
+      "file": "tools/release/mvp/stress_gate_common.py",
       "line": 103,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4564,7 +4564,7 @@
     {
       "context_sha256": "723a09374e9288a5678d41a9423e5c9c2f48c75e6b8d1ed419a22ce81d892107",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/stress_gate_common.py",
+      "file": "tools/release/mvp/stress_gate_common.py",
       "line": 112,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4576,7 +4576,7 @@
     {
       "context_sha256": "05f973681d5c7c670302cc680ec0538ded0bfc8d7da42237787236c4c0893e28",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/stress_gate_common.py",
+      "file": "tools/release/mvp/stress_gate_common.py",
       "line": 113,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4588,7 +4588,7 @@
     {
       "context_sha256": "a419d0ca32e5548c04da771d2de3e1846c877fd00662a884aea0466b2183a10f",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/stress_gate_common.py",
+      "file": "tools/release/mvp/stress_gate_common.py",
       "line": 114,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4600,7 +4600,7 @@
     {
       "context_sha256": "bc8ba5605cb9b5d62ba8f3b856c6d652344f5a374eedc150438e20c8b52123d8",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/stress_gate_common.py",
+      "file": "tools/release/mvp/stress_gate_common.py",
       "line": 347,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4612,7 +4612,7 @@
     {
       "context_sha256": "911a70af2d6ec8aae42ddf8bfaa3fcefe3106f6366491f378e88d149b3bceb68",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/stress_gate_common.py",
+      "file": "tools/release/mvp/stress_gate_common.py",
       "line": 1043,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4624,7 +4624,7 @@
     {
       "context_sha256": "911a70af2d6ec8aae42ddf8bfaa3fcefe3106f6366491f378e88d149b3bceb68",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/stress_gate_common.py",
+      "file": "tools/release/mvp/stress_gate_common.py",
       "line": 1181,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4636,7 +4636,7 @@
     {
       "context_sha256": "d093c785471f2b59463c3934b1532954d01dacd42f96225e9a1712c97d3c55b3",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/mvp/stress_gate_common.py",
+      "file": "tools/release/mvp/stress_gate_common.py",
       "line": 1262,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4804,7 +4804,7 @@
     {
       "context_sha256": "a79b1f742f828fbbe59dfd90d881bd657fe7a26248c05ed257c4f26b2b384639",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/doc_inventory_common.py",
+      "file": "tools/audit/review/doc_inventory_common.py",
       "line": 72,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4816,7 +4816,7 @@
     {
       "context_sha256": "fcfe36741744bbde13d8251f77e814a7f74cd46ae7189fd7ae567394d79269c8",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/doc_inventory_common.py",
+      "file": "tools/audit/review/doc_inventory_common.py",
       "line": 100,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4828,7 +4828,7 @@
     {
       "context_sha256": "87596a8cd7223fba39124a3acddea2f5f05d2a0fc9ab6b4ec4c388c47bf3dce8",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/doc_inventory_common.py",
+      "file": "tools/audit/review/doc_inventory_common.py",
       "line": 159,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4840,7 +4840,7 @@
     {
       "context_sha256": "156c84d1a5c5887306f9815123d44f21d8dbd3406ac584b120ded3593bddb77e",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/doc_inventory_common.py",
+      "file": "tools/audit/review/doc_inventory_common.py",
       "line": 161,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4852,7 +4852,7 @@
     {
       "context_sha256": "7143d9312601e59cbbaa6d984f2b8f5418f560216ad2e3b07e2cdc339fcfd543",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/doc_inventory_common.py",
+      "file": "tools/audit/review/doc_inventory_common.py",
       "line": 169,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4864,7 +4864,7 @@
     {
       "context_sha256": "d01bb8ef0bb678d44523264622f450c016fcb64dd55b512fda6fca507e644cf5",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/doc_inventory_common.py",
+      "file": "tools/audit/review/doc_inventory_common.py",
       "line": 172,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4876,7 +4876,7 @@
     {
       "context_sha256": "2fb368763121731fe62449c1e288e785593846a3ac7e0979fe52a226d167512c",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/doc_inventory_common.py",
+      "file": "tools/audit/review/doc_inventory_common.py",
       "line": 320,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4888,7 +4888,7 @@
     {
       "context_sha256": "a79b1f742f828fbbe59dfd90d881bd657fe7a26248c05ed257c4f26b2b384639",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/duplicate_impl_scan_common.py",
+      "file": "tools/audit/review/duplicate_impl_scan_common.py",
       "line": 292,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4900,7 +4900,7 @@
     {
       "context_sha256": "a79b1f742f828fbbe59dfd90d881bd657fe7a26248c05ed257c4f26b2b384639",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/duplicate_impl_scan_common.py",
+      "file": "tools/audit/review/duplicate_impl_scan_common.py",
       "line": 358,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4912,7 +4912,7 @@
     {
       "context_sha256": "206fbd29ef0a7439a30ed9a8f0730e80c744155465a0305befdc1f2b77f20a38",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/implementation_scoring_common.py",
+      "file": "tools/audit/review/implementation_scoring_common.py",
       "line": 218,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4924,7 +4924,7 @@
     {
       "context_sha256": "0213998684d7262e8344c8b8c1bb80c0a94f987e5cab619505b6dcbb5e0dcce8",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/repo_inventory_common.py",
+      "file": "tools/audit/review/repo_inventory_common.py",
       "line": 444,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4936,7 +4936,7 @@
     {
       "context_sha256": "5ab20039a0a08dd5d8e677153a121d457852f9cb9dd82e27bd3baaa72c9fbeb5",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/repo_inventory_common.py",
+      "file": "tools/audit/review/repo_inventory_common.py",
       "line": 445,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4948,7 +4948,7 @@
     {
       "context_sha256": "64f976b5b4f2cb7b0dcd6032f008a1300a58615a46ec647d373a592945c6971e",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/review/repo_inventory_common.py",
+      "file": "tools/audit/review/repo_inventory_common.py",
       "line": 446,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4960,7 +4960,7 @@
     {
       "context_sha256": "be25b59aa26ae398ff1129f4d39caeb85fec8fc8a39fd4bf60ebec925db0d168",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth0_probe.py",
+      "file": "tools/domain/worldgen/earth0_probe.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4972,7 +4972,7 @@
     {
       "context_sha256": "63632ea8270ca77dd7f85f99c2d0ffcd2ea93c04359258231398e447155dd82a",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth0_probe.py",
+      "file": "tools/domain/worldgen/earth0_probe.py",
       "line": 71,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4984,7 +4984,7 @@
     {
       "context_sha256": "0a5d21bbd04d92bfae0c8ce6a7b7639bcf354a4f5dd957ae7920c76d2b4c2227",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth0_probe.py",
+      "file": "tools/domain/worldgen/earth0_probe.py",
       "line": 73,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -4996,7 +4996,7 @@
     {
       "context_sha256": "03a52dcade6c832801219485a7e731793fb71cfe685d3a5ef6225368c58c502e",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth0_probe.py",
+      "file": "tools/domain/worldgen/earth0_probe.py",
       "line": 79,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5008,7 +5008,7 @@
     {
       "context_sha256": "d886d588347e79dea6240b0211c1d2548a70cf36a3b7346da3480519f2ea1f0f",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth0_probe.py",
+      "file": "tools/domain/worldgen/earth0_probe.py",
       "line": 93,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5020,7 +5020,7 @@
     {
       "context_sha256": "7dea17ab55db3bf1e12e136e473632beb77fcb09688f40924878e0336b041996",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth0_probe.py",
+      "file": "tools/domain/worldgen/earth0_probe.py",
       "line": 104,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5032,7 +5032,7 @@
     {
       "context_sha256": "31bcfeaa6beff1e8957530c79f8adb3d22da781d0f16620aa6b71aeed1510527",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth0_probe.py",
+      "file": "tools/domain/worldgen/earth0_probe.py",
       "line": 135,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5044,7 +5044,7 @@
     {
       "context_sha256": "350c441dedcf429af45527956d6c609e1b374c544da7978494e7c15887ead6fb",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth0_probe.py",
+      "file": "tools/domain/worldgen/earth0_probe.py",
       "line": 143,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5056,7 +5056,7 @@
     {
       "context_sha256": "bfa7423951f201cec0977da128c41cc2db7bb7ce200d3d06668fa495873899e0",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth0_probe.py",
+      "file": "tools/domain/worldgen/earth0_probe.py",
       "line": 158,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5068,7 +5068,7 @@
     {
       "context_sha256": "512844a53de3ad3ede583605480927dc51e416b981769eafc5c2a15c8a110514",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth10_audit_common.py",
+      "file": "tools/domain/worldgen/earth10_audit_common.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5080,7 +5080,7 @@
     {
       "context_sha256": "e18ef2e58fb841382dfd4da0dc471d35936e8e6746f53316703b12009d8ad190",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth10_audit_common.py",
+      "file": "tools/domain/worldgen/earth10_audit_common.py",
       "line": 18,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5092,7 +5092,7 @@
     {
       "context_sha256": "c2e5e12a3ab0e9d11658e7edbd2422b49aaef06735cee3b42d282f3d7acd7746",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth10_audit_common.py",
+      "file": "tools/domain/worldgen/earth10_audit_common.py",
       "line": 19,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5104,7 +5104,7 @@
     {
       "context_sha256": "268493bd6d0e1f428015b31c3102f3ec30fb1ca8fe359c6652f787029566c861",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth10_audit_common.py",
+      "file": "tools/domain/worldgen/earth10_audit_common.py",
       "line": 20,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5116,7 +5116,7 @@
     {
       "context_sha256": "a4347d16bb1d2322b2fc80e438ee827d6bf24b608a187bb90297a993a5f4dd90",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth10_audit_common.py",
+      "file": "tools/domain/worldgen/earth10_audit_common.py",
       "line": 99,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5128,7 +5128,7 @@
     {
       "context_sha256": "6943d3a057857af48d4d72fdb096962c890e3dfd9f9756ac36328b6525d8f94b",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth10_probe.py",
+      "file": "tools/domain/worldgen/earth10_probe.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5140,7 +5140,7 @@
     {
       "context_sha256": "cf92046481da18552c47ca82b30a6f8555ab9590282c9851d4c7dac2726894d0",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth10_probe.py",
+      "file": "tools/domain/worldgen/earth10_probe.py",
       "line": 26,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5152,7 +5152,7 @@
     {
       "context_sha256": "0f9dd71cd6c6897c262ef9d77e4ab06c3ef738de833a58a93bc8629d9cff48da",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth1_probe.py",
+      "file": "tools/domain/worldgen/earth1_probe.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5164,7 +5164,7 @@
     {
       "context_sha256": "49139373933ad2ba707baffdbed39552c730f790f9afb278ba635d7b06cf3cec",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth1_probe.py",
+      "file": "tools/domain/worldgen/earth1_probe.py",
       "line": 27,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5176,7 +5176,7 @@
     {
       "context_sha256": "f2128274543e874c87da98a3616af97956e97319d50039bf49120cc5854fa4cd",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth2_probe.py",
+      "file": "tools/domain/worldgen/earth2_probe.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5188,7 +5188,7 @@
     {
       "context_sha256": "39df4d7c33eb919839b5e1c402b1195172fd0ca6b2050dcffe9002d090d66796",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth2_probe.py",
+      "file": "tools/domain/worldgen/earth2_probe.py",
       "line": 26,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5200,7 +5200,7 @@
     {
       "context_sha256": "e2d475f3ad04415dc94dc7b3d22a745401aef73791fcc09efd31d84983c09cf3",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth2_probe.py",
+      "file": "tools/domain/worldgen/earth2_probe.py",
       "line": 69,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5212,7 +5212,7 @@
     {
       "context_sha256": "9c665162fd789c0b986961d17f739a98fef8ae99cca135a2a5743b1d35462925",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth2_probe.py",
+      "file": "tools/domain/worldgen/earth2_probe.py",
       "line": 330,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5224,7 +5224,7 @@
     {
       "context_sha256": "cd0515d1c51df5bb9bc5c9985eeb635ca9297d2b4f8a5a3e10e973c100197b21",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth3_probe.py",
+      "file": "tools/domain/worldgen/earth3_probe.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5236,7 +5236,7 @@
     {
       "context_sha256": "39df4d7c33eb919839b5e1c402b1195172fd0ca6b2050dcffe9002d090d66796",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth3_probe.py",
+      "file": "tools/domain/worldgen/earth3_probe.py",
       "line": 26,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5248,7 +5248,7 @@
     {
       "context_sha256": "c4da868558ead98eb5fe48b0c70375326b711e8d8c3deb25ad5e3b42b3220a9c",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth3_probe.py",
+      "file": "tools/domain/worldgen/earth3_probe.py",
       "line": 65,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5260,7 +5260,7 @@
     {
       "context_sha256": "520942ba4f0dfe51c11b7a37daffaa47a90093194aea200f9675e984bff8a3dc",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth4_probe.py",
+      "file": "tools/domain/worldgen/earth4_probe.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5272,7 +5272,7 @@
     {
       "context_sha256": "4bf487baf03a1c3a3af982f63cd85642d7ee5c21900d0484d3da7de150e09174",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth4_probe.py",
+      "file": "tools/domain/worldgen/earth4_probe.py",
       "line": 17,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5284,7 +5284,7 @@
     {
       "context_sha256": "0f3b733c9b724a2c1ee584136bdaf784cdbe5c6548d44d346df6fe8ab8d5d447",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth5_probe.py",
+      "file": "tools/domain/worldgen/earth5_probe.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5296,7 +5296,7 @@
     {
       "context_sha256": "b5bbbef813ce963a827cbef43591c496e279ab47f55b97ce6ac704749fda3e79",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth5_probe.py",
+      "file": "tools/domain/worldgen/earth5_probe.py",
       "line": 16,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5308,7 +5308,7 @@
     {
       "context_sha256": "75398e54a53fc8b59a5c9db11419423bb13295b91a8eeaf45ac4ea6c3da03e10",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth7_probe.py",
+      "file": "tools/domain/worldgen/earth7_probe.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5320,7 +5320,7 @@
     {
       "context_sha256": "39df4d7c33eb919839b5e1c402b1195172fd0ca6b2050dcffe9002d090d66796",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth7_probe.py",
+      "file": "tools/domain/worldgen/earth7_probe.py",
       "line": 28,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5332,7 +5332,7 @@
     {
       "context_sha256": "1987ee921017ff3bb7d93d3f285b1ba6990c9e45661753d906da4124b5ac425c",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth7_probe.py",
+      "file": "tools/domain/worldgen/earth7_probe.py",
       "line": 72,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5344,7 +5344,7 @@
     {
       "context_sha256": "486de78270e72a978d56d5f1b983bc016008b5723acd5c0fa5c118c5ab192f3b",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth7_probe.py",
+      "file": "tools/domain/worldgen/earth7_probe.py",
       "line": 198,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5356,7 +5356,7 @@
     {
       "context_sha256": "4ba3ad86ed0cf2624538b863c644bc46b8a36b0b124be61305365b59b435b7ad",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth8_probe.py",
+      "file": "tools/domain/worldgen/earth8_probe.py",
       "line": 1,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5368,7 +5368,7 @@
     {
       "context_sha256": "39df4d7c33eb919839b5e1c402b1195172fd0ca6b2050dcffe9002d090d66796",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth8_probe.py",
+      "file": "tools/domain/worldgen/earth8_probe.py",
       "line": 17,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5380,7 +5380,7 @@
     {
       "context_sha256": "d33246146e4caee78f71eff9663fa0fdc8255a0063ab8eb4cd9b2a20be324978",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/earth8_probe.py",
+      "file": "tools/domain/worldgen/earth8_probe.py",
       "line": 89,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5392,7 +5392,7 @@
     {
       "context_sha256": "567e96b6e7802b4834fc1425cc26d2feef8bcdf75896ebd92b1a0146abf11502",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/gal0_audit_common.py",
+      "file": "tools/domain/worldgen/gal0_audit_common.py",
       "line": 18,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5404,7 +5404,7 @@
     {
       "context_sha256": "d35160e81b8989f040f2a5bd3143e675c9adaae6fc0ba6e6d5c05ac116b2c4ef",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/mw4_probe.py",
+      "file": "tools/domain/worldgen/mw4_probe.py",
       "line": 139,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5416,7 +5416,7 @@
     {
       "context_sha256": "8f8a9ffa46679c1ddf3bf615d0c5fb1bda3af99e5db946ce42ca821141de3ccb",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_climate_window.py",
+      "file": "tools/domain/worldgen/tool_replay_climate_window.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5428,7 +5428,7 @@
     {
       "context_sha256": "de9588658309acd5048d59b8e7a5d20c8bfa4a3452081df4eac97eaf0066d897",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_climate_window.py",
+      "file": "tools/domain/worldgen/tool_replay_climate_window.py",
       "line": 22,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5440,7 +5440,7 @@
     {
       "context_sha256": "52533b234a0ca47dc5724300a74de33c4b4e03d0d69b73f04ad292bb67ab52cb",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_hydrology_window.py",
+      "file": "tools/domain/worldgen/tool_replay_hydrology_window.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5452,7 +5452,7 @@
     {
       "context_sha256": "5766cbb5cb59ae40a23aa4426411171de513755cdc653fab263f349c09f091f4",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_hydrology_window.py",
+      "file": "tools/domain/worldgen/tool_replay_hydrology_window.py",
       "line": 22,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5464,7 +5464,7 @@
     {
       "context_sha256": "99649a9445510d6dd913cbd4e588ce3712962546487e307300580f5dd1bf34b6",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_illumination_view.py",
+      "file": "tools/domain/worldgen/tool_replay_illumination_view.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5476,7 +5476,7 @@
     {
       "context_sha256": "253fd12b817f21535841d9f906b91bf464c91785404a7f2fd4a30b9631079dfb",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_material_proxy_window.py",
+      "file": "tools/domain/worldgen/tool_replay_material_proxy_window.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5488,7 +5488,7 @@
     {
       "context_sha256": "bcd64fee6b8af16554e167d1f9fd04ecb0dc705cfb1a2634ea409b0ce80e5721",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_material_proxy_window.py",
+      "file": "tools/domain/worldgen/tool_replay_material_proxy_window.py",
       "line": 22,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5500,7 +5500,7 @@
     {
       "context_sha256": "fc31724b53db390fa0ec4f55341a44a792e05a805255e47a7a7570145170c6de",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_sky_view.py",
+      "file": "tools/domain/worldgen/tool_replay_sky_view.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5512,7 +5512,7 @@
     {
       "context_sha256": "63b2224f9a315c9f8574c12a387bb07fd00ef5c03b03fb4ce172f2045fa4663d",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_sky_view.py",
+      "file": "tools/domain/worldgen/tool_replay_sky_view.py",
       "line": 22,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5524,7 +5524,7 @@
     {
       "context_sha256": "b832f03db03dc62cfbe3b9bb37d475673505f2fd44207917090bbf8562f8c3f7",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_tide_window.py",
+      "file": "tools/domain/worldgen/tool_replay_tide_window.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5536,7 +5536,7 @@
     {
       "context_sha256": "16670edb27336f40987f4722d9f934ee7b100234fb89adad2536b989112364e1",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_tide_window.py",
+      "file": "tools/domain/worldgen/tool_replay_tide_window.py",
       "line": 22,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5548,7 +5548,7 @@
     {
       "context_sha256": "664d8dc1ae4a929e88609e56f2335c163fcbc537e7732a16ef135b68f6e49f96",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_water_view.py",
+      "file": "tools/domain/worldgen/tool_replay_water_view.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5560,7 +5560,7 @@
     {
       "context_sha256": "1cd4e4dc0af383f39b7b6f33e1661ce26dc579ea396b99aa0f5bb3b8dcdf2616",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_water_view.py",
+      "file": "tools/domain/worldgen/tool_replay_water_view.py",
       "line": 22,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5572,7 +5572,7 @@
     {
       "context_sha256": "7503e9d5eb252fbcd2c31f2387ea1048e4cbf3b3c1aa1ee567dadfa4d7381293",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_wind_window.py",
+      "file": "tools/domain/worldgen/tool_replay_wind_window.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5584,7 +5584,7 @@
     {
       "context_sha256": "7b6cfdbad4599c90fce411c84fce338f9af8ca5b9fee39f566880c2cb76437f3",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_replay_wind_window.py",
+      "file": "tools/domain/worldgen/tool_replay_wind_window.py",
       "line": 22,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5596,7 +5596,7 @@
     {
       "context_sha256": "c7773d4b89dee9d93ecf78c2be2fa12f48baff8f6b417e9a0d3611c87657cde3",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_verify_earth_surface.py",
+      "file": "tools/domain/worldgen/tool_verify_earth_surface.py",
       "line": 2,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5608,7 +5608,7 @@
     {
       "context_sha256": "22f19f8585627176d85af257ffed7c8f65221751d608c2551473eec43377b2a1",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/tool_verify_earth_surface.py",
+      "file": "tools/domain/worldgen/tool_verify_earth_surface.py",
       "line": 22,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5620,7 +5620,7 @@
     {
       "context_sha256": "8b7a2bde08af10ae4b74770ce2b263975b5627a9635937de554610e0bca99106",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/worldgen_lock_common.py",
+      "file": "tools/domain/worldgen/worldgen_lock_common.py",
       "line": 318,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5632,7 +5632,7 @@
     {
       "context_sha256": "86d7c7062de012d0e07d02c3ea41e92d1c5be5a15ae85fde6be018417097cad9",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/worldgen_lock_common.py",
+      "file": "tools/domain/worldgen/worldgen_lock_common.py",
       "line": 337,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",
@@ -5644,7 +5644,7 @@
     {
       "context_sha256": "de920a58c20322c2f8d0c8e0fc3a79a54b4d43ecb739ba8810094d4f018ccc00",
       "disposition": "preserve_protocol_literal",
-      "file": "tools/worldgen/worldgen_lock_common.py",
+      "file": "tools/domain/worldgen/worldgen_lock_common.py",
       "line": 385,
       "owner": "docs/testing/SEMANTIC_LINT_DISPOSITION.md; docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
       "reason": "Tooling literal references an official pack, probe, replay, or MVP command surface; it is not authoritative simulation truth.",

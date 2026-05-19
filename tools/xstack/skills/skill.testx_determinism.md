@@ -46,8 +46,8 @@ Plan and execute determinism-focused TestX coverage for authoritative simulation
 12. Verify shard status tooling output for deterministic ownership:
    - `tools/xstack/srz_status saves/<save_id>/session_spec.json`
 13. Run packaging determinism gates:
-   - `tools/setup/build --bundle bundle.base.lab --out dist`
-   - `tools/launcher/launch run --dist dist --session saves/<save_id>/session_spec.json --script tools/xstack/testdata/session/script.region_traversal.fixture.json`
+   - `tools/package/setup/build --bundle bundle.base.lab --out dist`
+   - `tools/package/launcher/launch run --dist dist --session saves/<save_id>/session_spec.json --script tools/xstack/testdata/session/script.region_traversal.fixture.json`
    - verify `canonical_content_hash`, `pack_lock_hash`, and final `composite_hash` stability across repeated runs.
 
 ## Output Format

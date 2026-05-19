@@ -6,13 +6,22 @@ import os
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 
 from analyzers.base import make_finding
-from tools.meta.observability_common import RULE_GUARANTEES, observability_violations
+from tools.repo.meta.audit.observability_common import RULE_GUARANTEES, observability_violations
 
 
 ANALYZER_ID = "E530_MISSING_GUARANTEED_LOG_SMELL"
@@ -40,7 +49,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="DECLARE_AND_EMIT_THE_GUARANTEED_CATEGORY_THROUGH_THE_STRUCTURED_LOG_ENGINE",
                 related_invariants=[RULE_GUARANTEES],
-                related_paths=[rel_path or "contracts/registry/observability_guarantee_registry.json", "tools/meta/observability_common.py"],
+                related_paths=[rel_path or "contracts/registry/observability_guarantee_registry.json", "tools/repo/meta/audit/observability_common.py"],
             )
         )
     return findings

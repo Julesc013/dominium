@@ -8,7 +8,7 @@ from runtime.capability.effects import get_effective_modifier
 from tools.validators.core.flow import normalize_flow_channel
 from tools.validators.core.graph.network_graph_engine import normalize_network_graph
 from game.domain.fields.field_engine import build_field_cell
-from tools.models.model_engine import (
+from tools.repo.models.model_engine import (
     cache_policy_rows_by_id,
     evaluate_model_bindings,
     model_type_rows_by_id,

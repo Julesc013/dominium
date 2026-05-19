@@ -10,13 +10,22 @@ from typing import Iterable, Mapping, Sequence
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
 from tools.validators.stability import validate_all_registries, validate_pack_compat  # noqa: E402
-from tools.import_bridge import resolve_repo_path_equivalent  # noqa: E402
+from tools.migration.import_bridge import resolve_repo_path_equivalent  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
@@ -35,10 +44,10 @@ WORLDGEN_LOCK_RETRO_AUDIT_REL = os.path.join("docs", "audit", "WORLDGEN_LOCK0_RE
 WORLDGEN_LOCK_REGISTRY_REL = os.path.join("data", "registries", "worldgen_lock_registry.json")
 WORLDGEN_LOCK_BASELINE_SEED_REL = os.path.join("data", "baselines", "worldgen", "baseline_seed.txt")
 WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL = os.path.join("data", "baselines", "worldgen", "baseline_worldgen_snapshot.json")
-WORLDGEN_LOCK_GENERATE_TOOL_REL = os.path.join("tools", "worldgen", "tool_generate_worldgen_baseline")
-WORLDGEN_LOCK_GENERATE_TOOL_PY_REL = os.path.join("tools", "worldgen", "tool_generate_worldgen_baseline.py")
-WORLDGEN_LOCK_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_worldgen_lock")
-WORLDGEN_LOCK_VERIFY_TOOL_PY_REL = os.path.join("tools", "worldgen", "tool_verify_worldgen_lock.py")
+WORLDGEN_LOCK_GENERATE_TOOL_REL = os.path.join("tools", "domain", "worldgen", "tool_generate_worldgen_baseline")
+WORLDGEN_LOCK_GENERATE_TOOL_PY_REL = os.path.join("tools", "domain", "worldgen", "tool_generate_worldgen_baseline.py")
+WORLDGEN_LOCK_VERIFY_TOOL_REL = os.path.join("tools", "domain", "worldgen", "tool_verify_worldgen_lock")
+WORLDGEN_LOCK_VERIFY_TOOL_PY_REL = os.path.join("tools", "domain", "worldgen", "tool_verify_worldgen_lock.py")
 WORLDGEN_LOCK_VERIFY_JSON_REL = os.path.join("data", "audit", "worldgen_lock_verify.json")
 WORLDGEN_LOCK_VERIFY_DOC_REL = os.path.join("docs", "audit", "WORLDGEN_LOCK_VERIFY.md")
 BASELINE_UNIVERSE_RETRO_AUDIT_REL = os.path.join("docs", "audit", "BASELINE_UNIVERSE0_RETRO_AUDIT.md")
@@ -1075,7 +1084,7 @@ def scan_worldgen_lock(repo_root: str) -> dict:
 
     if registry_payload and registry_record and snapshot_payload and snapshot_record:
         try:
-            from tools.worldgen.worldgen_lock_common import registry_record_hash, snapshot_record_hash, verify_worldgen_lock
+            from tools.domain.worldgen.worldgen_lock_common import registry_record_hash, snapshot_record_hash, verify_worldgen_lock
         except Exception:
             findings.append(
                 _finding_row(
@@ -1224,7 +1233,7 @@ def scan_baseline_universe(repo_root: str) -> dict:
     verify_report = {}
     if snapshot_payload and snapshot_record:
         try:
-            from tools.mvp.baseline_universe_common import baseline_snapshot_record_hash, verify_baseline_universe
+            from tools.release.mvp.baseline_universe_common import baseline_snapshot_record_hash, verify_baseline_universe
         except Exception:
             findings.append(
                 _finding_row(
@@ -1356,7 +1365,7 @@ def scan_gameplay_loop(repo_root: str) -> dict:
     verify_report = {}
     if snapshot_payload and snapshot_record:
         try:
-            from tools.mvp.gameplay_loop_common import gameplay_snapshot_record_hash, verify_gameplay_loop
+            from tools.release.mvp.gameplay_loop_common import gameplay_snapshot_record_hash, verify_gameplay_loop
         except Exception:
             findings.append(
                 _finding_row(
@@ -1492,7 +1501,7 @@ def scan_disaster_suite(repo_root: str) -> dict:
     fresh_baseline = {}
 
     try:
-        from tools.mvp.disaster_suite_common import (
+        from tools.release.mvp.disaster_suite_common import (
             DISASTER_CASES_SCHEMA_ID,
             DISASTER_REGRESSION_REQUIRED_TAG,
             DISASTER_SUITE_BASELINE_SCHEMA_ID,
@@ -1743,7 +1752,7 @@ def scan_ecosystem_verify(repo_root: str) -> dict:
     fresh_baseline = {}
 
     try:
-        from tools.mvp.ecosystem_verify_common import (
+        from tools.release.mvp.ecosystem_verify_common import (
             ECOSYSTEM_REGRESSION_REQUIRED_TAG,
             ECOSYSTEM_VERIFY_BASELINE_SCHEMA_ID,
             ECOSYSTEM_VERIFY_RUN_SCHEMA_ID,
@@ -1977,7 +1986,7 @@ def scan_update_sim(repo_root: str) -> dict:
     }
 
     try:
-        from tools.mvp.update_sim_common import (
+        from tools.release.mvp.update_sim_common import (
             UPDATE_SIM_BASELINE_SCHEMA_ID,
             UPDATE_SIM_REGRESSION_REQUIRED_TAG,
             UPDATE_SIM_RUN_SCHEMA_ID,
@@ -2216,7 +2225,7 @@ def scan_trust_strict_suite(repo_root: str) -> dict:
     fresh_baseline = {}
 
     try:
-        from tools.security.trust_strict_common import (
+        from tools.validators.security.model.trust_strict_common import (
             TRUST_STRICT_BASELINE_SCHEMA_ID,
             TRUST_STRICT_REQUIRED_TAG,
             TRUST_STRICT_RUN_SCHEMA_ID,
@@ -2798,12 +2807,12 @@ def scan_trust_bypass(repo_root: str, override_paths: Sequence[str] | None = Non
     findings: list[dict] = []
     governance_violations: list[dict] = []
     try:
-        from tools.security.trust_model_common import trust_model_violations
+        from tools.validators.security.model.trust_model_common import trust_model_violations
     except Exception as exc:
         findings.append(
             _finding_row(
                 category="trust_bypass",
-                path="tools/security/trust_model_common.py",
+                path="tools/validators/security/model/trust_model_common.py",
                 line=1,
                 message="unable to import trust-model governance helpers ({})".format(str(exc)),
                 snippet="trust_model_violations",
@@ -3159,7 +3168,7 @@ def scan_toolchain_matrix(repo_root: str) -> dict:
     profile_registry = {}
 
     try:
-        from tools.mvp.toolchain_matrix_common import (
+        from tools.release.mvp.toolchain_matrix_common import (
             DEFAULT_ENV_ID,
             TOOLCHAIN_MATRIX_MODEL_DOC_REL,
             TOOLCHAIN_MATRIX_REGISTRY_REL,
@@ -3181,7 +3190,7 @@ def scan_toolchain_matrix(repo_root: str) -> dict:
             blocking_findings=[
                 _finding_row(
                     category="toolchain_matrix.required_surface",
-                    path="tools/mvp/toolchain_matrix_common.py",
+                    path="tools/release/mvp/toolchain_matrix_common.py",
                     line=1,
                     message="toolchain matrix tooling could not be imported.",
                     rule_id="INV-TOOLCHAIN-MATRIX-REGISTRY-PRESENT",

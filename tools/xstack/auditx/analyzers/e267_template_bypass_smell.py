@@ -103,8 +103,8 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         runtime_rel,
         compiler_rel,
-        "tools/system/tool_verify_template_reproducible.py",
-        "tools/system/tool_template_browser.py",
+        "tools/domain/systems/tool_verify_template_reproducible.py",
+        "tools/domain/systems/tool_template_browser.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

@@ -10,7 +10,7 @@ from tools.validators.identity import (
     IDENTITY_KIND_SUITE_RELEASE,
     attach_universal_identity_block,
 )
-from tools.governance import (
+from tools.repo.governance import (
     DEFAULT_GOVERNANCE_PROFILE_REL,
     governance_profile_hash,
     load_governance_profile,
@@ -32,7 +32,7 @@ from tools.release import (
 )
 from tools.release.component_graph_resolver import canonicalize_component_descriptor, canonicalize_component_graph
 from tools.validators.security.trust import load_trust_policy_registry, load_trust_root_registry, select_trust_policy
-from tools.import_bridge import resolve_repo_path_equivalent
+from tools.migration.import_bridge import resolve_repo_path_equivalent
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -491,11 +491,11 @@ def update_model_violations(repo_root: str) -> list[dict]:
             continue
         violations.append({"code": "missing_required_file", "message": message, "file_path": effective_rel if effective_rel != _norm_rel(rel_path) else rel_path, "rule_id": rule_id})
     for rel_path, token, message, rule_id in (
-        ("tools/setup/setup_cli.py", "resolve_update_plan", "setup update surfaces must resolve update plans through the release component graph", RULE_USE_COMPONENT_GRAPH),
-        ("tools/setup/setup_cli.py", "install_transaction_log", "rollback must use the deterministic transaction log", RULE_ROLLBACK_LOG),
-        ("tools/setup/setup_cli.py", "verify_release_manifest", "update apply must verify the target release manifest before changing the install", RULE_USE_COMPONENT_GRAPH),
+        ("tools/package/setup/setup_cli.py", "resolve_update_plan", "setup update surfaces must resolve update plans through the release component graph", RULE_USE_COMPONENT_GRAPH),
+        ("tools/package/setup/setup_cli.py", "install_transaction_log", "rollback must use the deterministic transaction log", RULE_ROLLBACK_LOG),
+        ("tools/package/setup/setup_cli.py", "verify_release_manifest", "update apply must verify the target release manifest before changing the install", RULE_USE_COMPONENT_GRAPH),
         ("tools/release/dist/dist_tree_common.py", "release_index.json", "dist assembly must emit a release index for offline update resolution", RULE_USE_COMPONENT_GRAPH),
-        ("tools/setup/setup_cli.py", "refusal.update", "setup update flows must emit explicit refusal codes instead of silent upgrade/refusal behavior", RULE_NO_SILENT_UPGRADE),
+        ("tools/package/setup/setup_cli.py", "refusal.update", "setup update flows must emit explicit refusal codes instead of silent upgrade/refusal behavior", RULE_NO_SILENT_UPGRADE),
     ):
         text = ""
         try:

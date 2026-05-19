@@ -11,7 +11,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E3_HANDSHAKE_POLICY_BYPASS_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/",
-    "tools/net/",
+    "tools/test/network/",
     "contracts/registry/net_replication_policy_registry.json",
     "contracts/registry/net_server_policy_registry.json",
     "contracts/registry/anti_cheat_policy_registry.json",

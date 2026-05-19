@@ -124,7 +124,7 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 - `tool_ui_bind.cmd`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
 - `tool_ui_doc_annotate.cmd`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
 - `tool_ui_validate.cmd`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
-- `validation`: `unknown_needs_review`, target `tools/validation`, risk `review`. Validation tooling belongs under tools unless it is contract law.
+- `validation`: `unknown_needs_review`, target `tools/validators`, risk `review`. Validation tooling belongs under tools unless it is contract law.
 
 ## Split-Required Domain Roots
 

@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.pollution.tool_replay_poll_window import verify_poll_replay_window
+    from tools.domain.pollution.tool_replay_poll_window import verify_poll_replay_window
     from tools.xstack.testx.tests.poll3_testlib import make_stress_scenario, run_stress_report
 
     scenario = make_stress_scenario(repo_root=repo_root, seed=9301)

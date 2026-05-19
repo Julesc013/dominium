@@ -56,6 +56,7 @@ _configure_stdio()
 
 _ORIGINAL_ISFILE = os.path.isfile
 _ORIGINAL_ISDIR = os.path.isdir
+_ORIGINAL_EXISTS = os.path.exists
 _ORIGINAL_GETSIZE = os.path.getsize
 _ORIGINAL_WALK = os.walk
 _ORIGINAL_READ_TEXT = read_text
@@ -66,7 +67,7 @@ _CANONICAL_EXACT_ALIASES = (
     ("meta/extensions/extensions_engine.py", "meta_extensions_engine.py"),
     ("runtime/shell/appcore/command/command_registry.c", "runtime/shell/command/command_registry.c"),
     ("runtime/shell/appcore/ui_bind/ui_command_binding_table.c", "tools/codegen/ui/bind/ui_command_binding_table.c"),
-    ("tools/appshell/tool_generate_command_docs.py", "tools/codegen/shell/tool_generate_command_docs.py"),
+    ("tools/validators/shell/tool_generate_command_docs.py", "tools/codegen/shell/tool_generate_command_docs.py"),
 )
 
 _CANONICAL_PREFIX_ALIASES = (
@@ -133,7 +134,19 @@ _CANONICAL_PREFIX_ALIASES = (
     ("compat/negotiation/", "tools/validators/compatibility/negotiation/"),
     ("compat/", "tools/validators/compatibility/"),
     ("modding/", "tools/validators/modding/"),
+    ("tools/appshell/tool_generate_command_docs.py", "tools/codegen/shell/tool_generate_command_docs.py"),
     ("tools/appshell/", "tools/validators/shell/"),
+    ("tools/compat/", "tools/package/compatibility/"),
+    ("tools/diag/", "tools/diagnostics/"),
+    ("tools/earth/", "tools/domain/worldgen/earth_stress/"),
+    ("tools/embodiment/", "tools/domain/embodiment/"),
+    ("tools/launcher/", "tools/package/launcher/"),
+    ("tools/mvp/", "tools/release/mvp/"),
+    ("tools/server/", "tools/test/server/"),
+    ("tools/setup/", "tools/package/setup/"),
+    ("tools/worldgen_offline/", "tools/domain/worldgen/offline/"),
+    ("tools/worldgen/", "tools/domain/worldgen/"),
+    ("tools/validators/shell/", "tools/validators/shell/"),
     ("tools/compatx/", "tools/xstack/compatx/"),
     ("tools/geo/", "tools/validators/domain/geology/"),
     ("packs/compat/", "tools/validators/package/compatibility_payload/"),
@@ -198,6 +211,12 @@ def _repox_isdir(path):
     return any(_ORIGINAL_ISDIR(candidate) for candidate in _alias_path_candidates(path))
 
 
+def _repox_exists(path):
+    if _ORIGINAL_EXISTS(path):
+        return True
+    return any(_ORIGINAL_EXISTS(candidate) for candidate in _alias_path_candidates(path))
+
+
 def _repox_walk(top, *args, **kwargs):
     return _ORIGINAL_WALK(_resolve_existing_path(top), *args, **kwargs)
 
@@ -212,6 +231,7 @@ def _repox_read_text(path, *args, **kwargs):
 
 os.path.isfile = _repox_isfile
 os.path.isdir = _repox_isdir
+os.path.exists = _repox_exists
 os.path.getsize = _repox_getsize
 os.walk = _repox_walk
 read_text = _repox_read_text
@@ -2864,13 +2884,13 @@ def check_portable_run_contract(repo_root):
     launcher_text = read_text(os.path.join(repo_root, launcher_rel.replace("/", os.sep))) or ""
 
     if "--install-root" not in setup_text:
-        violations.append("{}: tools/setup/setup_cli.py missing --install-root contract".format(invariant_id))
+        violations.append("{}: tools/package/setup/setup_cli.py missing --install-root contract".format(invariant_id))
     if "--lockfile" not in launcher_text:
-        violations.append("{}: tools/launcher/launcher_cli.py missing --lockfile contract".format(invariant_id))
+        violations.append("{}: tools/package/launcher/launcher_cli.py missing --lockfile contract".format(invariant_id))
     if "--mode" not in launcher_text and "--run-mode" not in launcher_text:
-        violations.append("{}: tools/launcher/launcher_cli.py missing mode selector contract".format(invariant_id))
+        violations.append("{}: tools/package/launcher/launcher_cli.py missing mode selector contract".format(invariant_id))
     if "--mode" not in setup_text and "--ui-mode" not in setup_text:
-        violations.append("{}: tools/setup/setup_cli.py missing mode selector contract".format(invariant_id))
+        violations.append("{}: tools/package/setup/setup_cli.py missing mode selector contract".format(invariant_id))
     return violations
 
 
@@ -6946,7 +6966,7 @@ def check_no_silent_format_interpretation(repo_root):
             "REFUSAL_FORMAT_MIGRATION_MISSING",
             "REFUSAL_FORMAT_READ_ONLY_UNAVAILABLE",
         ),
-        "tools/compat/tool_replay_migration.py": (
+        "tools/package/compatibility/tool_replay_migration.py": (
             "load_versioned_artifact(",
             "\"migration_events\"",
             "\"read_only_mode\"",
@@ -6987,7 +7007,7 @@ def check_migrations_logged(repo_root):
             "\"migration_id\"",
             "\"deterministic_transform_function_id\"",
         ),
-        "tools/compat/tool_replay_migration.py": (
+        "tools/package/compatibility/tool_replay_migration.py": (
             "\"migration_events\"",
             "\"loaded_hash\"",
             "\"deterministic_fingerprint\"",
@@ -7700,7 +7720,7 @@ def check_worldgen_lock_required(repo_root):
             violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
 
     try:
-        from tools.worldgen.worldgen_lock_common import (
+        from tools.domain.worldgen.worldgen_lock_common import (
             load_worldgen_lock_registry,
             load_worldgen_lock_snapshot,
             registry_record_hash,
@@ -11029,7 +11049,7 @@ def check_refinement_budgeted(repo_root):
     try:
         if repo_root not in sys.path:
             sys.path.insert(0, repo_root)
-        from tools.worldgen.mw4_probe import run_refinement_stress
+        from tools.domain.worldgen.mw4_probe import run_refinement_stress
 
         report = dict(run_refinement_stress(repo_root))
     except Exception as exc:  # pragma: no cover - RepoX runtime guard
@@ -11248,7 +11268,7 @@ def check_no_blocking_worldgen_in_ui(repo_root):
     try:
         if repo_root not in sys.path:
             sys.path.insert(0, repo_root)
-        from tools.worldgen.mw4_probe import run_refinement_stress
+        from tools.domain.worldgen.mw4_probe import run_refinement_stress
 
         report = dict(run_refinement_stress(repo_root))
     except Exception as exc:  # pragma: no cover - RepoX runtime guard

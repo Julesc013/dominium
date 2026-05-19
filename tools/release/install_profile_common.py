@@ -15,7 +15,7 @@ from tools.release import (
     platform_targets_for_tag,
     select_install_profile,
 )
-from tools.import_bridge import resolve_repo_path_equivalent
+from tools.migration.import_bridge import resolve_repo_path_equivalent
 from tools.release.component_graph_resolver import deterministic_fingerprint
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
@@ -343,11 +343,11 @@ def install_profile_violations(repo_root: str) -> list[dict]:
     for rel_path, token, message, rule_id in (
         ("tools/release/component_graph_resolver.py", "select_install_profile(", "component resolver must load and select install profiles", RULE_USE_PROFILES),
         ("tools/release/component_graph_resolver.py", "disabled_optional_components", "install plans must report disabled optional components", RULE_USE_PROFILES),
-        ("tools/setup/setup_cli.py", "\"plan\"", "setup install surface must expose install-profile plan/apply commands", RULE_USE_PROFILES),
-        ("tools/setup/setup_cli.py", "install_profile_id", "setup install plan/apply must thread install_profile_id through the resolver", RULE_USE_PROFILES),
+        ("tools/package/setup/setup_cli.py", "\"plan\"", "setup install surface must expose install-profile plan/apply commands", RULE_USE_PROFILES),
+        ("tools/package/setup/setup_cli.py", "install_profile_id", "setup install plan/apply must thread install_profile_id through the resolver", RULE_USE_PROFILES),
         ("tools/release/dist/dist_tree_common.py", "install_profile_id", "dist assembly must choose bundle contents through an install profile", RULE_NO_HARDCODED),
         ("tools/release/dist/tool_assemble_dist_tree.py", "--install-profile-id", "dist assembly CLI must accept install_profile_id", RULE_USE_PROFILES),
-        ("tools/launcher/launch.py", "install_profile_id", "launcher instance surfaces must expose instance install profile targeting", RULE_USE_PROFILES),
+        ("tools/package/launcher/launch.py", "install_profile_id", "launcher instance surfaces must expose instance install profile targeting", RULE_USE_PROFILES),
     ):
         try:
             effective_rel = _equivalent_rel(root, rel_path)

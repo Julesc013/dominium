@@ -116,11 +116,11 @@
       "product_kind": "compiled_product_and_operator_suite",
       "likely_role": "operator tools host plus specialized domain and validation executables",
       "likely_entrypoint_paths": [
-        "tools/tools_host_main.c",
+        "tools/build/host/tools_host_main.c",
         "tools/validators/suite/validate_all_main.cpp",
-        "tools/data_validate/data_validate_main.c",
-        "tools/modpack/mod_pack_builder.cpp",
-        "tools/modpack/mod_pack_validator.cpp"
+        "tools/validators/content/data/data_validate_main.c",
+        "tools/package/modpack/mod_pack_builder.cpp",
+        "tools/package/modpack/mod_pack_validator.cpp"
       ],
       "build_targets": [
         "dominium-tools",

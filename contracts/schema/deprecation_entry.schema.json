@@ -96,7 +96,7 @@
       "deprecated_version": "1.0.0",
       "removal_target_version": "2.0.0",
       "status": "deprecated",
-      "adapter_path": "tools/governance/adapters/deprecation_registry_adapter.py",
+      "adapter_path": "tools/repo/governance/adapters/deprecation_registry_adapter.py",
       "notes": "Temporary adapter until all tools migrate to governance registry path",
       "extensions": {}
     }

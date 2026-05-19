@@ -16,8 +16,8 @@ WATCH_PREFIXES = (
 )
 
 TOPOLOGY_REL = "docs/audit/TOPOLOGY_MAP.json"
-CONTROL_PLANE_REL = "tools/governance/control_plane_engine.py"
-CONTROL_PLANE_NODE_ID = "module:tools/governance/control_plane_engine.py"
+CONTROL_PLANE_REL = "tools/repo/governance/control_plane_engine.py"
+CONTROL_PLANE_NODE_ID = "module:tools/repo/governance/control_plane_engine.py"
 DOWNGRADE_MARKERS = (
     "downgrade.",
     "budget_insufficient",

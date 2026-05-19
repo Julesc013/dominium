@@ -6,7 +6,16 @@ import os
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
@@ -34,7 +43,7 @@ def run(graph, repo_root, changed_files=None):
                 category="release.silent_upgrade_smell",
                 severity="RISK",
                 confidence=0.97,
-                file_path=rel_path or "tools/setup/setup_cli.py",
+                file_path=rel_path or "tools/package/setup/setup_cli.py",
                 evidence=[
                     code or "silent_upgrade_risk",
                     str(item.get("message", "")).strip() or "release-index policy integration is incomplete and may allow silent upgrade behavior",
@@ -43,7 +52,7 @@ def run(graph, repo_root, changed_files=None):
                 recommended_action="ROUTE_INSTALL_AND_UPDATE_SELECTION_THROUGH_THE_DECLARED_RELEASE_RESOLUTION_POLICY_WITH_EXPLICIT_EXPLANATIONS",
                 related_invariants=[RULE_POLICY_DECLARED],
                 related_paths=[
-                    rel_path or "tools/setup/setup_cli.py",
+                    rel_path or "tools/package/setup/setup_cli.py",
                     "tools/release/release_index_policy_common.py",
                     "docs/release/RELEASE_INDEX_RESOLUTION_POLICY.md",
                 ],

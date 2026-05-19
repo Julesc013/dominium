@@ -1,4 +1,4 @@
-"""FAST test: XI-4z fix report remains deterministic.""" 
+"""FAST test: XI-4z fix report remains deterministic."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "xi", "restructure", "determinism"]
 
 
 def run(repo_root: str):
-    from tools.review.xi4z_fix_common import XI4Z_FIX_REPORT_JSON_REL, artifact_hashes, build_xi4z_fix_snapshot
+    from tools.audit.review.xi4z_fix_common import XI4Z_FIX_REPORT_JSON_REL, artifact_hashes, build_xi4z_fix_snapshot
     from tools.xstack.testx.tests.xi4z_fix_testlib import committed_fix_report
 
     committed = committed_fix_report(repo_root)

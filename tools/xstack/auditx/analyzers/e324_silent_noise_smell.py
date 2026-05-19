@@ -16,7 +16,7 @@ WATCH_PREFIXES = (
     "contracts/registry/logic_noise_policy_registry.json",
     "game/domain/logic/noise/noise_engine.py",
     "game/domain/logic/eval/sense_engine.py",
-    "tools/logic/tool_replay_fault_window.py",
+    "tools/domain/logic/tool_replay_fault_window.py",
 )
 
 
@@ -125,7 +125,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    replay_rel = "tools/logic/tool_replay_fault_window.py"
+    replay_rel = "tools/domain/logic/tool_replay_fault_window.py"
     replay_text = _read_text(repo_root, replay_rel)
     if "logic_noise_decision_hash_chain" not in replay_text:
         findings.append(

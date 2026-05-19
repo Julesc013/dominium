@@ -29,7 +29,7 @@ def main():
     args = parser.parse_args()
     repo_root = os.path.abspath(args.repo_root)
 
-    tool = os.path.join(repo_root, "tools", "system", "anb_omega.py")
+    tool = os.path.join(repo_root, "tools", "domain", "systems", "anb_omega.py")
     if not os.path.isfile(tool):
         print("missing tool {}".format(tool))
         return 1

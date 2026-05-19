@@ -27,7 +27,7 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
 ## Validation
 
 
-- `tools/pack/pack_validate.py`
+- `tools/package/pack/pack_validate.py`
 
 
   - Validates pack manifests, namespace rules, unit annotations, and cross-pack capability references.
@@ -36,10 +36,10 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
   - Example:
 
 
-    - `python tools/pack/pack_validate.py --pack-root content/packs/core/org.dominium.core.units --format json`
+    - `python tools/package/pack/pack_validate.py --pack-root content/packs/core/org.dominium.core.units --format json`
 
 
-- `tools/fab/fab_validate.py`
+- `tools/domain/fabrication/fab_validate.py`
 
 
   - Validates FAB-0 data (materials, parts, assemblies, processes, standards).
@@ -51,7 +51,7 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
   - Example:
 
 
-    - `python tools/fab/fab_validate.py --input content/packs/core/org.dominium.core.parts.basic/data/fab_pack.json --pack-root content/packs/core/org.dominium.core.parts.basic --format json`
+    - `python tools/domain/fabrication/fab_validate.py --input content/packs/core/org.dominium.core.parts.basic/data/fab_pack.json --pack-root content/packs/core/org.dominium.core.parts.basic --format json`
 
 
 
@@ -60,7 +60,7 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
 ## Inspection
 
 
-- `tools/pack/capability_inspect.py`
+- `tools/package/pack/capability_inspect.py`
 
 
   - Reports provided/required capabilities, transitive closure, conflicts/overlaps, and baseline compatibility.
@@ -69,10 +69,10 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
   - Example:
 
 
-    - `python tools/pack/capability_inspect.py --pack-id org.dominium.core.units --pack-id org.dominium.worldgen.minimal --format json`
+    - `python tools/package/pack/capability_inspect.py --pack-id org.dominium.core.units --pack-id org.dominium.worldgen.minimal --format json`
 
 
-- `tools/coverage/coverage_inspect.py`
+- `tools/audit/coverage/coverage_inspect.py`
 
 
   - Reports coverage ladder status (C-A..C-H) and maturity breakdown.
@@ -81,10 +81,10 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
   - Example:
 
 
-    - `python tools/coverage/coverage_inspect.py --pack-id org.dominium.core.ecology.basic --format json`
+    - `python tools/audit/coverage/coverage_inspect.py --pack-id org.dominium.core.ecology.basic --format json`
 
 
-- `tools/fab/fab_inspect.py`
+- `tools/domain/fabrication/fab_inspect.py`
 
 
   - Aggregates assembly properties and interface compatibility checks.
@@ -96,7 +96,7 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
 ## Refusal Debugging
 
 
-- `tools/inspect/refusal_explain.py`
+- `apps/workbench/module/inspection/inspector/refusal_explain.py`
 
 
   - Explains refusal payloads and validation failures with schema paths and data-side fixes.
@@ -105,25 +105,25 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
   - Example:
 
 
-    - `python tools/inspect/refusal_explain.py --input tmp/fab_validate.json --data content/packs/core/org.dominium.core.parts.basic/data/fab_pack.json --format json`
+    - `python apps/workbench/module/inspection/inspector/refusal_explain.py --input tmp/fab_validate.json --data content/packs/core/org.dominium.core.parts.basic/data/fab_pack.json --format json`
 
 
 
 
 
 ## Diff & Comparison
-- `tools/fab/fab_diff.py`
+- `tools/domain/fabrication/fab_diff.py`
   - Diffs two FAB packs and reports compatibility impact.
   - Example:
-    - `python tools/fab/fab_diff.py --left content/packs/core/org.dominium.core.parts.basic --right content/packs/core/org.dominium.core.parts.extended --format json`
-- `tools/playtest/replay_diff.py`
+    - `python tools/domain/fabrication/fab_diff.py --left content/packs/core/org.dominium.core.parts.basic --right content/packs/core/org.dominium.core.parts.extended --format json`
+- `tools/test/playtest/replay_diff.py`
   - Diffs two replays and reports event/refusal divergence.
 
 ## Bugreporting
-- `tools/bugreport/bugreport_cli.py`
+- `tools/diagnostics/bugreport/bugreport_cli.py`
   - Creates and inspects reproducible bugreport bundles with replay context.
   - Example:
-    - `python tools/bugreport/bugreport_cli.py create --replay-bundle tmp/replay_bundle --install-manifest tmp/install.manifest.json --instance-manifest tmp/instance.manifest.json --runtime-descriptor tmp/runtime.descriptor.json --compat-report tmp/compat_report.json --ops-log tmp/ops.log --out tmp/bugreport_bundle`
+    - `python tools/diagnostics/bugreport/bugreport_cli.py create --replay-bundle tmp/replay_bundle --install-manifest tmp/install.manifest.json --instance-manifest tmp/instance.manifest.json --runtime-descriptor tmp/runtime.descriptor.json --compat-report tmp/compat_report.json --ops-log tmp/ops.log --out tmp/bugreport_bundle`
 
 
 

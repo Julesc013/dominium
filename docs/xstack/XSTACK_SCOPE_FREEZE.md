@@ -148,7 +148,7 @@ A path may appear again in Section H as a later extraction candidate without cha
 | `tools/xstack/controlx/` | Older autonomous control-plane wrapper outside `tools/xstack/`; still useful evidence, but not the current branded XStack root. |
 | `tools/xstack/compatx/` | Older compatibility CLI/core; `tools/validators/suite/validation_engine.py` maps it as legacy or adapter surface rather than the current XStack canon. |
 | `tools/validators/suite/validate_all_main.cpp`, `tools/validators/suite/validator_common.*`, `tools/validators/suite/validator_reports.*`, and `tools/validators/suite/validators_registry.*` | Explicitly represented by the unified validation engine as legacy coverage adapters or deprecated aggregate validator surfaces. |
-| `tools/mvp/runtime_entry.py` | Audit marks this as a transitional wrapper rather than the dependable canonical playtest bootstrap. |
+| `tools/release/mvp/runtime_entry.py` | Audit marks this as a transitional wrapper rather than the dependable canonical playtest bootstrap. |
 | `docs/XSTACK.md` | Useful reference, but still describes an older gate-centric model and does not cleanly reflect current live coupling. |
 | `docs/governance/XSTACK_PORTABILITY.md`, `docs/governance/XSTACK_INCREMENTAL_MODEL.md`, `docs/governance/XSTACK_EXTENSION_MODEL.md`, `docs/governance/XSTACK_PRODUCTION_CRITERIA.md`, `docs/governance/XSTACK_TEMPLATE_CHECKLIST.md`, and `docs/governance/XSTACK_SCOPE_TEMPLATE.json` | Derived portability/removability guidance; several files say they are only partially aligned, and live imports show stronger coupling than the docs claim. |
 
@@ -211,8 +211,8 @@ It does not replace the repo's broader control plane.
 
 The strongest repo-local operator shells today remain Dominium-owned:
 
-- `tools/launcher/launch.py`
-- `tools/setup/setup_cli.py`
+- `tools/package/launcher/launch.py`
+- `tools/package/setup/setup_cli.py`
 - `appshell/**`
 
 XStack is beneath or beside these shells, not above them as a separate platform.

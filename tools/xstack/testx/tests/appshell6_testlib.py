@@ -28,21 +28,21 @@ def build_run_spec(repo_root: str, *, seed: str = "seed.appshell6.test", policy_
 
 def run_probe(repo_root: str, *, suffix: str = "default") -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.appshell.appshell6_probe import run_supervisor_probe
+    from tools.validators.shell.appshell6_probe import run_supervisor_probe
 
     return run_supervisor_probe(repo_root, suffix=str(suffix).strip() or "default")
 
 
 def replay_probe(repo_root: str, *, suffix: str = "replay") -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.appshell.appshell6_probe import verify_supervisor_replay
+    from tools.validators.shell.appshell6_probe import verify_supervisor_replay
 
     return verify_supervisor_replay(repo_root, suffix=str(suffix).strip() or "replay")
 
 
 def build_hardening_report(repo_root: str) -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.appshell.supervisor_hardening_common import build_supervisor_hardening_report
+    from tools.validators.shell.supervisor_hardening_common import build_supervisor_hardening_report
 
     return build_supervisor_hardening_report(repo_root)
 

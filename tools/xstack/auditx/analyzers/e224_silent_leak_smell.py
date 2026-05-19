@@ -53,7 +53,7 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "game/domain/fluids/network/fluid_network_engine.py",
-        "tools/fluid/tool_run_fluid_stress.py",
+        "tools/domain/fluids/tool_run_fluid_stress.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:

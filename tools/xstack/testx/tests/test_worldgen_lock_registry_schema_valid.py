@@ -34,7 +34,7 @@ EXPECTED_SCHEMA_ID = "dominium.schema.governance" + ".worldgen_lock_registry"
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.worldgen.worldgen_lock_common import load_worldgen_lock_registry, registry_record_hash
+    from tools.domain.worldgen.worldgen_lock_common import load_worldgen_lock_registry, registry_record_hash
 
     payload = load_worldgen_lock_registry(repo_root)
     record = dict(payload.get("record") or {})

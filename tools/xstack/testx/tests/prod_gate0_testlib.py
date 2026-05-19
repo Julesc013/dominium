@@ -6,7 +6,7 @@ from tools.xstack.compatx.canonical_json import canonical_json_text
 
 
 def load_report(repo_root: str, *, prefer_cached: bool = True) -> tuple[dict, str]:
-    from tools.mvp.prod_gate0_common import load_or_run_product_boot_matrix_report
+    from tools.release.mvp.prod_gate0_common import load_or_run_product_boot_matrix_report
 
     report = load_or_run_product_boot_matrix_report(repo_root, prefer_cached=prefer_cached)
     if str(report.get("report_id", "")).strip() != "mvp.product_boot_matrix.v1":
@@ -17,7 +17,7 @@ def load_report(repo_root: str, *, prefer_cached: bool = True) -> tuple[dict, st
 
 
 def build_report(repo_root: str) -> dict:
-    from tools.mvp.prod_gate0_common import build_product_boot_matrix_report
+    from tools.release.mvp.prod_gate0_common import build_product_boot_matrix_report
 
     return build_product_boot_matrix_report(repo_root)
 

@@ -24,7 +24,7 @@ jobs:
       - name: ABI boundary check
         run: python scripts/verify_abi_boundaries.py --repo-root .
       - name: Performance envelope baseline
-        run: python tools/perf/tool_run_performance_envelope.py --repo-root . --platform-tag win64
+        run: python tools/performance/envelope/tool_run_performance_envelope.py --repo-root . --platform-tag win64
 
   ci-dev:
     name: CI-dev

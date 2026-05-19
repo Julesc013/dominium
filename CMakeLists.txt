@@ -175,7 +175,7 @@ if(DOC_RATIO_ENABLE)
 endif()
 
 add_custom_target(check_arch
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/ci/arch_checks.py --repo-root ${CMAKE_SOURCE_DIR}
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/validators/ci/arch_checks.py --repo-root ${CMAKE_SOURCE_DIR}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Running architecture boundary checks"
 )
@@ -187,7 +187,7 @@ add_custom_target(check_build_boundaries
 )
 
 add_test(NAME phase6_audit
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/ci/phase6_audit_checks.py --repo-root ${CMAKE_SOURCE_DIR}
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/validators/ci/phase6_audit_checks.py --repo-root ${CMAKE_SOURCE_DIR}
 )
 
 add_custom_target(check_hygiene
@@ -1395,7 +1395,7 @@ add_custom_target(verify_dist
         -DDOM_DIST_LEAF=${DOM_DIST_LEAF}
         -DDOM_DIST_VARIANT=${DOM_DIST_VARIANT}
         -DDOM_DIST_SEED_RUNTIME=${DOM_DIST_SEED_RUNTIME}
-        -P ${CMAKE_SOURCE_DIR}/tools/validate_dist.cmake
+        -P ${CMAKE_SOURCE_DIR}/tools/validators/distribution/validate_dist.cmake
     COMMENT "Validating dist layout"
 )
 add_dependencies(verify_dist dist_meta)
@@ -1489,7 +1489,7 @@ add_custom_target(launcher_run_smoke
 )
 
 add_custom_target(smoke_run_apps
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/ci/smoke_run_apps.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/validators/ci/smoke_run_apps.py
         --repo-root ${CMAKE_SOURCE_DIR}
         --build-root ${CMAKE_BINARY_DIR}
         --output ${CMAKE_BINARY_DIR}/smoke_run_apps.json

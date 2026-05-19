@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Sequence, Tuple
 
-from tools.models.model_engine import evaluate_field_modifier_curve
+from tools.repo.models.model_engine import evaluate_field_modifier_curve
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

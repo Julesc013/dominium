@@ -25,7 +25,7 @@ from tools.release import (
     resolve_update_plan,
     select_install_profile,
 )
-from tools.dist.dist_tree_common import build_dist_tree
+from tools.release.dist.dist_tree_common import build_dist_tree
 from tools.release.update_model_common import build_release_index_payload
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
@@ -614,10 +614,10 @@ def release_index_policy_violations(repo_root: str) -> list[dict]:
         ("tools/release/update_resolver.py", "resolution_policy_id", "update resolver must accept an explicit resolution policy id", RULE_POLICY_DECLARED),
         ("tools/release/update_resolver.py", "explain.component_skipped_yanked", "latest-compatible resolution must log skipped yanked candidates", RULE_YANKED_EXCLUDED),
         ("tools/release/update_resolver.py", "selected_yanked_component_ids", "selected yanked components must remain machine-visible", RULE_YANKED_EXCLUDED),
-        ("tools/setup/setup_cli.py", "--policy", "setup install/update surfaces must expose policy selection", RULE_POLICY_DECLARED),
-        ("tools/setup/setup_cli.py", "install_plan_hash", "update transactions must record install_plan_hash", RULE_ROLLBACK_RECORDED),
-        ("tools/setup/setup_cli.py", "prior_component_set_hash", "update transactions must record prior_component_set_hash", RULE_ROLLBACK_RECORDED),
-        ("tools/launcher/launch.py", "selected_yanked_component_ids", "launcher status surfaces must expose yanked selection state", RULE_YANKED_EXCLUDED),
+        ("tools/package/setup/setup_cli.py", "--policy", "setup install/update surfaces must expose policy selection", RULE_POLICY_DECLARED),
+        ("tools/package/setup/setup_cli.py", "install_plan_hash", "update transactions must record install_plan_hash", RULE_ROLLBACK_RECORDED),
+        ("tools/package/setup/setup_cli.py", "prior_component_set_hash", "update transactions must record prior_component_set_hash", RULE_ROLLBACK_RECORDED),
+        ("tools/package/launcher/launch.py", "selected_yanked_component_ids", "launcher status surfaces must expose yanked selection state", RULE_YANKED_EXCLUDED),
     ):
         try:
             with open(os.path.join(root, rel_path.replace("/", os.sep)), "r", encoding="utf-8") as handle:

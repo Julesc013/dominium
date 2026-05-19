@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: XStack-to-AIDE extraction mapping, playable-baseline assembly follow-ups
 Replacement Target: later explicit repo-operating-contract checkpoint or replacement artifact only
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `archive/generated/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `archive/generated/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `contracts/xstack/aide_capability_profile_shape.json`, `docs/xstack/AIDE_ADAPTER_CONTRACT.md`, `contracts/xstack/aide_adapter_contract.json`, `CMakePresets.json`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/testx_all.py`, `tools/validators/suite/tool_run_validation.py`, `tools/mvp/runtime_entry.py`, `server/server_main.py`, `client/local_server/local_server_controller.py`, `server/net/loopback_transport.py`, `runtime/process_spawn.py`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/templates/session/session.mvp_default.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `archive/generated/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `archive/generated/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `contracts/xstack/aide_capability_profile_shape.json`, `docs/xstack/AIDE_ADAPTER_CONTRACT.md`, `contracts/xstack/aide_adapter_contract.json`, `CMakePresets.json`, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/testx_all.py`, `tools/validators/suite/tool_run_validation.py`, `tools/release/mvp/runtime_entry.py`, `server/server_main.py`, `client/local_server/local_server_controller.py`, `server/net/loopback_transport.py`, `runtime/process_spawn.py`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/templates/session/session.mvp_default.json`
 
 # Codex Repo Operating Contract
 
@@ -134,8 +134,8 @@ Current strongest public or semi-public path:
    - `cmake --preset verify`
    - `cmake --build --preset verify`
 2. Prefer the Python/AppShell shells as the operator-facing surfaces:
-   - `python tools/setup/setup_cli.py ...`
-   - `python tools/launcher/launch.py ...`
+   - `python tools/package/setup/setup_cli.py ...`
+   - `python tools/package/launcher/launch.py ...`
 3. Materialize the session under the canonical repo-local save tree:
    - `python tools/xstack/session_create.py --save-id <save_id>`
 4. Treat local loopback authority as the canonical runtime direction:
@@ -167,7 +167,7 @@ What Codex must not assume yet:
 
 - raw `python server/server_main.py` is not the canonical public playtest path
 - `python -m server.server_main` is not a safe canonical substitute
-- `python tools/mvp/runtime_entry.py --local-singleplayer` is transitional and must not be promoted into the canonical operator path without an explicit task
+- `python tools/release/mvp/runtime_entry.py --local-singleplayer` is transitional and must not be promoted into the canonical operator path without an explicit task
 - alt save roots are not end-to-end supported just because `session_create.py` accepts `--saves-root`
 - non-loopback multiplayer, installed-mode assumptions, and native launcher/setup parity are not baseline-ready
 
@@ -222,9 +222,9 @@ The following directory families are authoritative for current work, with the li
 
 - `appshell/**`
   - canonical shell and adapter surface for the current Python/AppShell operator path
-- `tools/launcher/**`
+- `tools/package/launcher/**`
   - canonical launcher shell family for repo-local operation
-- `tools/setup/**`
+- `tools/package/setup/**`
   - canonical setup shell family for repo-local operation
 - `tools/xstack/**`
   - canonical XStack tooling family for session creation, boot control, validation, and test harnesses
@@ -301,7 +301,7 @@ During the playable-baseline push, Codex should avoid touching the following unl
 - native launcher/setup shell completion work that does not directly unblock the baseline path
 - release/publication/archive/trust policy changes unrelated to the active task
 - doctrine rewrites under `docs/canon/**`, `AGENTS.md`, or equivalent protected roots unless the prompt is explicitly doctrine-facing
-- promotion of `tools/mvp/runtime_entry.py` into the canonical public playtest path without an explicit task
+- promotion of `tools/release/mvp/runtime_entry.py` into the canonical public playtest path without an explicit task
 - wrapper proliferation that creates a second or third "official" startup flow
 
 Allowed exception rule:
@@ -407,7 +407,7 @@ The following operating patterns are forbidden unless an explicit prompt authori
 - inventing a second canonical playtest path
 - claiming validation success without running the relevant validation
 - treating experimental or transitional wrappers as canonical operator surfaces without evidence
-- silently promoting raw `server/server_main.py` or `tools/mvp/runtime_entry.py` into the public playtest path
+- silently promoting raw `server/server_main.py` or `tools/release/mvp/runtime_entry.py` into the public playtest path
 - competing with the playable-baseline path by expanding into large AIDE runtime or platform work
 - flattening `verified`, `likely`, `partial`, and `blocked` into one status label
 - silently rebinding ownership-sensitive roots because one side is easier to consume

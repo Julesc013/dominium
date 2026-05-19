@@ -24,7 +24,7 @@ REQUIRED_TOKENS = {
         "load_save_contract_bundle(",
         "save_semantic_contract_registry_hash(",
     ),
-    "tools/launcher/launcher_cli.py": (
+    "tools/package/launcher/launcher_cli.py": (
         "resolve_save_manifest_path(",
         "evaluate_save_open(",
         "save manifest not found",

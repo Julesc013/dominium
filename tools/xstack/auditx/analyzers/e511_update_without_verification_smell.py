@@ -6,7 +6,16 @@ import os
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
@@ -35,7 +44,7 @@ def run(graph, repo_root, changed_files=None):
                 category="release.update_without_verification_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "tools/setup/setup_cli.py",
+                file_path=rel_path or "tools/package/setup/setup_cli.py",
                 evidence=[
                     str(item.get("code", "")).strip() or "update_without_verification",
                     str(item.get("message", "")).strip() or "update flow does not verify the release surface through the governed component graph",
@@ -43,7 +52,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ROUTE_UPDATES_THROUGH_RELEASE_INDEX_AND_MANIFEST_VERIFICATION",
                 related_invariants=sorted(_RULE_IDS),
-                related_paths=[rel_path or "tools/setup/setup_cli.py", "tools/release/update_resolver.py"],
+                related_paths=[rel_path or "tools/package/setup/setup_cli.py", "tools/release/update_resolver.py"],
             )
         )
     return findings

@@ -85,7 +85,7 @@ Failures are explicit refusals; no silent tier mutation is permitted.
   - `system_tier_change_hash_chain`
   - `collapse_expand_event_hash_chain`
 - Replay verifier:
-  - `tools/system/tool_replay_tier_transitions`
+  - `tools/domain/systems/tool_replay_tier_transitions`
 - Tier change events are canonical RECORD-linked artifacts.
 
 ## Non-Goals

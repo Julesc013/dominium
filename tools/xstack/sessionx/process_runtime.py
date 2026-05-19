@@ -211,29 +211,29 @@ from engine.time import (
     normalize_time_mapping_cache_rows,
     normalize_time_stamp_artifact_rows,
 )
-from tools.governance.ir.control_ir_programs import (
+from tools.repo.governance.ir.control_ir_programs import (
     build_ai_controller_stub_ir,
     build_autopilot_stub_ir,
     build_blueprint_execution_ir,
     compile_ir_program,
 )
-from tools.governance.ir.control_ir_multiplayer import validate_control_ir_multiplayer
-from tools.governance.ir.control_ir_verifier import (
+from tools.repo.governance.ir.control_ir_multiplayer import validate_control_ir_multiplayer
+from tools.repo.governance.ir.control_ir_verifier import (
     REFUSAL_CTRL_IR_INVALID,
     verify_control_ir,
 )
-from tools.governance.control_plane_engine import (
+from tools.repo.governance.control_plane_engine import (
     build_control_intent,
     build_control_resolution,
 )
-from tools.governance.fidelity import (
+from tools.repo.governance.fidelity import (
     DEFAULT_FIDELITY_POLICY_ID,
     RANK_FAIR_POLICY_ID,
     REFUSAL_CTRL_FIDELITY_DENIED,
     arbitrate_fidelity_requests,
     build_fidelity_request,
 )
-from tools.governance.planning.plan_engine import (
+from tools.repo.governance.planning.plan_engine import (
     REFUSAL_PLAN_INVALID,
     REFUSAL_PLAN_NOT_FOUND,
     REFUSAL_PLAN_POLICY_REFUSED,
@@ -243,12 +243,12 @@ from tools.governance.planning.plan_engine import (
     create_plan_artifact,
     update_plan_artifact_incremental,
 )
-from tools.governance.capability import (
+from tools.repo.governance.capability import (
     capability_binding_rows,
     has_capability,
     normalize_capability_binding_rows,
 )
-from tools.governance.view import (
+from tools.repo.governance.view import (
     REFUSAL_VIEW_ENTITLEMENT_MISSING as REFUSAL_VIEW_POLICY_ENTITLEMENT_MISSING,
     REFUSAL_VIEW_POLICY_FORBIDDEN as REFUSAL_VIEW_POLICY_FORBIDDEN,
     REFUSAL_VIEW_REQUIRES_EMBODIMENT as REFUSAL_VIEW_POLICY_REQUIRES_EMBODIMENT,
@@ -281,7 +281,7 @@ from game.domain.embodiment.movement import (
     resolve_horizontal_damping_state,
     resolve_jump_params_row,
 )
-from tools.governance.effects import (
+from tools.repo.governance.effects import (
     REFUSAL_EFFECT_FORBIDDEN,
     REFUSAL_EFFECT_INVALID_TARGET,
     active_effect_rows_by_target,
@@ -291,7 +291,7 @@ from tools.governance.effects import (
     normalize_effect_rows,
     prune_expired_effect_rows,
 )
-from tools.specs import (
+from tools.repo.specs import (
     REFUSAL_SPEC_NONCOMPLIANT,
     build_spec_binding,
     compliance_check_rows_by_id,
@@ -550,7 +550,7 @@ from tools.validators.safety import (
     normalize_safety_instance_rows,
     safety_pattern_rows_by_id,
 )
-from tools.models import (
+from tools.repo.models import (
     ModelEngineError,
     cache_policy_rows_by_id,
     constitutive_model_rows_by_id,

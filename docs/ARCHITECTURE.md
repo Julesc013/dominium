@@ -197,8 +197,8 @@ Current module registry includes active baseline modules (`org.dominium.worldgen
 
 Related runtime/tooling:
 
-- `tools/worldgen_offline/world_definition_cli.py`
-- `tools/worldgen_offline/refinement_runner.py`
+- `tools/domain/worldgen/offline/world_definition_cli.py`
+- `tools/domain/worldgen/offline/refinement_runner.py`
 
 ## Related Docs
 

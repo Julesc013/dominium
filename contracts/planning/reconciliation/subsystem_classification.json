@@ -125,7 +125,7 @@
         "security/trust",
         "tools/compatx",
         "tools/controlx",
-        "tools/distribution",
+        "tools/package/distribution",
         "tools/release",
         "tools/securex"
       ],

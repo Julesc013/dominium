@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.logic.tool_run_logic_protocol_stress import run_protocol_stress
+    from tools.domain.logic.tool_run_logic_protocol_stress import run_protocol_stress
 
     first = run_protocol_stress(repo_root=repo_root, frame_count=12, tick_count=6, use_sig=False)
     second = run_protocol_stress(repo_root=repo_root, frame_count=12, tick_count=6, use_sig=False)

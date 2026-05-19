@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.final_prompt_inventory_common import (
+from tools.audit.review.final_prompt_inventory_common import (
     FINAL_PROMPT_INVENTORY_REL,
     PI_2_FINAL_REL,
     PROMPT_DEPENDENCY_TREE_REL,

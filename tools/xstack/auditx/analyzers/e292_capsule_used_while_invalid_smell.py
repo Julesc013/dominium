@@ -54,7 +54,7 @@ def run(graph, repo_root, changed_files=None):
         "game/domain/processes/capsules/capsule_executor.py",
         "game/domain/processes/process_run_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "tools/process/tool_replay_capsule_window.py",
+        "tools/domain/processes/tool_replay_capsule_window.py",
         "tools/xstack/repox/check.py",
     }
     required_invalidation_tokens = (

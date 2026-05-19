@@ -19,7 +19,7 @@ REQUIRED_TOKENS = {
         "resolve_providers(",
         "REFUSAL_PROVIDES_AMBIGUOUS",
     ),
-    "tools/launcher/launcher_cli.py": (
+    "tools/package/launcher/launcher_cli.py": (
         "\"provider_resolution\": provider_resolution",
         "\"provider_selection_logged\": bool(provider_resolution.get(\"selection_logged\", False))",
         "provider resolution failed",

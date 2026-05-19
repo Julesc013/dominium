@@ -20,7 +20,7 @@ def make_stress_scenario(
     ticks: int,
 ) -> dict:
     _ensure_repo_path(repo_root)
-    from tools.chem.tool_generate_chem_stress import generate_chem_stress_scenario
+    from tools.domain.chemistry.tool_generate_chem_stress import generate_chem_stress_scenario
 
     return generate_chem_stress_scenario(
         seed=int(seed),
@@ -40,7 +40,7 @@ def run_stress_report(
     budget_envelope_id: str,
 ) -> dict:
     _ensure_repo_path(repo_root)
-    from tools.chem.tool_run_chem_stress import _envelope_defaults, run_chem_stress_scenario
+    from tools.domain.chemistry.tool_run_chem_stress import _envelope_defaults, run_chem_stress_scenario
 
     defaults = _envelope_defaults(str(budget_envelope_id))
     return run_chem_stress_scenario(

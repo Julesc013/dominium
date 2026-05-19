@@ -20,10 +20,10 @@ Authority: canonical. Engine and game code MUST NOT depend on these tools.
 - Engine output MUST remain authoritative over tool output.
 
 ## Tool inventory
-- `tools/worldgen_offline/refinement_runner.py`
-- `tools/worldgen_offline/validation_checker.py`
-- `tools/worldgen_offline/epistemic_simulator.py`
-- `tools/worldgen_offline/pack_diff_visualizer.py`
+- `tools/domain/worldgen/offline/refinement_runner.py`
+- `tools/domain/worldgen/offline/validation_checker.py`
+- `tools/domain/worldgen/offline/epistemic_simulator.py`
+- `tools/domain/worldgen/offline/pack_diff_visualizer.py`
 
 ## Determinism
 - Tool outputs MUST be deterministic for the same inputs.

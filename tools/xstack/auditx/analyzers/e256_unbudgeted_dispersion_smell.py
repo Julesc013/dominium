@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     canonical_engine_rel = "game/domain/pollution/dispersion_engine.py"
-    canonical_stress_rel = "tools/pollution/tool_run_poll_stress.py"
+    canonical_stress_rel = "tools/domain/pollution/tool_run_poll_stress.py"
     engine_text = _read_text(repo_root, canonical_engine_rel)
     stress_text = _read_text(repo_root, canonical_stress_rel)
     for token in ("max_cell_updates_per_tick", "_split_cell_work(", "degrade.pollution.cell_budget"):

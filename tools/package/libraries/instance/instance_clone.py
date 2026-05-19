@@ -11,7 +11,7 @@ from tools.package.libraries.instance.instance_validator import (
     normalize_instance_manifest,
     validate_instance_manifest,
 )
-from tools.lib.content_store import (
+from tools.package.libraries.store.content_store import (
     JSON_PAYLOAD,
     TREE_PAYLOAD_DIR,
     artifact_payload_path,

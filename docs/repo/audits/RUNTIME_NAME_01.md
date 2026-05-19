@@ -61,7 +61,7 @@ Updated active imports and validator/audit-test path constants from `runtime.ren
 - `tools/xstack/testx/tests/test_renderer_truth_isolation.py`
 - `tools/xstack/testx/tests/test_renderer_truth_isolation_hardware.py`
 - `scripts/ci/check_repox_rules.py`
-- `tools/review/xi6_common.py`
+- `tools/audit/review/xi6_common.py`
 - `tools/migration/canon_spine_new.py`
 - `tests/app/app_scaffold_contract_tests.py`
 - `runtime/shell/bootstrap.py`

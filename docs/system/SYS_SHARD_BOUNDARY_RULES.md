@@ -43,8 +43,8 @@ When shard-boundary requirements are not satisfied:
 - Explain pathway must remain available through system forensics contracts.
 
 ## Validation Surfaces
-- Stress harness: `tools/system/tool_run_sys_stress.py`
-- Replay verifier: `tools/system/tool_replay_sys_window.py`
+- Stress harness: `tools/domain/systems/tool_run_sys_stress.py`
+- Replay verifier: `tools/domain/systems/tool_replay_sys_window.py`
 - Invariants:
   - `INV-SYS-INVARIANTS-ALWAYS-CHECKED`
   - `INV-NO-SILENT-TIER-TRANSITION`

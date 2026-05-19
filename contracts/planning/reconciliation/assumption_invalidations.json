@@ -19,7 +19,7 @@
         "data/registries",
         "tools/xstack",
         "tools/release",
-        "tools/distribution",
+        "tools/package/distribution",
         "tools/compatx",
         "tools/controlx",
         "tools/securex",

@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "release", "update-model", "self-update"]
 
 def run(repo_root: str):
     del repo_root
-    from tools.setup.setup_cli import _copy_managed_paths
+    from tools.package.setup.setup_cli import _copy_managed_paths
 
     with tempfile.TemporaryDirectory() as tmp:
         source_root = os.path.join(tmp, "source")

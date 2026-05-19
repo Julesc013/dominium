@@ -128,7 +128,7 @@ Until those are explicit, `Ζ` should remain dependency-shadowed rather than tre
 - `server/shard/shard_api.cpp`
 - `tools/validators/network/policies/policy_server_authoritative.py`
 - `tools/validators/network/srz/shard_coordinator.py`
-- `tools/governance/control_plane_engine.py`
+- `tools/repo/governance/control_plane_engine.py`
 - `process/process_run_engine.py`
 - `process/capsules/capsule_executor.py`
 - `server/persistence/**`

@@ -65,7 +65,7 @@ Deprecated surfaces remain provisional and must keep explicit replacement target
 
 Legacy aggregate wrappers are now convergence shims rather than alternate validation pipelines.
 
-- `tools/ci/validate_all.py` routes to `validate --all` with a deterministic profile map and emits `warn.deprecated_validator_usage`.
+- `tools/validators/ci/validate_all.py` routes to `validate --all` with a deterministic profile map and emits `warn.deprecated_validator_usage`.
 
 ## Outputs
 

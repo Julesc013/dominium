@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "xi5a", "regression", "review"]
 
 
 def run(repo_root: str):
-    from tools.review.xi5a_v4_execute_common import _apply_replacements, _build_replacement_maps
+    from tools.audit.review.xi5a_v4_execute_common import _apply_replacements, _build_replacement_maps
 
     lock_path = os.path.join(repo_root, "data", "restructure", "src_domain_mapping_lock_approved_v4.json")
     with open(lock_path, "r", encoding="utf-8") as handle:

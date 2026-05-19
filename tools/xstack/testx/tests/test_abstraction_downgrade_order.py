@@ -23,7 +23,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.governance.negotiation import negotiate_request
+    from tools.repo.governance.negotiation import negotiate_request
 
     request = {
         "schema_version": "1.0.0",

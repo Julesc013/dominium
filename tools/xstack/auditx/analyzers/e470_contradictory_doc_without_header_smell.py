@@ -6,17 +6,26 @@ import os
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 
 from analyzers.base import make_finding
-from tools.review.doc_inventory_common import contradictory_doc_header_issues, load_or_run_doc_inventory
+from tools.audit.review.doc_inventory_common import contradictory_doc_header_issues, load_or_run_doc_inventory
 
 
 ANALYZER_ID = "E470_CONTRADICTORY_DOC_WITHOUT_HEADER_SMELL"
-WATCH_PREFIXES = ("docs/", "tools/review/", "archive/generated/audit/doc_inventory.json")
+WATCH_PREFIXES = ("docs/", "tools/audit/review/", "archive/generated/audit/doc_inventory.json")
 RULE_ID = "INV-SUPERSEDED-DOCS-MUST-LINK-REPLACEMENT"
 
 

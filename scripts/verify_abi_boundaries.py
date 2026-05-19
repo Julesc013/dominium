@@ -46,7 +46,7 @@ def main():
         "contracts/abi/dom_contracts/include",
         "apps/launcher/include",
         "apps/setup/include",
-        "tools/ui_shared/include",
+        "runtime/ui/include",
     ]
 
     violations = []

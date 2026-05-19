@@ -505,16 +505,16 @@ add_executable(dominium_coredata_tests
     ${CMAKE_SOURCE_DIR}/source/dominium/game/runtime/dom_coredata_load.cpp
     ${CMAKE_SOURCE_DIR}/source/dominium/game/dom_game_net.cpp
     ${CMAKE_SOURCE_DIR}/source/dominium/game/dom_game_save.cpp
-    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile/coredata_load.cpp
-    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile/coredata_validate.cpp
-    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile/coredata_emit_tlv.cpp
-    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile/coredata_manifest.cpp
+    ${CMAKE_SOURCE_DIR}/tools/codegen/content/coredata_compile/coredata_load.cpp
+    ${CMAKE_SOURCE_DIR}/tools/codegen/content/coredata_compile/coredata_validate.cpp
+    ${CMAKE_SOURCE_DIR}/tools/codegen/content/coredata_compile/coredata_emit_tlv.cpp
+    ${CMAKE_SOURCE_DIR}/tools/codegen/content/coredata_compile/coredata_manifest.cpp
 )
 target_include_directories(dominium_coredata_tests PRIVATE
     ${DOMINIUM_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/source/dominium/game
     ${CMAKE_SOURCE_DIR}/source/dominium/common
-    ${CMAKE_SOURCE_DIR}/source/dominium/tools/coredata_compile
+    ${CMAKE_SOURCE_DIR}/tools/codegen/content/coredata_compile
     ${CMAKE_SOURCE_DIR}/source/domino
 )
 target_link_libraries(dominium_coredata_tests PRIVATE

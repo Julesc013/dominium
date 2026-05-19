@@ -12,7 +12,7 @@ from tools.validators.security.trust import (
     select_trust_policy,
     verify_artifact_trust,
 )
-from tools.security.trust_model_common import build_trust_model_report
+from tools.validators.security.model.trust_model_common import build_trust_model_report
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

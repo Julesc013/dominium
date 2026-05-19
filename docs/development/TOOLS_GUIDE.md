@@ -27,17 +27,17 @@ Scope: read-only and operational tooling entrypoints.
 ## Replay inspection
 - `dominium-tools replay <path>`
   Summary and event scan of a replay file.
-- `tools/playtest/replay_diff.py`
+- `tools/test/playtest/replay_diff.py`
   Diff two replay files or runs (read-only).
 
 ## Refusal explanation
-- `tools/inspect/refusal_explain.py`
+- `apps/workbench/module/inspection/inspector/refusal_explain.py`
   Parse refusal payloads into a readable explanation.
 
 ## Validation & schema tooling
 - `tools/validators/*`
   Dataset and schema validation (read-only by default).
-- `tools/worldgen_offline/world_definition_cli.py`
+- `tools/domain/worldgen/offline/world_definition_cli.py`
   WorldDefinition validation and diffs.
 
 ## Sandbox and mutation rules

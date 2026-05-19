@@ -21,7 +21,7 @@ from game.domain.universe import (
     enforce_session_contract_bundle,
     pin_contract_bundle_metadata,
 )
-from tools.mvp.runtime_bundle import (
+from tools.release.mvp.runtime_bundle import (
     build_default_universe_identity,
     validate_pack_lock_payload as validate_runtime_pack_lock_payload,
 )

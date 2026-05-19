@@ -220,8 +220,8 @@
     },
     {
       "surface": [
-        "tools/launcher/launch.py",
-        "tools/setup/setup_cli.py",
+        "tools/package/launcher/launch.py",
+        "tools/package/setup/setup_cli.py",
         "appshell/commands/command_engine.py"
       ],
       "supports": [

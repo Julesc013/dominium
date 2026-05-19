@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_library(tools_shared STATIC
-    _shared/tools_shared_stub.c
+    build/host/tools_shared_stub.c
 )
 target_include_directories(tools_shared PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/_shared
+    ${CMAKE_CURRENT_SOURCE_DIR}/build/host
 )
 target_link_libraries(tools_shared
     PUBLIC
@@ -18,9 +18,9 @@ set_target_properties(tools_shared PROPERTIES
 add_library(tools::shared ALIAS tools_shared)
 
 add_executable(dominium-tools
-    tools_host_main.c
-    scale/scale_cli.cpp
-    mmo/mmo_cli.cpp
+    build/host/tools_host_main.c
+    domain/scale/scale_cli.cpp
+    domain/mmo/mmo_cli.cpp
     ../runtime/network/server/dom_server_protocol.cpp
     ../runtime/network/server/dom_server_runtime.cpp
     ../runtime/network/server/shard/dom_cross_shard_log.cpp
@@ -56,7 +56,7 @@ dom_register_product(tools dominium-tools)
 
 if(WIN32)
     add_executable(tools_app_win32 WIN32
-        gui/tools_app_win32.cpp
+        ../apps/workbench/module/tooling/host/win32/tools_app_win32.cpp
     )
     target_link_libraries(tools_app_win32 PRIVATE
         libs::appcore
@@ -77,7 +77,7 @@ if(WIN32)
 endif()
 
 add_executable(dom_tool_artifactmeta
-    artifactmeta/tool_artifactmeta.c
+    package/artifactmeta/tool_artifactmeta.c
 )
 target_link_libraries(dom_tool_artifactmeta PRIVATE libs::contracts)
 target_include_directories(dom_tool_artifactmeta PRIVATE
@@ -92,7 +92,7 @@ set_target_properties(dom_tool_artifactmeta PROPERTIES
 )
 
 add_executable(dom_tool_terrain
-    terrain/terrain_cli.cpp
+    domain/terrain/terrain_cli.cpp
 )
 target_link_libraries(dom_tool_terrain PRIVATE domino_engine)
 target_include_directories(dom_tool_terrain PRIVATE
@@ -128,7 +128,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_climate
-    climate/climate_cli.cpp
+    domain/climate/climate_cli.cpp
 )
 target_link_libraries(dom_tool_climate PRIVATE domino_engine)
 target_include_directories(dom_tool_climate PRIVATE
@@ -146,7 +146,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_weather
-    weather/weather_cli.cpp
+    domain/weather/weather_cli.cpp
 )
 target_link_libraries(dom_tool_weather PRIVATE domino_engine)
 target_include_directories(dom_tool_weather PRIVATE
@@ -164,7 +164,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_energy
-    energy/energy_cli.cpp
+    domain/energy/energy_cli.cpp
 )
 target_link_libraries(dom_tool_energy PRIVATE domino_engine)
 target_include_directories(dom_tool_energy PRIVATE
@@ -182,7 +182,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_heat
-    heat/heat_cli.cpp
+    domain/thermal/heat/heat_cli.cpp
 )
 target_link_libraries(dom_tool_heat PRIVATE domino_engine)
 target_include_directories(dom_tool_heat PRIVATE
@@ -200,7 +200,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_fluid
-    fluid/fluid_cli.cpp
+    domain/fluids/fluid_cli.cpp
 )
 target_link_libraries(dom_tool_fluid PRIVATE domino_engine)
 target_include_directories(dom_tool_fluid PRIVATE
@@ -236,7 +236,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_hazard
-    hazard/hazard_cli.cpp
+    domain/hazard/hazard_cli.cpp
 )
 target_link_libraries(dom_tool_hazard PRIVATE domino_engine)
 target_include_directories(dom_tool_hazard PRIVATE
@@ -254,7 +254,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_risk
-    risk/risk_cli.cpp
+    domain/risk/risk_cli.cpp
 )
 target_link_libraries(dom_tool_risk PRIVATE domino_engine)
 target_include_directories(dom_tool_risk PRIVATE
@@ -272,7 +272,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_trust
-    trust/trust_cli.cpp
+    domain/trust/trust_cli.cpp
 )
 target_link_libraries(dom_tool_trust PRIVATE domino_engine)
 target_include_directories(dom_tool_trust PRIVATE
@@ -290,7 +290,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_institution
-    institution/institution_cli.cpp
+    domain/institution/institution_cli.cpp
 )
 target_link_libraries(dom_tool_institution PRIVATE domino_engine)
 target_include_directories(dom_tool_institution PRIVATE
@@ -308,7 +308,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_economy
-    economy/economy_cli.cpp
+    domain/economy/economy_cli.cpp
 )
 target_link_libraries(dom_tool_economy PRIVATE domino_engine)
 target_include_directories(dom_tool_economy PRIVATE
@@ -326,7 +326,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_conflict
-    conflict/conflict_cli.cpp
+    domain/conflict/conflict_cli.cpp
 )
 target_link_libraries(dom_tool_conflict PRIVATE domino_engine)
 target_include_directories(dom_tool_conflict PRIVATE
@@ -344,7 +344,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_history
-    history/history_cli.cpp
+    domain/history/history_cli.cpp
 )
 target_link_libraries(dom_tool_history PRIVATE domino_engine)
 target_include_directories(dom_tool_history PRIVATE
@@ -362,7 +362,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_standard
-    standard/standard_cli.cpp
+    domain/standards/standard_cli.cpp
 )
 target_link_libraries(dom_tool_standard PRIVATE domino_engine)
 target_include_directories(dom_tool_standard PRIVATE
@@ -380,7 +380,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_autonomy
-    autonomy/autonomy_cli.cpp
+    domain/autonomy/autonomy_cli.cpp
 )
 target_link_libraries(dom_tool_autonomy PRIVATE domino_engine)
 target_include_directories(dom_tool_autonomy PRIVATE
@@ -398,7 +398,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_srz
-    srz/srz_cli.cpp
+    domain/srz/srz_cli.cpp
 )
 target_link_libraries(dom_tool_srz PRIVATE domino_engine)
 target_include_directories(dom_tool_srz PRIVATE
@@ -416,7 +416,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_knowledge
-    knowledge/knowledge_cli.cpp
+    domain/knowledge/knowledge_cli.cpp
 )
 target_link_libraries(dom_tool_knowledge PRIVATE domino_engine)
 target_include_directories(dom_tool_knowledge PRIVATE
@@ -434,7 +434,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_vegetation
-    vegetation/vegetation_cli.cpp
+    domain/vegetation/vegetation_cli.cpp
 )
 target_link_libraries(dom_tool_vegetation PRIVATE domino_engine)
 target_include_directories(dom_tool_vegetation PRIVATE
@@ -452,7 +452,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_animal
-    animal/animal_cli.cpp
+    domain/animals/animal_cli.cpp
 )
 target_link_libraries(dom_tool_animal PRIVATE domino_engine)
 target_include_directories(dom_tool_animal PRIVATE
@@ -470,7 +470,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_structure
-    structure/structure_cli.cpp
+    domain/structure/structure_cli.cpp
 )
 target_link_libraries(dom_tool_structure PRIVATE domino_engine)
 target_include_directories(dom_tool_structure PRIVATE
@@ -488,7 +488,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_travel
-    travel/travel_cli.cpp
+    domain/travel/travel_cli.cpp
 )
 target_link_libraries(dom_tool_travel PRIVATE domino_engine)
 target_include_directories(dom_tool_travel PRIVATE
@@ -506,7 +506,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_mining
-    mining/mining_cli.cpp
+    domain/mining/mining_cli.cpp
 )
 target_link_libraries(dom_tool_mining PRIVATE domino_engine)
 target_include_directories(dom_tool_mining PRIVATE
@@ -524,7 +524,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_crafting
-    crafting/crafting_cli.cpp
+    domain/crafting/crafting_cli.cpp
 )
 target_link_libraries(dom_tool_crafting PRIVATE domino_engine)
 target_include_directories(dom_tool_crafting PRIVATE
@@ -541,7 +541,7 @@ if(NOT WIN32)
     target_link_libraries(dom_tool_crafting PRIVATE m)
 endif()
 add_executable(coredata_compile
-    coredata_compile_stub.c
+    codegen/content/coredata_compile_stub.c
 )
 set_target_properties(coredata_compile PROPERTIES
     OUTPUT_NAME "coredata_compile"
@@ -550,7 +550,7 @@ set_target_properties(coredata_compile PROPERTIES
     C_EXTENSIONS OFF
 )
 add_executable(coredata_validate
-    coredata_validate_stub.c
+    validators/content/coredata_validate_stub.c
 )
 set_target_properties(coredata_validate PROPERTIES
     OUTPUT_NAME "coredata_validate"
@@ -560,7 +560,7 @@ set_target_properties(coredata_validate PROPERTIES
 )
 
 add_executable(data_validate
-    data_validate/data_validate_main.c
+    validators/content/data/data_validate_main.c
 )
 target_link_libraries(data_validate PRIVATE domino_engine)
 set_target_properties(data_validate PROPERTIES
@@ -617,16 +617,16 @@ set_target_properties(hygiene_validate_cli PROPERTIES
 )
 
 add_library(dominium_tools_inspect STATIC
-    inspect/replay_inspector.cpp
-    inspect/provenance_browser.cpp
-    inspect/ledger_inspector.cpp
-    inspect/event_timeline_view.cpp
-    inspect/dispute_replay_inspector.cpp
+    ../apps/workbench/module/inspection/inspector/replay_inspector.cpp
+    ../apps/workbench/module/inspection/inspector/provenance_browser.cpp
+    ../apps/workbench/module/inspection/inspector/ledger_inspector.cpp
+    ../apps/workbench/module/inspection/inspector/event_timeline_view.cpp
+    ../apps/workbench/module/inspection/inspector/dispute_replay_inspector.cpp
 )
 target_include_directories(dominium_tools_inspect
     PUBLIC
         ${DOMINIUM_ENGINE_INCLUDE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/inspect
+        ${CMAKE_SOURCE_DIR}/apps/workbench/module/inspection/inspector
 )
 set_target_properties(dominium_tools_inspect PROPERTIES
     CXX_STANDARD 98
@@ -635,21 +635,21 @@ set_target_properties(dominium_tools_inspect PROPERTIES
 )
 
 add_library(dominium_tools_observability STATIC
-    observability/observation_store.cpp
-    observability/observability_api.cpp
-    observability/world_inspector.cpp
-    observability/agent_inspector.cpp
-    observability/institution_inspector.cpp
-    observability/history_viewer.cpp
-    observability/pack_inspector.cpp
-    observability/determinism_tools.cpp
-    observability/visualization_view.cpp
+    ../apps/workbench/module/observability/inspector/observation_store.cpp
+    ../apps/workbench/module/observability/inspector/observability_api.cpp
+    ../apps/workbench/module/observability/inspector/world_inspector.cpp
+    ../apps/workbench/module/observability/inspector/agent_inspector.cpp
+    ../apps/workbench/module/observability/inspector/institution_inspector.cpp
+    ../apps/workbench/module/observability/inspector/history_viewer.cpp
+    ../apps/workbench/module/observability/inspector/pack_inspector.cpp
+    ../apps/workbench/module/observability/inspector/determinism_tools.cpp
+    ../apps/workbench/module/observability/inspector/visualization_view.cpp
 )
 target_include_directories(dominium_tools_observability
     PUBLIC
         ${DOMINIUM_ENGINE_INCLUDE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/observability
-        ${CMAKE_CURRENT_SOURCE_DIR}/inspect
+        ${CMAKE_SOURCE_DIR}/apps/workbench/module/observability/inspector
+        ${CMAKE_SOURCE_DIR}/apps/workbench/module/inspection/inspector
 )
 set_target_properties(dominium_tools_observability PROPERTIES
     CXX_STANDARD 98
@@ -658,7 +658,7 @@ set_target_properties(dominium_tools_observability PROPERTIES
 )
 
 add_executable(dominium_tool0_inspection_tests
-    tests/tool0_inspection_tests.cpp
+    test/cpp/tool0_inspection_tests.cpp
 )
 target_link_libraries(dominium_tool0_inspection_tests PRIVATE dominium_tools_inspect)
 set_target_properties(dominium_tool0_inspection_tests PROPERTIES
@@ -671,7 +671,7 @@ add_test(NAME dominium_tool0_inspection
 )
 
 add_executable(dominium_vis3_observability_tests
-    tests/vis3_observability_tests.cpp
+    test/cpp/vis3_observability_tests.cpp
 )
 target_link_libraries(dominium_vis3_observability_tests PRIVATE dominium_tools_observability)
 set_target_properties(dominium_vis3_observability_tests PROPERTIES
@@ -684,7 +684,7 @@ add_test(NAME dominium_vis3_observability
 )
 
 add_executable(dominium_registry_tests
-    tests/registry_tests.cpp
+    test/cpp/registry_tests.cpp
 )
 target_link_libraries(dominium_registry_tests PRIVATE
     domino_engine
@@ -703,7 +703,7 @@ add_test(NAME dominium_registry
 )
 
 add_executable(mod_pack_builder
-    modpack/mod_pack_builder.cpp
+    package/modpack/mod_pack_builder.cpp
     validators/suite/validator_common.cpp
 )
 target_include_directories(mod_pack_builder PRIVATE
@@ -720,7 +720,7 @@ set_target_properties(mod_pack_builder PROPERTIES
 )
 
 add_executable(mod_pack_validator
-    modpack/mod_pack_validator.cpp
+    package/modpack/mod_pack_validator.cpp
     validators/suite/validator_common.cpp
 )
 target_include_directories(mod_pack_validator PRIVATE
@@ -785,23 +785,34 @@ add_test(NAME dominium_validate_all_bad_renderer
 set_tests_properties(dominium_validate_all_bad_renderer PROPERTIES WILL_FAIL TRUE)
 
 add_test(NAME dominium_content1_sol_data
-    COMMAND python ${CMAKE_SOURCE_DIR}/tools/ci/validate_sol_data.py
+    COMMAND python ${CMAKE_SOURCE_DIR}/tools/validators/ci/validate_sol_data.py
         --repo-root=${CMAKE_SOURCE_DIR}
 )
 
 add_test(NAME dominium_content2_earth_data
-    COMMAND python ${CMAKE_SOURCE_DIR}/tools/ci/validate_earth_data.py
+    COMMAND python ${CMAKE_SOURCE_DIR}/tools/validators/ci/validate_earth_data.py
         --repo-root=${CMAKE_SOURCE_DIR}
 )
 
 add_test(NAME dominium_content3_milky_way_data
-    COMMAND python ${CMAKE_SOURCE_DIR}/tools/ci/validate_milky_way_data.py
+    COMMAND python ${CMAKE_SOURCE_DIR}/tools/validators/ci/validate_milky_way_data.py
         --repo-root=${CMAKE_SOURCE_DIR}
 )
 
 add_test(NAME dominium_world_definition
-    COMMAND python ${CMAKE_SOURCE_DIR}/tools/ci/validate_world_definition.py
+    COMMAND python ${CMAKE_SOURCE_DIR}/tools/validators/ci/validate_world_definition.py
         --repo-root=${CMAKE_SOURCE_DIR}
+)
+
+add_test(NAME dominium_tools_taxonomy_selftest
+    COMMAND python ${CMAKE_SOURCE_DIR}/tools/validators/repo/check_tools_taxonomy.py
+        --self-test
+)
+
+add_test(NAME dominium_tools_taxonomy
+    COMMAND python ${CMAKE_SOURCE_DIR}/tools/validators/repo/check_tools_taxonomy.py
+        --repo-root=${CMAKE_SOURCE_DIR}
+        --strict
 )
 
 set(_dominium_tools_canonical_include_targets

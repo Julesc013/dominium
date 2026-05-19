@@ -13,8 +13,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.logic.tool_replay_fault_window import replay_fault_window_from_payload
-    from tools.logic.tool_run_logic_fault_stress import build_logic_fault_stress_scenario
+    from tools.domain.logic.tool_replay_fault_window import replay_fault_window_from_payload
+    from tools.domain.logic.tool_run_logic_fault_stress import build_logic_fault_stress_scenario
 
     payload = build_logic_fault_stress_scenario(repo_root=repo_root, tick_count=6)
     first = replay_fault_window_from_payload(repo_root=repo_root, payload=payload)

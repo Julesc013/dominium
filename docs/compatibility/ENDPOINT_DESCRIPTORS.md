@@ -116,7 +116,7 @@ Compilation-options hash must avoid host-specific volatility.
 It may include only stable declared build/runtime options.
 
 ## Offline Descriptor Manifest
-`tools/compat/tool_generate_descriptor_manifest.py` scans `archive/generated/dist/bin`, runs each shipped product surface with `--descriptor`, and writes:
+`tools/package/compatibility/tool_generate_descriptor_manifest.py` scans `archive/generated/dist/bin`, runs each shipped product surface with `--descriptor`, and writes:
 
 - `archive/generated/dist/manifests/endpoint_descriptors.json`
 

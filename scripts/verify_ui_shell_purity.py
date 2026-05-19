@@ -48,8 +48,8 @@ def main():
         "runtime/platform/win32/setup",
         "apps/setup/tui",
         "apps/workbench/module/ui/preview/native",
-        "tools/launcher/ui",
-        "tools/setup/ui",
+        "tools/package/launcher/ui",
+        "tools/package/setup/ui",
     ]
     roots = args.roots or default_roots
     roots = [os.path.join(repo_root, r) for r in roots if os.path.isdir(os.path.join(repo_root, r))]

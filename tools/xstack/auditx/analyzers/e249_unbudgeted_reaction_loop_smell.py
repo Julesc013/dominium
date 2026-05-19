@@ -33,7 +33,7 @@ def run(graph, repo_root, changed_files=None):
 
     checks = (
         (
-            "tools/chem/tool_run_chem_stress.py",
+            "tools/domain/chemistry/tool_run_chem_stress.py",
             (
                 "run_chem_stress_scenario(",
                 "max_reaction_evaluations_per_tick",
@@ -97,7 +97,7 @@ def run(graph, repo_root, changed_files=None):
                 ],
                 related_paths=[
                     rel_path,
-                    "tools/chem/tool_run_chem_stress.py",
+                    "tools/domain/chemistry/tool_run_chem_stress.py",
                     "tools/xstack/sessionx/process_runtime.py",
                 ],
             )

@@ -59,7 +59,7 @@ Proof bundle is a deterministic JSON object with:
    - generator tool id/version
 
 ## Export Tool Contract
-`tools/net/tool_export_ranked_proof_bundle` must emit:
+`tools/test/network/tool_export_ranked_proof_bundle` must emit:
 
 1. JSON artifact
 2. deterministic Markdown summary
@@ -68,7 +68,7 @@ Proof bundle is a deterministic JSON object with:
 Example:
 
 ```text
-python tools/net/tool_export_ranked_proof_bundle.py --run-meta saves/<save_id>/run_meta/<run_id>.json --out-dir build/net/proofs --out-prefix ranked_proof_bundle
+python tools/test/network/tool_export_ranked_proof_bundle.py --run-meta saves/<save_id>/run_meta/<run_id>.json --out-dir build/net/proofs --out-prefix ranked_proof_bundle
 ```
 
 ## Cross-References

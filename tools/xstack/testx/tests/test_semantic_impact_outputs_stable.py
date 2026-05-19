@@ -13,8 +13,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.governance.tool_semantic_impact import compute_semantic_impact
-    from tools.governance.tool_topology_generate import generate_topology_map
+    from tools.repo.governance.tool_semantic_impact import compute_semantic_impact
+    from tools.repo.governance.tool_topology_generate import generate_topology_map
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     topology = generate_topology_map(repo_root=repo_root, commit_hash="", generated_tick=0)

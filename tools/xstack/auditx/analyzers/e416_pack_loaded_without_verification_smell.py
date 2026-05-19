@@ -18,12 +18,12 @@ REQUIRED_TOKENS = {
         "merge_overlay_view(",
         "build_verified_pack_lock(",
     ),
-    "tools/setup/setup_cli.py": (
+    "tools/package/setup/setup_cli.py": (
         "handle_verify(",
         "handle_build_lock(",
         "appshell_verify_pack_root(",
     ),
-    "tools/launcher/launch.py": (
+    "tools/package/launcher/launch.py": (
         "verify_pack_root(",
         "cmd_compat_status(",
         "\"pack_compatibility_report\"",

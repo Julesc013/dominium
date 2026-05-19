@@ -35,7 +35,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.system.tool_replay_system_failure_window import verify_system_failure_replay_window
+    from tools.domain.systems.tool_replay_system_failure_window import verify_system_failure_replay_window
 
     first = _run_once(repo_root)
     second = _run_once(repo_root)

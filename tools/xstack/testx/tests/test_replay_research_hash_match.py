@@ -70,8 +70,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.process.tool_replay_experiment_window import verify_experiment_replay_window
-    from tools.process.tool_replay_reverse_engineering_window import (
+    from tools.domain.processes.tool_replay_experiment_window import verify_experiment_replay_window
+    from tools.domain.processes.tool_replay_reverse_engineering_window import (
         verify_reverse_engineering_replay_window,
     )
 

@@ -55,7 +55,7 @@ See `docs/governance/TESTX_PROOF_MODEL.md` for runtime proof semantics.
 
 ## Clip/Voice Artifact Governance
 
-- Bug observations are ingested into `data/logs/bugreports/` using `tools/bugreport/ingest.py`.
+- Bug observations are ingested into `data/logs/bugreports/` using `tools/diagnostics/bugreport/ingest.py`.
 - Resolution requires either:
   - `regression_test`, or
   - `deferred_reason`.
@@ -325,7 +325,7 @@ See `docs/development/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - Fails when `docs/audit/identity_fingerprint.json` is missing or stale.
 - Fingerprint is derived from canon/governance-critical identity inputs.
-- Canonical generator: `tools/ci/tool_identity_fingerprint.py`.
+- Canonical generator: `tools/validators/ci/tool_identity_fingerprint.py`.
 
 ### INV-IDENTITY-CHANGE-EXPLANATION
 

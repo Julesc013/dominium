@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E366_NONDETERMINISTIC_NOISE_SMELL"
 EARTH_GENERATOR_REL = "game/domain/worldgen/earth/earth_surface_generator.py"
 MW_SURFACE_REFINER_REL = "game/domain/worldgen/mw/mw_surface_refiner_l3.py"
-EARTH_PROBE_REL = "tools/worldgen/earth0_probe.py"
+EARTH_PROBE_REL = "tools/domain/worldgen/earth0_probe.py"
 DOC_REL = "docs/domains/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md"
 REQUIRED_GENERATOR_TOKENS = (
     "canonical_sha256(",

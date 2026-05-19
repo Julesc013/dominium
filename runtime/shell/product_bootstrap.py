@@ -36,12 +36,12 @@ _LEGACY_MODE_VALUE_MAP = {
     "tui": "tui",
 }
 _PRODUCT_ENTRYPOINT_LABELS = {
-    "client": "tools/mvp/runtime_entry.py::appshell_product_bootstrap",
+    "client": "tools/release/mvp/runtime_entry.py::appshell_product_bootstrap",
     "engine": "tools/validators/shell/product_stub_cli.py::main",
     "game": "tools/validators/shell/product_stub_cli.py::main",
-    "launcher": "tools/launcher/launch.py::appshell_product_bootstrap",
+    "launcher": "tools/package/launcher/launch.py::appshell_product_bootstrap",
     "server": "apps/server/server_main.py::appshell_product_bootstrap",
-    "setup": "tools/setup/setup_cli.py::appshell_product_bootstrap",
+    "setup": "tools/package/setup/setup_cli.py::appshell_product_bootstrap",
     "tool.attach_console_stub": "tools/validators/shell/product_stub_cli.py::main",
 }
 

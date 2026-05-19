@@ -16,7 +16,7 @@ def ensure_repo_on_path(repo_root: str) -> None:
 @lru_cache(maxsize=4)
 def interop_matrix(repo_root: str) -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.compat.cap_neg4_common import DEFAULT_CAP_NEG4_SEED, generate_interop_matrix
+    from tools.package.compatibility.cap_neg4_common import DEFAULT_CAP_NEG4_SEED, generate_interop_matrix
 
     return generate_interop_matrix(repo_root=repo_root, seed=DEFAULT_CAP_NEG4_SEED)
 
@@ -24,7 +24,7 @@ def interop_matrix(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def interop_stress_report(repo_root: str) -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.compat.cap_neg4_common import DEFAULT_CAP_NEG4_SEED, run_interop_stress
+    from tools.package.compatibility.cap_neg4_common import DEFAULT_CAP_NEG4_SEED, run_interop_stress
 
     matrix = interop_matrix(repo_root)
     return run_interop_stress(repo_root=repo_root, matrix=matrix, seed=DEFAULT_CAP_NEG4_SEED)
@@ -40,7 +40,7 @@ def interop_baseline(repo_root: str) -> dict:
 
 def build_current_baseline(repo_root: str) -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.compat.cap_neg4_common import DEFAULT_CAP_NEG4_SEED, build_cap_neg_full_baseline
+    from tools.package.compatibility.cap_neg4_common import DEFAULT_CAP_NEG4_SEED, build_cap_neg_full_baseline
 
     return build_cap_neg_full_baseline(
         repo_root=repo_root,

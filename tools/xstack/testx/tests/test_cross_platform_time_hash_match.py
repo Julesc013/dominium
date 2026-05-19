@@ -26,9 +26,9 @@ def _build_variant(repo_root: str, *, reverse_rows: bool) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.models import model_type_rows_by_id
+    from tools.repo.models import model_type_rows_by_id
     from engine.time import evaluate_time_mappings
-    from tools.time.tool_replay_time_window import verify_time_replay_window
+    from tools.domain.time.tool_replay_time_window import verify_time_replay_window
 
     temporal_payload, temporal_error = _load_json(repo_root, "contracts/registry/temporal_domain_registry.json")
     mapping_payload, mapping_error = _load_json(repo_root, "contracts/registry/time_mapping_registry.json")
@@ -110,7 +110,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.time.tool_replay_time_window import verify_time_replay_window
+    from tools.domain.time.tool_replay_time_window import verify_time_replay_window
 
     first = _build_variant(repo_root, reverse_rows=False)
     second = _build_variant(repo_root, reverse_rows=True)

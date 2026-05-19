@@ -13,7 +13,7 @@ Dominium uses lightweight build-time guardrails to prevent layer leakage.
   - Enforces include boundaries across engine/game/apps/tools.
 - `scripts/verify_abi_boundaries.py`:
   - Blocks STL tokens in public headers.
-- `tools/ci/arch_checks.py`:
+- `tools/validators/ci/arch_checks.py`:
   - Enforces repo layout and architecture rules (ARCH/DET/PERF/SCALE/EPIS).
 - `cmake/BaselineHeaderCheck.cmake`:
   - Enforces C89/C++98 safety for baseline-visible public headers.

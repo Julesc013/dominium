@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "worldgen", "lock", "determinism"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.worldgen.worldgen_lock_common import build_worldgen_lock_snapshot, read_worldgen_baseline_seed
+    from tools.domain.worldgen.worldgen_lock_common import build_worldgen_lock_snapshot, read_worldgen_baseline_seed
 
     seed_text = read_worldgen_baseline_seed(repo_root)
     first = build_worldgen_lock_snapshot(repo_root, seed_text=seed_text)

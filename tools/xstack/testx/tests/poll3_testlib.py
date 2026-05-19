@@ -14,7 +14,7 @@ def make_stress_scenario(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.pollution.tool_generate_poll_stress import generate_poll_stress_scenario
+    from tools.domain.pollution.tool_generate_poll_stress import generate_poll_stress_scenario
 
     return generate_poll_stress_scenario(
         seed=int(seed),
@@ -39,7 +39,7 @@ def run_stress_report(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.pollution.tool_run_poll_stress import _envelope_defaults, run_poll_stress_scenario
+    from tools.domain.pollution.tool_run_poll_stress import _envelope_defaults, run_poll_stress_scenario
 
     defaults = _envelope_defaults(str(budget_envelope_id))
     return run_poll_stress_scenario(

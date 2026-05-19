@@ -1,7 +1,7 @@
 /*
 FILE: tools/codegen/ui/setup/user/ui_setup_ui_actions_user.h
 MODULE: Repository
-LAYER / SUBSYSTEM: tools/setup/ui
+LAYER / SUBSYSTEM: tools/package/setup/ui
 RESPONSIBILITY: Declares user-owned UI action stubs for the setup tool; does NOT define generated IDs or dispatch tables.
 ALLOWED DEPENDENCIES: Project-local headers; C89/C++98 standard headers.
 FORBIDDEN DEPENDENCIES: N/A.

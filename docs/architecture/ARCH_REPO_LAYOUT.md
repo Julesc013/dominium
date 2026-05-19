@@ -254,7 +254,7 @@ game/
 - Root `CMakeLists.txt` asserts forbidden links with `dom_assert_no_link(...)`.
 
 
-- `tools/ci/arch_checks.py` enforces include and dependency boundaries.
+- `tools/validators/ci/arch_checks.py` enforces include and dependency boundaries.
 
 
 

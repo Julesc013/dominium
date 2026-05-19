@@ -8,10 +8,10 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E385_UNBOUNDED_UPDATE_LOOP_SMELL"
-STRESS_COMMON_REL = "tools/earth/earth9_stress_common.py"
-STRESS_TOOL_REL = "tools/earth/tool_run_earth_mvp_stress.py"
-VIEW_REPLAY_REL = "tools/earth/tool_replay_earth_view_window.py"
-PHYSICS_REPLAY_REL = "tools/earth/tool_replay_earth_physics_window.py"
+STRESS_COMMON_REL = "tools/domain/worldgen/earth_stress/earth9_stress_common.py"
+STRESS_TOOL_REL = "tools/domain/worldgen/earth_stress/tool_run_earth_mvp_stress.py"
+VIEW_REPLAY_REL = "tools/domain/worldgen/earth_stress/tool_replay_earth_view_window.py"
+PHYSICS_REPLAY_REL = "tools/domain/worldgen/earth_stress/tool_replay_earth_physics_window.py"
 FINAL_AUDIT_REL = "docs/audit/EARTH_MVP_FINAL_BASELINE.md"
 REQUIRED_TOKENS = {
     STRESS_COMMON_REL: (

@@ -78,9 +78,9 @@ Signals are captured in artifacts:
 ## Tooling
 Inspect signal networks and replay parity:
 ```
-python tools/inspect/signal_inspector.py --save data/saves/signals.save --format text
-python tools/inspect/signal_inspector.py --replay data/replays/signals.replay --format text
-python tools/inspect/signal_inspector.py --diff data/replays/a.replay data/replays/b.replay --format text
+python apps/workbench/module/inspection/inspector/signal_inspector.py --save data/saves/signals.save --format text
+python apps/workbench/module/inspection/inspector/signal_inspector.py --replay data/replays/signals.replay --format text
+python apps/workbench/module/inspection/inspector/signal_inspector.py --diff data/replays/a.replay data/replays/b.replay --format text
 ```
 
 ## What This Does Not Include

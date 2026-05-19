@@ -36,7 +36,7 @@ build/msvc-base/bin/validate_all --repo-root=. --json-out=validate_all.json --te
 CI and scripted usage:
 
 ```
-python tools/ci/validate_all.py --strict
+python tools/validators/ci/validate_all.py --strict
 ```
 
 ## What it checks

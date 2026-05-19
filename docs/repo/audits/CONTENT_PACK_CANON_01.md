@@ -27,9 +27,9 @@ Task: CONTENT-PACK-CANON-01
 - `content/examples/`
 - `content/fixtures/`
 - `tools/package/distribution/`
-- `tools/pack/`
-- `tools/coverage/`
-- `tools/inspect/`
+- `tools/package/pack/`
+- `tools/audit/coverage/`
+- `apps/workbench/module/inspection/inspector/`
 - active package/content tests under `tests/contentlib/`, `tests/data_1/`, `tests/contract/`, `tests/distribution/`, `tests/signal/`, and `tests/tools/`
 
 ## Chosen Pack Layout
@@ -88,7 +88,7 @@ Active tracked inventory now has no `content/domains/game/core/` and no `content
 - Added `content/packs/blueprint/blueprints.default.m1/pack.json` as the missing manifest for an existing authored blueprint pack.
 - Added `tools/validators/repo/check_content_layout.py`.
 - Added `tests/contentlib/content_layout_validator_tests.py`.
-- Repointed `tools/ci/validate_sol_data.py`, `tools/ci/validate_earth_data.py`, and `tools/ci/validate_milky_way_data.py` from retired `data/world/**` paths to canonical `content/domains/worldgen/real/**` data.
+- Repointed `tools/validators/ci/validate_sol_data.py`, `tools/validators/ci/validate_earth_data.py`, and `tools/validators/ci/validate_milky_way_data.py` from retired `data/world/**` paths to canonical `content/domains/worldgen/real/**` data.
 
 ## Identity Preservation
 
@@ -103,7 +103,7 @@ Active tracked inventory now has no `content/domains/game/core/` and no `content
 - Pack validation, coverage inspection, refusal explanation, capability-gating migration, AuditX pack analyzers, and RepoX process registry collection now use `content/packs`.
 - Legacy `data/packs/<pack_id>` path shim resolution now falls through to the matching canonical category pack under `content/packs`.
 - Current content/tool docs now point examples at `content/packs`.
-- `tools/assetc/tool_assetc.c` now defaults authored asset input/output to `content/assets/...` rather than old `data/...` surfaces.
+- `tools/codegen/assets/tool_assetc.c` now defaults authored asset input/output to `content/assets/...` rather than old `data/...` surfaces.
 - Smoke-test harness references for ControlX/PerformX were updated to their active `tools/xstack/**` paths so the required smoke CTest lane could run without old tool-root assumptions.
 
 ## Generated And Historical References Skipped
@@ -136,13 +136,13 @@ Preflight:
 Focused content/package proof:
 
 - `python tools/validators/repo/check_content_layout.py --strict --json --max-findings 20`: passed.
-- `python tools/ci/validate_sol_data.py --repo-root .`: passed.
-- `python tools/ci/validate_earth_data.py --repo-root .`: passed.
-- `python tools/ci/validate_milky_way_data.py --repo-root .`: passed.
+- `python tools/validators/ci/validate_sol_data.py --repo-root .`: passed.
+- `python tools/validators/ci/validate_earth_data.py --repo-root .`: passed.
+- `python tools/validators/ci/validate_milky_way_data.py --repo-root .`: passed.
 - Focused Python package/content tests under `tests/contentlib`, `tests/data_1`, `tests/tools`, `tests/app`, `tests/contract`, `tests/distribution`, and `tests/signal`: passed.
 - `python tools/package/distribution/pack_discover.py --repo-root . --format json`: passed, found 106 packs including `blueprints.default.m1`.
 - `python tools/package/distribution/compat_dry_run.py --repo-root . --require-capability org.dominium.core.units --format json`: passed.
-- `python tools/pack/pack_validate.py --pack-root content/packs/core/org.dominium.core.units --repo-root . --format json`: passed.
+- `python tools/package/pack/pack_validate.py --pack-root content/packs/core/org.dominium.core.units --repo-root . --format json`: passed.
 
 Repo/proof validators:
 

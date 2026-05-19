@@ -14,9 +14,9 @@ SCOPED_TIME_ANCHOR_PATHS: tuple[str, ...] = (
     "tools/repo/meta/provenance/compaction_engine.py",
     "tools/xstack/sessionx/script_runner.py",
     "tools/xstack/sessionx/time_lineage.py",
-    "tools/server/server_mvp0_probe.py",
-    "tools/time/tool_verify_longrun_ticks.py",
-    "tools/time/tool_compaction_anchor_check.py",
+    "tools/test/server/server_mvp0_probe.py",
+    "tools/domain/time/tool_verify_longrun_ticks.py",
+    "tools/domain/time/tool_compaction_anchor_check.py",
 )
 
 REQUIRED_TIME_ANCHOR_FILES: tuple[str, ...] = (
@@ -29,8 +29,8 @@ REQUIRED_TIME_ANCHOR_FILES: tuple[str, ...] = (
     "contracts/registry/time_anchor_policy_registry.json",
     "engine/time/tick_t.py",
     "engine/time/epoch_anchor_engine.py",
-    "tools/time/tool_verify_longrun_ticks.py",
-    "tools/time/tool_compaction_anchor_check.py",
+    "tools/domain/time/tool_verify_longrun_ticks.py",
+    "tools/domain/time/tool_compaction_anchor_check.py",
     "tools/xstack/testx/tests/test_epoch_anchor_emitted_on_interval.py",
     "tools/xstack/testx/tests/test_anchor_contains_required_hashes.py",
     "tools/xstack/testx/tests/test_compaction_respects_anchor_boundaries.py",

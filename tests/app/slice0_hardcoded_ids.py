@@ -38,8 +38,8 @@ SKIP_PREFIXES = (
     "external/",
     "deps/",
     "content/domains/game/",
-    "tools/ci/",
-    "tools/worldgen_offline/",
+    "tools/validators/ci/",
+    "tools/domain/worldgen/offline/",
 )
 
 ALLOWLIST = {

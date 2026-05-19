@@ -22,7 +22,7 @@ def run(repo_root: str):
 
     with tempfile.TemporaryDirectory() as temp_dir:
         out_path = os.path.join(temp_dir, "CLI_REFERENCE.md")
-        from tools.appshell.tool_generate_command_docs import main as docs_main
+        from tools.codegen.shell.tool_generate_command_docs import main as docs_main
 
         result = int(docs_main(["--repo-root", repo_root, "--output-path", out_path]))
         if result != 0:

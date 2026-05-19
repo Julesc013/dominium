@@ -15,7 +15,7 @@ Version: 1.0.0
 
 This policy governs deterministic budget degradation for CHEM stress execution in:
 
-- `tools/chem/tool_run_chem_stress.py`
+- `tools/domain/chemistry/tool_run_chem_stress.py`
 
 It does not change runtime CHEM semantics. It governs stress-envelope behavior and diagnostics only.
 

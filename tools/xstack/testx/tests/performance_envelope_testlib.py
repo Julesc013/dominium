@@ -7,7 +7,7 @@ import os
 import subprocess
 import sys
 
-from tools.perf.performance_envelope_common import (
+from tools.performance.envelope.performance_envelope_common import (
     BASELINE_DOC_REL,
     DEFAULT_PLATFORM_TAG,
     DOCTRINE_DOC_REL,

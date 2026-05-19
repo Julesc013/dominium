@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E373_FLOAT_TRIG_SMELL"
 SEASON_ENGINE_REL = "game/domain/worldgen/earth/season_phase_engine.py"
 CLIMATE_ENGINE_REL = "game/domain/worldgen/earth/climate_field_engine.py"
-CLIMATE_PROBE_REL = "tools/worldgen/earth2_probe.py"
+CLIMATE_PROBE_REL = "tools/domain/worldgen/earth2_probe.py"
 CLIMATE_DOC_REL = "docs/domains/worldgen/EARTH_SEASONAL_CLIMATE_MODEL.md"
 REQUIRED_TOKENS = {
     SEASON_ENGINE_REL: (

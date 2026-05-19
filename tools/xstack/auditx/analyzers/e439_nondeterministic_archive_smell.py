@@ -19,7 +19,7 @@ REQUIRED_TOKENS = {
         "verify_bundle_directory(",
         "\"bundle_hash_mismatch\"",
     ),
-    "tools/lib/tool_verify_bundle.py": (
+    "tools/package/libraries/bundle/tool_verify_bundle.py": (
         "Verify a deterministic LIB-6 bundle directory.",
         "verify_bundle_directory(",
     ),
@@ -27,7 +27,7 @@ REQUIRED_TOKENS = {
 FORBIDDEN_TOKENS = {
     "tools/package/libraries/bundle/bundle_manifest.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "os.path.getmtime(", "random."),
     "tools/export/export_engine.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "os.path.getmtime(", "random."),
-    "tools/lib/tool_verify_bundle.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "random."),
+    "tools/package/libraries/bundle/tool_verify_bundle.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "random."),
 }
 
 

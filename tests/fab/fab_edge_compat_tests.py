@@ -20,7 +20,7 @@ def main():
     repo_root = os.path.abspath(args.repo_root)
 
     path = os.path.join(repo_root, "tests", "fab", "fixtures", "fab_pack_edge_mismatch.json")
-    inspect_out = run_tool(repo_root, "tools/fab/fab_inspect.py", path)
+    inspect_out = run_tool(repo_root, "tools/domain/fabrication/fab_inspect.py", path)
     edges = inspect_out.get("edges", [])
     target = [edge for edge in edges if edge.get("edge_id") == "dominium.test.edge.mismatch"]
     if not target:

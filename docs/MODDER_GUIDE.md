@@ -29,7 +29,7 @@ Dominium is data‑first. Mods are content packs that extend reality through sch
 - Start with a clear pack ID and version.
 - Follow the pack taxonomy in `docs/distribution/PACK_TAXONOMY.md`.
 - Use the schemas in `schema/` and respect unit policies in `docs/architecture/UNIT_SYSTEM_POLICY.md`.
-- Validate with `tools/pack/pack_validate.py` and `tools/fab/fab_validate.py`.
+- Validate with `tools/package/pack/pack_validate.py` and `tools/domain/fabrication/fab_validate.py`.
 
 ## Maturity labels
 

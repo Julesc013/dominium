@@ -7,7 +7,7 @@ import os
 from typing import Mapping, Sequence
 
 from tools.package.libraries.install import merge_protocol_ranges, normalize_install_manifest
-from tools.governance import governance_profile_hash
+from tools.repo.governance import governance_profile_hash
 from tools.validators.identity import (
     UNIVERSAL_IDENTITY_FIELD,
     canonicalize_universal_identity_block,

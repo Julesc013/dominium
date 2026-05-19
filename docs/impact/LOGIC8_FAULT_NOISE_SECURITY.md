@@ -12,16 +12,16 @@ Touched Paths:
 - contracts/registry/instrumentation_surface_registry.json
 - contracts/registry/process_registry.json
 - docs/logic/FAULT_NOISE_SECURITY_MODEL.md
-- tools/governance/proof/control_proof_bundle.py
+- tools/repo/governance/proof/control_proof_bundle.py
 - logic/debug/debug_engine.py
 - logic/eval/logic_eval_engine.py
 - logic/eval/runtime_state.py
 - logic/eval/sense_engine.py
 - logic/fault/fault_engine.py
 - logic/noise/noise_engine.py
-- tools/logic/tool_replay_fault_window.py
-- tools/logic/tool_replay_logic_window.py
-- tools/logic/tool_run_logic_fault_stress.py
+- tools/domain/logic/tool_replay_fault_window.py
+- tools/domain/logic/tool_replay_logic_window.py
+- tools/domain/logic/tool_run_logic_fault_stress.py
 - tools/xstack/sessionx/process_runtime.py
 
 Demand IDs:

@@ -2151,7 +2151,7 @@
     {
       "display_name": "Client",
       "entry_function": "client_main",
-      "entry_module": "tools.mvp.runtime_entry",
+      "entry_module": "tools.release.mvp.runtime_entry",
       "expected_refusal_codes": [
         "refusal.install.not_found",
         "refusal.compat.feature_disabled"
@@ -2175,7 +2175,7 @@
     {
       "display_name": "Engine",
       "entry_function": "main",
-      "entry_module": "tools.appshell.product_stub_cli",
+      "entry_module": "tools.validators.shell.product_stub_cli",
       "expected_refusal_codes": [
         "refusal.install.not_found",
         "refusal.compat.feature_disabled"
@@ -2199,7 +2199,7 @@
     {
       "display_name": "Game",
       "entry_function": "main",
-      "entry_module": "tools.appshell.product_stub_cli",
+      "entry_module": "tools.validators.shell.product_stub_cli",
       "expected_refusal_codes": [
         "refusal.install.not_found",
         "refusal.compat.feature_disabled"
@@ -2223,7 +2223,7 @@
     {
       "display_name": "Launcher",
       "entry_function": "main",
-      "entry_module": "tools.launcher.launch",
+      "entry_module": "tools.package.launcher.launch",
       "expected_refusal_codes": [
         "refusal.install.not_found",
         "refusal.compat.feature_disabled"
@@ -2271,7 +2271,7 @@
     {
       "display_name": "Setup",
       "entry_function": "main",
-      "entry_module": "tools.setup.setup_cli",
+      "entry_module": "tools.package.setup.setup_cli",
       "expected_refusal_codes": [
         "refusal.install.not_found",
         "refusal.compat.feature_disabled"
@@ -2295,7 +2295,7 @@
     {
       "display_name": "Tools",
       "entry_function": "main",
-      "entry_module": "tools.appshell.product_stub_cli",
+      "entry_module": "tools.validators.shell.product_stub_cli",
       "expected_refusal_codes": [
         "refusal.install.not_found",
         "refusal.compat.feature_disabled"

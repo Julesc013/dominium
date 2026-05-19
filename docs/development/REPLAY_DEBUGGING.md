@@ -34,14 +34,14 @@ dominium-tools replay <path>
 - Keep inputs and build versions constant.
 - Use replay diff tooling:
 ```
-python tools/playtest/replay_diff.py --left <replay_a> --right <replay_b>
+python tools/test/playtest/replay_diff.py --left <replay_a> --right <replay_b>
 ```
 
 ## Refusal diagnostics
 - Refusals are explicit and encoded with canonical codes.
 - Use the refusal explain tool:
 ```
-python tools/inspect/refusal_explain.py --input <refusal_payload.json>
+python apps/workbench/module/inspection/inspector/refusal_explain.py --input <refusal_payload.json>
 ```
 
 ## Notes

@@ -20,7 +20,7 @@ TARGETS = (
         ),
     ),
     (
-        "tools/materials/tool_run_stress.py",
+        "tools/domain/materials/tool_run_stress.py",
         (
             "run_stress_simulation(",
             "stress_report",

@@ -6,7 +6,16 @@ import os
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
@@ -16,7 +25,7 @@ from tools.validators.suite import validation_surface_findings
 
 
 ANALYZER_ID = "E473_DUPLICATE_VALIDATION_SURFACE_SMELL"
-WATCH_PREFIXES = ("tools/validation", "tools/validate", "tools/validator", "tools/coredata_validate", "src/validation")
+WATCH_PREFIXES = ("tools/validators", "tools/validators/content/coredata", "src/validation")
 RULE_ID = "INV-NO-ADHOC-VALIDATION-ENTRYPOINTS"
 
 

@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.astro.sol1_audit_common import scan_moon_phase_storage
+    from tools.domain.astronomy.sol1_audit_common import scan_moon_phase_storage
 
     violations = list(scan_moon_phase_storage(repo_root))
     if violations:

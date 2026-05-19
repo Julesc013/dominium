@@ -11,8 +11,8 @@ ANALYZER_ID = "E379_UNBOUNDED_SHADOW_SAMPLING_SMELL"
 HORIZON_SHADOW_REL = "game/domain/worldgen/earth/lighting/horizon_shadow_engine.py"
 SHADOW_REGISTRY_REL = "contracts/registry/shadow_model_registry.json"
 LIGHTING_VIEW_REL = "game/domain/worldgen/earth/lighting/lighting_view_engine.py"
-PROBE_REL = "tools/worldgen/earth5_probe.py"
-REPLAY_REL = "tools/worldgen/tool_replay_illumination_view.py"
+PROBE_REL = "tools/domain/worldgen/earth5_probe.py"
+REPLAY_REL = "tools/domain/worldgen/tool_replay_illumination_view.py"
 DOC_REL = "docs/domains/worldgen/EARTH_ILLUMINATION_SHADOW_MODEL.md"
 REQUIRED_TOKENS = {
     HORIZON_SHADOW_REL: (

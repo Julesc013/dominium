@@ -389,7 +389,7 @@ static int launcher_append_quoted(char* buf, size_t cap, const char* arg)
 
 static int launcher_resolve_ops_script(char* out, size_t cap)
 {
-    const char* rel = "tools/ops/ops_cli.py";
+    const char* rel = "tools/package/ops/ops_cli.py";
     if (!out || cap == 0u) {
         return 0;
     }
@@ -439,7 +439,7 @@ static int launcher_run_ops(int argc, char** argv, int cmd_index)
 
 static int launcher_resolve_share_script(char* out, size_t cap)
 {
-    const char* rel = "tools/share/share_cli.py";
+    const char* rel = "tools/export/share/share_cli.py";
     if (!out || cap == 0u) {
         return 0;
     }
@@ -489,7 +489,7 @@ static int launcher_run_share(int argc, char** argv, int cmd_index)
 
 static int launcher_resolve_bugreport_script(char* out, size_t cap)
 {
-    const char* rel = "tools/bugreport/bugreport_cli.py";
+    const char* rel = "tools/diagnostics/bugreport/bugreport_cli.py";
     if (!out || cap == 0u) {
         return 0;
     }
@@ -539,7 +539,7 @@ static int launcher_run_bugreport(int argc, char** argv, int cmd_index)
 
 static int launcher_resolve_launcher_script(char* out, size_t cap)
 {
-    const char* rel = "tools/launcher/launcher_cli.py";
+    const char* rel = "tools/package/launcher/launcher_cli.py";
     if (!out || cap == 0u) {
         return 0;
     }

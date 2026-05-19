@@ -24,7 +24,7 @@ def _load_json(path: str):
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.mvp.baseline_universe_common import (
+    from tools.release.mvp.baseline_universe_common import (
         BASELINE_INSTANCE_MANIFEST_REL,
         BASELINE_PACK_LOCK_REL,
         BASELINE_PROFILE_BUNDLE_REL,

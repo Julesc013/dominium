@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.meta_blueprint_common import (
+from tools.audit.review.meta_blueprint_common import (
     CAPABILITY_LADDER_REL,
     FOUNDATION_READINESS_REL,
     LIVE_OPS_DIAGRAM_REL,

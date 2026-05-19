@@ -16,7 +16,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.time.tool_verify_sync_consistency import verify_sync_consistency
+    from tools.domain.time.tool_verify_sync_consistency import verify_sync_consistency
 
     report = verify_sync_consistency(
         sync_policy_id="sync.adjust_on_receipt",

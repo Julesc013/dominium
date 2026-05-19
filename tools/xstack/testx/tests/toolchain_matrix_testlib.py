@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 
-from tools.mvp.toolchain_matrix_common import (
+from tools.release.mvp.toolchain_matrix_common import (
     DEFAULT_ENV_ID,
     DEFAULT_PROFILE_ID,
     TOOLCHAIN_HASHES_SCHEMA_ID,

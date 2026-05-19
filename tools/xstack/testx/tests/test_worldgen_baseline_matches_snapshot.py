@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "worldgen", "lock", "baseline"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.worldgen.worldgen_lock_common import verify_worldgen_lock
+    from tools.domain.worldgen.worldgen_lock_common import verify_worldgen_lock
 
     report = verify_worldgen_lock(repo_root)
     if not bool(report.get("matches_snapshot")):

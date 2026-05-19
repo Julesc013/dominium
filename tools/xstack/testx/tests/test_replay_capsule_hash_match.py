@@ -16,7 +16,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.process.tool_replay_capsule_window import verify_capsule_replay_window
+    from tools.domain.processes.tool_replay_capsule_window import verify_capsule_replay_window
     from tools.xstack.testx.tests.proc5_testlib import run_proc5_capsule_case
 
     first = run_proc5_capsule_case(repo_root=repo_root, compile_with_compiled_model=True)

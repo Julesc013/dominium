@@ -6,13 +6,22 @@ import os
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 
 from analyzers.base import make_finding
-from tools.compat.migration_lifecycle_common import RULE_POLICY, migration_lifecycle_violations
+from tools.package.compatibility.migration_lifecycle_common import RULE_POLICY, migration_lifecycle_violations
 
 
 ANALYZER_ID = "E523_ARTIFACT_LOADED_WITHOUT_POLICY_SMELL"
@@ -42,7 +51,7 @@ def run(graph, repo_root, changed_files=None):
                 related_invariants=[RULE_POLICY],
                 related_paths=[
                     rel_path or "tools/validators/compatibility/migration_lifecycle.py",
-                    "tools/compat/migration_lifecycle_common.py",
+                    "tools/package/compatibility/migration_lifecycle_common.py",
                 ],
             )
         )

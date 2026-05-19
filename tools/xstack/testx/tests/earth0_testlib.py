@@ -19,7 +19,7 @@ def _ensure_repo_root(repo_root: str) -> None:
 
 def generate_earth_tile_fixture(repo_root: str, *, current_tick: int = EARTH_FIXTURE_TICK) -> dict:
     _ensure_repo_root(repo_root)
-    from tools.worldgen.earth0_probe import build_earth_probe_context, generate_earth_probe_tile
+    from tools.domain.worldgen.earth0_probe import build_earth_probe_context, generate_earth_probe_tile
 
     context = build_earth_probe_context(repo_root)
     return generate_earth_probe_tile(
@@ -33,21 +33,21 @@ def generate_earth_tile_fixture(repo_root: str, *, current_tick: int = EARTH_FIX
 
 def generate_earth_surface_report(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from tools.worldgen.earth0_probe import verify_earth_surface_consistency
+    from tools.domain.worldgen.earth0_probe import verify_earth_surface_consistency
 
     return verify_earth_surface_consistency(repo_root)
 
 
 def earth_surface_hash(repo_root: str) -> str:
     _ensure_repo_root(repo_root)
-    from tools.worldgen.earth0_probe import earth_surface_sample_hash, sample_earth_surface
+    from tools.domain.worldgen.earth0_probe import earth_surface_sample_hash, sample_earth_surface
 
     return earth_surface_sample_hash(sample_earth_surface(repo_root, current_tick=EARTH_HASH_TICK))
 
 
 def generate_earth_seasonal_pair(repo_root: str) -> tuple[dict, dict]:
     _ensure_repo_root(repo_root)
-    from tools.worldgen.earth0_probe import (
+    from tools.domain.worldgen.earth0_probe import (
         EARTH_SEASON_TICK_A,
         EARTH_SEASON_TICK_B,
         build_earth_probe_context,

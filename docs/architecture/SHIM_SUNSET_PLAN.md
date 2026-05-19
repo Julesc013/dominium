@@ -30,8 +30,8 @@ Removal requires all of the following:
 | `path` | `shim.path.legacy_packs_root` | `../packs | ./packs | packs | data/packs | ./data/packs` | `VROOT_PACKS` | `v0.1.0` | `not proven` | `yes` |
 | `path` | `shim.path.legacy_profiles_root` | `./profiles | profiles | data/profiles | ./data/profiles` | `VROOT_PROFILES` | `v0.1.0` | `not proven` | `yes` |
 | `path` | `shim.path.legacy_store_children` | `./locks | ./instances | ./saves | ./exports | ./logs | ./runtime` | `governed store vroots` | `v0.1.0` | `not proven` | `yes` |
-| `tool` | `shim.tool.pack_migrate_capability_gating` | `tools/pack/migrate_capability_gating.py` | `dom pack migrate-capability-gating` | `v0.1.0` | `not proven` | `yes` |
-| `tool` | `shim.tool.pack_validate` | `tools/pack/pack_validate.py` | `dom pack validate-manifest` | `v0.1.0` | `not proven` | `yes` |
-| `validation` | `shim.validation.validate_all_py` | `tools/ci/validate_all.py` | `validate --all --profile FAST|STRICT|FULL` | `v0.1.0` | `not proven` | `yes` |
+| `tool` | `shim.tool.pack_migrate_capability_gating` | `tools/package/pack/migrate_capability_gating.py` | `dom pack migrate-capability-gating` | `v0.1.0` | `not proven` | `yes` |
+| `tool` | `shim.tool.pack_validate` | `tools/package/pack/pack_validate.py` | `dom pack validate-manifest` | `v0.1.0` | `not proven` | `yes` |
+| `validation` | `shim.validation.validate_all_py` | `tools/validators/ci/validate_all.py` | `validate --all --profile FAST|STRICT|FULL` | `v0.1.0` | `not proven` | `yes` |
 
 Current Xi-8 action: retain all shims. No shim was removed in this freeze pass.

@@ -16,13 +16,13 @@ def ensure_repo_on_path(repo_root: str) -> None:
 
 def run_probe(repo_root: str, *, suffix: str) -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.appshell.appshell4_probe import run_ipc_attach_probe
+    from tools.validators.shell.appshell4_probe import run_ipc_attach_probe
 
     return run_ipc_attach_probe(repo_root, suffix=str(suffix).strip() or "default")
 
 
 def replay_probe(repo_root: str, *, suffix: str) -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.appshell.appshell4_probe import verify_ipc_attach_replay
+    from tools.validators.shell.appshell4_probe import verify_ipc_attach_replay
 
     return verify_ipc_attach_replay(repo_root, suffix=str(suffix).strip() or "replay")

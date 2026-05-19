@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 import tempfile
 
-from tools.review.repo_inventory_common import build_repo_inventory, scan_product_main_bypasses, unknown_inventory_entries
+from tools.audit.review.repo_inventory_common import build_repo_inventory, scan_product_main_bypasses, unknown_inventory_entries
 from tools.xstack.compatx.canonical_json import canonical_json_text
 
 

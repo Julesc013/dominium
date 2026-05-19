@@ -16,7 +16,7 @@ WATCH_PREFIXES = (
     "contracts/registry/logic_policy_registry.json",
     "contracts/registry/compute_budget_profile_registry.json",
     "game/domain/logic/",
-    "tools/logic/",
+    "tools/domain/logic/",
 )
 
 

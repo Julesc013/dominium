@@ -525,7 +525,7 @@
       ],
       "representative_evidence_surfaces": [
         "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
-        "tools/convergence/**",
+        "tools/migration/convergence/**",
         "repo/repox/rulesets/**"
       ],
       "allowed_output_classes": [

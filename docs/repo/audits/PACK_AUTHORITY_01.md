@@ -169,7 +169,7 @@ capability fields were not mutated.
 - `python tools/build/validate_build_contract.py`: PASS.
 - `python -m py_compile tools/migration/canon_spine_new.py
   tools/validators/repo/check_path_terms.py`: PASS.
-- `python tools/pack/pack_validate.py --repo-root . --pack-root
+- `python tools/package/pack/pack_validate.py --repo-root . --pack-root
   content/packs/core/org.dominium.core.units --format json`: PASS; deprecated
   shim warning emitted before the JSON success payload.
 - `python tests/invariant/test_pack_duplicate_pack_id_refusal.py --repo-root .`:

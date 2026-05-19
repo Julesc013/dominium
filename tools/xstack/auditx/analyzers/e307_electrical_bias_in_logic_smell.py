@@ -16,7 +16,7 @@ WATCH_PREFIXES = (
     "contracts/schema/logic/",
     "contracts/registry/signal_type_registry.json",
     "game/domain/logic/",
-    "tools/logic/",
+    "tools/domain/logic/",
 )
 
 _FORBIDDEN_PATTERNS = (

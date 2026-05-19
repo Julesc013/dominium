@@ -82,7 +82,7 @@ Live repo evidence shows that execution context often includes:
 Those are real in the repo, but they belong to execution surfaces rather than the portable task contract itself.
 
 Product-shell commands are also distinct from portable task contracts.
-For example, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, and `appshell/commands/command_engine.py` are real command surfaces, but they package product and operator behavior around deeper contracts.
+For example, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, and `appshell/commands/command_engine.py` are real command surfaces, but they package product and operator behavior around deeper contracts.
 They may trigger or expose tasks; they do not define the portable task truth.
 
 Out-of-scope orchestration and runtime concerns for this prompt include:
@@ -172,7 +172,7 @@ This contract freeze is based on live repo evidence rather than aspiration.
 - `tools/xstack/sessionx/pipeline_contract.py` uses explicit refusal payloads with reason codes, remediation hints, relevant ids, and path markers when preconditions or contract rows are invalid. That is the repo-grounded reason to freeze refusal as a first-class contract outcome distinct from generic failure.
 - `tools/xstack/controlx/types.py` defines execution context fields such as `profile`, `cache_enabled`, `shards`, `shard_index`, and `output_dir`. Those are real and important, but they are execution-shape details, so they stay outside the portable task contract.
 - `tools/validators/suite/validation_engine.py` maps live and legacy validation surfaces, replacement targets, evidence outputs, and status classes. That is the repo-grounded reason to require evidence obligations, compatibility notes, and review-aware failure reporting.
-- `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, and `appshell/commands/command_engine.py` prove that the repo already has large command surfaces whose job is product integration and operator control. That is why the portable task contract must remain separate from product commands and shell wiring.
+- `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, and `appshell/commands/command_engine.py` prove that the repo already has large command surfaces whose job is product integration and operator control. That is why the portable task contract must remain separate from product commands and shell wiring.
 
 The portable minimum is therefore justified by implementation patterns already present in Dominium, while runtime placement and product shells remain intentionally excluded.
 

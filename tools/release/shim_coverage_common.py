@@ -8,7 +8,16 @@ from typing import Mapping
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
@@ -51,21 +60,21 @@ _INTEGRATION_TARGETS = (
     },
     {
         "integration_id": "pack_validate_tool_shim",
-        "file_path": "tools/pack/pack_validate.py",
+        "file_path": "tools/package/pack/pack_validate.py",
         "required_tokens": ("emit_legacy_tool_warning(", "redirect_legacy_path("),
         "rule_id": "INV-SHIMS-MUST-LOG-DEPRECATION",
         "message": "Legacy pack_validate entrypoint must emit a deprecation warning and redirect legacy paths through vpath shims.",
     },
     {
         "integration_id": "pack_migrate_tool_shim",
-        "file_path": "tools/pack/migrate_capability_gating.py",
+        "file_path": "tools/package/pack/migrate_capability_gating.py",
         "required_tokens": ("emit_legacy_tool_warning(", "redirect_legacy_path("),
         "rule_id": "INV-SHIMS-MUST-LOG-DEPRECATION",
         "message": "Legacy capability-gating migration entrypoint must emit a deprecation warning and redirect legacy paths through vpath shims.",
     },
     {
         "integration_id": "legacy_validate_all_shim",
-        "file_path": "tools/ci/validate_all.py",
+        "file_path": "tools/validators/ci/validate_all.py",
         "required_tokens": ("run_legacy_validate_all(",),
         "rule_id": "INV-SHIMS-MUST-NOT-BYPASS-VALIDATION",
         "message": "Legacy validate_all wrapper must route into the unified validation pipeline.",
@@ -183,7 +192,7 @@ def _legacy_validation_remainders(repo_root: str) -> list[dict]:
     for row in validation_surface_rows(repo_root):
         row_map = dict(row or {})
         path = _token(row_map.get("path"))
-        if path in {"tools/ci/validate_all.py"}:
+        if path in {"tools/validators/ci/validate_all.py"}:
             continue
         rows.append(
             {

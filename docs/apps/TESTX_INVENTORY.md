@@ -33,7 +33,7 @@ Short discovery summary for the APR0 platform/runtime and renderer work.
 - Server (`apps/server/main_server.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, `--control-*`, `--mp0-loopback`, `--mp0-server-auth`.
 - Launcher CLI (`apps/launcher/cli/launcher_cli_main.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, `version`, `list-profiles`, `capabilities` commands.
 - Setup CLI (`apps/setup/cli/setup_cli_main.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, `version`, `status`, `prepare` commands.
-- Tools host (`tools/tools_host_main.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, plus `inspect`/`validate`/`replay` stubs.
+- Tools host (`tools/build/host/tools_host_main.c`): `--help`, `--version`, `--build-info`, `--status`, `--smoke`, `--selftest`, plus `inspect`/`validate`/`replay` stubs.
 
 ## Version/build reporting (current)
 - Global build number: `.dominium_build_number` (read in root `CMakeLists.txt`).

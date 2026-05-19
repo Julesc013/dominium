@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E104_DIRECT_INTENT_BYPASS_SMELL"
 
 ALLOWED_PATHS = {
-    "tools/governance/control_plane_engine.py",
+    "tools/repo/governance/control_plane_engine.py",
     "runtime/ui/client/interaction/interaction_dispatch.py",
     "tools/validators/network/srz/shard_coordinator.py",
     "tools/validators/network/policies/policy_server_authoritative.py",

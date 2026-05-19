@@ -87,13 +87,13 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | --- | --- | --- | --- | --- | --- | --- |
 
 
-| ARCH-TOP-001 | Top-level `source/`, `src/`, `common_source/` are FORBIDDEN. | Repo layout lint (tools/ci/arch_checks.py) | Configure | CI fail: ARCH-TOP-001 | Remove or relocate the directory into a canonical top-level domain. | Prevents ambiguous ownership and drift. |
+| ARCH-TOP-001 | Top-level `source/`, `src/`, `common_source/` are FORBIDDEN. | Repo layout lint (tools/validators/ci/arch_checks.py) | Configure | CI fail: ARCH-TOP-001 | Remove or relocate the directory into a canonical top-level domain. | Prevents ambiguous ownership and drift. |
 
 
 | ARCH-OWN-002 | `engine/` and `game/` responsibilities MUST NOT be merged. | Repo layout + target graph check | Configure | CI fail: ARCH-OWN-002 | Split responsibilities and restore separation between engine and game targets. | Preserves core layering and portability. |
 
 
-| ARCH-DEP-001 | `engine/` MUST NOT reference or link `game/`, `launcher/`, `setup/`, or `tools/`. | Target graph rule + static scan (tools/ci/arch_checks.py) | Configure | CI fail: ARCH-DEP-001 | Remove forbidden references and use engine public APIs only. | Keeps engine as the dependency root. |
+| ARCH-DEP-001 | `engine/` MUST NOT reference or link `game/`, `launcher/`, `setup/`, or `tools/`. | Target graph rule + static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: ARCH-DEP-001 | Remove forbidden references and use engine public APIs only. | Keeps engine as the dependency root. |
 
 
 | ARCH-DEP-002 | `game/` MAY depend only on `engine/`. | Target graph rule in CMake | Configure | CI fail: ARCH-DEP-002 | Remove illegal dependencies and rewire through engine public APIs. | Maintains clear ownership of rules. |
@@ -111,16 +111,16 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | ARCH-DEP-006 | `launcher/` MAY depend on `engine/` (public) + `libs/contracts`; `setup/` MAY depend only on `libs/contracts`. | Target graph rule in CMake | Configure | CI fail: ARCH-DEP-006 | Remove illegal dependencies and route through `libs/contracts` or engine public APIs only. | Keeps control-plane tools separate from runtime logic. |
 
 
-| ARCH-INC-001 | `game/` includes from `engine/modules/**` or platform headers are FORBIDDEN. | Compile-time include guard + static scan (tools/ci/arch_checks.py) | Build | CI fail: ARCH-INC-001 | Replace with `engine/include/**` public headers; remove platform headers from game. | Enforces API boundaries. |
+| ARCH-INC-001 | `game/` includes from `engine/modules/**` or platform headers are FORBIDDEN. | Compile-time include guard + static scan (tools/validators/ci/arch_checks.py) | Build | CI fail: ARCH-INC-001 | Replace with `engine/include/**` public headers; remove platform headers from game. | Enforces API boundaries. |
 
 
-| ARCH-INC-002 | `client/`, `server/`, `tools/` include from `engine/modules/**` are FORBIDDEN. | Compile-time include guard + static scan (tools/ci/arch_checks.py) | Build | CI fail: ARCH-INC-002 | Replace with `engine/include/**` public headers. | Protects internal engine modules. |
+| ARCH-INC-002 | `client/`, `server/`, `tools/` include from `engine/modules/**` are FORBIDDEN. | Compile-time include guard + static scan (tools/validators/ci/arch_checks.py) | Build | CI fail: ARCH-INC-002 | Replace with `engine/include/**` public headers. | Protects internal engine modules. |
 
 
 | ARCH-INC-003 | Public headers MUST live in `engine/include/**` only. | CMake configure-time public-include assertion (`domino_engine`) | Configure | CI fail: ARCH-INC-003 | Move or re-export headers via `engine/include/**`. | Prevents accidental API exposure. |
 
 
-| ARCH-RENDER-001 | Renderer-specific code outside `runtime/render/**` is FORBIDDEN. | Path-based static scan (tools/ci/arch_checks.py) | Configure | CI fail: ARCH-RENDER-001 | Move code into `runtime/render/**` and expose public API. | Centralizes renderer ownership. |
+| ARCH-RENDER-001 | Renderer-specific code outside `runtime/render/**` is FORBIDDEN. | Path-based static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: ARCH-RENDER-001 | Move code into `runtime/render/**` and expose public API. | Centralizes renderer ownership. |
 
 
 | ARCH-REN-002 | `game/` MUST NOT branch on graphics APIs. | Static scan for backend tokens | Configure | CI fail: ARCH-REN-002 | Move backend choice to engine render layer. | Keeps game logic renderer-agnostic. |
@@ -476,16 +476,16 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | ECSX0-PACK-001 | Compiler-dependent packing declarations are FORBIDDEN. | Schema + code scan (future hook) | Docs | CI fail: ECSX0-PACK-001 | Use explicit packing rules only. | Prevents platform-dependent layout. |
 
 
-| DET-FLOAT-003 | Floating point usage or math headers in authoritative zones are FORBIDDEN. | Static scan (tools/ci/arch_checks.py) | Configure | CI fail: DET-FLOAT-003 | Replace with deterministic fixed-point or approved math. | Prevents nondeterministic math. |
+| DET-FLOAT-003 | Floating point usage or math headers in authoritative zones are FORBIDDEN. | Static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: DET-FLOAT-003 | Replace with deterministic fixed-point or approved math. | Prevents nondeterministic math. |
 
 
-| DET-TIME-001 | OS time APIs in authoritative zones are FORBIDDEN. | Static scan (tools/ci/arch_checks.py) | Configure | CI fail: DET-TIME-001 | Use ACT time and deterministic scheduling only. | Eliminates wall-clock variance. |
+| DET-TIME-001 | OS time APIs in authoritative zones are FORBIDDEN. | Static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: DET-TIME-001 | Use ACT time and deterministic scheduling only. | Eliminates wall-clock variance. |
 
 
-| DET-RNG-002 | Non-deterministic RNG in authoritative zones is FORBIDDEN. | Static scan (tools/ci/arch_checks.py) | Configure | CI fail: DET-RNG-002 | Use engine deterministic RNG only. | Ensures replayable randomness. |
+| DET-RNG-002 | Non-deterministic RNG in authoritative zones is FORBIDDEN. | Static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: DET-RNG-002 | Use engine deterministic RNG only. | Ensures replayable randomness. |
 
 
-| DET-ORD-004 | Unordered container iteration without normalization is FORBIDDEN. | Lint + static scan (tools/ci/arch_checks.py) | Configure | CI fail: DET-ORD-004 | Normalize ordering or use ordered containers. | Removes hash-order variance. |
+| DET-ORD-004 | Unordered container iteration without normalization is FORBIDDEN. | Lint + static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: DET-ORD-004 | Normalize ordering or use ordered containers. | Removes hash-order variance. |
 
 
 | DET-ORDER-TEST-001 | Event queue ordering is deterministic under permuted insertions. | CTest `engine_det_order` | Test | CI fail: DET-ORDER-TEST-001 | Fix event queue ordering or tie-break keys. | Prevents event scheduling drift. |
@@ -533,7 +533,7 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | DET-G6 | Canonical ordering under permuted insertions MUST hold. | Ordering invariance suite | Test | CI fail: DET-G6 | Normalize container ordering. | Prevents order-dependent divergence. |
 
 
-| PERF-GLOBAL-002 | Global iteration in runtime update paths is FORBIDDEN. | Lint (tools/ci/arch_checks.py) + fixture test | Test | CI fail: PERF-GLOBAL-002 | Convert to event-driven, interest-set bounded processing. | Avoids O(N) frame scaling. |
+| PERF-GLOBAL-002 | Global iteration in runtime update paths is FORBIDDEN. | Lint (tools/validators/ci/arch_checks.py) + fixture test | Test | CI fail: PERF-GLOBAL-002 | Convert to event-driven, interest-set bounded processing. | Avoids O(N) frame scaling. |
 
 
 | PERF-EVT-001 | Macro scheduler processes only due entries (latent universe stays bounded). | CTest `engine_due_sched` | Test | CI fail: PERF-EVT-001 | Register macro objects with due scheduler; avoid global sweeps. | Keeps idle universe near-zero cost. |
@@ -560,7 +560,7 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | PERF-STALL-004 | Stall watchdog thresholds MUST NOT be exceeded. | Perf regression test | Test | CI fail: PERF-STALL-004 | Reduce stalls or move work off render/UI threads. | Enforces predictable frame budgets. |
 
 
-| PERF-PROFILE-001 | PERF3 fixtures MUST emit telemetry and required metrics. | CTest `engine_perf_budget_fixture` + tools/ci/perf_budget_check.py | Test | CI fail: PERF-PROFILE-001 | Ensure profiling is enabled and metrics are recorded per lane. | Keeps telemetry consistent and parseable. |
+| PERF-PROFILE-001 | PERF3 fixtures MUST emit telemetry and required metrics. | CTest `engine_perf_budget_fixture` + tools/validators/ci/perf_budget_check.py | Test | CI fail: PERF-PROFILE-001 | Ensure profiling is enabled and metrics are recorded per lane. | Keeps telemetry consistent and parseable. |
 
 
 | PERF-FID-005 | Forbidden fidelity degradation is FORBIDDEN. | Scenario tests + invariants | Test | CI fail: PERF-FID-005 | Use only approved degradation mechanisms. | Protects authoritative state integrity. |
@@ -572,7 +572,7 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | PERF-BUDGET-001 | Tier performance budgets MUST NOT be exceeded. | PERF3 fixture regression | Test | CI fail: PERF-BUDGET-001 | Optimize hot paths or reduce workload. | Enforces tier targets. |
 
 
-| PERF-BUDGET-002 | Tier performance budgets MUST NOT be exceeded. | tools/ci/perf_budget_check.py against PERF3 reports | Test | CI fail: PERF-BUDGET-002 | Optimize workloads or update PERF_BUDGETS.md thresholds with approval. | Prevents performance regression drift. |
+| PERF-BUDGET-002 | Tier performance budgets MUST NOT be exceeded. | tools/validators/ci/perf_budget_check.py against PERF3 reports | Test | CI fail: PERF-BUDGET-002 | Optimize workloads or update PERF_BUDGETS.md thresholds with approval. | Prevents performance regression drift. |
 
 
 | SCALE-SHARD-001 | Single-writer shard authority is REQUIRED. | Policy/spec lint (SCALE0) | Configure | CI fail: SCALE-SHARD-001 | Define shard authority domains with exactly one writer. | Prevents authority drift and nondeterminism. |
@@ -584,16 +584,16 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | SCALE-CLOCK-003 | Per-shard clocks or drift are FORBIDDEN. | Policy/spec lint (SCALE0) | Configure | CI fail: SCALE-CLOCK-003 | Ensure all shards share ACT; pace via batching only. | Preserves determinism across shards. |
 
 
-| SCALE-INT-001 | Macro/meso update paths MUST accept an InterestSet parameter. | Static scan (tools/ci/arch_checks.py) | Configure | CI fail: SCALE-INT-001 | Add dom_interest_set parameters and use them for iteration. | Enforces interest-driven processing. |
+| SCALE-INT-001 | Macro/meso update paths MUST accept an InterestSet parameter. | Static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: SCALE-INT-001 | Add dom_interest_set parameters and use them for iteration. | Enforces interest-driven processing. |
 
 
-| SCALE-INT-002 | Camera/view-driven activation in authoritative code is FORBIDDEN. | Static scan (tools/ci/arch_checks.py) | Configure | CI fail: SCALE-INT-002 | Use explicit interest sources; do not activate simulation from camera/view state. | Prevents UI-driven simulation activation. |
+| SCALE-INT-002 | Camera/view-driven activation in authoritative code is FORBIDDEN. | Static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: SCALE-INT-002 | Use explicit interest sources; do not activate simulation from camera/view state. | Prevents UI-driven simulation activation. |
 
 
-| SCALE-FID-001 | Direct spawn/despawn/destroy patterns outside fidelity interfaces are FORBIDDEN. | Static scan (tools/ci/arch_checks.py) | Configure | CI fail: SCALE-FID-001 | Route lifecycle changes through dom_fidelity request/apply interfaces. | Prevents ad-hoc entity lifecycle changes. |
+| SCALE-FID-001 | Direct spawn/despawn/destroy patterns outside fidelity interfaces are FORBIDDEN. | Static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: SCALE-FID-001 | Route lifecycle changes through dom_fidelity request/apply interfaces. | Prevents ad-hoc entity lifecycle changes. |
 
 
-| SCALE-FID-002 | Ad-hoc approximation/LOD shortcuts in authoritative code are FORBIDDEN. | Static scan (tools/ci/arch_checks.py) | Configure | CI fail: SCALE-FID-002 | Use fidelity projection refine/collapse paths with provenance preservation. | Prevents non-provenanced simplification. |
+| SCALE-FID-002 | Ad-hoc approximation/LOD shortcuts in authoritative code are FORBIDDEN. | Static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: SCALE-FID-002 | Use fidelity projection refine/collapse paths with provenance preservation. | Prevents non-provenanced simplification. |
 
 
 | SCALE-INT-TEST-001 | Interest sets are deterministic, bounded, and hysteretic. | CTest `dominium_interest` | Test | CI fail: SCALE-INT-TEST-001 | Fix interest-set aggregation, ordering, or hysteresis policy. | Verifies interest set determinism and bounded processing. |
@@ -632,19 +632,19 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | GOV-VAL-PERF-005 | Performance schema violations are FORBIDDEN (unbounded lists, missing fallbacks). | `tools/validators/suite/validate_all` | Configure | CI fail: GOV-VAL-PERF-005 | Add bounded sizes and render feature requires/fallback/cost. | Prevents unbounded or non-scalable content. |
 
 
-| PH6-AUDIT-001 | Phase 6 audit gates MUST pass (docs, CI IDs, test assets). | `tools/ci/phase6_audit_checks.py` (CTest `phase6_audit`) | Test | CI fail: PH6-AUDIT-001 | Restore required Phase 6 docs/tests and CI matrix IDs. | Ensures Phase 6 coverage stays complete. |
+| PH6-AUDIT-001 | Phase 6 audit gates MUST pass (docs, CI IDs, test assets). | `tools/validators/ci/phase6_audit_checks.py` (CTest `phase6_audit`) | Test | CI fail: PH6-AUDIT-001 | Restore required Phase 6 docs/tests and CI matrix IDs. | Ensures Phase 6 coverage stays complete. |
 
 
 | PERF-NOMODAL-001 | Modal loading is FORBIDDEN. | Runtime trace + watchdog | Test | CI fail: PERF-NOMODAL-001 | Move work to async pipelines. | Eliminates blocking loads. |
 
 
-| UI-BYPASS-001 | UI code reading authoritative world state is FORBIDDEN. | Static scan (tools/ci/arch_checks.py) | Configure | CI fail: UI-BYPASS-001 | Route UI through authorized projection layers. | Preserves epistemic separation. |
+| UI-BYPASS-001 | UI code reading authoritative world state is FORBIDDEN. | Static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: UI-BYPASS-001 | Route UI through authorized projection layers. | Preserves epistemic separation. |
 
 
-| EPIS-BYPASS-001 | UI includes authoritative headers are FORBIDDEN. | Static scan (tools/ci/arch_checks.py) + CTest `dominium_epistemic_ui_bypass` | Test | CI fail: EPIS-BYPASS-001 | Include EIL/capability snapshot headers only. | Blocks direct sim access from UI zones. |
+| EPIS-BYPASS-001 | UI includes authoritative headers are FORBIDDEN. | Static scan (tools/validators/ci/arch_checks.py) + CTest `dominium_epistemic_ui_bypass` | Test | CI fail: EPIS-BYPASS-001 | Include EIL/capability snapshot headers only. | Blocks direct sim access from UI zones. |
 
 
-| EPIS-API-002 | UI calls forbidden sim/world APIs are FORBIDDEN. | Static scan (tools/ci/arch_checks.py) | Configure | CI fail: EPIS-API-002 | Route UI access through EIL only. | Prevents authoritative queries from UI. |
+| EPIS-API-002 | UI calls forbidden sim/world APIs are FORBIDDEN. | Static scan (tools/validators/ci/arch_checks.py) | Configure | CI fail: EPIS-API-002 | Route UI access through EIL only. | Prevents authoritative queries from UI. |
 
 
 | EPIS-CAP-003 | UI displays info without capability justification is FORBIDDEN. | CTest `dominium_epistemic` | Test | CI fail: EPIS-CAP-003 | Use capability snapshots and epistemic queries for UI output. | Ensures UI reflects epistemic state only. |
@@ -1178,7 +1178,7 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 
 
 
-- `tools/ci/arch_checks.py` is not invoked by `.github/workflows/ci.yml`. IDs that rely solely on this script are not CI-enforced without an explicit `check_arch` step.
+- `tools/validators/ci/arch_checks.py` is not invoked by `.github/workflows/ci.yml`. IDs that rely solely on this script are not CI-enforced without an explicit `check_arch` step.
 
 
 - ID alias conflict: `DET-GATE-*` (docs/policies/DETERMINISM_ENFORCEMENT.md) and `DET-G*` (docs/policies/DETERMINISM_GATES.md) describe the same gates. Align to one canonical ID set.
@@ -1187,7 +1187,7 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 - `docs/architecture/ARCH_BUILD_ENFORCEMENT.md` references `DET-FLOAT-001`, but the implemented check ID is `DET-FLOAT-003`.
 
 
-- `BUILD-GLOBAL-001` is enforced for `include_directories()` at configure time; `link_directories()` is only covered by `tools/ci/arch_checks.py`.
+- `BUILD-GLOBAL-001` is enforced for `include_directories()` at configure time; `link_directories()` is only covered by `tools/validators/ci/arch_checks.py`.
 
 
 - `PERF-STALL-004` and `PERF-BUDGET-001` duplicate `PERF-STALL-001` and `PERF-BUDGET-002` without implementation.

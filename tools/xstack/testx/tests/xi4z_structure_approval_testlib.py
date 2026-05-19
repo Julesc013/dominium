@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.xi4z_structure_approval_common import (
+from tools.audit.review.xi4z_structure_approval_common import (
     SRC_DOMAIN_MAPPING_DECISIONS_REL,
     SRC_DOMAIN_MAPPING_LOCK_APPROVED_REL,
     TMP_BUNDLE_MANIFEST_REL,

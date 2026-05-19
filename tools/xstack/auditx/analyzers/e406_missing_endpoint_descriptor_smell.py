@@ -36,11 +36,11 @@ REQUIRED_TOKENS = {
         "build_product_build_metadata(",
         "product_descriptor_bin_names(",
     ),
-    "tools/compat/tool_emit_descriptor.py": (
+    "tools/package/compatibility/tool_emit_descriptor.py": (
         "--product-id",
         "emit_product_descriptor(",
     ),
-    "tools/compat/tool_generate_descriptor_manifest.py": (
+    "tools/package/compatibility/tool_generate_descriptor_manifest.py": (
         "product_descriptor_bin_names(",
         "--descriptor",
         "endpoint_descriptors.json",

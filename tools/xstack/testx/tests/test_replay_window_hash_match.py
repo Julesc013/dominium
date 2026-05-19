@@ -13,9 +13,9 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.fluid.tool_generate_fluid_stress import generate_fluid_stress_scenario
-    from tools.fluid.tool_replay_fluid_window import verify_fluid_replay_window
-    from tools.fluid.tool_run_fluid_stress import run_fluid_stress_scenario
+    from tools.domain.fluids.tool_generate_fluid_stress import generate_fluid_stress_scenario
+    from tools.domain.fluids.tool_replay_fluid_window import verify_fluid_replay_window
+    from tools.domain.fluids.tool_run_fluid_stress import run_fluid_stress_scenario
 
     scenario = generate_fluid_stress_scenario(
         seed=9704,

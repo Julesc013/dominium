@@ -21,8 +21,8 @@ LOGIC_FIELDS = (
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.mvp.gameplay_loop_common import load_gameplay_snapshot
-    from tools.mvp.mvp_smoke_common import run_logic_smoke_suite
+    from tools.release.mvp.gameplay_loop_common import load_gameplay_snapshot
+    from tools.release.mvp.mvp_smoke_common import run_logic_smoke_suite
 
     snapshot = load_gameplay_snapshot(repo_root)
     expected_logic = dict(dict(snapshot.get("record") or {}).get("logic") or {})

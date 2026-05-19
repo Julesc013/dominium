@@ -12,27 +12,27 @@ def _ensure_repo_root(repo_root: str) -> None:
 
 def water_view_report(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from tools.worldgen.earth8_probe import verify_water_view_replay as _report
+    from tools.domain.worldgen.earth8_probe import verify_water_view_replay as _report
 
     return _report(repo_root)
 
 
 def river_mask_report(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from tools.worldgen.earth8_probe import river_mask_report as _report
+    from tools.domain.worldgen.earth8_probe import river_mask_report as _report
 
     return _report(repo_root)
 
 
 def tide_offset_report(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from tools.worldgen.earth8_probe import tide_offset_report as _report
+    from tools.domain.worldgen.earth8_probe import tide_offset_report as _report
 
     return _report(repo_root)
 
 
 def earth_water_hash(repo_root: str) -> str:
     _ensure_repo_root(repo_root)
-    from tools.worldgen.earth8_probe import water_hash
+    from tools.domain.worldgen.earth8_probe import water_hash
 
     return str(water_hash(repo_root)).strip()

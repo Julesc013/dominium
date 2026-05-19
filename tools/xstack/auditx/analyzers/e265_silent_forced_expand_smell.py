@@ -81,7 +81,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         runtime_rel,
         macro_engine_rel,
-        "tools/governance/proof/control_proof_bundle.py",
+        "tools/repo/governance/proof/control_proof_bundle.py",
         "game/domain/systems/forensics/system_forensics_engine.py",
         "tools/xstack/repox/check.py",
     }

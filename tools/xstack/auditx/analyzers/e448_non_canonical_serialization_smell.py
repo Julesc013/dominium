@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E448_NON_CANONICAL_SERIALIZATION_SMELL"
 RULE_ID = "INV-MVP-CROSS-PLATFORM-MUST-PASS"
-HELPER_REL = "tools/mvp/cross_platform_gate_common.py"
+HELPER_REL = "tools/release/mvp/cross_platform_gate_common.py"
 HASHES_REL = "build/mvp/mvp_cross_platform_hashes.json"
 REPORT_REL = "build/mvp/mvp_cross_platform_matrix.json"
 BASELINE_REL = "tests/fixtures/regression/mvp_cross_platform_baseline.json"

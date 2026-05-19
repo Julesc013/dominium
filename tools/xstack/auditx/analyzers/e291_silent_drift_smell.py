@@ -55,7 +55,7 @@ def run(graph, repo_root, changed_files=None):
         "game/domain/processes/drift/drift_engine.py",
         "game/domain/processes/drift/__init__.py",
         "game/domain/processes/__init__.py",
-        "tools/process/tool_replay_drift_window.py",
+        "tools/domain/processes/tool_replay_drift_window.py",
         "tools/xstack/repox/check.py",
     }
     required_logging_tokens = (

@@ -31,7 +31,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.data.tool_srtm_import import run_import
+    run_import = __import__("tools.import.data.tool_srtm_import", fromlist=["run_import"]).run_import
 
     first = run_import(
         repo_root=repo_root,

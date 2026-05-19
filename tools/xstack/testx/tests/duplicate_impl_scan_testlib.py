@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.duplicate_impl_scan_common import (
+from tools.audit.review.duplicate_impl_scan_common import (
     DUPLICATE_IMPLS_REL,
     SRC_DIRECTORY_REPORT_REL,
     build_duplicate_impl_snapshot,

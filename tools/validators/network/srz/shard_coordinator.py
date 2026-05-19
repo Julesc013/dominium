@@ -20,7 +20,7 @@ from tools.validators.network.anti_cheat import (
     export_proof_artifacts,
     refusal_reason_from_action,
 )
-from tools.governance.proof import (
+from tools.repo.governance.proof import (
     build_control_proof_bundle_from_markers,
     collect_control_decision_markers,
 )

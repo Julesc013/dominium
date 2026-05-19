@@ -35,10 +35,10 @@ PRODUCT_ROWS = (
     {
         "product_id": "client",
         "executable_names": ["client", "dominium_client"],
-        "source_file": "tools/mvp/runtime_entry.py",
+        "source_file": "tools/release/mvp/runtime_entry.py",
         "main_symbol": "client_main",
-        "ui_init_location": "AppShell mode handoff -> tools/mvp/runtime_entry.py::_legacy_main",
-        "pack_loading_location": "tools/mvp/runtime_bundle.py::build_runtime_bootstrap",
+        "ui_init_location": "AppShell mode handoff -> tools/release/mvp/runtime_entry.py::_legacy_main",
+        "pack_loading_location": "tools/release/mvp/runtime_bundle.py::build_runtime_bootstrap",
         "ipc_start_location": "runtime/shell/bootstrap.py::AppShellIPCEndpointServer",
         "supervisor_involvement": "no",
     },
@@ -65,9 +65,9 @@ PRODUCT_ROWS = (
     {
         "product_id": "launcher",
         "executable_names": ["launcher"],
-        "source_file": "tools/launcher/launch.py",
+        "source_file": "tools/package/launcher/launch.py",
         "main_symbol": "main",
-        "ui_init_location": "AppShell mode handoff -> tools/launcher/launch.py::_legacy_main",
+        "ui_init_location": "AppShell mode handoff -> tools/package/launcher/launch.py::_legacy_main",
         "pack_loading_location": "appshell.pack_verifier_adapter.verify_pack_root",
         "ipc_start_location": "runtime/shell/bootstrap.py::AppShellIPCEndpointServer",
         "supervisor_involvement": "yes",
@@ -85,9 +85,9 @@ PRODUCT_ROWS = (
     {
         "product_id": "setup",
         "executable_names": ["setup"],
-        "source_file": "tools/setup/setup_cli.py",
+        "source_file": "tools/package/setup/setup_cli.py",
         "main_symbol": "main",
-        "ui_init_location": "AppShell mode handoff -> tools/setup/setup_cli.py::_legacy_main",
+        "ui_init_location": "AppShell mode handoff -> tools/package/setup/setup_cli.py::_legacy_main",
         "pack_loading_location": "appshell.pack_verifier_adapter.verify_pack_root",
         "ipc_start_location": "runtime/shell/bootstrap.py::AppShellIPCEndpointServer",
         "supervisor_involvement": "no",
@@ -246,7 +246,7 @@ def _violations_for_row(repo_root: str, row: Mapping[str, object]) -> list[dict]
                 "rule_id": "INV-NO-ADHOC-MAIN",
             }
         )
-    if rel_path == "tools/mvp/runtime_entry.py" and "return _legacy_main(str(raw_args[0]).strip(), raw_args[1:])" in text:
+    if rel_path == "tools/release/mvp/runtime_entry.py" and "return _legacy_main(str(raw_args[0]).strip(), raw_args[1:])" in text:
         violations.append(
             {
                 "code": "multiplexer_bypass",

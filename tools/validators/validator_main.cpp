@@ -1,7 +1,7 @@
 /*
 FILE: source/dominium/tools/validators/validator_main.cpp
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / tools/validator
+LAYER / SUBSYSTEM: Dominium impl / tools/validators
 RESPONSIBILITY: Universe bundle validator CLI entry point.
 */
 #include <cstdio>

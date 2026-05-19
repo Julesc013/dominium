@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 
-from tools.dist.dist_platform_matrix_common import (
+from tools.release.dist.dist_platform_matrix_common import (
     DEFAULT_BUILD_OUTPUT_ROOT,
     DEFAULT_PLATFORM_TAGS,
     build_platform_matrix_report,

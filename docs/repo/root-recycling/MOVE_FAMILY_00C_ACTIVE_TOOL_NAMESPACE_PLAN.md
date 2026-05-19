@@ -48,7 +48,7 @@ The target roots contain 33 tracked Python files and no direct CLI entrypoints. 
 | `validation/**` | `tools/validators/unified_validation/**` | move with temporary shim |
 | `meta/identity/**` | `tools/validators/identity/**` | move with temporary shim |
 | `meta/stability/**` | `tools/validators/stability/**` | move with temporary shim |
-| `governance/**` | `tools/governance/profile/**` | move with temporary shim |
+| `governance/**` | `tools/repo/governance/profile/**` | move with temporary shim |
 | semantic/runtime `meta/**` | preserve current | defer |
 | `performance/**` | preserve current | defer |
 

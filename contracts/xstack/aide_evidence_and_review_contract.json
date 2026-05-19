@@ -39,8 +39,8 @@
     "appshell/command_registry.py",
     "appshell/commands/command_engine.py",
     "tools/validators/security/trust/trust_verifier.py",
-    "tools/review/xi4z_structure_approval_common.py",
-    "tools/review/xi5x2_common.py",
+    "tools/audit/review/xi4z_structure_approval_common.py",
+    "tools/audit/review/xi5x2_common.py",
     "contracts/restructure/xi4b_review_manifest.json",
     "contracts/restructure/xi4z_decision_manifest.json",
     "docs/agents/AGENT_MIRROR_POLICY.md",
@@ -319,8 +319,8 @@
     },
     {
       "surface": [
-        "tools/review/xi4z_structure_approval_common.py",
-        "tools/review/xi5x2_common.py",
+        "tools/audit/review/xi4z_structure_approval_common.py",
+        "tools/audit/review/xi5x2_common.py",
         "contracts/restructure/xi4b_review_manifest.json",
         "contracts/restructure/xi4z_decision_manifest.json"
       ],

@@ -27,7 +27,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    stress_rel = "tools/logic/tool_run_logic_stress.py"
+    stress_rel = "tools/domain/logic/tool_run_logic_stress.py"
     stress_text = _read_text(repo_root, stress_rel)
     for token in ("throttle_event_count", "degradation_behavior", "compiled_execution_ratio", "security_block_count"):
         if token in stress_text:
@@ -76,7 +76,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    replay_rel = "tools/logic/tool_replay_logic_window.py"
+    replay_rel = "tools/domain/logic/tool_replay_logic_window.py"
     replay_text = _read_text(repo_root, replay_rel)
     for token in ("logic_throttle_event_hash_chain", "logic_security_fail_hash_chain"):
         if token in replay_text:

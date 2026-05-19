@@ -22,8 +22,8 @@ Replacement Target: legacy reference surface retained without current binding au
 - `tools/package/libraries/instance/instance_validator.py`
 - `tools/validators/package/compatibility_payload/pack_compat_validator.py`
 - `tools/validators/package/compatibility_payload/pack_verification_pipeline.py`
-- `tools/ops/ops_cli.py`
-- `tools/launcher/launcher_cli.py`
+- `tools/package/ops/ops_cli.py`
+- `tools/package/launcher/launcher_cli.py`
 - `tools/xstack/pack_loader/loader.py`
 - `contracts/registry/provides_registry.json`
 - `contracts/registry/resolution_policy_registry.json`

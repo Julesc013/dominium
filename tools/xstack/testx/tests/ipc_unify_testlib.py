@@ -16,6 +16,6 @@ def ensure_repo_on_path(repo_root: str) -> None:
 
 def build_report(repo_root: str, *, include_runtime: bool = False) -> dict:
     ensure_repo_on_path(repo_root)
-    from tools.appshell.ipc_unify_common import build_ipc_unify_report
+    from tools.validators.shell.ipc_unify_common import build_ipc_unify_report
 
     return build_ipc_unify_report(repo_root, include_runtime=include_runtime)

@@ -13,10 +13,10 @@ WATCH_PREFIXES = (
 )
 
 IR_FILES = (
-    "tools/governance/ir/control_ir_verifier.py",
-    "tools/governance/ir/control_ir_compiler.py",
-    "tools/governance/ir/control_ir_programs.py",
-    "tools/governance/ir/control_ir_multiplayer.py",
+    "tools/repo/governance/ir/control_ir_verifier.py",
+    "tools/repo/governance/ir/control_ir_compiler.py",
+    "tools/repo/governance/ir/control_ir_programs.py",
+    "tools/repo/governance/ir/control_ir_multiplayer.py",
 )
 
 FORBIDDEN_TOKENS = (

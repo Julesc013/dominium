@@ -11,8 +11,8 @@ ANALYZER_ID = "E374_NONDETERMINISTIC_CLIMATE_SMELL"
 SEASON_ENGINE_REL = "game/domain/worldgen/earth/season_phase_engine.py"
 CLIMATE_ENGINE_REL = "game/domain/worldgen/earth/climate_field_engine.py"
 PROCESS_RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
-CLIMATE_PROBE_REL = "tools/worldgen/earth2_probe.py"
-CLIMATE_REPLAY_REL = "tools/worldgen/tool_replay_climate_window.py"
+CLIMATE_PROBE_REL = "tools/domain/worldgen/earth2_probe.py"
+CLIMATE_REPLAY_REL = "tools/domain/worldgen/tool_replay_climate_window.py"
 CLIMATE_DOC_REL = "docs/domains/worldgen/EARTH_SEASONAL_CLIMATE_MODEL.md"
 REQUIRED_TOKENS = {
     CLIMATE_ENGINE_REL: (

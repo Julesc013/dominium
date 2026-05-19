@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: X-9 closure audit, post-baseline extraction checkpoints
 Replacement Target: later explicit XStack/AIDE extraction-review checkpoint or approved spinout checkpoint only
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `archive/generated/audit/ultra_repo_audit_system_inventory.json`, `archive/generated/audit/ultra_repo_audit_reuse_plan.json`, `archive/generated/audit/ultra_repo_audit_product_assembly_plan.json`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `archive/generated/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `archive/generated/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `contracts/xstack/aide_capability_profile_shape.json`, `docs/xstack/AIDE_ADAPTER_CONTRACT.md`, `contracts/xstack/aide_adapter_contract.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `contracts/xstack/codex_repo_operating_contract.json`, `tools/xstack/compatx/README.md`, `tools/xstack/controlx/README.md`, `tools/xstack/sessionx/README.md`, `tools/xstack/testx/README.md`, `tools/xstack/compatx/versioning.py`, `tools/xstack/compatx/profile_checks.py`, `tools/xstack/controlx/orchestrator.py`, `tools/xstack/securex/check.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/testx/runner.py`, `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `tools/tool_surface_adapter.py`, `tools/import_bridge.py`, `tools/xstack/controlx/core/remediation_bridge.py`, `tools/validators/suite/validation_engine.py`, `tools/xstack/compatx/compatx.py`, `tools/xstack/controlx/controlx.py`, `tools/xstack/auditx/check.py`, `tools/xstack/repox/check.py`, `tools/xstack/performx/check.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/release/release_manifest_engine.py`, `tools/release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `archive/generated/audit/ultra_repo_audit_system_inventory.json`, `archive/generated/audit/ultra_repo_audit_reuse_plan.json`, `archive/generated/audit/ultra_repo_audit_product_assembly_plan.json`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `archive/generated/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `archive/generated/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `contracts/xstack/aide_capability_profile_shape.json`, `docs/xstack/AIDE_ADAPTER_CONTRACT.md`, `contracts/xstack/aide_adapter_contract.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `contracts/xstack/codex_repo_operating_contract.json`, `tools/xstack/compatx/README.md`, `tools/xstack/controlx/README.md`, `tools/xstack/sessionx/README.md`, `tools/xstack/testx/README.md`, `tools/xstack/compatx/versioning.py`, `tools/xstack/compatx/profile_checks.py`, `tools/xstack/controlx/orchestrator.py`, `tools/xstack/securex/check.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/testx/runner.py`, `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `tools/repo/tool_surface_adapter.py`, `tools/migration/import_bridge.py`, `tools/xstack/controlx/core/remediation_bridge.py`, `tools/validators/suite/validation_engine.py`, `tools/xstack/compatx/compatx.py`, `tools/xstack/controlx/controlx.py`, `tools/xstack/auditx/check.py`, `tools/xstack/repox/check.py`, `tools/xstack/performx/check.py`, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `tools/release/release_manifest_engine.py`, `tools/release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`
 
 # XStack To AIDE Extraction Map
 
@@ -142,7 +142,7 @@ It is a staged boundary judgment.
 ### `xmap.gate_and_review_bridges`
 
 - Name: Repo gate and review bridge scripts that consume XStack
-- Repo Paths: `scripts/dev/gate.py`, `scripts/ci/check_repox_rules.py`, `tools/review/xi8_common.py`
+- Repo Paths: `scripts/dev/gate.py`, `scripts/ci/check_repox_rules.py`, `tools/audit/review/xi8_common.py`
 - Current role / maturity summary: `ops_concern / implemented_and_used / transitional_bridge`
 - Extraction decision: `defer_until_after_baseline`
 - Rationale: these are repo bridges between XStack semantics and Dominium review/gate flows, not portable core
@@ -285,7 +285,7 @@ It is a staged boundary judgment.
 ### `xmap.operator_shell_and_appshell_surfaces`
 
 - Name: Python launcher/setup shells and shared AppShell command layer
-- Repo Paths: `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `appshell/**`
+- Repo Paths: `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `appshell/**`
 - Current role / maturity summary: `dominium_only / implemented_and_used / active_product_shell`
 - Extraction decision: `retain_in_dominium`
 - Rationale: the audit identifies these as the strongest repo-local operator shells for the playable baseline, and they encode repo-root, dist, profile, pack, trust, supervision, and product-command assumptions
@@ -298,7 +298,7 @@ It is a staged boundary judgment.
 ### `xmap.appshell_and_tool_bridge_helpers`
 
 - Name: AppShell and tool-level bridge helpers
-- Repo Paths: `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `tools/tool_surface_adapter.py`, `tools/import_bridge.py`, `tools/xstack/controlx/core/remediation_bridge.py`
+- Repo Paths: `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `tools/repo/tool_surface_adapter.py`, `tools/migration/import_bridge.py`, `tools/xstack/controlx/core/remediation_bridge.py`
 - Current role / maturity summary: `mixed / implemented_and_used / transitional_bridge`
 - Extraction decision: `retain_in_dominium`
 - Rationale: these files are bridge hosts, not portable cores; they bind Dominium release, trust, packs, audit artifacts, and old import topology into current operator flows
@@ -368,7 +368,7 @@ The following surfaces should remain in Dominium for now:
   - baseline session materialization and default bundle/lock/template semantics
 - `tools/xstack/session_boot.py` and the broader `tools/xstack/sessionx/**` runtime/control path
   - boot, SRZ, stage control, UI host, render model, and runtime coupling remain repo-owned
-- `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, and `appshell/**`
+- `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, and `appshell/**`
   - canonical operator shells and product-shell control surfaces for the playable baseline
 - `server/server_boot.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, and `server/net/loopback_transport.py`
   - strongest current loopback authority/runtime path and therefore baseline-critical
@@ -445,7 +445,7 @@ Later extraction will require explicit retained bridge layers rather than direct
 ### H5. Operator and runtime wrappers
 
 - AppShell/operator wrappers remain in Dominium
-- startup/session/runtime integration should keep using retained bridges such as `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `tools/tool_surface_adapter.py`, `tools/import_bridge.py`, and `tools/xstack/controlx/core/remediation_bridge.py`
+- startup/session/runtime integration should keep using retained bridges such as `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `tools/repo/tool_surface_adapter.py`, `tools/migration/import_bridge.py`, and `tools/xstack/controlx/core/remediation_bridge.py`
 - any future extracted portable core should talk through these boundaries instead of displacing them
 
 ## I. Extraction Order After The Baseline Exists

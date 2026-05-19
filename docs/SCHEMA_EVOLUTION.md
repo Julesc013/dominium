@@ -59,8 +59,8 @@ TestX contracts:
 - `tests/contract/schema_change_notes_required.py`
 
 Tooling checks:
-- `tools/ci/validate_world_definition.py`
-- `tools/worldgen_offline/world_definition_lib.py`
+- `tools/validators/ci/validate_world_definition.py`
+- `tools/domain/worldgen/offline/world_definition_lib.py`
 
 These enforce explicit versioning, skip-unknown preservation, and refusal on
 unsupported versions.

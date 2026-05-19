@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from tools.dist.dist6_interop_common import (
+from tools.release.dist.dist6_interop_common import (
     DIST6_CASE_IDS,
     build_version_interop_reports,
     version_interop_violations,
@@ -19,7 +19,7 @@ def load_reports(repo_root: str) -> dict[str, dict]:
     report_map: dict[str, dict] = {}
     missing = False
     for case_id in DIST6_CASE_IDS:
-        from tools.dist.dist6_interop_common import _load_case_report  # lazy import to avoid test bootstrap cost
+        from tools.release.dist.dist6_interop_common import _load_case_report  # lazy import to avoid test bootstrap cost
 
         payload = _load_case_report(repo_root, case_id)
         if not payload:

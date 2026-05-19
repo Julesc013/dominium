@@ -50,7 +50,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    stress_rel = "tools/pollution/tool_run_poll_stress.py"
+    stress_rel = "tools/domain/pollution/tool_run_poll_stress.py"
     runtime_text = _read_text(repo_root, runtime_rel)
     stress_text = _read_text(repo_root, stress_rel)
 

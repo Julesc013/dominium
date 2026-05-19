@@ -24,7 +24,7 @@ REQUIRED_TOKENS = {
         "shows coarse view until refined",
         "explain.refinement_deferred",
     ),
-    "tools/worldgen/tool_run_refinement_stress.py": (
+    "tools/domain/worldgen/tool_run_refinement_stress.py": (
         "rapid-teleport and ROI-thrash",
         "run_refinement_stress(",
     ),

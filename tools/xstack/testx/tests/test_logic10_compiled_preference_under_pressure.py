@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.logic.tool_run_logic_stress import run_logic_stress
+    from tools.domain.logic.tool_run_logic_stress import run_logic_stress
 
     report = run_logic_stress(
         repo_root=repo_root,

@@ -151,7 +151,7 @@ Control proof bundles must carry these chains when CHEM process-run rows are pre
 
 Replay verification tool:
 
-- `python tools/chem/tool_replay_process_run.py --state-path <state.json> --expected-state-path <baseline.json>`
+- `python tools/domain/chemistry/tool_replay_process_run.py --state-path <state.json> --expected-state-path <baseline.json>`
 
 The verifier checks:
 

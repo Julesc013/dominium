@@ -15,14 +15,14 @@ REQUIRED_TOKENS = {
         '"scenario_id": "interop.client_server.contract_mismatch_read_only"',
         '"scenario_id": "real.client_server.current_build"',
     ),
-    "tools/compat/cap_neg4_common.py": (
+    "tools/package/compatibility/cap_neg4_common.py": (
         "def generate_interop_matrix(",
         "def run_interop_stress(",
         '"interop.client_server.rendered_to_tui"',
         '"interop.engine_server.compiled_to_l1"',
         '"real.client_server.current_build"',
     ),
-    "tools/compat/tool_run_interop_stress.py": (
+    "tools/package/compatibility/tool_run_interop_stress.py": (
         "generate_interop_matrix",
         "run_interop_stress",
         "interoperability stress harness",

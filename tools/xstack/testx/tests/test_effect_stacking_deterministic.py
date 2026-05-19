@@ -57,7 +57,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.governance.effects import build_effect, get_effective_modifier
+    from tools.repo.governance.effects import build_effect, get_effective_modifier
 
     target_id = "machine.alpha"
     rows = [

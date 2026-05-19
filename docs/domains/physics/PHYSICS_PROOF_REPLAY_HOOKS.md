@@ -109,7 +109,7 @@ For CHEM-1 combustion windows, reenactment windows must also reproduce:
 
 Verification helper:
 
-- `tools/chem/tool_replay_combustion_window`
+- `tools/domain/chemistry/tool_replay_combustion_window`
 
 ## 4) Non-Goals (PHYS-0)
 

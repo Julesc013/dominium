@@ -20,7 +20,7 @@ def _load_fixture(repo_root: str):
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.launcher.launch import cmd_run
+    from tools.package.launcher.launch import cmd_run
     from tools.xstack.packagingx import build_dist_layout
     from tools.xstack.sessionx.creator import create_session_spec
 

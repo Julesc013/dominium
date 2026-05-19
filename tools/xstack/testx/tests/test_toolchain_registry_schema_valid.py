@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "omega", "toolchain", "release"]
 
 
 def run(repo_root: str):
-    from tools.mvp.toolchain_matrix_common import (
+    from tools.release.mvp.toolchain_matrix_common import (
         TOOLCHAIN_MATRIX_REGISTRY_SCHEMA_ID,
         TOOLCHAIN_TEST_PROFILE_REGISTRY_SCHEMA_ID,
     )

@@ -32,17 +32,17 @@ def run(repo_root: str):
         encoding="utf-8",
     )
     if int(proc.returncode) != 2:
-        return {"status": "fail", "message": "tools/setup/build.py should return refusal exit code for stage args"}
+        return {"status": "fail", "message": "tools/package/setup/build.py should return refusal exit code for stage args"}
     stdout = str(proc.stdout or "").strip()
     if not stdout:
-        return {"status": "fail", "message": "tools/setup/build.py refusal output missing"}
+        return {"status": "fail", "message": "tools/package/setup/build.py refusal output missing"}
     try:
         payload = json.loads(stdout)
     except ValueError:
-        return {"status": "fail", "message": "tools/setup/build.py refusal output is not valid JSON"}
+        return {"status": "fail", "message": "tools/package/setup/build.py refusal output is not valid JSON"}
     if str(payload.get("result", "")) != "refused":
-        return {"status": "fail", "message": "tools/setup/build.py should return result=refused for stage args"}
+        return {"status": "fail", "message": "tools/package/setup/build.py should return result=refused for stage args"}
     reason_code = str((payload.get("refusal") or {}).get("reason_code", ""))
     if reason_code != "REFUSE_SETUP_PIPELINE_FORBIDDEN":
         return {"status": "fail", "message": "expected REFUSE_SETUP_PIPELINE_FORBIDDEN, got '{}'".format(reason_code)}
-    return {"status": "pass", "message": "tools/setup/build.py stage-argument refusal check passed"}
+    return {"status": "pass", "message": "tools/package/setup/build.py stage-argument refusal check passed"}

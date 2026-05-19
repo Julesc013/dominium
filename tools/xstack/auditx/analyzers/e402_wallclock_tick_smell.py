@@ -15,7 +15,7 @@ REQUIRED_TOKENS = {
         "build_server_proof_anchor(",
         "run_server_ticks(",
     ),
-    "tools/server/tool_replay_server_window.py": (
+    "tools/test/server/tool_replay_server_window.py": (
         "Verify SERVER-MVP-0 deterministic tick, loopback, and proof-anchor replay.",
         "verify_server_window_replay(",
     ),
@@ -27,7 +27,7 @@ REQUIRED_TOKENS = {
 }
 FORBIDDEN_TOKENS = {
     "runtime/shell/server/tick_loop.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
-    "tools/server/server_mvp0_probe.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
+    "tools/test/server/server_mvp0_probe.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
 }
 
 

@@ -13,8 +13,8 @@ WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/__init__.py",
     "docs/logic/LOGIC_COMPILATION_MODEL.md",
     "game/domain/logic/eval/logic_eval_engine.py",
-    "tools/logic/tool_replay_logic_window.py",
-    "tools/logic/tool_replay_compiled_logic_window.py",
+    "tools/domain/logic/tool_replay_logic_window.py",
+    "tools/domain/logic/tool_replay_compiled_logic_window.py",
 )
 
 
@@ -86,7 +86,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    replay_rel = "tools/logic/tool_replay_logic_window.py"
+    replay_rel = "tools/domain/logic/tool_replay_logic_window.py"
     replay_text = _read_text(repo_root, replay_rel)
     for token in ("forced_expand_event_hash_chain", "compile_result_hash_chain"):
         if token in replay_text:
@@ -107,7 +107,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    compiled_replay_rel = "tools/logic/tool_replay_compiled_logic_window.py"
+    compiled_replay_rel = "tools/domain/logic/tool_replay_compiled_logic_window.py"
     compiled_replay_text = _read_text(repo_root, compiled_replay_rel)
     for token in ("compiled_path_observed", "reason_code"):
         if token in compiled_replay_text:

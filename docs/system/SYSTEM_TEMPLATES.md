@@ -77,7 +77,7 @@ No direct world spawn is allowed unless explicitly authorized by profile/law and
 - No bypass of SYS collapse/expand or control-plane contracts.
 
 ## I) UX Integration (RND + CTRL)
-- Developer-facing browser: `tools/system/tool_template_browser`.
+- Developer-facing browser: `tools/domain/systems/tool_template_browser`.
 - Browser surfaces:
   - interface signature template summary,
   - invariant template set,
@@ -94,5 +94,5 @@ No direct world spawn is allowed unless explicitly authorized by profile/law and
   - `template_instance_record_hash_chain`,
   - `compiled_template_fingerprint_hash_chain`.
 - Deterministic reproducibility verifier:
-  - `tools/system/tool_verify_template_reproducible`
+  - `tools/domain/systems/tool_verify_template_reproducible`
 - Any fingerprint drift under identical inputs is treated as a contract violation.

@@ -11,7 +11,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E52_INTERACTION_BYPASS_SMELL"
 WATCH_PREFIXES = (
     "src/client/interaction/",
-    "tools/interaction/",
+    "tools/domain/interaction/",
     "tools/xstack/sessionx/interaction.py",
 )
 DISPATCH_PATH = "runtime/ui/client/interaction/interaction_dispatch.py"
@@ -21,7 +21,7 @@ SURFACE_PATHS = (
     "runtime/ui/client/interaction/preview_generator.py",
     "runtime/ui/client/interaction/inspection_overlays.py",
     "runtime/ui/client/interaction/interaction_panel.py",
-    "tools/interaction/interaction_cli.py",
+    "tools/domain/interaction/interaction_cli.py",
     "tools/xstack/sessionx/interaction.py",
 )
 TRUTH_MUTATION_PATTERN = re.compile(

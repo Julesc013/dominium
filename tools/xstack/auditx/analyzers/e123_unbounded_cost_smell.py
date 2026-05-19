@@ -34,7 +34,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    fidelity_engine_rel = "tools/governance/fidelity/fidelity_engine.py"
+    fidelity_engine_rel = "tools/repo/governance/fidelity/fidelity_engine.py"
     fidelity_engine_text = _read_text(repo_root, fidelity_engine_rel)
     required_engine_tokens = (
         "max_cost_units_per_tick",

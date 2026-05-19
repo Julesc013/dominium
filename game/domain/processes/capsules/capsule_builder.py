@@ -14,7 +14,7 @@ from tools.repo.meta.compile.compile_engine import (
 )
 from game.domain.processes.maturity import normalize_process_maturity_record_rows
 from game.domain.processes.maturity.metrics_engine import normalize_process_metrics_state_rows
-from tools.specs import tolerance_policy_rows_by_id
+from tools.repo.specs import tolerance_policy_rows_by_id
 from game.domain.systems.statevec import (
     state_vector_definition_for_owner,
 )

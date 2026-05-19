@@ -6,7 +6,7 @@ Stability: stable
 Series Scope: repo-structure discovery and design
 Series Role: authoritative preferred-target and boundary packet for later migration, shim, rollback, and ownership-reconciliation prompts; downstream of stronger canon, the Omega0 constraint packet, the Omega1 topology reality map, the Omega2 coupling-risk packet, and the Omega0 topology-option comparison
 Replacement Target: later explicit migration-planning checkpoint or preferred-target replacement only after new baseline-hardening evidence and follow-up approval
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md`, `archive/generated/repo/repo_coupling_drift_and_relayout_risk_analysis.json`, `docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md`, `archive/generated/repo/repo_target_topology_options_and_comparison.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `appshell/paths/virtual_paths.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/release/release_manifest_engine.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md`, `archive/generated/repo/repo_coupling_drift_and_relayout_risk_analysis.json`, `docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md`, `archive/generated/repo/repo_target_topology_options_and_comparison.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `appshell/paths/virtual_paths.py`, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/release/release_manifest_engine.py`
 
 # Repo Authoritative Boundary Model And Preferred Target
 
@@ -88,7 +88,7 @@ These matter for the target model, but they do not outweigh current-reality and 
 
 The preferred-target choice is constrained by all of the following repo-grounded facts:
 
-- `appshell/`, `tools/launcher/`, `tools/setup/`, SessionX create/boot, and the loopback-authoritative local path are Omega2 `do_not_move_yet` or high-shim surfaces
+- `appshell/`, `tools/package/launcher/`, `tools/package/setup/`, SessionX create/boot, and the loopback-authoritative local path are Omega2 `do_not_move_yet` or high-shim surfaces
 - `server/server_main.py` repo-root math, `sessionx/runner.py` save-root coupling, and supervision instability are still live blockers or fragilities
 - wrapper-only native launcher/setup roots are not strong enough to anchor the preferred target
 - `schema/` versus `schemas/` and `packs/` versus `data/packs/` remain explicit split-root cautions rather than resolved convergence winners
@@ -156,7 +156,7 @@ That means the conceptual boundaries are authoritative even where the current ph
 ### `product_shells_and_apps`
 
 - What it owns:
-  repo-local operator shells and product entry surfaces, including `appshell/`, `tools/launcher/`, `tools/setup/`, product-facing application wiring in `client/` and `server/`, local singleplayer orchestration under `client/local_server/`, and wrapper-only native launcher/setup leaves as wrappers.
+  repo-local operator shells and product entry surfaces, including `appshell/`, `tools/package/launcher/`, `tools/package/setup/`, product-facing application wiring in `client/` and `server/`, local singleplayer orchestration under `client/local_server/`, and wrapper-only native launcher/setup leaves as wrappers.
 - What it does not own:
   deep runtime/service substrate, release/trust policy, validation/report ownership, or canonical authored content roots.
 - Legitimate cross-boundary dependencies:
@@ -189,7 +189,7 @@ That means the conceptual boundaries are authoritative even where the current ph
 ### `tooling_validation_and_dev_workflows`
 
 - What it owns:
-  validation, session tooling, developer workflows, and proof/CI surfaces, including `tools/xstack/`, `tools/validators/suite/`, `validation/`, `tests/`, `cmake/`, build scripts, workflow automation, and compatibility scaffolding such as `tools/import_bridge.py`.
+  validation, session tooling, developer workflows, and proof/CI surfaces, including `tools/xstack/`, `tools/validators/suite/`, `validation/`, `tests/`, `cmake/`, build scripts, workflow automation, and compatibility scaffolding such as `tools/migration/import_bridge.py`.
 - What it does not own:
   canonical product-shell ownership, semantic doctrine, release policy law, or authored content truth.
 - Legitimate cross-boundary dependencies:
@@ -245,7 +245,7 @@ The following remain conditional until migration planning:
 ### Canonical Source Roots The Preferred Target Must Preserve
 
 - product and shell authority:
-  `appshell/`, `client/`, `server/`, `tools/launcher/`, and `tools/setup/`
+  `appshell/`, `client/`, `server/`, `tools/package/launcher/`, and `tools/package/setup/`
 - runtime and service authority:
   `engine/`, `game/`, `net/`, `process/`, and runtime/service portions of `server/`
 - control-plane authority:
@@ -308,7 +308,7 @@ The preferred target preserves the canonical playable-baseline path by keeping t
 
 ### Launcher / Setup AppShell Flows
 
-- `appshell/`, `tools/launcher/`, and `tools/setup/` remain inside the same preferred target family
+- `appshell/`, `tools/package/launcher/`, and `tools/package/setup/` remain inside the same preferred target family
 - wrapper-only native `launcher/` and `setup/` roots remain explicitly weaker than the Python/AppShell shells
 - release/trust/install-discovery dependencies remain legitimate cross-band dependencies rather than excuses to move the shells
 

@@ -3,7 +3,7 @@ Last Reviewed: 2026-02-15
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Requires `tools/xstack/run.py`, `tools/dev/dev.py`, and `tools/dev/impact_graph/`.
+Compatibility: Requires `tools/xstack/run.py`, `tools/repo/dev/dev.py`, and `tools/repo/dev/impact_graph/`.
 Stability: provisional
 Future Series: DOC-ARCHIVE
 Replacement Target: legacy reference surface retained without current binding authority
@@ -27,7 +27,7 @@ Binding references:
 ### Dev lane
 
 - Goal: shortest deterministic feedback loop during active changes.
-- Primary entrypoint: `tools/dev/dev verify` for strict checks, plus impacted subsets via `tools/dev/dev impacted-tests`.
+- Primary entrypoint: `tools/repo/dev/dev verify` for strict checks, plus impacted subsets via `tools/repo/dev/dev impacted-tests`.
 - Must not run packaging/publish operations.
 - Produces non-gating acceleration artifacts:
   - `build/impact_graph.json`
@@ -46,7 +46,7 @@ Binding references:
 
 - Goal: deterministic packaging and reproducible distribution proof.
 - Primary entrypoints:
-  - `tools/setup/build --bundle bundle.base.lab --out dist`
+  - `tools/package/setup/build --bundle bundle.base.lab --out dist`
   - `tools/xstack/run strict` (packaging/lab validation step)
 - Must include lockfile and registry hash validation.
 - Must not change version metadata implicitly.

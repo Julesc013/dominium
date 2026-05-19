@@ -52,11 +52,11 @@ Direct command equivalents:
 - `tools/xstack/bundle_validate content/bundles/bundle.base.lab/bundle.json`
 - `tools/xstack/registry_compile.cmd`
 - `tools/xstack/lockfile_build.cmd --bundle bundle.base.lab --out build/lockfile.json`
-- `tools/setup/build --bundle bundle.base.lab --out dist` (consumes compiled lockfile/registries for packaging)
+- `tools/package/setup/build --bundle bundle.base.lab --out dist` (consumes compiled lockfile/registries for packaging)
 
 ## Boot-Time Expectations
 - Session boot (`tools/xstack/session_boot`) requires compiled registries to exist and match lockfile hashes.
-- Dist launch (`tools/launcher/launch`) requires packaged registries to match packaged lockfile hashes.
+- Dist launch (`tools/package/launcher/launch`) requires packaged registries to match packaged lockfile hashes.
 - Boot may refuse if registry files are missing or if lockfile hashes do not match canonical registry payload hashes.
 - Optional boot compile is explicit (`--compile-if-missing on`); no silent regeneration.
 

@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.process.tool_verify_proc_compaction import verify_proc_compaction
+    from tools.domain.processes.tool_verify_proc_compaction import verify_proc_compaction
     from tools.xstack.testx.tests import proc9_testlib
 
     scenario = proc9_testlib.make_stress_scenario(repo_root=repo_root, seed=99121)

@@ -848,7 +848,7 @@ static int setup_append_quoted(char* buf, size_t cap, const char* arg)
 
 static int setup_resolve_ops_script(char* out, size_t cap)
 {
-    const char* rel = "tools/ops/ops_cli.py";
+    const char* rel = "tools/package/ops/ops_cli.py";
     if (!out || cap == 0u) {
         return 0;
     }
@@ -898,7 +898,7 @@ static int setup_run_ops(int argc, char** argv, int cmd_index)
 
 static int setup_resolve_share_script(char* out, size_t cap)
 {
-    const char* rel = "tools/share/share_cli.py";
+    const char* rel = "tools/export/share/share_cli.py";
     if (!out || cap == 0u) {
         return 0;
     }
@@ -964,7 +964,7 @@ static int setup_args_has_prefix(int argc, char** argv, const char* prefix)
 
 static int setup_resolve_setup_script(char* out, size_t cap)
 {
-    const char* rel = "tools/setup/setup_cli.py";
+    const char* rel = "tools/package/setup/setup_cli.py";
     if (!out || cap == 0u) {
         return 0;
     }
@@ -976,7 +976,7 @@ static int setup_resolve_setup_script(char* out, size_t cap)
     if (setup_find_upward(out, cap, rel)) {
         return 1;
     }
-    strncpy(out, "tools/setup/setup_cli.py", cap - 1u);
+    strncpy(out, "tools/package/setup/setup_cli.py", cap - 1u);
     out[cap - 1u] = '\0';
     return 1;
 }

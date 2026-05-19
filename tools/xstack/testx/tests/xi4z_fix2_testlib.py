@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from tools.review.xi4z_fix2_common import (
+from tools.audit.review.xi4z_fix2_common import (
     SRC_DOMAIN_MAPPING_LOCK_APPROVED_V3_REL,
     SRC_DOMAIN_MAPPING_TARGET_PATHS_V3_REL,
     XI4Z_FIX2_REPORT_JSON_REL,

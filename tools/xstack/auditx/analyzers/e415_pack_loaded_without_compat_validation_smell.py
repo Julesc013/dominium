@@ -30,7 +30,7 @@ REQUIRED_TOKENS = {
         "\"pack_degrade_mode_id\"",
         "compute_pack_lock_hash(",
     ),
-    "tools/mvp/runtime_bundle.py": (
+    "tools/release/mvp/runtime_bundle.py": (
         "attach_pack_compat_manifest(",
         "\"compat_manifest_hash\"",
         "\"pack_degrade_mode_id\"",

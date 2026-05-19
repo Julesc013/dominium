@@ -10,7 +10,16 @@ from typing import Iterable, Mapping, Sequence
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
@@ -23,7 +32,7 @@ from runtime.platform.platform_probe import (
     load_platform_capability_registry,
     probe_platform_descriptor,
 )
-from tools.dist.dist_tree_common import DEFAULT_RELEASE_CHANNEL, PRODUCT_IDS, build_dist_tree
+from tools.release.dist.dist_tree_common import DEFAULT_RELEASE_CHANNEL, PRODUCT_IDS, build_dist_tree
 from tools.release.ui_mode_resolution_common import build_test_probe, selection_for_product
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 

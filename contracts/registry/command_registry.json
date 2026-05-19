@@ -1850,8 +1850,8 @@
             "required_capabilities": [],
             "stable_id": "dom.compat.apply-migration.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.compat.tool_apply_migration",
-            "tool_relpath": "tools/compat/tool_apply_migration.py",
+            "tool_module": "tools.package.compatibility.tool_apply_migration",
+            "tool_relpath": "tools/package/compatibility/tool_apply_migration.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -1902,8 +1902,8 @@
             "required_capabilities": [],
             "stable_id": "dom.compat.emit-descriptor.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.compat.tool_emit_descriptor",
-            "tool_relpath": "tools/compat/tool_emit_descriptor.py",
+            "tool_module": "tools.package.compatibility.tool_emit_descriptor",
+            "tool_relpath": "tools/package/compatibility/tool_emit_descriptor.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -1954,8 +1954,8 @@
             "required_capabilities": [],
             "stable_id": "dom.compat.generate-descriptor-manifest.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.compat.tool_generate_descriptor_manifest",
-            "tool_relpath": "tools/compat/tool_generate_descriptor_manifest.py",
+            "tool_module": "tools.package.compatibility.tool_generate_descriptor_manifest",
+            "tool_relpath": "tools/package/compatibility/tool_generate_descriptor_manifest.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2006,8 +2006,8 @@
             "required_capabilities": [],
             "stable_id": "dom.compat.generate-interop-matrix.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.compat.tool_generate_interop_matrix",
-            "tool_relpath": "tools/compat/tool_generate_interop_matrix.py",
+            "tool_module": "tools.package.compatibility.tool_generate_interop_matrix",
+            "tool_relpath": "tools/package/compatibility/tool_generate_interop_matrix.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2058,8 +2058,8 @@
             "required_capabilities": [],
             "stable_id": "dom.compat.plan-migration.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.compat.tool_plan_migration",
-            "tool_relpath": "tools/compat/tool_plan_migration.py",
+            "tool_module": "tools.package.compatibility.tool_plan_migration",
+            "tool_relpath": "tools/package/compatibility/tool_plan_migration.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2110,8 +2110,8 @@
             "required_capabilities": [],
             "stable_id": "dom.compat.replay-migration.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.compat.tool_replay_migration",
-            "tool_relpath": "tools/compat/tool_replay_migration.py",
+            "tool_module": "tools.package.compatibility.tool_replay_migration",
+            "tool_relpath": "tools/package/compatibility/tool_replay_migration.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2162,8 +2162,8 @@
             "required_capabilities": [],
             "stable_id": "dom.compat.replay-negotiation.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.compat.tool_replay_negotiation",
-            "tool_relpath": "tools/compat/tool_replay_negotiation.py",
+            "tool_module": "tools.package.compatibility.tool_replay_negotiation",
+            "tool_relpath": "tools/package/compatibility/tool_replay_negotiation.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2214,8 +2214,8 @@
             "required_capabilities": [],
             "stable_id": "dom.compat.run-interop-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.compat.tool_run_interop_stress",
-            "tool_relpath": "tools/compat/tool_run_interop_stress.py",
+            "tool_module": "tools.package.compatibility.tool_run_interop_stress",
+            "tool_relpath": "tools/package/compatibility/tool_run_interop_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2266,8 +2266,8 @@
             "required_capabilities": [],
             "stable_id": "dom.compat.run-migration-lifecycle.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.compat.tool_run_migration_lifecycle",
-            "tool_relpath": "tools/compat/tool_run_migration_lifecycle.py",
+            "tool_module": "tools.package.compatibility.tool_run_migration_lifecycle",
+            "tool_relpath": "tools/package/compatibility/tool_run_migration_lifecycle.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2430,7 +2430,7 @@
             "stable_id": "dom.diag.replay-bundle.v1",
             "surface_role": "leaf",
             "tool_module": "tools.diag.tool_replay_bundle",
-            "tool_relpath": "tools/diag/tool_replay_bundle.py",
+            "tool_relpath": "tools/diagnostics/tool_replay_bundle.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2536,8 +2536,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.generate-earth-mvp-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.earth.tool_generate_earth_mvp_stress",
-            "tool_relpath": "tools/earth/tool_generate_earth_mvp_stress.py",
+            "tool_module": "tools.domain.worldgen.earth_stress.tool_generate_earth_mvp_stress",
+            "tool_relpath": "tools/domain/worldgen/earth_stress/tool_generate_earth_mvp_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2588,8 +2588,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.replay-climate-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_climate_window",
-            "tool_relpath": "tools/worldgen/tool_replay_climate_window.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_climate_window",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_climate_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2640,8 +2640,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.replay-earth-physics-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.earth.tool_replay_earth_physics_window",
-            "tool_relpath": "tools/earth/tool_replay_earth_physics_window.py",
+            "tool_module": "tools.domain.worldgen.earth_stress.tool_replay_earth_physics_window",
+            "tool_relpath": "tools/domain/worldgen/earth_stress/tool_replay_earth_physics_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2692,8 +2692,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.replay-earth-view-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.earth.tool_replay_earth_view_window",
-            "tool_relpath": "tools/earth/tool_replay_earth_view_window.py",
+            "tool_module": "tools.domain.worldgen.earth_stress.tool_replay_earth_view_window",
+            "tool_relpath": "tools/domain/worldgen/earth_stress/tool_replay_earth_view_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2744,8 +2744,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.replay-hydrology-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_hydrology_window",
-            "tool_relpath": "tools/worldgen/tool_replay_hydrology_window.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_hydrology_window",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_hydrology_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2796,8 +2796,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.replay-illumination-view.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_illumination_view",
-            "tool_relpath": "tools/worldgen/tool_replay_illumination_view.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_illumination_view",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_illumination_view.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2848,8 +2848,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.replay-material-proxy-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_material_proxy_window",
-            "tool_relpath": "tools/worldgen/tool_replay_material_proxy_window.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_material_proxy_window",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_material_proxy_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2900,8 +2900,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.replay-sky-view.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_sky_view",
-            "tool_relpath": "tools/worldgen/tool_replay_sky_view.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_sky_view",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_sky_view.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -2952,8 +2952,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.replay-tide-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_tide_window",
-            "tool_relpath": "tools/worldgen/tool_replay_tide_window.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_tide_window",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_tide_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3004,8 +3004,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.replay-water-view.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_water_view",
-            "tool_relpath": "tools/worldgen/tool_replay_water_view.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_water_view",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_water_view.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3056,8 +3056,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.replay-wind-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_wind_window",
-            "tool_relpath": "tools/worldgen/tool_replay_wind_window.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_wind_window",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_wind_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3108,8 +3108,8 @@
             "required_capabilities": [],
             "stable_id": "dom.earth.run-earth-mvp-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.earth.tool_run_earth_mvp_stress",
-            "tool_relpath": "tools/earth/tool_run_earth_mvp_stress.py",
+            "tool_module": "tools.domain.worldgen.earth_stress.tool_run_earth_mvp_stress",
+            "tool_relpath": "tools/domain/worldgen/earth_stress/tool_run_earth_mvp_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3160,8 +3160,8 @@
             "required_capabilities": [],
             "stable_id": "dom.gal.replay-galaxy-objects.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_galaxy_objects",
-            "tool_relpath": "tools/worldgen/tool_replay_galaxy_objects.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_galaxy_objects",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_galaxy_objects.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3212,8 +3212,8 @@
             "required_capabilities": [],
             "stable_id": "dom.gal.replay-galaxy-proxies.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_galaxy_proxies",
-            "tool_relpath": "tools/worldgen/tool_replay_galaxy_proxies.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_galaxy_proxies",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_galaxy_proxies.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4044,8 +4044,8 @@
             "required_capabilities": [],
             "stable_id": "dom.lib.generate-lib-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.lib.tool_generate_lib_stress",
-            "tool_relpath": "tools/lib/tool_generate_lib_stress.py",
+            "tool_module": "tools.package.libraries.stress.tool_generate_lib_stress",
+            "tool_relpath": "tools/package/libraries/stress/tool_generate_lib_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4096,8 +4096,8 @@
             "required_capabilities": [],
             "stable_id": "dom.lib.replay-save-open.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.lib.tool_replay_save_open",
-            "tool_relpath": "tools/lib/tool_replay_save_open.py",
+            "tool_module": "tools.package.libraries.save.tool_replay_save_open",
+            "tool_relpath": "tools/package/libraries/save/tool_replay_save_open.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4148,8 +4148,8 @@
             "required_capabilities": [],
             "stable_id": "dom.lib.run-lib-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.lib.tool_run_lib_stress",
-            "tool_relpath": "tools/lib/tool_run_lib_stress.py",
+            "tool_module": "tools.package.libraries.stress.tool_run_lib_stress",
+            "tool_relpath": "tools/package/libraries/stress/tool_run_lib_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4200,8 +4200,8 @@
             "required_capabilities": [],
             "stable_id": "dom.lib.run-store-gc.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.lib.tool_run_store_gc",
-            "tool_relpath": "tools/lib/tool_run_store_gc.py",
+            "tool_module": "tools.package.libraries.store.tool_run_store_gc",
+            "tool_relpath": "tools/package/libraries/store/tool_run_store_gc.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4252,8 +4252,8 @@
             "required_capabilities": [],
             "stable_id": "dom.lib.store-verify.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.lib.tool_store_verify",
-            "tool_relpath": "tools/lib/tool_store_verify.py",
+            "tool_module": "tools.package.libraries.store.tool_store_verify",
+            "tool_relpath": "tools/package/libraries/store/tool_store_verify.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4304,8 +4304,8 @@
             "required_capabilities": [],
             "stable_id": "dom.lib.verify-bundle.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.lib.tool_verify_bundle",
-            "tool_relpath": "tools/lib/tool_verify_bundle.py",
+            "tool_module": "tools.package.libraries.bundle.tool_verify_bundle",
+            "tool_relpath": "tools/package/libraries/bundle/tool_verify_bundle.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4356,8 +4356,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.generate-logic-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_generate_logic_stress",
-            "tool_relpath": "tools/logic/tool_generate_logic_stress.py",
+            "tool_module": "tools.domain.logic.tool_generate_logic_stress",
+            "tool_relpath": "tools/domain/logic/tool_generate_logic_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4408,8 +4408,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.replay-compiled-logic-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_replay_compiled_logic_window",
-            "tool_relpath": "tools/logic/tool_replay_compiled_logic_window.py",
+            "tool_module": "tools.domain.logic.tool_replay_compiled_logic_window",
+            "tool_relpath": "tools/domain/logic/tool_replay_compiled_logic_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4460,8 +4460,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.replay-fault-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_replay_fault_window",
-            "tool_relpath": "tools/logic/tool_replay_fault_window.py",
+            "tool_module": "tools.domain.logic.tool_replay_fault_window",
+            "tool_relpath": "tools/domain/logic/tool_replay_fault_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4512,8 +4512,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.replay-logic-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_replay_logic_window",
-            "tool_relpath": "tools/logic/tool_replay_logic_window.py",
+            "tool_module": "tools.domain.logic.tool_replay_logic_window",
+            "tool_relpath": "tools/domain/logic/tool_replay_logic_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4564,8 +4564,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.replay-protocol-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_replay_protocol_window",
-            "tool_relpath": "tools/logic/tool_replay_protocol_window.py",
+            "tool_module": "tools.domain.logic.tool_replay_protocol_window",
+            "tool_relpath": "tools/domain/logic/tool_replay_protocol_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4616,8 +4616,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.replay-timing-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_replay_timing_window",
-            "tool_relpath": "tools/logic/tool_replay_timing_window.py",
+            "tool_module": "tools.domain.logic.tool_replay_timing_window",
+            "tool_relpath": "tools/domain/logic/tool_replay_timing_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4668,8 +4668,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.replay-trace-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_replay_trace_window",
-            "tool_relpath": "tools/logic/tool_replay_trace_window.py",
+            "tool_module": "tools.domain.logic.tool_replay_trace_window",
+            "tool_relpath": "tools/domain/logic/tool_replay_trace_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4720,8 +4720,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.run-logic-compile-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_run_logic_compile_stress",
-            "tool_relpath": "tools/logic/tool_run_logic_compile_stress.py",
+            "tool_module": "tools.domain.logic.tool_run_logic_compile_stress",
+            "tool_relpath": "tools/domain/logic/tool_run_logic_compile_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4772,8 +4772,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.run-logic-debug-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_run_logic_debug_stress",
-            "tool_relpath": "tools/logic/tool_run_logic_debug_stress.py",
+            "tool_module": "tools.domain.logic.tool_run_logic_debug_stress",
+            "tool_relpath": "tools/domain/logic/tool_run_logic_debug_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4824,8 +4824,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.run-logic-eval-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_run_logic_eval_stress",
-            "tool_relpath": "tools/logic/tool_run_logic_eval_stress.py",
+            "tool_module": "tools.domain.logic.tool_run_logic_eval_stress",
+            "tool_relpath": "tools/domain/logic/tool_run_logic_eval_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4876,8 +4876,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.run-logic-fault-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_run_logic_fault_stress",
-            "tool_relpath": "tools/logic/tool_run_logic_fault_stress.py",
+            "tool_module": "tools.domain.logic.tool_run_logic_fault_stress",
+            "tool_relpath": "tools/domain/logic/tool_run_logic_fault_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4928,8 +4928,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.run-logic-protocol-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_run_logic_protocol_stress",
-            "tool_relpath": "tools/logic/tool_run_logic_protocol_stress.py",
+            "tool_module": "tools.domain.logic.tool_run_logic_protocol_stress",
+            "tool_relpath": "tools/domain/logic/tool_run_logic_protocol_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -4980,8 +4980,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.run-logic-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_run_logic_stress",
-            "tool_relpath": "tools/logic/tool_run_logic_stress.py",
+            "tool_module": "tools.domain.logic.tool_run_logic_stress",
+            "tool_relpath": "tools/domain/logic/tool_run_logic_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5032,8 +5032,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.run-logic-timing-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_run_logic_timing_stress",
-            "tool_relpath": "tools/logic/tool_run_logic_timing_stress.py",
+            "tool_module": "tools.domain.logic.tool_run_logic_timing_stress",
+            "tool_relpath": "tools/domain/logic/tool_run_logic_timing_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5084,8 +5084,8 @@
             "required_capabilities": [],
             "stable_id": "dom.logic.verify-compiled-vs-l1.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.logic.tool_verify_compiled_vs_l1",
-            "tool_relpath": "tools/logic/tool_verify_compiled_vs_l1.py",
+            "tool_module": "tools.domain.logic.tool_verify_compiled_vs_l1",
+            "tool_relpath": "tools/domain/logic/tool_verify_compiled_vs_l1.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5195,8 +5195,8 @@
             "required_capabilities": [],
             "stable_id": "dom.pack.capability-inspect.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.pack.capability_inspect",
-            "tool_relpath": "tools/pack/capability_inspect.py",
+            "tool_module": "tools.package.pack.capability_inspect",
+            "tool_relpath": "tools/package/pack/capability_inspect.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5302,8 +5302,8 @@
             "required_capabilities": [],
             "stable_id": "dom.pack.migrate-capability-gating.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.pack.migrate_capability_gating",
-            "tool_relpath": "tools/pack/migrate_capability_gating.py",
+            "tool_module": "tools.package.pack.migrate_capability_gating",
+            "tool_relpath": "tools/package/pack/migrate_capability_gating.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5354,8 +5354,8 @@
             "required_capabilities": [],
             "stable_id": "dom.pack.validate-manifest.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.pack.pack_validate",
-            "tool_relpath": "tools/pack/pack_validate.py",
+            "tool_module": "tools.package.pack.pack_validate",
+            "tool_relpath": "tools/package/pack/pack_validate.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5465,8 +5465,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.generate-proc-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_generate_proc_stress",
-            "tool_relpath": "tools/process/tool_generate_proc_stress.py",
+            "tool_module": "tools.domain.processes.tool_generate_proc_stress",
+            "tool_relpath": "tools/domain/processes/tool_generate_proc_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5517,8 +5517,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.replay-capsule-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_replay_capsule_window",
-            "tool_relpath": "tools/process/tool_replay_capsule_window.py",
+            "tool_module": "tools.domain.processes.tool_replay_capsule_window",
+            "tool_relpath": "tools/domain/processes/tool_replay_capsule_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5569,8 +5569,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.replay-drift-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_replay_drift_window",
-            "tool_relpath": "tools/process/tool_replay_drift_window.py",
+            "tool_module": "tools.domain.processes.tool_replay_drift_window",
+            "tool_relpath": "tools/domain/processes/tool_replay_drift_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5621,8 +5621,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.replay-experiment-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_replay_experiment_window",
-            "tool_relpath": "tools/process/tool_replay_experiment_window.py",
+            "tool_module": "tools.domain.processes.tool_replay_experiment_window",
+            "tool_relpath": "tools/domain/processes/tool_replay_experiment_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5673,8 +5673,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.replay-maturity-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_replay_maturity_window",
-            "tool_relpath": "tools/process/tool_replay_maturity_window.py",
+            "tool_module": "tools.domain.processes.tool_replay_maturity_window",
+            "tool_relpath": "tools/domain/processes/tool_replay_maturity_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5725,8 +5725,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.replay-pipeline-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_replay_pipeline_window",
-            "tool_relpath": "tools/process/tool_replay_pipeline_window.py",
+            "tool_module": "tools.domain.processes.tool_replay_pipeline_window",
+            "tool_relpath": "tools/domain/processes/tool_replay_pipeline_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5777,8 +5777,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.replay-proc-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_replay_proc_window",
-            "tool_relpath": "tools/process/tool_replay_proc_window.py",
+            "tool_module": "tools.domain.processes.tool_replay_proc_window",
+            "tool_relpath": "tools/domain/processes/tool_replay_proc_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5829,8 +5829,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.replay-process-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_replay_process_window",
-            "tool_relpath": "tools/process/tool_replay_process_window.py",
+            "tool_module": "tools.domain.processes.tool_replay_process_window",
+            "tool_relpath": "tools/domain/processes/tool_replay_process_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5881,8 +5881,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.replay-qc-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_replay_qc_window",
-            "tool_relpath": "tools/process/tool_replay_qc_window.py",
+            "tool_module": "tools.domain.processes.tool_replay_qc_window",
+            "tool_relpath": "tools/domain/processes/tool_replay_qc_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5933,8 +5933,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.replay-quality-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_replay_quality_window",
-            "tool_relpath": "tools/process/tool_replay_quality_window.py",
+            "tool_module": "tools.domain.processes.tool_replay_quality_window",
+            "tool_relpath": "tools/domain/processes/tool_replay_quality_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -5985,8 +5985,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.replay-reverse-engineering-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_replay_reverse_engineering_window",
-            "tool_relpath": "tools/process/tool_replay_reverse_engineering_window.py",
+            "tool_module": "tools.domain.processes.tool_replay_reverse_engineering_window",
+            "tool_relpath": "tools/domain/processes/tool_replay_reverse_engineering_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6037,8 +6037,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.run-proc-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_run_proc_stress",
-            "tool_relpath": "tools/process/tool_run_proc_stress.py",
+            "tool_module": "tools.domain.processes.tool_run_proc_stress",
+            "tool_relpath": "tools/domain/processes/tool_run_proc_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6089,8 +6089,8 @@
             "required_capabilities": [],
             "stable_id": "dom.proc.verify-proc-compaction.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.process.tool_verify_proc_compaction",
-            "tool_relpath": "tools/process/tool_verify_proc_compaction.py",
+            "tool_module": "tools.domain.processes.tool_verify_proc_compaction",
+            "tool_relpath": "tools/domain/processes/tool_verify_proc_compaction.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6305,8 +6305,8 @@
             "required_capabilities": [],
             "stable_id": "dom.server.replay-local-singleplayer.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.server.tool_replay_local_singleplayer",
-            "tool_relpath": "tools/server/tool_replay_local_singleplayer.py",
+            "tool_module": "tools.test.server.tool_replay_local_singleplayer",
+            "tool_relpath": "tools/test/server/tool_replay_local_singleplayer.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6357,8 +6357,8 @@
             "required_capabilities": [],
             "stable_id": "dom.server.replay-server-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.server.tool_replay_server_window",
-            "tool_relpath": "tools/server/tool_replay_server_window.py",
+            "tool_module": "tools.test.server.tool_replay_server_window",
+            "tool_relpath": "tools/test/server/tool_replay_server_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6409,8 +6409,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sol.replay-illumination-view.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.astro.tool_replay_illumination_view",
-            "tool_relpath": "tools/astro/tool_replay_illumination_view.py",
+            "tool_module": "tools.domain.astronomy.tool_replay_illumination_view",
+            "tool_relpath": "tools/domain/astronomy/tool_replay_illumination_view.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6461,8 +6461,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sol.replay-orbit-view.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.astro.tool_replay_orbit_view",
-            "tool_relpath": "tools/astro/tool_replay_orbit_view.py",
+            "tool_module": "tools.domain.astronomy.tool_replay_orbit_view",
+            "tool_relpath": "tools/domain/astronomy/tool_replay_orbit_view.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6513,8 +6513,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sys.generate-sys-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.system.tool_generate_sys_stress",
-            "tool_relpath": "tools/system/tool_generate_sys_stress.py",
+            "tool_module": "tools.domain.systems.tool_generate_sys_stress",
+            "tool_relpath": "tools/domain/systems/tool_generate_sys_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6565,8 +6565,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sys.replay-capsule-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.system.tool_replay_capsule_window",
-            "tool_relpath": "tools/system/tool_replay_capsule_window.py",
+            "tool_module": "tools.domain.systems.tool_replay_capsule_window",
+            "tool_relpath": "tools/domain/systems/tool_replay_capsule_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6617,8 +6617,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sys.replay-certification-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.system.tool_replay_certification_window",
-            "tool_relpath": "tools/system/tool_replay_certification_window.py",
+            "tool_module": "tools.domain.systems.tool_replay_certification_window",
+            "tool_relpath": "tools/domain/systems/tool_replay_certification_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6669,8 +6669,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sys.replay-sys-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.system.tool_replay_sys_window",
-            "tool_relpath": "tools/system/tool_replay_sys_window.py",
+            "tool_module": "tools.domain.systems.tool_replay_sys_window",
+            "tool_relpath": "tools/domain/systems/tool_replay_sys_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6721,8 +6721,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sys.replay-system-failure-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.system.tool_replay_system_failure_window",
-            "tool_relpath": "tools/system/tool_replay_system_failure_window.py",
+            "tool_module": "tools.domain.systems.tool_replay_system_failure_window",
+            "tool_relpath": "tools/domain/systems/tool_replay_system_failure_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6773,8 +6773,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sys.replay-tier-transitions.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.system.tool_replay_tier_transitions",
-            "tool_relpath": "tools/system/tool_replay_tier_transitions.py",
+            "tool_module": "tools.domain.systems.tool_replay_tier_transitions",
+            "tool_relpath": "tools/domain/systems/tool_replay_tier_transitions.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6825,8 +6825,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sys.run-sys-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.system.tool_run_sys_stress",
-            "tool_relpath": "tools/system/tool_run_sys_stress.py",
+            "tool_module": "tools.domain.systems.tool_run_sys_stress",
+            "tool_relpath": "tools/domain/systems/tool_run_sys_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6877,8 +6877,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sys.template-browser.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.system.tool_template_browser",
-            "tool_relpath": "tools/system/tool_template_browser.py",
+            "tool_module": "tools.domain.systems.tool_template_browser",
+            "tool_relpath": "tools/domain/systems/tool_template_browser.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6929,8 +6929,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sys.verify-explain-determinism.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.system.tool_verify_explain_determinism",
-            "tool_relpath": "tools/system/tool_verify_explain_determinism.py",
+            "tool_module": "tools.domain.systems.tool_verify_explain_determinism",
+            "tool_relpath": "tools/domain/systems/tool_verify_explain_determinism.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -6981,8 +6981,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sys.verify-statevec-roundtrip.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.system.tool_verify_statevec_roundtrip",
-            "tool_relpath": "tools/system/tool_verify_statevec_roundtrip.py",
+            "tool_module": "tools.domain.systems.tool_verify_statevec_roundtrip",
+            "tool_relpath": "tools/domain/systems/tool_verify_statevec_roundtrip.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7033,8 +7033,8 @@
             "required_capabilities": [],
             "stable_id": "dom.sys.verify-template-reproducible.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.system.tool_verify_template_reproducible",
-            "tool_relpath": "tools/system/tool_verify_template_reproducible.py",
+            "tool_module": "tools.domain.systems.tool_verify_template_reproducible",
+            "tool_relpath": "tools/domain/systems/tool_verify_template_reproducible.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7085,8 +7085,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.generate-worldgen-baseline.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_generate_worldgen_baseline",
-            "tool_relpath": "tools/worldgen/tool_generate_worldgen_baseline.py",
+            "tool_module": "tools.domain.worldgen.tool_generate_worldgen_baseline",
+            "tool_relpath": "tools/domain/worldgen/tool_generate_worldgen_baseline.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7137,8 +7137,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-climate-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_climate_window",
-            "tool_relpath": "tools/worldgen/tool_replay_climate_window.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_climate_window",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_climate_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7189,8 +7189,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-galaxy-objects.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_galaxy_objects",
-            "tool_relpath": "tools/worldgen/tool_replay_galaxy_objects.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_galaxy_objects",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_galaxy_objects.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7241,8 +7241,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-galaxy-proxies.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_galaxy_proxies",
-            "tool_relpath": "tools/worldgen/tool_replay_galaxy_proxies.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_galaxy_proxies",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_galaxy_proxies.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7293,8 +7293,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-hydrology-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_hydrology_window",
-            "tool_relpath": "tools/worldgen/tool_replay_hydrology_window.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_hydrology_window",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_hydrology_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7345,8 +7345,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-illumination-view.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_illumination_view",
-            "tool_relpath": "tools/worldgen/tool_replay_illumination_view.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_illumination_view",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_illumination_view.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7397,8 +7397,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-material-proxy-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_material_proxy_window",
-            "tool_relpath": "tools/worldgen/tool_replay_material_proxy_window.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_material_proxy_window",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_material_proxy_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7449,8 +7449,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-refinement-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_refinement_window",
-            "tool_relpath": "tools/worldgen/tool_replay_refinement_window.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_refinement_window",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_refinement_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7501,8 +7501,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-sky-view.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_sky_view",
-            "tool_relpath": "tools/worldgen/tool_replay_sky_view.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_sky_view",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_sky_view.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7553,8 +7553,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-system-instantiation.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_system_instantiation",
-            "tool_relpath": "tools/worldgen/tool_replay_system_instantiation.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_system_instantiation",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_system_instantiation.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7605,8 +7605,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-system-l2.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_system_l2",
-            "tool_relpath": "tools/worldgen/tool_replay_system_l2.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_system_l2",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_system_l2.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7657,8 +7657,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-tide-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_tide_window",
-            "tool_relpath": "tools/worldgen/tool_replay_tide_window.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_tide_window",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_tide_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7709,8 +7709,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-water-view.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_water_view",
-            "tool_relpath": "tools/worldgen/tool_replay_water_view.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_water_view",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_water_view.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7761,8 +7761,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.replay-wind-window.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_replay_wind_window",
-            "tool_relpath": "tools/worldgen/tool_replay_wind_window.py",
+            "tool_module": "tools.domain.worldgen.tool_replay_wind_window",
+            "tool_relpath": "tools/domain/worldgen/tool_replay_wind_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7813,8 +7813,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.run-refinement-stress.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_run_refinement_stress",
-            "tool_relpath": "tools/worldgen/tool_run_refinement_stress.py",
+            "tool_module": "tools.domain.worldgen.tool_run_refinement_stress",
+            "tool_relpath": "tools/domain/worldgen/tool_run_refinement_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7865,8 +7865,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.verify-earth-surface.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_verify_earth_surface",
-            "tool_relpath": "tools/worldgen/tool_verify_earth_surface.py",
+            "tool_module": "tools.domain.worldgen.tool_verify_earth_surface",
+            "tool_relpath": "tools/domain/worldgen/tool_verify_earth_surface.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -7917,8 +7917,8 @@
             "required_capabilities": [],
             "stable_id": "dom.worldgen.verify-worldgen-lock.v1",
             "surface_role": "leaf",
-            "tool_module": "tools.worldgen.tool_verify_worldgen_lock",
-            "tool_relpath": "tools/worldgen/tool_verify_worldgen_lock.py",
+            "tool_module": "tools.domain.worldgen.tool_verify_worldgen_lock",
+            "tool_relpath": "tools/domain/worldgen/tool_verify_worldgen_lock.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },

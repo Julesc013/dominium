@@ -94,7 +94,7 @@
       "rationale": "Truth/perceived/render separation already exists constitutionally and in live control/view and presentation surfaces, but the ladder is not explicitly frozen.",
       "evidence_refs": [
         "docs/canon/constitution_v1.md",
-        "tools/governance/view/view_engine.py",
+        "tools/repo/governance/view/view_engine.py",
         "app/ui_presentation.c"
       ],
       "next_action_implication": "Freeze the ladder by extending the existing observer, perception, and render surfaces.",
@@ -437,7 +437,7 @@
       "status": "partially_exists",
       "rationale": "Runtime, compatibility, control, persistence, and observability services already exist in distributed form across live roots.",
       "evidence_refs": [
-        "tools/governance/control_plane_engine.py",
+        "tools/repo/governance/control_plane_engine.py",
         "server/runtime/tick_loop.py",
         "tools/observability",
         "contracts/planning/reality/runtime_surfaces.json"
@@ -663,7 +663,7 @@
         "release/updates/stable.json",
         "release/updates/beta.json",
         "release/updates/nightly.json",
-        "tools/distribution"
+        "tools/package/distribution"
       ],
       "next_action_implication": "Formalize publication models as a consolidation of existing channels and distribution surfaces.",
       "depends_on": [
@@ -736,7 +736,7 @@
       "evidence_refs": [
         "release",
         "tools/release",
-        "tools/distribution",
+        "tools/package/distribution",
         "tools/xstack"
       ],
       "next_action_implication": "Define the pipeline as a consolidation of the existing tooling and policy stack.",

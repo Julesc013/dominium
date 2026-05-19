@@ -54,7 +54,7 @@ Audit logs MUST be stored with the migrated artifact (save, replay, or export).
   - Refuse if both old and new forms are present but conflict.
   - Process ID: process.schema.migrate.pack_manifest.v1_to_v2
   - Deterministic function:
-    tools/schema_migration/schema_migration_runner.py::migrate_pack_manifest_1_0_0_to_2_0_0
+    tools/migration/schema/schema_migration_runner.py::migrate_pack_manifest_1_0_0_to_2_0_0
 
 ## Machine-readable migration registry
 
@@ -74,4 +74,4 @@ Audit logs MUST be stored with the migrated artifact (save, replay, or export).
 - Migrations are invoked explicitly via tooling or tests.
 - No background or implicit migration is permitted.
 - Example invocation:
-  - `python tools/schema_migration/schema_migration_runner.py --schema-id dominium.schema.pack_manifest --source-version 1.0.0 --target-version 2.0.0 --input in.json --output out.json`
+  - `python tools/migration/schema/schema_migration_runner.py --schema-id dominium.schema.pack_manifest --source-version 1.0.0 --target-version 2.0.0 --input in.json --output out.json`

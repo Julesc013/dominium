@@ -47,7 +47,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         "engine/time/time_mapping_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "tools/time/tool_verify_sync_consistency.py",
+        "tools/domain/time/tool_verify_sync_consistency.py",
     }
 
     for root in scan_roots:

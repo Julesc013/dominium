@@ -27,46 +27,46 @@ Scope: interpreter extensions and tool updates to close DATA-1 gaps.
 
 
 
-- Unitless numeric values not supported.  
+- Unitless numeric values not supported.
 
 
-  Classification: NUMERIC.  
+  Classification: NUMERIC.
 
 
   Resolution: Added `unit.dimensionless.ratio` to UNIT_SYSTEM_POLICY and core units pack; updated DATA-1 process distributions to use unitless units.
 
 
-- No pressure unit exists.  
+- No pressure unit exists.
 
 
-  Classification: NUMERIC.  
+  Classification: NUMERIC.
 
 
   Resolution: Added `unit.pressure.pascal` to UNIT_SYSTEM_POLICY and core units pack; updated pressure interfaces in DATA-1 parts to use pressure units.
 
 
-- `fab_inspect` does not compare endpoint interfaces on edges.  
+- `fab_inspect` does not compare endpoint interfaces on edges.
 
 
-  Classification: TOOLING / VALIDATION.  
+  Classification: TOOLING / VALIDATION.
 
 
   Resolution: `fab_inspect` now validates edge endpoints, compares from/to interfaces, and emits compatibility traces and refusals.
 
 
-- Assembly cycles lack allow/forbid policy.  
+- Assembly cycles lack allow/forbid policy.
 
 
-  Classification: STRUCTURAL / VALIDATION.  
+  Classification: STRUCTURAL / VALIDATION.
 
 
   Resolution: Introduced `extensions.cycle_policy` convention (`allow`/`forbid`) and cycle checks in `fab_validate`.
 
 
-- Process families cannot encode distribution types.  
+- Process families cannot encode distribution types.
 
 
-  Classification: PARAMETRIC / TOOLING.  
+  Classification: PARAMETRIC / TOOLING.
 
 
   Resolution: Added deterministic sampling helpers (bounded sampling, multi-outcome selection) and seed composition utilities for future distribution metadata.
@@ -111,10 +111,10 @@ Scope: interpreter extensions and tool updates to close DATA-1 gaps.
 - Unit gaps: `docs/architecture/UNIT_SYSTEM_POLICY.md` updates and data pack unit annotations.
 
 
-- Interface compatibility gap: `tools/fab/fab_inspect.py` and new edge mismatch fixture.
+- Interface compatibility gap: `tools/domain/fabrication/fab_inspect.py` and new edge mismatch fixture.
 
 
-- Cycle policy gap: `tools/fab/fab_validate.py` and cycle fixtures.
+- Cycle policy gap: `tools/domain/fabrication/fab_validate.py` and cycle fixtures.
 
 
 - Distribution gap: `game/include/dominium/fab/fab_interpreters.h` + `game/rules/fab/fab_interpreters.cpp` helpers.

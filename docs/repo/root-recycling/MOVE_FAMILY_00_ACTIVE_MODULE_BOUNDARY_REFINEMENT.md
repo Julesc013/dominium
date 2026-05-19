@@ -66,7 +66,7 @@ They are source metadata, not generated evidence. Their preferred future owner i
 | `validation/**` | `tools/validators` | move_with_temporary_shim |
 | `meta/identity/**` | `tools/validators` | move_with_temporary_shim |
 | `meta/stability/**` | `tools/validators` | move_with_temporary_shim |
-| `governance/**` | `tools/repo` via `tools/governance/**` | move_with_temporary_shim |
+| `governance/**` | `tools/repo` via `tools/repo/governance/**` | move_with_temporary_shim |
 | semantic/runtime `meta/**` | preserve_current | preserve_until_tool_wrapping |
 | `performance/**` | preserve_current | block_unknown |
 

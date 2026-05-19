@@ -1,7 +1,7 @@
 /*
 FILE: source/dominium/tools/validators/validator_checks.h
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / tools/validator
+LAYER / SUBSYSTEM: Dominium impl / tools/validators
 RESPONSIBILITY: Deterministic validation checks for universe bundles.
 */
 #ifndef DOM_VALIDATOR_CHECKS_H

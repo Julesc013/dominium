@@ -36,7 +36,7 @@ def run(graph, repo_root, changed_files=None):
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     scheduler_rel = "game/domain/systems/roi/system_roi_scheduler.py"
-    replay_rel = "tools/system/tool_replay_sys_window.py"
+    replay_rel = "tools/domain/systems/tool_replay_sys_window.py"
 
     runtime_text = _read_text(repo_root, runtime_rel)
     for token in (

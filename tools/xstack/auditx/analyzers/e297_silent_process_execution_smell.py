@@ -57,7 +57,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "tools/process/tool_run_proc_stress.py",
+        "tools/domain/processes/tool_run_proc_stress.py",
         "tools/xstack/sessionx/process_runtime.py",
         "game/domain/processes/capsules/capsule_executor.py",
         "game/domain/processes/process_run_engine.py",
@@ -101,7 +101,7 @@ def run(graph, repo_root, changed_files=None):
                         ],
                         related_paths=[
                             rel_path,
-                            "tools/process/tool_run_proc_stress.py",
+                            "tools/domain/processes/tool_run_proc_stress.py",
                             "game/domain/processes/process_run_engine.py",
                         ],
                     )

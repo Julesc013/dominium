@@ -8,11 +8,11 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E368_DIRECT_POSITION_WRITE_SMELL"
-WATCH_PREFIXES = ("game/domain/embodiment/", "tools/xstack/sessionx/", "tools/mvp/", "docs/embodiment/")
+WATCH_PREFIXES = ("game/domain/embodiment/", "tools/xstack/sessionx/", "tools/release/mvp/", "docs/embodiment/")
 BODY_SYSTEM_REL = "game/domain/embodiment/body/body_system.py"
 LENS_ENGINE_REL = "game/domain/embodiment/lens/lens_engine.py"
 PROCESS_RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
-RUNTIME_BUNDLE_REL = "tools/mvp/runtime_bundle.py"
+RUNTIME_BUNDLE_REL = "tools/release/mvp/runtime_bundle.py"
 DOC_REL = "docs/embodiment/EMBODIMENT_BASELINE.md"
 REQUIRED_TOKENS = {
     PROCESS_RUNTIME_REL: (

@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "omega", "toolchain", "compare"]
 
 
 def run(repo_root: str):
-    from tools.mvp.toolchain_matrix_common import compare_toolchain_runs
+    from tools.release.mvp.toolchain_matrix_common import compare_toolchain_runs
     from tools.xstack.testx.tests.toolchain_matrix_testlib import write_synthetic_run_root
 
     work_root = tempfile.mkdtemp(prefix="omega9_compare_")

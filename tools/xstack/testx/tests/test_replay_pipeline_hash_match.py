@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.process.tool_replay_pipeline_window import verify_pipeline_replay_window
+    from tools.domain.processes.tool_replay_pipeline_window import verify_pipeline_replay_window
     from tools.xstack.testx.tests import proc8_testlib
 
     state = proc8_testlib.cloned_state()

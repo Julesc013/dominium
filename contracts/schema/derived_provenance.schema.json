@@ -58,7 +58,7 @@
       "artifact_type_id": "artifact.ephemeris.table",
       "source_pack_id": "org.dominium.sol.spice",
       "source_hash": "18c9b8c7451aaaea0001eb96e45a2a8d9a09003011bf57be3bf9e3d1fb363e1e",
-      "generator_tool_id": "tools/data/tool_spice_import",
+      "generator_tool_id": "tools/import/data/tool_spice_import",
       "generator_tool_version": "1.0.0",
       "schema_version": "1.0.0",
       "input_merkle_hash": "295d7cb4ee9f47de5ec8c889b959a84572f22e5ebb535efb068b902e334be28b",

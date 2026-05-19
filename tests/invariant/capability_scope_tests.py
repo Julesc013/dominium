@@ -30,7 +30,7 @@ SKIP_SUBDIRS = (
     "server/tests",
     "launcher/tests",
     "setup/tests",
-    "tools/tests",
+    "tools/test",
 )
 
 SCOPE_PREFIX_RE = re.compile(r'["\'](game|client|client\.ui|launcher|setup|tools|ops)\.[^"\']+["\']',

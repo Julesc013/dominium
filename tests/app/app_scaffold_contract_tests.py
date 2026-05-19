@@ -9,7 +9,7 @@ GUI_STUBS = [
     ("setup", "runtime/platform/win32/setup/setup_app_win32.cpp"),
     ("client", "runtime/platform/win32/client/client_app_win32.cpp"),
     ("server", "runtime/platform/win32/server/server_app_win32.cpp"),
-    ("tools", "tools/gui/tools_app_win32.cpp"),
+    ("tools", "apps/workbench/module/tooling/host/win32/tools_app_win32.cpp"),
 ]
 
 REQUIRED_UI_SYMBOLS = [

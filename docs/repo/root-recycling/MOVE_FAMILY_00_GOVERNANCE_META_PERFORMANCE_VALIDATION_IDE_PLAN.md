@@ -116,7 +116,7 @@ MOVE-FAMILY-00-PLAN made no source-root moves, deletes, renames, reference rewri
 - IDE manifest files found: 3.
 - `ide/manifests/**` preferred future owner: `contracts/projections`.
 - `validation/**`, `meta/identity/**`, and `meta/stability/**` preferred future owner: `tools/validators`, but only with temporary shim/import planning.
-- `governance/**` preferred future owner: `tools/repo` via `tools/governance/**`, but only with release/tool import proof.
+- `governance/**` preferred future owner: `tools/repo` via `tools/repo/governance/**`, but only with release/tool import proof.
 - most semantic/runtime `meta/**` and all `performance/**` remain preserve-current.
 - Next recommended task: `MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan`.
 

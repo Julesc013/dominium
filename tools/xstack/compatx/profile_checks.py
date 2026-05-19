@@ -12,7 +12,16 @@ from typing import Any, Dict, List
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REPO_ROOT_HINT = os.path.abspath(THIS_DIR)
+for _repo_root_probe_depth in range(16):
+    if os.path.exists(os.path.join(REPO_ROOT_HINT, "AGENTS.md")):
+        break
+    parent = os.path.dirname(REPO_ROOT_HINT)
+    if parent == REPO_ROOT_HINT:
+        REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+        break
+    REPO_ROOT_HINT = parent
+REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
@@ -30,8 +39,8 @@ DOC_SCHEMA_LINKS = {
     "docs/architecture/session_lifecycle.md": ["session_spec.schema.json", "bundle_profile.schema.json"],
     "docs/architecture/srz_contract.md": ["srz_shard.schema.json", "intent_envelope.schema.json"],
     "docs/architecture/hash_anchors.md": ["composite_hash", "tick_hash_anchors"],
-    "docs/architecture/deterministic_packaging.md": ["bundle_lockfile.schema.json", "canonical_content_hash", "tools/setup/build"],
-    "docs/architecture/setup_and_launcher.md": ["LOCKFILE_MISMATCH", "PACK_INCOMPATIBLE", "tools/launcher/launch"],
+    "docs/architecture/deterministic_packaging.md": ["bundle_lockfile.schema.json", "canonical_content_hash", "tools/package/setup/build"],
+    "docs/architecture/setup_and_launcher.md": ["LOCKFILE_MISMATCH", "PACK_INCOMPATIBLE", "tools/package/launcher/launch"],
     "docs/testing/xstack_profiles.md": ["session_spec.schema.json", "bundle_profile.schema.json", "registry_outputs.schema.json"],
 }
 

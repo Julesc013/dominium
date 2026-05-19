@@ -32,7 +32,7 @@ from game.domain.worldgen.refinement.refinement_scheduler import (
     build_refinement_status_view,
     normalize_refinement_request_record_rows,
 )
-from tools.mvp.runtime_bundle import (
+from tools.release.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
     MVP_PROFILE_BUNDLE_REL,
     build_runtime_bootstrap,

@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "omega", "ecosystem", "determinism"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.mvp.ecosystem_verify_common import verify_ecosystem
+    from tools.release.mvp.ecosystem_verify_common import verify_ecosystem
 
     first = verify_ecosystem(repo_root)
     second = verify_ecosystem(repo_root)

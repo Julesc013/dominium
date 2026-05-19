@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.models.model_engine import resolve_speed_multiplier_permille
+from tools.repo.models.model_engine import resolve_speed_multiplier_permille
 from game.domain.mobility.travel.itinerary_engine import normalize_itinerary_rows
 from game.domain.mobility.traffic import (
     apply_congestion_to_speed,

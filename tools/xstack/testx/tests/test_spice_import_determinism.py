@@ -21,7 +21,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.data.tool_spice_import import run_import
+    run_import = __import__("tools.import.data.tool_spice_import", fromlist=["run_import"]).run_import
 
     temp_root = tempfile.mkdtemp(prefix="dominium_spice_import_")
     try:
@@ -59,7 +59,7 @@ def run(repo_root: str):
         prov = dict(a_json.get("provenance") or {})
         if not bool(prov.get("deterministic", False)):
             return {"status": "fail", "message": "SPICE provenance deterministic flag is missing"}
-        if str(prov.get("generator_tool_id", "")) != "tools/data/tool_spice_import":
+        if str(prov.get("generator_tool_id", "")) != "tools/import/data/tool_spice_import":
             return {"status": "fail", "message": "SPICE provenance generator_tool_id mismatch"}
 
         return {"status": "pass", "message": "SPICE import determinism verified"}

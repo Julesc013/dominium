@@ -17,7 +17,7 @@ from tools.validators.identity import (
     universal_identity_block_fingerprint,
     validate_identity_block,
 )
-from tools.meta.identity_common import REPORT_JSON_REL, build_identity_report, write_identity_artifacts
+from tools.repo.meta.audit.identity_common import REPORT_JSON_REL, build_identity_report, write_identity_artifacts
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -179,15 +179,15 @@ def run_tool(repo_root: str, tool_rel: str, *args: str) -> subprocess.CompletedP
 
 def print_tool_outputs(repo_root: str) -> tuple[subprocess.CompletedProcess[str], subprocess.CompletedProcess[str]]:
     artifact_path = sample_identity_artifact(repo_root)
-    first = run_tool(repo_root, "tools/meta/tool_print_identity.py", artifact_path, "--repo-root", repo_root, "--json")
-    second = run_tool(repo_root, "tools/meta/tool_print_identity.py", artifact_path, "--repo-root", repo_root, "--json")
+    first = run_tool(repo_root, "tools/repo/meta/audit/tool_print_identity.py", artifact_path, "--repo-root", repo_root, "--json")
+    second = run_tool(repo_root, "tools/repo/meta/audit/tool_print_identity.py", artifact_path, "--repo-root", repo_root, "--json")
     return first, second
 
 
 def diff_tool_outputs(repo_root: str) -> tuple[subprocess.CompletedProcess[str], subprocess.CompletedProcess[str]]:
     artifact_path = sample_identity_artifact(repo_root)
-    first = run_tool(repo_root, "tools/meta/tool_diff_identity.py", artifact_path, artifact_path, "--repo-root", repo_root, "--json")
-    second = run_tool(repo_root, "tools/meta/tool_diff_identity.py", artifact_path, artifact_path, "--repo-root", repo_root, "--json")
+    first = run_tool(repo_root, "tools/repo/meta/audit/tool_diff_identity.py", artifact_path, artifact_path, "--repo-root", repo_root, "--json")
+    second = run_tool(repo_root, "tools/repo/meta/audit/tool_diff_identity.py", artifact_path, artifact_path, "--repo-root", repo_root, "--json")
     return first, second
 
 

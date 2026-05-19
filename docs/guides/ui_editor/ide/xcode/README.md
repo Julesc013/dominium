@@ -15,7 +15,7 @@ set -e
 
 ROOT_DIR="${SRCROOT}"
 UI_DOC="${ROOT_DIR}/tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv"
-UI_ROOT="${ROOT_DIR}/tools/launcher/ui"
+UI_ROOT="${ROOT_DIR}/tools/package/launcher/ui"
 
 # Adjust UI_EDITOR to your local tool path if needed.
 UI_EDITOR="${BUILD_DIR}/Debug/tool_ui_editor"

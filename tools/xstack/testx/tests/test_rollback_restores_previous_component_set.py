@@ -14,7 +14,7 @@ TEST_TAGS = ["fast", "release", "release-index-policy", "rollback"]
 def run(repo_root: str):
     del repo_root
     from tools.release import append_install_transaction, load_install_transaction_log
-    from tools.setup.setup_cli import rollback_from_plan, transaction_log_path, write_json
+    from tools.package.setup.setup_cli import rollback_from_plan, transaction_log_path, write_json
 
     with tempfile.TemporaryDirectory() as tmp:
         install_root = os.path.join(tmp, "install")

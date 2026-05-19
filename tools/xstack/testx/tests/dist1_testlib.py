@@ -7,7 +7,7 @@ import tempfile
 from contextlib import contextmanager
 
 from tools.release import verify_release_manifest
-from tools.dist.dist_tree_common import (
+from tools.release.dist.dist_tree_common import (
     DEFAULT_OUTPUT_ROOT,
     DEFAULT_PLATFORM_TAG,
     DEFAULT_RELEASE_CHANNEL,
