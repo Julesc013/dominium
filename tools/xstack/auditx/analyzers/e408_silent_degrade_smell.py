@@ -20,7 +20,7 @@ REQUIRED_TOKENS = {
         '"degrade.client.rendered_to_tui"',
         '"degrade.client.contract_read_only"',
     ),
-    "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md": (
+    "docs/reference/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md": (
         "All degradation decisions must appear in the NegotiationRecord.",
         "disable feature",
         "substitute stub",

@@ -49,4 +49,4 @@ Evidence is recorded in:
 - `docs/architecture/BUDGET_POLICY.md`
 - `docs/architecture/COLLAPSE_EXPAND_CONTRACT.md`
 - `docs/architecture/DETERMINISTIC_ORDERING_POLICY.md`
-- `docs/policies/PERF_BUDGETS.md`
+- `docs/governance/policies/PERF_BUDGETS.md`

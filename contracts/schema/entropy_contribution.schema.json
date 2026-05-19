@@ -5,7 +5,7 @@
   "description": "Canonical PHYS-4 deterministic mapping row from source transformation to entropy increment formula.",
   "x-doc-ref": [
     "docs/domains/physics/ENTROPY_POLICY.md",
-    "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
+    "docs/governance/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

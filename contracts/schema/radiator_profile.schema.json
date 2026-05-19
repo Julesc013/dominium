@@ -5,7 +5,7 @@
   "description": "Deterministic THERM-3 radiator profile row.",
   "x-doc-ref": [
     "docs/domains/thermal/COOLING_AND_AMBIENT_MODEL.md",
-    "docs/audit/THERMAL_COOLING_BASELINE.md"
+    "docs/archive/audit/THERMAL_COOLING_BASELINE.md"
   ],
   "type": "object",
   "required": [

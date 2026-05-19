@@ -28,7 +28,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
 DEFAULT_DEPRECATIONS_REL = "contracts/governance/deprecations.json"
-DEFAULT_TOPOLOGY_MAP_REL = "docs/audit/TOPOLOGY_MAP.json"
+DEFAULT_TOPOLOGY_MAP_REL = "docs/archive/audit/TOPOLOGY_MAP.json"
 ALLOWED_STATUS = ("active", "deprecated", "quarantined", "removed")
 
 

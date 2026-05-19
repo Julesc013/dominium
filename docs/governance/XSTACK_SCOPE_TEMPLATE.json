@@ -15,7 +15,7 @@
         "CANONICAL"
       ],
       "excluded_prefixes": [
-        "docs/audit/",
+        "docs/archive/audit/",
         "archive/generated/dist/",
         "build/",
         "tmp/",
@@ -33,7 +33,7 @@
         "CANONICAL"
       ],
       "excluded_prefixes": [
-        "docs/audit/",
+        "docs/archive/audit/",
         "archive/generated/dist/",
         "build/",
         "tmp/",
@@ -50,7 +50,7 @@
         "CANONICAL"
       ],
       "excluded_prefixes": [
-        "docs/audit/",
+        "docs/archive/audit/",
         "archive/generated/dist/",
         "build/",
         "tmp/",

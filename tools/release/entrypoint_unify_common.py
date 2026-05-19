@@ -16,9 +16,9 @@ from runtime.platform.platform_probe import probe_platform_descriptor
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
-ENTRYPOINT_UNIFY_MAP_PATH = "docs/audit/ENTRYPOINT_UNIFY_MAP.md"
+ENTRYPOINT_UNIFY_MAP_PATH = "docs/archive/audit/ENTRYPOINT_UNIFY_MAP.md"
 FLAG_MIGRATION_PATH = "docs/runtime/shell/FLAG_MIGRATION.md"
-ENTRYPOINT_UNIFY_FINAL_PATH = "docs/audit/ENTRYPOINT_UNIFY_FINAL.md"
+ENTRYPOINT_UNIFY_FINAL_PATH = "docs/archive/audit/ENTRYPOINT_UNIFY_FINAL.md"
 ENTRYPOINT_UNIFY_TOOL_PATH = "tools/release/tool_run_entrypoint_unify.py"
 STUB_ONLY_PRODUCTS = {"engine", "game", "tool.attach_console_stub"}
 SAMPLE_ARGS = {

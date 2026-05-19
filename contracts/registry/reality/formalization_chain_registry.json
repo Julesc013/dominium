@@ -11,12 +11,12 @@
     "docs/canon/constitution_v1.md",
     "docs/canon/glossary_v1.md",
     "AGENTS.md",
-    "docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
-    "docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "docs/reference/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "docs/reference/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
     "contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md",
-    "docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md",
-    "docs/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
-    "docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+    "docs/reference/specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+    "docs/reference/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+    "docs/reference/specs/reality/SPEC_FORMALIZATION_CHAIN.md",
     "docs/planning/POST_PI_EXECUTION_PLAN.md",
     "docs/planning/MERGED_PROGRAM_STATE.md",
     "docs/planning/GATES_AND_PROOFS.md"
@@ -27,8 +27,8 @@
     "infrastructure/formalization/inference_engine.py",
     "docs/domains/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md",
     "docs/domains/worldgen/LAW_AND_GOVERNANCE_BASELINE.md",
-    "docs/knowledge/EPISTEMICS_OVERVIEW.md",
-    "docs/audit/BOM_AG_BASELINE.md"
+    "docs/domains/knowledge/EPISTEMICS_OVERVIEW.md",
+    "docs/archive/audit/BOM_AG_BASELINE.md"
   ],
   "core_definition": {
     "summary": "Formalization is the lawful process by which knowledge, design, practice, or structure becomes explicit, portable, reviewable, reusable, and lineage-bearing beyond its immediate local context.",

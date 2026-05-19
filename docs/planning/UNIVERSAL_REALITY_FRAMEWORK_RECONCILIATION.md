@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: post-`Ζ` domain constitutions, post-`Ζ` frontier planning
 Replacement Target: later domain constitution checkpoints may refine domain-specific mapping without replacing this reconciliation layer
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`, `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`, `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md`, `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md`, `docs/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md`, `docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md`, `docs/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`, `docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/POST_ZETA_FRONTIER_RECONCILIATION_AND_HANDOFF.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/reference/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`, `docs/reference/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`, `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md`, `docs/reference/specs/reality/SPEC_REPRESENTATION_LADDERS.md`, `docs/reference/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md`, `docs/reference/specs/reality/SPEC_FORMALIZATION_CHAIN.md`, `docs/reference/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`, `docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/POST_ZETA_FRONTIER_RECONCILIATION_AND_HANDOFF.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`
 
 # Universal Reality Framework Reconciliation
 

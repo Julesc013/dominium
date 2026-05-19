@@ -16,8 +16,8 @@ def run(repo_root: str):
         return {"status": "fail", "message": "XI-4z bundle manifest text must be rendered"}
     required_entries = (
         "REVIEW_FIRST.md",
-        "docs/restructure/XI_4Z_DECISION_REPORT.md",
-        "docs/restructure/XI_4Z_XI5_READINESS.md",
+        "docs/archive/restructure/XI_4Z_DECISION_REPORT.md",
+        "docs/archive/restructure/XI_4Z_XI5_READINESS.md",
         "archive/generated/restructure/src_domain_mapping_lock_approved.json",
         "contracts/restructure/xi5_readiness_contract.json",
         "archive/generated/architecture/architecture_graph.json",

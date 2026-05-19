@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical shipment commitment declaration.",
   "x-doc-ref": [
-    "docs/materials/MANIFESTS_AND_SHIPMENTS.md"
+    "docs/domains/materials/MANIFESTS_AND_SHIPMENTS.md"
   ],
   "type": "object",
   "required": [

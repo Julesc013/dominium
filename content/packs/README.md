@@ -27,4 +27,4 @@ Define canonical on-disk pack layout for deterministic discovery and validation 
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
 - `docs/architecture/pack_system.md`
-- `docs/contracts/versioning_and_migration.md`
+- `docs/reference/contracts/versioning_and_migration.md`

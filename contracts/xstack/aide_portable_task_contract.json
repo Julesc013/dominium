@@ -21,14 +21,14 @@
     "docs/planning/MERGED_PROGRAM_STATE.md",
     "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
     "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
-    "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
-    "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
-    "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
-    "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "docs/archive/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/archive/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+    "docs/archive/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+    "docs/development/xstack/XSTACK_SCOPE_FREEZE.md",
     "archive/generated/xstack/xstack_scope_freeze.json",
-    "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "docs/development/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
     "archive/generated/xstack/xstack_inventory_and_classification.json",
-    "docs/agents/XSTACK_TASK_CATALOG.md"
+    "docs/game/agents/XSTACK_TASK_CATALOG.md"
   ],
   "current_program_context": {
     "admissible_zeta_doctrine_program_complete": true,
@@ -37,9 +37,9 @@
     "current_aide_implementation_presence": false
   },
   "dependencies": {
-    "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "required_scope_freeze_doc": "docs/development/xstack/XSTACK_SCOPE_FREEZE.md",
     "required_scope_freeze_json": "archive/generated/xstack/xstack_scope_freeze.json",
-    "required_inventory_doc": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "required_inventory_doc": "docs/development/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
     "required_inventory_json": "archive/generated/xstack/xstack_inventory_and_classification.json"
   },
   "portable_task_definition": {
@@ -155,7 +155,7 @@
   },
   "repo_grounded_rationale": [
     {
-      "surface": "docs/agents/XSTACK_TASK_CATALOG.md",
+      "surface": "docs/game/agents/XSTACK_TASK_CATALOG.md",
       "supports": [
         "task_kind",
         "authoritative_inputs",

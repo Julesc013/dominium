@@ -40,7 +40,7 @@ POST-CONVERGE-10H reduced focused RepoX from 1769 failures to 153 failures and l
 - Root-recycling/migration references rewritten: 0
 - Historical/audit references deleted: 0
 
-The failures were all `docs/refactor/QUARANTINE_*` DERIVED evidence packets that cite `docs/archive/**` as part of duplicate/quarantine audit evidence. Those citations should remain.
+The failures were all `docs/archive/refactor/QUARANTINE_*` DERIVED evidence packets that cite `docs/archive/**` as part of duplicate/quarantine audit evidence. Those citations should remain.
 
 ## Changes Made
 

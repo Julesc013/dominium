@@ -39,11 +39,11 @@ from tools.audit.review.xi4z_fix3_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-XI_5A_FINAL_REL = "docs/audit/XI_5A_FINAL.md"
+XI_5A_FINAL_REL = "docs/archive/audit/XI_5A_FINAL.md"
 XI5A_EXECUTION_LOG_REL = "archive/generated/restructure/xi5a_execution_log.json"
 XI5A_POSTMOVE_RESIDUAL_SRC_REPORT_REL = "archive/generated/restructure/xi5a_postmove_residual_src_report.json"
 
-XI_5X1_FINAL_REL = "docs/audit/XI_5X1_FINAL.md"
+XI_5X1_FINAL_REL = "docs/archive/audit/XI_5X1_FINAL.md"
 XI5X1_CLASSIFICATION_LOCK_REL = "archive/generated/restructure/xi5x1_residual_classification_lock.json"
 XI5X1_BATCH_PLAN_REL = "archive/generated/restructure/xi5x1_batch_plan.json"
 XI5X1_EXECUTION_LOG_REL = "archive/generated/restructure/xi5x1_execution_log.json"
@@ -62,23 +62,23 @@ XI5X2_PLATFORM_ADAPTER_REVIEW_REL = "archive/generated/restructure/xi5x2_platfor
 XI5X2_XI6_GATE_MODEL_REL = "archive/generated/restructure/xi5x2_xi6_gate_model.json"
 XI5X2_BLOCKER_DELTA_REL = "archive/generated/restructure/xi5x2_blocker_delta.json"
 
-XI_5X2_FINAL_REL = "docs/audit/XI_5X2_FINAL.md"
-XI_5X2_REALITY_REFRESH_DOC_REL = "docs/audit/XI_5X2_REALITY_REFRESH.md"
-XI_5X2_BUILD_TOOLCHAIN_REPORT_REL = "docs/audit/XI_5X2_BUILD_TOOLCHAIN_REPORT.md"
-XI_5X2_PRECONDITION_REPORT_REL = "docs/audit/XI_5X2_PRECONDITION_REPORT.md"
-XI_5X2_BATCH_PLAN_AUDIT_REL = "docs/audit/XI_5X2_BATCH_PLAN.md"
-XI_5X2_CONTENT_SOURCE_POLICY_REPORT_REL = "docs/audit/XI_5X2_CONTENT_SOURCE_POLICY_REPORT.md"
-XI_5X2_LEGACY_REPORT_REL = "docs/audit/XI_5X2_LEGACY_REPORT.md"
-XI_5X2_LEGACY_POCKETS_REPORT_REL = "docs/audit/XI_5X2_LEGACY_POCKETS_REPORT.md"
-XI_5X2_BLOCKED_PRECONDITIONS_DOC_REL = "docs/audit/XI_5X2_BLOCKED_PRECONDITIONS.md"
+XI_5X2_FINAL_REL = "docs/archive/audit/XI_5X2_FINAL.md"
+XI_5X2_REALITY_REFRESH_DOC_REL = "docs/archive/audit/XI_5X2_REALITY_REFRESH.md"
+XI_5X2_BUILD_TOOLCHAIN_REPORT_REL = "docs/archive/audit/XI_5X2_BUILD_TOOLCHAIN_REPORT.md"
+XI_5X2_PRECONDITION_REPORT_REL = "docs/archive/audit/XI_5X2_PRECONDITION_REPORT.md"
+XI_5X2_BATCH_PLAN_AUDIT_REL = "docs/archive/audit/XI_5X2_BATCH_PLAN.md"
+XI_5X2_CONTENT_SOURCE_POLICY_REPORT_REL = "docs/archive/audit/XI_5X2_CONTENT_SOURCE_POLICY_REPORT.md"
+XI_5X2_LEGACY_REPORT_REL = "docs/archive/audit/XI_5X2_LEGACY_REPORT.md"
+XI_5X2_LEGACY_POCKETS_REPORT_REL = "docs/archive/audit/XI_5X2_LEGACY_POCKETS_REPORT.md"
+XI_5X2_BLOCKED_PRECONDITIONS_DOC_REL = "docs/archive/audit/XI_5X2_BLOCKED_PRECONDITIONS.md"
 
 SOURCE_POCKET_POLICY_DOC_REL = "docs/architecture/SOURCE_POCKET_POLICY_v1.md"
-XI_5X2_XCODE_PLATFORM_REVIEW_DOC_REL = "docs/refactor/XI_5X2_XCODE_AND_PLATFORM_REVIEW.md"
-XI_5X2_MANUAL_REVIEW_DOC_REL = "docs/refactor/XI_5X2_MANUAL_REVIEW_PACKETS.md"
+XI_5X2_XCODE_PLATFORM_REVIEW_DOC_REL = "docs/archive/refactor/XI_5X2_XCODE_AND_PLATFORM_REVIEW.md"
+XI_5X2_MANUAL_REVIEW_DOC_REL = "docs/archive/refactor/XI_5X2_MANUAL_REVIEW_PACKETS.md"
 
-XI_5X2_BATCH_PLAN_DOC_REL = "docs/restructure/XI_5X2_BATCH_PLAN.md"
-XI_5X2_RESIDUAL_DECISIONS_DOC_REL = "docs/restructure/XI_5X2_RESIDUAL_DECISIONS.md"
-XI_5X2_XI6_READINESS_DOC_REL = "docs/restructure/XI_5X2_XI6_READINESS.md"
+XI_5X2_BATCH_PLAN_DOC_REL = "docs/archive/restructure/XI_5X2_BATCH_PLAN.md"
+XI_5X2_RESIDUAL_DECISIONS_DOC_REL = "docs/archive/restructure/XI_5X2_RESIDUAL_DECISIONS.md"
+XI_5X2_XI6_READINESS_DOC_REL = "docs/archive/restructure/XI_5X2_XI6_READINESS.md"
 
 VALIDATION_FAST_REL = "archive/generated/audit/validation_report_FAST.json"
 VALIDATION_STRICT_REL = "archive/generated/audit/validation_report_STRICT.json"
@@ -195,11 +195,11 @@ def _required_inputs() -> tuple[str, ...]:
         "docs/canon/constitution_v1.md",
         "docs/canon/glossary_v1.md",
         "AGENTS.md",
-        "docs/blueprint/META_BLUEPRINT_INDEX.md",
-        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md",
-        "docs/blueprint/FINAL_PROMPT_INVENTORY.md",
-        "docs/blueprint/PROMPT_DEPENDENCY_TREE.md",
-        "docs/blueprint/PROMPT_RISK_MATRIX.md",
+        "docs/archive/blueprint/META_BLUEPRINT_INDEX.md",
+        "docs/archive/blueprint/SERIES_EXECUTION_STRATEGY.md",
+        "docs/archive/blueprint/FINAL_PROMPT_INVENTORY.md",
+        "docs/archive/blueprint/PROMPT_DEPENDENCY_TREE.md",
+        "docs/archive/blueprint/PROMPT_RISK_MATRIX.md",
     )
 
 

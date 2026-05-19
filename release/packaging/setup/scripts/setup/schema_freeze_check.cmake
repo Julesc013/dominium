@@ -28,7 +28,7 @@ if(DEFINED SCHEMA_FREEZE_PRINT_ONLY AND SCHEMA_FREEZE_PRINT_ONLY)
     return()
 endif()
 
-set(DOC_PATH "${ROOT}/docs/setup/SCHEMA_FREEZE_V1.md")
+set(DOC_PATH "${ROOT}/docs/apps/setup/SCHEMA_FREEZE_V1.md")
 if(NOT EXISTS "${DOC_PATH}")
     message(FATAL_ERROR "schema_freeze_check: missing ${DOC_PATH}")
 endif()

@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E115_REMOVED_STILL_REFERENCED_SMELL"
 DEPRECATIONS_REL = "contracts/governance/deprecations.json"
-TOPOLOGY_REL = "docs/audit/TOPOLOGY_MAP.json"
+TOPOLOGY_REL = "docs/archive/audit/TOPOLOGY_MAP.json"
 
 
 def _norm(path: str) -> str:

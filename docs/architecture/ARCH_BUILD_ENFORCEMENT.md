@@ -150,7 +150,7 @@ Enforcement is done via target-scoped includes and configure-time assertions:
 - **Static checks**: `tools/validators/ci/arch_checks.py` enforces repo-wide guards (ARCH-TOP-001, ARCH-RENDER-001, UI-BYPASS-001, EPIS-*).
 
 
-- **Data validation**: `data_validate` and `engine_data_validate` validate data invariants (see `docs/guides/DATA_VALIDATION_GUIDE.md`).
+- **Data validation**: `data_validate` and `engine_data_validate` validate data invariants (see `docs/development/guides/DATA_VALIDATION_GUIDE.md`).
 
 
 - **Governance validation**: `tools/validators/suite/validate_all` validates schema governance and policy enforcement.

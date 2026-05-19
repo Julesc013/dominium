@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic body shape registry output for collision substrate.",
   "x-doc-ref": [
-    "docs/embodiment/BODY_PRIMITIVES_AND_COLLISION.md",
+    "docs/domains/embodiment/BODY_PRIMITIVES_AND_COLLISION.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical deterministic cohort assembly record for CIV-2.",
   "x-doc-ref": [
-    "docs/civilisation/COHORT_MODEL.md"
+    "docs/domains/civilization/COHORT_MODEL.md"
   ],
   "type": "object",
   "required": [

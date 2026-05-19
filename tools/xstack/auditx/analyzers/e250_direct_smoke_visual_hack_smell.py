@@ -98,7 +98,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "docs/pollution/POLLUTION_CONSTITUTION.md",
+                                "docs/domains/pollution/POLLUTION_CONSTITUTION.md",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

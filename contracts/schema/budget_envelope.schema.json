@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic RS-5 workload envelope for shard-level micro simulation and inspection limits.",
   "x-doc-ref": [
-    "docs/reality/PERFORMANCE_CONSTITUTION.md"
+    "docs/domains/reality/PERFORMANCE_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

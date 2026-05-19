@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Derived deterministic FIELD-1 field type registry output.",
   "x-doc-ref": [
-    "docs/fields/FIELD_LAYER_MODEL.md",
-    "docs/audit/FIELD_LAYER_BASELINE.md",
+    "docs/domains/fields/FIELD_LAYER_MODEL.md",
+    "docs/archive/audit/FIELD_LAYER_BASELINE.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

@@ -9,7 +9,7 @@ from typing import Dict, Iterable, List, Mapping, Tuple
 
 
 GAL0_SCOPE_PATHS: Tuple[str, ...] = (
-    "docs/audit/GAL0_RETRO_AUDIT.md",
+    "docs/archive/audit/GAL0_RETRO_AUDIT.md",
     "docs/domains/worldgen/GALAXY_METADATA_PROXIES.md",
     "contracts/registry/field_type_registry.json",
     "contracts/registry/field_binding_registry.json",

@@ -96,10 +96,10 @@ static int require_doc_links(const char* path)
 
 static int test_contract_docs(void)
 {
-    std::string model = join_path(DOMINIUM_REPO_ROOT, "docs/agents/AGENT_MODEL.md");
-    std::string identity = join_path(DOMINIUM_REPO_ROOT, "docs/agents/AGENT_IDENTITY.md");
-    std::string lifecycle = join_path(DOMINIUM_REPO_ROOT, "docs/agents/AGENT_LIFECYCLE.md");
-    std::string non_goals = join_path(DOMINIUM_REPO_ROOT, "docs/agents/AGENT_NON_GOALS.md");
+    std::string model = join_path(DOMINIUM_REPO_ROOT, "docs/game/agents/AGENT_MODEL.md");
+    std::string identity = join_path(DOMINIUM_REPO_ROOT, "docs/game/agents/AGENT_IDENTITY.md");
+    std::string lifecycle = join_path(DOMINIUM_REPO_ROOT, "docs/game/agents/AGENT_LIFECYCLE.md");
+    std::string non_goals = join_path(DOMINIUM_REPO_ROOT, "docs/game/agents/AGENT_NON_GOALS.md");
 
     EXPECT(require_doc_links(model.c_str()), "AGENT_MODEL links");
     EXPECT(require_doc_links(identity.c_str()), "AGENT_IDENTITY links");

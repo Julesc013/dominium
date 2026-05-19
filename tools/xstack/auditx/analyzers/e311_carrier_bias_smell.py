@@ -13,7 +13,7 @@ WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e311_carrier_bias_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
     "game/domain/logic/",
-    "docs/logic/",
+    "docs/domains/logic/",
 )
 
 _FORBIDDEN_PATTERNS = (

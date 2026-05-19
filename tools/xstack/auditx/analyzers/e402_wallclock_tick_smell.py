@@ -19,7 +19,7 @@ REQUIRED_TOKENS = {
         "Verify SERVER-MVP-0 deterministic tick, loopback, and proof-anchor replay.",
         "verify_server_window_replay(",
     ),
-    "docs/server/SERVER_MVP_BASELINE.md": (
+    "docs/apps/server/SERVER_MVP_BASELINE.md": (
         "simulation time advances only through canonical ticks",
         "wall-clock is forbidden for authoritative scheduling",
         "proof anchors are emitted every configured `proof_anchor_interval_ticks`",

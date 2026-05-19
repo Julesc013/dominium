@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Canonical ordered session lifecycle pipeline declaration.",
   "x-doc-ref": [
-    "docs/client/CLIENT_LIFECYCLE_PIPELINE.md",
-    "docs/client/SESSION_READY_AND_RUNNING.md",
+    "docs/apps/client/CLIENT_LIFECYCLE_PIPELINE.md",
+    "docs/apps/client/SESSION_READY_AND_RUNNING.md",
     "schema/session/session_pipeline.schema"
   ],
   "type": "object",

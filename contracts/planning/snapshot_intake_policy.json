@@ -43,7 +43,7 @@
       "order": 2,
       "roots": [
         "schema",
-        "docs/contracts",
+        "docs/reference/contracts",
         "docs/architecture",
         "docs/release"
       ],
@@ -133,10 +133,10 @@
       "roots": [
         "docs/planning",
         "data/planning",
-        "docs/blueprint",
+        "docs/archive/blueprint",
         "data/blueprint",
-        "docs/omega",
-        "docs/restructure",
+        "docs/archive/omega",
+        "docs/archive/restructure",
         "data/restructure"
       ],
       "default_status_class": "advisory",
@@ -194,7 +194,7 @@
         "sources": [
           "AGENTS.md",
           "schema/**",
-          "docs/contracts/**"
+          "docs/reference/contracts/**"
         ]
       },
       {
@@ -229,7 +229,7 @@
         "sources": [
           "docs/planning/**",
           "data/planning/**",
-          "docs/blueprint/**",
+          "docs/archive/blueprint/**",
           "data/blueprint/**"
         ]
       },
@@ -276,7 +276,7 @@
         "authority_level": "contextual",
         "sources": [
           "docs/planning/**",
-          "docs/blueprint/**",
+          "docs/archive/blueprint/**",
           "data/blueprint/**"
         ]
       },
@@ -308,7 +308,7 @@
           "schema version declarations",
           "schema/SCHEMA_VERSIONING.md",
           "migration/refusal contracts",
-          "docs/contracts/**"
+          "docs/reference/contracts/**"
         ]
       },
       {
@@ -405,10 +405,10 @@
         "tier_id": "PLN-2",
         "authority_level": "conditional",
         "sources": [
-          "docs/blueprint/**",
+          "docs/archive/blueprint/**",
           "data/blueprint/**",
-          "docs/omega/**",
-          "docs/restructure/**",
+          "docs/archive/omega/**",
+          "docs/archive/restructure/**",
           "data/restructure/**"
         ]
       },

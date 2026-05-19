@@ -68,9 +68,9 @@ Define deterministic lens selection and gating rules across SessionSpec boot and
 - Add optional lens priority weighting contract for multi-lens experiences.
 
 ## Cross-References
-- `docs/contracts/lens_contract.md`
-- `docs/contracts/law_profile.md`
-- `docs/contracts/authority_context.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/lens_contract.md`
+- `docs/reference/contracts/law_profile.md`
+- `docs/reference/contracts/authority_context.md`
+- `docs/reference/contracts/refusal_contract.md`
 - `docs/architecture/observation_kernel.md`
 - `docs/architecture/truth_perceived_render.md`

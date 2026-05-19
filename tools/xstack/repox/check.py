@@ -141,7 +141,7 @@ SCAN_ROOTS = (
     "contracts/registry/worldgen_module_registry.json",
     "packs",
     "bundles",
-    "docs/contracts",
+    "docs/reference/contracts",
     "docs/net",
     "docs/testing",
     "docs/worldgen",
@@ -171,7 +171,7 @@ TEXT_EXTENSIONS = {
 
 GIT_HOSTED_BLOB_HARD_LIMIT_BYTES = 100 * 1024 * 1024
 TOPOLOGY_MAP_SIZE_BUDGET_BYTES = 99 * 1024 * 1024
-TOPOLOGY_MAP_REL = "docs/audit/TOPOLOGY_MAP.json"
+TOPOLOGY_MAP_REL = "docs/archive/audit/TOPOLOGY_MAP.json"
 
 INCLUDE_RE = re.compile(r'^\s*#\s*include\s*[<"]([^">]+)[">]')
 RENDERER_TRUTH_INCLUDE_FORBIDDEN = {
@@ -207,7 +207,7 @@ DOMAIN_TOKEN_ALLOWED_PATH_PREFIXES = (
     "contracts/registry/domain_registry.json",
     "contracts/registry/solver_registry.json",
     "packs/system_templates/",
-    "docs/scale/",
+    "docs/domains/scale/",
     "contracts/schema/scale/",
     "contracts/schema/domain_",
     "contracts/schema/solver_registry.schema.json",
@@ -218,7 +218,7 @@ CONTRACT_TOKEN_ALLOWED_PATH_PREFIXES = (
     "contracts/registry/domain_registry.json",
     "contracts/registry/domain_contract_registry.json",
     "contracts/registry/solver_registry.json",
-    "docs/scale/",
+    "docs/domains/scale/",
     "contracts/schema/scale/",
     "contracts/schema/domain_foundation_registry.schema.json",
     "contracts/schema/domain_contract_registry.schema.json",
@@ -320,7 +320,7 @@ RENDER_SNAPSHOT_DERIVED_FILES = (
 
 INTENT_DISPATCH_WHITELIST_REGISTRY_REL = "contracts/registry/intent_dispatch_whitelist.json"
 DEPRECATIONS_REGISTRY_REL = "contracts/governance/deprecations.json"
-WORKTREE_LEFTOVERS_REL = "docs/audit/WORKTREE_LEFTOVERS.md"
+WORKTREE_LEFTOVERS_REL = "docs/archive/audit/WORKTREE_LEFTOVERS.md"
 DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS = (
     "src/net/**",
     "src/control/**",
@@ -846,7 +846,7 @@ ANTI_CHEAT_ALLOWED_ACTIONS = (
 NET_POLICY_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/registries/",
     "docs/runtime/network/",
-    "docs/contracts/",
+    "docs/reference/contracts/",
     "contracts/schema/",
     "tools/xstack/testx/tests/",
     "tools/xstack/auditx/",
@@ -876,7 +876,7 @@ BLUEPRINT_LITERAL_ALLOWED_PATH_PREFIXES = (
     "tools/xstack/repox/check.py",
 )
 
-AUDITX_FINDINGS_PATH = "docs/audit/auditx/FINDINGS.json"
+AUDITX_FINDINGS_PATH = "docs/archive/audit/auditx/FINDINGS.json"
 AUDITX_RUNTIME_PROBE_OUTPUT_ROOT = ".xstack_cache/auditx/repox_probe"
 AUDITX_HIGH_RISK_CONFIDENCE = 0.85
 AUDITX_HIGH_RISK_THRESHOLD = 15
@@ -1023,11 +1023,11 @@ MAT_SCALE_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "update_policy",
 )
 
-MVP_SMOKE_DOCTRINE_PATH = "docs/mvp/MVP_SMOKE_SUITE.md"
+MVP_SMOKE_DOCTRINE_PATH = "docs/release/mvp/MVP_SMOKE_SUITE.md"
 MVP_SMOKE_HASHES_PATH = "build/mvp/mvp_smoke_hashes.json"
 MVP_SMOKE_REPORT_PATH = "build/mvp/mvp_smoke_report.json"
 MVP_SMOKE_BASELINE_PATH = "tests/fixtures/regression/mvp_smoke_baseline.json"
-MVP_SMOKE_FINAL_PATH = "docs/audit/MVP_SMOKE_FINAL.md"
+MVP_SMOKE_FINAL_PATH = "docs/archive/audit/MVP_SMOKE_FINAL.md"
 MVP_SMOKE_BASELINE_REQUIRED_FIELDS = (
     "baseline_id",
     "scenario_id",
@@ -1041,12 +1041,12 @@ MVP_SMOKE_BASELINE_REQUIRED_FIELDS = (
     "update_policy",
 )
 
-MVP_STRESS_DOCTRINE_PATH = "docs/mvp/MVP_STRESS_GATE.md"
+MVP_STRESS_DOCTRINE_PATH = "docs/release/mvp/MVP_STRESS_GATE.md"
 MVP_STRESS_HASHES_PATH = "build/mvp/mvp_stress_hashes.json"
 MVP_STRESS_REPORT_PATH = "build/mvp/mvp_stress_report.json"
 MVP_STRESS_PROOF_REPORT_PATH = "build/mvp/mvp_stress_proof_report.json"
 MVP_STRESS_BASELINE_PATH = "tests/fixtures/regression/mvp_stress_baseline.json"
-MVP_STRESS_FINAL_PATH = "docs/audit/MVP_STRESS_FINAL.md"
+MVP_STRESS_FINAL_PATH = "docs/archive/audit/MVP_STRESS_FINAL.md"
 MVP_STRESS_BASELINE_REQUIRED_FIELDS = (
     "baseline_id",
     "gate_id",
@@ -1066,11 +1066,11 @@ MVP_STRESS_BASELINE_REQUIRED_FIELDS = (
     "update_policy",
 )
 
-MVP_CROSS_PLATFORM_DOCTRINE_PATH = "docs/mvp/MVP_CROSS_PLATFORM_GATE.md"
+MVP_CROSS_PLATFORM_DOCTRINE_PATH = "docs/release/mvp/MVP_CROSS_PLATFORM_GATE.md"
 MVP_CROSS_PLATFORM_HASHES_PATH = "build/mvp/mvp_cross_platform_hashes.json"
 MVP_CROSS_PLATFORM_REPORT_PATH = "build/mvp/mvp_cross_platform_matrix.json"
 MVP_CROSS_PLATFORM_BASELINE_PATH = "tests/fixtures/regression/mvp_cross_platform_baseline.json"
-MVP_CROSS_PLATFORM_FINAL_PATH = "docs/audit/MVP_CROSS_PLATFORM_FINAL.md"
+MVP_CROSS_PLATFORM_FINAL_PATH = "docs/archive/audit/MVP_CROSS_PLATFORM_FINAL.md"
 MVP_CROSS_PLATFORM_BASELINE_REQUIRED_FIELDS = (
     "baseline_id",
     "gate_id",
@@ -1087,20 +1087,20 @@ MVP_CROSS_PLATFORM_BASELINE_REQUIRED_FIELDS = (
     "update_policy",
 )
 
-META_STABILITY_RETRO_AUDIT_PATH = "docs/audit/META_STABILITY1_RETRO_AUDIT.md"
-META_STABILITY_FIX_PLAN_PATH = "docs/audit/META_STABILITY1_FIX_PLAN.md"
-META_STABILITY_DOCTRINE_PATH = "docs/meta/STABILITY_CLASSIFICATION.md"
-META_STABILITY_CONVENTION_PATH = "docs/meta/STABILITY_REGISTRY_CONVENTION.md"
+META_STABILITY_RETRO_AUDIT_PATH = "docs/archive/audit/META_STABILITY1_RETRO_AUDIT.md"
+META_STABILITY_FIX_PLAN_PATH = "docs/archive/audit/META_STABILITY1_FIX_PLAN.md"
+META_STABILITY_DOCTRINE_PATH = "docs/governance/meta/STABILITY_CLASSIFICATION.md"
+META_STABILITY_CONVENTION_PATH = "docs/governance/meta/STABILITY_REGISTRY_CONVENTION.md"
 META_STABILITY_SCHEMA_DOC_PATH = "contracts/schema/meta/stability_marker.schema"
 META_STABILITY_SCHEMA_JSON_PATH = "contracts/schema/stability_marker.schema.json"
 META_STABILITY_CLASS_REGISTRY_PATH = "contracts/registry/stability_class_registry.json"
 META_STABILITY_REQUIREMENTS_REGISTRY_PATH = "contracts/registry/stability_requirements_registry.json"
 META_STABILITY_VALIDATOR_PATH = "tools/validators/stability/stability_validator.py"
 META_STABILITY_SCOPE_PATH = "tools/validators/stability/stability_scope.py"
-META_STABILITY_FINAL_PATH = "docs/audit/STABILITY_TAGGING_FINAL.md"
+META_STABILITY_FINAL_PATH = "docs/archive/audit/STABILITY_TAGGING_FINAL.md"
 
-TIME_ANCHOR_RETRO_AUDIT_PATH = "docs/audit/TIME_ANCHOR0_RETRO_AUDIT.md"
-TIME_ANCHOR_DOCTRINE_PATH = "docs/time/TIME_ANCHOR_MODEL.md"
+TIME_ANCHOR_RETRO_AUDIT_PATH = "docs/archive/audit/TIME_ANCHOR0_RETRO_AUDIT.md"
+TIME_ANCHOR_DOCTRINE_PATH = "docs/engine/time/TIME_ANCHOR_MODEL.md"
 TIME_ANCHOR_TICK_SCHEMA_DOC_PATH = "contracts/schema/time/tick_t.schema"
 TIME_ANCHOR_EPOCH_SCHEMA_DOC_PATH = "contracts/schema/time/epoch_anchor_record.schema"
 TIME_ANCHOR_TICK_SCHEMA_JSON_PATH = "contracts/schema/tick_t.schema.json"
@@ -1110,92 +1110,92 @@ TIME_ANCHOR_TICK_MODULE_PATH = "engine/time/tick_t.py"
 TIME_ANCHOR_ENGINE_PATH = "engine/time/epoch_anchor_engine.py"
 TIME_ANCHOR_VERIFY_TOOL_PATH = "tools/domain/time/tool_verify_longrun_ticks.py"
 TIME_ANCHOR_COMPACTION_TOOL_PATH = "tools/domain/time/tool_compaction_anchor_check.py"
-TIME_ANCHOR_BASELINE_PATH = "docs/audit/TIME_ANCHOR_BASELINE.md"
+TIME_ANCHOR_BASELINE_PATH = "docs/archive/audit/TIME_ANCHOR_BASELINE.md"
 
-ARCH_AUDIT_RETRO_AUDIT_PATH = "docs/audit/ARCH_AUDIT0_RETRO_AUDIT.md"
-ARCH_AUDIT_CONSTITUTION_PATH = "docs/audit/ARCH_AUDIT_CONSTITUTION.md"
+ARCH_AUDIT_RETRO_AUDIT_PATH = "docs/archive/audit/ARCH_AUDIT0_RETRO_AUDIT.md"
+ARCH_AUDIT_CONSTITUTION_PATH = "docs/archive/audit/ARCH_AUDIT_CONSTITUTION.md"
 ARCH_AUDIT_TOOL_PATH = "tools/audit/tool_run_arch_audit.py"
-ARCH_AUDIT_REPORT_PATH = "docs/audit/ARCH_AUDIT_REPORT.md"
+ARCH_AUDIT_REPORT_PATH = "docs/archive/audit/ARCH_AUDIT_REPORT.md"
 ARCH_AUDIT_REPORT_JSON_PATH = "archive/generated/audit/arch_audit_report.json"
-ARCH_AUDIT_BASELINE_PATH = "docs/audit/ARCH_AUDIT_BASELINE.md"
-ARCH_AUDIT2_RETRO_AUDIT_PATH = "docs/audit/ARCH_AUDIT2_RETRO_AUDIT.md"
-ARCH_AUDIT2_CONSTITUTION_PATH = "docs/audit/ARCH_AUDIT2_CONSTITUTION.md"
-ARCH_AUDIT2_REPORT_PATH = "docs/audit/ARCH_AUDIT2_REPORT.md"
+ARCH_AUDIT_BASELINE_PATH = "docs/archive/audit/ARCH_AUDIT_BASELINE.md"
+ARCH_AUDIT2_RETRO_AUDIT_PATH = "docs/archive/audit/ARCH_AUDIT2_RETRO_AUDIT.md"
+ARCH_AUDIT2_CONSTITUTION_PATH = "docs/archive/audit/ARCH_AUDIT2_CONSTITUTION.md"
+ARCH_AUDIT2_REPORT_PATH = "docs/archive/audit/ARCH_AUDIT2_REPORT.md"
 ARCH_AUDIT2_REPORT_JSON_PATH = "archive/generated/audit/arch_audit2_report.json"
-ARCH_AUDIT2_FINAL_PATH = "docs/audit/ARCH_AUDIT2_FINAL.md"
+ARCH_AUDIT2_FINAL_PATH = "docs/archive/audit/ARCH_AUDIT2_FINAL.md"
 
 REPO_INVENTORY_TOOL_PATH = "tools/audit/review/tool_repo_inventory.py"
 REPO_INVENTORY_COMMON_PATH = "tools/audit/review/repo_inventory_common.py"
 REPO_INVENTORY_JSON_PATH = "archive/generated/audit/repo_inventory.json"
-REPO_TREE_INDEX_PATH = "docs/audit/REPO_TREE_INDEX.md"
-MODULE_DUPLICATION_REPORT_PATH = "docs/audit/MODULE_DUPLICATION_REPORT.md"
-ENTRYPOINT_MAP_PATH = "docs/audit/ENTRYPOINT_MAP.md"
-PLATFORM_RENDERER_SURFACE_PATH = "docs/audit/PLATFORM_RENDERER_SURFACE.md"
-VALIDATION_STACK_MAP_PATH = "docs/audit/VALIDATION_STACK_MAP.md"
-STABILITY_COVERAGE_REPORT_PATH = "docs/audit/STABILITY_COVERAGE_REPORT.md"
-REPO_REVIEW_2_FINAL_PATH = "docs/audit/REPO_REVIEW_2_FINAL.md"
+REPO_TREE_INDEX_PATH = "docs/archive/audit/REPO_TREE_INDEX.md"
+MODULE_DUPLICATION_REPORT_PATH = "docs/archive/audit/MODULE_DUPLICATION_REPORT.md"
+ENTRYPOINT_MAP_PATH = "docs/archive/audit/ENTRYPOINT_MAP.md"
+PLATFORM_RENDERER_SURFACE_PATH = "docs/archive/audit/PLATFORM_RENDERER_SURFACE.md"
+VALIDATION_STACK_MAP_PATH = "docs/archive/audit/VALIDATION_STACK_MAP.md"
+STABILITY_COVERAGE_REPORT_PATH = "docs/archive/audit/STABILITY_COVERAGE_REPORT.md"
+REPO_REVIEW_2_FINAL_PATH = "docs/archive/audit/REPO_REVIEW_2_FINAL.md"
 ENTRYPOINT_UNIFY_TOOL_PATH = "tools/release/tool_run_entrypoint_unify.py"
 ENTRYPOINT_UNIFY_COMMON_PATH = "tools/release/entrypoint_unify_common.py"
-ENTRYPOINT_UNIFY_MAP_PATH = "docs/audit/ENTRYPOINT_UNIFY_MAP.md"
+ENTRYPOINT_UNIFY_MAP_PATH = "docs/archive/audit/ENTRYPOINT_UNIFY_MAP.md"
 FLAG_MIGRATION_DOC_PATH = "docs/runtime/shell/FLAG_MIGRATION.md"
-ENTRYPOINT_UNIFY_FINAL_PATH = "docs/audit/ENTRYPOINT_UNIFY_FINAL.md"
+ENTRYPOINT_UNIFY_FINAL_PATH = "docs/archive/audit/ENTRYPOINT_UNIFY_FINAL.md"
 UI_MODE_RESOLUTION_TOOL_PATH = "tools/release/tool_run_ui_mode_resolution.py"
 UI_MODE_RESOLUTION_COMMON_PATH = "tools/release/ui_mode_resolution_common.py"
 UI_MODE_RESOLUTION_DOC_PATH = "docs/runtime/shell/UI_MODE_RESOLUTION.md"
-UI_MODE_RESOLUTION_BASELINE_PATH = "docs/audit/UI_MODE_RESOLUTION_BASELINE.md"
+UI_MODE_RESOLUTION_BASELINE_PATH = "docs/archive/audit/UI_MODE_RESOLUTION_BASELINE.md"
 UI_MODE_POLICY_REGISTRY_PATH = "contracts/registry/ui_mode_policy_registry.json"
 PLATFORM_CAPABILITY_REGISTRY_PATH = "contracts/registry/platform_capability_registry.json"
 PLATFORM_PROBE_PATH = "runtime/platform/platform_probe.py"
 PLATFORM_CAPS_PROBE_PATH = "runtime/platform/platform_caps_probe.py"
 PLATFORM_FORMALIZE_TOOL_PATH = "tools/release/tool_run_platform_formalize.py"
 PLATFORM_FORMALIZE_COMMON_PATH = "tools/release/platform_formalize_common.py"
-PLATFORM_RENDERER_MATRIX_PATH = "docs/audit/PLATFORM_RENDERER_MATRIX.md"
-PLATFORM_FORMALIZE_FINAL_PATH = "docs/audit/PLATFORM_FORMALIZE_FINAL.md"
+PLATFORM_RENDERER_MATRIX_PATH = "docs/archive/audit/PLATFORM_RENDERER_MATRIX.md"
+PLATFORM_FORMALIZE_FINAL_PATH = "docs/archive/audit/PLATFORM_FORMALIZE_FINAL.md"
 PLATFORM_FORMALIZE_REPORT_PATH = "archive/generated/audit/platform_formalize_report.json"
 UI_MODE_SELECTOR_PATH = "runtime/shell/ui_mode_selector.py"
 UI_RECONCILE_TOOL_PATH = "tools/release/tool_run_ui_reconcile.py"
 UI_RECONCILE_COMMON_PATH = "tools/release/ui_reconcile_common.py"
 UI_ADAPTER_CONTRACT_PATH = "docs/runtime/ui/UI_ADAPTER_CONTRACT.md"
-UI_SURFACE_MAP_AUDIT_PATH = "docs/audit/UI_SURFACE_MAP.md"
-UI_RECONCILE_FINAL_PATH = "docs/audit/UI_RECONCILE_FINAL.md"
+UI_SURFACE_MAP_AUDIT_PATH = "docs/archive/audit/UI_SURFACE_MAP.md"
+UI_RECONCILE_FINAL_PATH = "docs/archive/audit/UI_RECONCILE_FINAL.md"
 UI_SURFACE_REPORT_JSON_PATH = "archive/generated/audit/ui_surface_report.json"
 TOOL_SURFACE_TOOL_PATH = "tools/release/tool_run_tool_surface.py"
 TOOL_SURFACE_ADAPTER_PATH = "tools/repo/tool_surface_adapter.py"
-TOOL_SURFACE_MAP_PATH = "docs/audit/TOOL_SURFACE_MAP.md"
-TOOL_SURFACE_FINAL_PATH = "docs/audit/TOOL_SURFACE_FINAL.md"
+TOOL_SURFACE_MAP_PATH = "docs/archive/audit/TOOL_SURFACE_MAP.md"
+TOOL_SURFACE_FINAL_PATH = "docs/archive/audit/TOOL_SURFACE_FINAL.md"
 TOOL_SURFACE_REFERENCE_PATH = "docs/runtime/shell/TOOL_REFERENCE.md"
 VIRTUAL_ROOT_REGISTRY_PATH = "contracts/registry/virtual_root_registry.json"
 VIRTUAL_PATHS_ENGINE_PATH = "runtime/shell/paths/virtual_paths.py"
 VIRTUAL_PATHS_DOC_PATH = "docs/runtime/shell/VIRTUAL_PATHS.md"
 VIRTUAL_PATHS_TOOL_PATH = "tools/release/tool_run_virtual_paths.py"
 VIRTUAL_PATHS_COMMON_PATH = "tools/release/virtual_paths_common.py"
-VIRTUAL_PATHS_BASELINE_PATH = "docs/audit/VIRTUAL_PATHS_BASELINE.md"
+VIRTUAL_PATHS_BASELINE_PATH = "docs/archive/audit/VIRTUAL_PATHS_BASELINE.md"
 VIRTUAL_PATHS_REPORT_PATH = "archive/generated/audit/virtual_paths_report.json"
 INSTALL_DISCOVERY_ENGINE_PATH = "runtime/package/install_discovery_engine.py"
 INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schema/install/install_registry.schema"
 INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
-INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"
+INSTALL_DISCOVERY_BASELINE_PATH = "docs/archive/audit/INSTALL_DISCOVERY_BASELINE.md"
 INSTALL_DISCOVERY_REPORT_PATH = "archive/generated/audit/install_discovery_report.json"
-PRODUCT_BOOT_MATRIX_DOC_PATH = "docs/mvp/PRODUCT_BOOT_MATRIX.md"
+PRODUCT_BOOT_MATRIX_DOC_PATH = "docs/release/mvp/PRODUCT_BOOT_MATRIX.md"
 PRODUCT_BOOT_MATRIX_TOOL_PATH = "tools/release/mvp/tool_run_product_boot_matrix.py"
 PRODUCT_BOOT_MATRIX_COMMON_PATH = "tools/release/mvp/prod_gate0_common.py"
-PRODUCT_BOOT_MATRIX_REPORT_PATH = "docs/audit/PRODUCT_BOOT_MATRIX_REPORT.md"
+PRODUCT_BOOT_MATRIX_REPORT_PATH = "docs/archive/audit/PRODUCT_BOOT_MATRIX_REPORT.md"
 PRODUCT_BOOT_MATRIX_JSON_PATH = "contracts/audit/product_boot_matrix.json"
-PROD_GATE_FINAL_PATH = "docs/audit/PROD_GATE_FINAL.md"
+PROD_GATE_FINAL_PATH = "docs/archive/audit/PROD_GATE_FINAL.md"
 DIST_PLATFORM_MATRIX_MODEL_PATH = "docs/release/DIST_PLATFORM_MATRIX_MODEL.md"
 DIST_PLATFORM_MATRIX_TOOL_PATH = "tools/release/dist/tool_run_platform_matrix.py"
 DIST_PLATFORM_MATRIX_COMMON_PATH = "tools/release/dist/dist_platform_matrix_common.py"
-DIST_PLATFORM_MATRIX_REPORT_PATH = "docs/audit/DIST_PLATFORM_MATRIX_REPORT.md"
+DIST_PLATFORM_MATRIX_REPORT_PATH = "docs/archive/audit/DIST_PLATFORM_MATRIX_REPORT.md"
 DIST_PLATFORM_MATRIX_JSON_PATH = "contracts/audit/dist_platform_matrix.json"
 SUPPORTED_PLATFORMS_V0_PATH = "docs/release/SUPPORTED_PLATFORMS_v0_0_0_mock.md"
-DIST4_FINAL_PATH = "docs/audit/DIST4_FINAL.md"
+DIST4_FINAL_PATH = "docs/archive/audit/DIST4_FINAL.md"
 CONVERGENCE_GATE_COMMON_PATH = "tools/migration/convergence/convergence_gate_common.py"
 CONVERGENCE_GATE_TOOL_PATH = "tools/migration/convergence/tool_run_convergence_gate.py"
-CONVERGENCE_GATE_FINAL_DOC_PATH = "docs/audit/CONVERGENCE_FINAL.md"
+CONVERGENCE_GATE_FINAL_DOC_PATH = "docs/archive/audit/CONVERGENCE_FINAL.md"
 CONVERGENCE_GATE_FINAL_JSON_PATH = "archive/generated/audit/convergence_final.json"
-SHIM_POLICY_DOC_PATH = "docs/restructure/SHIM_POLICY.md"
-SHIM_COVERAGE_REPORT_PATH = "docs/audit/SHIM_COVERAGE_REPORT.md"
+SHIM_POLICY_DOC_PATH = "docs/archive/restructure/SHIM_POLICY.md"
+SHIM_COVERAGE_REPORT_PATH = "docs/archive/audit/SHIM_COVERAGE_REPORT.md"
 SHIM_TOOL_PATH = "tools/release/tool_run_shim_coverage.py"
 SHIM_COMMON_PATH = "tools/release/shim_coverage_common.py"
 PATH_SHIMS_PATH = "tools/validators/compatibility/shims/path_shims.py"
@@ -1203,8 +1203,8 @@ FLAG_SHIMS_PATH = "tools/validators/compatibility/shims/flag_shims.py"
 TOOL_SHIMS_PATH = "tools/validators/compatibility/shims/tool_shims.py"
 VALIDATION_SHIMS_PATH = "tools/validators/compatibility/shims/validation_shims.py"
 VALIDATION_PIPELINE_DOC_PATH = "docs/testing/validation/VALIDATION_PIPELINE.md"
-VALIDATION_INVENTORY_DOC_PATH = "docs/audit/VALIDATION_INVENTORY.md"
-VALIDATION_FINAL_DOC_PATH = "docs/audit/VALIDATION_UNIFY_FINAL.md"
+VALIDATION_INVENTORY_DOC_PATH = "docs/archive/audit/VALIDATION_INVENTORY.md"
+VALIDATION_FINAL_DOC_PATH = "docs/archive/audit/VALIDATION_UNIFY_FINAL.md"
 VALIDATION_RESULT_SCHEMA_DOC_PATH = "contracts/schema/validation/validation_result.schema"
 VALIDATION_RESULT_SCHEMA_JSON_PATH = "contracts/schema/validation_result.schema.json"
 VALIDATION_SUITE_REGISTRY_PATH = "contracts/registry/validation_suite_registry.json"
@@ -1213,23 +1213,23 @@ VALIDATION_TOOL_PATH = "tools/validators/suite/tool_run_validation.py"
 DOC_INVENTORY_TOOL_PATH = "tools/audit/review/tool_doc_inventory.py"
 DOC_INVENTORY_COMMON_PATH = "tools/audit/review/doc_inventory_common.py"
 DOC_INVENTORY_JSON_PATH = "archive/generated/audit/doc_inventory.json"
-DOC_INDEX_PATH = "docs/audit/DOC_INDEX.md"
-CANON_MAP_PATH = "docs/audit/CANON_MAP.md"
-DOC_DRIFT_MATRIX_PATH = "docs/audit/DOC_DRIFT_MATRIX.md"
-DOC_GAPS_PATH = "docs/audit/DOC_GAPS.md"
-REPO_REVIEW_3_FINAL_PATH = "docs/audit/REPO_REVIEW_3_FINAL.md"
+DOC_INDEX_PATH = "docs/archive/audit/DOC_INDEX.md"
+CANON_MAP_PATH = "docs/archive/audit/CANON_MAP.md"
+DOC_DRIFT_MATRIX_PATH = "docs/archive/audit/DOC_DRIFT_MATRIX.md"
+DOC_GAPS_PATH = "docs/archive/audit/DOC_GAPS.md"
+REPO_REVIEW_3_FINAL_PATH = "docs/archive/audit/REPO_REVIEW_3_FINAL.md"
 
-EARTH10_RETRO_AUDIT_PATH = "docs/audit/EARTH10_RETRO_AUDIT.md"
+EARTH10_RETRO_AUDIT_PATH = "docs/archive/audit/EARTH10_RETRO_AUDIT.md"
 EARTH10_DOCTRINE_PATH = "docs/domains/worldgen/EARTH_MATERIAL_SURFACE_PROXY.md"
 EARTH10_MATERIAL_REGISTRY_PATH = "contracts/registry/material_proxy_registry.json"
 EARTH10_SURFACE_FLAG_REGISTRY_PATH = "contracts/registry/surface_flag_registry.json"
 EARTH10_PROBE_PATH = "tools/domain/worldgen/earth10_probe.py"
 EARTH10_AUDIT_COMMON_PATH = "tools/domain/worldgen/earth10_audit_common.py"
 EARTH10_REPLAY_TOOL_PATH = "tools/domain/worldgen/tool_replay_material_proxy_window.py"
-EARTH10_BASELINE_PATH = "docs/audit/EARTH_MATERIAL_PROXY_BASELINE.md"
+EARTH10_BASELINE_PATH = "docs/archive/audit/EARTH_MATERIAL_PROXY_BASELINE.md"
 
-SOL1_RETRO_AUDIT_PATH = "docs/audit/SOL1_RETRO_AUDIT.md"
-SOL1_DOCTRINE_PATH = "docs/sol/ILLUMINATION_GEOMETRY_MODEL.md"
+SOL1_RETRO_AUDIT_PATH = "docs/archive/audit/SOL1_RETRO_AUDIT.md"
+SOL1_DOCTRINE_PATH = "docs/domains/astronomy/sol/ILLUMINATION_GEOMETRY_MODEL.md"
 SOL1_EMITTER_SCHEMA_DOC_PATH = "contracts/schema/astro/emitter.schema"
 SOL1_RECEIVER_SCHEMA_DOC_PATH = "contracts/schema/astro/receiver.schema"
 SOL1_VIEW_SCHEMA_DOC_PATH = "contracts/schema/astro/illumination_view_artifact.schema"
@@ -1243,8 +1243,8 @@ SOL1_ENGINE_PATH = "game/domain/astronomy/illumination/illumination_geometry_eng
 SOL1_REPLAY_TOOL_PATH = "tools/domain/astronomy/tool_replay_illumination_view.py"
 SOL1_AUDIT_COMMON_PATH = "tools/domain/astronomy/sol1_audit_common.py"
 
-SOL2_RETRO_AUDIT_PATH = "docs/audit/SOL2_RETRO_AUDIT.md"
-SOL2_DOCTRINE_PATH = "docs/sol/ORBIT_VISUALIZATION_MODEL.md"
+SOL2_RETRO_AUDIT_PATH = "docs/archive/audit/SOL2_RETRO_AUDIT.md"
+SOL2_DOCTRINE_PATH = "docs/domains/astronomy/sol/ORBIT_VISUALIZATION_MODEL.md"
 SOL2_PROVIDER_SCHEMA_DOC_PATH = "contracts/schema/astro/ephemeris_provider.schema"
 SOL2_POLICY_SCHEMA_DOC_PATH = "contracts/schema/astro/orbit_path_policy.schema"
 SOL2_VIEW_SCHEMA_DOC_PATH = "contracts/schema/astro/orbit_view_artifact.schema"
@@ -1258,15 +1258,15 @@ SOL2_VIEW_ENGINE_PATH = "game/domain/astronomy/views/orbit_view_engine.py"
 SOL2_REPLAY_TOOL_PATH = "tools/domain/astronomy/tool_replay_orbit_view.py"
 SOL2_RUNTIME_COMMON_PATH = "tools/domain/astronomy/sol2_runtime_common.py"
 SOL2_AUDIT_COMMON_PATH = "tools/domain/astronomy/sol2_audit_common.py"
-GAL0_RETRO_AUDIT_PATH = "docs/audit/GAL0_RETRO_AUDIT.md"
+GAL0_RETRO_AUDIT_PATH = "docs/archive/audit/GAL0_RETRO_AUDIT.md"
 GAL0_DOCTRINE_PATH = "docs/domains/worldgen/GALAXY_METADATA_PROXIES.md"
 GAL0_REGION_REGISTRY_PATH = "contracts/registry/galactic_region_registry.json"
 GAL0_ENGINE_PATH = "game/domain/worldgen/galaxy/galaxy_proxy_field_engine.py"
 GAL0_PROBE_PATH = "tools/domain/worldgen/gal0_probe.py"
 GAL0_AUDIT_COMMON_PATH = "tools/domain/worldgen/gal0_audit_common.py"
 GAL0_REPLAY_TOOL_PATH = "tools/domain/worldgen/tool_replay_galaxy_proxies.py"
-GAL0_BASELINE_PATH = "docs/audit/GALAXY_PROXY_BASELINE.md"
-GAL1_RETRO_AUDIT_PATH = "docs/audit/GAL1_RETRO_AUDIT.md"
+GAL0_BASELINE_PATH = "docs/archive/audit/GALAXY_PROXY_BASELINE.md"
+GAL1_RETRO_AUDIT_PATH = "docs/archive/audit/GAL1_RETRO_AUDIT.md"
 GAL1_DOCTRINE_PATH = "docs/domains/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md"
 GAL1_SCHEMA_DOC_PATH = "contracts/schema/worldgen/galaxy_object_stub.schema"
 GAL1_SCHEMA_JSON_PATH = "contracts/schema/galaxy_object_stub.schema.json"
@@ -1275,9 +1275,9 @@ GAL1_ENGINE_PATH = "game/domain/worldgen/galaxy/galaxy_object_stub_generator.py"
 GAL1_PROBE_PATH = "tools/domain/worldgen/gal1_probe.py"
 GAL1_AUDIT_COMMON_PATH = "tools/domain/worldgen/gal1_audit_common.py"
 GAL1_REPLAY_TOOL_PATH = "tools/domain/worldgen/tool_replay_galaxy_objects.py"
-GAL1_BASELINE_PATH = "docs/audit/GALAXY_OBJECT_STUBS_BASELINE.md"
+GAL1_BASELINE_PATH = "docs/archive/audit/GALAXY_OBJECT_STUBS_BASELINE.md"
 
-CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
+CONSISTENCY_MATRIX_PATH = "docs/archive/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
     "Game",
@@ -1308,7 +1308,7 @@ CONSISTENCY_MATRIX_REQUIRED_COLUMNS = (
     "Derived artifact production",
 )
 
-STATUS_NOW_PATH = "docs/STATUS_NOW.md"
+STATUS_NOW_PATH = "docs/archive/STATUS_NOW.md"
 STATUS_NOW_REQUIRED_SECTIONS = (
     "## REAL",
     "## SOON",
@@ -1327,7 +1327,7 @@ RUNTIME_PATH_PREFIXES = (
 )
 
 PLAYER_DEMAND_MATRIX_REL = "contracts/meta/player_demand_matrix.json"
-PLAYER_DEMAND_IMPACT_PREFIX = "docs/impact/"
+PLAYER_DEMAND_IMPACT_PREFIX = "docs/archive/impact/"
 PLAYER_DEMAND_RUNTIME_PREFIXES = (
     "src/",
     "engine/",
@@ -3213,7 +3213,7 @@ def _append_player_demand_invariant_findings(
             snippet=runtime_changed[0][:140],
             message=(
                 "runtime-domain changes must reference at least one demand_id "
-                "via docs/impact/*.md or inline demand tags"
+                "via docs/archive/impact/*.md or inline demand tags"
             ),
             rule_id=rule_id,
         )
@@ -3718,7 +3718,7 @@ def _append_logic_constitution_invariant_findings(
     process_only_rule_id = "INV-SIGNAL-UPDATES-PROCESS-ONLY"
     carrier_bias_rule_id = "INV-NO-CARRIER-SEMANTIC-BIAS"
 
-    constitution_rel = "docs/logic/LOGIC_CONSTITUTION.md"
+    constitution_rel = "docs/domains/logic/LOGIC_CONSTITUTION.md"
     signal_schema_rel = "contracts/schema/logic/signal_type.schema"
     logic_policy_schema_rel = "contracts/schema/logic/logic_policy.schema"
     signal_registry_rel = "contracts/registry/signal_type_registry.json"
@@ -4132,7 +4132,7 @@ def _append_logic_element_invariant_findings(
     hardcoded_rule_id = "INV-NO-HARDCODED-GATES"
 
     required_files = (
-        ("docs/logic/LOGIC_ELEMENT_MODEL.md", statevec_rule_id),
+        ("docs/domains/logic/LOGIC_ELEMENT_MODEL.md", statevec_rule_id),
         ("contracts/schema/logic/logic_element_definition.schema", statevec_rule_id),
         ("contracts/schema/logic/logic_behavior_model.schema", statevec_rule_id),
         ("contracts/schema/logic/state_machine_definition.schema", statevec_rule_id),
@@ -4259,8 +4259,8 @@ def _append_logic_network_invariant_findings(
     loop_rule_id = "INV-LOOP-POLICY-ENFORCED"
 
     required_files = (
-        ("docs/logic/LOGIC_NETWORKGRAPH.md", substrate_rule_id),
-        ("docs/logic/LOGIC_SHARD_BOUNDARY_RULES.md", loop_rule_id),
+        ("docs/domains/logic/LOGIC_NETWORKGRAPH.md", substrate_rule_id),
+        ("docs/domains/logic/LOGIC_SHARD_BOUNDARY_RULES.md", loop_rule_id),
         ("contracts/schema/logic/logic_node_payload.schema", substrate_rule_id),
         ("contracts/schema/logic/logic_edge_payload.schema", substrate_rule_id),
         ("contracts/schema/logic/logic_network_binding.schema", substrate_rule_id),
@@ -4480,7 +4480,7 @@ def _append_logic_eval_invariant_findings(
         return bool(re.search(r"\b{}\s*\(".format(re.escape(stem)), str(text or "")))
 
     required_files = (
-        ("docs/logic/LOGIC_EVALUATION_ENGINE.md", budget_rule_id),
+        ("docs/domains/logic/LOGIC_EVALUATION_ENGINE.md", budget_rule_id),
         ("contracts/schema/logic/logic_network_runtime_state.schema", budget_rule_id),
         ("contracts/schema/logic/logic_eval_record.schema", budget_rule_id),
         ("contracts/schema/logic/logic_throttle_event.schema", budget_rule_id),
@@ -4685,7 +4685,7 @@ def _append_logic_timing_invariant_findings(
     explain_rule_id = "INV-OSCILLATION-EXPLAIN-AVAILABLE"
 
     required_files = (
-        ("docs/logic/TIMING_AND_OSCILLATION_MODEL.md", clock_rule_id),
+        ("docs/domains/logic/TIMING_AND_OSCILLATION_MODEL.md", clock_rule_id),
         ("contracts/schema/logic/timing_constraint.schema", delay_rule_id),
         ("contracts/schema/logic/oscillation_record.schema", explain_rule_id),
         ("contracts/schema/logic/watchdog_definition.schema", explain_rule_id),
@@ -4711,7 +4711,7 @@ def _append_logic_timing_invariant_findings(
             )
         )
 
-    doctrine_rel = "docs/logic/TIMING_AND_OSCILLATION_MODEL.md"
+    doctrine_rel = "docs/domains/logic/TIMING_AND_OSCILLATION_MODEL.md"
     doctrine_text = _file_text(repo_root, doctrine_rel).lower()
     for token, rule_id, message in (
         ("delay.temporal_domain", delay_rule_id, "timing doctrine must route temporal delay through TEMP mappings"),
@@ -4848,7 +4848,7 @@ def _append_logic_compile_invariant_findings(
     deterministic_rule_id = "INV-LOGIC-COMPILE-DETERMINISTIC"
 
     required_files = (
-        ("docs/logic/LOGIC_COMPILATION_MODEL.md", proof_rule_id),
+        ("docs/domains/logic/LOGIC_COMPILATION_MODEL.md", proof_rule_id),
         ("contracts/registry/logic_compile_policy_registry.json", deterministic_rule_id),
         ("game/domain/logic/compile/logic_compiler.py", deterministic_rule_id),
         ("game/domain/logic/compile/logic_proof_engine.py", proof_rule_id),
@@ -4871,7 +4871,7 @@ def _append_logic_compile_invariant_findings(
             )
         )
 
-    doctrine_rel = "docs/logic/LOGIC_COMPILATION_MODEL.md"
+    doctrine_rel = "docs/domains/logic/LOGIC_COMPILATION_MODEL.md"
     doctrine_text = _file_text(repo_root, doctrine_rel).lower()
     for token, rule_id, message in (
         ("compilation is invalid without proof", proof_rule_id, "logic compilation doctrine must forbid proofless compiled models"),
@@ -5045,7 +5045,7 @@ def _append_logic_debug_invariant_findings(
     bounded_rule_id = "INV-TRACE-BOUNDED"
 
     required_files = (
-        ("docs/logic/DEBUG_AND_INSTRUMENTATION.md", omniscient_rule_id),
+        ("docs/domains/logic/DEBUG_AND_INSTRUMENTATION.md", omniscient_rule_id),
         ("contracts/schema/logic/debug_probe_request.schema", bounded_rule_id),
         ("contracts/schema/logic/debug_trace_request.schema", bounded_rule_id),
         ("contracts/schema/logic/debug_trace_artifact.schema", bounded_rule_id),
@@ -5069,7 +5069,7 @@ def _append_logic_debug_invariant_findings(
             )
         )
 
-    doctrine_rel = "docs/logic/DEBUG_AND_INSTRUMENTATION.md"
+    doctrine_rel = "docs/domains/logic/DEBUG_AND_INSTRUMENTATION.md"
     doctrine_text = _file_text(repo_root, doctrine_rel).lower()
     for token, rule_id, message in (
         ("logic probe", omniscient_rule_id, "debug doctrine must define the logic probe"),
@@ -5262,8 +5262,8 @@ def _append_logic_protocol_invariant_findings(
     bypass_rule_id = "INV-NO-DIRECT-FRAME-DELIVERY"
 
     required_files = (
-        ("docs/logic/PROTOCOL_LAYER_MODEL.md", deterministic_rule_id),
-        ("docs/logic/PROTOCOL_SHARD_RULES.md", bypass_rule_id),
+        ("docs/domains/logic/PROTOCOL_LAYER_MODEL.md", deterministic_rule_id),
+        ("docs/domains/logic/PROTOCOL_SHARD_RULES.md", bypass_rule_id),
         ("contracts/schema/logic/protocol_frame.schema", deterministic_rule_id),
         ("contracts/schema/logic/arbitration_state.schema", deterministic_rule_id),
         ("contracts/schema/logic/protocol_event_record.schema", deterministic_rule_id),
@@ -5287,7 +5287,7 @@ def _append_logic_protocol_invariant_findings(
             )
         )
 
-    doctrine_rel = "docs/logic/PROTOCOL_LAYER_MODEL.md"
+    doctrine_rel = "docs/domains/logic/PROTOCOL_LAYER_MODEL.md"
     doctrine_text = _file_text(repo_root, doctrine_rel).lower()
     for token, rule_id, message in (
         ("framing", deterministic_rule_id, "protocol doctrine must define framing"),
@@ -5310,7 +5310,7 @@ def _append_logic_protocol_invariant_findings(
             )
         )
 
-    shard_rel = "docs/logic/PROTOCOL_SHARD_RULES.md"
+    shard_rel = "docs/domains/logic/PROTOCOL_SHARD_RULES.md"
     shard_text = _file_text(repo_root, shard_rel).lower()
     for token, rule_id, message in (
         ("boundary", bypass_rule_id, "protocol shard rules must require boundary-safe exchange"),
@@ -5443,12 +5443,12 @@ def _append_logic_envelope_invariant_findings(
     security_rule_id = "INV-SECURITY-BLOCK-LOGGED"
 
     required_files = (
-        ("docs/audit/LOGIC10_RETRO_AUDIT.md", loop_rule_id),
+        ("docs/archive/audit/LOGIC10_RETRO_AUDIT.md", loop_rule_id),
         ("tools/domain/logic/tool_generate_logic_stress.py", budget_rule_id),
         ("tools/domain/logic/tool_run_logic_stress.py", degrade_rule_id),
         ("tools/domain/logic/tool_verify_compiled_vs_l1.py", budget_rule_id),
         ("tests/fixtures/regression/logic_full_baseline.json", degrade_rule_id),
-        ("docs/audit/LOGIC10_STRESS_RESULTS.json", budget_rule_id),
+        ("docs/archive/audit/LOGIC10_STRESS_RESULTS.json", budget_rule_id),
     )
     for rel_path, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -9206,7 +9206,7 @@ def _append_release_identity_findings(
     artifact_rule_id = "INV-ARTIFACT-IDENTITY-CONTENT-ADDRESSED"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/RELEASE0_RETRO_AUDIT.md", "RELEASE0 retro audit is required", wallclock_rule_id),
+        ("docs/archive/audit/RELEASE0_RETRO_AUDIT.md", "RELEASE0 retro audit is required", wallclock_rule_id),
         ("docs/release/RELEASE_IDENTITY_CONSTITUTION.md", "release identity constitution is required", wallclock_rule_id),
         ("docs/release/ARTIFACT_NAMING_RULES.md", "artifact naming rules are required", artifact_rule_id),
         ("tools/release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
@@ -9276,7 +9276,7 @@ def _append_release_manifest_findings(
     verify_rule_id = "INV-VERIFY-OFFLINE"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/RELEASE1_RETRO_AUDIT.md", "RELEASE1 retro audit is required", deterministic_rule_id),
+        ("docs/archive/audit/RELEASE1_RETRO_AUDIT.md", "RELEASE1 retro audit is required", deterministic_rule_id),
         ("docs/release/RELEASE_MANIFEST_MODEL.md", "release manifest doctrine is required", deterministic_rule_id),
         ("tools/release/release_manifest_engine.py", "release manifest engine is required", deterministic_rule_id),
         ("tools/release/release_manifest_common.py", "release manifest audit helper is required", deterministic_rule_id),
@@ -9343,7 +9343,7 @@ def _append_reproducible_build_findings(
     reproducibility_rule_id = "INV-BUILD-ID-MATCHES-MANIFEST"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/RELEASE2_RETRO_AUDIT.md", "RELEASE2 retro audit is required", reproducibility_rule_id),
+        ("docs/archive/audit/RELEASE2_RETRO_AUDIT.md", "RELEASE2 retro audit is required", reproducibility_rule_id),
         ("docs/release/REPRODUCIBLE_BUILD_RULES.md", "reproducible build doctrine is required", wallclock_rule_id),
         ("docs/release/SIGNING_POLICY.md", "signing policy is required", reproducibility_rule_id),
         ("tools/release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
@@ -9414,7 +9414,7 @@ def _append_distribution_model_findings(
     severity = _invariant_severity(profile)
     required_files = (
         ("docs/release/DISTRIBUTION_MODEL.md", "distribution model doctrine is required", manifest_rule_id),
-        ("docs/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md", "distribution architecture freeze report is required", manifest_rule_id),
+        ("docs/archive/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md", "distribution architecture freeze report is required", manifest_rule_id),
         ("tools/release/distribution_model_common.py", "distribution model helper is required", manifest_rule_id),
         ("tools/release/tool_run_distribution_model.py", "distribution model report tool is required", manifest_rule_id),
         ("tools/xstack/auditx/analyzers/e496_dev_artifact_in_dist_smell.py", "DevArtifactInDistSmell analyzer is required", no_dev_rule_id),
@@ -9481,8 +9481,8 @@ def _append_dist1_findings(
     severity = _invariant_severity(profile)
     required_files = (
         ("docs/release/DIST_BUNDLE_ASSEMBLY.md", "distribution bundle assembly doctrine is required", deterministic_rule_id),
-        ("docs/audit/DIST_CONTENT_AUDIT.md", "distribution content audit report is required", exclusion_rule_id),
-        ("docs/audit/DIST_TREE_ASSEMBLY_FINAL.md", "distribution tree assembly final report is required", deterministic_rule_id),
+        ("docs/archive/audit/DIST_CONTENT_AUDIT.md", "distribution content audit report is required", exclusion_rule_id),
+        ("docs/archive/audit/DIST_TREE_ASSEMBLY_FINAL.md", "distribution tree assembly final report is required", deterministic_rule_id),
         ("tools/release/dist/dist_tree_common.py", "distribution assembly helper is required", deterministic_rule_id),
         ("tools/release/dist/tool_assemble_dist_tree.py", "distribution assembly tool is required", deterministic_rule_id),
         ("tools/release/dist/tool_dist_minimize.py", "distribution minimization tool is required", exclusion_rule_id),
@@ -9543,10 +9543,10 @@ def _append_dist2_findings(
     xstack_rule_id = "INV-NO-XSTACK-IN-DIST"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/DIST2_RETRO_AUDIT.md", "DIST-2 retro audit is required", verify_rule_id),
+        ("docs/archive/audit/DIST2_RETRO_AUDIT.md", "DIST-2 retro audit is required", verify_rule_id),
         ("docs/release/DIST_VERIFICATION_RULES.md", "distribution verification rules are required", verify_rule_id),
-        ("docs/audit/DIST_VERIFY_win64.md", "distribution verification report is required", verify_rule_id),
-        ("docs/audit/DIST2_FINAL.md", "DIST-2 final report is required", verify_rule_id),
+        ("docs/archive/audit/DIST_VERIFY_win64.md", "distribution verification report is required", verify_rule_id),
+        ("docs/archive/audit/DIST2_FINAL.md", "DIST-2 final report is required", verify_rule_id),
         ("archive/generated/audit/dist_verify_win64.json", "distribution verification machine report is required", verify_rule_id),
         ("tools/release/dist/dist_verify_common.py", "distribution verification helper is required", verify_rule_id),
         ("tools/release/dist/tool_verify_distribution.py", "distribution verification tool is required", verify_rule_id),
@@ -9606,8 +9606,8 @@ def _append_dist3_findings(
     severity = _invariant_severity(profile)
     required_files = (
         ("docs/release/CLEAN_ROOM_TEST_MODEL.md", "clean-room doctrine is required", rule_id),
-        ("docs/audit/CLEAN_ROOM_win64.md", "clean-room platform report is required", rule_id),
-        ("docs/audit/DIST3_FINAL.md", "DIST-3 final report is required", rule_id),
+        ("docs/archive/audit/CLEAN_ROOM_win64.md", "clean-room platform report is required", rule_id),
+        ("docs/archive/audit/DIST3_FINAL.md", "DIST-3 final report is required", rule_id),
         ("archive/generated/audit/clean_room_win64.json", "clean-room machine report is required", rule_id),
         ("tools/release/dist/clean_room_common.py", "clean-room helper is required", rule_id),
         ("tools/release/dist/tool_run_clean_room.py", "clean-room harness tool is required", rule_id),
@@ -9772,8 +9772,8 @@ def _append_dist5_findings(
     required_files = (
         ("docs/release/UX_POLISH_CRITERIA.md", "DIST-5 UX polish doctrine is required", help_rule_id),
         ("docs/runtime/shell/CLI_REFERENCE.md", "generated CLI reference is required", help_rule_id),
-        ("docs/audit/DIST5_UX_SMOKE.md", "DIST-5 UX smoke report is required", help_rule_id),
-        ("docs/audit/DIST5_UX_POLISH_FINAL.md", "DIST-5 final report is required", help_rule_id),
+        ("docs/archive/audit/DIST5_UX_SMOKE.md", "DIST-5 UX smoke report is required", help_rule_id),
+        ("docs/archive/audit/DIST5_UX_POLISH_FINAL.md", "DIST-5 final report is required", help_rule_id),
         ("archive/generated/audit/dist5_ux_smoke.json", "DIST-5 machine report is required", help_rule_id),
         ("tools/release/dist/ux_smoke_common.py", "DIST-5 UX smoke helper is required", help_rule_id),
         ("tools/release/dist/tool_run_ux_smoke.py", "DIST-5 UX smoke runner is required", help_rule_id),
@@ -9859,7 +9859,7 @@ def _append_dist6_findings(
         ("docs/release/INTEROP_MATRIX_v0_0_0_mock.md", "DIST-6 interop matrix doctrine is required", rule_id),
         ("tools/release/dist/dist6_interop_common.py", "DIST-6 interop helper is required", rule_id),
         ("tools/release/dist/tool_run_version_interop.py", "DIST-6 interop runner is required", rule_id),
-        ("docs/audit/DIST6_FINAL.md", "DIST-6 final report is required", rule_id),
+        ("docs/archive/audit/DIST6_FINAL.md", "DIST-6 final report is required", rule_id),
         ("tools/xstack/auditx/analyzers/e507_silent_degrade_smell.py", "SilentDegradeSmell analyzer is required", rule_id),
         ("tools/xstack/auditx/analyzers/e508_negotiation_record_missing_smell.py", "NegotiationRecordMissingSmell analyzer is required", rule_id),
         ("tools/xstack/testx/tests/dist6_testlib.py", "DIST-6 TestX helper is required", rule_id),
@@ -9903,7 +9903,7 @@ def _append_dist6_findings(
             )
         )
 
-    final_text = _file_text(repo_root, "docs/audit/DIST6_FINAL.md").lower()
+    final_text = _file_text(repo_root, "docs/archive/audit/DIST6_FINAL.md").lower()
     for token, message in (
         ("# dist6 final", "DIST-6 final report must declare the canonical title"),
         ("## matrix summary", "DIST-6 final report must summarize the interop matrix"),
@@ -9915,7 +9915,7 @@ def _append_dist6_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/audit/DIST6_FINAL.md",
+                file_path="docs/archive/audit/DIST6_FINAL.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -9960,10 +9960,10 @@ def _append_ipc_unify_findings(
     rule_id = "INV-IPC-REQUIRES-NEGOTIATION"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/IPC_SURFACE_MAP.md", "IPC surface inventory is required", rule_id),
-        ("docs/audit/IPC_DUPLICATION_FIXES.md", "IPC duplication fixes report is required", rule_id),
+        ("docs/archive/audit/IPC_SURFACE_MAP.md", "IPC surface inventory is required", rule_id),
+        ("docs/archive/audit/IPC_DUPLICATION_FIXES.md", "IPC duplication fixes report is required", rule_id),
         ("docs/runtime/shell/IPC_DISCOVERY.md", "IPC discovery doctrine is required", rule_id),
-        ("docs/audit/IPC_UNIFY_FINAL.md", "IPC unify final report is required", rule_id),
+        ("docs/archive/audit/IPC_UNIFY_FINAL.md", "IPC unify final report is required", rule_id),
         ("archive/generated/audit/ipc_unify_report.json", "IPC unify machine-readable report is required", rule_id),
         ("tools/validators/shell/ipc_unify_common.py", "IPC unify helper module is required", rule_id),
         ("tools/validators/shell/tool_run_ipc_unify.py", "IPC unify tool runner is required", rule_id),
@@ -10009,7 +10009,7 @@ def _append_ipc_unify_findings(
             )
         )
 
-    final_text = _file_text(repo_root, "docs/audit/IPC_UNIFY_FINAL.md").lower()
+    final_text = _file_text(repo_root, "docs/archive/audit/IPC_UNIFY_FINAL.md").lower()
     for token, message in (
         ("# ipc unify final", "IPC unify final report must declare the canonical title"),
         ("## canonical stack", "IPC unify final report must summarize the canonical stack"),
@@ -10021,7 +10021,7 @@ def _append_ipc_unify_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/audit/IPC_UNIFY_FINAL.md",
+                file_path="docs/archive/audit/IPC_UNIFY_FINAL.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -10071,9 +10071,9 @@ def _append_supervisor_hardening_findings(
         (
             "INV-SUPERVISOR-NO-WALLCLOCK",
             (
-                ("docs/audit/SUPERVISOR_SURFACE_MAP.md", "supervisor surface map is required"),
+                ("docs/archive/audit/SUPERVISOR_SURFACE_MAP.md", "supervisor surface map is required"),
                 ("docs/runtime/shell/LOG_MERGE_RULES.md", "supervisor log merge rules doc is required"),
-                ("docs/audit/SUPERVISOR_HARDENING_FINAL.md", "supervisor hardening final report is required"),
+                ("docs/archive/audit/SUPERVISOR_HARDENING_FINAL.md", "supervisor hardening final report is required"),
                 ("archive/generated/audit/supervisor_hardening_report.json", "supervisor hardening machine-readable report is required"),
                 ("tools/validators/shell/supervisor_hardening_common.py", "supervisor hardening helper module is required"),
                 ("tools/validators/shell/tool_run_supervisor_hardening.py", "supervisor hardening tool runner is required"),
@@ -10103,7 +10103,7 @@ def _append_supervisor_hardening_findings(
                 )
             )
 
-    final_text = _file_text(repo_root, "docs/audit/SUPERVISOR_HARDENING_FINAL.md").lower()
+    final_text = _file_text(repo_root, "docs/archive/audit/SUPERVISOR_HARDENING_FINAL.md").lower()
     for token, message, rule_id in (
         ("# supervisor hardening final", "supervisor hardening final report must declare the canonical title", "INV-SUPERVISOR-NO-WALLCLOCK"),
         ("## removed wall-clock usage", "supervisor hardening final report must list removed wall-clock usage", "INV-SUPERVISOR-NO-WALLCLOCK"),
@@ -10116,7 +10116,7 @@ def _append_supervisor_hardening_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/audit/SUPERVISOR_HARDENING_FINAL.md",
+                file_path="docs/archive/audit/SUPERVISOR_HARDENING_FINAL.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -12173,7 +12173,7 @@ def _append_negative_invariant_findings(
                 )
             )
 
-    demography_doc_rel = "docs/civilisation/DEMOGRAPHY_OPTIONALITY.md"
+    demography_doc_rel = "docs/domains/civilization/DEMOGRAPHY_OPTIONALITY.md"
     demography_doc_abs = os.path.join(repo_root, demography_doc_rel.replace("/", os.sep))
     try:
         demography_doc_text = open(demography_doc_abs, "r", encoding="utf-8").read().lower()
@@ -14938,7 +14938,7 @@ def _append_material_scale_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    strategy_rel = "docs/materials/PERFORMANCE_AND_SCALE_STRATEGY.md"
+    strategy_rel = "docs/domains/materials/PERFORMANCE_AND_SCALE_STRATEGY.md"
     strategy_abs = os.path.join(repo_root, strategy_rel.replace("/", os.sep))
     try:
         strategy_text = open(strategy_abs, "r", encoding="utf-8").read()
@@ -16277,7 +16277,7 @@ def _append_deprecation_framework_invariant_findings(
     validation = validate_deprecation_registry(
         repo_root=repo_root,
         deprecations_rel=DEPRECATIONS_REGISTRY_REL,
-        topology_map_rel="docs/audit/TOPOLOGY_MAP.json",
+        topology_map_rel="docs/archive/audit/TOPOLOGY_MAP.json",
     )
     if str(validation.get("result", "")) != "pass":
         for row in list(validation.get("errors") or []):
@@ -16805,7 +16805,7 @@ def _append_topology_map_invariant_findings(
                 file_path=rel_path,
                 line_number=1,
                 snippet=rel_path,
-                message="schema must be declared in docs/audit/TOPOLOGY_MAP.json",
+                message="schema must be declared in docs/archive/audit/TOPOLOGY_MAP.json",
                 rule_id="INV-NO-UNDECLARED-SCHEMA",
             )
         )
@@ -16819,7 +16819,7 @@ def _append_topology_map_invariant_findings(
                 file_path=rel_path,
                 line_number=1,
                 snippet=rel_path,
-                message="registry must be declared in docs/audit/TOPOLOGY_MAP.json",
+                message="registry must be declared in docs/archive/audit/TOPOLOGY_MAP.json",
                 rule_id="INV-NO-UNDECLARED-REGISTRY",
             )
         )
@@ -23211,7 +23211,7 @@ def _append_mobility_invariant_findings(
 
     process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     control_plane_rel = "tools/repo/governance/control_plane_engine.py"
-    constitution_rel = "docs/mobility/MOBILITY_CONSTITUTION.md"
+    constitution_rel = "docs/domains/mobility/MOBILITY_CONSTITUTION.md"
     travel_engine_rel = "game/domain/mobility/travel/travel_engine.py"
 
     runtime_text = _file_text(repo_root, process_runtime_rel)
@@ -25761,8 +25761,8 @@ def _append_pollution_constitution_invariant_findings(
     pollutant_registry_rel = "contracts/registry/pollutant_type_registry.json"
 
     required_paths = (
-        "docs/pollution/POLLUTION_CONSTITUTION.md",
-        "docs/pollution/EXPOSURE_AND_COMPLIANCE_MODEL.md",
+        "docs/domains/pollution/POLLUTION_CONSTITUTION.md",
+        "docs/domains/pollution/EXPOSURE_AND_COMPLIANCE_MODEL.md",
         "contracts/schema/pollution/pollutant_type.schema",
         "contracts/schema/pollution/pollution_source_event.schema",
         "contracts/schema/pollution/pollution_field_policy.schema",
@@ -27424,7 +27424,7 @@ def _append_system_template_invariant_findings(
     template_rule_id = "INV-TEMPLATE-HAS-SIGNATURE-INVARIANTS"
 
     required_paths = (
-        "docs/system/SYSTEM_TEMPLATES.md",
+        "docs/architecture/system/SYSTEM_TEMPLATES.md",
         "contracts/schema/system/system_template.schema",
         "contracts/schema/system/template_instance_record.schema",
         "game/domain/systems/templates/template_compiler.py",
@@ -27586,7 +27586,7 @@ def _append_system_certification_invariant_findings(
     revoke_rule_id = "INV-CERT-INVALIDATED-ON-MODIFICATION"
 
     required_paths = (
-        "docs/system/SYSTEM_CERTIFICATION_MODEL.md",
+        "docs/architecture/system/SYSTEM_CERTIFICATION_MODEL.md",
         "contracts/schema/system/certification_profile.schema",
         "contracts/schema/system/certification_result.schema",
         "contracts/schema/system/certificate_artifact.schema",
@@ -27771,7 +27771,7 @@ def _append_system_reliability_invariant_findings(
     process_registry_rel = "contracts/registry/process_registry.json"
     reliability_registry_rel = "contracts/registry/reliability_profile_registry.json"
     required_paths = (
-        "docs/system/SYSTEM_RELIABILITY_MODEL.md",
+        "docs/architecture/system/SYSTEM_RELIABILITY_MODEL.md",
         "contracts/schema/system/reliability_profile.schema",
         "contracts/schema/system/system_health_state.schema",
         "contracts/schema/system/failure_event.schema",
@@ -27975,7 +27975,7 @@ def _append_system_forensics_invariant_findings(
     provenance_registry_rel = "contracts/registry/provenance_classification_registry.json"
     replay_tool_rel = "tools/domain/systems/tool_verify_explain_determinism.py"
     required_paths = (
-        "docs/system/SYSTEM_FORENSICS_MODEL.md",
+        "docs/architecture/system/SYSTEM_FORENSICS_MODEL.md",
         "contracts/schema/system/system_explain_request.schema",
         "contracts/schema/system/system_explain_artifact.schema",
         "contracts/schema/system/cause_entry.schema",
@@ -28184,7 +28184,7 @@ def _append_system_envelope_invariant_findings(
     stress_tool_rel = "tools/domain/systems/tool_run_sys_stress.py"
     replay_tool_rel = "tools/domain/systems/tool_replay_sys_window.py"
     regression_rel = "tests/fixtures/regression/sys_full_baseline.json"
-    shard_rules_rel = "docs/system/SYS_SHARD_BOUNDARY_RULES.md"
+    shard_rules_rel = "docs/architecture/system/SYS_SHARD_BOUNDARY_RULES.md"
 
     required_paths = (
         scenario_tool_rel,
@@ -28536,7 +28536,7 @@ def _append_state_vector_invariant_findings(
     statevec_registry_rel = "contracts/registry/state_vector_registry.json"
     verify_tool_rel = "tools/domain/systems/tool_verify_statevec_roundtrip.py"
     required_paths = (
-        "docs/system/EXPLICIT_STATE_VECTOR_RULE.md",
+        "docs/architecture/system/EXPLICIT_STATE_VECTOR_RULE.md",
         "contracts/schema/system/state_vector_definition.schema",
         "contracts/schema/system/state_vector_snapshot.schema",
         statevec_registry_rel,
@@ -29574,12 +29574,12 @@ def _append_process_constitution_invariant_findings(
     drift_policy_schema_rel = "contracts/schema/process/drift_policy.schema"
     process_drift_state_schema_rel = "contracts/schema/process/process_drift_state.schema"
     drift_event_record_schema_rel = "contracts/schema/process/drift_event_record.schema"
-    constitution_rel = "docs/process/PROCESS_CONSTITUTION.md"
-    process_capsule_doc_rel = "docs/process/PROCESS_CAPSULE_MODEL.md"
-    qc_doc_rel = "docs/process/QC_SAMPLING_MODEL.md"
-    maturity_doc_rel = "docs/process/STABILIZATION_AND_MATURITY_MODEL.md"
-    drift_doc_rel = "docs/process/DRIFT_AND_REVALIDATION_MODEL.md"
-    research_doc_rel = "docs/process/RESEARCH_AND_REVERSE_ENGINEERING_MODEL.md"
+    constitution_rel = "docs/domains/processes/PROCESS_CONSTITUTION.md"
+    process_capsule_doc_rel = "docs/domains/processes/PROCESS_CAPSULE_MODEL.md"
+    qc_doc_rel = "docs/domains/processes/QC_SAMPLING_MODEL.md"
+    maturity_doc_rel = "docs/domains/processes/STABILIZATION_AND_MATURITY_MODEL.md"
+    drift_doc_rel = "docs/domains/processes/DRIFT_AND_REVALIDATION_MODEL.md"
+    research_doc_rel = "docs/domains/processes/RESEARCH_AND_REVERSE_ENGINEERING_MODEL.md"
     explain_registry_rel = "contracts/registry/explain_contract_registry.json"
     inspection_section_rel = "contracts/registry/inspection_section_registry.json"
     stabilization_policy_registry_v2_rel = "contracts/registry/stabilization_policy_registry.json"
@@ -29608,7 +29608,7 @@ def _append_process_constitution_invariant_findings(
     deployment_record_schema_rel = "contracts/schema/process/deployment_record.schema"
     software_toolchain_registry_rel = "contracts/registry/software_toolchain_registry.json"
     software_pipeline_template_registry_rel = "contracts/registry/software_pipeline_template_registry.json"
-    software_pipeline_doc_rel = "docs/process/SOFTWARE_PIPELINE_MODEL.md"
+    software_pipeline_doc_rel = "docs/domains/processes/SOFTWARE_PIPELINE_MODEL.md"
     pipeline_replay_tool_rel = "tools/domain/processes/tool_replay_pipeline_window.py"
     proc_stress_generator_rel = "tools/domain/processes/tool_generate_proc_stress.py"
     proc_stress_harness_rel = "tools/domain/processes/tool_run_proc_stress.py"
@@ -31595,7 +31595,7 @@ def _append_logic_fault_invariant_findings(
     security_rule_id = "INV-SECURITY-POLICY-ENFORCED"
 
     required_files = (
-        ("docs/logic/FAULT_NOISE_SECURITY_MODEL.md", process_rule_id),
+        ("docs/domains/logic/FAULT_NOISE_SECURITY_MODEL.md", process_rule_id),
         ("contracts/schema/logic/logic_fault_state.schema", process_rule_id),
         ("contracts/schema/logic/noise_policy.schema", noise_rule_id),
         ("contracts/schema/logic/security_policy.schema", security_rule_id),
@@ -31620,7 +31620,7 @@ def _append_logic_fault_invariant_findings(
             )
         )
 
-    doctrine_rel = "docs/logic/FAULT_NOISE_SECURITY_MODEL.md"
+    doctrine_rel = "docs/domains/logic/FAULT_NOISE_SECURITY_MODEL.md"
     doctrine_text = _file_text(repo_root, doctrine_rel).lower()
     for token, rule_id, message in (
         ("fault.open", process_rule_id, "fault doctrine must define open-circuit behavior"),
@@ -32779,8 +32779,8 @@ def _append_store_gc_findings(
     policy_rule_id = "INV-NO-DELETE-WITHOUT-POLICY"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/STORE_GC0_RETRO_AUDIT.md", "STORE-GC retro audit is required", graph_rule_id),
-        ("docs/lib/STORE_INTEGRITY_AND_GC.md", "store integrity and GC doctrine is required", graph_rule_id),
+        ("docs/archive/audit/STORE_GC0_RETRO_AUDIT.md", "STORE-GC retro audit is required", graph_rule_id),
+        ("docs/runtime/storage/STORE_INTEGRITY_AND_GC.md", "store integrity and GC doctrine is required", graph_rule_id),
         ("contracts/schema/runtime/storage/gc_policy.schema", "gc_policy schema is required", policy_rule_id),
         ("contracts/schema/runtime/storage/gc_report.schema", "gc_report schema is required", policy_rule_id),
         ("contracts/schema/gc_policy.schema.json", "compiled gc_policy schema is required", policy_rule_id),
@@ -32791,9 +32791,9 @@ def _append_store_gc_findings(
         ("tools/package/libraries/store/store_gc_common.py", "STORE-GC helper is required", deterministic_rule_id),
         ("tools/package/libraries/store/tool_store_verify.py", "store verification tool is required", deterministic_rule_id),
         ("tools/package/libraries/store/tool_run_store_gc.py", "STORE-GC runner is required", deterministic_rule_id),
-        ("docs/audit/STORE_VERIFY_REPORT.md", "store verification report is required", deterministic_rule_id),
+        ("docs/archive/audit/STORE_VERIFY_REPORT.md", "store verification report is required", deterministic_rule_id),
         ("archive/generated/audit/store_verify_report.json", "store verification machine report is required", deterministic_rule_id),
-        ("docs/audit/STORE_GC_BASELINE.md", "STORE-GC baseline is required", deterministic_rule_id),
+        ("docs/archive/audit/STORE_GC_BASELINE.md", "STORE-GC baseline is required", deterministic_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -32809,7 +32809,7 @@ def _append_store_gc_findings(
             )
         )
 
-    doctrine_text = _file_text(repo_root, "docs/lib/STORE_INTEGRITY_AND_GC.md").lower()
+    doctrine_text = _file_text(repo_root, "docs/runtime/storage/STORE_INTEGRITY_AND_GC.md").lower()
     for token, message, rule_id in (
         ("# store integrity and gc", "STORE-GC doctrine must declare the canonical title", graph_rule_id),
         ("## store integrity checks", "STORE-GC doctrine must define integrity checks", graph_rule_id),
@@ -32823,7 +32823,7 @@ def _append_store_gc_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/lib/STORE_INTEGRITY_AND_GC.md",
+                file_path="docs/runtime/storage/STORE_INTEGRITY_AND_GC.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -32831,7 +32831,7 @@ def _append_store_gc_findings(
             )
         )
 
-    baseline_text = _file_text(repo_root, "docs/audit/STORE_GC_BASELINE.md").lower()
+    baseline_text = _file_text(repo_root, "docs/archive/audit/STORE_GC_BASELINE.md").lower()
     for token, message in (
         ("# store gc baseline", "STORE-GC baseline must declare the canonical title"),
         ("## policy definitions", "STORE-GC baseline must summarize policy definitions"),
@@ -32843,7 +32843,7 @@ def _append_store_gc_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/audit/STORE_GC_BASELINE.md",
+                file_path="docs/archive/audit/STORE_GC_BASELINE.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -32888,8 +32888,8 @@ def _append_constitutive_model_invariant_findings(
     severity = _strict_only_severity(profile)
     deprecated_sites = _deprecated_inline_response_curve_sites(repo_root)
 
-    constitution_rel = "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
-    catalog_rel = "docs/meta/CONSTITUTIVE_MODEL_CATALOG.md"
+    constitution_rel = "docs/governance/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
+    catalog_rel = "docs/governance/meta/CONSTITUTIVE_MODEL_CATALOG.md"
     for rel_path in (constitution_rel, catalog_rel):
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
         if os.path.isfile(abs_path):
@@ -33839,7 +33839,7 @@ def _append_component_graph_findings(
     hardcoded_rule_id = "INV-NO-HARDCODED-COMPONENT-SETS"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/COMPONENT_GRAPH0_RETRO_AUDIT.md", "COMPONENT-GRAPH-0 retro audit is required", install_rule_id),
+        ("docs/archive/audit/COMPONENT_GRAPH0_RETRO_AUDIT.md", "COMPONENT-GRAPH-0 retro audit is required", install_rule_id),
         ("docs/release/COMPONENT_GRAPH_CONSTITUTION.md", "COMPONENT-GRAPH-0 constitution is required", install_rule_id),
         ("docs/release/RELEASE_NOTES_v0_0_0_mock.md", "release notes doc is required for graph-backed docs component coverage", hardcoded_rule_id),
         ("contracts/schema/release/component_id.schema", "component_id schema is required", install_rule_id),
@@ -33858,7 +33858,7 @@ def _append_component_graph_findings(
         ("tools/release/component_graph_resolver.py", "component graph resolver is required", install_rule_id),
         ("tools/release/component_graph_common.py", "component graph helper is required", install_rule_id),
         ("tools/release/tool_run_component_graph.py", "component graph runner is required", install_rule_id),
-        ("docs/audit/COMPONENT_GRAPH_BASELINE.md", "component graph baseline report is required", install_rule_id),
+        ("docs/archive/audit/COMPONENT_GRAPH_BASELINE.md", "component graph baseline report is required", install_rule_id),
         ("archive/generated/audit/component_graph_report.json", "component graph machine report is required", install_rule_id),
     )
     for rel_path, message, rule_id in required_files:
@@ -33896,7 +33896,7 @@ def _append_component_graph_findings(
             )
         )
 
-    baseline_text = _file_text(repo_root, "docs/audit/COMPONENT_GRAPH_BASELINE.md").lower()
+    baseline_text = _file_text(repo_root, "docs/archive/audit/COMPONENT_GRAPH_BASELINE.md").lower()
     for token, message in (
         ("# component graph baseline", "component graph baseline must declare the canonical title"),
         ("## component list", "component graph baseline must list components"),
@@ -33908,7 +33908,7 @@ def _append_component_graph_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/audit/COMPONENT_GRAPH_BASELINE.md",
+                file_path="docs/archive/audit/COMPONENT_GRAPH_BASELINE.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -33954,14 +33954,14 @@ def _append_install_profile_findings(
     hardcoded_rule_id = "INV-NO-HARDCODED-BUNDLE-CONTENTS"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/DIST_REFINE1_RETRO_AUDIT.md", "DIST-REFINE-1 retro audit is required", use_rule_id),
+        ("docs/archive/audit/DIST_REFINE1_RETRO_AUDIT.md", "DIST-REFINE-1 retro audit is required", use_rule_id),
         ("docs/release/INSTALL_PROFILES.md", "install profile doctrine is required", use_rule_id),
         ("contracts/schema/release/install_profile.schema", "install_profile schema is required", use_rule_id),
         ("contracts/schema/install_profile.schema.json", "compiled install_profile schema is required", use_rule_id),
         ("contracts/registry/install_profile_registry.json", "install profile registry is required", use_rule_id),
         ("tools/release/install_profile_common.py", "install profile helper is required", use_rule_id),
         ("tools/release/tool_run_install_profiles.py", "install profile runner is required", use_rule_id),
-        ("docs/audit/INSTALL_PROFILE_BASELINE.md", "install profile baseline report is required", use_rule_id),
+        ("docs/archive/audit/INSTALL_PROFILE_BASELINE.md", "install profile baseline report is required", use_rule_id),
         ("archive/generated/audit/install_profile_report.json", "install profile machine report is required", use_rule_id),
     )
     for rel_path, message, rule_id in required_files:
@@ -34000,7 +34000,7 @@ def _append_install_profile_findings(
             )
         )
 
-    baseline_text = _file_text(repo_root, "docs/audit/INSTALL_PROFILE_BASELINE.md").lower()
+    baseline_text = _file_text(repo_root, "docs/archive/audit/INSTALL_PROFILE_BASELINE.md").lower()
     for token, message in (
         ("# install profile baseline", "install profile baseline must declare the canonical title"),
         ("## profile definitions", "install profile baseline must list profile definitions"),
@@ -34011,7 +34011,7 @@ def _append_install_profile_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/audit/INSTALL_PROFILE_BASELINE.md",
+                file_path="docs/archive/audit/INSTALL_PROFILE_BASELINE.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -34058,7 +34058,7 @@ def _append_update_model_findings(
     silent_rule_id = "INV-NO-SILENT-UPGRADE"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/UPDATE_MODEL0_RETRO_AUDIT.md", "UPDATE-MODEL-0 retro audit is required", graph_rule_id),
+        ("docs/archive/audit/UPDATE_MODEL0_RETRO_AUDIT.md", "UPDATE-MODEL-0 retro audit is required", graph_rule_id),
         ("docs/release/RELEASE_INDEX_MODEL.md", "release index doctrine is required", graph_rule_id),
         ("docs/release/SETUP_SELF_UPDATE.md", "setup self-update doctrine is required", graph_rule_id),
         ("contracts/schema/release/release_index.schema", "release_index schema is required", graph_rule_id),
@@ -34068,7 +34068,7 @@ def _append_update_model_findings(
         ("tools/release/update_resolver.py", "update resolver is required", graph_rule_id),
         ("tools/release/update_model_common.py", "update-model helper is required", graph_rule_id),
         ("tools/release/tool_run_update_model.py", "update-model runner is required", graph_rule_id),
-        ("docs/audit/UPDATE_MODEL_BASELINE.md", "update-model baseline is required", graph_rule_id),
+        ("docs/archive/audit/UPDATE_MODEL_BASELINE.md", "update-model baseline is required", graph_rule_id),
         ("archive/generated/audit/update_model_report.json", "update-model machine report is required", graph_rule_id),
     )
     for rel_path, message, rule_id in required_files:
@@ -34106,7 +34106,7 @@ def _append_update_model_findings(
             )
         )
 
-    baseline_text = _file_text(repo_root, "docs/audit/UPDATE_MODEL_BASELINE.md").lower()
+    baseline_text = _file_text(repo_root, "docs/archive/audit/UPDATE_MODEL_BASELINE.md").lower()
     for token, message in (
         ("# update model baseline", "update-model baseline must declare the canonical title"),
         ("## release index schema", "update-model baseline must summarize the release index schema"),
@@ -34118,7 +34118,7 @@ def _append_update_model_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/audit/UPDATE_MODEL_BASELINE.md",
+                file_path="docs/archive/audit/UPDATE_MODEL_BASELINE.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -34202,7 +34202,7 @@ def _append_trust_model_findings(
     strict_rule_id = "INV-STRICT-REQUIRES-SIGNATURES"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/TRUST_MODEL0_RETRO_AUDIT.md", "TRUST-MODEL-0 retro audit is required", policy_rule_id),
+        ("docs/archive/audit/TRUST_MODEL0_RETRO_AUDIT.md", "TRUST-MODEL-0 retro audit is required", policy_rule_id),
         ("docs/security/TRUST_AND_SIGNING_MODEL.md", "trust and signing doctrine is required", policy_rule_id),
         ("contracts/schema/security/trust_root.schema", "trust_root schema is required", policy_rule_id),
         ("contracts/schema/security/trust_policy.schema", "trust_policy schema is required", policy_rule_id),
@@ -34215,7 +34215,7 @@ def _append_trust_model_findings(
         ("tools/validators/security/trust/trust_verifier.py", "trust verifier is required", hashes_rule_id),
         ("tools/validators/security/model/trust_model_common.py", "trust-model helper is required", policy_rule_id),
         ("tools/validators/security/model/tool_run_trust_model.py", "trust-model runner is required", policy_rule_id),
-        ("docs/audit/TRUST_MODEL_BASELINE.md", "trust-model baseline is required", policy_rule_id),
+        ("docs/archive/audit/TRUST_MODEL_BASELINE.md", "trust-model baseline is required", policy_rule_id),
         ("archive/generated/audit/trust_model_report.json", "trust-model machine report is required", policy_rule_id),
     )
     for rel_path, message, rule_id in required_files:
@@ -34254,7 +34254,7 @@ def _append_trust_model_findings(
             )
         )
 
-    baseline_text = _file_text(repo_root, "docs/audit/TRUST_MODEL_BASELINE.md").lower()
+    baseline_text = _file_text(repo_root, "docs/archive/audit/TRUST_MODEL_BASELINE.md").lower()
     for token, message in (
         ("# trust model baseline", "trust-model baseline must declare the canonical title"),
         ("## policies", "trust-model baseline must summarize policies"),
@@ -34266,7 +34266,7 @@ def _append_trust_model_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/audit/TRUST_MODEL_BASELINE.md",
+                file_path="docs/archive/audit/TRUST_MODEL_BASELINE.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -34311,7 +34311,7 @@ def _append_governance_model_findings(
     rule_id = "INV-GOVERNANCE-PROFILE-PRESENT-IN-RELEASE"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/GOVERNANCE0_RETRO_AUDIT.md", "GOVERNANCE-0 retro audit is required", rule_id),
+        ("docs/archive/audit/GOVERNANCE0_RETRO_AUDIT.md", "GOVERNANCE-0 retro audit is required", rule_id),
         ("docs/governance/GOVERNANCE_MODEL.md", "governance doctrine is required", rule_id),
         ("docs/governance/TRUST_ROOT_GOVERNANCE.md", "trust-root governance doctrine is required", rule_id),
         ("docs/governance/LICENSING_STRATEGY.md", "licensing strategy document is required", rule_id),
@@ -34321,7 +34321,7 @@ def _append_governance_model_findings(
         ("contracts/governance/governance_profile.json", "governance profile is required", rule_id),
         ("tools/repo/governance/governance_model_common.py", "governance-model helper is required", rule_id),
         ("tools/repo/governance/tool_run_governance_model.py", "governance-model runner is required", rule_id),
-        ("docs/audit/GOVERNANCE_POLICY_BASELINE.md", "governance baseline is required", rule_id),
+        ("docs/archive/audit/GOVERNANCE_POLICY_BASELINE.md", "governance baseline is required", rule_id),
         ("contracts/audit/governance_policy_report.json", "governance machine report is required", rule_id),
     )
     for rel_path, message, current_rule_id in required_files:
@@ -34471,13 +34471,13 @@ def _append_arch_matrix_findings(
     tier3_rule_id = "INV-TIER3-NOT-IN-DEFAULT-RELEASE_INDEX"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/ARCH_MATRIX0_RETRO_AUDIT.md", "ARCH-MATRIX-0 retro audit is required", matrix_rule_id),
+        ("docs/archive/audit/ARCH_MATRIX0_RETRO_AUDIT.md", "ARCH-MATRIX-0 retro audit is required", matrix_rule_id),
         ("docs/release/TARGET_MATRIX_v0_0_0_mock.md", "target matrix doctrine is required", matrix_rule_id),
         ("docs/release/TARGET_CAPABILITY_RULES.md", "target capability rules are required", matrix_rule_id),
         ("contracts/registry/target_matrix_registry.json", "target matrix registry is required", matrix_rule_id),
         ("tools/release/arch_matrix_common.py", "ARCH-MATRIX helper is required", matrix_rule_id),
         ("tools/release/tool_run_arch_matrix.py", "ARCH-MATRIX runner is required", matrix_rule_id),
-        ("docs/audit/ARCH_MATRIX_FINAL.md", "ARCH-MATRIX final report is required", matrix_rule_id),
+        ("docs/archive/audit/ARCH_MATRIX_FINAL.md", "ARCH-MATRIX final report is required", matrix_rule_id),
         ("contracts/audit/arch_matrix_report.json", "ARCH-MATRIX machine report is required", matrix_rule_id),
     )
     for rel_path, message, rule_id in required_files:
@@ -34516,7 +34516,7 @@ def _append_arch_matrix_findings(
             )
         )
 
-    baseline_text = _file_text(repo_root, "docs/audit/ARCH_MATRIX_FINAL.md").lower()
+    baseline_text = _file_text(repo_root, "docs/archive/audit/ARCH_MATRIX_FINAL.md").lower()
     for token, message in (
         ("# arch-matrix final", "ARCH-MATRIX final report must declare the canonical title"),
         ("## full target matrix table", "ARCH-MATRIX final report must include the full target table"),
@@ -34528,7 +34528,7 @@ def _append_arch_matrix_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/audit/ARCH_MATRIX_FINAL.md",
+                file_path="docs/archive/audit/ARCH_MATRIX_FINAL.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -34578,9 +34578,9 @@ def _append_universal_identity_findings(
     canonical_rule_id = "INV-IDENTITY-CANONICAL-SERIALIZED"
     blocker_severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/UNIVERSAL_IDENTITY0_RETRO_AUDIT.md", "UNIVERSAL-ID retro audit is required", warn_rule_id),
-        ("docs/meta/UNIVERSAL_IDENTITY_MODEL.md", "universal identity doctrine is required", warn_rule_id),
-        ("docs/meta/IDENTITY_INTEGRATION_MAP.md", "identity integration map is required", warn_rule_id),
+        ("docs/archive/audit/UNIVERSAL_IDENTITY0_RETRO_AUDIT.md", "UNIVERSAL-ID retro audit is required", warn_rule_id),
+        ("docs/governance/meta/UNIVERSAL_IDENTITY_MODEL.md", "universal identity doctrine is required", warn_rule_id),
+        ("docs/governance/meta/IDENTITY_INTEGRATION_MAP.md", "identity integration map is required", warn_rule_id),
         ("contracts/schema/meta/universal_identity_block.schema", "universal identity schema is required", canonical_rule_id),
         ("contracts/schema/universal_identity_block.schema.json", "compiled universal identity schema is required", canonical_rule_id),
         ("contracts/registry/identity_kind_registry.json", "identity kind registry is required", namespaced_rule_id),
@@ -34588,7 +34588,7 @@ def _append_universal_identity_findings(
         ("tools/repo/meta/audit/identity_common.py", "identity helper is required", canonical_rule_id),
         ("tools/repo/meta/audit/tool_print_identity.py", "identity print tool is required", warn_rule_id),
         ("tools/repo/meta/audit/tool_diff_identity.py", "identity diff tool is required", warn_rule_id),
-        ("docs/audit/UNIVERSAL_IDENTITY_BASELINE.md", "universal identity baseline is required", warn_rule_id),
+        ("docs/archive/audit/UNIVERSAL_IDENTITY_BASELINE.md", "universal identity baseline is required", warn_rule_id),
         ("archive/generated/audit/universal_identity_report.json", "universal identity machine report is required", warn_rule_id),
     )
     for rel_path, message, rule_id in required_files:
@@ -34606,7 +34606,7 @@ def _append_universal_identity_findings(
             )
         )
 
-    doctrine_text = _file_text(repo_root, "docs/meta/UNIVERSAL_IDENTITY_MODEL.md").lower()
+    doctrine_text = _file_text(repo_root, "docs/governance/meta/UNIVERSAL_IDENTITY_MODEL.md").lower()
     for token, message, rule_id in (
         ("# universal identity model", "universal identity doctrine must declare the canonical title", warn_rule_id),
         ("## universalidentityblock", "universal identity doctrine must define the universal identity block", warn_rule_id),
@@ -34619,7 +34619,7 @@ def _append_universal_identity_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/meta/UNIVERSAL_IDENTITY_MODEL.md",
+                file_path="docs/governance/meta/UNIVERSAL_IDENTITY_MODEL.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -34668,7 +34668,7 @@ def _append_migration_lifecycle_findings(
     readonly_rule_id = "INV-READONLY-LOGGED"
     severity = _invariant_severity(profile)
     required_files = (
-        ("docs/audit/MIGRATION_LIFECYCLE0_RETRO_AUDIT.md", "migration lifecycle retro audit is required", policy_rule_id),
+        ("docs/archive/audit/MIGRATION_LIFECYCLE0_RETRO_AUDIT.md", "migration lifecycle retro audit is required", policy_rule_id),
         ("docs/compatibility/MIGRATION_LIFECYCLE_MODEL.md", "migration lifecycle doctrine is required", policy_rule_id),
         ("contracts/schema/compatibility/migration_policy.schema", "migration policy schema is required", policy_rule_id),
         ("contracts/schema/compatibility/migration_chain.schema", "migration chain schema is required", policy_rule_id),
@@ -34681,7 +34681,7 @@ def _append_migration_lifecycle_findings(
         ("tools/package/compatibility/migration_lifecycle_common.py", "migration lifecycle helper/reporting tool is required", policy_rule_id),
         ("tools/package/compatibility/tool_plan_migration.py", "migration planning tool is required", silent_rule_id),
         ("tools/package/compatibility/tool_apply_migration.py", "migration apply tool is required", silent_rule_id),
-        ("docs/audit/MIGRATION_LIFECYCLE_BASELINE.md", "migration lifecycle baseline is required", policy_rule_id),
+        ("docs/archive/audit/MIGRATION_LIFECYCLE_BASELINE.md", "migration lifecycle baseline is required", policy_rule_id),
         ("archive/generated/audit/migration_lifecycle_report.json", "migration lifecycle report is required", policy_rule_id),
     )
     for rel_path, message, rule_id in required_files:
@@ -34760,7 +34760,7 @@ def _append_bundle_invariant_findings(
     severity = _invariant_severity(profile)
     invariant_tokens = {
         "INV-BUNDLES-DETERMINISTIC": {
-            "docs/lib/EXPORT_IMPORT_FORMAT.md": (
+            "docs/runtime/storage/EXPORT_IMPORT_FORMAT.md": (
                 "bundle.instance.portable",
                 "`bundle_hash` is computed from the canonical ordered item-hash projection only.",
                 "filesystem timestamps do not affect `bundle_hash`",
@@ -34782,7 +34782,7 @@ def _append_bundle_invariant_findings(
             ),
         },
         "INV-NO-TIMESTAMPS-IN-ARCHIVES": {
-            "docs/lib/EXPORT_IMPORT_FORMAT.md": (
+            "docs/runtime/storage/EXPORT_IMPORT_FORMAT.md": (
                 "zip` with fixed timestamp `2000-01-01T00:00:00Z`",
                 "No OS-specific metadata is permitted in archive entries.",
             ),
@@ -34797,7 +34797,7 @@ def _append_bundle_invariant_findings(
             ),
         },
         "INV-IMPORT-VALIDATES-HASHES": {
-            "docs/lib/EXPORT_IMPORT_FORMAT.md": (
+            "docs/runtime/storage/EXPORT_IMPORT_FORMAT.md": (
                 "recompute each `content_hash`",
                 "recompute `bundle_hash`",
                 "refuse if any mismatch occurs",
@@ -34872,7 +34872,7 @@ def _append_lib_envelope_invariant_findings(
                 "--slash-mode",
                 "--baseline-out",
             ),
-            "docs/audit/LIB_FINAL_BASELINE.md": (
+            "docs/archive/audit/LIB_FINAL_BASELINE.md": (
                 "repeated runs keep identical projection hashes",
                 "forward- and backslash-shaped scenarios keep identical bundle hashes",
                 "cross-platform bundle hash stability is covered",
@@ -34885,7 +34885,7 @@ def _append_lib_envelope_invariant_findings(
             ),
         },
         "INV-NO-PATH-SEMANTICS": {
-            "docs/audit/LIB7_RETRO_AUDIT.md": (
+            "docs/archive/audit/LIB7_RETRO_AUDIT.md": (
                 "path-based semantics",
                 "slash-mode",
                 "normalize/separate path spelling from content identity",
@@ -34909,7 +34909,7 @@ def _append_lib_envelope_invariant_findings(
                 "\"tools/package/libraries/bundle/tool_verify_bundle.py\"",
                 "import_instance_bundle(",
             ),
-            "docs/audit/LIB_FINAL_BASELINE.md": (
+            "docs/archive/audit/LIB_FINAL_BASELINE.md": (
                 "`tool_verify_bundle` returns `result=complete`",
                 "import previews complete for linked instance, portable instance, save, and pack bundles",
             ),
@@ -34929,7 +34929,7 @@ def _append_lib_envelope_invariant_findings(
                 "\"provider_resolution\": provider_resolution",
                 "\"provider_selection_logged\": bool(provider_resolution.get(\"selection_logged\", False))",
             ),
-            "docs/audit/LIB_FINAL_BASELINE.md": (
+            "docs/archive/audit/LIB_FINAL_BASELINE.md": (
                 "selection_logged = true",
                 "strict policy refuses ambiguity with `refusal.provides.ambiguous`",
                 "anarchy policy completes deterministically",
@@ -35122,7 +35122,7 @@ def _append_dist_final_plan_invariant_findings(
             )
         )
 
-    dryrun_rel = "docs/audit/DIST_FINAL_DRYRUN.md"
+    dryrun_rel = "docs/archive/audit/DIST_FINAL_DRYRUN.md"
     dryrun_text = _file_text(repo_root, dryrun_rel)
     if not dryrun_text:
         findings.append(

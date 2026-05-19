@@ -50,7 +50,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ALIGN_IDENTITY_KIND_ID_AND_REQUIRED_FIELDS_WITH_ARTIFACT_KIND",
                 related_invariants=[rule_id],
-                related_paths=[rel_path or "tools/validators/identity/identity_validator.py", "docs/meta/UNIVERSAL_IDENTITY_MODEL.md"],
+                related_paths=[rel_path or "tools/validators/identity/identity_validator.py", "docs/governance/meta/UNIVERSAL_IDENTITY_MODEL.md"],
             )
         )
     return findings

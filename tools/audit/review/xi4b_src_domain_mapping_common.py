@@ -54,21 +54,21 @@ CONVERGENCE_ACTIONS_REL = "archive/generated/refactor/convergence_actions.json"
 CONVERGENCE_RISK_MAP_REL = "archive/generated/refactor/convergence_risk_map.json"
 CONVERGENCE_EXECUTION_LOG_REL = "archive/generated/refactor/convergence_execution_log.json"
 
-XI_1_FINAL_REL = "docs/audit/XI_1_FINAL.md"
-XI_2_FINAL_REL = "docs/audit/XI_2_FINAL.md"
-XI_3_FINAL_REL = "docs/audit/XI_3_FINAL.md"
-XI_4_FINAL_REL = "docs/audit/XI_4_FINAL.md"
+XI_1_FINAL_REL = "docs/archive/audit/XI_1_FINAL.md"
+XI_2_FINAL_REL = "docs/archive/audit/XI_2_FINAL.md"
+XI_3_FINAL_REL = "docs/archive/audit/XI_3_FINAL.md"
+XI_4_FINAL_REL = "docs/archive/audit/XI_4_FINAL.md"
 
-CONVERGENCE_PLAN_DOC_REL = "docs/refactor/CONVERGENCE_PLAN.md"
-CONVERGENCE_RISK_REPORT_REL = "docs/refactor/CONVERGENCE_RISK_REPORT.md"
-CONVERGENCE_CHECKLIST_REL = "docs/refactor/CONVERGENCE_CHECKLIST.md"
-DEPRECATIONS_REL = "docs/refactor/DEPRECATIONS.md"
+CONVERGENCE_PLAN_DOC_REL = "docs/archive/refactor/CONVERGENCE_PLAN.md"
+CONVERGENCE_RISK_REPORT_REL = "docs/archive/refactor/CONVERGENCE_RISK_REPORT.md"
+CONVERGENCE_CHECKLIST_REL = "docs/archive/refactor/CONVERGENCE_CHECKLIST.md"
+DEPRECATIONS_REL = "docs/archive/refactor/DEPRECATIONS.md"
 
-FINAL_PROMPT_INVENTORY_REL = "docs/blueprint/FINAL_PROMPT_INVENTORY.md"
-SNAPSHOT_MAPPING_TEMPLATE_REL = "docs/blueprint/SNAPSHOT_MAPPING_TEMPLATE.md"
-PROMPT_DEPENDENCY_TREE_REL = "docs/blueprint/PROMPT_DEPENDENCY_TREE.md"
-PROMPT_RISK_MATRIX_REL = "docs/blueprint/PROMPT_RISK_MATRIX.md"
-REPO_REALITY_RECONCILIATION_GUIDE_REL = "docs/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md"
+FINAL_PROMPT_INVENTORY_REL = "docs/archive/blueprint/FINAL_PROMPT_INVENTORY.md"
+SNAPSHOT_MAPPING_TEMPLATE_REL = "docs/archive/blueprint/SNAPSHOT_MAPPING_TEMPLATE.md"
+PROMPT_DEPENDENCY_TREE_REL = "docs/archive/blueprint/PROMPT_DEPENDENCY_TREE.md"
+PROMPT_RISK_MATRIX_REL = "docs/archive/blueprint/PROMPT_RISK_MATRIX.md"
+REPO_REALITY_RECONCILIATION_GUIDE_REL = "docs/archive/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md"
 
 SRC_DOMAIN_MAPPING_REL = "archive/generated/restructure/src_domain_mapping.json"
 SRC_DOMAIN_MAPPING_CANDIDATES_REL = "archive/generated/restructure/src_domain_mapping_candidates.json"
@@ -81,11 +81,11 @@ SRC_TEST_ONLY_SET_REL = "tests/fixtures/restructure/src_test_only_set.json"
 SRC_LEGACY_SET_REL = "archive/generated/restructure/src_legacy_set.json"
 XI4B_REVIEW_MANIFEST_REL = "contracts/restructure/xi4b_review_manifest.json"
 
-SRC_DOMAIN_MAPPING_REPORT_REL = "docs/restructure/SRC_DOMAIN_MAPPING_REPORT.md"
-STRUCTURE_OPTIONS_REPORT_REL = "docs/restructure/STRUCTURE_OPTIONS_REPORT.md"
-XI_4B_REVIEW_GUIDE_REL = "docs/restructure/XI_4B_REVIEW_GUIDE.md"
-XI_4B_UNBLOCK_REPORT_REL = "docs/restructure/XI_4B_UNBLOCK_REPORT.md"
-XI_4B_FINAL_REL = "docs/audit/XI_4B_FINAL.md"
+SRC_DOMAIN_MAPPING_REPORT_REL = "docs/archive/restructure/SRC_DOMAIN_MAPPING_REPORT.md"
+STRUCTURE_OPTIONS_REPORT_REL = "docs/archive/restructure/STRUCTURE_OPTIONS_REPORT.md"
+XI_4B_REVIEW_GUIDE_REL = "docs/archive/restructure/XI_4B_REVIEW_GUIDE.md"
+XI_4B_UNBLOCK_REPORT_REL = "docs/archive/restructure/XI_4B_UNBLOCK_REPORT.md"
+XI_4B_FINAL_REL = "docs/archive/audit/XI_4B_FINAL.md"
 
 TMP_BUNDLE_REL = "tmp/xi4b_structure_review_bundle.zip"
 TMP_BUNDLE_MANIFEST_REL = "tmp/xi4b_structure_review_bundle_manifest.txt"
@@ -476,12 +476,12 @@ def _load_inputs(repo_root: str) -> dict[str, object]:
     if os.path.isdir(quarantine_glob_root):
         for name in sorted(os.listdir(quarantine_glob_root)):
             if name.startswith("QUARANTINE_") and name.endswith(".md"):
-                rel_path = f"docs/refactor/{name}"
+                rel_path = f"docs/archive/refactor/{name}"
                 text = _read_text(_repo_abs(repo_root, rel_path))
                 if text:
                     quarantine_docs.append({"path": rel_path, "text": text})
     if not quarantine_docs:
-        missing_inputs.append("docs/refactor/QUARANTINE_*.md")
+        missing_inputs.append("docs/archive/refactor/QUARANTINE_*.md")
 
     major_missing = [rel for rel in missing_inputs if _input_key_for_rel(rel) in MAJOR_INPUT_KEYS]
     input_fingerprints = _build_input_fingerprints(json_payloads, text_payloads, quarantine_docs)
@@ -1669,9 +1669,9 @@ def _render_review_guide(preferred_option: str, conflicts: Sequence[Mapping[str,
             _doc_header("XI-4B Review Guide", "approved mapping lock for XI-5"),
             "## Read Order",
             "",
-            "1. `docs/restructure/XI_4B_UNBLOCK_REPORT.md`",
-            "2. `docs/restructure/STRUCTURE_OPTIONS_REPORT.md`",
-            "3. `docs/restructure/SRC_DOMAIN_MAPPING_REPORT.md`",
+            "1. `docs/archive/restructure/XI_4B_UNBLOCK_REPORT.md`",
+            "2. `docs/archive/restructure/STRUCTURE_OPTIONS_REPORT.md`",
+            "3. `docs/archive/restructure/SRC_DOMAIN_MAPPING_REPORT.md`",
             "4. `archive/generated/restructure/src_domain_mapping_lock_proposal.json`",
             "",
             "## Decisions Required",
@@ -1745,7 +1745,7 @@ def _render_xi_4b_final(
             "",
             "## Recommended Next Step",
             "",
-            "- review `docs/restructure/XI_4B_UNBLOCK_REPORT.md` and approve the provisional mapping lock",
+            "- review `docs/archive/restructure/XI_4B_UNBLOCK_REPORT.md` and approve the provisional mapping lock",
             "- resolve conflicts listed in `archive/generated/restructure/src_domain_mapping_conflicts.json`",
             "- execute bounded XI-5 against `archive/generated/restructure/src_domain_mapping_lock_proposal.json` after approval",
             "",
@@ -1761,9 +1761,9 @@ def _review_first_text(preferred_option: str, conflicts: Sequence[Mapping[str, o
             "This bundle is the deterministic XI-4b structure review packet for deciding the post-Xi repository layout before XI-5 removes source-like directories.",
             "",
             "Read in this order:",
-            "1. docs/restructure/XI_4B_REVIEW_GUIDE.md",
-            "2. docs/restructure/XI_4B_UNBLOCK_REPORT.md",
-            "3. docs/restructure/STRUCTURE_OPTIONS_REPORT.md",
+            "1. docs/archive/restructure/XI_4B_REVIEW_GUIDE.md",
+            "2. docs/archive/restructure/XI_4B_UNBLOCK_REPORT.md",
+            "3. docs/archive/restructure/STRUCTURE_OPTIONS_REPORT.md",
             "4. archive/generated/restructure/src_domain_mapping_lock_proposal.json",
             "",
             "Human decisions required:",

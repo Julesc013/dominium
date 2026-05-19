@@ -39,7 +39,7 @@ def _write_contract(repo_root: str) -> None:
                 },
                 {
                     "artifact_id": "artifact.repox.profile",
-                    "path": "docs/audit/repox/REPOX_PROFILE.json",
+                    "path": "docs/archive/audit/repox/REPOX_PROFILE.json",
                     "artifact_class": "RUN_META",
                     "canonical_hash_required": False,
                     "used_for_gating": False,

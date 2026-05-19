@@ -35,7 +35,7 @@ Dominium is the product layer (Client, Server, Launcher, Setup, Tools) on top of
 - **Authority**: all mutations route through process execution under `AuthorityContext`
 - **Data-first extensibility**: schemas + registries + packs define behavior surfaces
 
-See `docs/ARCHITECTURE.md` for the technical model.
+See `docs/architecture/ROOT_ARCHITECTURE.md` for the technical model.
 
 ## High-Level Architecture
 
@@ -54,7 +54,7 @@ Canonical architecture contracts are under `docs/architecture/`, starting at `do
 
 Prerequisites:
 
-- CMake (see `docs/guides/BUILDING.md`)
+- CMake (see `docs/development/guides/BUILDING.md`)
 - Python 3.x for governance scripts
 - Verify preset toolchain configured
 
@@ -82,11 +82,11 @@ out\build\vs2026\verify\bin\tools.exe --help
 
 ## Key Documentation
 
-- Architecture: `docs/ARCHITECTURE.md`
-- Governance stack: `docs/XSTACK.md`
+- Architecture: `docs/architecture/ROOT_ARCHITECTURE.md`
+- Governance stack: `docs/development/xstack/XSTACK.md`
 - Canon index: `docs/architecture/CANON_INDEX.md`
-- Glossary: `docs/GLOSSARY.md`
-- Status snapshot: `docs/STATUS_NOW.md`
+- Glossary: `docs/reference/GLOSSARY.md`
+- Status snapshot: `docs/archive/STATUS_NOW.md`
 
 ## Governance Stack Overview
 

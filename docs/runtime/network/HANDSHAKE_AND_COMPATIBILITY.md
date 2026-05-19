@@ -161,7 +161,7 @@ Remediation: set `extensions.perception_interest_policy_id` in server policy and
 - `contracts/registry/net_server_policy_registry.json`
 - `contracts/registry/securex_policy_registry.json`
 - `contracts/registry/server_profile_registry.json`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`
 - `docs/runtime/network/TRANSPORT_ABSTRACTION.md`
 
 ## TODO

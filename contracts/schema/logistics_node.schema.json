@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical logistics node declaration.",
   "x-doc-ref": [
-    "docs/materials/LOGISTICS_GRAPH.md"
+    "docs/domains/materials/LOGISTICS_GRAPH.md"
   ],
   "type": "object",
   "required": [

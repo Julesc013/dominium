@@ -219,7 +219,7 @@ Registry compile builds deterministic search maps by normalization:
 - `docs/architecture/session_lifecycle.md`
 - `docs/architecture/lockfile.md`
 - `docs/architecture/deterministic_packaging.md`
-- `docs/contracts/versioning_and_migration.md`
+- `docs/reference/contracts/versioning_and_migration.md`
 - `schemas/bundle_lockfile.schema.json`
 - `schemas/domain_registry.schema.json`
 - `schemas/law_registry.schema.json`

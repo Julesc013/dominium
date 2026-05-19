@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic per-target affordance listing payload.",
   "x-doc-ref": [
-    "docs/interaction/INTERACTION_MODEL.md"
+    "docs/game/interaction/INTERACTION_MODEL.md"
   ],
   "type": "object",
   "required": [

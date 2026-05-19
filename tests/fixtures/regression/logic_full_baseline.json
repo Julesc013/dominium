@@ -133,7 +133,7 @@
     "network_count": 12,
     "scenario_id": "scenario.logic10.envelope.9c32793a79cc",
     "scenario_seed": 1010,
-    "stress_report_path": "docs/audit/LOGIC10_STRESS_RESULTS.json",
+    "stress_report_path": "docs/archive/audit/LOGIC10_STRESS_RESULTS.json",
     "thread_count_labels": [
       1,
       8

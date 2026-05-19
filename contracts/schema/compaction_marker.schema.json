@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical deterministic provenance compaction marker.",
   "x-doc-ref": [
-    "docs/meta/PROVENANCE_AND_COMPACTION_CONSTITUTION.md"
+    "docs/governance/meta/PROVENANCE_AND_COMPACTION_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

@@ -135,7 +135,7 @@ Scheduler equivalence is verified by the `execution_equivalence` test
 
 
 
-See `docs/ci/CI_ENFORCEMENT_MATRIX.md` for the complete matrix.
+See `docs/testing/ci/CI_ENFORCEMENT_MATRIX.md` for the complete matrix.
 
 
 

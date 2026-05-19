@@ -20,7 +20,7 @@ REQUIRED_TOKENS = {
         "required_entitlement_id",
         '"refusal.tool.entitlement_missing"',
     ),
-    "docs/embodiment/MVP_TOOLBELT_MODEL.md": (
+    "docs/domains/embodiment/MVP_TOOLBELT_MODEL.md": (
         "Tool use is granted by `AuthorityContext` and constrained by `LawProfile`.",
         "`ent.tool.terrain_edit`",
     ),

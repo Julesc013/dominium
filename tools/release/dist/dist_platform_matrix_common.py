@@ -38,10 +38,10 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 
 DIST_PLATFORM_MATRIX_REPORT_ID = "dist.platform_matrix.v1"
-DIST_PLATFORM_MATRIX_REPORT_PATH = "docs/audit/DIST_PLATFORM_MATRIX_REPORT.md"
+DIST_PLATFORM_MATRIX_REPORT_PATH = "docs/archive/audit/DIST_PLATFORM_MATRIX_REPORT.md"
 DIST_PLATFORM_MATRIX_JSON_PATH = "contracts/audit/dist_platform_matrix.json"
 SUPPORTED_PLATFORMS_DOC_PATH = "docs/release/SUPPORTED_PLATFORMS_v0_0_0_mock.md"
-DIST4_FINAL_PATH = "docs/audit/DIST4_FINAL.md"
+DIST4_FINAL_PATH = "docs/archive/audit/DIST4_FINAL.md"
 DEFAULT_PLATFORM_TAGS = ("win64",)
 DEFAULT_BUILD_OUTPUT_ROOT = os.path.join("build", "tmp", "dist4_matrix_bundle")
 RULE_ID = "INV-DIST-PLATFORM-MATRIX-MUST-EXIST"

@@ -5,7 +5,7 @@
   "description": "Deterministic FLUID-1 tank/reservoir state payload.",
   "x-doc-ref": [
     "docs/domains/fluids/FLUID_CONSTITUTION.md",
-    "docs/audit/FLUID_NETWORK_BASELINE.md"
+    "docs/archive/audit/FLUID_NETWORK_BASELINE.md"
   ],
   "type": "object",
   "required": [

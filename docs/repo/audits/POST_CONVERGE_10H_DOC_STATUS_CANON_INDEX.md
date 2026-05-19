@@ -47,7 +47,7 @@ POST-CONVERGE-10G left focused RepoX failing with 1769 failures and 5 warnings. 
 
 ## Changes Made
 
-- Added or repaired four-line `DERIVED` status headers on clear evidence/reference documentation under docs/refactor, docs/audit, docs/repo, docs/aide, docs/restructure, docs/reference, docs/release, and docs/mvp.
+- Added or repaired four-line `DERIVED` status headers on clear evidence/reference documentation under docs/archive/refactor, docs/archive/audit, docs/repo, docs/development/aide, docs/archive/restructure, docs/reference, docs/release, and docs/mvp.
 - Added the 84 missing documents that already declared `Status: CANONICAL` to `docs/architecture/CANON_INDEX.md`.
 - Deferred architecture/runtime/xstack/performance/domain status headers whose authority role requires narrower owner review.
 

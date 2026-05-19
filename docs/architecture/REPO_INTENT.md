@@ -61,7 +61,7 @@ Normative contracts live under `docs/architecture/` only. See `docs/architecture
 
 Normative contracts live in `docs/architecture/` only. Other documentation categories:
 
-- `docs/roadmap/` is goals and tests only.
+- `docs/release/roadmap/` is goals and tests only.
 - `docs/content/` is data explanation only.
 - `docs/development/` and `docs/modding/` are how-to only.
 

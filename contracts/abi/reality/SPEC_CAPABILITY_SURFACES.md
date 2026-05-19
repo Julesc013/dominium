@@ -3,7 +3,7 @@ Last Reviewed: 2026-04-02
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, and `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0.
+Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `docs/reference/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, and `docs/reference/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0.
 Stability: stable
 Future Series: Λ-3, Λ-4, Λ-5, Λ-6, Σ, Φ
 Replacement Target: later domain constitutions and interaction systems must instantiate this framework rather than replace it
@@ -429,13 +429,13 @@ Any future change that alters the meaning of capability surfaces requires:
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
 - `AGENTS.md`
-- `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
-- `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`
+- `docs/reference/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
+- `docs/reference/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`
 - `schema/reality/domain_contract.schema.json`
 - `schemas/capability.schema.json`
 - `schemas/affordance.schema.json`
 - `schemas/authority_context.schema.json`
-- `docs/interaction/INTERACTION_MODEL.md`
+- `docs/game/interaction/INTERACTION_MODEL.md`
 - `docs/planning/POST_PI_EXECUTION_PLAN.md`
 - `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`
 - `docs/planning/GATES_AND_PROOFS.md`

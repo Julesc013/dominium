@@ -378,7 +378,7 @@ def _cmd_profile(args: argparse.Namespace) -> int:
             "--scenario-id",
             "scenario.lab.galaxy_nav",
             "--out",
-            "docs/audit/perf/profile_trace.sample.json",
+            "docs/archive/audit/perf/profile_trace.sample.json",
         ],
     )
     if int(capture.get("exit_code", 1)) != 0 or str(capture.get("json_error", "")):
@@ -414,7 +414,7 @@ def _cmd_profile(args: argparse.Namespace) -> int:
             "--trace",
             trace_path,
             "--out",
-            "docs/audit/perf/profile_trace.sample.md",
+            "docs/archive/audit/perf/profile_trace.sample.md",
         ],
     )
     if int(report.get("exit_code", 1)) != 0 or str(report.get("json_error", "")):

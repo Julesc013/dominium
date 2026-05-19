@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 sta
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: Deterministic RNG (LCG; unsigned overflow wraps modulo word size); see `docs/specs/SPEC_DETERMINISM.md`.
+DETERMINISM: Deterministic RNG (LCG; unsigned overflow wraps modulo word size); see `docs/reference/specs/SPEC_DETERMINISM.md`.
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
-EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/reference/specs/SPEC_*.md` without cross-layer coupling.
 */
 #include "domino/core/rng.h"
 

@@ -32,8 +32,8 @@ from runtime.platform import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-PLATFORM_RENDERER_MATRIX_PATH = "docs/audit/PLATFORM_RENDERER_MATRIX.md"
-PLATFORM_FORMALIZE_FINAL_PATH = "docs/audit/PLATFORM_FORMALIZE_FINAL.md"
+PLATFORM_RENDERER_MATRIX_PATH = "docs/archive/audit/PLATFORM_RENDERER_MATRIX.md"
+PLATFORM_FORMALIZE_FINAL_PATH = "docs/archive/audit/PLATFORM_FORMALIZE_FINAL.md"
 PLATFORM_FORMALIZE_REPORT_PATH = "archive/generated/audit/platform_formalize_report.json"
 PLATFORM_CAPABILITY_REGISTRY_PATH = "contracts/registry/platform_capability_registry.json"
 PLATFORM_PROBE_PATH = "runtime/platform/platform_probe.py"

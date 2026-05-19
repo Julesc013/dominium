@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E416_PACK_LOADED_WITHOUT_VERIFICATION_SMELL"
 REQUIRED_TOKENS = {
-    "docs/packs/PACK_VERIFICATION_PIPELINE.md": (
+    "docs/content/packs/PACK_VERIFICATION_PIPELINE.md": (
         "Produce a deterministic `PackCompatibilityReport`.",
         "Generate a deterministic `pack_lock.json` when the report is valid.",
     ),

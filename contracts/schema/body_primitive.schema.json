@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical deterministic body primitive contract for embodiment collision substrate.",
   "x-doc-ref": [
-    "docs/embodiment/BODY_PRIMITIVES_AND_COLLISION.md",
+    "docs/domains/embodiment/BODY_PRIMITIVES_AND_COLLISION.md",
     "docs/canon/constitution_v1.md §3 A1/A2",
     "docs/canon/glossary_v1.md"
   ],

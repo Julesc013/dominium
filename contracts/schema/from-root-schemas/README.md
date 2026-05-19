@@ -42,5 +42,5 @@ Examples are provided under `contracts/schema/examples/*.example.json`.
 
 ## Cross-References
 - `docs/canon/constitution_v1.md`
-- `docs/contracts/versioning_and_migration.md`
+- `docs/reference/contracts/versioning_and_migration.md`
 - `tools/xstack/compatx/version_registry.json`

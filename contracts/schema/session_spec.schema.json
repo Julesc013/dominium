@@ -6,7 +6,7 @@
   "x-doc-ref": [
     "docs/canon/constitution_v1.md §3 A4, §5 C1-C4",
     "docs/canon/glossary_v1.md SessionSpec",
-    "docs/contracts/session_spec.md"
+    "docs/reference/contracts/session_spec.md"
   ],
   "type": "object",
   "required": [

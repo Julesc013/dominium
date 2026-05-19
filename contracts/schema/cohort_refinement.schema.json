@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic cohort macro<->micro refinement record.",
   "x-doc-ref": [
-    "docs/civilisation/COHORT_MODEL.md"
+    "docs/domains/civilization/COHORT_MODEL.md"
   ],
   "type": "object",
   "required": [

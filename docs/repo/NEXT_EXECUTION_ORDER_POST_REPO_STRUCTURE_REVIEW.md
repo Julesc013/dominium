@@ -6,7 +6,7 @@ Stability: stable
 Series Scope: repo-structure discovery and design
 Series Role: authoritative next-order handoff after the final repo-structure review checkpoint; downstream of the repo-structure series packets and the pre-relayout decision checkpoint
 Replacement Target: later first-slice execution receipt or explicit replacement checkpoint after RMS-001 execution
-Binding Sources: `docs/repo/CHECKPOINT_C_REPO_MEGA_STRUCTURE_REVIEW.md`, `archive/generated/repo/checkpoint_c_repo_mega_structure_review.json`, `docs/repo/REPO_PHASED_MIGRATION_SHIMS_VALIDATION_AND_ROLLBACK.md`, `archive/generated/repo/repo_phased_migration_shims_validation_and_rollback.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`
+Binding Sources: `docs/repo/CHECKPOINT_C_REPO_MEGA_STRUCTURE_REVIEW.md`, `archive/generated/repo/checkpoint_c_repo_mega_structure_review.json`, `docs/repo/REPO_PHASED_MIGRATION_SHIMS_VALIDATION_AND_ROLLBACK.md`, `archive/generated/repo/repo_phased_migration_shims_validation_and_rollback.json`, `docs/archive/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/development/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`
 
 # Next Execution Order Post Repo Structure Review
 

@@ -66,7 +66,7 @@ def _search_token(repo_root: str, token: str) -> bool:
         return True
     roots = (
         "packs",
-        "docs/contracts",
+        "docs/reference/contracts",
     )
     token_bytes = token.encode("utf-8")
     for root in roots:

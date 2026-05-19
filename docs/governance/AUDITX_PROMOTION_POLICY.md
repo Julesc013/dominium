@@ -12,7 +12,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
 - Required updates: documentation surface exists, but current canon ownership is not explicit
-- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+- Cross-check with: `docs/archive/audit/CANON_MAP.md` and `docs/archive/audit/DOC_DRIFT_MATRIX.md`.
 
 
 ## Purpose
@@ -29,7 +29,7 @@ Promotion is a governance change and must be explicit, reviewable, and reversibl
 
 ## Promotion Flow
 
-1. AuditX emits findings and optional promotion candidates in `docs/audit/auditx/PROMOTION_CANDIDATES.json`.
+1. AuditX emits findings and optional promotion candidates in `docs/archive/audit/auditx/PROMOTION_CANDIDATES.json`.
 2. Maintainer reviews evidence paths, false-positive risk, and rule scope boundaries.
 3. New rule is authored in `repo/repox/rulesets/*.json` with documentation in `docs/governance/REPOX_RULESETS.md`.
 4. RepoX checker implementation is added in `scripts/ci/check_repox_rules.py`.

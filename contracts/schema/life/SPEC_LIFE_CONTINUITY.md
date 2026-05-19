@@ -121,7 +121,7 @@ Server-auth:
 - Any design that requires global iteration over all persons.
 
 ## Integration points (mandatory)
-- Provenance: `docs/specs/SPEC_PROVENANCE.md`
-- Ledger: `docs/specs/SPEC_LEDGER.md`
-- Time scheduling: `docs/specs/SPEC_SCHEDULING.md` and `docs/specs/SPEC_TIME_CORE.md`
-- Epistemic model: `docs/specs/SPEC_INFORMATION_MODEL.md` and `docs/specs/SPEC_EPISTEMIC_INTERFACE.md`
+- Provenance: `docs/reference/specs/SPEC_PROVENANCE.md`
+- Ledger: `docs/reference/specs/SPEC_LEDGER.md`
+- Time scheduling: `docs/reference/specs/SPEC_SCHEDULING.md` and `docs/reference/specs/SPEC_TIME_CORE.md`
+- Epistemic model: `docs/reference/specs/SPEC_INFORMATION_MODEL.md` and `docs/reference/specs/SPEC_EPISTEMIC_INTERFACE.md`

@@ -132,7 +132,7 @@ The validator fails active tracked paths for shared subsystem names under `apps/
 - `cmake --build --preset verify --target ALL_BUILD`: PASS. Build emitted known `domino_engine` LNK4006 duplicate-symbol warnings for graphics/window/system stubs.
 - `ctest --preset verify -L smoke --output-on-failure`: PASS, 57/57.
 - Focused moved-path CTest lane for APPS invariants/systemic checks: 12/13 APPS-relevant tests passed; `inv_repox_rules` still fails on broad repo/audit/dist/process/generated-map debt, with no remaining stale APPS-THIN moved-path failure.
-- Full `ctest --preset verify --output-on-failure`: attempted; 425/498 passed and 73 failed. Failures are broad pre-existing/non-APPS proof debt including stale `data/registries` expectations, schema plural paths, docs/audit status headers, dist artifact expectations, process guard/runtime invariants, generated registry/hash drift, and TestX workspace/gate issues. APPS-THIN stale path failures found during the full run were repaired and focused reruns passed.
+- Full `ctest --preset verify --output-on-failure`: attempted; 425/498 passed and 73 failed. Failures are broad pre-existing/non-APPS proof debt including stale `data/registries` expectations, schema plural paths, docs/archive/audit status headers, dist artifact expectations, process guard/runtime invariants, generated registry/hash drift, and TestX workspace/gate issues. APPS-THIN stale path failures found during the full run were repaired and focused reruns passed.
 
 ## Remaining Follow-Up Work
 

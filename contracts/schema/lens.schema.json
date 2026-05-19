@@ -6,7 +6,7 @@
   "x-doc-ref": [
     "docs/canon/constitution_v1.md §3 A7",
     "docs/canon/glossary_v1.md Lens",
-    "docs/contracts/lens_contract.md"
+    "docs/reference/contracts/lens_contract.md"
   ],
   "type": "object",
   "required": [

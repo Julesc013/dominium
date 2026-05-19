@@ -13,7 +13,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests.tool_surface_testlib import build_report
 
     report = build_report(repo_root)
-    final_doc_path = "docs/audit/TOOL_SURFACE_FINAL.md"
+    final_doc_path = "docs/archive/audit/TOOL_SURFACE_FINAL.md"
     try:
         text = open(final_doc_path, "r", encoding="utf-8").read()
     except OSError:

@@ -86,7 +86,7 @@ Rules:
 - `PROCESS_INPUT_INVALID`
 
 See also:
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`
 
 ## Example: Shard (Schema View)
 ```json

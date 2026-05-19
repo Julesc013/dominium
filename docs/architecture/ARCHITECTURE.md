@@ -21,7 +21,7 @@ for Dominium (product layer) and Domino (engine). See
 `docs/architecture/DIRECTORY_CONTEXT.md` for the authoritative layout contract and
 
 
-`docs/guides/DEPENDENCIES.md` for enforceable dependency rules.
+`docs/development/guides/DEPENDENCIES.md` for enforceable dependency rules.
 
 
 Conceptual framing lives in `docs/architectureitecture/MENTAL_MODEL.md`.
@@ -147,7 +147,7 @@ Conceptual framing lives in `docs/architectureitecture/MENTAL_MODEL.md`.
 ## Public API boundaries
 
 
-Public header paths and ABI rules are defined in `docs/specs/CONTRACTS.md`.
+Public header paths and ABI rules are defined in `docs/reference/specs/CONTRACTS.md`.
 
 
 
@@ -162,7 +162,7 @@ Public header paths and ABI rules are defined in `docs/specs/CONTRACTS.md`.
 - `docs/architecture/ARCH_REPO_LAYOUT.md` (ownership map)
 
 
-- `docs/guides/DEPENDENCIES.md` (allowed/forbidden edges)
+- `docs/development/guides/DEPENDENCIES.md` (allowed/forbidden edges)
 
 
 - `docs/architecture/CANONICAL_SYSTEM_MAP.md` (canonical dependency map)

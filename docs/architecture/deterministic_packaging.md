@@ -108,5 +108,5 @@ tools/package/launcher/launch run --dist dist --session saves/save.demo/session_
 - `docs/architecture/registry_compile.md`
 - `docs/architecture/lockfile.md`
 - `docs/architecture/setup_and_launcher.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`
 - `docs/testing/xstack_profiles.md`

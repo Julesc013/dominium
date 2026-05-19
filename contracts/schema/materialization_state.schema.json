@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical deterministic ROI materialization state payload.",
   "x-doc-ref": [
-    "docs/materials/MACRO_MICRO_MAPPING.md"
+    "docs/domains/materials/MACRO_MICRO_MAPPING.md"
   ],
   "type": "object",
   "required": [

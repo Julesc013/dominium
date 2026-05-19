@@ -12,7 +12,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
 - Required updates: documentation surface exists, but current canon ownership is not explicit
-- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+- Cross-check with: `docs/archive/audit/CANON_MAP.md` and `docs/archive/audit/DOC_DRIFT_MATRIX.md`.
 
 
 The Dominium UX is CLI-first, deterministic, and presentation-only. All UI surfaces are thin projections of stable intents and read-only data.
@@ -28,7 +28,7 @@ The Dominium UX is CLI-first, deterministic, and presentation-only. All UI surfa
 - docs/runtime/ui/UX_RULES.md
 - docs/runtime/ui/CLI_CANON.md
 - docs/runtime/ui/LOCALIZATION_MODEL.md
-- docs/accessibility/ACCESSIBILITY_MODEL.md
+- docs/runtime/ui/accessibility/ACCESSIBILITY_MODEL.md
 - docs/runtime/ui/HUD_COMPOSITION.md
 - docs/runtime/ui/ONBOARDING_GUIDE.md
 

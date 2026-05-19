@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic machine operation registry output.",
   "x-doc-ref": [
-    "docs/interaction/MACHINE_PORTS.md",
+    "docs/game/interaction/MACHINE_PORTS.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

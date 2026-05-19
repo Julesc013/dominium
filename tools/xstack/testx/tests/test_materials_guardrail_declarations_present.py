@@ -14,7 +14,7 @@ def run(repo_root: str):
     try:
         text = open(doc_path, "r", encoding="utf-8").read()
     except OSError:
-        return {"status": "fail", "message": "docs/materials/GUARDRAIL_DECLARATIONS.md missing"}
+        return {"status": "fail", "message": "docs/domains/materials/GUARDRAIL_DECLARATIONS.md missing"}
 
     required_tokens = [
         "test_batch_lineage_integrity",

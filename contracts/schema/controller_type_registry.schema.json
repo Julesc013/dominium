@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic controller type capability registry output.",
   "x-doc-ref": [
-    "docs/embodiment/CONTROL_SUBSTRATE_DOCTRINE.md",
+    "docs/domains/embodiment/CONTROL_SUBSTRATE_DOCTRINE.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

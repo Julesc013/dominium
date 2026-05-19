@@ -19,7 +19,7 @@ Apply schema changes safely with explicit compatibility, migration/refusal, and 
 2. Classify change: PATCH, MINOR, or MAJOR.
 3. Update schema metadata fields (`schema_version`, `stability`) as needed.
 4. Add/adjust migration route or explicit refusal behavior.
-5. Update related docs under `docs/contracts/` and `docs/architecture/`.
+5. Update related docs under `docs/reference/contracts/` and `docs/architecture/`.
 6. Update compatibility notes (CompatX-facing docs) when behavior changes.
 7. Run schema-focused tests and required gate profile.
    - `tools/xstack/schema_validate session_spec contracts/schema/examples/session_spec.example.json`
@@ -50,7 +50,7 @@ Run:
 
 ## Cross-References
 - `docs/canon/constitution_v1.md`
-- `docs/contracts/lens_contract.md`
+- `docs/reference/contracts/lens_contract.md`
 - `docs/governance/COMPATX_MODEL.md`
 - `contracts/schema/SCHEMA_VERSIONING.md`
 - `contracts/schema/SCHEMA_MIGRATION.md`

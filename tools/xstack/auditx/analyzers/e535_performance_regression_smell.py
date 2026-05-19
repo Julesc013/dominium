@@ -165,7 +165,7 @@ def run(graph, repo_root, changed_files=None):
                 related_paths=[
                     rel_path,
                     "docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md",
-                    "docs/audit/PERFORMANCE_ENVELOPE_BASELINE.md",
+                    "docs/archive/audit/PERFORMANCE_ENVELOPE_BASELINE.md",
                 ],
             )
         )

@@ -6,7 +6,7 @@ Stability: stable
 Series Scope: repo-structure discovery and design
 Series Role: authoritative topology, path-contract, and ownership reality map for later repo-structure discovery, design, migration-planning, and decision prompts; downstream of stronger canon, the Omega0 constraint packet, audit evidence, and live implementation evidence
 Replacement Target: later explicit repo-structure follow-up after approved topology design or new playable-baseline evidence
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `archive/generated/audit/ultra_repo_audit_system_inventory.json`, `archive/generated/audit/ultra_repo_audit_entrypoints.json`, `archive/generated/audit/ultra_repo_audit_product_assembly_plan.json`, `archive/generated/audit/ultra_repo_audit_gap_ledger.json`, `contracts/audit/ultra_repo_audit_build_run_test_matrix.json`, `archive/generated/audit/ultra_repo_audit_wiring_map.json`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `CMakePresets.json`, `appshell/command_registry.py`, `appshell/paths/virtual_paths.py`, `contracts/registry/virtual_root_registry.json`, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `tools/validators/suite/tool_run_validation.py`, `tools/xstack/testx_all.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/release/mvp/runtime_entry.py`, `tools/release/mvp/runtime_bundle.py`, `tools/xstack/registry_compile/constants.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/server_main.py`, `server/net/loopback_transport.py`, `tools/validators/network/policies/policy_server_authoritative.py`, `tools/release/release_manifest_engine.py`, `tools/release/component_graph_resolver.py`, `tools/release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/templates/session/session.mvp_default.json`, `contracts/registry/bundle_profiles.json`, `contracts/registry/session_defaults.json`, `schema/README.md`, `schemas/README.md`, `content/packs/README.md`, `contracts/repo/release_policy.toml`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/archive/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `archive/generated/audit/ultra_repo_audit_system_inventory.json`, `archive/generated/audit/ultra_repo_audit_entrypoints.json`, `archive/generated/audit/ultra_repo_audit_product_assembly_plan.json`, `archive/generated/audit/ultra_repo_audit_gap_ledger.json`, `contracts/audit/ultra_repo_audit_build_run_test_matrix.json`, `archive/generated/audit/ultra_repo_audit_wiring_map.json`, `docs/development/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/development/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `docs/development/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `docs/development/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `CMakePresets.json`, `appshell/command_registry.py`, `appshell/paths/virtual_paths.py`, `contracts/registry/virtual_root_registry.json`, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `tools/validators/suite/tool_run_validation.py`, `tools/xstack/testx_all.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/release/mvp/runtime_entry.py`, `tools/release/mvp/runtime_bundle.py`, `tools/xstack/registry_compile/constants.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/server_main.py`, `server/net/loopback_transport.py`, `tools/validators/network/policies/policy_server_authoritative.py`, `tools/release/release_manifest_engine.py`, `tools/release/component_graph_resolver.py`, `tools/release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/templates/session/session.mvp_default.json`, `contracts/registry/bundle_profiles.json`, `contracts/registry/session_defaults.json`, `schema/README.md`, `schemas/README.md`, `content/packs/README.md`, `contracts/repo/release_policy.toml`
 
 # Repo Topology, Paths, And Ownership Reality Map
 
@@ -74,7 +74,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - `server/net/`, `server/runtime/`, and `server/persistence/` are the current authoritative runtime cluster behind the local baseline.
 - `tools/package/launcher/`, `tools/package/setup/`, `tools/xstack/`, and `tools/validators/suite/` are the tool subroots that materially affect build, session, validation, and operator flows.
 - `profiles/bundles/`, `locks/`, `data/session_templates/`, and `data/registries/` are the authored and machine-readable data roots that current flows consume directly.
-- `docs/planning/`, `docs/audit/`, `docs/repo/`, `docs/xstack/`, `specs/reality/`, `data/planning/`, `data/audit/`, and `data/xstack/` are the doctrine and evidence cluster that later design prompts must consume instead of rediscovering.
+- `docs/planning/`, `docs/archive/audit/`, `docs/repo/`, `docs/development/xstack/`, `specs/reality/`, `data/planning/`, `data/audit/`, and `data/xstack/` are the doctrine and evidence cluster that later design prompts must consume instead of rediscovering.
 
 ### Roots Central To Current Product Flows
 
@@ -106,7 +106,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - `run_meta/`
 - large parts of `archive/generated/dist/` once assembled
 - `data/audit/`
-- many generated report leaves under `docs/audit/`
+- many generated report leaves under `docs/archive/audit/`
 
 ## C. Ownership Classes
 
@@ -143,7 +143,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   compiled through the verify preset family and consumed by client/server/test surfaces
 - Evidence notes:
-  `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `CMakePresets.json`
+  `docs/archive/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `CMakePresets.json`
 
 ### `TOP-002 - appshell_root`
 
@@ -189,7 +189,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   verify build lane, `runtime/process_spawn.py`, `server/net/loopback_transport.py`, `build/client/local_singleplayer/<save_id>/diag/`
 - Evidence notes:
-  `client/CMakeLists.txt`, `client/local_server/local_server_controller.py`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`
+  `client/CMakeLists.txt`, `client/local_server/local_server_controller.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`
 
 ### `TOP-004 - client_local_server_cluster`
 
@@ -212,7 +212,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   `runtime/process_spawn.py`, `server/server_main.py`, `server/net/loopback_transport.py`, `tools/xstack/session_create.py`, `saves/<save_id>/`
 - Evidence notes:
-  `client/local_server/local_server_controller.py`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`
+  `client/local_server/local_server_controller.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`
 
 ### `TOP-005 - server_root`
 
@@ -258,7 +258,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   verify build lane, shared include surfaces, AppShell-adjacent concepts, but current stronger shell path is under `tools/package/launcher/`
 - Evidence notes:
-  `launcher/CMakeLists.txt`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`
+  `launcher/CMakeLists.txt`, `docs/archive/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`
 
 ### `TOP-007 - setup_root`
 
@@ -281,7 +281,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   verify build lane, install packaging assets, AppShell-adjacent concepts, but stronger repo-local flow is `tools/package/setup/setup_cli.py`
 - Evidence notes:
-  `setup/CMakeLists.txt`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`
+  `setup/CMakeLists.txt`, `docs/archive/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`
 
 ### `TOP-008 - release_root`
 
@@ -350,7 +350,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   `server/server_main.py`, repo-root cwd assumptions, local-server controller use
 - Evidence notes:
-  `runtime/process_spawn.py`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`
+  `runtime/process_spawn.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`
 
 ### `TOP-011 - net_root`
 
@@ -373,7 +373,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   entangled with `server/net/`, consumed by authority policy code and runtime wiring
 - Evidence notes:
-  `tools/validators/network/policies/policy_server_authoritative.py`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`
+  `tools/validators/network/policies/policy_server_authoritative.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`
 
 ### `TOP-012 - validation_root`
 
@@ -394,7 +394,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Safe to treat as canonical:
   yes for validation-engine logic
 - Major dependencies or path couplings:
-  `contracts/registry/validation_suite_registry.json`, `docs/audit/VALIDATION_INVENTORY.md`, `docs/audit/VALIDATION_REPORT_<PROFILE>.md`, `data/audit/validation_report_<PROFILE>.json`, `docs/audit/VALIDATION_UNIFY_FINAL.md`
+  `contracts/registry/validation_suite_registry.json`, `docs/archive/audit/VALIDATION_INVENTORY.md`, `docs/archive/audit/VALIDATION_REPORT_<PROFILE>.md`, `data/audit/validation_report_<PROFILE>.json`, `docs/archive/audit/VALIDATION_UNIFY_FINAL.md`
 - Evidence notes:
   `tools/validators/suite/validation_engine.py`, `tools/validators/suite/tool_run_validation.py`
 
@@ -419,7 +419,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   `tools/package/launcher/`, `tools/package/setup/`, `tools/xstack/`, `tools/validators/suite/`, `tools/release/mvp/`, `tools/release/dist/`, many repo-root hints and relative-path contracts
 - Evidence notes:
-  `tools/CMakeLists.txt`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`
+  `tools/CMakeLists.txt`, `docs/archive/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`
 
 ### `TOP-014 - tools_baseline_shell_cluster`
 
@@ -647,9 +647,9 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Safe to treat as canonical:
   yes for doctrine and planning within authority order, no as a replacement for live code evidence
 - Major dependencies or path couplings:
-  `docs/planning/`, `docs/audit/`, `docs/repo/`, `docs/xstack/`, `specs/reality/`
+  `docs/planning/`, `docs/archive/audit/`, `docs/repo/`, `docs/development/xstack/`, `specs/reality/`
 - Evidence notes:
-  `docs/planning/AUTHORITY_ORDER.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`
+  `docs/planning/AUTHORITY_ORDER.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `docs/development/xstack/CODEX_REPO_OPERATING_CONTRACT.md`
 
 ### `TOP-024 - data_planning_audit_xstack_cluster`
 
@@ -859,14 +859,14 @@ The following path contracts exist now and matter to later relayout work.
 - Baseline-critical now:
   yes
 - Evidence notes:
-  `CMakePresets.json`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`
+  `CMakePresets.json`, `docs/archive/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`
 
 ### `ENTRY-002 - validation_fast`
 
 - Entrypoint:
   `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST`
 - Depends on:
-  `tools/validators/suite/`, `validation/`, `contracts/registry/validation_suite_registry.json`, `docs/audit/`, `data/audit/`
+  `tools/validators/suite/`, `validation/`, `contracts/registry/validation_suite_registry.json`, `docs/archive/audit/`, `data/audit/`
 - Critical path contracts:
   `PATH-001`, `PATH-012`
 - Baseline-critical now:
@@ -885,7 +885,7 @@ The following path contracts exist now and matter to later relayout work.
 - Baseline-critical now:
   yes
 - Evidence notes:
-  `tools/xstack/testx_all.py`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`
+  `tools/xstack/testx_all.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`
 
 ### `ENTRY-004 - launcher_appshell_shell`
 
@@ -963,7 +963,7 @@ The following path contracts exist now and matter to later relayout work.
 - Baseline-critical now:
   transitional only
 - Evidence notes:
-  `tools/release/mvp/runtime_entry.py`, `tools/release/mvp/runtime_bundle.py`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`
+  `tools/release/mvp/runtime_entry.py`, `tools/release/mvp/runtime_bundle.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`
 
 ## G. Canonical Vs Derived Data And Location Map
 
@@ -981,9 +981,9 @@ The following path contracts exist now and matter to later relayout work.
 | `schemas/` | validator-facing schemas and examples | derived or mixed projection root | useful and consumed, but not canonical law |
 | `docs/planning/` | planning law and checkpoints | canonical source of truth within authority order | planning canon outranks mirrors |
 | `data/planning/` | planning mirrors and machine-readable checkpoints | derived mirror with intact provenance | useful evidence, not higher-order canon |
-| `docs/audit/` | human-readable audit evidence | mixed evidence root | high-value evidence, but not implementation truth when code differs |
+| `docs/archive/audit/` | human-readable audit evidence | mixed evidence root | high-value evidence, but not implementation truth when code differs |
 | `data/audit/` | machine-readable audit evidence | derived report-only root | mirrors reports and evidence payloads |
-| `docs/xstack/` | xstack closure and retained/deferred contracts | canonical bounded-domain packet for this series | XStack/AIDE closure is frozen and constraining |
+| `docs/development/xstack/` | xstack closure and retained/deferred contracts | canonical bounded-domain packet for this series | XStack/AIDE closure is frozen and constraining |
 | `data/xstack/` | xstack mirrors | derived mirror with intact provenance | machine-readable consumption only |
 | `archive/generated/dist/` | assembled distribution tree | generated but operationally important | launcher/setup/appshell discover it, but it is not authored canon |
 | `saves/` | runtime materialized saves | mixed and operationally canonical for now | not authored truth, but current baseline path assumes it |

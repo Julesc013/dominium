@@ -12,7 +12,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
 - Required updates: documentation surface exists, but current canon ownership is not explicit
-- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+- Cross-check with: `docs/archive/audit/CANON_MAP.md` and `docs/archive/audit/DOC_DRIFT_MATRIX.md`.
 
 
 ## Objective
@@ -37,7 +37,7 @@ Invariants, determinism, and canonical enforcement remain mandatory.
   - Intended for explicit exhaustive local checks and CI hardening.
 - `SNAPSHOT` (explicit `gate.py snapshot`)
   - Runs strict validation once and allows writes only for `SNAPSHOT_ONLY` artifacts.
-  - Produces canonical audit snapshot outputs and `docs/audit/system/SNAPSHOT_REPORT.md`.
+  - Produces canonical audit snapshot outputs and `docs/archive/audit/system/SNAPSHOT_REPORT.md`.
 
 ## Escalation Rules
 
@@ -127,7 +127,7 @@ Live events include:
 
 - `gate.py verify|strict|full|doctor` must not modify tracked files.
 - these commands may only write under `.xstack_cache/` (or workspace temp roots).
-- `gate.py snapshot` is the only command allowed to update tracked `docs/audit/**` artifacts, and only for entries marked `commit_policy=SNAPSHOT_ONLY` in `contracts/registry/derived_artifacts.json`.
+- `gate.py snapshot` is the only command allowed to update tracked `docs/archive/audit/**` artifacts, and only for entries marked `commit_policy=SNAPSHOT_ONLY` in `contracts/registry/derived_artifacts.json`.
 - each gate run emits `.xstack_cache/gate/TOUCHED_FILES_MANIFEST.json` for enforcement and diagnostics.
 
 ## Structural Bounding
@@ -148,8 +148,8 @@ FULL mode is bounded by architecture, not timeouts:
 ## Repo Health Snapshot
 
 - Governance finalization updates must include:
-  - `docs/audit/system/REPO_HEALTH_SNAPSHOT.json`
-  - `docs/audit/system/REPO_HEALTH_SNAPSHOT.md`
+  - `docs/archive/audit/system/REPO_HEALTH_SNAPSHOT.json`
+  - `docs/archive/audit/system/REPO_HEALTH_SNAPSHOT.md`
 - Snapshot json is canonical and must report `git_status_clean=true` for finalization commits.
 
 ## Key Files

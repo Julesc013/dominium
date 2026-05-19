@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic RS-3 intent/envelope log chunk artifact.",
   "x-doc-ref": [
-    "docs/reality/TIME_CONSTITUTION.md"
+    "docs/domains/reality/TIME_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

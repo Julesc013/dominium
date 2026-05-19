@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic registry output for dt quantization rules.",
   "x-doc-ref": [
-    "docs/reality/TIME_CONSTITUTION.md",
+    "docs/domains/reality/TIME_CONSTITUTION.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

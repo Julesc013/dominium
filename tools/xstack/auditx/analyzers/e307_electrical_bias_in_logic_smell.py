@@ -12,7 +12,7 @@ ANALYZER_ID = "E307_ELECTRICAL_BIAS_IN_LOGIC_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e307_electrical_bias_in_logic_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/",
+    "docs/domains/logic/",
     "contracts/schema/logic/",
     "contracts/registry/signal_type_registry.json",
     "game/domain/logic/",
@@ -77,7 +77,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    constitution_rel = "docs/logic/LOGIC_CONSTITUTION.md"
+    constitution_rel = "docs/domains/logic/LOGIC_CONSTITUTION.md"
     constitution_text = _read_text(repo_root, constitution_rel)
     constitution_lower = constitution_text.lower()
     if constitution_text and not (

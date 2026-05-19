@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "CIV-3 build-plan payload. Generates plan artifacts only (no material execution).",
   "x-doc-ref": [
-    "docs/civilisation/ORDER_LANGUAGE.md"
+    "docs/domains/civilization/ORDER_LANGUAGE.md"
   ],
   "type": "object",
   "required": [

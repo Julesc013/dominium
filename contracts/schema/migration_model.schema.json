@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical deterministic CIV-4 migration model record.",
   "x-doc-ref": [
-    "docs/civilisation/MIGRATION_AND_ASSIMILATION.md"
+    "docs/domains/civilization/MIGRATION_AND_ASSIMILATION.md"
   ],
   "type": "object",
   "required": [

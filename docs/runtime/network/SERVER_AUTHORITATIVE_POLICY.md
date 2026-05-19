@@ -108,6 +108,6 @@ Actions are policy-driven (`audit|refuse|terminate|throttle`) and deterministic.
 - `docs/runtime/network/REPLICATION_POLICIES.md`
 - `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`
 - `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`
 - `contracts/registry/net_replication_policy_registry.json`
 - `contracts/registry/net_resync_strategy_registry.json`

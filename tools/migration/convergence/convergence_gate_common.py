@@ -96,9 +96,9 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 CONVERGENCE_GATE_ID = "release.convergence.gate.v1"
 CONVERGENCE_TOOL_PATH = "tools/migration/convergence/tool_run_convergence_gate.py"
-CONVERGENCE_FINAL_DOC_PATH = "docs/audit/CONVERGENCE_FINAL.md"
+CONVERGENCE_FINAL_DOC_PATH = "docs/archive/audit/CONVERGENCE_FINAL.md"
 CONVERGENCE_FINAL_JSON_PATH = "archive/generated/audit/convergence_final.json"
-CONVERGENCE_STEP_DOC_DIR = "docs/audit/convergence_steps"
+CONVERGENCE_STEP_DOC_DIR = "docs/archive/audit/convergence_steps"
 CONVERGENCE_STEP_JSON_DIR = "data/audit/convergence_steps"
 LAST_REVIEWED = "2026-03-13"
 CAP_NEG_TOOL_PATH = "tools/package/compatibility/tool_run_interop_stress.py"
@@ -288,7 +288,7 @@ def convergence_step_specs(*, include_cross_platform: bool = True, include_dist_
             "title": "ARCH-AUDIT tool",
             "tool_path": ARCH_AUDIT_TOOL_PATH,
             "rule_id": "INV-ARCH-AUDIT-MUST-PASS-BEFORE-RELEASE",
-            "rerun_command": "python tools/audit/tool_run_arch_audit.py --repo-root . --report-path docs/audit/ARCH_AUDIT_REPORT.md --json-path archive/generated/audit/arch_audit_report.json",
+            "rerun_command": "python tools/audit/tool_run_arch_audit.py --repo-root . --report-path docs/archive/audit/ARCH_AUDIT_REPORT.md --json-path archive/generated/audit/arch_audit_report.json",
         },
         {
             "step_id": "cap_neg_interop",
@@ -539,9 +539,9 @@ def _validation_step(repo_root: str, spec: Mapping[str, object], *, step_no: int
         result=result,
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
         source_paths=[
-            "docs/audit/VALIDATION_REPORT_STRICT.md",
+            "docs/archive/audit/VALIDATION_REPORT_STRICT.md",
             "archive/generated/audit/validation_report_STRICT.json",
-            "docs/audit/VALIDATION_UNIFY_FINAL.md",
+            "docs/archive/audit/VALIDATION_UNIFY_FINAL.md",
         ],
         observed_refusal_count=len(errors),
         default_path_refusal_count=len(errors),
@@ -636,11 +636,11 @@ def _arch_audit_step(repo_root: str, spec: Mapping[str, object], *, step_no: int
         result=result,
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
         source_paths=[
-            "docs/audit/ARCH_AUDIT_REPORT.md",
+            "docs/archive/audit/ARCH_AUDIT_REPORT.md",
             "archive/generated/audit/arch_audit_report.json",
-            "docs/audit/ARCH_AUDIT2_REPORT.md",
+            "docs/archive/audit/ARCH_AUDIT2_REPORT.md",
             "archive/generated/audit/arch_audit2_report.json",
-            "docs/audit/ARCH_AUDIT2_FINAL.md",
+            "docs/archive/audit/ARCH_AUDIT2_FINAL.md",
         ],
         observed_refusal_count=blocking,
         default_path_refusal_count=blocking,
@@ -796,7 +796,7 @@ def _product_boot_step(repo_root: str, spec: Mapping[str, object], *, step_no: i
         step_no=step_no,
         result=result,
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
-        source_paths=["docs/mvp/PRODUCT_BOOT_MATRIX.md", "contracts/audit/product_boot_matrix.json"],
+        source_paths=["docs/release/mvp/PRODUCT_BOOT_MATRIX.md", "contracts/audit/product_boot_matrix.json"],
         observed_degrade_count=int(_as_int(_as_map(report.get("metrics")).get("degrade_count", 0), 0)),
         key_hashes={"product_boot_matrix_fingerprint": _token(report.get("deterministic_fingerprint"))},
         metrics=_as_map(report.get("metrics")),
@@ -866,7 +866,7 @@ def _supervisor_step(repo_root: str, spec: Mapping[str, object], *, step_no: int
         step_no=step_no,
         result=result,
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
-        source_paths=["archive/generated/audit/supervisor_hardening_report.json", "docs/audit/SUPERVISOR_HARDENING_FINAL.md"],
+        source_paths=["archive/generated/audit/supervisor_hardening_report.json", "docs/archive/audit/SUPERVISOR_HARDENING_FINAL.md"],
         observed_refusal_count=len(violations),
         default_path_refusal_count=len(violations),
         key_hashes={
@@ -923,7 +923,7 @@ def _mvp_smoke_step(
         step_no=step_no,
         result=result,
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
-        source_paths=[SMOKE_REPORT_REL.replace("\\", "/"), SMOKE_BASELINE_REL.replace("\\", "/"), "docs/audit/MVP_SMOKE_FINAL.md"],
+        source_paths=[SMOKE_REPORT_REL.replace("\\", "/"), SMOKE_BASELINE_REL.replace("\\", "/"), "docs/archive/audit/MVP_SMOKE_FINAL.md"],
         observed_refusal_count=int(_as_int(report.get("refusal_count", 0), 0)),
         default_path_refusal_count=int(_as_int(report.get("refusal_count", 0), 0)),
         key_hashes={
@@ -980,7 +980,7 @@ def _mvp_stress_step(
         step_no=step_no,
         result=result,
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
-        source_paths=[STRESS_REPORT_REL.replace("\\", "/"), STRESS_PROOF_REPORT_REL.replace("\\", "/"), STRESS_BASELINE_REL.replace("\\", "/"), "docs/audit/MVP_STRESS_FINAL.md"],
+        source_paths=[STRESS_REPORT_REL.replace("\\", "/"), STRESS_PROOF_REPORT_REL.replace("\\", "/"), STRESS_BASELINE_REL.replace("\\", "/"), "docs/archive/audit/MVP_STRESS_FINAL.md"],
         observed_refusal_count=int(_as_int(report.get("unexpected_refusal_count", 0), 0)),
         default_path_refusal_count=0,
         key_hashes={
@@ -1030,7 +1030,7 @@ def _mvp_cross_platform_step(
         step_no=step_no,
         result=result,
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
-        source_paths=[CROSS_PLATFORM_REPORT_REL.replace("\\", "/"), CROSS_PLATFORM_BASELINE_REL.replace("\\", "/"), "docs/audit/MVP_CROSS_PLATFORM_FINAL.md"],
+        source_paths=[CROSS_PLATFORM_REPORT_REL.replace("\\", "/"), CROSS_PLATFORM_BASELINE_REL.replace("\\", "/"), "docs/archive/audit/MVP_CROSS_PLATFORM_FINAL.md"],
         observed_refusal_count=0,
         default_path_refusal_count=0,
         key_hashes={
@@ -1073,7 +1073,7 @@ def _dist_verify_step(
         step_no=step_no,
         result="complete" if _token(report.get("result")) == "complete" else "refused",
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
-        source_paths=["archive/generated/audit/dist_verify_win64.json", "docs/audit/DIST_VERIFY_win64.md"],
+        source_paths=["archive/generated/audit/dist_verify_win64.json", "docs/archive/audit/DIST_VERIFY_win64.md"],
         observed_refusal_count=int(len(_as_list(report.get("errors")))),
         default_path_refusal_count=0,
         key_hashes={

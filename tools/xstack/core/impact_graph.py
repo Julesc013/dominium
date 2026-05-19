@@ -25,8 +25,8 @@ DEFAULT_SUBSYSTEMS: Tuple[str, ...] = (
     "tests",
 )
 IGNORE_CHANGED_PREFIXES: Tuple[str, ...] = (
-    "docs/audit/",
-    "docs/audit/remediation/",
+    "docs/archive/audit/",
+    "docs/archive/audit/remediation/",
     ".xstack_cache/",
     "tools/xstack/auditx/cache/",
     "tools/xstack/compatx/cache/",

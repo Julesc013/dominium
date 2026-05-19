@@ -39,13 +39,13 @@ PROMPT_DEPENDENCY_TREE_REL = "archive/generated/blueprint/prompt_dependency_tree
 PROMPT_RISK_MATRIX_REL = "contracts/blueprint/prompt_risk_matrix.json"
 RECONCILIATION_RULES_REL = "archive/generated/blueprint/repo_reality_reconciliation_rules.json"
 
-FINAL_PROMPT_INVENTORY_DOC_REL = "docs/blueprint/FINAL_PROMPT_INVENTORY.md"
-SNAPSHOT_MAPPING_TEMPLATE_DOC_REL = "docs/blueprint/SNAPSHOT_MAPPING_TEMPLATE.md"
-PROMPT_EXECUTION_CHECKLIST_DOC_REL = "docs/blueprint/PROMPT_EXECUTION_CHECKLIST.md"
-PROMPT_DEPENDENCY_TREE_DOC_REL = "docs/blueprint/PROMPT_DEPENDENCY_TREE.md"
-PROMPT_RISK_MATRIX_DOC_REL = "docs/blueprint/PROMPT_RISK_MATRIX.md"
-RECONCILIATION_GUIDE_DOC_REL = "docs/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md"
-PI_2_FINAL_REL = "docs/audit/PI_2_FINAL.md"
+FINAL_PROMPT_INVENTORY_DOC_REL = "docs/archive/blueprint/FINAL_PROMPT_INVENTORY.md"
+SNAPSHOT_MAPPING_TEMPLATE_DOC_REL = "docs/archive/blueprint/SNAPSHOT_MAPPING_TEMPLATE.md"
+PROMPT_EXECUTION_CHECKLIST_DOC_REL = "docs/archive/blueprint/PROMPT_EXECUTION_CHECKLIST.md"
+PROMPT_DEPENDENCY_TREE_DOC_REL = "docs/archive/blueprint/PROMPT_DEPENDENCY_TREE.md"
+PROMPT_RISK_MATRIX_DOC_REL = "docs/archive/blueprint/PROMPT_RISK_MATRIX.md"
+RECONCILIATION_GUIDE_DOC_REL = "docs/archive/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md"
+PI_2_FINAL_REL = "docs/archive/audit/PI_2_FINAL.md"
 
 OUTPUT_REL_PATHS = {
     FINAL_PROMPT_INVENTORY_REL,
@@ -414,17 +414,17 @@ def _prompt_inputs(seed: Mapping[str, object]) -> list[str]:
         "archive/generated/architecture/architecture_graph.v1.json",
         "archive/generated/architecture/module_boundary_rules.v1.json",
         "archive/generated/architecture/repository_structure_lock.json",
-        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md",
-        "docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md",
+        "docs/archive/blueprint/SERIES_EXECUTION_STRATEGY.md",
+        "docs/archive/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md",
         "docs/architecture/REPOSITORY_STRUCTURE_v1.md",
         "archive/generated/blueprint/series_execution_strategy.json",
     ]
     if _token(seed.get("snapshot_requirement")) == "post_snapshot_required":
         inputs.append("snapshot-mapping rows for the target prompt")
     if series_key == "SIGMA":
-        inputs.extend(["AGENTS.md", "docs/canon/constitution_v1.md", "docs/xstack/CI_GUARDRAILS.md", "tools/xstack"])
+        inputs.extend(["AGENTS.md", "docs/canon/constitution_v1.md", "docs/development/xstack/CI_GUARDRAILS.md", "tools/xstack"])
     elif series_key == "PHI":
-        inputs.extend(["contracts/registry/architecture/single_engine_registry.json", "docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md", "engine", "game", "apps", "ui", "platform", "compat"])
+        inputs.extend(["contracts/registry/architecture/single_engine_registry.json", "docs/archive/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md", "engine", "game", "apps", "ui", "platform", "compat"])
     elif series_key == "UPSILON":
         inputs.extend(["archive/generated/audit/build_graph.json", "archive/generated/xstack/gate_definitions.json", "dist", "release", "tools/xstack"])
     elif series_key == "ZETA":
@@ -974,7 +974,7 @@ def _render_inventory_doc(rows: Sequence[Mapping[str, object]], inventory: Mappi
     lines.extend(
         [
             "",
-            "The matching execution doctrine is also anchored in `docs/blueprint/SERIES_EXECUTION_STRATEGY.md`.",
+            "The matching execution doctrine is also anchored in `docs/archive/blueprint/SERIES_EXECUTION_STRATEGY.md`.",
             "",
             "## Global Stop Conditions",
             "",
@@ -1231,12 +1231,12 @@ def _render_pi_2_final_doc(
         "",
         "## Generated Artifacts",
         "",
-        "- `docs/blueprint/FINAL_PROMPT_INVENTORY.md`",
-        "- `docs/blueprint/SNAPSHOT_MAPPING_TEMPLATE.md`",
-        "- `docs/blueprint/PROMPT_EXECUTION_CHECKLIST.md`",
-        "- `docs/blueprint/PROMPT_DEPENDENCY_TREE.md`",
-        "- `docs/blueprint/PROMPT_RISK_MATRIX.md`",
-        "- `docs/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md`",
+        "- `docs/archive/blueprint/FINAL_PROMPT_INVENTORY.md`",
+        "- `docs/archive/blueprint/SNAPSHOT_MAPPING_TEMPLATE.md`",
+        "- `docs/archive/blueprint/PROMPT_EXECUTION_CHECKLIST.md`",
+        "- `docs/archive/blueprint/PROMPT_DEPENDENCY_TREE.md`",
+        "- `docs/archive/blueprint/PROMPT_RISK_MATRIX.md`",
+        "- `docs/archive/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md`",
         "- `archive/generated/blueprint/final_prompt_inventory.json`",
         "- `archive/generated/blueprint/snapshot_mapping_template.json`",
         "- `archive/generated/blueprint/prompt_dependency_tree.json`",

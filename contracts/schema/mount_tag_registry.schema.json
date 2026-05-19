@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic POSE mount tag registry output.",
   "x-doc-ref": [
-    "docs/interaction/POSE_AND_MOUNT_MODEL.md",
+    "docs/game/interaction/POSE_AND_MOUNT_MODEL.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

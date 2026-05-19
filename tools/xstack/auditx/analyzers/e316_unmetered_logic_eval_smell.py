@@ -11,7 +11,7 @@ ANALYZER_ID = "E316_UNMETERED_LOGIC_EVAL_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e316_unmetered_logic_eval_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/LOGIC_EVALUATION_ENGINE.md",
+    "docs/domains/logic/LOGIC_EVALUATION_ENGINE.md",
     "game/domain/logic/eval/",
     "tools/xstack/sessionx/process_runtime.py",
 )
@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    doc_rel = "docs/logic/LOGIC_EVALUATION_ENGINE.md"
+    doc_rel = "docs/domains/logic/LOGIC_EVALUATION_ENGINE.md"
     doc_text = _read_text(repo_root, doc_rel).lower()
     for token in ("instruction_units", "memory_units", "per-network", "throttle"):
         if token in doc_text:

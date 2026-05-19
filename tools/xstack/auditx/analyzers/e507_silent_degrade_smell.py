@@ -43,7 +43,7 @@ def run(graph, repo_root, changed_files=None):
                 category="dist.silent_degrade_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "docs/audit/DIST6_FINAL.md",
+                file_path=rel_path or "docs/archive/audit/DIST6_FINAL.md",
                 evidence=[
                     code,
                     str(item.get("message", "")).strip() or "degrade path was not logged deterministically",
@@ -51,7 +51,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="LOG_INTEROP_DEGRADE_PATH",
                 related_invariants=[str(item.get("rule_id", "")).strip() or "INV-VERSION-INTEROP-MUST-PASS-BEFORE-DIST"],
-                related_paths=[rel_path or "docs/audit/DIST6_FINAL.md", "tools/release/dist/dist6_interop_common.py"],
+                related_paths=[rel_path or "docs/archive/audit/DIST6_FINAL.md", "tools/release/dist/dist6_interop_common.py"],
             )
         )
     return findings

@@ -43,7 +43,7 @@ def run(graph, repo_root, changed_files=None):
                 category="release.tier_mismatch_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path="docs/audit/ARCH_MATRIX_FINAL.md",
+                file_path="docs/archive/audit/ARCH_MATRIX_FINAL.md",
                 evidence=[
                     target_id or "tier1_target_gate_incomplete",
                     "convergence={}; clean_room={}; dist4={}; dist4_platform_passed={}".format(
@@ -57,7 +57,7 @@ def run(graph, repo_root, changed_files=None):
                 recommended_action="RUN_TIER1_GATE_CHAIN_AND_FIX_MISMATCH",
                 related_invariants=[_RULE_ID],
                 related_paths=[
-                    "docs/audit/ARCH_MATRIX_FINAL.md",
+                    "docs/archive/audit/ARCH_MATRIX_FINAL.md",
                     "contracts/audit/arch_matrix_report.json",
                     "tools/release/arch_matrix_common.py",
                 ],

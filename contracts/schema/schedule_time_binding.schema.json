@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic TEMP-0 schedule binding row for temporal-domain-aware execution.",
   "x-doc-ref": [
-    "docs/time/TEMPORAL_SEMANTICS_CONSTITUTION.md"
+    "docs/engine/time/TEMPORAL_SEMANTICS_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

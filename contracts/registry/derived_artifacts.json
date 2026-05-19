@@ -11,7 +11,7 @@
           "No run metadata fields.",
           "Deterministic semantic findings output."
         ],
-        "path": "docs/audit/auditx/FINDINGS.json",
+        "path": "docs/archive/audit/auditx/FINDINGS.json",
         "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
         "regeneration_tool": "tools/xstack/auditx/auditx.py",
@@ -38,7 +38,7 @@
           "No run metadata fields.",
           "Deterministic invariant mapping output."
         ],
-        "path": "docs/audit/auditx/INVARIANT_MAP.json",
+        "path": "docs/archive/audit/auditx/INVARIANT_MAP.json",
         "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
         "regeneration_tool": "tools/xstack/auditx/auditx.py",
@@ -68,7 +68,7 @@
           "Promotion candidates are deterministic suggestions only.",
           "Activation requires explicit RepoX acceptance."
         ],
-        "path": "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+        "path": "docs/archive/audit/auditx/PROMOTION_CANDIDATES.json",
         "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format json",
@@ -98,7 +98,7 @@
           "Trend summary derived from canonical findings only.",
           "No wall-clock metadata allowed."
         ],
-        "path": "docs/audit/auditx/TRENDS.json",
+        "path": "docs/archive/audit/auditx/TRENDS.json",
         "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format json",
@@ -154,7 +154,7 @@
           "Human-facing derived report.",
           "Formatting changes are non-semantic."
         ],
-        "path": "docs/audit/auditx/FINDINGS.md",
+        "path": "docs/archive/audit/auditx/FINDINGS.md",
         "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format md",
@@ -183,7 +183,7 @@
           "Human-facing derived summary.",
           "Formatting changes are non-semantic."
         ],
-        "path": "docs/audit/auditx/SUMMARY.md",
+        "path": "docs/archive/audit/auditx/SUMMARY.md",
         "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format md",
@@ -210,7 +210,7 @@
           "Canonical selected test summary.",
           "No wall-clock fields permitted."
         ],
-        "path": "docs/audit/testx/TESTX_SUMMARY.json",
+        "path": "docs/archive/audit/testx/TESTX_SUMMARY.json",
         "producer": "testx runner",
         "regenerable": true,
         "regeneration_tool": "testx runner",
@@ -239,7 +239,7 @@
           "Human-readable TestX summary view.",
           "Formatting changes are non-semantic."
         ],
-        "path": "docs/audit/testx/TESTX_SUMMARY.md",
+        "path": "docs/archive/audit/testx/TESTX_SUMMARY.md",
         "producer": "testx runner",
         "regenerable": true,
         "regeneration_tool": "python scripts/dev/run_xstack_group_tests.py --repo-root . --group-id testx.group.core.invariants",
@@ -293,7 +293,7 @@
           "Identity invariants contract input.",
           "Deterministic by design."
         ],
-        "path": "docs/audit/identity_fingerprint.json",
+        "path": "docs/archive/audit/identity_fingerprint.json",
         "producer": "tools/validators/ci/tool_identity_fingerprint.py",
         "regenerable": true,
         "regeneration_tool": "tools/validators/ci/tool_identity_fingerprint.py",
@@ -379,7 +379,7 @@
           "Deterministic repository health snapshot keyed to current repo state.",
           "Used for governance finalization proof."
         ],
-        "path": "docs/audit/system/REPO_HEALTH_SNAPSHOT.json",
+        "path": "docs/archive/audit/system/REPO_HEALTH_SNAPSHOT.json",
         "producer": "tools/xstack/core/repo_health.py",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/core/repo_health.py --repo-root .",
@@ -408,7 +408,7 @@
           "Human-readable mirror of repository health snapshot.",
           "Formatting-only changes are non-semantic."
         ],
-        "path": "docs/audit/system/REPO_HEALTH_SNAPSHOT.md",
+        "path": "docs/archive/audit/system/REPO_HEALTH_SNAPSHOT.md",
         "producer": "tools/xstack/core/repo_health.py",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/core/repo_health.py --repo-root .",
@@ -492,7 +492,7 @@
           "Canonical envelope results.",
           "No timestamps or machine identifiers allowed."
         ],
-        "path": "docs/audit/performance/PERFORMX_RESULTS.json",
+        "path": "docs/archive/audit/performance/PERFORMX_RESULTS.json",
         "producer": "tools/xstack/performx/performx.py",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/performx/performx.py run --repo-root .",
@@ -522,7 +522,7 @@
           "Canonical regression report derived from performance results and baseline.",
           "Hardware identifiers are excluded from canonical output."
         ],
-        "path": "docs/audit/performance/PERFORMX_REGRESSIONS.json",
+        "path": "docs/archive/audit/performance/PERFORMX_REGRESSIONS.json",
         "producer": "tools/xstack/performx/performx.py",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/performx/performx.py run --repo-root .",
@@ -581,7 +581,7 @@
           "Explicit baseline for regression comparison.",
           "Update requires deterministic justification and RepoX approval."
         ],
-        "path": "docs/audit/performance/PERFORMX_BASELINE.json",
+        "path": "docs/archive/audit/performance/PERFORMX_BASELINE.json",
         "producer": "tools/xstack/performx/performx.py baseline --update",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/performx/performx.py baseline --repo-root . --update --justification <path>",
@@ -611,7 +611,7 @@
           "Canonical compatibility baseline for schema, pack, save, replay, protocol, API, and ABI.",
           "Contains deterministic compatibility transitions and migration linkage only."
         ],
-        "path": "docs/audit/compat/COMPAT_BASELINE.json",
+        "path": "docs/archive/audit/compat/COMPAT_BASELINE.json",
         "producer": "tools/xstack/compatx/compatx.py verify",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/compatx/compatx.py verify --repo-root .",
@@ -640,7 +640,7 @@
           "Human-readable compatibility baseline summary.",
           "Formatting changes are non-semantic."
         ],
-        "path": "docs/audit/compat/COMPAT_BASELINE.md",
+        "path": "docs/archive/audit/compat/COMPAT_BASELINE.md",
         "producer": "tools/xstack/compatx/compatx.py verify",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/compatx/compatx.py verify --repo-root .",
@@ -670,7 +670,7 @@
           "Canonical security findings emitted by SecureX.",
           "No run metadata fields are allowed in this artifact."
         ],
-        "path": "docs/audit/security/FINDINGS.json",
+        "path": "docs/archive/audit/security/FINDINGS.json",
         "producer": "tools/xstack/securex/securex.py verify",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/securex/securex.py verify --repo-root .",
@@ -700,7 +700,7 @@
           "Canonical integrity manifest for tool and artifact hashes.",
           "Used to enforce tool-version consistency."
         ],
-        "path": "docs/audit/security/INTEGRITY_MANIFEST.json",
+        "path": "docs/archive/audit/security/INTEGRITY_MANIFEST.json",
         "producer": "tools/xstack/securex/securex.py verify",
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/securex/securex.py verify --repo-root .",
@@ -756,7 +756,7 @@
           "Trace values are informational.",
           "Only trace schema/structure is considered deterministic."
         ],
-        "path": "docs/audit/perf/profile_trace.sample.json",
+        "path": "docs/archive/audit/perf/profile_trace.sample.json",
         "producer": "tool_profile_capture",
         "regenerable": true,
         "regeneration_tool": "tool_profile_capture",
@@ -785,7 +785,7 @@
           "Human-readable throughput diagnostics.",
           "May include host-dependent duration values."
         ],
-        "path": "docs/audit/xstack/XSTACK_SPEED_REPORT.md",
+        "path": "docs/archive/audit/xstack/XSTACK_SPEED_REPORT.md",
         "producer": "scripts/dev/gate.py --profile-report",
         "regenerable": true,
         "regeneration_tool": "python scripts/dev/gate.py strict --repo-root . --profile-report",
@@ -814,7 +814,7 @@
           "Validation summary generated after throughput validation runs.",
           "Contains informational timing data only."
         ],
-        "path": "docs/audit/xstack/FINAL_PERFORMANCE_VALIDATION.md",
+        "path": "docs/archive/audit/xstack/FINAL_PERFORMANCE_VALIDATION.md",
         "producer": "scripts/dev/gate.py full --profile-report",
         "regenerable": true,
         "regeneration_tool": "python scripts/dev/gate.py full --repo-root . --profile-report",
@@ -843,7 +843,7 @@
           "Deterministic execution ledger summary for snapshot auditing.",
           "Contains non-gating run diagnostics."
         ],
-        "path": "docs/audit/system/LEDGER_SNAPSHOT.md",
+        "path": "docs/archive/audit/system/LEDGER_SNAPSHOT.md",
         "producer": "scripts/dev/gate.py --ledger-export",
         "regenerable": true,
         "regeneration_tool": "python scripts/dev/gate.py snapshot --repo-root . --ledger-export",
@@ -872,7 +872,7 @@
           "Structural alert raised when STRICT cold runtime exceeds configured threshold.",
           "Report is advisory and does not enforce timeouts."
         ],
-        "path": "docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md",
+        "path": "docs/archive/audit/xstack/PERFORMANCE_CEILING_ALERT.md",
         "producer": "scripts/dev/gate.py strict",
         "regenerable": true,
         "regeneration_tool": "python scripts/dev/gate.py snapshot --repo-root .",

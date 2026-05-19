@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical deterministic faction relation record.",
   "x-doc-ref": [
-    "docs/civilisation/DIPLOMACY_STUBS.md"
+    "docs/domains/civilization/DIPLOMACY_STUBS.md"
   ],
   "type": "object",
   "required": [

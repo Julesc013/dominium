@@ -28,10 +28,10 @@ from tools.release import build_product_build_metadata, DEFAULT_PRODUCT_SEMVER  
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-RELEASE0_RETRO_AUDIT_PATH = "docs/audit/RELEASE0_RETRO_AUDIT.md"
+RELEASE0_RETRO_AUDIT_PATH = "docs/archive/audit/RELEASE0_RETRO_AUDIT.md"
 RELEASE_IDENTITY_CONSTITUTION_PATH = "docs/release/RELEASE_IDENTITY_CONSTITUTION.md"
 ARTIFACT_NAMING_RULES_PATH = "docs/release/ARTIFACT_NAMING_RULES.md"
-RELEASE_IDENTITY_BASELINE_PATH = "docs/audit/RELEASE_IDENTITY_BASELINE.md"
+RELEASE_IDENTITY_BASELINE_PATH = "docs/archive/audit/RELEASE_IDENTITY_BASELINE.md"
 RELEASE_IDENTITY_REPORT_PATH = "archive/generated/audit/release_identity_report.json"
 RELEASE_CHANNEL_REGISTRY_PATH = "contracts/registry/release_channel_registry.json"
 ARTIFACT_KIND_REGISTRY_PATH = "contracts/registry/artifact_kind_registry.json"

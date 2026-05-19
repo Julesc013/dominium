@@ -399,8 +399,8 @@ def write_json(path: Path, payload):
 def main():
     parser = argparse.ArgumentParser(description="Generate inventory and audit reports.")
     parser.add_argument("--repo-root", default=".")
-    parser.add_argument("--out-inventory", default="docs/audit/INVENTORY.json")
-    parser.add_argument("--out-stubs", default="docs/audit/STUB_REPORT.json")
+    parser.add_argument("--out-inventory", default="docs/archive/audit/INVENTORY.json")
+    parser.add_argument("--out-stubs", default="docs/archive/audit/STUB_REPORT.json")
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()

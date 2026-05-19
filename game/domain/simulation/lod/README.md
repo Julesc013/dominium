@@ -11,5 +11,5 @@ Representation ladder and deterministic promotion/demotion under budget.
 - No heuristic/non-deterministic selection (no floats, no RNG, no wall clock).
 
 ## Spec
-See `docs/specs/SPEC_LOD.md` and `docs/specs/SPEC_DETERMINISM.md`.
+See `docs/reference/specs/SPEC_LOD.md` and `docs/reference/specs/SPEC_DETERMINISM.md`.
 

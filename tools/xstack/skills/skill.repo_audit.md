@@ -39,7 +39,7 @@ Run a targeted repository audit for canon drift, invariant breaks, and contract/
 ## Example Invocation
 ```text
 Use skill.repo_audit on these changed files:
-- docs/contracts/*
+- docs/reference/contracts/*
 - docs/architecture/*
 Audit for constitution/glossary drift and missing determinism obligations.
 Run: tools/xstack/run strict

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical server/tool-authored cosmetic assignment contract for representation-only state.",
   "x-doc-ref": [
-    "docs/embodiment/REPRESENTATION_LAYER.md",
+    "docs/domains/embodiment/REPRESENTATION_LAYER.md",
     "docs/runtime/network/RANKED_SERVER_GOVERNANCE.md"
   ],
   "type": "object",

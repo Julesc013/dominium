@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Pack-attributed material property override payload.",
   "x-doc-ref": [
-    "docs/materials/MATERIAL_TAXONOMY.md"
+    "docs/domains/materials/MATERIAL_TAXONOMY.md"
   ],
   "type": "object",
   "required": [

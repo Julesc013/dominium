@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic connection between ports and ports/logistics nodes.",
   "x-doc-ref": [
-    "docs/interaction/MACHINE_PORTS.md"
+    "docs/game/interaction/MACHINE_PORTS.md"
   ],
   "type": "object",
   "required": [

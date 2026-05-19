@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic mobility speed policy registry output.",
   "x-doc-ref": [
-    "docs/mobility/MOBILITY_CONSTITUTION.md",
+    "docs/domains/mobility/MOBILITY_CONSTITUTION.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

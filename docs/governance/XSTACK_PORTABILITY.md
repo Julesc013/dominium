@@ -12,7 +12,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
 - Required updates: documentation surface exists, but current canon ownership is not explicit
-- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+- Cross-check with: `docs/archive/audit/CANON_MAP.md` and `docs/archive/audit/DOC_DRIFT_MATRIX.md`.
 
 
 ## Purpose
@@ -67,7 +67,7 @@ Required registry surfaces:
 
 ## Tracked vs Ignored Outputs
 
-- Tracked outputs are limited to canonical snapshot artifacts under `docs/audit/`.
+- Tracked outputs are limited to canonical snapshot artifacts under `docs/archive/audit/`.
 - Normal gate commands (`verify|strict|full|doctor`) are read-only for tracked files.
 - Run-meta outputs are written under:
   - `.xstack_cache/`
@@ -96,7 +96,7 @@ Required registry surfaces:
 - Define scope roots per rule group (for example, `repox.structure.code` -> `engine|game|client|server`).
 - Define artifact-class filters per scope (`CANONICAL` only for structural dep hashes).
 - Define explicit non-canonical prefix exclusions per scope:
-  - `docs/audit/`
+  - `docs/archive/audit/`
   - `archive/generated/dist/`
   - `build/`
   - `tmp/`
@@ -118,7 +118,7 @@ Use `docs/governance/XSTACK_SCOPE_TEMPLATE.json` as the portable baseline for ne
 ## Optional Components
 
 - `tools/xstack/core/repo_health.py` snapshot generator
-- throughput reports in `docs/audit/xstack/`
+- throughput reports in `docs/archive/audit/xstack/`
 - FULL plan size warning artifact (`FULL_PLAN_TOO_LARGE.md`)
 
 ## Migration Notes

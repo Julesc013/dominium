@@ -69,12 +69,12 @@ The family list is based on the live mixed repository state observed after Ω/Ξ
 | Order | Family ID | Typical Roots In This Repo | Primary Use In Intake | Default Handling |
 | --- | --- | --- | --- | --- |
 | 1 | `canon_and_root_governance` | `docs/canon/**`, `AGENTS.md` | semantic and vocabulary floor; repository execution contract | authoritative |
-| 2 | `contract_and_schema_law` | `schema/**`, `docs/contracts/**`, binding governance docs under `docs/architecture/**` and `docs/release/**` | semantic, compatibility, and release doctrine | authoritative |
+| 2 | `contract_and_schema_law` | `schema/**`, `docs/reference/contracts/**`, binding governance docs under `docs/architecture/**` and `docs/release/**` | semantic, compatibility, and release doctrine | authoritative |
 | 3 | `machine_schema_projections` | `schemas/**` and machine-readable schema exports | validator-facing contract projection | derived unless explicitly promoted for validator scope |
 | 4 | `registries_manifests_and_pack_metadata` | `data/registries/**`, `data/packs/**`, `packs/**/pack*.json`, `repo/**`, `data/architecture/**`, `updates/**` | machine-readable runtime, compat, and release declarations | authoritative within declared scope |
 | 5 | `live_code_and_build_surface` | `engine/**`, `game/**`, `client/**`, `server/**`, `runtime/**`, `app/**`, `appshell/**`, `launcher/**`, `setup/**`, `lib/**`, `libs/**`, domain roots, build files | implementation and structure reality | structurally authoritative |
 | 6 | `release_distribution_and_update_surface` | `release/**`, `docs/release/**`, `contracts/repo/release_policy.toml`, `data/release/**`, `updates/**` | install, distribution, channel, archive, and update truth | release-authoritative |
-| 7 | `planning_surfaces` | `docs/planning/**`, `data/planning/**`, `docs/blueprint/**`, `data/blueprint/**`, `docs/omega/**`, `docs/restructure/**`, `data/restructure/**` | planning constraints, sequencing, stop conditions, and reconciliation inputs | advisory by default; P-0 artifacts are planning-authoritative within intake scope |
+| 7 | `planning_surfaces` | `docs/planning/**`, `data/planning/**`, `docs/archive/blueprint/**`, `data/blueprint/**`, `docs/archive/omega/**`, `docs/archive/restructure/**`, `data/restructure/**` | planning constraints, sequencing, stop conditions, and reconciliation inputs | advisory by default; P-0 artifacts are planning-authoritative within intake scope |
 | 8 | `generated_evidence_and_baselines` | `data/audit/**`, `data/baselines/**`, `archive/generated/artifacts/**`, `build/**`, `out/**`, `run_meta/**` | evidence of observed or generated state | derived unless explicitly promoted |
 | 9 | `transitional_legacy_and_quarantine` | `legacy/**`, `attic/src_quarantine/**`, `quarantine/**`, roots such as `_orphaned` | migration evidence, residue, or quarantined material | transitional or quarantined |
 

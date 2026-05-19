@@ -21,14 +21,14 @@
     "docs/planning/MERGED_PROGRAM_STATE.md",
     "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
     "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
-    "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
-    "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
-    "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
-    "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "docs/archive/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/archive/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+    "docs/archive/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+    "docs/development/xstack/XSTACK_SCOPE_FREEZE.md",
     "archive/generated/xstack/xstack_scope_freeze.json",
-    "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "docs/development/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
     "archive/generated/xstack/xstack_inventory_and_classification.json",
-    "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+    "docs/development/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
     "contracts/xstack/aide_portable_task_contract.json",
     "contracts/registry/derived_artifacts.json",
     "tools/validators/suite/validation_engine.py",
@@ -43,9 +43,9 @@
     "tools/audit/review/xi5x2_common.py",
     "contracts/restructure/xi4b_review_manifest.json",
     "contracts/restructure/xi4z_decision_manifest.json",
-    "docs/agents/AGENT_MIRROR_POLICY.md",
-    "docs/xstack/CI_GUARDRAILS.md",
-    "docs/xstack/ARCH_DRIFT_POLICY.md"
+    "docs/game/agents/AGENT_MIRROR_POLICY.md",
+    "docs/development/xstack/CI_GUARDRAILS.md",
+    "docs/development/xstack/ARCH_DRIFT_POLICY.md"
   ],
   "current_program_context": {
     "admissible_zeta_doctrine_program_complete": true,
@@ -54,11 +54,11 @@
     "current_aide_workflow_runtime_presence": false
   },
   "dependencies": {
-    "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "required_scope_freeze_doc": "docs/development/xstack/XSTACK_SCOPE_FREEZE.md",
     "required_scope_freeze_json": "archive/generated/xstack/xstack_scope_freeze.json",
-    "required_inventory_doc": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "required_inventory_doc": "docs/development/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
     "required_inventory_json": "archive/generated/xstack/xstack_inventory_and_classification.json",
-    "required_task_contract_doc": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+    "required_task_contract_doc": "docs/development/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
     "required_task_contract_json": "contracts/xstack/aide_portable_task_contract.json"
   },
   "portable_evidence_definition": {
@@ -336,9 +336,9 @@
     },
     {
       "surface": [
-        "docs/agents/AGENT_MIRROR_POLICY.md",
-        "docs/xstack/CI_GUARDRAILS.md",
-        "docs/xstack/ARCH_DRIFT_POLICY.md"
+        "docs/game/agents/AGENT_MIRROR_POLICY.md",
+        "docs/development/xstack/CI_GUARDRAILS.md",
+        "docs/development/xstack/ARCH_DRIFT_POLICY.md"
       ],
       "supports": [
         "canonical_vs_derived_markers",
@@ -370,7 +370,7 @@
     ]
   },
   "dominium_retained_now": [
-    "concrete storage roots such as docs/audit, .xstack_cache, product-shell status locations, and local bundle write paths",
+    "concrete storage roots such as docs/archive/audit, .xstack_cache, product-shell status locations, and local bundle write paths",
     "exact FAST, STRICT, and FULL gate wiring and repo-local enforcement rules",
     "AppShell exit-code dispatch, product command descriptors, and launcher or setup affordances",
     "concrete trust-root registries, release policy tables, pack signing policy identifiers, and repo-local trust plumbing",

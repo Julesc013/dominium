@@ -14,6 +14,6 @@ physical representation scaffolding.
 - `phys/` structure-local physical representation scaffolding (no solvers yet).
 
 ## Spec
-See `docs/specs/SPEC_TRANS_STRUCT_DECOR.md`, `docs/specs/SPEC_POSE_AND_ANCHORS.md`,
-and `docs/specs/SPEC_DETERMINISM.md`.
+See `docs/reference/specs/SPEC_TRANS_STRUCT_DECOR.md`, `docs/reference/specs/SPEC_POSE_AND_ANCHORS.md`,
+and `docs/reference/specs/SPEC_DETERMINISM.md`.
 

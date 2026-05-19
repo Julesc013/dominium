@@ -45,11 +45,11 @@ SINGLE_ENGINE_REGISTRY_REL = "contracts/registry/architecture/single_engine_regi
 
 ARCHITECTURE_GRAPH_SPEC_V1_REL = "docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md"
 MODULE_BOUNDARIES_V1_REL = "docs/architecture/MODULE_BOUNDARIES_v1.md"
-XI_6_FINAL_REL = "docs/audit/XI_6_FINAL.md"
+XI_6_FINAL_REL = "docs/archive/audit/XI_6_FINAL.md"
 
-XI_5A_FINAL_REL = "docs/audit/XI_5A_FINAL.md"
-XI_5X1_FINAL_REL = "docs/audit/XI_5X1_FINAL.md"
-XI_5X2_FINAL_REL = "docs/audit/XI_5X2_FINAL.md"
+XI_5A_FINAL_REL = "docs/archive/audit/XI_5A_FINAL.md"
+XI_5X1_FINAL_REL = "docs/archive/audit/XI_5X1_FINAL.md"
+XI_5X2_FINAL_REL = "docs/archive/audit/XI_5X2_FINAL.md"
 XI5X2_GATE_MODEL_REL = "archive/generated/restructure/xi5x2_xi6_gate_model.json"
 
 ARCH_GRAPH_UPDATE_TAG_REL = "data/architecture/arch_graph_update_request.json"

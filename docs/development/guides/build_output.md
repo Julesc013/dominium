@@ -1,0 +1,28 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
+# Build Output Guide
+
+This document summarizes where build artifacts are written. Dist layout details
+live in `docs/development/guides/BUILD_DIST.md`.
+
+## Default output directories
+- Runtime outputs: `${CMAKE_BINARY_DIR}/bin`
+- Libraries/archives: `${CMAKE_BINARY_DIR}/lib`
+
+These defaults are set by the root `CMakeLists.txt` and may be overridden by
+specific presets in `CMakePresets.json`.
+
+## Dist outputs (opt-in)
+- `archive/generated/dist/` is a separate layout used only for targets that call `dist_set_role`.
+- The root build defines `dist_meta`, `verify_dist`, and `validate_dist`.
+- The `dist_seed` target exists only if `tools/dist_seed` is added to the build.
+
+## References
+- `docs/development/guides/BUILD_DIST.md` (dist layout and validation rules)
+- `docs/development/guides/BUILDING.md` (build system and options)

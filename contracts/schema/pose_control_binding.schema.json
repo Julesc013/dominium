@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "POSE-1 deterministic control grants exposed by occupied pose slots.",
   "x-doc-ref": [
-    "docs/interaction/POSE_AND_MOUNT_MODEL.md"
+    "docs/game/interaction/POSE_AND_MOUNT_MODEL.md"
   ],
   "type": "object",
   "required": [

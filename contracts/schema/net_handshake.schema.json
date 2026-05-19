@@ -5,7 +5,7 @@
   "description": "Deterministic multiplayer compatibility handshake artifact contract.",
   "x-doc-ref": [
     "docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md",
-    "docs/contracts/refusal_contract.md"
+    "docs/reference/contracts/refusal_contract.md"
   ],
   "type": "object",
   "required": [

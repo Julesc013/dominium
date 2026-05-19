@@ -12,7 +12,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
 - Required updates: documentation surface exists, but current canon ownership is not explicit
-- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+- Cross-check with: `docs/archive/audit/CANON_MAP.md` and `docs/archive/audit/DOC_DRIFT_MATRIX.md`.
 
 
 RepoX and TestX must self-canonicalize their tool environment. Manual `PATH` setup is optional for convenience only.
@@ -60,7 +60,7 @@ Behavior:
 - supports dependency-only evaluation (`TASK_DEPENDENCY`) through `gate taskcheck`
 - evaluates dependency gates (`TASK_DEPENDENCY`) such as `ui_bind_check`
 - attempts deterministic tool-discovery remediation when `INV-TOOLS-DIR-MISSING` occurs
-- writes remediation artifacts to `docs/audit/remediation/<workspace_id>/...`
+- writes remediation artifacts to `docs/archive/audit/remediation/<workspace_id>/...`
 
 Prompt templates must use this gate entry contract. See `docs/governance/PROMPT_GATE_CONTRACT.md`.
 

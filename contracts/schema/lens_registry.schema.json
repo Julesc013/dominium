@@ -5,7 +5,7 @@
   "description": "Derived deterministic lens registry output.",
   "x-doc-ref": [
     "docs/architecture/registry_compile.md",
-    "docs/contracts/lens_contract.md"
+    "docs/reference/contracts/lens_contract.md"
   ],
   "type": "object",
   "required": [

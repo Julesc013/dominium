@@ -24,7 +24,7 @@ Existing older layout docs are retained as legacy, planning, or reference materi
 | `README.md` | User-facing overview that still references older top-level product roots. | Add a short convergence note; not layout authority. | Refresh after physical layout convergence. |
 | `docs/architecture/ARCH_REPO_LAYOUT.md` | Legacy architecture layout reference with stale concrete paths. | Mark with a CONVERGE-02 notice pointing to current contracts. | Reconcile or archive after layout contract hardening. |
 | `docs/architecture/DIRECTORY_CONTEXT.md` | Legacy directory context that still claims authoritative layout status. | Mark with a CONVERGE-02 notice pointing to current contracts. | Reconcile or archive after stale-doc cleanup. |
-| `docs/restructure/FUTURE_LAYOUT_PROPOSAL.md` | Planning input for restructure with a proposed future layout. | Mark as planning/reference input, not current authority. | Mine useful migration constraints in later phases. |
+| `docs/archive/restructure/FUTURE_LAYOUT_PROPOSAL.md` | Planning input for restructure with a proposed future layout. | Mark as planning/reference input, not current authority. | Mine useful migration constraints in later phases. |
 | `docs/architecture/CANON_INDEX.md` | Legacy canon index that may list stale layout docs as canonical. | Treat as a stale-authority input for layout scope until reconciled. | Reconcile during stale-doc authority cleanup. |
 | `docs/repo/REPO_LAYOUT_TARGET.md` | Human explanation of target source layout. | Current human explanation. | Keep aligned with layout contracts. |
 | `contracts/repo/layout.contract.toml` | Machine-readable source layout convergence contract. | Current machine-readable layout authority. | Refine during CONVERGE-03 and later. |
@@ -37,7 +37,7 @@ High-risk stale authority docs patched in CONVERGE-12:
 - `README.md`
 - `docs/architecture/ARCH_REPO_LAYOUT.md`
 - `docs/architecture/DIRECTORY_CONTEXT.md`
-- `docs/restructure/FUTURE_LAYOUT_PROPOSAL.md`
+- `docs/archive/restructure/FUTURE_LAYOUT_PROPOSAL.md`
 - `docs/architecture/CANON_INDEX.md`
 
 These files may still contain historical old-path examples. Those examples are not current source-layout authority unless they agree with the current contracts and repo docs.

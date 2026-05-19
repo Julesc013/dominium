@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic reenactment artifact metadata.",
   "x-doc-ref": [
-    "docs/materials/REENACTMENT_MODEL.md"
+    "docs/domains/materials/REENACTMENT_MODEL.md"
   ],
   "type": "object",
   "required": [

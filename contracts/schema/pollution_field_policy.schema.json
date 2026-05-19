@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic POLL tier and field-cell update policy declaration.",
   "x-doc-ref": [
-    "docs/pollution/POLLUTION_CONSTITUTION.md",
-    "docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md"
+    "docs/domains/pollution/POLLUTION_CONSTITUTION.md",
+    "docs/governance/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md"
   ],
   "type": "object",
   "required": [

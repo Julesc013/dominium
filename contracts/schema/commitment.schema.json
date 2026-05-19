@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Canonical commitment artifact used for MAT-8 causality enforcement and reenactment linkage.",
   "x-doc-ref": [
-    "docs/materials/NOTHING_JUST_HAPPENS.md",
-    "docs/materials/REENACTMENT_MODEL.md"
+    "docs/domains/materials/NOTHING_JUST_HAPPENS.md",
+    "docs/domains/materials/REENACTMENT_MODEL.md"
   ],
   "type": "object",
   "required": [

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic SOL-2 derived orbit visualization artifact.",
   "x-doc-ref": [
-    "docs/sol/ORBIT_VISUALIZATION_MODEL.md"
+    "docs/domains/astronomy/sol/ORBIT_VISUALIZATION_MODEL.md"
   ],
   "type": "object",
   "required": [

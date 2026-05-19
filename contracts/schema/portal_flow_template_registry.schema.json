@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic portal flow template registry output.",
   "x-doc-ref": [
-    "docs/interior/COMPARTMENT_FLOWS.md",
+    "docs/domains/interiors/COMPARTMENT_FLOWS.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

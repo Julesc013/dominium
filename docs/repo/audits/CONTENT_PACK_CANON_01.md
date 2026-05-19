@@ -111,7 +111,7 @@ Active tracked inventory now has no `content/domains/game/core/` and no `content
 - `docs/content/archive/**` retains historical `data/packs` references.
 - Planning and generated evidence references to `content/domains/game/core` were not rewritten because they describe prior structural state or generated/historical proof.
 - Compatibility shim and legacy-path tests intentionally keep `data/packs` literals as migration/redirect fixtures.
-- Generated audit outputs under `docs/audit/**`, planning generated data, and architecture registry snapshots were not hand-edited.
+- Generated audit outputs under `docs/archive/audit/**`, planning generated data, and architecture registry snapshots were not hand-edited.
 
 ## Validator Update
 

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic order type registry output.",
   "x-doc-ref": [
-    "docs/civilisation/ORDER_LANGUAGE.md",
+    "docs/domains/civilization/ORDER_LANGUAGE.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

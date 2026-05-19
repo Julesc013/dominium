@@ -34,10 +34,10 @@ from tools.package.setup.setup_cli import install_manifest_payload  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-PRODUCT_BOOT_MATRIX_DOC_PATH = "docs/mvp/PRODUCT_BOOT_MATRIX.md"
-PRODUCT_BOOT_MATRIX_REPORT_PATH = "docs/audit/PRODUCT_BOOT_MATRIX_REPORT.md"
+PRODUCT_BOOT_MATRIX_DOC_PATH = "docs/release/mvp/PRODUCT_BOOT_MATRIX.md"
+PRODUCT_BOOT_MATRIX_REPORT_PATH = "docs/archive/audit/PRODUCT_BOOT_MATRIX_REPORT.md"
 PRODUCT_BOOT_MATRIX_JSON_PATH = "contracts/audit/product_boot_matrix.json"
-PROD_GATE_FINAL_PATH = "docs/audit/PROD_GATE_FINAL.md"
+PROD_GATE_FINAL_PATH = "docs/archive/audit/PROD_GATE_FINAL.md"
 PRODUCT_BOOT_MATRIX_TOOL_PATH = "tools/release/mvp/tool_run_product_boot_matrix.py"
 PRODUCT_BOOT_MATRIX_REPORT_ID = "mvp.product_boot_matrix.v1"
 PRODUCT_BOOT_MATRIX_WORK_ROOT_REL = os.path.join("build", "mvp", "prod_gate0")

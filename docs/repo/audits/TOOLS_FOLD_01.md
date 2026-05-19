@@ -94,7 +94,7 @@ Updated generated-current evidence where active validators consume it:
 - architecture bootstrap outputs under `archive/generated/architecture/`, `archive/generated/audit/`, `contracts/registry/architecture/`, and generated audit reports
 - Xi6/module-registry evidence where the generator writes active module state
 
-Skipped stale historical/generated prose references when they are evidence snapshots or historical reports, including old references in `docs/audit/TOOL_SURFACE_MAP.md`, duplicate/quarantine reports under `docs/refactor/`, and other superseded audit reports. Migration maps intentionally retain old source paths as old-to-new route aliases.
+Skipped stale historical/generated prose references when they are evidence snapshots or historical reports, including old references in `docs/archive/audit/TOOL_SURFACE_MAP.md`, duplicate/quarantine reports under `docs/archive/refactor/`, and other superseded audit reports. Migration maps intentionally retain old source paths as old-to-new route aliases.
 
 ## Validator Changes
 
@@ -130,6 +130,6 @@ Known residual failures not caused by the tools fold:
 
 ## Remaining Follow-Up Work
 
-- Refresh historical/generated audit surfaces if a later docs/audit regeneration task wants old `tools/*` prose snapshots rewritten.
+- Refresh historical/generated audit surfaces if a later docs/archive/audit regeneration task wants old `tools/*` prose snapshots rewritten.
 - Resolve unrelated RepoX FAST failures and Xi6 single-engine findings in their own scoped tasks.
 - Retire old route aliases in migration helpers only after downstream consumers no longer need source-path mapping evidence.

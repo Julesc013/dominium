@@ -129,10 +129,10 @@ Rules:
 This boundary is enforced by:
 
 
-- Hygiene scans and queue (docs/ci/HYGIENE_QUEUE.md).
+- Hygiene scans and queue (docs/testing/ci/HYGIENE_QUEUE.md).
 
 
-- CI rules (docs/ci/CODEHYGIENE_RULES.md).
+- CI rules (docs/testing/ci/CODEHYGIENE_RULES.md).
 
 
 - Registry pattern (docs/architecture/REGISTRY_PATTERN.md).
@@ -165,7 +165,7 @@ This boundary is enforced by:
 - docs/architecture/REGISTRY_PATTERN.md
 
 
-- docs/ci/CODEHYGIENE_RULES.md
+- docs/testing/ci/CODEHYGIENE_RULES.md
 
 
 - docs/architecture/INVARIANTS.md

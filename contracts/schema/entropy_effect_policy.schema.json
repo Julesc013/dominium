@@ -5,7 +5,7 @@
   "description": "Canonical PHYS-4 deterministic policy row for entropy-driven degradation effects.",
   "x-doc-ref": [
     "docs/domains/physics/ENTROPY_POLICY.md",
-    "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
+    "docs/governance/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

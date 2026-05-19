@@ -19,7 +19,7 @@ REQUIRED_TOKENS = {
         "build_scan_result_panel(",
         'panel.inspect.scan_result',
     ),
-    "docs/embodiment/MVP_TOOLBELT_MODEL.md": (
+    "docs/domains/embodiment/MVP_TOOLBELT_MODEL.md": (
         "scanner output may only be built from inspection snapshots, field summaries, and explain/provenance artifacts",
     ),
 }

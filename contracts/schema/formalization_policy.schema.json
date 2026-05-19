@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Registry entry for FORM-1 formalization lifecycle policy behavior.",
   "x-doc-ref": [
-    "docs/infrastructure/FORMALIZATION_MODEL.md"
+    "docs/domains/infrastructure/FORMALIZATION_MODEL.md"
   ],
   "type": "object",
   "required": [

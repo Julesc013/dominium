@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic compound registry output.",
   "x-doc-ref": [
-    "docs/materials/MATERIAL_TAXONOMY.md",
+    "docs/domains/materials/MATERIAL_TAXONOMY.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

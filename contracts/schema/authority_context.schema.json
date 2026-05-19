@@ -6,7 +6,7 @@
   "x-doc-ref": [
     "docs/canon/constitution_v1.md §3 A3/A7",
     "docs/canon/glossary_v1.md AuthorityContext",
-    "docs/contracts/authority_context.md"
+    "docs/reference/contracts/authority_context.md"
   ],
   "type": "object",
   "required": [

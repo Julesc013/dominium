@@ -594,7 +594,7 @@ def generate_topology_map(
     topology_contract_node = _node(
         node_id="contract_set:governance.topology_map_artifact",
         node_kind="contract_set",
-        path="docs/audit/TOPOLOGY_MAP.json",
+        path="docs/archive/audit/TOPOLOGY_MAP.json",
         tags=["governance", "derived_artifact"],
         owner_subsystem="governance",
     )
@@ -798,8 +798,8 @@ def main() -> int:
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--commit-hash", default="")
     parser.add_argument("--generated-tick", type=int, default=0)
-    parser.add_argument("--out-json", default="docs/audit/TOPOLOGY_MAP.json")
-    parser.add_argument("--out-md", default="docs/audit/TOPOLOGY_MAP.md")
+    parser.add_argument("--out-json", default="docs/archive/audit/TOPOLOGY_MAP.json")
+    parser.add_argument("--out-md", default="docs/archive/audit/TOPOLOGY_MAP.md")
     args = parser.parse_args()
 
     repo_root = os.path.normpath(os.path.abspath(args.repo_root)) if str(args.repo_root).strip() else REPO_ROOT_HINT

@@ -10,8 +10,8 @@
         "paths": [
           "schema/**",
           "schemas/**",
-          "docs/omega/**",
-          "docs/audit/OMEGA_0_FINAL.md",
+          "docs/archive/omega/**",
+          "docs/archive/audit/OMEGA_0_FINAL.md",
           "packs/**",
           "build/registries/**",
           "build/lockfile.json",
@@ -46,8 +46,8 @@
           "testx.group.core.invariants"
         ],
         "expected_artifacts": [
-          "docs/audit/testx/TESTX_SUMMARY.json",
-          "docs/audit/testx/TESTX_RUN_META.json"
+          "docs/archive/audit/testx/TESTX_SUMMARY.json",
+          "docs/archive/audit/testx/TESTX_RUN_META.json"
         ],
         "escalation_thresholds": {
           "strict": true,
@@ -87,7 +87,7 @@
           "testx.group.runtime.verify"
         ],
         "expected_artifacts": [
-          "docs/audit/testx/TESTX_SUMMARY.json"
+          "docs/archive/audit/testx/TESTX_SUMMARY.json"
         ],
         "escalation_thresholds": {
           "strict": true,
@@ -134,8 +134,8 @@
           "testx.group.full.verify"
         ],
         "expected_artifacts": [
-          "docs/audit/testx/TESTX_SUMMARY.json",
-          "docs/audit/testx/TESTX_RUN_META.json"
+          "docs/archive/audit/testx/TESTX_SUMMARY.json",
+          "docs/archive/audit/testx/TESTX_RUN_META.json"
         ],
         "escalation_thresholds": {
           "strict": false,
@@ -176,7 +176,7 @@
           "testx_dist"
         ],
         "expected_artifacts": [
-          "docs/audit/testx/TESTX_SUMMARY.json"
+          "docs/archive/audit/testx/TESTX_SUMMARY.json"
         ],
         "escalation_thresholds": {
           "strict": false,

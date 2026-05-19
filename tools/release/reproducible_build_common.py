@@ -16,10 +16,10 @@ from tools.release import (
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
-RELEASE2_RETRO_AUDIT_PATH = "docs/audit/RELEASE2_RETRO_AUDIT.md"
+RELEASE2_RETRO_AUDIT_PATH = "docs/archive/audit/RELEASE2_RETRO_AUDIT.md"
 REPRODUCIBLE_BUILD_RULES_PATH = "docs/release/REPRODUCIBLE_BUILD_RULES.md"
 SIGNING_POLICY_PATH = "docs/release/SIGNING_POLICY.md"
-REPRODUCIBLE_BUILD_BASELINE_PATH = "docs/audit/REPRODUCIBLE_BUILD_BASELINE.md"
+REPRODUCIBLE_BUILD_BASELINE_PATH = "docs/archive/audit/REPRODUCIBLE_BUILD_BASELINE.md"
 BUILD_ID_ENGINE_PATH = "tools/release/build_id_engine.py"
 RELEASE_MANIFEST_ENGINE_PATH = "tools/release/release_manifest_engine.py"
 RELEASE_MANIFEST_GENERATOR_PATH = "tools/release/tool_generate_release_manifest.py"

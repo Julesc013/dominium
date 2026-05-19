@@ -28,11 +28,11 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 
 DOC_INVENTORY_JSON_REL = "archive/generated/audit/doc_inventory.json"
-DOC_INDEX_MD_REL = "docs/audit/DOC_INDEX.md"
-CANON_MAP_MD_REL = "docs/audit/CANON_MAP.md"
-DOC_DRIFT_MATRIX_MD_REL = "docs/audit/DOC_DRIFT_MATRIX.md"
-DOC_GAPS_MD_REL = "docs/audit/DOC_GAPS.md"
-REPO_REVIEW_3_FINAL_MD_REL = "docs/audit/REPO_REVIEW_3_FINAL.md"
+DOC_INDEX_MD_REL = "docs/archive/audit/DOC_INDEX.md"
+CANON_MAP_MD_REL = "docs/archive/audit/CANON_MAP.md"
+DOC_DRIFT_MATRIX_MD_REL = "docs/archive/audit/DOC_DRIFT_MATRIX.md"
+DOC_GAPS_MD_REL = "docs/archive/audit/DOC_GAPS.md"
+REPO_REVIEW_3_FINAL_MD_REL = "docs/archive/audit/REPO_REVIEW_3_FINAL.md"
 
 
 def _today_iso() -> str:
@@ -51,7 +51,7 @@ SKIP_DIR_NAMES = {
     "dist",
     "node_modules",
 }
-SKIP_PREFIXES = ("docs/audit/auditx/",)
+SKIP_PREFIXES = ("docs/archive/audit/auditx/",)
 DOC_EXTENSIONS = {".md", ".rst", ".tex"}
 ROOT_DOC_PATHS = {
     "AGENTS.md",
@@ -182,32 +182,32 @@ TOPIC_RULES = {
     "xstack": ("xstack", "repox", "auditx", "testx", "compatx"),
 }
 SUPERSESSION_OVERRIDES = {
-    "docs/GLOSSARY.md": {"alignment_status": "superseded", "replacement_doc": "docs/canon/glossary_v1.md", "reason": "duplicate glossary surface is no longer binding; canon glossary v1 wins"},
-    "docs/CAPABILITY_STAGES.md": {"alignment_status": "superseded", "replacement_doc": "docs/architecture/CAPABILITY_ONLY_CANON.md", "reason": "legacy capability staging summary already points to the current canonical document"},
-    "docs/TESTX_STAGE_MATRIX.md": {"alignment_status": "superseded", "replacement_doc": "tests/testx/CAPABILITY_MATRIX.yaml", "reason": "matrix ownership moved into the generated TestX capability matrix artifact"},
+    "docs/reference/GLOSSARY.md": {"alignment_status": "superseded", "replacement_doc": "docs/canon/glossary_v1.md", "reason": "duplicate glossary surface is no longer binding; canon glossary v1 wins"},
+    "docs/game/CAPABILITY_STAGES.md": {"alignment_status": "superseded", "replacement_doc": "docs/architecture/CAPABILITY_ONLY_CANON.md", "reason": "legacy capability staging summary already points to the current canonical document"},
+    "docs/testing/TESTX_STAGE_MATRIX.md": {"alignment_status": "superseded", "replacement_doc": "tests/testx/CAPABILITY_MATRIX.yaml", "reason": "matrix ownership moved into the generated TestX capability matrix artifact"},
     "docs/apps/UI_MODES.md": {"alignment_status": "contradictory", "replacement_doc": "docs/runtime/shell/APPSHELL_CONSTITUTION.md", "reason": "mode-selection order conflicts with the frozen v0.0.0 AppShell contract"},
-    "docs/architecture/DIRECTORY_STRUCTURE.md": {"alignment_status": "contradictory", "replacement_doc": "docs/audit/REPO_TREE_INDEX.md", "reason": "top-level layout no longer matches the real repository inventory"},
+    "docs/architecture/DIRECTORY_STRUCTURE.md": {"alignment_status": "contradictory", "replacement_doc": "docs/archive/audit/REPO_TREE_INDEX.md", "reason": "top-level layout no longer matches the real repository inventory"},
 }
 PARTIAL_OVERRIDES = {
-    "docs/ARCHITECTURE.md": "root architecture summary still describes boundaries, but does not reflect the current `src/` + `tools/` repository organization or current canon precedence",
-    "docs/STATUS_NOW.md": "snapshot sections predate the final MVP scope freeze and need release-era updates",
-    "docs/XSTACK.md": "governance overview is useful, but its implementation pointers and ownership language need reconciliation with the current tool layout",
+    "docs/architecture/ROOT_ARCHITECTURE.md": "root architecture summary still describes boundaries, but does not reflect the current `src/` + `tools/` repository organization or current canon precedence",
+    "docs/archive/STATUS_NOW.md": "snapshot sections predate the final MVP scope freeze and need release-era updates",
+    "docs/development/xstack/XSTACK.md": "governance overview is useful, but its implementation pointers and ownership language need reconciliation with the current tool layout",
     "docs/apps/PRODUCT_BOUNDARIES.md": "product responsibilities remain mostly correct, but capability negotiation, AppShell, and standalone guarantees need alignment with current release docs",
     "docs/architecture/ARCH_REPO_LAYOUT.md": "ownership intent remains useful, but the concrete top-level layout is stale relative to the real repository tree",
 }
 GAP_ROWS = (
-    {"priority": "high", "topic": "virtual paths", "suggested_doc": "docs/lib/VIRTUAL_PATH_LAYER.md", "reason": "REPO-REVIEW-2 found wide direct-path usage and there is no single current doctrine for the virtual path layer."},
+    {"priority": "high", "topic": "virtual paths", "suggested_doc": "docs/runtime/storage/VIRTUAL_PATH_LAYER.md", "reason": "REPO-REVIEW-2 found wide direct-path usage and there is no single current doctrine for the virtual path layer."},
     {"priority": "high", "topic": "standalone product guarantees", "suggested_doc": "docs/release/STANDALONE_PRODUCT_GUARANTEES.md", "reason": "setup guarantees exist, but there is no single current release doc for client/server/launcher/setup standalone guarantees."},
     {"priority": "medium", "topic": "platform matrix", "suggested_doc": "docs/release/PLATFORM_MATRIX.md", "reason": "cross-platform gate outputs exist, but there is no stable release-facing platform support matrix."},
     {"priority": "medium", "topic": "validation unification", "suggested_doc": "docs/testing/validation/VALIDATION_UNIFICATION.md", "reason": "RepoX, AuditX, TestX, CompatX, and ARCH-AUDIT surfaces are documented in fragments rather than one convergence doc."},
     {"priority": "medium", "topic": "user-facing UI mode selection", "suggested_doc": "docs/apps/UI_MODE_SELECTION.md", "reason": "the old UI mode summary is contradictory and the current mode order only appears indirectly in AppShell and release-freeze docs."},
 )
 DRIFT_RULES = (
-    {"kind": "duplicate_spec", "severity": "high", "paths": ("docs/GLOSSARY.md", "docs/canon/glossary_v1.md"), "message": "duplicate glossary surfaces exist; only the canon glossary v1 is binding."},
+    {"kind": "duplicate_spec", "severity": "high", "paths": ("docs/reference/GLOSSARY.md", "docs/canon/glossary_v1.md"), "message": "duplicate glossary surfaces exist; only the canon glossary v1 is binding."},
     {"kind": "conflicting_definition", "severity": "high", "paths": ("docs/apps/UI_MODES.md", "docs/runtime/shell/APPSHELL_CONSTITUTION.md", "docs/release/FROZEN_INVARIANTS_v0_0_0.md"), "message": "UI mode selection rules diverge between the older app doc and the frozen AppShell order."},
-    {"kind": "conflicting_definition", "severity": "high", "paths": ("docs/architecture/DIRECTORY_STRUCTURE.md", "docs/architecture/ARCH_REPO_LAYOUT.md", "docs/audit/REPO_TREE_INDEX.md"), "message": "layout docs still describe top-level product directories that no longer match the actual repository tree."},
-    {"kind": "duplicate_spec", "severity": "medium", "paths": ("docs/ARCHITECTURE.md", "docs/architecture/ARCH0_CONSTITUTION.md", "docs/canon/constitution_v1.md"), "message": "root architecture summary overlaps with binding constitutional docs and can drift if treated as equivalent authority."},
-    {"kind": "duplicate_spec", "severity": "medium", "paths": ("docs/XSTACK.md", "docs/audit/VALIDATION_STACK_MAP.md"), "message": "XStack governance is documented both as a narrative overview and as a generated current-state validation surface map."},
+    {"kind": "conflicting_definition", "severity": "high", "paths": ("docs/architecture/DIRECTORY_STRUCTURE.md", "docs/architecture/ARCH_REPO_LAYOUT.md", "docs/archive/audit/REPO_TREE_INDEX.md"), "message": "layout docs still describe top-level product directories that no longer match the actual repository tree."},
+    {"kind": "duplicate_spec", "severity": "medium", "paths": ("docs/architecture/ROOT_ARCHITECTURE.md", "docs/architecture/ARCH0_CONSTITUTION.md", "docs/canon/constitution_v1.md"), "message": "root architecture summary overlaps with binding constitutional docs and can drift if treated as equivalent authority."},
+    {"kind": "duplicate_spec", "severity": "medium", "paths": ("docs/development/xstack/XSTACK.md", "docs/archive/audit/VALIDATION_STACK_MAP.md"), "message": "XStack governance is documented both as a narrative overview and as a generated current-state validation surface map."},
 )
 
 
@@ -320,17 +320,17 @@ def _classify_alignment(rel_path: str, title: str, text: str, header: Mapping[st
     lowered = " ".join((rel_norm, title, text[:4000])).lower()
     if rel_norm.startswith(("docs/archive/", "data/archive/")):
         return "legacy_reference_only", "", "archived surface retained only for historical reference"
-    if rel_norm.startswith(("docs/guides/", "docs/specs/", "docs/post_canon/", "docs/impact/", "docs/roadmap/", "docs/ci/")):
+    if rel_norm.startswith(("docs/development/guides/", "docs/reference/specs/", "docs/archive/post-canon/", "docs/archive/impact/", "docs/release/roadmap/", "docs/testing/ci/")):
         return "legacy_reference_only", "", "guide/spec backlog surface is not part of the current binding canon set"
     if any(token in lowered for token in EXCLUDED_SCOPE_KEYWORDS):
         return "legacy_reference_only", "", "document describes excluded or future domain scope for v0.0.0"
     if rel_norm.startswith("docs/canon/"):
         return "aligned", "", "binding canon surface"
-    if rel_norm.startswith(("docs/release/", "docs/mvp/", "docs/meta/", "docs/time/", "docs/sol/", "docs/domains/worldgen/", "docs/domains/geology/", "docs/logic/", "docs/runtime/shell/", "docs/packs/", "docs/server/", "docs/contracts/", "docs/compatibility/", "docs/runtime/network/", "docs/client/", "docs/universe/")):
+    if rel_norm.startswith(("docs/release/", "docs/release/mvp/", "docs/governance/meta/", "docs/engine/time/", "docs/domains/astronomy/sol/", "docs/domains/worldgen/", "docs/domains/geology/", "docs/domains/logic/", "docs/runtime/shell/", "docs/content/packs/", "docs/apps/server/", "docs/reference/contracts/", "docs/compatibility/", "docs/runtime/network/", "docs/apps/client/", "docs/domains/universe/")):
         return "aligned", "", "document aligns to implemented constitutional pillars or release gates"
-    if rel_norm.startswith("docs/audit/"):
+    if rel_norm.startswith("docs/archive/audit/"):
         return "aligned", "", "derived audit artifact aligned to current implemented state"
-    if rel_norm.startswith(("docs/apps/", "docs/build/", "docs/distribution/", "docs/reality/")):
+    if rel_norm.startswith(("docs/apps/", "docs/build/", "docs/distribution/", "docs/domains/reality/")):
         return "aligned", "", "document covers active app, build, distribution, or runtime surfaces"
     if rel_norm.startswith("docs/architecture/"):
         if any(token in lowered for token in CURRENT_SCOPE_KEYWORDS):
@@ -649,7 +649,7 @@ def _render_final_report(report: Mapping[str, object]) -> str:
     lines.extend(["", "## Top Missing Docs", ""])
     for row in gaps:
         lines.append("- `{}` `{}` -> `{}`".format(_token(row.get("priority")), _token(row.get("topic")), _token(row.get("suggested_doc"))))
-    lines.extend(["", "## Readiness", "", "- Entrypoint unification: ready with doc supersession map in place.", "- Validation unification: partially ready; canonical gap remains tracked in `docs/audit/DOC_GAPS.md`.", ""])
+    lines.extend(["", "## Readiness", "", "- Entrypoint unification: ready with doc supersession map in place.", "- Validation unification: partially ready; canonical gap remains tracked in `docs/archive/audit/DOC_GAPS.md`.", ""])
     return "\n".join(lines)
 
 

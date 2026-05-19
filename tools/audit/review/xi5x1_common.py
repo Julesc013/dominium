@@ -39,7 +39,7 @@ from tools.audit.review.xi4z_fix3_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-XI_5A_FINAL_REL = "docs/audit/XI_5A_FINAL.md"
+XI_5A_FINAL_REL = "docs/archive/audit/XI_5A_FINAL.md"
 XI5A_EXECUTION_LOG_REL = "archive/generated/restructure/xi5a_execution_log.json"
 XI5A_POSTMOVE_RESIDUAL_SRC_REPORT_REL = "archive/generated/restructure/xi5a_postmove_residual_src_report.json"
 
@@ -49,11 +49,11 @@ XI5X1_EXECUTION_LOG_REL = "archive/generated/restructure/xi5x1_execution_log.jso
 XI5X1_POSTMOVE_RESIDUAL_REPORT_REL = "archive/generated/restructure/xi5x1_postmove_residual_src_report.json"
 XI5X1_XI6_GATE_MODEL_REL = "archive/generated/restructure/xi5x1_xi6_gate_model.json"
 
-XI_5D_RESIDUAL_LOCK_REPORT_REL = "docs/audit/XI_5D_RESIDUAL_LOCK_REPORT.md"
-XI_5B_SAFE_BATCH_REPORT_REL = "docs/audit/XI_5B_SAFE_BATCH_REPORT.md"
-XI_5C_MERGE_AND_MANUAL_REVIEW_REPORT_REL = "docs/audit/XI_5C_MERGE_AND_MANUAL_REVIEW_REPORT.md"
-XI_5E_COMPLETION_REPORT_REL = "docs/audit/XI_5E_COMPLETION_REPORT.md"
-XI_5X1_FINAL_REL = "docs/audit/XI_5X1_FINAL.md"
+XI_5D_RESIDUAL_LOCK_REPORT_REL = "docs/archive/audit/XI_5D_RESIDUAL_LOCK_REPORT.md"
+XI_5B_SAFE_BATCH_REPORT_REL = "docs/archive/audit/XI_5B_SAFE_BATCH_REPORT.md"
+XI_5C_MERGE_AND_MANUAL_REVIEW_REPORT_REL = "docs/archive/audit/XI_5C_MERGE_AND_MANUAL_REVIEW_REPORT.md"
+XI_5E_COMPLETION_REPORT_REL = "docs/archive/audit/XI_5E_COMPLETION_REPORT.md"
+XI_5X1_FINAL_REL = "docs/archive/audit/XI_5X1_FINAL.md"
 
 VALIDATION_FAST_REL = "archive/generated/audit/validation_report_FAST.json"
 VALIDATION_STRICT_REL = "archive/generated/audit/validation_report_STRICT.json"

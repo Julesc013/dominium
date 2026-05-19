@@ -10,11 +10,11 @@ TEST_TAGS = ["fast", "meta", "model", "docs"]
 
 
 _REQUIRED_DOCS = (
-    "docs/audit/META_MODEL0_RETRO_AUDIT.md",
-    "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md",
-    "docs/meta/CONSTITUTIVE_MODEL_CATALOG.md",
-    "docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md",
-    "docs/audit/CONSTITUTIVE_MODEL_CONSTITUTION_BASELINE.md",
+    "docs/archive/audit/META_MODEL0_RETRO_AUDIT.md",
+    "docs/governance/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md",
+    "docs/governance/meta/CONSTITUTIVE_MODEL_CATALOG.md",
+    "docs/governance/meta/INFORMATION_GRAMMAR_CONSTITUTION.md",
+    "docs/archive/audit/CONSTITUTIVE_MODEL_CONSTITUTION_BASELINE.md",
 )
 
 

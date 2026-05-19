@@ -158,4 +158,4 @@ Implementations MUST provide tests for:
 ## Integration points
 - Control authority: `schema/life/SPEC_CONTROL_AUTHORITY.md`
 - Death and estate: `schema/life/SPEC_DEATH_AND_ESTATE.md`
-- Provenance: `docs/specs/SPEC_PROVENANCE.md`
+- Provenance: `docs/reference/specs/SPEC_PROVENANCE.md`

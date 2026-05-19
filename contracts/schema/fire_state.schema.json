@@ -5,7 +5,7 @@
   "description": "Deterministic THERM-4 fire state row.",
   "x-doc-ref": [
     "docs/domains/thermal/FIRE_AND_RUNAWAY_MODEL.md",
-    "docs/audit/FIRE_RUNAWAY_BASELINE.md"
+    "docs/archive/audit/FIRE_RUNAWAY_BASELINE.md"
   ],
   "type": "object",
   "required": [

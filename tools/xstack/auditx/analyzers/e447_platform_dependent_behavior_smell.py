@@ -8,12 +8,12 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E447_PLATFORM_DEPENDENT_BEHAVIOR_SMELL"
 RULE_ID = "INV-MVP-CROSS-PLATFORM-MUST-PASS"
-DOCTRINE_REL = "docs/mvp/MVP_CROSS_PLATFORM_GATE.md"
+DOCTRINE_REL = "docs/release/mvp/MVP_CROSS_PLATFORM_GATE.md"
 HELPER_REL = "tools/release/mvp/cross_platform_gate_common.py"
 TOOL_REL = "tools/release/mvp/tool_run_cross_platform_matrix.py"
 REPORT_REL = "build/mvp/mvp_cross_platform_matrix.json"
 BASELINE_REL = "tests/fixtures/regression/mvp_cross_platform_baseline.json"
-FINAL_REL = "docs/audit/MVP_CROSS_PLATFORM_FINAL.md"
+FINAL_REL = "docs/archive/audit/MVP_CROSS_PLATFORM_FINAL.md"
 TEST_RELS = (
     "tools/xstack/testx/tests/test_cross_platform_hash_agreement.py",
     "tools/xstack/testx/tests/test_portable_linked_parity.py",

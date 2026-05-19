@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E439_NONDETERMINISTIC_ARCHIVE_SMELL"
 REQUIRED_TOKENS = {
-    "docs/lib/EXPORT_IMPORT_FORMAT.md": (
+    "docs/runtime/storage/EXPORT_IMPORT_FORMAT.md": (
         "fixed timestamp `2000-01-01T00:00:00Z`",
         "archive container metadata does not affect `bundle_hash`",
         "No OS-specific metadata is permitted in archive entries.",

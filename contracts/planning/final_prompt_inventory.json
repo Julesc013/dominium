@@ -411,9 +411,9 @@
         "Σ-5"
       ],
       "prerequisite_artifacts": [
-        "docs/agents",
+        "docs/game/agents",
         "docs/governance",
-        "docs/xstack",
+        "docs/development/xstack",
         "tools/controlx",
         "tools/xstack"
       ],
@@ -512,7 +512,7 @@
         "Σ-5"
       ],
       "prerequisite_artifacts": [
-        "docs/agents/AGENT_PLANNING.md",
+        "docs/game/agents/AGENT_PLANNING.md",
         "tools/xstack/controlx/controlx.py",
         "data/planning/reconciliation/assumption_invalidations.json"
       ],
@@ -686,7 +686,7 @@
       "prerequisite_artifacts": [
         "compat/migration_lifecycle.py",
         "server/persistence/dom_checkpointing.cpp",
-        "docs/specs/launcher/CLI.md"
+        "docs/reference/specs/launcher/CLI.md"
       ],
       "expected_outputs": [
         "state externalization specification",
@@ -883,7 +883,7 @@
       "prerequisite_artifacts": [
         "schema/release/build_id.schema",
         "schema/identity/artifact_identity.schema",
-        "docs/specs/SPEC_IDENTITY.md",
+        "docs/reference/specs/SPEC_IDENTITY.md",
         "repo/release_policy.toml"
       ],
       "expected_outputs": [
@@ -1174,7 +1174,7 @@
       "prerequisite_artifacts": [
         "tools/release/update_resolver.py",
         "updates/stable.json",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "expected_outputs": [
         "disaster and downgrade policy",
@@ -1243,7 +1243,7 @@
         "repo/release_policy.toml",
         "schema/release/build_id.schema",
         "schema/identity/artifact_identity.schema",
-        "docs/audit/RELEASE0_RETRO_AUDIT.md"
+        "docs/archive/audit/RELEASE0_RETRO_AUDIT.md"
       ],
       "expected_outputs": [
         "release_contract_profile.schema",
@@ -1271,7 +1271,7 @@
         "Υ-16"
       ],
       "prerequisite_artifacts": [
-        "docs/audit/RELEASE0_RETRO_AUDIT.md",
+        "docs/archive/audit/RELEASE0_RETRO_AUDIT.md",
         "schema/identity/artifact_identity.schema",
         "repo/release_policy.toml"
       ],
@@ -1394,8 +1394,8 @@
         "Ζ-3"
       ],
       "prerequisite_artifacts": [
-        "docs/blueprint/FOUNDATION_PHASES.md",
-        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
+        "docs/archive/blueprint/FOUNDATION_PHASES.md",
+        "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
         "data/planning/reconciliation/subsystem_classification.json"
       ],
       "expected_outputs": [
@@ -1431,7 +1431,7 @@
       "prerequisite_artifacts": [
         "server/persistence/dom_checkpointing.cpp",
         "server/persistence/dispute_bundle.cpp",
-        "docs/blueprint/FINAL_PROMPT_INVENTORY.md"
+        "docs/archive/blueprint/FINAL_PROMPT_INVENTORY.md"
       ],
       "expected_outputs": [
         "snapshot service design or implementation package",
@@ -1461,8 +1461,8 @@
       ],
       "prerequisite_artifacts": [
         "client/render",
-        "docs/blueprint/FOUNDATION_PHASES.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_PHASES.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "expected_outputs": [
         "framegraph design or implementation package"
@@ -1488,7 +1488,7 @@
       "blocks": [],
       "prerequisite_artifacts": [
         "client/render",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
         "CMakeLists.txt"
       ],
       "expected_outputs": [
@@ -1554,8 +1554,8 @@
         "Ζ-2"
       ],
       "prerequisite_artifacts": [
-        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/SERIES_EXECUTION_STRATEGY.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
         "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
       ],
       "expected_outputs": [
@@ -1590,7 +1590,7 @@
       "prerequisite_artifacts": [
         "apps/client/main_client.c",
         "server/tests/shard_api_tests.cpp",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "expected_outputs": [
         "distributed authority review package",
@@ -1620,8 +1620,8 @@
         "Ζ-2"
       ],
       "prerequisite_artifacts": [
-        "docs/blueprint/CAPABILITY_LADDER.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/CAPABILITY_LADDER.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "expected_outputs": [
         "replaceability criteria",
@@ -1649,8 +1649,8 @@
       "blocks": [],
       "prerequisite_artifacts": [
         "appshell/supervisor",
-        "docs/blueprint/FOUNDATION_PHASES.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_PHASES.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "expected_outputs": [
         "service restart policy",
@@ -1677,9 +1677,9 @@
       ],
       "blocks": [],
       "prerequisite_artifacts": [
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-        "docs/blueprint/CAPABILITY_LADDER.md",
-        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md",
+        "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
       ],
       "expected_outputs": [
         "gated module reload implementation plan"
@@ -1707,7 +1707,7 @@
       ],
       "prerequisite_artifacts": [
         "server/persistence",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "expected_outputs": [
         "non-blocking save implementation plan",
@@ -1737,7 +1737,7 @@
       "prerequisite_artifacts": [
         "compat/migration_lifecycle.py",
         "server/persistence/dom_checkpointing.cpp",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "expected_outputs": [
         "gated live save migration plan",
@@ -1766,7 +1766,7 @@
       "prerequisite_artifacts": [
         "tools/release/update_resolver.py",
         "updates/stable.json",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "expected_outputs": [
         "canary, rollback, and cutover operations policy"
@@ -1795,7 +1795,7 @@
       "prerequisite_artifacts": [
         "security/trust",
         "tools/securex",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "expected_outputs": [
         "trust-root live-change criteria",
@@ -1827,8 +1827,8 @@
       ],
       "prerequisite_artifacts": [
         "server/tests/shard_routing_tests.cpp",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-        "docs/blueprint/CAPABILITY_LADDER.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md"
       ],
       "expected_outputs": [
         "deferred distributed live-ops gate",
@@ -1854,9 +1854,9 @@
       ],
       "blocks": [],
       "prerequisite_artifacts": [
-        "docs/blueprint/PIPE_DREAMS_MATRIX.md",
-        "docs/blueprint/CAPABILITY_LADDER.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/PIPE_DREAMS_MATRIX.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "expected_outputs": [
         "placeholder research brief or explicit deferment"

@@ -46,7 +46,7 @@ def run(graph, repo_root, changed_files=None):
     schema_rel = "contracts/schema/system/system_template.schema"
     pack_registry_rel = "content/packs/core/system_templates.base/data/system_template_registry.json"
     core_registry_rel = "contracts/registry/system_template_registry.json"
-    docs_rel = "docs/system/SYSTEM_TEMPLATES.md"
+    docs_rel = "docs/architecture/system/SYSTEM_TEMPLATES.md"
 
     for rel in (schema_rel, pack_registry_rel, core_registry_rel, docs_rel):
         if os.path.isfile(os.path.join(repo_root, rel.replace("/", os.sep))):

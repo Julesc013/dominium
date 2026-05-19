@@ -12,7 +12,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
 - Required updates: documentation surface exists, but current canon ownership is not explicit
-- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+- Cross-check with: `docs/archive/audit/CANON_MAP.md` and `docs/archive/audit/DOC_DRIFT_MATRIX.md`.
 
 
 Developer wrappers are convenience surfaces only. RepoX/TestX/CI must continue using canonical adapter and tool policies.
@@ -43,7 +43,7 @@ Prompt 19 command surface:
 - `python tools/repo/dev/dev.py verify`
 - `python tools/repo/dev/dev.py profile`
 - `python tools/repo/dev/tool_profile_capture.py --session-id session.dev.profile --scenario-id scenario.lab.galaxy_nav`
-- `python tools/repo/dev/tool_profile_report.py --trace docs/audit/perf/profile_trace.sample.json`
+- `python tools/repo/dev/tool_profile_report.py --trace docs/archive/audit/perf/profile_trace.sample.json`
 
 Notes:
 
@@ -51,7 +51,7 @@ Notes:
 - `run <target>` routes through SessionSpec creation + boot (+ deterministic script replay for non-observer targets).
 - `audit` routes through `tools/xstack/auditx/auditx.py scan`.
 - `verify` routes through `tools/xstack/run.py strict`.
-- `profile` captures `docs/audit/perf/profile_trace.sample.json` and renders `docs/audit/perf/profile_trace.sample.md`.
+- `profile` captures `docs/archive/audit/perf/profile_trace.sample.json` and renders `docs/archive/audit/perf/profile_trace.sample.md`.
 
 Supported commands:
 
@@ -106,10 +106,10 @@ Behavior:
 - canonicalizes tool PATH in-process
 - runs gate policy classes deterministically (minimal precheck and strict exitcheck)
 - supports targeted execution with `--only-gate <gate_id>` for dependency gate diagnostics
-- emits remediation artifacts to `docs/audit/remediation/...`
-- emits remediation artifacts to `docs/audit/remediation/<workspace_id>/...`
+- emits remediation artifacts to `docs/archive/audit/remediation/...`
+- emits remediation artifacts to `docs/archive/audit/remediation/<workspace_id>/...`
 - verify/strict/full are tracked-read-only and write diagnostics under `.xstack_cache/`
-- snapshot is the only mode allowed to write `SNAPSHOT_ONLY` artifacts to `docs/audit/`
+- snapshot is the only mode allowed to write `SNAPSHOT_ONLY` artifacts to `docs/archive/audit/`
 
 Sanctioned legacy wrappers:
 

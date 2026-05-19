@@ -102,7 +102,7 @@ Primary references:
 
 - `schema/SCHEMA_VERSIONING.md`
 - `schema/SCHEMA_VALIDATION.md`
-- `docs/SCHEMA_EVOLUTION.md`
+- `docs/reference/schema/SCHEMA_EVOLUTION.md`
 
 ## Updating Registries
 
@@ -148,7 +148,7 @@ and corresponding tests:
 When changing contracts or behavior:
 
 1. Update docs in `docs/` in the same change.
-2. Keep terms aligned with `docs/GLOSSARY.md`.
+2. Keep terms aligned with `docs/reference/GLOSSARY.md`.
 3. Cross-link to schema/registry paths, not vague concepts.
 4. Regenerate derived audit docs only when the underlying run actually changed.
 

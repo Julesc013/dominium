@@ -93,7 +93,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "docs/mobility/VEHICLE_INTERIORS.md",
+                                "docs/domains/mobility/VEHICLE_INTERIORS.md",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

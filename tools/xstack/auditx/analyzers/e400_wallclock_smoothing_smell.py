@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E400_WALLCLOCK_SMOOTHING_SMELL"
 SMOOTHING_REL = "game/domain/embodiment/lens/camera_smoothing.py"
 VIEWER_SHELL_REL = "runtime/ui/client/viewer_shell.py"
-DOC_REL = "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
+DOC_REL = "docs/domains/embodiment/LOCOMOTION_POLISH_MODEL.md"
 REQUIRED_TOKENS = {
     SMOOTHING_REL: (
         "resolve_smoothed_camera_state(",

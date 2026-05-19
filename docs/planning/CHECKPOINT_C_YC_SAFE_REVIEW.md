@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: risky `Φ-B4`, later checkpoint before `Φ-B5`, selected `Υ-D`, future `Ζ`
 Replacement Target: later post-`Φ-B4` checkpoint and any narrower post-runtime/cutover reassessment may refine readiness judgments without replacing the checkpoint law frozen here
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md`, `docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB3_YB.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md`, `docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `tools/validators/security/trust/trust_verifier.py`, `tools/release/update_resolver.py`, `contracts/repo/release_policy.toml`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `contracts/registry/provenance_classification_registry.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md`, `docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB3_YB.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md`, `docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/archive/blueprint/MANUAL_REVIEW_GATES.md`, `tools/validators/security/trust/trust_verifier.py`, `tools/release/update_resolver.py`, `contracts/repo/release_policy.toml`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `contracts/registry/provenance_classification_registry.json`
 
 # C-ΥC_SAFE_REVIEW
 
@@ -87,7 +87,7 @@ Completed work is still not sufficient to reopen `Φ-B5` beyond a premature stat
 Why:
 
 - `docs/runtime/MULTI_VERSION_COEXISTENCE.md` explicitly forbids distributed split-authority coexistence by convenience
-- `docs/blueprint/FOUNDATION_READINESS_MATRIX.md` still classifies `Distributed shard relocation` as `unrealistic_currently`
+- `docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md` still classifies `Distributed shard relocation` as `unrealistic_currently`
 - live trust-root rotation remains foundation-ready but not implemented, with trust-root state still empty in `contracts/registry/trust_root_registry.json`
 - trust policy remains provisional in `contracts/registry/trust_policy_registry.json`
 - the repo still lacks explicit deterministic replication, authority handoff, quorum proof, and state-partition transfer proof surfaces
@@ -148,7 +148,7 @@ Rationale:
 - distributed authority still lacks explicit authority handoff law, deterministic replication posture, and state-partition transfer proof
 - the trust stack is more explicit, but still not operationally mature enough for live distributed authority claims
 - `tools/validators/security/trust/trust_verifier.py` and `tools/release/update_resolver.py` prove local trust-bearing control-plane handling exists, but not distributed trust convergence or distributed revocation choreography
-- `docs/blueprint/FOUNDATION_READINESS_MATRIX.md` still records `Distributed shard relocation` as `unrealistic_currently`
+- `docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md` still records `Distributed shard relocation` as `unrealistic_currently`
 
 `Φ-B5` therefore remains downstream of both `Φ-B4` and later checkpointed reassessment.
 
@@ -164,7 +164,7 @@ Why:
 
 - trust roots are still empty in canonical registry state
 - trust policies are still provisional
-- `docs/blueprint/MANUAL_REVIEW_GATES.md` still keeps trust-root governance changes under `FULL` review with rotation choreography and downgrade plus revocation proof requirements
+- `docs/archive/blueprint/MANUAL_REVIEW_GATES.md` still keeps trust-root governance changes under `FULL` review with rotation choreography and downgrade plus revocation proof requirements
 - live propagation semantics should not be frozen before `Φ-B4` clarifies runtime-affecting cutover boundaries
 
 ### E.2 Live-Cutover Receipt And Runtime Continuity Generalization

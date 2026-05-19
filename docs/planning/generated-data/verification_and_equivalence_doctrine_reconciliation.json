@@ -5,9 +5,9 @@
   "stability": "provisional",
   "last_reviewed": "2026-04-06",
   "binding_sources": [
-    "docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
-    "docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md",
-    "docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+    "docs/reference/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "docs/reference/specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+    "docs/reference/specs/reality/SPEC_FORMALIZATION_CHAIN.md",
     "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
     "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
     "docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md",

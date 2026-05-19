@@ -1291,7 +1291,7 @@ def _adapt_arch_audit_suite(repo_root: str, suite_row: Mapping[str, object], pro
         suite_order=int(suite_row.get("suite_order", 0) or 0),
         adapter_id=_token(suite_row.get("adapter_id")),
         description=_token(suite_row.get("description")),
-        checked_paths=["docs/audit/ARCH_AUDIT_REPORT.md", "archive/generated/audit/arch_audit_report.json"],
+        checked_paths=["docs/archive/audit/ARCH_AUDIT_REPORT.md", "archive/generated/audit/arch_audit_report.json"],
         result="complete" if not errors else "refused",
         message="arch audit {} (blocking={}, known={})".format(
             "passed" if not errors else "found_errors",

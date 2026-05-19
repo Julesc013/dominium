@@ -28,7 +28,7 @@ Any later `canonical`, `authoritative`, or `current directory layout` wording in
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
 - Required updates: ownership intent remains useful, but the concrete top-level layout is stale relative to the real repository tree
-- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+- Cross-check with: `docs/archive/audit/CANON_MAP.md` and `docs/archive/audit/DOC_DRIFT_MATRIX.md`.
 
 
 

@@ -36,10 +36,10 @@ from tools.validators.shell.appshell4_probe import run_ipc_attach_probe, verify_
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-IPC_SURFACE_MAP_PATH = "docs/audit/IPC_SURFACE_MAP.md"
-IPC_DUPLICATION_FIXES_PATH = "docs/audit/IPC_DUPLICATION_FIXES.md"
+IPC_SURFACE_MAP_PATH = "docs/archive/audit/IPC_SURFACE_MAP.md"
+IPC_DUPLICATION_FIXES_PATH = "docs/archive/audit/IPC_DUPLICATION_FIXES.md"
 IPC_DISCOVERY_DOC_PATH = "docs/runtime/shell/IPC_DISCOVERY.md"
-IPC_UNIFY_FINAL_PATH = "docs/audit/IPC_UNIFY_FINAL.md"
+IPC_UNIFY_FINAL_PATH = "docs/archive/audit/IPC_UNIFY_FINAL.md"
 IPC_UNIFY_REPORT_PATH = "archive/generated/audit/ipc_unify_report.json"
 IPC_UNIFY_TOOL_PATH = "tools/validators/shell/tool_run_ipc_unify.py"
 IPC_UNIFY_REPORT_ID = "appshell.ipc_unify.v1"

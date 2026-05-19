@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic ELEC-2 protection device row.",
   "x-doc-ref": [
-    "docs/electric/PROTECTION_AND_FAULT_MODEL.md",
-    "docs/audit/ELECTRICAL_PROTECTION_BASELINE.md"
+    "docs/domains/electricity/PROTECTION_AND_FAULT_MODEL.md",
+    "docs/archive/audit/ELECTRICAL_PROTECTION_BASELINE.md"
   ],
   "type": "object",
   "required": [

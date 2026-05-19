@@ -94,4 +94,4 @@ Policy uses `resync.hybrid.shard_snapshot`.
 - `schemas/shard_map.schema.json`
 - `contracts/registry/shard_map_registry.json`
 - `contracts/registry/perception_interest_policy_registry.json`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`

@@ -64,5 +64,5 @@ Policies are data-defined under:
 
 - `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md`
 - `docs/runtime/network/DIEGETIC_CHANNELS_OVER_NETWORK.md`
-- `docs/contracts/authority_context.md`
-- `docs/contracts/law_profile.md`
+- `docs/reference/contracts/authority_context.md`
+- `docs/reference/contracts/law_profile.md`

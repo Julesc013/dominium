@@ -12,7 +12,7 @@ ANALYZER_ID = "E321_TRUTH_LEAK_VIA_DEBUG_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e321_truth_leak_via_debug_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/DEBUG_AND_INSTRUMENTATION.md",
+    "docs/domains/logic/DEBUG_AND_INSTRUMENTATION.md",
     "game/domain/logic/debug/",
     "tools/domain/logic/tool_replay_trace_window.py",
 )
@@ -57,7 +57,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    doctrine_rel = "docs/logic/DEBUG_AND_INSTRUMENTATION.md"
+    doctrine_rel = "docs/domains/logic/DEBUG_AND_INSTRUMENTATION.md"
     doctrine_text = _read_text(repo_root, doctrine_rel).lower()
     for token in ("without omniscience", "epistemic", "remote monitoring requires", "force expand"):
         if token in doctrine_text:

@@ -46,8 +46,8 @@ XI5_READINESS_CONTRACT_V4_REL = "contracts/restructure/xi5_readiness_contract_v4
 SRC_DOMAIN_MAPPING_TARGET_PATHS_V4_REL = "archive/generated/restructure/src_domain_mapping_target_paths_v4.json"
 XI4Z_FIX3_REPORT_JSON_REL = "archive/generated/restructure/xi4z_fix3_report.json"
 
-XI_4Z_SHADOW_ROOT_RESOLUTION_REPORT_REL = "docs/restructure/XI_4Z_SHADOW_ROOT_RESOLUTION_REPORT.md"
-XI_4Z_FIX3_FINAL_REL = "docs/audit/XI_4Z_FIX3_FINAL.md"
+XI_4Z_SHADOW_ROOT_RESOLUTION_REPORT_REL = "docs/archive/restructure/XI_4Z_SHADOW_ROOT_RESOLUTION_REPORT.md"
+XI_4Z_FIX3_FINAL_REL = "docs/archive/audit/XI_4Z_FIX3_FINAL.md"
 
 FIX3_OUTPUT_RELS = (
     SRC_DOMAIN_MAPPING_LOCK_APPROVED_V4_REL,

@@ -11,7 +11,7 @@ ANALYZER_ID = "E319_SILENT_COMPILED_INVALIDATION_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e319_silent_compiled_invalidation_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/LOGIC_COMPILATION_MODEL.md",
+    "docs/domains/logic/LOGIC_COMPILATION_MODEL.md",
     "game/domain/logic/eval/logic_eval_engine.py",
     "tools/domain/logic/tool_replay_logic_window.py",
     "tools/domain/logic/tool_replay_compiled_logic_window.py",
@@ -39,7 +39,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    doctrine_rel = "docs/logic/LOGIC_COMPILATION_MODEL.md"
+    doctrine_rel = "docs/domains/logic/LOGIC_COMPILATION_MODEL.md"
     doctrine_text = _read_text(repo_root, doctrine_rel).lower()
     for token in ("must not silently change path", "explicit fallback", "forced expand"):
         if token in doctrine_text:

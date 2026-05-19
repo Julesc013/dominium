@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E38_DEMOGRAPHY_LEAK_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 OBSERVATION_PATH = "tools/xstack/sessionx/observation.py"
-DOC_PATH = "docs/civilisation/DEMOGRAPHY_OPTIONALITY.md"
+DOC_PATH = "docs/domains/civilization/DEMOGRAPHY_OPTIONALITY.md"
 
 
 def _norm(path: str) -> str:

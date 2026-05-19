@@ -148,7 +148,7 @@
       "data/registries/trust_policy_registry.json",
       "tools/xstack/controlx/README.md",
       "tools/xstack/controlx/controlx.py",
-      "docs/xstack/CI_GUARDRAILS.md",
+      "docs/development/xstack/CI_GUARDRAILS.md",
       "tools/xstack/ci/xstack_ci_entrypoint.py",
       "tools/release/dist/dist_tree_common.py"
     ]

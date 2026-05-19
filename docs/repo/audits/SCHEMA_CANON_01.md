@@ -86,7 +86,7 @@ All moved tracked files were moved with `git mv`.
 - `contracts/schema/SCHEMA_MIGRATION.md`
 - `contracts/schema/SCHEMA_VERSIONING.md`
 - `docs/repo/MOVE_MAP.md`
-- `docs/audit/security/INTEGRITY_MANIFEST.json`
+- `docs/archive/audit/security/INTEGRITY_MANIFEST.json`
 - `scripts/ci/check_repox_rules.py`
 - `tests/invariant/process_registry_execution_tests.py`
 - `tests/invariant/process_registry_tests.py`
@@ -119,7 +119,7 @@ The focused validator test `tests/schema/schema_taxonomy_validator_tests.py` cov
 
 ## Generated And Historical References Skipped
 
-Stale old schema paths remain in generated or historical audit evidence such as `docs/audit/**`, `.aide/**`, and migration route inventories. They were not hand-edited because they are generated/historical evidence rather than current schema authority.
+Stale old schema paths remain in generated or historical audit evidence such as `docs/archive/audit/**`, `.aide/**`, and migration route inventories. They were not hand-edited because they are generated/historical evidence rather than current schema authority.
 
 ## Validation Results
 

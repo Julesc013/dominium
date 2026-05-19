@@ -74,7 +74,7 @@ after full CTest exposed the stale import in setup/install lanes.
 Historical and generated inventories still mention old paths and were not hand-edited:
 
 - `.aide/**` generated reports, maps, observations, and repair context
-- `docs/audit/**` historical audit reports
+- `docs/archive/audit/**` historical audit reports
 - `docs/repo/audits/CANON_DEBT_CLEANUP_01.md` prior audit record
 - generated architecture/module registries
 

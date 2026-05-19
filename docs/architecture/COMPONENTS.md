@@ -18,7 +18,7 @@ This document describes the current top-level components and their build
 products. It complements `docs/architecture/ARCHITECTURE.md` and
 
 
-`docs/guides/DEPENDENCIES.md`. Directory layout is authoritative in
+`docs/development/guides/DEPENDENCIES.md`. Directory layout is authoritative in
 
 
 `docs/architecture/DIRECTORY_CONTEXT.md`.

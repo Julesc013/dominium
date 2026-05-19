@@ -27,7 +27,7 @@ Implement or review client UI changes while preserving law/authority gating and 
 4. Verify observer/renderer/truth boundaries remain intact.
    - renderer/presentation code must not include `domino/truth_model_v1.h`
 5. Verify missing entitlement/missing pack behavior is explicit refusal.
-6. Update docs/contracts for changed surface semantics.
+6. Update docs/reference/contracts for changed surface semantics.
 7. Run required tests/gates for UI and determinism safety.
    - `tools/xstack/run fast`
    - `tools/xstack/run strict`
@@ -62,8 +62,8 @@ Use skill.client_ui to add a new navigation panel:
 
 ## Cross-References
 - `docs/canon/constitution_v1.md`
-- `docs/contracts/lens_contract.md`
-- `docs/contracts/authority_context.md`
+- `docs/reference/contracts/lens_contract.md`
+- `docs/reference/contracts/authority_context.md`
 - `docs/architecture/truth_model.md`
 - `docs/architecture/truth_perceived_render.md`
 - `docs/architecture/ui_registry.md`

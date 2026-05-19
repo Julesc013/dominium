@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic camera view mode registry output.",
   "x-doc-ref": [
-    "docs/embodiment/CAMERA_AND_VIEW_LENSES.md",
+    "docs/domains/embodiment/CAMERA_AND_VIEW_LENSES.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

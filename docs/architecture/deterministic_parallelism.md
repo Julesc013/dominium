@@ -86,4 +86,4 @@ resolved canonical order:
 - `docs/canon/constitution_v1.md`
 - `docs/architecture/srz_contract.md`
 - `docs/architecture/hash_anchors.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`

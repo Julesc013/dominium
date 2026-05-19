@@ -5,7 +5,7 @@
   "description": "Deterministic material phase-threshold profile used by THERM phase transition models.",
   "x-doc-ref": [
     "docs/domains/thermal/PHASE_CHANGE_AND_CURING.md",
-    "docs/audit/THERM_PHASE_CURE_BASELINE.md"
+    "docs/archive/audit/THERM_PHASE_CURE_BASELINE.md"
   ],
   "type": "object",
   "required": [

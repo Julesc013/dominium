@@ -3,7 +3,7 @@ Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/runtime/shell/APPSHELL_CONSTITUTION.md`, `docs/runtime/shell/COMMANDS_AND_REFUSALS.md`, `docs/runtime/shell/LOGGING_AND_TRACING.md`, and `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`.
+Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/runtime/shell/APPSHELL_CONSTITUTION.md`, `docs/runtime/shell/COMMANDS_AND_REFUSALS.md`, `docs/runtime/shell/LOGGING_AND_TRACING.md`, and `docs/reference/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`.
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: canon-aligned documentation set for convergence and release preparation

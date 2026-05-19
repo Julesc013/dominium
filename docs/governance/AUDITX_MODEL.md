@@ -14,7 +14,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
 - Required updates: documentation surface exists, but current canon ownership is not explicit
-- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+- Cross-check with: `docs/archive/audit/CANON_MAP.md` and `docs/archive/audit/DOC_DRIFT_MATRIX.md`.
 
 
 ## Purpose
@@ -62,7 +62,7 @@ Promotion is explicit and tracked:
 - AuditX does not introduce simulation primitives.
 
 ## Output Contract
-Primary output root: `docs/audit/auditx/`
+Primary output root: `docs/archive/audit/auditx/`
 - `FINDINGS.json`
 - `FINDINGS.md`
 - `SUMMARY.md`
@@ -86,4 +86,4 @@ Optional derived support artifacts may be emitted but must remain deterministic.
 - `docs/governance/REPOX_RULESETS.md`
 - `docs/governance/TESTX_ARCHITECTURE.md`
 - `docs/testing/xstack_profiles.md`
-- `docs/audit/auditx/README.md`
+- `docs/archive/audit/auditx/README.md`

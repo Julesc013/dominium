@@ -86,4 +86,4 @@ These are adapters only. Identity and compatibility remain hash-pinned.
 - `docs/architecture/SAVE_PIPELINE.md`
 - `docs/architecture/SAVE_FORMAT.md`
 - `docs/distribution/LAUNCHER_GUIDE.md`
-- `docs/audit/SAVE_MANIFEST_BASELINE.md`
+- `docs/archive/audit/SAVE_MANIFEST_BASELINE.md`

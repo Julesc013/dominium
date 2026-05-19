@@ -35,7 +35,7 @@ def main() -> int:
         version_hash="runner.version.a",
         exit_code=0,
         output_hash="output.hash.a",
-        artifacts_produced=["docs/audit/proof_manifest.json"],
+        artifacts_produced=["docs/archive/audit/proof_manifest.json"],
         timestamp_utc="2026-02-14T00:00:00Z",
         cache_root=cache_root,
     )

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical deterministic construction policy entry payload.",
   "x-doc-ref": [
-    "docs/materials/CONSTRUCTION_AND_INSTALLATION.md"
+    "docs/domains/materials/CONSTRUCTION_AND_INSTALLATION.md"
   ],
   "type": "object",
   "required": [

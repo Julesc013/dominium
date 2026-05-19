@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic registry output for RS-5 budget envelopes.",
   "x-doc-ref": [
-    "docs/reality/PERFORMANCE_CONSTITUTION.md",
+    "docs/domains/reality/PERFORMANCE_CONSTITUTION.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

@@ -70,7 +70,7 @@ All of the following must pass before Ω-11 signoff is accepted:
   - `python tools/package/setup/setup_cli.py packs verify --root archive/generated/dist/v0.0.0-mock/win64/dominium`
 - PERFORMANCE baseline capture retained and current
   - `python tools/performance/envelope/tool_run_performance_envelope.py --repo-root . --platform-tag win64`
-  - retained supporting baseline: `docs/audit/performance/PERFORMX_BASELINE.json`
+  - retained supporting baseline: `docs/archive/audit/performance/PERFORMX_BASELINE.json`
 
 ## B) Target Selection
 

@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic MOB-6 coupling constraint row for consists.",
   "x-doc-ref": [
-    "docs/mobility/MICRO_CONSTRAINED_MOTION.md",
-    "docs/audit/MICRO_CONSTRAINED_MOTION_BASELINE.md"
+    "docs/domains/mobility/MICRO_CONSTRAINED_MOTION.md",
+    "docs/archive/audit/MICRO_CONSTRAINED_MOTION_BASELINE.md"
   ],
   "type": "object",
   "required": [

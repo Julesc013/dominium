@@ -7,8 +7,8 @@ import sys
 
 
 CANONICAL_REL = (
-    "docs/audit/performance/PERFORMX_RESULTS.json",
-    "docs/audit/performance/PERFORMX_REGRESSIONS.json",
+    "docs/archive/audit/performance/PERFORMX_RESULTS.json",
+    "docs/archive/audit/performance/PERFORMX_REGRESSIONS.json",
 )
 
 

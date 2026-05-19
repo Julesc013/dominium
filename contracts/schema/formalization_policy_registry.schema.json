@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic FORM-1 formalization policy registry output.",
   "x-doc-ref": [
-    "docs/infrastructure/FORMALIZATION_MODEL.md",
+    "docs/domains/infrastructure/FORMALIZATION_MODEL.md",
     "docs/architecture/registry_compile.md",
     "schemas/formalization_policy.schema.json"
   ],

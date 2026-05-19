@@ -566,7 +566,7 @@ class Router:
         if has_any(source, {"capability"}):
             return join_target("contracts/capability", rest), "capability spec", "canonical"
         if is_markdown(source):
-            return join_target("docs/specs", rest), "human spec", "canonical"
+            return join_target("docs/reference/specs", rest), "human spec", "canonical"
         if is_contractlike(source) or is_data(source):
             return join_target("contracts/specs", rest), "contract spec", "canonical"
         return None, "spec role unclear", "quarantine"

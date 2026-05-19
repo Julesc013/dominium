@@ -42,7 +42,7 @@ This document extends APP-CANON0 without replacing it.
 ## Multi-instance and multi-version safety
 - Instance isolation is strict; profiles do not cross instances.
 - Version mismatches are explicit refusals.
-- Lockfile semantics are documented in `docs/ops/INSTANCE_ISOLATION.md`.
+- Lockfile semantics are documented in `docs/operations/INSTANCE_ISOLATION.md`.
 
 ## SRZ read-only visibility
 - Applications may display SRZ status but never control it.

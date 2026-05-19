@@ -50,7 +50,7 @@ Raw term matches remain high because the repository intentionally retains histor
 | `README.md` | `repo/` governance root | current_path_instruction | updated | Clarified `contracts/repo/` and `docs/repo/` as current governance layout surfaces; root `repo/` remains transitional/review. |
 | `docs/architecture/ARCH_REPO_LAYOUT.md` | `client/`, `server/`, `launcher/`, `setup/`, `schema/`, old canonical layout heading | current_authority_claim | updated | Added final CONVERGE-12 note and demoted the old canonical layout heading for physical paths. |
 | `docs/architecture/DIRECTORY_CONTEXT.md` | old authoritative directory contract and old product/schema roots | current_authority_claim | updated | Added final CONVERGE-12 note and converted current-authority wording to historical context. |
-| `docs/restructure/FUTURE_LAYOUT_PROPOSAL.md` | `/src` proposal, `schema/`, `schemas/`, `appshell/`, product roots | superseded_reference | cross_reference_added | Retained as planning input; added final note that current contracts supersede the proposal. |
+| `docs/archive/restructure/FUTURE_LAYOUT_PROPOSAL.md` | `/src` proposal, `schema/`, `schemas/`, `appshell/`, product roots | superseded_reference | cross_reference_added | Retained as planning input; added final note that current contracts supersede the proposal. |
 | `docs/architecture/CANON_INDEX.md` | canonical doc index listing older path docs | current_authority_claim | cross_reference_added | Added final note that this index is not current physical layout authority. |
 | `docs/repo/STALE_LAYOUT_AUTHORITY.md` | stale authority inventory | current_authority_claim | updated | Marked CONVERGE-12 review status and listed patched docs. |
 | `docs/release/*_mock.md` | target/interop matrix mock paths | superseded_reference | cross_reference_added | Release/component matrix contract now owns current support posture. |
@@ -68,7 +68,7 @@ The highest-risk stale authority surfaces were:
 - `README.md`
 - `docs/architecture/ARCH_REPO_LAYOUT.md`
 - `docs/architecture/DIRECTORY_CONTEXT.md`
-- `docs/restructure/FUTURE_LAYOUT_PROPOSAL.md`
+- `docs/archive/restructure/FUTURE_LAYOUT_PROPOSAL.md`
 - `docs/architecture/CANON_INDEX.md`
 
 Each now points readers to current source layout authority:

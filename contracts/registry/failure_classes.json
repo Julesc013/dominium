@@ -15,7 +15,7 @@
           "test_testx_empty_path",
           "test_testx_arbitrary_cwd"
         ],
-        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#tool_discovery",
+        "explanation_doc": "docs/archive/audit/system/FAILURE_CLASSES.md#tool_discovery",
         "severity": "fail",
         "mechanical": true,
         "extensions": {},
@@ -39,7 +39,7 @@
           "test_canonical_artifact_hash_stability",
           "test_no_timestamp_in_canonical"
         ],
-        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#derived_artifact_stale",
+        "explanation_doc": "docs/archive/audit/system/FAILURE_CLASSES.md#derived_artifact_stale",
         "severity": "fail",
         "mechanical": true,
         "extensions": {},
@@ -62,7 +62,7 @@
           "compatx_schema_diff_tests",
           "compatx_migration_tests"
         ],
-        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#schema_mismatch",
+        "explanation_doc": "docs/archive/audit/system/FAILURE_CLASSES.md#schema_mismatch",
         "severity": "fail",
         "mechanical": true,
         "extensions": {},
@@ -84,7 +84,7 @@
         "regression_tests": [
           "historical_blocker_direct_gate_invocation"
         ],
-        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#ui_bind_drift",
+        "explanation_doc": "docs/archive/audit/system/FAILURE_CLASSES.md#ui_bind_drift",
         "severity": "fail",
         "mechanical": true,
         "extensions": {},
@@ -107,7 +107,7 @@
           "queue_continue_tests",
           "controlx_smoke"
         ],
-        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#build_output_missing",
+        "explanation_doc": "docs/archive/audit/system/FAILURE_CLASSES.md#build_output_missing",
         "severity": "fail",
         "mechanical": true,
         "extensions": {},
@@ -132,7 +132,7 @@
           "test_performx_empty_path",
           "test_performx_arbitrary_cwd"
         ],
-        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#path_cwd_dependency",
+        "explanation_doc": "docs/archive/audit/system/FAILURE_CLASSES.md#path_cwd_dependency",
         "severity": "fail",
         "mechanical": true,
         "extensions": {},
@@ -157,7 +157,7 @@
           "performx_workspace_isolation",
           "workspace_isolation_tests"
         ],
-        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#workspace_collision",
+        "explanation_doc": "docs/archive/audit/system/FAILURE_CLASSES.md#workspace_collision",
         "severity": "fail",
         "mechanical": true,
         "extensions": {},
@@ -180,7 +180,7 @@
           "historical_blocker_identity_drift",
           "test_identity_explanation_required"
         ],
-        "explanation_doc": "docs/audit/system/FAILURE_CLASSES.md#identity_drift",
+        "explanation_doc": "docs/archive/audit/system/FAILURE_CLASSES.md#identity_drift",
         "severity": "fail",
         "mechanical": false,
         "extensions": {},

@@ -43,18 +43,18 @@ CAPABILITY_DEP_GRAPH_REL = "contracts/blueprint/capability_dependency_graph.json
 READINESS_MATRIX_REL = "contracts/blueprint/readiness_matrix.json"
 PIPE_DREAMS_MATRIX_REL = "contracts/blueprint/pipe_dreams_matrix.json"
 
-META_BLUEPRINT_INDEX_REL = "docs/blueprint/META_BLUEPRINT_INDEX.md"
-META_BLUEPRINT_SUMMARY_REL = "docs/blueprint/META_BLUEPRINT_SUMMARY.md"
-RUNTIME_ARCH_DIAGRAM_REL = "docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md"
-REPO_GOV_DIAGRAM_REL = "docs/blueprint/REPOSITORY_GOVERNANCE_DIAGRAM.md"
-DIST_ARCHIVE_DIAGRAM_REL = "docs/blueprint/DISTRIBUTION_AND_ARCHIVE_DIAGRAM.md"
-LIVE_OPS_DIAGRAM_REL = "docs/blueprint/LIVE_OPERATIONS_DIAGRAM.md"
-SERIES_DEP_MAP_REL = "docs/blueprint/SERIES_DEPENDENCY_MAP.md"
-CAPABILITY_LADDER_REL = "docs/blueprint/CAPABILITY_LADDER.md"
-FOUNDATION_READINESS_REL = "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
-PIPE_DREAMS_REL = "docs/blueprint/PIPE_DREAMS_MATRIX.md"
-SNAPSHOT_MAPPING_NOTES_REL = "docs/blueprint/SNAPSHOT_MAPPING_NOTES.md"
-PI_0_FINAL_REL = "docs/audit/PI_0_FINAL.md"
+META_BLUEPRINT_INDEX_REL = "docs/archive/blueprint/META_BLUEPRINT_INDEX.md"
+META_BLUEPRINT_SUMMARY_REL = "docs/archive/blueprint/META_BLUEPRINT_SUMMARY.md"
+RUNTIME_ARCH_DIAGRAM_REL = "docs/archive/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md"
+REPO_GOV_DIAGRAM_REL = "docs/archive/blueprint/REPOSITORY_GOVERNANCE_DIAGRAM.md"
+DIST_ARCHIVE_DIAGRAM_REL = "docs/archive/blueprint/DISTRIBUTION_AND_ARCHIVE_DIAGRAM.md"
+LIVE_OPS_DIAGRAM_REL = "docs/archive/blueprint/LIVE_OPERATIONS_DIAGRAM.md"
+SERIES_DEP_MAP_REL = "docs/archive/blueprint/SERIES_DEPENDENCY_MAP.md"
+CAPABILITY_LADDER_REL = "docs/archive/blueprint/CAPABILITY_LADDER.md"
+FOUNDATION_READINESS_REL = "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
+PIPE_DREAMS_REL = "docs/archive/blueprint/PIPE_DREAMS_MATRIX.md"
+SNAPSHOT_MAPPING_NOTES_REL = "docs/archive/blueprint/SNAPSHOT_MAPPING_NOTES.md"
+PI_0_FINAL_REL = "docs/archive/audit/PI_0_FINAL.md"
 
 OUTPUT_REL_PATHS = {
     SERIES_DEP_GRAPH_REL,
@@ -191,26 +191,26 @@ def _discover_current_facts(repo_root: str) -> dict[str, object]:
         _token(row.get("policy_class")) for row in allowed_source_like_root_rows if _token(row.get("policy_class"))
     )
     xi_artifact_state = {
-        "XI_0": _path_present(root, "docs/audit/ARCH_GRAPH_BOOTSTRAP.md"),
-        "XI_1": _path_present(root, "docs/audit/XI_1_FINAL.md"),
-        "XI_2": _path_present(root, "docs/audit/XI_2_FINAL.md"),
-        "XI_3": _path_present(root, "docs/audit/XI_3_FINAL.md"),
-        "XI_4": _path_present(root, "docs/audit/XI_4_FINAL.md"),
+        "XI_0": _path_present(root, "docs/archive/audit/ARCH_GRAPH_BOOTSTRAP.md"),
+        "XI_1": _path_present(root, "docs/archive/audit/XI_1_FINAL.md"),
+        "XI_2": _path_present(root, "docs/archive/audit/XI_2_FINAL.md"),
+        "XI_3": _path_present(root, "docs/archive/audit/XI_3_FINAL.md"),
+        "XI_4": _path_present(root, "docs/archive/audit/XI_4_FINAL.md"),
         "XI_5": all(
             _path_present(root, rel_path)
             for rel_path in (
-                "docs/audit/XI_5A_FINAL.md",
-                "docs/audit/XI_5X1_FINAL.md",
-                "docs/audit/XI_5X2_FINAL.md",
+                "docs/archive/audit/XI_5A_FINAL.md",
+                "docs/archive/audit/XI_5X1_FINAL.md",
+                "docs/archive/audit/XI_5X2_FINAL.md",
             )
         ),
-        "XI_6": _path_present(root, "docs/audit/XI_6_FINAL.md"),
-        "XI_7": _path_present(root, "docs/audit/XI_7_FINAL.md"),
-        "XI_8": _path_present(root, "docs/audit/XI_8_FINAL.md"),
+        "XI_6": _path_present(root, "docs/archive/audit/XI_6_FINAL.md"),
+        "XI_7": _path_present(root, "docs/archive/audit/XI_7_FINAL.md"),
+        "XI_8": _path_present(root, "docs/archive/audit/XI_8_FINAL.md"),
     }
     omega_artifact_state = {
-        "OMEGA_0": _path_present(root, "docs/audit/OMEGA_0_FINAL.md"),
-        "OMEGA_10": _path_present(root, "docs/audit/OMEGA10_FINAL.md"),
+        "OMEGA_0": _path_present(root, "docs/archive/audit/OMEGA_0_FINAL.md"),
+        "OMEGA_10": _path_present(root, "docs/archive/audit/OMEGA10_FINAL.md"),
     }
     return {
         "architecture_graph_content_hash": _token(architecture_graph.get("content_hash")),

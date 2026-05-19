@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Derived deterministic interaction preview payload.",
   "x-doc-ref": [
-    "docs/interaction/INTERACTION_MODEL.md",
-    "docs/interaction/INSPECTION_OVERLAYS.md"
+    "docs/game/interaction/INTERACTION_MODEL.md",
+    "docs/game/interaction/INSPECTION_OVERLAYS.md"
   ],
   "type": "object",
   "required": [

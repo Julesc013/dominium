@@ -55,21 +55,21 @@ MODULE_REGISTRY_REL = "contracts/registry/architecture/module_registry.json"
 BUILD_GRAPH_REL = "archive/generated/audit/build_graph.json"
 INCLUDE_GRAPH_REL = "archive/generated/audit/include_graph.json"
 SYMBOL_INDEX_REL = "archive/generated/audit/symbol_index.json"
-XI_4_FINAL_REL = "docs/audit/XI_4_FINAL.md"
-XI_4B_FINAL_REL = "docs/audit/XI_4B_FINAL.md"
-XI_4Z_FINAL_REL = "docs/audit/XI_4Z_FINAL.md"
-XI_4Z_FIX_FINAL_REL = "docs/audit/XI_4Z_FIX_FINAL.md"
-DEPRECATIONS_REL = "docs/refactor/DEPRECATIONS.md"
+XI_4_FINAL_REL = "docs/archive/audit/XI_4_FINAL.md"
+XI_4B_FINAL_REL = "docs/archive/audit/XI_4B_FINAL.md"
+XI_4Z_FINAL_REL = "docs/archive/audit/XI_4Z_FINAL.md"
+XI_4Z_FIX_FINAL_REL = "docs/archive/audit/XI_4Z_FIX_FINAL.md"
+DEPRECATIONS_REL = "docs/archive/refactor/DEPRECATIONS.md"
 
 XI5A_MOVE_MAP_REL = "archive/generated/restructure/xi5a_move_map.json"
 XI5A_ATTIC_MAP_REL = "archive/generated/restructure/xi5a_attic_map.json"
 XI5A_EXECUTION_LOG_REL = "archive/generated/restructure/xi5a_execution_log.json"
 XI5A_POSTMOVE_RESIDUAL_SRC_REPORT_REL = "archive/generated/restructure/xi5a_postmove_residual_src_report.json"
-XI_5A_MOVE_PLAN_REL = "docs/restructure/XI_5A_MOVE_PLAN.md"
-XI_5A_EXECUTION_LOG_DOC_REL = "docs/restructure/XI_5A_EXECUTION_LOG.md"
-XI_5A_POSTMOVE_REPORT_REL = "docs/restructure/XI_5A_POSTMOVE_REPORT.md"
-XI_5A_ATTIC_REPORT_REL = "docs/restructure/XI_5A_ATTIC_REPORT.md"
-XI_5A_FINAL_REL = "docs/audit/XI_5A_FINAL.md"
+XI_5A_MOVE_PLAN_REL = "docs/archive/restructure/XI_5A_MOVE_PLAN.md"
+XI_5A_EXECUTION_LOG_DOC_REL = "docs/archive/restructure/XI_5A_EXECUTION_LOG.md"
+XI_5A_POSTMOVE_REPORT_REL = "docs/archive/restructure/XI_5A_POSTMOVE_REPORT.md"
+XI_5A_ATTIC_REPORT_REL = "docs/archive/restructure/XI_5A_ATTIC_REPORT.md"
+XI_5A_FINAL_REL = "docs/archive/audit/XI_5A_FINAL.md"
 XI5A_PREFLIGHT_REPAIR_REL = "archive/generated/audit/xi5a_preflight_repair.json"
 
 TEMP_ROOT_REL = "build/tmp/xi5a_v4"
@@ -125,18 +125,18 @@ EXCLUDED_PREFIXES = (
     "data/refactor/",
     "data/restructure/",
     "docs/archive/",
-    "docs/audit/",
-    "docs/blueprint/",
-    "docs/guides/",
-    "docs/refactor/",
-    "docs/restructure/",
+    "docs/archive/audit/",
+    "docs/archive/blueprint/",
+    "docs/development/guides/",
+    "docs/archive/refactor/",
+    "docs/archive/restructure/",
     "tmp_",
 )
 GATE_MUTABLE_PREFIXES = (
     "data/audit/",
     "data/baselines/",
     "data/regression/",
-    "docs/audit/",
+    "docs/archive/audit/",
 )
 
 
@@ -182,8 +182,8 @@ def _required_input_paths() -> tuple[str, ...]:
         SRC_DOMAIN_MAPPING_ATTIC_APPROVED_REL,
         SRC_DOMAIN_MAPPING_DEFERRED_REL,
         XI_5A_EXECUTION_INPUTS_REL,
-        "docs/restructure/XI_4Z_TARGET_NORMALIZATION_REPORT.md",
-        "docs/restructure/XI_4Z_XI5_READINESS.md",
+        "docs/archive/restructure/XI_4Z_TARGET_NORMALIZATION_REPORT.md",
+        "docs/archive/restructure/XI_4Z_XI5_READINESS.md",
         XI_4Z_FIX3_FINAL_REL,
         ARCHITECTURE_GRAPH_REL,
         MODULE_REGISTRY_REL,

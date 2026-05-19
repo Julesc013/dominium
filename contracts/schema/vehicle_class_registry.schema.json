@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "MOB-3 source registry for data-driven vehicle classes.",
   "x-doc-ref": [
-    "docs/mobility/VEHICLE_MODEL.md",
-    "docs/audit/VEHICLE_MODEL_BASELINE.md"
+    "docs/domains/mobility/VEHICLE_MODEL.md",
+    "docs/archive/audit/VEHICLE_MODEL_BASELINE.md"
   ],
   "type": "object",
   "required": [

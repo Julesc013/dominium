@@ -86,9 +86,9 @@
       "major_prerequisite_surfaces": [
         "AGENTS.md",
         "docs/planning",
-        "docs/agents",
+        "docs/game/agents",
         "docs/governance",
-        "docs/xstack",
+        "docs/development/xstack",
         "tools/controlx",
         "tools/xstack"
       ],

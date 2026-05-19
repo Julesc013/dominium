@@ -88,9 +88,9 @@ For each validated bundle and product, DIST-4 records:
 
 DIST-4 generates:
 
-- `docs/audit/DIST_PLATFORM_MATRIX_REPORT.md`
+- `docs/archive/audit/DIST_PLATFORM_MATRIX_REPORT.md`
 - `contracts/audit/dist_platform_matrix.json`
 - `docs/release/SUPPORTED_PLATFORMS_v0_0_0_mock.md`
-- `docs/audit/DIST4_FINAL.md`
+- `docs/archive/audit/DIST4_FINAL.md`
 
 All outputs must use deterministic ordering and canonical serialization.

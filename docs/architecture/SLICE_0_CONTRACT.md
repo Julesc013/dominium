@@ -165,4 +165,4 @@ Replaceability rules:
 SLICE-0 completion is defined by the acceptance checklist in
 
 
-`docs/roadmap/SLICE_0_ACCEPTANCE.md`.
+`docs/release/roadmap/SLICE_0_ACCEPTANCE.md`.

@@ -18,7 +18,7 @@ class OrphanFeatureSmell:
 
 
 PLAYER_DEMAND_MATRIX_REL = "contracts/meta/player_demand_matrix.json"
-IMPACT_DIR_REL = "docs/impact/"
+IMPACT_DIR_REL = "docs/archive/impact/"
 FEATURE_PATH_PREFIXES = (
     "src/",
     "engine/",
@@ -147,7 +147,7 @@ def run(graph, repo_root, changed_files=None):
                 line=1,
                 evidence=[
                     "feature-like change detected without demand mapping",
-                    "add demand ids in docs/impact/*.md or adjacent change notes",
+                    "add demand ids in docs/archive/impact/*.md or adjacent change notes",
                 ],
                 suggested_classification="NEEDS_REVIEW",
                 recommended_action="REWRITE",

@@ -35,10 +35,10 @@ ARCHITECTURE_GRAPH_REL = "archive/generated/architecture/architecture_graph.json
 BUILD_GRAPH_REL = "archive/generated/audit/build_graph.json"
 
 CONVERGENCE_EXECUTION_LOG_REL = "archive/generated/refactor/convergence_execution_log.json"
-CONVERGENCE_EXECUTION_LOG_DOC_REL = "docs/refactor/CONVERGENCE_EXECUTION_LOG.md"
-DEPRECATIONS_REL = "docs/refactor/DEPRECATIONS.md"
-XI_4_FINAL_REL = "docs/audit/XI_4_FINAL.md"
-QUARANTINE_DOC_DIR_REL = "docs/refactor"
+CONVERGENCE_EXECUTION_LOG_DOC_REL = "docs/archive/refactor/CONVERGENCE_EXECUTION_LOG.md"
+DEPRECATIONS_REL = "docs/archive/refactor/DEPRECATIONS.md"
+XI_4_FINAL_REL = "docs/archive/audit/XI_4_FINAL.md"
+QUARANTINE_DOC_DIR_REL = "docs/archive/refactor"
 QUARANTINE_DOC_PREFIX = "QUARANTINE_"
 
 OUTPUT_REL_PATHS = {
@@ -594,7 +594,7 @@ def render_convergence_execution_log(snapshot: Mapping[str, object]) -> str:
     for cluster_id in list(cluster_sets.get("quarantined") or [])[:CLUSTER_LIST_LIMIT]:
         lines.append("- `{}`".format(cluster_id))
     if len(list(cluster_sets.get("quarantined") or [])) > CLUSTER_LIST_LIMIT:
-        lines.append("- ... see `docs/refactor/QUARANTINE_*.md` for the full packet set")
+        lines.append("- ... see `docs/archive/refactor/QUARANTINE_*.md` for the full packet set")
     if not list(cluster_sets.get("quarantined") or []):
         lines.append("- none")
     lines.extend(["", "## Deferred Clusters", ""])
@@ -690,7 +690,7 @@ def render_xi_4_final(snapshot: Mapping[str, object]) -> str:
     for cluster_id in list(cluster_sets.get("quarantined") or [])[:CLUSTER_LIST_LIMIT]:
         lines.append("- `{}`".format(cluster_id))
     if len(list(cluster_sets.get("quarantined") or [])) > CLUSTER_LIST_LIMIT:
-        lines.append("- ... see `docs/refactor/QUARANTINE_*.md` for the full packet set")
+        lines.append("- ... see `docs/archive/refactor/QUARANTINE_*.md` for the full packet set")
     if not list(cluster_sets.get("quarantined") or []):
         lines.append("- none")
     lines.extend(["", "## Deprecated Modules", ""])
@@ -698,7 +698,7 @@ def render_xi_4_final(snapshot: Mapping[str, object]) -> str:
         for row in deprecations[:DEPRECATION_LIST_LIMIT]:
             lines.append("- `{}`".format(_norm_rel(row.get("secondary_file"))))
         if len(deprecations) > DEPRECATION_LIST_LIMIT:
-            lines.append("- ... see `docs/refactor/DEPRECATIONS.md` for the full set")
+            lines.append("- ... see `docs/archive/refactor/DEPRECATIONS.md` for the full set")
     else:
         lines.append("- none in this conservative pass")
     lines.extend(["", "## Gate Evidence", ""])

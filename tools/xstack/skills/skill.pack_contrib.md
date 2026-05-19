@@ -24,7 +24,7 @@ Contribute or modify packs while preserving pack-driven integration and determin
    - `tools/xstack/lockfile_validate build/lockfile.json`
    - For lens/law contributions, verify required observation-gating fields are present.
 4. Confirm optional/missing-pack behavior is deterministic refusal/degradation.
-5. Update pack-related docs/contracts if behavior meaning changes.
+5. Update pack-related docs/reference/contracts if behavior meaning changes.
 6. Validate lock/hash impact and replay-safety implications.
 7. Run required gate profile for impacted scope.
 
@@ -53,5 +53,5 @@ Verify with:
 ## Cross-References
 - `docs/canon/constitution_v1.md`
 - `docs/architecture/pack_system.md`
-- `docs/contracts/session_spec.md`
+- `docs/reference/contracts/session_spec.md`
 - `docs/architecture/PACK_FORMAT.md`

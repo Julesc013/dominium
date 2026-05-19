@@ -119,11 +119,81 @@ _CANONICAL_PREFIX_ALIASES = (
     ("runtime/appshell/commands/", "runtime/shell/command/"),
     ("runtime/shell/appcore/command/", "runtime/shell/command/"),
     ("runtime/shell/appcore/ui_bind/", "tools/codegen/ui/bind/"),
+    ("docs/accessibility/", "docs/runtime/ui/accessibility/"),
+    ("docs/agents/", "docs/game/agents/"),
+    ("docs/aide/", "docs/development/aide/"),
+    ("docs/app/", "docs/apps/"),
     ("docs/appshell/", "docs/runtime/shell/"),
+    ("docs/audit/", "docs/archive/audit/"),
+    ("docs/blueprint/", "docs/archive/blueprint/"),
+    ("docs/ci/", "docs/testing/ci/"),
+    ("docs/civilisation/", "docs/domains/civilization/"),
+    ("docs/client/", "docs/apps/client/"),
     ("docs/compat/", "docs/compatibility/"),
+    ("docs/contracts/", "docs/reference/contracts/"),
+    ("docs/control/", "docs/governance/control/"),
     ("docs/diag/", "docs/runtime/diagnostics/"),
+    ("docs/diegetics/", "docs/game/diegetics/"),
+    ("docs/electric/", "docs/domains/electricity/"),
+    ("docs/embodiment/", "docs/domains/embodiment/"),
+    ("docs/epistemics/", "docs/game/epistemics/"),
+    ("docs/examples/", "docs/reference/examples/"),
+    ("docs/fields/", "docs/domains/fields/"),
+    ("docs/fluid/", "docs/domains/fluids/"),
+    ("docs/gameplay/", "docs/game/gameplay/"),
     ("docs/geo/", "docs/domains/geology/"),
+    ("docs/glossary/", "docs/reference/glossary/"),
+    ("docs/guides/", "docs/development/guides/"),
+    ("docs/impact/", "docs/archive/impact/"),
+    ("docs/infrastructure/", "docs/domains/infrastructure/"),
+    ("docs/interaction/", "docs/game/interaction/"),
+    ("docs/interior/", "docs/domains/interiors/"),
+    ("docs/knowledge/", "docs/domains/knowledge/"),
+    ("docs/launcher/", "docs/apps/launcher/"),
+    ("docs/lib/", "docs/runtime/storage/"),
+    ("docs/logic/", "docs/domains/logic/"),
+    ("docs/materials/", "docs/domains/materials/"),
+    ("docs/mechanics/", "docs/domains/mechanics/"),
+    ("docs/meta/", "docs/governance/meta/"),
+    ("docs/mobility/", "docs/domains/mobility/"),
+    ("docs/mvp/", "docs/release/mvp/"),
+    ("docs/net/", "docs/runtime/network/"),
+    ("docs/omega/", "docs/archive/omega/"),
+    ("docs/ops/", "docs/operations/"),
+    ("docs/pack_format/", "docs/distribution/package-format/"),
+    ("docs/packs/", "docs/content/packs/"),
+    ("docs/physical/", "docs/domains/physics/physical/"),
+    ("docs/platform/", "docs/runtime/platform/"),
+    ("docs/player/", "docs/game/player/"),
+    ("docs/policies/", "docs/governance/policies/"),
+    ("docs/pollution/", "docs/domains/pollution/"),
+    ("docs/post_canon/", "docs/archive/post-canon/"),
+    ("docs/process/", "docs/domains/processes/"),
+    ("docs/prompts/", "docs/archive/prompts/"),
+    ("docs/realities/", "docs/game/realities/"),
+    ("docs/reality/", "docs/domains/reality/"),
+    ("docs/refactor/", "docs/archive/refactor/"),
+    ("docs/render/", "docs/runtime/render/"),
+    ("docs/repox/", "docs/repo/repox/"),
+    ("docs/restructure/", "docs/archive/restructure/"),
+    ("docs/roadmap/", "docs/release/roadmap/"),
+    ("docs/scale/", "docs/domains/scale/"),
+    ("docs/schema/", "docs/reference/schema/"),
+    ("docs/server/", "docs/apps/server/"),
+    ("docs/settings/", "docs/runtime/settings/"),
+    ("docs/setup/", "docs/apps/setup/"),
+    ("docs/signals/", "docs/domains/signals/"),
+    ("docs/sol/", "docs/domains/astronomy/sol/"),
+    ("docs/specs/", "docs/reference/specs/"),
+    ("docs/system/", "docs/architecture/system/"),
+    ("docs/time/", "docs/engine/time/"),
+    ("docs/tools/", "docs/development/tools/"),
+    ("docs/ui/", "docs/runtime/ui/"),
+    ("docs/universe/", "docs/domains/universe/"),
+    ("docs/ux/", "docs/runtime/ui/ux/"),
+    ("docs/visualization/", "docs/runtime/render/visualization/"),
     ("docs/worldgen/", "docs/domains/worldgen/"),
+    ("docs/xstack/", "docs/development/xstack/"),
     ("game/domains/", "game/domain/"),
     ("apps/server/net/", "runtime/network/server/"),
     ("apps/server/runtime/", "runtime/shell/server/"),
@@ -478,12 +548,12 @@ FORBIDDEN_RENDER_TRUTH_TOKENS = (
 
 RULESET_ROOT = os.path.join("contracts", "repo", "repox", "rulesets")
 REPOX_EXEMPTIONS_PATH = os.path.join("repo", "repox", "repox_exemptions.json")
-PROOF_MANIFEST_DEFAULT = os.path.join("docs", "audit", "proof_manifest.json")
-REPOX_PROFILE_REL = os.path.join("docs", "audit", "repox", "REPOX_PROFILE.json")
+PROOF_MANIFEST_DEFAULT = os.path.join("docs", "archive", "audit", "proof_manifest.json")
+REPOX_PROFILE_REL = os.path.join("docs", "archive", "audit", "repox", "REPOX_PROFILE.json")
 REPOX_RULE_IMPL_REL = "scripts/ci/check_repox_rules.py"
 GATE_TOUCHED_MANIFEST_REL = os.path.join(".xstack_cache", "gate", "TOUCHED_FILES_MANIFEST.json")
 STRUCTURE_SCOPE_EXCLUDED_PREFIXES = (
-    "docs/audit",
+    "docs/archive/audit",
     "dist",
     "build",
     "tmp",
@@ -984,12 +1054,12 @@ CANONICAL_TOOL_IDS = (
 )
 
 AUDITX_CANONICAL_ARTIFACTS = (
-    "docs/audit/auditx/FINDINGS.json",
-    "docs/audit/auditx/INVARIANT_MAP.json",
-    "docs/audit/auditx/PROMOTION_CANDIDATES.json",
-    "docs/audit/auditx/TRENDS.json",
+    "docs/archive/audit/auditx/FINDINGS.json",
+    "docs/archive/audit/auditx/INVARIANT_MAP.json",
+    "docs/archive/audit/auditx/PROMOTION_CANDIDATES.json",
+    "docs/archive/audit/auditx/TRENDS.json",
 )
-AUDITX_RUN_META_ARTIFACT = "docs/audit/auditx/RUN_META.json"
+AUDITX_RUN_META_ARTIFACT = "docs/archive/audit/auditx/RUN_META.json"
 AUDITX_CANONICAL_FORBIDDEN_KEYS = (
     "created_utc",
     "last_reviewed",
@@ -1017,7 +1087,7 @@ TOOL_SCAN_SKIP_PREFIXES = (
     "tools/xstack/performx/cache/",
     "tools/xstack/securex/cache/",
     ".xstack_cache/",
-    "docs/audit/remediation/",
+    "docs/archive/audit/remediation/",
 )
 DIRECT_GATE_SCAN_ROOTS = (
     os.path.join("scripts", "dev"),
@@ -13729,9 +13799,9 @@ def check_auditx_artifact_headers(repo_root):
         return []
 
     expected_md = (
-        "docs/audit/auditx/README.md",
-        "docs/audit/auditx/FINDINGS.md",
-        "docs/audit/auditx/SUMMARY.md",
+        "docs/archive/audit/auditx/README.md",
+        "docs/archive/audit/auditx/FINDINGS.md",
+        "docs/archive/audit/auditx/SUMMARY.md",
     )
     expected_json = AUDITX_CANONICAL_ARTIFACTS
 
@@ -13853,7 +13923,7 @@ def check_auditx_nonruntime_leak(repo_root):
 
 def check_auditx_output_staleness(repo_root):
     invariant_id = "INV-AUDITX-OUTPUT-STALE"
-    tracked = "docs/audit/auditx/FINDINGS.json"
+    tracked = "docs/archive/audit/auditx/FINDINGS.json"
     tracked_path = os.path.join(repo_root, tracked.replace("/", os.sep))
     if not os.path.isfile(tracked_path):
         return []
@@ -13877,7 +13947,7 @@ def check_auditx_output_staleness(repo_root):
 
 def check_auditx_promotion_candidates(repo_root):
     invariant_id = "INV-AUDITX-PROMOTION-CANDIDATE-SHAPE"
-    rel = "docs/audit/auditx/PROMOTION_CANDIDATES.json"
+    rel = "docs/archive/audit/auditx/PROMOTION_CANDIDATES.json"
     path = os.path.join(repo_root, rel.replace("/", os.sep))
     if not os.path.isfile(path):
         return []

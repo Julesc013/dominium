@@ -85,7 +85,7 @@ def run(graph, repo_root, changed_files=None):
                                 "INV-TRAVEL-THROUGH-COMMITMENTS",
                                 "INV-NO-SILENT-POSITION-UPDATES",
                             ],
-                            related_paths=[rel_path, "docs/mobility/MACRO_TRAVEL_MODEL.md"],
+                            related_paths=[rel_path, "docs/domains/mobility/MACRO_TRAVEL_MODEL.md"],
                         )
                     )
                     break

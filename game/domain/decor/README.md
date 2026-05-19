@@ -13,5 +13,5 @@ Decor is explicitly non-authoritative: it must never become gameplay truth.
 - `compile/` deterministic compilation of decor into runtime artifacts.
 
 ## Spec
-See `docs/specs/SPEC_TRANS_STRUCT_DECOR.md` and `docs/specs/SPEC_DETERMINISM.md`.
+See `docs/reference/specs/SPEC_TRANS_STRUCT_DECOR.md` and `docs/reference/specs/SPEC_DETERMINISM.md`.
 

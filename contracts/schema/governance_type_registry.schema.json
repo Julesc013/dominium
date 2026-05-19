@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic governance type registry output.",
   "x-doc-ref": [
-    "docs/civilisation/FACTIONS_AND_AFFILIATION.md",
+    "docs/domains/civilization/FACTIONS_AND_AFFILIATION.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

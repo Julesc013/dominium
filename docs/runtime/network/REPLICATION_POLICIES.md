@@ -89,7 +89,7 @@ Define policy IDs for canonical multiplayer replication behaviors over shared pr
 - `contracts/registry/perception_interest_policy_registry.json`
 - `docs/runtime/network/SRZ_HYBRID_POLICY.md`
 - `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`
 
 ## TODO
 

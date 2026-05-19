@@ -6,7 +6,7 @@ Stability: stable
 Series Scope: repo-structure discovery and design
 Series Role: authoritative phased migration and rollback packet for later relayout execution prompts; downstream of stronger canon, the Omega0 constraint packet, the Omega1 topology reality map, the Omega2 coupling-risk packet, the Omega0 option packet, and the Omega1 preferred-target packet
 Replacement Target: later explicit relayout-execution checkpoint or migration-plan replacement only after new baseline-hardening evidence and follow-up approval
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md`, `archive/generated/repo/repo_coupling_drift_and_relayout_risk_analysis.json`, `docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md`, `archive/generated/repo/repo_target_topology_options_and_comparison.json`, `docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md`, `archive/generated/repo/repo_authoritative_boundary_model_and_preferred_target.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `appshell/paths/virtual_paths.py`, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/registry_compile/constants.py`, `tools/migration/import_bridge.py`, `runtime/process_spawn.py`, `server/server_main.py`, `tools/release/release_manifest_engine.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md`, `archive/generated/repo/repo_coupling_drift_and_relayout_risk_analysis.json`, `docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md`, `archive/generated/repo/repo_target_topology_options_and_comparison.json`, `docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md`, `archive/generated/repo/repo_authoritative_boundary_model_and_preferred_target.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/archive/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/development/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/development/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `appshell/paths/virtual_paths.py`, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/registry_compile/constants.py`, `tools/migration/import_bridge.py`, `runtime/process_spawn.py`, `server/server_main.py`, `tools/release/release_manifest_engine.py`
 
 # Repo Phased Migration, Shims, Validation, And Rollback
 
@@ -76,7 +76,7 @@ A shim is presumed necessary when:
 - a slice changes a path that current code or scripts still resolve literally
 - a slice changes command or entrypoint precedence while old invocations must remain valid
 - a slice changes report, manifest, registry, or session artifact locations that existing consumers still read
-- a slice touches a mixed host such as `tools/`, `docs/audit/`, `data/audit/`, or control-plane roots already consumed by launcher/setup shells
+- a slice touches a mixed host such as `tools/`, `docs/archive/audit/`, `data/audit/`, or control-plane roots already consumed by launcher/setup shells
 
 ### How Validation Gates Are Selected
 
@@ -237,7 +237,7 @@ The following are not part of the normal early-to-mid migration path and must re
 - What problem it solves:
   preserves external references, machine-readable evidence paths, and derived docs while stale path vocabulary is cleaned up.
 - When it is appropriate:
-  for `docs/audit/`, `data/audit/`, and other derived/report families where consumers still expect older locations or names.
+  for `docs/archive/audit/`, `data/audit/`, and other derived/report families where consumers still expect older locations or names.
 - When it is dangerous:
   when redirects are used to excuse stale runtime claims or when report outputs start being treated as canonical runtime truth.
 - When it should be removed:
@@ -250,7 +250,7 @@ The following are not part of the normal early-to-mid migration path and must re
 - Conceptual goal:
   normalize authoritative path vocabulary, wrapper precedence, and preferred-target labels in docs and mirrors without moving files or changing runtime behavior.
 - Likely affected roots:
-  `docs/repo/`, `docs/audit/`, `data/repo/`, and later derived doc/report mirrors that still carry stale `src/...` vocabulary or wrapper overclaims.
+  `docs/repo/`, `docs/archive/audit/`, `data/repo/`, and later derived doc/report mirrors that still carry stale `src/...` vocabulary or wrapper overclaims.
 - Safe to do early:
   yes
 - Likely needs shims:
@@ -301,7 +301,7 @@ The following are not part of the normal early-to-mid migration path and must re
 - Conceptual goal:
   separate proof tooling from emitted reports using compatibility aliases and report redirects so validation ownership becomes clearer without breaking consumers.
 - Likely affected roots:
-  `validation/`, `tools/validators/suite/`, `tools/migration/import_bridge.py`, `docs/audit/`, and `data/audit/`
+  `validation/`, `tools/validators/suite/`, `tools/migration/import_bridge.py`, `docs/archive/audit/`, and `data/audit/`
 - Safe to do early:
   no; it should follow the first low-risk slice because the proof surface is broad and heavily consumed
 - Likely needs shims:

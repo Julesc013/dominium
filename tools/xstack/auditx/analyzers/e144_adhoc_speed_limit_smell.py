@@ -83,7 +83,7 @@ def run(graph, repo_root, changed_files=None):
                                 "INV-NO-TRAIN-SPECIALCASE",
                                 "INV-MOB-THROUGH-CONTROL",
                             ],
-                            related_paths=[rel_path, "docs/mobility/MOBILITY_CONSTITUTION.md"],
+                            related_paths=[rel_path, "docs/domains/mobility/MOBILITY_CONSTITUTION.md"],
                         )
                     )
                     break

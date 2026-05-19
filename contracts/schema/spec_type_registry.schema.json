@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic SPEC-1 spec type registry output.",
   "x-doc-ref": [
-    "docs/specs/SPECSHEET_CONSTITUTION.md",
+    "docs/reference/specs/SPECSHEET_CONSTITUTION.md",
     "docs/architecture/registry_compile.md",
     "schemas/spec_type.schema.json"
   ],

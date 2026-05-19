@@ -13,10 +13,10 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E129_CONTROL_PLANE_BYPASS_SMELL"
 WATCH_PREFIXES = (
     "src/",
-    "docs/audit/TOPOLOGY_MAP.json",
+    "docs/archive/audit/TOPOLOGY_MAP.json",
 )
 
-TOPOLOGY_REL = "docs/audit/TOPOLOGY_MAP.json"
+TOPOLOGY_REL = "docs/archive/audit/TOPOLOGY_MAP.json"
 CONTROL_PLANE_NODE_ID = "module:tools/repo/governance/control_plane_engine.py"
 
 DIRECT_PROCESS_CALL_RE = re.compile(r"\b(?:run_process|execute_process|runtime_execute_intent|execute_intent)\s*\(")

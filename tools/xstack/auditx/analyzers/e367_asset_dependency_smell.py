@@ -8,12 +8,12 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E367_ASSET_DEPENDENCY_SMELL"
-WATCH_PREFIXES = ("game/domain/embodiment/", "data/registries/", "docs/embodiment/")
+WATCH_PREFIXES = ("game/domain/embodiment/", "data/registries/", "docs/domains/embodiment/")
 BODY_SYSTEM_REL = "game/domain/embodiment/body/body_system.py"
 LENS_ENGINE_REL = "game/domain/embodiment/lens/lens_engine.py"
 BODY_TEMPLATE_REGISTRY_REL = "contracts/registry/body_template_registry.json"
 SYSTEM_TEMPLATE_REGISTRY_REL = "contracts/registry/system_template_registry.json"
-DOC_REL = "docs/embodiment/EMBODIMENT_BASELINE.md"
+DOC_REL = "docs/domains/embodiment/EMBODIMENT_BASELINE.md"
 REQUIRED_TOKENS = {
     BODY_SYSTEM_REL: (
         "instantiate_body_system(",

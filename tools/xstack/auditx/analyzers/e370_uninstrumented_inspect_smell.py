@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E370_UNINSTRUMENTED_INSPECT_SMELL"
 VIEWER_SHELL_REL = "runtime/ui/client/viewer_shell.py"
 INSPECT_PANELS_REL = "runtime/ui/client/inspect_panels.py"
-DOC_REL = "docs/ux/MVP_VIEWER_SHELL.md"
+DOC_REL = "docs/runtime/ui/ux/MVP_VIEWER_SHELL.md"
 REQUIRED_TOKENS = {
     VIEWER_SHELL_REL: (
         "build_inspection_panel_set(",

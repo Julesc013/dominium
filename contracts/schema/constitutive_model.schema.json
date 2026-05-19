@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic constitutive model definition row.",
   "x-doc-ref": [
-    "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
+    "docs/governance/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

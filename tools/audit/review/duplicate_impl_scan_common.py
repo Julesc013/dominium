@@ -40,9 +40,9 @@ SHADOW_MODULES_REL = "archive/generated/audit/shadow_modules.json"
 DUPLICATE_CLUSTERS_REL = "archive/generated/audit/duplicate_clusters.json"
 SRC_DIRECTORY_REPORT_REL = "archive/generated/audit/src_directory_report.json"
 
-DUPLICATE_IMPLS_REPORT_REL = "docs/audit/DUPLICATE_IMPLEMENTATIONS_REPORT.md"
-SRC_SHADOW_REPORT_REL = "docs/audit/SRC_SHADOW_REPORT.md"
-XI_1_FINAL_REL = "docs/audit/XI_1_FINAL.md"
+DUPLICATE_IMPLS_REPORT_REL = "docs/archive/audit/DUPLICATE_IMPLEMENTATIONS_REPORT.md"
+SRC_SHADOW_REPORT_REL = "docs/archive/audit/SRC_SHADOW_REPORT.md"
+XI_1_FINAL_REL = "docs/archive/audit/XI_1_FINAL.md"
 
 OUTPUT_REL_PATHS = {
     DUPLICATE_IMPLS_REL,

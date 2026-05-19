@@ -76,7 +76,7 @@
     {
       "surface_name": "blueprint archive",
       "path_family": [
-        "docs/blueprint"
+        "docs/archive/blueprint"
       ],
       "category": "governance_instruction",
       "status": "extend",
@@ -97,9 +97,9 @@
     {
       "surface_name": "mirrored governance docs",
       "path_family": [
-        "docs/agents",
+        "docs/game/agents",
         "docs/governance",
-        "docs/xstack",
+        "docs/development/xstack",
         "DOMINIUM.md",
         "GOVERNANCE.md",
         "README.md",

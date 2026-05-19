@@ -5,7 +5,7 @@
   "description": "Deterministic THERM-1 ThermalNetworkGraph edge payload.",
   "x-doc-ref": [
     "docs/domains/thermal/THERMAL_CONSTITUTION.md",
-    "docs/audit/THERMAL_NETWORK_BASELINE.md"
+    "docs/archive/audit/THERMAL_NETWORK_BASELINE.md"
   ],
   "type": "object",
   "required": [

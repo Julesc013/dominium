@@ -87,11 +87,11 @@ SRC_DOMAIN_MAPPING_DEFERRED_REL = "archive/generated/restructure/src_domain_mapp
 XI5_READINESS_CONTRACT_REL = "contracts/restructure/xi5_readiness_contract.json"
 XI4Z_DECISION_MANIFEST_REL = "contracts/restructure/xi4z_decision_manifest.json"
 
-XI_4Z_DECISION_REPORT_REL = "docs/restructure/XI_4Z_DECISION_REPORT.md"
-XI_4Z_XI5_READINESS_REL = "docs/restructure/XI_4Z_XI5_READINESS.md"
-XI_4Z_CONFLICT_RESOLUTION_REL = "docs/restructure/XI_4Z_CONFLICT_RESOLUTION.md"
-XI_4Z_APPROVED_LAYOUT_REL = "docs/restructure/XI_4Z_APPROVED_LAYOUT.md"
-XI_4Z_FINAL_REL = "docs/audit/XI_4Z_FINAL.md"
+XI_4Z_DECISION_REPORT_REL = "docs/archive/restructure/XI_4Z_DECISION_REPORT.md"
+XI_4Z_XI5_READINESS_REL = "docs/archive/restructure/XI_4Z_XI5_READINESS.md"
+XI_4Z_CONFLICT_RESOLUTION_REL = "docs/archive/restructure/XI_4Z_CONFLICT_RESOLUTION.md"
+XI_4Z_APPROVED_LAYOUT_REL = "docs/archive/restructure/XI_4Z_APPROVED_LAYOUT.md"
+XI_4Z_FINAL_REL = "docs/archive/audit/XI_4Z_FINAL.md"
 
 TMP_BUNDLE_REL = "tmp/xi4z_xi5_readiness_bundle.zip"
 TMP_BUNDLE_MANIFEST_REL = "tmp/xi4z_xi5_readiness_bundle_manifest.txt"
@@ -133,11 +133,11 @@ OUTPUT_REL_PATHS = (
 )
 
 CRITICAL_CORE_INPUTS = {
-    "docs/audit/XI_4B_FINAL.md",
-    "docs/restructure/XI_4B_UNBLOCK_REPORT.md",
-    "docs/restructure/STRUCTURE_OPTIONS_REPORT.md",
-    "docs/restructure/SRC_DOMAIN_MAPPING_REPORT.md",
-    "docs/restructure/XI_4B_REVIEW_GUIDE.md",
+    "docs/archive/audit/XI_4B_FINAL.md",
+    "docs/archive/restructure/XI_4B_UNBLOCK_REPORT.md",
+    "docs/archive/restructure/STRUCTURE_OPTIONS_REPORT.md",
+    "docs/archive/restructure/SRC_DOMAIN_MAPPING_REPORT.md",
+    "docs/archive/restructure/XI_4B_REVIEW_GUIDE.md",
     "archive/generated/restructure/src_domain_mapping.json",
     "archive/generated/restructure/src_domain_mapping_candidates.json",
     "archive/generated/restructure/src_domain_mapping_conflicts.json",
@@ -180,7 +180,7 @@ REQUIRED_TEXT_INPUTS = (
     XI_4B_FINAL_REL,
     XI_4B_UNBLOCK_REPORT_REL,
     STRUCTURE_OPTIONS_REPORT_REL,
-    "docs/restructure/SRC_DOMAIN_MAPPING_REPORT.md",
+    "docs/archive/restructure/SRC_DOMAIN_MAPPING_REPORT.md",
     XI_4B_REVIEW_GUIDE_REL,
     FINAL_PROMPT_INVENTORY_REL,
     PROMPT_DEPENDENCY_TREE_REL,
@@ -784,9 +784,9 @@ def _review_first_text(selected_option: str, counts: Mapping[str, int]) -> str:
             f"Chosen layout option: `{selected_option}`",
             "",
             "Read in this order:",
-            "1. docs/restructure/XI_4Z_DECISION_REPORT.md",
-            "2. docs/restructure/XI_4Z_XI5_READINESS.md",
-            "3. docs/restructure/XI_4Z_CONFLICT_RESOLUTION.md",
+            "1. docs/archive/restructure/XI_4Z_DECISION_REPORT.md",
+            "2. docs/archive/restructure/XI_4Z_XI5_READINESS.md",
+            "3. docs/archive/restructure/XI_4Z_CONFLICT_RESOLUTION.md",
             "4. archive/generated/restructure/src_domain_mapping_lock_approved.json",
             "5. contracts/restructure/xi5_readiness_contract.json",
             "",

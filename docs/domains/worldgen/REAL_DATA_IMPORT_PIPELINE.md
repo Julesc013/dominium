@@ -88,4 +88,4 @@ All derived artifacts must include a `provenance` object with:
 - `docs/architecture/interest_regions.md`
 - `docs/architecture/macro_capsules.md`
 - `docs/architecture/deterministic_packaging.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`

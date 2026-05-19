@@ -20,7 +20,7 @@ def _load_json(repo_root: str, rel_path: str) -> dict:
 
 
 def run(repo_root: str):
-    findings_payload = _load_json(repo_root, "docs/audit/auditx/FINDINGS.json")
+    findings_payload = _load_json(repo_root, "docs/archive/audit/auditx/FINDINGS.json")
     deprecations_payload = _load_json(repo_root, "contracts/registry/deprecation_registry.json")
     if not deprecations_payload:
         return {"status": "fail", "message": "deprecation_registry missing or invalid"}

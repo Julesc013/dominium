@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Tool capability type used for ActionSurface filtering and process capability projection.",
   "x-doc-ref": [
-    "docs/interaction/TOOLS_AND_EFFECTS.md"
+    "docs/game/interaction/TOOLS_AND_EFFECTS.md"
   ],
   "type": "object",
   "required": [

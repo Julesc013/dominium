@@ -8,8 +8,8 @@
   },
   "evidence": {
     "process_registry": "contracts/registry/process_registry.json",
-    "schema_alignment": "docs/SCHEMA_CANON_ALIGNMENT.md",
-    "testx_contract": "docs/ci/TESTX_GATE_CONTRACT.md"
+    "schema_alignment": "docs/reference/schema/SCHEMA_CANON_ALIGNMENT.md",
+    "testx_contract": "docs/testing/ci/TESTX_GATE_CONTRACT.md"
   },
   "notes": "Canon state asserted by content verification, not git tags."
 }

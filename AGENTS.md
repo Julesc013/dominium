@@ -144,7 +144,7 @@ Before substantive work, agents must consult the relevant authoritative repo art
 
 Task-specific additions are mandatory when scope expands:
 
-- schema or compatibility work: `schema/**`, `docs/contracts/**`, compat metadata
+- schema or compatibility work: `schema/**`, `docs/reference/contracts/**`, compat metadata
 - release or control-plane work: `docs/release/**`, `contracts/repo/release_policy.toml`, release and update registries
 - runtime extraction work: relevant runtime roots plus ownership review and bridge law
 - bridge or ownership-sensitive work: `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md` before binding to overlapping roots

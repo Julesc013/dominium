@@ -100,4 +100,4 @@ Supported kinds:
 - `docs/architecture/SAVE_MODEL.md`
 - `docs/architecture/LOCKFILES.md`
 - `docs/distribution/LAUNCHER_GUIDE.md`
-- `docs/audit/INSTANCE_MANIFEST_BASELINE.md`
+- `docs/archive/audit/INSTANCE_MANIFEST_BASELINE.md`

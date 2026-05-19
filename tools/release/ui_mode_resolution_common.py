@@ -11,7 +11,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
 UI_MODE_RESOLUTION_DOC_PATH = "docs/runtime/shell/UI_MODE_RESOLUTION.md"
-UI_MODE_RESOLUTION_BASELINE_PATH = "docs/audit/UI_MODE_RESOLUTION_BASELINE.md"
+UI_MODE_RESOLUTION_BASELINE_PATH = "docs/archive/audit/UI_MODE_RESOLUTION_BASELINE.md"
 UI_MODE_RESOLUTION_TOOL_PATH = "tools/release/tool_run_ui_mode_resolution.py"
 
 

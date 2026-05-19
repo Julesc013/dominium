@@ -49,10 +49,10 @@
       "server/net/dom_server_runtime.h",
       "tools/release/update_resolver.py",
       "tools/validators/security/trust/trust_verifier.py",
-      "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-      "docs/blueprint/CAPABILITY_LADDER.md",
-      "docs/blueprint/MANUAL_REVIEW_GATES.md",
-      "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+      "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+      "docs/archive/blueprint/CAPABILITY_LADDER.md",
+      "docs/archive/blueprint/MANUAL_REVIEW_GATES.md",
+      "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
     ]
   },
   "blocker_categories": [
@@ -368,7 +368,7 @@
       ],
       "evidence_refs": [
         "server/net/dom_server_runtime.cpp",
-        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+        "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
       ],
       "missing_realization_or_admission": [
         "runtime cutover proof obligations",
@@ -499,15 +499,15 @@
       ],
       "upstream_doctrine_refs": [
         "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-        "docs/blueprint/CAPABILITY_LADDER.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md"
       ],
       "checkpoint_refs": [
         "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
       ],
       "evidence_refs": [
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-        "docs/blueprint/CAPABILITY_LADDER.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md"
       ],
       "missing_realization_or_admission": [
         "deterministic replication proof",
@@ -531,16 +531,16 @@
         "restartless core engine replacement"
       ],
       "upstream_doctrine_refs": [
-        "docs/blueprint/CAPABILITY_LADDER.md",
-        "docs/blueprint/PIPE_DREAMS_MATRIX.md",
-        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+        "docs/archive/blueprint/CAPABILITY_LADDER.md",
+        "docs/archive/blueprint/PIPE_DREAMS_MATRIX.md",
+        "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
       ],
       "checkpoint_refs": [
         "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
       ],
       "evidence_refs": [
-        "docs/blueprint/CAPABILITY_LADDER.md",
-        "docs/blueprint/PIPE_DREAMS_MATRIX.md"
+        "docs/archive/blueprint/CAPABILITY_LADDER.md",
+        "docs/archive/blueprint/PIPE_DREAMS_MATRIX.md"
       ],
       "missing_realization_or_admission": [
         "multiple earlier runtime, trust, receipt, and live-ops proof layers",

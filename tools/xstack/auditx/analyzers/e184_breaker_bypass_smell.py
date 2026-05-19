@@ -90,7 +90,7 @@ def run(graph, repo_root, changed_files=None):
                             related_paths=[
                                 rel_path,
                                 "tools/validators/safety/safety_engine.py",
-                                "docs/electric/ELECTRICAL_CONSTITUTION.md",
+                                "docs/domains/electricity/ELECTRICAL_CONSTITUTION.md",
                             ],
                         )
                     )

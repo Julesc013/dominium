@@ -30,7 +30,7 @@ def main():
     parser.add_argument("--roots", action="append", help="Root path to scan.")
     parser.add_argument("--exclude", action="append", help="Exclude path fragment.")
     parser.add_argument("--mode", choices=["warn", "fail"], default="fail")
-    parser.add_argument("--known-blockers", default="docs/ci/KNOWN_BLOCKERS.md")
+    parser.add_argument("--known-blockers", default="docs/testing/ci/KNOWN_BLOCKERS.md")
     args = parser.parse_args()
 
     roots = expand_list(args.roots, DEFAULT_ROOTS)

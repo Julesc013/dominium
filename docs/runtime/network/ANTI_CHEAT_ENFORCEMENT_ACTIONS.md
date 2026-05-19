@@ -54,5 +54,5 @@ Define explicit anti-cheat action semantics. No hidden ban paths are permitted.
 ## Cross-References
 - `docs/runtime/network/ANTI_CHEAT_MODULES.md`
 - `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`
 - `tools/validators/network/anti_cheat/anti_cheat_engine.py`

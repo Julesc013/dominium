@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic MOB-4 travel commitment row.",
   "x-doc-ref": [
-    "docs/mobility/MACRO_TRAVEL_MODEL.md",
-    "docs/audit/MACRO_TRAVEL_BASELINE.md"
+    "docs/domains/mobility/MACRO_TRAVEL_MODEL.md",
+    "docs/archive/audit/MACRO_TRAVEL_BASELINE.md"
   ],
   "type": "object",
   "required": [

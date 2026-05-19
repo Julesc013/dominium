@@ -201,6 +201,6 @@ Reserved for future name-query flows:
 - `docs/architecture/astronomy_catalogs.md`
 - `docs/architecture/site_registry.md`
 - `docs/architecture/ui_registry.md`
-- `docs/contracts/authority_context.md`
-- `docs/contracts/law_profile.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/authority_context.md`
+- `docs/reference/contracts/law_profile.md`
+- `docs/reference/contracts/refusal_contract.md`

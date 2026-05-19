@@ -106,7 +106,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=["INV-NO-DIRECT-CONCENTRATION-WRITE"],
                             related_paths=[
                                 rel_path,
-                                "docs/pollution/DISPERSION_MODEL.md",
+                                "docs/domains/pollution/DISPERSION_MODEL.md",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

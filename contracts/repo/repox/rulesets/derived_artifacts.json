@@ -19,14 +19,14 @@
     {
       "rule_id": "INV-AUDITX-ARTIFACT-HEADERS",
       "severity": "FAIL",
-      "scope_paths": ["docs/audit/auditx", "tools/xstack/auditx/output"],
+      "scope_paths": ["docs/archive/audit/auditx", "tools/xstack/auditx/output"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-auditx-artifact-headers",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-AUDITX-DETERMINISM",
       "severity": "FAIL",
-      "scope_paths": ["tools/auditx", "docs/audit/auditx"],
+      "scope_paths": ["tools/auditx", "docs/archive/audit/auditx"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-auditx-determinism",
       "exemption_policy": "allow_with_expiry"
     },
@@ -40,14 +40,14 @@
     {
       "rule_id": "INV-AUDITX-PROMOTION-CANDIDATE-SHAPE",
       "severity": "FAIL",
-      "scope_paths": ["docs/audit/auditx/PROMOTION_CANDIDATES.json", "tools/xstack/auditx/output", "scripts/ci/check_repox_rules.py"],
+      "scope_paths": ["docs/archive/audit/auditx/PROMOTION_CANDIDATES.json", "tools/xstack/auditx/output", "scripts/ci/check_repox_rules.py"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-auditx-promotion-candidate-shape",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-AUDITX-OUTPUT-STALE",
       "severity": "WARN",
-      "scope_paths": ["docs/audit/auditx", "tools/auditx"],
+      "scope_paths": ["docs/archive/audit/auditx", "tools/auditx"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-auditx-output-stale",
       "exemption_policy": "allow_with_expiry"
     }

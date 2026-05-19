@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E440_IMPORT_WITHOUT_HASH_CHECK_SMELL"
 REQUIRED_TOKENS = {
-    "docs/lib/EXPORT_IMPORT_FORMAT.md": (
+    "docs/runtime/storage/EXPORT_IMPORT_FORMAT.md": (
         "recompute each `content_hash`",
         "recompute `bundle_hash`",
         "refuse if any mismatch occurs",

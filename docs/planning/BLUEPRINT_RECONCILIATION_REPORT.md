@@ -31,7 +31,7 @@ The classification buckets are used in the strict P-2 sense:
 - `replace`: the current shape is misleading or structurally wrong enough that later work should derive a different canonical surface.
 - `quarantine`: evidence is insufficient, conflict risk is high, or human review is required before later prompts may depend on it.
 
-These judgments follow the P-0 authority rules and the repo-reality-first guidance in `docs/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md`. The machine-readable registries are sorted deterministically by subsystem family and surface name.
+These judgments follow the P-0 authority rules and the repo-reality-first guidance in `docs/archive/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md`. The machine-readable registries are sorted deterministically by subsystem family and surface name.
 
 ## 3. Blueprint Families Reconciled
 
@@ -244,15 +244,15 @@ These are already acting as the live governance and planning authority stack for
 
 Extend:
 
-- `docs/blueprint`
+- `docs/archive/blueprint`
 
 The blueprint archive is still valuable, but P-2 shows several of its implicit assumptions now need reconciliation guards before later prompts consume it directly.
 
 Merge:
 
-- `docs/agents`
+- `docs/game/agents`
 - `docs/governance`
-- `docs/xstack`
+- `docs/development/xstack`
 - `DOMINIUM.md`
 - `GOVERNANCE.md`
 - `README.md`

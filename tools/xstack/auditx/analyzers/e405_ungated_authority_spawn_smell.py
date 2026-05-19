@@ -20,7 +20,7 @@ REQUIRED_TOKENS = {
         "--local-singleplayer",
         "start_local_singleplayer(",
     ),
-    "docs/server/LOCAL_SINGLEPLAYER_MODEL.md": (
+    "docs/apps/server/LOCAL_SINGLEPLAYER_MODEL.md": (
         "Local authority spawning is profile-driven.",
         "`server.profile.private_relaxed`",
         "`refusal.client.local_authority_forbidden`",

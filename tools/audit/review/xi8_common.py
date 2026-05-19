@@ -37,11 +37,11 @@ from tools.audit.review.xi6_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-XI_5A_FINAL_REL = "docs/audit/XI_5A_FINAL.md"
-XI_5X1_FINAL_REL = "docs/audit/XI_5X1_FINAL.md"
-XI_5X2_FINAL_REL = "docs/audit/XI_5X2_FINAL.md"
-XI_6_FINAL_REL = "docs/audit/XI_6_FINAL.md"
-XI_7_FINAL_REL = "docs/audit/XI_7_FINAL.md"
+XI_5A_FINAL_REL = "docs/archive/audit/XI_5A_FINAL.md"
+XI_5X1_FINAL_REL = "docs/archive/audit/XI_5X1_FINAL.md"
+XI_5X2_FINAL_REL = "docs/archive/audit/XI_5X2_FINAL.md"
+XI_6_FINAL_REL = "docs/archive/audit/XI_6_FINAL.md"
+XI_7_FINAL_REL = "docs/archive/audit/XI_7_FINAL.md"
 
 XI5X2_SOURCE_POLICY_REL = "contracts/restructure/xi5x2_source_pocket_policy.json"
 BUILD_GRAPH_REL = "archive/generated/audit/build_graph.json"
@@ -55,18 +55,18 @@ ENTRYPOINT_PY_REL = "tools/xstack/ci/xstack_ci_entrypoint.py"
 ENTRYPOINT_REL = "tools/xstack/ci/xstack_ci_entrypoint"
 ENTRYPOINT_PS1_REL = "tools/xstack/ci/xstack_ci_entrypoint.ps1"
 
-CI_GUARDRAILS_DOC_REL = "docs/xstack/CI_GUARDRAILS.md"
-ARCH_DRIFT_POLICY_DOC_REL = "docs/xstack/ARCH_DRIFT_POLICY.md"
+CI_GUARDRAILS_DOC_REL = "docs/development/xstack/CI_GUARDRAILS.md"
+ARCH_DRIFT_POLICY_DOC_REL = "docs/development/xstack/ARCH_DRIFT_POLICY.md"
 
 REPOSITORY_STRUCTURE_LOCK_REL = "archive/generated/architecture/repository_structure_lock.json"
 REPOSITORY_STRUCTURE_DOC_REL = "docs/architecture/REPOSITORY_STRUCTURE_v1.md"
 MODULE_INDEX_DOC_REL = "docs/architecture/MODULE_INDEX_v1.md"
 SHIM_SUNSET_PLAN_REL = "docs/architecture/SHIM_SUNSET_PLAN.md"
-REPO_FREEZE_VERIFICATION_REL = "docs/audit/REPO_FREEZE_VERIFICATION.md"
-XI_8_FINAL_REL = "docs/audit/XI_8_FINAL.md"
+REPO_FREEZE_VERIFICATION_REL = "docs/archive/audit/REPO_FREEZE_VERIFICATION.md"
+XI_8_FINAL_REL = "docs/archive/audit/XI_8_FINAL.md"
 
 CI_REPORT_JSON_REL = "archive/generated/audit/ci_run_report.json"
-CI_REPORT_MD_REL = "docs/audit/CI_RUN_REPORT.md"
+CI_REPORT_MD_REL = "docs/archive/audit/CI_RUN_REPORT.md"
 
 DIST_ASSEMBLE_TOOL_REL = "tools/release/dist/tool_assemble_dist_tree.py"
 DIST_VERIFY_TOOL_REL = "tools/release/dist/tool_verify_distribution.py"
@@ -548,8 +548,8 @@ def _gate_definitions_payload(lock_payload: Mapping[str, object]) -> dict[str, o
             {"group_id": "full_suite", "profile": "FULL", "selection": "full_profile_runner"},
         ],
         "validation_gates": [
-            {"gate_id": "validate_strict", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/validators/ci/validate_all.py", "--repo-root", ".", "--strict"], "prefer_report_file": True, "report_json_rel": "archive/generated/audit/validation_report_STRICT.json", "report_doc_rel": "docs/audit/VALIDATION_REPORT_STRICT.md"},
-            {"gate_id": "arch_audit_2", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/audit/tool_run_arch_audit.py", "--repo-root", "."], "prefer_report_file": True, "report_json_rel": "archive/generated/audit/arch_audit2_report.json", "report_doc_rel": "docs/audit/ARCH_AUDIT2_REPORT.md"},
+            {"gate_id": "validate_strict", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/validators/ci/validate_all.py", "--repo-root", ".", "--strict"], "prefer_report_file": True, "report_json_rel": "archive/generated/audit/validation_report_STRICT.json", "report_doc_rel": "docs/archive/audit/VALIDATION_REPORT_STRICT.md"},
+            {"gate_id": "arch_audit_2", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/audit/tool_run_arch_audit.py", "--repo-root", "."], "prefer_report_file": True, "report_json_rel": "archive/generated/audit/arch_audit2_report.json", "report_doc_rel": "docs/archive/audit/ARCH_AUDIT2_REPORT.md"},
             {"gate_id": "omega_1_worldgen_lock", "profiles": ["FAST", "STRICT", "FULL"], "command": ["python", "-B", "tools/domain/worldgen/tool_verify_worldgen_lock.py", "--repo-root", "."]},
             {"gate_id": "omega_2_baseline_universe", "profiles": ["FAST", "STRICT", "FULL"], "command": ["python", "-B", "tools/release/mvp/tool_verify_baseline_universe.py", "--repo-root", "."]},
             {"gate_id": "omega_3_gameplay_loop", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/release/mvp/tool_verify_gameplay_loop.py", "--repo-root", "."]},
@@ -568,12 +568,12 @@ def _gate_definitions_payload(lock_payload: Mapping[str, object]) -> dict[str, o
         "provisional_allowances": [
             {"allowance_id": "xi7_data_architecture_support_surface", "allowed_module_id": "data.architecture", "reason": "Xi-6, Xi-7, and Xi-8 freeze and guard artifacts live under data/architecture as non-runtime support surfaces.", "replacement_plan": "Classify data/architecture explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "architecture_drift"},
             {"allowance_id": "xi8_data_xstack_support_surface", "allowed_module_id": "data.xstack", "reason": "Xi-7 and Xi-8 CI gate catalogs live under data/xstack as non-runtime support surfaces.", "replacement_plan": "Classify data/xstack explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "architecture_drift"},
-            {"allowance_id": "xi8_docs_xstack_support_surface", "allowed_module_id": "docs.xstack", "reason": "Xi-7 and Xi-8 operator CI policy docs live under docs/xstack as non-runtime support surfaces.", "replacement_plan": "Classify docs/xstack explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "architecture_drift"},
+            {"allowance_id": "xi8_docs_xstack_support_surface", "allowed_module_id": "docs.xstack", "reason": "Xi-7 and Xi-8 operator CI policy docs live under docs/development/xstack as non-runtime support surfaces.", "replacement_plan": "Classify docs/development/xstack explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "architecture_drift"},
             {"allowance_id": "xi8_tools_xstack_ci_support_surface", "allowed_module_id": "tools.xstack.ci", "reason": "Xi-7 and Xi-8 CI entrypoints and helpers live under tools/xstack/ci as non-runtime support surfaces.", "replacement_plan": "Classify tools/xstack/ci explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "architecture_drift"},
             {"allowance_id": "xi8_tools_xstack_ci_profiles_support_surface", "allowed_module_id": "tools.xstack.ci.profiles", "reason": "Xi-7 and Xi-8 CI profile metadata lives under tools/xstack/ci/profiles as non-runtime support surfaces.", "replacement_plan": "Classify tools/xstack/ci/profiles explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "architecture_drift"},
             {"allowance_id": "xi7_data_architecture_support_surface_boundary", "allowed_module_id": "data.architecture", "reason": "Xi-6, Xi-7, and Xi-8 freeze and guard artifacts live under data/architecture as non-runtime support surfaces.", "replacement_plan": "Classify data/architecture explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "module_boundary"},
             {"allowance_id": "xi8_data_xstack_support_surface_boundary", "allowed_module_id": "data.xstack", "reason": "Xi-7 and Xi-8 CI gate catalogs live under data/xstack as non-runtime support surfaces.", "replacement_plan": "Classify data/xstack explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "module_boundary"},
-            {"allowance_id": "xi8_docs_xstack_support_surface_boundary", "allowed_module_id": "docs.xstack", "reason": "Xi-7 and Xi-8 operator CI policy docs live under docs/xstack as non-runtime support surfaces.", "replacement_plan": "Classify docs/xstack explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "module_boundary"},
+            {"allowance_id": "xi8_docs_xstack_support_surface_boundary", "allowed_module_id": "docs.xstack", "reason": "Xi-7 and Xi-8 operator CI policy docs live under docs/development/xstack as non-runtime support surfaces.", "replacement_plan": "Classify docs/development/xstack explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "module_boundary"},
             {"allowance_id": "xi8_tools_xstack_ci_support_surface_boundary", "allowed_module_id": "tools.xstack.ci", "reason": "Xi-7 and Xi-8 CI entrypoints and helpers live under tools/xstack/ci as non-runtime support surfaces.", "replacement_plan": "Classify tools/xstack/ci explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "module_boundary"},
             {"allowance_id": "xi8_tools_xstack_ci_profiles_support_surface_boundary", "allowed_module_id": "tools.xstack.ci.profiles", "reason": "Xi-7 and Xi-8 CI profile metadata lives under tools/xstack/ci/profiles as non-runtime support surfaces.", "replacement_plan": "Classify tools/xstack/ci/profiles explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "module_boundary"},
             {"allowance_id": "xi7_tools_controlx_review_bridge", "allowed_module_id": "tools.xstack.controlx", "allowed_dependency_module_id": "tools.audit.review", "reason": "ControlX planning helpers still reuse review-side analysis helpers during the Xi-7/Xi-8 integration phase.", "replacement_plan": "Move the shared logic into a neutral support surface or refresh module boundaries via ARCH-GRAPH-UPDATE before tightening this allowance away.", "scope": "module_boundary"},
@@ -1118,7 +1118,7 @@ def _render_xi8_final(snapshot: Mapping[str, object], lock_payload: Mapping[str,
         "- `docs/architecture/REPOSITORY_STRUCTURE_v1.md`",
         "- `docs/architecture/MODULE_INDEX_v1.md`",
         "- `docs/architecture/SHIM_SUNSET_PLAN.md`",
-        "- `docs/audit/REPO_FREEZE_VERIFICATION.md`",
+        "- `docs/archive/audit/REPO_FREEZE_VERIFICATION.md`",
         "",
         "Freeze summary:",
         "",

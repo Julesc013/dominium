@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: `Υ-C`, `Φ-B4`, later `Φ-B5`, later `Ζ`
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `contracts/blueprint/readiness_matrix.json`, `tools/release/update_resolver.py`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/archive/blueprint/MANUAL_REVIEW_GATES.md`, `contracts/blueprint/readiness_matrix.json`, `tools/release/update_resolver.py`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`
 
 # Next Execution Order Post-Φ-B3 / Υ-B
 

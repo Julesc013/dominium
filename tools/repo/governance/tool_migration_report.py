@@ -199,12 +199,12 @@ def generate_migration_report(
     repo_root: str,
     deprecations_rel: str = DEFAULT_DEPRECATIONS_REL,
     topology_map_rel: str = DEFAULT_TOPOLOGY_MAP_REL,
-    out_rel: str = "docs/audit/MIGRATION_STATUS.md",
+    out_rel: str = "docs/archive/audit/MIGRATION_STATUS.md",
 ) -> Dict[str, object]:
     repo_root = os.path.normpath(os.path.abspath(repo_root))
     deprecations_rel = _norm(deprecations_rel) or DEFAULT_DEPRECATIONS_REL
     topology_map_rel = _norm(topology_map_rel) or DEFAULT_TOPOLOGY_MAP_REL
-    out_rel = _norm(out_rel) or "docs/audit/MIGRATION_STATUS.md"
+    out_rel = _norm(out_rel) or "docs/archive/audit/MIGRATION_STATUS.md"
 
     payload = _read_json(os.path.join(repo_root, deprecations_rel.replace("/", os.sep)))
     rows = [
@@ -246,7 +246,7 @@ def main() -> int:
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--deprecations", default=DEFAULT_DEPRECATIONS_REL)
     parser.add_argument("--topology-map", default=DEFAULT_TOPOLOGY_MAP_REL)
-    parser.add_argument("--out", default="docs/audit/MIGRATION_STATUS.md")
+    parser.add_argument("--out", default="docs/archive/audit/MIGRATION_STATUS.md")
     args = parser.parse_args()
 
     repo_root = os.path.normpath(os.path.abspath(args.repo_root)) if str(args.repo_root).strip() else REPO_ROOT_HINT
@@ -254,7 +254,7 @@ def main() -> int:
         repo_root=repo_root,
         deprecations_rel=str(args.deprecations or DEFAULT_DEPRECATIONS_REL),
         topology_map_rel=str(args.topology_map or DEFAULT_TOPOLOGY_MAP_REL),
-        out_rel=str(args.out or "docs/audit/MIGRATION_STATUS.md"),
+        out_rel=str(args.out or "docs/archive/audit/MIGRATION_STATUS.md"),
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0

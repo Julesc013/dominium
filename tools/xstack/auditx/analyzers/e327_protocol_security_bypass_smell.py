@@ -27,7 +27,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    doc_rel = "docs/logic/PROTOCOL_LAYER_MODEL.md"
+    doc_rel = "docs/domains/logic/PROTOCOL_LAYER_MODEL.md"
     doc_text = _read_text(repo_root, doc_rel).lower()
     for token in ("auth", "encryption", "security", "sig"):
         if token in doc_text:

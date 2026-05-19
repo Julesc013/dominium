@@ -92,6 +92,6 @@ Server must emit explicit deterministic refusals for governance failures:
 - `docs/security/SECUREX_TRUST_MODEL.md`
 - `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`
 - `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`
 - `contracts/registry/server_profile_registry.json`
 - `contracts/registry/securex_policy_registry.json`

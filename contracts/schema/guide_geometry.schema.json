@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic MOB-1 GuideGeometry artifact row.",
   "x-doc-ref": [
-    "docs/mobility/GUIDE_GEOMETRY.md",
-    "docs/audit/GUIDE_GEOMETRY_BASELINE.md"
+    "docs/domains/mobility/GUIDE_GEOMETRY.md",
+    "docs/archive/audit/GUIDE_GEOMETRY_BASELINE.md"
   ],
   "type": "object",
   "required": [

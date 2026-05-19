@@ -27,7 +27,7 @@ REQUIRED_TOKENS = {
         '"reason_code"',
         '"refusal.client.unauthorized"',
     ),
-    "docs/server/SERVER_MVP_BASELINE.md": (
+    "docs/apps/server/SERVER_MVP_BASELINE.md": (
         "Every incoming client intent must be wrapped in `AuthorityContext`.",
         "`refusal.client.unauthorized`",
     ),

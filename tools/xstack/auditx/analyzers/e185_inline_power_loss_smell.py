@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
                             related_paths=[
                                 rel_path,
                                 "game/domain/electricity/power_network_engine.py",
-                                "docs/electric/ELECTRICAL_CONSTITUTION.md",
+                                "docs/domains/electricity/ELECTRICAL_CONSTITUTION.md",
                             ],
                         )
                     )

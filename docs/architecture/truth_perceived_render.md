@@ -85,4 +85,4 @@ Define hard architectural boundaries that prevent renderer epistemic leakage and
 - `docs/architecture/observation_kernel.md`
 - `docs/architecture/lens_system.md`
 - `docs/architecture/ui_registry.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`

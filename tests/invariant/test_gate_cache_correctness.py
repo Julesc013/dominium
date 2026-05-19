@@ -33,7 +33,7 @@ def main() -> int:
         profile_id=profile_id,
         exit_code=0,
         output_hash="hash.output.a",
-        artifacts_produced=["docs/audit/proof_manifest.json"],
+        artifacts_produced=["docs/archive/audit/proof_manifest.json"],
         timestamp_utc="2026-02-13T00:00:00Z",
         cache_root=cache_root,
     )

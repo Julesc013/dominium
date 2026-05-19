@@ -75,7 +75,7 @@ No hidden enforcement actions are allowed; all outcomes are explicit and logged.
 - `contracts/registry/anti_cheat_policy_registry.json`
 - `contracts/registry/anti_cheat_module_registry.json`
 - `schemas/net_anti_cheat_event.schema.json`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`
 - `docs/runtime/network/ANTI_CHEAT_MODULES.md`
 - `docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md`
 

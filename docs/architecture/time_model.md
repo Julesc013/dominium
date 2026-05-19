@@ -75,7 +75,7 @@ When paused, no authoritative tick advance occurs.
 
 ## Cross-References
 - `docs/canon/constitution_v1.md`
-- `docs/contracts/law_profile.md`
-- `docs/contracts/authority_context.md`
+- `docs/reference/contracts/law_profile.md`
+- `docs/reference/contracts/authority_context.md`
 - `docs/architecture/camera_and_navigation.md`
 - `docs/architecture/interest_regions.md`

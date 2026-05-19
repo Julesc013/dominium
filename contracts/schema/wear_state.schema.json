@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic MOB-9 wear accumulation state row.",
   "x-doc-ref": [
-    "docs/mobility/MAINTENANCE_AND_WEAR.md",
-    "docs/audit/MAINTENANCE_WEAR_BASELINE.md"
+    "docs/domains/mobility/MAINTENANCE_AND_WEAR.md",
+    "docs/archive/audit/MAINTENANCE_WEAR_BASELINE.md"
   ],
   "type": "object",
   "required": [

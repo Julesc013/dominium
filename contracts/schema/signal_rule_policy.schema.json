@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic MOB-8 signal rule policy.",
   "x-doc-ref": [
-    "docs/mobility/SIGNALING_AND_INTERLOCKING.md",
-    "docs/audit/SIGNALING_INTERLOCKING_BASELINE.md"
+    "docs/domains/mobility/SIGNALING_AND_INTERLOCKING.md",
+    "docs/archive/audit/SIGNALING_INTERLOCKING_BASELINE.md"
   ],
   "type": "object",
   "required": [

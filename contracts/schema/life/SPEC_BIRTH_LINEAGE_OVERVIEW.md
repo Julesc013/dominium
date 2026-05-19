@@ -68,9 +68,9 @@ Optional fields:
 - Epistemic knowledge of birth is emitted via an explicit callback hook only.
 
 ## Integration points
-- Provenance: `docs/specs/SPEC_PROVENANCE.md`
-- Information model: `docs/specs/SPEC_INFORMATION_MODEL.md`
-- Fidelity projection: `docs/specs/SPEC_FIDELITY_PROJECTION.md`
+- Provenance: `docs/reference/specs/SPEC_PROVENANCE.md`
+- Information model: `docs/reference/specs/SPEC_INFORMATION_MODEL.md`
+- Fidelity projection: `docs/reference/specs/SPEC_FIDELITY_PROJECTION.md`
 
 ## Prohibitions
 - Fabricating lineage links.

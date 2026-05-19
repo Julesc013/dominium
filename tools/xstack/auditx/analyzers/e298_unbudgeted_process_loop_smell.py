@@ -64,7 +64,7 @@ def run(graph, repo_root, changed_files=None):
             ],
             related_paths=[
                 rel_path,
-                "docs/audit/PROC9_RETRO_AUDIT.md",
+                "docs/archive/audit/PROC9_RETRO_AUDIT.md",
             ],
         )
     )

@@ -89,8 +89,8 @@ The following are FORBIDDEN:
 - Schema changes without CI validation.
 
 ## FINAL0 Policy References
-- `docs/policies/LONG_TERM_SUPPORT_POLICY.md`
-- `docs/policies/DEPRECATION_POLICY.md`
-- `docs/policies/COMPATIBILITY_PROMISES.md`
-- `docs/policies/FEATURE_EPOCH_POLICY.md`
-- `docs/policies/RENDER_BACKEND_LIFECYCLE.md`
+- `docs/governance/policies/LONG_TERM_SUPPORT_POLICY.md`
+- `docs/governance/policies/DEPRECATION_POLICY.md`
+- `docs/governance/policies/COMPATIBILITY_PROMISES.md`
+- `docs/governance/policies/FEATURE_EPOCH_POLICY.md`
+- `docs/governance/policies/RENDER_BACKEND_LIFECYCLE.md`

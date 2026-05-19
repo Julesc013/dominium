@@ -90,7 +90,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=["INV-ELEC-USES-FLOW-BUNDLE", "INV-NO-ADHOC-PF-LOGIC"],
                             related_paths=[
                                 rel_path,
-                                "docs/electric/ELECTRICAL_CONSTITUTION.md",
+                                "docs/domains/electricity/ELECTRICAL_CONSTITUTION.md",
                                 "docs/architecture/QUANTITY_BUNDLES.md",
                             ],
                         )

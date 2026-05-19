@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic CTRL-6 view-policy contract for camera mode and epistemic constraints.",
   "x-doc-ref": [
-    "docs/audit/VIEW_EPISTEMIC_CONTROL_BASELINE.md"
+    "docs/archive/audit/VIEW_EPISTEMIC_CONTROL_BASELINE.md"
   ],
   "type": "object",
   "required": [

@@ -86,7 +86,7 @@ def _read_json(path: str):
 def _is_generated_evidence_path(rel: str) -> bool:
     if rel.startswith(".aide/") and not rel.startswith((".aide/scripts/", ".aide/adapters/")):
         return True
-    if rel.startswith("docs/audit/"):
+    if rel.startswith("docs/archive/audit/"):
         return True
     return False
 

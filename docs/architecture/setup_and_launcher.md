@@ -94,5 +94,5 @@ tools/package/launcher/launch run --dist dist --session saves/save.example/sessi
 - `docs/architecture/deterministic_packaging.md`
 - `docs/architecture/session_lifecycle.md`
 - `docs/architecture/hash_anchors.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`
 - `docs/testing/xstack_profiles.md`

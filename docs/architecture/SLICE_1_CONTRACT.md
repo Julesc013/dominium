@@ -24,7 +24,7 @@ without hardcoded world assumptions or new simulation systems.
 Scope (binding for SLICE-1):
 
 
-- engine/, game/, data/, client/, tools/, docs/architecture/, docs/examples/, tests/
+- engine/, game/, data/, client/, tools/, docs/architecture/, docs/reference/examples/, tests/
 
 
 - Documentation and tests may be added/updated.
@@ -159,4 +159,4 @@ Replaceability rules:
 SLICE-1 completion is defined by the acceptance checklist in
 
 
-`docs/roadmap/SLICE_1_ACCEPTANCE.md`.
+`docs/release/roadmap/SLICE_1_ACCEPTANCE.md`.

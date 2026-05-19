@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic control action registry output.",
   "x-doc-ref": [
-    "docs/control/CONTROL_PLANE_CONSTITUTION.md",
+    "docs/governance/control/CONTROL_PLANE_CONSTITUTION.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

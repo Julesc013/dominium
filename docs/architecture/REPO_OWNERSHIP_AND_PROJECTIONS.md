@@ -140,4 +140,4 @@ If any new non-legacy paths are added later, they MUST be listed here with exact
 - `docs/architecture/IDE_AND_TOOLCHAIN_POLICY.md`
 
 
-- `docs/policies/IDE_CONTRIBUTION_RULES.md`
+- `docs/governance/policies/IDE_CONTRIBUTION_RULES.md`

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic eviction rule registry output.",
   "x-doc-ref": [
-    "docs/epistemics/MEMORY_AND_FOG_OF_WAR.md"
+    "docs/game/epistemics/MEMORY_AND_FOG_OF_WAR.md"
   ],
   "type": "object",
   "required": [

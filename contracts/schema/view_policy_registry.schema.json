@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic camera view policy registry output.",
   "x-doc-ref": [
-    "docs/audit/VIEW_EPISTEMIC_CONTROL_BASELINE.md"
+    "docs/archive/audit/VIEW_EPISTEMIC_CONTROL_BASELINE.md"
   ],
   "type": "object",
   "required": [

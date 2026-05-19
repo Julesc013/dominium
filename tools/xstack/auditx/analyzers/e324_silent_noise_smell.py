@@ -11,7 +11,7 @@ ANALYZER_ID = "E324_SILENT_NOISE_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e324_silent_noise_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/FAULT_NOISE_SECURITY_MODEL.md",
+    "docs/domains/logic/FAULT_NOISE_SECURITY_MODEL.md",
     "contracts/schema/logic/noise_policy.schema",
     "contracts/registry/logic_noise_policy_registry.json",
     "game/domain/logic/noise/noise_engine.py",
@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    doc_rel = "docs/logic/FAULT_NOISE_SECURITY_MODEL.md"
+    doc_rel = "docs/domains/logic/FAULT_NOISE_SECURITY_MODEL.md"
     doc_text = _read_text(repo_root, doc_rel).lower()
     for token in ("deterministic quantization", "named rng", "proof-visible", "signal sampling"):
         if token in doc_text:

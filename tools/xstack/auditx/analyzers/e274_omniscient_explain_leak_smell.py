@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=["INV-FORENSICS-DERIVED-ONLY"],
                             related_paths=[
                                 rel_path,
-                                "docs/system/SYSTEM_FORENSICS_MODEL.md",
+                                "docs/architecture/system/SYSTEM_FORENSICS_MODEL.md",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

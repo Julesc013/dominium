@@ -47,19 +47,19 @@ from tools.audit.review.xi4z_structure_approval_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-XI4Z_FIX_REPORT_REL = "docs/restructure/XI_4Z_FIX_REPORT.md"
+XI4Z_FIX_REPORT_REL = "docs/archive/restructure/XI_4Z_FIX_REPORT.md"
 XI4Z_FIX_REPORT_JSON_REL = "archive/generated/restructure/xi4z_fix_report.json"
-XI4Z_FIX_FINAL_REL = "docs/audit/XI_4Z_FIX_FINAL.md"
+XI4Z_FIX_FINAL_REL = "docs/archive/audit/XI_4Z_FIX_FINAL.md"
 
 FIX_CHANGED_RELS = (
     "contracts/restructure/xi4z_decision_manifest.json",
     "contracts/restructure/xi5_readiness_contract.json",
     "archive/generated/restructure/xi4z_fix_report.json",
-    "docs/audit/XI_4Z_FINAL.md",
-    "docs/audit/XI_4Z_FIX_FINAL.md",
-    "docs/restructure/XI_4Z_DECISION_REPORT.md",
-    "docs/restructure/XI_4Z_FIX_REPORT.md",
-    "docs/restructure/XI_4Z_XI5_READINESS.md",
+    "docs/archive/audit/XI_4Z_FINAL.md",
+    "docs/archive/audit/XI_4Z_FIX_FINAL.md",
+    "docs/archive/restructure/XI_4Z_DECISION_REPORT.md",
+    "docs/archive/restructure/XI_4Z_FIX_REPORT.md",
+    "docs/archive/restructure/XI_4Z_XI5_READINESS.md",
     "tools/audit/review/tool_run_xi4z_fix.py",
     "tools/audit/review/xi4z_fix_common.py",
     "tools/audit/review/xi4z_structure_approval_common.py",
@@ -228,8 +228,8 @@ def _scan_snapshot(snapshot: Mapping[str, object], repo_root: str) -> dict[str, 
     for required_marker in (
         "archive/generated/restructure/src_domain_mapping_lock_approved.json",
         "contracts/restructure/xi5_readiness_contract.json",
-        "docs/restructure/XI_4Z_DECISION_REPORT.md",
-        "docs/restructure/XI_4Z_XI5_READINESS.md",
+        "docs/archive/restructure/XI_4Z_DECISION_REPORT.md",
+        "docs/archive/restructure/XI_4Z_XI5_READINESS.md",
     ):
         if required_marker not in manifest_text:
             mismatches.append(

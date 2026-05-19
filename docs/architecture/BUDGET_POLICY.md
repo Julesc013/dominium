@@ -98,4 +98,4 @@ Contribution format:
 - `docs/architecture/interest_regions.md`
 - `docs/architecture/fidelity_policy.md`
 - `docs/architecture/macro_capsules.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`

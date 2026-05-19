@@ -19,7 +19,7 @@ REQUIRED_TOKENS = {
         "--local-singleplayer",
         "start_local_singleplayer(",
     ),
-    "docs/server/LOCAL_SINGLEPLAYER_MODEL.md": (
+    "docs/apps/server/LOCAL_SINGLEPLAYER_MODEL.md": (
         "Ready detection must not use wall-clock timeouts.",
         "bounded polling iterations",
     ),

@@ -10,7 +10,7 @@ Machine-Readable Source: `contracts/repo/naming.contract.toml`
 
 Dominium does not use a root `src/` model.
 
-The historical `docs/restructure/FUTURE_LAYOUT_PROPOSAL.md` still contains a proposed `/src` tree, but that document explicitly says the proposed `/src` layout is historical planning input and does not override the completed CONVERGE source-root model.
+The historical `docs/archive/restructure/FUTURE_LAYOUT_PROPOSAL.md` still contains a proposed `/src` tree, but that document explicitly says the proposed `/src` layout is historical planning input and does not override the completed CONVERGE source-root model.
 
 The active model is ownership-first:
 

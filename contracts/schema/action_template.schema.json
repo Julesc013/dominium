@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "META-ACTION-0 action template row for deterministic action validation.",
   "x-doc-ref": [
-    "docs/meta/ACTION_GRAMMAR_CONSTITUTION.md",
-    "docs/audit/ACTION_GRAMMAR_BASELINE.md"
+    "docs/governance/meta/ACTION_GRAMMAR_CONSTITUTION.md",
+    "docs/archive/audit/ACTION_GRAMMAR_BASELINE.md"
   ],
   "type": "object",
   "required": [

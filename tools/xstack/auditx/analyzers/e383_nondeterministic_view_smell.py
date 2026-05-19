@@ -13,7 +13,7 @@ STRESS_TOOL_REL = "tools/domain/worldgen/earth_stress/tool_run_earth_mvp_stress.
 VIEW_REPLAY_REL = "tools/domain/worldgen/earth_stress/tool_replay_earth_view_window.py"
 PHYSICS_REPLAY_REL = "tools/domain/worldgen/earth_stress/tool_replay_earth_physics_window.py"
 BASELINE_REL = "tests/fixtures/regression/earth_mvp_baseline.json"
-FINAL_AUDIT_REL = "docs/audit/EARTH_MVP_FINAL_BASELINE.md"
+FINAL_AUDIT_REL = "docs/archive/audit/EARTH_MVP_FINAL_BASELINE.md"
 REQUIRED_TOKENS = {
     STRESS_COMMON_REL: (
         "generate_earth_mvp_stress_scenario(",

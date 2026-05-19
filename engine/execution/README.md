@@ -13,4 +13,4 @@ Deterministic Work IR, scheduling, and budget enforcement for engine execution.
 - No direct cross-system calls; only packet/bus interfaces.
 
 ## Spec
-See `docs/specs/SPEC_SIM_SCHEDULER.md` and `docs/specs/SPEC_DETERMINISM.md`.
+See `docs/reference/specs/SPEC_SIM_SCHEDULER.md` and `docs/reference/specs/SPEC_DETERMINISM.md`.

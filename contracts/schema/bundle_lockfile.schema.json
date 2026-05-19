@@ -6,7 +6,7 @@
   "x-doc-ref": [
     "docs/architecture/lockfile.md",
     "docs/architecture/registry_compile.md",
-    "docs/contracts/versioning_and_migration.md"
+    "docs/reference/contracts/versioning_and_migration.md"
   ],
   "type": "object",
   "required": [

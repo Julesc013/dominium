@@ -30,7 +30,7 @@ def main() -> int:
         runner_ids=["repox_runner", "testx.group.core.invariants"],
         cache_hits=2,
         cache_misses=0,
-        artifact_hashes={"docs/audit/testx/TESTX_SUMMARY.json": "artifact.hash.a"},
+        artifact_hashes={"docs/archive/audit/testx/TESTX_SUMMARY.json": "artifact.hash.a"},
         failure_class="",
         duration_s=1.25,
         workspace_id="ws.ledger.test",

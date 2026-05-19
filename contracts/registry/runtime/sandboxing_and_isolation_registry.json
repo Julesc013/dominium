@@ -86,7 +86,7 @@
     "tools/xstack/testx/tests/test_renderer_truth_isolation.py",
     "tools/xstack/testx/tests/test_platform_isolation.py",
     "tools/xstack/testx/tests/test_no_production_import_from_quarantine.py",
-    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+    "docs/governance/control/CONTROL_PLANE_CONSTITUTION.md"
   ],
   "isolation_subject_classes": [
     {

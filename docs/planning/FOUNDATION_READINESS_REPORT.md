@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Λ, Σ, Φ, Υ, Ζ
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `contracts/planning/snapshot_intake_policy.json`, `docs/planning/REALITY_EXTRACTION_REPORT.md`, `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `contracts/planning/reconciliation/subsystem_classification.json`, `contracts/planning/reconciliation/assumption_invalidations.json`, `contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/CAPABILITY_LADDER.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `contracts/planning/snapshot_intake_policy.json`, `docs/planning/REALITY_EXTRACTION_REPORT.md`, `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `contracts/planning/reconciliation/subsystem_classification.json`, `contracts/planning/reconciliation/assumption_invalidations.json`, `contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json`, `docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/archive/blueprint/CAPABILITY_LADDER.md`
 
 # Foundation Readiness Report
 
@@ -39,7 +39,7 @@ The main risks are not absence, but split ownership:
 
 ### 3.2 Agent and Governance Readiness
 
-This axis is also strong. `AGENTS.md`, `docs/planning`, `docs/agents`, `docs/governance`, `docs/xstack`, `tools/controlx`, and `tools/xstack` already provide a real governance substrate. The missing work is harmonization, task-class pinning, and vendor-neutral interface shaping.
+This axis is also strong. `AGENTS.md`, `docs/planning`, `docs/game/agents`, `docs/governance`, `docs/development/xstack`, `tools/controlx`, and `tools/xstack` already provide a real governance substrate. The missing work is harmonization, task-class pinning, and vendor-neutral interface shaping.
 
 The key trap here is pretending Σ starts from zero. It does not.
 
@@ -121,7 +121,7 @@ What already exists:
 
 What partially exists:
 
-- mirrored instruction surfaces across `docs/agents`, `docs/governance`, and `docs/xstack`
+- mirrored instruction surfaces across `docs/game/agents`, `docs/governance`, and `docs/development/xstack`
 - routed operator and interface tooling in `tools/controlx` and `tools/xstack`
 
 What is blocked:
@@ -234,7 +234,7 @@ Equivalent live support already exists in:
 - `schema/release/build_id.schema`
 - `schema/identity/artifact_identity.schema`
 - `schema/release/release_channel.schema`
-- `docs/specs/SPEC_IDENTITY.md`
+- `docs/reference/specs/SPEC_IDENTITY.md`
 - `tools/release/update_resolver.py`
 - `updates/*.json`
 
@@ -303,13 +303,13 @@ Later prompts should not reinvent:
 - the live semantic/domain roots already present across reality, worldgen, geo, materials, logic, signals, system, universe, and pack surfaces
 - existing rollback, yanked-release, transaction-log, checkpoint, and replay primitives
 
-P-4 should also avoid consuming `docs/blueprint/FINAL_PROMPT_INVENTORY.md` or `archive/generated/blueprint/final_prompt_inventory.json` as if they were still self-sufficient. Those are now advisory inputs that must be filtered through P-2 and P-3.
+P-4 should also avoid consuming `docs/archive/blueprint/FINAL_PROMPT_INVENTORY.md` or `archive/generated/blueprint/final_prompt_inventory.json` as if they were still self-sufficient. Those are now advisory inputs that must be filtered through P-2 and P-3.
 
 ## 7. What Later Prompts Should Extend Instead of Replace
 
 Later prompts should extend:
 
-- `docs/agents`, `docs/governance`, `docs/xstack`, `tools/controlx`, and `tools/xstack` for Σ
+- `docs/game/agents`, `docs/governance`, `docs/development/xstack`, `tools/controlx`, and `tools/xstack` for Σ
 - `engine`, `game`, `app`, `compat`, `control`, `core`, `net`, `process`, `server/runtime`, and `server/persistence` for Φ
 - `release`, `repo`, `updates`, `tools/release`, `tools/distribution`, `tools/compatx`, `tools/securex`, `data/architecture`, and `data/registries` for Υ
 - `worldgen`, `geo`, `reality`, `materials`, `logic`, `signals`, `system`, `universe`, `packs/domain`, `packs/experience`, and `packs/law` for Λ

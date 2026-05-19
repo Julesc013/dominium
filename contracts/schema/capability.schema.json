@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic CTRL-7 capability declaration contract.",
   "x-doc-ref": [
-    "docs/audit/CAPABILITY_REGISTRY_BASELINE.md"
+    "docs/archive/audit/CAPABILITY_REGISTRY_BASELINE.md"
   ],
   "type": "object",
   "required": [

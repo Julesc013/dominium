@@ -11,7 +11,7 @@ ANALYZER_ID = "E325_SECURITY_BYPASS_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e325_security_bypass_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/FAULT_NOISE_SECURITY_MODEL.md",
+    "docs/domains/logic/FAULT_NOISE_SECURITY_MODEL.md",
     "contracts/schema/logic/security_policy.schema",
     "contracts/registry/logic_security_policy_registry.json",
     "game/domain/logic/eval/sense_engine.py",
@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    doc_rel = "docs/logic/FAULT_NOISE_SECURITY_MODEL.md"
+    doc_rel = "docs/domains/logic/FAULT_NOISE_SECURITY_MODEL.md"
     doc_text = _read_text(repo_root, doc_rel).lower()
     for token in ("credential verification", "encryption", "security_policy_id", "explain.logic_spoof_detected"):
         if token in doc_text:

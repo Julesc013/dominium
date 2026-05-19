@@ -25,7 +25,7 @@ REQUIRED_FILE_TOKENS = {
         "DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF",
         '"contract_bundle_hash"',
     ),
-    "docs/meta/UNIVERSE_CONTRACT_BUNDLE.md": (
+    "docs/governance/meta/UNIVERSE_CONTRACT_BUNDLE.md": (
         "refusal.contract.missing_bundle",
         "UniverseIdentity",
         "SessionSpec",

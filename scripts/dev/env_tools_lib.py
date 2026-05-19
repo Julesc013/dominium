@@ -167,7 +167,7 @@ def canonical_workspace_dirs(repo_root, ws_id="", platform_id="", arch_id=""):
     dist_root = _norm(os.path.join(repo_root, "dist", "ws", use_ws_id))
     dist_sys_root = _norm(os.path.join(dist_root, "sys", use_platform, use_arch))
     dist_tools_root = _norm(os.path.join(dist_sys_root, "bin", "tools"))
-    remediation_root = _norm(os.path.join(repo_root, "docs", "audit", "remediation", use_ws_id))
+    remediation_root = _norm(os.path.join(repo_root, "docs", "archive", "audit", "remediation", use_ws_id))
 
     legacy_build_root = _norm(os.path.join(repo_root, "out", "build", LEGACY_WORKSPACE_ID))
     legacy_verify = _norm(os.path.join(legacy_build_root, "verify"))
@@ -322,7 +322,7 @@ def ensure_workspace_dirs(repo_root, ws_id="", platform_id="", arch_id="", env=N
 
 
 def workspace_artifact_dir(repo_root, ws_id="", category=""):
-    """Return workspace-scoped artifact directory under docs/audit."""
+    """Return workspace-scoped artifact directory under docs/archive/audit."""
 
     dirs = canonical_workspace_dirs(repo_root, ws_id=ws_id)
     root = dirs["remediation_root"]

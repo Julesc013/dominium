@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Commitment type definition for causality strictness enforcement.",
   "x-doc-ref": [
-    "docs/materials/NOTHING_JUST_HAPPENS.md"
+    "docs/domains/materials/NOTHING_JUST_HAPPENS.md"
   ],
   "type": "object",
   "required": [

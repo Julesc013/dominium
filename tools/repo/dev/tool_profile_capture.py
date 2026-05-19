@@ -285,7 +285,7 @@ def main() -> int:
     parser.add_argument("--session-id", required=True)
     parser.add_argument("--scenario-id", required=True)
     parser.add_argument("--bii", default="")
-    parser.add_argument("--out", default="docs/audit/perf/profile_trace.sample.json")
+    parser.add_argument("--out", default="docs/archive/audit/perf/profile_trace.sample.json")
     parser.add_argument("--multiplayer-policy-id", default="")
     parser.add_argument("--multiplayer-client-count", type=int, default=0)
     parser.add_argument("--multiplayer-shard-count", type=int, default=0)

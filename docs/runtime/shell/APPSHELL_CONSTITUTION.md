@@ -3,7 +3,7 @@ Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, and `docs/packs/PACK_VERIFICATION_PIPELINE.md`.
+Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/reference/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/reference/contracts/SEMANTIC_CONTRACT_MODEL.md`, and `docs/content/packs/PACK_VERIFICATION_PIPELINE.md`.
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: canon-aligned documentation set for convergence and release preparation

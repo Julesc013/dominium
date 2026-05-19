@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic signal rule policy registry output.",
   "x-doc-ref": [
-    "docs/mobility/SIGNALING_AND_INTERLOCKING.md",
+    "docs/domains/mobility/SIGNALING_AND_INTERLOCKING.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

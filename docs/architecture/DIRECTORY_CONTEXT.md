@@ -163,7 +163,7 @@ runtime/front-end subsystems:
 
 
 
-- Deterministic core subsystems (must obey `docs/specs/SPEC_DETERMINISM.md`):
+- Deterministic core subsystems (must obey `docs/reference/specs/SPEC_DETERMINISM.md`):
 
 
   `core/`, `sim/`, `world/`, `trans/`, `struct/`, `decor/`, `agent/`, plus the
@@ -211,7 +211,7 @@ MUST NOT include private headers from `engine/modules/**`; use
 
 
 
-Filesystem root contracts are defined in `docs/specs/SPEC_FS_CONTRACT.md` and
+Filesystem root contracts are defined in `docs/reference/specs/SPEC_FS_CONTRACT.md` and
 
 
 `engine/include/domino/pkg/repo.h`. This repository does not ship a `repo/`

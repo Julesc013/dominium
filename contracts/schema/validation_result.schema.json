@@ -374,7 +374,7 @@
       ],
       "deterministic_fingerprint": "8bfc775a7ce72af99e94fd809edd7b2d31821f6e58f5fa9cda84c836a55f5703",
       "extensions": {
-        "report_doc_path": "docs/audit/VALIDATION_REPORT_FAST.md"
+        "report_doc_path": "docs/archive/audit/VALIDATION_REPORT_FAST.md"
       }
     }
   ]

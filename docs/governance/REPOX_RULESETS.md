@@ -12,7 +12,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
 - Required updates: documentation surface exists, but current canon ownership is not explicit
-- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+- Cross-check with: `docs/archive/audit/CANON_MAP.md` and `docs/archive/audit/DOC_DRIFT_MATRIX.md`.
 
 
 RepoX rules are organized into policy packs under `repo/repox/rulesets/`.
@@ -323,14 +323,14 @@ See `docs/development/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-IDENTITY-FINGERPRINT
 
-- Fails when `docs/audit/identity_fingerprint.json` is missing or stale.
+- Fails when `docs/archive/audit/identity_fingerprint.json` is missing or stale.
 - Fingerprint is derived from canon/governance-critical identity inputs.
 - Canonical generator: `tools/validators/ci/tool_identity_fingerprint.py`.
 
 ### INV-IDENTITY-CHANGE-EXPLANATION
 
 - Fails when identity input changes are not accompanied by explanation artifact updates.
-- Explanation artifact: `docs/audit/identity_fingerprint_explanation.md`.
+- Explanation artifact: `docs/archive/audit/identity_fingerprint_explanation.md`.
 
 ### INV-COLLISION-DETERMINISTIC
 
@@ -439,7 +439,7 @@ See `docs/development/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-AUDITX-ARTIFACT-HEADERS
 
-- Fails when `docs/audit/auditx/` exists but required artifact files are missing.
+- Fails when `docs/archive/audit/auditx/` exists but required artifact files are missing.
 - Fails when markdown artifacts are missing RepoX doc headers.
 - Fails when canonical JSON artifacts are not marked `artifact_class=CANONICAL`.
 - Fails when canonical JSON artifacts include run-meta timestamp keys.
@@ -463,7 +463,7 @@ See `docs/development/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-TOPOLOGY-MAP-SIZE-BUDGET
 
-- Fails when `docs/audit/TOPOLOGY_MAP.json` exceeds the repository topology budget (`99 MiB` canonical JSON including trailing newline).
+- Fails when `docs/archive/audit/TOPOLOGY_MAP.json` exceeds the repository topology budget (`99 MiB` canonical JSON including trailing newline).
 - Preserves headroom below hosted-remote hard limits so topology regeneration remains push-safe.
 
 ### INV-AUDITX-DETERMINISM
@@ -478,7 +478,7 @@ See `docs/development/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-AUDITX-OUTPUT-STALE
 
-- Warns when committed `docs/audit/auditx/FINDINGS.json` lags far behind HEAD.
+- Warns when committed `docs/archive/audit/auditx/FINDINGS.json` lags far behind HEAD.
 - Non-gating signal to refresh derived semantic reports.
 
 ### INV-SECUREX-TRUST-POLICY-VALID
@@ -500,7 +500,7 @@ See `docs/development/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-TOOL-VERSION-MISMATCH
 
-- Fails when `docs/audit/security/INTEGRITY_MANIFEST.json` is missing, malformed, or stale.
+- Fails when `docs/archive/audit/security/INTEGRITY_MANIFEST.json` is missing, malformed, or stale.
 - Fails when recorded tool hashes do not match current tool sources.
 - Prevents committing derived artifacts produced by mismatched tool implementations.
 
@@ -543,7 +543,7 @@ See `docs/development/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - Fails when `UniverseIdentity` schemas omit `universe_contract_bundle_ref` or `universe_contract_bundle_hash`.
 - Fails when the universe identity builder/creator no longer pins the contract sidecar deterministically.
-- Fails when the canonical `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md` doctrine or runtime enforcer markers are missing.
+- Fails when the canonical `docs/governance/meta/UNIVERSE_CONTRACT_BUNDLE.md` doctrine or runtime enforcer markers are missing.
 
 ### INV-SESSION-MUST-REFERENCE-CONTRACT-HASH
 
@@ -1219,8 +1219,8 @@ See `docs/development/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-REPO-HEALTH-SNAPSHOT-FINALIZATION
 
-- Applies only when `docs/audit/system/GOVERNANCE_FINAL_REPORT.md` is part of the change.
-- Requires `docs/audit/system/REPO_HEALTH_SNAPSHOT.json` and `docs/audit/system/REPO_HEALTH_SNAPSHOT.md` in the same change.
+- Applies only when `docs/archive/audit/system/GOVERNANCE_FINAL_REPORT.md` is part of the change.
+- Requires `docs/archive/audit/system/REPO_HEALTH_SNAPSHOT.json` and `docs/archive/audit/system/REPO_HEALTH_SNAPSHOT.md` in the same change.
 - Requires snapshot json to declare `artifact_class=CANONICAL` and `git_status_clean=true`.
 
 ### INV-DEFAULTS-OPTIONAL

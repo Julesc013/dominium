@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Canonical controller contract for process-driven control bindings.",
   "x-doc-ref": [
-    "docs/embodiment/CONTROL_SUBSTRATE_DOCTRINE.md",
-    "docs/contracts/authority_context.md"
+    "docs/domains/embodiment/CONTROL_SUBSTRATE_DOCTRINE.md",
+    "docs/reference/contracts/authority_context.md"
   ],
   "type": "object",
   "required": [

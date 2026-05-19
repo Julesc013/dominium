@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic unit registry output.",
   "x-doc-ref": [
-    "docs/materials/UNITS_AND_DIMENSIONS.md",
+    "docs/domains/materials/UNITS_AND_DIMENSIONS.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

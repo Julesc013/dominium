@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic ELEC-1 PowerNetworkGraph node payload.",
   "x-doc-ref": [
-    "docs/electric/ELECTRICAL_CONSTITUTION.md",
-    "docs/audit/POWER_NETWORK_BASELINE.md"
+    "docs/domains/electricity/ELECTRICAL_CONSTITUTION.md",
+    "docs/archive/audit/POWER_NETWORK_BASELINE.md"
   ],
   "type": "object",
   "required": [

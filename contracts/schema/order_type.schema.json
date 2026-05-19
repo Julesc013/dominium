@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical CIV-3 order type contract record.",
   "x-doc-ref": [
-    "docs/civilisation/ORDER_LANGUAGE.md"
+    "docs/domains/civilization/ORDER_LANGUAGE.md"
   ],
   "type": "object",
   "required": [

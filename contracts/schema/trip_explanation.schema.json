@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic derived trip explanation artifact for ELEC-4 UI and inspection workflows.",
   "x-doc-ref": [
-    "docs/electric/ELECTRICAL_UX_MODEL.md",
-    "docs/audit/ELECTRICAL_UX_BASELINE.md"
+    "docs/domains/electricity/ELECTRICAL_UX_MODEL.md",
+    "docs/archive/audit/ELECTRICAL_UX_BASELINE.md"
   ],
   "type": "object",
   "required": [

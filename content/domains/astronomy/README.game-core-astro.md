@@ -12,4 +12,4 @@ Notes:
   additional intent notes in `data/core/astro/sol/README.md`.
 
 See:
-- `docs/specs/SPEC_CORE_DATA.md`
+- `docs/reference/specs/SPEC_CORE_DATA.md`

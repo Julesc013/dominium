@@ -154,8 +154,8 @@ def build_profile_report(repo_root: str, trace_rel: str, out_rel: str) -> Dict[s
 def main() -> int:
     parser = argparse.ArgumentParser(description="Render deterministic markdown profile report from profile trace.")
     parser.add_argument("--repo-root", default="")
-    parser.add_argument("--trace", default="docs/audit/perf/profile_trace.sample.json")
-    parser.add_argument("--out", default="docs/audit/perf/profile_trace.sample.md")
+    parser.add_argument("--trace", default="docs/archive/audit/perf/profile_trace.sample.json")
+    parser.add_argument("--out", default="docs/archive/audit/perf/profile_trace.sample.md")
     args = parser.parse_args()
 
     repo_root = os.path.normpath(os.path.abspath(args.repo_root)) if str(args.repo_root).strip() else REPO_ROOT_HINT

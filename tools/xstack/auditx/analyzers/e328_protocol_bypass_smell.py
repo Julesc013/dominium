@@ -69,7 +69,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    shard_rel = "docs/logic/PROTOCOL_SHARD_RULES.md"
+    shard_rel = "docs/domains/logic/PROTOCOL_SHARD_RULES.md"
     shard_text = _read_text(repo_root, shard_rel).lower()
     for token in ("boundary", "carrier.sig", "no direct synchronous"):
         if token in shard_text:

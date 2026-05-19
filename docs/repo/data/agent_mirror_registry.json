@@ -3,7 +3,7 @@
   "last_reviewed": "2026-04-02",
   "stability": "provisional",
   "canonical_governance_source": "AGENTS.md",
-  "mirror_policy_source": "docs/agents/AGENT_MIRROR_POLICY.md",
+  "mirror_policy_source": "docs/game/agents/AGENT_MIRROR_POLICY.md",
   "checkpoint_state": "post-Λ / post-Σ-0 / post-C-Σ0ΦA1 / post-Φ-2 / pre-Σ-1",
   "canonical_vs_derived_rule": {
     "single_canonical_governance_source": true,
@@ -15,7 +15,7 @@
     "docs/canon/glossary_v1.md",
     "AGENTS.md",
     "scope-specific canonical planning, semantic, runtime, schema, contract, release, and policy artifacts",
-    "docs/agents/AGENT_MIRROR_POLICY.md and other scope-specific canonical mirror-governance artifacts",
+    "docs/game/agents/AGENT_MIRROR_POLICY.md and other scope-specific canonical mirror-governance artifacts",
     "derived mirror files",
     "chat summaries and uncommitted notes"
   ],
@@ -85,7 +85,7 @@
         "docs/runtime/RUNTIME_KERNEL_MODEL.md",
         "docs/runtime/COMPONENT_MODEL.md",
         "docs/runtime/RUNTIME_SERVICES.md",
-        "docs/agents/AGENT_MIRROR_POLICY.md"
+        "docs/game/agents/AGENT_MIRROR_POLICY.md"
       ],
       "maintenance_rule": "Update when AGENTS.md, ownership review, or early-Φ runtime vocabulary changes materially.",
       "conflict_rule": "Canonical sources win; stale mirror must be updated or removed.",
@@ -101,7 +101,7 @@
       "path_scopes": [],
       "canonical_source_refs": [
         "AGENTS.md",
-        "docs/agents/AGENT_MIRROR_POLICY.md"
+        "docs/game/agents/AGENT_MIRROR_POLICY.md"
       ],
       "maintenance_rule": "Create only when stable path-local instruction differences are justified by real repo divergence.",
       "conflict_rule": "Any future path-specific file must remain subordinate to root mirrors and canonical governance.",
@@ -126,7 +126,7 @@
         "docs/runtime/RUNTIME_KERNEL_MODEL.md",
         "docs/runtime/COMPONENT_MODEL.md",
         "docs/runtime/RUNTIME_SERVICES.md",
-        "docs/agents/AGENT_MIRROR_POLICY.md"
+        "docs/game/agents/AGENT_MIRROR_POLICY.md"
       ],
       "maintenance_rule": "Update when canonical governance, ownership cautions, or runtime vocabulary changes materially.",
       "conflict_rule": "Canonical sources win; stale mirror must be updated or removed.",
@@ -142,7 +142,7 @@
       "path_scopes": [],
       "canonical_source_refs": [
         "AGENTS.md",
-        "docs/agents/AGENT_MIRROR_POLICY.md"
+        "docs/game/agents/AGENT_MIRROR_POLICY.md"
       ],
       "maintenance_rule": "Create only when a bounded profile need is justified and later Σ safety/task prompts provide sufficient guardrails.",
       "conflict_rule": "Any future profile must remain derived, bounded, and non-privileged.",

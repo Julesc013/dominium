@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Canonical camera target binding contract for deterministic camera/view processes.",
   "x-doc-ref": [
-    "docs/embodiment/CAMERA_AND_VIEW_LENSES.md",
-    "docs/contracts/refusal_contract.md"
+    "docs/domains/embodiment/CAMERA_AND_VIEW_LENSES.md",
+    "docs/reference/contracts/refusal_contract.md"
   ],
   "type": "object",
   "required": [

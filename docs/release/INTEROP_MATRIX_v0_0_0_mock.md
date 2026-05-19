@@ -84,8 +84,8 @@ No silent fallback is allowed.
 
 DIST-6 generates:
 
-- `docs/audit/DIST6_INTEROP_<case>.md`
+- `docs/archive/audit/DIST6_INTEROP_<case>.md`
 - `data/audit/dist6_interop_<case>.json`
-- `docs/audit/DIST6_FINAL.md`
+- `docs/archive/audit/DIST6_FINAL.md`
 
 All outputs must use deterministic ordering and canonical serialization.

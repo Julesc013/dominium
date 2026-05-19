@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic MOB-2 MobilityNetworkGraph node payload.",
   "x-doc-ref": [
-    "docs/mobility/MOBILITY_NETWORKGRAPH.md",
-    "docs/audit/MOBILITY_NETWORK_BASELINE.md"
+    "docs/domains/mobility/MOBILITY_NETWORKGRAPH.md",
+    "docs/archive/audit/MOBILITY_NETWORK_BASELINE.md"
   ],
   "type": "object",
   "required": [

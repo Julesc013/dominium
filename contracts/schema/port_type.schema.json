@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Data-defined machine port type.",
   "x-doc-ref": [
-    "docs/interaction/MACHINE_PORTS.md"
+    "docs/game/interaction/MACHINE_PORTS.md"
   ],
   "type": "object",
   "required": [

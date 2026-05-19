@@ -36,7 +36,7 @@
       "notes": "Contributor-facing surface."
     },
     {
-      "path": "docs/agents",
+      "path": "docs/game/agents",
       "guidance_scope": "agent_model_identity_lifecycle_and_planning_docs",
       "status_class": "advisory",
       "authority_domains": [
@@ -48,7 +48,7 @@
       "notes": "Contains AGENT_CONTRACTS, AGENT_LIFECYCLE, AGENT_MODEL, AGENT_PLANNING, and related files."
     },
     {
-      "path": "docs/blueprint",
+      "path": "docs/archive/blueprint",
       "guidance_scope": "current_blueprint_and_series_planning_archive",
       "status_class": "advisory",
       "authority_domains": [
@@ -82,7 +82,7 @@
       "notes": "Contains P-0 intake doctrine and, after this prompt, P-1 reality extraction artifacts."
     },
     {
-      "path": "docs/xstack",
+      "path": "docs/development/xstack",
       "guidance_scope": "xstack process guardrails",
       "status_class": "advisory",
       "authority_domains": [

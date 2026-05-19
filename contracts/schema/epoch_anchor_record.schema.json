@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Canonical epoch anchor record for long-run deterministic replay and compaction boundaries.",
   "x-doc-ref": [
-    "docs/time/TIME_ANCHOR_MODEL.md",
-    "docs/time/TEMPORAL_SEMANTICS_CONSTITUTION.md"
+    "docs/engine/time/TIME_ANCHOR_MODEL.md",
+    "docs/engine/time/TEMPORAL_SEMANTICS_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

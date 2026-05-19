@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical deterministic fixed-point tolerance and rounding contract per quantity.",
   "x-doc-ref": [
-    "docs/meta/NUMERICAL_TOLERANCE_CONSTITUTION.md"
+    "docs/governance/meta/NUMERICAL_TOLERANCE_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

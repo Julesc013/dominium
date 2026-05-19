@@ -5,7 +5,7 @@
   "description": "Canonical PHYS-1 process payload for deterministic force-to-momentum mutation.",
   "x-doc-ref": [
     "docs/domains/physics/PHYSICS_CONSTITUTION.md",
-    "docs/audit/FORCE_MOMENTUM_BASELINE.md"
+    "docs/archive/audit/FORCE_MOMENTUM_BASELINE.md"
   ],
   "type": "object",
   "required": [

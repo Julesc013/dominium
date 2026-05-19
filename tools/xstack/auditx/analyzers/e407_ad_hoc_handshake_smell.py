@@ -21,7 +21,7 @@ REQUIRED_TOKENS = {
         '"compatibility_mode_id"',
         '"endpoint_descriptor"',
     ),
-    "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md": (
+    "docs/reference/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md": (
         "Choose a mutually supported “compatibility mode”",
         "Produce a signed/hashed negotiation record",
     ),

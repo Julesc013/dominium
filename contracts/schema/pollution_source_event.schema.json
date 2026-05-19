@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical process-level pollution emission event for deterministic provenance.",
   "x-doc-ref": [
-    "docs/pollution/POLLUTION_CONSTITUTION.md",
+    "docs/domains/pollution/POLLUTION_CONSTITUTION.md",
     "docs/canon/constitution_v1.md"
   ],
   "type": "object",

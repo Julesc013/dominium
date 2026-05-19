@@ -11,7 +11,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E33_NONDETERMINISTIC_COHORT_MAPPING_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/",
-    "docs/civilisation/",
+    "docs/domains/civilization/",
 )
 
 FORBIDDEN_PATTERNS = (
@@ -111,7 +111,7 @@ def run(graph, repo_root, changed_files=None):
                 )
             )
 
-    docs_rel = "docs/civilisation/COHORT_MODEL.md"
+    docs_rel = "docs/domains/civilization/COHORT_MODEL.md"
     docs_text = _read_text(repo_root, docs_rel)
     if "named RNG streams" not in docs_text and "deterministic seeds" not in docs_text:
         findings.append(

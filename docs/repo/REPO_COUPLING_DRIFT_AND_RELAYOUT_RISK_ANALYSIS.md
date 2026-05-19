@@ -6,7 +6,7 @@ Stability: stable
 Series Scope: repo-structure discovery and design
 Series Role: risk and coupling packet for later topology-option, preferred-target, shim-design, migration-sequencing, and ownership-reconciliation prompts; downstream of stronger canon, the Omega0 constraint packet, the Omega1 topology reality map, audit evidence, and live implementation evidence
 Replacement Target: later explicit repo-structure follow-up after approved topology decisions or new playable-baseline evidence
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `archive/generated/audit/install_discovery_report.json`, `archive/generated/audit/ui_surface_report.json`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `appshell/paths/virtual_paths.py`, `appshell/mode_dispatcher.py`, `appshell/tui_stub.py`, `appshell/supervisor/supervisor_engine.py`, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/release/mvp/runtime_entry.py`, `tools/release/mvp/runtime_bundle.py`, `tools/xstack/registry_compile/constants.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/server_main.py`, `server/net/loopback_transport.py`, `tools/release/release_manifest_engine.py`, `tools/release/component_graph_resolver.py`, `tools/release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/validators/suite/validation_engine.py`, `tools/validators/suite/tool_run_validation.py`, `tools/migration/import_bridge.py`, `contracts/registry/virtual_root_registry.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/archive/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `archive/generated/audit/install_discovery_report.json`, `archive/generated/audit/ui_surface_report.json`, `docs/development/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/development/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `docs/development/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `docs/development/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `appshell/paths/virtual_paths.py`, `appshell/mode_dispatcher.py`, `appshell/tui_stub.py`, `appshell/supervisor/supervisor_engine.py`, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/release/mvp/runtime_entry.py`, `tools/release/mvp/runtime_bundle.py`, `tools/xstack/registry_compile/constants.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/server_main.py`, `server/net/loopback_transport.py`, `tools/release/release_manifest_engine.py`, `tools/release/component_graph_resolver.py`, `tools/release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/validators/suite/validation_engine.py`, `tools/validators/suite/tool_run_validation.py`, `tools/migration/import_bridge.py`, `contracts/registry/virtual_root_registry.json`
 
 # Repo Coupling, Drift, And Relayout Risk Analysis
 
@@ -175,7 +175,7 @@ Move risk is judged conservatively from five factors:
 - Should not move yet:
   yes
 - Evidence notes:
-  `appshell/supervisor/supervisor_engine.py`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`
+  `appshell/supervisor/supervisor_engine.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`
 
 ### `CRA-003 - launcher_and_setup_python_shells`
 
@@ -198,7 +198,7 @@ Move risk is judged conservatively from five factors:
 - Should not move yet:
   yes
 - Evidence notes:
-  `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`
+  `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/development/xstack/CODEX_REPO_OPERATING_CONTRACT.md`
 
 ### `CRA-004 - native_launcher_and_setup_wrappers`
 
@@ -244,7 +244,7 @@ Move risk is judged conservatively from five factors:
 - Should not move yet:
   yes
 - Evidence notes:
-  `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/net/loopback_transport.py`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`
+  `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/net/loopback_transport.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`
 
 ### `CRA-006 - server_python_boot_and_process_spawn`
 
@@ -267,7 +267,7 @@ Move risk is judged conservatively from five factors:
 - Should not move yet:
   yes
 - Evidence notes:
-  `runtime/process_spawn.py`, `server/server_main.py`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`
+  `runtime/process_spawn.py`, `server/server_main.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`
 
 ### `CRA-007 - session_create_boot_and_runner_pipeline`
 
@@ -290,7 +290,7 @@ Move risk is judged conservatively from five factors:
 - Should not move yet:
   yes
 - Evidence notes:
-  `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`
+  `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`
 
 ### `CRA-008 - release_trust_install_discovery_cluster`
 
@@ -318,11 +318,11 @@ Move risk is judged conservatively from five factors:
 ### `CRA-009 - validation_testx_ctest_and_report_pipeline`
 
 - Root/path or subsystem:
-  `validation/`, `tools/validators/suite/`, `tools/xstack/testx_all.py`, `tests/`, `docs/audit/`, `data/audit/`
+  `validation/`, `tools/validators/suite/`, `tools/xstack/testx_all.py`, `tests/`, `docs/archive/audit/`, `data/audit/`
 - Coupling class:
   `high_coupling_likely_needs_shim`
 - What it is coupled to:
-  `contracts/registry/validation_suite_registry.json`, `tools/migration/import_bridge.py`, validation reports under `docs/audit/` and `data/audit/`, verify build/test lane
+  `contracts/registry/validation_suite_registry.json`, `tools/migration/import_bridge.py`, validation reports under `docs/archive/audit/` and `data/audit/`, verify build/test lane
 - Nature of the coupling:
   import, path, data, report, build, validation
 - Why it matters:
@@ -410,7 +410,7 @@ Move risk is judged conservatively from five factors:
 ### `CRA-013 - planning_audit_xstack_packet_cluster`
 
 - Root/path or subsystem:
-  `docs/planning/`, `docs/repo/`, `docs/xstack/`, `docs/audit/`, `data/planning/`, `data/xstack/`, `data/audit/`
+  `docs/planning/`, `docs/repo/`, `docs/development/xstack/`, `docs/archive/audit/`, `data/planning/`, `data/xstack/`, `data/audit/`
 - Coupling class:
   `moderate_coupling_review_required`
 - What it is coupled to:
@@ -428,7 +428,7 @@ Move risk is judged conservatively from five factors:
 - Should not move yet:
   no
 - Evidence notes:
-  `docs/planning/AUTHORITY_ORDER.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`
+  `docs/planning/AUTHORITY_ORDER.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`
 
 ### `CRA-014 - import_bridge_and_src_alias_compat_layer`
 
@@ -466,7 +466,7 @@ Move risk is judged conservatively from five factors:
 - Why it matters:
   this is not just stale naming; it overstates a broken boot path
 - Evidence notes:
-  `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `server/server_main.py`
+  `docs/archive/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `server/server_main.py`
 
 ### `DRIFT-002 - legacy_src_prefix_drift_in_docs_and_json_mirrors`
 
@@ -479,7 +479,7 @@ Move risk is judged conservatively from five factors:
 - Why it matters:
   this drift can make a candidate relayout look cheaper than it is because the packet appears already abstracted from the old-to-new root transition
 - Evidence notes:
-  `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `archive/generated/audit/install_discovery_report.json`, `archive/generated/audit/ui_surface_report.json`
+  `docs/archive/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `archive/generated/audit/install_discovery_report.json`, `archive/generated/audit/ui_surface_report.json`
 
 ### `DRIFT-003 - portability_overclaim_versus_stub_reality`
 
@@ -492,7 +492,7 @@ Move risk is judged conservatively from five factors:
 - Why it matters:
   later topology work must not infer that wrapper roots are mature enough to anchor the canonical path
 - Evidence notes:
-  `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `appshell/mode_dispatcher.py`, `appshell/tui_stub.py`, `launcher/gui/launcher_gui_stub.c`, `launcher/tui/launcher_tui_stub.c`
+  `docs/archive/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `appshell/mode_dispatcher.py`, `appshell/tui_stub.py`, `launcher/gui/launcher_gui_stub.c`, `launcher/tui/launcher_tui_stub.c`
 
 ### `DRIFT-004 - runtime_entry_bootstrap_overclaim`
 
@@ -505,7 +505,7 @@ Move risk is judged conservatively from five factors:
 - Why it matters:
   this is a wrapper-versus-canonical confusion point and a relayout hazard if the transitional wrapper is treated as the stable target
 - Evidence notes:
-  `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `tools/release/mvp/runtime_entry.py`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`
+  `docs/archive/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `tools/release/mvp/runtime_entry.py`, `docs/archive/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`
 
 ### `DRIFT-005 - session_boot_availability_overclaim`
 
@@ -518,7 +518,7 @@ Move risk is judged conservatively from five factors:
 - Why it matters:
   this is a true relayout blocker, not a cosmetic mismatch
 - Evidence notes:
-  `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/runner.py`
+  `docs/archive/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/runner.py`
 
 ### `DRIFT-006 - src_alias_bridge_masks_remaining_structural_drift`
 
@@ -586,7 +586,7 @@ Move risk is judged conservatively from five factors:
   `release/`, `security/trust/`, `archive/generated/dist/`, manifest and store path conventions
   Rationale: the stronger operator shells already depend on manifest, registry, and store projections.
 - Validation and proof cluster:
-  `validation/`, `tools/validators/suite/`, `tools/xstack/testx_all.py`, `docs/audit/`, `data/audit/`
+  `validation/`, `tools/validators/suite/`, `tools/xstack/testx_all.py`, `docs/archive/audit/`, `data/audit/`
   Rationale: relayout would need report-path preservation, mirror regeneration, or validation-path updates.
 - Data-location cluster:
   `profiles/`, `locks/`, `data/session_templates/`, `data/registries/`
@@ -623,7 +623,7 @@ Move risk is judged conservatively from five factors:
   Rationale: unresolved ownership split, not a clean move target.
 - `packs/` versus `data/packs/`
   Rationale: unresolved authored-content versus runtime-packaging split, not a clean move target.
-- `docs/audit/` and `data/audit/`
+- `docs/archive/audit/` and `data/audit/`
   Rationale: some leaves are stale mirrors, but others are live validation or proof outputs.
 
 ## H. Baseline-Critical Structural Risks
@@ -643,7 +643,7 @@ The following are the structural issues most dangerous to the canonical playable
 - Wrapper-versus-canonical confusion:
   native launcher/setup wrappers and `runtime_entry.py` still look more canonical than they are, while the stronger live path sits in the Python/AppShell shells and local authority controller.
 - Generated-intermediate dependency:
-  current session and validation flows still depend on `build/registries/`, `build/lockfile.json`, and report outputs under `docs/audit/` and `data/audit/`.
+  current session and validation flows still depend on `build/registries/`, `build/lockfile.json`, and report outputs under `docs/archive/audit/` and `data/audit/`.
 
 ### Truly Baseline-Critical Rather Than Merely Annoying
 

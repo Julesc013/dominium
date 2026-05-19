@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Canonical material batch provenance payload.",
   "x-doc-ref": [
-    "docs/materials/MATERIAL_TAXONOMY.md",
-    "docs/materials/MATERIALS_CONSTITUTION.md"
+    "docs/domains/materials/MATERIAL_TAXONOMY.md",
+    "docs/domains/materials/MATERIALS_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

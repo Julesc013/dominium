@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Policy row for MAT-8 causality strictness levels.",
   "x-doc-ref": [
-    "docs/materials/NOTHING_JUST_HAPPENS.md"
+    "docs/domains/materials/NOTHING_JUST_HAPPENS.md"
   ],
   "type": "object",
   "required": [

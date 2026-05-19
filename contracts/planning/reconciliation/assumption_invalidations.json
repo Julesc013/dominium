@@ -8,8 +8,8 @@
       "assumption_id": "control_plane_is_mostly_theoretical",
       "assumption_description": "Release, update, trust, and control-plane structure are still mostly future work.",
       "assumption_source_paths": [
-        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
-        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md"
+        "docs/archive/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/archive/blueprint/SERIES_EXECUTION_STRATEGY.md"
       ],
       "repo_reality_evidence": [
         "release",
@@ -39,8 +39,8 @@
       "assumption_id": "duplicate_risk_is_legacy_only",
       "assumption_description": "Meaningful duplicate-shadow risk lives mainly in legacy or attic roots.",
       "assumption_source_paths": [
-        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
-        "docs/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md"
+        "docs/archive/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/archive/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md"
       ],
       "repo_reality_evidence": [
         "field",
@@ -67,15 +67,15 @@
       "assumption_id": "governance_mirroring_is_absent",
       "assumption_description": "Agent and operator guidance layers still need to be introduced from near-zero.",
       "assumption_source_paths": [
-        "docs/blueprint/REPOSITORY_GOVERNANCE_DIAGRAM.md",
-        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md"
+        "docs/archive/blueprint/REPOSITORY_GOVERNANCE_DIAGRAM.md",
+        "docs/archive/blueprint/SERIES_EXECUTION_STRATEGY.md"
       ],
       "repo_reality_evidence": [
         "AGENTS.md",
         "docs/planning",
-        "docs/agents",
+        "docs/game/agents",
         "docs/governance",
-        "docs/xstack",
+        "docs/development/xstack",
         "DOMINIUM.md",
         "GOVERNANCE.md",
         "tools/xstack"
@@ -93,8 +93,8 @@
       "assumption_id": "pack_surface_is_single_root",
       "assumption_description": "Pack manifests and pack ownership can be treated as one clear root.",
       "assumption_source_paths": [
-        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
-        "docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md"
+        "docs/archive/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/archive/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md"
       ],
       "repo_reality_evidence": [
         "packs",
@@ -118,8 +118,8 @@
       "assumption_id": "runtime_orchestrator_has_single_obvious_root",
       "assumption_description": "There is already one obvious runtime-orchestrator root for later work to target directly.",
       "assumption_source_paths": [
-        "docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md",
-        "docs/blueprint/CAPABILITY_LADDER.md"
+        "docs/archive/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md"
       ],
       "repo_reality_evidence": [
         "app",
@@ -144,9 +144,9 @@
       "assumption_id": "runtime_service_foundation_is_absent",
       "assumption_description": "Runtime and service foundations mostly do not exist yet and must be invented from scratch.",
       "assumption_source_paths": [
-        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
-        "docs/blueprint/FOUNDATION_PHASES.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/archive/blueprint/FOUNDATION_PHASES.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "repo_reality_evidence": [
         "app",
@@ -176,8 +176,8 @@
       "assumption_id": "schema_surface_is_single_root",
       "assumption_description": "Schema law and schema projections can be handled as one clear root without special reconciliation.",
       "assumption_source_paths": [
-        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
-        "docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md"
+        "docs/archive/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/archive/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md"
       ],
       "repo_reality_evidence": [
         "schema",
@@ -199,8 +199,8 @@
       "assumption_id": "semantic_domain_embodiment_is_absent",
       "assumption_description": "The semantic and world-model direction is mostly doctrinal and does not yet have meaningful repo embodiment.",
       "assumption_source_paths": [
-        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
-        "docs/blueprint/CAPABILITY_LADDER.md"
+        "docs/archive/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md"
       ],
       "repo_reality_evidence": [
         "worldgen",
@@ -232,8 +232,8 @@
       "assumption_id": "small_source_root_model_still_describes_repo",
       "assumption_description": "The live repo can still be reasoned about through a very small number of source-like roots.",
       "assumption_source_paths": [
-        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
-        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md"
+        "docs/archive/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/archive/blueprint/SERIES_EXECUTION_STRATEGY.md"
       ],
       "repo_reality_evidence": [
         "client",
@@ -273,8 +273,8 @@
       "assumption_id": "toolchain_surface_is_sparse",
       "assumption_description": "Build graph, presets, toolchains, and CI are sparse enough that later work must largely invent the normalization surface.",
       "assumption_source_paths": [
-        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md",
-        "docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md"
+        "docs/archive/blueprint/SERIES_EXECUTION_STRATEGY.md",
+        "docs/archive/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md"
       ],
       "repo_reality_evidence": [
         "CMakeLists.txt",

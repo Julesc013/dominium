@@ -49,8 +49,8 @@ XI5_READINESS_CONTRACT_V3_REL = "contracts/restructure/xi5_readiness_contract_v3
 SRC_DOMAIN_MAPPING_TARGET_PATHS_V3_REL = "archive/generated/restructure/src_domain_mapping_target_paths_v3.json"
 XI4Z_FIX2_REPORT_JSON_REL = "archive/generated/restructure/xi4z_fix2_report.json"
 
-XI_4Z_PACKAGE_COLLISION_REPORT_REL = "docs/restructure/XI_4Z_PACKAGE_COLLISION_REPORT.md"
-XI_4Z_FIX2_FINAL_REL = "docs/audit/XI_4Z_FIX2_FINAL.md"
+XI_4Z_PACKAGE_COLLISION_REPORT_REL = "docs/archive/restructure/XI_4Z_PACKAGE_COLLISION_REPORT.md"
+XI_4Z_FIX2_FINAL_REL = "docs/archive/audit/XI_4Z_FIX2_FINAL.md"
 
 FIX2_OUTPUT_RELS = (
     SRC_DOMAIN_MAPPING_LOCK_APPROVED_V3_REL,
@@ -386,7 +386,7 @@ def _render_package_collision_report(report_payload: Mapping[str, object]) -> st
     lines = [
         "Status: DERIVED",
         "Last Reviewed: 2026-03-28",
-        "Supersedes: docs/restructure/XI_4Z_TARGET_NORMALIZATION_REPORT.md",
+        "Supersedes: docs/archive/restructure/XI_4Z_TARGET_NORMALIZATION_REPORT.md",
         "Superseded By: none",
         "Stability: provisional",
         "Future Series: XI-5",
@@ -441,7 +441,7 @@ def _render_execution_inputs(lock_payload: Mapping[str, object], readiness_paylo
     lines = [
         "Status: DERIVED",
         "Last Reviewed: 2026-03-28",
-        "Supersedes: docs/restructure/XI_5A_EXECUTION_INPUTS.md (v2 content)",
+        "Supersedes: docs/archive/restructure/XI_5A_EXECUTION_INPUTS.md (v2 content)",
         "Superseded By: none",
         "Stability: provisional",
         "Future Series: XI-5",
@@ -489,7 +489,7 @@ def _render_fix2_final(report_payload: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: 2026-03-28",
-        "Supersedes: docs/audit/XI_4Z_FIX1_FINAL.md",
+        "Supersedes: docs/archive/audit/XI_4Z_FIX1_FINAL.md",
         "Superseded By: none",
         "Stability: provisional",
         "Future Series: XI-5",

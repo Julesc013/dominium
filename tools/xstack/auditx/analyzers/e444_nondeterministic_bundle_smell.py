@@ -9,12 +9,12 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E444_NONDETERMINISTIC_BUNDLE_SMELL"
 REQUIRED_TOKENS = {
-    "docs/lib/EXPORT_IMPORT_FORMAT.md": (
+    "docs/runtime/storage/EXPORT_IMPORT_FORMAT.md": (
         "bundle.instance.portable",
         "`bundle_hash` is computed from the canonical ordered item-hash projection only.",
         "No OS-specific metadata is permitted in archive entries.",
     ),
-    "docs/audit/LIB_FINAL_BASELINE.md": (
+    "docs/archive/audit/LIB_FINAL_BASELINE.md": (
         "repeated runs keep identical projection hashes",
         "forward- and backslash-shaped scenarios keep identical bundle hashes",
         "`tool_verify_bundle` returns `result=complete`",

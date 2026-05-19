@@ -74,7 +74,7 @@ Per session run-meta artifacts include:
 ## Cross-References
 - `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md`
 - `docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`
 - `contracts/registry/anti_cheat_policy_registry.json`
 - `contracts/registry/anti_cheat_module_registry.json`
 - `tools/validators/network/anti_cheat/anti_cheat_engine.py`

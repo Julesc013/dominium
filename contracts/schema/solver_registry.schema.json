@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Structural solver registry contract with domain/contract bindings and transition support metadata.",
   "x-doc-ref": [
-    "docs/scale/SOLVER_DOMAIN_BINDINGS.md",
+    "docs/domains/scale/SOLVER_DOMAIN_BINDINGS.md",
     "schema/scale/solver_registry_extension.schema"
   ],
   "type": "object",

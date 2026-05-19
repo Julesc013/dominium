@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic conservation contract-set registry output.",
   "x-doc-ref": [
-    "docs/reality/CONSERVATION_AND_EXCEPTIONS.md",
+    "docs/domains/reality/CONSERVATION_AND_EXCEPTIONS.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

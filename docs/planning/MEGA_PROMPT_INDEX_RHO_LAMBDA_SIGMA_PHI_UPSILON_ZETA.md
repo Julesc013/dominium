@@ -68,7 +68,7 @@ Gating/review. Confirm and normalize the already-existing governance baseline in
 
 ### Σ-1 `AGENT_MIRRORS-0`
 
-Architecture/specification. Harmonize fragmented instruction and guidance layers into vendor-neutral human/agent mirrors without erasing existing repo guidance surfaces. Inputs: `docs/agents`, `docs/governance`, `docs/xstack`, `tools/controlx`, `tools/xstack`, Σ-0. Outputs: mirror surface spec and merge plan for narrative ownership. Dependencies: `Σ-0`. Human review: not mandatory before; recommended after. Suggested order: `9`.
+Architecture/specification. Harmonize fragmented instruction and guidance layers into vendor-neutral human/agent mirrors without erasing existing repo guidance surfaces. Inputs: `docs/game/agents`, `docs/governance`, `docs/development/xstack`, `tools/controlx`, `tools/xstack`, Σ-0. Outputs: mirror surface spec and merge plan for narrative ownership. Dependencies: `Σ-0`. Human review: not mandatory before; recommended after. Suggested order: `9`.
 
 ### Σ-2 `AGENT_SAFETY_POLICY-0`
 

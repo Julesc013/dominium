@@ -191,7 +191,7 @@ add_test(NAME phase6_audit
 )
 
 add_custom_target(check_hygiene
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/ci/check_hygiene_scan.py --mode check --queue ${CMAKE_SOURCE_DIR}/docs/ci/HYGIENE_QUEUE.md
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/ci/check_hygiene_scan.py --mode check --queue ${CMAKE_SOURCE_DIR}/docs/testing/ci/HYGIENE_QUEUE.md
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Checking code/data hygiene queue consistency"
 )
@@ -969,9 +969,9 @@ add_custom_target(dom_bump_build_number
 )
 set(DOM_TESTX_TIMEOUT "1200" CACHE STRING "Per-test timeout seconds for TestX gate")
 set(DOM_TESTX_RUNNER "${CMAKE_SOURCE_DIR}/scripts/dev/testx_proof_engine.py")
-set(DOM_TESTX_SUMMARY_JSON "${CMAKE_SOURCE_DIR}/docs/audit/testx/TESTX_SUMMARY.json")
-set(DOM_TESTX_SUMMARY_MD "${CMAKE_SOURCE_DIR}/docs/audit/testx/TESTX_SUMMARY.md")
-set(DOM_TESTX_RUN_META_JSON "${CMAKE_SOURCE_DIR}/docs/audit/testx/TESTX_RUN_META.json")
+set(DOM_TESTX_SUMMARY_JSON "${CMAKE_SOURCE_DIR}/docs/archive/audit/testx/TESTX_SUMMARY.json")
+set(DOM_TESTX_SUMMARY_MD "${CMAKE_SOURCE_DIR}/docs/archive/audit/testx/TESTX_SUMMARY.md")
+set(DOM_TESTX_RUN_META_JSON "${CMAKE_SOURCE_DIR}/docs/archive/audit/testx/TESTX_RUN_META.json")
 
 add_custom_target(testx_fast
     COMMAND ${Python3_EXECUTABLE} ${DOM_TESTX_RUNNER}

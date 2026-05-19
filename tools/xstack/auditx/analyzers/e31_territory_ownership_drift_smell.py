@@ -11,7 +11,7 @@ ANALYZER_ID = "E31_TERRITORY_OWNERSHIP_DRIFT_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/",
     "contracts/schema/",
-    "docs/civilisation/",
+    "docs/domains/civilization/",
 )
 
 
@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    docs_rel = "docs/civilisation/TERRITORY_AND_CLAIMS.md"
+    docs_rel = "docs/domains/civilization/TERRITORY_AND_CLAIMS.md"
     if not _read_text(repo_root, docs_rel):
         findings.append(
             make_finding(

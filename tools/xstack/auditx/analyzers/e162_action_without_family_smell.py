@@ -126,7 +126,7 @@ def run(graph, repo_root, changed_files=None):
                     related_invariants=["INV-ACTION-MUST-HAVE-FAMILY"],
                     related_paths=[
                         "contracts/registry/action_template_registry.json",
-                        "docs/meta/ACTION_GRAMMAR_CONSTITUTION.md",
+                        "docs/governance/meta/ACTION_GRAMMAR_CONSTITUTION.md",
                     ],
                 )
             )

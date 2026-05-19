@@ -7,7 +7,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "A8_BLOCKER_RECURRENCE"
-WATCH_PREFIXES = ("docs/audit/remediation/",)
+WATCH_PREFIXES = ("docs/archive/audit/remediation/",)
 RECURRENCE_THRESHOLD = 2
 
 
@@ -57,7 +57,7 @@ def run(graph, repo_root, changed_files=None):
                 category="semantic.blocker_recurrence",
                 severity="RISK",
                 confidence=0.84,
-                file_path=refs[0] if refs else "docs/audit/remediation",
+                file_path=refs[0] if refs else "docs/archive/audit/remediation",
                 evidence=[
                     "Recurring blocker/refusal code detected across remediation artifacts.",
                     "Code '{}' seen {} times.".format(code, count),

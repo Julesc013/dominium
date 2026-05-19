@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic ACT-3 task/work row.",
   "x-doc-ref": [
-    "docs/interaction/TASK_AND_WORK_MODEL.md"
+    "docs/game/interaction/TASK_AND_WORK_MODEL.md"
   ],
   "type": "object",
   "required": [

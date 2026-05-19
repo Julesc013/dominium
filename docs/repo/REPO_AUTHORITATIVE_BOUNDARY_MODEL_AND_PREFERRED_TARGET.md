@@ -6,7 +6,7 @@ Stability: stable
 Series Scope: repo-structure discovery and design
 Series Role: authoritative preferred-target and boundary packet for later migration, shim, rollback, and ownership-reconciliation prompts; downstream of stronger canon, the Omega0 constraint packet, the Omega1 topology reality map, the Omega2 coupling-risk packet, and the Omega0 topology-option comparison
 Replacement Target: later explicit migration-planning checkpoint or preferred-target replacement only after new baseline-hardening evidence and follow-up approval
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md`, `archive/generated/repo/repo_coupling_drift_and_relayout_risk_analysis.json`, `docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md`, `archive/generated/repo/repo_target_topology_options_and_comparison.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `appshell/paths/virtual_paths.py`, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/release/release_manifest_engine.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md`, `archive/generated/repo/repo_coupling_drift_and_relayout_risk_analysis.json`, `docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md`, `archive/generated/repo/repo_target_topology_options_and_comparison.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/archive/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/archive/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/development/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/development/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `appshell/paths/virtual_paths.py`, `tools/package/launcher/launch.py`, `tools/package/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/release/release_manifest_engine.py`
 
 # Repo Authoritative Boundary Model And Preferred Target
 
@@ -145,7 +145,7 @@ The preferred conceptual target keeps the current top-level root federation as t
 ### What Tradeoffs It Accepts
 
 - the repo stays conceptually federated rather than physically simplified right away
-- mixed roots such as `tools/`, `launcher/`, `setup/`, `docs/audit/`, and `data/audit/` remain visible as mixed hosts for longer
+- mixed roots such as `tools/`, `launcher/`, `setup/`, `docs/archive/audit/`, and `data/audit/` remain visible as mixed hosts for longer
 - long-term modularity and Codex ergonomics improve more slowly than they would under the lattice option
 
 ## D. Authoritative Boundary Model
@@ -162,7 +162,7 @@ That means the conceptual boundaries are authoritative even where the current ph
 - Legitimate cross-boundary dependencies:
   into runtime/substrate for authority services, process spawn, and loopback transport; into control-plane for install discovery, release resolution, and trust verification; into tooling for session assembly entry surfaces; into content roots for profiles, locks, templates, and registries.
 - Boundary violations that would be unhealthy:
-  treating `launcher/` or `setup/` wrapper leaves as canonical ownership centers, mutating release policy directly from shell code, or reading docs/audit mirrors as runtime truth.
+  treating `launcher/` or `setup/` wrapper leaves as canonical ownership centers, mutating release policy directly from shell code, or reading docs/archive/audit mirrors as runtime truth.
 
 ### `runtime_substrate_and_engine`
 
@@ -193,7 +193,7 @@ That means the conceptual boundaries are authoritative even where the current ph
 - What it does not own:
   canonical product-shell ownership, semantic doctrine, release policy law, or authored content truth.
 - Legitimate cross-boundary dependencies:
-  into product-shell roots for operator entry surfaces, into runtime roots for proof targets, into content roots for compile and validation inputs, and into docs/audit roots for derived report emission.
+  into product-shell roots for operator entry surfaces, into runtime roots for proof targets, into content roots for compile and validation inputs, and into docs/archive/audit roots for derived report emission.
 - Boundary violations that would be unhealthy:
   promoting validation reports or compatibility bridges into canonical structural truth, treating `tools/` path location as proof of unified ownership, or letting tool wrappers redefine product or control-plane semantics.
 
@@ -211,7 +211,7 @@ That means the conceptual boundaries are authoritative even where the current ph
 ### `docs_specs_planning_and_audit`
 
 - What it owns:
-  doctrine, specifications, planning packets, repo-structure packets, and audit/report surfaces, including `docs/`, `specs/`, `docs/planning/`, `docs/repo/`, `docs/xstack/`, `docs/audit/`, `data/planning/`, `data/xstack/`, and `data/audit/` as machine-readable mirrors and evidence.
+  doctrine, specifications, planning packets, repo-structure packets, and audit/report surfaces, including `docs/`, `specs/`, `docs/planning/`, `docs/repo/`, `docs/development/xstack/`, `docs/archive/audit/`, `data/planning/`, `data/xstack/`, and `data/audit/` as machine-readable mirrors and evidence.
 - What it does not own:
   runtime structural truth when code and live machine-readable inputs disagree, product execution, or release policy implementation.
 - Legitimate cross-boundary dependencies:
@@ -238,7 +238,7 @@ The following remain conditional until migration planning:
 - exact treatment of `launcher/` and `setup/` wrapper leaves
 - exact physical handling of `schema/` versus `schemas/`
 - exact physical handling of `packs/` versus `data/packs/`
-- exact physical handling of `docs/audit/` and `data/audit/` as mixed doctrine-evidence families
+- exact physical handling of `docs/archive/audit/` and `data/audit/` as mixed doctrine-evidence families
 
 ## E. Canonical-Vs-Derived Boundary Model
 
@@ -253,14 +253,14 @@ The following remain conditional until migration planning:
 - authored content/config authority:
   `packs/`, `profiles/`, `locks/`, `data/session_templates/`, and `data/registries/`
 - doctrine and planning authority:
-  `docs/canon/`, `docs/planning/`, `docs/repo/`, `docs/xstack/`, and `specs/`
+  `docs/canon/`, `docs/planning/`, `docs/repo/`, `docs/development/xstack/`, and `specs/`
 
 ### Split-Truth And Bounded-Scope Canonicality That Must Stay Explicit
 
 - `schema/` is canonical semantic contract law
 - `schemas/` is the validator-facing machine-readable contract projection within its bounded tooling scope
 - `docs/planning/` is canonical over `data/planning/`
-- `docs/xstack/` and `docs/repo/` are canonical over their machine-readable mirrors
+- `docs/development/xstack/` and `docs/repo/` are canonical over their machine-readable mirrors
 - `packs/` remains canonical in runtime packaging, activation, compatibility, and distribution-descriptor scope
 - `data/packs/` remains authoritative within authored pack-content declaration scope and must not be erased by convenience
 
@@ -272,14 +272,14 @@ The following remain conditional until migration planning:
 - `archive/generated/artifacts/`
 - `run_meta/`
 - large assembled portions of `archive/generated/dist/`
-- generated validation and audit outputs under `docs/audit/` and `data/audit/`
+- generated validation and audit outputs under `docs/archive/audit/` and `data/audit/`
 
 ### Mixed Or Operationally Protected Roots
 
 - `tools/` is a mixed host, not one clean owner
 - `launcher/` and `setup/` are wrapper-only hosts, not primary product-shell owners
 - `saves/` is not authored canon, but it is an operationally protected generated root because the current baseline path depends on it directly
-- `docs/audit/` and `data/audit/` mix useful evidence with stale or derived mirrors and therefore require phased treatment rather than blanket cleanup
+- `docs/archive/audit/` and `data/audit/` mix useful evidence with stale or derived mirrors and therefore require phased treatment rather than blanket cleanup
 
 ### Documentation And Report Roots Must Not Masquerade As Runtime Truth
 
@@ -375,7 +375,7 @@ The following remain intentionally open until the migration-plan prompt:
 - exact breakup of the `tools/` umbrella into sub-ownerships
 - exact physical separation inside `client/` and `server/`
 - exact future treatment of `launcher/` and `setup/` wrapper leaves
-- exact future treatment of `docs/audit/` and `data/audit/`
+- exact future treatment of `docs/archive/audit/` and `data/audit/`
 - exact convergence strategy for `schema/` versus `schemas/`
 - exact convergence strategy for `packs/` versus `data/packs/`
 - exact resolution of the default bundle seam between authored MVP assets and `bundle.base.lab`

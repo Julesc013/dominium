@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic interaction affordance row derived from perceived targets and lawful authority context.",
   "x-doc-ref": [
-    "docs/interaction/INTERACTION_MODEL.md"
+    "docs/game/interaction/INTERACTION_MODEL.md"
   ],
   "type": "object",
   "required": [

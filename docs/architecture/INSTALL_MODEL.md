@@ -78,5 +78,5 @@ Descriptor sidecars may live adjacent to binaries under `bin/`.
 
 - `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
 - `docs/architecture/INSTANCE_MODEL.md`
-- `docs/audit/INSTALL_MANIFEST_BASELINE.md`
+- `docs/archive/audit/INSTALL_MANIFEST_BASELINE.md`
 - `schema/install/store_root.schema`

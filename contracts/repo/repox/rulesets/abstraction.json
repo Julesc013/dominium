@@ -29,7 +29,7 @@
       "rule_id": "INV-INSTITUTIONAL-SCHEDULES-THROUGH-CTRL",
       "severity": "WARN",
       "scope_paths": ["src/signals", "src/mobility", "tools/xstack/sessionx"],
-      "documentation": "docs/signals/INSTITUTIONAL_COMMS_MODEL.md",
+      "documentation": "docs/domains/signals/INSTITUTIONAL_COMMS_MODEL.md",
       "exemption_policy": "allow_with_expiry",
       "ratchet_after": "2026-12-31"
     },
@@ -37,7 +37,7 @@
       "rule_id": "INV-REPORTS-ARE-ARTIFACTS",
       "severity": "WARN",
       "scope_paths": ["src/signals", "src/inspection", "data/registries"],
-      "documentation": "docs/signals/INSTITUTIONAL_COMMS_MODEL.md",
+      "documentation": "docs/domains/signals/INSTITUTIONAL_COMMS_MODEL.md",
       "exemption_policy": "allow_with_expiry",
       "ratchet_after": "2026-12-31"
     },
@@ -45,7 +45,7 @@
       "rule_id": "INV-NO-ADHOC-BULLETINS",
       "severity": "WARN",
       "scope_paths": ["src/signals", "tools/xstack/sessionx"],
-      "documentation": "docs/signals/INSTITUTIONAL_COMMS_MODEL.md",
+      "documentation": "docs/domains/signals/INSTITUTIONAL_COMMS_MODEL.md",
       "exemption_policy": "allow_with_expiry",
       "ratchet_after": "2026-12-31"
     },
@@ -61,7 +61,7 @@
       "rule_id": "INV-ELEC-USES-FLOW-BUNDLE",
       "severity": "WARN",
       "scope_paths": ["src/core/flow", "src/models", "src/machines", "tools/xstack/sessionx"],
-      "documentation": "docs/electric/ELECTRICAL_CONSTITUTION.md",
+      "documentation": "docs/domains/electricity/ELECTRICAL_CONSTITUTION.md",
       "exemption_policy": "allow_with_expiry",
       "ratchet_after": "2026-12-31"
     },
@@ -69,7 +69,7 @@
       "rule_id": "INV-ELEC-SAFETY-THROUGH-PATTERNS",
       "severity": "WARN",
       "scope_paths": ["src/safety", "src/mobility", "src/machines", "tools/xstack/sessionx"],
-      "documentation": "docs/electric/ELECTRICAL_CONSTITUTION.md",
+      "documentation": "docs/domains/electricity/ELECTRICAL_CONSTITUTION.md",
       "exemption_policy": "allow_with_expiry",
       "ratchet_after": "2026-12-31"
     },
@@ -77,7 +77,7 @@
       "rule_id": "INV-NO-ADHOC-PF-LOGIC",
       "severity": "WARN",
       "scope_paths": ["src/core/flow", "src/models", "src/machines", "tools/xstack/sessionx"],
-      "documentation": "docs/electric/ELECTRICAL_CONSTITUTION.md",
+      "documentation": "docs/domains/electricity/ELECTRICAL_CONSTITUTION.md",
       "exemption_policy": "allow_with_expiry",
       "ratchet_after": "2026-12-31"
     }

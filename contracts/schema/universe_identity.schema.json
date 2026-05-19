@@ -6,7 +6,7 @@
   "x-doc-ref": [
     "docs/canon/constitution_v1.md §3 A1/A6",
     "docs/canon/glossary_v1.md UniverseIdentity",
-    "docs/roadmap/milestone_lab_galaxy.md"
+    "docs/release/roadmap/milestone_lab_galaxy.md"
   ],
   "type": "object",
   "required": [

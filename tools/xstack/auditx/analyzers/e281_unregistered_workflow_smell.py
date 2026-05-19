@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
                 ],
                 related_paths=[
                     process_registry_rel,
-                    "docs/process/PROCESS_CONSTITUTION.md",
+                    "docs/domains/processes/PROCESS_CONSTITUTION.md",
                 ],
             )
         )

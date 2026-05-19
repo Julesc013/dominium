@@ -45,7 +45,7 @@ This means later prompts should plan for convergence and extension, not pretend 
 | Semantic and world domains | `content/domains/game/core`, `worldgen`, `geo`, `reality`, `materials`, `machines`, `logic`, `signals`, `system`, `universe`, `astro`, `embodiment`, `epistemics`, `diegetics`, `mobility`, `physics`, `pollution` | Broad domain surface already exists in raw form and is not confined to one root. |
 | Schemas, registries, and manifests | `schema`, `schemas`, `data/registries`, `data/architecture`, `packs`, `data/packs`, `updates`, `repo` | Extensive machine-readable declaration layer, but with visible dual-structure coexistence. |
 | Toolchain and automation | `CMakeLists.txt`, `CMakePresets.json`, `cmake`, `scripts`, `tools/ci`, `setup/packages/scripts`, `.github/workflows/ci.yml` | Strong automation surface spanning build, validation, IDE projection, packaging, and CI profiles. |
-| Governance and planning | `AGENTS.md`, `docs/planning`, `docs/blueprint`, `docs/agents`, `docs/xstack`, `docs/governance`, `GOVERNANCE.md` | Repo contains multiple instruction layers; only some are planning-authoritative. |
+| Governance and planning | `AGENTS.md`, `docs/planning`, `docs/archive/blueprint`, `docs/game/agents`, `docs/development/xstack`, `docs/governance`, `GOVERNANCE.md` | Repo contains multiple instruction layers; only some are planning-authoritative. |
 | Transitional, legacy, and generated residue | `legacy`, `attic/src_quarantine`, `quarantine`, `build`, `artifacts`, `.xstack_cache`, `dist`, `run_meta` | Explicit archaeology and generated-output zones that must remain non-canonical unless separately promoted. |
 
 ## 4. Product and Application Roots
@@ -147,9 +147,9 @@ The repo has a visible guidance stack:
 
 - root `AGENTS.md` is the strongest repo-execution instruction surface after canon/glossary
 - `docs/planning/**` now contains P-0 intake doctrine and, after this prompt, P-1 extraction output
-- `docs/blueprint/**` contains the current blueprint/planning archive that later Ρ prompts must reconcile against reality
-- `docs/agents/**` contains a substantial doctrine set for agent concepts and lifecycle
-- `docs/xstack/**` and `docs/governance/**` provide process, guardrail, and prompt-firewall style policy surfaces
+- `docs/archive/blueprint/**` contains the current blueprint/planning archive that later Ρ prompts must reconcile against reality
+- `docs/game/agents/**` contains a substantial doctrine set for agent concepts and lifecycle
+- `docs/development/xstack/**` and `docs/governance/**` provide process, guardrail, and prompt-firewall style policy surfaces
 - `GOVERNANCE.md`, `SECURITY.md`, `CONTRIBUTING.md`, `README.md`, and `DOMINIUM.md` add collaborator-facing guidance
 
 No `CLAUDE.md` or Copilot instruction file was observed in the live snapshot.

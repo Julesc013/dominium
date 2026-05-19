@@ -7,7 +7,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "A4_DERIVED_ARTIFACT_CONTRACT"
-WATCH_PREFIXES = ("contracts/registry/derived_artifacts.json", "docs/audit/")
+WATCH_PREFIXES = ("contracts/registry/derived_artifacts.json", "docs/archive/audit/")
 FORBIDDEN = {
     "created_utc",
     "generated_utc",

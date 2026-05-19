@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic CTRL-3 control negotiation and resolution decision log artifact row.",
   "x-doc-ref": [
-    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+    "docs/governance/control/CONTROL_PLANE_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

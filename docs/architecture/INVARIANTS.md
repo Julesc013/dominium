@@ -93,10 +93,10 @@ Enforced by:
 - ARCH0 A2 (`docs/architecture/ARCH0_CONSTITUTION.md`)
 
 
-- Event-driven scheduling specs (e.g., `docs/specs/SPEC_EVENT_DRIVEN_STEPPING.md`)
+- Event-driven scheduling specs (e.g., `docs/reference/specs/SPEC_EVENT_DRIVEN_STEPPING.md`)
 
 
-- Guides: `docs/guides/NO_GLOBAL_ITERATION_GUIDE.md`
+- Guides: `docs/development/guides/NO_GLOBAL_ITERATION_GUIDE.md`
 
 
 - CI: CIV5-WAR3-NOGLOB-005, CIV5-WAR4-NOGLOB-004

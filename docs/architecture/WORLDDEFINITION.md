@@ -333,7 +333,7 @@ Required tools (headless, deterministic, no simulation mutation):
 - `docs/domains/worldgen/BUILTIN_TEMPLATES.md`
 
 
-- `docs/roadmap/WORLD_CREATION_FLOW.md`
+- `docs/release/roadmap/WORLD_CREATION_FLOW.md`
 
 
 - `docs/architecture/EXTENSION_RULES.md`

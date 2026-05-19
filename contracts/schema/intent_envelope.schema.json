@@ -7,7 +7,7 @@
     "docs/canon/constitution_v1.md §3 A2, §4 E8",
     "docs/canon/glossary_v1.md Process",
     "docs/architecture/srz_contract.md",
-    "docs/contracts/session_spec.md"
+    "docs/reference/contracts/session_spec.md"
   ],
   "type": "object",
   "required": [

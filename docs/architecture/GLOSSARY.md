@@ -9,7 +9,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 # Architecture Glossary
 
 This document binds architecture-level terminology used by canonical specs and invariants.
-For broader cross-product definitions, see `docs/GLOSSARY.md`.
+For broader cross-product definitions, see `docs/reference/GLOSSARY.md`.
 
 ## Core Terms
 

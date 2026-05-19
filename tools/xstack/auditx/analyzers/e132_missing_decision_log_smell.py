@@ -12,10 +12,10 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E132_MISSING_DECISION_LOG_SMELL"
 WATCH_PREFIXES = (
     "src/",
-    "docs/audit/TOPOLOGY_MAP.json",
+    "docs/archive/audit/TOPOLOGY_MAP.json",
 )
 
-TOPOLOGY_REL = "docs/audit/TOPOLOGY_MAP.json"
+TOPOLOGY_REL = "docs/archive/audit/TOPOLOGY_MAP.json"
 CONTROL_PLANE_REL = "tools/repo/governance/control_plane_engine.py"
 CONTROL_PLANE_NODE_ID = "module:tools/repo/governance/control_plane_engine.py"
 ALLOWED_UNLOGGED_MARKERS = (

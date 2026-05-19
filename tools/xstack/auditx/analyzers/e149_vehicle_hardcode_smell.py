@@ -88,7 +88,7 @@ def run(graph, repo_root, changed_files=None):
                                 "INV-NO-VEHICLE-SPECIALCASE",
                                 "INV-VEHICLES-AS-ASSEMBLIES",
                             ],
-                            related_paths=[rel_path, "docs/mobility/VEHICLE_MODEL.md"],
+                            related_paths=[rel_path, "docs/domains/mobility/VEHICLE_MODEL.md"],
                         )
                     )
                     break

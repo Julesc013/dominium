@@ -38,8 +38,8 @@ MODULE_REGISTRY_REL = "contracts/registry/architecture/module_registry.json"
 
 IMPLEMENTATION_SCORES_REL = "archive/generated/analysis/implementation_scores.json"
 DUPLICATE_CLUSTER_RANKINGS_REL = "archive/generated/analysis/duplicate_cluster_rankings.json"
-IMPLEMENTATION_SCORECARD_REL = "docs/audit/IMPLEMENTATION_SCORECARD.md"
-XI_2_FINAL_REL = "docs/audit/XI_2_FINAL.md"
+IMPLEMENTATION_SCORECARD_REL = "docs/archive/audit/IMPLEMENTATION_SCORECARD.md"
+XI_2_FINAL_REL = "docs/archive/audit/XI_2_FINAL.md"
 
 OUTPUT_REL_PATHS = {
     IMPLEMENTATION_SCORES_REL,

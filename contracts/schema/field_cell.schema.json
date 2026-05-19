@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic FIELD-1 field cell value row.",
   "x-doc-ref": [
-    "docs/fields/FIELD_LAYER_MODEL.md",
-    "docs/audit/FIELD_LAYER_BASELINE.md"
+    "docs/domains/fields/FIELD_LAYER_MODEL.md",
+    "docs/archive/audit/FIELD_LAYER_BASELINE.md"
   ],
   "type": "object",
   "required": [

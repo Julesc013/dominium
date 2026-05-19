@@ -11,5 +11,5 @@ Deterministic coordinate frames and frame graph scaffolding.
 - No baked geometry or external transforms as authoritative state.
 
 ## Spec
-See `docs/specs/SPEC_DOMAINS_FRAMES_PROP.md`, `docs/specs/SPEC_POSE_AND_ANCHORS.md`, and `docs/specs/SPEC_DETERMINISM.md`.
+See `docs/reference/specs/SPEC_DOMAINS_FRAMES_PROP.md`, `docs/reference/specs/SPEC_POSE_AND_ANCHORS.md`, and `docs/reference/specs/SPEC_DETERMINISM.md`.
 

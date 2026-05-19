@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic CTRL-10 proof bundle for control-plane replay/proof integration.",
   "x-doc-ref": [
-    "docs/control/CONTROL_EXTENSION_CONTRACT.md",
-    "docs/audit/CONTROL_PLANE_FINAL_BASELINE.md"
+    "docs/governance/control/CONTROL_EXTENSION_CONTRACT.md",
+    "docs/archive/audit/CONTROL_PLANE_FINAL_BASELINE.md"
   ],
   "type": "object",
   "required": [

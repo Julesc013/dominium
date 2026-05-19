@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Structural domain taxonomy registry used for domain/solver/contract governance.",
   "x-doc-ref": [
-    "docs/scale/DOMAIN_MODEL.md",
-    "docs/scale/DOMAIN_REGISTRY.md",
+    "docs/domains/scale/DOMAIN_MODEL.md",
+    "docs/domains/scale/DOMAIN_REGISTRY.md",
     "schema/scale/domain_registry.schema"
   ],
   "type": "object",

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic ToolEffect parameter model for process intent pass-through.",
   "x-doc-ref": [
-    "docs/interaction/TOOLS_AND_EFFECTS.md"
+    "docs/game/interaction/TOOLS_AND_EFFECTS.md"
   ],
   "type": "object",
   "required": [

@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Canonical camera view mode contract for deterministic process gating.",
   "x-doc-ref": [
-    "docs/embodiment/CAMERA_AND_VIEW_LENSES.md",
-    "docs/contracts/refusal_contract.md"
+    "docs/domains/embodiment/CAMERA_AND_VIEW_LENSES.md",
+    "docs/reference/contracts/refusal_contract.md"
   ],
   "type": "object",
   "required": [

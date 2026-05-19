@@ -316,7 +316,7 @@ def evidence_refs_for(path, family, wrapper_candidate):
         ".aide/reports/AIDE-STRUCTURE-00-status.md",
     ]
     if family in {"xstack", "audit", "repo_policy", "test"}:
-        refs.append("docs/aide/XSTACK_RECYCLING_PLAN.md")
+        refs.append("docs/development/aide/XSTACK_RECYCLING_PLAN.md")
     if wrapper_candidate:
         refs.append(".aide/reports/AIDE-STRUCTURE-01-wrapper-candidates.md")
     return refs
@@ -469,8 +469,8 @@ def build_inventory(repo_root, source_head):
             ".aide/reports/AIDE-STRUCTURE-00-blockers.md",
             ".aide/tools/latest-tool-inventory.json",
             ".aide/reports/DOM-AIDE-02-wrapper-selection.md",
-            "docs/aide/XSTACK_RECYCLING_PLAN.md",
-            "docs/aide/AIDE_REFACTOR_FRAMEWORK.md",
+            "docs/development/aide/XSTACK_RECYCLING_PLAN.md",
+            "docs/development/aide/AIDE_REFACTOR_FRAMEWORK.md",
         ],
         "summary": summarize(items),
         "items": items,

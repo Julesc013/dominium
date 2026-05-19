@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Mandatory cross-domain coupling declaration bound to legal substrate mechanisms.",
   "x-doc-ref": [
-    "docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md",
-    "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
+    "docs/governance/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md",
+    "docs/governance/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

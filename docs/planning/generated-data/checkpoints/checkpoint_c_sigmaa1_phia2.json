@@ -114,7 +114,7 @@
     ],
     "do_not_replace": [
       "AGENTS.md",
-      "docs/agents/**",
+      "docs/game/agents/**",
       "docs/planning/**",
       "docs/runtime/**",
       "runtime/"

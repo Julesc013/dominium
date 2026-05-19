@@ -12,7 +12,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
 - Required updates: documentation surface exists, but current canon ownership is not explicit
-- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+- Cross-check with: `docs/archive/audit/CANON_MAP.md` and `docs/archive/audit/DOC_DRIFT_MATRIX.md`.
 
 
 ## Scope
@@ -45,7 +45,7 @@ Gate profiles map to groups:
 
 ## Impact-Driven Selection
 
-RepoX emits `docs/audit/proof_manifest.json` and XStack builds an impact graph from changed paths.
+RepoX emits `docs/archive/audit/proof_manifest.json` and XStack builds an impact graph from changed paths.
 Test group selection is deterministic and reproducible for the same repo state hash.
 
 ## Determinism Envelopes

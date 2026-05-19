@@ -11,34 +11,34 @@ Replacement Target: Ω-11 execution ledger and final mock signoff
 ## Preconditions
 
 - [ ] Run `python tools/migration/convergence/tool_run_convergence_gate.py --repo-root . --skip-cross-platform --prefer-cached-heavy`
-  Expected outputs: convergence report under `docs/audit/convergence_steps/`
+  Expected outputs: convergence report under `docs/archive/audit/convergence_steps/`
   Pass criteria: result `complete`
 - [ ] Run `python tools/audit/tool_run_arch_audit.py --repo-root .`
-  Expected outputs: `docs/audit/ARCH_AUDIT_REPORT.md`, `archive/generated/audit/arch_audit_report.json`
+  Expected outputs: `docs/archive/audit/ARCH_AUDIT_REPORT.md`, `archive/generated/audit/arch_audit_report.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/domain/worldgen/tool_verify_worldgen_lock.py --repo-root .`
-  Expected outputs: `docs/audit/WORLDGEN_LOCK_VERIFY.md`, `archive/generated/audit/worldgen_lock_verify.json`
+  Expected outputs: `docs/archive/audit/WORLDGEN_LOCK_VERIFY.md`, `archive/generated/audit/worldgen_lock_verify.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/release/mvp/tool_verify_baseline_universe.py --repo-root .`
-  Expected outputs: `docs/audit/BASELINE_UNIVERSE_VERIFY.md`, `tests/fixtures/audit/baseline_universe_verify.json`
+  Expected outputs: `docs/archive/audit/BASELINE_UNIVERSE_VERIFY.md`, `tests/fixtures/audit/baseline_universe_verify.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/release/mvp/tool_verify_gameplay_loop.py --repo-root .`
-  Expected outputs: `docs/audit/MVP_GAMEPLAY_VERIFY.md`, `archive/generated/audit/gameplay_verify.json`
+  Expected outputs: `docs/archive/audit/MVP_GAMEPLAY_VERIFY.md`, `archive/generated/audit/gameplay_verify.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/release/mvp/tool_run_disaster_suite.py --repo-root .`
-  Expected outputs: `docs/audit/DISASTER_SUITE_RUN.md`, `archive/generated/audit/disaster_suite_run.json`
+  Expected outputs: `docs/archive/audit/DISASTER_SUITE_RUN.md`, `archive/generated/audit/disaster_suite_run.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/release/mvp/tool_verify_ecosystem.py --repo-root .`
-  Expected outputs: `docs/audit/ECOSYSTEM_VERIFY_RUN.md`, `archive/generated/audit/ecosystem_verify_run.json`
+  Expected outputs: `docs/archive/audit/ECOSYSTEM_VERIFY_RUN.md`, `archive/generated/audit/ecosystem_verify_run.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/release/mvp/tool_run_update_sim.py --repo-root .`
-  Expected outputs: `docs/audit/UPDATE_SIM_RUN.md`, `archive/generated/audit/update_sim_run.json`
+  Expected outputs: `docs/archive/audit/UPDATE_SIM_RUN.md`, `archive/generated/audit/update_sim_run.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/validators/security/model/tool_run_trust_strict_suite.py --repo-root .`
-  Expected outputs: `docs/audit/TRUST_STRICT_SUITE_RUN.md`, `archive/generated/audit/trust_strict_run.json`
+  Expected outputs: `docs/archive/audit/TRUST_STRICT_SUITE_RUN.md`, `archive/generated/audit/trust_strict_run.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/performance/envelope/tool_run_performance_envelope.py --repo-root . --platform-tag win64`
-  Expected outputs: `docs/audit/PERFORMANCE_ENVELOPE_BASELINE.md`
+  Expected outputs: `docs/archive/audit/PERFORMANCE_ENVELOPE_BASELINE.md`
   Pass criteria: result `complete`
 
 ## Bundle Assembly
@@ -56,7 +56,7 @@ Replacement Target: Ω-11 execution ledger and final mock signoff
 ## Verification
 
 - [ ] Verify the full bundle with `python tools/release/dist/tool_verify_distribution.py --repo-root . --platform-tag win64 --dist-root dist`
-  Expected outputs: `docs/audit/DIST_VERIFY_win64.md`
+  Expected outputs: `docs/archive/audit/DIST_VERIFY_win64.md`
   Pass criteria: result `complete`
 - [ ] Verify the server bundle with `python tools/release/dist/tool_verify_distribution.py --repo-root . --platform-tag win64 --dist-root build/dist.final/server`
   Expected outputs: distribution verify report for the server staging root
@@ -68,13 +68,13 @@ Replacement Target: Ω-11 execution ledger and final mock signoff
   Expected outputs: offline verification result on stdout or bundle-local logs
   Pass criteria: no refusal, no contract drift
 - [ ] Run clean-room verification with `python tools/release/dist/tool_run_clean_room.py --repo-root . --dist-root dist --platform-tag win64 --mode-policy cli`
-  Expected outputs: `archive/generated/audit/clean_room_win64.json`, `docs/audit/CLEAN_ROOM_TEST_FINAL.md`
+  Expected outputs: `archive/generated/audit/clean_room_win64.json`, `docs/archive/audit/CLEAN_ROOM_TEST_FINAL.md`
   Pass criteria: result `complete`
 - [ ] Run the platform matrix with `python tools/release/dist/tool_run_platform_matrix.py --repo-root . --dist-spec win64=archive/generated/dist/v0.0.0-mock/win64/dominium --channel mock`
-  Expected outputs: `docs/audit/DIST_PLATFORM_MATRIX_REPORT.md`, `docs/audit/DIST4_FINAL.md`
+  Expected outputs: `docs/archive/audit/DIST_PLATFORM_MATRIX_REPORT.md`, `docs/archive/audit/DIST4_FINAL.md`
   Pass criteria: result `complete`
 - [ ] Run the interop lane with `python tools/release/dist/tool_run_version_interop.py --repo-root . --dist-root-a dist --dist-root-b dist --platform-tag-a win64 --platform-tag-b win64 --channel mock`
-  Expected outputs: `docs/audit/DIST6_FINAL.md`
+  Expected outputs: `docs/archive/audit/DIST6_FINAL.md`
   Pass criteria: result `complete`
 
 ## Archive And Publication
@@ -86,13 +86,13 @@ Replacement Target: Ω-11 execution ledger and final mock signoff
   Expected outputs: `build/offline_archive/dominium-archive-v0.0.0-mock.tar.gz`
   Pass criteria: bundle written and hash recorded
 - [ ] Verify the offline reconstruction archive with `python tools/release/tool_verify_offline_archive.py --repo-root . --archive-path build/offline_archive/dominium-archive-v0.0.0-mock.tar.gz`
-  Expected outputs: `docs/audit/OFFLINE_ARCHIVE_VERIFY.md`, `archive/generated/audit/offline_archive_verify.json`
+  Expected outputs: `docs/archive/audit/OFFLINE_ARCHIVE_VERIFY.md`, `archive/generated/audit/offline_archive_verify.json`
   Pass criteria: result `complete`
 
 ## Signoff
 
 - [ ] Run `python tools/release/tool_dist_final_dryrun.py --repo-root .`
-  Expected outputs: `docs/audit/DIST_FINAL_DRYRUN.md`
+  Expected outputs: `docs/archive/audit/DIST_FINAL_DRYRUN.md`
   Pass criteria: result `complete`
 - [ ] Write `data/release/final_dist_signoff.json`
   Expected outputs: final machine-readable release signoff

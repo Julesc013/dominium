@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic MOB-3 vehicle assembly row.",
   "x-doc-ref": [
-    "docs/mobility/VEHICLE_MODEL.md",
-    "docs/audit/VEHICLE_MODEL_BASELINE.md"
+    "docs/domains/mobility/VEHICLE_MODEL.md",
+    "docs/archive/audit/VEHICLE_MODEL_BASELINE.md"
   ],
   "type": "object",
   "required": [

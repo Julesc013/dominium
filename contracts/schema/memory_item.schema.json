@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic memory item derived from PerceivedModel channels.",
   "x-doc-ref": [
-    "docs/epistemics/MEMORY_AND_FOG_OF_WAR.md",
+    "docs/game/epistemics/MEMORY_AND_FOG_OF_WAR.md",
     "docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md"
   ],
   "type": "object",

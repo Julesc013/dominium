@@ -14,10 +14,10 @@ It is subordinate to:
 
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
-- `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`
+- `docs/reference/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`
 - `docs/domains/worldgen/MILKY_WAY_CONSTITUTION.md`
 - `docs/domains/worldgen/PLANET_SURFACE_MACRO_MODEL.md`
-- `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`
+- `docs/content/packs/sol/PACK_SOL_PIN_MINIMAL.md`
 
 ## Relevant Invariants
 
@@ -29,7 +29,7 @@ It is subordinate to:
 - `docs/canon/constitution_v1.md` `E4` Named RNG streams
 - `docs/canon/constitution_v1.md` `E6` Replay equivalence
 - `docs/domains/worldgen/PLANET_SURFACE_MACRO_MODEL.md`
-- `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`
+- `docs/content/packs/sol/PACK_SOL_PIN_MINIMAL.md`
 
 ## 1. Scope
 

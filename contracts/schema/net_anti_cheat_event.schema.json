@@ -5,7 +5,7 @@
   "description": "Deterministic anti-cheat event artifact contract.",
   "x-doc-ref": [
     "docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md",
-    "docs/contracts/refusal_contract.md"
+    "docs/reference/contracts/refusal_contract.md"
   ],
   "type": "object",
   "required": [

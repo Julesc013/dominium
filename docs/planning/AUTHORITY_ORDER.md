@@ -22,7 +22,7 @@ The following order applies before any domain-specific refinement:
 1. `docs/canon/constitution_v1.md`
 2. `docs/canon/glossary_v1.md`
 3. `AGENTS.md`
-4. explicit schema law and contract docs under `schema/**` and `docs/contracts/**`
+4. explicit schema law and contract docs under `schema/**` and `docs/reference/contracts/**`
 5. scope-specific constitutions and policy docs under `docs/architecture/**`, `docs/release/**`, and repo policy files such as `contracts/repo/release_policy.toml`
 6. versioned machine-readable source artifacts such as registries, manifests, pack descriptors, and declared architecture data
 7. live repo code and build configuration for structural and implementation reality
@@ -41,7 +41,7 @@ Every disagreement must be classified into an authority domain first.
 | Tier | Source Family | Authority Level | Rule |
 | --- | --- | --- | --- |
 | `SEM-1` | `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md` | absolute | Frozen semantic doctrine, vocabulary, and refusal semantics. |
-| `SEM-2` | `AGENTS.md`, `schema/**`, `docs/contracts/**` | absolute within repo-execution and contract scope | Governs repository obligations, schema law, migration/refusal duties, and task discipline. |
+| `SEM-2` | `AGENTS.md`, `schema/**`, `docs/reference/contracts/**` | absolute within repo-execution and contract scope | Governs repository obligations, schema law, migration/refusal duties, and task discipline. |
 | `SEM-3` | binding architecture or release constitutions under `docs/architecture/**` and `docs/release/**` | conditional | Applies when the claim is inside the document's declared scope and does not conflict with higher tiers. |
 | `SEM-4` | declared semantic registries and manifests under `data/registries/**`, `packs/**`, `data/packs/**`, `data/architecture/**` | conditional | May define data-driven meaning only when they are explicit, current, and not contradicted by higher tiers. |
 | `SEM-5` | live repo code | conditional | Evidence of implementation state only; code cannot silently rewrite canon. |
@@ -63,7 +63,7 @@ Every disagreement must be classified into an authority domain first.
 
 | Tier | Source Family | Authority Level | Rule |
 | --- | --- | --- | --- |
-| `COM-1` | schema version declarations, `schema/SCHEMA_VERSIONING.md`, migration/refusal contracts, compatibility docs under `docs/contracts/**` | absolute | Governs versioning semantics and whether migration or refusal is mandatory. |
+| `COM-1` | schema version declarations, `schema/SCHEMA_VERSIONING.md`, migration/refusal contracts, compatibility docs under `docs/reference/contracts/**` | absolute | Governs versioning semantics and whether migration or refusal is mandatory. |
 | `COM-2` | compat manifests, compat registries, pack compat descriptors, release resolution metadata | absolute within artifact scope | Governs compatibility class, upgrade/downgrade behavior, and explicit refusal surfaces. |
 | `COM-3` | compat and validation code | conditional | Implementation evidence for enforcement, not a license to bypass explicit contracts. |
 | `COM-4` | planning docs and old reports | contextual | May propose compat work, not declare compat truth. |
@@ -84,7 +84,7 @@ Every disagreement must be classified into an authority domain first.
 | Tier | Source Family | Authority Level | Rule |
 | --- | --- | --- | --- |
 | `PLN-1` | `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `contracts/planning/snapshot_intake_policy.json` | absolute within post-Π intake planning | Governs how later Ρ and Λ planning must classify and rank sources. |
-| `PLN-2` | current blueprint and freeze-era planning artifacts under `docs/blueprint/**`, `data/blueprint/**`, `docs/omega/**`, `docs/restructure/**`, `data/restructure/**` | conditional | Governs current planning intent only where it does not conflict with stronger semantic, structural, compatibility, or release truth. |
+| `PLN-2` | current blueprint and freeze-era planning artifacts under `docs/archive/blueprint/**`, `data/blueprint/**`, `docs/archive/omega/**`, `docs/archive/restructure/**`, `data/restructure/**` | conditional | Governs current planning intent only where it does not conflict with stronger semantic, structural, compatibility, or release truth. |
 | `PLN-3` | old series outputs, inventories, reports, and archaeology notes | contextual | Useful for history and traceability only when still aligned to the live snapshot. |
 | `PLN-4` | stale planning notes, attic notes, chat history | insufficient on their own | Never authoritative for new planning decisions. |
 

@@ -14,7 +14,7 @@ def run(repo_root: str):
     try:
         text = open(refusal_path, "r", encoding="utf-8").read()
     except OSError:
-        return {"status": "fail", "message": "docs/contracts/refusal_contract.md missing"}
+        return {"status": "fail", "message": "docs/reference/contracts/refusal_contract.md missing"}
 
     required_codes = [
         "refusal.net.handshake_pack_lock_mismatch",

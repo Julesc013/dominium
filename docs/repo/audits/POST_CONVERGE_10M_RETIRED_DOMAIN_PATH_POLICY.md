@@ -77,4 +77,4 @@ POST-CONVERGE-11 is not ready. Product/projection proof failures should not circ
 
 ## POST-CONVERGE-10N Follow-up
 
-POST-CONVERGE-10N reduced focused RepoX from 23 failures / 5 warnings to 20 failures / 5 warnings by refreshing canonical identity and SecureX integrity evidence and by adding explicit docs/audit evidence dependencies to cached RepoX groups. It did not run product boot proof, portable projection proof, package proof, or release proof. POST-CONVERGE-11 remains blocked because non-proof RepoX governance/source-policy failures remain.
+POST-CONVERGE-10N reduced focused RepoX from 23 failures / 5 warnings to 20 failures / 5 warnings by refreshing canonical identity and SecureX integrity evidence and by adding explicit docs/archive/audit evidence dependencies to cached RepoX groups. It did not run product boot proof, portable projection proof, package proof, or release proof. POST-CONVERGE-11 remains blocked because non-proof RepoX governance/source-policy failures remain.

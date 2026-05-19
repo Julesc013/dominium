@@ -12,7 +12,7 @@ ANALYZER_ID = "E323_RANDOM_FAILURE_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e323_random_failure_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/FAULT_NOISE_SECURITY_MODEL.md",
+    "docs/domains/logic/FAULT_NOISE_SECURITY_MODEL.md",
     "game/domain/logic/fault/",
     "game/domain/logic/noise/",
     "game/domain/logic/eval/sense_engine.py",
@@ -63,7 +63,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    doc_rel = "docs/logic/FAULT_NOISE_SECURITY_MODEL.md"
+    doc_rel = "docs/domains/logic/FAULT_NOISE_SECURITY_MODEL.md"
     doc_text = _read_text(repo_root, doc_rel).lower()
     for token in ("deterministic quantization", "named rng", "proof-visible", "deterministic"):
         if token in doc_text:

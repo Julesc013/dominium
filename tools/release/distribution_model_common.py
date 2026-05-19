@@ -13,7 +13,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
 DISTRIBUTION_MODEL_PATH = "docs/release/DISTRIBUTION_MODEL.md"
-DISTRIBUTION_ARCHITECTURE_FREEZE_PATH = "docs/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md"
+DISTRIBUTION_ARCHITECTURE_FREEZE_PATH = "docs/archive/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md"
 DISTRIBUTION_ARCHITECTURE_REPORT_PATH = "archive/generated/audit/distribution_architecture_report.json"
 RELEASE_MANIFEST_REL = "archive/generated/dist/manifests/release_manifest.json"
 

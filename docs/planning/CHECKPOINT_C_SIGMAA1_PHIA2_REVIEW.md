@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Φ-A2, Σ-3, Σ-4, Σ-5, later checkpoints
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/agents/AGENT_MIRROR_POLICY.md`, `docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `docs/runtime/COMPONENT_MODEL.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/planning/CHECKPOINT_C_SIGMA0_PHIA1_REVIEW.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/game/agents/AGENT_MIRROR_POLICY.md`, `docs/game/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/reference/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `docs/runtime/COMPONENT_MODEL.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/planning/CHECKPOINT_C_SIGMA0_PHIA1_REVIEW.md`
 
 # Checkpoint C-ΣA1ΦA2 Review
 
@@ -79,8 +79,8 @@ Sufficient.
 The combined effect of:
 
 - `AGENTS.md`
-- `docs/agents/AGENT_MIRROR_POLICY.md`
-- `docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md`
+- `docs/game/agents/AGENT_MIRROR_POLICY.md`
+- `docs/game/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md`
 
 is now explicit enough that deeper `Φ` work knows:
 
@@ -262,7 +262,7 @@ The key boundary rule is simple:
 | `extend` | `app`, `compat`, `control`, `core`, `net`, `process`, `server/runtime`, `server/persistence` | extract domain-binding, state, and lifecycle law from the distributed runtime substrate rather than inventing a single new orchestrator home |
 | `extend` | semantic roots such as `reality`, `worldgen`, `geo`, `materials`, `logic`, `signals`, `system`, `universe`, `epistemics`, `diegetics`, `infrastructure`, `machines` | consume these as upstream semantic inputs; do not reframe them as runtime-owned truth |
 | `consolidate` | generated operational evidence under `build`, `artifacts`, `.xstack_cache`, `run_meta` | use for evidence and verification only; never treat as semantic, governance, or runtime owners |
-| `do-not-replace` | `AGENTS.md`, `docs/agents/**`, `docs/planning/**`, `docs/runtime/**` | deeper `Φ` must consume the already-frozen governance and runtime boundary spine instead of rewriting it locally |
+| `do-not-replace` | `AGENTS.md`, `docs/game/agents/**`, `docs/planning/**`, `docs/runtime/**` | deeper `Φ` must consume the already-frozen governance and runtime boundary spine instead of rewriting it locally |
 | `do-not-replace` | `runtime/` | do not pivot deeper runtime planning around this thin root or silently promote it to canonical orchestrator status |
 | `quarantine-aware` | `field`/`fields`, `schema`/`schemas`, `packs`/`data/packs` | no silent rebinding, flattening, or single-root invention |
 

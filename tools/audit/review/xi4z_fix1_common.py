@@ -52,9 +52,9 @@ XI5_READINESS_CONTRACT_V2_REL = "contracts/restructure/xi5_readiness_contract_v2
 SRC_DOMAIN_MAPPING_TARGET_PATHS_REL = "archive/generated/restructure/src_domain_mapping_target_paths.json"
 XI4Z_FIX1_REPORT_JSON_REL = "archive/generated/restructure/xi4z_fix1_report.json"
 
-XI_4Z_TARGET_NORMALIZATION_REPORT_REL = "docs/restructure/XI_4Z_TARGET_NORMALIZATION_REPORT.md"
-XI_5A_EXECUTION_INPUTS_REL = "docs/restructure/XI_5A_EXECUTION_INPUTS.md"
-XI_4Z_FIX1_FINAL_REL = "docs/audit/XI_4Z_FIX1_FINAL.md"
+XI_4Z_TARGET_NORMALIZATION_REPORT_REL = "docs/archive/restructure/XI_4Z_TARGET_NORMALIZATION_REPORT.md"
+XI_5A_EXECUTION_INPUTS_REL = "docs/archive/restructure/XI_5A_EXECUTION_INPUTS.md"
+XI_4Z_FIX1_FINAL_REL = "docs/archive/audit/XI_4Z_FIX1_FINAL.md"
 
 REQUIRED_JSON_INPUTS = (
     SRC_DOMAIN_MAPPING_LOCK_APPROVED_REL,
@@ -72,7 +72,7 @@ REQUIRED_TEXT_INPUTS = (
     XI_4Z_CONFLICT_RESOLUTION_REL,
     XI_4Z_XI5_READINESS_REL,
     XI_4Z_FINAL_REL,
-    "docs/audit/XI_4Z_FIX_FINAL.md",
+    "docs/archive/audit/XI_4Z_FIX_FINAL.md",
 )
 
 FIX1_OUTPUT_RELS = (
@@ -429,7 +429,7 @@ def _build_json_payloads(repo_root: str, inputs: Mapping[str, object]) -> dict[s
             XI_4Z_CONFLICT_RESOLUTION_REL,
             XI_4Z_XI5_READINESS_REL,
             XI_4Z_FINAL_REL,
-            "docs/audit/XI_4Z_FIX_FINAL.md",
+            "docs/archive/audit/XI_4Z_FIX_FINAL.md",
             ARCHITECTURE_GRAPH_REL,
             MODULE_REGISTRY_REL,
             BUILD_GRAPH_REL,

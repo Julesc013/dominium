@@ -28,7 +28,7 @@ class ExampleXRunner(BaseRunner):
         return _hash_text(json.dumps(payload, sort_keys=True, separators=(",", ":")))
 
     def produces(self) -> List[str]:
-        return ["docs/audit/examplex/EXAMPLEX_REPORT.json"]
+        return ["docs/archive/audit/examplex/EXAMPLEX_REPORT.json"]
 
     def run(self, context: RunnerContext) -> RunnerResult:
         _ = context
@@ -58,7 +58,7 @@ def register_extensions():
         {
             "extension_id": "example_x",
             "runner": ExampleXRunner(),
-            "artifact_contract": ["docs/audit/examplex/EXAMPLEX_REPORT.json"],
+            "artifact_contract": ["docs/archive/audit/examplex/EXAMPLEX_REPORT.json"],
             "scope_subtrees": ["tools", "docs"],
             "cost_class": "low",
         }

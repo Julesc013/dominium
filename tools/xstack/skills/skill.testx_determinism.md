@@ -73,8 +73,8 @@ Run:
 ## Cross-References
 - `docs/canon/constitution_v1.md`
 - `docs/architecture/deterministic_parallelism.md`
-- `docs/ci/DETERMINISM_TEST_MATRIX.md`
-- `docs/policies/DETERMINISM_HASH_PARTITIONS.md`
+- `docs/testing/ci/DETERMINISM_TEST_MATRIX.md`
+- `docs/governance/policies/DETERMINISM_HASH_PARTITIONS.md`
 - `docs/architecture/RNG_MODEL.md`
 - `docs/architecture/truth_perceived_render.md`
 - `docs/architecture/observation_kernel.md`

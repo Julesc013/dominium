@@ -118,9 +118,9 @@
     "contracts/registry/trust_policy_registry.json",
     "contracts/registry/trust_root_registry.json",
     "contracts/registry/provenance_classification_registry.json",
-    "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-    "docs/blueprint/MANUAL_REVIEW_GATES.md",
-    "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+    "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+    "docs/archive/blueprint/MANUAL_REVIEW_GATES.md",
+    "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
   ],
   "distributed_authority_subject_classes": [
     {

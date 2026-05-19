@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E42_UNACCOUNTED_VIOLATION_SMELL"
 LEDGER_ENGINE_PATH = "game/domain/reality/ledger/ledger_engine.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-DOC_PATH = "docs/reality/CONSERVATION_AND_EXCEPTIONS.md"
+DOC_PATH = "docs/domains/reality/CONSERVATION_AND_EXCEPTIONS.md"
 
 
 def _norm(path: str) -> str:

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical render-only proxy definition for mapping body primitives to presentation assets.",
   "x-doc-ref": [
-    "docs/embodiment/REPRESENTATION_LAYER.md"
+    "docs/domains/embodiment/REPRESENTATION_LAYER.md"
   ],
   "type": "object",
   "required": [

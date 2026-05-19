@@ -27,9 +27,9 @@ from tools.validators.suite import validation_surface_rows  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-SHIM_POLICY_DOC_PATH = "docs/restructure/SHIM_POLICY.md"
+SHIM_POLICY_DOC_PATH = "docs/archive/restructure/SHIM_POLICY.md"
 FLAG_MIGRATION_DOC_PATH = "docs/runtime/shell/FLAG_MIGRATION.md"
-SHIM_COVERAGE_REPORT_PATH = "docs/audit/SHIM_COVERAGE_REPORT.md"
+SHIM_COVERAGE_REPORT_PATH = "docs/archive/audit/SHIM_COVERAGE_REPORT.md"
 SHIM_TOOL_PATH = "tools/release/tool_run_shim_coverage.py"
 PATH_SHIMS_PATH = "tools/validators/compatibility/shims/path_shims.py"
 FLAG_SHIMS_PATH = "tools/validators/compatibility/shims/flag_shims.py"

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical blueprint declaration for deterministic BOM+AG compilation.",
   "x-doc-ref": [
-    "docs/materials/BOM_AND_ASSEMBLY_GRAPH.md"
+    "docs/domains/materials/BOM_AND_ASSEMBLY_GRAPH.md"
   ],
   "type": "object",
   "required": [

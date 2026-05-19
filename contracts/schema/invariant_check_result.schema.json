@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic transition invariant check result row.",
   "x-doc-ref": [
-    "docs/reality/TIER_TAXONOMY_AND_TRANSITIONS.md"
+    "docs/domains/reality/TIER_TAXONOMY_AND_TRANSITIONS.md"
   ],
   "type": "object",
   "required": [

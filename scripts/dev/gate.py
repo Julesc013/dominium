@@ -62,7 +62,7 @@ from gate_policy_eval import (
 
 
 VERIFY_BUILD_DIR_REL = os.path.join("out", "build", "vs2026", "verify")
-REMEDIATION_ROOT_REL = os.path.join("docs", "audit", "remediation")
+REMEDIATION_ROOT_REL = os.path.join("docs", "archive", "audit", "remediation")
 REPOX_SCRIPT_REL = os.path.join("scripts", "ci", "check_repox_rules.py")
 PLAYBOOK_REGISTRY_REL = os.path.join("data", "registries", "remediation_playbooks.json")
 GATE_POLICY_REGISTRY_REL = os.path.join("data", "registries", "gate_policy.json")
@@ -1771,7 +1771,7 @@ def main():
     parser.add_argument(
         "--ledger-export",
         action="store_true",
-        help="Export snapshot-mode execution ledger summary to docs/audit/system/LEDGER_SNAPSHOT.md.",
+        help="Export snapshot-mode execution ledger summary to docs/archive/audit/system/LEDGER_SNAPSHOT.md.",
     )
     args = parser.parse_args()
     if args.trace:

@@ -95,7 +95,7 @@ Create/boot/script execution must refuse deterministically on:
 - invalid shard target (`SHARD_TARGET_INVALID`)
 
 Refusal payload shape:
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`
 
 ## Example Commands
 ```text
@@ -112,9 +112,9 @@ tools/xstack/srz_status saves/save.lab.bootstrap/session_spec.json
 - Add replay import/export format for external deterministic audit tooling.
 
 ## Cross-References
-- `docs/contracts/session_spec.md`
-- `docs/contracts/authority_context.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/session_spec.md`
+- `docs/reference/contracts/authority_context.md`
+- `docs/reference/contracts/refusal_contract.md`
 - `docs/architecture/setup_and_launcher.md`
 - `docs/architecture/deterministic_packaging.md`
 - `docs/architecture/srz_contract.md`

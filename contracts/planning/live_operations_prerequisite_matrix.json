@@ -50,10 +50,10 @@
       "contracts/registry/provenance_classification_registry.json",
       "tools/release/update_resolver.py",
       "tools/validators/security/trust/trust_verifier.py",
-      "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-      "docs/blueprint/CAPABILITY_LADDER.md",
-      "docs/blueprint/MANUAL_REVIEW_GATES.md",
-      "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+      "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+      "docs/archive/blueprint/CAPABILITY_LADDER.md",
+      "docs/archive/blueprint/MANUAL_REVIEW_GATES.md",
+      "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
     ]
   },
   "family_categories": [
@@ -476,9 +476,9 @@
       ],
       "governing_doctrine_refs": [
         "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-        "docs/blueprint/CAPABILITY_LADDER.md",
-        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md",
+        "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
       ],
       "unresolved_blocker_ids": [
         "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
@@ -490,8 +490,8 @@
         "zeta.blocker.distributed_shard_relocation_live_execution"
       ],
       "evidence_refs": [
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-        "docs/blueprint/CAPABILITY_LADDER.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md",
         "server/shard/shard_api.h"
       ],
       "bounded_entry_suitability": "not_admissible",

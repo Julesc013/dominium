@@ -155,12 +155,12 @@ Contribution parsing rules:
 - `docs/architecture/lockfile.md`
 - `docs/architecture/deterministic_packaging.md`
 - `docs/architecture/setup_and_launcher.md`
-- `docs/contracts/session_spec.md`
-- `docs/contracts/law_profile.md`
+- `docs/reference/contracts/session_spec.md`
+- `docs/reference/contracts/law_profile.md`
 - `schemas/pack_manifest.schema.json`
 - `schemas/bundle_profile.schema.json`
 - `schemas/bundle_lockfile.schema.json`
-- `docs/contracts/versioning_and_migration.md`
+- `docs/reference/contracts/versioning_and_migration.md`
 - `docs/governance/COMPATX_MODEL.md`
 - `docs/architecture/session_lifecycle.md`
 - `docs/architecture/lens_system.md`

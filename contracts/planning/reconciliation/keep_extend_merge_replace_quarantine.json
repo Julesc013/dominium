@@ -33,7 +33,7 @@
       "subsystem_family": "agent_governance_instruction",
       "surface_name": "Blueprint archive",
       "path_family": [
-        "docs/blueprint"
+        "docs/archive/blueprint"
       ],
       "decision_bucket": "extend",
       "next_action_implication": "Consume through the P-2 reconciled lens rather than as raw truth.",
@@ -50,9 +50,9 @@
       "subsystem_family": "agent_governance_instruction",
       "surface_name": "Mirrored governance docs",
       "path_family": [
-        "docs/agents",
+        "docs/game/agents",
         "docs/governance",
-        "docs/xstack",
+        "docs/development/xstack",
         "DOMINIUM.md",
         "GOVERNANCE.md",
         "README.md",

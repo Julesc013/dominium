@@ -28,7 +28,7 @@ ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Layer metadata and query results are deterministic.
 
 
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md`.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/reference/specs/SPEC_ABI_TEMPLATES.md`.
 
 
 EXTENSION POINTS: Extend via public headers and relevant `docs/architecture/**`.

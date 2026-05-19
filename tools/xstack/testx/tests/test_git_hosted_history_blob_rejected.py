@@ -87,7 +87,7 @@ def run(repo_root: str):
             if str(row.get("rule_id", "")).strip() != "INV-GIT-HOSTED-HISTORY-BLOB-SIZE":
                 continue
             file_path = str(row.get("file_path", "")).replace("\\", "/")
-            if file_path.endswith("docs/audit/too_large_history_blob.json"):
+            if file_path.endswith("docs/archive/audit/too_large_history_blob.json"):
                 return {
                     "status": "pass",
                     "message": "RepoX rejects oversized hosted-remote blobs that remain only in outgoing history",

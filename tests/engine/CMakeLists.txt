@@ -93,7 +93,7 @@ set_tests_properties(engine_perf_budget_fixture PROPERTIES
 add_test(NAME engine_perf_budget_check
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/validators/ci/perf_budget_check.py
         --run-root ${_dom_perf_run_root}
-        --budgets ${CMAKE_SOURCE_DIR}/docs/policies/PERF_BUDGETS.md
+        --budgets ${CMAKE_SOURCE_DIR}/docs/governance/policies/PERF_BUDGETS.md
 )
 set_tests_properties(engine_perf_budget_check PROPERTIES
     FIXTURES_REQUIRED perf_budget

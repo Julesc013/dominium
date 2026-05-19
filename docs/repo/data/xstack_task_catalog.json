@@ -216,7 +216,7 @@
       ],
       "representative_evidence_surfaces": [
         "docs/runtime/**",
-        "docs/agents/**",
+        "docs/game/agents/**",
         "specs/reality/**"
       ],
       "allowed_output_classes": [
@@ -251,7 +251,7 @@
       "typical_authoritative_inputs": [
         "AGENTS.md",
         ".agentignore",
-        "docs/agents/**",
+        "docs/game/agents/**",
         "data/agents/**",
         "AUTHORITY_ORDER",
         "mirror_policy",
@@ -259,8 +259,8 @@
       ],
       "representative_evidence_surfaces": [
         "AGENTS.md",
-        "docs/agents/AGENT_MIRROR_POLICY.md",
-        "docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md"
+        "docs/game/agents/AGENT_MIRROR_POLICY.md",
+        "docs/game/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md"
       ],
       "allowed_output_classes": [
         "governance_docs",
@@ -299,8 +299,8 @@
         "SPEC_FORMALIZATION_CHAIN"
       ],
       "representative_evidence_surfaces": [
-        "docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
-        "docs/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+        "docs/reference/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+        "docs/reference/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
         "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md"
       ],
       "allowed_output_classes": [
@@ -434,7 +434,7 @@
       "representative_evidence_surfaces": [
         "tools/xstack/packagingx/dist_build.py",
         "tools/xstack/securex/check.py",
-        "docs/xstack/CI_GUARDRAILS.md",
+        "docs/development/xstack/CI_GUARDRAILS.md",
         "archive/generated/xstack/gate_definitions.json"
       ],
       "allowed_output_classes": [
@@ -611,8 +611,8 @@
       "representative_evidence_surfaces": [
         "docs/**",
         "README_surfaces",
-        "docs/XSTACK.md",
-        "docs/xstack/CI_GUARDRAILS.md"
+        "docs/development/xstack/XSTACK.md",
+        "docs/development/xstack/CI_GUARDRAILS.md"
       ],
       "allowed_output_classes": [
         "explanatory_docs",
@@ -653,7 +653,7 @@
       ],
       "representative_evidence_surfaces": [
         "repo_wide_inspection",
-        "docs/audit/**",
+        "docs/archive/audit/**",
         "docs/planning/**",
         "docs/runtime/**",
         "tools/xstack/**"

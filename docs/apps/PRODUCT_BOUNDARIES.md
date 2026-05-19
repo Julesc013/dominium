@@ -14,7 +14,7 @@ This document summarizes the responsibilities and non-overlap between products.
 
 - Product responsibilities remain directionally correct, but current standalone guarantees are split across AppShell, server, and release-lock docs.
 - Capability negotiation and degrade behavior are now governed primarily by `docs/runtime/shell/APPSHELL_CONSTITUTION.md` and the MVP gate reports.
-- Use `docs/audit/ENTRYPOINT_MAP.md` for the current executable-to-entrypoint mapping.
+- Use `docs/archive/audit/ENTRYPOINT_MAP.md` for the current executable-to-entrypoint mapping.
 
 ## Client
 - User-facing runtime entrypoint (UI + interaction orchestration)

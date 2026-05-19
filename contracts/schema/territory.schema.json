@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical deterministic territory assembly record.",
   "x-doc-ref": [
-    "docs/civilisation/TERRITORY_AND_CLAIMS.md"
+    "docs/domains/civilization/TERRITORY_AND_CLAIMS.md"
   ],
   "type": "object",
   "required": [

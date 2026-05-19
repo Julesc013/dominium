@@ -141,5 +141,5 @@ On failure:
 - `docs/architecture/truth_perceived_render.md`
 - `docs/architecture/camera_and_navigation.md`
 - `docs/architecture/registry_compile.md`
-- `docs/contracts/authority_context.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/authority_context.md`
+- `docs/reference/contracts/refusal_contract.md`

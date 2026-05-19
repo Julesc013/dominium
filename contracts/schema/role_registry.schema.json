@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic role registry output.",
   "x-doc-ref": [
-    "docs/civilisation/INSTITUTIONS_AND_ROLES.md",
+    "docs/domains/civilization/INSTITUTIONS_AND_ROLES.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

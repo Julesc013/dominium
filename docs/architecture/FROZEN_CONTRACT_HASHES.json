@@ -117,11 +117,11 @@
       "sha256": "dedd5010a6da3c38d978c71f206ac0f4abb38098d597c80e394c72da7d003756"
     },
     {
-      "path": "docs/contracts/SEMANTIC_CONTRACT_MODEL.md",
+      "path": "docs/reference/contracts/SEMANTIC_CONTRACT_MODEL.md",
       "sha256": "e18743d81fb52dc764f5c3a7dcdf99e273d728b7e68f1cabc539116ac6f848b6"
     },
     {
-      "path": "docs/meta/EXTENSION_DISCIPLINE.md",
+      "path": "docs/governance/meta/EXTENSION_DISCIPLINE.md",
       "sha256": "9fd7e40f83b97f63fe5fdf6c2e93d731ad54a966fa285dd8f3c80b3ac2b6c088"
     },
     {
@@ -129,7 +129,7 @@
       "sha256": "0a4d98ec51bb177e5129527c0924bd2af8c9ef9f87a5380d05d4488aa7820144"
     },
     {
-      "path": "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md",
+      "path": "docs/reference/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md",
       "sha256": "b402ea5abfc0028f49f1a89855afe412ecc0eef4fec471bac5fd9c903765ab52"
     },
     {

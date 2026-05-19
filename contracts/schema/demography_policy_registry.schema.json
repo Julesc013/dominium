@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic demography policy registry output.",
   "x-doc-ref": [
-    "docs/civilisation/DEMOGRAPHY_OPTIONALITY.md",
+    "docs/domains/civilization/DEMOGRAPHY_OPTIONALITY.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

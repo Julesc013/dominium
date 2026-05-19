@@ -30,7 +30,7 @@ def _iter_docs(repo_root):
             if not name.lower().endswith(".md"):
                 continue
             rel = os.path.relpath(os.path.join(root, name), repo_root).replace("\\", "/")
-            if rel.startswith("docs/archive/") or rel.startswith("docs/audit/"):
+            if rel.startswith("docs/archive/") or rel.startswith("docs/archive/audit/"):
                 continue
             records.append(rel)
     return sorted(records)

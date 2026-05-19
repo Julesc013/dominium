@@ -30,7 +30,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 VIRTUAL_ROOT_REGISTRY_PATH = "contracts/registry/virtual_root_registry.json"
 VIRTUAL_PATHS_ENGINE_PATH = "runtime/shell/paths/virtual_paths.py"
 VIRTUAL_PATHS_DOC_PATH = "docs/runtime/shell/VIRTUAL_PATHS.md"
-VIRTUAL_PATHS_BASELINE_PATH = "docs/audit/VIRTUAL_PATHS_BASELINE.md"
+VIRTUAL_PATHS_BASELINE_PATH = "docs/archive/audit/VIRTUAL_PATHS_BASELINE.md"
 VIRTUAL_PATHS_REPORT_PATH = "archive/generated/audit/virtual_paths_report.json"
 
 SCAN_ROOTS = (

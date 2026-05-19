@@ -10,9 +10,9 @@ TEST_TAGS = ["fast", "elec", "docs"]
 
 
 _REQUIRED_DOCS = (
-    "docs/audit/ELEC0_RETRO_AUDIT.md",
-    "docs/electric/ELECTRICAL_CONSTITUTION.md",
-    "docs/audit/ELECTRICAL_CONSTITUTION_BASELINE.md",
+    "docs/archive/audit/ELEC0_RETRO_AUDIT.md",
+    "docs/domains/electricity/ELECTRICAL_CONSTITUTION.md",
+    "docs/archive/audit/ELECTRICAL_CONSTITUTION_BASELINE.md",
 )
 
 

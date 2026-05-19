@@ -5,13 +5,13 @@ from datetime import date
 MARKERS = ("TODO", "FIXME", "PLACEHOLDER")
 STUB_TOKEN = "_stub"
 GENERATED_AUDIT_SKIPS = {
-    "docs/audit/marker_scan.txt",
-    "docs/audit/pack_audit.txt",
-    "docs/audit/inventory.md",
-    "docs/audit/inventory_machine.json",
-    "docs/audit/inventory.json",
-    "docs/audit/stub_report.json",
-    "docs/audit/test_coverage_matrix.md",
+    "docs/archive/audit/marker_scan.txt",
+    "docs/archive/audit/pack_audit.txt",
+    "docs/archive/audit/inventory.md",
+    "docs/archive/audit/inventory_machine.json",
+    "docs/archive/audit/inventory.json",
+    "docs/archive/audit/stub_report.json",
+    "docs/archive/audit/test_coverage_matrix.md",
 }
 
 
@@ -96,8 +96,8 @@ def main():
                     }
                 )
 
-    os.makedirs("docs/audit", exist_ok=True)
-    with open("docs/audit/MARKER_SCAN.txt", "w", encoding="utf-8") as f:
+    os.makedirs("docs/archive/audit", exist_ok=True)
+    with open("docs/archive/audit/MARKER_SCAN.txt", "w", encoding="utf-8") as f:
         f.write("Status: DERIVED\n")
         f.write("Last Reviewed: {}\n".format(date.today().isoformat()))
         f.write("Supersedes: none\n")

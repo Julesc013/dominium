@@ -99,8 +99,8 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md",
-                                "docs/meta/CONSTITUTIVE_MODEL_CATALOG.md",
+                                "docs/governance/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md",
+                                "docs/governance/meta/CONSTITUTIVE_MODEL_CATALOG.md",
                             ],
                         )
                     )

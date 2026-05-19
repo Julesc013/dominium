@@ -29,7 +29,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
 REGISTRY_REL = "contracts/registry/reference_evaluator_registry.json"
-MISMATCH_REL_TEMPLATE = "docs/audit/REFERENCE_MISMATCH_{seed}.md"
+MISMATCH_REL_TEMPLATE = "docs/archive/audit/REFERENCE_MISMATCH_{seed}.md"
 
 
 def _as_int(value: object, default_value: int = 0) -> int:

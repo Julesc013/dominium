@@ -11,9 +11,9 @@ from tools.release import build_release_manifest, verify_release_manifest, write
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
-RELEASE1_RETRO_AUDIT_PATH = "docs/audit/RELEASE1_RETRO_AUDIT.md"
+RELEASE1_RETRO_AUDIT_PATH = "docs/archive/audit/RELEASE1_RETRO_AUDIT.md"
 RELEASE_MANIFEST_MODEL_PATH = "docs/release/RELEASE_MANIFEST_MODEL.md"
-RELEASE_MANIFEST_BASELINE_PATH = "docs/audit/RELEASE_MANIFEST_BASELINE.md"
+RELEASE_MANIFEST_BASELINE_PATH = "docs/archive/audit/RELEASE_MANIFEST_BASELINE.md"
 RELEASE_MANIFEST_GENERATOR_PATH = "tools/release/tool_generate_release_manifest.py"
 RELEASE_MANIFEST_VERIFIER_PATH = "tools/release/tool_verify_release_manifest.py"
 RELEASE_MANIFEST_ENGINE_PATH = "tools/release/release_manifest_engine.py"

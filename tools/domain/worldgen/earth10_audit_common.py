@@ -8,7 +8,7 @@ from typing import Dict, Iterable, List, Tuple
 
 
 EARTH10_SCOPE_PATHS: Tuple[str, ...] = (
-    "docs/audit/EARTH10_RETRO_AUDIT.md",
+    "docs/archive/audit/EARTH10_RETRO_AUDIT.md",
     "docs/domains/worldgen/EARTH_MATERIAL_SURFACE_PROXY.md",
     "contracts/registry/material_proxy_registry.json",
     "contracts/registry/surface_flag_registry.json",

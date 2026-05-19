@@ -1,7 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-02-01
 Supersedes: none
-Superseded By: docs/audit/REPO_TREE_INDEX.md
+Superseded By: docs/archive/audit/REPO_TREE_INDEX.md
 Reason: top-level layout no longer matches the real repository inventory
 Stability: provisional
 Future Series: DOC-CONVERGENCE

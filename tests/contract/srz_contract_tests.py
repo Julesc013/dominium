@@ -26,7 +26,7 @@ def main() -> int:
         "docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md",
         "docs/architecture/EPISTEMICS_MODEL.md",
         "docs/architecture/EPISTEMICS_AND_SCALED_MMO.md",
-        "docs/ops/MMO_SCALING_PLAYBOOK.md",
+        "docs/operations/MMO_SCALING_PLAYBOOK.md",
     ]
     required_schemas = [
         "contracts/schema/srz.zone.schema",

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic diplomatic state registry output.",
   "x-doc-ref": [
-    "docs/civilisation/DIPLOMACY_STUBS.md",
+    "docs/domains/civilization/DIPLOMACY_STUBS.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

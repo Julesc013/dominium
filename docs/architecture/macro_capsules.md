@@ -73,4 +73,4 @@ This is intentionally minimal and forward-extensible to richer conserved quantit
 ## Cross-References
 - `docs/architecture/interest_regions.md`
 - `docs/architecture/fidelity_policy.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`

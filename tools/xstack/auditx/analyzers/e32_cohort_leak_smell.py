@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E32_COHORT_LEAK_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/",
-    "docs/civilisation/",
+    "docs/domains/civilization/",
     "data/registries/",
 )
 
@@ -98,7 +98,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    docs_rel = "docs/civilisation/COHORT_MODEL.md"
+    docs_rel = "docs/domains/civilization/COHORT_MODEL.md"
     if not _read_text(repo_root, docs_rel):
         findings.append(
             make_finding(

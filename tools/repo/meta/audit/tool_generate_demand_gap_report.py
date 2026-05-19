@@ -29,7 +29,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
 MATRIX_REL = "contracts/meta/player_demand_matrix.json"
-OUTPUT_REL = "docs/audit/PLAYER_DEMAND_GAPS.md"
+OUTPUT_REL = "docs/archive/audit/PLAYER_DEMAND_GAPS.md"
 
 
 def _load_json(repo_root: str, rel_path: str) -> Tuple[dict, str]:

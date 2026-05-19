@@ -137,5 +137,5 @@ Validation rejects deterministically on:
 - `docs/architecture/pack_system.md`
 - `docs/architecture/deterministic_packaging.md`
 - `docs/architecture/setup_and_launcher.md`
-- `docs/contracts/versioning_and_migration.md`
+- `docs/reference/contracts/versioning_and_migration.md`
 - `tools/xstack/registry_compile/lockfile.py`

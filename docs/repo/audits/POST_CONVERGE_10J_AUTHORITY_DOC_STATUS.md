@@ -56,8 +56,8 @@ All 12 deferred authority-sensitive entries were classifiable without changing b
 - `docs/domains/README.md`
 - `docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md`
 - `docs/runtime/CANONICAL_LOCAL_PLAYTEST.md`
-- `docs/xstack/ARCH_DRIFT_POLICY.md`
-- `docs/xstack/CI_GUARDRAILS.md`
+- `docs/development/xstack/ARCH_DRIFT_POLICY.md`
+- `docs/development/xstack/CI_GUARDRAILS.md`
 
 ## Before/After
 

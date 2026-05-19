@@ -33,7 +33,7 @@ Current naming and layout authority is derived from:
 - `docs/repo/root-recycling/ROOT_RECYCLING_RUNBOOK.md`
 - `docs/repo/root-recycling/MOVE_BULK_BATCH_SEQUENCE.md`
 
-`docs/restructure/FUTURE_LAYOUT_PROPOSAL.md` is retained as historical planning input. Its `/src` proposal is explicitly superseded by the post-CONVERGE source-root model.
+`docs/archive/restructure/FUTURE_LAYOUT_PROPOSAL.md` is retained as historical planning input. Its `/src` proposal is explicitly superseded by the post-CONVERGE source-root model.
 
 ## Deliverables
 

@@ -13,7 +13,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E392_UNDECLARED_EXTENSION_INTERPRETATION_SMELL"
 REGISTRY_REL = "contracts/registry/extension_interpretation_registry.json"
 ENGINE_REL = "meta_extensions_engine.py"
-DOC_REL = "docs/meta/EXTENSION_DISCIPLINE.md"
+DOC_REL = "docs/governance/meta/EXTENSION_DISCIPLINE.md"
 GET_RE = re.compile(r'extensions\s*\.\s*get\(\s*["\']([^"\']+)["\']')
 
 

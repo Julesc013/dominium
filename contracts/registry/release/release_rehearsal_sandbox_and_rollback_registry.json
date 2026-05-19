@@ -14,10 +14,10 @@
       "docs/canon/constitution_v1.md",
       "docs/canon/glossary_v1.md",
       "AGENTS.md",
-      "docs/agents/AGENT_TASKS.md",
-      "docs/agents/XSTACK_TASK_CATALOG.md",
-      "docs/agents/MCP_INTERFACE_MODEL.md",
-      "docs/agents/AGENT_SAFETY_POLICY.md",
+      "docs/game/agents/AGENT_TASKS.md",
+      "docs/game/agents/XSTACK_TASK_CATALOG.md",
+      "docs/game/agents/MCP_INTERFACE_MODEL.md",
+      "docs/game/agents/AGENT_SAFETY_POLICY.md",
       "docs/planning/AUTHORITY_ORDER.md",
       "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
       "docs/planning/GATES_AND_PROOFS.md",
@@ -207,7 +207,7 @@
     "contracts/registry/refusal_code_registry.json",
     "contracts/registry/remediation_playbooks.json",
     "contracts/registry/trust_root_registry.json",
-    "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+    "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
   ],
   "ambiguities_eliminated": [
     "dry_run_is_not_rollback_proof",

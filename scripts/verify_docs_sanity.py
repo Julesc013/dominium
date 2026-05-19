@@ -14,7 +14,7 @@ REQUIRED_PATHS = (
     "docs/architecture/GENERATED_CODE_POLICY.md",
     "docs/architecture/LEGACY_SUPPORT_STRATEGY.md",
     "docs/architecture/FUTURE_COMPATIBILITY_AND_ARCH.md",
-    "docs/policies/IDE_CONTRIBUTION_RULES.md",
+    "docs/governance/policies/IDE_CONTRIBUTION_RULES.md",
     "docs/architecture/IDE_PROJECTIONS.md",
     "contracts/projection/ide/projection_manifest.schema.json",
 )

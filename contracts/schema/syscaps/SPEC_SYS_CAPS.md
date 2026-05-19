@@ -25,5 +25,5 @@ they never change gameplay meaning.
 
 ## Serialization
 SysCaps are serialized and hashed deterministically. See
-`SPEC_SYS_CAPS_FIELDS.md` for canonical field ordering and `docs/specs/`
+`SPEC_SYS_CAPS_FIELDS.md` for canonical field ordering and `docs/reference/specs/`
 container requirements when stored on disk.

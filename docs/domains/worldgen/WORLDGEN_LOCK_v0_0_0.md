@@ -183,5 +183,5 @@ The lock is enforced by:
 - `tests/fixtures/baselines/worldgen/baseline_worldgen_snapshot.json`
 - `tools/domain/worldgen/tool_generate_worldgen_baseline`
 - `tools/domain/worldgen/tool_verify_worldgen_lock`
-- `docs/audit/WORLDGEN_LOCK_VERIFY.md`
-- `docs/audit/WORLDGEN_LOCK_BASELINE.md`
+- `docs/archive/audit/WORLDGEN_LOCK_VERIFY.md`
+- `docs/archive/audit/WORLDGEN_LOCK_BASELINE.md`

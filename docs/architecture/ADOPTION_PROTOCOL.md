@@ -80,7 +80,7 @@ Every migration PR MUST include:
 - AccessSet definitions for all emitted tasks
 - Work IR emission for authoritative work
 - Deterministic parity tests for DUAL state
-- CI enforcement updates (see `docs/ci/CI_ENFORCEMENT_MATRIX.md`)
+- CI enforcement updates (see `docs/testing/ci/CI_ENFORCEMENT_MATRIX.md`)
 
 ## Enforcement
 
@@ -90,4 +90,4 @@ ADOPT0 is enforced through CI gates:
 - ADOPT0-BYPASS-003
 - ADOPT0-ACCESS-004
 
-See `docs/ci/CI_ENFORCEMENT_MATRIX.md` for enforcement details.
+See `docs/testing/ci/CI_ENFORCEMENT_MATRIX.md` for enforcement details.

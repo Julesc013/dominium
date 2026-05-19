@@ -63,9 +63,9 @@ DIST6_CASE_IDS = (
     "contract_mismatch_read_only",
     "contract_mismatch_strict",
 )
-CASE_DOC_TEMPLATE = "docs/audit/DIST6_INTEROP_{}.md"
+CASE_DOC_TEMPLATE = "docs/archive/audit/DIST6_INTEROP_{}.md"
 CASE_JSON_TEMPLATE = "data/audit/dist6_interop_{}.json"
-FINAL_DOC_PATH = "docs/audit/DIST6_FINAL.md"
+FINAL_DOC_PATH = "docs/archive/audit/DIST6_FINAL.md"
 INTEROP_MATRIX_DOC_PATH = "docs/release/INTEROP_MATRIX_v0_0_0_mock.md"
 RULE_ID = "INV-VERSION-INTEROP-MUST-PASS-BEFORE-DIST"
 DEFAULT_OUTPUT_ROOT_A = os.path.join("build", "tmp", "dist6_interop_a")

@@ -90,7 +90,7 @@ def _is_generated_evidence_path(rel: str) -> bool:
     token = str(rel or "").replace("\\", "/")
     if token.startswith(".aide/") and not token.startswith((".aide/scripts/", ".aide/adapters/")):
         return True
-    if token.startswith("docs/audit/"):
+    if token.startswith("docs/archive/audit/"):
         return True
     return False
 

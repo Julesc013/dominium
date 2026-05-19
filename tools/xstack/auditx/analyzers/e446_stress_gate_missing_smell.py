@@ -8,12 +8,12 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E446_STRESS_GATE_MISSING_SMELL"
 RULE_ID = "INV-MVP-STRESS-MUST-PASS-BEFORE-RELEASE"
-DOCTRINE_REL = "docs/mvp/MVP_STRESS_GATE.md"
+DOCTRINE_REL = "docs/release/mvp/MVP_STRESS_GATE.md"
 HASHES_REL = "build/mvp/mvp_stress_hashes.json"
 REPORT_REL = "build/mvp/mvp_stress_report.json"
 PROOF_REL = "build/mvp/mvp_stress_proof_report.json"
 BASELINE_REL = "tests/fixtures/regression/mvp_stress_baseline.json"
-FINAL_REL = "docs/audit/MVP_STRESS_FINAL.md"
+FINAL_REL = "docs/archive/audit/MVP_STRESS_FINAL.md"
 TEST_RELS = (
     "tools/xstack/testx/tests/test_stress_orchestrator_order_deterministic.py",
     "tools/xstack/testx/tests/test_proof_validation_passes.py",

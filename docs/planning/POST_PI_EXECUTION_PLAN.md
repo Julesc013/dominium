@@ -69,7 +69,7 @@ It is the formalization pass that prevents later runtime, task, and release work
 
 ### 4.2 Why Σ Must Precede Deeper Φ Work
 
-The repo already has real governance surfaces in `AGENTS.md`, `docs/planning`, `docs/agents`, `docs/governance`, `docs/xstack`, `tools/controlx`, and `tools/xstack`.
+The repo already has real governance surfaces in `AGENTS.md`, `docs/planning`, `docs/game/agents`, `docs/governance`, `docs/development/xstack`, `tools/controlx`, and `tools/xstack`.
 
 What is missing is not governance existence, but governed task and interface pinning.
 Deeper `Φ` work would otherwise hard-freeze runtime boundaries without the governed task, refusal, and wrapper layer that later automation and control-plane work must obey.
@@ -282,7 +282,7 @@ Inputs:
 
 - `AGENTS.md`
 - planning authority docs
-- `docs/agents`, `docs/governance`, `docs/xstack`
+- `docs/game/agents`, `docs/governance`, `docs/development/xstack`
 - ControlX and XStack tooling
 - Λ outputs
 

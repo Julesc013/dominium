@@ -30,7 +30,7 @@ set TLV_CHANGED=0
 set TLV_DOC_CHANGED=0
 for /f "delims=" %%F in ('git diff --name-only %BASE% --') do (
     echo %%F | findstr /i "source/dominium/setup/kernel/include/dsk/dsk_contracts.h include/dominium/core_installed_state.h" >nul && set TLV_CHANGED=1
-    echo %%F | findstr /i "docs/setup/TLV_" >nul && set TLV_DOC_CHANGED=1
+    echo %%F | findstr /i "docs/apps/setup/TLV_" >nul && set TLV_DOC_CHANGED=1
 )
 if "%TLV_CHANGED%"=="1" if not "%TLV_DOC_CHANGED%"=="1" (
     echo TLV schema changed without TLV docs update

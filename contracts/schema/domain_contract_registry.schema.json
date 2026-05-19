@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Structural contract registry for domain/solver conservation and transition constraints.",
   "x-doc-ref": [
-    "docs/scale/CONTRACTS_AND_CONSERVATION.md",
+    "docs/domains/scale/CONTRACTS_AND_CONSERVATION.md",
     "schema/scale/domain_contract.schema"
   ],
   "type": "object",

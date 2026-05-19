@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic universe physics profile registry output.",
   "x-doc-ref": [
-    "docs/reality/UNIVERSE_PHYSICS_PROFILE.md",
+    "docs/domains/reality/UNIVERSE_PHYSICS_PROFILE.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

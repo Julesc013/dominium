@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Diegetic instrument assembly instance contract.",
   "x-doc-ref": [
-    "docs/diegetics/DIEGETIC_INSTRUMENT_DOCTRINE.md"
+    "docs/game/diegetics/DIEGETIC_INSTRUMENT_DOCTRINE.md"
   ],
   "type": "object",
   "required": [

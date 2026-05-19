@@ -12,7 +12,7 @@ COLLISION_PROVIDER_REL = "game/domain/embodiment/collision/macro_heightfield_pro
 PROCESS_RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
 PROBE_REL = "tools/domain/embodiment/earth6_probe.py"
 REPLAY_REL = "tools/domain/embodiment/tool_replay_movement_window.py"
-DOC_REL = "docs/embodiment/TERRAIN_COLLISION_MODEL.md"
+DOC_REL = "docs/domains/embodiment/TERRAIN_COLLISION_MODEL.md"
 REQUIRED_TOKENS = {
     COLLISION_PROVIDER_REL: (
         "resolve_macro_heightfield_sample(",

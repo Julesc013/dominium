@@ -24,7 +24,7 @@ institutional authority without hardcoded agent roles or world assumptions.
 Scope (binding for SLICE-2):
 
 
-- engine/, game/, data/, client/, tools/, docs/architecture/, docs/examples/, tests/
+- engine/, game/, data/, client/, tools/, docs/architecture/, docs/reference/examples/, tests/
 
 
 - Documentation and tests may be added/updated.
@@ -138,4 +138,4 @@ Replaceability rules:
 SLICE-2 completion is defined by the acceptance checklist in
 
 
-`docs/roadmap/SLICE_2_ACCEPTANCE.md`.
+`docs/release/roadmap/SLICE_2_ACCEPTANCE.md`.

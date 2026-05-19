@@ -171,8 +171,8 @@ def _markdown(rows: List[dict], content_hash: str) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate deterministic handshake compatibility matrix report.")
     parser.add_argument("--repo-root", default="")
-    parser.add_argument("--out-md", default="docs/audit/HANDSHAKE_COMPAT_MATRIX.md")
-    parser.add_argument("--out-json", default="docs/audit/HANDSHAKE_COMPAT_MATRIX.json")
+    parser.add_argument("--out-md", default="docs/archive/audit/HANDSHAKE_COMPAT_MATRIX.md")
+    parser.add_argument("--out-json", default="docs/archive/audit/HANDSHAKE_COMPAT_MATRIX.json")
     args = parser.parse_args()
 
     repo_root = os.path.normpath(os.path.abspath(args.repo_root)) if str(args.repo_root).strip() else REPO_ROOT_HINT

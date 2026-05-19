@@ -28,7 +28,7 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-DEFAULT_TOPOLOGY_MAP_REL = "docs/audit/TOPOLOGY_MAP.json"
+DEFAULT_TOPOLOGY_MAP_REL = "docs/archive/audit/TOPOLOGY_MAP.json"
 
 SCHEMA_ROOT_PREFIXES = ("contracts/schema/", "contracts/schema/")
 REGISTRY_ROOT_PREFIXES = ("data/registries/", "data/governance/")
@@ -471,7 +471,7 @@ def compute_semantic_impact(
             "contracts/registry/coupling_contract_registry.json",
             "contracts/registry/explain_contract_registry.json",
         }:
-            required_docs_updates.add("docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md")
+            required_docs_updates.add("docs/governance/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md")
             required_migration_checks.add("check.meta_contract_registry_consistency")
         if rel.startswith(SCHEMA_ROOT_PREFIXES):
             strict_required = True

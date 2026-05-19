@@ -12,7 +12,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
 - Required updates: documentation surface exists, but current canon ownership is not explicit
-- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+- Cross-check with: `docs/archive/audit/CANON_MAP.md` and `docs/archive/audit/DOC_DRIFT_MATRIX.md`.
 
 
 ## Overview
@@ -128,4 +128,4 @@ If throughput regresses:
 1. inspect latest plan in `.xstack_cache/plans/`
 2. inspect cache hit ratio in profile report
 3. check group registry granularity
-4. review `docs/audit/xstack/FULL_PLAN_TOO_LARGE.md` if present
+4. review `docs/archive/audit/xstack/FULL_PLAN_TOO_LARGE.md` if present

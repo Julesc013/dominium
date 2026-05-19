@@ -50,8 +50,8 @@ It operationalizes P-2 for later prompt generation.
 | Surface | Path Family | Status | Why Extension Is Preferred | Later Series |
 | --- | --- | --- | --- | --- |
 | authority planning stack | `AGENTS.md`, `docs/planning` | `do-not-replace` | this is already the live governance and intake spine; later prompts must preserve it as the binding planning layer | `Σ`, `Φ`, `Υ`, `Ζ` |
-| mirrored governance docs | `docs/agents`, `docs/governance`, `docs/xstack`, `DOMINIUM.md`, `GOVERNANCE.md`, `README.md`, `SECURITY.md` | `consolidate` | the problem is mirrored ownership and drift, not absence; later Σ should normalize instead of duplicating | `Σ`, `Υ` |
-| blueprint archive | `docs/blueprint` | `extend` | the blueprint archive remains useful, but only through the P-2 reconciled lens rather than as raw truth | `Λ`, `Σ`, `Φ`, `Υ`, `Ζ` |
+| mirrored governance docs | `docs/game/agents`, `docs/governance`, `docs/development/xstack`, `DOMINIUM.md`, `GOVERNANCE.md`, `README.md`, `SECURITY.md` | `consolidate` | the problem is mirrored ownership and drift, not absence; later Σ should normalize instead of duplicating | `Σ`, `Υ` |
+| blueprint archive | `docs/archive/blueprint` | `extend` | the blueprint archive remains useful, but only through the P-2 reconciled lens rather than as raw truth | `Λ`, `Σ`, `Φ`, `Υ`, `Ζ` |
 
 ## 6. Release, Versioning, And Control-Plane Surfaces
 

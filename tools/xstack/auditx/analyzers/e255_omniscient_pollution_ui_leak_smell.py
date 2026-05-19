@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=["INV-NO-OMNISCIENT-POLLUTION-KNOWLEDGE"],
                             related_paths=[
                                 rel_path,
-                                "docs/pollution/EXPOSURE_AND_COMPLIANCE_MODEL.md",
+                                "docs/domains/pollution/EXPOSURE_AND_COMPLIANCE_MODEL.md",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

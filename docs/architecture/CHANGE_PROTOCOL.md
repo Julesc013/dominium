@@ -27,7 +27,7 @@ Missing any artifact is a refusal condition.
 ## Change Workflow
 1. Define scope and classify impact (determinism, authority, schema, law, model).
 2. Produce the required artifacts in the change set.
-3. Update or add CI enforcement entries in `docs/ci/CI_ENFORCEMENT_MATRIX.md`.
+3. Update or add CI enforcement entries in `docs/testing/ci/CI_ENFORCEMENT_MATRIX.md`.
 4. Apply the epoch bump policy if the change is sim-affecting.
 5. Review against ARCH0 axioms and refuse if any violation is unresolved.
 

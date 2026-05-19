@@ -20,7 +20,7 @@ Apply this order when interpreting requirements:
 1. `docs/canon/constitution_v1.md`
 2. `docs/canon/glossary_v1.md`
 3. `AGENTS.md` (repo root)
-4. Schema law under `schema/` and contract docs under `docs/contracts/`
+4. Schema law under `schema/` and contract docs under `docs/reference/contracts/`
 5. Architecture docs under `docs/architecture/`
 6. Roadmap and testing docs
 

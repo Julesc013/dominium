@@ -101,5 +101,5 @@ Optional fields:
 
 ## Integration points
 - Continuation policies: `schema/life/SPEC_CONTINUATION_POLICIES.md`
-- Contracts: `docs/specs/SPEC_CONTRACTS.md`
-- Epistemic UI: `docs/specs/SPEC_EPISTEMIC_INTERFACE.md`
+- Contracts: `docs/reference/specs/SPEC_CONTRACTS.md`
+- Epistemic UI: `docs/reference/specs/SPEC_EPISTEMIC_INTERFACE.md`

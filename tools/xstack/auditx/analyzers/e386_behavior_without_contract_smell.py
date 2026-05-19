@@ -14,7 +14,7 @@ WATCH_PREFIXES = (
     "contracts/schema/universe_contract_bundle.schema.json",
     "tools/xstack/sessionx/creator.py",
     "tools/xstack/compatx/core/semantic_contract_validator.py",
-    "docs/contracts/SEMANTIC_CONTRACT_MODEL.md",
+    "docs/reference/contracts/SEMANTIC_CONTRACT_MODEL.md",
 )
 
 REQUIRED_FILE_TOKENS = {
@@ -43,7 +43,7 @@ REQUIRED_FILE_TOKENS = {
         "build_semantic_contract_proof_bundle(",
         "refuse.semantic_contract_mismatch",
     ),
-    "docs/contracts/SEMANTIC_CONTRACT_MODEL.md": (
+    "docs/reference/contracts/SEMANTIC_CONTRACT_MODEL.md": (
         "Semantic contracts version behavior meaning, not payload shape.",
         "Universe creation writes an immutable sidecar: `universe_contract_bundle.json`.",
         "No runtime behavior change is authorized by this document.",

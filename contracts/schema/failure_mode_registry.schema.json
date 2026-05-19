@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic failure mode registry output.",
   "x-doc-ref": [
-    "docs/materials/DECAY_FAILURE_MAINTENANCE.md",
+    "docs/domains/materials/DECAY_FAILURE_MAINTENANCE.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

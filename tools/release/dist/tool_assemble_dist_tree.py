@@ -62,8 +62,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--install-profile-id", default=DEFAULT_INSTALL_PROFILE_ID)
     parser.add_argument("--report-path", default="archive/generated/audit/dist_tree_assembly_report.json")
     parser.add_argument("--content-report-path", default="archive/generated/audit/dist_content_audit.json")
-    parser.add_argument("--content-doc-path", default="docs/audit/DIST_CONTENT_AUDIT.md")
-    parser.add_argument("--final-doc-path", default="docs/audit/DIST_TREE_ASSEMBLY_FINAL.md")
+    parser.add_argument("--content-doc-path", default="docs/archive/audit/DIST_CONTENT_AUDIT.md")
+    parser.add_argument("--final-doc-path", default="docs/archive/audit/DIST_TREE_ASSEMBLY_FINAL.md")
     args = parser.parse_args(argv)
 
     report = build_dist_tree(

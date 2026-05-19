@@ -37,9 +37,9 @@ SYMBOL_INDEX_REL = "archive/generated/audit/symbol_index.json"
 INCLUDE_GRAPH_REL = "archive/generated/audit/include_graph.json"
 BUILD_GRAPH_REL = "archive/generated/audit/build_graph.json"
 ARCHITECTURE_SCAN_REPORT_REL = "archive/generated/audit/architecture_scan_report.json"
-ARCHITECTURE_GRAPH_REPORT_REL = "docs/audit/ARCHITECTURE_GRAPH_REPORT.md"
-MODULE_DISCOVERY_REPORT_REL = "docs/audit/MODULE_DISCOVERY_REPORT.md"
-ARCH_GRAPH_BOOTSTRAP_REL = "docs/audit/ARCH_GRAPH_BOOTSTRAP.md"
+ARCHITECTURE_GRAPH_REPORT_REL = "docs/archive/audit/ARCHITECTURE_GRAPH_REPORT.md"
+MODULE_DISCOVERY_REPORT_REL = "docs/archive/audit/MODULE_DISCOVERY_REPORT.md"
+ARCH_GRAPH_BOOTSTRAP_REL = "docs/archive/audit/ARCH_GRAPH_BOOTSTRAP.md"
 
 OUTPUT_REL_PATHS = {
     ARCHITECTURE_GRAPH_REL,

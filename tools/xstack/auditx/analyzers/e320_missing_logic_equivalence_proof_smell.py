@@ -11,7 +11,7 @@ ANALYZER_ID = "E320_MISSING_LOGIC_EQUIVALENCE_PROOF_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e320_missing_logic_equivalence_proof_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/LOGIC_COMPILATION_MODEL.md",
+    "docs/domains/logic/LOGIC_COMPILATION_MODEL.md",
     "game/domain/logic/compile/logic_compiler.py",
     "game/domain/logic/compile/logic_proof_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    doctrine_rel = "docs/logic/LOGIC_COMPILATION_MODEL.md"
+    doctrine_rel = "docs/domains/logic/LOGIC_COMPILATION_MODEL.md"
     doctrine_text = _read_text(repo_root, doctrine_rel).lower()
     for token in ("equivalence proof", "exact proof", "proof exists and verifies"):
         if token in doctrine_text:

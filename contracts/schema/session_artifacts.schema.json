@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical session artifact classification record used by stage contracts.",
   "x-doc-ref": [
-    "docs/client/CLIENT_LIFECYCLE_PIPELINE.md",
+    "docs/apps/client/CLIENT_LIFECYCLE_PIPELINE.md",
     "schema/session/session_artifacts.schema"
   ],
   "type": "object",

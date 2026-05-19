@@ -6,8 +6,8 @@
   "x-stability": "stable",
   "description": "Canonical Dominium capability-surface structure. Capability surfaces expose lawful interaction surfaces over domain-grounded substrate and affordances without redefining truth, observation, or UI semantics.",
   "x-doc-ref": [
-    "docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
-    "docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "docs/reference/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "docs/reference/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
     "contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md"
   ],
   "type": "object",

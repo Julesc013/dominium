@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical RS-2 per-tick exception ledger artifact.",
   "x-doc-ref": [
-    "docs/reality/CONSERVATION_AND_EXCEPTIONS.md"
+    "docs/domains/reality/CONSERVATION_AND_EXCEPTIONS.md"
   ],
   "type": "object",
   "required": [

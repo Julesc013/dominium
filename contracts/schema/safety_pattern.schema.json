@@ -5,7 +5,7 @@
   "description": "SAFETY-0 canonical reusable safety pattern template.",
   "x-doc-ref": [
     "docs/safety/SAFETY_PATTERN_LIBRARY.md",
-    "docs/audit/SAFETY_PATTERN_BASELINE.md"
+    "docs/archive/audit/SAFETY_PATTERN_BASELINE.md"
   ],
   "type": "object",
   "required": [

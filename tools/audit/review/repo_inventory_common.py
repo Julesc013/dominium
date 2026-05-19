@@ -31,13 +31,13 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 
 INVENTORY_JSON_REL = "archive/generated/audit/repo_inventory.json"
-TREE_INDEX_MD_REL = "docs/audit/REPO_TREE_INDEX.md"
-MODULE_DUPLICATION_REPORT_REL = "docs/audit/MODULE_DUPLICATION_REPORT.md"
-ENTRYPOINT_MAP_REL = "docs/audit/ENTRYPOINT_MAP.md"
-PLATFORM_RENDERER_SURFACE_REL = "docs/audit/PLATFORM_RENDERER_SURFACE.md"
-VALIDATION_STACK_MAP_REL = "docs/audit/VALIDATION_STACK_MAP.md"
-STABILITY_COVERAGE_REPORT_REL = "docs/audit/STABILITY_COVERAGE_REPORT.md"
-FINAL_REPORT_REL = "docs/audit/REPO_REVIEW_2_FINAL.md"
+TREE_INDEX_MD_REL = "docs/archive/audit/REPO_TREE_INDEX.md"
+MODULE_DUPLICATION_REPORT_REL = "docs/archive/audit/MODULE_DUPLICATION_REPORT.md"
+ENTRYPOINT_MAP_REL = "docs/archive/audit/ENTRYPOINT_MAP.md"
+PLATFORM_RENDERER_SURFACE_REL = "docs/archive/audit/PLATFORM_RENDERER_SURFACE.md"
+VALIDATION_STACK_MAP_REL = "docs/archive/audit/VALIDATION_STACK_MAP.md"
+STABILITY_COVERAGE_REPORT_REL = "docs/archive/audit/STABILITY_COVERAGE_REPORT.md"
+FINAL_REPORT_REL = "docs/archive/audit/REPO_REVIEW_2_FINAL.md"
 
 SCAN_ROOTS = (
     "src",
@@ -53,7 +53,7 @@ TREE_ROOTS = (
     "schema",
     "schemas",
     "docs/release",
-    "docs/audit",
+    "docs/archive/audit",
 )
 SKIP_DIR_NAMES = {
     ".git",
@@ -67,7 +67,7 @@ SKIP_DIR_NAMES = {
 }
 SKIP_PREFIXES = (
     "build/",
-    "docs/audit/auditx/",
+    "docs/archive/audit/auditx/",
 )
 SKIP_EXACT_PATHS = {
     INVENTORY_JSON_REL,

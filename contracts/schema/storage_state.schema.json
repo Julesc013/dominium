@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic ELEC-3 storage state row for battery-capable nodes.",
   "x-doc-ref": [
-    "docs/electric/DEVICE_MODELS.md",
-    "docs/audit/ELECTRICAL_DEVICE_MODELS_BASELINE.md"
+    "docs/domains/electricity/DEVICE_MODELS.md",
+    "docs/archive/audit/ELECTRICAL_DEVICE_MODELS_BASELINE.md"
   ],
   "type": "object",
   "required": [

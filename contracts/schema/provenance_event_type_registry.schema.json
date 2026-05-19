@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic construction provenance event type registry output.",
   "x-doc-ref": [
-    "docs/materials/PROVENANCE_EVENTS.md",
+    "docs/domains/materials/PROVENANCE_EVENTS.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

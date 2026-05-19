@@ -58,7 +58,7 @@ def run(graph, repo_root, changed_files=None):
                 related_invariants=["INV-POLLUTION-FIELD-UPDATE-THROUGH-PROCESS"],
                 related_paths=[
                     canonical_engine_rel,
-                    "docs/pollution/DISPERSION_MODEL.md",
+                    "docs/domains/pollution/DISPERSION_MODEL.md",
                 ],
             )
         )

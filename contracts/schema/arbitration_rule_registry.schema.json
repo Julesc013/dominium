@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic registry output for transition arbitration rules.",
   "x-doc-ref": [
-    "docs/reality/TIER_TAXONOMY_AND_TRANSITIONS.md",
+    "docs/domains/reality/TIER_TAXONOMY_AND_TRANSITIONS.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

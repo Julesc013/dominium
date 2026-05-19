@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic SOL-1 illumination receiver descriptor.",
   "x-doc-ref": [
-    "docs/sol/ILLUMINATION_GEOMETRY_MODEL.md"
+    "docs/domains/astronomy/sol/ILLUMINATION_GEOMETRY_MODEL.md"
   ],
   "type": "object",
   "required": [

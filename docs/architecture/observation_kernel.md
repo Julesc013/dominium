@@ -85,6 +85,6 @@ Define the deterministic function that projects truth into observer-visible perc
 ## Cross-References
 - `docs/canon/constitution_v1.md`
 - `docs/architecture/truth_perceived_render.md`
-- `docs/contracts/authority_context.md`
-- `docs/contracts/lens_contract.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/authority_context.md`
+- `docs/reference/contracts/lens_contract.md`
+- `docs/reference/contracts/refusal_contract.md`

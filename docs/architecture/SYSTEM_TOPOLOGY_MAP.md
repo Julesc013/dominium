@@ -46,9 +46,9 @@ Version: 1.0.0
 - Stable deterministic fingerprint from canonical content (excluding run-meta fields).
 
 ## Artifacts
-- `docs/audit/TOPOLOGY_MAP.json`
-- `docs/audit/TOPOLOGY_MAP.md`
-- `docs/audit/TOPOLOGY_MAP.json` must remain within the repository-host budget (`99 MiB` canonical JSON including trailing newline).
+- `docs/archive/audit/TOPOLOGY_MAP.json`
+- `docs/archive/audit/TOPOLOGY_MAP.md`
+- `docs/archive/audit/TOPOLOGY_MAP.json` must remain within the repository-host budget (`99 MiB` canonical JSON including trailing newline).
 - The topology generator must refuse oversize output rather than emitting a push-blocking artifact.
 
 ## Governance Use

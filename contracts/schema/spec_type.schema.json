@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic SPEC-1 spec type declaration.",
   "x-doc-ref": [
-    "docs/specs/SPECSHEET_CONSTITUTION.md",
-    "docs/audit/SPECSHEET_BASELINE.md"
+    "docs/reference/specs/SPECSHEET_CONSTITUTION.md",
+    "docs/archive/audit/SPECSHEET_BASELINE.md"
   ],
   "type": "object",
   "required": [

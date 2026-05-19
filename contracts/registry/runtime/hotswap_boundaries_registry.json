@@ -115,8 +115,8 @@
     "contracts/registry/release_channel_registry.json",
     "contracts/registry/target_matrix_registry.json",
     "contracts/registry/trust_root_registry.json",
-    "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-    "docs/blueprint/MANUAL_REVIEW_GATES.md"
+    "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+    "docs/archive/blueprint/MANUAL_REVIEW_GATES.md"
   ],
   "hotswap_subject_classes": [
     {

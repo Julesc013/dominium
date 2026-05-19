@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic MOB-5 meso occupancy row for mobility edge capacity usage.",
   "x-doc-ref": [
-    "docs/mobility/MESO_TRAFFIC_MODEL.md",
-    "docs/audit/MESO_TRAFFIC_BASELINE.md"
+    "docs/domains/mobility/MESO_TRAFFIC_MODEL.md",
+    "docs/archive/audit/MESO_TRAFFIC_BASELINE.md"
   ],
   "type": "object",
   "required": [

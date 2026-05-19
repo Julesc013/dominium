@@ -32,7 +32,7 @@ INSTALL_DISCOVERY_ENGINE_PATH = "runtime/package/install_discovery_engine.py"
 INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schema/install/install_registry.schema"
 INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
-INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"
+INSTALL_DISCOVERY_BASELINE_PATH = "docs/archive/audit/INSTALL_DISCOVERY_BASELINE.md"
 INSTALL_DISCOVERY_REPORT_PATH = "archive/generated/audit/install_discovery_report.json"
 
 DISCOVERY_ORDER = (

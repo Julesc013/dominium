@@ -24,7 +24,7 @@ DEFAULT_RELEASE_TAG = "v0.0.0-{}".format(DEFAULT_RELEASE_CHANNEL)
 DEFAULT_PLATFORM = DEFAULT_PLATFORM_TAG
 DEFAULT_BUNDLE_REL = os.path.join(DEFAULT_OUTPUT_ROOT, DEFAULT_RELEASE_TAG, DEFAULT_PLATFORM, "dominium")
 DIST_VERIFY_RULES_PATH = "docs/release/DIST_VERIFICATION_RULES.md"
-DIST2_FINAL_DOC_PATH = "docs/audit/DIST2_FINAL.md"
+DIST2_FINAL_DOC_PATH = "docs/archive/audit/DIST2_FINAL.md"
 RULE_VERIFY = "INV-DIST-VERIFY-MUST-PASS"
 RULE_ABSOLUTE_PATHS = "INV-NO-ABSOLUTE-PATHS-IN-DIST"
 RULE_NO_XSTACK = "INV-NO-XSTACK-IN-DIST"
@@ -149,7 +149,7 @@ def _report_json_rel(platform_tag: str) -> str:
 
 
 def _report_doc_rel(platform_tag: str) -> str:
-    return "docs/audit/DIST_VERIFY_{}.md".format(_platform_slug(platform_tag))
+    return "docs/archive/audit/DIST_VERIFY_{}.md".format(_platform_slug(platform_tag))
 
 
 def _write_text(path: str, text: str) -> str:

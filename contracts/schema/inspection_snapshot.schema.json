@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic derived inspection snapshot artifact.",
   "x-doc-ref": [
-    "docs/materials/INSPECTION_SYSTEM.md"
+    "docs/domains/materials/INSPECTION_SYSTEM.md"
   ],
   "type": "object",
   "required": [

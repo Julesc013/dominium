@@ -49,7 +49,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REQUIRE_QUARANTINE_FOR_SAFE_MODE_AND_EXPLICIT_FLAGS_FOR_AGGRESSIVE_DELETION",
                 related_invariants=[RULE_POLICY],
-                related_paths=[rel_path or "runtime/storage/gc_engine.py", "docs/lib/STORE_INTEGRITY_AND_GC.md"],
+                related_paths=[rel_path or "runtime/storage/gc_engine.py", "docs/runtime/storage/STORE_INTEGRITY_AND_GC.md"],
             )
         )
     return findings

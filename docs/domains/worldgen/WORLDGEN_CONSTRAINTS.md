@@ -112,4 +112,4 @@ It does not change simulation primitives and does not mutate runtime state direc
 - `schemas/worldgen_constraints.schema.json`
 - `schemas/worldgen_search_plan.schema.json`
 - `schemas/worldgen_constraints_registry.schema.json`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`

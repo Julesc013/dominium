@@ -99,4 +99,4 @@ No runtime code branching is permitted for per-pack policy behavior.
 - `docs/architecture/budget_policy.md`
 - `docs/architecture/fidelity_policy.md`
 - `docs/architecture/camera_and_navigation.md`
-- `docs/contracts/refusal_contract.md`
+- `docs/reference/contracts/refusal_contract.md`

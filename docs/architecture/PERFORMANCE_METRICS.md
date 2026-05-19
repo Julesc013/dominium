@@ -63,4 +63,4 @@ The following metric keys are mandatory in PERF-1 fixture outputs:
 - `docs/architecture/CONSTANT_COST_GUARANTEE.md`
 - `docs/architecture/SCALING_MODEL.md`
 - `docs/architecture/BUDGET_POLICY.md`
-- `docs/policies/PERF_BUDGETS.md`
+- `docs/governance/policies/PERF_BUDGETS.md`

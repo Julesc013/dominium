@@ -160,7 +160,7 @@ validation_expectations = ["data parse", "domain contract reference review"]
 [slots.human_docs]
 id = "human_docs"
 target = "docs/"
-examples = ["docs/repo/", "docs/aide/", "docs/domains/"]
+examples = ["docs/repo/", "docs/development/aide/", "docs/domains/"]
 must_not_contain = ["source authority except named doctrine files", "generated output without provenance"]
 validation_expectations = ["docs sanity", "authority-order review when doctrine-adjacent"]
 

@@ -253,7 +253,7 @@ def build_execution_plan(
                 "node_id": "repox.base",
                 "runner_id": "repox_runner",
                 "command": ["python", "scripts/ci/check_repox_rules.py", "--repo-root", "{repo_root}", "--profile", "{profile}"],
-                "expected_artifacts": runner_metadata("repox_runner").get("produces") or ["docs/audit/proof_manifest.json"],
+                "expected_artifacts": runner_metadata("repox_runner").get("produces") or ["docs/archive/audit/proof_manifest.json"],
                 "parallelizable": False,
                 "depends_on": [],
             }

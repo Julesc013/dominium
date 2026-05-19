@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Canonical controller-to-target binding contract.",
   "x-doc-ref": [
-    "docs/embodiment/CONTROL_SUBSTRATE_DOCTRINE.md",
-    "docs/contracts/refusal_contract.md"
+    "docs/domains/embodiment/CONTROL_SUBSTRATE_DOCTRINE.md",
+    "docs/reference/contracts/refusal_contract.md"
   ],
   "type": "object",
   "required": [

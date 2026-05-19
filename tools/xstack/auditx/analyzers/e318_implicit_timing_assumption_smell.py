@@ -12,7 +12,7 @@ ANALYZER_ID = "E318_IMPLICIT_TIMING_ASSUMPTION_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e318_implicit_timing_assumption_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/TIMING_AND_OSCILLATION_MODEL.md",
+    "docs/domains/logic/TIMING_AND_OSCILLATION_MODEL.md",
     "game/domain/logic/timing/",
     "game/domain/logic/eval/",
     "tools/domain/logic/tool_replay_timing_window.py",
@@ -59,7 +59,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    doc_rel = "docs/logic/TIMING_AND_OSCILLATION_MODEL.md"
+    doc_rel = "docs/domains/logic/TIMING_AND_OSCILLATION_MODEL.md"
     doc_text = _read_text(repo_root, doc_rel).lower()
     for token in ("delay.temporal_domain", "no global free-running clock", "watchdog", "synchronizer"):
         if token in doc_text:

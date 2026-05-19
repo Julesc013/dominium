@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: Σ-2, Σ-3, Σ-4, Σ-5
 Canonical Source: `AGENTS.md`
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `docs/runtime/COMPONENT_MODEL.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/agents/AGENT_MIRROR_POLICY.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `docs/runtime/COMPONENT_MODEL.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/game/agents/AGENT_MIRROR_POLICY.md`
 
 # Dominium Claude Mirror
 
@@ -78,4 +78,4 @@ At minimum:
 - run `git diff --check`
 - report run and unrun checks honestly
 
-For mirror precedence, maintenance, and conflict handling, use `docs/agents/AGENT_MIRROR_POLICY.md`.
+For mirror precedence, maintenance, and conflict handling, use `docs/game/agents/AGENT_MIRROR_POLICY.md`.

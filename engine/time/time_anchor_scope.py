@@ -20,8 +20,8 @@ SCOPED_TIME_ANCHOR_PATHS: tuple[str, ...] = (
 )
 
 REQUIRED_TIME_ANCHOR_FILES: tuple[str, ...] = (
-    "docs/time/TIME_ANCHOR_MODEL.md",
-    "docs/audit/TIME_ANCHOR0_RETRO_AUDIT.md",
+    "docs/engine/time/TIME_ANCHOR_MODEL.md",
+    "docs/archive/audit/TIME_ANCHOR0_RETRO_AUDIT.md",
     "schema/time/tick_t.schema",
     "schema/time/epoch_anchor_record.schema",
     "schemas/tick_t.schema.json",

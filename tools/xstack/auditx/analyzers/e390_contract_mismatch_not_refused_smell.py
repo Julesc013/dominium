@@ -25,7 +25,7 @@ REQUIRED_FILE_TOKENS = {
         '"contract_bundle_hash"',
         '"semantic_contract_registry_hash"',
     ),
-    "docs/meta/UNIVERSE_CONTRACT_BUNDLE.md": (
+    "docs/governance/meta/UNIVERSE_CONTRACT_BUNDLE.md": (
         "refusal.contract.mismatch",
         "Run the explicit CompatX migration tool",
     ),

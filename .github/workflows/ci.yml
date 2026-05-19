@@ -43,7 +43,7 @@ jobs:
           name: ci-dev-artifacts
           path: |
             data/audit/ci_run_report.json
-            docs/audit/CI_RUN_REPORT.md
+            docs/archive/audit/CI_RUN_REPORT.md
             tools/xstack/out/fast/latest
 
   ci-verify:
@@ -63,7 +63,7 @@ jobs:
           name: ci-verify-artifacts
           path: |
             data/audit/ci_run_report.json
-            docs/audit/CI_RUN_REPORT.md
+            docs/archive/audit/CI_RUN_REPORT.md
             tools/xstack/out/strict/latest
 
   ci-dist:
@@ -84,7 +84,7 @@ jobs:
           name: ci-dist-artifacts
           path: |
             data/audit/ci_run_report.json
-            docs/audit/CI_RUN_REPORT.md
+            docs/archive/audit/CI_RUN_REPORT.md
             tools/xstack/out/full/latest
 
   projection-sanity:

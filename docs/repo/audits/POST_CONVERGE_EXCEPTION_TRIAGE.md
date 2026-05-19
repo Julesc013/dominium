@@ -65,7 +65,7 @@ Superseded By: none
 | `repo_root` | `repo` | directory | high | contracts/repo, docs/repo, release, or tools split | inspect control-plane authority carefully | Do not add new layout authority here. |
 | `safety_root` | `safety` | directory | high | contracts/safety, docs/safety, tools, or runtime policy | protected review required | Safety meaning must not drift. |
 | `security_root` | `security` | directory | high | contracts/security, docs/security, release, tools, or runtime policy | protected review required | Trust/security semantics require review. |
-| `specs_root` | `specs` | directory | high | contracts/specs, docs/specs, or semantic spec review | protected semantic review required | Reality specs retain established authority. |
+| `specs_root` | `specs` | directory | high | contracts/specs, docs/reference/specs, or semantic spec review | protected semantic review required | Reality specs retain established authority. |
 | `updates_root` | `updates` | directory | high | release/update, contracts/distribution, or ops transaction review | inspect update identity and trust semantics | Do not change update identity. |
 
 ### Batch 5 - Core / Control / Net Ownership Review

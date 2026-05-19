@@ -7,10 +7,10 @@ import sys
 
 
 CANONICAL_ARTIFACTS = (
-    "docs/audit/auditx/FINDINGS.json",
-    "docs/audit/auditx/INVARIANT_MAP.json",
-    "docs/audit/auditx/PROMOTION_CANDIDATES.json",
-    "docs/audit/auditx/TRENDS.json",
+    "docs/archive/audit/auditx/FINDINGS.json",
+    "docs/archive/audit/auditx/INVARIANT_MAP.json",
+    "docs/archive/audit/auditx/PROMOTION_CANDIDATES.json",
+    "docs/archive/audit/auditx/TRENDS.json",
 )
 
 

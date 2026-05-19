@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Semantic ActionSurface type definition.",
   "x-doc-ref": [
-    "docs/interaction/ACTION_SURFACE_MODEL.md"
+    "docs/game/interaction/ACTION_SURFACE_MODEL.md"
   ],
   "type": "object",
   "required": [

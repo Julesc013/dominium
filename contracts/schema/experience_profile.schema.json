@@ -6,7 +6,7 @@
   "x-doc-ref": [
     "docs/canon/constitution_v1.md §3 A4/A7",
     "docs/canon/glossary_v1.md ExperienceProfile",
-    "docs/contracts/experience_profile.md"
+    "docs/reference/contracts/experience_profile.md"
   ],
   "type": "object",
   "required": [

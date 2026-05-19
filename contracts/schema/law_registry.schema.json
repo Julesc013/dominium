@@ -5,7 +5,7 @@
   "description": "Derived deterministic law registry output.",
   "x-doc-ref": [
     "docs/architecture/registry_compile.md",
-    "docs/contracts/law_profile.md"
+    "docs/reference/contracts/law_profile.md"
   ],
   "type": "object",
   "required": [

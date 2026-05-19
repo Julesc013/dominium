@@ -11,7 +11,7 @@ ANALYZER_ID = "E369_UI_TRUTH_LEAK_SMELL"
 VIEWER_SHELL_REL = "runtime/ui/client/viewer_shell.py"
 MAP_VIEWS_REL = "runtime/ui/client/map_views.py"
 INSPECT_PANELS_REL = "runtime/ui/client/inspect_panels.py"
-DOC_REL = "docs/ux/MVP_VIEWER_SHELL.md"
+DOC_REL = "docs/runtime/ui/ux/MVP_VIEWER_SHELL.md"
 REQUIRED_TOKENS = {
     VIEWER_SHELL_REL: (
         '"consumes_perceived_model_only": True',

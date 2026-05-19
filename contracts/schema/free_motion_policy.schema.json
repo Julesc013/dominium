@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic MOB-7 micro free-motion policy row.",
   "x-doc-ref": [
-    "docs/mobility/MICRO_FREE_MOTION.md",
-    "docs/audit/MICRO_FREE_MOTION_BASELINE.md"
+    "docs/domains/mobility/MICRO_FREE_MOTION.md",
+    "docs/archive/audit/MICRO_FREE_MOTION_BASELINE.md"
   ],
   "type": "object",
   "required": [

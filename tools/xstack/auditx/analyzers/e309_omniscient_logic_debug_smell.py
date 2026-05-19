@@ -13,7 +13,7 @@ ANALYZER_ID = "E309_OMNISCIENT_LOGIC_DEBUG_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e309_omniscient_logic_debug_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/",
+    "docs/domains/logic/",
     "contracts/registry/instrument_type_registry.json",
     "game/domain/logic/",
     "tools/domain/logic/",
@@ -68,7 +68,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    constitution_rel = "docs/logic/LOGIC_CONSTITUTION.md"
+    constitution_rel = "docs/domains/logic/LOGIC_CONSTITUTION.md"
     constitution_text = _read_text(repo_root, constitution_rel).lower()
     for token in ("instrumentation surfaces",):
         if token in constitution_text:

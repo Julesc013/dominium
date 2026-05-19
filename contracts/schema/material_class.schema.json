@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Canonical material class declaration with dimensional properties.",
   "x-doc-ref": [
-    "docs/materials/MATERIAL_TAXONOMY.md",
-    "docs/materials/UNITS_AND_DIMENSIONS.md"
+    "docs/domains/materials/MATERIAL_TAXONOMY.md",
+    "docs/domains/materials/UNITS_AND_DIMENSIONS.md"
   ],
   "type": "object",
   "required": [

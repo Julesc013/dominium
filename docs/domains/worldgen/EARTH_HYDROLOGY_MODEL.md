@@ -14,7 +14,7 @@ It is subordinate to:
 
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
-- `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`
+- `docs/reference/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`
 - `docs/domains/worldgen/PLANET_SURFACE_MACRO_MODEL.md`
 - `docs/domains/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md`
 

@@ -71,10 +71,10 @@ Legacy aggregate wrappers are now convergence shims rather than alternate valida
 
 For a given profile `<P>` the pipeline writes:
 
-- [VALIDATION_REPORT_FAST.md](/d:/Projects/Dominium/dominium/docs/audit/VALIDATION_REPORT_FAST.md) or the matching profile variant
+- [VALIDATION_REPORT_FAST.md](/d:/Projects/Dominium/dominium/docs/archive/audit/VALIDATION_REPORT_FAST.md) or the matching profile variant
 - [validation_report_FAST.json](/d:/Projects/Dominium/dominium/archive/generated/audit/validation_report_FAST.json) or the matching profile variant
-- [VALIDATION_INVENTORY.md](/d:/Projects/Dominium/dominium/docs/audit/VALIDATION_INVENTORY.md)
-- [VALIDATION_UNIFY_FINAL.md](/d:/Projects/Dominium/dominium/docs/audit/VALIDATION_UNIFY_FINAL.md)
+- [VALIDATION_INVENTORY.md](/d:/Projects/Dominium/dominium/docs/archive/audit/VALIDATION_INVENTORY.md)
+- [VALIDATION_UNIFY_FINAL.md](/d:/Projects/Dominium/dominium/docs/archive/audit/VALIDATION_UNIFY_FINAL.md)
 
 ## Invariants
 

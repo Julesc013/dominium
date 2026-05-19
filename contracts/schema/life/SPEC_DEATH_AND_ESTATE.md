@@ -193,7 +193,7 @@ Implementations MUST provide tests for:
 - collapse/refine count and provenance hash preservation
 
 ## Integration points (mandatory)
-- Provenance: `docs/specs/SPEC_PROVENANCE.md`
-- Ledger: `docs/specs/SPEC_LEDGER.md`
-- Time scheduling: `docs/specs/SPEC_SCHEDULING.md`
-- Epistemic model: `docs/specs/SPEC_INFORMATION_MODEL.md` and `docs/specs/SPEC_COMMUNICATION.md`
+- Provenance: `docs/reference/specs/SPEC_PROVENANCE.md`
+- Ledger: `docs/reference/specs/SPEC_LEDGER.md`
+- Time scheduling: `docs/reference/specs/SPEC_SCHEDULING.md`
+- Epistemic model: `docs/reference/specs/SPEC_INFORMATION_MODEL.md` and `docs/reference/specs/SPEC_COMMUNICATION.md`

@@ -5,8 +5,8 @@
   "description": "Immutable semantic contract pins for a universe lineage.",
   "x-doc-ref": [
     "docs/canon/constitution_v1.md §3 A1/A6",
-    "docs/contracts/SEMANTIC_CONTRACT_MODEL.md",
-    "docs/universe/UNIVERSE_IDENTITY_STATE.md"
+    "docs/reference/contracts/SEMANTIC_CONTRACT_MODEL.md",
+    "docs/domains/universe/UNIVERSE_IDENTITY_STATE.md"
   ],
   "type": "object",
   "required": [

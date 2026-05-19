@@ -11,7 +11,7 @@ ANALYZER_ID = "E322_UNBOUNDED_TRACE_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e322_unbounded_trace_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/DEBUG_AND_INSTRUMENTATION.md",
+    "docs/domains/logic/DEBUG_AND_INSTRUMENTATION.md",
     "contracts/schema/logic/debug_trace_request.schema",
     "contracts/schema/logic/debug_trace_artifact.schema",
     "contracts/schema/logic/debug_sampling_policy.schema",
@@ -42,7 +42,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    doc_rel = "docs/logic/DEBUG_AND_INSTRUMENTATION.md"
+    doc_rel = "docs/domains/logic/DEBUG_AND_INSTRUMENTATION.md"
     doc_text = _read_text(repo_root, doc_rel).lower()
     for token in ("bounded length", "bounded sampling rate", "deterministic sampling strategy", "observer effect"):
         if token in doc_text:

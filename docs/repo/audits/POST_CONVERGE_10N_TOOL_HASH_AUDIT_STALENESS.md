@@ -23,7 +23,7 @@ This was focused tool hash and audit evidence staleness remediation. It applied 
 
 POST-CONVERGE-10M left focused RepoX at 23 failures and 5 warnings. The remaining targetable 10N failures were:
 
-- `INV-IDENTITY-FINGERPRINT`: stale `docs/audit/identity_fingerprint.json`.
+- `INV-IDENTITY-FINGERPRINT`: stale `docs/archive/audit/identity_fingerprint.json`.
 - `INV-TOOL-VERSION-MISMATCH`: stale SecureX integrity manifest hashes for `tools/xstack/compatx/compatx.py` and `tools/xstack/securex/securex.py`.
 - `INV-AUDITX-OUTPUT-STALE`: warning that AuditX findings lag HEAD by 199 commits.
 - four glossary warnings in generated or historical audit evidence.
@@ -43,15 +43,15 @@ POST-CONVERGE-10M left focused RepoX at 23 failures and 5 warnings. The remainin
 | --- | ---: | --- | --- |
 | Stale identity fingerprint | 1 | `stale_audit_manifest_safe_refresh` | Fixed with the canonical identity fingerprint generator. |
 | Stale SecureX tool hashes | 2 | `stale_tool_hash_safe_refresh` | Fixed with the canonical SecureX integrity manifest generator. |
-| RepoX cache skipped docs/audit evidence dependencies | 0 | `rule_false_positive` | Fixed by adding explicit evidence dependencies for cached groups that read docs/audit artifacts. |
+| RepoX cache skipped docs/archive/audit evidence dependencies | 0 | `rule_false_positive` | Fixed by adding explicit evidence dependencies for cached groups that read docs/archive/audit artifacts. |
 | AuditX output stale warning | 1 warning | `unknown` | Deferred; broad AuditX output regeneration is out of scope. |
 | Audit/remediation glossary warnings | 4 warnings | `generated_tracked_output_stale` | Deferred; historical/generated evidence was preserved. |
 
 ## Changes Made
 
-- Refreshed `docs/audit/identity_fingerprint.json` with `tools/validators/ci/tool_identity_fingerprint.py`.
-- Refreshed `docs/audit/security/INTEGRITY_MANIFEST.json` with `tools/xstack/securex/securex.py integrity-manifest`.
-- Updated `scripts/ci/check_repox_rules.py` so `repox.docs.canon` and `repox.schema.compat` cache keys explicitly include tracked docs/audit evidence files they read.
+- Refreshed `docs/archive/audit/identity_fingerprint.json` with `tools/validators/ci/tool_identity_fingerprint.py`.
+- Refreshed `docs/archive/audit/security/INTEGRITY_MANIFEST.json` with `tools/xstack/securex/securex.py integrity-manifest`.
+- Updated `scripts/ci/check_repox_rules.py` so `repox.docs.canon` and `repox.schema.compat` cache keys explicitly include tracked docs/archive/audit evidence files they read.
 - Refreshed tracked RepoX proof/profile evidence after the focused run.
 - Added POST-CONVERGE-10N AIDE reports and audit evidence.
 - Updated post-converge status docs and latest AIDE packets.

@@ -43,15 +43,15 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 PROFILE_DIR_REL = "tools/xstack/ci/profiles"
 GATE_DEFINITIONS_REL = "archive/generated/xstack/gate_definitions.json"
 CI_REPORT_JSON_REL = "archive/generated/audit/ci_run_report.json"
-CI_REPORT_MD_REL = "docs/audit/CI_RUN_REPORT.md"
+CI_REPORT_MD_REL = "docs/archive/audit/CI_RUN_REPORT.md"
 WORKFLOW_REL = ".github/workflows/ci.yml"
 
 ENTRYPOINT_REL = "tools/xstack/ci/xstack_ci_entrypoint"
 ENTRYPOINT_PY_REL = "tools/xstack/ci/xstack_ci_entrypoint.py"
 ENTRYPOINT_PS1_REL = "tools/xstack/ci/xstack_ci_entrypoint.ps1"
 
-CI_GUARDRAILS_DOC_REL = "docs/xstack/CI_GUARDRAILS.md"
-ARCH_DRIFT_POLICY_DOC_REL = "docs/xstack/ARCH_DRIFT_POLICY.md"
+CI_GUARDRAILS_DOC_REL = "docs/development/xstack/CI_GUARDRAILS.md"
+ARCH_DRIFT_POLICY_DOC_REL = "docs/development/xstack/ARCH_DRIFT_POLICY.md"
 
 REPOX_RULE_IDS = (
     "INV-NO-SRC-DIRECTORY",
@@ -230,7 +230,7 @@ def ensure_xi7_inputs(repo_root: str) -> None:
         "archive/generated/architecture/architecture_graph.v1.json",
         "archive/generated/architecture/module_boundary_rules.v1.json",
         "contracts/registry/architecture/single_engine_registry.json",
-        "docs/audit/XI_6_FINAL.md",
+        "docs/archive/audit/XI_6_FINAL.md",
         "tools/xstack/repox/check.py",
         "tools/xstack/auditx/auditx.py",
         "tools/xstack/testx/runner.py",
@@ -388,7 +388,7 @@ def build_ci_guard_violations(repo_root: str) -> list[dict[str, object]]:
                 "code": "docs_missing_local_fast_command",
                 "file_path": CI_GUARDRAILS_DOC_REL,
                 "message": "CI guard docs must show the local FAST entrypoint command",
-                "remediation": "document tools/xstack/ci/xstack_ci_entrypoint --profile FAST in docs/xstack/CI_GUARDRAILS.md",
+                "remediation": "document tools/xstack/ci/xstack_ci_entrypoint --profile FAST in docs/development/xstack/CI_GUARDRAILS.md",
             }
         )
 

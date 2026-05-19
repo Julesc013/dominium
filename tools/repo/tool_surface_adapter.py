@@ -16,8 +16,8 @@ from meta_extensions_engine import normalize_extensions_tree
 
 
 DOM_PRODUCT_ID = "tool.attach_console_stub"
-TOOL_SURFACE_MAP_PATH = "docs/audit/TOOL_SURFACE_MAP.md"
-TOOL_SURFACE_FINAL_PATH = "docs/audit/TOOL_SURFACE_FINAL.md"
+TOOL_SURFACE_MAP_PATH = "docs/archive/audit/TOOL_SURFACE_MAP.md"
+TOOL_SURFACE_FINAL_PATH = "docs/archive/audit/TOOL_SURFACE_FINAL.md"
 TOOL_REFERENCE_PATH = "docs/runtime/shell/TOOL_REFERENCE.md"
 REPO_INVENTORY_PATH = "archive/generated/audit/repo_inventory.json"
 TOOL_ADAPTER_OUTPUT_SCHEMA_ID = "dominium.schema.appshell.output.tool_adapter_result"

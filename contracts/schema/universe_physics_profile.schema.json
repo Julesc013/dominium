@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical immutable universe physics profile contract.",
   "x-doc-ref": [
-    "docs/reality/UNIVERSE_PHYSICS_PROFILE.md",
+    "docs/domains/reality/UNIVERSE_PHYSICS_PROFILE.md",
     "docs/canon/constitution_v1.md"
   ],
   "type": "object",

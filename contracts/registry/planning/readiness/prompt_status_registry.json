@@ -148,9 +148,9 @@
       "status": "foundation_ready",
       "rationale": "The repo already contains mirrored advisory instruction layers and XStack-related guidance, but they are fragmented rather than harmonized.",
       "evidence_refs": [
-        "docs/agents",
+        "docs/game/agents",
         "docs/governance",
-        "docs/xstack",
+        "docs/development/xstack",
         "contracts/planning/reconciliation/subsystem_classification.json"
       ],
       "next_action_implication": "Merge and normalize the existing mirror surfaces immediately after initial Λ framing.",
@@ -206,7 +206,7 @@
       "rationale": "Natural-language binding is high leverage, but it should not freeze before Λ stabilizes capability surfaces, semantic bridges, and acceptance boundaries.",
       "evidence_refs": [
         "tools/xstack/controlx/controlx.py",
-        "docs/agents/AGENT_PLANNING.md",
+        "docs/game/agents/AGENT_PLANNING.md",
         "contracts/planning/reconciliation/assumption_invalidations.json"
       ],
       "next_action_implication": "Define the bridge only after Λ core vocabulary lands.",
@@ -226,7 +226,7 @@
       "rationale": "The XStack substrate is strong, but a canonical task catalog should not lock task classes before Λ freezes the semantic and capability vocabulary they target.",
       "evidence_refs": [
         "tools/xstack",
-        "docs/blueprint/FINAL_PROMPT_INVENTORY.md",
+        "docs/archive/blueprint/FINAL_PROMPT_INVENTORY.md",
         "contracts/planning/reconciliation/assumption_invalidations.json"
       ],
       "next_action_implication": "Reuse the live XStack tooling, but delay the final catalog until after Λ.",
@@ -265,7 +265,7 @@
       "evidence_refs": [
         "contracts/planning/reconciliation/subsystem_classification.json",
         "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
-        "docs/blueprint/FOUNDATION_PHASES.md"
+        "docs/archive/blueprint/FOUNDATION_PHASES.md"
       ],
       "next_action_implication": "Derive the component model from the live runtime substrate only after Λ core semantics are pinned.",
       "depends_on": [
@@ -285,8 +285,8 @@
       "evidence_refs": [
         "apps/client/main_client.c",
         "server/tests/shard_api_tests.cpp",
-        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "next_action_implication": "Keep this at design-gate level only until lifecycle, snapshot, proof, and Λ semantics are frozen.",
       "depends_on": [
@@ -324,8 +324,8 @@
       "rationale": "Render backends and client renderers exist, but the explicit framegraph and render-device foundations called for in the blueprint are not yet present.",
       "evidence_refs": [
         "client/render",
-        "docs/blueprint/FOUNDATION_PHASES.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_PHASES.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "next_action_implication": "Do not execute render replacement work until the missing abstractions are mapped and introduced deliberately.",
       "depends_on": [
@@ -342,8 +342,8 @@
       "status": "dangerous",
       "rationale": "Hotswap and replacement work would freeze the wrong boundaries before lifecycle, snapshot, component, and semantic contracts are stable.",
       "evidence_refs": [
-        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/SERIES_EXECUTION_STRATEGY.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
         "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
       ],
       "next_action_implication": "Treat hotswap only as a late boundary-design concern, not an early runtime task.",
@@ -362,8 +362,8 @@
       "status": "blocked",
       "rationale": "No explicit lifecycle-manager surface is present in the live repo, and the blueprint treats it as a required new foundation.",
       "evidence_refs": [
-        "docs/blueprint/FOUNDATION_PHASES.md",
-        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
+        "docs/archive/blueprint/FOUNDATION_PHASES.md",
+        "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
         "contracts/planning/reconciliation/subsystem_classification.json"
       ],
       "next_action_implication": "Map insertion points first; do not imply that lifecycle control already exists as a frozen subsystem.",
@@ -381,9 +381,9 @@
       "status": "blocked",
       "rationale": "The repo does not expose an explicit module-loader foundation yet, and the blueprint stop conditions still treat loader insertion points as unresolved.",
       "evidence_refs": [
-        "docs/blueprint/FOUNDATION_PHASES.md",
-        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
-        "docs/blueprint/FINAL_PROMPT_INVENTORY.md"
+        "docs/archive/blueprint/FOUNDATION_PHASES.md",
+        "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
+        "docs/archive/blueprint/FINAL_PROMPT_INVENTORY.md"
       ],
       "next_action_implication": "Leave this blocked until runtime boundaries are mapped against the live substrate.",
       "depends_on": [
@@ -477,7 +477,7 @@
       "evidence_refs": [
         "server/persistence/dom_checkpointing.cpp",
         "server/persistence/dispute_bundle.cpp",
-        "docs/blueprint/FINAL_PROMPT_INVENTORY.md"
+        "docs/archive/blueprint/FINAL_PROMPT_INVENTORY.md"
       ],
       "next_action_implication": "Do not treat schemas and checkpoint code as proof that the service boundary already exists.",
       "depends_on": [
@@ -494,7 +494,7 @@
       "status": "waits_for_lambda",
       "rationale": "Export, import, migration, checkpoint, and replay surfaces already exist, but final state boundaries should inherit Λ semantics instead of guessing what counts as lawful externalized state.",
       "evidence_refs": [
-        "docs/specs/launcher/CLI.md",
+        "docs/reference/specs/launcher/CLI.md",
         "tools/validators/compatibility/migration_lifecycle.py",
         "server/persistence/dom_checkpointing.cpp"
       ],
@@ -570,7 +570,7 @@
       "evidence_refs": [
         "tools/release/update_resolver.py",
         "release/updates/stable.json",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "next_action_implication": "Consolidate downgrade and rollback policy from existing release machinery.",
       "depends_on": [
@@ -682,7 +682,7 @@
         "contracts/repo/release_policy.toml",
         "schema/release/build_id.schema",
         "schema/identity/artifact_identity.schema",
-        "docs/audit/RELEASE0_RETRO_AUDIT.md"
+        "docs/archive/audit/RELEASE0_RETRO_AUDIT.md"
       ],
       "next_action_implication": "Author the missing release contract profile artifacts as consolidation over existing identity and release surfaces.",
       "depends_on": [
@@ -756,7 +756,7 @@
       "evidence_refs": [
         "schema/release/build_id.schema",
         "schema/identity/artifact_identity.schema",
-        "docs/specs/SPEC_IDENTITY.md",
+        "docs/reference/specs/SPEC_IDENTITY.md",
         "contracts/repo/release_policy.toml"
       ],
       "next_action_implication": "Write the constitution as a consolidation of existing explicit identity surfaces, not as a fresh invention.",
@@ -773,9 +773,9 @@
       "status": "dangerous",
       "rationale": "Cluster-of-clusters, live schema evolution by default, and restartless core replacement remain explicitly unrealistic or speculative in the current blueprint and repo state.",
       "evidence_refs": [
-        "docs/blueprint/CAPABILITY_LADDER.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-        "docs/blueprint/PIPE_DREAMS_MATRIX.md"
+        "docs/archive/blueprint/CAPABILITY_LADDER.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/PIPE_DREAMS_MATRIX.md"
       ],
       "next_action_implication": "Keep these out of near-term execution planning.",
       "depends_on": [
@@ -793,7 +793,7 @@
       "evidence_refs": [
         "tools/validators/compatibility/migration_lifecycle.py",
         "server/persistence/dom_checkpointing.cpp",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "next_action_implication": "Do not schedule live save migration before Φ and Υ foundations land.",
       "depends_on": [
@@ -812,8 +812,8 @@
       "rationale": "Save and snapshot primitives exist, but non-blocking capture still depends on lifecycle control and explicit snapshot-service boundaries.",
       "evidence_refs": [
         "server/persistence",
-        "docs/blueprint/FINAL_PROMPT_INVENTORY.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FINAL_PROMPT_INVENTORY.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "next_action_implication": "Leave this blocked until the missing Φ foundations are real.",
       "depends_on": [
@@ -830,9 +830,9 @@
       "status": "blocked",
       "rationale": "The blueprint still classifies live module reload as requiring new foundation, and the repo still lacks the module loader and state-export boundaries it depends on.",
       "evidence_refs": [
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-        "docs/blueprint/CAPABILITY_LADDER.md",
-        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md",
+        "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
       ],
       "next_action_implication": "Keep this behind Φ module-loader and state-externalization work.",
       "depends_on": [
@@ -849,8 +849,8 @@
       "status": "dangerous",
       "rationale": "The repo has useful runtime and rollback precursors, but hot-swappable subsystem work would still outrun lifecycle, state-export, render, and cutover foundations.",
       "evidence_refs": [
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-        "docs/blueprint/CAPABILITY_LADDER.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md",
         "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
       ],
       "next_action_implication": "Treat replaceability as a late-stage governed outcome, not a near-term implementation target.",
@@ -871,7 +871,7 @@
       "evidence_refs": [
         "tools/release/update_resolver.py",
         "release/updates/stable.json",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "next_action_implication": "Treat early Ζ rollout work as an extension of existing rollback policy, not a blank-slate live-ops project.",
       "depends_on": [
@@ -889,8 +889,8 @@
       "rationale": "Supervisor and shell surfaces exist, but runtime-safe service restart semantics would still be guessed without a frozen lifecycle manager and cutover policy.",
       "evidence_refs": [
         "appshell/supervisor",
-        "docs/blueprint/FOUNDATION_PHASES.md",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_PHASES.md",
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "next_action_implication": "Keep restart work downstream of explicit Φ lifecycle and Υ release control work.",
       "depends_on": [
@@ -908,8 +908,8 @@
       "rationale": "The repo has shard and replay precursors, but the blueprint still treats distributed relocation as unrealistic without deterministic replication and lawful authority handoff.",
       "evidence_refs": [
         "server/tests/shard_routing_tests.cpp",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-        "docs/blueprint/CAPABILITY_LADDER.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/archive/blueprint/CAPABILITY_LADDER.md"
       ],
       "next_action_implication": "Do not plan this in detail yet; keep it behind Φ and Υ completion plus explicit human approval.",
       "depends_on": [
@@ -929,7 +929,7 @@
       "evidence_refs": [
         "security/trust",
         "tools/securex",
-        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+        "docs/archive/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
       "next_action_implication": "Keep live trust changes behind later Υ control-plane work.",
       "depends_on": [

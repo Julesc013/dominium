@@ -14,7 +14,7 @@ DSU_ENDIAN_MARKER_LE = 0xFFFE
 DSU_HEADER_SIZE = 20
 
 
-# TLV type ids (locked; see docs/setup/MANIFEST_SCHEMA.md)
+# TLV type ids (locked; see docs/apps/setup/MANIFEST_SCHEMA.md)
 TLV_MANIFEST_ROOT = 0x0001
 TLV_ROOT_VERSION = 0x0002
 TLV_PRODUCT_ID = 0x0010

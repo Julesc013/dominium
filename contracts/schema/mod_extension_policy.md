@@ -26,4 +26,4 @@ Mods are data extensions. They add content and contracts, not engine logic.
 
 ## Integration points
 - Global schema policy: `schema/schema_policy.md`
-- Mod compatibility checks: `docs/ci/CI_ENFORCEMENT_MATRIX.md`
+- Mod compatibility checks: `docs/testing/ci/CI_ENFORCEMENT_MATRIX.md`

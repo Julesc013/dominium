@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic FORM-1 infrastructure formalization lifecycle state row.",
   "x-doc-ref": [
-    "docs/infrastructure/FORMALIZATION_MODEL.md"
+    "docs/domains/infrastructure/FORMALIZATION_MODEL.md"
   ],
   "type": "object",
   "required": [

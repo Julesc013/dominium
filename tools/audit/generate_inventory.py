@@ -19,13 +19,13 @@ def main():
         "setup": "docs/apps/README.md",
         "tools": "docs/development/tools/TOOLING_OVERVIEW.md",
         "libs": "docs/architecture/PROJECT_LIBRARIES.md",
-        "schema": "docs/contracts/schema/SCHEMA_INDEX.md",
-        "data": "docs/pack_format/PACK_MANIFEST.md",
-        "ci": "docs/ci/README.md",
+        "schema": "docs/reference/contracts/schema/SCHEMA_INDEX.md",
+        "data": "docs/distribution/package-format/PACK_MANIFEST.md",
+        "ci": "docs/testing/ci/README.md",
         "build": "docs/build/README.md",
         "dist": "docs/distribution/README.md",
         "updates": "docs/distribution/README.md",
-        "tests": "docs/repox/TESTX_OVERVIEW.md",
+        "tests": "docs/repo/repox/TESTX_OVERVIEW.md",
     }
 
     items = []
@@ -92,8 +92,8 @@ def main():
         "items": items,
     }
 
-    os.makedirs("docs/audit", exist_ok=True)
-    with open("docs/audit/INVENTORY_MACHINE.json", "w", encoding="utf-8") as f:
+    os.makedirs("docs/archive/audit", exist_ok=True)
+    with open("docs/archive/audit/INVENTORY_MACHINE.json", "w", encoding="utf-8") as f:
         json.dump(inventory, f, indent=2, sort_keys=True)
 
 

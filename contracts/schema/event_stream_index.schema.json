@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic ordered event stream index for reenactment and history inspection.",
   "x-doc-ref": [
-    "docs/materials/REENACTMENT_MODEL.md"
+    "docs/domains/materials/REENACTMENT_MODEL.md"
   ],
   "type": "object",
   "required": [

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic GuideGeometry junction type registry output.",
   "x-doc-ref": [
-    "docs/mobility/GUIDE_GEOMETRY.md",
+    "docs/domains/mobility/GUIDE_GEOMETRY.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

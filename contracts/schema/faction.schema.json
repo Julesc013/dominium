@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical deterministic faction assembly record.",
   "x-doc-ref": [
-    "docs/civilisation/FACTIONS_AND_AFFILIATION.md"
+    "docs/domains/civilization/FACTIONS_AND_AFFILIATION.md"
   ],
   "type": "object",
   "required": [

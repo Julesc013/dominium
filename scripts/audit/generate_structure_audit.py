@@ -339,7 +339,7 @@ def write_markdown(path, report):
     lines.append("")
     lines.append("## Inventory Artifact")
     lines.append("")
-    lines.append("- Full per-file inventory is written to `docs/audit/REPO_STRUCTURE_AUDIT.json`.")
+    lines.append("- Full per-file inventory is written to `docs/archive/audit/REPO_STRUCTURE_AUDIT.json`.")
     with open(path, "w", encoding="utf-8", newline="\n") as handle:
         handle.write("\n".join(lines))
         handle.write("\n")
@@ -348,8 +348,8 @@ def write_markdown(path, report):
 def main():
     parser = argparse.ArgumentParser(description="Generate full repository structure audit.")
     parser.add_argument("--repo-root", default=".")
-    parser.add_argument("--out-json", default="docs/audit/REPO_STRUCTURE_AUDIT.json")
-    parser.add_argument("--out-md", default="docs/audit/REPO_STRUCTURE_AUDIT.md")
+    parser.add_argument("--out-json", default="docs/archive/audit/REPO_STRUCTURE_AUDIT.json")
+    parser.add_argument("--out-md", default="docs/archive/audit/REPO_STRUCTURE_AUDIT.md")
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)

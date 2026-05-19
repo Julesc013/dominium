@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic CTRL-8 effect stacking policy declaration.",
   "x-doc-ref": [
-    "docs/audit/EFFECT_SYSTEM_BASELINE.md"
+    "docs/archive/audit/EFFECT_SYSTEM_BASELINE.md"
   ],
   "type": "object",
   "required": [

@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E417_NONDETERMINISTIC_PACK_ORDER_SMELL"
 REQUIRED_TOKENS = {
-    "docs/packs/PACK_VERIFICATION_PIPELINE.md": (
+    "docs/content/packs/PACK_VERIFICATION_PIPELINE.md": (
         "Pack order is canonicalized by `(pack_id, pack_version)`.",
         "All report and lock artifacts use canonical JSON serialization.",
     ),

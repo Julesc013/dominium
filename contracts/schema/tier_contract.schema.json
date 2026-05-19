@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Mandatory deterministic tier contract declaration for subsystem/process families.",
   "x-doc-ref": [
-    "docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md",
+    "docs/governance/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md",
     "docs/canon/constitution_v1.md"
   ],
   "type": "object",

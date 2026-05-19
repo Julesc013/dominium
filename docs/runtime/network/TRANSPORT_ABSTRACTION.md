@@ -18,7 +18,7 @@ Define the pluggable multiplayer transport boundary used by deterministic protoc
 - Protocol payloads are schema-validated and canonical-serialized before transport.
 - Transport timing may change delivery latency but must not change authoritative truth outcomes.
 - Policy selection is data-driven (`policy_id`), never hardcoded mode branches.
-- Refusals are explicit and deterministic (`docs/contracts/refusal_contract.md`).
+- Refusals are explicit and deterministic (`docs/reference/contracts/refusal_contract.md`).
 
 ## Transport Types
 Canonical transport IDs:

@@ -8,11 +8,11 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E445_SMOKE_SUITE_MISSING_SMELL"
 RULE_ID = "INV-MVP-SMOKE-MUST-PASS-BEFORE-RELEASE"
-DOCTRINE_REL = "docs/mvp/MVP_SMOKE_SUITE.md"
+DOCTRINE_REL = "docs/release/mvp/MVP_SMOKE_SUITE.md"
 HASHES_REL = "build/mvp/mvp_smoke_hashes.json"
 REPORT_REL = "build/mvp/mvp_smoke_report.json"
 BASELINE_REL = "tests/fixtures/regression/mvp_smoke_baseline.json"
-FINAL_REL = "docs/audit/MVP_SMOKE_FINAL.md"
+FINAL_REL = "docs/archive/audit/MVP_SMOKE_FINAL.md"
 TEST_RELS = (
     "tools/xstack/testx/tests/test_smoke_scenario_deterministic.py",
     "tools/xstack/testx/tests/test_smoke_harness_passes.py",

@@ -11,7 +11,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 This document freezes the Dominium v0.0.0 procedural Milky Way base model.
 
 It is subordinate to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`,
-`docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`, and the GEO worldgen contract.
+`docs/reference/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`, and the GEO worldgen contract.
 
 ## Relevant Invariants
 
@@ -21,7 +21,7 @@ It is subordinate to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md
 - `docs/canon/constitution_v1.md` `A9` Pack-driven integration
 - `docs/canon/constitution_v1.md` `E4` Named RNG streams
 - `docs/canon/constitution_v1.md` `E6` Replay equivalence
-- `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`
+- `docs/reference/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`
 - `docs/domains/geology/WORLDGEN_CONSTITUTION.md`
 
 ## 1. Scope

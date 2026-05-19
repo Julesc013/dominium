@@ -11,7 +11,7 @@ ANALYZER_ID = "E401_TRUTH_MUTATION_FROM_LENS_SMELL"
 SMOOTHING_REL = "game/domain/embodiment/lens/camera_smoothing.py"
 LENS_ENGINE_REL = "game/domain/embodiment/lens/lens_engine.py"
 VIEWER_SHELL_REL = "runtime/ui/client/viewer_shell.py"
-DOC_REL = "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
+DOC_REL = "docs/domains/embodiment/LOCOMOTION_POLISH_MODEL.md"
 REQUIRED_TOKENS = {
     SMOOTHING_REL: (
         "resolve_smoothed_camera_state(",

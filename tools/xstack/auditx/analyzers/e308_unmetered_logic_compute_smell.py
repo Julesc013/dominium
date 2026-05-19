@@ -12,7 +12,7 @@ ANALYZER_ID = "E308_UNMETERED_LOGIC_COMPUTE_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/auditx/analyzers/e308_unmetered_logic_compute_smell.py",
     "tools/xstack/auditx/analyzers/__init__.py",
-    "docs/logic/",
+    "docs/domains/logic/",
     "contracts/registry/logic_policy_registry.json",
     "contracts/registry/compute_budget_profile_registry.json",
     "game/domain/logic/",
@@ -65,7 +65,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    constitution_rel = "docs/logic/LOGIC_CONSTITUTION.md"
+    constitution_rel = "docs/domains/logic/LOGIC_CONSTITUTION.md"
     constitution_text = _read_text(repo_root, constitution_rel).lower()
     for token in ("instruction_units", "memory_units"):
         if token in constitution_text:

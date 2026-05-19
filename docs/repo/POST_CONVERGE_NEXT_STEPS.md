@@ -352,9 +352,9 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 
 - Result: PARTIAL.
 - Focused RepoX improved from 23 failures / 5 warnings to 20 failures / 5 warnings.
-- `INV-IDENTITY-FINGERPRINT` reduced from 1 to 0 by refreshing `docs/audit/identity_fingerprint.json` with the canonical generator.
-- `INV-TOOL-VERSION-MISMATCH` reduced from 2 to 0 by refreshing `docs/audit/security/INTEGRITY_MANIFEST.json` with the SecureX generator.
-- RepoX cached groups now include explicit docs/audit evidence dependencies where they read tracked audit artifacts skipped by Merkle roots.
+- `INV-IDENTITY-FINGERPRINT` reduced from 1 to 0 by refreshing `docs/archive/audit/identity_fingerprint.json` with the canonical generator.
+- `INV-TOOL-VERSION-MISMATCH` reduced from 2 to 0 by refreshing `docs/archive/audit/security/INTEGRITY_MANIFEST.json` with the SecureX generator.
+- RepoX cached groups now include explicit docs/archive/audit evidence dependencies where they read tracked audit artifacts skipped by Merkle roots.
 - `INV-AUDITX-OUTPUT-STALE` and four glossary warnings in generated/historical audit evidence remain warnings.
 - POST-CONVERGE-11 remains blocked because focused RepoX still has non-proof governance/source-policy failures.
 - Next recommended semantic task: residual RepoX governance/source-policy remediation or an explicit RepoX acceptance gate; TEST-PERF follow-up remains useful for validation speed.

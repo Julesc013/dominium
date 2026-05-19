@@ -29,7 +29,7 @@ A field is an atomic, typed element within a component.
 Required fields:
 - `field_id` (stable numeric or stable hash)
 - `name` (human-readable)
-- `type` (portable, fixed-width; see `docs/specs/SPEC_NUMERIC.md`)
+- `type` (portable, fixed-width; see `docs/reference/specs/SPEC_NUMERIC.md`)
 - `determinism_class` (AUTHORITATIVE, DERIVED, PRESENTATION)
 
 Optional fields:

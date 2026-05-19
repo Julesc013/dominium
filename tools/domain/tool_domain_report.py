@@ -177,16 +177,16 @@ def _markdown_report(result: dict, domains: List[dict], contracts: List[dict], s
             )
     lines.append("")
     lines.append("## Cross-References")
-    lines.append("- `docs/scale/DOMAIN_MODEL.md`")
-    lines.append("- `docs/scale/CONTRACTS_AND_CONSERVATION.md`")
-    lines.append("- `docs/scale/SOLVER_DOMAIN_BINDINGS.md`")
+    lines.append("- `docs/domains/scale/DOMAIN_MODEL.md`")
+    lines.append("- `docs/domains/scale/CONTRACTS_AND_CONSERVATION.md`")
+    lines.append("- `docs/domains/scale/SOLVER_DOMAIN_BINDINGS.md`")
     return "\n".join(lines) + "\n"
 
 
 def build_domain_report(
     repo_root: str,
-    out_json_rel: str = "docs/audit/DOMAIN_REGISTRY_REPORT.json",
-    out_md_rel: str = "docs/audit/DOMAIN_REGISTRY_REPORT.md",
+    out_json_rel: str = "docs/archive/audit/DOMAIN_REGISTRY_REPORT.json",
+    out_md_rel: str = "docs/archive/audit/DOMAIN_REGISTRY_REPORT.md",
 ) -> Dict[str, object]:
     result = validate_domain_foundation(repo_root=repo_root)
     domain_payload, _ = _read_json(os.path.join(repo_root, "data", "registries", "domain_registry.json"))
@@ -229,8 +229,8 @@ def build_domain_report(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate deterministic domain foundation audit reports.")
     parser.add_argument("--repo-root", default="")
-    parser.add_argument("--out-json", default="docs/audit/DOMAIN_REGISTRY_REPORT.json")
-    parser.add_argument("--out-md", default="docs/audit/DOMAIN_REGISTRY_REPORT.md")
+    parser.add_argument("--out-json", default="docs/archive/audit/DOMAIN_REGISTRY_REPORT.json")
+    parser.add_argument("--out-md", default="docs/archive/audit/DOMAIN_REGISTRY_REPORT.md")
     args = parser.parse_args()
 
     repo_root = os.path.normpath(os.path.abspath(args.repo_root)) if str(args.repo_root).strip() else REPO_ROOT_HINT

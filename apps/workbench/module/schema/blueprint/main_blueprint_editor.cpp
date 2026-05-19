@@ -7,9 +7,9 @@ ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/architecture/OVERVIEW_ARCHITECTURE.md` layering.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
-DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+DETERMINISM: See `docs/reference/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
-EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/reference/specs/SPEC_*.md` without cross-layer coupling.
 */
 #include "dominium/tools/common/dom_tool_app.h"
 #include "dominium/tools/common/dom_tool_cli.h"

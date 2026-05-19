@@ -84,7 +84,7 @@ When adding a system, you must update:
 - Schema indexes under `schema/` if new data formats are added.
 
 
-- `docs/ci/CI_ENFORCEMENT_MATRIX.md` with new enforcement IDs.
+- `docs/testing/ci/CI_ENFORCEMENT_MATRIX.md` with new enforcement IDs.
 
 
 

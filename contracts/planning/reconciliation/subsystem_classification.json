@@ -28,7 +28,7 @@
     {
       "surface_name": "Blueprint archive",
       "path_family": [
-        "docs/blueprint"
+        "docs/archive/blueprint"
       ],
       "subsystem_family": "agent_governance_instruction",
       "blueprint_expectations": [
@@ -48,9 +48,9 @@
     {
       "surface_name": "Mirrored governance docs",
       "path_family": [
-        "docs/agents",
+        "docs/game/agents",
         "docs/governance",
-        "docs/xstack",
+        "docs/development/xstack",
         "DOMINIUM.md",
         "GOVERNANCE.md",
         "README.md",

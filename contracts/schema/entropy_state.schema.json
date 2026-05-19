@@ -5,7 +5,7 @@
   "description": "Canonical PHYS-4 deterministic entropy state row.",
   "x-doc-ref": [
     "docs/domains/physics/ENTROPY_POLICY.md",
-    "docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md"
+    "docs/governance/meta/INFORMATION_GRAMMAR_CONSTITUTION.md"
   ],
   "type": "object",
   "required": [

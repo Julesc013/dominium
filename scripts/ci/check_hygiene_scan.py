@@ -16,7 +16,7 @@ from hygiene_utils import (
     strip_c_comments_and_strings,
 )
 
-QUEUE_PATH = "docs/ci/HYGIENE_QUEUE.md"
+QUEUE_PATH = "docs/testing/ci/HYGIENE_QUEUE.md"
 
 ENUM_TOKEN_RE = re.compile(r"\b[A-Za-z0-9_]*(CUSTOM|OTHER|UNKNOWN)[A-Za-z0-9_]*\b")
 NUM_RE = re.compile(r"(?<![A-Za-z0-9_])(-?(?:0x[0-9A-Fa-f]+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?))(?:[uUlLfF]*)")

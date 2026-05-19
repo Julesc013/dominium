@@ -76,7 +76,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-NO-CROSS-SHARD-DIRECT-WRITES"],
-                related_paths=[rel_path, "docs/contracts/refusal_contract.md"],
+                related_paths=[rel_path, "docs/reference/contracts/refusal_contract.md"],
             )
         )
 

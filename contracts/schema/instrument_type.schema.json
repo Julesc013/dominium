@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Diegetic instrument type contract defining perceived inputs and diegetic output channels.",
   "x-doc-ref": [
-    "docs/diegetics/DIEGETIC_INSTRUMENT_DOCTRINE.md",
-    "docs/diegetics/MAP_AND_NOTEBOOK_MODEL.md"
+    "docs/game/diegetics/DIEGETIC_INSTRUMENT_DOCTRINE.md",
+    "docs/game/diegetics/MAP_AND_NOTEBOOK_MODEL.md"
   ],
   "type": "object",
   "required": [

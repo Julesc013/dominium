@@ -27,4 +27,4 @@ Store declarative bundle selections under `bundles/<bundle_id>/bundle.json` for 
 ## Cross-References
 - `docs/architecture/pack_system.md`
 - `docs/architecture/session_lifecycle.md`
-- `docs/contracts/versioning_and_migration.md`
+- `docs/reference/contracts/versioning_and_migration.md`

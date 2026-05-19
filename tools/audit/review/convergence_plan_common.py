@@ -41,10 +41,10 @@ CONVERGENCE_PLAN_REL = "archive/generated/refactor/convergence_plan.json"
 CONVERGENCE_ACTIONS_REL = "archive/generated/refactor/convergence_actions.json"
 CONVERGENCE_RISK_MAP_REL = "archive/generated/refactor/convergence_risk_map.json"
 
-CONVERGENCE_PLAN_DOC_REL = "docs/refactor/CONVERGENCE_PLAN.md"
-CONVERGENCE_RISK_REPORT_REL = "docs/refactor/CONVERGENCE_RISK_REPORT.md"
-CONVERGENCE_CHECKLIST_REL = "docs/refactor/CONVERGENCE_CHECKLIST.md"
-XI_3_FINAL_REL = "docs/audit/XI_3_FINAL.md"
+CONVERGENCE_PLAN_DOC_REL = "docs/archive/refactor/CONVERGENCE_PLAN.md"
+CONVERGENCE_RISK_REPORT_REL = "docs/archive/refactor/CONVERGENCE_RISK_REPORT.md"
+CONVERGENCE_CHECKLIST_REL = "docs/archive/refactor/CONVERGENCE_CHECKLIST.md"
+XI_3_FINAL_REL = "docs/archive/audit/XI_3_FINAL.md"
 
 OUTPUT_REL_PATHS = {
     CONVERGENCE_PLAN_REL,

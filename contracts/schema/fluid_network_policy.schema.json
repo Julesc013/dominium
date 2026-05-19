@@ -5,7 +5,7 @@
   "description": "Deterministic FLUID network tier/cost/degradation policy declaration.",
   "x-doc-ref": [
     "docs/domains/fluids/FLUID_CONSTITUTION.md",
-    "docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md"
+    "docs/governance/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md"
   ],
   "type": "object",
   "required": [

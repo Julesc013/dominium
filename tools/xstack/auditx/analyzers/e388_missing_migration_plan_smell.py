@@ -11,10 +11,10 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E388_MISSING_MIGRATION_PLAN_SMELL"
 WATCH_PREFIXES = (
     "contracts/registry/semantic_contract_registry.json",
-    "docs/contracts/SEMANTIC_CONTRACT_MODEL.md",
+    "docs/reference/contracts/SEMANTIC_CONTRACT_MODEL.md",
 )
 REGISTRY_REL = "contracts/registry/semantic_contract_registry.json"
-DOC_REL = "docs/contracts/SEMANTIC_CONTRACT_MODEL.md"
+DOC_REL = "docs/reference/contracts/SEMANTIC_CONTRACT_MODEL.md"
 REQUIRED_BREAKING_TOKENS = (
     "CompatX migration descriptor",
     "explicit migration tool or explicit refusal path",

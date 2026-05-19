@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic interior volume type registry output.",
   "x-doc-ref": [
-    "docs/interior/INTERIOR_VOLUME_MODEL.md",
+    "docs/domains/interiors/INTERIOR_VOLUME_MODEL.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

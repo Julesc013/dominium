@@ -6,8 +6,8 @@
   "x-doc-ref": [
     "docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md",
     "docs/runtime/network/EPISTEMICS_OVER_NETWORK.md",
-    "docs/contracts/authority_context.md",
-    "docs/contracts/law_profile.md"
+    "docs/reference/contracts/authority_context.md",
+    "docs/reference/contracts/law_profile.md"
   ],
   "type": "object",
   "required": [

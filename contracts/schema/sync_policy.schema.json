@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Deterministic TEMP-2 synchronization policy declaration for domain-time correction.",
   "x-doc-ref": [
-    "docs/time/DRIFT_AND_SYNC_POLICY.md"
+    "docs/engine/time/DRIFT_AND_SYNC_POLICY.md"
   ],
   "type": "object",
   "required": [

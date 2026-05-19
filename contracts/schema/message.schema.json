@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic diegetic message artifact contract for notebook/radio scaffolding.",
   "x-doc-ref": [
-    "docs/diegetics/COMMUNICATION_CHANNELS_OVERVIEW.md",
-    "docs/diegetics/MAP_AND_NOTEBOOK_MODEL.md"
+    "docs/game/diegetics/COMMUNICATION_CHANNELS_OVERVIEW.md",
+    "docs/game/diegetics/MAP_AND_NOTEBOOK_MODEL.md"
   ],
   "type": "object",
   "required": [

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived deterministic commitment type registry output.",
   "x-doc-ref": [
-    "docs/materials/NOTHING_JUST_HAPPENS.md",
+    "docs/domains/materials/NOTHING_JUST_HAPPENS.md",
     "docs/architecture/registry_compile.md"
   ],
   "type": "object",

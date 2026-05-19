@@ -52,9 +52,9 @@ def main():
         return 1
 
     artifacts = (
-        "docs/audit/performance/PERFORMX_RESULTS.json",
-        "docs/audit/performance/PERFORMX_REGRESSIONS.json",
-        "docs/audit/performance/RUN_META.json",
+        "docs/archive/audit/performance/PERFORMX_RESULTS.json",
+        "docs/archive/audit/performance/PERFORMX_REGRESSIONS.json",
+        "docs/archive/audit/performance/RUN_META.json",
     )
     for rel in artifacts:
         path = os.path.join(repo_root, rel.replace("/", os.sep))

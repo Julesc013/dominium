@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Tool compatibility tag used for ActionSurface filtering.",
   "x-doc-ref": [
-    "docs/interaction/ACTION_SURFACE_MODEL.md"
+    "docs/game/interaction/ACTION_SURFACE_MODEL.md"
   ],
   "type": "object",
   "required": [

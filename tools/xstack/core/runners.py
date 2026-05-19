@@ -325,45 +325,45 @@ class CommandRunner(BaseRunner):
 _REPOX_RUNNER = CommandRunner(
     "repox_runner",
     produced_artifacts=[
-        "docs/audit/proof_manifest.json",
-        "docs/audit/repox/REPOX_PROFILE.json",
+        "docs/archive/audit/proof_manifest.json",
+        "docs/archive/audit/repox/REPOX_PROFILE.json",
     ],
 )
 _TESTX_RUNNER = CommandRunner(
     "testx_runner",
     produced_artifacts=[
-        "docs/audit/testx/TESTX_SUMMARY.json",
-        "docs/audit/testx/TESTX_RUN_META.json",
+        "docs/archive/audit/testx/TESTX_SUMMARY.json",
+        "docs/archive/audit/testx/TESTX_RUN_META.json",
     ],
     grouped=True,
 )
 _AUDITX_RUNNER = CommandRunner(
     "auditx_runner",
     produced_artifacts=[
-        "docs/audit/auditx/FINDINGS.json",
-        "docs/audit/auditx/INVARIANT_MAP.json",
-        "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+        "docs/archive/audit/auditx/FINDINGS.json",
+        "docs/archive/audit/auditx/INVARIANT_MAP.json",
+        "docs/archive/audit/auditx/PROMOTION_CANDIDATES.json",
     ],
     grouped=True,
 )
 _PERFORMX_RUNNER = CommandRunner(
     "performx_runner",
     produced_artifacts=[
-        "docs/audit/performance/PERFORMX_RESULTS.json",
-        "docs/audit/performance/PERFORMX_REGRESSIONS.json",
+        "docs/archive/audit/performance/PERFORMX_RESULTS.json",
+        "docs/archive/audit/performance/PERFORMX_REGRESSIONS.json",
     ],
     default_full=True,
 )
 _COMPATX_RUNNER = CommandRunner(
     "compatx_runner",
-    produced_artifacts=["docs/audit/compat/COMPAT_BASELINE.json"],
+    produced_artifacts=["docs/archive/audit/compat/COMPAT_BASELINE.json"],
     default_full=True,
 )
 _SECUREX_RUNNER = CommandRunner(
     "securex_runner",
     produced_artifacts=[
-        "docs/audit/security/FINDINGS.json",
-        "docs/audit/security/INTEGRITY_MANIFEST.json",
+        "docs/archive/audit/security/FINDINGS.json",
+        "docs/archive/audit/security/INTEGRITY_MANIFEST.json",
     ],
     default_full=True,
 )

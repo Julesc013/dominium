@@ -30,12 +30,12 @@ def _write_contract(repo_root: str) -> None:
                 },
                 {
                     "artifact_id": "artifact.test.run_meta",
-                    "path": "docs/audit/run_meta.json",
+                    "path": "docs/archive/audit/run_meta.json",
                     "artifact_class": "RUN_META",
                 },
                 {
                     "artifact_id": "artifact.test.view",
-                    "path": "docs/audit/view.md",
+                    "path": "docs/archive/audit/view.md",
                     "artifact_class": "DERIVED_VIEW",
                 },
             ],
@@ -71,7 +71,7 @@ def main() -> int:
             "subtrees": ["docs"],
             "include_artifact_classes": ("CANONICAL",),
             "exclude_artifact_classes": ("RUN_META", "DERIVED_VIEW"),
-            "extra_excluded_prefixes": ("docs/audit", "dist", "build", "tmp", ".xstack_cache"),
+            "extra_excluded_prefixes": ("docs/archive/audit", "dist", "build", "tmp", ".xstack_cache"),
         }
         before = merkle_tree.compute_repo_state_hash(temp_root, **opts)
         before_hash = str(before.get("repo_state_hash", ""))

@@ -815,6 +815,17 @@ add_test(NAME dominium_tools_taxonomy
         --strict
 )
 
+add_test(NAME dominium_docs_taxonomy_selftest
+    COMMAND python ${CMAKE_SOURCE_DIR}/tools/validators/repo/check_docs_taxonomy.py
+        --self-test
+)
+
+add_test(NAME dominium_docs_taxonomy
+    COMMAND python ${CMAKE_SOURCE_DIR}/tools/validators/repo/check_docs_taxonomy.py
+        --repo-root=${CMAKE_SOURCE_DIR}
+        --strict
+)
+
 set(_dominium_tools_canonical_include_targets
     dominium-tools
     dom_tool_artifactmeta

@@ -33,7 +33,7 @@
           "docs_audit"
         ],
         "canonical_outputs": [
-          "docs/audit/testx/TESTX_SUMMARY.json"
+          "docs/archive/audit/testx/TESTX_SUMMARY.json"
         ],
         "stability": {
           "schema_version": "1.0.0",
@@ -55,10 +55,10 @@
           "docs_audit"
         ],
         "canonical_outputs": [
-          "docs/audit/auditx/FINDINGS.json",
-          "docs/audit/auditx/INVARIANT_MAP.json",
-          "docs/audit/auditx/PROMOTION_CANDIDATES.json",
-          "docs/audit/auditx/TRENDS.json"
+          "docs/archive/audit/auditx/FINDINGS.json",
+          "docs/archive/audit/auditx/INVARIANT_MAP.json",
+          "docs/archive/audit/auditx/PROMOTION_CANDIDATES.json",
+          "docs/archive/audit/auditx/TRENDS.json"
         ],
         "stability": {
           "schema_version": "1.0.0",
@@ -80,8 +80,8 @@
           "docs_audit"
         ],
         "canonical_outputs": [
-          "docs/audit/performance/PERFORMX_RESULTS.json",
-          "docs/audit/performance/PERFORMX_REGRESSIONS.json"
+          "docs/archive/audit/performance/PERFORMX_RESULTS.json",
+          "docs/archive/audit/performance/PERFORMX_REGRESSIONS.json"
         ],
         "stability": {
           "schema_version": "1.0.0",
@@ -103,7 +103,7 @@
           "docs_audit"
         ],
         "canonical_outputs": [
-          "docs/audit/compat/COMPAT_BASELINE.json"
+          "docs/archive/audit/compat/COMPAT_BASELINE.json"
         ],
         "stability": {
           "schema_version": "1.0.0",
@@ -125,8 +125,8 @@
           "docs_audit"
         ],
         "canonical_outputs": [
-          "docs/audit/security/FINDINGS.json",
-          "docs/audit/security/INTEGRITY_MANIFEST.json"
+          "docs/archive/audit/security/FINDINGS.json",
+          "docs/archive/audit/security/INTEGRITY_MANIFEST.json"
         ],
         "stability": {
           "schema_version": "1.0.0",
@@ -298,8 +298,8 @@
           "{repo_root}"
         ],
         "expected_artifacts": [
-          "docs/audit/performance/PERFORMX_RESULTS.json",
-          "docs/audit/performance/PERFORMX_REGRESSIONS.json"
+          "docs/archive/audit/performance/PERFORMX_RESULTS.json",
+          "docs/archive/audit/performance/PERFORMX_REGRESSIONS.json"
         ],
         "stability": {
           "schema_version": "1.0.0",
@@ -322,7 +322,7 @@
           "{repo_root}"
         ],
         "expected_artifacts": [
-          "docs/audit/compat/COMPAT_BASELINE.json"
+          "docs/archive/audit/compat/COMPAT_BASELINE.json"
         ],
         "stability": {
           "schema_version": "1.0.0",
@@ -345,8 +345,8 @@
           "{repo_root}"
         ],
         "expected_artifacts": [
-          "docs/audit/security/FINDINGS.json",
-          "docs/audit/security/INTEGRITY_MANIFEST.json"
+          "docs/archive/audit/security/FINDINGS.json",
+          "docs/archive/audit/security/INTEGRITY_MANIFEST.json"
         ],
         "stability": {
           "schema_version": "1.0.0",

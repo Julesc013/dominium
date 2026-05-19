@@ -69,5 +69,5 @@ Define the minimal authoritative state envelope consumed by Observation Kernel d
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
 - `docs/architecture/truth_perceived_render.md`
-- `docs/contracts/lens_contract.md`
+- `docs/reference/contracts/lens_contract.md`
 - `docs/architecture/observation_kernel.md`

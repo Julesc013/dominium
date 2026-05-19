@@ -96,8 +96,8 @@
       "rule_id": "INV-REPO-HEALTH-SNAPSHOT-FINALIZATION",
       "severity": "FAIL",
       "scope_paths": [
-        "docs/audit/system/GOVERNANCE_FINAL_REPORT.md",
-        "docs/audit/system/REPO_HEALTH_SNAPSHOT.json",
+        "docs/archive/audit/system/GOVERNANCE_FINAL_REPORT.md",
+        "docs/archive/audit/system/REPO_HEALTH_SNAPSHOT.json",
         "tools/xstack/core/repo_health.py"
       ],
       "documentation": "docs/governance/GATE_THROUGHPUT_POLICY.md#repo-health-snapshot",
@@ -214,7 +214,7 @@
         "schema/universe/universe_contract_bundle.schema",
         "schemas/universe_contract_bundle.schema.json",
         "tools/xstack/sessionx/creator.py",
-        "docs/contracts/SEMANTIC_CONTRACT_MODEL.md"
+        "docs/reference/contracts/SEMANTIC_CONTRACT_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-contract-pinned-in-universe",
       "exemption_policy": "deny"
@@ -225,7 +225,7 @@
       "scope_paths": [
         "contracts/registry/semantic_contract_registry.json",
         "tools/xstack/compatx/core/semantic_contract_validator.py",
-        "docs/contracts/SEMANTIC_CONTRACT_MODEL.md"
+        "docs/reference/contracts/SEMANTIC_CONTRACT_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-unversioned-behavior-change",
       "exemption_policy": "deny"
@@ -253,7 +253,7 @@
         "universe/universe_identity_builder.py",
         "universe/universe_contract_enforcer.py",
         "tools/xstack/sessionx/creator.py",
-        "docs/meta/UNIVERSE_CONTRACT_BUNDLE.md"
+        "docs/governance/meta/UNIVERSE_CONTRACT_BUNDLE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-universe-must-have-contract-bundle",
       "exemption_policy": "deny"
@@ -276,7 +276,7 @@
         "universe/universe_contract_enforcer.py",
         "tools/xstack/sessionx/runner.py",
         "tools/xstack/sessionx/script_runner.py",
-        "docs/meta/UNIVERSE_CONTRACT_BUNDLE.md"
+        "docs/governance/meta/UNIVERSE_CONTRACT_BUNDLE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-replay-refuses-contract-mismatch",
       "exemption_policy": "deny"
@@ -285,8 +285,8 @@
       "rule_id": "INV-EXTENSIONS-NAMESPACED",
       "severity": "FAIL",
       "scope_paths": [
-        "docs/meta/EXTENSION_DISCIPLINE.md",
-        "docs/meta/EXTENSION_MIGRATION_NOTES.md",
+        "docs/governance/meta/EXTENSION_DISCIPLINE.md",
+        "docs/governance/meta/EXTENSION_MIGRATION_NOTES.md",
         "contracts/registry/extension_interpretation_registry.json",
         "meta_extensions_engine.py",
         "tools/repo/meta/extensions/extensions_engine.py"
@@ -319,7 +319,7 @@
         "tools/xstack/pack_loader/loader.py",
         "geo/overlay/overlay_merge_engine.py",
         "geo/worldgen/worldgen_engine.py",
-        "docs/meta/EXTENSION_DISCIPLINE.md"
+        "docs/governance/meta/EXTENSION_DISCIPLINE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-extensions-deterministic-serialization",
       "exemption_policy": "deny"
@@ -330,7 +330,7 @@
       "scope_paths": [
         "contracts/registry/product_registry.json",
         "tools/validators/compatibility/capability_negotiation.py",
-        "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
+        "docs/reference/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-all-products-have-endpoint-descriptor",
       "exemption_policy": "deny"
@@ -598,7 +598,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/runtime/diagnostics/REPRO_BUNDLE_MODEL.md",
-        "docs/audit/REPRO_BUNDLE_BASELINE.md",
+        "docs/archive/audit/REPRO_BUNDLE_BASELINE.md",
         "schema/diag",
         "schemas/repro_bundle_manifest.schema.json",
         "schemas/repro_bundle_index.schema.json",
@@ -618,7 +618,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/runtime/diagnostics/REPRO_BUNDLE_MODEL.md",
-        "docs/audit/REPRO_BUNDLE_BASELINE.md",
+        "docs/archive/audit/REPRO_BUNDLE_BASELINE.md",
         "src/diag",
         "tools/diagnostics",
         "tools/xstack/testx/tests/test_no_secrets_in_bundle.py"
@@ -632,7 +632,7 @@
       "scope_paths": [
         "tools/xstack/sessionx/net_handshake.py",
         "server/net/loopback_transport.py",
-        "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
+        "docs/reference/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-negotiation-required-for-connections",
       "exemption_policy": "deny"
@@ -752,7 +752,7 @@
       "scope_paths": [
         "contracts/registry/capability_registry.json",
         "tools/validators/compatibility/capability_negotiation.py",
-        "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
+        "docs/reference/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-unknown-cap-ignored-deterministically",
       "exemption_policy": "deny"
@@ -835,7 +835,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "packs/official",
-        "docs/packs/PACK_COMPATIBILITY_MANIFEST.md",
+        "docs/content/packs/PACK_COMPATIBILITY_MANIFEST.md",
         "schemas/pack_compat_manifest.schema.json",
         "tools/validators/package/compatibility_payload/pack_compat_validator.py",
         "contracts/registry/pack_degrade_mode_registry.json"
@@ -847,7 +847,7 @@
       "rule_id": "INV-STRICT-MODE-REFUSES-MISSING-COMPAT",
       "severity": "FAIL",
       "scope_paths": [
-        "docs/packs/PACK_COMPATIBILITY_MANIFEST.md",
+        "docs/content/packs/PACK_COMPATIBILITY_MANIFEST.md",
         "tools/validators/package/compatibility_payload/pack_compat_validator.py",
         "tools/xstack/pack_loader/loader.py",
         "tools/xstack/testx/tests/test_missing_manifest_warns_or_refuses_by_policy.py"
@@ -864,7 +864,7 @@
         "tools/xstack/registry_compile/compiler.py",
         "tools/xstack/registry_compile/lockfile.py",
         "tools/release/mvp/runtime_bundle.py",
-        "docs/packs/PACK_COMPATIBILITY_MANIFEST.md"
+        "docs/content/packs/PACK_COMPATIBILITY_MANIFEST.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-pack-compat-validated-before-load",
       "exemption_policy": "deny"
@@ -873,8 +873,8 @@
       "rule_id": "INV-PACK-VERIFICATION-REQUIRED-BEFORE-LOAD",
       "severity": "FAIL",
       "scope_paths": [
-        "docs/packs/PACK_VERIFICATION_PIPELINE.md",
-        "docs/audit/PACK_VERIFICATION_BASELINE.md",
+        "docs/content/packs/PACK_VERIFICATION_PIPELINE.md",
+        "docs/archive/audit/PACK_VERIFICATION_BASELINE.md",
         "schema/package/pack_compatibility_report.schema",
         "schemas/pack_compatibility_report.schema.json",
         "tools/validators/package/compatibility_payload/pack_verification_pipeline.py",
@@ -888,7 +888,7 @@
       "rule_id": "INV-PACK-LOCK-DETERMINISTIC",
       "severity": "FAIL",
       "scope_paths": [
-        "docs/packs/PACK_VERIFICATION_PIPELINE.md",
+        "docs/content/packs/PACK_VERIFICATION_PIPELINE.md",
         "schema/package/pack_lock.schema",
         "schemas/pack_lock.schema.json",
         "tools/validators/package/compatibility_payload/pack_verification_pipeline.py",
@@ -901,7 +901,7 @@
       "rule_id": "INV-STRICT-MODE-REFUSES-CONFLICT",
       "severity": "FAIL",
       "scope_paths": [
-        "docs/packs/PACK_VERIFICATION_PIPELINE.md",
+        "docs/content/packs/PACK_VERIFICATION_PIPELINE.md",
         "tools/validators/package/compatibility_payload/pack_verification_pipeline.py",
         "tools/package/setup/setup_cli.py",
         "tools/package/launcher/launch.py",
@@ -917,7 +917,7 @@
         "server/runtime/tick_loop.py",
         "tools/test/server/server_mvp0_probe.py",
         "tools/test/server/tool_replay_server_window.py",
-        "docs/server/SERVER_MVP_BASELINE.md"
+        "docs/apps/server/SERVER_MVP_BASELINE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-server-tick-deterministic",
       "exemption_policy": "deny"
@@ -930,7 +930,7 @@
         "server/server_main.py",
         "schema/server/server_config.schema",
         "contracts/registry/server_config_registry.json",
-        "docs/server/SERVER_MVP_BASELINE.md"
+        "docs/apps/server/SERVER_MVP_BASELINE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-contracts-validated-on-boot",
       "exemption_policy": "deny"
@@ -942,7 +942,7 @@
         "server/server_boot.py",
         "server/net/loopback_transport.py",
         "tools/test/server/server_mvp0_probe.py",
-        "docs/server/SERVER_MVP_BASELINE.md"
+        "docs/apps/server/SERVER_MVP_BASELINE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-authority-required",
       "exemption_policy": "deny"
@@ -953,7 +953,7 @@
       "scope_paths": [
         "client/local_server/local_server_controller.py",
         "tools/release/mvp/runtime_entry.py",
-        "docs/server/LOCAL_SINGLEPLAYER_MODEL.md"
+        "docs/apps/server/LOCAL_SINGLEPLAYER_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-local-spawn-profiled",
       "exemption_policy": "deny"
@@ -965,7 +965,7 @@
         "client/local_server/local_server_controller.py",
         "tools/release/mvp/runtime_entry.py",
         "tools/test/server/tool_replay_local_singleplayer.py",
-        "docs/server/LOCAL_SINGLEPLAYER_MODEL.md"
+        "docs/apps/server/LOCAL_SINGLEPLAYER_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-wallclock-timeouts-in-boot",
       "exemption_policy": "deny"
@@ -1057,7 +1057,7 @@
       "rule_id": "INV-IDENTITY-FINGERPRINT",
       "severity": "FAIL",
       "scope_paths": [
-        "docs/audit/identity_fingerprint.json",
+        "docs/archive/audit/identity_fingerprint.json",
         "scripts/ci/check_repox_rules.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-identity-fingerprint",
@@ -1067,7 +1067,7 @@
       "rule_id": "INV-IDENTITY-CHANGE-EXPLANATION",
       "severity": "FAIL",
       "scope_paths": [
-        "docs/audit/identity_fingerprint_explanation.md",
+        "docs/archive/audit/identity_fingerprint_explanation.md",
         "scripts/ci/check_repox_rules.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-identity-fingerprint",
@@ -1091,9 +1091,9 @@
         "client",
         "launcher",
         "setup",
-        "docs/settings/SETTINGS_OWNERSHIP_MODEL.md"
+        "docs/runtime/settings/SETTINGS_OWNERSHIP_MODEL.md"
       ],
-      "documentation": "docs/settings/SETTINGS_OWNERSHIP_MODEL.md#forbidden-overlaps",
+      "documentation": "docs/runtime/settings/SETTINGS_OWNERSHIP_MODEL.md#forbidden-overlaps",
       "exemption_policy": "deny"
     },
     {
@@ -1102,9 +1102,9 @@
       "scope_paths": [
         "engine",
         "game",
-        "docs/settings/SETTINGS_OWNERSHIP_MODEL.md"
+        "docs/runtime/settings/SETTINGS_OWNERSHIP_MODEL.md"
       ],
-      "documentation": "docs/settings/SETTINGS_OWNERSHIP_MODEL.md#ownership",
+      "documentation": "docs/runtime/settings/SETTINGS_OWNERSHIP_MODEL.md#ownership",
       "exemption_policy": "deny"
     },
     {
@@ -1225,7 +1225,7 @@
         "contracts/package/locks/pack_lock.mvp_default.json",
         "archive/generated/dist/packs",
         "tools/release/mvp/runtime_bundle.py",
-        "docs/mvp/MVP_RUNTIME_BUNDLE.md"
+        "docs/release/mvp/MVP_RUNTIME_BUNDLE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-mvp-packs-minimal",
       "exemption_policy": "deny"
@@ -1249,7 +1249,7 @@
         "content/profiles/bundles/bundle.mvp_default.json",
         "archive/generated/dist/profiles/bundle.mvp_default.json",
         "tools/release/mvp/runtime_entry.py",
-        "docs/mvp/MVP_RUNTIME_BUNDLE.md"
+        "docs/release/mvp/MVP_RUNTIME_BUNDLE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-profile-bundle-required",
       "exemption_policy": "deny"
@@ -1261,7 +1261,7 @@
         "content/packs/official/pack.sol.pin_minimal/pack.json",
         "content/packs/official/pack.sol.pin_minimal/data/overlay/overlay.layer.sol_pin_minimal.json",
         "content/packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json",
-        "docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
+        "docs/content/packs/sol/PACK_SOL_PIN_MINIMAL.md",
         "tools/validators/domain/geology/tool_verify_sol_pin_overlay.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-sol-pack-minimal-size",
@@ -1273,7 +1273,7 @@
       "scope_paths": [
         "content/packs/official/pack.sol.pin_minimal/pack.json",
         "content/packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json",
-        "docs/packs/sol/PACK_SOL_PIN_MINIMAL.md"
+        "docs/content/packs/sol/PACK_SOL_PIN_MINIMAL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-sol-pack-no-terrain-data",
       "exemption_policy": "deny"
@@ -1283,7 +1283,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "content/packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json",
-        "docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
+        "docs/content/packs/sol/PACK_SOL_PIN_MINIMAL.md",
         "geo/overlay/overlay_merge_engine.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-identity-override",
@@ -1562,7 +1562,7 @@
       "scope_paths": [
         "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
         "tools/domain/worldgen/earth_stress/tool_run_earth_mvp_stress.py",
-        "docs/audit/EARTH_MVP_FINAL_BASELINE.md"
+        "docs/archive/audit/EARTH_MVP_FINAL_BASELINE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-earth-updates-bounded",
       "exemption_policy": "deny"
@@ -1576,7 +1576,7 @@
         "tools/domain/worldgen/earth_stress/tool_replay_earth_view_window.py",
         "tools/domain/worldgen/earth_stress/tool_replay_earth_physics_window.py",
         "tests/fixtures/regression/earth_mvp_baseline.json",
-        "docs/audit/EARTH_MVP_FINAL_BASELINE.md"
+        "docs/archive/audit/EARTH_MVP_FINAL_BASELINE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-earth-deterministic",
       "exemption_policy": "deny"
@@ -1688,7 +1688,7 @@
         "embodiment/lens/lens_engine.py",
         "contracts/registry/body_template_registry.json",
         "contracts/registry/system_template_registry.json",
-        "docs/embodiment/EMBODIMENT_BASELINE.md"
+        "docs/domains/embodiment/EMBODIMENT_BASELINE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-asset-dependency-for-emb",
       "exemption_policy": "deny"
@@ -1701,7 +1701,7 @@
         "tools/xstack/sessionx/process_runtime.py",
         "tools/release/mvp/runtime_bundle.py",
         "contracts/registry/lens_profile_registry.json",
-        "docs/embodiment/EMBODIMENT_BASELINE.md"
+        "docs/domains/embodiment/EMBODIMENT_BASELINE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-lens-profiled",
       "exemption_policy": "deny"
@@ -1714,7 +1714,7 @@
         "embodiment/lens/lens_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/release/mvp/runtime_bundle.py",
-        "docs/embodiment/EMBODIMENT_BASELINE.md"
+        "docs/domains/embodiment/EMBODIMENT_BASELINE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-body-motion-process-only",
       "exemption_policy": "deny"
@@ -1729,7 +1729,7 @@
         "tools/domain/embodiment/tool_replay_movement_window.py",
         "contracts/registry/collision_provider_registry.json",
         "contracts/registry/movement_slope_params_registry.json",
-        "docs/embodiment/TERRAIN_COLLISION_MODEL.md"
+        "docs/domains/embodiment/TERRAIN_COLLISION_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-collision-deterministic",
       "exemption_policy": "deny"
@@ -1742,7 +1742,7 @@
         "tools/xstack/sessionx/process_runtime.py",
         "client/ui/viewer_shell.py",
         "client/ui/inspect_panels.py",
-        "docs/embodiment/TERRAIN_COLLISION_MODEL.md"
+        "docs/domains/embodiment/TERRAIN_COLLISION_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-position-write-bypass",
       "exemption_policy": "deny"
@@ -1758,7 +1758,7 @@
         "tools/release/mvp/runtime_bundle.py",
         "contracts/registry/jump_params_registry.json",
         "contracts/registry/entitlement_registry.json",
-        "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
+        "docs/domains/embodiment/LOCOMOTION_POLISH_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-jump-profile-gated",
       "exemption_policy": "deny"
@@ -1771,7 +1771,7 @@
         "embodiment/lens/lens_engine.py",
         "client/ui/viewer_shell.py",
         "tools/domain/embodiment/tool_replay_locomotion_window.py",
-        "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
+        "docs/domains/embodiment/LOCOMOTION_POLISH_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-camera-smooth-render-only",
       "exemption_policy": "deny"
@@ -1783,7 +1783,7 @@
         "embodiment/lens/camera_smoothing.py",
         "client/ui/viewer_shell.py",
         "contracts/registry/camera_smoothing_registry.json",
-        "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
+        "docs/domains/embodiment/LOCOMOTION_POLISH_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-float-smoothing",
       "exemption_policy": "deny"
@@ -1799,7 +1799,7 @@
         "embodiment/tools/teleport_tool.py",
         "contracts/registry/tool_capability_registry.json",
         "contracts/registry/entitlement_registry.json",
-        "docs/embodiment/MVP_TOOLBELT_MODEL.md"
+        "docs/domains/embodiment/MVP_TOOLBELT_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-tools-require-entitlement",
       "exemption_policy": "deny"
@@ -1810,7 +1810,7 @@
       "scope_paths": [
         "embodiment/tools/scanner_tool.py",
         "client/ui/inspect_panels.py",
-        "docs/embodiment/MVP_TOOLBELT_MODEL.md"
+        "docs/domains/embodiment/MVP_TOOLBELT_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-truth-leak-in-scans",
       "exemption_policy": "deny"
@@ -1822,7 +1822,7 @@
         "embodiment/tools/terrain_edit_tool.py",
         "tools/domain/embodiment/toolbelt_cli.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "docs/embodiment/MVP_TOOLBELT_MODEL.md"
+        "docs/domains/embodiment/MVP_TOOLBELT_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-terrain-edits-process-only",
       "exemption_policy": "deny"
@@ -1834,7 +1834,7 @@
         "client/ui/viewer_shell.py",
         "client/ui/map_views.py",
         "client/ui/inspect_panels.py",
-        "docs/ux/MVP_VIEWER_SHELL.md"
+        "docs/runtime/ui/ux/MVP_VIEWER_SHELL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-truth-in-ui",
       "exemption_policy": "deny"
@@ -1846,7 +1846,7 @@
         "client/ui/viewer_shell.py",
         "client/ui/map_views.py",
         "client/ui/inspect_panels.py",
-        "docs/ux/MVP_VIEWER_SHELL.md",
+        "docs/runtime/ui/ux/MVP_VIEWER_SHELL.md",
         "tools/validators/domain/geology/tool_explain_property_origin.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-view-artifact-only",
@@ -1909,7 +1909,7 @@
       "scope_paths": [
         "tools/domain/worldgen/earth_stress/earth9_stress_common.py",
         "tools/domain/worldgen/earth_stress/tool_replay_earth_view_window.py",
-        "docs/audit/EARTH_MVP_FINAL_BASELINE.md"
+        "docs/archive/audit/EARTH_MVP_FINAL_BASELINE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-earth-views-derived-only",
       "exemption_policy": "deny"
@@ -1999,7 +1999,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "src",
-        "docs/meta",
+        "docs/governance/meta",
         "contracts/registry/deprecation_registry.json",
         "tools/xstack/repox/check.py"
       ],

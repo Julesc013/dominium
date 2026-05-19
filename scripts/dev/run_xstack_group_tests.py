@@ -133,9 +133,9 @@ def main():
     parser = argparse.ArgumentParser(description="Run deterministic XStack test group checks.")
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--group-id", required=True)
-    parser.add_argument("--summary-json", default="docs/audit/testx/TESTX_SUMMARY.json")
-    parser.add_argument("--summary-md", default="docs/audit/testx/TESTX_SUMMARY.md")
-    parser.add_argument("--run-meta-json", default="docs/audit/testx/TESTX_RUN_META.json")
+    parser.add_argument("--summary-json", default="docs/archive/audit/testx/TESTX_SUMMARY.json")
+    parser.add_argument("--summary-md", default="docs/archive/audit/testx/TESTX_SUMMARY.md")
+    parser.add_argument("--run-meta-json", default="docs/archive/audit/testx/TESTX_RUN_META.json")
     args = parser.parse_args()
 
     repo_root = _norm(os.path.abspath(args.repo_root))

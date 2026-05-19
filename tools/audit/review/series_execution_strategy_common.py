@@ -37,12 +37,12 @@ FOUNDATION_PHASES_REL = "archive/generated/blueprint/foundation_phases.json"
 STOP_CONDITIONS_REL = "archive/generated/blueprint/stop_conditions.json"
 MANUAL_REVIEW_GATES_REL = "archive/generated/blueprint/manual_review_gates.json"
 
-SERIES_EXECUTION_STRATEGY_DOC_REL = "docs/blueprint/SERIES_EXECUTION_STRATEGY.md"
-FOUNDATION_PHASES_DOC_REL = "docs/blueprint/FOUNDATION_PHASES.md"
-STOP_CONDITIONS_DOC_REL = "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
-MANUAL_REVIEW_GATES_DOC_REL = "docs/blueprint/MANUAL_REVIEW_GATES.md"
-PRE_POST_SNAPSHOT_DOC_REL = "docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md"
-PI_1_FINAL_REL = "docs/audit/PI_1_FINAL.md"
+SERIES_EXECUTION_STRATEGY_DOC_REL = "docs/archive/blueprint/SERIES_EXECUTION_STRATEGY.md"
+FOUNDATION_PHASES_DOC_REL = "docs/archive/blueprint/FOUNDATION_PHASES.md"
+STOP_CONDITIONS_DOC_REL = "docs/archive/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+MANUAL_REVIEW_GATES_DOC_REL = "docs/archive/blueprint/MANUAL_REVIEW_GATES.md"
+PRE_POST_SNAPSHOT_DOC_REL = "docs/archive/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md"
+PI_1_FINAL_REL = "docs/archive/audit/PI_1_FINAL.md"
 
 OUTPUT_REL_PATHS = {
     SERIES_EXECUTION_STRATEGY_REL,

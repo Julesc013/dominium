@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Deterministic MOB-11 mobility reenactment descriptor and proof surface.",
   "x-doc-ref": [
-    "docs/audit/MOB11_RETRO_AUDIT.md",
-    "docs/audit/MOBILITY_FINAL_BASELINE.md"
+    "docs/archive/audit/MOB11_RETRO_AUDIT.md",
+    "docs/archive/audit/MOBILITY_FINAL_BASELINE.md"
   ],
   "type": "object",
   "required": [

@@ -28,7 +28,7 @@ ERROR MODEL: Return codes/NULL pointers; no exceptions.
 DETERMINISM: Metadata only; MUST NOT alter simulation logic.
 
 
-VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
+VERSIONING / ABI / DATA FORMAT NOTES: Public header; see `docs/reference/specs/SPEC_ABI_TEMPLATES.md` where ABI stability matters.
 
 
 EXTENSION POINTS: Extend via public headers and relevant `docs/architecture/**`.

@@ -25,13 +25,13 @@ THREADING MODEL: No internal synchronization; callers must serialize access unle
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
 
 
-DETERMINISM: See `docs/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
+DETERMINISM: See `docs/reference/specs/SPEC_DETERMINISM.md` for deterministic subsystems; otherwise N/A.
 
 
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (implementation file).
 
 
-EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` without cross-layer coupling.
+EXTENSION POINTS: Extend via public headers and relevant `docs/reference/specs/SPEC_*.md` without cross-layer coupling.
 
 
 */

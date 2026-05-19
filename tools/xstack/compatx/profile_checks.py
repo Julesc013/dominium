@@ -31,10 +31,10 @@ from tools.xstack.compatx.validator import validate_instance, validate_schema_ex
 
 
 DOC_SCHEMA_LINKS = {
-    "docs/contracts/session_spec.md": ["session_spec.schema.json"],
-    "docs/contracts/authority_context.md": ["authority_context.schema.json"],
-    "docs/contracts/law_profile.md": ["law_profile.schema.json"],
-    "docs/contracts/lens_contract.md": ["lens.schema.json"],
+    "docs/reference/contracts/session_spec.md": ["session_spec.schema.json"],
+    "docs/reference/contracts/authority_context.md": ["authority_context.schema.json"],
+    "docs/reference/contracts/law_profile.md": ["law_profile.schema.json"],
+    "docs/reference/contracts/lens_contract.md": ["lens.schema.json"],
     "docs/architecture/pack_system.md": ["pack_manifest.schema.json", "bundle_profile.schema.json"],
     "docs/architecture/session_lifecycle.md": ["session_spec.schema.json", "bundle_profile.schema.json"],
     "docs/architecture/srz_contract.md": ["srz_shard.schema.json", "intent_envelope.schema.json"],

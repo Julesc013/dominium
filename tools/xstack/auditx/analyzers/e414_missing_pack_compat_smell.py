@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E414_MISSING_PACK_COMPAT_SMELL"
 REQUIRED_FILES = {
-    "docs/packs/PACK_COMPATIBILITY_MANIFEST.md": (
+    "docs/content/packs/PACK_COMPATIBILITY_MANIFEST.md": (
         "pack.compat.json",
         "strict policy surfaces must refuse packs missing it",
         "refusal.pack.compat_manifest_missing",

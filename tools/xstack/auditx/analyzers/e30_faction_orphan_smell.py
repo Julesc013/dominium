@@ -11,7 +11,7 @@ ANALYZER_ID = "E30_FACTION_ORPHAN_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/",
     "contracts/schema/",
-    "docs/civilisation/",
+    "docs/domains/civilization/",
 )
 
 
@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    docs_rel = "docs/civilisation/FACTIONS_AND_AFFILIATION.md"
+    docs_rel = "docs/domains/civilization/FACTIONS_AND_AFFILIATION.md"
     if not _read_text(repo_root, docs_rel):
         findings.append(
             make_finding(

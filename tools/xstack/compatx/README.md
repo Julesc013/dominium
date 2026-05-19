@@ -31,6 +31,6 @@ Provide deterministic schema validation tooling for canonical `contracts/schema/
 - Add signed schema bundle export path for release artifacts.
 
 ## Cross-References
-- `docs/contracts/versioning_and_migration.md`
+- `docs/reference/contracts/versioning_and_migration.md`
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`

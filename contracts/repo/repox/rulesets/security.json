@@ -47,7 +47,7 @@
     {
       "rule_id": "INV-TOOL-VERSION-MISMATCH",
       "severity": "FAIL",
-      "scope_paths": ["docs/audit/security/INTEGRITY_MANIFEST.json", "tools", "scripts", "schema/governance/integrity_manifest.schema"],
+      "scope_paths": ["docs/archive/audit/security/INTEGRITY_MANIFEST.json", "tools", "scripts", "schema/governance/integrity_manifest.schema"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-tool-version-mismatch",
       "exemption_policy": "deny"
     }

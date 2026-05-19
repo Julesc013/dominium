@@ -10,10 +10,10 @@
     "docs/canon/constitution_v1.md",
     "docs/canon/glossary_v1.md",
     "AGENTS.md",
-    "docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
-    "docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "docs/reference/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "docs/reference/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
     "contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md",
-    "docs/interaction/INTERACTION_MODEL.md",
+    "docs/game/interaction/INTERACTION_MODEL.md",
     "schemas/capability.schema.json",
     "schemas/affordance.schema.json",
     "schemas/authority_context.schema.json"
@@ -27,7 +27,7 @@
     "inspection",
     "tools/controlx",
     "tools/xstack",
-    "docs/interaction/INTERACTION_MODEL.md",
+    "docs/game/interaction/INTERACTION_MODEL.md",
     "schemas/capability.schema.json",
     "schemas/affordance.schema.json",
     "schemas/authority_context.schema.json"

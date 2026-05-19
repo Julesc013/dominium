@@ -13,10 +13,10 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL"
 WATCH_PREFIXES = (
     "src/",
-    "docs/audit/TOPOLOGY_MAP.json",
+    "docs/archive/audit/TOPOLOGY_MAP.json",
 )
 
-TOPOLOGY_REL = "docs/audit/TOPOLOGY_MAP.json"
+TOPOLOGY_REL = "docs/archive/audit/TOPOLOGY_MAP.json"
 CONTROL_PLANE_NODE_ID = "module:tools/repo/governance/control_plane_engine.py"
 
 PRIVILEGE_PATTERNS = (

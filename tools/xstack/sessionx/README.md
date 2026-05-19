@@ -42,5 +42,5 @@ Provide deterministic out-of-game session lifecycle tooling:
 
 ## Cross-References
 - `docs/architecture/session_lifecycle.md`
-- `docs/contracts/refusal_contract.md`
-- `docs/contracts/session_spec.md`
+- `docs/reference/contracts/refusal_contract.md`
+- `docs/reference/contracts/session_spec.md`

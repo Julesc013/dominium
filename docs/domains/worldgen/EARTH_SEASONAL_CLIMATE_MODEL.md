@@ -20,8 +20,8 @@ This document freezes the EARTH-2 seasonal climate proxy contract for Dominium v
 - `docs/canon/constitution_v1.md` `A10` Explicit degradation and refusal
 - `docs/canon/constitution_v1.md` `E2` Deterministic ordering
 - `docs/canon/constitution_v1.md` `E6` Replay equivalence
-- `docs/time/TEMPORAL_SEMANTICS_CONSTITUTION.md`
-- `docs/fields/FIELD_LAYER_MODEL.md`
+- `docs/engine/time/TEMPORAL_SEMANTICS_CONSTITUTION.md`
+- `docs/domains/fields/FIELD_LAYER_MODEL.md`
 
 ## 1. Scope
 
