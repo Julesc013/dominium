@@ -11,9 +11,9 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 from runtime.platform.platform_gfx import list_available_backends
 from runtime.platform.platform_window import detect_platform_id
 
-from .renderers.hw_renderer_gl import render_hardware_gl_snapshot
-from .renderers.null_renderer import render_null_snapshot
-from .renderers.software_renderer import render_software_snapshot
+from .hw_renderer_gl import render_hardware_gl_snapshot
+from .null_renderer import render_null_snapshot
+from .software_renderer import render_software_snapshot
 
 
 def _to_int(value: object, default: int = 0) -> int:

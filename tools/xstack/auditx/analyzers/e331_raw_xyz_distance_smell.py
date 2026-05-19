@@ -8,8 +8,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E331_RAW_XYZ_DISTANCE_SMELL"
-WATCH_PREFIXES = ("src/client/render/",)
-TARGET_FILES = ("runtime/render/client/representation_resolver.py",)
+WATCH_PREFIXES = ("runtime/render/backend/",)
+TARGET_FILES = ("runtime/render/backend/representation_resolver.py",)
 LEGACY_TOKENS = (
     'abs(_to_int(transform.get("x", 0), 0))',
     'abs(_to_int(transform.get("y", 0), 0))',

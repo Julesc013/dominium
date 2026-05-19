@@ -8,7 +8,7 @@ from typing import Callable, Sequence
 
 from .args_parser import parse_appshell_args
 from .command_registry import build_root_command_descriptors, build_tui_panel_descriptors, format_help_text
-from .commands import dispatch_registered_command
+from .command import dispatch_registered_command
 from .compat_adapter import build_version_payload, emit_descriptor_payload
 from .config_loader import resolve_repo_root
 from tools.validators.compatibility.shims import apply_flag_shims

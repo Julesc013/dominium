@@ -13,7 +13,7 @@ SCAN_PATHS = (
     "tools/xstack/sessionx/runner.py",
     "tools/xstack/sessionx/script_runner.py",
     "tools/xstack/sessionx/net_handshake.py",
-    "runtime/render/client/render_model_adapter.py",
+    "runtime/render/backend/render_model_adapter.py",
 )
 FORBIDDEN_LITERAL = "physics.default.realistic"
 

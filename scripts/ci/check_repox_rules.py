@@ -91,7 +91,7 @@ _CANONICAL_PREFIX_ALIASES = (
     ("apps/server/net/", "runtime/network/server/"),
     ("apps/server/runtime/", "runtime/shell/server/"),
     ("apps/client/render/renderers/", "runtime/render/backend/"),
-    ("apps/client/render/", "runtime/render/client/"),
+    ("apps/client/render/", "runtime/render/backend/"),
     ("apps/client/ui/", "runtime/ui/client/"),
     ("compat/descriptor/", "tools/validators/compatibility/descriptor/"),
     ("compat/negotiation/", "tools/validators/compatibility/negotiation/"),
@@ -727,9 +727,9 @@ EMB2_REPLAY_TOOL_REL = os.path.join("tools", "embodiment", "tool_replay_locomoti
 UX_VIEWER_SHELL_REL = os.path.join("apps", "client", "ui", "viewer_shell.py")
 UX_MAP_VIEWS_REL = os.path.join("apps", "client", "ui", "map_views.py")
 UX_INSPECT_PANELS_REL = os.path.join("apps", "client", "ui", "inspect_panels.py")
-RENDER_MODEL_ADAPTER_REL = os.path.join("apps", "client", "render", "render_model_adapter.py")
-SOFTWARE_RENDERER_REL = os.path.join("apps", "client", "render", "renderers", "software_renderer.py")
-NULL_RENDERER_REL = os.path.join("apps", "client", "render", "renderers", "null_renderer.py")
+RENDER_MODEL_ADAPTER_REL = os.path.join("runtime", "render", "backend", "render_model_adapter.py")
+SOFTWARE_RENDERER_REL = os.path.join("runtime", "render", "backend", "software_renderer.py")
+NULL_RENDERER_REL = os.path.join("runtime", "render", "backend", "null_renderer.py")
 UX_VIEWER_DOC_REL = os.path.join("docs", "ux", "MVP_VIEWER_SHELL.md")
 EMB_ASSET_FORBIDDEN_TOKENS = (
     ".png",

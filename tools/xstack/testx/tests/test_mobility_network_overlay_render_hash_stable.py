@@ -112,7 +112,7 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     from client.interaction.inspection_overlays import build_inspection_overlays
-    from client.render import build_render_model
+    from runtime.render.backend import build_render_model
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     graph = _graph_payload()

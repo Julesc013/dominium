@@ -11,9 +11,9 @@ TEST_ID = "testx.render.renderer_truth_isolation"
 TEST_TAGS = ["strict", "render", "repox"]
 
 TARGETS = (
-    "runtime/render/client/render_model_adapter.py",
-    "runtime/render/client/representation_resolver.py",
-    "runtime/render/client/snapshot_capture.py",
+    "runtime/render/backend/render_model_adapter.py",
+    "runtime/render/backend/representation_resolver.py",
+    "runtime/render/backend/snapshot_capture.py",
     "runtime/render/backend/null_renderer.py",
     "runtime/render/backend/software_renderer.py",
     "runtime/render/backend/hw_renderer_gl.py",

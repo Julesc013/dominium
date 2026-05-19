@@ -10,8 +10,8 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E36_RENDER_TRUTH_LEAK_SMELL"
 TARGETS = (
-    "runtime/render/client/render_model_adapter.py",
-    "runtime/render/client/representation_resolver.py",
+    "runtime/render/backend/render_model_adapter.py",
+    "runtime/render/backend/representation_resolver.py",
     "tools/xstack/sessionx/render_model.py",
 )
 FORBIDDEN_PATTERN = re.compile(r"\b(truth_model|truthmodel|universe_state)\b", re.IGNORECASE)

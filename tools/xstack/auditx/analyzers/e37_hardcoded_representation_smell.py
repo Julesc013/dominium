@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E37_HARDCODED_REPRESENTATION_SMELL"
-TARGET_PATH = "runtime/render/client/representation_resolver.py"
+TARGET_PATH = "runtime/render/backend/representation_resolver.py"
 REQUIRED_TOKENS = (
     "representation_rule_registry",
     "_rule_rows(",

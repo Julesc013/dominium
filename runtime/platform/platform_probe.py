@@ -102,28 +102,28 @@ _LINUX_NATIVE_MARKERS = {
     "setup": ("tools/codegen/ui/setup/native_gtk_adapter.py",),
 }
 _RENDERED_MARKERS = (
-    "client/render/render_model_adapter.py",
-    "client/render/renderers/software_renderer.py",
+    "runtime/render/backend/render_model_adapter.py",
+    "runtime/render/backend/software_renderer.py",
 )
 _SOFTWARE_RENDERER_MARKERS = (
-    "client/render/renderers/software_renderer.py",
-    "client/render/render_model_adapter.py",
+    "runtime/render/backend/software_renderer.py",
+    "runtime/render/backend/render_model_adapter.py",
 )
 _OPENGL_RENDERER_MARKERS = (
-    "client/render/renderers/hw_renderer_gl.py",
+    "runtime/render/backend/hw_renderer_gl.py",
     "runtime/platform/platform_gfx.py",
 )
 _DIRECTX_RENDERER_MARKERS = (
-    "src/client/render/renderers/hw_renderer_dx.py",
-    "src/platform/renderers/hw_renderer_dx.py",
+    "runtime/render/backend/hw_renderer_dx.py",
+    "runtime/platform/renderers/hw_renderer_dx.py",
 )
 _VULKAN_RENDERER_MARKERS = (
-    "src/client/render/renderers/hw_renderer_vk.py",
-    "src/platform/renderers/hw_renderer_vk.py",
+    "runtime/render/backend/hw_renderer_vk.py",
+    "runtime/platform/renderers/hw_renderer_vk.py",
 )
 _METAL_RENDERER_MARKERS = (
-    "src/client/render/renderers/hw_renderer_metal.py",
-    "src/platform/renderers/hw_renderer_metal.py",
+    "runtime/render/backend/hw_renderer_metal.py",
+    "runtime/platform/renderers/hw_renderer_metal.py",
 )
 
 

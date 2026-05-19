@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Mapping
 
 from game.domain.astronomy import build_orbit_view_surface
-from runtime.render.client import build_render_model
+from runtime.render.backend import build_render_model
 from game.domain.embodiment import (
     build_cut_trench_task,
     build_fill_at_cursor_task,

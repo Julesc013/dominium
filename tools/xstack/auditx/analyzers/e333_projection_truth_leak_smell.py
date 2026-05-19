@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E333_PROJECTION_TRUTH_LEAK_SMELL"
-WATCH_PREFIXES = ("src/client/render/renderers/",)
+WATCH_PREFIXES = ("runtime/render/backend/",)
 TARGET_FILE = "runtime/render/backend/software_renderer.py"
 LEGACY_TOKENS = (
     "x, y, z = _camera_space(",

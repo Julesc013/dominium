@@ -19,7 +19,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from client.render import build_render_model
+    from runtime.render.backend import build_render_model
     from game.domain.materials.blueprint_engine import build_blueprint_ghost_overlay, compile_blueprint_artifacts
 
     blueprint_registry = _read_json(os.path.join(repo_root, "data", "registries", "blueprint_registry.json"))

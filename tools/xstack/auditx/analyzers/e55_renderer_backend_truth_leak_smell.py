@@ -11,7 +11,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E55_RENDERER_BACKEND_TRUTH_LEAK_SMELL"
 TARGETS = (
     "runtime/render/backend/hw_renderer_gl.py",
-    "runtime/render/client/snapshot_capture.py",
+    "runtime/render/backend/snapshot_capture.py",
 )
 FORBIDDEN_PATTERN = re.compile(
     r"\b(truth_model|truthmodel|universe_state|process_runtime|apply_intent|authority_context)\b",

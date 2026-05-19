@@ -29,6 +29,16 @@ TRANSITIONAL_ROOTS = set([
     "modding", "models", "templates", "net", "dist", "artifacts",
 ])
 
+FORBIDDEN_ACTIVE_PATH_PREFIXES = {
+    "runtime/render/client": "runtime render client bucket retired; use runtime/render/backend",
+    "runtime/render/soft": "soft is an abbreviation; use runtime/render/software",
+    "runtime/render/stub": "stub is status wording; use runtime/render/null",
+    "runtime/shell/commands": "shell command subsystem is singular runtime/shell/command",
+    "runtime/shell/ui_backends": "UI backend implementation belongs under runtime/ui/backend",
+    "runtime/capability/capability": "capability/capability is tautological; use runtime/capability/core or a precise leaf",
+    "runtime/ui/core": "runtime/ui/core is vague; use runtime/ui/service or a precise UI leaf",
+}
+
 
 def utc_now():
     return _datetime.datetime.now(_datetime.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -80,6 +90,18 @@ def build_report(repo_root, max_findings):
     findings = []
     counts = {}
     for path in git_files(repo_root):
+        for prefix, reason in sorted(FORBIDDEN_ACTIVE_PATH_PREFIXES.items()):
+            if path == prefix or path.startswith(prefix + "/"):
+                findings.append({
+                    "path": path,
+                    "segment": prefix,
+                    "segment_index": -1,
+                    "severity": "blocker",
+                    "disposition": "retired_runtime_path",
+                    "reason": reason,
+                    "rule": "retired_runtime_path",
+                })
+                counts[prefix] = counts.get(prefix, 0) + 1
         segments = path.split("/")[:-1]
         for index, segment in enumerate(segments):
             if segment in FORBIDDEN_TERMS:

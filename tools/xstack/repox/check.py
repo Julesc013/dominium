@@ -275,15 +275,15 @@ CIV_MUTATION_ALLOWED_PREFIXES = (
 )
 
 REPRESENTATION_RENDER_ONLY_FILES = (
-    "runtime/render/client/render_model_adapter.py",
-    "runtime/render/client/representation_resolver.py",
+    "runtime/render/backend/render_model_adapter.py",
+    "runtime/render/backend/representation_resolver.py",
     "tools/xstack/sessionx/render_model.py",
 )
 
 RENDERER_RENDERMODEL_ONLY_FILES = (
-    "runtime/render/client/render_model_adapter.py",
-    "runtime/render/client/representation_resolver.py",
-    "runtime/render/client/snapshot_capture.py",
+    "runtime/render/backend/render_model_adapter.py",
+    "runtime/render/backend/representation_resolver.py",
+    "runtime/render/backend/snapshot_capture.py",
     "runtime/render/backend/null_renderer.py",
     "runtime/render/backend/software_renderer.py",
     "tools/xstack/sessionx/render_model.py",
@@ -292,7 +292,7 @@ RENDERER_RENDERMODEL_ONLY_FILES = (
 )
 
 RENDER_SNAPSHOT_DERIVED_FILES = (
-    "runtime/render/client/snapshot_capture.py",
+    "runtime/render/backend/snapshot_capture.py",
     "runtime/render/backend/null_renderer.py",
     "runtime/render/backend/software_renderer.py",
     "tools/validators/render/tool_render_capture.py",
@@ -604,10 +604,10 @@ PLATFORM_ABSTRACTION_FILES = (
 
 HW_RENDERER_RENDERMODEL_ONLY_FILES = (
     "runtime/render/backend/hw_renderer_gl.py",
-    "runtime/render/client/snapshot_capture.py",
+    "runtime/render/backend/snapshot_capture.py",
 )
 
-REPRESENTATION_DATA_DRIVEN_FILE = "runtime/render/client/representation_resolver.py"
+REPRESENTATION_DATA_DRIVEN_FILE = "runtime/render/backend/representation_resolver.py"
 REPRESENTATION_DATA_DRIVEN_REQUIRED_TOKENS = (
     "representation_rule_registry",
     "_rule_rows(",
@@ -21473,7 +21473,7 @@ def _append_geo_portability_invariant_findings(
     severity = _strict_only_severity(profile)
     field_engine_rel = "game/domain/fields/field_engine.py"
     pollution_rel = "game/domain/pollution/dispersion_engine.py"
-    representation_rel = "runtime/render/client/representation_resolver.py"
+    representation_rel = "runtime/render/backend/representation_resolver.py"
     renderer_rel = "runtime/render/backend/software_renderer.py"
 
     field_text = _file_text(repo_root, field_engine_rel)

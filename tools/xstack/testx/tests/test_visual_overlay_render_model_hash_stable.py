@@ -92,7 +92,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from client.render import build_render_model
+    from runtime.render.backend import build_render_model
 
     overlay_payload = _build_overlay_payload(repo_root=repo_root)
     if not overlay_payload:

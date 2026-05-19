@@ -84,7 +84,7 @@ NON_RUNTIME_DOMAINS = {
 }
 TRUTH_FORBIDDEN_PREFIXES = ("field", "fields", "process", "universe")
 UI_RENDER_PREFIXES = (
-    "runtime.render.client",
+    "runtime.render.backend",
     "runtime.ui.client",
     "apps.client.presentation",
     "ui",
