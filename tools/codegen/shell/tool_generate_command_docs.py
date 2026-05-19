@@ -14,7 +14,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from runtime.shell.command_registry import load_command_registry
-from runtime.shell.commands.command_engine import REFUSAL_TO_EXIT_REGISTRY_REL
+from runtime.shell.command.command_engine import REFUSAL_TO_EXIT_REGISTRY_REL
 from tools import TOOL_REFERENCE_PATH, build_tool_surface_report
 
 

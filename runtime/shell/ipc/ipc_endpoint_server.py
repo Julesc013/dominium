@@ -172,7 +172,7 @@ class AppShellIPCEndpointServer:
         return [dict(_normalize_tree(dict(row))) for row in rows[:limit]]
 
     def _dispatch_console(self, negotiation_record: Mapping[str, object], payload_ref: Mapping[str, object]) -> list[dict]:
-        from runtime.shell.commands.command_engine import dispatch_registered_command
+        from runtime.shell.command.command_engine import dispatch_registered_command
 
         message = dict(_normalize_tree(dict(payload_ref or {})))
         command_text = str(message.get("text", "")).strip()

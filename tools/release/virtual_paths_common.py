@@ -51,7 +51,7 @@ INTEGRATION_TARGETS = (
         "surface": "bootstrap",
     },
     {
-        "file_path": "runtime/shell/commands/command_engine.py",
+        "file_path": "runtime/shell/command/command_engine.py",
         "markers": ("VROOT_LOCKS", "VROOT_LOGS", "vpath_resolve(", "vpath_candidate_roots("),
         "surface": "command_engine",
     },

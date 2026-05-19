@@ -8,7 +8,7 @@ from typing import Dict, List, Mapping, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
-from .capability import capability_binding_rows, resolve_missing_capabilities
+from .core import capability_binding_rows, resolve_missing_capabilities
 from .effects import REFUSAL_EFFECT_FORBIDDEN, get_effective_modifier_map
 from .negotiation import negotiate_request
 

@@ -67,7 +67,7 @@ PREFIX_ROUTES: list[tuple[str, str, str]] = [
     ("engine/modules/system/", "runtime/platform/system/", "runtime system platform service"),
     ("engine/modules/trans/", "game/domain/transport/", "transport domain mechanics"),
     ("engine/modules/tui/", "runtime/ui/tui/", "runtime TUI service"),
-    ("engine/modules/ui/", "runtime/ui/core/", "runtime UI service"),
+    ("engine/modules/ui/", "runtime/ui/service/", "runtime UI service"),
     ("engine/modules/ups/", "game/domain/systems/ups/", "UPS systems domain mechanics"),
     ("engine/modules/vehicle/", "game/domain/mobility/vehicle/", "vehicle mobility mechanics"),
     ("engine/modules/view/", "runtime/ui/view/", "runtime view service"),

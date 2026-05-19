@@ -55,18 +55,18 @@ not a merge blocker.
 
 ### RUNTIME-NAME-01
 
-Still visible:
+Closed by the follow-up runtime naming pass:
 
-- `runtime/shell/command` and `runtime/shell/commands`
-- `runtime/render/soft`
-- `runtime/render/stub`
-- `runtime/render/client/renderers`
-- `runtime/shell/ui_backends`
-- `runtime/capability/capability`
-- `runtime/ui/core`
+- `runtime/shell/commands` merged into `runtime/shell/command`.
+- `runtime/render/soft` moved to `runtime/render/software`.
+- `runtime/render/stub` moved to `runtime/render/null`.
+- `runtime/render/client/renderers` moved to `runtime/render/backend`.
+- `runtime/shell/ui_backends` moved to `runtime/ui/backend`.
+- `runtime/capability/capability` moved to `runtime/capability/core`.
+- `runtime/ui/core` moved to `runtime/ui/service`.
 
-Do this after reference repair for RepoX, AuditX, shell validators, and CMake
-paths.
+Active CMake, RepoX, AuditX, shell validators, renderer tests, and command
+imports now reference the canonical runtime paths.
 
 ### GAME-RULE-01
 

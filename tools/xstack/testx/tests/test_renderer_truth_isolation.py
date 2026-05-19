@@ -14,9 +14,9 @@ TARGETS = (
     "runtime/render/client/render_model_adapter.py",
     "runtime/render/client/representation_resolver.py",
     "runtime/render/client/snapshot_capture.py",
-    "runtime/render/client/renderers/null_renderer.py",
-    "runtime/render/client/renderers/software_renderer.py",
-    "runtime/render/client/renderers/hw_renderer_gl.py",
+    "runtime/render/backend/null_renderer.py",
+    "runtime/render/backend/software_renderer.py",
+    "runtime/render/backend/hw_renderer_gl.py",
     "tools/validators/render/tool_render_capture.py",
     "tools/validators/render/render_cli.py",
 )

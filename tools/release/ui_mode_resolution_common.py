@@ -106,12 +106,12 @@ def ui_mode_resolution_violations(repo_root: str) -> list[dict]:
                 "rule_id": "INV-FALLBACK-DETERMINISTIC",
             }
         )
-    command_engine_text = _file_text(repo_root, "runtime/shell/commands/command_engine.py")
+    command_engine_text = _file_text(repo_root, "runtime/shell/command/command_engine.py")
     if "\"mode_selection\"" not in command_engine_text:
         violations.append(
             {
                 "code": "silent_mode_fallback",
-                "file_path": "runtime/shell/commands/command_engine.py",
+                "file_path": "runtime/shell/command/command_engine.py",
                 "message": "compat-status must expose current mode selection and degrade details",
                 "rule_id": "INV-UI-MODE-LOGGED",
             }

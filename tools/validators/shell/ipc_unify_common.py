@@ -87,7 +87,7 @@ CANONICAL_SURFACES = (
         ),
     },
     {
-        "path": "runtime/shell/commands/command_engine.py",
+        "path": "runtime/shell/command/command_engine.py",
         "surface": "command_entrypoint",
         "classification": "canonical",
         "notes": "AppShell console attach command routes through the canonical IPC client.",
@@ -139,7 +139,7 @@ CANONICAL_SURFACES = (
 CANONICAL_BINDINGS = (
     {
         "surface": "Console attach command",
-        "consumer_path": "runtime/shell/commands/command_engine.py",
+        "consumer_path": "runtime/shell/command/command_engine.py",
         "canonical_target": "runtime/shell/ipc/ipc_client.py",
         "notes": "All console attach requests route through attach_ipc_endpoint/query_ipc_status/query_ipc_log_events/run_ipc_console_command.",
     },
@@ -831,7 +831,7 @@ def _render_final_report(report: Mapping[str, object]) -> str:
         "- Handshake: `tools/validators/compatibility/handshake/handshake_engine.py`",
         "- Attach client: `runtime/shell/ipc/ipc_client.py`",
         "- Endpoint server: `runtime/shell/ipc/ipc_endpoint_server.py`",
-        "- Consumers: `runtime/shell/commands/command_engine.py`, `runtime/shell/tui/tui_engine.py`, and `runtime/shell/supervisor/supervisor_engine.py`",
+        "- Consumers: `runtime/shell/command/command_engine.py`, `runtime/shell/tui/tui_engine.py`, and `runtime/shell/supervisor/supervisor_engine.py`",
         "",
         "## Removed Duplicate IPC Paths",
         "",

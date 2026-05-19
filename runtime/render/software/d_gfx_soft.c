@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/render/soft/d_gfx_soft.c
+FILE: runtime/render/software/d_gfx_soft.c
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / render/soft/d_gfx_soft
+LAYER / SUBSYSTEM: Domino impl / render/software/d_gfx_soft
 RESPONSIBILITY: Implements `d_gfx_soft`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `include/render/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).
@@ -14,7 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` 
 #include <stdlib.h>
 #include <string.h>
 
-#include "soft/d_gfx_soft.h"
+#include "d_gfx_soft.h"
 #include "domino/system/d_system.h"
 
 #define D_GFX_SOFT_FONT_SCALE 2

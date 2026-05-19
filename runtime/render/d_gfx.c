@@ -21,9 +21,9 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` 
 #include "domino/caps.h"
 #include "domino/config_base.h"
 #include "domino/sys.h"
-#include "soft/d_gfx_soft.h"
+#include "d_gfx_soft.h"
 #include "render/null/d_gfx_null.h"
-#include "stub/d_gfx_stub.h"
+#include "d_gfx_stub.h"
 
 /* Backbuffer defaults */
 static i32 g_backbuffer_w = 800;

@@ -256,8 +256,8 @@ RENDERER_RENDERMODEL_ONLY_FILES = (
     "runtime/render/client/render_model_adapter.py",
     "runtime/render/client/representation_resolver.py",
     "runtime/render/client/snapshot_capture.py",
-    "runtime/render/client/renderers/null_renderer.py",
-    "runtime/render/client/renderers/software_renderer.py",
+    "runtime/render/backend/null_renderer.py",
+    "runtime/render/backend/software_renderer.py",
     "tools/xstack/sessionx/render_model.py",
     "tools/validators/render/tool_render_capture.py",
     "tools/validators/render/render_cli.py",
@@ -265,8 +265,8 @@ RENDERER_RENDERMODEL_ONLY_FILES = (
 
 RENDER_SNAPSHOT_DERIVED_FILES = (
     "runtime/render/client/snapshot_capture.py",
-    "runtime/render/client/renderers/null_renderer.py",
-    "runtime/render/client/renderers/software_renderer.py",
+    "runtime/render/backend/null_renderer.py",
+    "runtime/render/backend/software_renderer.py",
     "tools/validators/render/tool_render_capture.py",
 )
 
@@ -575,7 +575,7 @@ PLATFORM_ABSTRACTION_FILES = (
 )
 
 HW_RENDERER_RENDERMODEL_ONLY_FILES = (
-    "runtime/render/client/renderers/hw_renderer_gl.py",
+    "runtime/render/backend/hw_renderer_gl.py",
     "runtime/render/client/snapshot_capture.py",
 )
 
@@ -19837,7 +19837,7 @@ def _append_platform_renderer_invariant_findings(
                 )
             )
 
-    hw_renderer_rel = "runtime/render/client/renderers/hw_renderer_gl.py"
+    hw_renderer_rel = "runtime/render/backend/hw_renderer_gl.py"
     hw_renderer_abs = os.path.join(repo_root, hw_renderer_rel.replace("/", os.sep))
     try:
         hw_text = open(hw_renderer_abs, "r", encoding="utf-8").read()
@@ -21446,7 +21446,7 @@ def _append_geo_portability_invariant_findings(
     field_engine_rel = "game/domain/fields/field_engine.py"
     pollution_rel = "game/domain/pollution/dispersion_engine.py"
     representation_rel = "runtime/render/client/representation_resolver.py"
-    renderer_rel = "runtime/render/client/renderers/software_renderer.py"
+    renderer_rel = "runtime/render/backend/software_renderer.py"
 
     field_text = _file_text(repo_root, field_engine_rel)
     if "geo_partition_cell_key(" not in field_text:

@@ -53,7 +53,7 @@ if(WIN32)
     )
     target_link_libraries(launcher_app_win32 PRIVATE
         libs::appcore
-        shared_ui::win32
+        runtime_platform_win32_ui
     )
     set_target_properties(launcher_app_win32 PROPERTIES
         OUTPUT_NAME "launcher_app_win32"

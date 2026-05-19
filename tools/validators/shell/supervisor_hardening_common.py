@@ -76,7 +76,7 @@ SUPERVISOR_SURFACES = (
         ),
     },
     {
-        "path": "runtime/shell/commands/command_engine.py",
+        "path": "runtime/shell/command/command_engine.py",
         "surface": "launcher_commands",
         "classification": "canonical",
         "purpose": "launcher command entrypoints for start/status/stop/attach",
@@ -115,7 +115,7 @@ SUPERVISOR_SURFACES = (
 
 SCAN_FILES = (
     "runtime/shell/supervisor/supervisor_engine.py",
-    "runtime/shell/commands/command_engine.py",
+    "runtime/shell/command/command_engine.py",
     "tools/validators/shell/supervisor_service.py",
     "tools/validators/shell/appshell6_probe.py",
 )

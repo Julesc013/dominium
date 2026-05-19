@@ -1,5 +1,5 @@
 /*
-FILE: shared_ui_win32/src/win32_shell_stub.c
+FILE: runtime/platform/win32/shell/win32_shell_stub.c
 MODULE: Dominium
 PURPOSE: Minimal Win32 shell loop stub.
 NOTES: Pure presentation; no business logic.

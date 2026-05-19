@@ -26,7 +26,7 @@ REQUIRED_TOKENS = {
         "build_root_command_descriptors(",
         "format_help_text(",
     ),
-    "runtime/shell/commands/command_engine.py": (
+    "runtime/shell/command/command_engine.py": (
         "find_command_descriptor(",
         'handler_id == "packs_verify"',
         'handler_id == "profiles_show"',

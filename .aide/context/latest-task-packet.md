@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - CANON-DEBT-CLEANUP-01
+UNSPECIFIED - RUNTIME-NAME-01
 
 ## GOAL
 
-CANON-DEBT-CLEANUP-01
+RUNTIME-NAME-01
 
 ## WHY
 
@@ -113,8 +113,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4104
-- approx_tokens: 1026
+- chars: 4092
+- approx_tokens: 1023
 - budget_status: PASS
 - warnings:
   - none

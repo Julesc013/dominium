@@ -51,7 +51,7 @@ INTEGRATION_TARGETS = (
         "markers": ("compat.install_selected", "refusal.install.not_found", "_allow_install_refusal_cli"),
     },
     {
-        "file_path": "runtime/shell/commands/command_engine.py",
+        "file_path": "runtime/shell/command/command_engine.py",
         "surface": "compat_status",
         "markers": ("status_payload[\"install_discovery\"]",),
     },

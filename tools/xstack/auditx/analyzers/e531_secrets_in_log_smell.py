@@ -20,7 +20,7 @@ RULE_ID = "INV-NO-SECRETS-IN-LOGS"
 SCAN_FILES = (
     "runtime/shell/logging/log_engine.py",
     "runtime/shell/bootstrap.py",
-    "runtime/shell/commands/command_engine.py",
+    "runtime/shell/command/command_engine.py",
     "tools/setup/setup_cli.py",
     "runtime/shell/supervisor/supervisor_engine.py",
 )

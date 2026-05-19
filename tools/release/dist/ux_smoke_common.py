@@ -294,7 +294,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
                 {
                     "code": "refusal_surface_missing_refusal",
                     "message": "refusal surface did not emit a refused payload for {}".format(_token(row.get("surface_id"))),
-                    "file_path": "runtime/shell/commands/command_engine.py",
+                    "file_path": "runtime/shell/command/command_engine.py",
                     "rule_id": RULE_REMEDIATION_ID,
                 }
             )
@@ -303,7 +303,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
                 {
                     "code": "unstructured_user_facing_error",
                     "message": "user-facing refusal omitted a stable code or short reason for {}".format(_token(row.get("surface_id"))),
-                    "file_path": "runtime/shell/commands/command_engine.py",
+                    "file_path": "runtime/shell/command/command_engine.py",
                     "rule_id": RULE_REMEDIATION_ID,
                 }
             )
@@ -312,7 +312,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
                 {
                     "code": "refusal_missing_remediation",
                     "message": "refusal payload omitted a remediation hint for {}".format(_token(row.get("surface_id"))),
-                    "file_path": "runtime/shell/commands/command_engine.py",
+                    "file_path": "runtime/shell/command/command_engine.py",
                     "rule_id": RULE_REMEDIATION_ID,
                 }
             )

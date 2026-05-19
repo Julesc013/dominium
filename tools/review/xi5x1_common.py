@@ -238,7 +238,7 @@ def _classification_for_row(repo_root: str, row: Mapping[str, object]) -> dict[s
                 "rationale": "Component-local source file with a collision-free target and narrowly scoped local build rewires.",
                 "evidence_refs": [
                     XI5A_POSTMOVE_RESIDUAL_SRC_REPORT_REL,
-                    "tools/build/identity/CMakeLists.txt" if source_path.startswith("libs/build_identity/src/") else "runtime/shell/ui_backends/win32/CMakeLists.txt",
+                    "tools/build/identity/CMakeLists.txt" if source_path.startswith("libs/build_identity/src/") else "runtime/ui/backend/win32/CMakeLists.txt",
                 ],
             }
         )
@@ -763,7 +763,7 @@ def build_execution_log(
     safe_reference_updates = {
         BATCH_SAFE_1: [
             "tools/build/identity/CMakeLists.txt",
-            "runtime/shell/ui_backends/win32/CMakeLists.txt",
+            "runtime/ui/backend/win32/CMakeLists.txt",
         ],
         BATCH_SAFE_2: [
             "CMakeLists.txt",

@@ -10,7 +10,7 @@ import sys
 from typing import Iterable, Mapping, Sequence
 
 from runtime.shell.command_registry import build_root_command_descriptors
-from runtime.shell.commands import dispatch_registered_command
+from runtime.shell.command import dispatch_registered_command
 from runtime.shell.compat_adapter import emit_descriptor_payload
 from runtime.shell.console_repl import build_console_session_stub
 from runtime.shell.ipc import attach_ipc_endpoint, query_ipc_log_events, query_ipc_status, run_ipc_console_command

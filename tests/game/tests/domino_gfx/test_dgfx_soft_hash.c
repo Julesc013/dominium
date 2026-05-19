@@ -16,7 +16,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` 
 
 #include "domino/config_base.h"
 #include "domino/gfx.h"
-#include "render/soft/d_gfx_soft.h"
+#include "d_gfx_soft.h"
 #include "xxhash.h"
 
 #if DOM_BACKEND_SOFT
