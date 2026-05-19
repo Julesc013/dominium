@@ -71,6 +71,11 @@ FORBIDDEN_ACTIVE_PATH_PREFIXES = {
     "contracts/schema/fluid": "fluid schemas use contracts/schema/domain/fluids",
     "contracts/schema/civ": "civilization schemas use contracts/schema/domain/civilization",
     "contracts/schema/civilisation": "civilization schemas use contracts/schema/domain/civilization",
+    "contracts/schema/electric": "electricity schemas use contracts/schema/domain/electricity",
+    "contracts/schema/physical": "physical schemas use contracts/schema/domain/physics or contracts/schema/domain/mechanics",
+    "contracts/schema/fab": "fabrication schemas use contracts/schema/domain/fabrication",
+    "contracts/schema/tech": "technology schemas use contracts/schema/domain/technology",
+    "contracts/schema/technology": "technology schemas use contracts/schema/domain/technology",
     "contracts/schema/packs": "package/pack schemas use contracts/schema/package",
     "contracts/schema/net": "network schemas use contracts/schema/runtime/network or contracts/schema/protocol/network",
     "contracts/schema/control": "control schemas use contracts/schema/runtime/control, governance, or policy owners",
@@ -89,6 +94,39 @@ FORBIDDEN_ACTIVE_PATH_PREFIXES = {
 
 PACK_CONTRACT_GUARD_PREFIX = "contracts/package/packs/"
 PACK_CONTRACT_GUARD_README = "contracts/package/packs/README.md"
+
+SCHEMA_DUPLICATE_PATH_GROUPS = (
+    (
+        "chemistry",
+        ("contracts/schema/chem", "contracts/schema/chemistry"),
+        "contracts/schema/domain/chemistry",
+    ),
+    (
+        "geology",
+        ("contracts/schema/geo", "contracts/schema/geology"),
+        "contracts/schema/domain/geology",
+    ),
+    (
+        "fluids",
+        ("contracts/schema/fluid", "contracts/schema/fluids"),
+        "contracts/schema/domain/fluids",
+    ),
+    (
+        "civilization",
+        ("contracts/schema/civ", "contracts/schema/civilisation", "contracts/schema/civilization"),
+        "contracts/schema/domain/civilization",
+    ),
+    (
+        "materials",
+        ("contracts/schema/material", "contracts/schema/materials"),
+        "contracts/schema/domain/materials",
+    ),
+    (
+        "tool",
+        ("contracts/schema/tools",),
+        "contracts/schema/tool",
+    ),
+)
 
 
 def utc_now():
@@ -140,7 +178,39 @@ def classify(path, term, index):
 def build_report(repo_root, max_findings):
     findings = []
     counts = {}
-    for path in git_files(repo_root):
+    tracked_files = git_files(repo_root)
+    tracked_paths = set(tracked_files)
+    tracked_dirs = set()
+    for path in tracked_files:
+        segments = path.split("/")[:-1]
+        for index in range(1, len(segments) + 1):
+            tracked_dirs.add("/".join(segments[:index]))
+
+    for domain_name, retired_roots, canonical_root in SCHEMA_DUPLICATE_PATH_GROUPS:
+        active_retired = [
+            root for root in retired_roots
+            if root in tracked_dirs or root in tracked_paths
+        ]
+        canonical_present = canonical_root in tracked_dirs or canonical_root in tracked_paths
+        if active_retired and canonical_present:
+            for root in active_retired:
+                reason = "{0} schemas must not be split between {1} and {2}".format(
+                    domain_name,
+                    root,
+                    canonical_root,
+                )
+                findings.append({
+                    "path": root,
+                    "segment": root,
+                    "segment_index": -1,
+                    "severity": "blocker",
+                    "disposition": "schema_duplicate_spelling",
+                    "reason": reason,
+                    "rule": "schema_duplicate_path_group",
+                })
+                counts[root] = counts.get(root, 0) + 1
+
+    for path in tracked_files:
         if path.startswith(PACK_CONTRACT_GUARD_PREFIX) and path != PACK_CONTRACT_GUARD_README:
             reason = (
                 "contracts/package/packs is guard-only; authored pack payloads belong under "

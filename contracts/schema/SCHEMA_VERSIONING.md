@@ -1,6 +1,6 @@
 # Schema Versioning Law (DATA0)
 
-All schemas under `schema/**` MUST be versioned and self-describing.
+All schemas under `contracts/schema/**` MUST be versioned and self-describing.
 Versioning is enforceable and merge-blocking.
 
 ## Required Metadata
@@ -45,4 +45,4 @@ Schemas without these fields are invalid.
 
 - Version numbers MUST be monotonic per schema_id.
 - Downgrades are FORBIDDEN.
-- Any MAJOR bump MUST list a migration plan in `schema/SCHEMA_MIGRATION.md`.
+- Any MAJOR bump MUST list a migration plan in `contracts/schema/SCHEMA_MIGRATION.md`.

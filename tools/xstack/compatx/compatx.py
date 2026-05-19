@@ -12,11 +12,15 @@ from typing import Any, Dict, List
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
 CORE_DIR = os.path.join(THIS_DIR, "core")
 if CORE_DIR not in sys.path:
     sys.path.insert(0, CORE_DIR)
 
-DEV_DIR = os.path.normpath(os.path.join(THIS_DIR, "..", "..", "scripts", "dev"))
+DEV_DIR = os.path.join(REPO_ROOT, "scripts", "dev")
 if DEV_DIR not in sys.path:
     sys.path.insert(0, DEV_DIR)
 
@@ -51,10 +55,10 @@ from schema_diff import diff_schema_files  # noqa: E402
 from env_tools_lib import canonical_workspace_id, canonicalize_env_for_workspace, detect_repo_root  # noqa: E402
 
 
-COMPAT_MATRIX_REL = os.path.join("data", "registries", "compat_matrix.json")
-MIGRATIONS_REL = os.path.join("data", "registries", "migrations.json")
-SCHEMA_POLICY_REL = os.path.join("data", "registries", "schema_version_policy.json")
-BUNDLE_PROFILES_REL = os.path.join("data", "registries", "bundle_profiles.json")
+COMPAT_MATRIX_REL = os.path.join("contracts", "registry", "compat_matrix.json")
+MIGRATIONS_REL = os.path.join("contracts", "registry", "migrations.json")
+SCHEMA_POLICY_REL = os.path.join("contracts", "schema", "registry", "schema_version_policy.json")
+BUNDLE_PROFILES_REL = os.path.join("contracts", "registry", "bundle_profiles.json")
 
 OUTPUT_ROOT_REL = os.path.join("docs", "audit", "compat")
 BASELINE_JSON_REL = "COMPAT_BASELINE.json"

@@ -74,9 +74,45 @@ _CANONICAL_PREFIX_ALIASES = (
     ("data/packs/", "content/packs/"),
     ("data/regression/", "tests/fixtures/regression/"),
     ("data/session_templates/", "content/templates/session/"),
-    ("contracts/schemas/", "contracts/schema/"),
     ("contracts/schemas/geo/", "contracts/schema/domain/geology/"),
+    ("contracts/schemas/chem/", "contracts/schema/domain/chemistry/"),
+    ("contracts/schemas/civ/", "contracts/schema/domain/civilization/"),
+    ("contracts/schemas/civilisation/", "contracts/schema/domain/civilization/"),
+    ("contracts/schemas/fluid/", "contracts/schema/domain/fluids/"),
+    ("contracts/schemas/electric/", "contracts/schema/domain/electricity/"),
+    ("contracts/schemas/tech/", "contracts/schema/domain/technology/"),
+    ("contracts/schemas/technology/", "contracts/schema/domain/technology/"),
     ("contracts/schemas/packs/", "contracts/schema/package/"),
+    ("contracts/schemas/tools/", "contracts/schema/tool/"),
+    ("contracts/schemas/validator/", "contracts/schema/validation/"),
+    ("contracts/schemas/net/", "contracts/schema/runtime/network/"),
+    ("contracts/schemas/render/", "contracts/schema/runtime/render/"),
+    ("contracts/schemas/control/", "contracts/schema/runtime/control/"),
+    ("contracts/schemas/diag/", "contracts/schema/runtime/diagnostics/"),
+    ("contracts/schemas/compat/", "contracts/schema/compatibility/"),
+    ("contracts/schemas/mods/", "contracts/schema/package/modding/"),
+    ("contracts/schemas/models/", "contracts/schema/domain/modeling/"),
+    ("contracts/schemas/specs/", "contracts/schema/validation/specs/"),
+    ("contracts/schemas/", "contracts/schema/"),
+    ("schema/geo/", "contracts/schema/domain/geology/"),
+    ("schema/chem/", "contracts/schema/domain/chemistry/"),
+    ("schema/civ/", "contracts/schema/domain/civilization/"),
+    ("schema/civilisation/", "contracts/schema/domain/civilization/"),
+    ("schema/fluid/", "contracts/schema/domain/fluids/"),
+    ("schema/electric/", "contracts/schema/domain/electricity/"),
+    ("schema/tech/", "contracts/schema/domain/technology/"),
+    ("schema/technology/", "contracts/schema/domain/technology/"),
+    ("schema/packs/", "contracts/schema/package/"),
+    ("schema/tools/", "contracts/schema/tool/"),
+    ("schema/validator/", "contracts/schema/validation/"),
+    ("schema/net/", "contracts/schema/runtime/network/"),
+    ("schema/render/", "contracts/schema/runtime/render/"),
+    ("schema/control/", "contracts/schema/runtime/control/"),
+    ("schema/diag/", "contracts/schema/runtime/diagnostics/"),
+    ("schema/compat/", "contracts/schema/compatibility/"),
+    ("schema/mods/", "contracts/schema/package/modding/"),
+    ("schema/models/", "contracts/schema/domain/modeling/"),
+    ("schema/specs/", "contracts/schema/validation/specs/"),
     ("schema/", "contracts/schema/"),
     ("runtime/appshell/", "runtime/shell/"),
     ("runtime/appshell/commands/", "runtime/shell/command/"),
@@ -867,24 +903,24 @@ REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS = (
     "WORKSPACE_COLLISION",
     "VERSIONING_POLICY_MISMATCH",
 )
-FAILURE_CLASS_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "failure_classes.schema")
-FAILURE_CLASS_REGISTRY_REL = os.path.join("data", "registries", "failure_classes.json")
+FAILURE_CLASS_SCHEMA_REL = os.path.join("contracts", "schema", "governance", "failure_classes.schema")
+FAILURE_CLASS_REGISTRY_REL = os.path.join("contracts", "registry", "failure_classes.json")
 FAILURE_CLASS_SCHEMA_ID = "dominium.schema.governance.failure_classes"  # schema_version: 1.0.0
 
-COMPAT_MATRIX_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "compat_matrix.schema")
-COMPAT_MATRIX_REGISTRY_REL = os.path.join("data", "registries", "compat_matrix.json")
+COMPAT_MATRIX_SCHEMA_REL = os.path.join("contracts", "schema", "governance", "compat_matrix.schema")
+COMPAT_MATRIX_REGISTRY_REL = os.path.join("contracts", "registry", "compat_matrix.json")
 COMPAT_MATRIX_SCHEMA_ID = "dominium.schema.governance.compat_matrix"  # schema_version: 1.0.0
-COMPAT_MIGRATION_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "migration_spec.schema")
-COMPAT_MIGRATION_REGISTRY_REL = os.path.join("data", "registries", "migrations.json")
+COMPAT_MIGRATION_SCHEMA_REL = os.path.join("contracts", "schema", "governance", "migration_spec.schema")
+COMPAT_MIGRATION_REGISTRY_REL = os.path.join("contracts", "registry", "migrations.json")
 COMPAT_MIGRATION_SCHEMA_ID = "dominium.schema.governance.migration_spec"  # schema_version: 1.0.0
-COMPAT_SCHEMA_POLICY_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "schema_version_policy.schema")
-COMPAT_SCHEMA_POLICY_REGISTRY_REL = os.path.join("data", "registries", "schema_version_policy.json")
+COMPAT_SCHEMA_POLICY_SCHEMA_REL = os.path.join("contracts", "schema", "governance", "schema_version_policy.schema")
+COMPAT_SCHEMA_POLICY_REGISTRY_REL = os.path.join("contracts", "schema", "registry", "schema_version_policy.json")
 COMPAT_SCHEMA_POLICY_SCHEMA_ID = "dominium.schema.governance.schema_version_policy"  # schema_version: 1.0.0
-SECUREX_TRUST_POLICY_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "trust_policy.schema")
-SECUREX_TRUST_POLICY_REGISTRY_REL = os.path.join("data", "registries", "trust_policy.json")
+SECUREX_TRUST_POLICY_SCHEMA_REL = os.path.join("contracts", "schema", "governance", "trust_policy.schema")
+SECUREX_TRUST_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "trust_policy.json")
 SECUREX_TRUST_POLICY_SCHEMA_ID = "dominium.schema.governance.trust_policy"  # schema_version: 1.0.0
-SECUREX_PRIVILEGE_MODEL_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "privilege_model.schema")
-SECUREX_PRIVILEGE_MODEL_REGISTRY_REL = os.path.join("data", "registries", "security_roles.json")
+SECUREX_PRIVILEGE_MODEL_SCHEMA_REL = os.path.join("contracts", "schema", "governance", "privilege_model.schema")
+SECUREX_PRIVILEGE_MODEL_REGISTRY_REL = os.path.join("contracts", "registry", "security_roles.json")
 SECUREX_PRIVILEGE_MODEL_SCHEMA_ID = "dominium.schema.governance.privilege_model"  # schema_version: 1.0.0
 SECUREX_INTEGRITY_MANIFEST_REL = os.path.join("docs", "audit", "security", "INTEGRITY_MANIFEST.json")
 SECUREX_INTEGRITY_MANIFEST_SCHEMA_ID = "dominium.schema.governance.integrity_manifest"  # schema_version: 1.0.0

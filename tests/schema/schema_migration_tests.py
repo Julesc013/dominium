@@ -6,8 +6,8 @@ import os
 import sys
 
 
-MIGRATION_REGISTRY_PATH = os.path.join("contracts", "schemas", "SCHEMA_MIGRATION_REGISTRY.json")
-PROCESS_REGISTRY_PATH = os.path.join("data", "registries", "process_registry.json")
+MIGRATION_REGISTRY_PATH = os.path.join("contracts", "schema", "SCHEMA_MIGRATION_REGISTRY.json")
+PROCESS_REGISTRY_PATH = os.path.join("contracts", "registry", "process_registry.json")
 MIGRATION_RUNNER_PATH = os.path.join("tools", "schema_migration", "schema_migration_runner.py")
 
 

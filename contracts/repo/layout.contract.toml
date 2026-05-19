@@ -200,7 +200,7 @@ status_after_phase = "violation"
 notes = "Root-level launcher/ was retired in CONVERGE-08; launcher product entrypoint source belongs under apps/launcher/ while product identity and executable naming remain stable."
 
 [transitional_aliases.schema]
-target = "contracts/schemas"
+target = "contracts/schema"
 action = "retired_after_contract_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-06"
@@ -210,7 +210,7 @@ status_after_phase = "violation"
 notes = "Root-level schema/ was retired in CONVERGE-06; retained schema law belongs under contracts/schema/."
 
 [transitional_aliases.schemas]
-target = "contracts/schemas"
+target = "contracts/schema"
 action = "retired_after_contract_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-06"
@@ -579,7 +579,7 @@ status_after_phase = "violation"
 completed_phase = "CONVERGE-09"
 normalized_domain = "chemistry"
 implementation_target = "game/domain/chemistry"
-targets = ["contracts/schema/chemistry", "contracts/registry/chemistry", "contracts/capability/chemistry", "contracts/protocol/chemistry", "game/domain/chemistry", "content/domains/chemistry", "docs/domains/chemistry", "tests/determinism/chemistry", "tests/fixtures/chemistry", "tests/regression/chemistry", "tests/golden/chemistry"]
+targets = ["contracts/schema/domain/chemistry", "contracts/registry/chemistry", "contracts/capability/chemistry", "contracts/protocol/chemistry", "game/domain/chemistry", "content/domains/chemistry", "docs/domains/chemistry", "tests/determinism/chemistry", "tests/fixtures/chemistry", "tests/regression/chemistry", "tests/golden/chemistry"]
 notes = "Root-level chem/ was retired in CONVERGE-09; implementation moved to game/domain/chemistry/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.electric]
@@ -589,7 +589,7 @@ status_after_phase = "violation"
 completed_phase = "CONVERGE-09"
 normalized_domain = "electricity"
 implementation_target = "game/domain/electricity"
-targets = ["contracts/schema/electricity", "contracts/registry/electricity", "contracts/capability/electricity", "contracts/protocol/electricity", "game/domain/electricity", "content/domains/electricity", "docs/domains/electricity", "tests/determinism/electricity", "tests/fixtures/electricity", "tests/regression/electricity", "tests/golden/electricity"]
+targets = ["contracts/schema/domain/electricity", "contracts/registry/electricity", "contracts/capability/electricity", "contracts/protocol/electricity", "game/domain/electricity", "content/domains/electricity", "docs/domains/electricity", "tests/determinism/electricity", "tests/fixtures/electricity", "tests/regression/electricity", "tests/golden/electricity"]
 notes = "Root-level electric/ was retired in CONVERGE-09; implementation moved to game/domain/electricity/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.field]
@@ -619,7 +619,7 @@ status_after_phase = "violation"
 completed_phase = "CONVERGE-09"
 normalized_domain = "fluids"
 implementation_target = "game/domain/fluids"
-targets = ["contracts/schema/fluids", "contracts/registry/fluids", "contracts/capability/fluids", "contracts/protocol/fluids", "game/domain/fluids", "content/domains/fluids", "docs/domains/fluids", "tests/determinism/fluids", "tests/fixtures/fluids", "tests/regression/fluids", "tests/golden/fluids"]
+targets = ["contracts/schema/domain/fluids", "contracts/registry/fluids", "contracts/capability/fluids", "contracts/protocol/fluids", "game/domain/fluids", "content/domains/fluids", "docs/domains/fluids", "tests/determinism/fluids", "tests/fixtures/fluids", "tests/regression/fluids", "tests/golden/fluids"]
 notes = "Root-level fluid/ was retired in CONVERGE-09; implementation moved to game/domain/fluids/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.geo]
@@ -629,7 +629,7 @@ status_after_phase = "violation"
 completed_phase = "CONVERGE-09"
 normalized_domain = "geology"
 implementation_target = "game/domain/geology"
-targets = ["contracts/schema/geology", "contracts/registry/geology", "contracts/capability/geology", "contracts/protocol/geology", "game/domain/geology", "content/domains/geology", "docs/domains/geology", "tests/determinism/geology", "tests/fixtures/geology", "tests/regression/geology", "tests/golden/geology"]
+targets = ["contracts/schema/domain/geology", "contracts/registry/geology", "contracts/capability/geology", "contracts/protocol/geology", "game/domain/geology", "content/domains/geology", "docs/domains/geology", "tests/determinism/geology", "tests/fixtures/geology", "tests/regression/geology", "tests/golden/geology"]
 notes = "Root-level geo/ was retired in CONVERGE-09; implementation moved to game/domain/geology/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.logic]
@@ -649,7 +649,7 @@ status_after_phase = "violation"
 completed_phase = "CONVERGE-09"
 normalized_domain = "materials"
 implementation_target = "game/domain/materials"
-targets = ["contracts/schema/materials", "contracts/registry/materials", "contracts/capability/materials", "contracts/protocol/materials", "game/domain/materials", "content/domains/materials", "docs/domains/materials", "tests/determinism/materials", "tests/fixtures/materials", "tests/regression/materials", "tests/golden/materials"]
+targets = ["contracts/schema/domain/materials", "contracts/registry/materials", "contracts/capability/materials", "contracts/protocol/materials", "game/domain/materials", "content/domains/materials", "docs/domains/materials", "tests/determinism/materials", "tests/fixtures/materials", "tests/regression/materials", "tests/golden/materials"]
 notes = "Root-level materials/ was retired in CONVERGE-09; implementation moved to game/domain/materials/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.mechanics]
@@ -777,7 +777,7 @@ retire_by_phase = "CONVERGE-09"
 status_after_phase = "violation"
 normalized_domain = "civilization"
 implementation_target = "game/domain/civilization"
-targets = ["contracts/schema/civilization", "contracts/registry/civilization", "contracts/capability/civilization", "contracts/protocol/civilization", "game/domain/civilization", "content/domains/civilization", "docs/domains/civilization", "tests/determinism/civilization", "tests/fixtures/civilization", "tests/regression/civilization", "tests/golden/civilization"]
+targets = ["contracts/schema/domain/civilization", "contracts/registry/civilization", "contracts/capability/civilization", "contracts/protocol/civilization", "game/domain/civilization", "content/domains/civilization", "docs/domains/civilization", "tests/determinism/civilization", "tests/fixtures/civilization", "tests/regression/civilization", "tests/golden/civilization"]
 notes = "Root-level civilization/ was absent during CONVERGE-09; future civilization/ roots are non-authoritative and must split into the listed ownership targets."
 
 [domain_roots.ecology]

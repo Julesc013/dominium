@@ -13,6 +13,7 @@
           "pack.core.runtime"
         ],
         "default_experience_id": "exp.observer",
+        "optional": false,
         "optional_content": [],
         "size_class": "small",
         "extensions": {
@@ -44,6 +45,7 @@
           "pack.ui.mission"
         ],
         "default_experience_id": "exp.observer",
+        "optional": true,
         "optional_content": [
           "experience.set.defaults"
         ],
@@ -70,6 +72,7 @@
           "pack.scenario.sol.demo",
           "pack.scenario.earth.demo"
         ],
+        "optional": true,
         "optional_content": [
           "scenario.set.intro"
         ],
@@ -97,6 +100,7 @@
         "install_pack_ids": [
           "pack.mission.intro"
         ],
+        "optional": true,
         "optional_content": [
           "mission.set.training"
         ],
@@ -121,6 +125,7 @@
         "install_pack_ids": [
           "pack.education.basic"
         ],
+        "optional": true,
         "optional_content": [
           "lesson.set.basic"
         ],
@@ -145,6 +150,7 @@
         "install_pack_ids": [
           "pack.core.runtime"
         ],
+        "optional": false,
         "optional_content": [],
         "size_class": "small",
         "extensions": {

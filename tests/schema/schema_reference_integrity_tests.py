@@ -93,7 +93,7 @@ def main() -> int:
             if ref_type in ALLOWLIST_REFS:
                 continue
             base = ref_type[: -len("_ref")]
-            schema_path = os.path.join(repo_root, "contracts", "schemas", "{}.schema".format(base))
+            schema_path = os.path.join(repo_root, "contracts", "schema", "{}.schema".format(base))
             if not os.path.isfile(schema_path):
                 violations.append(
                     "missing referenced schema for {} in {} (expected {})".format(

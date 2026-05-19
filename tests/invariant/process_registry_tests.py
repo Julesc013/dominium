@@ -8,7 +8,7 @@ from invariant_utils import is_override_active
 
 PROCESS_SCHEMA_ID = "dominium.schema.process"
 REGISTRY_SCHEMA_ID = "dominium.schema.process_registry"
-REGISTRY_PATH = os.path.join("data", "registries", "process_registry.json")
+REGISTRY_PATH = os.path.join("contracts", "registry", "process_registry.json")
 FIXTURE_PATHS = (
     os.path.join("tests", "contract", "terrain_fixtures.json"),
 )
@@ -35,9 +35,9 @@ def iter_json_files(root):
 
 def collect_process_defs(repo_root, violations):
     defs = {}
-    packs_root = os.path.join(repo_root, "data", "packs")
+    packs_root = os.path.join(repo_root, "content", "packs")
     if not os.path.isdir(packs_root):
-        violations.append("missing packs directory: data/packs")
+        violations.append("missing packs directory: content/packs")
         return defs
 
     for path in iter_json_files(packs_root):
@@ -57,7 +57,7 @@ def collect_process_defs(repo_root, violations):
             continue
         rel_path = os.path.relpath(path, repo_root).replace("\\", "/")
         parts = rel_path.split("/")
-        pack_id = parts[2] if len(parts) > 2 and parts[0] == "data" and parts[1] == "packs" else ""
+        pack_id = parts[3] if len(parts) > 3 and parts[0] == "content" and parts[1] == "packs" else ""
         for record in records:
             if not isinstance(record, dict):
                 violations.append("process-defs: invalid record in {}".format(rel_path))

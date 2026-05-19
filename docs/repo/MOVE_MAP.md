@@ -127,8 +127,8 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `repo` | `split_to_contracts_docs_tools` | `split` | `true` | `true` | `not_started` | `CONVERGE-06` | `high` | Do not add new authority here; split later into contracts/repo, docs/repo, or tools/migration. |
 | `runtime` | `runtime` | `keep` | `false` | `false` | `not_started` | `none` | `medium` | Runtime host, AppShell, platform, render, input, audio, network, storage, diagnostics, and UI adapters. Present canonical target root; inspect contents before treating adjacent... |
 | `safety` | `contracts/safety` | `split` | `true` | `false` | `not_started` | `CONVERGE-06` | `high` | Safety policy belongs under contracts or docs depending on authority. |
-| `schema` | `contracts/schemas` | `merge` | `false` | `false` | `completed` | `CONVERGE-06` | `medium` | Completed in CONVERGE-06; root-level schema/ moved under contracts/schema/. |
-| `schemas` | `contracts/schemas` | `merge` | `false` | `false` | `completed` | `CONVERGE-06` | `medium` | Completed in CONVERGE-06; root-level schemas/ merged under contracts/schema/. |
+| `schema` | `contracts/schema` | `merge` | `false` | `false` | `completed` | `CONVERGE-06` | `medium` | Completed in CONVERGE-06; root-level schema/ moved under contracts/schema/. |
+| `schemas` | `contracts/schema` | `merge` | `false` | `false` | `completed` | `CONVERGE-06` | `medium` | Completed in CONVERGE-06; root-level schemas/ merged under contracts/schema/. |
 | `scripts` | `scripts` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Developer workflow scripts and repository automation entrypoints. |
 | `security` | `contracts/security` | `split` | `true` | `false` | `not_started` | `CONVERGE-06` | `high` | Security and trust surfaces are protected and review-sensitive. |
 | `SECURITY.md` | `SECURITY.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |

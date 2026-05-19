@@ -22,8 +22,8 @@ def main() -> int:
     args = parser.parse_args()
     repo_root = os.path.abspath(args.repo_root)
 
-    field_schema = os.path.join(repo_root, "contracts", "schemas", "signal.field.schema")
-    iface_schema = os.path.join(repo_root, "contracts", "schemas", "signal.interface.schema")
+    field_schema = os.path.join(repo_root, "contracts", "schema", "signal.field.schema")
+    iface_schema = os.path.join(repo_root, "contracts", "schema", "signal.interface.schema")
     signal_doc = os.path.join(repo_root, "docs", "architecture", "SIGNAL_MODEL.md")
 
     for path in (field_schema, iface_schema, signal_doc):

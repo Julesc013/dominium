@@ -1,6 +1,6 @@
 # Schema Governance Law (DATA0)
 
-This document defines non-negotiable governance for all schemas under `schema/`.
+This document defines non-negotiable governance for all schemas under `contracts/schema/`.
 All data-driven systems MUST comply. Violations are merge-blocking.
 
 ## Scope
@@ -37,13 +37,13 @@ Each schema MUST declare its class explicitly:
 
 ## Schema Location and Ownership
 
-- All schemas live under `schema/**` and are versioned.
+- All schemas live under `contracts/schema/**` and are versioned.
 - Ownership is aligned to top-level domains:
-  - `schema/world/**` for game world data.
-  - `schema/save/**` for saves.
-  - `schema/runtime/network/**` for network payloads.
-  - `schema/package/modding/**` for mod manifests and compatibility.
-  - `schema/law/**` for law and policy formats.
+  - `contracts/schema/domain/world/**` or `contracts/schema/game/**` for game world data.
+  - `contracts/schema/save/**` for saves.
+  - `contracts/schema/runtime/network/**` for network payloads.
+  - `contracts/schema/package/modding/**` for mod manifests and compatibility.
+  - `contracts/schema/game/law/**` or `contracts/schema/governance/**` for law and policy formats.
 
 **Rationale**
 Centralized schema ownership prevents format drift and preserves determinism.

@@ -1048,13 +1048,13 @@ def completed_contract_move_entries(repo_root, roots):
     completed = []
     contract_targets = {
         "schema": {
-            "target": "contracts/schemas",
+            "target": "contracts/schema",
             "action": "merge",
             "notes": "Completed in CONVERGE-06; root-level schema/ moved under contracts/schema/.",
             "completed_notes": "Root-level schema/ is retired; retained schema law lives under contracts/schema/.",
         },
         "schemas": {
-            "target": "contracts/schemas",
+            "target": "contracts/schema",
             "action": "merge",
             "notes": "Completed in CONVERGE-06; root-level schemas/ merged under contracts/schema/.",
             "completed_notes": "Root-level schemas/ is retired; retained validator-facing schema projections live under contracts/schema/.",

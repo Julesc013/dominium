@@ -58,7 +58,7 @@ Audit logs MUST be stored with the migrated artifact (save, replay, or export).
 
 ## Machine-readable migration registry
 
-- File: `schema/SCHEMA_MIGRATION_REGISTRY.json`
+- File: `contracts/schema/SCHEMA_MIGRATION_REGISTRY.json`
 - Purpose: deterministic, explicit migration route table.
 - Required fields per route:
   - `schema_id`

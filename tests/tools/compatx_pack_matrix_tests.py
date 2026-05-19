@@ -25,7 +25,7 @@ def main():
 
     cmd = [
         sys.executable,
-        os.path.join(repo_root, "tools", "compatx", "compatx.py"),
+        os.path.join(repo_root, "tools", "xstack", "compatx", "compatx.py"),
         "pack-validate",
         "--repo-root",
         repo_root,

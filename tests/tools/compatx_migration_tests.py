@@ -20,7 +20,7 @@ def _run(cmd, cwd):
 
 
 def _compatx(repo_root, args):
-    cmd = [sys.executable, os.path.join(repo_root, "tools", "compatx", "compatx.py")]
+    cmd = [sys.executable, os.path.join(repo_root, "tools", "xstack", "compatx", "compatx.py")]
     cmd.extend(args)
     cmd.extend(["--repo-root", repo_root])
     return _run(cmd, repo_root)

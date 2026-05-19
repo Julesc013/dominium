@@ -8,7 +8,7 @@ from invariant_utils import is_override_active
 
 
 INVARIANT_ID = "INV-PROCESS-EXECUTION-COVERAGE"
-REGISTRY_PATH = os.path.join("data", "registries", "process_registry.json")
+REGISTRY_PATH = os.path.join("contracts", "registry", "process_registry.json")
 REGISTRY_SCHEMA_ID = "dominium.schema.process_registry"
 LAW_REFUSAL_PREFERENCE = (
     "failure.insufficient_authority",

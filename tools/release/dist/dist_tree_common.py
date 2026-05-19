@@ -347,8 +347,8 @@ def _copy_runtime_data(repo_root: str, bundle_root: str) -> dict:
         ("data/registries", "data/registries"),
         ("contracts/governance/governance_profile.json", "contracts/governance/governance_profile.json"),
         ("content/templates/session/session.mvp_default.json", "content/templates/session/session.mvp_default.json"),
-        ("contracts/schemas", "schema"),
-        ("contracts/schemas", "schemas"),
+        ("contracts/schema", "schema"),
+        ("contracts/schema", "schemas"),
         ("tools/xstack/compatx/version_registry.json", "tools/xstack/compatx/version_registry.json"),
     ):
         src_path = os.path.join(repo_root_abs, source_rel_path.replace("/", os.sep))

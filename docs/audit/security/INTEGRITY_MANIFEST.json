@@ -65,7 +65,7 @@
       },
       {
         "id": "tool.compatx",
-        "sha256": "684fce553b870fea424c8a49f85f41958a61f5512ee0965186e50c210b934b6c",
+        "sha256": "21b2e36b1f5e8ec5441e2f857da72a01039e056e624c24e9913ec9e19278c965",
         "source": "tools/xstack/compatx/compatx.py"
       },
       {
