@@ -30,6 +30,7 @@
 - `python tools/validators/repo/check_no_src_source_dirs.py --repo-root .`: 0 blockers, historical/archive info findings only.
 - `python tools/validators/repo/check_forbidden_root_names.py --repo-root .`: 0 blockers, archive/fixture warning debt remains.
 - AIDE validate warns that the repo map source snapshot hash is stale.
+- `py -3 .aide/scripts/aide_lite.py commit check --latest`: initial repair commit failed message-body structure policy; follow-up evidence commit uses the required structured headings and changelog category prefixes.
 
 ## NOT GREEN
 
