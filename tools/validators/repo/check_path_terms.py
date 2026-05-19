@@ -42,6 +42,16 @@ FORBIDDEN_ACTIVE_PATH_PREFIXES = {
     "apps/workbench/module/ui/editor/gen": "Workbench UI editor uses generated as the checked-in generated binding bucket",
     "apps/workbench/module/ui/native": "Native Workbench UI host belongs under apps/workbench/module/ui/preview/native or reusable runtime UI/platform owners",
     "apps/workbench/module/ui/preview/support": "Workbench UI preview shared helpers use apps/workbench/module/ui/preview/service",
+    "engine/include/domino/app": "engine/include must not export runtime/app headers; use runtime/include/domino/shell or an app-owned include path",
+    "engine/include/domino/cli": "engine/include must not export CLI shell headers; use runtime/include/domino/shell/command or an app-owned include path",
+    "engine/include/domino/gui": "engine/include must not export GUI/UI headers; use runtime/include/domino/ui or runtime/include/domino/platform",
+    "engine/include/domino/input": "engine/include must not export input runtime headers; use runtime/include/domino/input",
+    "engine/include/domino/io": "engine/include must not export IO/storage runtime headers; use runtime/include/domino/storage or runtime/include/domino/platform/io",
+    "engine/include/domino/pkg": "engine/include must not export package runtime headers; use runtime/include/domino/package or contracts/package",
+    "engine/include/domino/render": "engine/include must not export render runtime headers; use runtime/include/domino/render",
+    "engine/include/domino/tui": "engine/include must not export TUI runtime headers; use runtime/include/domino/ui/tui or runtime/include/domino/shell/tui",
+    "engine/include/domino/world": "engine/include must not export game/world headers; use game/include/dominium/world or game/include/domino/world by documented convention",
+    "engine/include/render": "engine/include must not export render runtime headers; use runtime/include/domino/render",
 }
 
 
