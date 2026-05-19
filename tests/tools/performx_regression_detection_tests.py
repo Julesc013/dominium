@@ -31,7 +31,7 @@ def _write_json(path, payload):
 def _performx(repo_root, output_root, baseline_path):
     cmd = [
         sys.executable,
-        os.path.join(repo_root, "tools", "performx", "performx.py"),
+        os.path.join(repo_root, "tools", "xstack", "performx", "performx.py"),
         "run",
         "--repo-root",
         repo_root,

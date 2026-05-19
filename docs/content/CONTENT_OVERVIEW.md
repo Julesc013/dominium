@@ -123,7 +123,7 @@ Every content record MUST include:
 
 
 
-Canonical, optional base packs live under `data/packs/` and are documented in
+Canonical, optional base packs live under `content/packs/` and are documented in
 
 
 `docs/content/BASE_PACKS.md`.

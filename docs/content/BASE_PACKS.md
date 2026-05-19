@@ -18,7 +18,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 These packs are OPTIONAL and are provided only to demonstrate the architecture.
 No pack is required to boot or run the engine or game.
 
-Pack definitions live under `data/packs/`.
+Pack definitions live under `content/packs/<category>/<pack_id>/`.
 
 ## org.dominium.base.topology
 

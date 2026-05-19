@@ -7,6 +7,14 @@ import sys
 
 VERSION_RE = re.compile(r"^\d+\.\d+\.\d+$")
 MAX_LIST = 256
+REQUIRED_FILES = [
+    "fields.json",
+    "knowledge_artifacts.json",
+    "measurement_artifacts.json",
+    "provenance_records.json",
+    "refinement_plans.json",
+    "worldgen_models.json",
+]
 
 
 def load_json(path, errors):
@@ -18,52 +26,172 @@ def load_json(path, errors):
         return None
 
 
+def collect_values(value, key):
+    if isinstance(value, dict):
+        for current_key, current_value in value.items():
+            if current_key == key and isinstance(current_value, str):
+                yield current_value
+            yield from collect_values(current_value, key)
+    elif isinstance(value, list):
+        for item in value:
+            yield from collect_values(item, key)
+
+
 def require_keys(obj, keys, path, errors):
     for key in keys:
         if key not in obj:
             errors.append(f"{path}: missing required field '{key}'")
 
 
-def check_version(meta, path, errors):
-    schema_version = meta.get("schema_version")
+def check_version(doc, path, errors):
+    schema_version = doc.get("schema_version")
     if not schema_version or not VERSION_RE.match(schema_version):
         errors.append(f"{path}: invalid schema_version '{schema_version}'")
-    stub = meta.get("migration_stub")
-    if not isinstance(stub, dict):
-        errors.append(f"{path}: missing migration_stub")
-        return
-    require_keys(stub, ["from_version", "to_version", "status"], path, errors)
 
 
-def check_list(name, value, path, errors):
-    if not isinstance(value, list):
-        errors.append(f"{path}: field '{name}' must be a list")
-        return
-    if len(value) > MAX_LIST:
-        errors.append(f"{path}: field '{name}' exceeds max size {MAX_LIST}")
+def check_records(doc, path, errors):
+    records = doc.get("records")
+    if not isinstance(records, list) or not records:
+        errors.append(f"{path}: records must be a non-empty list")
+        return []
+    if len(records) > MAX_LIST:
+        errors.append(f"{path}: records exceeds max size {MAX_LIST}")
+    return records
 
 
-def detect_cycles(parent_map):
-    visited = {}
+def validate_real_worldgen_domain(repo_root, domain_name, display_name, min_field_count):
+    root = os.path.join(repo_root, "content", "domains", "worldgen", "real", domain_name)
+    errors = []
 
-    def visit(node):
-        state = visited.get(node, 0)
-        if state == 1:
-            return True
-        if state == 2:
-            return False
-        visited[node] = 1
-        parent = parent_map.get(node)
-        if parent:
-            if visit(parent):
-                return True
-        visited[node] = 2
-        return False
+    if not os.path.isdir(root):
+        errors.append(f"{root}: missing canonical worldgen real domain directory")
+    if os.path.isdir(os.path.join(root, "content")):
+        errors.append(f"{os.path.join(root, 'content')}: nested content/ wrapper is not canonical")
 
-    for node in parent_map:
-        if visit(node):
-            return True
-    return False
+    docs = {}
+    for filename in REQUIRED_FILES:
+        path = os.path.join(root, filename)
+        if not os.path.exists(path):
+            errors.append(f"{path}: missing required canonical worldgen file")
+            continue
+        doc = load_json(path, errors)
+        if doc is not None:
+            docs[filename] = doc
+
+    if errors:
+        for err in errors:
+            print(err)
+        return 1
+
+    records_by_file = {}
+    for filename, doc in docs.items():
+        path = os.path.join(root, filename)
+        check_version(doc, path, errors)
+        records_by_file[filename] = check_records(doc, path, errors)
+
+    token = f"worldgen.real.{domain_name}"
+    id_prefix = f"org.dominium.worldgen.real.{domain_name}."
+    provenance_prefix = f"prov.org.dominium.worldgen.realdata.{domain_name}."
+
+    provenance_ids = set()
+    for record in records_by_file["provenance_records.json"]:
+        require_keys(record, ["knowledge_artifact_id", "knowledge_domain_tag"], "provenance_records.json", errors)
+        provenance_id = record.get("knowledge_artifact_id")
+        if provenance_id:
+            provenance_ids.add(provenance_id)
+            if not provenance_id.startswith(provenance_prefix):
+                errors.append(f"provenance_records.json: unexpected provenance id '{provenance_id}'")
+        if token not in record.get("knowledge_domain_tag", ""):
+            errors.append("provenance_records.json: provenance domain tag does not match canonical domain")
+
+    field_ids = set()
+    for record in records_by_file["fields.json"]:
+        require_keys(
+            record,
+            ["field_id", "field_type", "units", "resolution", "representation", "knowledge_state", "provenance_ref"],
+            "fields.json",
+            errors,
+        )
+        field_id = record.get("field_id")
+        if field_id in field_ids:
+            errors.append(f"fields.json: duplicate field_id '{field_id}'")
+        if field_id:
+            field_ids.add(field_id)
+            if not field_id.startswith(f"{id_prefix}field."):
+                errors.append(f"fields.json: field_id '{field_id}' does not use canonical domain prefix")
+        if not isinstance(record.get("units"), list):
+            errors.append(f"fields.json: field '{field_id}' units must be a list")
+        if not isinstance(record.get("representation"), list) or not record.get("representation"):
+            errors.append(f"fields.json: field '{field_id}' representation must be a non-empty list")
+
+    if len(field_ids) < min_field_count:
+        errors.append(f"fields.json: expected at least {min_field_count} {display_name} field records")
+
+    model_ids = set()
+    for record in records_by_file["worldgen_models.json"]:
+        require_keys(record, ["model_id", "model_family", "supported_fields", "provenance_ref"], "worldgen_models.json", errors)
+        model_id = record.get("model_id")
+        if model_id in model_ids:
+            errors.append(f"worldgen_models.json: duplicate model_id '{model_id}'")
+        if model_id:
+            model_ids.add(model_id)
+            if not model_id.startswith(f"{id_prefix}model."):
+                errors.append(f"worldgen_models.json: model_id '{model_id}' does not use canonical domain prefix")
+        supported_fields = set(collect_values(record.get("supported_fields", []), "field_id"))
+        missing_fields = sorted(supported_fields - field_ids)
+        if missing_fields:
+            errors.append(f"worldgen_models.json: model '{model_id}' references unknown fields {missing_fields}")
+
+    for record in records_by_file["refinement_plans.json"]:
+        require_keys(record, ["plan_id", "layers", "provenance_ref"], "refinement_plans.json", errors)
+        plan_id = record.get("plan_id")
+        if plan_id and not plan_id.startswith(f"{id_prefix}plan."):
+            errors.append(f"refinement_plans.json: plan_id '{plan_id}' does not use canonical domain prefix")
+        layers = record.get("layers", [])
+        if not isinstance(layers, list) or not layers:
+            errors.append(f"refinement_plans.json: plan '{plan_id}' layers must be a non-empty list")
+            continue
+        order_indices = []
+        for layer in layers:
+            layer_id = layer.get("layer_id")
+            order_index = layer.get("order_index")
+            if not isinstance(order_index, int):
+                errors.append(f"refinement_plans.json: layer '{layer_id}' order_index must be an int")
+            else:
+                order_indices.append(order_index)
+            missing_fields = sorted(set(collect_values(layer.get("field_refs", []), "field_id")) - field_ids)
+            if missing_fields:
+                errors.append(f"refinement_plans.json: layer '{layer_id}' references unknown fields {missing_fields}")
+            missing_models = sorted(set(collect_values(layer.get("model_refs", []), "model_id")) - model_ids)
+            if missing_models:
+                errors.append(f"refinement_plans.json: layer '{layer_id}' references unknown models {missing_models}")
+        if order_indices and order_indices != sorted(order_indices):
+            errors.append(f"refinement_plans.json: plan '{plan_id}' layers must be ordered by order_index")
+
+    for filename, id_key in [
+        ("knowledge_artifacts.json", "knowledge_artifact_id"),
+        ("measurement_artifacts.json", "measurement_artifact_id"),
+    ]:
+        for record in records_by_file[filename]:
+            require_keys(record, [id_key, "provenance_ref"], filename, errors)
+            record_id = record.get(id_key, "")
+            if domain_name not in record_id:
+                errors.append(f"{filename}: {id_key} '{record_id}' does not identify {display_name}")
+
+    for filename, records in records_by_file.items():
+        if filename == "provenance_records.json":
+            continue
+        for provenance_id in collect_values(records, "provenance_id"):
+            if provenance_id not in provenance_ids:
+                errors.append(f"{filename}: provenance_id '{provenance_id}' is not declared")
+
+    if errors:
+        for err in errors:
+            print(err)
+        return 1
+
+    print(f"{display_name} canonical worldgen data validation passed")
+    return 0
 
 
 def main():
@@ -71,242 +199,12 @@ def main():
     parser.add_argument("--repo-root", default=".")
     args = parser.parse_args()
 
-    repo_root = os.path.abspath(args.repo_root)
-    earth_root = os.path.join(repo_root, "data", "world", "sol", "earth")
-    errors = []
-
-    required_files = [
-        os.path.join(earth_root, "earth.body.json"),
-        os.path.join(earth_root, "earth.orbits.json"),
-        os.path.join(earth_root, "earth.surfaces", "land.surface.json"),
-        os.path.join(earth_root, "earth.surfaces", "ocean.surface.json"),
-        os.path.join(earth_root, "earth.surfaces", "atmosphere.volume.json"),
-        os.path.join(earth_root, "earth.surfaces", "subsurface.volume.json"),
-        os.path.join(earth_root, "earth.regions", "continents.json"),
-        os.path.join(earth_root, "earth.regions", "oceans.json"),
-        os.path.join(earth_root, "earth.regions", "polar_regions.json"),
-        os.path.join(earth_root, "earth.regions", "tectonic_plates.json"),
-        os.path.join(earth_root, "earth.climate", "climate_zones.json"),
-        os.path.join(earth_root, "earth.climate", "biome_tags.json"),
-        os.path.join(earth_root, "earth.imports", "README.md"),
-        os.path.join(earth_root, "README.md")
-    ]
-
-    for path in required_files:
-        if not os.path.exists(path):
-            errors.append(f"{path}: missing required file")
-
-    if errors:
-        for err in errors:
-            print(err)
-        return 1
-
-    body_doc = load_json(os.path.join(earth_root, "earth.body.json"), errors)
-    orbits_doc = load_json(os.path.join(earth_root, "earth.orbits.json"), errors)
-    land_doc = load_json(os.path.join(earth_root, "earth.surfaces", "land.surface.json"), errors)
-    ocean_doc = load_json(os.path.join(earth_root, "earth.surfaces", "ocean.surface.json"), errors)
-    atm_doc = load_json(os.path.join(earth_root, "earth.surfaces", "atmosphere.volume.json"), errors)
-    sub_doc = load_json(os.path.join(earth_root, "earth.surfaces", "subsurface.volume.json"), errors)
-    continents_doc = load_json(os.path.join(earth_root, "earth.regions", "continents.json"), errors)
-    oceans_doc = load_json(os.path.join(earth_root, "earth.regions", "oceans.json"), errors)
-    polar_doc = load_json(os.path.join(earth_root, "earth.regions", "polar_regions.json"), errors)
-    plates_doc = load_json(os.path.join(earth_root, "earth.regions", "tectonic_plates.json"), errors)
-    climate_doc = load_json(os.path.join(earth_root, "earth.climate", "climate_zones.json"), errors)
-    biome_doc = load_json(os.path.join(earth_root, "earth.climate", "biome_tags.json"), errors)
-
-    if errors:
-        for err in errors:
-            print(err)
-        return 1
-
-    for doc, path in [
-        (body_doc, "earth.body.json"),
-        (orbits_doc, "earth.orbits.json"),
-        (land_doc, "earth.surfaces/land.surface.json"),
-        (ocean_doc, "earth.surfaces/ocean.surface.json"),
-        (atm_doc, "earth.surfaces/atmosphere.volume.json"),
-        (sub_doc, "earth.surfaces/subsurface.volume.json"),
-        (continents_doc, "earth.regions/continents.json"),
-        (oceans_doc, "earth.regions/oceans.json"),
-        (polar_doc, "earth.regions/polar_regions.json"),
-        (plates_doc, "earth.regions/tectonic_plates.json"),
-        (climate_doc, "earth.climate/climate_zones.json"),
-        (biome_doc, "earth.climate/biome_tags.json")
-    ]:
-        check_version(doc, path, errors)
-
-    body_rec = body_doc.get("record", {})
-    require_keys(body_rec, [
-        "body_id",
-        "parent_body_ref",
-        "body_type",
-        "name",
-        "radius_m",
-        "mass_class",
-        "surface_refs",
-        "volume_refs",
-        "orbital_rail_ref",
-        "scale_domain_ref",
-        "provenance_ref",
-        "data_source_refs",
-        "body_tags"
-    ], "earth.body.json", errors)
-    check_list("surface_refs", body_rec.get("surface_refs", []), "earth.body.json", errors)
-    check_list("volume_refs", body_rec.get("volume_refs", []), "earth.body.json", errors)
-    check_list("data_source_refs", body_rec.get("data_source_refs", []), "earth.body.json", errors)
-    check_list("body_tags", body_rec.get("body_tags", []), "earth.body.json", errors)
-    if "supported_scale_domains" in body_rec:
-        check_list("supported_scale_domains", body_rec.get("supported_scale_domains", []),
-                   "earth.body.json", errors)
-
-    orbits_rec = orbits_doc.get("record", {})
-    require_keys(orbits_rec, ["rail_records"], "earth.orbits.json", errors)
-    check_list("rail_records", orbits_rec.get("rail_records", []), "earth.orbits.json", errors)
-
-    surface_docs = [land_doc, ocean_doc]
-    volume_docs = [atm_doc, sub_doc]
-    region_docs = [continents_doc, oceans_doc, polar_doc, plates_doc]
-
-    surface_ids = set()
-    volume_ids = set()
-    region_ids = set()
-    parent_map = {}
-    surface_biomes = set()
-
-    for doc, path in [
-        (land_doc, "earth.surfaces/land.surface.json"),
-        (ocean_doc, "earth.surfaces/ocean.surface.json")
-    ]:
-        rec = doc.get("record", {})
-        surface_records = rec.get("surface_records", [])
-        check_list("surface_records", surface_records, path, errors)
-        for surface in surface_records:
-            require_keys(surface, [
-                "surface_id",
-                "body_ref",
-                "surface_type",
-                "coordinate_frame_ref",
-                "heightmap_ref",
-                "climate_map_ref",
-                "biome_tags",
-                "region_ids",
-                "provenance_ref"
-            ], path, errors)
-            surface_id = surface.get("surface_id")
-            if surface_id:
-                surface_ids.add(surface_id)
-            check_list("biome_tags", surface.get("biome_tags", []), path, errors)
-            check_list("region_ids", surface.get("region_ids", []), path, errors)
-            for tag in surface.get("biome_tags", []):
-                surface_biomes.add(tag)
-
-    for doc, path in [
-        (atm_doc, "earth.surfaces/atmosphere.volume.json"),
-        (sub_doc, "earth.surfaces/subsurface.volume.json")
-    ]:
-        rec = doc.get("record", {})
-        volume_records = rec.get("volume_records", [])
-        check_list("volume_records", volume_records, path, errors)
-        for volume in volume_records:
-            require_keys(volume, [
-                "volume_id",
-                "body_ref",
-                "volume_type",
-                "coordinate_frame_ref",
-                "bounds_ref",
-                "region_ids",
-                "provenance_ref"
-            ], path, errors)
-            volume_id = volume.get("volume_id")
-            if volume_id:
-                volume_ids.add(volume_id)
-            check_list("region_ids", volume.get("region_ids", []), path, errors)
-
-    for doc, path in [
-        (continents_doc, "earth.regions/continents.json"),
-        (oceans_doc, "earth.regions/oceans.json"),
-        (polar_doc, "earth.regions/polar_regions.json"),
-        (plates_doc, "earth.regions/tectonic_plates.json"),
-        (atm_doc, "earth.surfaces/atmosphere.volume.json"),
-        (sub_doc, "earth.surfaces/subsurface.volume.json")
-    ]:
-        rec = doc.get("record", {})
-        region_records = rec.get("region_records", [])
-        check_list("region_records", region_records, path, errors)
-        for region in region_records:
-            require_keys(region, [
-                "region_id",
-                "surface_ref",
-                "volume_ref",
-                "boundary_ref",
-                "region_type",
-                "parent_region_ref",
-                "layer_id",
-                "region_tags",
-                "provenance_ref"
-            ], path, errors)
-            region_id = region.get("region_id")
-            if region_id:
-                region_ids.add(region_id)
-            parent_map[region_id] = region.get("parent_region_ref")
-            surface_ref = region.get("surface_ref")
-            volume_ref = region.get("volume_ref")
-            if (surface_ref and volume_ref) or (not surface_ref and not volume_ref):
-                errors.append(f"{path}: region '{region_id}' must reference exactly one of surface_ref or volume_ref")
-            if surface_ref and surface_ref not in surface_ids:
-                errors.append(f"{path}: region '{region_id}' references unknown surface '{surface_ref}'")
-            if volume_ref and volume_ref not in volume_ids:
-                errors.append(f"{path}: region '{region_id}' references unknown volume '{volume_ref}'")
-            check_list("region_tags", region.get("region_tags", []), path, errors)
-
-    if detect_cycles(parent_map):
-        errors.append("region hierarchy contains cycles")
-
-    for doc, path in [
-        (land_doc, "earth.surfaces/land.surface.json"),
-        (ocean_doc, "earth.surfaces/ocean.surface.json")
-    ]:
-        rec = doc.get("record", {})
-        for surface in rec.get("surface_records", []):
-            for region_id in surface.get("region_ids", []):
-                if region_id not in region_ids:
-                    errors.append(f"{path}: surface '{surface.get('surface_id')}' references unknown region '{region_id}'")
-
-    climate_rec = climate_doc.get("record", {})
-    climate_tags = climate_rec.get("valid_climate_tags", [])
-    check_list("valid_climate_tags", climate_tags, "earth.climate/climate_zones.json", errors)
-    zones = climate_rec.get("climate_zone_records", [])
-    check_list("climate_zone_records", zones, "earth.climate/climate_zones.json", errors)
-    for zone in zones:
-        require_keys(zone, ["zone_id", "tag", "region_refs", "provenance_ref"],
-                     "earth.climate/climate_zones.json", errors)
-        tag = zone.get("tag")
-        if tag not in climate_tags:
-            errors.append(f"earth.climate/climate_zones.json: zone '{zone.get('zone_id')}' has invalid tag '{tag}'")
-        check_list("region_refs", zone.get("region_refs", []), "earth.climate/climate_zones.json", errors)
-
-    biome_rec = biome_doc.get("record", {})
-    biome_tags = biome_rec.get("valid_biome_tags", [])
-    check_list("valid_biome_tags", biome_tags, "earth.climate/biome_tags.json", errors)
-    biome_records = biome_rec.get("biome_tag_records", [])
-    check_list("biome_tag_records", biome_records, "earth.climate/biome_tags.json", errors)
-    for biome in biome_records:
-        require_keys(biome, ["tag_id", "category", "provenance_ref"],
-                     "earth.climate/biome_tags.json", errors)
-        if biome.get("tag_id") not in biome_tags:
-            errors.append(f"earth.climate/biome_tags.json: tag '{biome.get('tag_id')}' not in valid list")
-
-    for tag in surface_biomes:
-        if tag not in biome_tags:
-            errors.append(f"surface biome tag '{tag}' not in earth.climate valid_biome_tags")
-
-    if errors:
-        for err in errors:
-            print(err)
-        return 1
-
-    print("Earth data validation passed")
-    return 0
+    return validate_real_worldgen_domain(
+        os.path.abspath(args.repo_root),
+        domain_name="earth",
+        display_name="Earth",
+        min_field_count=13,
+    )
 
 
 if __name__ == "__main__":

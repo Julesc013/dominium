@@ -14,7 +14,7 @@ This guide shows how to validate, inspect, and debug data-only packs without cha
 Use `pack_validate` for pack manifests, dependencies, and unit annotations.
 
 ```bash
-python tools/pack/pack_validate.py --pack-root data/packs/org.dominium.core.units --format json
+python tools/pack/pack_validate.py --pack-root content/packs/core/org.dominium.core.units --format json
 ```
 
 Common issues and fixes:
@@ -46,7 +46,7 @@ python tools/pack/capability_inspect.py --pack-id org.dominium.core.ecology.basi
 Use `fab_diff` to compare two FAB packs.
 
 ```bash
-python tools/fab/fab_diff.py --left data/packs/org.dominium.core.parts.basic --right data/packs/org.dominium.core.parts.extended --format json
+python tools/fab/fab_diff.py --left content/packs/core/org.dominium.core.parts.basic --right content/packs/core/org.dominium.core.parts.extended --format json
 ```
 
 ## Coverage status

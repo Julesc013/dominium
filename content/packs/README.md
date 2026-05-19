@@ -3,7 +3,7 @@ Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `schemas/pack_manifest.schema.json` and `docs/architecture/pack_system.md`.
+Compatibility: Bound to `contracts/schema/pack_manifest.schema.json` and `docs/architecture/pack_system.md`.
 
 # Pack Substrate v1
 
@@ -11,7 +11,7 @@ Compatibility: Bound to `schemas/pack_manifest.schema.json` and `docs/architectu
 Define canonical on-disk pack layout for deterministic discovery and validation tooling.
 
 ## Required Layout
-- `packs/<category>/<pack_id>/pack.json`
+- `content/packs/<category>/<pack_id>/pack.json`
 - Allowed categories: `blueprint`, `core`, `derived`, `domain`,
   `example`, `experience`, `law`, `official`, `reality`, `representation`,
   `spec`, `tool`, and `worldgen`.
@@ -19,7 +19,7 @@ Define canonical on-disk pack layout for deterministic discovery and validation 
   and `scenarios/`.
 
 ## Invariants
-- No executable code is allowed under `packs/`.
+- No executable code is allowed under `content/packs/`.
 - Pack activation is explicit and manifest-driven; no implicit runtime branching.
 - Dependency and contribution validation is deterministic and refusal-based.
 

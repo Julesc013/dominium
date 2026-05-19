@@ -140,6 +140,27 @@ def _repo_local_candidate(repo_root: str, normalized_path: str) -> str:
     return ""
 
 
+def _content_pack_candidate(repo_root: str, suffix: str) -> str:
+    repo_root_token = _token(repo_root)
+    suffix_token = _normalize_relpath(suffix)
+    if not repo_root_token or not suffix_token:
+        return ""
+    parts = suffix_token.split("/")
+    pack_id = parts[0]
+    if not pack_id:
+        return ""
+    packs_root = os.path.join(repo_root_token, "content", "packs")
+    if not os.path.isdir(packs_root):
+        return ""
+    for category in sorted(os.listdir(packs_root)):
+        candidate = os.path.join(packs_root, category, pack_id)
+        if len(parts) > 1:
+            candidate = os.path.join(candidate, *parts[1:])
+        if os.path.exists(candidate):
+            return os.path.normpath(os.path.abspath(candidate))
+    return ""
+
+
 def _context(repo_root: str, product_id: str, executable_path: str, active_context: Mapping[str, object] | None = None) -> dict:
     if active_context is not None:
         return dict(active_context)
@@ -214,8 +235,10 @@ def redirect_legacy_path(
     rel_prefix = _token(rel_prefix_override) or _token(row_map.get("vroot_relative_prefix"))
     rewritten_rel = "/".join(part for part in (rel_prefix, suffix) if _token(part))
     repo_local_fallback = _repo_local_candidate(repo_root, normalized)
+    content_pack_fallback = _content_pack_candidate(repo_root, suffix) if vroot_id == VROOT_PACKS else ""
     rewritten_path = (
         repo_local_fallback
+        or content_pack_fallback
         or vpath_resolve_existing(vroot_id, rewritten_rel, active_context)
         or vpath_resolve(vroot_id, rewritten_rel, active_context)
     )
@@ -233,6 +256,7 @@ def redirect_legacy_path(
                 "legacy_prefix": prefix,
                 "replacement_vroot": vroot_id,
                 "repo_local_fallback_used": bool(repo_local_fallback),
+                "content_pack_fallback_used": bool(content_pack_fallback),
                 "rewritten_path": rewritten_path.replace("\\", "/"),
             },
         )

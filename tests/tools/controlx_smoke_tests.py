@@ -19,7 +19,7 @@ def _run(cmd, cwd):
 
 
 def _controlx(repo_root, args):
-    cmd = [sys.executable, os.path.join(repo_root, "tools", "controlx", "controlx.py")]
+    cmd = [sys.executable, os.path.join(repo_root, "tools", "xstack", "controlx", "controlx.py")]
     cmd.extend(args)
     cmd.extend(["--repo-root", repo_root])
     return _run(cmd, cwd=repo_root)

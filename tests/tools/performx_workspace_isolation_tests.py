@@ -24,7 +24,7 @@ def _performx(repo_root, output_root, workspace_id):
     env["DOM_WS_ID"] = workspace_id
     cmd = [
         sys.executable,
-        os.path.join(repo_root, "tools", "performx", "performx.py"),
+        os.path.join(repo_root, "tools", "xstack", "performx", "performx.py"),
         "run",
         "--repo-root",
         repo_root,

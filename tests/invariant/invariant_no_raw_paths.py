@@ -7,9 +7,8 @@ from invariant_utils import is_override_active
 
 
 SCAN_DIRS = (
-    ("data", "packs"),
-    ("data", "world"),
-    ("data", "worldgen"),
+    ("content", "packs"),
+    ("content", "domains"),
     ("schema",),
     ("tests", "fixtures"),
     ("tests", "contract"),

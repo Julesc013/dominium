@@ -19,9 +19,9 @@ def run(repo_root: str):
     if str(redirected.get("vroot_id", "")).strip() != "VROOT_PACKS":
         return {"status": "fail", "message": "legacy data/packs path did not resolve through VROOT_PACKS"}
     rewritten = str(redirected.get("rewritten_path", "")).replace("\\", "/")
-    expected_path = os.path.join(repo_root, legacy_pack_path).replace("\\", "/")
+    expected_path = os.path.join(repo_root, "content", "packs", "core", "org.dominium.base.topology").replace("\\", "/")
     if rewritten != expected_path:
-        return {"status": "fail", "message": "legacy data/packs path did not prefer the existing repo-local fallback"}
+        return {"status": "fail", "message": "legacy data/packs path did not resolve to the canonical content pack"}
     if not os.path.isdir(str(redirected.get("rewritten_path", ""))):
         return {"status": "fail", "message": "legacy data/packs path did not resolve to an existing directory"}
     return {"status": "pass", "message": "legacy path redirects route through the governed virtual path layer"}

@@ -470,7 +470,7 @@ def _classify_responsibility(rel_path: str, layer: str) -> str:
         return "validation.stack"
     if rel_norm.startswith(("tools/audit", "tools/xstack/auditx", "tools/xstack/compatx", "tools/xstack/", "contracts/schema/", "contracts/schema/", "data/registries/")):
         return "validation.stack"
-    if rel_norm.startswith(("tools/launcher/", "tools/setup/", "tools/pack/", "tools/package/distribution/", "data/packs/")):
+    if rel_norm.startswith(("tools/launcher/", "tools/setup/", "tools/pack/", "tools/package/distribution/", "content/packs/")):
         return "packaging.install"
     if layer == "legacy":
         return "legacy.experimental"

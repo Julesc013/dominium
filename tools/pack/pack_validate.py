@@ -269,7 +269,7 @@ def main():
                 add_issue(issues, "manifest_invalid", "pack_manifest.json invalid", "pack_manifest.json")
             else:
                 validate_manifest(record, pack_root, issues)
-                all_packs = discover_pack_manifests(["data/packs", "data/worldgen"], repo_root)
+                all_packs = discover_pack_manifests(["content/packs"], repo_root)
                 provider_map = {}
                 for pack in all_packs:
                     for cap_id in pack.get("provides") or []:

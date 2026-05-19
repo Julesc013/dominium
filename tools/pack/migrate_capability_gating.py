@@ -206,8 +206,7 @@ def migrate_world_capability_fixture(path: str) -> Tuple[bool, Dict[str, str]]:
 
 def discover_pack_manifests(repo_root: str) -> List[str]:
     roots = [
-        os.path.join(repo_root, "data", "packs"),
-        os.path.join(repo_root, "data", "worldgen"),
+        os.path.join(repo_root, "content", "packs"),
         os.path.join(repo_root, "tests", "fixtures"),
         os.path.join(repo_root, "tests", "distribution", "fixtures"),
     ]

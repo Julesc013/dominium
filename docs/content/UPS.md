@@ -28,7 +28,7 @@ Authority: canonical for required contract; blockers listed below.
 
 ## Current state (as-is)
 - UPS concepts are documented in `docs/content/UPS_OVERVIEW.md`.
-- Packs under `data/packs/` are optional and capability-providing.
+- Packs under `content/packs/` are optional and capability-providing.
 - Capability resolution enforcement in engine/game is not yet fully audited.
 
 ## Blockers to resolve in Phase 3

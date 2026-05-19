@@ -9,16 +9,20 @@ import os
 import subprocess
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, Iterable, List, Tuple
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
 CORE_DIR = os.path.join(THIS_DIR, "core")
 if CORE_DIR not in sys.path:
     sys.path.insert(0, CORE_DIR)
 
-DEV_DIR = os.path.normpath(os.path.join(THIS_DIR, "..", "..", "scripts", "dev"))
+DEV_DIR = os.path.join(REPO_ROOT, "scripts", "dev")
 if DEV_DIR not in sys.path:
     sys.path.insert(0, DEV_DIR)
 
@@ -38,8 +42,8 @@ from regression_detector import detect_regressions
 from env_tools_lib import canonical_workspace_id, canonicalize_env_for_workspace, detect_repo_root
 
 
-ENVELOPE_REGISTRY_REL = os.path.join("data", "registries", "performance_envelopes.json")
-PROFILE_REGISTRY_REL = os.path.join("data", "registries", "performance_profiles.json")
+ENVELOPE_REGISTRY_REL = os.path.join("contracts", "registry", "performance_envelopes.json")
+PROFILE_REGISTRY_REL = os.path.join("contracts", "registry", "performance_profiles.json")
 OUTPUT_ROOT_REL = os.path.join("docs", "audit", "performance")
 RESULTS_REL = "PERFORMX_RESULTS.json"
 REGRESSIONS_REL = "PERFORMX_REGRESSIONS.json"
@@ -240,7 +244,7 @@ def _run(args: argparse.Namespace) -> int:
     run_meta_payload = {
         "artifact_class": "RUN_META",
         "status": "DERIVED",
-        "generated_utc": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "duration_ms": int((time.time() - start) * 1000.0),
         "workspace_id": str(ws_dirs.get("workspace_id", "")),
         "cache_key": cache_key,

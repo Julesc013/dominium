@@ -39,10 +39,19 @@ def run_validate(repo_root, input_path):
 
 
 def load_pack_manifest(repo_root, pack_id):
-    path = os.path.join(repo_root, "data", "packs", pack_id, "pack_manifest.json")
+    path = os.path.join(pack_dir(repo_root, pack_id), "pack_manifest.json")
     with open(path, "r", encoding="utf-8") as handle:
         data = json.load(handle)
     return data.get("record", data)
+
+
+def pack_dir(repo_root, pack_id):
+    packs_root = os.path.join(repo_root, "content", "packs")
+    for category in sorted(os.listdir(packs_root)):
+        candidate = os.path.join(packs_root, category, pack_id)
+        if os.path.isdir(candidate):
+            return candidate
+    return os.path.join(packs_root, "<missing>", pack_id)
 
 
 def extract_capabilities(entries):
@@ -118,7 +127,7 @@ def main():
         include_packs = resolve_dependency_closure(pack_id, manifests, providers)
         pack_paths = []
         for pid in include_packs:
-            fab_path = os.path.join(repo_root, "data", "packs", pid, "data", "fab_pack.json")
+            fab_path = os.path.join(pack_dir(repo_root, pid), "data", "fab_pack.json")
             if not os.path.isfile(fab_path):
                 print("missing fab_pack.json for {}".format(pid))
                 return 1

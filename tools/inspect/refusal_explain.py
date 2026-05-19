@@ -161,7 +161,7 @@ def extract_issues(payload):
 def build_capability_suggestions(repo_root, capability_id):
     if not capability_id:
         return []
-    packs = discover_pack_manifests(["data/packs", "data/worldgen"], repo_root)
+    packs = discover_pack_manifests(["content/packs"], repo_root)
     providers = []
     for pack in packs:
         if capability_id in (pack.get("provides") or []):

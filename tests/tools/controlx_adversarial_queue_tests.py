@@ -55,7 +55,7 @@ def main():
         result = _run(
             [
                 sys.executable,
-                os.path.join(repo_root, "tools", "controlx", "controlx.py"),
+                os.path.join(repo_root, "tools", "xstack", "controlx", "controlx.py"),
                 "run-queue",
                 "--repo-root",
                 repo_root,

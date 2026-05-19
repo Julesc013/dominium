@@ -47,7 +47,7 @@ def main() -> int:
     args = parser.parse_args()
     repo_root = os.path.abspath(args.repo_root)
 
-    pack_root = os.path.join(repo_root, "data", "packs", PACK_ID)
+    pack_root = os.path.join(repo_root, "content", "packs", "core", PACK_ID)
     if not os.path.isdir(pack_root):
         print("missing pack root: {}".format(PACK_ID))
         return 1

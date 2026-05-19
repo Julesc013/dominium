@@ -36,7 +36,7 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
   - Example:
 
 
-    - `python tools/pack/pack_validate.py --pack-root data/packs/org.dominium.core.units --format json`
+    - `python tools/pack/pack_validate.py --pack-root content/packs/core/org.dominium.core.units --format json`
 
 
 - `tools/fab/fab_validate.py`
@@ -51,7 +51,7 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
   - Example:
 
 
-    - `python tools/fab/fab_validate.py --input content/packs/core/org.dominium.core.parts.basic/data/fab_pack.json --pack-root data/packs/org.dominium.core.parts.basic --format json`
+    - `python tools/fab/fab_validate.py --input content/packs/core/org.dominium.core.parts.basic/data/fab_pack.json --pack-root content/packs/core/org.dominium.core.parts.basic --format json`
 
 
 
@@ -115,7 +115,7 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
 - `tools/fab/fab_diff.py`
   - Diffs two FAB packs and reports compatibility impact.
   - Example:
-    - `python tools/fab/fab_diff.py --left data/packs/org.dominium.core.parts.basic --right data/packs/org.dominium.core.parts.extended --format json`
+    - `python tools/fab/fab_diff.py --left content/packs/core/org.dominium.core.parts.basic --right content/packs/core/org.dominium.core.parts.extended --format json`
 - `tools/playtest/replay_diff.py`
   - Diffs two replays and reports event/refusal divergence.
 

@@ -50,7 +50,7 @@ cursors to keep simulation deterministic at scale.
 
 Add or extend:
 
-- new signal fields in `data/packs/*/data/signals.json`
+- new signal fields in `content/packs/*/*/data/signals.json`
 - new signal interfaces (compatibility rules are data)
 - process families for transformation, modulation, and filtering
 - standards and instruments to govern accuracy

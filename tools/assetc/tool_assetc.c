@@ -146,10 +146,10 @@ int dom_tool_assetc_main(dom_tool_ctx* ctx, int argc, char** argv)
     }
 
     if (!input_flag) {
-        input_flag = "data/authoring";
+        input_flag = "content/assets/authoring";
     }
     if (!output_flag) {
-        output_flag = "data/packs";
+        output_flag = "content/assets";
     }
     if (strcmp(type_flag, "graphics") != 0 &&
         strcmp(type_flag, "sounds") != 0 &&

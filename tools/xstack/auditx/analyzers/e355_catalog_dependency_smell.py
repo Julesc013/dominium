@@ -13,7 +13,7 @@ SCAN_ROOTS = ("game/domain/worldgen/mw", "game/domain/geology/worldgen", "tools/
 SCAN_EXTS = (".py",)
 CATALOG_TOKENS = (
     "data/world/milky_way/",
-    "data/worldgen/real/milky_way/",
+    "content/domains/worldgen/real/milky_way/",
     "milky_way.galaxy.json",
     "milky_way.arms.json",
     "milky_way.anchors.json",

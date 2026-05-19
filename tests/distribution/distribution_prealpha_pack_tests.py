@@ -29,6 +29,15 @@ def _load_json(path):
         return json.load(handle)
 
 
+def _pack_dir(repo_root, pack_id):
+    packs_root = os.path.join(repo_root, "content", "packs")
+    for category in sorted(os.listdir(packs_root)):
+        candidate = os.path.join(packs_root, category, pack_id)
+        if os.path.isdir(candidate):
+            return candidate
+    return os.path.join(packs_root, "<missing>", pack_id)
+
+
 def _run_json(repo_root, rel_script, args):
     script = os.path.join(repo_root, rel_script)
     cmd = [sys.executable, script] + args
@@ -50,7 +59,7 @@ def _run_json(repo_root, rel_script, args):
 
 def _check_pack_markers(repo_root):
     for pack_id in PREALPHA_PACK_IDS:
-        manifest_path = os.path.join(repo_root, "data", "packs", pack_id, "pack_manifest.json")
+        manifest_path = os.path.join(_pack_dir(repo_root, pack_id), "pack_manifest.json")
         payload = _load_json(manifest_path)
         record = payload.get("record", {})
         tags = set([str(value) for value in (record.get("pack_tags") or [])])
@@ -96,7 +105,7 @@ def _check_pack_replacement_flow(repo_root):
     for root in roots:
         rc, payload = _run_json(
             repo_root,
-            os.path.join("tools", "distribution", "compat_dry_run.py"),
+            os.path.join("tools", "package", "distribution", "compat_dry_run.py"),
             [
                 "--repo-root",
                 repo_root,
@@ -113,7 +122,7 @@ def _check_pack_replacement_flow(repo_root):
 
     rc, payload = _run_json(
         repo_root,
-        os.path.join("tools", "distribution", "compat_dry_run.py"),
+        os.path.join("tools", "package", "distribution", "compat_dry_run.py"),
         [
             "--repo-root",
             repo_root,

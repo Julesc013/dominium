@@ -9,7 +9,7 @@ Replacement Target: legacy reference surface retained without current binding au
 Data content audit
 ==================
 
-Scope: `data/` only.
+Scope: legacy `data/` content audit, retained as transition context.
 
 Classification:
 - PRESERVED: `capabilities/` (reference notes only; no content assumptions)
@@ -20,10 +20,10 @@ Classification:
 - PRESERVED: `standards/` (documentation stubs; no content assumptions)
 - ARCHIVED: `world/` -> moved to `data/archive/world/`
 - ARCHIVED: `scenarios/` -> moved to `data/archive/scenarios/`
-- CURRENT: `packs/` (canonical optional content packs)
+- MOVED: `packs/` -> `content/packs/` (canonical optional content packs)
 - CURRENT: `archive/` (historical storage)
 
 Notes:
 - Legacy world and scenario data were archived to enforce the pack-based,
   capability-driven content model.
-- Canonical base packs now live under `data/packs/` and are optional.
+- Canonical base packs now live under `content/packs/` and are optional.

@@ -7,7 +7,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "A2_SCHEMA_SHADOWING"
-WATCH_PREFIXES = ("contracts/schema/", "data/packs/", "data/registries/")
+WATCH_PREFIXES = ("contracts/schema/", "content/packs/", "contracts/registry/")
 
 SCHEMA_ID_RE = re.compile(r'["\']schema_id["\']\s*:\s*["\']([A-Za-z0-9_.-]+)["\']')
 SCHEMA_DECL_RE = re.compile(r"^\s*schema_id\s*:\s*([A-Za-z0-9_.-]+)\s*$", re.MULTILINE)
@@ -26,7 +26,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
 
     core_schema_ids = set()
-    schema_root = os.path.join(repo_root, "contracts", "schemas")
+    schema_root = os.path.join(repo_root, "contracts", "schema")
     for root, dirs, files in os.walk(schema_root):
         dirs[:] = sorted(dirs)
         for name in sorted(files):
@@ -40,8 +40,8 @@ def run(graph, repo_root, changed_files=None):
 
     findings = []
     probe_roots = [
-        os.path.join(repo_root, "data", "packs"),
-        os.path.join(repo_root, "data", "registries"),
+        os.path.join(repo_root, "content", "packs"),
+        os.path.join(repo_root, "contracts", "registry"),
     ]
     for probe_root in probe_roots:
         if not os.path.isdir(probe_root):

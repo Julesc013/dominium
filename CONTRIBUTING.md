@@ -119,7 +119,7 @@ Domain additions are pack-driven, not hardcoded mode logic.
 
 Typical flow:
 
-1. Create/update pack content under `data/packs/<pack_id>/`.
+1. Create/update pack content under `content/packs/<category>/<pack_id>/`.
 2. Provide/update `pack_manifest.json` and `pack.manifest`.
 3. Register new process/material/scenario/worldgen entries in relevant registries (for example `contracts/registry/process_registry.json` or `contracts/registry/worldgen_module_registry.json`).
 4. Ensure capabilities and law constraints are explicit in profile/law registries.

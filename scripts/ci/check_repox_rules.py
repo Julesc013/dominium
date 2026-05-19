@@ -12050,9 +12050,9 @@ def check_solver_registry_contracts(repo_root):
 
 def _collect_process_defs(repo_root, violations):
     defs = {}
-    packs_root = os.path.join(repo_root, "data", "packs")
+    packs_root = os.path.join(repo_root, "content", "packs")
     if not os.path.isdir(packs_root):
-        violations.append("INV-PROCESS-REGISTRY: missing data/packs")
+        violations.append("INV-PROCESS-REGISTRY: missing content/packs")
         return defs
     for path in iter_files([packs_root], DEFAULT_EXCLUDES, [".json"]):
         if "process" not in os.path.basename(path).lower():
@@ -12073,7 +12073,7 @@ def _collect_process_defs(repo_root, violations):
             continue
         rel_path = repo_rel(repo_root, path)
         parts = rel_path.split("/")
-        pack_id = parts[2] if len(parts) > 2 and parts[0] == "data" and parts[1] == "packs" else ""
+        pack_id = parts[3] if len(parts) > 3 and parts[0] == "content" and parts[1] == "packs" else ""
         for record in records:
             if not isinstance(record, dict):
                 violations.append("INV-PROCESS-REGISTRY: invalid process record in {}".format(rel_path))

@@ -24,7 +24,7 @@ def main():
     args = parser.parse_args()
     repo_root = os.path.abspath(args.repo_root)
 
-    pack_root = os.path.join(repo_root, "data", "packs", "org.dominium.core.units")
+    pack_root = os.path.join(repo_root, "content", "packs", "core", "org.dominium.core.units")
     manifest = os.path.join(pack_root, "pack_manifest.json")
     readme = os.path.join(pack_root, "docs", "README.md")
 

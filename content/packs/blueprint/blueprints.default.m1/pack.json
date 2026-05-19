@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "blueprints.default.m1",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [],
+  "contribution_types": [
+    "blueprint"
+  ],
+  "contributions": [
+    {
+      "type": "blueprint",
+      "id": "blueprint.house.basic",
+      "path": "data/blueprint.house.basic.json"
+    },
+    {
+      "type": "blueprint",
+      "id": "blueprint.lathe.basic",
+      "path": "data/blueprint.lathe.basic.json"
+    },
+    {
+      "type": "blueprint",
+      "id": "blueprint.road.segment.basic",
+      "path": "data/blueprint.road.segment.basic.json"
+    },
+    {
+      "type": "blueprint",
+      "id": "blueprint.simple_bridge.basic",
+      "path": "data/blueprint.simple_bridge.basic.json"
+    },
+    {
+      "type": "blueprint",
+      "id": "blueprint.space_elevator.template",
+      "path": "data/blueprint.space_elevator.template.json"
+    }
+  ],
+  "canonical_hash": "placeholder.blueprints.default.m1.v1",
+  "signature_status": "unsigned"
+}

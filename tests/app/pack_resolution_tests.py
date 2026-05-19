@@ -28,8 +28,7 @@ def load_pack_manifest(path):
 
 def iter_pack_manifests(repo_root):
     roots = [
-        os.path.join(repo_root, "data", "packs"),
-        os.path.join(repo_root, "data", "worldgen"),
+        os.path.join(repo_root, "content", "packs"),
     ]
     for root in roots:
         if not os.path.isdir(root):
@@ -110,8 +109,8 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    schema_pack = os.path.join(repo_root, "contracts", "schemas", "pack_manifest.schema")
-    schema_lock = os.path.join(repo_root, "contracts", "schemas", "capability_lockfile.schema")
+    schema_pack = os.path.join(repo_root, "contracts", "schema", "pack_manifest.schema")
+    schema_lock = os.path.join(repo_root, "contracts", "schema", "capability_lockfile.schema")
     if not os.path.isfile(schema_pack):
         print("missing pack manifest schema")
         return 1

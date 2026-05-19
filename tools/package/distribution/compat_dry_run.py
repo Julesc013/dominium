@@ -74,7 +74,7 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    roots = args.root if args.root else ["data/packs"]
+    roots = args.root if args.root else ["content/packs"]
     packs = discover_pack_manifests(roots, repo_root)
 
     incompatible = []

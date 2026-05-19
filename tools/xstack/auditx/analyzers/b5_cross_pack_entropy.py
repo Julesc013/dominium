@@ -7,7 +7,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "A5_CROSS_PACK_ENTROPY"
-WATCH_PREFIXES = ("data/packs/", "data/registries/")
+WATCH_PREFIXES = ("content/packs/", "contracts/registry/")
 MAX_REQUIRES = 8
 MAX_FANIN = 10
 
@@ -24,7 +24,7 @@ def run(graph, repo_root, changed_files=None):
     del graph
     del changed_files
 
-    packs_root = os.path.join(repo_root, "data", "packs")
+    packs_root = os.path.join(repo_root, "content", "packs")
     manifests = []
     for root, dirs, files in os.walk(packs_root):
         dirs[:] = sorted(dirs)
@@ -81,7 +81,7 @@ def run(graph, repo_root, changed_files=None):
                 category="semantic.cross_pack_entropy",
                 severity="WARN",
                 confidence=0.73,
-                file_path="data/packs",
+                file_path="content/packs",
                 evidence=[
                     "Pack is a high fan-in dependency ({} dependents).".format(len(dependents)),
                     "Pack: {}".format(pack_id),
@@ -89,7 +89,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="LEGACY",
                 recommended_action="DOC_FIX",
                 related_invariants=["INV-PACK-SCOPE-ISOLATION"],
-                related_paths=["data/packs"],
+                related_paths=["content/packs"],
             )
         )
     return findings

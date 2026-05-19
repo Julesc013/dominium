@@ -3,22 +3,26 @@
 
 from __future__ import annotations
 
-import argparse
-import json
 import os
 import sys
-from typing import Any, Dict, List
 
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-if THIS_DIR not in sys.path:
-    sys.path.insert(0, THIS_DIR)
+while THIS_DIR in sys.path:
+    sys.path.remove(THIS_DIR)
+REPO_ROOT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+import argparse
+import json
+from typing import Any, Dict, List
 
 CORE_DIR = os.path.join(THIS_DIR, "core")
 if CORE_DIR not in sys.path:
     sys.path.insert(0, CORE_DIR)
 
-DEV_SCRIPT_DIR = os.path.normpath(os.path.join(THIS_DIR, "..", "..", "scripts", "dev"))
+DEV_SCRIPT_DIR = os.path.join(REPO_ROOT, "scripts", "dev")
 if DEV_SCRIPT_DIR not in sys.path:
     sys.path.insert(0, DEV_SCRIPT_DIR)
 
@@ -31,7 +35,7 @@ from prompt_sanitizer import sanitize_prompt
 def _repo_root(path: str) -> str:
     if path:
         return os.path.abspath(path)
-    return os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+    return REPO_ROOT
 
 
 def _read_prompt_arg(args: argparse.Namespace) -> str:
@@ -108,7 +112,7 @@ def build_parser() -> argparse.ArgumentParser:
         sub_parser.add_argument("--repo-root", default="")
         sub_parser.add_argument(
             "--policy",
-            default=os.path.join("data", "registries", "controlx_policy.json"),
+            default=os.path.join("contracts", "registry", "controlx_policy.json"),
             help="Policy registry path relative to repo root.",
         )
 

@@ -36,7 +36,7 @@ def main():
     )
     cmd = [
         sys.executable,
-        os.path.join(repo_root, "tools", "controlx", "controlx.py"),
+        os.path.join(repo_root, "tools", "xstack", "controlx", "controlx.py"),
         "sanitize",
         "--repo-root",
         repo_root,

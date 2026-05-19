@@ -59,6 +59,15 @@ def load_pack_manifest(path):
     return data.get("record", data)
 
 
+def pack_dir(repo_root, pack_id):
+    packs_root = os.path.join(repo_root, "content", "packs")
+    for category in sorted(os.listdir(packs_root)):
+        candidate = os.path.join(packs_root, category, pack_id)
+        if os.path.isdir(candidate):
+            return candidate
+    return os.path.join(packs_root, "<missing>", pack_id)
+
+
 def extract_capabilities(entries):
     out = []
     for entry in entries or []:
@@ -108,12 +117,12 @@ def main():
 
     pack_records = []
     for pack_id in PACKS:
-        pack_dir = os.path.join(repo_root, "data", "packs", pack_id)
-        if not os.path.isdir(pack_dir):
+        pack_path = pack_dir(repo_root, pack_id)
+        if not os.path.isdir(pack_path):
             print("missing pack dir: {}".format(pack_id))
             return 1
 
-        pack_toml = os.path.join(pack_dir, "pack.toml")
+        pack_toml = os.path.join(pack_path, "pack.toml")
         if not os.path.isfile(pack_toml):
             print("missing pack.toml: {}".format(pack_id))
             return 1
@@ -127,7 +136,7 @@ def main():
             print("pack.toml missing pack_version for {}".format(pack_id))
             return 1
 
-        pack_manifest = os.path.join(pack_dir, "pack_manifest.json")
+        pack_manifest = os.path.join(pack_path, "pack_manifest.json")
         if not os.path.isfile(pack_manifest):
             print("missing pack_manifest.json: {}".format(pack_id))
             return 1
@@ -141,12 +150,12 @@ def main():
             print("pack_manifest missing capability for {}".format(pack_id))
             return 1
 
-        docs_readme = os.path.join(pack_dir, "docs", "README.md")
+        docs_readme = os.path.join(pack_path, "docs", "README.md")
         if not os.path.isfile(docs_readme):
             print("missing pack docs README for {}".format(pack_id))
             return 1
 
-        data_dir = os.path.join(pack_dir, "data")
+        data_dir = os.path.join(pack_path, "data")
         if not os.path.isdir(data_dir):
             print("missing data dir for {}".format(pack_id))
             return 1
@@ -160,9 +169,9 @@ def main():
             return 1
 
     # Cross-pack references: parts -> materials/interfaces
-    materials_path = os.path.join(repo_root, "data", "packs", "org.dominium.core.materials.basic", "data", "fab_pack.json")
-    interfaces_path = os.path.join(repo_root, "data", "packs", "org.dominium.core.interfaces", "data", "fab_pack.json")
-    parts_path = os.path.join(repo_root, "data", "packs", "org.dominium.core.parts.basic", "data", "fab_pack.json")
+    materials_path = os.path.join(pack_dir(repo_root, "org.dominium.core.materials.basic"), "data", "fab_pack.json")
+    interfaces_path = os.path.join(pack_dir(repo_root, "org.dominium.core.interfaces"), "data", "fab_pack.json")
+    parts_path = os.path.join(pack_dir(repo_root, "org.dominium.core.parts.basic"), "data", "fab_pack.json")
     materials = json.load(open(materials_path, "r", encoding="utf-8")).get("materials", [])
     interfaces = json.load(open(interfaces_path, "r", encoding="utf-8")).get("interfaces", [])
     parts = json.load(open(parts_path, "r", encoding="utf-8")).get("parts", [])

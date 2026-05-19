@@ -90,7 +90,7 @@ def main():
 
     repo_root = os.path.abspath(args.repo_root)
     levels = load_coverage_levels(repo_root)
-    all_packs = discover_pack_manifests(["data/packs", "data/worldgen"], repo_root)
+    all_packs = discover_pack_manifests(["content/packs"], repo_root)
 
     if args.pack_id:
         selected, missing = selection_from_ids(all_packs, args.pack_id)

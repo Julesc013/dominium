@@ -19,7 +19,7 @@ def _run(cmd, cwd, env=None):
 
 
 def _performx(repo_root, args, env=None):
-    cmd = [sys.executable, os.path.join(repo_root, "tools", "performx", "performx.py")]
+    cmd = [sys.executable, os.path.join(repo_root, "tools", "xstack", "performx", "performx.py")]
     cmd.extend(args)
     cmd.extend(["--repo-root", repo_root])
     return _run(cmd, cwd=repo_root, env=env)
