@@ -1,3 +1,11 @@
+set(DOMINIUM_ENGINE_INTERNAL_TEST_INCLUDES
+    ${CMAKE_SOURCE_DIR}/engine
+    ${CMAKE_SOURCE_DIR}/engine/state
+    ${CMAKE_SOURCE_DIR}/engine/execution/kernels
+    ${CMAKE_SOURCE_DIR}/game/domain
+    ${CMAKE_SOURCE_DIR}/game/domain/simulation/pkt
+)
+
 add_executable(engine_smoke_test
     engine_smoke_test.c
 )
@@ -447,3 +455,43 @@ set_target_properties(streaming_work_ir_tests PROPERTIES
     CXX_EXTENSIONS OFF
 )
 add_test(NAME streaming_work_ir COMMAND streaming_work_ir_tests)
+
+foreach(_dominium_engine_test_target
+        engine_smoke_test
+        engine_det_order_test
+        process_guard_tests
+        engine_perf_no_modal_test
+        engine_due_sched_test
+        engine_perf_budget_test
+        engine_data_validate_test
+        macro_capsule_store_tests
+        execution_ir_tests
+        execution_scheduler_ref_tests
+        execution_scheduler_law_tests
+        execution_contract_tests
+        agent_foundation_contract_tests
+        agent_mvp_core_tests
+        agent_mvp_social_tests
+        physicalization_mvp_tests
+        player_embodiment_tests
+        execution_equivalence_tests
+        ecs_storage_iface_tests
+        ecs_soa_storage_tests
+        ecs_packed_view_tests
+        kernel_iface_tests
+        kernel_scalar_tests
+        kernel_simd_equivalence_tests
+        kernel_gpu_fallback_tests
+        kernel_policy_tests
+        sys_caps_tests
+        execution_policy_tests
+        budget_model_tests
+        domain_volume_tests
+        visitability_contract_tests
+        execution_perf_regression_tests
+        render_prep_work_ir_tests
+        streaming_work_ir_tests)
+    target_include_directories(${_dominium_engine_test_target} PRIVATE
+        ${DOMINIUM_ENGINE_INTERNAL_TEST_INCLUDES}
+    )
+endforeach()

@@ -15,7 +15,7 @@ from tools.validators.network.policies.policy_server_authoritative import POLICY
 from tools.validators.network.policies.policy_srz_hybrid import POLICY_ID_SRZ_HYBRID
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.boundary_debug import debug_assert_after_execute
-from tools.governance.control_plane_engine import build_control_intent, build_control_resolution
+from runtime.capability.control_plane_engine import build_control_intent, build_control_resolution
 from game.domain.interaction.task import resolve_task_type_for_completion_process
 
 from .affordance_generator import build_affordance_list

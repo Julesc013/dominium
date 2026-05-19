@@ -2,96 +2,120 @@
 
 ## PHASE
 
-CANON-SPINE-NEW - canonical source-spine cleanup.
+UNSPECIFIED - CANON-SPINE-BOUNDARY-01
 
 ## GOAL
 
-Collapse second-level wrapper and duplicate source structures into the canonical
-spine: runtime shell, runtime UI/render/platform, thin apps, Workbench modules,
-deterministic engine, game domain, singular contracts, specific content roots,
-and non-interactive tools.
+CANON-SPINE-BOUNDARY-01
 
 ## WHY
 
-Top-level bad-root cleanup is complete, but the active source tree still carried
-second-level wrappers such as app/appshell/appcore/core/gui/ui/tool/data and
-singular/plural duplicate roots. CANON-SPINE-NEW makes the active ownership
-spine usable before feature work resumes.
+Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
 
 ## CONTEXT_REFS
 
-- `AGENTS.md`
-- `contracts/repo/naming.contract.toml`
-- `contracts/repo/bad_root_routing.contract.toml`
-- `docs/repo/final_repository_structure.md`
-- `docs/repo/root-recycling/CANON_SPINE_NEW_RESULT.md`
-- `docs/repo/audits/CANON_SPINE_NEW_SOURCE_SPINE_CLEANUP.md`
-- `.aide/reports/CANON-SPINE-NEW-status.md`
-- `.aide/reports/CANON-SPINE-NEW-validation.md`
-- `.aide/reports/CANON-SPINE-NEW-blockers.md`
-- `.aide/reports/CANON-SPINE-NEW-summary.json`
+- `.aide/memory/project-state.md`
+- `.aide/memory/decisions.md`
+- `.aide/memory/open-risks.md`
+- `.aide/context/repo-snapshot.json` (present)
+- `.aide/context/repo-map.json` (present)
+- `.aide/context/repo-map.md` (present)
+- `.aide/context/test-map.json` (present)
+- `.aide/context/context-index.json` (present)
+- `.aide/context/latest-context-packet.md` (present)
+- `.aide/repo/latest-repo-intelligence.md` (present)
+- `.aide/repo/file-inventory.json` (present)
+- `.aide/reports/file-quality-summary.md` (present)
+- `.aide/reports/file-quality-ledger.json` (present)
+- `.aide/refactors/latest-refactor-readiness.md` (present)
+- `.aide/refactors/latest-refactor-plan.example.json` (present)
+- `.aide/routing/latest-route-decision.json` (present)
+- `.aide/routing/latest-route-decision.md` (present)
+- `.aide/cache/latest-cache-keys.json` (present)
+- `.aide/cache/latest-cache-keys.md` (present)
+- `.aide/prompts/compact-task.md`
+- `.aide/policies/token-budget.yaml`
+- `.aide/policies/cache.yaml`
+- `.aide/policies/local-state.yaml`
 
 ## ALLOWED_PATHS
 
-- active source files whose paths/imports/build references changed because of the spine move
-- `apps/**`, `engine/**`, `game/**`, `runtime/**`, `contracts/**`, `content/**`, `docs/**`, `tests/**`, `tools/**`, `scripts/**`, `cmake/**`, `release/**`, `archive/**`
-- `.aide/reports/**`, `.aide/context/**`, `.aide/ledgers/**`
+- `<fill from the next reviewed queue packet>`
+- `.aide/context/**`
+- `.aide/queue/unspecified-*` if this task becomes a queue item
+- root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
 
+- `.git/**`
+- `.env`
+- `secrets/**`
 - `.aide.local/**`
-- `.dominium.local/**`
-- root `build/**`, `out/**`, `dist/**`, `artifacts/**`, `tmp/**`, `__pycache__/**`
-- public release/tag/upload surfaces
+- raw provider credentials, API keys, local caches, raw prompt logs
+- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
 
 ## IMPLEMENTATION
 
-- Use `git mv` for tracked structural moves.
-- Preserve file contents and semantic IDs.
-- Repair stale paths/imports/build references caused by the move.
-- Keep generated/local roots untracked.
-- Record evidence and remaining blockers.
+- Read the queue packet and relevant repo refs first.
+- Keep changes inside the allowed paths.
+- Make the smallest coherent diff that satisfies acceptance.
+- Preserve generated/manual boundaries.
+- Do not inline whole source files unless exact contents are required.
+- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
 
 ## VALIDATION
 
-- AIDE doctor/validate/test/selftest/tools/roots/repo.
-- Strict repo/root/distribution/component validators.
-- Bad-root absence and naming validators.
-- Docs/UI/ABI/include sanity.
-- CMake configure.
-- Smoke CTest and focused spine CTest.
-- Git diff checks.
+- `py -3 .aide/scripts/aide_lite.py doctor`
+- `py -3 .aide/scripts/aide_lite.py validate`
+- `py -3 .aide/scripts/aide_lite.py index`
+- `py -3 .aide/scripts/aide_lite.py context`
+- `py -3 .aide/scripts/aide_lite.py repo inventory`
+- `py -3 .aide/scripts/aide_lite.py repo validate`
+- `py -3 .aide/scripts/aide_lite.py verify`
+- `py -3 .aide/scripts/aide_lite.py review-pack`
+- `py -3 .aide/scripts/aide_lite.py route explain`
+- `py -3 .aide/scripts/aide_lite.py test`
+- `py -3 .aide/scripts/aide_lite.py selftest`
+- `py -3 scripts/aide validate`
+- `git diff --check`
+
+## COMMITS
+
+- Commit coherent subdeliverables with verbose bodies.
+- Stop at review gates.
 
 ## EVIDENCE
 
-- `.aide/reports/CANON-SPINE-NEW-status.md`
-- `.aide/reports/CANON-SPINE-NEW-validation.md`
-- `.aide/reports/CANON-SPINE-NEW-blockers.md`
-- `.aide/reports/CANON-SPINE-NEW-summary.json`
+- changed files
+- validation commands and results
+- verifier result
+- review packet path and result when review-pack is available
+- advisory route decision path and result when Q17 routing is available
+- compact packet size and budget status
+- unresolved risks and deferrals
 
 ## NON_GOALS
 
-- no feature implementation
-- no public release/tag/upload
-- no deletion of tracked source
-- no semantic ID mutation
-- no final full-proof claim while boundary/full CTest blockers remain
+- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
 
 ## ACCEPTANCE
 
-PASS_WITH_WARNINGS is acceptable when AIDE and strict structural validators pass,
-former bad roots remain empty, smoke/focused spine tests pass, and remaining
-boundary/full-proof blockers are documented.
+- Task-specific acceptance criteria are met.
+- Validation is run and recorded.
+- Evidence is written.
+- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
 
 ## OUTPUT_SCHEMA
 
-Evidence is Markdown plus compact JSON under `.aide/reports/CANON-SPINE-NEW-*`.
+Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
+Include the verifier result when Q12 verifier behavior is available.
 
 ## TOKEN_ESTIMATE
 
-This packet is intentionally compact and references evidence by path.
-
-## STATUS
-
-PASS_WITH_WARNINGS. Feature work remains blocked. Next task is
-`CANON-SPINE-BOUNDARY-01 - Repair Remaining Boundary Imports and Full Proof`.
+- method: chars / 4, rounded up
+- chars: 4108
+- approx_tokens: 1027
+- budget_status: PASS
+- warnings:
+  - none
+- formal ledger: `.aide/reports/token-ledger.jsonl`

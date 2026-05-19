@@ -12,7 +12,7 @@ DETERMINISM: Deterministic checks for required policy docs.
 #ifndef DOMINIUM_TOOLS_VALIDATE_POLICY_VALIDATION_H
 #define DOMINIUM_TOOLS_VALIDATE_POLICY_VALIDATION_H
 
-#include "validation/validator_common.h"
+#include "suite/validator_common.h"
 
 namespace dom {
 namespace validation {

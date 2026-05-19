@@ -1,0 +1,9 @@
+CANON-SPINE-BOUNDARY-01 boundary-after
+
+Command:
+python scripts/verify_build_target_boundaries.py
+
+Result:
+BOUNDARY-OK: build boundary checks passed
+
+Failure count: 0

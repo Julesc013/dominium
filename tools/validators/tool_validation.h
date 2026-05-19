@@ -12,7 +12,7 @@ DETERMINISM: Deterministic traversal and reporting order.
 #ifndef DOMINIUM_TOOLS_VALIDATE_TOOL_VALIDATION_H
 #define DOMINIUM_TOOLS_VALIDATE_TOOL_VALIDATION_H
 
-#include "validation/validator_common.h"
+#include "suite/validator_common.h"
 
 namespace dom {
 namespace validation {

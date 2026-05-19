@@ -4,7 +4,7 @@ Performance regression fixtures for PERF3 (telemetry + budget outputs).
 #include "domino/system/dsys_perf.h"
 #include "domino/system/dsys_guard.h"
 #include "domino/sim/dg_due_sched.h"
-#include "sim/lod/dg_interest.h"
+#include "simulation/lod/dg_interest.h"
 
 #include <string.h>
 #include <stdlib.h>

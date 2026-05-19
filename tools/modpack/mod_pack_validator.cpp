@@ -17,7 +17,7 @@ DETERMINISM: Deterministic parsing and ordering.
 
 #include "dominium/mods/mod_loader.h"
 #include "dominium/mods/mod_hash.h"
-#include "validation/validator_common.h"
+#include "validators/suite/validator_common.h"
 
 using dom::validation::read_file_text;
 

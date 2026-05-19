@@ -1,0 +1,19 @@
+CANON-SPINE-BOUNDARY-01 boundary-before
+
+Captured before repair with:
+python scripts/verify_build_target_boundaries.py
+
+Result: FAIL
+
+Failure count: 9
+
+Failures:
+- BOUNDARY-PLATFORM-001 runtime/shell/ui_backends/win32/win32_shell_stub.c:10
+- BOUNDARY-PLATFORM-001 runtime/ui/dui/dui_win32.c:23
+- BOUNDARY-PLATFORM-001 runtime/ui/include/dui/dui_win32.h:13
+- BOUNDARY-PLATFORM-001 runtime/ui/ir/ui_ir_fileio.cpp:14
+- BOUNDARY-TOOLS-001 apps/client/interaction/interaction_dispatch.py:18
+- BOUNDARY-TOOLS-001 game/domain/interaction/action_surface_engine.py:7
+- BOUNDARY-TOOLS-001 game/domain/signals/institutions/dispatch_engine.py:9
+- BOUNDARY-TOOLS-001 runtime/capability/effects/__init__.py:3
+- BOUNDARY-TOOLS-001 runtime/capability/fidelity/__init__.py:3

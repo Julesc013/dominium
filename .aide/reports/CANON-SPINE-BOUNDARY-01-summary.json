@@ -1,0 +1,36 @@
+{
+  "schema_version": "dominium.aide.canon_spine_boundary_01.summary.v1",
+  "task": "CANON-SPINE-BOUNDARY-01",
+  "result": "PASS_WITH_WARNINGS",
+  "branch": "canon-spine-boundary-01",
+  "head_before": "8f7e5adcf9e85833f6a2d8c91b3f90eecb9d34ee",
+  "origin_main": "8f7e5adcf9e85833f6a2d8c91b3f90eecb9d34ee",
+  "apps_workbench_tracked": true,
+  "tracked_generated_local_files": 0,
+  "tracked_release_python_files": 0,
+  "bad_root_tracked_files": 0,
+  "boundary_failures_before": 9,
+  "boundary_failures_after": 0,
+  "runtime_capability_moves": 5,
+  "platform_file_moves": 5,
+  "compatibility_shims_created": 5,
+  "cmake_configure": "pass",
+  "cmake_all_build": "pass",
+  "smoke_ctest": {
+    "status": "pass",
+    "passed": 57,
+    "failed": 0
+  },
+  "focused_spine_ctest": {
+    "status": "pass",
+    "passed": 6,
+    "failed": 0
+  },
+  "full_verify_ctest": {
+    "status": "not_green",
+    "passed_observed": 231,
+    "failed_observed": 113
+  },
+  "feature_work_authorized": false,
+  "next_task": "POST-RESTRUCTURE-02 - Full Green Proof and Origin Sync"
+}

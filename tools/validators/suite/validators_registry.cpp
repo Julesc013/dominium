@@ -10,8 +10,8 @@ ERROR MODEL: Return codes; no exceptions.
 DETERMINISM: Validation order is deterministic.
 */
 #include "validators_registry.h"
-#include "validate/tool_validation.h"
-#include "validate/policy_validation.h"
+#include "validators/tool_validation.h"
+#include "validators/policy_validation.h"
 
 namespace dom {
 namespace validation {

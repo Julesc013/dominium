@@ -17,7 +17,7 @@ DETERMINISM: Deterministic file ordering and hashing.
 
 #include "dominium/mods/mod_manifest.h"
 #include "dominium/mods/mod_hash.h"
-#include "validation/validator_common.h"
+#include "validators/suite/validator_common.h"
 
 using dom::validation::list_files_recursive;
 using dom::validation::read_file_text;

@@ -6,7 +6,7 @@ from typing import Dict, List, Mapping
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
-from tools.governance.control_plane_engine import build_control_intent
+from runtime.capability.control_plane_engine import build_control_intent
 from game.domain.signals.transport import normalize_info_artifact_rows, process_signal_send
 
 

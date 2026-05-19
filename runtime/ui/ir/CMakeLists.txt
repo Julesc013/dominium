@@ -6,7 +6,7 @@ add_library(domino_ui_ir STATIC
     ui_ir_props.cpp
     ui_ir_doc.cpp
     ui_ir_diag.cpp
-    ui_ir_fileio.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/platform/win32/ui/ir/ui_ir_fileio.cpp
     ui_ir_tlv.cpp
     ui_ir_json.cpp
     ui_ir_legacy_import.cpp
@@ -18,7 +18,9 @@ add_library(domino_ui_ir STATIC
 
 target_include_directories(domino_ui_ir PUBLIC
     ${DOMINIUM_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/runtime/ui/dui
     ${CMAKE_SOURCE_DIR}/runtime/ui/include
+    ${CMAKE_SOURCE_DIR}/runtime/platform/win32/ui/include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -30,6 +32,16 @@ target_link_libraries(domino_ui_ir
 target_compile_definitions(domino_ui_ir PUBLIC
     DOMUI_ENABLE_JSON_MIRROR=$<BOOL:${DOMUI_ENABLE_JSON_MIRROR}>
 )
+
+if(WIN32)
+    target_sources(domino_ui_ir PRIVATE
+        ${CMAKE_SOURCE_DIR}/runtime/platform/win32/ui/dui/dui_win32.c
+    )
+    target_link_libraries(domino_ui_ir
+        PRIVATE
+            comctl32
+    )
+endif()
 
 set_target_properties(domino_ui_ir PROPERTIES
     CXX_STANDARD 98

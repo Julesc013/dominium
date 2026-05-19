@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_library(appcore STATIC
+add_library(runtime_shell STATIC
     discover/appcore_discover.c
     profile/appcore_profile.c
     ${CMAKE_SOURCE_DIR}/tools/repo/repox/shell/appcore_repox.c
@@ -13,7 +13,7 @@ add_library(appcore STATIC
     ${CMAKE_SOURCE_DIR}/tools/codegen/ui/bind/ui_accessibility_map.c
 )
 
-target_include_directories(appcore PUBLIC
+target_include_directories(runtime_shell PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/engine/include
     ${CMAKE_SOURCE_DIR}/tools/codegen/ui/bind
@@ -21,10 +21,11 @@ target_include_directories(appcore PUBLIC
     ${CMAKE_SOURCE_DIR}/tools/validators/shell
 )
 
-set_target_properties(appcore PROPERTIES
+set_target_properties(runtime_shell PROPERTIES
     C_STANDARD 90
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
 
-add_library(libs::appcore ALIAS appcore)
+add_library(appcore ALIAS runtime_shell)
+add_library(libs::appcore ALIAS runtime_shell)

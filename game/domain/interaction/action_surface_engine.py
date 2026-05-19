@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.governance.capability import resolve_missing_capabilities
+from runtime.capability.capability import resolve_missing_capabilities
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

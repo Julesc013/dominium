@@ -165,6 +165,7 @@ if(DOM_BUILD_TESTS)
     )
     target_include_directories(dominium_server_shard_regression_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/engine
         ${CMAKE_SOURCE_DIR}/engine/kernel
     )
     target_compile_definitions(dominium_server_shard_regression_tests PRIVATE

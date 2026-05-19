@@ -8,7 +8,7 @@ Deterministic ordering permutation tests.
 #include "domino/core/det_order.h"
 #include "domino/core/fixed.h"
 
-#include "sim/lod/dg_interest.h"
+#include "simulation/lod/dg_interest.h"
 
 #define TEST_CHECK(cond) do { if (!(cond)) return 1; } while (0)
 

@@ -1108,7 +1108,7 @@ file(MAKE_DIRECTORY
 add_subdirectory(cmake/legacy_libs)
 add_subdirectory(engine)
 add_subdirectory(runtime/shell/lifecycle)
-add_subdirectory(runtime/shell/ui_backends/win32)
+add_subdirectory(runtime/platform/win32/shell)
 add_subdirectory(runtime/ui/ir)
 add_subdirectory(tools/codegen/ui/bind)
 if(WIN32)
@@ -1151,7 +1151,7 @@ endfunction()
 
 add_custom_target(all_libs)
 dom_add_existing_deps(all_libs
-    appcore
+    runtime_shell
     build_identity
     domino_engine
     dominium_game
@@ -1159,7 +1159,7 @@ dom_add_existing_deps(all_libs
     domino_ui_ir
     launcher_core
     setup_core
-    shared_ui_win32
+    runtime_platform_win32_ui
 )
 
 add_custom_target(all_apps)

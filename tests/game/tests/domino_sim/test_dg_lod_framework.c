@@ -15,7 +15,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/specs/SPEC_*.md` 
 
 #include "sim/lod/dg_rep.h"
 #include "sim/lod/dg_lod_index.h"
-#include "sim/lod/dg_interest.h"
+#include "simulation/lod/dg_interest.h"
 #include "sim/lod/dg_promo.h"
 #include "sim/lod/dg_stride.h"
 #include "sim/lod/dg_accum.h"
