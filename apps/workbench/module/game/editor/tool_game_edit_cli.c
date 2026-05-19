@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/apps/workbench/module/game/edit/tool_game_edit_cli.c
+FILE: source/dominium/apps/workbench/module/game/editor/tool_game_edit_cli.c
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / apps/workbench/module/game/edit/tool_game_edit_cli
+LAYER / SUBSYSTEM: Dominium impl / apps/workbench/module/game/editor/tool_game_edit_cli
 RESPONSIBILITY: Implements `tool_game_edit_cli`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/architecture/OVERVIEW_ARCHITECTURE.md` layering.

@@ -1,5 +1,5 @@
 /*
-FILE: apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.h
+FILE: apps/workbench/module/ui/editor/generated/ui_tool_editor_actions_gen.h
 MODULE: Repository
 LAYER / SUBSYSTEM: apps/workbench/module/ui/editor
 RESPONSIBILITY: Declares generated action IDs and dispatch helpers for the tool editor UI; does NOT implement user handler logic.

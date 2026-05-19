@@ -59,7 +59,7 @@ A unified GUI host for editor backends. Uses the same dsys/dgfx stack as the lau
 
 ## Entry points
 
-- Executable: `dominium-editor` (see `source/dominium/apps/workbench/module/ui/native/editor_gui.c`).
+- Executable: `dominium-editor` (see `source/dominium/apps/workbench/module/ui/preview/native/editor_gui.c`).
 - CLI args for bootstrapping paths:
   - `--world <path>`
   - `--save <path>`

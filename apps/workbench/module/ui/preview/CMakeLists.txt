@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
 set(UI_PREVIEW_COMMON_SRC
-    common/ui_preview_common.cpp
-    common/ui_preview_common.h
+    service/ui_preview_common.cpp
+    service/ui_preview_common.h
 )
 
 if(WIN32)
@@ -12,7 +12,7 @@ if(WIN32)
     )
 
     target_include_directories(dominium-ui-preview-host-win32 PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/common
+        ${CMAKE_CURRENT_SOURCE_DIR}/service
     )
 
     target_link_libraries(dominium-ui-preview-host-win32
@@ -47,7 +47,7 @@ if(APPLE)
     )
 
     target_include_directories(dominium-ui-preview-host-macos PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/common
+        ${CMAKE_CURRENT_SOURCE_DIR}/service
     )
 
     target_link_libraries(dominium-ui-preview-host-macos
@@ -81,7 +81,7 @@ if(UNIX AND NOT APPLE)
     )
 
     target_include_directories(dominium-ui-preview-host-linux PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/common
+        ${CMAKE_CURRENT_SOURCE_DIR}/service
     )
 
     target_link_libraries(dominium-ui-preview-host-linux

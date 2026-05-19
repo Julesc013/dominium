@@ -1,6 +1,6 @@
 /*
-FILE: apps/workbench/module/tool/editor/tool_editor_docgen.cpp
-MODULE: Dominium tools
+FILE: tools/codegen/ui/tool_editor/tool_editor_docgen.cpp
+MODULE: Dominium UI codegen
 RESPONSIBILITY: Generate the initial Tool Editor UI docs (TLV + JSON mirror).
 */
 #include <stdio.h>
@@ -31,10 +31,11 @@ static void make_dir_one(const char* path)
 
 static void ensure_tool_editor_dirs(void)
 {
-    make_dir_one("tools");
-    make_dir_one("tools/tool_editor");
-    make_dir_one("apps/workbench/module/ui/editor");
-    make_dir_one("apps/workbench/module/ui/editor/doc");
+    make_dir_one("apps");
+    make_dir_one("apps/workbench");
+    make_dir_one("apps/workbench/module");
+    make_dir_one("apps/workbench/module/ui");
+    make_dir_one("apps/workbench/module/ui/doc");
 }
 
 static void set_text_prop(domui_widget* w, const char* text)

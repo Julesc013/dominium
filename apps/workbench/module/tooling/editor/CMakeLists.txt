@@ -10,10 +10,10 @@ else()
     )
 endif()
 
-set(TOOL_EDITOR_UI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ui)
+set(TOOL_EDITOR_UI_DIR ${CMAKE_SOURCE_DIR}/apps/workbench/module/ui)
 set(TOOL_EDITOR_UI_DOC_DIR ${TOOL_EDITOR_UI_DIR}/doc)
-set(TOOL_EDITOR_UI_GEN_DIR ${TOOL_EDITOR_UI_DIR}/gen)
-set(TOOL_EDITOR_UI_USER_DIR ${TOOL_EDITOR_UI_DIR}/user)
+set(TOOL_EDITOR_UI_GEN_DIR ${TOOL_EDITOR_UI_DIR}/editor/generated)
+set(TOOL_EDITOR_UI_USER_DIR ${TOOL_EDITOR_UI_DIR}/editor/user)
 set(TOOL_EDITOR_UI_REGISTRY_DIR ${TOOL_EDITOR_UI_DIR}/registry)
 set(TOOL_EDITOR_UI_DOC ${TOOL_EDITOR_UI_DOC_DIR}/tool_editor_ui_doc.tlv)
 set(TOOL_EDITOR_UI_REGISTRY ${TOOL_EDITOR_UI_REGISTRY_DIR}/ui_actions_registry.json)
@@ -91,18 +91,3 @@ set_target_properties(dominium-tool-editor PROPERTIES
     CXX_EXTENSIONS OFF
 )
 dist_set_role(dominium-tool-editor tools)
-
-add_executable(dominium-tool-editor-docgen
-    tool_editor_docgen.cpp
-)
-target_link_libraries(dominium-tool-editor-docgen
-    PRIVATE
-        domino_ui_ir
-)
-set_target_properties(dominium-tool-editor-docgen PROPERTIES
-    OUTPUT_NAME "tool_tool_editor_docgen"
-    CXX_STANDARD 98
-    CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
-)
-dist_set_role(dominium-tool-editor-docgen tools)

@@ -147,7 +147,7 @@ dominium-ui-editor --help
 dominium-ui-editor --scan-ui --out tools/codegen/ui/index/ui_index.json
 dominium-ui-editor --headless-validate apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv --report out/validate.json
 dominium-ui-editor --headless-format apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv --report out/format.json
-dominium-ui-editor --headless-codegen --in apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv --out apps/workbench/module/ui/editor/gen --registry apps/workbench/module/ui/registry/ui_actions_registry.json --docname tool_editor_ui_doc
+dominium-ui-editor --headless-codegen --in apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv --out apps/workbench/module/ui/editor/generated --registry apps/workbench/module/ui/registry/ui_actions_registry.json --docname tool_editor_ui_doc
 dominium-ui-editor --headless-build-ui --in apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv --docname tool_editor_ui_doc --out-root apps/workbench/module/ui/editor
 dominium-ui-editor --headless-apply apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv --script ops.json --report out/apply.json
 ```

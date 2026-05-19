@@ -47,7 +47,7 @@ def main():
         "apps/launcher/tui",
         "runtime/platform/win32/setup",
         "apps/setup/tui",
-        "tools/editor_gui",
+        "apps/workbench/module/ui/preview/native",
         "tools/launcher/ui",
         "tools/setup/ui",
     ]

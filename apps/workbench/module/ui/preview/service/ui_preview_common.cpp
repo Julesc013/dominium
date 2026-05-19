@@ -1,5 +1,5 @@
 /*
-FILE: apps/workbench/module/ui/preview/support/ui_preview_common.cpp
+FILE: apps/workbench/module/ui/preview/service/ui_preview_common.cpp
 MODULE: Dominium tools
 RESPONSIBILITY: Shared helpers for UI preview hosts (doc loading, contracts/schema/state build, logging).
 */

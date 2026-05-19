@@ -1,6 +1,6 @@
 /*
-FILE: apps/workbench/module/tool/editor/tool_editor_actions.h
-MODULE: Dominium tools
+FILE: apps/workbench/module/tooling/editor/tool_editor_actions.h
+MODULE: Dominium Workbench tooling editor
 RESPONSIBILITY: Shared action IDs + dispatch hook for Tool Editor actions.
 */
 #ifndef DOMINIUM_TOOL_EDITOR_ACTIONS_H_INCLUDED

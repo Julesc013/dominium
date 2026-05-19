@@ -37,6 +37,11 @@ FORBIDDEN_ACTIVE_PATH_PREFIXES = {
     "runtime/shell/ui_backends": "UI backend implementation belongs under runtime/ui/backend",
     "runtime/capability/capability": "capability/capability is tautological; use runtime/capability/core or a precise leaf",
     "runtime/ui/core": "runtime/ui/core is vague; use runtime/ui/service or a precise UI leaf",
+    "apps/workbench/module/game/edit": "Workbench game editor module is noun-based apps/workbench/module/game/editor",
+    "apps/workbench/module/tool/editor": "Workbench tool editor is ambiguous; use apps/workbench/module/tooling/editor or route tooling out of Workbench",
+    "apps/workbench/module/ui/editor/gen": "Workbench UI editor uses generated as the checked-in generated binding bucket",
+    "apps/workbench/module/ui/native": "Native Workbench UI host belongs under apps/workbench/module/ui/preview/native or reusable runtime UI/platform owners",
+    "apps/workbench/module/ui/preview/support": "Workbench UI preview shared helpers use apps/workbench/module/ui/preview/service",
 }
 
 

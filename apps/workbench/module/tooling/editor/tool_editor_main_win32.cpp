@@ -1,6 +1,6 @@
 /*
-FILE: apps/workbench/module/tool/editor/tool_editor_main_win32.cpp
-MODULE: Dominium tools
+FILE: apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp
+MODULE: Dominium Workbench tooling editor
 RESPONSIBILITY: Minimal Tool Editor host that loads a DUI UI doc and edits ui_doc.tlv files.
 */
 #include <stdio.h>

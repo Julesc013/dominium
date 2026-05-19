@@ -82,7 +82,7 @@ _LEGACY_SURFACE_GLOBS = (
     "tools/ui_shared/**/*",
     "apps/workbench/module/ui/preview/**/*",
     "apps/workbench/module/ui/editor/**/*",
-    "apps/workbench/module/ui/native/**/*",
+    "apps/workbench/module/ui/preview/native/**/*",
     "tools/gui/**/*",
     "tools/xstack/sessionx/ui_host.py",
 )
@@ -207,7 +207,7 @@ def _legacy_purpose(rel_path: str) -> str:
         return "Launcher native UI scaffold kept outside the governed MVP runtime surface."
     if token.startswith("tools/codegen/ui/setup/"):
         return "Setup native UI scaffold kept outside the governed MVP runtime surface."
-    if token.startswith("apps/workbench/module/ui/editor/") or token.startswith("apps/workbench/module/ui/native/") or token.startswith("tools/gui/"):
+    if token.startswith("apps/workbench/module/ui/editor/") or token.startswith("apps/workbench/module/ui/preview/native/") or token.startswith("tools/gui/"):
         return "Editor or tooling UI scaffold kept outside the governed MVP runtime surface."
     return "Legacy or preview UI surface pending post-MVP formalization."
 

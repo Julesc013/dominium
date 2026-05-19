@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/apps/workbench/module/ui/native/editor_gui.c
+FILE: source/dominium/apps/workbench/module/ui/preview/native/editor_gui.c
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / apps/workbench/module/ui/native/editor_gui
+LAYER / SUBSYSTEM: Dominium impl / apps/workbench/module/ui/preview/native/editor_gui
 RESPONSIBILITY: Implements `editor_gui`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/architecture/OVERVIEW_ARCHITECTURE.md` layering.

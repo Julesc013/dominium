@@ -16,7 +16,7 @@ UI docs and codegen outputs
 - UI doc: `apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv` (+ JSON mirror)
 - Template doc: `apps/workbench/module/ui/doc/ui_doc_template_basic.tlv`
 - Action registry: `apps/workbench/module/ui/registry/ui_actions_registry.json`
-- Generated code: `apps/workbench/module/ui/editor/gen/` and `apps/workbench/module/ui/editor/user/`
+- Generated code: `apps/workbench/module/ui/editor/generated/` and `apps/workbench/module/ui/editor/user/`
 
 Editing the Tool Editor UI
 

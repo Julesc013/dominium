@@ -40,4 +40,19 @@ if(DOMUI_ENABLE_CODEGEN)
     dist_set_role(domui_codegen tools)
 endif()
 
+add_executable(dominium-tool-editor-docgen
+    tool_editor/tool_editor_docgen.cpp
+)
+target_link_libraries(dominium-tool-editor-docgen
+    PRIVATE
+        domino_ui_ir
+)
+set_target_properties(dominium-tool-editor-docgen PROPERTIES
+    OUTPUT_NAME "tool_tool_editor_docgen"
+    CXX_STANDARD 98
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+dist_set_role(dominium-tool-editor-docgen tools)
+
 add_subdirectory(tests)
