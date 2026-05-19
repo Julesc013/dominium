@@ -6,7 +6,7 @@ import sys
 from invariant_utils import is_override_active
 
 
-BUNDLE_REL = os.path.join("data", "registries", "bundle_profiles.json")
+BUNDLE_REL = os.path.join("contracts", "registry", "bundle_profiles.json")
 
 
 def main() -> int:

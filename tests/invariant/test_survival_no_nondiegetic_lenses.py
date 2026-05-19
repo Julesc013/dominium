@@ -6,7 +6,7 @@ import sys
 from invariant_utils import is_override_active
 
 
-LAW_PROFILES_REL = os.path.join("data", "registries", "law_profiles.json")
+LAW_PROFILES_REL = os.path.join("contracts", "registry", "law_profiles.json")
 
 
 def main() -> int:

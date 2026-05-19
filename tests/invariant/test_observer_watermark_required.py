@@ -6,9 +6,9 @@ import sys
 from invariant_utils import is_override_active
 
 
-LAW_REL = os.path.join("data", "registries", "law_profiles.json")
-MATRIX_REL = os.path.join("data", "registries", "presentation_matrix.json")
-BRIDGE_REL = os.path.join("apps", "client", "core", "client_command_bridge.c")
+LAW_REL = os.path.join("contracts", "registry", "law_profiles.json")
+MATRIX_REL = os.path.join("contracts", "registry", "presentation_matrix.json")
+BRIDGE_REL = os.path.join("apps", "client", "command", "client_command_bridge.c")
 
 
 def _load_json(path: str):

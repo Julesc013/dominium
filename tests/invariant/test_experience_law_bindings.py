@@ -6,9 +6,9 @@ import sys
 from invariant_utils import is_override_active
 
 
-LAW_REL = os.path.join("data", "registries", "law_profiles.json")
-EXP_REL = os.path.join("data", "registries", "experience_profiles.json")
-PARAM_REL = os.path.join("data", "registries", "parameter_bundles.json")
+LAW_REL = os.path.join("contracts", "registry", "law_profiles.json")
+EXP_REL = os.path.join("contracts", "registry", "experience_profiles.json")
+PARAM_REL = os.path.join("contracts", "registry", "parameter_bundles.json")
 
 
 def _load_json(path: str):

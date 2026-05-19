@@ -6,8 +6,8 @@ import sys
 from invariant_utils import is_override_active
 
 
-SLICE_REL = os.path.join("data", "registries", "survival_vertical_slice.json")
-PARAM_REL = os.path.join("data", "registries", "parameter_bundles.json")
+SLICE_REL = os.path.join("contracts", "registry", "survival_vertical_slice.json")
+PARAM_REL = os.path.join("contracts", "registry", "parameter_bundles.json")
 
 
 def _load(path: str):

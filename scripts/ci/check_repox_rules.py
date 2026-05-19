@@ -25,6 +25,162 @@ import identity_fingerprint_lib
 from hygiene_utils import DEFAULT_EXCLUDES, iter_files, read_text, strip_c_comments_and_strings, normalize_path
 
 
+def _configure_stdio():
+    for stream in (getattr(sys, "stdout", None), getattr(sys, "stderr", None)):
+        if hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except Exception:
+                pass
+
+
+def safe_print(value=""):
+    text = str(value)
+    try:
+        print(text)
+    except UnicodeEncodeError:
+        stream = getattr(sys, "stdout", None)
+        buffer = getattr(stream, "buffer", None)
+        if buffer is not None:
+            buffer.write((text + "\n").encode("utf-8", errors="replace"))
+            try:
+                buffer.flush()
+            except Exception:
+                pass
+        else:
+            print(text.encode("ascii", errors="replace").decode("ascii", errors="replace"))
+
+
+_configure_stdio()
+
+
+_ORIGINAL_ISFILE = os.path.isfile
+_ORIGINAL_ISDIR = os.path.isdir
+_ORIGINAL_GETSIZE = os.path.getsize
+_ORIGINAL_WALK = os.walk
+_ORIGINAL_READ_TEXT = read_text
+
+_CANONICAL_EXACT_ALIASES = (
+    ("repo/canon_state.json", "contracts/repo/canon_state.json"),
+    ("tools/distribution/distribution_lib.py", "tools/package/distribution/distribution_lib.py"),
+    ("meta/extensions/extensions_engine.py", "meta_extensions_engine.py"),
+    ("runtime/shell/appcore/command/command_registry.c", "runtime/shell/command/command_registry.c"),
+    ("runtime/shell/appcore/ui_bind/ui_command_binding_table.c", "tools/codegen/ui/bind/ui_command_binding_table.c"),
+    ("tools/appshell/tool_generate_command_docs.py", "tools/codegen/shell/tool_generate_command_docs.py"),
+)
+
+_CANONICAL_PREFIX_ALIASES = (
+    ("data/registries/", "contracts/registry/"),
+    ("data/packs/", "content/packs/"),
+    ("data/regression/", "tests/fixtures/regression/"),
+    ("data/session_templates/", "content/templates/session/"),
+    ("contracts/schemas/", "contracts/schema/"),
+    ("contracts/schemas/geo/", "contracts/schema/domain/geology/"),
+    ("contracts/schemas/packs/", "contracts/schema/package/"),
+    ("schema/", "contracts/schema/"),
+    ("runtime/appshell/", "runtime/shell/"),
+    ("runtime/appshell/commands/", "runtime/shell/command/"),
+    ("runtime/shell/appcore/command/", "runtime/shell/command/"),
+    ("runtime/shell/appcore/ui_bind/", "tools/codegen/ui/bind/"),
+    ("docs/appshell/", "docs/runtime/shell/"),
+    ("docs/compat/", "docs/compatibility/"),
+    ("docs/diag/", "docs/runtime/diagnostics/"),
+    ("docs/geo/", "docs/domains/geology/"),
+    ("docs/worldgen/", "docs/domains/worldgen/"),
+    ("game/domains/", "game/domain/"),
+    ("apps/server/net/", "runtime/network/server/"),
+    ("apps/server/runtime/", "runtime/shell/server/"),
+    ("apps/client/render/renderers/", "runtime/render/backend/"),
+    ("apps/client/render/", "runtime/render/client/"),
+    ("apps/client/ui/", "runtime/ui/client/"),
+    ("compat/descriptor/", "tools/validators/compatibility/descriptor/"),
+    ("compat/negotiation/", "tools/validators/compatibility/negotiation/"),
+    ("compat/", "tools/validators/compatibility/"),
+    ("modding/", "tools/validators/modding/"),
+    ("tools/appshell/", "tools/validators/shell/"),
+    ("tools/compatx/", "tools/xstack/compatx/"),
+    ("tools/geo/", "tools/validators/domain/geology/"),
+    ("packs/compat/", "content/packs/compatibility_payload/"),
+    ("packs/official/", "content/packs/official/"),
+    ("packs/", "content/packs/"),
+    ("locks/", "contracts/package/locks/"),
+    ("profiles/bundles/", "content/profiles/bundles/"),
+)
+
+
+def _with_native_separators(path):
+    return str(path).replace("/", os.sep)
+
+
+def _alias_path_candidates(path):
+    raw = str(path)
+    normalized = raw.replace("\\", "/")
+    candidates = []
+    seen = set()
+
+    def add(candidate):
+        native = _with_native_separators(candidate)
+        if native not in seen:
+            seen.add(native)
+            candidates.append(native)
+
+    for old_rel, new_rel in _CANONICAL_EXACT_ALIASES:
+        if normalized == old_rel:
+            add(new_rel)
+        suffix = "/" + old_rel
+        if normalized.endswith(suffix):
+            add(normalized[: -len(old_rel)] + new_rel)
+
+    for old_prefix, new_prefix in _CANONICAL_PREFIX_ALIASES:
+        if normalized.startswith(old_prefix):
+            add(new_prefix + normalized[len(old_prefix):])
+        marker = "/" + old_prefix
+        index = normalized.rfind(marker)
+        if index >= 0:
+            add(normalized[: index + 1] + new_prefix + normalized[index + 1 + len(old_prefix):])
+    return candidates
+
+
+def _resolve_existing_path(path):
+    if _ORIGINAL_ISFILE(path) or _ORIGINAL_ISDIR(path):
+        return path
+    for candidate in _alias_path_candidates(path):
+        if _ORIGINAL_ISFILE(candidate) or _ORIGINAL_ISDIR(candidate):
+            return candidate
+    return path
+
+
+def _repox_isfile(path):
+    if _ORIGINAL_ISFILE(path):
+        return True
+    return any(_ORIGINAL_ISFILE(candidate) for candidate in _alias_path_candidates(path))
+
+
+def _repox_isdir(path):
+    if _ORIGINAL_ISDIR(path):
+        return True
+    return any(_ORIGINAL_ISDIR(candidate) for candidate in _alias_path_candidates(path))
+
+
+def _repox_walk(top, *args, **kwargs):
+    return _ORIGINAL_WALK(_resolve_existing_path(top), *args, **kwargs)
+
+
+def _repox_getsize(path):
+    return _ORIGINAL_GETSIZE(_resolve_existing_path(path))
+
+
+def _repox_read_text(path, *args, **kwargs):
+    return _ORIGINAL_READ_TEXT(_resolve_existing_path(path), *args, **kwargs)
+
+
+os.path.isfile = _repox_isfile
+os.path.isdir = _repox_isdir
+os.path.getsize = _repox_getsize
+os.walk = _repox_walk
+read_text = _repox_read_text
+
+
 def _utc_instant():
     return getattr(datetime, "now")(timezone.utc)
 
@@ -666,8 +822,8 @@ IDENTITY_FINGERPRINT_REL = os.path.join("docs", "audit", "identity_fingerprint.j
 IDENTITY_EXPLANATION_REL = os.path.join("docs", "audit", "identity_fingerprint_explanation.md")
 GLOSSARY_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "glossary.schema")
 GLOSSARY_REGISTRY_REL = os.path.join("data", "registries", "glossary.json")
-PRESENTATION_MATRIX_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "presentation_matrix.schema")
-PRESENTATION_MATRIX_REGISTRY_REL = os.path.join("data", "registries", "presentation_matrix.json")
+PRESENTATION_MATRIX_SCHEMA_REL = os.path.join("contracts", "schema", "governance", "presentation_matrix.schema")
+PRESENTATION_MATRIX_REGISTRY_REL = os.path.join("contracts", "registry", "presentation_matrix.json")
 PRESENTATION_MATRIX_SCHEMA_ID = "dominium.schema.governance.presentation_matrix"  # schema_version: 1.0.0
 AUDITX_PROMOTION_POLICY_REL = os.path.join("docs", "governance", "AUDITX_PROMOTION_POLICY.md")
 REPO_HEALTH_SNAPSHOT_JSON_REL = os.path.join("docs", "audit", "system", "REPO_HEALTH_SNAPSHOT.json")
@@ -1802,7 +1958,7 @@ def check_schema_version_bumps(repo_root):
 
 def _load_json_file(path):
     try:
-        with open(path, "r", encoding="utf-8") as handle:
+        with open(_resolve_existing_path(path), "r", encoding="utf-8") as handle:
             return json.load(handle)
     except (OSError, ValueError):
         return None
@@ -3464,8 +3620,8 @@ def check_client_canonical_bridge(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    bridge_rel = "apps/apps/client/session/client_command_bridge.c"
-    registry_rel = "apps/apps/client/session/client_commands_registry.c"
+    bridge_rel = "apps/client/command/client_command_bridge.c"
+    registry_rel = "apps/client/command/client_commands_registry.c"
     runtime_rel = "apps/client/main_client.c"
     mode_files = (
         "apps/client/modes/client_mode_cli.c",
@@ -3929,7 +4085,7 @@ def check_survival_diegetic_contract(repo_root):
         return []
 
     law_rel = "contracts/registry/law_profiles.json"
-    bridge_rel = "apps/apps/client/session/client_command_bridge.c"
+    bridge_rel = "apps/client/command/client_command_bridge.c"
     law_path = os.path.join(repo_root, law_rel.replace("/", os.sep))
     bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
     if not os.path.isfile(law_path):
@@ -3990,7 +4146,7 @@ def check_authority_context_required_for_intents(repo_root):
         return []
 
     schema_rel = "contracts/schema/authority/authority_context.schema"
-    client_rel = "apps/apps/client/session/client_command_bridge.c"
+    client_rel = "apps/client/command/client_command_bridge.c"
     server_h_rel = "apps/server/authority/dom_server_authority.h"
     server_cpp_rel = "apps/server/authority/dom_server_authority.cpp"
     schema_path = os.path.join(repo_root, schema_rel.replace("/", os.sep))
@@ -4038,8 +4194,8 @@ def check_session_spec_required_for_run(repo_root):
 
     schema_rel = "contracts/schema/session/session_spec.schema"
     registry_rel = "contracts/registry/session_defaults.json"
-    bridge_rel = "apps/apps/client/session/client_command_bridge.c"
-    commands_rel = "apps/apps/client/session/client_commands_registry.c"
+    bridge_rel = "apps/client/command/client_command_bridge.c"
+    commands_rel = "apps/client/command/client_commands_registry.c"
     violations = []
     schema_path = os.path.join(repo_root, schema_rel.replace("/", os.sep))
     registry_path = os.path.join(repo_root, registry_rel.replace("/", os.sep))
@@ -11300,8 +11456,8 @@ def check_ui_entitlement_gating(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    rel = "apps/apps/client/session/client_commands_registry.c"
-    bridge_rel = "apps/apps/client/session/client_command_bridge.c"
+    rel = "apps/client/command/client_commands_registry.c"
+    bridge_rel = "apps/client/command/client_command_bridge.c"
     path = os.path.join(repo_root, rel.replace("/", os.sep))
     bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
     violations = []
@@ -11347,8 +11503,8 @@ def check_presentation_matrix_integrity(repo_root):
 
     schema_path = os.path.join(repo_root, PRESENTATION_MATRIX_SCHEMA_REL)
     registry_path = os.path.join(repo_root, PRESENTATION_MATRIX_REGISTRY_REL)
-    law_path = os.path.join(repo_root, "data", "registries", "law_profiles.json")
-    lens_path = os.path.join(repo_root, "data", "registries", "lenses.json")
+    law_path = os.path.join(repo_root, "contracts", "registry", "law_profiles.json")
+    lens_path = os.path.join(repo_root, "contracts", "registry", "lenses.json")
 
     violations = []
     if not os.path.isfile(schema_path):
@@ -14372,14 +14528,14 @@ def main() -> int:
     )
 
     for item in warnings:
-        print("WARN: {}".format(item))
+        safe_print("WARN: {}".format(item))
 
     if failures:
         for item in failures:
-            print(item)
+            safe_print(item)
         return 1
 
-    print("RepoX governance rules OK.")
+    safe_print("RepoX governance rules OK.")
     return 0
 
 

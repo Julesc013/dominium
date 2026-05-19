@@ -6,7 +6,7 @@ from invariant_utils import is_override_active
 
 
 SCHEMA_REL = os.path.join("contracts", "schemas", "authority", "authority_context.schema")
-CLIENT_REL = os.path.join("apps", "client", "core", "client_command_bridge.c")
+CLIENT_REL = os.path.join("apps", "client", "command", "client_command_bridge.c")
 SERVER_H_REL = os.path.join("apps", "server", "authority", "dom_server_authority.h")
 SERVER_CPP_REL = os.path.join("apps", "server", "authority", "dom_server_authority.cpp")
 

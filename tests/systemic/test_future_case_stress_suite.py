@@ -4,11 +4,11 @@ import os
 import sys
 
 
-FUTURE_CASES_REL = os.path.join("data", "registries", "future_cases.json")
-EXPERIENCE_REL = os.path.join("data", "registries", "experience_profiles.json")
-LAW_REL = os.path.join("data", "registries", "law_profiles.json")
-DOMAIN_REL = os.path.join("data", "registries", "domain_registry.json")
-CONTROLX_POLICY_REL = os.path.join("data", "registries", "controlx_policy.json")
+FUTURE_CASES_REL = os.path.join("contracts", "registry", "future_cases.json")
+EXPERIENCE_REL = os.path.join("contracts", "registry", "experience_profiles.json")
+LAW_REL = os.path.join("contracts", "registry", "law_profiles.json")
+DOMAIN_REL = os.path.join("contracts", "registry", "domain_registry.json")
+CONTROLX_POLICY_REL = os.path.join("contracts", "registry", "controlx_policy.json")
 
 
 def _load_json(path: str):

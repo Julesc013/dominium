@@ -14,6 +14,34 @@ import sys
 from typing import Dict, Iterable, List, Set, Tuple
 
 
+def _configure_stdio() -> None:
+    for stream in (getattr(sys, "stdout", None), getattr(sys, "stderr", None)):
+        if hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except Exception:
+                pass
+
+
+def _safe_print(text: str) -> None:
+    try:
+        print(text)
+    except UnicodeEncodeError:
+        stream = getattr(sys, "stdout", None)
+        buffer = getattr(stream, "buffer", None)
+        if buffer is not None:
+            buffer.write((text + "\n").encode("utf-8", errors="replace"))
+            try:
+                buffer.flush()
+            except Exception:
+                pass
+        else:
+            print(text.encode("ascii", errors="replace").decode("ascii", errors="replace"))
+
+
+_configure_stdio()
+
+
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
@@ -36188,7 +36216,7 @@ def main() -> int:
 
     repo_root = os.path.normpath(os.path.abspath(args.repo_root)) if str(args.repo_root).strip() else REPO_ROOT_HINT
     result = run_repox_check(repo_root=repo_root, profile=str(args.profile))
-    print(json.dumps(result, indent=2, sort_keys=True))
+    _safe_print(json.dumps(result, indent=2, sort_keys=True))
     status = str(result.get("status", "error"))
     if status == "pass":
         return 0

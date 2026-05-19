@@ -4,14 +4,14 @@ import os
 import sys
 
 
-LAW_REL = os.path.join("data", "registries", "law_profiles.json")
-EXP_REL = os.path.join("data", "registries", "experience_profiles.json")
-PARAM_REL = os.path.join("data", "registries", "parameter_bundles.json")
-BUNDLE_REL = os.path.join("data", "registries", "bundle_profiles.json")
-PIPELINE_REL = os.path.join("client", "core", "session_pipeline.c")
-BRIDGE_REL = os.path.join("client", "core", "client_command_bridge.c")
-REGISTRY_REL = os.path.join("client", "core", "client_commands_registry.c")
-REFUSAL_REL = os.path.join("client", "core", "session_refusal_codes.h")
+LAW_REL = os.path.join("contracts", "registry", "law_profiles.json")
+EXP_REL = os.path.join("contracts", "registry", "experience_profiles.json")
+PARAM_REL = os.path.join("contracts", "registry", "parameter_bundles.json")
+BUNDLE_REL = os.path.join("contracts", "registry", "bundle_profiles.json")
+PIPELINE_REL = os.path.join("apps", "client", "session", "session_pipeline.c")
+BRIDGE_REL = os.path.join("apps", "client", "command", "client_command_bridge.c")
+REGISTRY_REL = os.path.join("apps", "client", "command", "client_commands_registry.c")
+REFUSAL_REL = os.path.join("apps", "client", "session", "session_refusal_codes.h")
 
 
 def _load_json(path: str):

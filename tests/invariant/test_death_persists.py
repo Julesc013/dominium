@@ -6,8 +6,8 @@ import sys
 from invariant_utils import is_override_active
 
 
-LAW_REL = os.path.join("data", "registries", "law_profiles.json")
-SLICE_REL = os.path.join("data", "registries", "survival_vertical_slice.json")
+LAW_REL = os.path.join("contracts", "registry", "law_profiles.json")
+SLICE_REL = os.path.join("contracts", "registry", "survival_vertical_slice.json")
 
 
 def _load(path: str):
