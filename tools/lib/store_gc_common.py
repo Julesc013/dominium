@@ -796,8 +796,8 @@ def store_gc_violations(repo_root: str) -> list[dict]:
     required_paths = (
         (RETRO_AUDIT_DOC_REL, "store GC retro audit is required", RULE_GRAPH),
         (DOCTRINE_DOC_REL, "store integrity and GC doctrine is required", RULE_GRAPH),
-        ("contracts/schema/lib/gc_policy.schema", "gc_policy schema is required", RULE_POLICY),
-        ("contracts/schema/lib/gc_report.schema", "gc_report schema is required", RULE_POLICY),
+        ("contracts/schema/runtime/storage/gc_policy.schema", "gc_policy schema is required", RULE_POLICY),
+        ("contracts/schema/runtime/storage/gc_report.schema", "gc_report schema is required", RULE_POLICY),
         ("contracts/schema/gc_policy.schema.json", "compiled gc_policy schema is required", RULE_POLICY),
         ("contracts/schema/gc_report.schema.json", "compiled gc_report schema is required", RULE_POLICY),
         (GC_POLICY_REGISTRY_REL, "gc policy registry is required", RULE_POLICY),
