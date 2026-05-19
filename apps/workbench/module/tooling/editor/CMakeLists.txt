@@ -12,7 +12,7 @@ endif()
 
 set(TOOL_EDITOR_UI_DIR ${CMAKE_SOURCE_DIR}/apps/workbench/module/ui)
 set(TOOL_EDITOR_UI_DOC_DIR ${TOOL_EDITOR_UI_DIR}/doc)
-set(TOOL_EDITOR_UI_GEN_DIR ${TOOL_EDITOR_UI_DIR}/editor/generated)
+set(TOOL_EDITOR_UI_GEN_DIR ${CMAKE_SOURCE_DIR}/tools/codegen/ui/tool_editor/gen)
 set(TOOL_EDITOR_UI_USER_DIR ${TOOL_EDITOR_UI_DIR}/editor/user)
 set(TOOL_EDITOR_UI_REGISTRY_DIR ${TOOL_EDITOR_UI_DIR}/registry)
 set(TOOL_EDITOR_UI_DOC ${TOOL_EDITOR_UI_DOC_DIR}/tool_editor_ui_doc.tlv)

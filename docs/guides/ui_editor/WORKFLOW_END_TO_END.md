@@ -77,5 +77,5 @@ cmake --build build\msvc-debug --config Debug --target ui_capability_test
 ## Artifact Policy
 
 - Canonical docs and ops scripts are committed.
-- Generated code (`gen/` + `user/`) is committed to keep builds self-contained.
+- Generated code under `tools/codegen/ui/*/gen` and owned user stubs are committed to keep builds self-contained.
 - Reports (`tools/*/ui/reports/*.json`) are generated per run and may be ignored.

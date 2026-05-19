@@ -17,6 +17,7 @@ They inspect tracked paths only. They do not move, delete, rename, rewrite, gene
 check_no_src_source_dirs.py
 check_path_terms.py
 check_app_thinness.py
+check_workbench_module_names.py
 check_directory_naming.py
 check_file_naming.py
 ```
