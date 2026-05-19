@@ -25,14 +25,14 @@ Common issues and fixes:
 Use `fab_validate` to check FAB schema integrity. If you pass a pack root (or validate a pack's `data/fab_pack.json` directly), it will also enforce maturity labels in `docs/README.md`.
 
 ```bash
-python tools/fab/fab_validate.py --input content/packs/org.dominium.core.parts.basic/data/fab_pack.json --format json
+python tools/fab/fab_validate.py --input content/packs/core/org.dominium.core.parts.basic/data/fab_pack.json --format json
 ```
 
 ## Explain refusals
 Use `refusal_explain` to map refusals back to schema paths and suggested fixes.
 
 ```bash
-python tools/inspect/refusal_explain.py --input tmp/fab_validate.json --data content/packs/org.dominium.core.parts.basic/data/fab_pack.json --format json
+python tools/inspect/refusal_explain.py --input tmp/fab_validate.json --data content/packs/core/org.dominium.core.parts.basic/data/fab_pack.json --format json
 ```
 
 ## Inspect capabilities

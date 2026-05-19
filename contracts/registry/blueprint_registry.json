@@ -8,7 +8,7 @@
       {
         "blueprint_id": "blueprint.house.basic",
         "description": "Small deterministic house blueprint.",
-        "blueprint_path": "content/packs/blueprints/blueprints.default.m1/data/blueprint.house.basic.json",
+        "blueprint_path": "content/packs/blueprint/blueprints.default.m1/data/blueprint.house.basic.json",
         "tags": [
           "baseline",
           "structure",
@@ -29,7 +29,7 @@
       {
         "blueprint_id": "blueprint.lathe.basic",
         "description": "Basic deterministic lathe blueprint.",
-        "blueprint_path": "content/packs/blueprints/blueprints.default.m1/data/blueprint.lathe.basic.json",
+        "blueprint_path": "content/packs/blueprint/blueprints.default.m1/data/blueprint.lathe.basic.json",
         "tags": [
           "baseline",
           "machine",
@@ -50,7 +50,7 @@
       {
         "blueprint_id": "blueprint.road.segment.basic",
         "description": "Basic deterministic road-segment blueprint.",
-        "blueprint_path": "content/packs/blueprints/blueprints.default.m1/data/blueprint.road.segment.basic.json",
+        "blueprint_path": "content/packs/blueprint/blueprints.default.m1/data/blueprint.road.segment.basic.json",
         "tags": [
           "baseline",
           "infrastructure",
@@ -71,7 +71,7 @@
       {
         "blueprint_id": "blueprint.simple_bridge.basic",
         "description": "Simple deterministic bridge blueprint.",
-        "blueprint_path": "content/packs/blueprints/blueprints.default.m1/data/blueprint.simple_bridge.basic.json",
+        "blueprint_path": "content/packs/blueprint/blueprints.default.m1/data/blueprint.simple_bridge.basic.json",
         "tags": [
           "baseline",
           "infrastructure",
@@ -92,7 +92,7 @@
       {
         "blueprint_id": "blueprint.space_elevator.template",
         "description": "Placeholder megastructure blueprint template.",
-        "blueprint_path": "content/packs/blueprints/blueprints.default.m1/data/blueprint.space_elevator.template.json",
+        "blueprint_path": "content/packs/blueprint/blueprints.default.m1/data/blueprint.space_elevator.template.json",
         "tags": [
           "baseline",
           "megastructure",

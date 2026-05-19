@@ -28,7 +28,7 @@ from runtime.shell.tui import build_tui_surface, run_tui_mode  # noqa: E402
 from tools.validators.compatibility import build_default_endpoint_descriptor, build_degrade_runtime_state, negotiate_endpoint_descriptors  # noqa: E402
 from runtime.diagnostics.repro_bundle_builder import verify_repro_bundle, write_repro_bundle  # noqa: E402
 from game.domain.embodiment import build_logic_probe_task, build_logic_trace_task  # noqa: E402
-from content.packs.compatibility_payload.pack_verification_pipeline import verify_pack_set, write_pack_compatibility_outputs  # noqa: E402
+from tools.validators.package.compatibility_payload.pack_verification_pipeline import verify_pack_set, write_pack_compatibility_outputs  # noqa: E402
 from tools.earth.earth9_stress_common import (  # noqa: E402
     generate_earth_mvp_stress_scenario,
     verify_earth_mvp_stress_scenario,

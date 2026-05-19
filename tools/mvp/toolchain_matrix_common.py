@@ -25,7 +25,7 @@ from tools.validators.compatibility.capability_negotiation import (  # noqa: E40
     semantic_contract_rows_by_category,
     verify_negotiation_record,
 )
-from content.packs.compatibility_payload.pack_verification_pipeline import verify_pack_set  # noqa: E402
+from tools.validators.package.compatibility_payload.pack_verification_pipeline import verify_pack_set  # noqa: E402
 from runtime.platform.platform_probe import (  # noqa: E402
     MODE_TO_CAPABILITY_ID,
     PLATFORM_CAPABILITY_KEYS,

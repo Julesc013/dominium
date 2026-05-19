@@ -51,7 +51,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests.construction_testlib import authority_context, policy_context
 
     execute_intent = process_runtime.execute_intent
-    default_pack_suffix = "content/packs/specs/specs.default.realistic.m1/data/spec_sheets.json"
+    default_pack_suffix = "content/packs/spec/specs.default.realistic.m1/data/spec_sheets.json"
 
     intent = {
         "intent_id": "intent.spec.null_pack.001",

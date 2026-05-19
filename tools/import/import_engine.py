@@ -32,7 +32,7 @@ from tools.package.libraries.save import (
     normalize_save_manifest,
     validate_save_manifest,
 )
-from content.packs.compatibility_payload import verify_pack_set
+from tools.validators.package.compatibility_payload import verify_pack_set
 from tools.lib.content_store import (
     ARTIFACT_MANIFEST,
     JSON_PAYLOAD,

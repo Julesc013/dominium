@@ -20,8 +20,8 @@ Replacement Target: legacy reference surface retained without current binding au
 - `tools/package/libraries/provides/__init__.py`
 - `tools/package/libraries/provides/provider_resolution.py`
 - `tools/package/libraries/instance/instance_validator.py`
-- `content/packs/compatibility_payload/pack_compat_validator.py`
-- `content/packs/compatibility_payload/pack_verification_pipeline.py`
+- `tools/validators/package/compatibility_payload/pack_compat_validator.py`
+- `tools/validators/package/compatibility_payload/pack_verification_pipeline.py`
 - `tools/ops/ops_cli.py`
 - `tools/launcher/launcher_cli.py`
 - `tools/xstack/pack_loader/loader.py`

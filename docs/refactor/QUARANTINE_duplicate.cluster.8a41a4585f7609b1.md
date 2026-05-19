@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/content/packs/compatibility_payload/pack_verification_pipeline.py`
+- Canonical Candidate: `src/tools/validators/package/compatibility_payload/pack_verification_pipeline.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/content/packs/compatibility_payload/pack_compat_validator.py`
-- `src/content/packs/compatibility_payload/pack_verification_pipeline.py`
+- `src/tools/validators/package/compatibility_payload/pack_compat_validator.py`
+- `src/tools/validators/package/compatibility_payload/pack_verification_pipeline.py`
 
 ## Scorecard
 
-- `src/content/packs/compatibility_payload/pack_verification_pipeline.py` disposition=`canonical` rank=`1` total_score=`59.17` risk=`HIGH`
-- `src/content/packs/compatibility_payload/pack_compat_validator.py` disposition=`quarantine` rank=`2` total_score=`57.38` risk=`HIGH`
+- `src/tools/validators/package/compatibility_payload/pack_verification_pipeline.py` disposition=`canonical` rank=`1` total_score=`59.17` risk=`HIGH`
+- `src/tools/validators/package/compatibility_payload/pack_compat_validator.py` disposition=`quarantine` rank=`2` total_score=`57.38` risk=`HIGH`
 
 ## Usage Sites
 

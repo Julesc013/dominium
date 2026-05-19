@@ -23,7 +23,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/astro/__init__.py`
 - `src/tools/validators/compatibility/__init__.py`
 - `src/embodiment/__init__.py`
-- `src/content/packs/compatibility_payload/__init__.py`
+- `src/tools/validators/package/compatibility_payload/__init__.py`
 - `src/release/__init__.py`
 - `src/worldgen/galaxy/__init__.py`
 - `src/worldgen/mw/__init__.py`
@@ -36,7 +36,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/tools/validators/compatibility/__init__.py` disposition=`merge` rank=`3` total_score=`58.21` risk=`HIGH`
 - `src/embodiment/__init__.py` disposition=`drop` rank=`4` total_score=`58.21` risk=`HIGH`
 - `src/release/__init__.py` disposition=`drop` rank=`5` total_score=`58.21` risk=`HIGH`
-- `src/content/packs/compatibility_payload/__init__.py` disposition=`drop` rank=`6` total_score=`57.62` risk=`HIGH`
+- `src/tools/validators/package/compatibility_payload/__init__.py` disposition=`drop` rank=`6` total_score=`57.62` risk=`HIGH`
 - `src/appshell/__init__.py` disposition=`drop` rank=`7` total_score=`57.14` risk=`HIGH`
 - `src/worldgen/galaxy/__init__.py` disposition=`drop` rank=`8` total_score=`55.21` risk=`HIGH`
 - `src/appshell/commands/__init__.py` disposition=`drop` rank=`9` total_score=`53.07` risk=`HIGH`

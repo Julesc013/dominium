@@ -43,7 +43,7 @@ from tools.package.libraries.save import (
     validate_save_manifest,
     write_json as write_save_json,
 )
-from content.packs.compatibility_payload import verify_pack_set
+from tools.validators.package.compatibility_payload import verify_pack_set
 from tools.launcher.launcher_cli import perform_preflight
 from tools.lib.content_store import (
     build_install_ref,

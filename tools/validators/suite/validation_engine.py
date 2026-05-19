@@ -244,7 +244,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
     },
     {
         "surface_id": "legacy.pack_verification_pipeline",
-        "path": "content/packs/compatibility_payload/pack_verification_pipeline.py",
+        "path": "tools/validators/package/compatibility_payload/pack_verification_pipeline.py",
         "purpose": "PACK-COMPAT verification and pack lock generation surface.",
         "inputs": ["dist root", "bundle selection", "contract bundle"],
         "outputs": ["pack compatibility report", "pack lock"],

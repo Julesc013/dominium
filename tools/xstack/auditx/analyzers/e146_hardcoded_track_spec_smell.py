@@ -84,7 +84,7 @@ def run(graph, repo_root, changed_files=None):
                                 "INV-NO-HARDCODED-GAUGE",
                                 "INV-NO-HARDCODED-GAUGE-WIDTH-SPECS",
                             ],
-                            related_paths=[rel_path, "content/packs/specs/specs.default.realistic.m1/data/spec_sheets.json"],
+                            related_paths=[rel_path, "content/packs/spec/specs.default.realistic.m1/data/spec_sheets.json"],
                         )
                     )
                     break

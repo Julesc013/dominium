@@ -66,7 +66,7 @@ def run(repo_root: str):
         return {"status": "fail", "message": "compliance_check_registry missing required baseline checks"}
 
     pack_payloads = []
-    default_pack_rel = "content/packs/specs/specs.default.realistic.m1/data/spec_sheets.json"
+    default_pack_rel = "content/packs/spec/specs.default.realistic.m1/data/spec_sheets.json"
     default_pack_abs = os.path.join(repo_root, default_pack_rel.replace("/", os.sep))
     if os.path.isfile(default_pack_abs):
         default_pack_payload = _read_json(repo_root, default_pack_rel)

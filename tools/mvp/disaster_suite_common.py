@@ -29,8 +29,8 @@ from tools.package.libraries.provides.provider_resolution import (  # noqa: E402
     resolve_providers,
 )
 from tools.validators.identity import IDENTITY_KIND_PACK, attach_universal_identity_block  # noqa: E402
-from content.packs.compatibility_payload.pack_compat_validator import pack_compat_manifest_fingerprint  # noqa: E402
-from content.packs.compatibility_payload.pack_verification_pipeline import verify_pack_set  # noqa: E402
+from tools.validators.package.compatibility_payload.pack_compat_validator import pack_compat_manifest_fingerprint  # noqa: E402
+from tools.validators.package.compatibility_payload.pack_verification_pipeline import verify_pack_set  # noqa: E402
 from tools.release.release_manifest_engine import build_mock_signature_block, verify_release_manifest  # noqa: E402
 from tools.release.update_resolver import (  # noqa: E402
     RESOLUTION_POLICY_LATEST_COMPATIBLE,

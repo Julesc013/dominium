@@ -71,8 +71,8 @@ Replacement Target: XI-4b manual review resolution
 - `src/meta_extensions_engine.py`
 - `src/contracts/package/modding/mod_policy_engine.py`
 - `src/numeric_discipline.py`
-- `src/content/packs/compatibility_payload/pack_compat_validator.py`
-- `src/content/packs/compatibility_payload/pack_verification_pipeline.py`
+- `src/tools/validators/package/compatibility_payload/pack_compat_validator.py`
+- `src/tools/validators/package/compatibility_payload/pack_verification_pipeline.py`
 - `src/platform/platform_probe.py`
 - `src/platform/target_matrix.py`
 - `src/process/capsules/capsule_builder.py`
@@ -274,7 +274,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/worldgen/earth/climate_field_engine.py` disposition=`drop` rank=`104` total_score=`59.64` risk=`HIGH`
 - `src/logic/network/logic_network_validator.py` disposition=`drop` rank=`105` total_score=`59.52` risk=`HIGH`
 - `src/tools/validators/stability/stability_validator.py` disposition=`drop` rank=`106` total_score=`59.4` risk=`HIGH`
-- `src/content/packs/compatibility_payload/pack_verification_pipeline.py` disposition=`drop` rank=`107` total_score=`59.17` risk=`HIGH`
+- `src/tools/validators/package/compatibility_payload/pack_verification_pipeline.py` disposition=`drop` rank=`107` total_score=`59.17` risk=`HIGH`
 - `src/logic/network/instrumentation_binding.py` disposition=`drop` rank=`108` total_score=`59.08` risk=`HIGH`
 - `src/system/reliability/system_health_engine.py` disposition=`drop` rank=`109` total_score=`59.07` risk=`HIGH`
 - `src/worldgen/mw/system_query_engine.py` disposition=`drop` rank=`110` total_score=`59.05` risk=`HIGH`
@@ -285,7 +285,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/system/templates/template_compiler.py` disposition=`drop` rank=`115` total_score=`57.68` risk=`HIGH`
 - `src/geo/kernel/geo_kernel.py` disposition=`drop` rank=`116` total_score=`57.62` risk=`HIGH`
 - `src/geo/edit/geometry_state_engine.py` disposition=`drop` rank=`117` total_score=`57.56` risk=`HIGH`
-- `src/content/packs/compatibility_payload/pack_compat_validator.py` disposition=`drop` rank=`118` total_score=`57.38` risk=`HIGH`
+- `src/tools/validators/package/compatibility_payload/pack_compat_validator.py` disposition=`drop` rank=`118` total_score=`57.38` risk=`HIGH`
 - `src/client/ui/teleport_controller.py` disposition=`drop` rank=`119` total_score=`57.26` risk=`HIGH`
 - `src/worldgen/mw/mw_surface_refiner_l3.py` disposition=`drop` rank=`120` total_score=`57.2` risk=`HIGH`
 - `src/worldgen/mw/mw_system_refiner_l2.py` disposition=`drop` rank=`121` total_score=`57.06` risk=`HIGH`

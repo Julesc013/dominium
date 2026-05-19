@@ -837,7 +837,7 @@
         "packs/official",
         "docs/packs/PACK_COMPATIBILITY_MANIFEST.md",
         "schemas/pack_compat_manifest.schema.json",
-        "content/packs/compatibility_payload/pack_compat_validator.py",
+        "tools/validators/package/compatibility_payload/pack_compat_validator.py",
         "contracts/registry/pack_degrade_mode_registry.json"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-official-packs-have-compat-manifest",
@@ -848,7 +848,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/packs/PACK_COMPATIBILITY_MANIFEST.md",
-        "content/packs/compatibility_payload/pack_compat_validator.py",
+        "tools/validators/package/compatibility_payload/pack_compat_validator.py",
         "tools/xstack/pack_loader/loader.py",
         "tools/xstack/testx/tests/test_missing_manifest_warns_or_refuses_by_policy.py"
       ],
@@ -859,7 +859,7 @@
       "rule_id": "INV-PACK-COMPAT-VALIDATED-BEFORE-LOAD",
       "severity": "FAIL",
       "scope_paths": [
-        "content/packs/compatibility_payload/pack_compat_validator.py",
+        "tools/validators/package/compatibility_payload/pack_compat_validator.py",
         "tools/xstack/pack_loader/loader.py",
         "tools/xstack/registry_compile/compiler.py",
         "tools/xstack/registry_compile/lockfile.py",
@@ -877,7 +877,7 @@
         "docs/audit/PACK_VERIFICATION_BASELINE.md",
         "schema/package/pack_compatibility_report.schema",
         "schemas/pack_compatibility_report.schema.json",
-        "content/packs/compatibility_payload/pack_verification_pipeline.py",
+        "tools/validators/package/compatibility_payload/pack_verification_pipeline.py",
         "tools/setup/setup_cli.py",
         "tools/launcher/launch.py"
       ],
@@ -891,7 +891,7 @@
         "docs/packs/PACK_VERIFICATION_PIPELINE.md",
         "schema/package/pack_lock.schema",
         "schemas/pack_lock.schema.json",
-        "content/packs/compatibility_payload/pack_verification_pipeline.py",
+        "tools/validators/package/compatibility_payload/pack_verification_pipeline.py",
         "tools/xstack/testx/tests/test_deterministic_pack_lock_hash.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-pack-lock-deterministic",
@@ -902,7 +902,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/packs/PACK_VERIFICATION_PIPELINE.md",
-        "content/packs/compatibility_payload/pack_verification_pipeline.py",
+        "tools/validators/package/compatibility_payload/pack_verification_pipeline.py",
         "tools/setup/setup_cli.py",
         "tools/launcher/launch.py",
         "tools/xstack/testx/tests/test_overlay_conflict_detected.py"

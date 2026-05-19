@@ -8,7 +8,7 @@ from typing import Dict, List, Tuple
 
 from tools.package.libraries.provides import classify_pack_namespace
 from tools.validators.modding import attach_pack_policy_descriptors
-from content.packs.compatibility_payload import attach_pack_compat_manifest
+from tools.validators.package.compatibility_payload import attach_pack_compat_manifest
 from meta_extensions_engine import normalize_extensions_tree
 from tools.xstack.compatx.validator import validate_instance
 

@@ -37,8 +37,8 @@ Replacement Target: XI-4b manual review resolution
 - `src/tools/validators/identity/identity_validator.py`
 - `src/meta_extensions_engine.py`
 - `src/contracts/package/modding/mod_policy_engine.py`
-- `src/content/packs/compatibility_payload/pack_compat_validator.py`
-- `src/content/packs/compatibility_payload/pack_verification_pipeline.py`
+- `src/tools/validators/package/compatibility_payload/pack_compat_validator.py`
+- `src/tools/validators/package/compatibility_payload/pack_verification_pipeline.py`
 - `src/platform/platform_probe.py`
 - `src/platform/target_matrix.py`
 - `src/tools/release/archive_policy.py`
@@ -137,13 +137,13 @@ Replacement Target: XI-4b manual review resolution
 - `tools/worldgen/earth7_probe.py` disposition=`merge` rank=`47` total_score=`62.38` risk=`HIGH`
 - `src/appshell/ui_mode_selector.py` disposition=`drop` rank=`48` total_score=`61.67` risk=`HIGH`
 - `src/worldgen/earth/climate_field_engine.py` disposition=`drop` rank=`49` total_score=`59.64` risk=`HIGH`
-- `src/content/packs/compatibility_payload/pack_verification_pipeline.py` disposition=`drop` rank=`50` total_score=`59.17` risk=`HIGH`
+- `src/tools/validators/package/compatibility_payload/pack_verification_pipeline.py` disposition=`drop` rank=`50` total_score=`59.17` risk=`HIGH`
 - `src/worldgen/mw/system_query_engine.py` disposition=`drop` rank=`51` total_score=`59.05` risk=`HIGH`
 - `src/tools/package/libraries/install/install_validator.py` disposition=`merge` rank=`52` total_score=`58.27` risk=`HIGH`
 - `src/worldgen/earth/hydrology_engine.py` disposition=`drop` rank=`53` total_score=`58.1` risk=`HIGH`
 - `tools/worldgen/gal0_probe.py` disposition=`merge` rank=`54` total_score=`58.02` risk=`HIGH`
 - `src/geo/edit/geometry_state_engine.py` disposition=`drop` rank=`55` total_score=`57.56` risk=`HIGH`
-- `src/content/packs/compatibility_payload/pack_compat_validator.py` disposition=`drop` rank=`56` total_score=`57.38` risk=`HIGH`
+- `src/tools/validators/package/compatibility_payload/pack_compat_validator.py` disposition=`drop` rank=`56` total_score=`57.38` risk=`HIGH`
 - `src/worldgen/mw/mw_surface_refiner_l3.py` disposition=`drop` rank=`57` total_score=`57.2` risk=`HIGH`
 - `src/worldgen/mw/mw_system_refiner_l2.py` disposition=`drop` rank=`58` total_score=`57.06` risk=`HIGH`
 - `src/worldgen/earth/material/material_proxy_engine.py` disposition=`drop` rank=`59` total_score=`55.54` risk=`HIGH`

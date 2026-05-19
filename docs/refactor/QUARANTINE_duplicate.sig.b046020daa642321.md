@@ -26,8 +26,8 @@ Replacement Target: XI-4b manual review resolution
 - `src/appshell/tui/tui_engine.py`
 - `src/diag/repro_bundle_builder.py`
 - `src/runtime/package/install_discovery_engine.py`
-- `src/content/packs/compatibility_payload/pack_compat_validator.py`
-- `src/content/packs/compatibility_payload/pack_verification_pipeline.py`
+- `src/tools/validators/package/compatibility_payload/pack_compat_validator.py`
+- `src/tools/validators/package/compatibility_payload/pack_verification_pipeline.py`
 - `src/ui/ui_model.py`
 - `tools/mvp/toolchain_matrix_common.py`
 - `tools/xstack/testx/tests/pack_compat1_testlib.py`
@@ -45,8 +45,8 @@ Replacement Target: XI-4b manual review resolution
 - `src/appshell/tui/tui_engine.py` disposition=`merge` rank=`9` total_score=`66.19` risk=`HIGH`
 - `src/appshell/ipc/ipc_transport.py` disposition=`merge` rank=`10` total_score=`64.11` risk=`HIGH`
 - `src/diag/repro_bundle_builder.py` disposition=`merge` rank=`11` total_score=`62.86` risk=`HIGH`
-- `src/content/packs/compatibility_payload/pack_verification_pipeline.py` disposition=`merge` rank=`12` total_score=`59.17` risk=`HIGH`
-- `src/content/packs/compatibility_payload/pack_compat_validator.py` disposition=`merge` rank=`13` total_score=`57.38` risk=`HIGH`
+- `src/tools/validators/package/compatibility_payload/pack_verification_pipeline.py` disposition=`merge` rank=`12` total_score=`59.17` risk=`HIGH`
+- `src/tools/validators/package/compatibility_payload/pack_compat_validator.py` disposition=`merge` rank=`13` total_score=`57.38` risk=`HIGH`
 
 ## Usage Sites
 

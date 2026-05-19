@@ -1042,7 +1042,7 @@ def _write_verification_outputs(
     report_path: Optional[str],
     lock_path: Optional[str],
 ) -> dict:
-    from content.packs.compatibility_payload import write_pack_compatibility_outputs
+    from tools.validators.package.compatibility_payload import write_pack_compatibility_outputs
 
     report_target = normalize_path(report_path or os.path.join(root, DEFAULT_COMPAT_REPORT))
     lock_target = normalize_path(lock_path or os.path.join(root, "pack_lock.json"))

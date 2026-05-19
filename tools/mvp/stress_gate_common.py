@@ -16,7 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from content.packs.compatibility_payload.pack_verification_pipeline import verify_pack_set, write_pack_compatibility_outputs  # noqa: E402
+from tools.validators.package.compatibility_payload.pack_verification_pipeline import verify_pack_set, write_pack_compatibility_outputs  # noqa: E402
 from runtime.network.server.loopback_transport import service_loopback_control_channel  # noqa: E402
 from runtime.shell.server.tick_loop import run_server_ticks  # noqa: E402
 from tools.compat.cap_neg4_common import (  # noqa: E402

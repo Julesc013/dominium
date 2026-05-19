@@ -100,7 +100,7 @@ _CANONICAL_PREFIX_ALIASES = (
     ("tools/appshell/", "tools/validators/shell/"),
     ("tools/compatx/", "tools/xstack/compatx/"),
     ("tools/geo/", "tools/validators/domain/geology/"),
-    ("packs/compat/", "content/packs/compatibility_payload/"),
+    ("packs/compat/", "tools/validators/package/compatibility_payload/"),
     ("packs/official/", "content/packs/official/"),
     ("packs/", "content/packs/"),
     ("locks/", "contracts/package/locks/"),

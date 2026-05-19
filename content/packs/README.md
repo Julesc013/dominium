@@ -12,8 +12,11 @@ Define canonical on-disk pack layout for deterministic discovery and validation 
 
 ## Required Layout
 - `packs/<category>/<pack_id>/pack.json`
-- Allowed categories: `core`, `domain`, `experience`, `law`, `tool`
-- Optional pack-local directories: `data/`, `assets/`, `ui/`, `scenarios/`
+- Allowed categories: `blueprint`, `core`, `derived`, `domain`,
+  `example`, `experience`, `law`, `official`, `reality`, `representation`,
+  `spec`, `tool`, and `worldgen`.
+- Optional pack-local directories: `data/`, `assets/`, `docs/`, `ui/`,
+  and `scenarios/`.
 
 ## Invariants
 - No executable code is allowed under `packs/`.

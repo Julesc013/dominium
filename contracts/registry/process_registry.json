@@ -4,7 +4,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.base.rules/content/processes.json",
+      "description": "Data-defined process from content/packs/core/org.dominium.base.rules/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -53,7 +53,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.base.rules/content/processes.json",
+      "description": "Data-defined process from content/packs/core/org.dominium.base.rules/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -102,7 +102,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.base.rules/content/processes.json",
+      "description": "Data-defined process from content/packs/core/org.dominium.base.rules/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -331,7 +331,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.realities.alchemy/content/processes.json",
+      "description": "Data-defined process from content/packs/reality/org.dominium.realities.alchemy/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -369,7 +369,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.realities.alchemy/content/processes.json",
+      "description": "Data-defined process from content/packs/reality/org.dominium.realities.alchemy/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -407,7 +407,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.realities.astrology/content/processes.json",
+      "description": "Data-defined process from content/packs/reality/org.dominium.realities.astrology/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -530,7 +530,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.epistemics.core/content/processes.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.epistemics.core/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -567,7 +567,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.epistemics.core/content/processes.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.epistemics.core/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -605,7 +605,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.epistemics.core/content/processes.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.epistemics.core/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -642,7 +642,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.epistemics.core/content/processes.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.epistemics.core/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -680,7 +680,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.epistemics.core/content/processes.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.epistemics.core/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -718,7 +718,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.epistemics.core/content/processes.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.epistemics.core/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -755,7 +755,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.epistemics.core/content/processes.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.epistemics.core/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -792,7 +792,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.epistemics.core/content/processes.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.epistemics.core/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -832,7 +832,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.examples.false_science/content/processes.json",
+      "description": "Data-defined process from content/packs/example/org.dominium.examples.false_science/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -884,7 +884,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.examples.false_science/content/processes.json",
+      "description": "Data-defined process from content/packs/example/org.dominium.examples.false_science/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -935,7 +935,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.examples.lost_civilization/content/processes.json",
+      "description": "Data-defined process from content/packs/example/org.dominium.examples.lost_civilization/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -990,7 +990,7 @@
         "field.on_planet.terrain.cover"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.examples.lost_civilization/content/processes.json",
+      "description": "Data-defined process from content/packs/example/org.dominium.examples.lost_civilization/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1048,7 +1048,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.realities.hyperspace/content/processes.json",
+      "description": "Data-defined process from content/packs/reality/org.dominium.realities.hyperspace/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1086,7 +1086,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.realities.hyperspace/content/processes.json",
+      "description": "Data-defined process from content/packs/reality/org.dominium.realities.hyperspace/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1124,7 +1124,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.realities.hyperspace/content/processes.json",
+      "description": "Data-defined process from content/packs/reality/org.dominium.realities.hyperspace/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1162,7 +1162,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.realities.magic/content/processes.json",
+      "description": "Data-defined process from content/packs/reality/org.dominium.realities.magic/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1200,7 +1200,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.realities.magic/content/processes.json",
+      "description": "Data-defined process from content/packs/reality/org.dominium.realities.magic/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1238,7 +1238,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.realities.magic/content/processes.json",
+      "description": "Data-defined process from content/packs/reality/org.dominium.realities.magic/content/processes.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1516,7 +1516,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_construction.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1575,7 +1575,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_construction.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1637,7 +1637,7 @@
         "field.on_planet.terrain.cover"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_construction.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1704,7 +1704,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_construction.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1766,7 +1766,7 @@
         "field.on_planet.structural.integrity"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_construction.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1834,7 +1834,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_construction.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1892,7 +1892,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_construction.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -1954,7 +1954,7 @@
         "field.on_planet.terrain.elevation"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_construction.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2014,7 +2014,7 @@
         "field.on_planet.structural.integrity"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_construction.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_construction.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2067,7 +2067,7 @@
         "field.on_planet.structural.integrity"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2120,7 +2120,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2173,7 +2173,7 @@
         "field.on_planet.structural.integrity"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2228,7 +2228,7 @@
         "field.on_planet.structural.integrity"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2288,7 +2288,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2342,7 +2342,7 @@
         "field.on_planet.structural.integrity"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_maintenance.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2397,7 +2397,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2463,7 +2463,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2523,7 +2523,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2576,7 +2576,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2635,7 +2635,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_manufacturing.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2689,7 +2689,7 @@
         "field.on_planet.resource.accessibility"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_mining.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2743,7 +2743,7 @@
         "field.on_planet.resource.deposit"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_mining.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2796,7 +2796,7 @@
         "field.on_planet.resource.deposit"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_mining.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2858,7 +2858,7 @@
         "field.on_planet.soil.contamination"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_mining.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2909,7 +2909,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_mining.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -2975,7 +2975,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_mining.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_mining.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3035,7 +3035,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_networks.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3095,7 +3095,7 @@
         "field.on_planet.network.congestion"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_networks.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3160,7 +3160,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_networks.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3217,7 +3217,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_networks.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3270,7 +3270,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_networks.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3328,7 +3328,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_networks.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3382,7 +3382,7 @@
         "field.on_planet.network.congestion"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_networks.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_networks.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3433,7 +3433,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3487,7 +3487,7 @@
         "field.on_planet.structural.integrity"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3544,7 +3544,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3603,7 +3603,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3661,7 +3661,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3712,7 +3712,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_regulation.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3766,7 +3766,7 @@
         "field.on_planet.atmosphere.pressure"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3833,7 +3833,7 @@
         "field.on_planet.temperature"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3898,7 +3898,7 @@
         "field.on_planet.atmosphere.composition"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -3958,7 +3958,7 @@
         "field.on_planet.biomass.cover"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4018,7 +4018,7 @@
         "field.on_planet.climate.albedo"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4072,7 +4072,7 @@
         "field.on_planet.hydrology.storage"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4138,7 +4138,7 @@
         "field.on_planet.atmosphere.composition"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terraforming.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4198,7 +4198,7 @@
         "field.on_planet.hydrology.flow"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4254,7 +4254,7 @@
         "field.on_planet.terrain.cover"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4321,7 +4321,7 @@
         "field.on_planet.soil.compaction"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4374,7 +4374,7 @@
         "field.on_planet.soil.contamination"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4433,7 +4433,7 @@
         "field.on_planet.terrain.cover"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4503,7 +4503,7 @@
         "field.on_planet.hydrology.storage"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4569,7 +4569,7 @@
         "field.on_planet.terrain.elevation"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4629,7 +4629,7 @@
         "field.on_planet.terrain.elevation"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4705,7 +4705,7 @@
         "field.on_planet.terrain.elevation"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4759,7 +4759,7 @@
         "field.on_planet.soil.contamination"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4821,7 +4821,7 @@
         "field.on_planet.biomass.cover"
       ],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_terrain.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4881,7 +4881,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_trade.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4941,7 +4941,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_trade.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -4999,7 +4999,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_trade.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -5051,7 +5051,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_trade.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -5102,7 +5102,7 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_trade.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"
@@ -5163,7 +5163,7 @@
       ],
       "affected_fields": [],
       "deprecated": false,
-      "description": "Data-defined process from content/packs/org.dominium.lib.on_planet.processes/content/processes_trade.json",
+      "description": "Data-defined process from content/packs/domain/org.dominium.lib.on_planet.processes/content/processes_trade.json",
       "determinism_notes": [
         "data-defined",
         "deterministic-order"

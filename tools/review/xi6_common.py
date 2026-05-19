@@ -148,7 +148,7 @@ ENGINE_SPECS = (
         "semantic_area": "PACK-COMPAT",
         "canonical_module_id": "packs.compat",
         "canonical_entrypoint_symbols": ("validate_pack_compat_manifest",),
-        "canonical_file_paths": ("content/packs/compatibility_payload/pack_compat_validator.py",),
+        "canonical_file_paths": ("tools/validators/package/compatibility_payload/pack_compat_validator.py",),
         "allowed_definition_modules": ("packs.compat",),
         "description": "Pack compatibility verification must stay inside the canonical pack compatibility validator.",
     },

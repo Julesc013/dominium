@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 
 from runtime.shell.paths import VROOT_STORE, get_current_virtual_paths, vpath_root
-from content.packs.compatibility_payload import verify_pack_set, write_pack_compatibility_outputs
+from tools.validators.package.compatibility_payload import verify_pack_set, write_pack_compatibility_outputs
 from tools.validators.security.trust import (
     ARTIFACT_KIND_PACK,
     ARTIFACT_KIND_PACK_COMPAT,

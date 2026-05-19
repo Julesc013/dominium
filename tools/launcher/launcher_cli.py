@@ -69,7 +69,7 @@ from runtime.shell.paths import (
     vpath_candidate_roots,
     vpath_resolve,
 )
-from content.packs.compatibility_payload import verify_pack_set
+from tools.validators.package.compatibility_payload import verify_pack_set
 
 
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"

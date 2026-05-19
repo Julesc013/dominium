@@ -27404,7 +27404,7 @@ def _append_system_template_invariant_findings(
         "game/domain/systems/templates/template_compiler.py",
         "tools/xstack/sessionx/process_runtime.py",
         "contracts/registry/system_template_registry.json",
-        "content/packs/system_templates/base/data/system_template_registry.json",
+        "content/packs/core/system_templates.base/data/system_template_registry.json",
         "tools/system/tool_verify_template_reproducible.py",
     )
     for rel_path in required_paths:
@@ -27492,7 +27492,7 @@ def _append_system_template_invariant_findings(
             )
         )
 
-    registry_rel = "content/packs/system_templates/base/data/system_template_registry.json"
+    registry_rel = "content/packs/core/system_templates.base/data/system_template_registry.json"
     registry_text = _file_text(repo_root, registry_rel)
     for token in (
         "template.engine.ice_stub",
@@ -33761,7 +33761,7 @@ def _append_forking_provides_invariant_findings(
                 "selection_logged",
                 "selection_mode",
             ),
-            "content/packs/compatibility_payload/pack_verification_pipeline.py": (
+            "tools/validators/package/compatibility_payload/pack_verification_pipeline.py": (
                 "resolve_providers(",
                 "provides_resolutions",
                 "provider_selection_logged",

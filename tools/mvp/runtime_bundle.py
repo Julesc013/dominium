@@ -23,7 +23,7 @@ from tools.validators.modding import (
     mod_policy_registry_hash,
     mod_policy_rows_by_id,
 )
-from content.packs.compatibility_payload import attach_pack_compat_manifest
+from tools.validators.package.compatibility_payload import attach_pack_compat_manifest
 from tools.validators.compatibility.data_format_loader import artifact_deterministic_fingerprint, load_versioned_artifact, stamp_artifact_metadata
 from tools.validators.identity import IDENTITY_KIND_BUNDLE, UNIVERSAL_IDENTITY_FIELD, attach_universal_identity_block
 from game.domain.universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata

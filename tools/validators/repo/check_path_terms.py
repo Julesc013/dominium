@@ -72,6 +72,15 @@ FORBIDDEN_ACTIVE_PATH_PREFIXES = {
     "contracts/schema/control": "control schemas use contracts/schema/runtime/control, governance, or policy owners",
     "contracts/schema/tools": "tool schemas use contracts/schema/tool",
     "contracts/schema/validator": "validator schemas use contracts/schema/validation",
+    "content/domains/game/core": "domain content lives directly under content/domains/<canonical-domain>, not game/core",
+    "content/domains/worldgen/real/earth/content": "worldgen real-earth domain content should not use a nested content wrapper",
+    "content/domains/worldgen/real/milky_way/content": "worldgen real-milky-way domain content should not use a nested content wrapper",
+    "content/domains/worldgen/real/sol_system/content": "worldgen real-sol-system domain content should not use a nested content wrapper",
+    "content/packs/blueprints": "pack category is singular content/packs/blueprint",
+    "content/packs/specs": "pack category is singular content/packs/spec",
+    "content/packs/physics": "physics packs belong under content/packs/domain",
+    "content/packs/system_templates": "system template packs belong under content/packs/core or another canonical pack category",
+    "content/packs/compatibility_payload": "executable package compatibility tooling belongs under tools/validators/package",
 }
 
 

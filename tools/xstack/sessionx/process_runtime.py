@@ -21809,7 +21809,7 @@ def _spec_pack_payload_rows(policy_context: dict | None) -> List[dict]:
         inline = policy_context.get("spec_sheet_payloads")
         if isinstance(inline, list):
             rows.extend(dict(item) for item in inline if isinstance(item, dict))
-    default_pack_rel = "content/packs/specs/specs.default.realistic.m1/data/spec_sheets.json"
+    default_pack_rel = "content/packs/spec/specs.default.realistic.m1/data/spec_sheets.json"
     default_pack_abs = os.path.join(REPO_ROOT_HINT, default_pack_rel.replace("/", os.sep))
     if os.path.isfile(default_pack_abs):
         try:
