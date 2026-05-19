@@ -87,6 +87,8 @@ add_executable(distribution_sdk_engine_compile_smoke
 )
 target_include_directories(distribution_sdk_engine_compile_smoke PRIVATE
     ${CMAKE_SOURCE_DIR}/engine/include
+    ${CMAKE_SOURCE_DIR}/game/include
+    ${CMAKE_SOURCE_DIR}/runtime/include
     ${CMAKE_BINARY_DIR}/generated/include
 )
 target_link_libraries(distribution_sdk_engine_compile_smoke PRIVATE
@@ -108,6 +110,7 @@ add_executable(distribution_sdk_game_compile_smoke
 target_include_directories(distribution_sdk_game_compile_smoke PRIVATE
     ${CMAKE_SOURCE_DIR}/engine/include
     ${CMAKE_SOURCE_DIR}/game/include
+    ${CMAKE_SOURCE_DIR}/runtime/include
     ${CMAKE_BINARY_DIR}/generated/include
 )
 target_link_libraries(distribution_sdk_game_compile_smoke PRIVATE

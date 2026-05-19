@@ -175,6 +175,7 @@ add_dependencies(dominium_game game_include_sanity)
 target_include_directories(dominium_game
     PUBLIC
         ${DOMINIUM_GAME_INCLUDE_DIR}
+        ${DOMINIUM_RUNTIME_INCLUDE_DIR}
     PRIVATE
         ${DOMINIUM_GENERATED_INCLUDE_DIR}
 )

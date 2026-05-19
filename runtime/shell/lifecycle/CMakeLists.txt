@@ -10,6 +10,7 @@ add_library(dominium_app_runtime STATIC
 )
 target_include_directories(dominium_app_runtime PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${DOMINIUM_RUNTIME_INCLUDE_DIR}
 )
 target_link_libraries(dominium_app_runtime PUBLIC
     domino_engine

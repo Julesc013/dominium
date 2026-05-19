@@ -2,6 +2,8 @@ set(DOMINIUM_ENGINE_INTERNAL_TEST_INCLUDES
     ${CMAKE_SOURCE_DIR}/engine
     ${CMAKE_SOURCE_DIR}/engine/state
     ${CMAKE_SOURCE_DIR}/engine/execution/kernels
+    ${DOMINIUM_GAME_INCLUDE_DIR}
+    ${DOMINIUM_RUNTIME_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/game/domain
     ${CMAKE_SOURCE_DIR}/game/domain/simulation/pkt
 )

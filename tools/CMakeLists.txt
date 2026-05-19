@@ -801,3 +801,54 @@ add_test(NAME dominium_world_definition
     COMMAND python ${CMAKE_SOURCE_DIR}/tools/ci/validate_world_definition.py
         --repo-root=${CMAKE_SOURCE_DIR}
 )
+
+set(_dominium_tools_canonical_include_targets
+    dominium-tools
+    dom_tool_artifactmeta
+    dom_tool_terrain
+    dom_tool_geology
+    dom_tool_climate
+    dom_tool_weather
+    dom_tool_energy
+    dom_tool_heat
+    dom_tool_fluid
+    dom_tool_network
+    dom_tool_hazard
+    dom_tool_risk
+    dom_tool_trust
+    dom_tool_institution
+    dom_tool_economy
+    dom_tool_conflict
+    dom_tool_history
+    dom_tool_standard
+    dom_tool_autonomy
+    dom_tool_srz
+    dom_tool_knowledge
+    dom_tool_vegetation
+    dom_tool_animal
+    dom_tool_structure
+    dom_tool_travel
+    dom_tool_mining
+    dom_tool_crafting
+    data_validate
+    dominium_tools_inspect
+    dominium_tools_observability
+    mod_pack_builder
+    mod_pack_validator
+)
+foreach(_dominium_tools_target IN LISTS _dominium_tools_canonical_include_targets)
+    if(TARGET ${_dominium_tools_target})
+        target_include_directories(${_dominium_tools_target} PRIVATE
+            ${DOMINIUM_GAME_INCLUDE_DIR}
+            ${DOMINIUM_RUNTIME_INCLUDE_DIR}
+        )
+    endif()
+endforeach()
+foreach(_dominium_tools_library IN ITEMS dominium_tools_inspect dominium_tools_observability)
+    if(TARGET ${_dominium_tools_library})
+        target_include_directories(${_dominium_tools_library} PUBLIC
+            ${DOMINIUM_GAME_INCLUDE_DIR}
+            ${DOMINIUM_RUNTIME_INCLUDE_DIR}
+        )
+    endif()
+endforeach()

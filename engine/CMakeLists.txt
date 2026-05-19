@@ -300,6 +300,8 @@ target_include_directories(domino_engine
         ${DOMINIUM_ENGINE_INCLUDE_DIR}
     PRIVATE
         ${DOMINIUM_GENERATED_INCLUDE_DIR}
+        ${DOMINIUM_GAME_INCLUDE_DIR}
+        ${DOMINIUM_RUNTIME_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/execution
         ${CMAKE_CURRENT_SOURCE_DIR}/execution/budgets
         ${CMAKE_CURRENT_SOURCE_DIR}/execution/ir
