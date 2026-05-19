@@ -52,7 +52,7 @@ def test_locklist(repo_root):
 
 
 def test_exit_codes(repo_root):
-    header = os.path.join(repo_root, "engine", "include", "domino", "app", "runtime.h")
+    header = os.path.join(repo_root, "runtime", "include", "domino", "app", "runtime.h")
     text = read_text(header)
     for token in [
         "D_APP_EXIT_OK",
