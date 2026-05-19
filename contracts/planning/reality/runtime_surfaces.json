@@ -49,9 +49,9 @@
       "evidence": [
         "apps/client/main_client.c",
         "client/adapters",
-        "apps/client/session",
+        "runtime/shell/client/session",
         "client/input",
-        "client/modes"
+        "runtime/shell/client/modes"
       ],
       "notes": "Product-facing runtime surface that bridges app runtime, engine, game, and UI."
     },

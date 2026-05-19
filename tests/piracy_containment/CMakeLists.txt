@@ -1,6 +1,6 @@
 add_executable(piracy_base_free_tests
     piracy_base_free_tests.cpp
-    ${CMAKE_SOURCE_DIR}/apps/server/authority/dom_server_authority.cpp
+    ${CMAKE_SOURCE_DIR}/game/law/authority/dom_server_authority.cpp
 )
 target_include_directories(piracy_base_free_tests PRIVATE
     ${CMAKE_SOURCE_DIR}

@@ -1,7 +1,7 @@
 /*
 Tourist non-interference tests (TESTX3).
 */
-#include "apps/server/authority/dom_server_authority.h"
+#include "game/law/authority/dom_server_authority.h"
 #include "tests/control/control_test_common.h"
 
 #include <stdio.h>

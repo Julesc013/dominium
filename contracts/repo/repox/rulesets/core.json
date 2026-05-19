@@ -1150,7 +1150,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "contracts/registry/law_profiles.json",
-        "apps/client/command/client_command_bridge.c",
+        "runtime/shell/client/command/client_command_bridge.c",
         "schema/lens/lens.schema"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-survival-diegetic-contract",
@@ -1199,9 +1199,9 @@
       "severity": "FAIL",
       "scope_paths": [
         "schema/authority/authority_context.schema",
-        "apps/client/command/client_command_bridge.c",
-        "apps/server/authority/dom_server_authority.h",
-        "apps/server/authority/dom_server_authority.cpp"
+        "runtime/shell/client/command/client_command_bridge.c",
+        "game/law/authority/dom_server_authority.h",
+        "game/law/authority/dom_server_authority.cpp"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-authority-context-required-for-intents",
       "exemption_policy": "deny"
@@ -1212,8 +1212,8 @@
       "scope_paths": [
         "schema/session/session_spec.schema",
         "contracts/registry/session_defaults.json",
-        "apps/client/command/client_command_bridge.c",
-        "apps/client/command/client_commands_registry.c"
+        "runtime/shell/client/command/client_command_bridge.c",
+        "runtime/shell/client/command/client_commands_registry.c"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-session-spec-required-for-run",
       "exemption_policy": "deny"
@@ -1966,8 +1966,8 @@
       "rule_id": "INV-UI-ENTITLEMENT-GATING",
       "severity": "FAIL",
       "scope_paths": [
-        "apps/client/command/client_commands_registry.c",
-        "apps/client/command/client_command_bridge.c"
+        "runtime/shell/client/command/client_commands_registry.c",
+        "runtime/shell/client/command/client_command_bridge.c"
       ],
       "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#entitlement-gating",
       "exemption_policy": "deny"
@@ -1980,7 +1980,7 @@
         "contracts/registry/presentation_matrix.json",
         "contracts/registry/law_profiles.json",
         "contracts/registry/lenses.json",
-        "apps/client/command/client_commands_registry.c"
+        "runtime/shell/client/command/client_commands_registry.c"
       ],
       "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#presentation-matrix-integrity",
       "exemption_policy": "deny"

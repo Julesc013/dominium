@@ -88,8 +88,8 @@ RESERVED_WORDS = (
 )
 
 SCAN_ROOTS = (
-    "apps/client/observability",
-    "apps/client/presentation",
+    "runtime/ui/client/observability",
+    "runtime/render/client/presentation",
     "worldgen",
     "tools/xstack/compatx",
     "tools/xstack/pack_loader",
@@ -624,17 +624,17 @@ COSMETIC_SEMANTIC_FORBIDDEN_TOKENS = (
 )
 
 INTERACTION_UI_SURFACE_FILES = (
-    "apps/client/interaction/affordance_generator.py",
-    "apps/client/interaction/interaction_dispatch.py",
-    "apps/client/interaction/preview_generator.py",
-    "apps/client/interaction/inspection_overlays.py",
-    "apps/client/interaction/interaction_panel.py",
+    "runtime/ui/client/interaction/affordance_generator.py",
+    "runtime/ui/client/interaction/interaction_dispatch.py",
+    "runtime/ui/client/interaction/preview_generator.py",
+    "runtime/ui/client/interaction/inspection_overlays.py",
+    "runtime/ui/client/interaction/interaction_panel.py",
     "tools/xstack/sessionx/interaction.py",
     "tools/interaction/interaction_cli.py",
 )
 
 PUBLIC_INTERACTION_ENTRYPOINT_REQUIREMENTS = {
-    "apps/client/interaction/interaction_dispatch.py": (
+    "runtime/ui/client/interaction/interaction_dispatch.py": (
         "def run_interaction_command(",
         "def build_interaction_control_intent(",
         "build_control_intent(",
@@ -655,14 +655,14 @@ UI_DIRECT_PROCESS_SCAN_ROOTS = (
 )
 
 UI_DIRECT_PROCESS_ALLOWED_FILES = (
-    "apps/client/interaction/interaction_dispatch.py",
+    "runtime/ui/client/interaction/interaction_dispatch.py",
     "tools/xstack/sessionx/process_runtime.py",
     "tools/xstack/testx/tests/",
     "tools/xstack/auditx/analyzers/",
 )
 
-INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE = "apps/client/interaction/interaction_dispatch.py"
-INTERACTION_AFFORDANCE_FILE = "apps/client/interaction/affordance_generator.py"
+INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE = "runtime/ui/client/interaction/interaction_dispatch.py"
+INTERACTION_AFFORDANCE_FILE = "runtime/ui/client/interaction/affordance_generator.py"
 ACTION_SURFACE_ENGINE_FILE = "game/domain/interaction/action_surface_engine.py"
 ACTION_SURFACE_REGISTRY_FILES = (
     "contracts/registry/surface_type_registry.json",
@@ -11213,7 +11213,7 @@ def _append_renderer_truth_boundary_findings(
     if profile not in ("STRICT", "FULL"):
         return
     rel_norm = _norm(rel_path).lower()
-    if not rel_norm.startswith("apps/client/presentation/"):
+    if not rel_norm.startswith("runtime/render/client/presentation/"):
         return
     match = INCLUDE_RE.match(line)
     if match:
@@ -11282,7 +11282,7 @@ def _append_negative_invariant_findings(
                         )
                     )
 
-            if rel_norm.startswith(("apps/client/presentation/", "runtime/ui/client/")):
+            if rel_norm.startswith(("runtime/render/client/presentation/", "runtime/ui/client/")):
                 ui_bypass_tokens = (
                     "boot_session_spec(",
                     "create_session_spec(",
@@ -14002,12 +14002,12 @@ def _append_material_structure_invariant_findings(
             "cache_key",
             "pack_lock_hash",
         ),
-        "apps/client/interaction/preview_generator.py": (
+        "runtime/ui/client/interaction/preview_generator.py": (
             "_blueprint_preview_payload(",
             "process.blueprint_inspect",
             "build_blueprint_ghost_overlay(",
         ),
-        "apps/client/interaction/inspection_overlays.py": (
+        "runtime/ui/client/interaction/inspection_overlays.py": (
             "_blueprint_overlay_payload(",
             "build_blueprint_ghost_overlay(",
             "blueprint_bom_summary(",
@@ -15504,7 +15504,7 @@ def _append_core_abstraction_invariant_findings(
                 "target_kind",
             ),
         },
-        "apps/client/interaction/inspection_overlays.py": {
+        "runtime/ui/client/interaction/inspection_overlays.py": {
             "INV-NO-OMNISCIENT-INTERIOR-UI": (
                 "_interior_overlay_payload(",
                 "section.interior.pressure_summary",
@@ -16594,7 +16594,7 @@ def _append_retro_consistency_invariant_findings(
 
     allowed_intent_dispatch_paths = {
         "tools/governance/control_plane_engine.py",
-        "apps/client/interaction/interaction_dispatch.py",
+        "runtime/ui/client/interaction/interaction_dispatch.py",
         "tools/validators/network/srz/shard_coordinator.py",
         "tools/validators/network/policies/policy_server_authoritative.py",
     }
@@ -20242,7 +20242,7 @@ def _append_plan_execution_enforcement_invariant_findings(
                 )
             )
 
-    overlays_rel = "apps/client/interaction/inspection_overlays.py"
+    overlays_rel = "runtime/ui/client/interaction/inspection_overlays.py"
     overlays_text = _file_text(repo_root, overlays_rel)
     if not overlays_text:
         findings.append(
@@ -24439,7 +24439,7 @@ def _append_electric_invariant_findings(
 
     observation_rel = "tools/xstack/sessionx/observation.py"
     inspection_rel = "game/domain/inspection/inspection_engine.py"
-    overlay_rel = "apps/client/interaction/inspection_overlays.py"
+    overlay_rel = "runtime/ui/client/interaction/inspection_overlays.py"
     control_registry_rel = "contracts/registry/control_action_registry.json"
     action_template_rel = "contracts/registry/action_template_registry.json"
     observation_text = _file_text(repo_root, observation_rel)

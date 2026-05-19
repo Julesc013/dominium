@@ -10,7 +10,7 @@ FORBIDDEN_PREFIXES = [
     "engine/",
     "game/",
     "apps/server/",
-    "apps/client/presentation/",
+    "runtime/render/client/presentation/",
     "runtime/network/client/",
     "runtime/input/client/",
     "game/source/",

@@ -2,23 +2,23 @@ cmake_minimum_required(VERSION 3.16)
 
 add_executable(dominium_server
     main_server.c
-    authority/dom_server_authority.cpp
+    ${CMAKE_SOURCE_DIR}/game/law/authority/dom_server_authority.cpp
     ${CMAKE_SOURCE_DIR}/runtime/network/server/dom_server_protocol.cpp
     ${CMAKE_SOURCE_DIR}/runtime/network/server/dom_server_runtime.cpp
-    shard/shard_api.cpp
-    shard/shard_router.cpp
-    shard/shard_domain_index.cpp
-    shard/dom_cross_shard_log.cpp
-    shard/dom_global_id.cpp
-    shard/dom_shard_lifecycle.cpp
-    shard/domain_shard_mapper.cpp
-    shard/task_splitter.cpp
-    shard/message_bus.cpp
-    shard/shard_executor.cpp
-    shard/shard_hashing.cpp
-    persistence/integrity_checkpoints.cpp
-    persistence/dom_checkpointing.cpp
-    persistence/dispute_bundle.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_api.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_router.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_domain_index.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/dom_cross_shard_log.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/dom_global_id.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/dom_shard_lifecycle.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/domain_shard_mapper.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/task_splitter.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/message_bus.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_executor.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_hashing.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/integrity_checkpoints.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/dom_checkpointing.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/dispute_bundle.cpp
 )
 target_link_libraries(dominium_server PRIVATE
     app::runtime
@@ -29,6 +29,9 @@ target_link_libraries(dominium_server PRIVATE
 target_include_directories(dominium_server PRIVATE
     ${DOMINIUM_GENERATED_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/runtime/network/server
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard
+    ${CMAKE_SOURCE_DIR}/runtime/storage/server
+    ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence
 )
 set_target_properties(dominium_server PROPERTIES
     OUTPUT_NAME "server"
@@ -71,19 +74,23 @@ endif()
 if(DOM_BUILD_TESTS)
     add_executable(dominium_server_shard_tests
         ${CMAKE_SOURCE_DIR}/tests/server/shard_api_tests.cpp
-        shard/shard_api.cpp
-        shard/shard_router.cpp
-        shard/shard_domain_index.cpp
-        shard/domain_shard_mapper.cpp
-        shard/task_splitter.cpp
-        shard/message_bus.cpp
-        shard/shard_executor.cpp
-        shard/shard_hashing.cpp
-        persistence/integrity_checkpoints.cpp
-        persistence/dispute_bundle.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_api.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_router.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_domain_index.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/domain_shard_mapper.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/task_splitter.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/message_bus.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_executor.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_hashing.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/integrity_checkpoints.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/dispute_bundle.cpp
     )
     target_include_directories(dominium_server_shard_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/runtime/network/server
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence
     )
     target_link_libraries(dominium_server_shard_tests PRIVATE
         domino_engine
@@ -98,19 +105,23 @@ if(DOM_BUILD_TESTS)
 
     add_executable(dominium_server_shard_routing_tests
         ${CMAKE_SOURCE_DIR}/tests/server/shard_routing_tests.cpp
-        shard/shard_api.cpp
-        shard/shard_router.cpp
-        shard/shard_domain_index.cpp
-        shard/domain_shard_mapper.cpp
-        shard/task_splitter.cpp
-        shard/message_bus.cpp
-        shard/shard_executor.cpp
-        shard/shard_hashing.cpp
-        persistence/integrity_checkpoints.cpp
-        persistence/dispute_bundle.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_api.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_router.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_domain_index.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/domain_shard_mapper.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/task_splitter.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/message_bus.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_executor.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_hashing.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/integrity_checkpoints.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/dispute_bundle.cpp
     )
     target_include_directories(dominium_server_shard_routing_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/runtime/network/server
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence
     )
     target_link_libraries(dominium_server_shard_routing_tests PRIVATE
         domino_engine
@@ -125,19 +136,23 @@ if(DOM_BUILD_TESTS)
 
     add_executable(dominium_server_integrity_tests
         ${CMAKE_SOURCE_DIR}/tests/server/integrity_checkpoint_tests.cpp
-        shard/shard_api.cpp
-        shard/shard_router.cpp
-        shard/shard_domain_index.cpp
-        shard/domain_shard_mapper.cpp
-        shard/task_splitter.cpp
-        shard/message_bus.cpp
-        shard/shard_executor.cpp
-        shard/shard_hashing.cpp
-        persistence/integrity_checkpoints.cpp
-        persistence/dispute_bundle.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_api.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_router.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_domain_index.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/domain_shard_mapper.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/task_splitter.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/message_bus.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_executor.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_hashing.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/integrity_checkpoints.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/dispute_bundle.cpp
     )
     target_include_directories(dominium_server_integrity_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/runtime/network/server
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence
     )
     target_link_libraries(dominium_server_integrity_tests PRIVATE
         domino_engine
@@ -152,19 +167,23 @@ if(DOM_BUILD_TESTS)
 
     add_executable(dominium_server_shard_regression_tests
         ${CMAKE_SOURCE_DIR}/tests/server/shard_regression_tests.cpp
-        shard/shard_api.cpp
-        shard/shard_router.cpp
-        shard/shard_domain_index.cpp
-        shard/domain_shard_mapper.cpp
-        shard/task_splitter.cpp
-        shard/message_bus.cpp
-        shard/shard_executor.cpp
-        shard/shard_hashing.cpp
-        persistence/integrity_checkpoints.cpp
-        persistence/dispute_bundle.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_api.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_router.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_domain_index.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/domain_shard_mapper.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/task_splitter.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/message_bus.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_executor.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_hashing.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/integrity_checkpoints.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/dispute_bundle.cpp
     )
     target_include_directories(dominium_server_shard_regression_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/runtime/network/server
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence
         ${CMAKE_SOURCE_DIR}/engine
         ${CMAKE_SOURCE_DIR}/engine/kernel
     )
@@ -184,19 +203,23 @@ if(DOM_BUILD_TESTS)
 
     add_executable(dominium_server_domain_shard_partition_tests
         ${CMAKE_SOURCE_DIR}/tests/server/domain_shard_partition_tests.cpp
-        shard/shard_api.cpp
-        shard/shard_router.cpp
-        shard/shard_domain_index.cpp
-        shard/domain_shard_mapper.cpp
-        shard/task_splitter.cpp
-        shard/message_bus.cpp
-        shard/shard_executor.cpp
-        shard/shard_hashing.cpp
-        persistence/integrity_checkpoints.cpp
-        persistence/dispute_bundle.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_api.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_router.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_domain_index.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/domain_shard_mapper.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/task_splitter.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/message_bus.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_executor.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard/shard_hashing.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/integrity_checkpoints.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence/dispute_bundle.cpp
     )
     target_include_directories(dominium_server_domain_shard_partition_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/runtime/network/server
+        ${CMAKE_SOURCE_DIR}/runtime/network/server/shard
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server
+        ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence
     )
     target_link_libraries(dominium_server_domain_shard_partition_tests PRIVATE
         domino_engine

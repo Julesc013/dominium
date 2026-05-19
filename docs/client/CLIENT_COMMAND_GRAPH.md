@@ -33,7 +33,7 @@ Each command descriptor declares:
 - refusal code list
 - mode mask (`cli|tui|gui`)
 
-Definitions are in `apps/apps/client/session/client_commands_registry.c`.
+Definitions are in `runtime/shell/client/command/client_commands_registry.c`.
 
 ## Bridge Rules
 

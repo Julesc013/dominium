@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E121_PLAN_BYPASS_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/process_runtime.py",
-    "apps/client/interaction/inspection_overlays.py",
+    "runtime/ui/client/interaction/inspection_overlays.py",
     "tools/governance/planning/plan_engine.py",
 )
 
@@ -78,7 +78,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    overlays_rel = "apps/client/interaction/inspection_overlays.py"
+    overlays_rel = "runtime/ui/client/interaction/inspection_overlays.py"
     overlays_text = _read_text(repo_root, overlays_rel)
     if not overlays_text or "_plan_overlay_payload(" not in overlays_text or "\"plan_archive\generated\archive\generated\archive\generated\artifacts\"" not in overlays_text:
         findings.append(

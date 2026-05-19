@@ -34,7 +34,7 @@ Server records merge by stable keys:
 2. `provider`
 3. `address`
 
-Sorting and deduplication are deterministic in `apps/apps/client/session/client_models_server.c`.
+Sorting and deduplication are deterministic in `runtime/ui/client/model/client_models_server.c`.
 
 ## Refusal Surface
 

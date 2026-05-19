@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from client.interaction.affordance_generator import build_affordance_list
+    from runtime.ui.client.interaction.affordance_generator import build_affordance_list
 
     perceived_model = {
         "schema_version": "1.0.0",
@@ -132,4 +132,3 @@ def run(repo_root: str):
     if str(row.get("process_id", "")) != "process.agent_move":
         return {"status": "fail", "message": "surface-derived affordance process id mismatch"}
     return {"status": "pass", "message": "surface-driven affordance generation passed"}
-

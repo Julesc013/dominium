@@ -13,8 +13,8 @@ engine/game APIs isolated.
 
 ## Modules
 - Adapter API: `runtime/shell/lifecycle/include/dominium/app/readonly_adapter.h`
-- View model: `apps/client/observability/readonly_view_model.h`,
-  `apps/client/observability/readonly_view_model.c`
+- View model: `runtime/ui/client/observability/readonly_view_model.h`,
+  `runtime/ui/client/observability/readonly_view_model.c`
 - Input bindings: `runtime/input/client/client_input_bindings.h`,
   `runtime/input/client/client_input_bindings.c`
 - UI overlay: `runtime/ui/client/client_ui_compositor.h`,

@@ -15,7 +15,7 @@ without touching engine/game.
   `runtime/ui/client/client_ui_compositor.c`
 - Input bindings: `runtime/input/client/client_input_bindings.h`,
   `runtime/input/client/client_input_bindings.c`
-- Read-only view model: `apps/client/observability/readonly_view_model.h`,
-  `apps/client/observability/readonly_view_model.c`
+- Read-only view model: `runtime/ui/client/observability/readonly_view_model.h`,
+  `runtime/ui/client/observability/readonly_view_model.c`
 - Entry point: `apps/client/main_client.c`
 - Adapter boundary: `runtime/shell/lifecycle/include/dominium/app/readonly_adapter.h`

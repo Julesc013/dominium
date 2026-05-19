@@ -1,7 +1,7 @@
 /*
 Services expiry tests (TESTX3).
 */
-#include "apps/server/authority/dom_server_authority.h"
+#include "game/law/authority/dom_server_authority.h"
 #include "dom_contracts/authority_token.h"
 #include "tests/control/control_test_common.h"
 

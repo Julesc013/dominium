@@ -29,7 +29,7 @@ CONTROL_USAGE_TOKENS = (
     "build_control_resolution(",
 )
 ALLOWED_DIRECT_DISPATCH_PATHS = {
-    "apps/client/interaction/interaction_dispatch.py",
+    "runtime/ui/client/interaction/interaction_dispatch.py",
     "tools/validators/network/policies/policy_server_authoritative.py",
     "tools/validators/network/srz/shard_coordinator.py",
 }

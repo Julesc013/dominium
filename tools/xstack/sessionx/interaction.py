@@ -1,10 +1,10 @@
-﻿"""SessionX wrapper for deterministic client interaction affordance/dispatch."""
+"""SessionX wrapper for deterministic client interaction affordance/dispatch."""
 
 from __future__ import annotations
 
 from typing import Dict
 
-from apps.client.interaction import (
+from runtime.ui.client.interaction import (
     build_affordance_list as _build_affordance_list,
     build_inspection_overlays as _build_inspection_overlays,
     execute_affordance as _execute_affordance,

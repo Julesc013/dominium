@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from apps.client.interaction import build_inspection_overlays
+from runtime.ui.client.interaction import build_inspection_overlays
 from tools.validators.domain.geology.tool_explain_property_origin import explain_property_origin_report
 from tools.xstack.compatx.canonical_json import canonical_sha256
 

@@ -5,10 +5,10 @@ import sys
 from invariant_utils import is_override_active
 
 
-SCHEMA_REL = os.path.join("contracts", "schemas", "authority", "authority_context.schema")
-CLIENT_REL = os.path.join("apps", "client", "command", "client_command_bridge.c")
-SERVER_H_REL = os.path.join("apps", "server", "authority", "dom_server_authority.h")
-SERVER_CPP_REL = os.path.join("apps", "server", "authority", "dom_server_authority.cpp")
+SCHEMA_REL = os.path.join("contracts", "schema", "authority", "authority_context.schema")
+CLIENT_REL = os.path.join("runtime", "shell", "client", "command", "client_command_bridge.c")
+SERVER_H_REL = os.path.join("game", "law", "authority", "dom_server_authority.h")
+SERVER_CPP_REL = os.path.join("game", "law", "authority", "dom_server_authority.cpp")
 
 
 def _read(path: str) -> str:

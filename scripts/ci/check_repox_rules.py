@@ -3656,13 +3656,13 @@ def check_client_canonical_bridge(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    bridge_rel = "apps/client/command/client_command_bridge.c"
-    registry_rel = "apps/client/command/client_commands_registry.c"
+    bridge_rel = "runtime/shell/client/command/client_command_bridge.c"
+    registry_rel = "runtime/shell/client/command/client_commands_registry.c"
     runtime_rel = "apps/client/main_client.c"
     mode_files = (
-        "apps/client/modes/client_mode_cli.c",
-        "apps/client/modes/client_mode_tui.c",
-        "apps/client/modes/client_mode_gui.c",
+        "runtime/shell/client/modes/client_mode_cli.c",
+        "runtime/shell/client/modes/client_mode_tui.c",
+        "runtime/shell/client/modes/client_mode_gui.c",
     )
     required_commands = (
         "client.boot.start",
@@ -4121,7 +4121,7 @@ def check_survival_diegetic_contract(repo_root):
         return []
 
     law_rel = "contracts/registry/law_profiles.json"
-    bridge_rel = "apps/client/command/client_command_bridge.c"
+    bridge_rel = "runtime/shell/client/command/client_command_bridge.c"
     law_path = os.path.join(repo_root, law_rel.replace("/", os.sep))
     bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
     if not os.path.isfile(law_path):
@@ -4182,9 +4182,9 @@ def check_authority_context_required_for_intents(repo_root):
         return []
 
     schema_rel = "contracts/schema/authority/authority_context.schema"
-    client_rel = "apps/client/command/client_command_bridge.c"
-    server_h_rel = "apps/server/authority/dom_server_authority.h"
-    server_cpp_rel = "apps/server/authority/dom_server_authority.cpp"
+    client_rel = "runtime/shell/client/command/client_command_bridge.c"
+    server_h_rel = "game/law/authority/dom_server_authority.h"
+    server_cpp_rel = "game/law/authority/dom_server_authority.cpp"
     schema_path = os.path.join(repo_root, schema_rel.replace("/", os.sep))
     client_path = os.path.join(repo_root, client_rel.replace("/", os.sep))
     server_h_path = os.path.join(repo_root, server_h_rel.replace("/", os.sep))
@@ -4230,8 +4230,8 @@ def check_session_spec_required_for_run(repo_root):
 
     schema_rel = "contracts/schema/session/session_spec.schema"
     registry_rel = "contracts/registry/session_defaults.json"
-    bridge_rel = "apps/client/command/client_command_bridge.c"
-    commands_rel = "apps/client/command/client_commands_registry.c"
+    bridge_rel = "runtime/shell/client/command/client_command_bridge.c"
+    commands_rel = "runtime/shell/client/command/client_commands_registry.c"
     violations = []
     schema_path = os.path.join(repo_root, schema_rel.replace("/", os.sep))
     registry_path = os.path.join(repo_root, registry_rel.replace("/", os.sep))
@@ -11492,8 +11492,8 @@ def check_ui_entitlement_gating(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    rel = "apps/client/command/client_commands_registry.c"
-    bridge_rel = "apps/client/command/client_command_bridge.c"
+    rel = "runtime/shell/client/command/client_commands_registry.c"
+    bridge_rel = "runtime/shell/client/command/client_command_bridge.c"
     path = os.path.join(repo_root, rel.replace("/", os.sep))
     bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
     violations = []
@@ -11758,7 +11758,7 @@ def check_renderer_no_truth_access(repo_root):
                     )
                 )
 
-    frame_graph_rel = os.path.join("apps", "client", "presentation", "frame_graph_builder.h")
+    frame_graph_rel = os.path.join("runtime", "render", "client", "presentation", "frame_graph_builder.h")
     frame_graph_path = os.path.join(repo_root, frame_graph_rel)
     if not os.path.isfile(frame_graph_path):
         violations.append("{}: missing {}".format(invariant_id, frame_graph_rel.replace("\\", "/")))
@@ -11784,7 +11784,7 @@ def check_renderer_no_truth_access(repo_root):
                     )
                 )
 
-    render_prep_rel = os.path.join("apps", "client", "presentation", "render_prep_system.cpp")
+    render_prep_rel = os.path.join("runtime", "render", "client", "presentation", "render_prep_system.cpp")
     render_prep_path = os.path.join(repo_root, render_prep_rel)
     if not os.path.isfile(render_prep_path):
         violations.append("{}: missing {}".format(invariant_id, render_prep_rel.replace("\\", "/")))

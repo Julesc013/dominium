@@ -134,7 +134,7 @@ Representative evidence roots include:
 - `runtime/shell/lifecycle/ui_event_log.c`
 - `engine/modules/view`
 - `engine/modules/ui`
-- `client/presentation`
+- `runtime/render/client/presentation`
 
 ### 6.4 Control and Integration Services
 

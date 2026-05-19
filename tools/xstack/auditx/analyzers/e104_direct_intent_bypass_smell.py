@@ -11,7 +11,7 @@ ANALYZER_ID = "E104_DIRECT_INTENT_BYPASS_SMELL"
 
 ALLOWED_PATHS = {
     "tools/governance/control_plane_engine.py",
-    "apps/client/interaction/interaction_dispatch.py",
+    "runtime/ui/client/interaction/interaction_dispatch.py",
     "tools/validators/network/srz/shard_coordinator.py",
     "tools/validators/network/policies/policy_server_authoritative.py",
 }

@@ -127,7 +127,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from client.interaction.inspection_overlays import build_inspection_overlays
+    from runtime.ui.client.interaction.inspection_overlays import build_inspection_overlays
 
     state = _state()
     state["formalization_inference_candidates"] = [_candidate_row(repo_root)]

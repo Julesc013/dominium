@@ -6,8 +6,8 @@ from invariant_utils import is_override_active
 
 
 LAW_REL = os.path.join("contracts", "registry", "law_profiles.json")
-BRIDGE_REL = os.path.join("apps", "client", "command", "client_command_bridge.c")
-REGISTRY_REL = os.path.join("apps", "client", "command", "client_commands_registry.c")
+BRIDGE_REL = os.path.join("runtime", "shell", "client", "command", "client_command_bridge.c")
+REGISTRY_REL = os.path.join("runtime", "shell", "client", "command", "client_commands_registry.c")
 
 
 def _read(path: str) -> str:

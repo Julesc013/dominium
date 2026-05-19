@@ -130,7 +130,7 @@ Representative evidence roots include:
 
 - `engine/modules/view`
 - `engine/modules/ui`
-- `client/presentation`
+- `runtime/render/client/presentation`
 - `client/observability`
 - `control/view`
 

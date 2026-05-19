@@ -9,7 +9,7 @@ def test_xi4z_v4_missing_package_initializers_promoted(repo_root: str) -> None:
 
     promoted = sorted(report_payload.get("missing_package_initializers_promoted") or [])
     assert promoted == [
-        "apps/client/interaction/__init__.py",
+        "runtime/ui/client/interaction/__init__.py",
         "tools/package/libraries/store/__init__.py",
     ]
 
@@ -17,5 +17,5 @@ def test_xi4z_v4_missing_package_initializers_promoted(repo_root: str) -> None:
         str(dict(row or {}).get("source_path") or dict(row or {}).get("file_path") or "").replace("\\", "/"): str(dict(row or {}).get("target_path") or "").replace("\\", "/")
         for row in list(lock_payload.get("approved_for_xi5") or [])
     }
-    assert approved_targets["apps/client/interaction/__init__.py"] == "apps/client/interaction/__init__.py"
+    assert approved_targets["runtime/ui/client/interaction/__init__.py"] == "runtime/ui/client/interaction/__init__.py"
     assert approved_targets["tools/package/libraries/store/__init__.py"] == "tools/package/libraries/store/__init__.py"

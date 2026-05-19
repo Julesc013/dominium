@@ -5,8 +5,8 @@ import sys
 from invariant_utils import is_override_active
 
 
-SERVER_CPP_REL = os.path.join("apps", "server", "authority", "dom_server_authority.cpp")
-CLIENT_BRIDGE_REL = os.path.join("apps", "client", "command", "client_command_bridge.c")
+SERVER_CPP_REL = os.path.join("game", "law", "authority", "dom_server_authority.cpp")
+CLIENT_BRIDGE_REL = os.path.join("runtime", "shell", "client", "command", "client_command_bridge.c")
 
 
 def _read(path: str) -> str:

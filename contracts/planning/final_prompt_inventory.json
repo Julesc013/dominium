@@ -779,7 +779,7 @@
       ],
       "prerequisite_artifacts": [
         "tests/tests/game/setup/test_services_fs_sandbox.cpp",
-        "apps/client/session/client_command_bridge.c",
+        "runtime/shell/client/command/client_command_bridge.c",
         "schema/authority/README.md"
       ],
       "expected_outputs": [

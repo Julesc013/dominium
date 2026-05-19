@@ -23,10 +23,10 @@ add_executable(dominium-tools
     mmo/mmo_cli.cpp
     ../runtime/network/server/dom_server_protocol.cpp
     ../runtime/network/server/dom_server_runtime.cpp
-    ../apps/server/shard/dom_cross_shard_log.cpp
-    ../apps/server/shard/dom_global_id.cpp
-    ../apps/server/shard/dom_shard_lifecycle.cpp
-    ../apps/server/persistence/dom_checkpointing.cpp
+    ../runtime/network/server/shard/dom_cross_shard_log.cpp
+    ../runtime/network/server/shard/dom_global_id.cpp
+    ../runtime/network/server/shard/dom_shard_lifecycle.cpp
+    ../runtime/storage/server/persistence/dom_checkpointing.cpp
 )
 target_link_libraries(dominium-tools PRIVATE tools::shared)
 target_link_libraries(dominium-tools PRIVATE app::runtime)
@@ -36,8 +36,10 @@ target_include_directories(dominium-tools PRIVATE
     ${DOMINIUM_ENGINE_INCLUDE_DIR}
     ${DOMINIUM_GENERATED_INCLUDE_DIR}
     ${DOMINIUM_GAME_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/apps/server
     ${CMAKE_SOURCE_DIR}/runtime/network/server
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/shard
+    ${CMAKE_SOURCE_DIR}/runtime/storage/server
+    ${CMAKE_SOURCE_DIR}/runtime/storage/server/persistence
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 set_target_properties(dominium-tools PROPERTIES

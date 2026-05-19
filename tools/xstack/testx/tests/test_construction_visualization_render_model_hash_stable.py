@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "materials", "construction", "render", "determinism"]
 
 
 def _build_overlay_payload(repo_root: str) -> dict:
-    from client.interaction.inspection_overlays import build_inspection_overlays
+    from runtime.ui.client.interaction.inspection_overlays import build_inspection_overlays
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.construction_testlib import (
         authority_context,

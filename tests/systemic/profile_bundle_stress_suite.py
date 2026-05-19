@@ -8,10 +8,10 @@ LAW_REL = os.path.join("contracts", "registry", "law_profiles.json")
 EXP_REL = os.path.join("contracts", "registry", "experience_profiles.json")
 PARAM_REL = os.path.join("contracts", "registry", "parameter_bundles.json")
 BUNDLE_REL = os.path.join("contracts", "registry", "bundle_profiles.json")
-PIPELINE_REL = os.path.join("apps", "client", "session", "session_pipeline.c")
-BRIDGE_REL = os.path.join("apps", "client", "command", "client_command_bridge.c")
-REGISTRY_REL = os.path.join("apps", "client", "command", "client_commands_registry.c")
-REFUSAL_REL = os.path.join("apps", "client", "session", "session_refusal_codes.h")
+PIPELINE_REL = os.path.join("runtime", "shell", "client", "session", "session_pipeline.c")
+BRIDGE_REL = os.path.join("runtime", "shell", "client", "command", "client_command_bridge.c")
+REGISTRY_REL = os.path.join("runtime", "shell", "client", "command", "client_commands_registry.c")
+REFUSAL_REL = os.path.join("runtime", "shell", "client", "session", "session_refusal_codes.h")
 
 
 def _load_json(path: str):
@@ -48,7 +48,7 @@ def _case_profile_switch_requires_restart(repo_root: str):
     required = (
         "client.experience.select",
         "CLIENT_SESSION_STAGE_SESSION_RUNNING",
-        "CLIENT_SESSION_REFUSE_INVALID_TRANSITION",
+        "CLIENT_SESSION_REFUSE_STAGE_INVALID_TRANSITION",
     )
     for marker in required:
         if marker not in text:
@@ -164,7 +164,7 @@ def _case_bundle_not_installed_refusal(repo_root: str):
     registry_text = _read_text(os.path.join(repo_root, REGISTRY_REL))
     for marker, rel in (
         ("CLIENT_SESSION_REFUSE_PACK_MISSING", REFUSAL_REL),
-        ("refuse.pack_missing", REGISTRY_REL),
+        ("refusal.pack_missing", REGISTRY_REL),
     ):
         text = refusal_text if rel == REFUSAL_REL else registry_text
         if marker not in text:

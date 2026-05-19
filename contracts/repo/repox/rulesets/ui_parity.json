@@ -33,7 +33,7 @@
     {
       "rule_id": "INV-CLIENT-CANONICAL-BRIDGE",
       "severity": "FAIL",
-      "scope_paths": ["apps/client/main_client.c", "apps/client/session", "client/modes"],
+      "scope_paths": ["apps/client/main_client.c", "runtime/shell/client/session", "runtime/shell/client/modes"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-client-canonical-bridge",
       "exemption_policy": "allow_with_expiry"
     },

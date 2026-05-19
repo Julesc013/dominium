@@ -18,10 +18,10 @@ Define hard architectural boundaries that prevent renderer epistemic leakage and
   - `engine/include/domino/truth_model_v1.h`
   - authoritative references only.
 - PerceivedModel owner:
-  - `apps/client/observability/perceived_model_v1.h`
+  - `runtime/ui/client/observability/perceived_model_v1.h`
   - derived immutable snapshot only.
 - RenderModel owner:
-  - `apps/client/presentation/render_model_v1.h`
+  - `runtime/render/client/presentation/render_model_v1.h`
   - presentation projection only.
 
 ## Allowed Dependencies
@@ -32,7 +32,7 @@ Define hard architectural boundaries that prevent renderer epistemic leakage and
 - UI host may emit Intents only through process-intent pipeline.
 
 ## Forbidden Dependencies
-- `apps/client/presentation/*` importing `domino/truth_model_v1.h`
+- `runtime/render/client/presentation/*` importing `domino/truth_model_v1.h`
 - renderer logic directly reading authoritative simulation payloads
 - renderer-owned law/authority decisions
 - UI host direct mutation of TruthModel / UniverseState

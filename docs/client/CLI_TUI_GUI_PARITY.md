@@ -30,13 +30,13 @@ Session pipeline parity commands:
 
 ## Implemented Surfaces
 
-- command bridge: `apps/apps/client/session/client_command_bridge.c`
-- command descriptors: `apps/apps/client/session/client_commands_registry.c`
-- state machine: `apps/apps/client/session/client_state_machine.c`
+- command bridge: `runtime/shell/client/command/client_command_bridge.c`
+- command descriptors: `runtime/shell/client/command/client_commands_registry.c`
+- state machine: `runtime/shell/client/session/client_state_machine.c`
 - mode adapters:
-  - `apps/client/modes/client_mode_cli.c`
-  - `apps/client/modes/client_mode_tui.c`
-  - `apps/client/modes/client_mode_gui.c`
+  - `runtime/shell/client/modes/client_mode_cli.c`
+  - `runtime/shell/client/modes/client_mode_tui.c`
+  - `runtime/shell/client/modes/client_mode_gui.c`
 
 ## Validation
 

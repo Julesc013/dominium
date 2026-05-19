@@ -7,19 +7,30 @@ Task: APPS-THIN-01
 
 # APPS-THIN-01 Audit
 
+## Starting State
+
+- Starting commit: `a4ca69c640ecf9be5a4ae93c3e2bfb0db4b0d70d`
+- Branch: `main`
+- Initial worktree: clean
+- Source of truth: active tracked tree; live GitHub and generated historical reports were not used as authority.
+
 ## Scope
 
-Audit app-local directories that may violate the thin-product rule. This pass does not perform broad runtime API redesign.
+Audit and thin product app directories so `apps/` owns product entrypoints, descriptors, resources, app-specific bindings, and small lifecycle glue only.
 
-Starting commit: `5f0f44fe4`
+Out of scope: Workbench module naming, tools/docs taxonomy, broad runtime redesign, schema/content/package cleanup, and feature work.
 
-Branch: `main`
-
-## Paths Inspected
+## App Paths Inspected
 
 - `apps/client/local_server/`
 - `apps/client/model/`
 - `apps/client/presentation/`
+- `apps/client/interaction/`
+- `apps/client/session/`
+- `apps/client/observability/`
+- `apps/client/adapters/`
+- `apps/client/command/`
+- `apps/client/modes/`
 - `apps/server/authority/`
 - `apps/server/persistence/`
 - `apps/server/shard/`
@@ -27,26 +38,103 @@ Branch: `main`
 - `apps/setup/lifecycle/`
 - `apps/launcher/include/launcher/_internal/`
 - `apps/setup/include/dsu/_internal/`
+- `apps/setup/include/dsk/`
+- `apps/workbench/module/`
 
-## Classification
+Canonical destinations inspected included `runtime/shell/`, `runtime/network/`, `runtime/storage/`, `runtime/ui/`, `runtime/render/`, `runtime/diagnostics/`, `game/law/`, `contracts/view/`, `contracts/command/`, and `tests/`.
 
-- `apps/client/local_server/` is retained as client-local orchestration glue over runtime network/process APIs. It imports runtime networking and shell pieces rather than owning them.
-- `apps/client/model/` and `apps/client/presentation/` are retained as client-specific presentation and render-prep binding. They should be revisited if the same abstractions become shared by Workbench or other products.
-- `apps/server/authority/` is retained as server invocation/gating around authority contracts. Shared law remains outside this app path.
-- `apps/server/persistence/` is retained as server persistence binding/checkpoint integration. Shared storage substrate remains a follow-up if reuse appears.
-- `apps/server/shard/` is retained as server-product sharding implementation.
-- `apps/launcher/lifecycle/` and `apps/setup/lifecycle/` are retained as product-specific lifecycle wrappers and stubs.
-- Product `_internal` include trees are retained as product-private headers. They are not promoted to runtime until a shared API boundary is explicit.
+## Classification Decisions
 
-## Moves
+- Client command registration and mode/session state are shared shell-facing systems: moved to `runtime/shell/client/`.
+- Client interaction, view model, and observability state are reusable UI-facing systems: moved to `runtime/ui/client/`.
+- Client render presentation and render-prep code are render-facing presentation substrate: moved to `runtime/render/client/presentation/`.
+- Server authority enforcement is game law/authority code, not product entrypoint glue: moved to `game/law/authority/`.
+- Server shard machinery is reusable server networking/runtime partitioning code: moved to `runtime/network/server/shard/`.
+- Server checkpoint/dispute/integrity persistence is storage runtime code: moved to `runtime/storage/server/persistence/`.
+- `apps/client/local_server/` is retained as client-local orchestration glue over runtime network/process/server APIs.
+- `apps/client/adapters/` is retained as client product adapter glue.
+- `apps/launcher/lifecycle/` and `apps/setup/lifecycle/` are retained as product-specific lifecycle wrappers/stubs.
+- Launcher/setup include trees are retained as product public or product-private API headers. They were not promoted to runtime because no shared runtime API boundary is explicit in this task.
+- `apps/workbench/module/` remains valid user-facing module ownership and is explicitly allowed by the app thinness validator.
 
-No files were moved. The inspected files are product-specific enough to retain without inventing new runtime APIs during this narrow pass.
+## Moved Files And Directories
+
+- `apps/client/command/` -> `runtime/shell/client/command/`
+- `apps/client/modes/` -> `runtime/shell/client/modes/`
+- `apps/client/session/` -> `runtime/shell/client/session/`
+- `apps/client/interaction/` -> `runtime/ui/client/interaction/`
+- `apps/client/model/` -> `runtime/ui/client/model/`
+- `apps/client/observability/` -> `runtime/ui/client/observability/`
+- `apps/client/presentation/` -> `runtime/render/client/presentation/`
+- `apps/server/authority/` -> `game/law/authority/`
+- `apps/server/shard/` -> `runtime/network/server/shard/`
+- `apps/server/persistence/` -> `runtime/storage/server/persistence/`
+
+All tracked moves used `git mv`.
+
+## References Updated
+
+- CMake source lists and include directories for client, server, tools, and focused tests.
+- C/C++ includes for authority tests.
+- Python imports for client interaction helpers.
+- RepoX rule maps and active proof scripts that referenced moved app paths.
+- AuditX/TestX path expectations that refer to active moved sources.
+- Current architecture docs for Truth/Perceived/Render ownership.
+- `scripts/verify_ui_shell_purity.py` moved the forbidden presentation boundary from `apps/client/presentation/` to `runtime/render/client/presentation/`.
+
+## Retained Under Apps
+
+- `apps/client/local_server/`: product-specific local singleplayer orchestration around runtime services.
+- `apps/client/adapters/`: client product adapters.
+- `apps/launcher/lifecycle/`: launcher-specific lifecycle wrapper.
+- `apps/setup/lifecycle/`: setup-specific lifecycle wrapper/stub.
+- `apps/launcher/include/launcher/**`: launcher product API/private headers.
+- `apps/setup/include/{dsk,dsu}/**`: setup product API/private headers.
+- `apps/workbench/module/**`: user-facing Workbench modules, not shared runtime implementation.
+
+## Generated And Historical References Skipped
+
+- `tools/migration/canon_spine_new.py` retains old app paths as migration map source.
+- Historical audit reports outside this audit were not rewritten.
+- Generated architecture registries under `contracts/registry/architecture/` were not hand-edited; they should be regenerated by their owning generator if promoted as current source authority.
+
+## Validator Updates
+
+- Added `tools/validators/repo/check_app_thinness.py`.
+- Added `tests/app/app_thinness_validator_tests.py`.
+- Registered `app_thinness_validator_tests` in `tests/app/CMakeLists.txt`.
+
+The validator fails active tracked paths for shared subsystem names under `apps/<product>/`, `apps/server/authority`, `apps/server/persistence`, and `apps/server/shard`. It allows product CLI/TUI/include/lifecycle/adapters/local-server glue and `apps/workbench/module/**`.
 
 ## Validation Results
 
-No code moved. Final combined validation for the cleanup wave covers app build and smoke tests.
+- `git status --short`: initial preflight was clean; final pre-commit status contained only APPS-THIN task changes.
+- `git diff --check`: PASS.
+- `py -3 .aide/scripts/aide_lite.py validate`: PASS with existing warnings for missing review packet review ref and stale repo map source snapshot hash.
+- `python tools/validators/check_repo_layout.py --repo-root .`: PASS; no unexcepted violations.
+- `python tools/validators/check_root_allowlist.py --repo-root .`: PASS; no unexcepted violations.
+- `python tools/validators/check_distribution_layout.py --repo-root .`: PASS; no warnings.
+- `python tools/validators/check_component_matrices.py --repo-root .`: PASS; no warnings.
+- `python tools/validators/repo/check_bad_root_absence.py --repo-root . --strict --json`: PASS.
+- `python tools/validators/repo/check_no_src_source_dirs.py --repo-root . --strict --json --max-findings 50`: PASS_WITH_WARNINGS; blockers `0`, archive-only findings.
+- `python tools/validators/repo/check_forbidden_root_names.py --repo-root . --strict --json --max-findings 50`: PASS_WITH_WARNINGS; blockers `0`.
+- `python tools/validators/repo/check_directory_naming.py --repo-root . --strict --json --max-findings 50`: PASS_WITH_WARNINGS; blockers `0`.
+- `python tools/validators/repo/check_file_naming.py --repo-root . --strict --json --max-findings 50`: PASS_WITH_WARNINGS; blockers `0`.
+- `python tools/validators/repo/check_app_thinness.py --repo-root . --strict --json --max-findings 50`: PASS.
+- `python tests/app/app_thinness_validator_tests.py --repo-root .`: PASS.
+- `python -m py_compile ...` for touched Python modules/tests: PASS.
+- `python scripts/verify_build_target_boundaries.py`: PASS.
+- `python scripts/verify_includes_sanity.py`: PASS.
+- `python scripts/verify_docs_sanity.py`: PASS.
+- `python scripts/verify_ui_shell_purity.py`: PASS.
+- `python scripts/verify_abi_boundaries.py --repo-root .`: PASS.
+- `cmake --preset verify`: PASS, with SDL/PkgConfig warnings.
+- `cmake --build --preset verify --target ALL_BUILD`: PASS. Build emitted known `domino_engine` LNK4006 duplicate-symbol warnings for graphics/window/system stubs.
+- `ctest --preset verify -L smoke --output-on-failure`: PASS, 57/57.
+- Focused moved-path CTest lane for APPS invariants/systemic checks: 12/13 APPS-relevant tests passed; `inv_repox_rules` still fails on broad repo/audit/dist/process/generated-map debt, with no remaining stale APPS-THIN moved-path failure.
+- Full `ctest --preset verify --output-on-failure`: attempted; 425/498 passed and 73 failed. Failures are broad pre-existing/non-APPS proof debt including stale `data/registries` expectations, schema plural paths, docs/audit status headers, dist artifact expectations, process guard/runtime invariants, generated registry/hash drift, and TestX workspace/gate issues. APPS-THIN stale path failures found during the full run were repaired and focused reruns passed.
 
-## Follow-Up Work
+## Remaining Follow-Up Work
 
-- If Workbench or another product starts importing client presentation/model internals, split shared view/model contracts into `contracts/view/` or `runtime/ui/`.
-- If server persistence or authority becomes shared runtime service behavior, route it to `runtime/storage`, `runtime/capability`, or `game/law` with focused tests.
+- Regenerate any current architecture registry/path-map artifacts if the owning generator treats them as source authority.
+- Launcher/setup private include naming still carries old internal namespace labels in comments; it is retained as product API/private header scope for a focused product-header cleanup if needed.

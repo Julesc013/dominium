@@ -30,7 +30,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from client.interaction.affordance_generator import build_affordance_list
+    from runtime.ui.client.interaction.affordance_generator import build_affordance_list
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.interaction_testlib import authority_context, base_state, policy_context
 
@@ -159,4 +159,3 @@ def run(repo_root: str):
     if not any(bool(dict(row.get("extensions") or {}).get("pose_control_granted_process", False)) for row in rows):
         return {"status": "fail", "message": "affordance rows missing pose_control_granted_process marker"}
     return {"status": "pass", "message": "pose control binding grants exposed to affordance metadata"}
-

@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-19T13:01:58Z",
+  "generated_at_utc": "2026-05-19T18:23:13Z",
   "repo_root": ".",
-  "head_sha": "f9f74e9ee8bf9f4fab967789c76f3e53bf780bae",
+  "head_sha": "a4ca69c640ecf9be5a4ae93c3e2bfb0db4b0d70d",
   "source_branch": "main",
   "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
   "active_exception_count": 8,
@@ -1632,7 +1632,7 @@
     {
       "name": "schema",
       "current_path": "schema",
-      "proposed_target": "contracts/schemas",
+      "proposed_target": "contracts/schema",
       "action": "merge",
       "classification": "transitional_contract_or_schema_root",
       "ownership_surface": "contracts",
@@ -1647,13 +1647,13 @@
       "notes": "Completed in CONVERGE-06; root-level schema/ moved under contracts/schema/.",
       "status": "completed",
       "completed_phase": "CONVERGE-06",
-      "completed_target": "contracts/schemas",
+      "completed_target": "contracts/schema",
       "completed_notes": "Root-level schema/ is retired; retained schema law lives under contracts/schema/."
     },
     {
       "name": "schemas",
       "current_path": "schemas",
-      "proposed_target": "contracts/schemas",
+      "proposed_target": "contracts/schema",
       "action": "merge",
       "classification": "transitional_contract_or_schema_root",
       "ownership_surface": "contracts",
@@ -1668,7 +1668,7 @@
       "notes": "Completed in CONVERGE-06; root-level schemas/ merged under contracts/schema/.",
       "status": "completed",
       "completed_phase": "CONVERGE-06",
-      "completed_target": "contracts/schemas",
+      "completed_target": "contracts/schema",
       "completed_notes": "Root-level schemas/ is retired; retained validator-facing schema projections live under contracts/schema/."
     },
     {

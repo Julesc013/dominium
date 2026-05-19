@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E76_HARDCODED_INTERACTION_SMELL"
 ACTION_SURFACE_ENGINE_PATH = "game/domain/interaction/action_surface_engine.py"
-AFFORDANCE_PATH = "apps/client/interaction/affordance_generator.py"
+AFFORDANCE_PATH = "runtime/ui/client/interaction/affordance_generator.py"
 REGISTRY_PATHS = (
     "contracts/registry/surface_type_registry.json",
     "contracts/registry/tool_tag_registry.json",

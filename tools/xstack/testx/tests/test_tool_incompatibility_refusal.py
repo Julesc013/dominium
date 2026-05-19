@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from client.interaction.affordance_generator import build_affordance_list
+    from runtime.ui.client.interaction.affordance_generator import build_affordance_list
 
     perceived_model = {
         "schema_version": "1.0.0",
@@ -127,4 +127,3 @@ def run(repo_root: str):
     if str(extensions.get("disabled_reason_code", "")) != "refusal.tool.incompatible":
         return {"status": "fail", "message": "disabled affordance missing refusal.tool.incompatible reason"}
     return {"status": "pass", "message": "tool incompatibility refusal surfaced deterministically"}
-
