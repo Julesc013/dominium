@@ -28,7 +28,7 @@ CONVERGE-06 converged safe schema and schema-projection roots under `contracts/`
 - `contracts/replay/`
 - `contracts/repo/`
 - `contracts/distribution/`
-- `contracts/package/packs/`
+- `contracts/package/` including guard-only `contracts/package/packs/README.md`
 - `contracts/install/`
 - `contracts/instance/`
 - `contracts/save/`

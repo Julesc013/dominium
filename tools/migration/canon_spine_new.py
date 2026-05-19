@@ -177,7 +177,11 @@ PREFIX_ROUTES: list[tuple[str, str, str]] = [
     ("contracts/registries/", "contracts/registry/", "singular contract registry category"),
     ("contracts/capabilities/", "contracts/capability/", "singular contract capability category"),
     ("contracts/bundles/", "contracts/package/bundles/", "contract package bundle rules"),
-    ("contracts/packs/", "contracts/package/packs/", "contract package pack rules"),
+    (
+        "contracts/packs/",
+        "contracts/package/",
+        "package contract/law material; authored pack payloads belong under content/packs",
+    ),
     ("contracts/instances/", "contracts/instance/", "singular contract instance category"),
     ("contracts/saves/", "contracts/save/", "singular contract save category"),
     ("contracts/projections/", "contracts/projection/", "singular contract projection category"),

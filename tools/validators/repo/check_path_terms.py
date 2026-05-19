@@ -87,6 +87,9 @@ FORBIDDEN_ACTIVE_PATH_PREFIXES = {
     "content/packs/compatibility_payload": "executable package compatibility tooling belongs under tools/validators/package",
 }
 
+PACK_CONTRACT_GUARD_PREFIX = "contracts/package/packs/"
+PACK_CONTRACT_GUARD_README = "contracts/package/packs/README.md"
+
 
 def utc_now():
     return _datetime.datetime.now(_datetime.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -138,6 +141,21 @@ def build_report(repo_root, max_findings):
     findings = []
     counts = {}
     for path in git_files(repo_root):
+        if path.startswith(PACK_CONTRACT_GUARD_PREFIX) and path != PACK_CONTRACT_GUARD_README:
+            reason = (
+                "contracts/package/packs is guard-only; authored pack payloads belong under "
+                "content/packs and fixtures under tests/fixtures/package"
+            )
+            findings.append({
+                "path": path,
+                "segment": "contracts/package/packs",
+                "segment_index": -1,
+                "severity": "blocker",
+                "disposition": "pack_authority_violation",
+                "reason": reason,
+                "rule": "pack_authority_guard",
+            })
+            counts["contracts/package/packs"] = counts.get("contracts/package/packs", 0) + 1
         for prefix, reason in sorted(FORBIDDEN_ACTIVE_PATH_PREFIXES.items()):
             if path == prefix or path.startswith(prefix + "/"):
                 findings.append({
