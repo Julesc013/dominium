@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - CANON-SPINE-BOUNDARY-01
+UNSPECIFIED - CANON-DEBT-CLEANUP-01
 
 ## GOAL
 
-CANON-SPINE-BOUNDARY-01
+CANON-DEBT-CLEANUP-01
 
 ## WHY
 
@@ -113,8 +113,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4108
-- approx_tokens: 1027
+- chars: 4104
+- approx_tokens: 1026
 - budget_status: PASS
 - warnings:
   - none

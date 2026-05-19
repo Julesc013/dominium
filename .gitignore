@@ -359,3 +359,15 @@ docs/audit/GR3_FULL_SYS_STRESS.json
 **/__pycache__
 **/__pycache__/
 **/__pycache__/**
+
+# AIDE generated/export/runtime evidence is retained under archive/generated/aide/
+# when intentionally committed. Keep active .aide/ limited to contracts,
+# policies, scripts, commands, prompts, schemas, and current status surfaces.
+/.aide/export/
+/.aide/export/**
+/.aide/generated/
+/.aide/generated/**
+/.aide/release/dist/
+/.aide/release/dist/**
+/.aide/queue/**/evidence/
+/.aide/queue/**/evidence/**
