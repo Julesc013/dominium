@@ -1,0 +1,19 @@
+{
+  "replacement_id": "dominium.replacement.fixture.public_without_proof",
+  "replacement_kind": "public_api",
+  "status": "planned",
+  "owner": "tests.contract",
+  "summary": "Invalid public replacement without conformance or compatibility proof.",
+  "old_surface": {"id": "dominium.command.surface.v1", "kind": "command", "stability": "provisional", "version": "1.0.0"},
+  "new_surface": {"id": "dominium.command.surface.v1", "kind": "command", "stability": "provisional", "version": "1.0.0"},
+  "public_surfaces_affected": ["dominium.command.surface.v1"],
+  "compatibility_impact": "compatible",
+  "migration_policy": {"mode": "none"},
+  "refusal_policy": {"required": false, "codes": []},
+  "conformance_tests": [],
+  "compatibility_tests": [],
+  "rollback_plan": {"action": "revert_commit", "summary": "Rollback.", "steps": ["Revert."], "verification": ["git diff --check"]},
+  "evidence": ["tests/contract/replacement/README.md"],
+  "diagnostic_codes": ["DOM-REPLACEMENT-MISSING-PROOF"],
+  "approval_status": "pending"
+}

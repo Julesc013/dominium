@@ -1439,6 +1439,149 @@ replacement_policy = "fixture_changes_follow_app_validator_tests"
 notes = "Fixture suite for app descriptor validator behavior."
 
 [[surface]]
+id = "dominium.replacement.protocol.v1"
+kind = "documentation"
+path = "contracts/replacement/replacement.contract.toml"
+owner = "contracts.replacement"
+stability = "provisional"
+version = "1.0.0"
+introduced = "REPLACEMENT-PROTOCOL-01"
+proof = ["python tools/validators/repo/check_replacement_packet.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replacement_protocol_update"
+notes = "Replacement protocol law; no implementation replacement is performed by this task."
+
+[[surface]]
+id = "dominium.replacement.packet.v1"
+kind = "schema"
+path = "contracts/replacement/replacement_packet.schema.json"
+owner = "contracts.replacement"
+stability = "provisional"
+version = "1.0.0"
+introduced = "REPLACEMENT-PROTOCOL-01"
+proof = ["python -m json.tool contracts/replacement/replacement_packet.schema.json", "python tools/validators/repo/check_replacement_packet.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replacement_protocol_update"
+notes = "Replacement packet schema for old/new surfaces, impact, proof, rollback, migration, refusal, diagnostics, and evidence."
+
+[[surface]]
+id = "dominium.replacement.kind.registry.v1"
+kind = "registry"
+path = "contracts/replacement/replacement_kind.registry.json"
+owner = "contracts.replacement"
+stability = "provisional"
+version = "1.0.0"
+introduced = "REPLACEMENT-PROTOCOL-01"
+proof = ["python -m json.tool contracts/replacement/replacement_kind.registry.json", "python tools/validators/repo/check_replacement_packet.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replacement_protocol_update"
+notes = "Replacement kind and impact vocabulary."
+
+[[surface]]
+id = "dominium.replacement.status.registry.v1"
+kind = "registry"
+path = "contracts/replacement/replacement_status.registry.json"
+owner = "contracts.replacement"
+stability = "provisional"
+version = "1.0.0"
+introduced = "REPLACEMENT-PROTOCOL-01"
+proof = ["python -m json.tool contracts/replacement/replacement_status.registry.json", "python tools/validators/repo/check_replacement_packet.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replacement_protocol_update"
+notes = "Replacement lifecycle/status vocabulary."
+
+[[surface]]
+id = "dominium.replacement.impact.v1"
+kind = "schema"
+path = "contracts/replacement/replacement_impact.schema.json"
+owner = "contracts.replacement"
+stability = "provisional"
+version = "1.0.0"
+introduced = "REPLACEMENT-PROTOCOL-01"
+proof = ["python -m json.tool contracts/replacement/replacement_impact.schema.json", "python tools/validators/repo/check_replacement_packet.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replacement_protocol_update"
+notes = "Replacement impact schema."
+
+[[surface]]
+id = "dominium.replacement.proof.v1"
+kind = "schema"
+path = "contracts/replacement/replacement_proof.schema.json"
+owner = "contracts.replacement"
+stability = "provisional"
+version = "1.0.0"
+introduced = "REPLACEMENT-PROTOCOL-01"
+proof = ["python -m json.tool contracts/replacement/replacement_proof.schema.json", "python tools/validators/repo/check_replacement_packet.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replacement_protocol_update"
+notes = "Replacement proof schema for conformance, compatibility, and evidence references."
+
+[[surface]]
+id = "dominium.replacement.rollback_policy.v1"
+kind = "documentation"
+path = "contracts/replacement/rollback_policy.contract.toml"
+owner = "contracts.replacement"
+stability = "provisional"
+version = "1.0.0"
+introduced = "REPLACEMENT-PROTOCOL-01"
+proof = ["python tools/validators/repo/check_replacement_packet.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replacement_protocol_update"
+notes = "Rollback policy for active replacements."
+
+[[surface]]
+id = "dominium.replacement.conformance_policy.v1"
+kind = "documentation"
+path = "contracts/replacement/conformance_policy.contract.toml"
+owner = "contracts.replacement"
+stability = "provisional"
+version = "1.0.0"
+introduced = "REPLACEMENT-PROTOCOL-01"
+proof = ["python tools/validators/repo/check_replacement_packet.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replacement_protocol_update"
+notes = "Conformance proof policy for replacements."
+
+[[surface]]
+id = "dominium.replacement.migration_refusal_policy.v1"
+kind = "documentation"
+path = "contracts/replacement/migration_refusal_policy.contract.toml"
+owner = "contracts.replacement"
+stability = "provisional"
+version = "1.0.0"
+introduced = "REPLACEMENT-PROTOCOL-01"
+proof = ["python tools/validators/repo/check_replacement_packet.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replacement_protocol_update"
+notes = "Migration/refusal policy for incompatible replacements."
+
+[[surface]]
+id = "dominium.replacement.validator.v1"
+kind = "documentation"
+path = "tools/validators/repo/check_replacement_packet.py"
+owner = "tools.validators.repo"
+stability = "provisional"
+version = "1.0.0"
+introduced = "REPLACEMENT-PROTOCOL-01"
+proof = ["python -m py_compile tools/validators/repo/check_replacement_packet.py", "python tools/validators/repo/check_replacement_packet.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replacement_protocol_update"
+notes = "Validator for replacement contracts and packet fixtures."
+
+[[surface]]
+id = "dominium.replacement.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/replacement"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "REPLACEMENT-PROTOCOL-01"
+proof = ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_replacement_validator_tests"
+notes = "Fixture suite for replacement packet validator behavior."
+
+[[surface]]
 id = "dominium.retired.root_schema.v1"
 kind = "archive_record"
 path = "schema"

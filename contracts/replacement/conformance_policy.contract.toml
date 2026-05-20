@@ -1,0 +1,25 @@
+schema_version = "dominium.replacement.conformance_policy.v1"
+status = "provisional"
+owner = "contracts.replacement"
+last_reviewed = "2026-05-21"
+
+[contract]
+id = "dominium.replacement.conformance_policy.v1"
+status = "provisional"
+owner = "contracts.replacement"
+purpose = "Defines proof and conformance obligations for replacement packets."
+
+[policy]
+stable_public_surface_requires_conformance = true
+stable_abi_requires_header_and_boundary_checks = true
+stable_artifact_requires_compatibility_fixture = true
+stable_schema_protocol_requires_migration_or_refusal_proof = true
+provider_replacement_requires_provider_conformance = true
+module_replacement_requires_descriptor_and_command_view_proof = true
+directory_restructure_requires_reference_and_dependency_proof = true
+fixture_proof_is_not_runtime_conformance = true
+deferred_proof_requires_status_and_owner = true
+
+[proof_types]
+values = ["validator", "fixture", "compatibility_corpus", "abi_check", "dependency_check", "fast_strict", "manual_review", "deferred"]
+normal_gate = "fast_strict"

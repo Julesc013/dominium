@@ -1,0 +1,17 @@
+{
+  "replacement_id": "dominium.replacement.fixture.missing_old_surface",
+  "replacement_kind": "private_implementation",
+  "status": "planned",
+  "owner": "tests.contract",
+  "summary": "Invalid fixture missing old_surface.",
+  "new_surface": {"id": "dominium.repo.layout.v1", "kind": "registry", "stability": "stable_data_contract", "version": "1.0.0"},
+  "public_surfaces_affected": ["dominium.repo.layout.v1"],
+  "compatibility_impact": "compatible",
+  "migration_policy": {"mode": "none"},
+  "refusal_policy": {"required": false, "codes": []},
+  "conformance_tests": ["python tools/validators/check_repo_layout.py --repo-root . --strict"],
+  "rollback_plan": {"action": "revert_commit", "summary": "Rollback.", "steps": ["Revert."], "verification": ["git diff --check"]},
+  "evidence": ["tests/contract/replacement/README.md"],
+  "diagnostic_codes": ["DOM-REPLACEMENT-MISSING-OLD-SURFACE"],
+  "approval_status": "pending"
+}

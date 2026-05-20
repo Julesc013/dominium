@@ -1,0 +1,50 @@
+{
+  "replacement_id": "dominium.replacement.fixture.module",
+  "replacement_kind": "module",
+  "status": "planned",
+  "owner": "tests.contract",
+  "summary": "Fixture-only module replacement with descriptor compatibility proof.",
+  "old_surface": {
+    "id": "dominium.module.descriptor.v1",
+    "kind": "schema",
+    "stability": "provisional",
+    "version": "1.0.0",
+    "path": "contracts/module/module.schema.json",
+    "path_is_identity": false
+  },
+  "new_surface": {
+    "id": "dominium.module.descriptor.v1",
+    "kind": "schema",
+    "stability": "provisional",
+    "version": "1.0.0",
+    "path": "contracts/module/module.schema.json",
+    "path_is_identity": false
+  },
+  "public_surfaces_affected": ["dominium.module.descriptor.v1", "dominium.module.composition.v1"],
+  "artifacts_affected": [],
+  "schemas_affected": ["dominium.module.descriptor.v1"],
+  "protocols_affected": [],
+  "commands_affected": ["dominium.validation.run"],
+  "providers_affected": [],
+  "modules_affected": ["dominium.workbench.validation"],
+  "dependency_impact": "compatible",
+  "abi_impact": "none",
+  "compatibility_impact": "compatible",
+  "migration_policy": {"mode": "none", "summary": "Module ID and command/view bindings remain compatible."},
+  "refusal_policy": {"required": true, "codes": ["dominium.refusal.command.unsupported_surface"]},
+  "conformance_tests": ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict"],
+  "compatibility_tests": ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures"],
+  "replay_or_determinism_tests": [],
+  "performance_notes": "No performance claim in fixture.",
+  "security_notes": "Module must not call private tools directly.",
+  "rollback_plan": {
+    "action": "restore_previous_module",
+    "summary": "Restore previous module descriptor and command bindings.",
+    "steps": ["Revert the module descriptor change.", "Rerun module and command validators."],
+    "verification": ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict"]
+  },
+  "evidence": ["tests/contract/module/fixtures/valid_workbench_module.json"],
+  "diagnostic_codes": ["DOM-MODULE-PRIVATE-TOOL-CALL", "DOM-REPLACEMENT-MISSING-PROOF"],
+  "approval_status": "pending",
+  "notes": "Fixture only; no Workbench module runtime is implemented."
+}

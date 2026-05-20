@@ -1,0 +1,52 @@
+{
+  "replacement_id": "dominium.replacement.fixture.private_impl",
+  "replacement_kind": "private_implementation",
+  "status": "planned",
+  "owner": "tests.contract",
+  "summary": "Fixture-only private implementation replacement with unchanged public surface.",
+  "old_surface": {
+    "id": "dominium.repo.layout.v1",
+    "kind": "registry",
+    "stability": "stable_data_contract",
+    "version": "1.0.0",
+    "path": "contracts/repo/layout.contract.toml",
+    "path_is_identity": false
+  },
+  "new_surface": {
+    "id": "dominium.repo.layout.v1",
+    "kind": "registry",
+    "stability": "stable_data_contract",
+    "version": "1.0.0",
+    "path": "contracts/repo/layout.contract.toml",
+    "path_is_identity": false
+  },
+  "old_implementation": {"path": "tools/validators/check_repo_layout.py", "owner": "tools.repo", "identity_authority": false},
+  "new_implementation": {"path": "tools/validators/check_repo_layout.py", "owner": "tools.repo", "identity_authority": false},
+  "public_surfaces_affected": ["dominium.repo.layout.v1"],
+  "artifacts_affected": [],
+  "schemas_affected": [],
+  "protocols_affected": [],
+  "commands_affected": ["dominium.validation.run"],
+  "providers_affected": [],
+  "modules_affected": [],
+  "dependency_impact": "none",
+  "abi_impact": "none",
+  "compatibility_impact": "compatible",
+  "migration_policy": {"mode": "none", "summary": "Public data contract remains unchanged."},
+  "refusal_policy": {"required": false, "codes": []},
+  "conformance_tests": ["python tools/validators/check_repo_layout.py --repo-root . --strict"],
+  "compatibility_tests": [],
+  "replay_or_determinism_tests": [],
+  "performance_notes": "No performance claim in fixture.",
+  "security_notes": "No security claim in fixture.",
+  "rollback_plan": {
+    "action": "revert_commit",
+    "summary": "Revert the private implementation change if proof fails.",
+    "steps": ["Revert the commit containing the implementation change."],
+    "verification": ["python tools/validators/check_repo_layout.py --repo-root . --strict"]
+  },
+  "evidence": ["tests/contract/replacement/README.md"],
+  "diagnostic_codes": ["DOM-REPLACEMENT-MISSING-PROOF"],
+  "approval_status": "not_required",
+  "notes": "Fixture shows that private implementation replacement still names a surface."
+}

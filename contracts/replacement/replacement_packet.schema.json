@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.replacement.packet.v1",
+  "title": "Dominium Replacement Packet",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "replacement_id",
+    "replacement_kind",
+    "status",
+    "owner",
+    "summary",
+    "old_surface",
+    "new_surface",
+    "compatibility_impact",
+    "rollback_plan",
+    "evidence",
+    "diagnostic_codes"
+  ],
+  "properties": {
+    "replacement_id": {"type": "string", "pattern": "^(domino|dominium)\\.replacement(\\.[a-z0-9][a-z0-9_-]*)+$"},
+    "replacement_kind": {"type": "string"},
+    "status": {"type": "string"},
+    "owner": {"type": "string"},
+    "summary": {"type": "string"},
+    "old_surface": {"$ref": "#/$defs/surface_ref"},
+    "new_surface": {"$ref": "#/$defs/surface_ref"},
+    "old_implementation": {"$ref": "#/$defs/implementation_ref"},
+    "new_implementation": {"$ref": "#/$defs/implementation_ref"},
+    "public_surfaces_affected": {"type": "array", "items": {"type": "string"}},
+    "artifacts_affected": {"type": "array", "items": {"$ref": "#/$defs/artifact_ref"}},
+    "schemas_affected": {"type": "array", "items": {"type": "string"}},
+    "protocols_affected": {"type": "array", "items": {"type": "string"}},
+    "commands_affected": {"type": "array", "items": {"type": "string"}},
+    "providers_affected": {"type": "array", "items": {"type": "string"}},
+    "modules_affected": {"type": "array", "items": {"type": "string"}},
+    "dependency_impact": {"type": "string"},
+    "abi_impact": {"type": "string"},
+    "compatibility_impact": {"type": "string"},
+    "migration_policy": {"type": "object", "additionalProperties": true},
+    "refusal_policy": {"type": "object", "additionalProperties": true},
+    "conformance_tests": {"type": "array", "items": {"type": "string"}},
+    "compatibility_tests": {"type": "array", "items": {"type": "string"}},
+    "replay_or_determinism_tests": {"type": "array", "items": {"type": "string"}},
+    "performance_notes": {"type": "string"},
+    "security_notes": {"type": "string"},
+    "rollback_plan": {"$ref": "#/$defs/rollback_plan"},
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "diagnostic_codes": {"type": "array", "items": {"type": "string"}},
+    "approval_status": {"type": "string"},
+    "notes": {"type": "string"}
+  },
+  "$defs": {
+    "surface_ref": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "kind"],
+      "properties": {
+        "id": {"type": "string"},
+        "kind": {"type": "string"},
+        "stability": {"type": "string"},
+        "version": {"type": "string"},
+        "path": {"type": "string"},
+        "path_is_identity": {"type": "boolean"}
+      }
+    },
+    "implementation_ref": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "path": {"type": "string"},
+        "owner": {"type": "string"},
+        "identity_authority": {"type": "boolean"}
+      }
+    },
+    "artifact_ref": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "artifact_id": {"type": "string"},
+        "artifact_kind": {"type": "string"},
+        "stability": {"type": "string"},
+        "compatibility": {"type": "string"}
+      }
+    },
+    "rollback_plan": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["action", "summary", "steps", "verification"],
+      "properties": {
+        "action": {"type": "string"},
+        "summary": {"type": "string"},
+        "steps": {"type": "array", "items": {"type": "string"}},
+        "verification": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

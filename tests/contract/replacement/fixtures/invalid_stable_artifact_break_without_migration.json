@@ -1,0 +1,22 @@
+{
+  "replacement_id": "dominium.replacement.fixture.stable_artifact_break",
+  "replacement_kind": "artifact_format",
+  "status": "planned",
+  "owner": "tests.contract",
+  "summary": "Invalid stable artifact break without migration or refusal behavior.",
+  "old_surface": {"id": "dominium.artifact.manifest.v1", "kind": "schema", "stability": "provisional", "version": "1.0.0"},
+  "new_surface": {"id": "dominium.artifact.manifest.v1", "kind": "schema", "stability": "provisional", "version": "1.0.0"},
+  "public_surfaces_affected": ["dominium.artifact.manifest.v1"],
+  "artifacts_affected": [
+    {"artifact_id": "dominium.pack.core.units", "artifact_kind": "pack", "stability": "locked", "compatibility": "breaking"}
+  ],
+  "compatibility_impact": "breaking",
+  "migration_policy": {"mode": "none"},
+  "refusal_policy": {"required": false, "codes": []},
+  "conformance_tests": ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"],
+  "compatibility_tests": [],
+  "rollback_plan": {"action": "restore_previous_schema", "summary": "Rollback.", "steps": ["Revert."], "verification": ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"]},
+  "evidence": ["tests/contract/artifact_identity/fixtures/valid_pack_artifact.manifest.json"],
+  "diagnostic_codes": ["DOM-REPLACEMENT-COMPATIBILITY-BREAK"],
+  "approval_status": "pending"
+}

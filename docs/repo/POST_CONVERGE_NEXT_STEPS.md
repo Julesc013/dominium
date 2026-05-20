@@ -9,6 +9,32 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## REPLACEMENT-PROTOCOL-01 Update
+
+REPLACEMENT-PROTOCOL-01 adds the provisional safe replacement protocol.
+
+- replacement law: `contracts/replacement/replacement.contract.toml`
+- replacement packet schema: `contracts/replacement/replacement_packet.schema.json`
+- impact/proof schemas: `contracts/replacement/replacement_impact.schema.json`,
+  `contracts/replacement/replacement_proof.schema.json`
+- policies:
+  - `contracts/replacement/rollback_policy.contract.toml`
+  - `contracts/replacement/conformance_policy.contract.toml`
+  - `contracts/replacement/migration_refusal_policy.contract.toml`
+- validator:
+  - `python tools/validators/repo/check_replacement_packet.py --repo-root . --strict`
+- fixture suite: `tests/contract/replacement/**`
+- replacement kinds registered: 19
+- replacement statuses registered: 10
+- public surfaces after registration: 121
+- inventory: 17,942 tracked files scanned; 1,824 replacement-like historical or
+  future-candidate files classified descriptively
+- next Foundation Lock task: `VERSION-DEPRECATION-LAW-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Actual
+replacement, migration runtime, rollback runtime, provider runtime, Workbench UI,
+and product behavior are not implemented by this task.
+
 ## MODULE-COMPOSITION-LAW-01 Update
 
 MODULE-COMPOSITION-LAW-01 adds the provisional module, Workbench workspace, and app composition law.

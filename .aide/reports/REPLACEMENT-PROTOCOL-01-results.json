@@ -1,0 +1,14 @@
+{
+  "task": "REPLACEMENT-PROTOCOL-01",
+  "result": "PASS_WITH_WARNINGS",
+  "replacement_kinds_registered": 19,
+  "replacement_statuses_registered": 10,
+  "validator_status": "pass",
+  "fixtures_status": "pass",
+  "inventory_status": "warning",
+  "public_surface_registry_updated": true,
+  "diagnostics_registry_updated": true,
+  "refusal_registry_updated": true,
+  "fast_strict_status": "pass",
+  "next_task": "VERSION-DEPRECATION-LAW-01"
+}

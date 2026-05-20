@@ -1,0 +1,27 @@
+schema_version = "dominium.replacement.migration_refusal_policy.v1"
+status = "provisional"
+owner = "contracts.replacement"
+last_reviewed = "2026-05-21"
+
+[contract]
+id = "dominium.replacement.migration_refusal_policy.v1"
+status = "provisional"
+owner = "contracts.replacement"
+purpose = "Defines migration and refusal behavior for incompatible replacements."
+
+[policy]
+migration_must_be_explicit = true
+refusal_must_be_structured = true
+incompatible_stable_artifact_must_migrate_or_refuse = true
+schema_protocol_replacement_must_follow_evolution_law = true
+artifact_replacement_must_use_artifact_identity = true
+silent_default_forbidden = true
+silent_compatibility_reinterpretation_forbidden = true
+refusal_code_required = true
+diagnostic_code_required = true
+
+[relationships]
+diagnostic_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+refusal_registry = "contracts/refusal/refusal_code.registry.json"
+schema_migration_policy = "contracts/migration/migration_policy.contract.toml"
+artifact_identity_law = "contracts/artifact/artifact_identity.contract.toml"

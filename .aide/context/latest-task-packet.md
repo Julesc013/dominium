@@ -6,50 +6,46 @@ foundation-lock
 
 ## GOAL
 
-Complete `MODULE-COMPOSITION-LAW-01` by adding module, Workbench workspace, and
-app composition contracts, schemas, validators, fixtures, docs, public-surface
-registration, diagnostics/capability cross-references, and evidence.
+Complete `REPLACEMENT-PROTOCOL-01` by adding replacement protocol contracts,
+replacement packet/impact/proof schemas, replacement kind/status registries,
+rollback/conformance/migration-refusal policies, validator, fixtures, docs,
+public-surface registration, diagnostics/refusal cross-references, inventory,
+and evidence.
 
 ## WHY
 
-Dominium must distinguish component, service, provider, pack, module,
-workspace, app, and artifact. Module identity must come from descriptors, not
-folders, executable names, Workbench layout files, or private tool wiring.
+Dominium must allow safe replacement while forbidding silent breakage.
+Implementations, providers, modules, schemas, protocols, artifact formats,
+command handlers, validators, and directory-owned surfaces need governed
+packets with proof, rollback, migration/refusal behavior, diagnostics, and
+evidence.
 
 ## CONTEXT_REFS
 
 - `AGENTS.md`
-- `contracts/module/module_surface.contract.toml`
-- `contracts/module/module.schema.json`
-- `contracts/workbench/workspace.schema.json`
-- `contracts/app/app_descriptor.schema.json`
-- `contracts/command/command_surface.contract.toml`
-- `contracts/capability/capability.registry.json`
-- `contracts/provider/provider.registry.json`
-- `contracts/diagnostics/diagnostic_code.registry.json`
+- `contracts/replacement/replacement.contract.toml`
+- `contracts/replacement/replacement_packet.schema.json`
+- `contracts/replacement/replacement_kind.registry.json`
+- `contracts/replacement/replacement_status.registry.json`
+- `contracts/replacement/rollback_policy.contract.toml`
 - `contracts/public_surface/public_surface.contract.toml`
-- `docs/architecture/module_composition_law.md`
+- `contracts/diagnostics/diagnostic_code.registry.json`
+- `contracts/refusal/refusal_code.registry.json`
+- `contracts/provider/provider.contract.toml`
+- `contracts/module/module.schema.json`
+- `contracts/artifact/artifact_identity.contract.toml`
+- `contracts/schema/schema_evolution.contract.toml`
 - `.aide/context/latest-context-packet.md`
 
 ## ALLOWED_PATHS
 
-- `contracts/module/**`
-- `contracts/workbench/**`
-- `contracts/app/**`
-- `contracts/diagnostics/**` for narrow diagnostic additions
-- `contracts/capability/**` for narrow capability additions
-- `contracts/public_surface/**` for conservative registration
-- `docs/architecture/module_composition_law.md`
-- `docs/architecture/workbench_workspace_model.md`
-- `docs/architecture/app_composition_model.md`
-- `docs/development/module_development_guidelines.md`
-- `docs/development/workbench_module_guidelines.md`
-- `tools/validators/contracts/check_module_descriptors.py`
-- `tools/validators/contracts/check_workbench_workspaces.py`
-- `tools/validators/contracts/check_app_descriptors.py`
-- `tests/contract/module/**`
-- `tests/contract/workbench/**`
-- `tests/contract/app/**`
+- `contracts/replacement/**`
+- narrow `contracts/public_surface/**`, `contracts/diagnostics/**`, and
+  `contracts/refusal/**` registry updates
+- `docs/architecture/replacement_protocol.md`
+- `docs/development/replacement_protocol_guidelines.md`
+- `tools/validators/repo/check_replacement_packet.py`
+- `tests/contract/replacement/**`
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
@@ -63,75 +59,64 @@ folders, executable names, Workbench layout files, or private tool wiring.
 - `.dominium.local/**`
 - `.aide.local/**`
 - generated build/projection/release outputs
-- Workbench UI implementation
-- runtime module loader implementation
-- app composer implementation
-- pack runtime or module discovery runtime
-- provider runtime
-- gameplay/domain/renderer/native GUI feature code
-- release publication, tags, installers, or GitHub settings
+- implementation replacements or broad directory moves
+- migration runtime or rollback runtime
+- provider runtime, Workbench UI, app behavior, gameplay, renderer, native GUI,
+  package runtime, release publication, tags, installers, or GitHub settings
 
 ## IMPLEMENTATION
 
-- Keep the task to governance, validation, fixtures, docs, and evidence.
-- Define module descriptors, module composition, module kinds, Workbench
-  workspace/panel/view-binding schemas, app descriptors, and app composition.
-- Register only conservative provisional surfaces.
-- Inventory current app/workbench/module-like surfaces without migrating them.
+- Define replacement law only; do not perform an actual replacement.
+- Keep packet identity independent from implementation paths.
+- Register only provisional public surfaces.
+- Inventory historical replacement evidence without retrofitting full packets.
 
 ## VALIDATION
 
-- `python -m py_compile tools/validators/contracts/check_module_descriptors.py tools/validators/contracts/check_workbench_workspaces.py tools/validators/contracts/check_app_descriptors.py`
-- `python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict`
-- `python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures`
-- `python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict`
-- `python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --fixtures`
-- `python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict`
-- `python tools/validators/contracts/check_app_descriptors.py --repo-root . --fixtures`
-- Existing provider, capability/refusal, schema/protocol, artifact,
-  diagnostics, command, public-surface, dependency-direction, and ABI validators
-  where present
-- `python tools/test/run_fast_strict.py --repo-root . --json-out .aide/reports/MODULE-COMPOSITION-LAW-01-fast-strict.json --md-out .aide/reports/MODULE-COMPOSITION-LAW-01-fast-strict.md`
+- `python -m py_compile tools/validators/repo/check_replacement_packet.py`
+- `python tools/validators/repo/check_replacement_packet.py --repo-root . --strict`
+- `python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures`
+- `python tools/validators/repo/check_replacement_packet.py --repo-root . --inventory`
+- Existing module/workbench/app, provider, capability/refusal, schema/protocol,
+  artifact, diagnostics, command, public-surface, dependency-direction, and ABI
+  validators where present
+- `python tools/test/run_fast_strict.py --repo-root . --json-out .aide/reports/REPLACEMENT-PROTOCOL-01-fast-strict.json --md-out .aide/reports/REPLACEMENT-PROTOCOL-01-fast-strict.md`
 - `git diff --check`
 
 ## EVIDENCE
 
-- `.aide/reports/MODULE-COMPOSITION-LAW-01-status.md`
-- `.aide/reports/MODULE-COMPOSITION-LAW-01-validation.md`
-- `.aide/reports/MODULE-COMPOSITION-LAW-01-results.json`
-- `.aide/reports/MODULE-COMPOSITION-LAW-01-initial-module-inventory.md`
-- `.aide/reports/MODULE-COMPOSITION-LAW-01-fast-strict.md`
-- `.aide/reports/MODULE-COMPOSITION-LAW-01-fast-strict.json`
-- `docs/repo/audits/MODULE_COMPOSITION_LAW_01.md`
+- `.aide/reports/REPLACEMENT-PROTOCOL-01-status.md`
+- `.aide/reports/REPLACEMENT-PROTOCOL-01-validation.md`
+- `.aide/reports/REPLACEMENT-PROTOCOL-01-results.json`
+- `.aide/reports/REPLACEMENT-PROTOCOL-01-initial-replacement-inventory.md`
+- `docs/repo/audits/REPLACEMENT_PROTOCOL_01.md`
 
 ## NON_GOALS
 
-- No runtime module loader.
-- No Workbench UI.
-- No App Composer.
-- No pack runtime or module discovery runtime.
-- No provider runtime.
-- No gameplay/domain/renderer/native GUI feature behavior.
-- No release publication.
-- No full CTest claim.
+- No actual rewrite, replacement, migration, rollback, runtime loader, provider
+  resolver, Workbench UI, app behavior, release output, or broad directory move.
 
 ## ACCEPTANCE
 
-- Module, Workbench, and app validators compile and pass strict mode.
-- Fixture modes pass.
-- Inventory modes report candidates descriptively without migrating them.
-- Public surface, diagnostics, capability, provider, and command registries remain valid.
-- Fast strict passes.
-- Evidence and audit records are written.
-- Worktree excludes local/generated forbidden outputs.
-
-## TOKEN_ESTIMATE
-
-~1.3k tokens.
+- Replacement protocol files exist.
+- Validator passes strict and fixture modes.
+- Public surface, diagnostics, and refusal registries validate.
+- Fast strict proof is recorded.
+- Next task is `VERSION-DEPRECATION-LAW-01`.
 
 ## OUTPUT_SCHEMA
 
-Final report includes branch, starting HEAD, ending HEAD, origin/main, push
-status, result, created contracts/schemas/docs/tools, module kind count, fixture
-and inventory status, registry updates, validator status, fast strict status,
-known warnings, worktree status, and next task.
+Return a compact final report with branch, starting HEAD, ending HEAD,
+origin/main, pushed status, result status, created files, replacement kind/status
+counts, fixture validation, inventory summary, registry updates, validator
+status, fast strict status, known warnings, worktree status, and next task.
+
+## TOKEN_ESTIMATE
+
+- method: chars / 4, rounded up
+- chars: 4498
+- approx_tokens: 1125
+- budget_status: PASS
+- warnings:
+  - none
+- formal ledger: `.aide/reports/token-ledger.jsonl`

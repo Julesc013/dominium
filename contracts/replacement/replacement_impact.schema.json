@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.replacement.impact.v1",
+  "title": "Dominium Replacement Impact",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["impact_id", "owner", "summary", "compatibility_impact", "affected_surfaces"],
+  "properties": {
+    "impact_id": {"type": "string"},
+    "owner": {"type": "string"},
+    "summary": {"type": "string"},
+    "affected_surfaces": {"type": "array", "items": {"type": "string"}},
+    "affected_artifacts": {"type": "array", "items": {"type": "string"}},
+    "affected_schemas": {"type": "array", "items": {"type": "string"}},
+    "affected_protocols": {"type": "array", "items": {"type": "string"}},
+    "affected_commands": {"type": "array", "items": {"type": "string"}},
+    "affected_providers": {"type": "array", "items": {"type": "string"}},
+    "affected_modules": {"type": "array", "items": {"type": "string"}},
+    "dependency_impact": {"type": "string"},
+    "abi_impact": {"type": "string"},
+    "compatibility_impact": {"type": "string"},
+    "migration_required": {"type": "boolean"},
+    "refusal_required": {"type": "boolean"},
+    "notes": {"type": "string"}
+  }
+}

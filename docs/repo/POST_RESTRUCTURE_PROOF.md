@@ -5,7 +5,34 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, PROVIDER-MODEL-01, and MODULE-COMPOSITION-LAW-01.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, PROVIDER-MODEL-01, MODULE-COMPOSITION-LAW-01, and REPLACEMENT-PROTOCOL-01.
+
+## REPLACEMENT-PROTOCOL-01 Proof Note
+
+REPLACEMENT-PROTOCOL-01 adds the provisional safe replacement protocol.
+
+- replacement law: `contracts/replacement/replacement.contract.toml`.
+- replacement packet schema: `contracts/replacement/replacement_packet.schema.json`.
+- replacement impact/proof schemas:
+  `contracts/replacement/replacement_impact.schema.json` and
+  `contracts/replacement/replacement_proof.schema.json`.
+- rollback/conformance/migration-refusal policies:
+  `contracts/replacement/rollback_policy.contract.toml`,
+  `contracts/replacement/conformance_policy.contract.toml`, and
+  `contracts/replacement/migration_refusal_policy.contract.toml`.
+- validator: `python tools/validators/repo/check_replacement_packet.py --repo-root . --strict`.
+- fixtures: `tests/contract/replacement/**`.
+- replacement kinds registered: 19.
+- replacement statuses registered: 10.
+- public surface, diagnostics, and refusal registries updated with replacement
+  surfaces/codes.
+- historical move/router/repair evidence is inventoried but not converted into
+  formal replacement packets.
+- runtime migration, rollback, provider resolution, Workbench UI, and product
+  behavior are not implemented by this task.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `VERSION-DEPRECATION-LAW-01`.
 
 ## MODULE-COMPOSITION-LAW-01 Proof Note
 

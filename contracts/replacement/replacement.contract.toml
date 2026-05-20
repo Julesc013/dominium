@@ -1,0 +1,50 @@
+schema_version = "dominium.replacement.contract.v1"
+status = "provisional"
+owner = "contracts.replacement"
+last_reviewed = "2026-05-21"
+
+[contract]
+id = "dominium.replacement.protocol.v1"
+status = "provisional"
+owner = "contracts.replacement"
+purpose = "Defines safe replacement, rewrite, migration, conformance, rollback, and compatibility law for Dominium and Domino surfaces."
+
+[identity]
+replacement_id_required = true
+replacement_id_is_path = false
+implementation_path_is_identity = false
+public_surface_identity_required = true
+artifact_identity_required = true
+module_identity_required = true
+provider_identity_required = true
+
+[policy]
+silent_breakage_allowed = false
+silent_migration_allowed = false
+silent_fallback_allowed = false
+public_surface_replacement_requires_registry_update = true
+stable_api_or_abi_replacement_requires_conformance = true
+stable_artifact_replacement_requires_migration_or_refusal = true
+stable_schema_protocol_replacement_requires_evolution_policy = true
+provider_replacement_requires_capability_refusal_behavior = true
+module_replacement_requires_descriptor_compatibility = true
+directory_restructure_requires_reference_repair_proof = true
+rollback_plan_required = true
+evidence_required = true
+diagnostics_required_for_failed_validation = true
+
+[impact]
+public_surface_registry = "contracts/public_surface/public_surface.contract.toml"
+artifact_identity_law = "contracts/artifact/artifact_identity.contract.toml"
+schema_protocol_law = "contracts/schema/schema_evolution.contract.toml"
+provider_model = "contracts/provider/provider.contract.toml"
+module_composition_law = "contracts/module/module_surface.contract.toml"
+abi_canon = "contracts/abi/c_api.contract.toml"
+dependency_direction_law = "contracts/repo/dependency_directions.contract.toml"
+
+[proof]
+normal_gate = "fast_strict"
+validator = "tools/validators/repo/check_replacement_packet.py"
+fixtures = "tests/contract/replacement"
+compatibility_corpus_status = "future"
+release_promotion_requires_replacement_status = ["approved", "applied", "proven"]

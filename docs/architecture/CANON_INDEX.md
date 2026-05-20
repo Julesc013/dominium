@@ -586,6 +586,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/diagnostics_and_evidence.md`
 - `docs/architecture/module_composition_law.md`
 - `docs/architecture/provider_model.md`
+- `docs/architecture/replacement_protocol.md`
 - `docs/architecture/schema_protocol_evolution.md`
 - `docs/architecture/workbench_workspace_model.md`
 - `docs/architecture/app_composition_model.md`

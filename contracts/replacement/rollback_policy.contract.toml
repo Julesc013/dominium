@@ -1,0 +1,25 @@
+schema_version = "dominium.replacement.rollback_policy.v1"
+status = "provisional"
+owner = "contracts.replacement"
+last_reviewed = "2026-05-21"
+
+[contract]
+id = "dominium.replacement.rollback_policy.v1"
+status = "provisional"
+owner = "contracts.replacement"
+purpose = "Defines rollback expectations for governed replacements."
+
+[policy]
+rollback_plan_required = true
+rollback_may_be_absent_for_historical_record = true
+rollback_may_be_absent_for_documentation_only = true
+rollback_must_name_affected_surfaces = true
+rollback_must_name_state_to_restore = true
+rollback_must_preserve_evidence = true
+rollback_must_not_delete_unrelated_history = true
+rollback_must_not_use_force_push = true
+
+[rollback_plan]
+required_fields = ["action", "summary", "steps", "verification"]
+allowed_actions = ["revert_commit", "restore_previous_provider", "restore_previous_schema", "restore_previous_module", "disable_new_surface", "select_previous_capability", "manual_review", "not_recoverable"]
+evidence_policy = "Rollback evidence must include command results or explicit reason why rollback is not executable."

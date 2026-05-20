@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.replacement.proof.v1",
+  "title": "Dominium Replacement Proof",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["proof_id", "owner", "proof_type", "status", "commands", "evidence_refs"],
+  "properties": {
+    "proof_id": {"type": "string"},
+    "owner": {"type": "string"},
+    "proof_type": {"type": "string"},
+    "status": {"type": "string"},
+    "commands": {"type": "array", "items": {"type": "string"}},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "conformance_scope": {"type": "array", "items": {"type": "string"}},
+    "compatibility_scope": {"type": "array", "items": {"type": "string"}},
+    "diagnostic_codes": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  }
+}

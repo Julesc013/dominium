@@ -1,0 +1,30 @@
+{
+  "schema_version": "dominium.replacement.kind_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.replacement",
+  "kinds": [
+    {"id": "private_implementation", "description": "Implementation replacement where declared public surfaces remain unchanged."},
+    {"id": "public_api", "description": "Public API replacement or public contract shape change."},
+    {"id": "abi_surface", "description": "ABI, header, symbol, calling convention, or native boundary replacement."},
+    {"id": "schema", "description": "Schema replacement or incompatible schema evolution."},
+    {"id": "protocol", "description": "Protocol, message, encoding, or transport contract replacement."},
+    {"id": "registry", "description": "Registry format or authority replacement."},
+    {"id": "artifact_format", "description": "Persisted artifact format replacement affecting durable artifacts."},
+    {"id": "provider", "description": "Provider, backend, adapter, or capability implementation replacement."},
+    {"id": "module", "description": "Module descriptor, composition, command/view/document binding, or implementation replacement."},
+    {"id": "workbench_workspace", "description": "Workbench workspace composition replacement."},
+    {"id": "app_composition", "description": "Product app composition replacement."},
+    {"id": "package_format", "description": "Package, pack, profile, bundle, lock, or mount format replacement."},
+    {"id": "save_format", "description": "Save artifact or saved-state format replacement."},
+    {"id": "replay_format", "description": "Replay, trace, or determinism proof format replacement."},
+    {"id": "command_surface", "description": "Command input, output, execution, refusal, or exposure surface replacement."},
+    {"id": "dependency_boundary", "description": "Ownership, include/import, or dependency direction boundary replacement."},
+    {"id": "directory_restructure", "description": "Directory subtree or root ownership replacement."},
+    {"id": "tooling", "description": "Validator, test, AIDE, release, or repository tool replacement."},
+    {"id": "generated_surface", "description": "Generated projection, mirror, archive, or emitted surface replacement."}
+  ],
+  "compatibility_impact_values": ["none", "compatible", "compatible_with_warnings", "requires_migration", "breaking", "unknown"],
+  "abi_impact_values": ["none", "compatible", "warning", "breaking", "unknown"],
+  "dependency_impact_values": ["none", "compatible", "new_dependency", "removed_dependency", "direction_change", "unknown"],
+  "approval_status_values": ["not_required", "pending", "approved", "rejected", "deferred"]
+}

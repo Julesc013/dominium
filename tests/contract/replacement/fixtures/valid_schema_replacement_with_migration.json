@@ -1,0 +1,60 @@
+{
+  "replacement_id": "dominium.replacement.fixture.schema_migration",
+  "replacement_kind": "schema",
+  "status": "planned",
+  "owner": "tests.contract",
+  "summary": "Fixture-only schema replacement with explicit migration and refusal behavior.",
+  "old_surface": {
+    "id": "dominium.schema.evolution.v1",
+    "kind": "schema",
+    "stability": "provisional",
+    "version": "1.0.0",
+    "path": "contracts/schema/schema_evolution.contract.toml",
+    "path_is_identity": false
+  },
+  "new_surface": {
+    "id": "dominium.schema.evolution.v1",
+    "kind": "schema",
+    "stability": "provisional",
+    "version": "1.0.0",
+    "path": "contracts/schema/schema_evolution.contract.toml",
+    "path_is_identity": false
+  },
+  "public_surfaces_affected": ["dominium.schema.evolution.v1"],
+  "artifacts_affected": [
+    {"artifact_id": "dominium.evidence.fast_strict.run", "artifact_kind": "evidence_packet", "stability": "provisional", "compatibility": "requires_migration"}
+  ],
+  "schemas_affected": ["dominium.schema.evolution.v1"],
+  "protocols_affected": [],
+  "commands_affected": [],
+  "providers_affected": [],
+  "modules_affected": [],
+  "dependency_impact": "none",
+  "abi_impact": "none",
+  "compatibility_impact": "requires_migration",
+  "migration_policy": {
+    "mode": "explicit_migration_required",
+    "summary": "Old fixture schema documents migrate through a declared policy.",
+    "diagnostic_codes": ["DOM-MIGRATION-REQUIRED"]
+  },
+  "refusal_policy": {
+    "required": true,
+    "codes": ["dominium.refusal.schema.unsupported_version"],
+    "diagnostic_codes": ["DOM-SCHEMA-UNSUPPORTED-VERSION"]
+  },
+  "conformance_tests": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"],
+  "compatibility_tests": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --fixtures"],
+  "replay_or_determinism_tests": [],
+  "performance_notes": "No performance impact in fixture.",
+  "security_notes": "No security impact in fixture.",
+  "rollback_plan": {
+    "action": "restore_previous_schema",
+    "summary": "Restore the previous schema policy if migration proof fails.",
+    "steps": ["Revert the schema policy change.", "Preserve failed migration evidence."],
+    "verification": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"]
+  },
+  "evidence": ["tests/contract/schema_protocol/fixtures/valid_schema_policy.json"],
+  "diagnostic_codes": ["DOM-MIGRATION-REQUIRED", "DOM-REPLACEMENT-MIGRATION-MISSING"],
+  "approval_status": "pending",
+  "notes": "Fixture illustrates explicit migration, not a migration runtime."
+}

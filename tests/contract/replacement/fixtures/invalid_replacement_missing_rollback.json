@@ -1,0 +1,18 @@
+{
+  "replacement_id": "dominium.replacement.fixture.missing_rollback",
+  "replacement_kind": "provider",
+  "status": "planned",
+  "owner": "tests.contract",
+  "summary": "Invalid replacement missing rollback plan.",
+  "old_surface": {"id": "dominium.provider.descriptor.v1", "kind": "schema", "stability": "provisional", "version": "1.0.0"},
+  "new_surface": {"id": "dominium.provider.descriptor.v1", "kind": "schema", "stability": "provisional", "version": "1.0.0"},
+  "public_surfaces_affected": ["dominium.provider.descriptor.v1"],
+  "providers_affected": ["domino.provider.render.null"],
+  "compatibility_impact": "compatible",
+  "migration_policy": {"mode": "none"},
+  "refusal_policy": {"required": true, "codes": ["dominium.refusal.provider.unavailable"]},
+  "conformance_tests": ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"],
+  "evidence": ["tests/contract/provider/fixtures/valid_provider_descriptor.json"],
+  "diagnostic_codes": ["DOM-REPLACEMENT-MISSING-ROLLBACK"],
+  "approval_status": "pending"
+}

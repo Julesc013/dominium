@@ -1,0 +1,52 @@
+{
+  "replacement_id": "dominium.replacement.fixture.provider",
+  "replacement_kind": "provider",
+  "status": "planned",
+  "owner": "tests.contract",
+  "summary": "Fixture-only provider replacement with explicit capability and conformance proof.",
+  "old_surface": {
+    "id": "dominium.provider.descriptor.v1",
+    "kind": "schema",
+    "stability": "provisional",
+    "version": "1.0.0",
+    "path": "contracts/provider/provider_descriptor.schema.json",
+    "path_is_identity": false
+  },
+  "new_surface": {
+    "id": "dominium.provider.descriptor.v1",
+    "kind": "schema",
+    "stability": "provisional",
+    "version": "1.0.0",
+    "path": "contracts/provider/provider_descriptor.schema.json",
+    "path_is_identity": false
+  },
+  "old_implementation": {"path": "runtime/render/null", "owner": "runtime.render", "identity_authority": false},
+  "new_implementation": {"path": "runtime/render/software", "owner": "runtime.render", "identity_authority": false},
+  "public_surfaces_affected": ["dominium.provider.descriptor.v1", "dominium.provider.selection.v1"],
+  "artifacts_affected": [],
+  "schemas_affected": ["dominium.provider.descriptor.v1"],
+  "protocols_affected": [],
+  "commands_affected": [],
+  "providers_affected": ["domino.provider.render.null", "domino.provider.render.software"],
+  "modules_affected": [],
+  "dependency_impact": "compatible",
+  "abi_impact": "none",
+  "compatibility_impact": "compatible_with_warnings",
+  "migration_policy": {"mode": "none", "summary": "Provider identity remains declared; selection is explicit."},
+  "refusal_policy": {"required": true, "codes": ["dominium.refusal.provider.unavailable"]},
+  "conformance_tests": ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"],
+  "compatibility_tests": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+  "replay_or_determinism_tests": [],
+  "performance_notes": "Fixture does not claim renderer performance equivalence.",
+  "security_notes": "Provider trust remains repo_canonical in fixture metadata.",
+  "rollback_plan": {
+    "action": "restore_previous_provider",
+    "summary": "Select the old provider descriptor if replacement proof fails.",
+    "steps": ["Restore the prior provider descriptor or disable the replacement descriptor."],
+    "verification": ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+  },
+  "evidence": ["tests/contract/provider/fixtures/valid_provider_descriptor.json"],
+  "diagnostic_codes": ["DOM-PROVIDER-CONFORMANCE-MISSING", "DOM-REPLACEMENT-CONFORMANCE-MISSING"],
+  "approval_status": "pending",
+  "notes": "Fixture only; no runtime provider resolver is implemented."
+}

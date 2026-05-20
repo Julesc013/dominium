@@ -1,0 +1,19 @@
+{
+  "schema_version": "dominium.replacement.status_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.replacement",
+  "statuses": [
+    {"id": "draft", "description": "Packet is being authored and has not been approved."},
+    {"id": "planned", "description": "Replacement is planned but not applied."},
+    {"id": "approved", "description": "Replacement is approved for execution by the required review path."},
+    {"id": "applied", "description": "Replacement was applied but may still need promotion proof."},
+    {"id": "proven", "description": "Replacement has the required conformance, compatibility, and rollback evidence."},
+    {"id": "rejected", "description": "Replacement was rejected and must not proceed under this packet."},
+    {"id": "rolled_back", "description": "Replacement was rolled back and rollback evidence is preserved."},
+    {"id": "superseded", "description": "A later replacement packet supersedes this packet."},
+    {"id": "deferred", "description": "Replacement is deferred and must not be treated as applied."},
+    {"id": "historical", "description": "Historical replacement evidence imported for context only."}
+  ],
+  "proof_status_values": ["pass", "pass_with_warnings", "fail", "blocked", "not_run", "deferred"],
+  "surface_change_values": ["unchanged", "compatible", "deprecated", "replaced", "removed", "unknown"]
+}

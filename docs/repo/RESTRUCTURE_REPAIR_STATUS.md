@@ -5,12 +5,41 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `MODULE-COMPOSITION-LAW-01`.
+Latest task: `REPLACEMENT-PROTOCOL-01`.
 
-Result: PASS_WITH_WARNINGS for the provisional module/workspace/app composition
-law. Module, Workbench, and app contracts, schemas, validators, fixtures, docs,
-and evidence surfaces exist. Existing dependency-direction debt remains visible
-and is not hidden by this task.
+Result: PASS_WITH_WARNINGS for the provisional replacement protocol. Replacement
+contracts, schemas, validator, fixtures, docs, diagnostics/refusal codes, public
+surface registrations, and evidence exist. Existing dependency-direction debt
+remains visible and is not hidden by this task.
+
+## REPLACEMENT-PROTOCOL-01 Update
+
+REPLACEMENT-PROTOCOL-01 is PASS_WITH_WARNINGS.
+
+- replacement law: `contracts/replacement/replacement.contract.toml`.
+- replacement packet schema: `contracts/replacement/replacement_packet.schema.json`.
+- replacement impact/proof schemas:
+  `contracts/replacement/replacement_impact.schema.json` and
+  `contracts/replacement/replacement_proof.schema.json`.
+- policies:
+  - `contracts/replacement/rollback_policy.contract.toml`.
+  - `contracts/replacement/conformance_policy.contract.toml`.
+  - `contracts/replacement/migration_refusal_policy.contract.toml`.
+- validator: `tools/validators/repo/check_replacement_packet.py`.
+- fixtures: `tests/contract/replacement/**`.
+- replacement kinds registered: 19.
+- replacement statuses registered: 10.
+- diagnostic codes added: 8 replacement codes.
+- refusal codes added: 5 replacement refusal codes.
+- inventory: 17,942 tracked files scanned; 1,824 replacement-like historical or
+  future-candidate files classified.
+- historical refactors are inventoried but not retroactively converted into full
+  replacement packets.
+
+Next task:
+`VERSION-DEPRECATION-LAW-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## MODULE-COMPOSITION-LAW-01 Update
 
