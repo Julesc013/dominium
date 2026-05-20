@@ -1,0 +1,18 @@
+{
+  "artifact_id": "domino.replay.log.v1.fixture",
+  "artifact_kind": "replay",
+  "schema_id": "dominium.artifact.manifest_schema.v1",
+  "schema_version": "1.0.0",
+  "artifact_version": "0.1.0",
+  "owner": "runtime.replay",
+  "stability": "fixture",
+  "hash_algorithm": "sha256",
+  "canonical_serialization": "binary.format_defined",
+  "compatibility_policy": "fixture_only",
+  "migration_policy": "fixture_changes_follow_validator_tests",
+  "refusal_policy": "refuse_with_DOM-ARTIFACT-UNSUPPORTED-SCHEMA",
+  "trust_level": "fixture",
+  "provenance": {
+    "created_by": "tests.contract.artifact_identity"
+  }
+}

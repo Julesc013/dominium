@@ -5,12 +5,31 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `DIAGNOSTIC-CODE-REGISTRY-01`.
+Latest task: `ARTIFACT-IDENTITY-LAW-01`.
 
-Result: PASS_WITH_WARNINGS for the provisional diagnostic/evidence registry,
-assuming the final fast strict rerun remains green. Diagnostic code, severity,
-category, evidence, event, and refusal cross-reference surfaces exist. Existing
-dependency-direction debt remains visible and is not hidden by this task.
+Result: PASS_WITH_WARNINGS for the provisional artifact identity law, assuming
+the final fast strict rerun remains green. Artifact identity, manifest, kind,
+lifecycle, hash, compatibility, trust, ref, validator, fixtures, docs, and
+evidence surfaces exist. Existing dependency-direction debt remains visible and
+is not hidden by this task.
+
+## ARTIFACT-IDENTITY-LAW-01 Update
+
+ARTIFACT-IDENTITY-LAW-01 is PASS_WITH_WARNINGS.
+
+- artifact identity contract: `contracts/artifact/artifact_identity.contract.toml`.
+- artifact manifest schema: `contracts/artifact/artifact_manifest.schema.json`.
+- validator: `tools/validators/contracts/check_artifact_identity.py`.
+- artifact kinds registered: 23.
+- lifecycle states registered: 11.
+- artifact diagnostics added: 8.
+- inventory: 17,782 tracked files scanned; 1,890 artifact-like files classified.
+- existing artifacts are inventoried but not migrated.
+
+Next task:
+`SCHEMA-PROTOCOL-LAW-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## DIAGNOSTIC-CODE-REGISTRY-01 Update
 

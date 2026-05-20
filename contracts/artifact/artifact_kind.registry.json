@@ -1,0 +1,42 @@
+{
+  "schema_version": "dominium.artifact.kind_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.artifact",
+  "kinds": [
+    {"id": "pack", "description": "Authored content pack or mod pack artifact.", "expected_owner": "content or runtime.package", "manifest_required_for_stable": true},
+    {"id": "profile", "description": "Runtime, product, law, or configuration profile artifact.", "expected_owner": "content or contracts.profile", "manifest_required_for_stable": true},
+    {"id": "bundle", "description": "Bundle of profiles, packs, reports, or other artifacts.", "expected_owner": "content or release", "manifest_required_for_stable": true},
+    {"id": "save", "description": "Persisted game or simulation state.", "expected_owner": "runtime.persistence", "manifest_required_for_stable": true},
+    {"id": "instance", "description": "Instance descriptor or launched-session artifact.", "expected_owner": "runtime.instance", "manifest_required_for_stable": true},
+    {"id": "replay", "description": "Replay log, replay manifest, or deterministic replay artifact.", "expected_owner": "runtime.replay", "manifest_required_for_stable": true},
+    {"id": "diagnostic", "description": "Diagnostic bundle or condition artifact.", "expected_owner": "runtime.diagnostics or tools.diagnostics", "manifest_required_for_stable": true},
+    {"id": "evidence_packet", "description": "Machine-readable proof output packet.", "expected_owner": "contracts.evidence or tools.validation", "manifest_required_for_stable": true},
+    {"id": "release_artifact", "description": "Release package, installer, update, or promotion artifact.", "expected_owner": "release", "manifest_required_for_stable": true},
+    {"id": "schema_registry", "description": "Schema registry, schema catalog, or schema policy artifact.", "expected_owner": "contracts.schema", "manifest_required_for_stable": true},
+    {"id": "public_surface_registry", "description": "Public surface registry artifact.", "expected_owner": "contracts.public_surface", "manifest_required_for_stable": true},
+    {"id": "command_registry", "description": "Command/result/refusal surface registry artifact.", "expected_owner": "contracts.command", "manifest_required_for_stable": true},
+    {"id": "capability_registry", "description": "Capability ID or capability policy registry artifact.", "expected_owner": "contracts.capability", "manifest_required_for_stable": true},
+    {"id": "provider_registry", "description": "Provider model or provider conformance registry artifact.", "expected_owner": "contracts.provider", "manifest_required_for_stable": true},
+    {"id": "module_descriptor", "description": "Module or Workbench module descriptor artifact.", "expected_owner": "apps.workbench or contracts.module", "manifest_required_for_stable": true},
+    {"id": "app_descriptor", "description": "Application descriptor or product entrypoint artifact.", "expected_owner": "apps", "manifest_required_for_stable": true},
+    {"id": "workbench_workspace", "description": "Workbench workspace or project state artifact.", "expected_owner": "apps.workbench", "manifest_required_for_stable": true},
+    {"id": "theme", "description": "Theme, styling, or presentation package artifact.", "expected_owner": "content or apps", "manifest_required_for_stable": true},
+    {"id": "asset", "description": "Asset or asset manifest artifact.", "expected_owner": "content", "manifest_required_for_stable": true},
+    {"id": "worldgen_baseline", "description": "Worldgen baseline, reference run, or generated model artifact.", "expected_owner": "content.worldgen or tests", "manifest_required_for_stable": true},
+    {"id": "test_fixture", "description": "Test-only artifact fixture.", "expected_owner": "tests", "manifest_required_for_stable": false},
+    {"id": "generated_report", "description": "Generated report or proof output artifact.", "expected_owner": "owning generator", "manifest_required_for_stable": false},
+    {"id": "archive_record", "description": "Historical, retained, or archived artifact record.", "expected_owner": "archive", "manifest_required_for_stable": false}
+  ],
+  "trust_levels": [
+    "local_untrusted",
+    "local_trusted",
+    "repo_canonical",
+    "generated_local",
+    "generated_canonical",
+    "signed_release",
+    "external_untrusted",
+    "external_reviewed",
+    "fixture",
+    "historical"
+  ]
+}

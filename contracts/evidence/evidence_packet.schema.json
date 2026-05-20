@@ -111,6 +111,13 @@
         "type": "string"
       }
     },
+    "artifact_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "../artifact/artifact_ref.schema.json"
+      },
+      "description": "Optional structured artifact references. Paths are non-authoritative hints."
+    },
     "validation_context": {
       "type": "object"
     },

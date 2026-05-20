@@ -5,7 +5,24 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, and DIAGNOSTIC-CODE-REGISTRY-01.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, and ARTIFACT-IDENTITY-LAW-01.
+
+## ARTIFACT-IDENTITY-LAW-01 Proof Note
+
+ARTIFACT-IDENTITY-LAW-01 adds the provisional artifact identity law.
+
+- contract: `contracts/artifact/artifact_identity.contract.toml`.
+- validator: `python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict`.
+- artifact kinds registered: 23.
+- lifecycle states registered: 11.
+- fixtures: `tests/contract/artifact_identity/**`.
+- inventory: 17,782 tracked files scanned; 1,890 artifact-like files classified
+  descriptively.
+- public surface and diagnostic registries updated with artifact surfaces/codes.
+- existing artifacts are not migrated by this task.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `SCHEMA-PROTOCOL-LAW-01`.
 
 ## DIAGNOSTIC-CODE-REGISTRY-01 Proof Note
 

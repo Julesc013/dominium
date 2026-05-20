@@ -1,0 +1,18 @@
+{
+  "schema_version": "dominium.artifact.lifecycle_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.artifact",
+  "states": [
+    {"id": "draft", "description": "Authoring state; identity may not yet be final.", "stable": false},
+    {"id": "provisional", "description": "Named and governed, but not yet compatibility-stable.", "stable": false},
+    {"id": "validated", "description": "Validated by current tools, not necessarily locked for compatibility.", "stable": false},
+    {"id": "locked", "description": "Locked for a release or compatibility boundary.", "stable": true},
+    {"id": "published", "description": "Published or externally consumed artifact.", "stable": true},
+    {"id": "deprecated", "description": "Still recognized but slated for replacement.", "stable": true},
+    {"id": "retired", "description": "No longer active; replacement or retirement reason required.", "stable": false},
+    {"id": "historical", "description": "Archive-only retained artifact record.", "stable": false},
+    {"id": "quarantined", "description": "Retained for review or repair; not active source truth.", "stable": false},
+    {"id": "generated", "description": "Generated from a declared source and generator.", "stable": false},
+    {"id": "fixture", "description": "Test fixture only, not product artifact.", "stable": false}
+  ]
+}

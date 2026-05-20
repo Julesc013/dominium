@@ -419,10 +419,10 @@ owner = "contracts.evidence"
 stability = "provisional"
 version = "1.0.0"
 introduced = "COMMAND-SURFACE-01"
-proof = ["python -m json.tool contracts/evidence/evidence_packet.schema.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
+proof = ["python -m json.tool contracts/evidence/evidence_packet.schema.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict", "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_artifact_identity_law_or_command_surface_law_update"
-notes = "Evidence packet schema for command and diagnostic proof outputs; evidence is not source truth."
+notes = "Evidence packet schema for command, diagnostic, and artifact proof outputs; evidence is not source truth."
 
 [[surface]]
 id = "dominium.diagnostics.registry.v1"
@@ -527,6 +527,136 @@ proof = ["python tools/validators/contracts/check_diagnostics_registry.py --repo
 compatibility = "test_fixture_only"
 replacement_policy = "fixture_changes_follow_diagnostics_validator_tests"
 notes = "Fixture suite for diagnostic registry and evidence packet validator behavior."
+
+[[surface]]
+id = "dominium.artifact.identity.v1"
+kind = "registry"
+path = "contracts/artifact/artifact_identity.contract.toml"
+owner = "contracts.artifact"
+stability = "provisional"
+version = "1.0.0"
+introduced = "ARTIFACT-IDENTITY-LAW-01"
+proof = ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_artifact_identity_law_update"
+notes = "Provisional artifact identity law; runtime artifact loading is not implemented by this registry."
+
+[[surface]]
+id = "dominium.artifact.manifest.v1"
+kind = "schema"
+path = "contracts/artifact/artifact_manifest.schema.json"
+owner = "contracts.artifact"
+stability = "provisional"
+version = "1.0.0"
+introduced = "ARTIFACT-IDENTITY-LAW-01"
+proof = ["python -m json.tool contracts/artifact/artifact_manifest.schema.json", "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_artifact_manifest_schema_update"
+notes = "Base artifact manifest schema for stable artifact identity."
+
+[[surface]]
+id = "dominium.artifact.kind.registry.v1"
+kind = "registry"
+path = "contracts/artifact/artifact_kind.registry.json"
+owner = "contracts.artifact"
+stability = "provisional"
+version = "1.0.0"
+introduced = "ARTIFACT-IDENTITY-LAW-01"
+proof = ["python -m json.tool contracts/artifact/artifact_kind.registry.json", "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_artifact_kind_registry_update"
+notes = "Artifact kind registry for packs, profiles, bundles, saves, replays, evidence, release artifacts, descriptors, fixtures, and archive records."
+
+[[surface]]
+id = "dominium.artifact.lifecycle.registry.v1"
+kind = "registry"
+path = "contracts/artifact/artifact_lifecycle.registry.json"
+owner = "contracts.artifact"
+stability = "provisional"
+version = "1.0.0"
+introduced = "ARTIFACT-IDENTITY-LAW-01"
+proof = ["python -m json.tool contracts/artifact/artifact_lifecycle.registry.json", "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_artifact_lifecycle_registry_update"
+notes = "Artifact lifecycle state registry."
+
+[[surface]]
+id = "dominium.artifact.ref.v1"
+kind = "schema"
+path = "contracts/artifact/artifact_ref.schema.json"
+owner = "contracts.artifact"
+stability = "provisional"
+version = "1.0.0"
+introduced = "ARTIFACT-IDENTITY-LAW-01"
+proof = ["python -m json.tool contracts/artifact/artifact_ref.schema.json", "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_artifact_ref_schema_update"
+notes = "Structured artifact reference schema; paths are non-authoritative hints."
+
+[[surface]]
+id = "dominium.artifact.hash_policy.v1"
+kind = "registry"
+path = "contracts/artifact/artifact_hash_policy.contract.toml"
+owner = "contracts.artifact"
+stability = "provisional"
+version = "1.0.0"
+introduced = "ARTIFACT-IDENTITY-LAW-01"
+proof = ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_artifact_hash_policy_update"
+notes = "Hash and canonical serialization policy for artifacts."
+
+[[surface]]
+id = "dominium.artifact.compatibility_policy.v1"
+kind = "registry"
+path = "contracts/artifact/artifact_compatibility.contract.toml"
+owner = "contracts.artifact"
+stability = "provisional"
+version = "1.0.0"
+introduced = "ARTIFACT-IDENTITY-LAW-01"
+proof = ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_artifact_compatibility_policy_update"
+notes = "Compatibility, migration, and refusal policy for artifacts."
+
+[[surface]]
+id = "dominium.artifact.trust_policy.v1"
+kind = "registry"
+path = "contracts/artifact/artifact_trust_policy.contract.toml"
+owner = "contracts.artifact"
+stability = "provisional"
+version = "1.0.0"
+introduced = "ARTIFACT-IDENTITY-LAW-01"
+proof = ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_artifact_trust_policy_update"
+notes = "Scaffold trust and provenance policy for artifacts."
+
+[[surface]]
+id = "dominium.artifact.identity.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_artifact_identity.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "ARTIFACT-IDENTITY-LAW-01"
+proof = ["python -m py_compile tools/validators/contracts/check_artifact_identity.py", "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_artifact_identity_law_update"
+notes = "Validator implementation for artifact identity law."
+
+[[surface]]
+id = "dominium.artifact.identity.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/artifact_identity"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "ARTIFACT-IDENTITY-LAW-01"
+proof = ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_artifact_identity_validator_tests"
+notes = "Fixture suite for artifact identity validator behavior."
 
 [[surface]]
 id = "dominium.command_surface.validator.v1"

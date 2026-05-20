@@ -1,0 +1,19 @@
+{
+  "artifact_id": "org.dominium.core.units",
+  "artifact_kind": "pack",
+  "schema_id": "dominium.artifact.manifest_schema.v1",
+  "schema_version": "1.0.0",
+  "artifact_version": "0.1.0",
+  "owner": "content.packs",
+  "stability": "provisional",
+  "hash_algorithm": "sha256",
+  "canonical_serialization": "json.sorted_keys.lf",
+  "compatibility_policy": "not_yet_stable",
+  "migration_policy": "requires_explicit_migration_or_refusal",
+  "refusal_policy": "refuse_with_DOM-ARTIFACT-UNSUPPORTED-SCHEMA",
+  "trust_level": "fixture",
+  "provenance": {
+    "created_by": "tests.contract.artifact_identity"
+  },
+  "diagnostic_codes": []
+}

@@ -570,6 +570,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md`
 - `docs/architecture/api_abi_canon.md`
 - `docs/architecture/APPLICATION_CONTRACTS.md`
+- `docs/architecture/artifact_identity_law.md`
 - `docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md`
 - `docs/architecture/ARTIFACT_LIFECYCLE.md`
 - `docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md`

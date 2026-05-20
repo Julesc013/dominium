@@ -1,0 +1,31 @@
+schema_version = "dominium.artifact.compatibility.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.artifact"
+
+[contract]
+id = "dominium.artifact.compatibility.v1"
+status = "provisional"
+owner = "contracts.artifact"
+purpose = "Defines compatibility, migration, and refusal expectations for Dominium artifacts."
+
+[policy]
+valid_old_artifact_loads_or_migrates = true
+invalid_old_artifact_refuses_deterministically = true
+incompatible_artifact_refuses_with_diagnostic = true
+silent_fallback_allowed = false
+silent_migration_allowed = false
+stable_artifacts_require_compatibility_fixture = true
+provisional_artifacts_may_change_with_migration_notes = true
+compatibility_corpus_future_task = "SCHEMA-PROTOCOL-LAW-01"
+
+[migration]
+explicit_migration_required = true
+migration_records_required_for_stable = true
+migration_must_preserve_artifact_identity_history = true
+refusal_required_when_migration_missing = true
+
+[refusal]
+diagnostic_required = true
+refusal_policy_required_for_stable = true
+diagnostic_codes = ["DOM-ARTIFACT-UNSUPPORTED-SCHEMA", "DOM-ARTIFACT-MIGRATION-REQUIRED", "DOM-ARTIFACT-HASH-MISMATCH", "DOM-ARTIFACT-TRUST-INSUFFICIENT"]

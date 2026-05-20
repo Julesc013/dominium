@@ -1,0 +1,9 @@
+{
+  "artifact_id": "dominium.fixture.unknown_kind",
+  "artifact_kind": "not_a_kind",
+  "schema_id": "dominium.artifact.manifest_schema.v1",
+  "schema_version": "1.0.0",
+  "artifact_version": "0.1.0",
+  "owner": "tests.contract",
+  "stability": "fixture"
+}

@@ -1,6 +1,6 @@
 # Latest Warning Disposition
 
-Current task: `DIAGNOSTIC-CODE-REGISTRY-01`.
+Current task: `ARTIFACT-IDENTITY-LAW-01`.
 
 ## Accepted Known Warnings
 
@@ -9,19 +9,21 @@ Current task: `DIAGNOSTIC-CODE-REGISTRY-01`.
   from DEPENDENCY-DIRECTION-01.
 - ABI public-header validator still reports provisional warning debt that blocks
   stable/frozen ABI promotion.
-- The diagnostic registry is initial and provisional.
-- Runtime diagnostic dispatch is not implemented by this task.
-- Workbench diagnostic presentation is not implemented by this task.
-- Capability/refusal law and artifact identity law remain later tasks.
+- Artifact identity law is initial and provisional.
+- Existing artifacts are inventoried but not migrated in this task.
+- Compatibility corpus is not populated in this task.
+- Artifact runtime loading, save/replay/package systems, and Workbench
+  presentation are not implemented.
 
 ## Not Hidden
 
 - No failing full CTest result was reclassified as normal-gate success.
 - No dependency-direction violation was silenced or broadly excepted.
-- No diagnostic code was promoted to stable.
+- No artifact format was promoted to stable.
+- No existing pack/profile/save/replay/release manifest was rewritten.
 - No release, package runtime, gameplay, renderer, or Workbench behavior was
   implemented.
 
 ## Next
 
-Next task: `ARTIFACT-IDENTITY-LAW-01`.
+Next task: `SCHEMA-PROTOCOL-LAW-01`.

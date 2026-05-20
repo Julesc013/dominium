@@ -1,0 +1,27 @@
+schema_version = "dominium.artifact.trust_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.artifact"
+
+[contract]
+id = "dominium.artifact.trust_policy.v1"
+status = "provisional"
+owner = "contracts.artifact"
+purpose = "Defines scaffold trust and provenance fields for Dominium artifacts."
+
+[policy]
+trust_level_required_for_release_or_external = true
+provenance_required_for_generated = true
+signed_release_requires_signature_policy = true
+external_untrusted_must_not_be_silent_dependency = true
+fixture_trust_is_test_only = true
+historical_trust_is_archive_only = true
+deep_mod_trust_future_task = "MOD-PACK-TRUST-MODEL-01"
+
+[trust_levels]
+allowed = ["local_untrusted", "local_trusted", "repo_canonical", "generated_local", "generated_canonical", "signed_release", "external_untrusted", "external_reviewed", "fixture", "historical"]
+default = "local_untrusted"
+
+[provenance]
+fields = ["created_by", "source_surface", "generator", "repo_commit", "generated_at", "source_artifacts"]
+stable_requires_repo_commit_or_release_identity = true

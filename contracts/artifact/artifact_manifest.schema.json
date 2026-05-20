@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.artifact.manifest_schema.v1",
+  "title": "Dominium Artifact Manifest",
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "artifact_kind",
+    "schema_id",
+    "schema_version",
+    "artifact_version",
+    "owner",
+    "stability"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Stable artifact identity. Must not be a path or filename."
+    },
+    "artifact_kind": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "artifact_version": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "stability": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "provisional",
+        "validated",
+        "locked",
+        "published",
+        "deprecated",
+        "retired",
+        "historical",
+        "quarantined",
+        "generated",
+        "fixture",
+        "internal"
+      ]
+    },
+    "lifecycle": {
+      "type": "string"
+    },
+    "content_hash": {
+      "type": "string"
+    },
+    "hash_algorithm": {
+      "type": "string"
+    },
+    "canonical_serialization": {
+      "type": "string"
+    },
+    "compatibility_policy": {
+      "type": ["string", "object"]
+    },
+    "migration_policy": {
+      "type": ["string", "object"]
+    },
+    "refusal_policy": {
+      "type": ["string", "object"]
+    },
+    "trust_level": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "source_surface": {
+      "type": "string"
+    },
+    "generator": {
+      "type": "string"
+    },
+    "diagnostic_codes": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {"$ref": "artifact_ref.schema.json"}
+    }
+  }
+}

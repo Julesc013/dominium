@@ -1,0 +1,96 @@
+schema_version = "dominium.artifact.identity.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.artifact"
+
+[contract]
+id = "dominium.artifact.identity.v1"
+status = "provisional"
+owner = "contracts.artifact"
+purpose = "Defines stable identity and compatibility law for durable Dominium and Domino artifacts."
+
+[policy]
+path_is_identity = false
+filename_is_identity = false
+folder_location_is_identity = false
+implementation_is_identity = false
+workbench_view_is_identity = false
+manifest_required_for_stable_artifacts = true
+stable_artifacts_require_schema_id = true
+stable_artifacts_require_hash_policy = true
+stable_artifacts_require_compatibility_policy = true
+stable_artifacts_require_trust_policy = true
+stable_artifacts_require_migration_or_refusal_policy = true
+silent_migration_allowed = false
+silent_fallback_allowed = false
+generated_output_is_source_truth = false
+fixture_is_product_artifact = false
+
+[identity]
+id_format = "lowercase dotted, reverse-dns, or owner-qualified semantic id"
+path_separators_allowed = false
+filename_as_id_allowed = false
+reusable_prefix = "domino."
+product_prefix = "dominium."
+reverse_dns_allowed = true
+artifact_id_examples = ["dominium.pack.core.units", "dominium.profile.default", "domino.replay.log.v1", "org.dominium.core.units"]
+
+[schema]
+schema_id_required = true
+schema_version_required = true
+schema_identity_is_not_file_path = true
+schema_protocol_law_future_task = "SCHEMA-PROTOCOL-LAW-01"
+
+[version]
+artifact_version_required = true
+stable_version_changes_require_compatibility_note = true
+version_deprecation_law_future_task = "VERSION-DEPRECATION-LAW-01"
+
+[hash]
+policy = "contracts/artifact/artifact_hash_policy.contract.toml"
+default_algorithm = "sha256"
+canonical_serialization_required_for_stable = true
+
+[compatibility]
+policy = "contracts/artifact/artifact_compatibility.contract.toml"
+silent_fallback_forbidden = true
+invalid_old_artifact_refuses_deterministically = true
+
+[trust]
+policy = "contracts/artifact/artifact_trust_policy.contract.toml"
+trust_level_required_for_release_or_external = true
+mod_pack_trust_future_task = "MOD-PACK-TRUST-MODEL-01"
+
+[diagnostics]
+registry = "contracts/diagnostics/diagnostic_code.registry.json"
+artifact_diagnostics_are_provisional = true
+
+[evidence]
+artifact_ref_schema = "contracts/artifact/artifact_ref.schema.json"
+evidence_packet_schema = "contracts/evidence/evidence_packet.schema.json"
+evidence_is_not_source_truth = true
+
+[generated]
+generator_required_for_generated_artifacts = true
+source_surface_required_for_generated_artifacts = true
+generated_local_outputs_must_not_be_committed_unless_policy_allows = true
+
+[archive]
+archive_records_are_historical_by_default = true
+active_artifacts_must_not_depend_on_archive_paths = true
+
+[fixtures]
+fixtures_must_live_under_tests = true
+fixtures_do_not_create_product_compatibility_promise = true
+
+[promotion]
+stable_promotion_requires_manifest = true
+stable_promotion_requires_validator_proof = true
+stable_promotion_requires_compatibility_policy = true
+stable_promotion_requires_replacement_or_migration_policy = true
+
+[integration]
+public_surface_registry = "contracts/public_surface/public_surface.contract.toml"
+command_surface = "contracts/command/command_surface.contract.toml"
+diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+replacement_protocol_future_task = "REPLACEMENT-PROTOCOL-01"

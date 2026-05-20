@@ -1,0 +1,39 @@
+schema_version = "dominium.artifact.hash_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.artifact"
+
+[contract]
+id = "dominium.artifact.hash_policy.v1"
+status = "provisional"
+owner = "contracts.artifact"
+purpose = "Defines hash and canonical serialization policy for Dominium artifacts."
+
+[policy]
+default_hash_algorithm = "sha256"
+content_hash_required_for_stable = true
+canonical_serialization_required_for_stable = true
+path_is_hash_input_by_default = false
+filename_is_hash_input_by_default = false
+local_absolute_paths_forbidden_in_stable_hash = true
+generated_report_hash_is_evidence_only = true
+unknown_generated_output_cannot_define_stable_identity = true
+
+[serialization]
+json_canonicalization = "utf8, sorted object keys, no insignificant whitespace when stable"
+toml_canonicalization = "manifest-defined; stable TOML artifacts need explicit serializer before promotion"
+binary_canonicalization = "format-defined; stable binary artifacts need explicit byte order and record ordering"
+line_endings = "normalize text artifacts to LF before stable content hash unless the format says otherwise"
+
+[directory_artifact]
+manifest_first = true
+sorted_relative_file_list = true
+normalized_relative_paths = true
+per_file_hashes = true
+aggregate_hash = true
+exclude_local_outputs_unless_declared = true
+
+[algorithms]
+allowed = ["sha256"]
+preferred = "sha256"
+future_allowed_with_policy_update = ["blake3"]

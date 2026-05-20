@@ -6,15 +6,17 @@ foundation-lock
 
 ## GOAL
 
-Complete `DIAGNOSTIC-CODE-REGISTRY-01` by defining Dominium's diagnostic code,
-severity, category, evidence, event, and refusal/recovery metadata surfaces.
+Complete `ARTIFACT-IDENTITY-LAW-01` by defining Dominium's artifact identity,
+manifest, kind, lifecycle, hash, compatibility, trust, artifact-reference,
+validator, fixture, documentation, and evidence surfaces.
 
 ## WHY
 
-Free-text-only failures are not enough for CLI, TUI, Workbench, headless tools,
-tests, release proof, AIDE/Codex, setup, package validation, and runtime/service
-diagnostics. Conditions need stable codes, owners, severity, recovery actions,
-and evidence references.
+Packs, profiles, bundles, saves, replays, diagnostics, evidence packets, release
+artifacts, schemas, registries, generated reports, Workbench descriptors, app
+descriptors, and future modules must not be identified by paths or filenames.
+They need stable IDs, schema/version metadata, hash policy, compatibility,
+migration/refusal, trust, and provenance fields.
 
 ## CONTEXT_REFS
 
@@ -23,24 +25,20 @@ and evidence references.
 - `docs/canon/glossary_v1.md`
 - `contracts/testing/test_tiers.contract.toml`
 - `contracts/public_surface/public_surface.contract.toml`
-- `contracts/abi/c_api.contract.toml`
-- `contracts/repo/dependency_directions.contract.toml`
-- `contracts/command/command_surface.contract.toml`
-- `contracts/refusal/refusal_code.registry.json`
+- `contracts/diagnostics/diagnostic_code.registry.json`
+- `contracts/evidence/evidence_packet.schema.json`
 - `.aide/context/latest-context-packet.md`
 
 ## ALLOWED_PATHS
 
-- `contracts/diagnostics/**`
-- `contracts/evidence/**`
-- `contracts/event/**` for narrow diagnostic/evidence alignment
-- `contracts/refusal/**` for diagnostic cross-references
-- `contracts/command/**` for narrow diagnostic/evidence references
+- `contracts/artifact/**`
+- `contracts/evidence/**` for narrow artifact reference alignment
+- `contracts/diagnostics/**` for artifact diagnostic codes
 - `contracts/public_surface/**` for narrow registry cross-reference
-- `docs/architecture/diagnostics_and_evidence.md`
-- `docs/development/diagnostic_code_guidelines.md`
-- `tools/validators/contracts/check_diagnostics_registry.py`
-- `tests/contract/diagnostics/**`
+- `docs/architecture/artifact_identity_law.md`
+- `docs/development/artifact_identity_guidelines.md`
+- `tools/validators/contracts/check_artifact_identity.py`
+- `tests/contract/artifact_identity/**`
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
@@ -52,27 +50,29 @@ and evidence references.
 - `.dominium.local/**`
 - `.aide.local/**`
 - build, projection, release, installer, upload, cache, and generated output roots
-- gameplay, renderer, Workbench UI, native GUI, package runtime, diagnostic
-  runtime dispatch, command runtime dispatch, and product behavior paths
+- gameplay, renderer, Workbench UI, native GUI, package runtime, artifact
+  loading, save/replay runtime, and product behavior paths
 
 ## IMPLEMENTATION
 
-- Add diagnostic code, severity, category, and policy contracts.
-- Add evidence packet/reference schemas and minimal event-schema alignment.
-- Link existing command refusal codes to diagnostic codes where direct.
-- Add diagnostics validator and fixture suite.
-- Register diagnostics/evidence/event surfaces in public-surface governance.
+- Add artifact identity/hash/compatibility/trust contracts.
+- Add artifact manifest/ref schemas, kind registry, and lifecycle registry.
+- Add provisional artifact diagnostics.
+- Add an artifact identity validator and fixture suite.
+- Register artifact identity surfaces in public-surface governance.
+- Inventory existing artifact-like surfaces without migrating them.
 - Record evidence honestly, including existing dependency-direction debt.
 
 ## VALIDATION
 
-- `python -m py_compile tools/validators/contracts/check_diagnostics_registry.py`
+- `python -m py_compile tools/validators/contracts/check_artifact_identity.py`
 - JSON parse for created/touched schemas, registries, fixtures, and reports.
-- TOML parse/fallback for `contracts/diagnostics/diagnostic_policy.contract.toml`.
-- `python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict`
-- `python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --json`
-- `python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --fixtures`
-- command/public-surface/dependency-direction/ABI validators.
+- TOML parse/fallback for artifact contracts.
+- `python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict`
+- `python tools/validators/contracts/check_artifact_identity.py --repo-root . --json`
+- `python tools/validators/contracts/check_artifact_identity.py --repo-root . --fixtures`
+- `python tools/validators/contracts/check_artifact_identity.py --repo-root . --inventory`
+- diagnostics/command/public-surface/dependency-direction/ABI validators.
 - strict repo/root/distribution/component validators.
 - docs/build/UI/ABI supplemental checks.
 - `python tools/test/run_fast_strict.py --repo-root .`
@@ -80,39 +80,39 @@ and evidence references.
 
 ## TOKEN_ESTIMATE
 
-Expected review packet size is under 1,200 tokens. Detailed diagnostic registry
-and validation evidence lives in `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-*`.
+Expected review packet size is under 1,200 tokens. Detailed artifact identity
+and validation evidence lives in `.aide/reports/ARTIFACT-IDENTITY-LAW-01-*`.
 
 ## COMMITS
 
-Commit subject: `audit(diagnostics): add diagnostic code registry`
+Commit subject: `audit(artifact): add artifact identity law`
 
 ## EVIDENCE
 
-- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-status.md`
-- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-validation.md`
-- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-results.json`
-- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-initial-diagnostic-inventory.md`
-- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-fast-strict.json`
-- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-fast-strict.md`
-- `docs/repo/audits/DIAGNOSTIC_CODE_REGISTRY_01.md`
+- `.aide/reports/ARTIFACT-IDENTITY-LAW-01-status.md`
+- `.aide/reports/ARTIFACT-IDENTITY-LAW-01-validation.md`
+- `.aide/reports/ARTIFACT-IDENTITY-LAW-01-results.json`
+- `.aide/reports/ARTIFACT-IDENTITY-LAW-01-initial-artifact-inventory.md`
+- `.aide/reports/ARTIFACT-IDENTITY-LAW-01-fast-strict.json`
+- `.aide/reports/ARTIFACT-IDENTITY-LAW-01-fast-strict.md`
+- `docs/repo/audits/ARTIFACT_IDENTITY_LAW_01.md`
 
 ## NON_GOALS
 
-No diagnostic runtime dispatch, Workbench UI, gameplay, renderer, package
-runtime change, capability/refusal law, provider model, public release, tag,
-upload, or full CTest proof.
+No artifact loading, save/replay/package runtime, Workbench UI, compatibility
+corpus, schema/protocol law, provider model, module composition, release
+publication, tag, upload, or full CTest proof.
 
 ## ACCEPTANCE
 
-Diagnostic registry law and validator exist, fixtures pass, initial diagnostics
-are provisional and honest, surrounding validators run, and feature work stays
-blocked pending Foundation Lock.
+Artifact identity law and validator exist, fixtures pass, initial artifact
+diagnostics and public-surface entries are provisional and honest, surrounding
+validators run, and feature work stays blocked pending Foundation Lock.
 
 ## OUTPUT_SCHEMA
 
 Final report includes branch, starting HEAD, ending HEAD, origin/main, push
-status, result, created contracts/schemas/docs/tools, diagnostic and
-severity/category counts, public-surface update status, command/refusal update
-status, validator status, fast strict status, known warnings, worktree status,
-and next task.
+status, result, created contracts/schemas/docs/tools, artifact kind/lifecycle
+counts, fixture status, inventory summary, public-surface update status,
+diagnostics update status, validator status, fast strict status, known warnings,
+worktree status, and next task.

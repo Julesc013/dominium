@@ -1,0 +1,9 @@
+{
+  "artifact_id": "content/packs/core/pack_manifest.json",
+  "artifact_kind": "pack",
+  "schema_id": "dominium.artifact.manifest_schema.v1",
+  "schema_version": "1.0.0",
+  "artifact_version": "0.1.0",
+  "owner": "tests.contract",
+  "stability": "fixture"
+}

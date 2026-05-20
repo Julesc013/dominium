@@ -9,6 +9,22 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## ARTIFACT-IDENTITY-LAW-01 Update
+
+ARTIFACT-IDENTITY-LAW-01 adds the provisional artifact identity law.
+
+- contract: `contracts/artifact/artifact_identity.contract.toml`
+- manifest schema: `contracts/artifact/artifact_manifest.schema.json`
+- validator: `python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict`
+- artifact kinds registered: 23
+- lifecycle states registered: 11
+- artifact diagnostic codes added: 8
+- inventory: 17,782 files scanned, 1,890 artifact-like files classified descriptively
+- next Foundation Lock task: `SCHEMA-PROTOCOL-LAW-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Existing
+artifacts are inventoried but not migrated by this task.
+
 ## DIAGNOSTIC-CODE-REGISTRY-01 Update
 
 DIAGNOSTIC-CODE-REGISTRY-01 adds the provisional diagnostic/evidence registry.

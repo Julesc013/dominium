@@ -1,0 +1,25 @@
+{
+  "artifact_id": "dominium.evidence.fast_strict.run.fixture",
+  "artifact_kind": "evidence_packet",
+  "schema_id": "dominium.artifact.manifest_schema.v1",
+  "schema_version": "1.0.0",
+  "artifact_version": "0.1.0",
+  "owner": "tools.validation",
+  "stability": "fixture",
+  "hash_algorithm": "sha256",
+  "canonical_serialization": "json.sorted_keys.lf",
+  "compatibility_policy": "fixture_only",
+  "migration_policy": "fixture_changes_follow_validator_tests",
+  "refusal_policy": "refuse_with_DOM-ARTIFACT-MISSING-ID",
+  "trust_level": "fixture",
+  "provenance": {
+    "created_by": "tests.contract.artifact_identity"
+  },
+  "evidence_refs": [
+    {
+      "artifact_id": "dominium.evidence.fast_strict.run.fixture",
+      "artifact_kind": "evidence_packet",
+      "version": "0.1.0"
+    }
+  ]
+}
