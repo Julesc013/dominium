@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.versioning.compatibility_range.v1",
+  "title": "Dominium Compatibility Range",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mode"],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": ["exact", "minimum", "maximum", "range", "any_provisional", "incompatible_refuse"]
+    },
+    "exact": {"type": "string", "minLength": 1},
+    "minimum": {"type": "string", "minLength": 1},
+    "maximum": {"type": "string", "minLength": 1},
+    "include_minimum": {"type": "boolean"},
+    "include_maximum": {"type": "boolean"},
+    "reason": {"type": "string"},
+    "refusal_codes": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "notes": {"type": "string"}
+  }
+}

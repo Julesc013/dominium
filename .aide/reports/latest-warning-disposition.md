@@ -1,6 +1,6 @@
 # Latest Warning Disposition
 
-Current task: `REPLACEMENT-PROTOCOL-01`.
+Current task: `VERSION-DEPRECATION-LAW-01`.
 
 ## Accepted Known Warnings
 
@@ -9,24 +9,23 @@ Current task: `REPLACEMENT-PROTOCOL-01`.
   from DEPENDENCY-DIRECTION-01.
 - ABI public-header validator still reports provisional warning debt that blocks
   stable/frozen ABI promotion.
-- Replacement protocol is initial and provisional.
-- Historical refactors are inventoried but not retroactively converted into full
-  replacement packets.
-- Runtime migration and rollback are not implemented.
-- Version/deprecation law is not implemented in this task.
+- Version/deprecation law is initial and provisional.
+- Existing version-like surfaces are inventoried but not migrated.
+- Runtime migration and release promotion gates are not implemented.
+- Compatibility corpus is not populated.
+- Mod/pack trust model remains the next Foundation Lock task.
 
 ## Not Hidden
 
 - No failing full CTest result is reclassified as normal-gate success.
 - No dependency-direction violation is silenced or broadly excepted.
-- No replacement, public surface, artifact, provider, module, schema, protocol,
-  or ABI surface is promoted to stable.
-- No actual implementation replacement, broad directory move, migration runtime,
-  rollback runtime, Workbench UI, provider runtime, app behavior, release,
-  gameplay, renderer, or native GUI work is implemented.
-- No path identity, silent migration, silent fallback, or silent compatibility
-  reinterpretation policy is introduced.
+- No public surface, artifact, schema, protocol, command, provider, module,
+  app, pack, save, replay, or release surface is promoted to stable.
+- No active surface is deprecated, retired, removed, or migrated.
+- No runtime migration, release promotion, Workbench UI, product behavior,
+  gameplay, renderer, native GUI, or mod/pack trust behavior is implemented.
+- No silent compatibility, silent migration, or path-as-identity policy is introduced.
 
 ## Next
 
-Next task: `VERSION-DEPRECATION-LAW-01`.
+Next task: `MOD-PACK-TRUST-MODEL-01`.

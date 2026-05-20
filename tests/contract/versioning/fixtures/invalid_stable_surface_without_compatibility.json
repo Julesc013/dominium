@@ -1,0 +1,20 @@
+{
+  "surface_id": "dominium.versioning.fixture.surface.v1",
+  "kind": "schema",
+  "version": "1.2.0",
+  "owner": "tests.contract",
+  "lifecycle_state": "stable",
+  "stability": "stable",
+  "introduced_in": "VERSION-DEPRECATION-LAW-01",
+  "migration_policy": {
+    "mode": "none"
+  },
+  "refusal_policy": {
+    "required": false,
+    "codes": []
+  },
+  "proof": [
+    "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+  ],
+  "notes": "Invalid because stable surfaces require compatibility_range."
+}

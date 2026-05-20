@@ -1,0 +1,28 @@
+schema_version = "dominium.versioning.policy.v1"
+status = "provisional"
+owner = "contracts.versioning"
+
+[contract]
+id = "dominium.versioning.retirement_policy.v1"
+version = "1.0.0"
+stability = "provisional"
+purpose = "Defines how deprecated or otherwise governed surfaces leave active use without deletion."
+
+[policy]
+retired_is_not_deleted = true
+retired_surfaces_not_for_new_use = true
+retirement_requires_deprecation_or_explicit_policy = true
+public_retirement_requires_replacement_migration_or_refusal = true
+retirement_requires_diagnostics = true
+retirement_requires_evidence = true
+existing_artifact_references_must_migrate_bridge_or_refuse = true
+release_notes_required_for_release_surface = true
+
+[allowed_sources]
+from_deprecated = true
+from_provisional_public = "allowed only with explicit retirement note and no stable promise"
+from_stable = "requires deprecation notice unless emergency refusal policy is reviewed"
+
+[proof]
+validator = "tools/validators/contracts/check_version_deprecation.py"
+fixtures = "tests/contract/versioning"

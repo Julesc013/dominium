@@ -1,0 +1,22 @@
+{
+  "surface_id": "dominium.versioning.fixture.surface.v1",
+  "from_version": "1.2.0",
+  "to_version": "2.0.0",
+  "from_lifecycle_state": "stable",
+  "to_lifecycle_state": "removed",
+  "change_type": "removal",
+  "compatibility_impact": "incompatible_refuse",
+  "migration_policy": {
+    "mode": "none"
+  },
+  "refusal_policy": {
+    "required": true,
+    "codes": [
+      "dominium.refusal.surface.removed"
+    ]
+  },
+  "proof": [
+    "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+  ],
+  "notes": "Invalid because stable cannot transition directly to removed."
+}

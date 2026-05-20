@@ -5,12 +5,41 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `REPLACEMENT-PROTOCOL-01`.
+Latest task: `VERSION-DEPRECATION-LAW-01`.
 
-Result: PASS_WITH_WARNINGS for the provisional replacement protocol. Replacement
-contracts, schemas, validator, fixtures, docs, diagnostics/refusal codes, public
-surface registrations, and evidence exist. Existing dependency-direction debt
-remains visible and is not hidden by this task.
+Result: PASS_WITH_WARNINGS for the provisional version/deprecation law.
+Versioning contracts, lifecycle registry, compatibility/deprecation/transition
+schemas, validator, fixtures, docs, diagnostics/refusal codes, public surface
+registrations, and evidence exist. Existing dependency-direction debt remains
+visible and is not hidden by this task.
+
+## VERSION-DEPRECATION-LAW-01 Update
+
+VERSION-DEPRECATION-LAW-01 is PASS_WITH_WARNINGS.
+
+- versioning law: `contracts/versioning/versioning.contract.toml`.
+- lifecycle registry: `contracts/versioning/lifecycle_state.registry.json`.
+- schemas:
+  - `contracts/versioning/version_compatibility.schema.json`.
+  - `contracts/versioning/compatibility_range.schema.json`.
+  - `contracts/versioning/deprecation_notice.schema.json`.
+  - `contracts/versioning/version_transition.schema.json`.
+- policies:
+  - `contracts/versioning/deprecation_policy.contract.toml`.
+  - `contracts/versioning/retirement_policy.contract.toml`.
+  - `contracts/versioning/removal_policy.contract.toml`.
+  - `contracts/versioning/surface_lifecycle.contract.toml`.
+- validator: `tools/validators/contracts/check_version_deprecation.py`.
+- fixtures: `tests/contract/versioning/**`.
+- lifecycle states registered: 9.
+- diagnostic codes added: 8 version/deprecation codes.
+- refusal codes added: 6 version/deprecation refusal codes.
+- current version-like surfaces are inventoried but not migrated.
+
+Next task:
+`MOD-PACK-TRUST-MODEL-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## REPLACEMENT-PROTOCOL-01 Update
 

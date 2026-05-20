@@ -1582,6 +1582,162 @@ replacement_policy = "fixture_changes_follow_replacement_validator_tests"
 notes = "Fixture suite for replacement packet validator behavior."
 
 [[surface]]
+id = "dominium.versioning.law.v1"
+kind = "documentation"
+path = "contracts/versioning/versioning.contract.toml"
+owner = "contracts.versioning"
+stability = "provisional"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_version_deprecation_law_update"
+notes = "Versioning, lifecycle, deprecation, retirement, removal, compatibility, transition, migration, and refusal law."
+
+[[surface]]
+id = "dominium.lifecycle.state.registry.v1"
+kind = "registry"
+path = "contracts/versioning/lifecycle_state.registry.json"
+owner = "contracts.versioning"
+stability = "provisional"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python -m json.tool contracts/versioning/lifecycle_state.registry.json", "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_version_deprecation_law_update"
+notes = "Lifecycle state registry for experimental, provisional, stable, deprecated, retired, removed, generated, fixture, and historical states."
+
+[[surface]]
+id = "dominium.version.compatibility.v1"
+kind = "schema"
+path = "contracts/versioning/version_compatibility.schema.json"
+owner = "contracts.versioning"
+stability = "provisional"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python -m json.tool contracts/versioning/version_compatibility.schema.json", "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_version_deprecation_law_update"
+notes = "Version compatibility policy schema."
+
+[[surface]]
+id = "dominium.deprecation.notice.v1"
+kind = "schema"
+path = "contracts/versioning/deprecation_notice.schema.json"
+owner = "contracts.versioning"
+stability = "provisional"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python -m json.tool contracts/versioning/deprecation_notice.schema.json", "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_version_deprecation_law_update"
+notes = "Deprecation notice schema with replacement, migration, refusal, removal, proof, and evidence."
+
+[[surface]]
+id = "dominium.versioning.compatibility_range.v1"
+kind = "schema"
+path = "contracts/versioning/compatibility_range.schema.json"
+owner = "contracts.versioning"
+stability = "provisional"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python -m json.tool contracts/versioning/compatibility_range.schema.json", "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_version_deprecation_law_update"
+notes = "Compatibility range schema."
+
+[[surface]]
+id = "dominium.versioning.transition.v1"
+kind = "schema"
+path = "contracts/versioning/version_transition.schema.json"
+owner = "contracts.versioning"
+stability = "provisional"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python -m json.tool contracts/versioning/version_transition.schema.json", "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_version_deprecation_law_update"
+notes = "Version and lifecycle transition schema."
+
+[[surface]]
+id = "dominium.versioning.deprecation_policy.v1"
+kind = "documentation"
+path = "contracts/versioning/deprecation_policy.contract.toml"
+owner = "contracts.versioning"
+stability = "provisional"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_version_deprecation_law_update"
+notes = "Deprecation policy contract."
+
+[[surface]]
+id = "dominium.versioning.retirement_policy.v1"
+kind = "documentation"
+path = "contracts/versioning/retirement_policy.contract.toml"
+owner = "contracts.versioning"
+stability = "provisional"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_version_deprecation_law_update"
+notes = "Retirement policy contract."
+
+[[surface]]
+id = "dominium.versioning.removal_policy.v1"
+kind = "documentation"
+path = "contracts/versioning/removal_policy.contract.toml"
+owner = "contracts.versioning"
+stability = "provisional"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_version_deprecation_law_update"
+notes = "Removal policy contract."
+
+[[surface]]
+id = "dominium.versioning.surface_lifecycle.v1"
+kind = "documentation"
+path = "contracts/versioning/surface_lifecycle.contract.toml"
+owner = "contracts.versioning"
+stability = "provisional"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_version_deprecation_law_update"
+notes = "Surface lifecycle semantics contract."
+
+[[surface]]
+id = "dominium.version_deprecation.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_version_deprecation.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python -m py_compile tools/validators/contracts/check_version_deprecation.py", "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_version_deprecation_law_update"
+notes = "Validator for versioning and deprecation contracts, registries, fixtures, and inventory."
+
+[[surface]]
+id = "dominium.versioning.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/versioning"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "VERSION-DEPRECATION-LAW-01"
+proof = ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_version_deprecation_validator_tests"
+notes = "Fixture suite for version/deprecation validator behavior."
+
+[[surface]]
 id = "dominium.retired.root_schema.v1"
 kind = "archive_record"
 path = "schema"

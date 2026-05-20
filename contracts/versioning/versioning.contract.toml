@@ -1,0 +1,125 @@
+schema_version = "dominium.versioning.contract.v1"
+status = "provisional"
+owner = "contracts.versioning"
+last_reviewed = "2026-05-21"
+
+[contract]
+id = "dominium.versioning.law.v1"
+version = "1.0.0"
+stability = "provisional"
+task = "VERSION-DEPRECATION-LAW-01"
+purpose = "Defines how Dominium public surfaces, artifacts, schemas, protocols, commands, diagnostics, providers, modules, packs, app descriptors, and release artifacts declare version, lifecycle, compatibility, deprecation, retirement, removal, migration, refusal, and evidence policy."
+
+[core_law]
+nothing_stable_by_existence = true
+no_silent_removal = true
+deprecation_requires_replacement_or_reason = true
+version_changes_require_compatibility_impact = true
+retirement_is_governed_state = true
+removal_requires_resolved_public_obligations = true
+runtime_migration_implemented = false
+release_promotion_implemented = false
+
+[versioned_surface_policy]
+required_fields = ["id", "kind", "version", "owner", "lifecycle_state", "stability", "compatibility_range", "introduced_in", "migration_policy", "refusal_policy", "proof"]
+optional_fields = ["deprecated_in", "retired_in", "removed_in", "replacement", "notes"]
+ids_are_stable = true
+paths_are_identity = false
+implementation_is_identity = false
+version_without_lifecycle_is_incomplete = true
+stable_requires_compatibility_range = true
+stable_requires_proof = true
+generated_requires_source_and_generator = true
+fixture_is_test_only = true
+historical_is_archive_only = true
+
+[version_guidance]
+public_api = "Breaking stable public API changes require major version, replacement, migration, or refusal."
+abi_surface = "ABI breakage requires ABI proof, deprecation/replacement policy, or deterministic refusal."
+schema_protocol = "Schema/protocol versions may be integers or semantic versions, but compatibility, unknown fields, defaults, migration, and refusal must be declared."
+registry = "Registry entry additions may be minor when compatible; lifecycle removals require deprecation/retirement/removal policy."
+command = "Command IDs are stable identifiers; input/result changes require schema/protocol and refusal compatibility."
+artifact = "Durable artifacts use artifact identity law and must keep version, compatibility, migration, and refusal behavior explicit."
+provider_module_app = "Provider, module, workspace, and app descriptors declare lifecycle and compatibility before public promotion."
+internal_or_provisional = "Internal and provisional surfaces may use simpler versioning, but public dependents must record compatibility impact."
+
+[compatibility_range_policy]
+allowed_modes = ["exact", "minimum", "maximum", "range", "any_provisional", "incompatible_refuse"]
+stable_may_not_omit_range = true
+incompatible_requires_refusal = true
+range_must_name_bounds_or_reason = true
+compatibility_is_not_inferred_from_semver = true
+
+[lifecycle_policy]
+registry = "contracts/versioning/lifecycle_state.registry.json"
+allowed_transition_schema = "contracts/versioning/version_transition.schema.json"
+experimental_dependency_of_stable_allowed = false
+stable_to_removed_directly_allowed = false
+retired_for_new_use_allowed = false
+removed_requires_refusal_or_bridge = true
+public_removal_requires_evidence = true
+
+[deprecation_policy]
+contract = "contracts/versioning/deprecation_policy.contract.toml"
+notice_schema = "contracts/versioning/deprecation_notice.schema.json"
+replacement_or_no_replacement_reason_required = true
+migration_path_required = true
+retirement_behavior_required = true
+refusal_after_retirement_required = true
+owner_required = true
+evidence_required = true
+
+[retirement_policy]
+contract = "contracts/versioning/retirement_policy.contract.toml"
+retired_surfaces_not_for_new_use = true
+retirement_requires_deprecation_or_explicit_policy = true
+retirement_requires_refusal_behavior = true
+retirement_requires_migration_or_replacement_when_public = true
+
+[removal_policy]
+contract = "contracts/versioning/removal_policy.contract.toml"
+active_surface_removal_allowed = false
+stable_surface_removal_requires_retirement_history = true
+removed_surface_requires_refusal_or_compatibility_bridge = true
+delete_is_not_removal_policy = true
+
+[replacement_relationship]
+replacement_protocol = "contracts/replacement/replacement.contract.toml"
+breaking_replacement_requires_packet = true
+replacement_may_satisfy_deprecation_notice = true
+replacement_must_name_old_and_new_surface = true
+
+[migration_refusal_relationship]
+schema_protocol_law = "contracts/schema/schema_evolution.contract.toml"
+artifact_identity_law = "contracts/artifact/artifact_identity.contract.toml"
+capability_refusal_law = "contracts/capability/capability.contract.toml"
+no_best_effort_migration = true
+unsupported_versions_must_refuse_with_code = true
+migration_requires_diagnostic_or_evidence = true
+
+[public_surface_relationship]
+registry = "contracts/public_surface/public_surface.contract.toml"
+public_surfaces_require_lifecycle = true
+stable_public_surfaces_require_compatibility = true
+public_lifecycle_change_requires_registry_update = true
+provisional_surfaces_must_not_be_called_stable = true
+
+[diagnostics]
+registry = "contracts/diagnostics/diagnostic_code.registry.json"
+codes = ["DOM-VERSION-INCOMPATIBLE", "DOM-VERSION-UNSUPPORTED", "DOM-LIFECYCLE-INVALID-TRANSITION", "DOM-DEPRECATION-MISSING-REPLACEMENT", "DOM-RETIREMENT-MISSING-POLICY", "DOM-REMOVAL-WITHOUT-RETIREMENT", "DOM-STABLE-SURFACE-MISSING-COMPATIBILITY", "DOM-BREAKING-CHANGE-MISSING-MIGRATION"]
+
+[refusals]
+registry = "contracts/refusal/refusal_code.registry.json"
+codes = ["dominium.refusal.version.unsupported", "dominium.refusal.version.incompatible", "dominium.refusal.surface.retired", "dominium.refusal.surface.removed", "dominium.refusal.migration.required", "dominium.refusal.replacement.required"]
+
+[proof]
+validator = "tools/validators/contracts/check_version_deprecation.py"
+fixtures = "tests/contract/versioning"
+normal_gate = "fast_strict"
+full_ctest_required = false
+
+[known_limitations]
+compatibility_corpus_created = false
+runtime_migration_created = false
+release_promotion_gate_created = false
+active_surfaces_deprecated = false

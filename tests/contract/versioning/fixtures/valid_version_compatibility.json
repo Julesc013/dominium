@@ -1,0 +1,29 @@
+{
+  "surface_id": "dominium.versioning.fixture.surface.v1",
+  "kind": "schema",
+  "version": "1.2.0",
+  "owner": "tests.contract",
+  "lifecycle_state": "stable",
+  "stability": "stable",
+  "compatibility_range": {
+    "mode": "range",
+    "minimum": "1.0.0",
+    "maximum": "1.x",
+    "include_minimum": true,
+    "include_maximum": true,
+    "notes": "Fixture compatibility range for validator proof."
+  },
+  "introduced_in": "VERSION-DEPRECATION-LAW-01",
+  "migration_policy": {
+    "mode": "none",
+    "summary": "No migration is needed for this compatible fixture."
+  },
+  "refusal_policy": {
+    "required": false,
+    "codes": []
+  },
+  "proof": [
+    "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+  ],
+  "notes": "Fixture only."
+}

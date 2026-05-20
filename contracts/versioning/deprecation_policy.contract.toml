@@ -1,0 +1,30 @@
+schema_version = "dominium.versioning.policy.v1"
+status = "provisional"
+owner = "contracts.versioning"
+
+[contract]
+id = "dominium.versioning.deprecation_policy.v1"
+version = "1.0.0"
+stability = "provisional"
+purpose = "Defines how a surface enters deprecated lifecycle without disappearing silently."
+
+[policy]
+deprecation_is_support_state = true
+deprecation_is_not_removal = true
+notice_schema = "contracts/versioning/deprecation_notice.schema.json"
+replacement_or_no_replacement_reason_required = true
+migration_path_required = true
+refusal_after_retirement_required = true
+owner_required = true
+evidence_required = true
+public_surface_registry_update_required = true
+diagnostic_codes_required = true
+
+[notice]
+required_fields = ["surface_id", "deprecated_version", "deprecated_date", "migration_path", "refusal_behavior_after_retirement", "removal_policy", "owner", "proof", "evidence"]
+replacement_rule = "A notice must declare replacement or explain why no replacement exists."
+removal_rule = "Removal cannot be scheduled without retirement/removal policy and evidence expectations."
+
+[proof]
+validator = "tools/validators/contracts/check_version_deprecation.py"
+fixtures = "tests/contract/versioning"

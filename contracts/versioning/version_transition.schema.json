@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.versioning.version_transition.v1",
+  "title": "Dominium Version Lifecycle Transition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "surface_id",
+    "from_version",
+    "to_version",
+    "from_lifecycle_state",
+    "to_lifecycle_state",
+    "change_type",
+    "compatibility_impact",
+    "migration_policy",
+    "refusal_policy",
+    "proof"
+  ],
+  "properties": {
+    "surface_id": {"type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9_]+)+$"},
+    "from_version": {"type": "string", "minLength": 1},
+    "to_version": {"type": "string", "minLength": 1},
+    "from_lifecycle_state": {"type": "string"},
+    "to_lifecycle_state": {"type": "string"},
+    "change_type": {"type": "string", "enum": ["compatible", "breaking", "deprecation", "retirement", "removal", "generated_promotion", "documentation"]},
+    "compatibility_impact": {"type": "string", "enum": ["none", "compatible", "breaking", "incompatible_refuse", "unknown"]},
+    "migration_policy": {"type": "object"},
+    "refusal_policy": {"type": "object"},
+    "replacement": {"type": "string"},
+    "proof": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "notes": {"type": "string"}
+  }
+}

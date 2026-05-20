@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.versioning.deprecation_notice.v1",
+  "title": "Dominium Deprecation Notice",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "surface_id",
+    "deprecated_version",
+    "deprecated_date",
+    "migration_path",
+    "refusal_behavior_after_retirement",
+    "removal_policy",
+    "owner",
+    "proof",
+    "evidence"
+  ],
+  "properties": {
+    "surface_id": {"type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9_]+)+$"},
+    "deprecated_version": {"type": "string", "minLength": 1},
+    "deprecated_date": {"type": "string", "minLength": 1},
+    "replacement": {"type": "string"},
+    "no_replacement_reason": {"type": "string"},
+    "migration_path": {"type": "string", "minLength": 1},
+    "refusal_behavior_after_retirement": {"type": "object"},
+    "removal_policy": {"type": "object"},
+    "owner": {"type": "string", "minLength": 1},
+    "proof": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "evidence": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "notes": {"type": "string"}
+  },
+  "anyOf": [
+    {"required": ["replacement"]},
+    {"required": ["no_replacement_reason"]}
+  ]
+}

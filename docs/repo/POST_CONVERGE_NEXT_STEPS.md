@@ -9,6 +9,35 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## VERSION-DEPRECATION-LAW-01 Update
+
+VERSION-DEPRECATION-LAW-01 adds the provisional versioning, lifecycle,
+deprecation, retirement, removal, compatibility, and transition law.
+
+- versioning law: `contracts/versioning/versioning.contract.toml`
+- lifecycle registry: `contracts/versioning/lifecycle_state.registry.json`
+- compatibility schemas:
+  - `contracts/versioning/version_compatibility.schema.json`
+  - `contracts/versioning/compatibility_range.schema.json`
+- deprecation/transition schemas:
+  - `contracts/versioning/deprecation_notice.schema.json`
+  - `contracts/versioning/version_transition.schema.json`
+- policies:
+  - `contracts/versioning/deprecation_policy.contract.toml`
+  - `contracts/versioning/retirement_policy.contract.toml`
+  - `contracts/versioning/removal_policy.contract.toml`
+  - `contracts/versioning/surface_lifecycle.contract.toml`
+- validator:
+  - `python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict`
+- fixture suite: `tests/contract/versioning/**`
+- lifecycle states registered: 9
+- next Foundation Lock task: `MOD-PACK-TRUST-MODEL-01`
+
+Feature implementation remains blocked until Foundation Lock closes. No active
+surface is deprecated, retired, removed, or migrated by this task. Runtime
+migration, release promotion, Workbench UI, gameplay, renderer, native GUI, and
+product behavior are not implemented.
+
 ## REPLACEMENT-PROTOCOL-01 Update
 
 REPLACEMENT-PROTOCOL-01 adds the provisional safe replacement protocol.

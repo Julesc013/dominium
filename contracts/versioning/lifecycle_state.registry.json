@@ -1,0 +1,90 @@
+{
+  "schema_version": "dominium.versioning.lifecycle_state.registry.v1",
+  "registry_id": "dominium.lifecycle.state.registry.v1",
+  "status": "provisional",
+  "owner": "contracts.versioning",
+  "states": [
+    {
+      "state": "experimental",
+      "summary": "May change or disappear and must not be a dependency of stable surfaces.",
+      "public_promise": false,
+      "new_use_allowed": true,
+      "requires_proof": false
+    },
+    {
+      "state": "provisional",
+      "summary": "Visible and intended, but not a compatibility promise.",
+      "public_promise": false,
+      "new_use_allowed": true,
+      "requires_proof": false
+    },
+    {
+      "state": "stable",
+      "summary": "Compatibility promise applies.",
+      "public_promise": true,
+      "new_use_allowed": true,
+      "requires_proof": true
+    },
+    {
+      "state": "deprecated",
+      "summary": "Still supported, but replacement, migration, or no-replacement reason is declared.",
+      "public_promise": true,
+      "new_use_allowed": false,
+      "requires_proof": true
+    },
+    {
+      "state": "retired",
+      "summary": "Not active for new use; compatibility or refusal behavior is defined.",
+      "public_promise": false,
+      "new_use_allowed": false,
+      "requires_proof": true
+    },
+    {
+      "state": "removed",
+      "summary": "No longer available; old references must migrate, bridge, or refuse deterministically.",
+      "public_promise": false,
+      "new_use_allowed": false,
+      "requires_proof": true
+    },
+    {
+      "state": "generated",
+      "summary": "Derived from a source of truth; generator and source are required before public authority.",
+      "public_promise": false,
+      "new_use_allowed": true,
+      "requires_proof": false
+    },
+    {
+      "state": "fixture",
+      "summary": "Test-only data and not an active public contract.",
+      "public_promise": false,
+      "new_use_allowed": false,
+      "requires_proof": false
+    },
+    {
+      "state": "historical",
+      "summary": "Archive-only record and not active authority.",
+      "public_promise": false,
+      "new_use_allowed": false,
+      "requires_proof": false
+    }
+  ],
+  "allowed_transitions": [
+    {"from": "experimental", "to": "provisional", "requires": ["owner", "notes"]},
+    {"from": "provisional", "to": "stable", "requires": ["compatibility_range", "proof"]},
+    {"from": "stable", "to": "deprecated", "requires": ["deprecation_notice", "replacement_or_reason"]},
+    {"from": "deprecated", "to": "retired", "requires": ["retirement_policy", "refusal_policy"]},
+    {"from": "retired", "to": "removed", "requires": ["removal_policy", "evidence"]},
+    {"from": "generated", "to": "provisional", "requires": ["source", "generator"]},
+    {"from": "generated", "to": "stable", "requires": ["source", "generator", "promotion_record", "proof"]}
+  ],
+  "forbidden_transitions": [
+    {"from": "stable", "to": "removed", "reason": "Stable surfaces must pass through deprecation and retirement."},
+    {"from": "provisional", "to": "removed", "reason": "Public provisional removal requires retirement/deprecation notes when referenced."},
+    {"from": "generated", "to": "stable", "reason": "Generated surfaces need source, generator, promotion, and proof."},
+    {"from": "fixture", "to": "stable", "reason": "Fixtures do not become stable without a promotion record."},
+    {"from": "historical", "to": "stable", "reason": "Historical surfaces do not become active without replacement/recovery process."}
+  ],
+  "proof": [
+    "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"
+  ]
+}

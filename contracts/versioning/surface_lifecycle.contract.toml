@@ -1,0 +1,64 @@
+schema_version = "dominium.versioning.surface_lifecycle.v1"
+status = "provisional"
+owner = "contracts.versioning"
+
+[contract]
+id = "dominium.versioning.surface_lifecycle.v1"
+version = "1.0.0"
+stability = "provisional"
+purpose = "Maps lifecycle states to public-surface, artifact, schema, protocol, command, provider, module, app, release, generated, fixture, and historical surface behavior."
+
+[states.experimental]
+compatibility_promise = false
+stable_dependency_allowed = false
+new_use_allowed = true
+proof_required = false
+
+[states.provisional]
+compatibility_promise = false
+stable_dependency_allowed = false
+new_use_allowed = true
+proof_required = false
+
+[states.stable]
+compatibility_promise = true
+stable_dependency_allowed = true
+new_use_allowed = true
+proof_required = true
+compatibility_range_required = true
+
+[states.deprecated]
+compatibility_promise = true
+new_use_allowed = false
+notice_required = true
+replacement_or_reason_required = true
+retirement_policy_required = true
+
+[states.retired]
+compatibility_promise = false
+new_use_allowed = false
+refusal_or_bridge_required = true
+removal_policy_required = true
+
+[states.removed]
+compatibility_promise = false
+new_use_allowed = false
+refusal_or_bridge_required = true
+active_reference_allowed = false
+
+[states.generated]
+source_required = true
+generator_required = true
+promotion_record_required_for_stable = true
+
+[states.fixture]
+test_only = true
+public_contract = false
+
+[states.historical]
+archive_only = true
+public_contract = false
+
+[proof]
+validator = "tools/validators/contracts/check_version_deprecation.py"
+fixtures = "tests/contract/versioning"

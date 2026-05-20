@@ -2,8 +2,8 @@
 
 ## Review Objective
 
-Review `REPLACEMENT-PROTOCOL-01`: replacement protocol law, packet/impact/proof
-schemas, kind/status registries, rollback/conformance/migration-refusal
+Review `VERSION-DEPRECATION-LAW-01`: versioning law, lifecycle registry,
+compatibility/deprecation/transition schemas, deprecation/retirement/removal
 policies, validator, fixtures, docs, public-surface registration,
 diagnostics/refusal integration, inventory, and evidence.
 
@@ -21,62 +21,62 @@ diagnostics/refusal integration, inventory, and evidence.
 
 ## Verification Report Reference
 
-`.aide/reports/REPLACEMENT-PROTOCOL-01-validation.md`
+`.aide/reports/VERSION-DEPRECATION-LAW-01-validation.md`
 
 ## Evidence Packet References
 
-- `contracts/replacement/replacement.contract.toml`
-- `contracts/replacement/replacement_packet.schema.json`
-- `contracts/replacement/replacement_kind.registry.json`
-- `contracts/replacement/replacement_status.registry.json`
-- `contracts/replacement/replacement_impact.schema.json`
-- `contracts/replacement/replacement_proof.schema.json`
-- `contracts/replacement/rollback_policy.contract.toml`
-- `contracts/replacement/conformance_policy.contract.toml`
-- `contracts/replacement/migration_refusal_policy.contract.toml`
-- `tools/validators/repo/check_replacement_packet.py`
-- `tests/contract/replacement/**`
-- `docs/architecture/replacement_protocol.md`
-- `docs/development/replacement_protocol_guidelines.md`
-- `.aide/reports/REPLACEMENT-PROTOCOL-01-status.md`
-- `.aide/reports/REPLACEMENT-PROTOCOL-01-results.json`
-- `.aide/reports/REPLACEMENT-PROTOCOL-01-fast-strict.md`
-- `docs/repo/audits/REPLACEMENT_PROTOCOL_01.md`
+- `contracts/versioning/versioning.contract.toml`
+- `contracts/versioning/lifecycle_state.registry.json`
+- `contracts/versioning/version_compatibility.schema.json`
+- `contracts/versioning/compatibility_range.schema.json`
+- `contracts/versioning/deprecation_notice.schema.json`
+- `contracts/versioning/version_transition.schema.json`
+- `contracts/versioning/deprecation_policy.contract.toml`
+- `contracts/versioning/retirement_policy.contract.toml`
+- `contracts/versioning/removal_policy.contract.toml`
+- `contracts/versioning/surface_lifecycle.contract.toml`
+- `tools/validators/contracts/check_version_deprecation.py`
+- `tests/contract/versioning/**`
+- `docs/architecture/versioning_and_deprecation.md`
+- `docs/development/versioning_deprecation_guidelines.md`
+- `.aide/reports/VERSION-DEPRECATION-LAW-01-status.md`
+- `.aide/reports/VERSION-DEPRECATION-LAW-01-results.json`
+- `.aide/reports/VERSION-DEPRECATION-LAW-01-fast-strict.md`
+- `docs/repo/audits/VERSION_DEPRECATION_LAW_01.md`
 
 ## Changed Files Summary
 
-Adds a provisional replacement protocol governance spine. Registers replacement
-surfaces, diagnostics, and refusal codes without performing an actual
-implementation replacement, migration, rollback, runtime loader, or directory
-move.
+Adds a provisional versioning/deprecation governance spine. Registers lifecycle,
+compatibility, deprecation, retirement, removal, transition, diagnostic, refusal,
+and validator surfaces without deprecating, retiring, removing, migrating, or
+promoting any active surface.
 
 ## Validation Summary
 
-Replacement validator compiles and passes strict mode with 0 findings. Fixture
-mode passes with 4 valid replacement packet fixtures and 4 negative fixtures.
-Inventory mode scans 17,942 tracked files and classifies 1,824 replacement-like
-historical/future-candidate files descriptively. Dependency-direction debt
+Version/deprecation validator compiles and passes strict mode with 0 findings.
+Fixture mode passes with 3 valid fixtures and 4 negative fixtures. Inventory mode
+classifies current version-like surfaces descriptively. Dependency-direction debt
 remains known existing debt.
 
 ## Token Summary
 
-This review packet is intentionally compact; full validation details live in
-`.aide/reports/REPLACEMENT-PROTOCOL-01-validation.md`.
+This review packet is compact; full validation details live in
+`.aide/reports/VERSION-DEPRECATION-LAW-01-validation.md`.
 
 ## Risk Summary
 
-Replacement protocol is provisional. Historical refactors are inventoried but
-not retroactively converted into full packets. Runtime migration, rollback,
-provider resolver, Workbench UI, and version/deprecation law remain future work.
+Version/deprecation law is provisional. Existing version-like surfaces are
+inventoried but not migrated. Runtime migration, release promotion,
+compatibility corpus, and mod/pack trust remain future work.
 
 ## Non-Goals / Scope Guard
 
-No actual replacement, rewrite, directory move, runtime module/provider loading,
-migration runtime, rollback runtime, Workbench UI, release publication, or
-product behavior change.
+No actual deprecation, retirement, removal, migration runtime, release
+promotion, Workbench UI, product behavior, gameplay, renderer, native GUI, or
+active version rewrite.
 
 ## Reviewer Instructions
 
-Confirm that replacement identity is not implementation path, public/durable
-compatibility changes require proof or migration/refusal, and active
-replacement packets require rollback evidence.
+Confirm that stable surfaces require compatibility/proof, lifecycle transitions
+are explicit, deprecation requires replacement or no-replacement reason, and
+removal requires retirement history or deterministic refusal/bridge policy.

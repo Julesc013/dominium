@@ -5,7 +5,32 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, PROVIDER-MODEL-01, MODULE-COMPOSITION-LAW-01, and REPLACEMENT-PROTOCOL-01.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, PROVIDER-MODEL-01, MODULE-COMPOSITION-LAW-01, REPLACEMENT-PROTOCOL-01, and VERSION-DEPRECATION-LAW-01.
+
+## VERSION-DEPRECATION-LAW-01 Proof Note
+
+VERSION-DEPRECATION-LAW-01 adds the provisional version/deprecation law.
+
+- versioning law: `contracts/versioning/versioning.contract.toml`.
+- lifecycle registry: `contracts/versioning/lifecycle_state.registry.json`.
+- version compatibility and compatibility range schemas:
+  `contracts/versioning/version_compatibility.schema.json` and
+  `contracts/versioning/compatibility_range.schema.json`.
+- deprecation notice and version transition schemas:
+  `contracts/versioning/deprecation_notice.schema.json` and
+  `contracts/versioning/version_transition.schema.json`.
+- deprecation, retirement, removal, and surface lifecycle policies under
+  `contracts/versioning/**`.
+- validator: `python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict`.
+- fixtures: `tests/contract/versioning/**`.
+- lifecycle states registered: 9.
+- public surface, diagnostics, and refusal registries updated with
+  version/deprecation surfaces and provisional codes.
+- no active surface is deprecated, retired, removed, migrated, or promoted to
+  stable by this task.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `MOD-PACK-TRUST-MODEL-01`.
 
 ## REPLACEMENT-PROTOCOL-01 Proof Note
 

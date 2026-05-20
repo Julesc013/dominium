@@ -1,0 +1,29 @@
+{
+  "surface_id": "dominium.versioning.fixture.legacy_surface.v1",
+  "deprecated_version": "1.4.0",
+  "deprecated_date": "2026-05-21",
+  "replacement": "dominium.versioning.fixture.replacement_surface.v2",
+  "migration_path": "Use the replacement surface and migrate fixture payloads through the declared compatibility policy.",
+  "refusal_behavior_after_retirement": {
+    "mode": "refuse_with_diagnostic",
+    "diagnostic_codes": [
+      "DOM-VERSION-UNSUPPORTED"
+    ],
+    "refusal_codes": [
+      "dominium.refusal.version.unsupported"
+    ]
+  },
+  "removal_policy": {
+    "retirement_required": true,
+    "removal_after_retirement_only": true,
+    "evidence_required": true
+  },
+  "owner": "tests.contract",
+  "proof": [
+    "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+  ],
+  "evidence": [
+    ".aide/reports/VERSION-DEPRECATION-LAW-01-validation.md"
+  ],
+  "notes": "Fixture only; no active surface is deprecated."
+}

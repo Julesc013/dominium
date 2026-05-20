@@ -1,0 +1,21 @@
+{
+  "surface_id": "dominium.versioning.fixture.surface.v1",
+  "from_version": "1.1.0",
+  "to_version": "1.2.0",
+  "from_lifecycle_state": "provisional",
+  "to_lifecycle_state": "stable",
+  "change_type": "compatible",
+  "compatibility_impact": "compatible",
+  "migration_policy": {
+    "mode": "none",
+    "summary": "No migration required for compatible promotion fixture."
+  },
+  "refusal_policy": {
+    "required": false,
+    "codes": []
+  },
+  "proof": [
+    "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+  ],
+  "notes": "Allowed provisional to stable fixture transition with proof."
+}

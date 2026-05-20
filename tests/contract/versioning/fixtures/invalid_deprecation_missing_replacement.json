@@ -1,0 +1,22 @@
+{
+  "surface_id": "dominium.versioning.fixture.legacy_surface.v1",
+  "deprecated_version": "1.4.0",
+  "deprecated_date": "2026-05-21",
+  "migration_path": "Missing replacement and no_replacement_reason is intentionally invalid.",
+  "refusal_behavior_after_retirement": {
+    "mode": "refuse_with_diagnostic",
+    "diagnostic_codes": [
+      "DOM-VERSION-UNSUPPORTED"
+    ]
+  },
+  "removal_policy": {
+    "retirement_required": true
+  },
+  "owner": "tests.contract",
+  "proof": [
+    "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+  ],
+  "evidence": [
+    ".aide/reports/VERSION-DEPRECATION-LAW-01-validation.md"
+  ]
+}

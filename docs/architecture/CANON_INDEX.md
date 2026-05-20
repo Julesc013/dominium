@@ -243,6 +243,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/UPDATE_MODEL.md`
 - `docs/architecture/UPGRADE_AND_CONVERSION.md`
 - `docs/architecture/VALIDATION_RULES.md`
+- `docs/architecture/versioning_and_deprecation.md`
 - `docs/architecture/VISITABILITY_AND_REFINEMENT.md`
 - `docs/architecture/VISITABILITY_CONSISTENCY.md`
 - `docs/architecture/WHAT_THIS_IS.md`
