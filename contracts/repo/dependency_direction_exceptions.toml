@@ -1,0 +1,31 @@
+schema_version = "dominium.repo.dependency_direction_exceptions.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.repo"
+
+[contract]
+id = "dominium.repo.dependency_direction_exceptions.v1"
+status = "provisional"
+owner = "contracts.repo"
+purpose = "Records exact temporary exceptions to Dominium repository dependency-direction law."
+
+[policy]
+broad_exceptions_allowed = false
+exact_path_match_required = true
+exact_from_to_edge_match_required = true
+retire_by_task_required = true
+owner_required = true
+
+# No active exceptions are declared by DEPENDENCY-DIRECTION-01.
+# Example shape for a future reviewed temporary exception:
+#
+# [[exception]]
+# id = "depdir.example.temporary"
+# from_root = "runtime"
+# to_root = "tools"
+# edge_type = "import"
+# path = "runtime/example.c"
+# reason = "Temporary migration shim."
+# owner = "runtime"
+# status = "provisional"
+# retire_by_task = "DEPENDENCY-DIRECTION-REPAIR-01"

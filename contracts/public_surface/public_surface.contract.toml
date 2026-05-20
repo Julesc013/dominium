@@ -295,6 +295,45 @@ replacement_policy = "requires_api_abi_canon_update"
 notes = "Schema for public header surface entries; provisional until broader compatibility corpus exists."
 
 [[surface]]
+id = "dominium.repo.dependency_directions.v1"
+kind = "registry"
+path = "contracts/repo/dependency_directions.contract.toml"
+owner = "contracts.repo"
+stability = "provisional"
+version = "1.0.0"
+introduced = "DEPENDENCY-DIRECTION-01"
+proof = ["python tools/validators/repo/check_dependency_directions.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_dependency_direction_law_update"
+notes = "Machine-readable repository ownership dependency law; strict failures apply to high-confidence active include/import violations."
+
+[[surface]]
+id = "dominium.repo.dependency_direction_exceptions.v1"
+kind = "registry"
+path = "contracts/repo/dependency_direction_exceptions.toml"
+owner = "contracts.repo"
+stability = "provisional"
+version = "1.0.0"
+introduced = "DEPENDENCY-DIRECTION-01"
+proof = ["python tools/validators/repo/check_dependency_directions.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_precise_exception_retirement_or_registry_update"
+notes = "Exact temporary exception ledger for dependency-direction law; broad exceptions are forbidden."
+
+[[surface]]
+id = "dominium.repo.dependency_direction_validator.v1"
+kind = "documentation"
+path = "tools/validators/repo/check_dependency_directions.py"
+owner = "tools.validators.repo"
+stability = "provisional"
+version = "1.0.0"
+introduced = "DEPENDENCY-DIRECTION-01"
+proof = ["python -m py_compile tools/validators/repo/check_dependency_directions.py", "python tools/validators/repo/check_dependency_directions.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_dependency_direction_law_update"
+notes = "Validator implementation for the dependency-direction contract; registered to keep the proof surface discoverable."
+
+[[surface]]
 id = "dominium.release.update_channels.v1"
 kind = "registry"
 path = "release/updates"

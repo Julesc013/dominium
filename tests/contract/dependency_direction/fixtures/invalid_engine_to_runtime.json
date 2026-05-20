@@ -1,0 +1,12 @@
+{
+  "fixture_id": "dominium.tests.dependency_direction.invalid_engine_to_runtime.v1",
+  "expected": "fail",
+  "edges": [
+    {
+      "from_root": "engine",
+      "to_root": "runtime",
+      "edge_type": "include",
+      "reason": "Engine must not depend on runtime host/provider surfaces."
+    }
+  ]
+}

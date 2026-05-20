@@ -9,6 +9,22 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## DEPENDENCY-DIRECTION-01 Update
+
+DEPENDENCY-DIRECTION-01 adds the provisional repository dependency-direction law.
+
+- contract: `contracts/repo/dependency_directions.contract.toml`
+- schema: `contracts/repo/dependency_direction.schema.json`
+- exception ledger: `contracts/repo/dependency_direction_exceptions.toml`
+- validator: `python tools/validators/repo/check_dependency_directions.py --repo-root . --strict`
+- initial scan: 16,104 tracked text/source files scanned across 14 roots
+- current strict result: PARTIAL, with 358 high-confidence existing violations and 38 warnings
+- violations are recorded as dependency-direction debt, not hidden by broad exceptions
+- next Foundation Lock task: `COMMAND-SURFACE-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Full CTest
+remains T4 full/release proof and is not required for this governance task.
+
 ## LANGUAGE-BASELINE-01 Update
 
 LANGUAGE-BASELINE-01 moves Dominium active mainline governance to C17 + C++17.

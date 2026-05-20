@@ -1,6 +1,11 @@
+Status: DERIVED
+Last Reviewed: 2026-05-21
+Supersedes: none
+Superseded By: none
+
 # LANGUAGE_BASELINE_01
 
-Status: PASS_WITH_WARNINGS
+Result: PASS_WITH_WARNINGS
 
 ## Why
 

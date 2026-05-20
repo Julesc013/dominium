@@ -5,7 +5,25 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, and LANGUAGE-BASELINE-01.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, and DEPENDENCY-DIRECTION-01.
+
+## DEPENDENCY-DIRECTION-01 Proof Note
+
+DEPENDENCY-DIRECTION-01 adds the provisional repository dependency-direction law
+and validator.
+
+- contract: `contracts/repo/dependency_directions.contract.toml`.
+- validator: `python tools/validators/repo/check_dependency_directions.py --repo-root . --strict`.
+- initial scan: 16,104 tracked text/source files across 14 roots.
+- strict result: PARTIAL because the current repo has 358 high-confidence active
+  dependency-direction violations, primarily active Python imports from
+  `apps/`, `engine/`, `game/`, and `runtime/` into `tools/`.
+- warning result: 38 unlisted active dependencies, including current
+  game/runtime cross-dependencies and Workbench content schema includes.
+- exceptions active: 0; no broad exception was added to hide the debt.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `COMMAND-SURFACE-01`.
 
 ## LANGUAGE-BASELINE-01 Proof Note
 

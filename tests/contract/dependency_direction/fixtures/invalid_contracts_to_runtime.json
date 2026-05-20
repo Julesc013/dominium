@@ -1,0 +1,12 @@
+{
+  "fixture_id": "dominium.tests.dependency_direction.invalid_contracts_to_runtime.v1",
+  "expected": "fail",
+  "edges": [
+    {
+      "from_root": "contracts",
+      "to_root": "runtime",
+      "edge_type": "import",
+      "reason": "Contracts are law and must not import runtime implementation code."
+    }
+  ]
+}

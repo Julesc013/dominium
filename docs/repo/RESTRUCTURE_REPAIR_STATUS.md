@@ -5,9 +5,31 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `LANGUAGE-BASELINE-01`.
+Latest task: `DEPENDENCY-DIRECTION-01`.
 
-Result: PASS_WITH_WARNINGS for the active C17/C++17 language baseline, with naming law locked, CTest sharding honest, semantic lint blockers resolved, and deterministic bad-root routing evidence preserved.
+Result: PARTIAL for the provisional dependency-direction law. The law, schema,
+validator, fixtures, docs, and evidence exist, but the initial strict scan
+exposes existing active dependency-direction debt that is not hidden by broad
+exceptions.
+
+## DEPENDENCY-DIRECTION-01 Update
+
+DEPENDENCY-DIRECTION-01 is PARTIAL.
+
+- dependency law: `contracts/repo/dependency_directions.contract.toml`.
+- schema: `contracts/repo/dependency_direction.schema.json`.
+- exception ledger: `contracts/repo/dependency_direction_exceptions.toml`.
+- validator: `tools/validators/repo/check_dependency_directions.py`.
+- initial scan: 16,104 tracked text/source files across 14 roots.
+- violations: 358 high-confidence active dependency-direction violations.
+- warnings: 38 unlisted active dependencies.
+- active exceptions: 0.
+- broad exceptions: none.
+
+Next task:
+`COMMAND-SURFACE-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## LANGUAGE-BASELINE-01 Update
 

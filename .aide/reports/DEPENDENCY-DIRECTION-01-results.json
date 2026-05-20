@@ -1,0 +1,17 @@
+{
+  "task": "DEPENDENCY-DIRECTION-01",
+  "result": "PARTIAL",
+  "roots_scanned": 14,
+  "files_scanned": 16104,
+  "violations": 358,
+  "warnings": 38,
+  "exceptions_active": 0,
+  "exceptions_used": 0,
+  "exceptions_unused": 0,
+  "validator_status": "fail",
+  "public_surface_registry_updated": true,
+  "fast_strict_status": "pass",
+  "fast_strict_elapsed_seconds": 334.907,
+  "full_ctest_status": "not_run_t4_full_release_proof",
+  "next_task": "COMMAND-SURFACE-01"
+}

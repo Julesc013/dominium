@@ -1,0 +1,36 @@
+{
+  "fixture_id": "dominium.tests.dependency_direction.valid_edges.v1",
+  "expected": "pass",
+  "edges": [
+    {
+      "from_root": "apps",
+      "to_root": "runtime",
+      "edge_type": "include"
+    },
+    {
+      "from_root": "apps",
+      "to_root": "game",
+      "edge_type": "include"
+    },
+    {
+      "from_root": "runtime",
+      "to_root": "engine",
+      "edge_type": "include"
+    },
+    {
+      "from_root": "game",
+      "to_root": "engine",
+      "edge_type": "include"
+    },
+    {
+      "from_root": "tools",
+      "to_root": "engine",
+      "edge_type": "tool_inspection"
+    },
+    {
+      "from_root": "tests",
+      "to_root": "apps",
+      "edge_type": "test_reference"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "fixture_id": "dominium.tests.dependency_direction.invalid_runtime_to_apps.v1",
+  "expected": "fail",
+  "edges": [
+    {
+      "from_root": "runtime",
+      "to_root": "apps",
+      "edge_type": "include",
+      "reason": "Runtime must not depend on product shells."
+    }
+  ]
+}

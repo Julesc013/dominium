@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.repo.dependency_direction.schema.v1",
+  "title": "Dominium Dependency Direction Contract",
+  "type": "object",
+  "required": ["contract", "policy", "root", "edge_type", "exceptions"],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "contract": {
+      "type": "object",
+      "required": ["id", "status", "owner", "purpose"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^dominium\\.repo\\.dependency_directions\\.v[0-9]+$"
+        },
+        "status": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        }
+      }
+    },
+    "policy": {
+      "type": "object"
+    },
+    "root": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "may_depend_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "must_not_depend_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "must_not_be_required_by": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "strict_dependency_source": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "edge_type": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["description", "strict"],
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "strict": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "generated_local_roots": {
+      "type": "object",
+      "properties": {
+        "roots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "active_roots_must_not_depend_on": {
+          "type": "boolean"
+        }
+      }
+    },
+    "forbidden_edges": {
+      "type": "object",
+      "properties": {
+        "high_confidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "exceptions": {
+      "type": "object",
+      "required": ["file", "broad_exceptions_allowed"],
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "broad_exceptions_allowed": {
+          "type": "boolean"
+        },
+        "required_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exact_match_required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "integration": {
+      "type": "object"
+    }
+  }
+}

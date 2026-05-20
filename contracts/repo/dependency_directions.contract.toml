@@ -1,0 +1,188 @@
+schema_version = "dominium.repo.dependency_directions.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.repo"
+
+[contract]
+id = "dominium.repo.dependency_directions.v1"
+status = "provisional"
+owner = "contracts.repo"
+purpose = "Defines allowed and forbidden dependency directions between canonical repository ownership roots."
+
+[policy]
+paths_are_identity = false
+implementation_is_contract = false
+contracts_are_law_not_implementation = true
+content_is_data_not_code = true
+tools_are_inspectors_not_runtime_dependencies = true
+tests_are_subject_inspectors_not_runtime_dependencies = true
+archive_is_inactive = true
+generated_local_roots_are_never_active_dependencies = true
+strict_mode_fails_high_confidence_include_import_violations = true
+ambiguous_path_references_are_warnings = true
+full_ctest_required_for_dependency_direction_change = false
+normal_gate = "fast_strict"
+
+[root.apps]
+category = "active_product_shell"
+may_depend_on = ["runtime", "game", "contracts"]
+may_reference = ["content"]
+must_not_be_required_by = ["engine", "game", "runtime", "contracts"]
+notes = "Apps are thin product shells. Content access must go through package/profile/artifact interfaces."
+
+[root.engine]
+category = "active_substrate"
+may_depend_on = ["contracts", "external"]
+must_not_depend_on = ["apps", "game", "runtime", "content", "tools", "release", "archive"]
+notes = "Engine remains deterministic substrate and must not bind to runtime, game, apps, tools, release, or archive surfaces."
+
+[root.game]
+category = "active_domain"
+may_depend_on = ["engine", "contracts"]
+may_reference = ["content"]
+must_not_depend_on = ["apps", "tools", "archive"]
+notes = "Game owns domain law and may use engine/contracts. Host, platform, render, and UI providers belong behind runtime-facing contracts."
+
+[root.runtime]
+category = "active_host_services"
+may_depend_on = ["engine", "contracts", "external"]
+must_not_depend_on = ["apps", "tools", "archive"]
+notes = "Runtime owns host/services/provider glue. Runtime must not own game truth or depend on product shells."
+
+[root.contracts]
+category = "active_contract_law"
+may_depend_on = []
+must_not_depend_on = ["apps", "engine", "game", "runtime", "tools", "content", "archive"]
+may_reference_paths_as_metadata = true
+notes = "Contracts may name paths or IDs as metadata, but must not import or include implementation roots."
+
+[root.content]
+category = "active_data"
+may_depend_on = []
+may_reference_contract_ids = true
+must_not_depend_on_code = true
+must_not_depend_on = ["apps", "engine", "game", "runtime", "tools", "archive"]
+notes = "Content is authored data and packs. It may reference schemas/contracts by ID/path but must not import implementation code."
+
+[root.docs]
+category = "documentation"
+may_reference = ["*"]
+strict_dependency_source = false
+notes = "Docs may link to anything and do not create runtime dependencies."
+
+[root.tests]
+category = "test_subject_inspection"
+may_inspect = ["*"]
+must_not_be_runtime_dependency = true
+strict_dependency_source = false
+notes = "Tests may inspect all active roots and may contain invalid fixtures."
+
+[root.tools]
+category = "tooling"
+may_inspect = ["*"]
+may_depend_on = ["contracts", "tests", "external"]
+must_not_be_runtime_dependency = true
+strict_dependency_source = false
+notes = "Tools may inspect all roots. Active product/runtime/engine/game code must not depend on tools."
+
+[root.scripts]
+category = "thin_wrappers"
+may_call_tools = true
+must_not_contain_durable_runtime_logic = true
+strict_dependency_source = false
+notes = "Scripts are wrappers around tools and build/dev flows."
+
+[root.cmake]
+category = "build_metadata"
+may_reference = ["*"]
+strict_dependency_source = false
+notes = "CMake files describe build graph metadata and do not create runtime law by themselves."
+
+[root.release]
+category = "release_control_plane"
+may_reference = ["contracts", "content", "apps", "runtime", "engine", "game"]
+must_not_be_runtime_dependency = true
+strict_dependency_source = false
+notes = "Release recipes may reference packaged inputs. Runtime, engine, and game must not depend on release."
+
+[root.external]
+category = "third_party"
+active_dependencies_must_be_declared = true
+must_not_define_dominium_public_api = true
+strict_dependency_source = false
+notes = "External code is third-party material; approved use must be explicit."
+
+[root.archive]
+category = "inactive_history"
+inactive = true
+active_roots_must_not_depend_on = true
+strict_dependency_source = false
+notes = "Archive preserves history. Active code must not depend on archive."
+
+[generated_local_roots]
+roots = [".aide.local", ".dominium.local", "build", "out", "dist", "tmp", "__pycache__"]
+active_roots_must_not_depend_on = true
+tracked_outputs_forbidden_without_policy = true
+
+[edge_type.include]
+description = "C/C++ preprocessor include edge."
+strict = true
+
+[edge_type.import]
+description = "Python import edge."
+strict = true
+
+[edge_type.build_reference]
+description = "Build metadata reference, usually from CMake or build scripts."
+strict = false
+
+[edge_type.path_reference]
+description = "Plain path mention in text or source."
+strict = false
+
+[edge_type.schema_reference]
+description = "Schema path or ID reference."
+strict = false
+
+[edge_type.contract_reference]
+description = "Contract path or ID reference."
+strict = false
+
+[edge_type.doc_reference]
+description = "Documentation-only link or mention."
+strict = false
+
+[edge_type.test_reference]
+description = "Test fixture or subject reference."
+strict = false
+
+[edge_type.tool_inspection]
+description = "Tool scans or inspects another root."
+strict = false
+
+[edge_type.release_input]
+description = "Release recipe input reference."
+strict = false
+
+[edge_type.archive_reference]
+description = "Historical or archive-only reference."
+strict = false
+
+[edge_type.unknown]
+description = "Unclassified dependency-like signal."
+strict = false
+
+[forbidden_edges]
+high_confidence = ["engine->runtime", "engine->game", "engine->apps", "engine->content", "engine->tools", "engine->release", "engine->archive", "runtime->apps", "runtime->tools", "runtime->archive", "game->apps", "game->tools", "game->archive", "contracts->apps", "contracts->engine", "contracts->game", "contracts->runtime", "contracts->tools", "contracts->content", "contracts->archive", "content->apps", "content->engine", "content->game", "content->runtime", "content->tools", "content->archive", "active_source->generated_local", "active_source->archive", "product_runtime_engine_game->tools"]
+
+[exceptions]
+file = "contracts/repo/dependency_direction_exceptions.toml"
+broad_exceptions_allowed = false
+required_fields = ["id", "from_root", "to_root", "edge_type", "path", "reason", "owner", "status", "retire_by_task"]
+exact_match_required = true
+
+[integration]
+public_surface_registry = "contracts/public_surface/public_surface.contract.toml"
+abi_canon = "contracts/abi/c_api.contract.toml"
+primary_validator = "python tools/validators/repo/check_dependency_directions.py --repo-root . --strict"
+normal_gate = "python tools/test/run_fast_strict.py --repo-root ."
