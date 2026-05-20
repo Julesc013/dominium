@@ -223,4 +223,9 @@ summary: status=PASS commands=32 elapsed_seconds=301.437
 ```text
 git diff --check
 PASS
+
+py -3 .aide/scripts/aide_lite.py commit check --latest
+Initial replacement commit: FAIL
+reason: validation section did not record explicit PASS/WARN/FAIL/NOT RUN outcome tokens.
+Disposition: recorded in follow-up commit without amending the original commit.
 ```
