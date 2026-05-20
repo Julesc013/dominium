@@ -1,7 +1,11 @@
-# PORTABILITY-MATRIX-01 Audit
-
-Status: PASS_WITH_WARNINGS
+Status: DERIVED
+Last Reviewed: 2026-05-21
+Supersedes: none
+Superseded By: none
 Task: PORTABILITY-MATRIX-01
+Result: PASS_WITH_WARNINGS
+
+# PORTABILITY-MATRIX-01 Audit
 
 ## Why
 

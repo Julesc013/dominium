@@ -2,11 +2,7 @@
 
 ## Review Objective
 
-Review `PORTABILITY-MATRIX-01`: portability contract, platform floor registry,
-architecture registry, toolchain registry, status registry, runtime/renderer/
-product/package matrices, evidence schema, refusal policy, validator, fixtures,
-docs, public-surface registration, diagnostics/refusal/capability integration,
-inventory, and fast strict proof.
+Review `FOUNDATION-CLOSEOUT-01`: Foundation Lock coverage, validator results, fast strict evidence, generated-output policy, blocker classification, and readiness decision.
 
 ## Decision Requested
 
@@ -22,69 +18,39 @@ inventory, and fast strict proof.
 
 ## Verification Report Reference
 
-`.aide/reports/PORTABILITY-MATRIX-01-validation.md`
+`.aide/reports/FOUNDATION-CLOSEOUT-01-validation.md`
 
 ## Evidence Packet References
 
-- `contracts/platform/portability_matrix.contract.toml`
-- `contracts/platform/platform_floor.registry.json`
-- `contracts/platform/architecture.registry.json`
-- `contracts/platform/toolchain.registry.json`
-- `contracts/platform/platform_capability.schema.json`
-- `contracts/platform/portability_evidence.schema.json`
-- `contracts/platform/runtime_portability.matrix.json`
-- `contracts/platform/renderer_portability.matrix.json`
-- `contracts/platform/product_mode_portability.matrix.json`
-- `contracts/platform/package_portability.matrix.json`
-- `contracts/platform/portability_status.registry.json`
-- `contracts/platform/portability_refusal_policy.contract.toml`
-- `tools/validators/platform/check_portability_matrix.py`
-- `tests/contract/portability/**`
-- `docs/architecture/portability_matrix.md`
-- `docs/development/portability_guidelines.md`
-- `docs/build/toolchain_portability.md`
-- `docs/release/platform_support_policy.md`
-- `.aide/reports/PORTABILITY-MATRIX-01-status.md`
-- `.aide/reports/PORTABILITY-MATRIX-01-results.json`
-- `.aide/reports/PORTABILITY-MATRIX-01-fast-strict.md`
-- `docs/repo/audits/PORTABILITY_MATRIX_01.md`
+- `docs/repo/FOUNDATION_LOCK.md`
+- `docs/repo/audits/FOUNDATION_CLOSEOUT_01.md`
+- `.aide/reports/FOUNDATION-CLOSEOUT-01-foundation-matrix.md`
+- `.aide/reports/FOUNDATION-CLOSEOUT-01-foundation-matrix.json`
+- `.aide/reports/FOUNDATION-CLOSEOUT-01-fast-strict.md`
+- `.aide/reports/FOUNDATION-CLOSEOUT-01-blockers.md`
+- `.aide/reports/FOUNDATION-CLOSEOUT-01-next-readiness.md`
+- `.aide/reports/FOUNDATION-CLOSEOUT-01-results.json`
 
 ## Changed Files Summary
 
-Adds a provisional portability matrix and validator. Registers platform floors,
-architectures, toolchains, runtime/renderer/product/package portability rows,
-diagnostics, refusals, capabilities, and public surfaces without implementing
-new build targets, CI jobs, providers, renderers, package runtime, product
-behavior, or release artifacts.
+Adds closeout evidence and status documents. Performs one narrow documentation header repair in `docs/repo/audits/PORTABILITY_MATRIX_01.md` so RepoX can parse the prior audit correctly.
 
 ## Validation Summary
 
-Portability validator compiles and passes strict/json/fixtures/inventory modes.
-Fixtures pass with 4 valid fixtures and 4 negative fixtures. Fast strict passes
-32 commands in 312.297 seconds. Dependency-direction debt remains known existing
-debt; ABI stable-promotion warnings remain known debt.
-
-## Token Summary
-
-This review packet is compact; full validation details live in
-`.aide/reports/PORTABILITY-MATRIX-01-validation.md`.
+All required Foundation files are present. Fast strict passes 32 commands. Most standalone Foundation validators pass. Dependency-direction strict validation fails with 358 violations and 38 warnings, so Foundation Lock is blocked and the Workbench validation slice is not authorized.
 
 ## Risk Summary
 
-Portability law is provisional. Existing release/platform docs are inventoried
-as evidence sources, not support claims. No runtime provider, renderer,
-package, product mode, build target, CI job, or release behavior is implemented.
+The closeout does not implement product work. It does not hide dependency-direction debt. Full CTest remains T4/full-gate debt.
 
-## Non-Goals / Scope Guard
+## Token Summary
 
-No new platform/toolchain support claim, CMake preset, CI job, build target,
-provider runtime, renderer implementation, package runtime, Workbench UI,
-gameplay/domain/native GUI behavior, release tag, upload, or GitHub settings
-mutation.
+This review packet is compact. Full evidence lives in `.aide/reports/FOUNDATION-CLOSEOUT-01-validation.md`.
 
 ## Reviewer Instructions
 
-Confirm that support claims require evidence, planned/research/provisional rows
-are not presented as supported, product modes reference runtime capabilities,
-provider/render fallback is not silent, and unsupported requests have typed
-diagnostics/refusals.
+Check that the blocked decision matches the dependency-direction validator result and that no product work is authorized while the blocker remains.
+
+## Non-Goals / Scope Guard
+
+No Workbench UI, runtime module loading, provider runtime, package runtime, gameplay, renderer, native GUI, release publication, broad rewrite, or new governance subsystem is implemented.

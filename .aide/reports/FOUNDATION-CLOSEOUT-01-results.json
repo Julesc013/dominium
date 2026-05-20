@@ -1,0 +1,21 @@
+{
+  "task": "FOUNDATION-CLOSEOUT-01",
+  "result": "BLOCKED",
+  "foundation_lock": false,
+  "narrow_feature_work_authorized": false,
+  "broad_feature_work_authorized": false,
+  "required_foundation_files_present": true,
+  "foundation_validators_present": true,
+  "foundation_validators_status": "fail",
+  "blocking_validator": "tools/validators/repo/check_dependency_directions.py",
+  "fast_strict_status": "pass",
+  "fast_strict_elapsed_seconds": 308.406,
+  "fast_strict_commands_total": 32,
+  "repox_status": "pass",
+  "smoke_ctest_status": "pass",
+  "cmake_configure_status": "pass",
+  "cmake_build_status": "pass",
+  "full_ctest_status": "T4_deferred_known_debt",
+  "generated_output_status": "pass",
+  "next_task": "FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01"
+}

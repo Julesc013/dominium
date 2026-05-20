@@ -1,0 +1,17 @@
+{
+  "task": "FOUNDATION-CLOSEOUT-01",
+  "result": "BLOCKED",
+  "foundation_lock": false,
+  "narrow_feature_work_authorized": false,
+  "broad_feature_work_authorized": false,
+  "next_task": "FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01",
+  "full_ctest": "T4_deferred_known_debt",
+  "blocking_repairs": [
+    "FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01"
+  ],
+  "warnings": [
+    "API/ABI validator passes with stable-promotion warnings.",
+    "Full CTest remains T4/full-gate debt.",
+    "Inventory modes are descriptive and not migration proof."
+  ]
+}

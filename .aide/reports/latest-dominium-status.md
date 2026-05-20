@@ -1,43 +1,32 @@
 # Latest Dominium Status
 
-Current task: `PORTABILITY-MATRIX-01`.
+Current task: `FOUNDATION-CLOSEOUT-01`.
 
-Result: PASS_WITH_WARNINGS, pending final commit and post-commit checks.
+Result: BLOCKED.
 
-## Current Green State
+## Current State
 
-- Portability contracts, registries, matrices, validator, fixtures, docs, and
-  evidence exist under the allowed task scope.
-- Portability validator passes strict/json/fixtures/inventory modes.
-- Fixture validation passes: 4 valid fixtures and 4 negative fixtures.
-- Platform floor registry includes 8 entries.
-- Architecture registry includes 6 entries.
-- Toolchain registry includes 10 entries.
-- Matrix rows: runtime 3, renderer 6, product mode 4, package 3.
-- Diagnostics registry includes portability diagnostic codes.
-- Refusal registry includes portability refusal codes.
-- Capability registry includes provisional portability capabilities.
-- Public surface registry includes portability surfaces.
-- Fast strict passes 32 commands in 312.297 seconds.
+- All required Foundation Lock files for tasks 01 through 15 are present.
+- Public surface, API/ABI, command, diagnostics, artifact, schema/protocol, capability/refusal, provider, module/workbench/app, replacement, version/deprecation, mod/pack trust, and portability validators are present.
+- Most Foundation validators and fixtures pass.
+- Fast strict passes 32 commands in 308.406 seconds, including RepoX STRICT,
+  CMake configure/build, and smoke CTest.
+- Dependency-direction strict validation fails with 358 violations and 38 warnings.
+- Foundation Lock is not closed.
+- `WORKBENCH-VALIDATION-SLICE-01` is not authorized.
 
-## Current Dependency Debt
+## Blocker
 
-- `python tools/validators/repo/check_dependency_directions.py --repo-root . --strict`
-  still reports known existing repo debt: 358 violations and 38 warnings.
-- ABI public-header validator passes with 2851 stable-promotion warnings.
-- Full CTest/full release gates remain outside this task.
+`python tools/validators/repo/check_dependency_directions.py --repo-root . --strict`
 
-## Remaining Blockers
+Next repair task: `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
 
-- Portability matrix is provisional.
-- No new platform/toolchain/product/package/release support is claimed.
-- Runtime provider resolver, renderer fallback/runtime support, package runtime,
-  product release support, new CMake targets, and CI portability lanes are not
-  implemented.
-- Feature implementation remains blocked until Foundation Lock closes.
+## Remaining Debt
 
-DOE-00 readiness: no.
+- API/ABI validator passes with 2851 stable-promotion warnings.
+- Full CTest remains T4/full-gate debt and is not claimed green.
+- Queue B hardening remains future work.
 
 Feature implementation authorized: no.
 
-Next task: `FOUNDATION-CLOSEOUT-01`.
+Broad feature work authorized: no.

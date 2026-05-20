@@ -5,13 +5,29 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `MOD-PACK-TRUST-MODEL-01`.
+Latest task: `FOUNDATION-CLOSEOUT-01`.
 
-Result: PASS_WITH_WARNINGS for the provisional mod/pack trust law.
-Trust contracts, trust/permission registries, mod descriptor schema, policy
-contracts, validator, fixtures, docs, diagnostics/refusal/capability codes,
-public surface registrations, and evidence exist. Existing dependency-direction
-debt remains visible and is not hidden by this task.
+Result: BLOCKED.
+
+Foundation Lock was verified for presence and validator coverage, but it is not
+closed. The dependency-direction strict validator still reports 358 violations
+and 38 warnings in required closeout scope.
+
+Next task:
+`FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`
+
+`WORKBENCH-VALIDATION-SLICE-01` is not authorized yet. Broad feature work
+remains blocked.
+
+## FOUNDATION-CLOSEOUT-01 Update
+
+FOUNDATION-CLOSEOUT-01 is BLOCKED.
+
+- all required Foundation Lock files for tasks 01 through 15 are present.
+- most Foundation validators and fixtures pass.
+- active blocker: `tools/validators/repo/check_dependency_directions.py`.
+- fast strict was run and produced closeout evidence.
+- full CTest remains T4/full-gate debt and is not claimed green.
 
 ## MOD-PACK-TRUST-MODEL-01 Update
 

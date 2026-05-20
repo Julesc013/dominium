@@ -5,7 +5,22 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, PROVIDER-MODEL-01, MODULE-COMPOSITION-LAW-01, REPLACEMENT-PROTOCOL-01, VERSION-DEPRECATION-LAW-01, and MOD-PACK-TRUST-MODEL-01.
+Latest proof state: BLOCKED at `FOUNDATION-CLOSEOUT-01` after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, PROVIDER-MODEL-01, MODULE-COMPOSITION-LAW-01, REPLACEMENT-PROTOCOL-01, VERSION-DEPRECATION-LAW-01, MOD-PACK-TRUST-MODEL-01, and PORTABILITY-MATRIX-01.
+
+## FOUNDATION-CLOSEOUT-01 Proof Note
+
+FOUNDATION-CLOSEOUT-01 verifies the Foundation Lock spine but does not close it.
+
+- all expected Foundation Lock files for tasks 01 through 15 are present.
+- public surface, API/ABI, command, diagnostics, artifact, schema/protocol,
+  capability/refusal, provider, module/workbench/app, replacement,
+  version/deprecation, mod/pack trust, and portability validators are present.
+- blocker: dependency-direction strict validation fails with 358 violations and
+  38 warnings.
+- `WORKBENCH-VALIDATION-SLICE-01` is not authorized.
+- next repair task: `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
+
+Feature implementation remains blocked until Foundation Lock is rerun and passes.
 
 ## MOD-PACK-TRUST-MODEL-01 Proof Note
 

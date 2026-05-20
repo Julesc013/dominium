@@ -1,0 +1,162 @@
+{
+  "task": "FOUNDATION-CLOSEOUT-01",
+  "branch": "main",
+  "starting_head": "6f12e6f0a89a789d894a790970c8c18980312dba",
+  "origin_main": "6f12e6f0a89a789d894a790970c8c18980312dba",
+  "items": [
+    {
+      "task_id": "01 FAST-STRICT-TEST-TIER-01",
+      "present": true,
+      "validator_command": "python tools/validators/testing/check_test_tiers.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "not_applicable",
+      "inventory_result": "not_applicable",
+      "status": "pass",
+      "notes": "Fast strict runner and test tier contract exist."
+    },
+    {
+      "task_id": "02 PUBLIC-SURFACE-REGISTRY-01",
+      "present": true,
+      "validator_command": "python tools/validators/repo/check_public_surface.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "not_applicable",
+      "inventory_result": "not_applicable",
+      "status": "pass",
+      "notes": "148 surfaces, 2 stable."
+    },
+    {
+      "task_id": "03 API-ABI-CANON-01",
+      "present": true,
+      "validator_command": "python tools/validators/abi/check_public_headers.py --repo-root . --strict",
+      "validator_result": "pass_with_warnings",
+      "fixture_result": "not_applicable",
+      "inventory_result": "not_applicable",
+      "status": "pass_with_warnings",
+      "notes": "375 headers, 0 errors, 2851 stable-promotion warnings."
+    },
+    {
+      "task_id": "04 DEPENDENCY-DIRECTION-01",
+      "present": true,
+      "validator_command": "python tools/validators/repo/check_dependency_directions.py --repo-root . --strict",
+      "validator_result": "fail",
+      "fixture_result": "not_applicable",
+      "inventory_result": "not_applicable",
+      "status": "blocked",
+      "notes": "358 violations and 38 warnings."
+    },
+    {
+      "task_id": "05 COMMAND-SURFACE-01",
+      "present": true,
+      "validator_command": "python tools/validators/contracts/check_command_surface.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "not_applicable",
+      "inventory_result": "not_applicable",
+      "status": "pass",
+      "notes": "5 commands, 0 errors."
+    },
+    {
+      "task_id": "06 DIAGNOSTIC-CODE-REGISTRY-01",
+      "present": true,
+      "validator_command": "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "not_applicable",
+      "inventory_result": "not_applicable",
+      "status": "pass",
+      "notes": "89 diagnostic codes."
+    },
+    {
+      "task_id": "07 ARTIFACT-IDENTITY-LAW-01",
+      "present": true,
+      "validator_command": "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "pass",
+      "inventory_result": "not_run",
+      "status": "pass",
+      "notes": "23 artifact kinds, 11 lifecycle states."
+    },
+    {
+      "task_id": "08 SCHEMA-PROTOCOL-LAW-01",
+      "present": true,
+      "validator_command": "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "pass",
+      "inventory_result": "not_run",
+      "status": "pass",
+      "notes": "Schema/protocol fixtures passed."
+    },
+    {
+      "task_id": "09 CAPABILITY-REFUSAL-LAW-01",
+      "present": true,
+      "validator_command": "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "pass",
+      "inventory_result": "not_run",
+      "status": "pass",
+      "notes": "30 capabilities, 44 refusal codes."
+    },
+    {
+      "task_id": "10 PROVIDER-MODEL-01",
+      "present": true,
+      "validator_command": "python tools/validators/contracts/check_provider_model.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "pass",
+      "inventory_result": "warning",
+      "status": "pass_with_warnings",
+      "notes": "5 providers, 15 provider kinds; inventory warning is descriptive."
+    },
+    {
+      "task_id": "11 MODULE-COMPOSITION-LAW-01",
+      "present": true,
+      "validator_command": "module/workbench/app validators --strict",
+      "validator_result": "pass",
+      "fixture_result": "pass",
+      "inventory_result": "pass",
+      "status": "pass",
+      "notes": "Module, workbench, and app validators all pass."
+    },
+    {
+      "task_id": "12 REPLACEMENT-PROTOCOL-01",
+      "present": true,
+      "validator_command": "python tools/validators/repo/check_replacement_packet.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "pass",
+      "inventory_result": "warning",
+      "status": "pass_with_warnings",
+      "notes": "Inventory found historical replacement-like evidence but no strict failure."
+    },
+    {
+      "task_id": "13 VERSION-DEPRECATION-LAW-01",
+      "present": true,
+      "validator_command": "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "pass",
+      "inventory_result": "warning",
+      "status": "pass_with_warnings",
+      "notes": "9 lifecycle states; inventory is descriptive."
+    },
+    {
+      "task_id": "14 MOD-PACK-TRUST-MODEL-01",
+      "present": true,
+      "validator_command": "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "pass",
+      "inventory_result": "warning",
+      "status": "pass_with_warnings",
+      "notes": "7 trust levels and 22 permission kinds; inventory is descriptive."
+    },
+    {
+      "task_id": "15 PORTABILITY-MATRIX-01",
+      "present": true,
+      "validator_command": "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict",
+      "validator_result": "pass",
+      "fixture_result": "pass",
+      "inventory_result": "pass",
+      "status": "pass",
+      "notes": "8 platform floors, 6 architectures, 10 toolchains."
+    }
+  ],
+  "overall_status": "blocked",
+  "blocking_repairs": [
+    "FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01"
+  ]
+}

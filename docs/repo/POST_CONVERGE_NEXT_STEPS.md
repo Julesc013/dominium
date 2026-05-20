@@ -9,6 +9,21 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## FOUNDATION-CLOSEOUT-01 Update
+
+FOUNDATION-CLOSEOUT-01 is BLOCKED.
+
+- all required Foundation Lock files for tasks 01 through 15 are present.
+- most Foundation validators pass in strict and fixture scope.
+- blocker: `python tools/validators/repo/check_dependency_directions.py --repo-root . --strict`
+  reports 358 violations and 38 warnings.
+- narrow product work is not authorized.
+- broad feature work remains blocked.
+- next repair task: `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
+
+`WORKBENCH-VALIDATION-SLICE-01` remains pending until the dependency-direction
+blocker is repaired and Foundation Lock is rerun.
+
 ## MOD-PACK-TRUST-MODEL-01 Update
 
 MOD-PACK-TRUST-MODEL-01 adds the provisional mod/pack trust law.
