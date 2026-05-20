@@ -1,0 +1,297 @@
+schema_version = "dominium.public_surface.registry.v1"
+status = "provisional"
+last_reviewed = "2026-05-20"
+owner = "contracts.public_surface"
+
+[contract]
+id = "dominium.public_surface.registry.v1"
+status = "provisional"
+owner = "contracts.public_surface"
+purpose = "Registers public, internal, generated, fixture, historical, and retired surfaces."
+
+[policy]
+paths_are_identity = false
+implementation_is_contract = false
+generated_output_is_source_truth = false
+ui_is_authority = false
+default_stability = "internal"
+stable_requires_proof = true
+stable_requires_compatibility_policy = true
+stable_requires_registry_update = true
+generated_requires_source_and_generator = true
+retired_requires_reason = true
+full_ctest_required_for_registry_change = false
+normal_gate = "fast_strict"
+
+[stability_transition]
+allowed = ["experimental->provisional", "provisional->stable_api", "provisional->stable_data_contract", "provisional->stable_command_contract", "provisional->stable_protocol", "stable_api->retired", "stable_data_contract->retired", "stable_command_contract->retired", "stable_protocol->retired", "internal->provisional", "generated->provisional", "fixture->provisional"]
+forbidden = ["internal->stable_api", "internal->stable_data_contract", "generated->stable_data_contract_without_source_promotion", "fixture->stable_data_contract_without_new_surface", "historical->stable_without_review", "retired->stable_without_replacement_protocol"]
+promotion_rule = "Stable promotion requires this registry update, proof entries, compatibility policy, and task-specific validation."
+retirement_rule = "Retirement requires replacement_policy and retirement_reason."
+
+[[surface]]
+id = "domino.engine.public_headers.v1"
+kind = "c_header"
+path = "engine/include"
+owner = "engine"
+stability = "provisional"
+language = "c89"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root ."]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_registry_update"
+notes = "Umbrella entry for Domino engine public header surface; individual stable headers require API-ABI-CANON-01 proof."
+
+[[surface]]
+id = "domino.runtime.public_headers.v1"
+kind = "c_header"
+path = "runtime/include"
+owner = "runtime"
+stability = "provisional"
+language = "c89"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root ."]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_registry_update"
+notes = "Runtime headers are visible but not frozen ABI in this task."
+
+[[surface]]
+id = "dominium.game.public_headers.v1"
+kind = "c_header"
+path = "game/include"
+owner = "game"
+stability = "provisional"
+language = "c89/cpp"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root ."]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_registry_update"
+notes = "Game headers expose Dominium domain surfaces but are not stable external API yet."
+
+[[surface]]
+id = "dominium.launcher.headers.v1"
+kind = "c_header"
+path = "apps/launcher/include"
+owner = "apps.launcher"
+stability = "internal"
+language = "c89/cpp"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python scripts/verify_build_target_boundaries.py --repo-root ."]
+compatibility = "internal_no_public_promise"
+replacement_policy = "internal_change_allowed_with_boundary_proof"
+notes = "Launcher include tree is registered to prevent accidental public API claims."
+
+[[surface]]
+id = "dominium.setup.headers.v1"
+kind = "c_header"
+path = "apps/setup/include"
+owner = "apps.setup"
+stability = "internal"
+language = "c89/cpp"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python scripts/verify_build_target_boundaries.py --repo-root ."]
+compatibility = "internal_no_public_promise"
+replacement_policy = "internal_change_allowed_with_boundary_proof"
+notes = "Setup include tree remains internal until a product command/API contract exists."
+
+[[surface]]
+id = "dominium.workbench.modules.v1"
+kind = "module_descriptor"
+path = "apps/workbench/module"
+owner = "apps.workbench"
+stability = "internal"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python scripts/verify_ui_shell_purity.py --repo-root ."]
+compatibility = "internal_no_public_promise"
+replacement_policy = "requires_module_composition_law_before_public_promotion"
+notes = "Workbench module files are not stable module descriptors yet."
+
+[[surface]]
+id = "dominium.schema.catalog.v1"
+kind = "schema"
+path = "contracts/schema"
+owner = "contracts.schema"
+stability = "provisional"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python scripts/verify_docs_sanity.py --repo-root ."]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_schema_protocol_law_update"
+notes = "Umbrella schema catalog entry; individual schemas need SCHEMA-PROTOCOL-LAW-01 before stable promotion."
+
+[[surface]]
+id = "dominium.registry.catalog.v1"
+kind = "registry"
+path = "contracts/registry"
+owner = "contracts.registry"
+stability = "provisional"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python scripts/verify_docs_sanity.py --repo-root ."]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_registry_owner_update"
+notes = "Large registry catalog is visible but not globally stable as one surface."
+
+[[surface]]
+id = "dominium.package.contracts.v1"
+kind = "package_format"
+path = "contracts/package"
+owner = "contracts.package"
+stability = "provisional"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python scripts/verify_docs_sanity.py --repo-root ."]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_artifact_identity_law_or_mod_pack_trust_model_update"
+notes = "Package contract docs and lock examples are registered without declaring a stable package format."
+
+[[surface]]
+id = "dominium.content.packs.v1"
+kind = "package_format"
+path = "content/packs"
+owner = "content"
+stability = "provisional"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["ctest --preset verify -L smoke --output-on-failure --timeout 300"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_mod_pack_trust_model_update"
+notes = "Authored pack root is visible and important, but pack trust/compatibility remains future Foundation Lock work."
+
+[[surface]]
+id = "dominium.repo.layout.v1"
+kind = "registry"
+path = "contracts/repo/layout.contract.toml"
+owner = "contracts.repo"
+stability = "stable_data_contract"
+version = "1.0.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python tools/validators/check_repo_layout.py --repo-root . --strict"]
+compatibility = "repo_governance_contract; changes require validator and status updates"
+replacement_policy = "requires_registry_update_and_migration_ledger_entry"
+notes = "Strict repo layout validator proves this contract in the normal gate."
+
+[[surface]]
+id = "dominium.repo.root_allowlist.v1"
+kind = "registry"
+path = "contracts/repo/root_allowlist.toml"
+owner = "contracts.repo"
+stability = "stable_data_contract"
+version = "1.0.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python tools/validators/check_root_allowlist.py --repo-root . --strict"]
+compatibility = "repo_governance_contract; changes require validator and status updates"
+replacement_policy = "requires_registry_update_and_migration_ledger_entry"
+notes = "Strict root allowlist validator proves this contract in the normal gate."
+
+[[surface]]
+id = "dominium.repo.naming.v1"
+kind = "registry"
+path = "contracts/repo/naming.contract.toml"
+owner = "contracts.repo"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python tools/validators/repo/check_directory_naming.py --repo-root . --strict --max-findings 50"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_naming_law_update"
+notes = "Naming contract is active but related validators still classify known debt, so it remains provisional here."
+
+[[surface]]
+id = "dominium.testing.test_tiers.v1"
+kind = "registry"
+path = "contracts/testing/test_tiers.contract.toml"
+owner = "tools.test"
+stability = "provisional"
+version = "1.0.0"
+introduced = "FAST-STRICT-TEST-TIER-01"
+proof = ["python tools/validators/testing/check_test_tiers.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_test_tier_contract_update"
+notes = "Fast strict proof tier registry is new and intentionally provisional."
+
+[[surface]]
+id = "dominium.release.update_channels.v1"
+kind = "registry"
+path = "release/updates"
+owner = "release"
+stability = "provisional"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python scripts/verify_docs_sanity.py --repo-root ."]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_release_control_plane_update"
+notes = "Release update channel metadata exists but release/trust proof is outside this task."
+
+[[surface]]
+id = "dominium.release.control_plane.v1"
+kind = "release_artifact"
+path = "release"
+owner = "release"
+stability = "provisional"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python tools/validators/check_distribution_layout.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_release_control_plane_update"
+notes = "Release control-plane sources are registered as provisional; no release artifacts are generated by this task."
+
+[[surface]]
+id = "dominium.archive.generated.aide.v1"
+kind = "archive_record"
+path = "archive/generated/aide"
+owner = "archive"
+stability = "historical"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python tools/validators/check_repo_layout.py --repo-root . --strict"]
+compatibility = "not_active_surface"
+replacement_policy = "archive_retention_only"
+notes = "Generated AIDE archive material is historical evidence, not active source truth."
+
+[[surface]]
+id = "dominium.public_surface.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/public_surface"
+owner = "tests.contract"
+stability = "fixture"
+version = "0.1.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python tools/validators/repo/check_public_surface.py --repo-root . --fixture-dir tests/contract/public_surface/fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_validator_tests"
+notes = "Fixture suite for the public-surface validator."
+
+[[surface]]
+id = "dominium.retired.root_schema.v1"
+kind = "archive_record"
+path = "schema"
+owner = "contracts.repo"
+stability = "retired"
+version = "1.0.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python tools/validators/check_root_allowlist.py --repo-root . --strict"]
+compatibility = "retired_no_active_dependency"
+replacement_policy = "contracts/schema"
+retirement_reason = "Root-level schema was retired; active schema law belongs under contracts/schema."
+notes = "Registered retired root so future work does not recreate it as a public surface."
+
+[[surface]]
+id = "dominium.retired.root_schemas.v1"
+kind = "archive_record"
+path = "schemas"
+owner = "contracts.repo"
+stability = "retired"
+version = "1.0.0"
+introduced = "PUBLIC-SURFACE-REGISTRY-01"
+proof = ["python tools/validators/check_root_allowlist.py --repo-root . --strict"]
+compatibility = "retired_no_active_dependency"
+replacement_policy = "contracts/schema"
+retirement_reason = "Root-level schemas was retired; active validator-facing schema projections belong under contracts/schema unless later law says otherwise."
+notes = "Registered retired root so future work does not recreate it as a public surface."

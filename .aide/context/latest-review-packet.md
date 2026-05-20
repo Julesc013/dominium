@@ -2,9 +2,8 @@
 
 ## Review Objective
 
-Review `FAST-STRICT-TEST-TIER-01`: the Foundation Lock task that defines the
-normal fast strict development proof gate and separates it from T4 full/release
-proof.
+Review `PUBLIC-SURFACE-REGISTRY-01`: initial public surface registry,
+validator, fixtures, documentation, and evidence.
 
 ## Decision Requested
 
@@ -14,41 +13,62 @@ proof.
 
 `.aide/context/latest-task-packet.md`
 
+## Context Packet Reference
+
+`.aide/context/latest-context-packet.md`
+
+## Verification Report Reference
+
+`.aide/verification/latest-verification-report.md`
+
 ## Evidence Packet References
 
-- `contracts/testing/test_tiers.contract.toml`
-- `contracts/testing/test_tiers.schema.json`
-- `tools/test/run_fast_strict.py`
-- `tools/validators/testing/check_test_tiers.py`
-- `docs/testing/fast_strict_test_tier.md`
-- `docs/testing/test_tier_policy.md`
-- `.aide/reports/FAST-STRICT-TEST-TIER-01-status.md`
-- `.aide/reports/FAST-STRICT-TEST-TIER-01-validation.md`
-- `.aide/reports/FAST-STRICT-TEST-TIER-01-results.json`
-- `.aide/reports/FAST-STRICT-TEST-TIER-01-run.json`
-- `.aide/reports/FAST-STRICT-TEST-TIER-01-run.md`
-- `.aide/reports/FAST-STRICT-TEST-TIER-01-full-gate-debt.md`
-- `docs/repo/audits/FAST_STRICT_TEST_TIER_01.md`
+- `contracts/public_surface/public_surface.contract.toml`
+- `contracts/public_surface/surface.schema.json`
+- `contracts/public_surface/surface_kind.registry.json`
+- `contracts/public_surface/surface_stability.registry.json`
+- `tools/validators/repo/check_public_surface.py`
+- `tests/contract/public_surface/**`
+- `docs/architecture/public_surface_registry.md`
+- `docs/development/public_surface_guidelines.md`
+- `.aide/reports/PUBLIC-SURFACE-REGISTRY-01-status.md`
+- `.aide/reports/PUBLIC-SURFACE-REGISTRY-01-validation.md`
+- `.aide/reports/PUBLIC-SURFACE-REGISTRY-01-results.json`
+- `.aide/reports/PUBLIC-SURFACE-REGISTRY-01-initial-surface-inventory.md`
+- `docs/repo/audits/PUBLIC_SURFACE_REGISTRY_01.md`
 
 ## Changed Files Summary
 
-The task adds a machine-readable tier contract, a stdlib fast strict runner, a
-contract validator, test-tier docs, AIDE evidence, and narrow status pointers.
-It does not change product, gameplay, renderer, platform, or native GUI behavior.
+Adds a machine-readable public surface registry, kind/stability registries,
+JSON schema, stdlib validator, fixtures, documentation, and AIDE/repo evidence
+updates. A narrow fast-strict TOML fallback parser fix supports `[[surface]]`
+array tables without weakening validation.
 
 ## Validation Summary
 
-The normal `fast_strict` gate passed 30/30 commands in 332.828 seconds. The gate
-includes T0 static hygiene, T1 strict repo/governance checks, and T2 CMake
-configure/build plus smoke CTest.
+Public surface validator and fixtures pass. Initial registry has 20 surfaces,
+25 surface kinds, 12 stability classes, and 2 stable data contracts. RepoX
+STRICT passes after the required canon index and identity fingerprint refresh.
+Fast strict passes 30/30 commands in 299.828 seconds.
 
 ## Risk Summary
 
-Full CTest remains known T4 full/release debt and was not rerun for this task.
-Feature work remains blocked until Foundation Lock closes.
+The registry is intentionally conservative and incomplete. API/ABI, command,
+diagnostic, provider, schema/protocol, artifact identity, replacement, and pack
+trust hardening remain future Foundation Lock tasks.
+
+## Token Summary
+
+The packet stays compact and references evidence by path.
+
+## Non-Goals / Scope Guard
+
+No feature implementation, public release, tag, upload, renderer/native GUI
+behavior, package runtime, provider model, compatibility corpus, or false stable
+surface claim.
 
 ## Reviewer Instructions
 
-Confirm that T0/T1/T2 are strict enough for normal task closeout, that T3/T4
-remain outside the normal gate, and that full CTest debt is visible rather than
-hidden or marked green.
+Confirm that unproven surfaces remain internal/provisional, generated/archive
+material is not treated as source truth, and retired roots are visible without
+being reactivated.

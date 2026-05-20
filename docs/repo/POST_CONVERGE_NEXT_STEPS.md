@@ -9,6 +9,20 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## PUBLIC-SURFACE-REGISTRY-01 Update
+
+PUBLIC-SURFACE-REGISTRY-01 adds the initial public surface registry:
+
+- registry: `contracts/public_surface/public_surface.contract.toml`
+- validator: `python tools/validators/repo/check_public_surface.py --repo-root . --strict`
+- initial surfaces: 20
+- stable surfaces: 2, limited to strict repo governance contracts
+- fast strict: PASS, 30/30 commands, 299.828 seconds
+- next Foundation Lock task: `API-ABI-CANON-01`
+
+Feature implementation remains blocked until Foundation Lock closes. No broad
+folder work is required by this registry scaffold.
+
 ## FAST-STRICT-TEST-TIER-01 Update
 
 FAST-STRICT-TEST-TIER-01 defines the normal development proof gate as

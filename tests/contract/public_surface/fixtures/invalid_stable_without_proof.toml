@@ -1,0 +1,25 @@
+[contract]
+id = "dominium.public_surface.registry.v1"
+status = "fixture"
+owner = "tests.contract"
+purpose = "Invalid fixture with stable surface but no proof."
+
+[policy]
+paths_are_identity = false
+implementation_is_contract = false
+generated_output_is_source_truth = false
+ui_is_authority = false
+default_stability = "internal"
+stable_requires_proof = true
+stable_requires_compatibility_policy = true
+
+[[surface]]
+id = "dominium.fixture.stable_without_proof.v1"
+kind = "registry"
+path = "contracts/public_surface"
+owner = "tests.contract"
+stability = "stable_data_contract"
+proof = []
+compatibility = "fixture_compatibility_policy"
+replacement_policy = "requires_registry_update"
+notes = "Proof is intentionally empty."

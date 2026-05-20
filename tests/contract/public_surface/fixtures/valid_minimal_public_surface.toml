@@ -1,0 +1,25 @@
+[contract]
+id = "dominium.public_surface.registry.v1"
+status = "fixture"
+owner = "tests.contract"
+purpose = "Valid minimal public surface fixture."
+
+[policy]
+paths_are_identity = false
+implementation_is_contract = false
+generated_output_is_source_truth = false
+ui_is_authority = false
+default_stability = "internal"
+stable_requires_proof = true
+stable_requires_compatibility_policy = true
+
+[[surface]]
+id = "dominium.fixture.public_surface.v1"
+kind = "test_fixture"
+path = "tests/contract/public_surface"
+owner = "tests.contract"
+stability = "fixture"
+proof = ["validator_fixture"]
+compatibility = "fixture_only"
+replacement_policy = "fixture_changes_follow_tests"
+notes = "Valid fixture entry."

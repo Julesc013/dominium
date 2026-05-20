@@ -7,6 +7,22 @@ Superseded By: none
 
 Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, and NAME-00 naming-law follow-up.
 
+## PUBLIC-SURFACE-REGISTRY-01 Proof Note
+
+PUBLIC-SURFACE-REGISTRY-01 adds a provisional public surface registry and
+validator.
+
+- registry: `contracts/public_surface/public_surface.contract.toml`
+- validator: `python tools/validators/repo/check_public_surface.py --repo-root . --strict`
+- initial surfaces: 20.
+- stable surfaces: 2, limited to repo layout and root allowlist contracts.
+- fast strict: PASS, 30/30 commands, 299.828 seconds.
+- unproven headers, schemas, package formats, release surfaces, and Workbench
+  modules remain provisional or internal.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `API-ABI-CANON-01`.
+
 ## FAST-STRICT-TEST-TIER-01 Proof Note
 
 FAST-STRICT-TEST-TIER-01 adds the normal development gate:

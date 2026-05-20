@@ -1,23 +1,27 @@
 # Latest Warning Disposition
 
-Current task: `FAST-STRICT-TEST-TIER-01`.
+Current task: `PUBLIC-SURFACE-REGISTRY-01`.
 
 ## Accepted Local/Generated Warnings
 
 - `.aide.local/**`, `.dominium.local/**`, `.xstack_cache/**`, `build/`, `out/`, `dist/`, `artifacts/`, `tmp/`, and `__pycache__/` remain local/generated roots and must not be tracked.
-- Task evidence under `.aide/reports/FAST-STRICT-TEST-TIER-01-*` is tracked audit evidence, not local cache output.
+- Generated/archive material is not source truth unless a stronger contract explicitly promotes it.
 
-## Repaired Warnings
+## Conservative Classifications
 
-- Dominium now has an explicit normal development proof gate: `fast_strict` = T0 + T1 + T2.
-- The normal gate passed 30/30 commands in 332.828 seconds.
-- Full CTest is no longer treated as the routine edit-loop gate.
+- Engine, runtime, and game header surfaces are `provisional`, not stable API/ABI.
+- Workbench module surfaces are `internal`.
+- Package, pack, schema, registry, release, and update surfaces are mostly `provisional`.
+- `archive/generated/aide` is `historical`.
+- Public surface fixtures are `fixture`.
+- Retired root-level `schema` and `schemas` are recorded as `retired`.
 
 ## Blocking Warnings
 
-- Full CTest is still not green and remains T4 full/release debt.
-- The previous recorded full CTest result is 440/503 passed, 63 failed, about 3227.41 seconds; this task did not rerun it.
-- `FULL-GATE-DEBT-01` remains required for broad full-proof debt.
+- Compatibility corpus is not populated by this task.
+- Stable API/ABI proof remains assigned to `API-ABI-CANON-01`.
+- Fast strict is green for this registry task: 30/30 commands, 299.828 seconds.
+- Full CTest remains T4 full/release debt.
 - Feature work and DOE-00 remain blocked until Foundation Lock closes.
 
-Next task: `PUBLIC-SURFACE-REGISTRY-01`.
+Next task: `API-ABI-CANON-01`.

@@ -593,6 +593,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/MODULE_INDEX_v1.md`
 - `docs/architecture/NETWORKGRAPH_STANDARD.md`
 - `docs/architecture/POST_CLEAN_2_STATUS.md`
+- `docs/architecture/public_surface_registry.md`
 - `docs/architecture/QUANTITY_BUNDLES.md`
 - `docs/architecture/REPOSITORY_STRUCTURE_v1.md`
 - `docs/architecture/RETRO_CONSISTENCY_AUDIT_FRAMEWORK.md`

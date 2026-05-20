@@ -124,12 +124,13 @@ def _load_toml_fallback(path: Path) -> dict[str, Any]:
     current = root
     for line in _logical_lines(path):
         if line.startswith("[[") and line.endswith("]]"):
-            key = line[2:-2].strip()
-            if key != "commands":
-                raise ValueError(f"fallback TOML reader supports only [[commands]], not [[{key}]]")
-            commands = root.setdefault("commands", [])
+            parts = [part.strip() for part in line[2:-2].split(".") if part.strip()]
+            if not parts:
+                raise ValueError("empty TOML array table")
+            parent = _target(root, parts[:-1]) if len(parts) > 1 else root
+            commands = parent.setdefault(parts[-1], [])
             if not isinstance(commands, list):
-                raise ValueError("commands must be an array")
+                raise ValueError(f"{'.'.join(parts)} must be an array")
             current = {}
             commands.append(current)
             continue

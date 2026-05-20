@@ -1,0 +1,22 @@
+{
+  "task": "PUBLIC-SURFACE-REGISTRY-01",
+  "result": "PASS_WITH_WARNINGS",
+  "surface_count": 20,
+  "stable_count": 2,
+  "provisional_count": 11,
+  "internal_count": 3,
+  "generated_count": 0,
+  "fixture_count": 1,
+  "historical_count": 1,
+  "retired_count": 2,
+  "surface_kind_count": 25,
+  "stability_class_count": 12,
+  "validator_status": "pass",
+  "repox_strict_status": "pass",
+  "fast_strict_status": "pass",
+  "fast_strict_elapsed_seconds": 299.828,
+  "fast_strict_commands_total": 30,
+  "fast_strict_commands_passed": 30,
+  "fast_strict_commands_failed": 0,
+  "next_task": "API-ABI-CANON-01"
+}

@@ -9,6 +9,20 @@ Latest task: `MOVE-SCRIPT-00`.
 
 Result: PARTIAL, with naming law locked, CTest sharding honest, semantic lint blockers resolved, and deterministic bad-root routing evidence generated without applying moves.
 
+## PUBLIC-SURFACE-REGISTRY-01 Update
+
+PUBLIC-SURFACE-REGISTRY-01 is PASS_WITH_WARNINGS.
+
+- public surface registry: `contracts/public_surface/public_surface.contract.toml`.
+- validator: `python tools/validators/repo/check_public_surface.py --repo-root . --strict`.
+- initial registry: 20 surfaces, 25 kinds, 12 stability classes.
+- stable entries: 2 repo governance contracts with strict validator proof.
+- fast strict: PASS, 30/30 commands, 299.828 seconds.
+- feature implementation remains blocked until Foundation Lock closes.
+
+Next task:
+`API-ABI-CANON-01`
+
 ## FAST-STRICT-TEST-TIER-01 Update
 
 FAST-STRICT-TEST-TIER-01 is PASS_WITH_WARNINGS.

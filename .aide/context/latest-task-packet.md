@@ -1,17 +1,24 @@
 # AIDE Latest Task Packet
 
-## Phase
+## PHASE
 
 foundation-lock
 
-## Goal
+## GOAL
 
-`FAST-STRICT-TEST-TIER-01`
+`PUBLIC-SURFACE-REGISTRY-01`
 
-Define Dominium's normal fast strict development proof gate and keep full CTest
-as separate T4 release/full-certification proof.
+Create Dominium's machine-readable public surface registry for public,
+internal, generated, fixture, historical, and retired surfaces.
 
-## Relevant Invariants
+## WHY
+
+Future Foundation Lock work must not create accidental public APIs, artifact
+formats, command contracts, provider interfaces, schemas, release promises, or
+Workbench descriptors. Most surfaces should start internal or provisional until
+proof and compatibility policy justify stable promotion.
+
+## CONTEXT_REFS
 
 - `AGENTS.md`
 - `docs/canon/constitution_v1.md`
@@ -19,67 +26,89 @@ as separate T4 release/full-certification proof.
 - `docs/planning/AUTHORITY_ORDER.md`
 - `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`
 - `docs/planning/GATES_AND_PROOFS.md`
+- `contracts/testing/test_tiers.contract.toml`
+- `.aide/context/latest-context-packet.md`
+- `.aide/verification/latest-verification-report.md`
 
-## Allowed Paths
+## ALLOWED_PATHS
 
-- `contracts/testing/**`
-- `docs/testing/**`
-- `tools/test/**`
-- `tools/validators/testing/**`
+- `contracts/public_surface/**`
+- `docs/architecture/public_surface_registry.md`
+- `docs/development/public_surface_guidelines.md`
+- `tools/validators/repo/check_public_surface.py`
+- `tests/contract/public_surface/**`
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
 - `docs/repo/audits/**`
-- narrow status notes in `docs/repo/POST_CONVERGE_NEXT_STEPS.md`,
-  `docs/repo/POST_RESTRUCTURE_PROOF.md`, and
-  `docs/repo/RESTRUCTURE_REPAIR_STATUS.md`
+- `docs/repo/POST_CONVERGE_NEXT_STEPS.md`
+- `docs/repo/POST_RESTRUCTURE_PROOF.md`
+- `docs/repo/RESTRUCTURE_REPAIR_STATUS.md`
 
-## Deliverables
+## FORBIDDEN_PATHS
 
-- `contracts/testing/test_tiers.contract.toml`
-- `contracts/testing/test_tiers.schema.json`
-- `tools/test/run_fast_strict.py`
-- `tools/validators/testing/check_test_tiers.py`
-- `docs/testing/fast_strict_test_tier.md`
-- `docs/testing/test_tier_policy.md`
-- `.aide/reports/FAST-STRICT-TEST-TIER-01-*`
-- `docs/repo/audits/FAST_STRICT_TEST_TIER_01.md`
+- `.dominium.local/**`
+- `.aide.local/**`
+- build/projection/release generated outputs
+- product, gameplay, renderer, platform, native GUI, provider, Workbench UI, or package runtime implementation paths
+- public API/ABI rewrites outside registry classification
 
-## Normal Gate
+## IMPLEMENTATION
 
-Run:
+- Add kind and stability registries.
+- Add the initial conservative public surface TOML contract.
+- Add a stdlib validator with Python 3.8 TOML fallback.
+- Add validator fixtures and public-surface docs.
+- Update AIDE/repo status evidence narrowly.
+- Do not mark unproven surfaces stable.
 
-```text
-python tools/test/run_fast_strict.py --repo-root .
-```
+## VALIDATION
 
-The normal gate is `fast_strict` = T0 + T1 + T2. It excludes T3
-product/projection proof and T4 full/release proof unless a later task selects
-them explicitly.
-
-## Validation
-
-- `python -m py_compile tools/test/run_fast_strict.py tools/validators/testing/check_test_tiers.py`
-- `python tools/validators/testing/check_test_tiers.py --repo-root . --strict`
-- `python tools/validators/testing/check_test_tiers.py --repo-root . --json`
-- `python tools/test/run_fast_strict.py --repo-root . --list`
-- `python tools/test/run_fast_strict.py --repo-root . --dry-run`
-- `python tools/test/run_fast_strict.py --repo-root . --json-out .aide/reports/FAST-STRICT-TEST-TIER-01-run.json --md-out .aide/reports/FAST-STRICT-TEST-TIER-01-run.md`
+- `python -m py_compile tools/validators/repo/check_public_surface.py`
+- `python tools/validators/repo/check_public_surface.py --repo-root . --strict`
+- `python tools/validators/repo/check_public_surface.py --repo-root . --json`
+- `python tools/validators/repo/check_public_surface.py --repo-root . --fixture-dir tests/contract/public_surface/fixtures`
+- JSON/schema parse for the public surface registries and reports
+- `python tools/test/run_fast_strict.py --repo-root . --json-out .aide/reports/PUBLIC-SURFACE-REGISTRY-01-fast-strict.json --md-out .aide/reports/PUBLIC-SURFACE-REGISTRY-01-fast-strict.md`
 - `git diff --check`
 
-## Current Result
+## COMMITS
 
-`PASS_WITH_WARNINGS`: the normal fast strict gate passed 30/30 commands in
-332.828 seconds. Full CTest was not rerun and remains T4 known debt, with the
-previous recorded result of 440/503 passed, 63 failed, and about 3227.41 seconds.
+- Commit the completed task with audit-grade body after validation.
+- Do not amend, rebase, reset, or force push.
 
-## Non-Goals
+## EVIDENCE
 
-- No gameplay, Workbench, renderer, platform, native GUI, worldgen, package
-  format, provider, public-surface registry, or release artifact work.
-- No deletion or weakening of existing tests.
-- No false claim that full CTest is green.
+- `contracts/public_surface/public_surface.contract.toml`
+- `contracts/public_surface/surface.schema.json`
+- `contracts/public_surface/surface_kind.registry.json`
+- `contracts/public_surface/surface_stability.registry.json`
+- `.aide/reports/PUBLIC-SURFACE-REGISTRY-01-*`
+- `docs/repo/audits/PUBLIC_SURFACE_REGISTRY_01.md`
 
-## Next
+## NON_GOALS
 
-`PUBLIC-SURFACE-REGISTRY-01`
+- No gameplay, Workbench UI, renderer, native GUI, worldgen, package runtime, provider model, command implementation, ABI rewrite, release artifact, or compatibility corpus work.
+- No false stable claims for unproven surfaces.
+
+## ACCEPTANCE
+
+- Registry contract and schema exist.
+- Kind and stability registries exist.
+- Validator and fixtures pass.
+- Fast strict gate is run and recorded.
+- Feature work remains blocked pending Foundation Lock.
+
+## OUTPUT_SCHEMA
+
+Final report includes branch, starting HEAD, ending HEAD, origin/main, push
+status, result, created files, surface counts, validator status, fast strict
+status, warnings, worktree status, and next task.
+
+## TOKEN_ESTIMATE
+
+- method: chars / 4, rounded up
+- approx_tokens: 1050
+- budget_status: PASS
+- warnings:
+  - none

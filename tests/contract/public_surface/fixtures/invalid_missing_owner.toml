@@ -1,0 +1,24 @@
+[contract]
+id = "dominium.public_surface.registry.v1"
+status = "fixture"
+owner = "tests.contract"
+purpose = "Invalid fixture missing surface owner."
+
+[policy]
+paths_are_identity = false
+implementation_is_contract = false
+generated_output_is_source_truth = false
+ui_is_authority = false
+default_stability = "internal"
+stable_requires_proof = true
+stable_requires_compatibility_policy = true
+
+[[surface]]
+id = "dominium.fixture.missing_owner.v1"
+kind = "registry"
+path = "contracts/public_surface"
+stability = "provisional"
+proof = ["validator_fixture"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_registry_update"
+notes = "Owner is intentionally absent."
