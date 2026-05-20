@@ -2,8 +2,8 @@
 
 ## Review Objective
 
-Review `PUBLIC-SURFACE-REGISTRY-01`: initial public surface registry,
-validator, fixtures, documentation, and evidence.
+Review `API-ABI-CANON-01`: provisional C API/ABI canon, public-header validator,
+fixtures, documentation, public-surface registry updates, and evidence.
 
 ## Decision Requested
 
@@ -23,39 +23,40 @@ validator, fixtures, documentation, and evidence.
 
 ## Evidence Packet References
 
+- `contracts/abi/c_api.contract.toml`
+- `contracts/abi/language_boundary.contract.toml`
+- `contracts/abi/abi_rule.registry.json`
+- `contracts/abi/public_header.schema.json`
+- `tools/validators/abi/check_public_headers.py`
+- `tests/contract/public_headers/**`
+- `docs/architecture/api_abi_canon.md`
+- `docs/development/c89_coding_standard.md`
+- `docs/development/cpp98_implementation_standard.md`
+- `docs/development/module_api_standard.md`
 - `contracts/public_surface/public_surface.contract.toml`
-- `contracts/public_surface/surface.schema.json`
-- `contracts/public_surface/surface_kind.registry.json`
-- `contracts/public_surface/surface_stability.registry.json`
-- `tools/validators/repo/check_public_surface.py`
-- `tests/contract/public_surface/**`
-- `docs/architecture/public_surface_registry.md`
-- `docs/development/public_surface_guidelines.md`
-- `.aide/reports/PUBLIC-SURFACE-REGISTRY-01-status.md`
-- `.aide/reports/PUBLIC-SURFACE-REGISTRY-01-validation.md`
-- `.aide/reports/PUBLIC-SURFACE-REGISTRY-01-results.json`
-- `.aide/reports/PUBLIC-SURFACE-REGISTRY-01-initial-surface-inventory.md`
-- `docs/repo/audits/PUBLIC_SURFACE_REGISTRY_01.md`
+- `.aide/reports/API-ABI-CANON-01-status.md`
+- `.aide/reports/API-ABI-CANON-01-validation.md`
+- `.aide/reports/API-ABI-CANON-01-results.json`
+- `.aide/reports/API-ABI-CANON-01-public-header-inventory.md`
+- `docs/repo/audits/API_ABI_CANON_01.md`
 
 ## Changed Files Summary
 
-Adds a machine-readable public surface registry, kind/stability registries,
-JSON schema, stdlib validator, fixtures, documentation, and AIDE/repo evidence
-updates. A narrow fast-strict TOML fallback parser fix supports `[[surface]]`
-array tables without weakening validation.
+Adds provisional C89/C++98 API/ABI law, a stdlib public-header validator,
+fixture headers, docs, AIDE evidence, and conservative public-surface registry
+entries. Existing headers are not renamed or behaviorally changed.
 
 ## Validation Summary
 
-Public surface validator and fixtures pass. Initial registry has 20 surfaces,
-25 surface kinds, 12 stability classes, and 2 stable data contracts. RepoX
-STRICT passes after the required canon index and identity fingerprint refresh.
-Fast strict passes 30/30 commands in 299.828 seconds.
+ABI validator passes with 375 candidates, 0 high-confidence violations, and
+2,851 warnings. The warnings are retained as stable/frozen ABI promotion
+blockers. Public surface validator passes with 25 registered surfaces.
 
 ## Risk Summary
 
-The registry is intentionally conservative and incomplete. API/ABI, command,
-diagnostic, provider, schema/protocol, artifact identity, replacement, and pack
-trust hardening remain future Foundation Lock tasks.
+No public ABI is frozen. Existing `dom_`/`d_` prefixes, ABI-like struct shape,
+C++ declarations, and callback context gaps remain visible provisional debt.
+Compatibility corpus and deeper consumer compile proof remain later work.
 
 ## Token Summary
 
@@ -63,12 +64,11 @@ The packet stays compact and references evidence by path.
 
 ## Non-Goals / Scope Guard
 
-No feature implementation, public release, tag, upload, renderer/native GUI
-behavior, package runtime, provider model, compatibility corpus, or false stable
-surface claim.
+No feature implementation, release, tag, upload, renderer/native GUI behavior,
+package runtime change, provider model, dependency direction law, compatibility
+corpus, or full CTest proof.
 
 ## Reviewer Instructions
 
-Confirm that unproven surfaces remain internal/provisional, generated/archive
-material is not treated as source truth, and retired roots are visible without
-being reactivated.
+Confirm that the task defines and validates ABI law without freezing unproven
+headers, weakening existing validators, or hiding warning debt.

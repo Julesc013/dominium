@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.abi.public_header.schema.v1",
+  "title": "Dominium Public Header Surface Entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "path",
+    "owner",
+    "language_floor",
+    "namespace_prefix",
+    "stability",
+    "proof",
+    "notes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^(domino|dominium)(\\.[a-z0-9][a-z0-9_-]*)+\\.v[0-9]+$"
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language_floor": {
+      "type": "string",
+      "enum": ["c89", "cpp98", "c89_or_cpp98", "declared_by_surface"]
+    },
+    "namespace_prefix": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(domino_|dominium_|DOMINO_|DOMINIUM_)$"
+      },
+      "minItems": 1
+    },
+    "stability": {
+      "type": "string",
+      "enum": ["frozen_abi", "stable_api", "stable_data_contract", "stable_command_contract", "stable_protocol", "provisional", "internal", "experimental", "generated", "fixture", "historical", "retired"]
+    },
+    "proof": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "compatibility": {
+      "type": "string"
+    },
+    "replacement_policy": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "generator": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "stability": {
+            "enum": ["frozen_abi", "stable_api"]
+          }
+        },
+        "required": ["stability"]
+      },
+      "then": {
+        "required": ["compatibility", "replacement_policy"],
+        "properties": {
+          "proof": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stability": {
+            "const": "generated"
+          }
+        },
+        "required": ["stability"]
+      },
+      "then": {
+        "required": ["source", "generator"]
+      }
+    }
+  ]
+}

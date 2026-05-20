@@ -1,0 +1,113 @@
+schema_version = "dominium.abi.c_api.v1"
+status = "provisional"
+last_reviewed = "2026-05-20"
+owner = "contracts.abi"
+
+[contract]
+id = "dominium.abi.c_api.v1"
+status = "provisional"
+owner = "contracts.abi"
+purpose = "Defines C-compatible public API and ABI rules for Domino and Dominium surfaces."
+
+[authority]
+paths_are_identity = false
+implementation_is_contract = false
+public_identity_sources = ["contracts", "registries", "stable_ids", "public_headers", "compatibility_corpus", "release_metadata"]
+private_implementation_sources = ["directories", "files", "internal_structs", "helper_functions", "algorithms"]
+
+[language_floor]
+stable_public_c_headers = "c89"
+stable_public_cpp_headers = "cpp98_only_when_explicitly_declared"
+implementation_cpp_floor = "cpp98"
+higher_language_requires_surface_registry_entry = true
+
+[namespaces]
+reusable_prefix = "domino_"
+product_prefix = "dominium_"
+reusable_type_prefix = "domino_"
+product_type_prefix = "dominium_"
+reusable_type_suffix = "_t"
+product_type_suffix = "_t"
+reusable_macro_prefix = "DOMINO_"
+product_macro_prefix = "DOMINIUM_"
+legacy_prefix_status = "provisional_existing_debt"
+legacy_prefixes = ["dom_", "d_"]
+legacy_prefix_policy = "Existing dom_/d_ public header names are not promoted to frozen ABI by this contract; stable promotion requires explicit exception or replacement."
+
+[opaque_handles]
+owned_objects_crossing_abi_require_opaque_handles = true
+example = "typedef struct domino_engine domino_engine_t;"
+handle_ownership_must_be_documented = true
+destroy_or_release_function_required = true
+
+[structs]
+abi_visible_structs_require_struct_size = true
+public_config_structs_require_api_version = true
+caller_initializes_struct_size = true
+callee_validates_struct_size = true
+callee_validates_api_version_when_present = true
+raw_struct_serialization_forbidden = true
+layout_is_not_save_or_wire_format = true
+
+[allocator]
+explicit_allocator_required_for_cross_boundary_allocation = true
+destroy_function_required_for_owned_returns = true
+unknown_allocator_free_forbidden = true
+ownership_and_lifetime_notes_required = true
+
+[results_and_refusals]
+explicit_result_or_refusal_code_required = true
+silent_null_or_zero_failure_forbidden_unless_documented = true
+future_registry = "DIAGNOSTIC-CODE-REGISTRY-01 and CAPABILITY-REFUSAL-LAW-01"
+stable_codes_require_registry = true
+
+[callbacks]
+callback_user_pointer_required = true
+callback_threading_rules_required = true
+callback_lifetime_rules_required = true
+callback_ownership_rules_required = true
+
+[header_hygiene]
+include_guard_or_pragma_once_required = true
+self_contained_where_practical = true
+compile_as_c_required_for_stable_c_headers = true
+compile_as_cpp_required_where_extern_c_exposed = true
+extern_c_guard_required_for_c_headers_consumed_by_cpp = true
+implementation_private_headers_forbidden = true
+generic_unprefixed_macros_forbidden = true
+
+[forbidden_public_c_abi]
+cpp_classes = true
+templates = true
+stl = true
+exceptions = true
+overloaded_cpp_symbols = true
+platform_headers_in_engine = true
+engine_includes_runtime_game_or_apps = true
+raw_struct_serialization = true
+hidden_mutable_global_state = true
+
+[platform_leakage]
+engine_public_headers_must_be_portable = true
+forbidden_engine_header_families = ["windows", "winsock", "unistd", "pthread", "cocoa", "opengl", "direct3d", "vulkan", "metal", "sdl"]
+platform_specific_provider_headers_require_platform_scope = true
+
+[public_private_classification]
+candidate_public_roots = ["engine/include", "runtime/include", "game/include", "apps/*/include"]
+contracts_abi_headers_are_contract_surfaces = true
+implementation_headers_are_private_unless_registered = true
+archive_generated_fixture_headers_are_not_product_public_surfaces = true
+
+[promotion_rules]
+frozen_abi_requires_public_surface_registry = true
+frozen_abi_requires_consumer_tests = true
+stable_api_requires_conformance_tests = true
+stable_data_contract_requires_compatibility_policy = true
+provisional_surfaces_may_warn_without_failing_normal_gate = true
+warnings_block_stable_promotion_until_disposed = true
+no_surface_promoted_to_frozen_abi_by_this_task = true
+
+[validation]
+primary_validator = "python tools/validators/abi/check_public_headers.py --repo-root . --strict"
+fixture_validator = "python tools/validators/abi/check_public_headers.py --repo-root . --fixtures"
+existing_checks = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tests/contract/public_header_c89_compile.py --repo-root .", "python tests/contract/public_header_cpp98_compile.py --repo-root ."]

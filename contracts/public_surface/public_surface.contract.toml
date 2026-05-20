@@ -38,10 +38,10 @@ stability = "provisional"
 language = "c89"
 version = "0.1.0"
 introduced = "PUBLIC-SURFACE-REGISTRY-01"
-proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root ."]
+proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_registry_update"
-notes = "Umbrella entry for Domino engine public header surface; individual stable headers require API-ABI-CANON-01 proof."
+notes = "Umbrella entry for Domino engine public header surface; API-ABI-CANON-01 records this as provisional and warning-bearing, not frozen ABI."
 
 [[surface]]
 id = "domino.runtime.public_headers.v1"
@@ -52,10 +52,10 @@ stability = "provisional"
 language = "c89"
 version = "0.1.0"
 introduced = "PUBLIC-SURFACE-REGISTRY-01"
-proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root ."]
+proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_registry_update"
-notes = "Runtime headers are visible but not frozen ABI in this task."
+notes = "Runtime headers are visible but not frozen ABI; API-ABI-CANON-01 keeps them provisional pending compatibility proof."
 
 [[surface]]
 id = "dominium.game.public_headers.v1"
@@ -66,10 +66,10 @@ stability = "provisional"
 language = "c89/cpp"
 version = "0.1.0"
 introduced = "PUBLIC-SURFACE-REGISTRY-01"
-proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root ."]
+proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_registry_update"
-notes = "Game headers expose Dominium domain surfaces but are not stable external API yet."
+notes = "Game headers expose Dominium domain surfaces but are not stable external API; API-ABI-CANON-01 records current warning debt."
 
 [[surface]]
 id = "dominium.launcher.headers.v1"
@@ -217,6 +217,58 @@ replacement_policy = "requires_test_tier_contract_update"
 notes = "Fast strict proof tier registry is new and intentionally provisional."
 
 [[surface]]
+id = "dominium.abi.c_api.v1"
+kind = "registry"
+path = "contracts/abi/c_api.contract.toml"
+owner = "contracts.abi"
+stability = "provisional"
+version = "1.0.0"
+introduced = "API-ABI-CANON-01"
+proof = ["python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_api_abi_canon_update"
+notes = "Provisional C API/ABI canon; no surface is promoted to frozen ABI by API-ABI-CANON-01."
+
+[[surface]]
+id = "dominium.abi.language_boundary.v1"
+kind = "registry"
+path = "contracts/abi/language_boundary.contract.toml"
+owner = "contracts.abi"
+stability = "provisional"
+version = "1.0.0"
+introduced = "API-ABI-CANON-01"
+proof = ["python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_api_abi_canon_update"
+notes = "Defines C89/C++98/tool/data/generator language boundaries without changing implementation behavior."
+
+[[surface]]
+id = "dominium.abi.rule_registry.v1"
+kind = "registry"
+path = "contracts/abi/abi_rule.registry.json"
+owner = "contracts.abi"
+stability = "provisional"
+version = "1.0.0"
+introduced = "API-ABI-CANON-01"
+proof = ["python -m json.tool contracts/abi/abi_rule.registry.json"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_api_abi_canon_update"
+notes = "Machine-readable registry of ABI rule IDs used by the initial public-header validator."
+
+[[surface]]
+id = "dominium.abi.public_header_schema.v1"
+kind = "schema"
+path = "contracts/abi/public_header.schema.json"
+owner = "contracts.abi"
+stability = "provisional"
+version = "1.0.0"
+introduced = "API-ABI-CANON-01"
+proof = ["python -m json.tool contracts/abi/public_header.schema.json"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_api_abi_canon_update"
+notes = "Schema for public header surface entries; provisional until broader compatibility corpus exists."
+
+[[surface]]
 id = "dominium.release.update_channels.v1"
 kind = "registry"
 path = "release/updates"
@@ -267,6 +319,19 @@ proof = ["python tools/validators/repo/check_public_surface.py --repo-root . --f
 compatibility = "test_fixture_only"
 replacement_policy = "fixture_changes_follow_validator_tests"
 notes = "Fixture suite for the public-surface validator."
+
+[[surface]]
+id = "dominium.tests.public_header_fixtures.v1"
+kind = "test_fixture"
+path = "tests/contract/public_headers"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "API-ABI-CANON-01"
+proof = ["python tools/validators/abi/check_public_headers.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_public_header_validator_tests"
+notes = "Fixture suite for the public-header ABI validator."
 
 [[surface]]
 id = "dominium.retired.root_schema.v1"

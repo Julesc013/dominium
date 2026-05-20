@@ -7,6 +7,23 @@ Superseded By: none
 
 Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, and NAME-00 naming-law follow-up.
 
+## API-ABI-CANON-01 Proof Note
+
+API-ABI-CANON-01 adds provisional public API/ABI law and a public-header
+validator.
+
+- contracts: `contracts/abi/c_api.contract.toml` and `contracts/abi/language_boundary.contract.toml`.
+- validator: `python tools/validators/abi/check_public_headers.py --repo-root . --strict`.
+- fixtures: `tests/contract/public_headers/**`.
+- public header candidates inspected: 375.
+- high-confidence violations: 0.
+- warning findings: 2,851, all blocking stable/frozen promotion until disposition.
+- public surface registry updated with ABI canon surfaces and public-header fixture suite.
+- no header or symbol is promoted to frozen ABI by this task.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `DEPENDENCY-DIRECTION-01`.
+
 ## PUBLIC-SURFACE-REGISTRY-01 Proof Note
 
 PUBLIC-SURFACE-REGISTRY-01 adds a provisional public surface registry and

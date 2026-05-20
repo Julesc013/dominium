@@ -1,0 +1,42 @@
+{
+  "task": "API-ABI-CANON-01",
+  "result": "PASS_WITH_WARNINGS",
+  "starting_head": "b923e306bba40b1d7d147f3395f18851fbfc4cf4",
+  "origin_main": "b923e306bba40b1d7d147f3395f18851fbfc4cf4",
+  "public_header_candidates": 375,
+  "validator_status": "pass",
+  "high_confidence_violations": 0,
+  "warnings": 2851,
+  "warning_breakdown": {
+    "legacy_public_symbol_prefix": 1201,
+    "unprefixed_public_symbol": 1148,
+    "abi_struct_without_struct_size": 239,
+    "unprefixed_public_typedef": 106,
+    "legacy_public_typedef_prefix": 101,
+    "cpp_public_abi": 34,
+    "callback_without_user_pointer": 22
+  },
+  "public_surface_registry_updated": true,
+  "public_surface_registry": {
+    "status": "pass",
+    "surface_count": 25,
+    "stable_count": 2,
+    "provisional_count": 15,
+    "internal_count": 3,
+    "fixture_count": 2,
+    "historical_count": 1,
+    "retired_count": 2
+  },
+  "fast_strict": {
+    "status": "pass",
+    "elapsed_seconds": 337.406,
+    "commands_total": 30,
+    "commands_passed": 30,
+    "commands_failed": 0
+  },
+  "full_ctest": {
+    "status": "not_run",
+    "reason": "Full CTest remains T4 full/release proof and is not required for the normal fast strict gate."
+  },
+  "next_task": "DEPENDENCY-DIRECTION-01"
+}

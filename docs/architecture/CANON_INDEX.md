@@ -568,6 +568,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/runtime/shell/TOOL_REFERENCE.md`
 - `docs/architecture/ADAPTER_PATTERN.md`
 - `docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md`
+- `docs/architecture/api_abi_canon.md`
 - `docs/architecture/APPLICATION_CONTRACTS.md`
 - `docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md`
 - `docs/architecture/ARTIFACT_LIFECYCLE.md`

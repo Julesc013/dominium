@@ -1,0 +1,85 @@
+{
+  "schema_version": "dominium.abi.rule_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.abi",
+  "rules": [
+    {
+      "id": "abi.opaque_handle",
+      "description": "Owned objects crossing a public ABI use opaque handles instead of exposing implementation structs.",
+      "severity": "error_for_stable_abi",
+      "proof": "public header validator and consumer tests"
+    },
+    {
+      "id": "abi.struct_size",
+      "description": "ABI-visible option/config/descriptor structs include struct_size and callers initialize it to sizeof(struct_type).",
+      "severity": "error_for_stable_abi",
+      "proof": "public header validator"
+    },
+    {
+      "id": "abi.api_version",
+      "description": "Public ABI config structs include an API version when forward/backward compatibility is required.",
+      "severity": "error_for_stable_abi",
+      "proof": "public header validator"
+    },
+    {
+      "id": "abi.explicit_allocator",
+      "description": "Cross-boundary allocation uses an explicit allocator or a matching destroy/free API.",
+      "severity": "error_for_stable_abi",
+      "proof": "API review and consumer tests"
+    },
+    {
+      "id": "abi.ownership_lifetime",
+      "description": "Public APIs document ownership, lifetime, threading, and destroy responsibilities.",
+      "severity": "error_for_stable_abi",
+      "proof": "contract and documentation review"
+    },
+    {
+      "id": "abi.result_code",
+      "description": "Public APIs return explicit result or refusal codes instead of silent failure.",
+      "severity": "error_for_stable_abi",
+      "proof": "diagnostic/refusal registry and contract tests"
+    },
+    {
+      "id": "abi.no_cpp_public_abi",
+      "description": "Public C ABI does not expose C++ classes, templates, STL types, exceptions, or overload-only symbols.",
+      "severity": "error_for_stable_abi",
+      "proof": "public header validator"
+    },
+    {
+      "id": "abi.no_platform_engine_header",
+      "description": "Engine public headers do not include Windows, POSIX, Cocoa, OpenGL, Direct3D, Vulkan, Metal, SDL, or equivalent platform headers.",
+      "severity": "error",
+      "proof": "public header validator"
+    },
+    {
+      "id": "abi.no_raw_struct_serialization",
+      "description": "Public memory layout is not a file, network, save, or replay encoding.",
+      "severity": "error_for_stable_abi",
+      "proof": "schema/protocol review"
+    },
+    {
+      "id": "abi.callback_user_pointer",
+      "description": "Public callback APIs carry a void *user pointer and explicit lifetime/threading rules.",
+      "severity": "warning_until_stable",
+      "proof": "public header validator"
+    },
+    {
+      "id": "abi.public_symbol_prefix",
+      "description": "Public reusable symbols use domino_ and public Dominium product symbols use dominium_.",
+      "severity": "warning_until_stable",
+      "proof": "public header validator"
+    },
+    {
+      "id": "abi.header_self_contained",
+      "description": "Public headers are guarded, self-contained where practical, and avoid private implementation includes.",
+      "severity": "error_for_stable_abi",
+      "proof": "public header validator and consumer compile tests"
+    },
+    {
+      "id": "abi.c89_compatible_public_header",
+      "description": "Stable C public headers compile as C89 unless the surface declares a higher language floor.",
+      "severity": "error_for_stable_abi",
+      "proof": "public header consumer compile tests"
+    }
+  ]
+}

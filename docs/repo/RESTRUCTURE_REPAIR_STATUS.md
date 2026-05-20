@@ -9,6 +9,21 @@ Latest task: `MOVE-SCRIPT-00`.
 
 Result: PARTIAL, with naming law locked, CTest sharding honest, semantic lint blockers resolved, and deterministic bad-root routing evidence generated without applying moves.
 
+## API-ABI-CANON-01 Update
+
+API-ABI-CANON-01 is PASS_WITH_WARNINGS.
+
+- C API/ABI canon: `contracts/abi/c_api.contract.toml`.
+- Language boundary contract: `contracts/abi/language_boundary.contract.toml`.
+- Public-header validator: `python tools/validators/abi/check_public_headers.py --repo-root . --strict`.
+- Public header candidates inspected: 375.
+- High-confidence violations: 0.
+- Warnings: 2,851, retained as provisional ABI debt and stable-promotion blockers.
+- No public ABI is frozen by this task.
+- Next Foundation Lock task: `DEPENDENCY-DIRECTION-01`.
+
+Feature implementation remains blocked until Foundation Lock closes.
+
 ## PUBLIC-SURFACE-REGISTRY-01 Update
 
 PUBLIC-SURFACE-REGISTRY-01 is PASS_WITH_WARNINGS.

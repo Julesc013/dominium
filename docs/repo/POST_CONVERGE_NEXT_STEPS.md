@@ -9,6 +9,23 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## API-ABI-CANON-01 Update
+
+API-ABI-CANON-01 adds the provisional C API/ABI canon:
+
+- contracts: `contracts/abi/c_api.contract.toml` and `contracts/abi/language_boundary.contract.toml`
+- rule registry: `contracts/abi/abi_rule.registry.json`
+- public header schema: `contracts/abi/public_header.schema.json`
+- validator: `python tools/validators/abi/check_public_headers.py --repo-root . --strict`
+- public header candidates inspected: 375
+- high-confidence violations: 0
+- provisional warning findings: 2,851, primarily legacy prefixes, unpromoted ABI struct shape, and C++ declarations in non-frozen headers
+- no surface is promoted to frozen ABI by this task
+- next Foundation Lock task: `DEPENDENCY-DIRECTION-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Full CTest
+remains T4 full/release proof and is not required for this normal-gate task.
+
 ## PUBLIC-SURFACE-REGISTRY-01 Update
 
 PUBLIC-SURFACE-REGISTRY-01 adds the initial public surface registry:
