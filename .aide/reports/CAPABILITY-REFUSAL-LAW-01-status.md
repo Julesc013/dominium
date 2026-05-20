@@ -61,5 +61,7 @@ Fast strict result: PASS, 32/32 commands, 313.656 seconds
 AIDE commit-message policy note: the implementation commit was followed by a
 small evidence-only commit because the local post-commit checker requires a
 machine-readable changelog category prefix in the latest commit message.
+The latest evidence-only commit uses the title-case `Changed:` prefix required
+by `.aide/policies/commit-messages.yaml`.
 
 Next task: `PROVIDER-MODEL-01`
