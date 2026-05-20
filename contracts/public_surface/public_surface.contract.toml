@@ -1023,6 +1023,175 @@ replacement_policy = "fixture_changes_follow_public_header_validator_tests"
 notes = "Fixture suite for the public-header ABI validator."
 
 [[surface]]
+id = "dominium.provider.model.v1"
+kind = "provider_abi"
+path = "contracts/provider/provider.contract.toml"
+owner = "contracts.provider"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_update"
+notes = "Replaceable provider/backend/adapter model; runtime provider loading is not implemented here."
+
+[[surface]]
+id = "dominium.provider.registry.v1"
+kind = "registry"
+path = "contracts/provider/provider.registry.json"
+owner = "contracts.provider"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python -m json.tool contracts/provider/provider.registry.json", "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_update"
+notes = "Initial conservative provider descriptor registry."
+
+[[surface]]
+id = "dominium.provider.kind.registry.v1"
+kind = "registry"
+path = "contracts/provider/provider_kind.registry.json"
+owner = "contracts.provider"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python -m json.tool contracts/provider/provider_kind.registry.json", "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_update"
+notes = "Provider kind and provider selection decision vocabulary."
+
+[[surface]]
+id = "dominium.provider.lifecycle.registry.v1"
+kind = "registry"
+path = "contracts/provider/provider_lifecycle.registry.json"
+owner = "contracts.provider"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python -m json.tool contracts/provider/provider_lifecycle.registry.json", "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_update"
+notes = "Provider lifecycle and trust-level vocabulary."
+
+[[surface]]
+id = "dominium.provider.descriptor.v1"
+kind = "schema"
+path = "contracts/provider/provider_descriptor.schema.json"
+owner = "contracts.provider"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python -m json.tool contracts/provider/provider_descriptor.schema.json", "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_update"
+notes = "Provider descriptor schema; implementation_path is non-authoritative."
+
+[[surface]]
+id = "dominium.provider.selection.v1"
+kind = "schema"
+path = "contracts/provider/provider_selection_decision.schema.json"
+owner = "contracts.provider"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_update"
+notes = "Aggregate provider selection surface covering request and decision schemas."
+
+[[surface]]
+id = "dominium.provider.selection_request.v1"
+kind = "schema"
+path = "contracts/provider/provider_selection_request.schema.json"
+owner = "contracts.provider"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python -m json.tool contracts/provider/provider_selection_request.schema.json", "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_update"
+notes = "Provider selection request schema."
+
+[[surface]]
+id = "dominium.provider.selection_decision.v1"
+kind = "schema"
+path = "contracts/provider/provider_selection_decision.schema.json"
+owner = "contracts.provider"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python -m json.tool contracts/provider/provider_selection_decision.schema.json", "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_update"
+notes = "Provider selection decision schema for selected, degraded, refused, and unavailable outcomes."
+
+[[surface]]
+id = "dominium.provider.conformance.v1"
+kind = "provider_abi"
+path = "contracts/provider/provider_conformance.contract.toml"
+owner = "contracts.provider"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_update"
+notes = "Provider conformance policy; conformance runner implementation remains later work."
+
+[[surface]]
+id = "dominium.provider.capability_policy.v1"
+kind = "capability_id"
+path = "contracts/provider/provider_capability_policy.contract.toml"
+owner = "contracts.provider"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_update"
+notes = "Provider capability relationship policy."
+
+[[surface]]
+id = "dominium.provider.trust_policy.v1"
+kind = "registry"
+path = "contracts/provider/provider_trust_policy.contract.toml"
+owner = "contracts.provider"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_or_mod_pack_trust_update"
+notes = "Initial provider trust policy; detailed mod/native trust remains later work."
+
+[[surface]]
+id = "dominium.provider.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_provider_model.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python -m py_compile tools/validators/contracts/check_provider_model.py", "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_provider_model_update"
+notes = "Validator implementation for provider model contracts, registries, and fixtures."
+
+[[surface]]
+id = "dominium.provider.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/provider"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "PROVIDER-MODEL-01"
+proof = ["python tools/validators/contracts/check_provider_model.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_provider_validator_tests"
+notes = "Fixture suite for provider model validator behavior."
+
+[[surface]]
 id = "dominium.retired.root_schema.v1"
 kind = "archive_record"
 path = "schema"

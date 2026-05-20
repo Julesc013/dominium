@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.provider.selection_request.schema.v1",
+  "title": "Dominium Provider Selection Request",
+  "type": "object",
+  "required": ["request_id", "requested_by", "provider_kind", "required_capabilities", "acceptable_degradation", "platform_context", "evidence_requested"],
+  "properties": {
+    "request_id": {"type": "string"},
+    "requested_by": {"type": "string"},
+    "provider_kind": {"type": "string"},
+    "required_capabilities": {"type": "array", "items": {"type": "string"}},
+    "preferred_provider": {"type": ["string", "null"]},
+    "acceptable_degradation": {"type": "array", "items": {"type": "object"}},
+    "platform_context": {"type": "object"},
+    "artifact_context": {"type": "object"},
+    "evidence_requested": {"type": "boolean"}
+  },
+  "additionalProperties": true
+}

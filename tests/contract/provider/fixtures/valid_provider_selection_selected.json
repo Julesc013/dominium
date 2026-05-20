@@ -1,0 +1,14 @@
+{
+  "fixture_kind": "selection_decision",
+  "request_id": "provider.request.render.software.fixture",
+  "decision": "selected",
+  "selected_provider": "domino.provider.render.software",
+  "selected_capabilities": ["domino.render.software"],
+  "degraded_from": null,
+  "degraded_to": null,
+  "refusal_code": null,
+  "diagnostic_codes": [],
+  "recovery": {"action": "inspect_evidence", "summary": "No recovery needed; provider selected."},
+  "evidence_ref": "tests/contract/provider/fixtures/valid_provider_selection_selected.json",
+  "notes": "Valid selected provider decision fixture."
+}

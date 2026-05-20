@@ -1,0 +1,26 @@
+{
+  "schema_version": "dominium.provider.kind_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.provider",
+  "kinds": [
+    {"id": "render_backend", "description": "Renderer implementation provider."},
+    {"id": "platform_backend", "description": "Platform or OS host provider."},
+    {"id": "storage_backend", "description": "Storage or persistence backend provider."},
+    {"id": "network_transport", "description": "Network transport or session provider."},
+    {"id": "audio_backend", "description": "Audio output/input provider."},
+    {"id": "input_backend", "description": "Input device or binding provider."},
+    {"id": "package_loader", "description": "Package, pack, mod, or content loader/provider."},
+    {"id": "profile_loader", "description": "Profile or configuration loader/provider."},
+    {"id": "schema_loader", "description": "Schema, registry, or protocol loader/provider."},
+    {"id": "command_handler", "description": "Registered command handler provider."},
+    {"id": "workbench_module", "description": "Workbench module provider."},
+    {"id": "external_process_adapter", "description": "External process adapter provider."},
+    {"id": "native_provider", "description": "Native library or ABI provider."},
+    {"id": "test_provider", "description": "Test-only provider fixture."},
+    {"id": "aide_adapter", "description": "AIDE/Codex orchestration adapter provider."}
+  ],
+  "decision_values": ["selected", "degraded", "refused", "unavailable"],
+  "languages": ["c", "c++17", "python", "json", "toml", "external", "mixed", "unknown"],
+  "abi_values": ["none", "c_compatible", "c_compatible_internal", "cpp_internal", "python_module", "process_cli", "schema_only", "unknown"],
+  "notes": "Provider kinds are initial and provisional."
+}

@@ -1,17 +1,40 @@
 Status: DERIVED
-Last Reviewed: 2026-05-18
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `CAPABILITY-REFUSAL-LAW-01`.
+Latest task: `PROVIDER-MODEL-01`.
 
-Result: PASS_WITH_WARNINGS for the provisional capability/refusal law. Capability
-registry, request/decision schemas, degradation/recovery policy, refusal
-contract/schema/registry, validator, fixtures, docs, and evidence surfaces
-exist. Fast strict passes. Existing dependency-direction debt remains visible and
-is not hidden by this task.
+Result: PASS_WITH_WARNINGS for the provisional provider model law. Provider
+contracts, descriptor and selection schemas, kind/lifecycle registries,
+conformance/capability/trust policies, validator, fixtures, docs, and evidence
+surfaces exist. Existing dependency-direction debt remains visible and is not
+hidden by this task.
+
+## PROVIDER-MODEL-01 Update
+
+PROVIDER-MODEL-01 is PASS_WITH_WARNINGS.
+
+- provider law: `contracts/provider/provider.contract.toml`.
+- provider registry: `contracts/provider/provider.registry.json`.
+- descriptor schema: `contracts/provider/provider_descriptor.schema.json`.
+- validator: `tools/validators/contracts/check_provider_model.py`.
+- fixtures: `tests/contract/provider/**`.
+- provider descriptors registered: 5.
+- provider kinds registered: 15.
+- lifecycle states registered: 9.
+- provider diagnostics and refusal codes added while preserving existing codes.
+- capability registry updated with narrow `provided_by` cross-references.
+- inventory: 17,865 tracked files scanned; 1,396 provider/backend/service/
+  adapter/capability candidates classified.
+- current providers and runtime systems are inventoried but not migrated.
+
+Next task:
+`MODULE-COMPOSITION-LAW-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## CAPABILITY-REFUSAL-LAW-01 Update
 

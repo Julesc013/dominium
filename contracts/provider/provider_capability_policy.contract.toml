@@ -1,0 +1,20 @@
+[contract]
+id = "dominium.provider.capability_policy.v1"
+status = "provisional"
+owner = "contracts.provider"
+purpose = "Defines how providers declare, require, and negotiate capabilities."
+
+[policy]
+providers_must_declare_capabilities_provided = true
+providers_may_declare_capabilities_required = true
+capabilities_must_reference_registry = true
+missing_required_provider_capability_refuses = true
+optional_provider_capability_may_degrade = true
+silent_capability_fallback_allowed = false
+selected_capabilities_recorded_in_decision = true
+
+[selection]
+required_capabilities_all_satisfied = true
+preferred_provider_is_hint_not_authority = true
+acceptable_degradation_must_be_declared = true
+provider_conflicts_refuse_or_select_alternative = true

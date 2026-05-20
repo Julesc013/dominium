@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.provider.registry.schema.v1",
+  "title": "Dominium Provider Registry",
+  "type": "object",
+  "required": ["schema_version", "status", "owner", "providers"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "status": {"type": "string"},
+    "owner": {"type": "string"},
+    "providers": {
+      "type": "array",
+      "items": {"$ref": "provider_descriptor.schema.json"}
+    }
+  },
+  "additionalProperties": true
+}

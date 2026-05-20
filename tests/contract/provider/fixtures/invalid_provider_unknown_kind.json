@@ -1,0 +1,23 @@
+{
+  "fixture_kind": "provider_descriptor",
+  "provider_id": "domino.provider.render.unknown_kind",
+  "provider_kind": "renderer_magic",
+  "owner": "runtime.render",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "capabilities_provided": ["domino.render.software"],
+  "entry_surface": "contracts/provider/provider_descriptor.schema.json",
+  "implementation_path_is_identity": false,
+  "language": "c",
+  "abi": "c_compatible_internal",
+  "platform_constraints": [],
+  "determinism_impact": "presentation only",
+  "security_impact": "none declared",
+  "threading_model": "host_defined",
+  "lifetime_model": "owned_by_runtime_host",
+  "diagnostic_codes": [],
+  "refusal_codes": [],
+  "conformance_tests": [],
+  "replacement_policy": "requires_provider_model_update",
+  "trust_level": "repo_canonical"
+}

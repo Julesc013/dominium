@@ -1,0 +1,29 @@
+{
+  "schema_version": "dominium.provider.lifecycle_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.provider",
+  "lifecycle_states": [
+    "experimental",
+    "provisional",
+    "available",
+    "stable",
+    "deprecated",
+    "retired",
+    "generated",
+    "fixture",
+    "historical"
+  ],
+  "trust_levels": [
+    "built_in",
+    "repo_canonical",
+    "generated",
+    "local_untrusted",
+    "external_reviewed",
+    "external_process",
+    "native_trusted",
+    "signed_release",
+    "fixture",
+    "historical"
+  ],
+  "notes": "Stable provider states require conformance proof before promotion."
+}

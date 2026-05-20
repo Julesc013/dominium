@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.provider.selection_decision.schema.v1",
+  "title": "Dominium Provider Selection Decision",
+  "type": "object",
+  "required": ["request_id", "decision", "selected_capabilities", "diagnostic_codes", "recovery", "evidence_ref"],
+  "properties": {
+    "request_id": {"type": "string"},
+    "decision": {"enum": ["selected", "degraded", "refused", "unavailable"]},
+    "selected_provider": {"type": ["string", "null"]},
+    "selected_capabilities": {"type": "array", "items": {"type": "string"}},
+    "degraded_from": {"type": ["string", "null"]},
+    "degraded_to": {"type": ["string", "null"]},
+    "refusal_code": {"type": ["string", "null"]},
+    "diagnostic_codes": {"type": "array", "items": {"type": "string"}},
+    "recovery": {"type": "object"},
+    "evidence_ref": {"type": ["string", "object", "null"]},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}

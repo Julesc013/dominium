@@ -1,0 +1,27 @@
+[contract]
+id = "dominium.provider.conformance.v1"
+status = "provisional"
+owner = "contracts.provider"
+purpose = "Defines provider conformance proof expectations without implementing provider runtime loading."
+
+[policy]
+stable_providers_require_conformance_tests = true
+available_providers_require_declared_capabilities = true
+native_providers_require_abi_boundary_review = true
+deterministic_providers_require_replay_or_fixture_proof = true
+degradation_refusal_behavior_requires_fixtures = true
+diagnostic_evidence_required = true
+fake_runtime_conformance_allowed = false
+
+[required_proof]
+public_surface = "registered or explicitly internal"
+capability_ids = "declared and valid"
+fixtures = "at least one fixture or test id before stable promotion"
+diagnostics = "provider diagnostics or refusal evidence"
+abi = "C-compatible ABI canon when native/public"
+dependency_direction = "no forbidden root dependency"
+compatibility = "compatibility corpus relationship before stable promotion"
+
+[future_work]
+runtime_conformance_runner = "provider conformance implementation is later work"
+compatibility_corpus = "compatibility corpus remains later work"

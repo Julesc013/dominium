@@ -1,0 +1,18 @@
+{
+  "fixture_kind": "selection_request",
+  "request_id": "provider.request.render.software.fixture",
+  "requested_by": "tests.contract.provider",
+  "provider_kind": "render_backend",
+  "required_capabilities": ["domino.render.software"],
+  "preferred_provider": "domino.provider.render.software",
+  "acceptable_degradation": [
+    {
+      "from": "domino.provider.render.software",
+      "to": "domino.provider.render.null",
+      "condition": "headless test profile"
+    }
+  ],
+  "platform_context": {"os": "test"},
+  "artifact_context": {},
+  "evidence_requested": true
+}

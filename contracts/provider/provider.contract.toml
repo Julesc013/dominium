@@ -1,0 +1,58 @@
+[contract]
+id = "dominium.provider.model.v1"
+status = "provisional"
+owner = "contracts.provider"
+purpose = "Defines replaceable provider, backend, adapter, selection, conformance, capability, refusal, and trust law."
+
+[policy]
+provider_identity_is_implementation_path = false
+provider_availability_assumed = false
+provider_selection_explicit = true
+silent_provider_fallback_allowed = false
+stable_providers_require_conformance_tests = true
+native_provider_abi_requires_abi_canon = true
+dependencies_require_dependency_direction_law = true
+capabilities_must_reference_capability_registry = true
+refusals_must_be_typed = true
+degradation_requires_evidence = true
+runtime_provider_loading_implemented_here = false
+dynamic_loading_implemented_here = false
+normal_gate = "fast_strict"
+
+[naming]
+provider_id_case = "lowercase_dotted"
+provider_id_prefixes = ["domino.provider", "dominium.provider"]
+path_like_ids_allowed = false
+temporary_status_in_id_allowed = false
+
+[relationships]
+public_surface_registry = "contracts/public_surface/public_surface.contract.toml"
+abi_canon = "contracts/abi/c_api.contract.toml"
+dependency_direction_law = "contracts/repo/dependency_directions.contract.toml"
+capability_contract = "contracts/capability/capability.contract.toml"
+capability_registry = "contracts/capability/capability.registry.json"
+refusal_registry = "contracts/refusal/refusal_code.registry.json"
+diagnostic_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+artifact_identity = "contracts/artifact/artifact_identity.contract.toml"
+schema_evolution = "contracts/schema/schema_evolution.contract.toml"
+replacement_protocol = "REPLACEMENT-PROTOCOL-01"
+
+[descriptor]
+required_fields = ["provider_id", "provider_kind", "owner", "version", "stability", "capabilities_provided", "entry_surface", "language", "abi", "determinism_impact", "security_impact", "threading_model", "lifetime_model", "trust_level"]
+implementation_path_non_authoritative = true
+
+[selection]
+decisions = ["selected", "degraded", "refused", "unavailable"]
+selected_requires_provider = true
+degraded_requires_from_to_diagnostic_evidence = true
+refused_requires_refusal_recovery = true
+unavailable_requires_refusal_recovery = true
+
+[workbench]
+modules_are_providers = true
+workbench_is_not_authority = true
+module_runtime_implementation_here = false
+
+[native_provider]
+stable_native_abi_allowed = false
+stable_native_abi_requires = ["API-ABI-CANON-01", "PROVIDER-MODEL-01", "REPLACEMENT-PROTOCOL-01", "ASSURANCE-PROFILE-00"]

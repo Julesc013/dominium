@@ -1,0 +1,14 @@
+{
+  "fixture_kind": "selection_decision",
+  "request_id": "provider.request.render.software.fixture",
+  "decision": "degraded",
+  "selected_provider": "domino.provider.render.null",
+  "selected_capabilities": ["domino.render.null"],
+  "degraded_from": "domino.provider.render.software",
+  "degraded_to": "domino.provider.render.null",
+  "refusal_code": null,
+  "diagnostic_codes": ["DOM-PROVIDER-SELECTION-DEGRADED"],
+  "recovery": {"action": "use_degraded_mode", "summary": "Continue in explicit null-render headless mode."},
+  "evidence_ref": "tests/contract/provider/fixtures/valid_provider_selection_degraded.json",
+  "notes": "Valid degraded provider decision fixture."
+}

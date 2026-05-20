@@ -1,11 +1,35 @@
 Status: DERIVED
-Last Reviewed: 2026-05-18
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, and CAPABILITY-REFUSAL-LAW-01.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, and PROVIDER-MODEL-01.
+
+## PROVIDER-MODEL-01 Proof Note
+
+PROVIDER-MODEL-01 adds the provisional provider model law.
+
+- contract: `contracts/provider/provider.contract.toml`.
+- registry: `contracts/provider/provider.registry.json`.
+- descriptor schema: `contracts/provider/provider_descriptor.schema.json`.
+- selection schemas: `contracts/provider/provider_selection_request.schema.json`
+  and `contracts/provider/provider_selection_decision.schema.json`.
+- validator: `python tools/validators/contracts/check_provider_model.py --repo-root . --strict`.
+- fixtures: `tests/contract/provider/**`.
+- provider descriptors registered: 5.
+- provider kinds registered: 15.
+- lifecycle states registered: 9.
+- inventory: 17,865 tracked files scanned; 1,396 provider/backend/service/
+  adapter/capability candidates classified descriptively.
+- public surface, diagnostics, refusal, and capability registries updated with
+  provider surfaces, codes, and cross-references.
+- runtime provider resolution, dynamic loading, and renderer/platform fallback
+  are not implemented by this task.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `MODULE-COMPOSITION-LAW-01`.
 
 ## CAPABILITY-REFUSAL-LAW-01 Proof Note
 

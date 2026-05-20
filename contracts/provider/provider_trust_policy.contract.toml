@@ -1,0 +1,15 @@
+[contract]
+id = "dominium.provider.trust_policy.v1"
+status = "provisional"
+owner = "contracts.provider"
+purpose = "Defines initial provider trust fields and trust-level vocabulary."
+
+[policy]
+trust_level_required = true
+native_provider_trust_is_provisional = true
+external_process_adapters_declare_security_impact = true
+signed_release_trust_requires_release_policy = true
+mod_pack_trust_deepening = "MOD-PACK-TRUST-MODEL-01"
+
+[trust_levels]
+values = ["built_in", "repo_canonical", "generated", "local_untrusted", "external_reviewed", "external_process", "native_trusted", "signed_release", "fixture", "historical"]

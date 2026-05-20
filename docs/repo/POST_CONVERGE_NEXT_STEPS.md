@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-05-16
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 
@@ -8,6 +8,25 @@ Superseded By: none
 Status: PROVISIONAL
 
 Phase: POST-CONVERGE
+
+## PROVIDER-MODEL-01 Update
+
+PROVIDER-MODEL-01 adds the provisional provider model law.
+
+- contract: `contracts/provider/provider.contract.toml`
+- registry: `contracts/provider/provider.registry.json`
+- descriptor schema: `contracts/provider/provider_descriptor.schema.json`
+- validator: `python tools/validators/contracts/check_provider_model.py --repo-root . --strict`
+- fixture suite: `tests/contract/provider/**`
+- providers registered: 5
+- provider kinds registered: 15
+- lifecycle states registered: 9
+- inventory: 17,865 tracked files scanned; 1,396 provider/backend/service/adapter/capability candidates classified descriptively
+- next Foundation Lock task: `MODULE-COMPOSITION-LAW-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Runtime
+provider resolution, dynamic loading, renderer/platform fallback, package/profile
+runtime behavior, and Workbench UI are not implemented by this task.
 
 ## CAPABILITY-REFUSAL-LAW-01 Update
 
