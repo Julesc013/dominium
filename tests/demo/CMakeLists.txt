@@ -11,7 +11,7 @@ target_link_libraries(demo_read_paths_tests PRIVATE
     libs::contracts
 )
 set_target_properties(demo_read_paths_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

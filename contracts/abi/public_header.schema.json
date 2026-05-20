@@ -29,7 +29,7 @@
     },
     "language_floor": {
       "type": "string",
-      "enum": ["c89", "cpp98", "c89_or_cpp98", "declared_by_surface"]
+      "enum": ["c17", "cpp17", "c17_or_cpp17", "declared_by_surface"]
     },
     "namespace_prefix": {
       "type": "array",

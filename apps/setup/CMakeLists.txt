@@ -14,7 +14,7 @@ target_link_libraries(setup_core
         libs::contracts
 )
 set_target_properties(setup_core PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -31,7 +31,7 @@ target_include_directories(setup_cli PRIVATE
 )
 set_target_properties(setup_cli PROPERTIES
     OUTPUT_NAME "setup"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -41,7 +41,7 @@ add_executable(setup_gui
 target_link_libraries(setup_gui PRIVATE setup::setup)
 set_target_properties(setup_gui PROPERTIES
     OUTPUT_NAME "setup_gui"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -55,7 +55,7 @@ if(WIN32)
     )
     set_target_properties(setup_app_win32 PROPERTIES
         OUTPUT_NAME "setup_app_win32"
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -72,7 +72,7 @@ add_executable(setup_tui
 target_link_libraries(setup_tui PRIVATE setup::setup)
 set_target_properties(setup_tui PROPERTIES
     OUTPUT_NAME "setup_tui"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )

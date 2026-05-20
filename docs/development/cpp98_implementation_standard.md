@@ -1,17 +1,23 @@
 Status: DERIVED
-Last Reviewed: 2026-05-20
+Last Reviewed: 2026-05-21
 Supersedes: none
-Superseded By: none
+Superseded By: `docs/development/CPP17_USAGE_POLICY.md`
 Stability: provisional
 Future Series: API-ABI-CANON, DEPENDENCY-DIRECTION, PROVIDER-MODEL
 Binding Sources: `contracts/abi/c_api.contract.toml`, `contracts/abi/language_boundary.contract.toml`
 
-# C++98 Implementation Standard
+# Historical C++98 Implementation Standard
+
+This file is retained as historical rationale. It is no longer the active
+mainline language floor. The active C++ policy is
+`docs/development/CPP17_USAGE_POLICY.md`, and the build-enforced baseline is
+`contracts/build/language_baseline.contract.toml`.
 
 ## Scope
 
-C++98 may be used internally where the owning component and toolchain support it.
-This does not make C++ a stable public ABI surface.
+C++98 was previously used internally where the owning component and toolchain
+supported it. C++17 now governs mainline implementation. This still does not
+make C++ a stable public ABI surface.
 
 ## Boundary Rules
 

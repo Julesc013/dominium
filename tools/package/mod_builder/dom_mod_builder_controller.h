@@ -3,7 +3,7 @@ FILE: source/dominium/tools/package/mod_builder/dom_mod_builder_controller.h
 MODULE: Dominium
 LAYER / SUBSYSTEM: Dominium impl / tools/package/mod_builder/dom_mod_builder_controller
 RESPONSIBILITY: Defines internal contract for `dom_mod_builder_controller`; shared within its subsystem; does NOT define a public API (see `include/**`).
-ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
+ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C17/C++17 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/architecture/OVERVIEW_ARCHITECTURE.md` layering.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.

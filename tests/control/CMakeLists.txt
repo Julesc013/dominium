@@ -12,7 +12,7 @@ target_compile_definitions(control_disabled_determinism_tests PRIVATE
     DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/control_capabilities.registry"
 )
 set_target_properties(control_disabled_determinism_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -32,7 +32,7 @@ target_compile_definitions(control_non_interference_tests PRIVATE
     DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/control_capabilities.registry"
 )
 set_target_properties(control_non_interference_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -52,7 +52,7 @@ target_compile_definitions(control_capability_registry_tests PRIVATE
     DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/control_capabilities.registry"
 )
 set_target_properties(control_capability_registry_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -72,7 +72,7 @@ target_compile_definitions(control_refusal_tests PRIVATE
     DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/control_capabilities.registry"
 )
 set_target_properties(control_refusal_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -92,7 +92,7 @@ target_compile_definitions(control_audit_disclosure_tests PRIVATE
     DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/control_capabilities.registry"
 )
 set_target_properties(control_audit_disclosure_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -111,10 +111,10 @@ target_compile_definitions(control_removed_hooks_tests PRIVATE
     DOM_CONTROL_HOOKS=0
 )
 set_target_properties(control_removed_hooks_tests PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

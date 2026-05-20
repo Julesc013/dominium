@@ -1,5 +1,5 @@
-#ifndef DOMINO_TEST_VALID_C89_HEADER_H
-#define DOMINO_TEST_VALID_C89_HEADER_H
+#ifndef DOMINO_TEST_VALID_C17_HEADER_H
+#define DOMINO_TEST_VALID_C17_HEADER_H
 
 #include <stddef.h>
 
@@ -33,4 +33,4 @@ domino_test_result_t domino_test_engine_set_callback(domino_test_engine_t *engin
 } /* extern "C" */
 #endif
 
-#endif /* DOMINO_TEST_VALID_C89_HEADER_H */
+#endif /* DOMINO_TEST_VALID_C17_HEADER_H */

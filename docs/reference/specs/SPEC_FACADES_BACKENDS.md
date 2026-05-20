@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -48,14 +48,14 @@ Related:
 
 ## Language Baselines (Hard Rules)
 
-- **Domino core is C89/C90 forever.**
-- **Dominium is C++98 forever.**
-- Public headers under `include/` that are baseline-visible must remain compatible with these baselines.
-- Newer language standards may be used only in optional acceleration layers and must never be required for correctness or compatibility.
+- **Domino core is C17 mainline with C-compatible public ABI.**
+- **Dominium is C++17 mainline.**
+- Public headers under `include/` that are baseline-visible must remain compatible with the active language baseline and must not leak C++ ABI across stable C boundaries.
+- The macOS 10.9.5 C++17 library subset is restricted by `contracts/build/language_baseline.contract.toml`.
 
 ### Explicitly Rejected: Runtime Language Standard Switching
 
-The project does not support any runtime “C89 vs C11” (or “C++98 vs C++11”) switching. Language standard selection is a **compile-time** property only. Build/profile flags are represented as macros (see `domino/config_base.h`), not runtime toggles.
+The project does not support runtime language-standard switching. Language standard selection is a **compile-time** property only. Build/profile flags are represented as macros (see `domino/config_base.h`), not runtime toggles.
 
 ## Facade ABI Pattern
 

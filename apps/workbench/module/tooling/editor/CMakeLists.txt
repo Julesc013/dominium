@@ -86,7 +86,7 @@ target_link_libraries(dominium-tool-editor
 
 set_target_properties(dominium-tool-editor PROPERTIES
     OUTPUT_NAME "tool_tool_editor"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

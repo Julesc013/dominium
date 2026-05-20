@@ -22,7 +22,7 @@ target_include_directories(runtime_shell PUBLIC
 )
 
 set_target_properties(runtime_shell PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )

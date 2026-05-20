@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -12,7 +12,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 
 
-- **Domino engine** (`engine/`): C90 deterministic core with modules under
+- **Domino engine** (`engine/`): C17 deterministic core with modules under
 
 
   `engine/modules/` and render backends under `runtime/render/`. Public headers
@@ -21,7 +21,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
   live under `engine/include/domino/`.
 
 
-- **Dominium game** (`game/`): C++98 rules and domain logic that depend only on
+- **Dominium game** (`game/`): C++17 rules and domain logic that depend only on
 
 
   the engine public API. Public headers live under `game/include/dominium/`.

@@ -3,7 +3,7 @@ FILE: tests/domino_gfx/test_dgfx_caps_contract.c
 MODULE: Repository
 LAYER / SUBSYSTEM: tests/domino_gfx
 RESPONSIBILITY: Validate DGFX capability claims vs command acceptance.
-ALLOWED DEPENDENCIES: Project-local headers; C89/C++98 standard headers.
+ALLOWED DEPENDENCIES: Project-local headers; C17/C++17 standard headers.
 FORBIDDEN DEPENDENCIES: N/A.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.

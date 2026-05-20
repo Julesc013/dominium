@@ -575,6 +575,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md`
 - `docs/architecture/BOUNDARY_ENFORCEMENT.md`
 - `docs/architecture/BUDGET_POLICY.md`
+- `docs/architecture/C_COMPATIBLE_ABI_BOUNDARY.md`
 - `docs/architecture/COLLAPSE_EXPAND_SOLVERS.md`
 - `docs/architecture/COMPLEXITY_AND_SCALE.md`
 - `docs/architecture/CORE_ABSTRACTIONS.md`
@@ -1386,7 +1387,9 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/reference/contracts/session_spec.md`
 - `docs/reference/contracts/versioning_and_migration.md`
 - `docs/development/BUILD_MATRIX.md`
+- `docs/development/C17_USAGE_POLICY.md`
 - `docs/development/CLIP_DRIVEN_DEVELOPMENT.md`
+- `docs/development/CPP17_USAGE_POLICY.md`
 - `docs/development/DEBUG_AND_DIAGNOSTICS_MODEL.md`
 - `docs/development/DEVELOPER_ACCELERATION_MODEL.md`
 - `docs/development/DEV_COMMANDS.md`
@@ -1395,7 +1398,9 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/development/IDE_BUILD_DEFAULTS.md`
 - `docs/development/IDE_SETUP.md`
 - `docs/development/IMPACT_GRAPH.md`
+- `docs/development/LANGUAGE_BASELINE.md`
 - `docs/development/LOCAL_BUILD_RULES.md`
+- `docs/development/MACOS_10_9_CPP17_LIBRARY_SUBSET.md`
 - `docs/development/ONE_BINARY_THREE_MODES.md`
 - `docs/development/PLAYTESTING_GUIDE.md`
 - `docs/development/PORTABLE_TESTING.md`

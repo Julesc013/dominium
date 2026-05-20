@@ -8,7 +8,7 @@ target_include_directories(entitlement_mapping_tests PRIVATE
     ${CMAKE_SOURCE_DIR}
 )
 set_target_properties(entitlement_mapping_tests PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )

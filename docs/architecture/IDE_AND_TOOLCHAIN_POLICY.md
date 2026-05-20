@@ -1,123 +1,60 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
-Supersedes: none
+Last Reviewed: 2026-05-21
+Supersedes: prior legacy/modern mixed toolchain matrix
 Superseded By: none
 Stability: provisional
-Future Series: DOC-CONVERGENCE
+Future Series: LANGUAGE-BASELINE, PORTABILITY-MATRIX
 Replacement Target: canon-aligned documentation set for convergence and release preparation
 
-# IDE and Toolchain Policy (REPOX)
-
-
-
-
+# IDE and Toolchain Policy
 
 Status: binding.
 
+Scope: IDE projections, toolchain tiers, OS floor, ABI policy, and active
+language baseline.
 
-Scope: IDE projections, toolchain tiers, and OS/ABI policy.
+## Active Floor
 
+- Windows: Windows 7 SP1 or newer.
+- macOS: macOS 10.9.5 or newer.
+- Linux: supported by a C17/C++17-capable GCC/Clang toolchain and documented
+  libc/libstdc++/libc++ floor.
 
-
-
-
-This document is the authoritative toolchain × OS × language matrix.
-
-
-
-
+The active language baseline is C17 and C++17 with extensions off.
 
 ## Windows
 
+- Win7 SP1 and newer: C17/C++17 mainline; pinned SDK; avoid post-target APIs.
+- Win10/11: C17/C++17 mainline; separate artifacts per toolchain where needed.
+- Win95/98/ME, NT4/2000, XP, and Vista lanes are retired from active mainline
+  and may exist only as historical or future retro research surfaces.
 
-- Win95/98/ME: VC6 SP6; C89/C++98; /MT only; ANSI Win32; Unicode forbidden; separate binaries from NT builds.
+## macOS
 
-
-- NT4/2000: VC6 SP6; C89/C++98; NT-only binaries; CRT legacy behavior.
-
-
-- XP/Vista: VC7.1; C89/C++98; static CRT required; do NOT extend VC6 into this tier.
-
-
-- Win7/8/8.1: VS2015 U3; C89/C++98; pinned SDK; avoid post-target APIs.
-
-
-- Win10/11: VS2015 U3 (legacy) + VS2026 (modern); legacy C89/C++98; modern C17/C++17; separate artifacts per toolchain.
-
-
-
-
-
-## Mac
-
-
-- Classic (System 7–9): CodeWarrior Classic 10; C89/C++98; PPC only; Classic Toolbox/Carbon optional; no binary overlap with OS X.
-
-
-- OS X/macOS: Xcode era-pinned; early C89/C++98; modern C17/C++17; SDK removal is expected; multiple frozen envs required; Carbon dead-end.
-
-
-
-
+- macOS 10.9.5 and newer: C17/C++17 mainline.
+- C++17 standard-library use is restricted for macOS 10.9.5 compatibility; do
+  not require `std::filesystem`, `std::pmr`, `std::to_chars`, `std::from_chars`,
+  `std::any`, or unguarded throwing optional/variant access paths.
+- Classic Mac OS and early OS X lanes are retired from active mainline and may
+  exist only as historical or future retro research surfaces.
 
 ## Linux
 
+- Active Linux builds use C17/C++17-capable GCC or Clang.
+- The real binary floor is the libc/libstdc++/libc++ policy, not the distro
+  name.
+- GCC 2.95 and legacy Linux lanes are retired from active mainline and may
+  exist only as historical or future retro research surfaces.
 
-- Kernel 2.2 → current: GCC 2.95 → GCC/Clang; legacy C89/C++98; modern C17/C++17; real floor is glibc; avoid distro assumptions.
-
-
-
-
-
-## Global warnings (law)
-
+## Global Warnings
 
 - C standard != OS compatibility.
-
-
 - Compiler defines ABI reality.
-
-
 - SDK silently raises OS floor.
-
-
 - Never mix CRTs across module boundaries.
-
-
-- Never pass STL/allocator objects across DLL boundaries.
-
-
+- Never pass STL/allocator objects across stable public ABI boundaries.
 - Never share binaries across OS families.
-
-
-- Transition to C17/C++17 permanently drops: Win9x, NT4/2000, XP, Classic Mac OS, early OS X.
-
-
-- Legacy tiers are frozen once validated.
-
-
-
-
-
-## Projection policy
-
-
-- IDE projections are generated from CMake + REPOX scripts.
-
-
-- Toolchain tier, OS family, and language mode are explicit inputs.
-
-
-- No IDE is a source of truth; the repository owns the build graph.
-
-
-
-
-
-## Cross-references
-
-
-- `docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md`
-
-
-- `docs/architecture/PROJECTION_LIFECYCLE.md`
+- C17/C++17 mainline permanently drops active support for Win9x, NT4/2000, XP,
+  Classic Mac OS, and early OS X.
+- Legacy tiers are frozen only when a future retro lane explicitly validates
+  them; they do not govern mainline development.

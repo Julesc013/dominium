@@ -1,0 +1,60 @@
+schema_version = "dominium.build.language_baseline.v1"
+status = "active"
+last_reviewed = "2026-05-21"
+owner = "contracts.build"
+
+[contract]
+id = "dominium.build.language_baseline.v1"
+status = "active"
+owner = "contracts.build"
+purpose = "Defines the active Dominium mainline source-language baseline and legacy-lane disposition."
+
+[baseline]
+c_standard = "c17"
+c_standard_number = 17
+cxx_standard = "cpp17"
+cxx_standard_number = 17
+c_extensions = false
+cxx_extensions = false
+cmake_required = true
+active_lang_mode = "c17_cpp17"
+active_os_floor = ["windows7_sp1", "macos_10_9_5", "linux"]
+
+[public_abi]
+abi_language = "c_compatible"
+stable_c_header_floor = "c17"
+stable_cpp_header_floor = "cpp17_only_when_explicitly_declared"
+no_cpp_abi_leakage = true
+pod_or_opaque_handles = true
+versioned_structs_required = true
+raw_struct_serialization_forbidden = true
+
+[c17_policy]
+intended_use = ["public ABI-adjacent C headers", "deterministic substrate", "packets", "save_replay", "fixed_point_math", "C-callable facades"]
+msvc_c17_threads_atomics_complex_are_portable = false
+portable_c_threads_atomics_complex_forbidden = true
+use_project_or_cpp_concurrency_abstraction = true
+
+[cpp17_policy]
+intended_use = ["game orchestration", "runtime services", "renderer and platform backends", "apps", "tools", "resource ownership", "diagnostics"]
+exceptions_cross_public_abi = false
+rtti_cross_public_abi = false
+stl_cross_public_abi = false
+internal_raii_allowed = true
+internal_move_semantics_allowed = true
+
+[macos_10_9_cpp17_subset]
+deployment_floor = "10.9.5"
+forbidden_required_library_surfaces = ["std::filesystem", "std::pmr", "std::to_chars", "std::from_chars", "std::any throwing access", "std::optional throwing value access", "std::variant throwing access"]
+preferred_patterns = ["project path abstraction", "explicit result codes", "optional.has_value", "operator bool", "operator*", "no-exception low-level paths"]
+
+[legacy_lanes]
+c89_cpp98_mainline_status = "retired_from_active_mainline"
+retro_lane_status = "historical_or_future_research_only"
+legacy_projection_presets = "may_exist_when explicitly marked legacy/projection; must not govern default configure/build/test presets"
+feature_work_authorized = false
+
+[validation]
+language_baseline_validator = "python tools/validators/build/check_language_baseline.py --repo-root . --strict"
+cpp17_subset_validator = "python tools/validators/build/check_cpp17_forbidden_library_use.py --repo-root . --strict"
+fast_strict_gate = "python tools/test/run_fast_strict.py --repo-root ."

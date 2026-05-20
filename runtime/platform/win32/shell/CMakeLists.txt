@@ -13,7 +13,7 @@ if(WIN32)
         ${CMAKE_SOURCE_DIR}/engine/include
     )
     set_target_properties(runtime_platform_win32_ui PROPERTIES
-        C_STANDARD 90
+        C_STANDARD 17
         C_STANDARD_REQUIRED ON
         C_EXTENSIONS OFF
     )

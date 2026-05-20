@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -33,10 +33,10 @@ Scope: supported SKUs and their capability baselines.
 | --- | --- | --- |
 
 
-| legacy_core | BASELINE_LEGACY_CORE | C89/C++98; zero-pack executable required |
+| legacy_core | BASELINE_LEGACY_CORE | Retired retro/research lane; not the active mainline baseline |
 
 
-| mainline_core | BASELINE_MAINLINE_CORE | Future core baseline |
+| mainline_core | BASELINE_MAINLINE_CORE | Active C17/C++17 core baseline |
 
 
 | modern_ui | BASELINE_MODERN_UI | UI-focused capabilities |

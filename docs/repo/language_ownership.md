@@ -1,10 +1,10 @@
 Status: DERIVED
-Last Reviewed: 2026-05-18
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
 Task: NAME-00
-Machine-Readable Source: `contracts/repo/naming.contract.toml`
+Machine-Readable Source: `contracts/build/language_baseline.contract.toml`
 
 # Language Ownership
 
@@ -14,13 +14,13 @@ Language placement follows ownership and determinism obligations.
 
 | Root | Allowed by default | Must not own |
 | --- | --- | --- |
-| `engine/` | C89 and public headers parseable by C++98 | Python runtime behavior, shell runtime behavior, modern C++ without exception |
-| `game/` | C89 or C++98 | platform adapters, product shell behavior, modern C++ without exception |
-| `runtime/` | C89/C++98; isolated platform adapter language where required | game truth, domain law, process authority |
-| `apps/` | C++98/C89 or product-specific thin shell language | simulation truth, domain law, runtime adapter ownership |
+| `engine/` | C17 mainline; C++17 private implementation only where ownership allows; public ABI remains C-compatible | Python runtime behavior, shell runtime behavior, C++ ABI leakage |
+| `game/` | C++17 primary; C17 for deterministic packet/math/hash/save bits | platform adapters, product shell behavior, C++ ABI leakage |
+| `runtime/` | C++17 for services/platform/render/resource internals; C17 for C-callable facades | game truth, domain law, process authority |
+| `apps/` | C++17 or product-specific thin shell language | simulation truth, domain law, runtime adapter ownership |
 | `contracts/` | JSON, TOML, YAML, schema, manifest, registry, policy, matrix, lock | executable runtime behavior |
 | `content/` | data, assets, packs, profiles, templates, themes, locale | executable code, truth mutation |
-| `tools/` | Python, PowerShell, Bash, CMD, CMake helpers, C89/C++98 tooling, codegen | runtime dependency from product code |
+| `tools/` | Python, PowerShell, Bash, CMD, CMake helpers, C17/C++17 tooling, codegen | runtime dependency from product code |
 | `scripts/` | thin wrappers in Python, PowerShell, Bash, CMD | product behavior, simulation truth |
 | `cmake/` | CMake modules, presets, toolchains | source domain ownership, generated build output |
 | `external/` | third-party language as vendored | Dominium-owned source without reclassification |
@@ -44,11 +44,11 @@ These warnings are not final architecture approval. They are a ledger for later 
 
 ## Public Header Rule
 
-Public engine headers must remain C89 and C++98 parseable. This is already stated in `docs/engine/API_SPINE.md` and checked by the build boundary guardrails described in `docs/build/BOUNDARY_ENFORCEMENT.md`.
+Public engine headers must remain C17 C-compatible and C++17-consumable without leaking C++ ABI. This is checked by the ABI/header validators and build boundary guardrails.
 
 ## Toolchain Rule
 
-Do not couple OS floors to language standards. `docs/build/TRANSITION_DO_NOTS.md` keeps C89/C++98 discipline separate from platform support and toolchain status.
+The active OS floor is Windows 7 SP1, macOS 10.9.5, and Linux. C17/C++17 is the active build baseline; retro C89/C++98 lanes are historical or future research only.
 
 ## Content And Packs
 

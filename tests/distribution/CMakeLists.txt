@@ -8,7 +8,7 @@ target_link_libraries(distribution_single_package_tests PRIVATE
     libs::contracts
 )
 set_target_properties(distribution_single_package_tests PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -95,7 +95,7 @@ target_link_libraries(distribution_sdk_engine_compile_smoke PRIVATE
     domino_engine
 )
 set_target_properties(distribution_sdk_engine_compile_smoke PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -118,7 +118,7 @@ target_link_libraries(distribution_sdk_game_compile_smoke PRIVATE
     dominium_game
 )
 set_target_properties(distribution_sdk_game_compile_smoke PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

@@ -1,6 +1,6 @@
 schema_version = "dominium.abi.c_api.v1"
 status = "provisional"
-last_reviewed = "2026-05-20"
+last_reviewed = "2026-05-21"
 owner = "contracts.abi"
 
 [contract]
@@ -16,9 +16,9 @@ public_identity_sources = ["contracts", "registries", "stable_ids", "public_head
 private_implementation_sources = ["directories", "files", "internal_structs", "helper_functions", "algorithms"]
 
 [language_floor]
-stable_public_c_headers = "c89"
-stable_public_cpp_headers = "cpp98_only_when_explicitly_declared"
-implementation_cpp_floor = "cpp98"
+stable_public_c_headers = "c17"
+stable_public_cpp_headers = "cpp17_only_when_explicitly_declared"
+implementation_cpp_floor = "cpp17"
 higher_language_requires_surface_registry_entry = true
 
 [namespaces]
@@ -110,4 +110,4 @@ no_surface_promoted_to_frozen_abi_by_this_task = true
 [validation]
 primary_validator = "python tools/validators/abi/check_public_headers.py --repo-root . --strict"
 fixture_validator = "python tools/validators/abi/check_public_headers.py --repo-root . --fixtures"
-existing_checks = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tests/contract/public_header_c89_compile.py --repo-root .", "python tests/contract/public_header_cpp98_compile.py --repo-root ."]
+existing_checks = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tests/contract/public_header_c17_compile.py --repo-root .", "python tests/contract/public_header_cpp17_compile.py --repo-root .", "python tools/validators/build/check_language_baseline.py --repo-root . --strict"]

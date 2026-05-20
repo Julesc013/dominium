@@ -15,7 +15,7 @@ Kernel interface tests (KERN0).
 static unsigned int g_last_backend = 0u;
 static unsigned int g_alloc_count = 0u;
 
-void* operator new(size_t size) throw(std::bad_alloc)
+void* operator new(size_t size)
 {
     void* ptr = malloc(size);
     if (!ptr) {
@@ -25,7 +25,7 @@ void* operator new(size_t size) throw(std::bad_alloc)
     return ptr;
 }
 
-void* operator new[](size_t size) throw(std::bad_alloc)
+void* operator new[](size_t size)
 {
     void* ptr = malloc(size);
     if (!ptr) {
@@ -35,12 +35,12 @@ void* operator new[](size_t size) throw(std::bad_alloc)
     return ptr;
 }
 
-void operator delete(void* ptr) throw()
+void operator delete(void* ptr) noexcept
 {
     free(ptr);
 }
 
-void operator delete[](void* ptr) throw()
+void operator delete[](void* ptr) noexcept
 {
     free(ptr);
 }

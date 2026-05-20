@@ -19,7 +19,7 @@ target_link_libraries(tool_ui_bind PRIVATE
 
 set_target_properties(tool_ui_bind PROPERTIES
     OUTPUT_NAME "tool_ui_bind"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -44,7 +44,7 @@ target_link_libraries(tool_ui_doc_annotate PRIVATE
 
 set_target_properties(tool_ui_doc_annotate PROPERTIES
     OUTPUT_NAME "tool_ui_doc_annotate"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

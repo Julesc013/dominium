@@ -16,7 +16,7 @@ target_link_libraries(domino_ui_codegen
 )
 
 set_target_properties(domino_ui_codegen PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -33,7 +33,7 @@ if(DOMUI_ENABLE_CODEGEN)
 
     set_target_properties(domui_codegen PROPERTIES
         OUTPUT_NAME "tool_ui_codegen"
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -49,7 +49,7 @@ target_link_libraries(dominium-tool-editor-docgen
 )
 set_target_properties(dominium-tool-editor-docgen PROPERTIES
     OUTPUT_NAME "tool_tool_editor_docgen"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

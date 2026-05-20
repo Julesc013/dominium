@@ -3,7 +3,7 @@ FILE: include/dominium/dom_core.h
 MODULE: Dominium
 LAYER / SUBSYSTEM: Dominium API / dom_core
 RESPONSIBILITY: Defines the public contract for `dom_core` (types/constants/function signatures); does NOT provide implementation.
-ALLOWED DEPENDENCIES: `include/dominium/**` plus C89/C++98 standard headers as needed.
+ALLOWED DEPENDENCIES: `include/dominium/**` plus C17/C++17 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
@@ -14,7 +14,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/SPEC_*.md` withou
 #ifndef DOMINIUM_DOM_CORE_H
 #define DOMINIUM_DOM_CORE_H
 
-/* Small public-facing core surface. Keep C89 friendly. */
+/* Small public-facing core surface. Keep C17 compatible. */
 
 #include <stddef.h>
 #include "domino/baseline.h"

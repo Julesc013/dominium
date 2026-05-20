@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -34,13 +34,13 @@ Authority: canonical for required contract; blockers listed below.
 ## Required contract
 
 
-- Public headers MUST be C89 and C++98 parseable.
+- Public headers MUST be C17 C-compatible and C++17-consumable.
 
 
 - Public ABI MUST be flat, versioned, and C-only.
 
 
-- Public headers MUST NOT expose STL, templates, inline logic, or platform types.
+- Public headers MUST NOT expose STL, templates, C++ ABI, exceptions, RTTI, or platform types.
 
 
 - Public handles MUST be opaque; layout is private.
@@ -67,7 +67,7 @@ Authority: canonical for required contract; blockers listed below.
   `gfx.h`, `platform.h`, `render/`), which violates boundary hygiene.
 
 
-- Prior baseline checks indicate non-C89/C++98 constructs in public headers.
+- Prior baseline checks indicate public-header ABI and promotion-blocker debt.
 
 
 
@@ -82,7 +82,7 @@ Authority: canonical for required contract; blockers listed below.
 - Replace exposed structs with opaque handles where feasible without behavior change.
 
 
-- Remove inline logic and C99 constructs from public headers.
+- Remove C++ ABI leakage and platform leakage from public headers.
 
 
 - Define canonical error codes and ownership rules in public headers.

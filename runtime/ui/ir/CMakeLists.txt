@@ -44,7 +44,7 @@ if(WIN32)
 endif()
 
 set_target_properties(domino_ui_ir PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -60,7 +60,7 @@ target_link_libraries(domui_validate
 
 set_target_properties(domui_validate PROPERTIES
     OUTPUT_NAME "tool_ui_validate"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

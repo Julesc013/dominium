@@ -92,14 +92,14 @@ dom_add_testx(NAME inv_terrain_authority
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
-dom_add_testx(NAME invariant_lang_c89
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/invariant_lang_c89.py
+dom_add_testx(NAME invariant_lang_c17
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/invariant_lang_c17.py
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
-dom_add_testx(NAME invariant_lang_cpp98
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/invariant_lang_cpp98.py
+dom_add_testx(NAME invariant_lang_cpp17
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/invariant_lang_cpp17.py
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )

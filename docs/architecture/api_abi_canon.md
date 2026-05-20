@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-05-20
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -20,8 +20,8 @@ implementation may change behind the registered surface.
 
 ## Public ABI
 
-Stable reusable public ABI is C89-compatible unless the public surface registry
-declares a higher language floor. Public C++ implementation can exist behind a C
+Stable reusable public ABI is C17 C-compatible unless the public surface registry
+declares a different language floor. Public C++17 implementation can exist behind a C
 ABI, but C++ classes, templates, STL types, exceptions, and overload-only symbols
 must not cross the public C boundary.
 

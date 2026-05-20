@@ -1,9 +1,9 @@
 {
-  "fingerprint_sha256": "d7a7cc775732c91958232984bec2373f6e3053257b708042e53849a3936ecff1",
+  "fingerprint_sha256": "8715c1eab62f21582d9406c3ba538afdc3f216ad05963648f471c3f54158d798",
   "inputs": {
     "canon_index": {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "9f517c3f1c6140ab2b821d4c943a2b6a46fe42d0e26456389861bce7d97f7421"
+      "sha256": "bdbcc66208388cc4d31818a1486cb54aeb14147ec25810e14a563c93eff4735e"
     },
     "gate_runner": {
       "path": "scripts/dev/gate.py",
@@ -22,7 +22,7 @@
       "sha256": ""
     },
     "testx_suite_set": {
-      "sha256": "5b4cd78001697b1d59d24e4280174bee7e4d92281e6bada71581fe8dec4431b2",
+      "sha256": "af4c98dd7c29d45bbb667629cbe5ffde77179fb154f41a39aa807834394adfad",
       "source_root": "tests",
       "suite_count": 375
     },

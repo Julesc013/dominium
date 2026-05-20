@@ -31,8 +31,10 @@ ctest --preset vs2026-x64-debug
 ```
 
 ## Language levels (build-enforced)
-- C code is compiled as C90 (`CMAKE_C_STANDARD 90`, extensions off).
-- C++ code is compiled as C++98 (`CMAKE_CXX_STANDARD 98`, extensions off).
+- C code is compiled as C17 (`CMAKE_C_STANDARD 17`, extensions off).
+- C++ code is compiled as C++17 (`CMAKE_CXX_STANDARD 17`, extensions off).
+- Public ABI remains C-compatible; C++17 implementation does not make C++ ABI
+  stable.
 
 ## Toolchain policy (by host OS)
 - Windows presets target MSVC (Visual Studio generator).

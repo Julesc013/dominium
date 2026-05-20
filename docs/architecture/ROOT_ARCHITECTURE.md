@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-13
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -32,11 +32,11 @@ Canonical contracts remain in `docs/architecture/`, starting with `docs/architec
 +--------+-------+     +------------+------------+     +--------+-------+
          |                            |                          |
          +----------------------------v--------------------------+
-                              Game (C++98)
+                              Game (C++17)
                        meaning + process orchestration
                                       |
                                       v
-                             Engine (C89 core)
+                             Engine (C17 core)
                    deterministic substrate + canonical state
 ```
 

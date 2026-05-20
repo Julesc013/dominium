@@ -28,7 +28,7 @@ Secondary / compatibility toolchains
 
 Rules (binding for dev workflow)
 - IDE version does not define the language standard.
-- C89/C++98 is enforced via CMake flags and presets.
+- C17/C++17 is enforced via CMake flags and presets.
 - Use CMake presets; do not hand-edit generated project files.
 - Default IDE surfaces expose only the daily-use presets for the current host OS.
 - Set `DOMINIUM_ADVANCED_PRESETS=1` before configure if you need alternate toolchains, legacy lanes, or IDE projection presets.
@@ -37,7 +37,7 @@ Windows (VS2022)
 1) Open the repo folder in Visual Studio (CMake mode).
 2) Select a preset:
    - local (fast debug)
-   - verify (strict C89/C++98 + tests)
+   - verify (strict C17/C++17 + tests)
    - release-check (dry-run release lane)
    - release-winnt-x86_64 (release packaging lane)
 3) Configure and build all targets.

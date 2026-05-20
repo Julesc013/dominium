@@ -311,7 +311,7 @@ typedef struct err_t {
 } err_t;
 
 /*------------------------------------------------------------
- * Helpers (C89 compatible; no allocation).
+ * Helpers (C17 compatible; no allocation).
  *------------------------------------------------------------*/
 err_t err_ok(void);
 err_t err_make(u16 domain, u16 code, u32 flags, u32 msg_id);

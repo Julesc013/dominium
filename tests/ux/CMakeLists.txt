@@ -14,7 +14,7 @@ target_include_directories(ui_accessibility_tests PRIVATE
 )
 target_link_libraries(ui_accessibility_tests PRIVATE domino_ui_ir)
 set_target_properties(ui_accessibility_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

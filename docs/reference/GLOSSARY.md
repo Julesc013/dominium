@@ -181,7 +181,7 @@ Editor
 An ExperienceProfile permitting scenario or blueprint modification.
 
 Engine
-Domino, the deterministic universe simulation core (C89).
+Domino, the deterministic universe simulation core (C17 mainline with C-compatible public ABI).
 
 Entitlement
 A permission token within AuthorityContext.
@@ -252,7 +252,7 @@ G
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Game
-Dominium, the C++98 gameplay layer atop Domino.
+Dominium, the C++17 gameplay layer atop Domino.
 
 GBN
 Global Build Number for release tracking.

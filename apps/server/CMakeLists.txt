@@ -36,10 +36,10 @@ target_include_directories(dominium_server PRIVATE
 set_target_properties(dominium_server PROPERTIES
     OUTPUT_NAME "server"
     LINKER_LANGUAGE CXX
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -59,7 +59,7 @@ if(WIN32)
     )
     set_target_properties(server_app_win32 PROPERTIES
         OUTPUT_NAME "server_app_win32"
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -97,7 +97,7 @@ if(DOM_BUILD_TESTS)
         dominium_game
     )
     set_target_properties(dominium_server_shard_tests PROPERTIES
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -128,7 +128,7 @@ if(DOM_BUILD_TESTS)
         dominium_game
     )
     set_target_properties(dominium_server_shard_routing_tests PROPERTIES
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -159,7 +159,7 @@ if(DOM_BUILD_TESTS)
         dominium_game
     )
     set_target_properties(dominium_server_integrity_tests PROPERTIES
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -195,7 +195,7 @@ if(DOM_BUILD_TESTS)
         dominium_game
     )
     set_target_properties(dominium_server_shard_regression_tests PROPERTIES
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -226,7 +226,7 @@ if(DOM_BUILD_TESTS)
         dominium_game
     )
     set_target_properties(dominium_server_domain_shard_partition_tests PROPERTIES
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )

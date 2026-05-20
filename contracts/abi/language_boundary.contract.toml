@@ -1,6 +1,6 @@
 schema_version = "dominium.abi.language_boundary.v1"
 status = "provisional"
-last_reviewed = "2026-05-20"
+last_reviewed = "2026-05-21"
 owner = "contracts.abi"
 
 [contract]
@@ -10,7 +10,7 @@ owner = "contracts.abi"
 purpose = "Defines language boundary policy for public ABI, private implementation, tools, data contracts, and generated code."
 
 [public_c_abi]
-language_floor = "c89"
+language_floor = "c17"
 applies_to = ["stable public reusable headers", "cross-toolchain ABI", "long-lived provider/module surfaces"]
 requires_extern_c_for_cpp_consumers = true
 requires_opaque_handles_for_owned_objects = true
@@ -18,13 +18,18 @@ forbids_cpp_types = true
 forbids_platform_headers_in_engine = true
 
 [cpp_implementation]
-language_floor = "cpp98"
+language_floor = "cpp17"
 allowed_behind_c_abi = true
 may_use_internal_classes = true
 may_use_stl_in_internal_translation_units = true
 must_not_leak_classes_or_stl_to_public_c_abi = true
 exceptions_must_not_cross_abi = true
 compiler_extensions_require_local_justification = true
+
+[cpp17_library_subset]
+macos_10_9_5_restricted_subset = true
+forbidden_required_surfaces = ["std::filesystem", "std::pmr", "std::to_chars", "std::from_chars", "std::any"]
+throwing_optional_variant_access_requires_guard = true
 
 [python_tools]
 scope = "tooling_and_validation_only"

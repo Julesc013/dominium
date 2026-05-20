@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -16,7 +16,7 @@ This document enumerates the canonical build presets defined in
   full product build with tools/test enabled, `DOM_PLATFORM=sdl2`,
   `DOM_BACKEND_GL2=ON`, `DOM_BACKEND_DX9=ON`, `DOM_FETCH_SDL2=ON`.
 - `baseline-debug` / `baseline-release`:
-  strict baseline (C90/C++98), `DOM_ENABLE_MODERN=OFF`, `DOM_PLATFORM=sdl2`,
+  strict baseline (C17/C++17), `DOM_ENABLE_MODERN=OFF`, `DOM_PLATFORM=sdl2`,
   `DOM_BACKEND_SOFT=ON`, `DOM_BACKEND_NULL=ON`, `DOM_BACKEND_SDL2=ON`,
   `DOM_DISALLOW_DOWNLOADS=OFF`, `DOM_FETCH_SDL2=ON`.
 - `modern-debug` / `modern-release`:

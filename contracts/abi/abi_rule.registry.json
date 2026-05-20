@@ -76,10 +76,16 @@
       "proof": "public header validator and consumer compile tests"
     },
     {
-      "id": "abi.c89_compatible_public_header",
-      "description": "Stable C public headers compile as C89 unless the surface declares a higher language floor.",
+      "id": "abi.c17_compatible_public_header",
+      "description": "Stable C public headers compile as C17 and remain C-compatible across the public ABI.",
       "severity": "error_for_stable_abi",
       "proof": "public header consumer compile tests"
+    },
+    {
+      "id": "abi.cpp17_no_abi_leakage",
+      "description": "C++17 implementation may sit behind a public ABI, but C++ ABI and restricted library surfaces do not leak across it.",
+      "severity": "error_for_stable_abi",
+      "proof": "public header validator and C++17 library subset validator"
     }
   ]
 }

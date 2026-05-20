@@ -170,7 +170,7 @@ target_link_libraries(dominium_contract_tests PRIVATE
     core_tlv_schema
 )
 set_target_properties(dominium_contract_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -204,7 +204,7 @@ target_link_libraries(dominium_tlv_fuzz_tests PRIVATE
     core_tlv_schema
 )
 set_target_properties(dominium_tlv_fuzz_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -229,7 +229,7 @@ target_link_libraries(dominium_fs_contract_tests PRIVATE
     dominium_common
 )
 set_target_properties(dominium_fs_contract_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -254,7 +254,7 @@ target_link_libraries(dominium_universe_bundle_tests PRIVATE
     domino_core
 )
 set_target_properties(dominium_universe_bundle_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -278,7 +278,7 @@ target_link_libraries(dominium_macro_tests PRIVATE
     dominium_common
 )
 set_target_properties(dominium_macro_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -303,7 +303,7 @@ target_link_libraries(dominium_time_knowledge_tests PRIVATE
     domino_core
 )
 set_target_properties(dominium_time_knowledge_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -338,7 +338,7 @@ target_link_libraries(dominium_no_modal_tests PRIVATE
     domino_core
 )
 set_target_properties(dominium_no_modal_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -368,7 +368,7 @@ target_link_libraries(dominium_perf_tests PRIVATE
     domino_core
 )
 set_target_properties(dominium_perf_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -405,7 +405,7 @@ target_compile_definitions(dominium_session_tests PRIVATE
     DOMINIUM_TEST_RUN_ROOT="${CMAKE_SOURCE_DIR}/tmp"
 )
 set_target_properties(dominium_session_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -440,7 +440,7 @@ target_link_libraries(dominium_qos_tests PRIVATE
     domino_core
 )
 set_target_properties(dominium_qos_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -526,7 +526,7 @@ target_compile_definitions(dominium_coredata_tests PRIVATE
     DOMINIUM_TEST_FIXTURES_DIR="${CMAKE_SOURCE_DIR}/tests/fixtures"
 )
 set_target_properties(dominium_coredata_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -551,7 +551,7 @@ add_executable(dominium_interest_tests
 )
 target_link_libraries(dominium_interest_tests PRIVATE dominium_game)
 set_target_properties(dominium_interest_tests PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -562,7 +562,7 @@ add_executable(dominium_fidelity_tests
 )
 target_link_libraries(dominium_fidelity_tests PRIVATE dominium_game)
 set_target_properties(dominium_fidelity_tests PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -573,7 +573,7 @@ add_executable(dominium_epistemic_tests
 )
 target_link_libraries(dominium_epistemic_tests PRIVATE dominium_game)
 set_target_properties(dominium_epistemic_tests PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -587,7 +587,7 @@ target_include_directories(dominium_execution_emit_tests PRIVATE
 )
 target_link_libraries(dominium_execution_emit_tests PRIVATE dominium_game)
 set_target_properties(dominium_execution_emit_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -604,7 +604,7 @@ target_compile_definitions(policy_bridge_tests PRIVATE
 )
 target_link_libraries(policy_bridge_tests PRIVATE dominium_game)
 set_target_properties(policy_bridge_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -618,7 +618,7 @@ target_include_directories(jurisdiction_domain_tests PRIVATE
 )
 target_link_libraries(jurisdiction_domain_tests PRIVATE dominium_game)
 set_target_properties(jurisdiction_domain_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -629,7 +629,7 @@ add_executable(dominium_work_ir_completeness_tests
 )
 target_link_libraries(dominium_work_ir_completeness_tests PRIVATE dominium_game)
 set_target_properties(dominium_work_ir_completeness_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -640,7 +640,7 @@ add_executable(dominium_interest_work_ir_tests
 )
 target_link_libraries(dominium_interest_work_ir_tests PRIVATE dominium_game)
 set_target_properties(dominium_interest_work_ir_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -651,7 +651,7 @@ add_executable(dominium_economy_work_ir_tests
 )
 target_link_libraries(dominium_economy_work_ir_tests PRIVATE dominium_game)
 set_target_properties(dominium_economy_work_ir_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -662,7 +662,7 @@ add_executable(dominium_governance_work_ir_tests
 )
 target_link_libraries(dominium_governance_work_ir_tests PRIVATE dominium_game)
 set_target_properties(dominium_governance_work_ir_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -673,7 +673,7 @@ add_executable(dominium_war_work_ir_tests
 )
 target_link_libraries(dominium_war_work_ir_tests PRIVATE dominium_game)
 set_target_properties(dominium_war_work_ir_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -684,7 +684,7 @@ add_executable(dominium_agent_work_ir_tests
 )
 target_link_libraries(dominium_agent_work_ir_tests PRIVATE dominium_game)
 set_target_properties(dominium_agent_work_ir_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -695,7 +695,7 @@ add_executable(dominium_life_continuation_tests
 )
 target_link_libraries(dominium_life_continuation_tests PRIVATE dominium_game)
 set_target_properties(dominium_life_continuation_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -706,7 +706,7 @@ add_executable(dominium_life_death_tests
 )
 target_link_libraries(dominium_life_death_tests PRIVATE dominium_game)
 set_target_properties(dominium_life_death_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -717,7 +717,7 @@ add_executable(dominium_life_birth_tests
 )
 target_link_libraries(dominium_life_birth_tests PRIVATE dominium_game)
 set_target_properties(dominium_life_birth_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -728,7 +728,7 @@ add_executable(dominium_civ0a_survival_tests
 )
 target_link_libraries(dominium_civ0a_survival_tests PRIVATE dominium_game)
 set_target_properties(dominium_civ0a_survival_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -739,7 +739,7 @@ add_executable(dominium_civ0_population_tests
 )
 target_link_libraries(dominium_civ0_population_tests PRIVATE dominium_game)
 set_target_properties(dominium_civ0_population_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -750,7 +750,7 @@ add_executable(dominium_civ1_city_infra_tests
 )
 target_link_libraries(dominium_civ1_city_infra_tests PRIVATE dominium_game)
 set_target_properties(dominium_civ1_city_infra_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -761,7 +761,7 @@ add_executable(dominium_civ1_stub_refusal_tests
 )
 target_link_libraries(dominium_civ1_stub_refusal_tests PRIVATE dominium_game)
 set_target_properties(dominium_civ1_stub_refusal_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -772,7 +772,7 @@ add_executable(dominium_civ2_governance_tests
 )
 target_link_libraries(dominium_civ2_governance_tests PRIVATE dominium_game)
 set_target_properties(dominium_civ2_governance_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -783,7 +783,7 @@ add_executable(dominium_civ3_knowledge_tests
 )
 target_link_libraries(dominium_civ3_knowledge_tests PRIVATE dominium_game)
 set_target_properties(dominium_civ3_knowledge_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -794,7 +794,7 @@ add_executable(dominium_civ4_scale_tests
 )
 target_link_libraries(dominium_civ4_scale_tests PRIVATE dominium_game)
 set_target_properties(dominium_civ4_scale_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -805,7 +805,7 @@ add_executable(dominium_civ5_war1_security_force_tests
 )
 target_link_libraries(dominium_civ5_war1_security_force_tests PRIVATE dominium_game)
 set_target_properties(dominium_civ5_war1_security_force_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -816,7 +816,7 @@ add_executable(dominium_civ5_war2_engagement_tests
 )
 target_link_libraries(dominium_civ5_war2_engagement_tests PRIVATE dominium_game)
 set_target_properties(dominium_civ5_war2_engagement_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -827,7 +827,7 @@ add_executable(dominium_civ5_war3_occupation_tests
 )
 target_link_libraries(dominium_civ5_war3_occupation_tests PRIVATE dominium_game)
 set_target_properties(dominium_civ5_war3_occupation_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -838,7 +838,7 @@ add_executable(dominium_civ5_war4_scale_tests
 )
 target_link_libraries(dominium_civ5_war4_scale_tests PRIVATE dominium_game)
 set_target_properties(dominium_civ5_war4_scale_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -849,7 +849,7 @@ add_executable(dominium_agent1_goal_planning_tests
 )
 target_link_libraries(dominium_agent1_goal_planning_tests PRIVATE dominium_game)
 set_target_properties(dominium_agent1_goal_planning_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -860,7 +860,7 @@ add_executable(dominium_agent2_doctrine_tests
 )
 target_link_libraries(dominium_agent2_doctrine_tests PRIVATE dominium_game)
 set_target_properties(dominium_agent2_doctrine_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -871,7 +871,7 @@ add_executable(dominium_agent3_aggregation_tests
 )
 target_link_libraries(dominium_agent3_aggregation_tests PRIVATE dominium_game)
 set_target_properties(dominium_agent3_aggregation_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -882,7 +882,7 @@ add_executable(dominium_mod0_compat_tests
 )
 target_link_libraries(dominium_mod0_compat_tests PRIVATE dominium_game)
 set_target_properties(dominium_mod0_compat_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -893,7 +893,7 @@ add_executable(dominium_mp0_parity_tests
 )
 target_link_libraries(dominium_mp0_parity_tests PRIVATE dominium_game)
 set_target_properties(dominium_mp0_parity_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -904,7 +904,7 @@ add_executable(dominium_life_remains_tests
 )
 target_link_libraries(dominium_life_remains_tests PRIVATE dominium_game)
 set_target_properties(dominium_life_remains_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

@@ -542,6 +542,36 @@ warning_policy = "no_warnings_allowed"
 evidence_outputs = ["runner_json", "runner_markdown"]
 
 [[commands]]
+id = "t1.language_baseline"
+tier = "T1"
+name = "C17/C++17 language baseline validator"
+type = "argv"
+argv = ["{python}", "tools/validators/build/check_language_baseline.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "contracts.build"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "legacy projection warnings must remain visible"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.cpp17_forbidden_library_use"
+tier = "T1"
+name = "C++17 macOS 10.9 restricted library validator"
+type = "argv"
+argv = ["{python}", "tools/validators/build/check_cpp17_forbidden_library_use.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "contracts.build"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "optional/variant review warnings must remain visible"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
 id = "t1.repox_strict"
 tier = "T1"
 name = "RepoX STRICT"
@@ -617,11 +647,11 @@ warning_policy = "no_warnings_allowed"
 evidence_outputs = ["runner_json", "runner_markdown", "CTest output"]
 
 [[commands]]
-id = "t4.public_header_c89"
+id = "t4.public_header_c17"
 tier = "T4"
-name = "Engine public header C89 consumer check"
+name = "Engine public header C17 consumer check"
 type = "argv"
-argv = ["{python}", "tests/contract/public_header_c89_compile.py", "--repo-root", "{repo_root}"]
+argv = ["{python}", "tests/contract/public_header_c17_compile.py", "--repo-root", "{repo_root}"]
 owner = "release_trust"
 timeout_seconds = 120
 required = true
@@ -632,11 +662,11 @@ warning_policy = "public header consumer failures are full-gate debt until remed
 evidence_outputs = ["runner_json", "runner_markdown"]
 
 [[commands]]
-id = "t4.public_header_cpp98"
+id = "t4.public_header_cpp17"
 tier = "T4"
-name = "Game public header C++98 consumer check"
+name = "Game public header C++17 consumer check"
 type = "argv"
-argv = ["{python}", "tests/contract/public_header_cpp98_compile.py", "--repo-root", "{repo_root}"]
+argv = ["{python}", "tests/contract/public_header_cpp17_compile.py", "--repo-root", "{repo_root}"]
 owner = "release_trust"
 timeout_seconds = 120
 required = true

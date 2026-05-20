@@ -25,7 +25,7 @@ if(WIN32)
 
     set_target_properties(dominium-ui-preview-host-win32 PROPERTIES
         OUTPUT_NAME "dominium-ui-preview-host-win32"
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -59,7 +59,7 @@ if(APPLE)
 
     set_target_properties(dominium-ui-preview-host-macos PROPERTIES
         OUTPUT_NAME "dominium-ui-preview-host-macos"
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -93,7 +93,7 @@ if(UNIX AND NOT APPLE)
 
     set_target_properties(dominium-ui-preview-host-linux PROPERTIES
         OUTPUT_NAME "dominium-ui-preview-host-linux"
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )

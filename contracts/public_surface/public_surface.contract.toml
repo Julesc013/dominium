@@ -1,6 +1,6 @@
 schema_version = "dominium.public_surface.registry.v1"
 status = "provisional"
-last_reviewed = "2026-05-20"
+last_reviewed = "2026-05-21"
 owner = "contracts.public_surface"
 
 [contract]
@@ -35,7 +35,7 @@ kind = "c_header"
 path = "engine/include"
 owner = "engine"
 stability = "provisional"
-language = "c89"
+language = "c17"
 version = "0.1.0"
 introduced = "PUBLIC-SURFACE-REGISTRY-01"
 proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
@@ -49,7 +49,7 @@ kind = "c_header"
 path = "runtime/include"
 owner = "runtime"
 stability = "provisional"
-language = "c89"
+language = "c17"
 version = "0.1.0"
 introduced = "PUBLIC-SURFACE-REGISTRY-01"
 proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
@@ -63,7 +63,7 @@ kind = "c_header"
 path = "game/include"
 owner = "game"
 stability = "provisional"
-language = "c89/cpp"
+language = "c17/cpp17"
 version = "0.1.0"
 introduced = "PUBLIC-SURFACE-REGISTRY-01"
 proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
@@ -77,7 +77,7 @@ kind = "c_header"
 path = "apps/launcher/include"
 owner = "apps.launcher"
 stability = "internal"
-language = "c89/cpp"
+language = "c17/cpp17"
 version = "0.1.0"
 introduced = "PUBLIC-SURFACE-REGISTRY-01"
 proof = ["python scripts/verify_build_target_boundaries.py --repo-root ."]
@@ -91,7 +91,7 @@ kind = "c_header"
 path = "apps/setup/include"
 owner = "apps.setup"
 stability = "internal"
-language = "c89/cpp"
+language = "c17/cpp17"
 version = "0.1.0"
 introduced = "PUBLIC-SURFACE-REGISTRY-01"
 proof = ["python scripts/verify_build_target_boundaries.py --repo-root ."]
@@ -217,6 +217,32 @@ replacement_policy = "requires_test_tier_contract_update"
 notes = "Fast strict proof tier registry is new and intentionally provisional."
 
 [[surface]]
+id = "dominium.build.language_baseline.v1"
+kind = "registry"
+path = "contracts/build/language_baseline.contract.toml"
+owner = "contracts.build"
+stability = "provisional"
+version = "1.0.0"
+introduced = "LANGUAGE-BASELINE-01"
+proof = ["python tools/validators/build/check_language_baseline.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_language_baseline_update"
+notes = "Declares C17/C++17 as the active mainline source baseline while retaining C-compatible public ABI."
+
+[[surface]]
+id = "dominium.build.language_subset_schema.v1"
+kind = "schema"
+path = "contracts/build/language_subset.schema.json"
+owner = "contracts.build"
+stability = "provisional"
+version = "1.0.0"
+introduced = "LANGUAGE-BASELINE-01"
+proof = ["python -m json.tool contracts/build/language_subset.schema.json"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_language_baseline_update"
+notes = "Schema shape for language baseline contract validation."
+
+[[surface]]
 id = "dominium.abi.c_api.v1"
 kind = "registry"
 path = "contracts/abi/c_api.contract.toml"
@@ -240,7 +266,7 @@ introduced = "API-ABI-CANON-01"
 proof = ["python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_api_abi_canon_update"
-notes = "Defines C89/C++98/tool/data/generator language boundaries without changing implementation behavior."
+notes = "Defines C17/C++17/tool/data/generator language boundaries while preserving C-compatible public ABI."
 
 [[surface]]
 id = "dominium.abi.rule_registry.v1"

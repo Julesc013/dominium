@@ -56,7 +56,7 @@ set_source_files_properties(
 set_target_properties(dominium_client PROPERTIES
     OUTPUT_NAME "client"
     LINKER_LANGUAGE CXX
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -90,7 +90,7 @@ if(WIN32)
     )
     set_target_properties(client_app_win32 PROPERTIES
         OUTPUT_NAME "client_app_win32"
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )

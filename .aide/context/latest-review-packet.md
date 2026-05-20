@@ -2,8 +2,9 @@
 
 ## Review Objective
 
-Review `API-ABI-CANON-01`: provisional C API/ABI canon, public-header validator,
-fixtures, documentation, public-surface registry updates, and evidence.
+Review `LANGUAGE-BASELINE-01`: active C17/C++17 mainline baseline, public ABI
+preservation, macOS 10.9.5 C++17 subset policy, validators, build updates,
+documentation, and evidence.
 
 ## Decision Requested
 
@@ -17,50 +18,42 @@ fixtures, documentation, public-surface registry updates, and evidence.
 
 `.aide/context/latest-context-packet.md`
 
-## Verification Report Reference
-
-`.aide/verification/latest-verification-report.md`
-
 ## Evidence Packet References
 
-- `contracts/abi/c_api.contract.toml`
-- `contracts/abi/language_boundary.contract.toml`
-- `contracts/abi/abi_rule.registry.json`
-- `contracts/abi/public_header.schema.json`
-- `tools/validators/abi/check_public_headers.py`
-- `tests/contract/public_headers/**`
-- `docs/architecture/api_abi_canon.md`
-- `docs/development/c89_coding_standard.md`
-- `docs/development/cpp98_implementation_standard.md`
-- `docs/development/module_api_standard.md`
-- `contracts/public_surface/public_surface.contract.toml`
-- `.aide/reports/API-ABI-CANON-01-status.md`
-- `.aide/reports/API-ABI-CANON-01-validation.md`
-- `.aide/reports/API-ABI-CANON-01-results.json`
-- `.aide/reports/API-ABI-CANON-01-public-header-inventory.md`
-- `docs/repo/audits/API_ABI_CANON_01.md`
+- `contracts/build/language_baseline.contract.toml`
+- `contracts/build/language_subset.schema.json`
+- `tools/validators/build/check_language_baseline.py`
+- `tools/validators/build/check_cpp17_forbidden_library_use.py`
+- `docs/development/LANGUAGE_BASELINE.md`
+- `docs/development/C17_USAGE_POLICY.md`
+- `docs/development/CPP17_USAGE_POLICY.md`
+- `docs/development/MACOS_10_9_CPP17_LIBRARY_SUBSET.md`
+- `docs/architecture/C_COMPATIBLE_ABI_BOUNDARY.md`
+- `.aide/reports/LANGUAGE-BASELINE-01-status.md`
+- `.aide/reports/LANGUAGE-BASELINE-01-validation.md`
+- `.aide/reports/LANGUAGE-BASELINE-01-results.json`
+- `.aide/reports/LANGUAGE-BASELINE-01-language-inventory.md`
+- `.aide/reports/LANGUAGE-BASELINE-01-fast-strict.json`
+- `.aide/reports/LANGUAGE-BASELINE-01-fast-strict.md`
+- `docs/repo/audits/LANGUAGE_BASELINE_01.md`
 
 ## Changed Files Summary
 
-Adds provisional C89/C++98 API/ABI law, a stdlib public-header validator,
-fixture headers, docs, AIDE evidence, and conservative public-surface registry
-entries. Existing headers are not renamed or behaviorally changed.
+Moves active build and governance language surfaces to C17/C++17, preserves the
+C-compatible public ABI law, adds macOS 10.9.5 restricted C++17 subset
+validation, and records legacy projection warnings.
 
 ## Validation Summary
 
-ABI validator passes with 375 candidates, 0 high-confidence violations, and
-2,851 warnings. The warnings are retained as stable/frozen ABI promotion
-blockers. Public surface validator passes with 25 registered surfaces.
+Fast strict passes with 32/32 commands in 318.25 seconds. Language baseline
+validator passes with 7 legacy projection warnings. C++17 restricted library
+validator passes with 1,192 files checked and 0 findings.
 
 ## Risk Summary
 
-No public ABI is frozen. Existing `dom_`/`d_` prefixes, ABI-like struct shape,
-C++ declarations, and callback context gaps remain visible provisional debt.
-Compatibility corpus and deeper consumer compile proof remain later work.
-
-## Token Summary
-
-The packet stays compact and references evidence by path.
+Full CTest remains T4/full-gate debt. Existing ABI warning debt remains
+provisional and blocks stable/frozen ABI promotion. Legacy projection presets are
+not active mainline.
 
 ## Non-Goals / Scope Guard
 
@@ -70,5 +63,5 @@ corpus, or full CTest proof.
 
 ## Reviewer Instructions
 
-Confirm that the task defines and validates ABI law without freezing unproven
-headers, weakening existing validators, or hiding warning debt.
+Confirm that active mainline has moved to C17/C++17 without leaking C++ ABI,
+weakening the fast strict gate, or hiding legacy/full-gate debt.

@@ -37,10 +37,10 @@ def _generator_for_tuple(tuple_id: str, row: Mapping[str, Any], toolchains: Mapp
         "DOM_BUILD_LAUNCHER": "ON",
         "DOM_BUILD_GAME": "ON",
         "DOM_BUILD_TESTS": "ON" if str(row.get("intent") or "") == "verify" else "OFF",
-        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD": "17",
         "CMAKE_C_STANDARD_REQUIRED": "ON",
         "CMAKE_C_EXTENSIONS": "OFF",
-        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD": "17",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF",
     }

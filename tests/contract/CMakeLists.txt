@@ -86,14 +86,14 @@ dom_add_testx(NAME const_srz_contracts
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
-dom_add_testx(NAME public_header_c89_compile
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/public_header_c89_compile.py
+dom_add_testx(NAME public_header_c17_compile
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/public_header_c17_compile.py
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
 
-dom_add_testx(NAME public_header_cpp98_compile
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/public_header_cpp98_compile.py
+dom_add_testx(NAME public_header_cpp17_compile
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/public_header_cpp17_compile.py
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )

@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -24,7 +24,7 @@ Scope: language transition and split-component strategy.
 ## Steps
 
 
-1) Preserve C ABI spine and public headers (C89/C++98).
+1) Preserve the C-compatible ABI spine and public headers under the C17/C++17 mainline baseline.
 
 
 2) Isolate new language features to private translation units.

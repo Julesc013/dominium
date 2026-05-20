@@ -3,7 +3,7 @@ FILE: tests/contract/dominium_session_tests.cpp
 MODULE: Repository
 LAYER / SUBSYSTEM: tests/contract
 RESPONSIBILITY: Contract tests for session roles/authority modes and desync bundle plumbing.
-ALLOWED DEPENDENCIES: Project-local headers; C89/C++98 standard headers.
+ALLOWED DEPENDENCIES: Project-local headers; C17/C++17 standard headers.
 FORBIDDEN DEPENDENCIES: N/A.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.

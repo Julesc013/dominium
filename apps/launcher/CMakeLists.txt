@@ -17,7 +17,7 @@ target_link_libraries(launcher_core
         libs::contracts
 )
 set_target_properties(launcher_core PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -34,7 +34,7 @@ target_include_directories(launcher_cli PRIVATE
 )
 set_target_properties(launcher_cli PROPERTIES
     OUTPUT_NAME "launcher"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -43,7 +43,7 @@ add_executable(launcher_gui
 )
 set_target_properties(launcher_gui PROPERTIES
     OUTPUT_NAME "launcher_gui"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -57,7 +57,7 @@ if(WIN32)
     )
     set_target_properties(launcher_app_win32 PROPERTIES
         OUTPUT_NAME "launcher_app_win32"
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -73,7 +73,7 @@ add_executable(launcher_tui
 )
 set_target_properties(launcher_tui PROPERTIES
     OUTPUT_NAME "launcher_tui"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )

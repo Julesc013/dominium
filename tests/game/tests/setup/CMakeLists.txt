@@ -12,7 +12,7 @@ target_link_libraries(setup_kernel_tests PRIVATE
     dss_services
 )
 set_target_properties(setup_kernel_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -53,7 +53,7 @@ target_link_libraries(setup_splat_tests PRIVATE
     dss_services
 )
 set_target_properties(setup_splat_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -101,7 +101,7 @@ target_compile_definitions(setup_services_fs_tests PRIVATE
     SETUP_TESTS_SANDBOX_ROOT="${CMAKE_CURRENT_BINARY_DIR}/fs_sandbox"
 )
 set_target_properties(setup_services_fs_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -125,7 +125,7 @@ target_link_libraries(setup_services_platform_fake_tests PRIVATE
     dss_services
 )
 set_target_properties(setup_services_platform_fake_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -145,7 +145,7 @@ target_link_libraries(setup_kernel_uses_services_platform_tests PRIVATE
     dss_services
 )
 set_target_properties(setup_kernel_uses_services_platform_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -166,7 +166,7 @@ target_compile_definitions(setup_plan_tests PRIVATE
     SETUP_TESTS_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
 )
 set_target_properties(setup_plan_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -217,7 +217,7 @@ target_compile_definitions(setup_import_tests PRIVATE
     SETUP_TESTS_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
 )
 set_target_properties(setup_import_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -240,7 +240,7 @@ target_compile_definitions(setup_apply_tests PRIVATE
     SETUP_TESTS_SANDBOX_ROOT="${CMAKE_CURRENT_BINARY_DIR}/apply_sandbox"
 )
 set_target_properties(setup_apply_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -267,7 +267,7 @@ add_executable(setup_cli_golden_tests
     test_cli_golden.cpp
 )
 set_target_properties(setup_cli_golden_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -297,7 +297,7 @@ target_link_libraries(setup_gold_master_tests PRIVATE
     dss_services
 )
 set_target_properties(setup_gold_master_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -329,7 +329,7 @@ target_link_libraries(setup_adapter_steam_tests PRIVATE
     dsk_kernel
 )
 set_target_properties(setup_adapter_steam_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -348,7 +348,7 @@ add_executable(setup_adapter_macos_pkg_tests
     test_adapter_macos_pkg.cpp
 )
 set_target_properties(setup_adapter_macos_pkg_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -361,7 +361,7 @@ add_executable(setup_adapter_linux_wrappers_tests
     test_adapter_linux_wrappers.cpp
 )
 set_target_properties(setup_adapter_linux_wrappers_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -374,7 +374,7 @@ add_executable(setup_adapter_wrapper_tests
     test_adapter_wrapper_scripts.cpp
 )
 set_target_properties(setup_adapter_wrapper_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -390,7 +390,7 @@ target_compile_definitions(setup_parity_tests PRIVATE
     SETUP_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
 )
 set_target_properties(setup_parity_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -414,7 +414,7 @@ target_link_libraries(setup_parity_lock_tests PRIVATE
     dsk_kernel
 )
 set_target_properties(setup_parity_lock_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -477,7 +477,7 @@ if(WIN32)
         dsk_kernel
     )
     set_target_properties(setup_adapter_windows_tests PROPERTIES
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -506,7 +506,7 @@ target_link_libraries(setup_conformance_runner PRIVATE
     dss_services
 )
 set_target_properties(setup_conformance_runner PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -531,7 +531,7 @@ add_executable(setup_conformance_repeat_tests
     conformance/setup_conformance_repeat_tests.cpp
 )
 set_target_properties(setup_conformance_repeat_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

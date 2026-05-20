@@ -18,7 +18,7 @@ target_link_libraries(dominium_app_runtime PUBLIC
     libs::build_identity
 )
 set_target_properties(dominium_app_runtime PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )

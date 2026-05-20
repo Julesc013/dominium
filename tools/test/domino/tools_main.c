@@ -3,7 +3,7 @@ FILE: tools/test/domino/tools_main.c
 MODULE: Repository
 LAYER / SUBSYSTEM: tools/domino_test
 RESPONSIBILITY: Owns documentation for this translation unit.
-ALLOWED DEPENDENCIES: Project-local headers; C89/C++98 standard headers.
+ALLOWED DEPENDENCIES: Project-local headers; C17/C++17 standard headers.
 FORBIDDEN DEPENDENCIES: N/A.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.

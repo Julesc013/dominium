@@ -13,7 +13,7 @@ add_executable(engine_smoke_test
 )
 target_link_libraries(engine_smoke_test PRIVATE engine::domino)
 set_target_properties(engine_smoke_test PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -27,7 +27,7 @@ target_include_directories(engine_det_order_test PRIVATE
     ${CMAKE_SOURCE_DIR}/engine/kernel
 )
 set_target_properties(engine_det_order_test PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -42,7 +42,7 @@ target_include_directories(process_guard_tests PRIVATE
 )
 target_compile_definitions(process_guard_tests PRIVATE DOM_PROCESS_GUARD_ENABLED=1)
 set_target_properties(process_guard_tests PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -53,7 +53,7 @@ add_executable(engine_perf_no_modal_test
 )
 target_link_libraries(engine_perf_no_modal_test PRIVATE engine::domino)
 set_target_properties(engine_perf_no_modal_test PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -64,7 +64,7 @@ add_executable(engine_due_sched_test
 )
 target_link_libraries(engine_due_sched_test PRIVATE engine::domino)
 set_target_properties(engine_due_sched_test PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -78,7 +78,7 @@ target_include_directories(engine_perf_budget_test PRIVATE
     ${CMAKE_SOURCE_DIR}/engine/kernel
 )
 set_target_properties(engine_perf_budget_test PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -105,7 +105,7 @@ add_executable(engine_data_validate_test
 )
 target_link_libraries(engine_data_validate_test PRIVATE engine::domino)
 set_target_properties(engine_data_validate_test PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -116,7 +116,7 @@ add_executable(macro_capsule_store_tests
 )
 target_link_libraries(macro_capsule_store_tests PRIVATE engine::domino)
 set_target_properties(macro_capsule_store_tests PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -127,7 +127,7 @@ add_executable(execution_ir_tests
 )
 target_link_libraries(execution_ir_tests PRIVATE engine::domino)
 set_target_properties(execution_ir_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -141,7 +141,7 @@ target_include_directories(execution_scheduler_ref_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
 )
 set_target_properties(execution_scheduler_ref_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -155,7 +155,7 @@ target_include_directories(execution_scheduler_law_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
 )
 set_target_properties(execution_scheduler_law_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -169,7 +169,7 @@ target_include_directories(execution_contract_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
 )
 set_target_properties(execution_contract_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -183,7 +183,7 @@ target_compile_definitions(agent_foundation_contract_tests PRIVATE
     DOMINIUM_REPO_ROOT="${CMAKE_SOURCE_DIR}"
 )
 set_target_properties(agent_foundation_contract_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -194,7 +194,7 @@ add_executable(agent_mvp_core_tests
 )
 target_link_libraries(agent_mvp_core_tests PRIVATE engine::domino game::dominium)
 set_target_properties(agent_mvp_core_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -205,7 +205,7 @@ add_executable(agent_mvp_social_tests
 )
 target_link_libraries(agent_mvp_social_tests PRIVATE engine::domino game::dominium)
 set_target_properties(agent_mvp_social_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -216,7 +216,7 @@ add_executable(physicalization_mvp_tests
 )
 target_link_libraries(physicalization_mvp_tests PRIVATE engine::domino game::dominium)
 set_target_properties(physicalization_mvp_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -227,7 +227,7 @@ add_executable(player_embodiment_tests
 )
 target_link_libraries(player_embodiment_tests PRIVATE engine::domino game::dominium)
 set_target_properties(player_embodiment_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -241,7 +241,7 @@ target_include_directories(execution_equivalence_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
 )
 set_target_properties(execution_equivalence_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -252,7 +252,7 @@ add_executable(ecs_storage_iface_tests
 )
 target_link_libraries(ecs_storage_iface_tests PRIVATE engine::domino)
 set_target_properties(ecs_storage_iface_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -266,7 +266,7 @@ target_include_directories(ecs_soa_storage_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
 )
 set_target_properties(ecs_soa_storage_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -277,7 +277,7 @@ add_executable(ecs_packed_view_tests
 )
 target_link_libraries(ecs_packed_view_tests PRIVATE engine::domino)
 set_target_properties(ecs_packed_view_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -291,7 +291,7 @@ target_include_directories(kernel_iface_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
 )
 set_target_properties(kernel_iface_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -305,7 +305,7 @@ target_include_directories(kernel_scalar_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
 )
 set_target_properties(kernel_scalar_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -319,7 +319,7 @@ target_include_directories(kernel_simd_equivalence_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
 )
 set_target_properties(kernel_simd_equivalence_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -333,7 +333,7 @@ target_include_directories(kernel_gpu_fallback_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
 )
 set_target_properties(kernel_gpu_fallback_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -347,7 +347,7 @@ target_include_directories(kernel_policy_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
 )
 set_target_properties(kernel_policy_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -358,7 +358,7 @@ add_executable(sys_caps_tests
 )
 target_link_libraries(sys_caps_tests PRIVATE engine::domino)
 set_target_properties(sys_caps_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -369,7 +369,7 @@ add_executable(execution_policy_tests
 )
 target_link_libraries(execution_policy_tests PRIVATE engine::domino)
 set_target_properties(execution_policy_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -380,7 +380,7 @@ add_executable(budget_model_tests
 )
 target_link_libraries(budget_model_tests PRIVATE engine::domino)
 set_target_properties(budget_model_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -391,7 +391,7 @@ add_executable(domain_volume_tests
 )
 target_link_libraries(domain_volume_tests PRIVATE engine::domino)
 set_target_properties(domain_volume_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -402,7 +402,7 @@ add_executable(visitability_contract_tests
 )
 target_link_libraries(visitability_contract_tests PRIVATE engine::domino game::dominium)
 set_target_properties(visitability_contract_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -419,7 +419,7 @@ target_compile_definitions(execution_perf_regression_tests PRIVATE
     DOMINIUM_FIXTURES_DIR="${CMAKE_SOURCE_DIR}/tests/game/fixtures"
 )
 set_target_properties(execution_perf_regression_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -438,7 +438,7 @@ target_include_directories(render_prep_work_ir_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation
 )
 set_target_properties(render_prep_work_ir_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -452,7 +452,7 @@ target_include_directories(streaming_work_ir_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
 )
 set_target_properties(streaming_work_ir_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

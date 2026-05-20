@@ -42,6 +42,8 @@ Within T2, the CMake build step uses the verify preset with `ALL_BUILD` so the
 normal gate builds once and then runs explicit bounded CTest selections. This
 keeps build proof and test proof visible as separate evidence instead of
 letting the build preset invoke `verify_fast` and then running CTest again.
+T1 also validates the active C17/C++17 language baseline and the macOS 10.9
+C++17 restricted library subset.
 
 ## Pass Definition
 

@@ -19,7 +19,7 @@ Scope: canonical build presets for daily development, verification, and releases
 
 Key
 - dev: fast, debug, local iteration
-- verify: strict C89/C++98 + full TestX/RepoX
+- verify: strict C17/C++17 + full TestX/RepoX
 - release: release configuration
 - advanced: compatibility or alternate toolchains unlocked explicitly via `DOMINIUM_ADVANCED_PRESETS=1`
 
@@ -29,7 +29,7 @@ Windows (x64)
   - Purpose: daily debug
 - verify
   - Toolchain: Visual Studio 2022 (MSVC)
-  - Purpose: strict validation (C89/C++98 enforced)
+  - Purpose: strict validation (C17/C++17 enforced)
 - release-check
   - Toolchain: Visual Studio 2022 (MSVC)
   - Purpose: release dry-run lane without packaging
@@ -43,7 +43,7 @@ macOS (x64/arm64)
   - Purpose: daily debug
 - macos-verify
   - Toolchain: Xcode (latest)
-  - Purpose: strict validation (C89/C++98 enforced)
+  - Purpose: strict validation (C17/C++17 enforced)
 - release-macos-arm64
   - Toolchain: Xcode (latest)
   - Purpose: release build
@@ -54,13 +54,13 @@ Linux (x64)
   - Purpose: daily debug
 - linux-verify
   - Toolchain: GCC
-  - Purpose: strict validation (C89/C++98 enforced)
+  - Purpose: strict validation (C17/C++17 enforced)
 - release-linux-x86_64
   - Toolchain: GCC
   - Purpose: release build
 
 Notes
-- C89/C++98 is enforced in verify presets via explicit CMake flags.
+- C17/C++17 is enforced in verify presets via explicit CMake flags.
 - Tests are enabled in verify presets.
 - Advanced presets stay out of the default IDE picker until `DOMINIUM_ADVANCED_PRESETS=1` is set in the environment.
 - Use docs/architecture/IDE_AND_TOOLCHAIN_POLICY.md for policy details.

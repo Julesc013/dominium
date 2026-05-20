@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: unknown
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -16,8 +16,8 @@ For constitutional architecture rules, start with `docs/architecture/ARCH0_CONST
 
 Primary directories:
 
-- `engine/` - deterministic simulation substrate (C89)
-- `game/` - gameplay/meaning layer (C++98)
+- `engine/` - deterministic simulation substrate (C17 mainline with C-compatible public ABI)
+- `game/` - gameplay/meaning layer (C++17)
 - `client/`, `server/`, `launcher/`, `setup/`, `tools/` - product executables
 - `schema/` - schema contracts
 - `data/` - registries, packs, and canonical data
@@ -83,8 +83,9 @@ Relevant references:
 
 ## Code Style and Language Constraints
 
-- C code in deterministic core: **C89/C90**
-- C++ code in game/product layers: **C++98**
+- C code: **C17**, extensions off
+- C++ code: **C++17**, extensions off
+- Public ABI remains C-compatible; do not expose C++ ABI across stable boundaries.
 - Keep compatibility with configured toolchain constraints in `CMakePresets.json`
 
 Use existing style and naming conventions in touched modules; avoid introducing new formatting regimes in isolated edits.

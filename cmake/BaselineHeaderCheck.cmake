@@ -18,11 +18,6 @@ function(dominium_baseline_header_check root_dir)
         file(RELATIVE_PATH rel "${CMAKE_SOURCE_DIR}" "${header_path}")
         string(REPLACE "\\" "/" rel "${rel}")
 
-        set(is_c89_header 0)
-        if(rel MATCHES "^include/domino/")
-            set(is_c89_header 1)
-        endif()
-
         file(STRINGS "${header_path}" lines)
         set(line_no 0)
         set(in_block_comment 0)
@@ -59,7 +54,7 @@ function(dominium_baseline_header_check root_dir)
                 endif()
             endif()
 
-            # Strip // comments for token scanning (C89-only rule is handled separately below).
+            # Strip // comments for token scanning.
             if(line_scan MATCHES "//")
                 string(REGEX REPLACE "//.*$" "" line_scan "${line_scan}")
             endif()
@@ -67,34 +62,17 @@ function(dominium_baseline_header_check root_dir)
             # ------------------------------------------------------------
             # Forbidden includes (baseline-visible public headers)
             # ------------------------------------------------------------
-            if(line_scan MATCHES "^[ \t]*#[ \t]*include[ \t]*<stdint\\.h>")
-                list(APPEND violations "${rel}:${line_no}: forbidden include: <stdint.h>: ${line_disp}")
-            endif()
-            if(line_scan MATCHES "^[ \t]*#[ \t]*include[ \t]*<stdbool\\.h>")
-                list(APPEND violations "${rel}:${line_no}: forbidden include: <stdbool.h>: ${line_disp}")
-            endif()
-
-            # ------------------------------------------------------------
-            # Forbidden keywords / constructs
-            # ------------------------------------------------------------
-            foreach(kw IN ITEMS constexpr nullptr noexcept override final thread_local auto inline)
-                if(line_scan MATCHES "(^|[^A-Za-z0-9_])${kw}([^A-Za-z0-9_]|$)")
-                    list(APPEND violations "${rel}:${line_no}: forbidden token: ${kw}: ${line_disp}")
+            foreach(inc IN ITEMS vector string map set unordered_map unordered_set list deque array memory functional future thread mutex optional variant any stdexcept filesystem memory_resource charconv)
+                if(line_scan MATCHES "^[ \t]*#[ \t]*include[ \t]*<${inc}>")
+                    list(APPEND violations "${rel}:${line_no}: forbidden C++ library include in public C ABI header: <${inc}>: ${line_disp}")
+                endif()
+            endforeach()
+            foreach(inc IN ITEMS windows.h winsock.h winsock2.h unistd.h pthread.h vulkan/vulkan.h SDL.h SDL2/SDL.h)
+                if(line_scan MATCHES "^[ \t]*#[ \t]*include[ \t]*<${inc}>")
+                    list(APPEND violations "${rel}:${line_no}: forbidden platform include in public engine header: <${inc}>: ${line_disp}")
                 endif()
             endforeach()
 
-            if(line_scan MATCHES "long[ \t]+long")
-                list(APPEND violations "${rel}:${line_no}: forbidden token: long long: ${line_disp}")
-            endif()
-
-            if(line_scan MATCHES "\\.[A-Za-z_][A-Za-z0-9_]*[ \t]*=")
-                list(APPEND violations "${rel}:${line_no}: forbidden C99 designated initializer: ${line_disp}")
-            endif()
-
-            # C89 headers must not use // comments.
-            if(is_c89_header AND NOT in_block_comment AND line MATCHES "//")
-                list(APPEND violations "${rel}:${line_no}: forbidden C++-style comment in C89 header: ${line_disp}")
-            endif()
         endforeach()
     endforeach()
 
@@ -102,7 +80,8 @@ function(dominium_baseline_header_check root_dir)
         list(JOIN violations "\n" violations_text)
         message(FATAL_ERROR
             "Baseline header check failed.\n"
-            "Baseline-visible headers must remain C89/C++98 compatible.\n\n"
+            "Baseline-visible headers must avoid forbidden C++ library and platform header leakage.\n"
+            "C ABI shape is enforced by tools/validators/abi/check_public_headers.py.\n\n"
             "${violations_text}\n"
         )
     endif()

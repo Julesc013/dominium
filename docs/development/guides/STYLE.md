@@ -13,8 +13,10 @@ requirements are specified in `docs/reference/specs/SPEC_DETERMINISM.md` and enf
 `docs/governance/policies/DETERMINISM_REGRESSION_RULES.md`.
 
 ## Language levels (build-enforced)
-- C code that participates in deterministic simulation is C90 (`CMAKE_C_STANDARD 90`).
-- C++ code in the product layer is C++98 (`CMAKE_CXX_STANDARD 98`).
+- C code is C17 (`CMAKE_C_STANDARD 17`, extensions off).
+- C++ code is C++17 (`CMAKE_CXX_STANDARD 17`, extensions off).
+- Deterministic code remains subject to replay/order/serialization law; C17/C++17
+  does not authorize hidden runtime dependence.
 
 ## Prefixes (canonical)
 Use existing prefixes consistently:

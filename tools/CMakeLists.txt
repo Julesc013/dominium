@@ -11,7 +11,7 @@ target_link_libraries(tools_shared
         libs::contracts
 )
 set_target_properties(tools_shared PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -44,10 +44,10 @@ target_include_directories(dominium-tools PRIVATE
 )
 set_target_properties(dominium-tools PROPERTIES
     OUTPUT_NAME "tools"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -64,7 +64,7 @@ if(WIN32)
     )
     set_target_properties(tools_app_win32 PROPERTIES
         OUTPUT_NAME "tools_app_win32"
-        CXX_STANDARD 98
+        CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
@@ -86,7 +86,7 @@ target_include_directories(dom_tool_artifactmeta PRIVATE
 )
 set_target_properties(dom_tool_artifactmeta PROPERTIES
     OUTPUT_NAME "dom_tool_artifactmeta"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -101,7 +101,7 @@ target_include_directories(dom_tool_terrain PRIVATE
 )
 set_target_properties(dom_tool_terrain PROPERTIES
     OUTPUT_NAME "dom_tool_terrain"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -119,7 +119,7 @@ target_include_directories(dom_tool_geology PRIVATE
 )
 set_target_properties(dom_tool_geology PROPERTIES
     OUTPUT_NAME "dom_tool_geology"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -137,7 +137,7 @@ target_include_directories(dom_tool_climate PRIVATE
 )
 set_target_properties(dom_tool_climate PROPERTIES
     OUTPUT_NAME "dom_tool_climate"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -155,7 +155,7 @@ target_include_directories(dom_tool_weather PRIVATE
 )
 set_target_properties(dom_tool_weather PROPERTIES
     OUTPUT_NAME "dom_tool_weather"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -173,7 +173,7 @@ target_include_directories(dom_tool_energy PRIVATE
 )
 set_target_properties(dom_tool_energy PROPERTIES
     OUTPUT_NAME "dom_tool_energy"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -191,7 +191,7 @@ target_include_directories(dom_tool_heat PRIVATE
 )
 set_target_properties(dom_tool_heat PROPERTIES
     OUTPUT_NAME "dom_tool_heat"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -209,7 +209,7 @@ target_include_directories(dom_tool_fluid PRIVATE
 )
 set_target_properties(dom_tool_fluid PROPERTIES
     OUTPUT_NAME "dom_tool_fluid"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -227,7 +227,7 @@ target_include_directories(dom_tool_network PRIVATE
 )
 set_target_properties(dom_tool_network PROPERTIES
     OUTPUT_NAME "dom_tool_network"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -245,7 +245,7 @@ target_include_directories(dom_tool_hazard PRIVATE
 )
 set_target_properties(dom_tool_hazard PROPERTIES
     OUTPUT_NAME "dom_tool_hazard"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -263,7 +263,7 @@ target_include_directories(dom_tool_risk PRIVATE
 )
 set_target_properties(dom_tool_risk PROPERTIES
     OUTPUT_NAME "dom_tool_risk"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -281,7 +281,7 @@ target_include_directories(dom_tool_trust PRIVATE
 )
 set_target_properties(dom_tool_trust PROPERTIES
     OUTPUT_NAME "dom_tool_trust"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -299,7 +299,7 @@ target_include_directories(dom_tool_institution PRIVATE
 )
 set_target_properties(dom_tool_institution PROPERTIES
     OUTPUT_NAME "dom_tool_institution"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -317,7 +317,7 @@ target_include_directories(dom_tool_economy PRIVATE
 )
 set_target_properties(dom_tool_economy PROPERTIES
     OUTPUT_NAME "dom_tool_economy"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -335,7 +335,7 @@ target_include_directories(dom_tool_conflict PRIVATE
 )
 set_target_properties(dom_tool_conflict PROPERTIES
     OUTPUT_NAME "dom_tool_conflict"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -353,7 +353,7 @@ target_include_directories(dom_tool_history PRIVATE
 )
 set_target_properties(dom_tool_history PROPERTIES
     OUTPUT_NAME "dom_tool_history"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -371,7 +371,7 @@ target_include_directories(dom_tool_standard PRIVATE
 )
 set_target_properties(dom_tool_standard PROPERTIES
     OUTPUT_NAME "dom_tool_standard"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -389,7 +389,7 @@ target_include_directories(dom_tool_autonomy PRIVATE
 )
 set_target_properties(dom_tool_autonomy PROPERTIES
     OUTPUT_NAME "dom_tool_autonomy"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -407,7 +407,7 @@ target_include_directories(dom_tool_srz PRIVATE
 )
 set_target_properties(dom_tool_srz PROPERTIES
     OUTPUT_NAME "dom_tool_srz"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -425,7 +425,7 @@ target_include_directories(dom_tool_knowledge PRIVATE
 )
 set_target_properties(dom_tool_knowledge PROPERTIES
     OUTPUT_NAME "dom_tool_knowledge"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -443,7 +443,7 @@ target_include_directories(dom_tool_vegetation PRIVATE
 )
 set_target_properties(dom_tool_vegetation PROPERTIES
     OUTPUT_NAME "dom_tool_vegetation"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -461,7 +461,7 @@ target_include_directories(dom_tool_animal PRIVATE
 )
 set_target_properties(dom_tool_animal PROPERTIES
     OUTPUT_NAME "dom_tool_animal"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -479,7 +479,7 @@ target_include_directories(dom_tool_structure PRIVATE
 )
 set_target_properties(dom_tool_structure PROPERTIES
     OUTPUT_NAME "dom_tool_structure"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -497,7 +497,7 @@ target_include_directories(dom_tool_travel PRIVATE
 )
 set_target_properties(dom_tool_travel PROPERTIES
     OUTPUT_NAME "dom_tool_travel"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -515,7 +515,7 @@ target_include_directories(dom_tool_mining PRIVATE
 )
 set_target_properties(dom_tool_mining PROPERTIES
     OUTPUT_NAME "dom_tool_mining"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -533,7 +533,7 @@ target_include_directories(dom_tool_crafting PRIVATE
 )
 set_target_properties(dom_tool_crafting PROPERTIES
     OUTPUT_NAME "dom_tool_crafting"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -545,7 +545,7 @@ add_executable(coredata_compile
 )
 set_target_properties(coredata_compile PROPERTIES
     OUTPUT_NAME "coredata_compile"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -554,7 +554,7 @@ add_executable(coredata_validate
 )
 set_target_properties(coredata_validate PROPERTIES
     OUTPUT_NAME "coredata_validate"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -565,7 +565,7 @@ add_executable(data_validate
 target_link_libraries(data_validate PRIVATE domino_engine)
 set_target_properties(data_validate PROPERTIES
     OUTPUT_NAME "data_validate"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )
@@ -583,7 +583,7 @@ target_include_directories(validate_all PRIVATE
 )
 set_target_properties(validate_all PROPERTIES
     OUTPUT_NAME "validate_all"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -597,7 +597,7 @@ target_link_libraries(registry_dump_cli PRIVATE
 )
 set_target_properties(registry_dump_cli PROPERTIES
     OUTPUT_NAME "registry_dump_cli"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -611,7 +611,7 @@ target_link_libraries(hygiene_validate_cli PRIVATE
 )
 set_target_properties(hygiene_validate_cli PROPERTIES
     OUTPUT_NAME "hygiene_validate_cli"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -629,7 +629,7 @@ target_include_directories(dominium_tools_inspect
         ${CMAKE_SOURCE_DIR}/apps/workbench/module/inspection/inspector
 )
 set_target_properties(dominium_tools_inspect PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -652,7 +652,7 @@ target_include_directories(dominium_tools_observability
         ${CMAKE_SOURCE_DIR}/apps/workbench/module/inspection/inspector
 )
 set_target_properties(dominium_tools_observability PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -662,7 +662,7 @@ add_executable(dominium_tool0_inspection_tests
 )
 target_link_libraries(dominium_tool0_inspection_tests PRIVATE dominium_tools_inspect)
 set_target_properties(dominium_tool0_inspection_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -675,7 +675,7 @@ add_executable(dominium_vis3_observability_tests
 )
 target_link_libraries(dominium_vis3_observability_tests PRIVATE dominium_tools_observability)
 set_target_properties(dominium_vis3_observability_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -694,7 +694,7 @@ target_compile_definitions(dominium_registry_tests PRIVATE
     DOMINIUM_LAW_TARGETS_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/law_targets.registry"
 )
 set_target_properties(dominium_registry_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -714,7 +714,7 @@ target_include_directories(mod_pack_builder PRIVATE
 target_link_libraries(mod_pack_builder PRIVATE dominium_game)
 set_target_properties(mod_pack_builder PROPERTIES
     OUTPUT_NAME "mod_pack_builder"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )
@@ -731,7 +731,7 @@ target_include_directories(mod_pack_validator PRIVATE
 target_link_libraries(mod_pack_validator PRIVATE dominium_game)
 set_target_properties(mod_pack_validator PROPERTIES
     OUTPUT_NAME "mod_pack_validator"
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

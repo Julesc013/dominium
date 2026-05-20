@@ -3,7 +3,7 @@ FILE: include/dominium/dom_package_manifest.h
 MODULE: Dominium
 LAYER / SUBSYSTEM: Dominium API / dom_package_manifest
 RESPONSIBILITY: Defines the public contract for `dom_package_manifest` (types/constants/function signatures); does NOT provide implementation.
-ALLOWED DEPENDENCIES: `include/dominium/**` plus C89/C++98 standard headers as needed.
+ALLOWED DEPENDENCIES: `include/dominium/**` plus C17/C++17 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.

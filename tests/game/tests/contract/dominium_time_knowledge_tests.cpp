@@ -3,7 +3,7 @@ FILE: tests/contract/dominium_time_knowledge_tests.cpp
 MODULE: Repository
 LAYER / SUBSYSTEM: tests/contract
 RESPONSIBILITY: Contract tests for epistemic time knowledge and clock drift.
-ALLOWED DEPENDENCIES: Project-local headers; C89/C++98 standard headers.
+ALLOWED DEPENDENCIES: Project-local headers; C17/C++17 standard headers.
 FORBIDDEN DEPENDENCIES: OS time APIs; locale/timezone libraries.
 */
 #include <cstdio>

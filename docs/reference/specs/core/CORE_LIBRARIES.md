@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -28,7 +28,7 @@ This document lists the shared contract modules under
 
 - No OS/UI headers in core contract headers.
 - Deterministic output: stable ordering and canonical encoding.
-- C89-compatible ABIs at module boundaries; launcher/setup code uses C++98 only.
+- C17-compatible C ABIs at module boundaries; launcher/setup code uses C++17.
 - Skip-unknown TLV semantics for forward compatibility.
 
 ## Extending Safely

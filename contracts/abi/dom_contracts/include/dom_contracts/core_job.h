@@ -100,7 +100,7 @@ typedef struct core_job_state_t {
 } core_job_state;
 
 /*------------------------------------------------------------
- * Helpers (C89 compatible; no allocation).
+ * Helpers (C17 compatible; no allocation).
  *------------------------------------------------------------*/
 void core_job_def_clear(core_job_def* def);
 void core_job_state_clear(core_job_state* st);

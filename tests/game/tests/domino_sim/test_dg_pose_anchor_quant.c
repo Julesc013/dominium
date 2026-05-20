@@ -3,7 +3,7 @@ FILE: tests/domino_sim/test_dg_pose_anchor_quant.c
 MODULE: Repository
 LAYER / SUBSYSTEM: tests/domino_sim
 RESPONSIBILITY: Owns documentation for this translation unit.
-ALLOWED DEPENDENCIES: Project-local headers; C89/C++98 standard headers.
+ALLOWED DEPENDENCIES: Project-local headers; C17/C++17 standard headers.
 FORBIDDEN DEPENDENCIES: N/A.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.
@@ -97,7 +97,7 @@ static void frame_graph_make(d_world_frame *g, d_world_frame_node *storage, u32 
     d_world_frame_init(g, storage, cap);
     d_world_frame_clear(g);
 
-    /* Frame 10: parent=world. Translate (10m,0,0) and rotate 180° about Z. */
+    /* Frame 10: parent=world. Translate (10m,0,0) and rotate 180Â° about Z. */
     memset(&n, 0, sizeof(n));
     n.id = 10u;
     n.parent_id = DG_FRAME_ID_WORLD;

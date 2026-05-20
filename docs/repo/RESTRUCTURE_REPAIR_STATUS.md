@@ -5,9 +5,27 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `MOVE-SCRIPT-00`.
+Latest task: `LANGUAGE-BASELINE-01`.
 
-Result: PARTIAL, with naming law locked, CTest sharding honest, semantic lint blockers resolved, and deterministic bad-root routing evidence generated without applying moves.
+Result: PASS_WITH_WARNINGS for the active C17/C++17 language baseline, with naming law locked, CTest sharding honest, semantic lint blockers resolved, and deterministic bad-root routing evidence preserved.
+
+## LANGUAGE-BASELINE-01 Update
+
+LANGUAGE-BASELINE-01 is PASS_WITH_WARNINGS.
+
+- active mainline C floor: C17.
+- active mainline C++ floor: C++17.
+- public ABI remains C-compatible.
+- language contract: `contracts/build/language_baseline.contract.toml`.
+- language validators: `tools/validators/build/check_language_baseline.py` and `tools/validators/build/check_cpp17_forbidden_library_use.py`.
+- fast strict: PASS, 32/32 commands, 318.25 seconds.
+- warning: 7 legacy projection presets remain outside active mainline with `DOM_LANG_MODE=c89_cpp98`.
+- full CTest remains T4 full/release debt and was not rerun.
+
+Next task:
+`DEPENDENCY-DIRECTION-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## API-ABI-CANON-01 Update
 

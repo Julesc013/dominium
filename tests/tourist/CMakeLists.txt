@@ -12,7 +12,7 @@ target_link_libraries(tourist_non_interference_tests PRIVATE
     libs::contracts
 )
 set_target_properties(tourist_non_interference_tests PROPERTIES
-    CXX_STANDARD 98
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
 )

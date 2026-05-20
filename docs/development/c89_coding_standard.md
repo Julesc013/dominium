@@ -1,16 +1,21 @@
 Status: DERIVED
-Last Reviewed: 2026-05-20
+Last Reviewed: 2026-05-21
 Supersedes: none
-Superseded By: none
+Superseded By: `docs/development/C17_USAGE_POLICY.md`
 Stability: provisional
 Future Series: API-ABI-CANON, COMPATIBILITY-CORPUS, PORTABILITY-MATRIX
 Binding Sources: `contracts/abi/c_api.contract.toml`, `contracts/abi/abi_rule.registry.json`
 
-# C89 Public API Standard
+# Historical C89 Public API Standard
+
+This file is retained as historical rationale. It is no longer the active
+mainline language floor. The active C policy is
+`docs/development/C17_USAGE_POLICY.md`, and the build-enforced baseline is
+`contracts/build/language_baseline.contract.toml`.
 
 ## Scope
 
-This standard applies to stable C-compatible public headers and ABI-facing
+This historical standard applied to stable C-compatible public headers and ABI-facing
 fixtures. Provisional headers may carry warnings, but warnings block stable ABI
 promotion until resolved or explicitly excepted.
 

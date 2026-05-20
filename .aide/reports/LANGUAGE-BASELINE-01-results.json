@@ -1,0 +1,54 @@
+{
+  "task": "LANGUAGE-BASELINE-01",
+  "result": "PASS_WITH_WARNINGS",
+  "starting_head": "502daf57d4fda8bf2916677cd6fc322ce688d030",
+  "origin_main_at_start": "502daf57d4fda8bf2916677cd6fc322ce688d030",
+  "baseline": {
+    "c_standard": "c17",
+    "cxx_standard": "cpp17",
+    "public_abi": "c_compatible",
+    "active_os_floor": ["windows7_sp1", "macos_10_9_5", "linux"]
+  },
+  "validators": {
+    "language_baseline": {
+      "status": "pass",
+      "errors": 0,
+      "warnings": 7
+    },
+    "cpp17_forbidden_library_use": {
+      "status": "pass",
+      "errors": 0,
+      "warnings": 0,
+      "files_checked": 1192
+    },
+    "public_surface": {
+      "status": "pass",
+      "surface_count": 27,
+      "stable_count": 2
+    },
+    "public_header_abi": {
+      "status": "pass",
+      "headers": 375,
+      "errors": 0,
+      "warnings": 2851
+    }
+  },
+  "fast_strict": {
+    "status": "pass",
+    "elapsed_seconds": 318.25,
+    "commands_total": 32,
+    "commands_passed": 32,
+    "commands_failed": 0
+  },
+  "full_ctest": {
+    "status": "not_run",
+    "required_for_normal_gate": false,
+    "tier": "T4"
+  },
+  "warnings": [
+    "7 legacy projection presets still declare DOM_LANG_MODE=c89_cpp98 outside active mainline.",
+    "Full CTest remains T4 full/release proof and known debt.",
+    "No public ABI is promoted to frozen ABI by this task."
+  ],
+  "next_task": "DEPENDENCY-DIRECTION-01"
+}

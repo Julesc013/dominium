@@ -46,6 +46,7 @@ It includes:
 - no-`src`/`source` and forbidden-root validators
 - docs sanity, include sanity, build target boundaries, UI shell purity, and ABI
   boundary checks
+- C17/C++17 language baseline and macOS 10.9 C++17 library-subset validators
 - the test-tier contract validator
 - RepoX STRICT
 

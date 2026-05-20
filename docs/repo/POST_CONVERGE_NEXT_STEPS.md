@@ -9,6 +9,24 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## LANGUAGE-BASELINE-01 Update
+
+LANGUAGE-BASELINE-01 moves Dominium active mainline governance to C17 + C++17.
+
+- contract: `contracts/build/language_baseline.contract.toml`
+- schema: `contracts/build/language_subset.schema.json`
+- validators:
+  - `python tools/validators/build/check_language_baseline.py --repo-root . --strict`
+  - `python tools/validators/build/check_cpp17_forbidden_library_use.py --repo-root . --strict`
+- active CMake and verify presets now use C17/C++17
+- public ABI remains C-compatible and provisional unless separately promoted
+- fast strict: PASS, 32/32 commands, 318.25 seconds
+- warning: 7 legacy projection presets still declare `DOM_LANG_MODE=c89_cpp98` outside active mainline
+- next Foundation Lock task: `DEPENDENCY-DIRECTION-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Full CTest
+remains T4 full/release proof and was not rerun for this task.
+
 ## API-ABI-CANON-01 Update
 
 API-ABI-CANON-01 adds the provisional C API/ABI canon:

@@ -3,7 +3,7 @@ FILE: tests/contract/dominium_no_modal_tests.cpp
 MODULE: Repository
 LAYER / SUBSYSTEM: tests/contract
 RESPONSIBILITY: Contract tests for no-modal-loading, derived ordering, and snapshot isolation.
-ALLOWED DEPENDENCIES: Project-local headers; C89/C++98 standard headers.
+ALLOWED DEPENDENCIES: Project-local headers; C17/C++17 standard headers.
 FORBIDDEN DEPENDENCIES: N/A.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.

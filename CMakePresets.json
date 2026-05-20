@@ -159,7 +159,7 @@
     },
     {
       "name": "verify-win-vs2026",
-      "displayName": "Verify Win VS 2022 (C89/C++98)",
+      "displayName": "Verify Win VS 2022 (C17/C++17)",
       "inherits": "msvc-base",
       "binaryDir": "${sourceDir}/out/build/vs2026/${presetName}",
       "cacheVariables": {
@@ -169,10 +169,10 @@
         "DOM_BUILD_LAUNCHER": "ON",
         "DOM_BUILD_GAME": "ON",
         "DOM_BUILD_TESTS": "ON",
-        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD": "17",
         "CMAKE_C_STANDARD_REQUIRED": "ON",
         "CMAKE_C_EXTENSIONS": "OFF",
-        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD": "17",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF",
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
@@ -190,10 +190,10 @@
       "description": "Strict verification preset (determinism, schema, replay; no GBN).",
       "inherits": "verify-win-vs2026",
       "cacheVariables": {
-        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD": "17",
         "CMAKE_C_STANDARD_REQUIRED": "ON",
         "CMAKE_C_EXTENSIONS": "OFF",
-        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD": "17",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF"
       },
@@ -209,10 +209,10 @@
       "description": "Full pipeline dry-run (release policy + tests; no GBN).",
       "inherits": "verify-win-vs2026",
       "cacheVariables": {
-        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD": "17",
         "CMAKE_C_STANDARD_REQUIRED": "ON",
         "CMAKE_C_EXTENSIONS": "OFF",
-        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD": "17",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF",
         "DOM_REPOX_RELEASE_CHECK": "ON"
@@ -686,15 +686,15 @@
     },
     {
       "name": "verify-macos-xcode",
-      "displayName": "Verify macOS Xcode (C89/C++98)",
+      "displayName": "Verify macOS Xcode (C17/C++17)",
       "inherits": "macos-xcode-debug",
       "cacheVariables": {
         "DOM_BUILD_MODE": "Debug",
         "DOM_BUILD_TESTS": "ON",
-        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD": "17",
         "CMAKE_C_STANDARD_REQUIRED": "ON",
         "CMAKE_C_EXTENSIONS": "OFF",
-        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD": "17",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF"
       },
@@ -903,15 +903,15 @@
     },
     {
       "name": "verify-linux-gcc",
-      "displayName": "Verify Linux GCC (C89/C++98)",
+      "displayName": "Verify Linux GCC (C17/C++17)",
       "inherits": "linux-debug",
       "cacheVariables": {
         "DOM_BUILD_MODE": "Debug",
         "DOM_BUILD_TESTS": "ON",
-        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD": "17",
         "CMAKE_C_STANDARD_REQUIRED": "ON",
         "CMAKE_C_EXTENSIONS": "OFF",
-        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD": "17",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF"
       },
@@ -1029,14 +1029,14 @@
     },
     {
       "name": "baseline-debug",
-      "displayName": "Baseline Debug (C89/C++98)",
+      "displayName": "Baseline Debug (C17/C++17)",
       "description": "Canonical baseline toolchain/settings; no optional accel layers.",
       "inherits": "msvc-debug",
       "cacheVariables": {
-        "CMAKE_C_STANDARD": "90",
+        "CMAKE_C_STANDARD": "17",
         "CMAKE_C_STANDARD_REQUIRED": "ON",
         "CMAKE_C_EXTENSIONS": "OFF",
-        "CMAKE_CXX_STANDARD": "98",
+        "CMAKE_CXX_STANDARD": "17",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF",
         "DOM_ENABLE_MODERN": "OFF",
@@ -1057,7 +1057,7 @@
     },
     {
       "name": "baseline-release",
-      "displayName": "Baseline Release (C89/C++98)",
+      "displayName": "Baseline Release (C17/C++17)",
       "description": "Canonical baseline release toolchain/settings; no optional accel layers.",
       "inherits": "baseline-debug",
       "cacheVariables": {
@@ -1068,7 +1068,7 @@
     },
     {
       "name": "modern-debug",
-      "displayName": "Modern Debug (C89/C++98 + optional accel)",
+      "displayName": "Modern Debug (C17/C++17 + optional accel)",
       "description": "Enables optional acceleration layers while retaining baseline correctness paths.",
       "inherits": "baseline-debug",
       "cacheVariables": {
@@ -1080,7 +1080,7 @@
     },
     {
       "name": "modern-release",
-      "displayName": "Modern Release (C89/C++98 + optional accel)",
+      "displayName": "Modern Release (C17/C++17 + optional accel)",
       "description": "Enables optional acceleration layers while retaining baseline correctness paths.",
       "inherits": "baseline-release",
       "cacheVariables": {

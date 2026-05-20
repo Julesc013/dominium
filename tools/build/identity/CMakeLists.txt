@@ -13,7 +13,7 @@ target_link_libraries(build_identity PUBLIC
 )
 
 set_target_properties(build_identity PROPERTIES
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )

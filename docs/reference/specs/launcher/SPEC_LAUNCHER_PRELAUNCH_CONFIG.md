@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -38,7 +38,7 @@ This spec defines the launcher pre-launch layer: how an instance’s effective l
 
 Constraints (reasserted):
 - Launcher core remains platform-agnostic; no OS/UI/renderer headers in core.
-- C++98 only.
+- C++17 only for active launcher implementation; public ABI boundaries remain C-compatible.
 - All persistence is TLV (versioned, skip-unknown, forward-compatible).
 - Deterministic resolution and refusal reasons for the same explicit inputs.
 - No in-place mutation of live instances (staging + atomic swap only).

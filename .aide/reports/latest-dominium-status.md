@@ -1,40 +1,39 @@
 # Latest Dominium Status
 
-Current task: `API-ABI-CANON-01`.
+Current task: `LANGUAGE-BASELINE-01`.
 
 Result: PASS_WITH_WARNINGS.
 
 ## Current Green State
 
-- Provisional C API/ABI canon exists under `contracts/abi/**`.
-- Public-header validator exists: `python tools/validators/abi/check_public_headers.py --repo-root . --strict`.
-- ABI validator result: PASS, 375 public header candidates inspected, 0 high-confidence violations.
-- Public-header fixture validation: PASS.
-- Public surface registry validator: PASS after ABI surface registration.
-- Registered public surfaces: 25.
-- Stable public surfaces remain limited to 2 repo governance data contracts.
+- Active mainline language baseline is C17 + C++17.
+- Public ABI remains C-compatible; no public ABI is promoted to frozen ABI.
+- Language baseline contract exists: `contracts/build/language_baseline.contract.toml`.
+- Language subset schema exists: `contracts/build/language_subset.schema.json`.
+- Language validators exist under `tools/validators/build/**`.
+- Active CMake and verify presets now use C17/C++17.
+- Fast strict gate passes: 32/32 commands in 318.25 seconds.
 
 ## Created Proof Surfaces
 
-- `contracts/abi/c_api.contract.toml`
-- `contracts/abi/language_boundary.contract.toml`
-- `contracts/abi/abi_rule.registry.json`
-- `contracts/abi/public_header.schema.json`
-- `tools/validators/abi/check_public_headers.py`
-- `tests/contract/public_headers/**`
-- `docs/architecture/api_abi_canon.md`
-- `docs/development/c89_coding_standard.md`
-- `docs/development/cpp98_implementation_standard.md`
-- `docs/development/module_api_standard.md`
-- `.aide/reports/API-ABI-CANON-01-*`
-- `docs/repo/audits/API_ABI_CANON_01.md`
+- `contracts/build/language_baseline.contract.toml`
+- `contracts/build/language_subset.schema.json`
+- `tools/validators/build/check_language_baseline.py`
+- `tools/validators/build/check_cpp17_forbidden_library_use.py`
+- `docs/development/LANGUAGE_BASELINE.md`
+- `docs/development/C17_USAGE_POLICY.md`
+- `docs/development/CPP17_USAGE_POLICY.md`
+- `docs/development/MACOS_10_9_CPP17_LIBRARY_SUBSET.md`
+- `docs/architecture/C_COMPATIBLE_ABI_BOUNDARY.md`
+- `.aide/reports/LANGUAGE-BASELINE-01-*`
+- `docs/repo/audits/LANGUAGE_BASELINE_01.md`
 
 ## Remaining Blockers
 
-- Existing public-header candidates carry 2,851 provisional warning findings; these block stable/frozen ABI promotion until disposed.
-- No public ABI is frozen by this task.
+- Seven legacy IDE projection presets still declare `DOM_LANG_MODE=c89_cpp98`; they are outside active mainline.
+- Existing public-header ABI warnings remain provisional stable-promotion debt.
+- Full CTest remains T4 full/release proof and was not run for this task.
 - Dependency direction, command surface, diagnostic/refusal registries, provider model, replacement protocol, compatibility corpus, and portability matrix remain future tasks.
-- Full CTest remains T4 full/release debt and was not made a normal gate.
 - Feature implementation remains blocked until Foundation Lock closes.
 
 DOE-00 readiness: no.

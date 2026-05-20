@@ -6,7 +6,7 @@ add_executable(dominium_dist_seed
 
 set_target_properties(dominium_dist_seed PROPERTIES
     OUTPUT_NAME "dominium-dist-seed"
-    C_STANDARD 90
+    C_STANDARD 17
     C_STANDARD_REQUIRED ON
     C_EXTENSIONS OFF
 )

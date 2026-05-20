@@ -3,7 +3,7 @@ FILE: include/dominium/_internal/dom_priv/dom_keys.h
 MODULE: Dominium
 LAYER / SUBSYSTEM: Dominium API / _internal/dom_priv/dom_keys
 RESPONSIBILITY: Defines internal contract for keycode normalization used by Dominium UI/input; not a stable public API; does NOT provide implementation.
-ALLOWED DEPENDENCIES: `include/dominium/**` plus C89/C++98 standard headers as needed.
+ALLOWED DEPENDENCIES: `include/dominium/**` plus C17/C++17 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `source/**` private headers; keep contracts freestanding and layer-respecting.
 THREADING MODEL: No internal synchronization; callers must serialize access unless stated otherwise.
 ERROR MODEL: Return codes/NULL pointers; no exceptions.

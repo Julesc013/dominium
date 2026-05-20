@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -24,10 +24,10 @@ Scope: baseline capability sets for compatibility and SKUs.
 ## Baselines (locked identifiers)
 
 
-- BASELINE_LEGACY_CORE (C89/C++98)
+- BASELINE_LEGACY_CORE (retired retro/research lane)
 
 
-- BASELINE_MAINLINE_CORE (future C17/C++17)
+- BASELINE_MAINLINE_CORE (active C17/C++17)
 
 
 - BASELINE_MODERN_UI

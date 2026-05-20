@@ -5,7 +5,24 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, and NAME-00 naming-law follow-up.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, and LANGUAGE-BASELINE-01.
+
+## LANGUAGE-BASELINE-01 Proof Note
+
+LANGUAGE-BASELINE-01 moves the active mainline language floor to C17 + C++17
+while keeping public ABI C-compatible.
+
+- contract: `contracts/build/language_baseline.contract.toml`
+- validators:
+  - `python tools/validators/build/check_language_baseline.py --repo-root . --strict`
+  - `python tools/validators/build/check_cpp17_forbidden_library_use.py --repo-root . --strict`
+- active CMake and verify presets now use C17/C++17.
+- C++17 restricted library validator passes with 1,192 files checked and 0 findings.
+- fast strict: PASS, 32/32 commands, 318.25 seconds.
+- full CTest remains T4 full/release proof and was not rerun.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `DEPENDENCY-DIRECTION-01`.
 
 ## API-ABI-CANON-01 Proof Note
 

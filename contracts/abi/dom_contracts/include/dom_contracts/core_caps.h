@@ -149,7 +149,7 @@ typedef enum core_caps_result_e {
 } core_caps_result;
 
 /*------------------------------------------------------------
- * Helpers (C89 compatible; no allocation).
+ * Helpers (C17 compatible; no allocation).
  *------------------------------------------------------------*/
 void core_caps_clear(core_caps* caps);
 core_caps_result core_caps_set_bool(core_caps* caps, u32 key_id, u32 value);

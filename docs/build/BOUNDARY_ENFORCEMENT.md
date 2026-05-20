@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 
@@ -16,7 +16,8 @@ Dominium uses lightweight build-time guardrails to prevent layer leakage.
 - `tools/validators/ci/arch_checks.py`:
   - Enforces repo layout and architecture rules (ARCH/DET/PERF/SCALE/EPIS).
 - `cmake/BaselineHeaderCheck.cmake`:
-  - Enforces C89/C++98 safety for baseline-visible public headers.
+  - Enforces C17 C-compatible ABI hygiene and blocks C++ ABI/platform leakage
+    for baseline-visible public headers.
 - `dom_assert_no_link(...)` (top-level CMake):
   - Blocks forbidden link dependencies (engine/game boundaries).
 

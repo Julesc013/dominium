@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.build.language_subset.schema.v1",
+  "title": "Dominium Language Baseline Contract Shape",
+  "type": "object",
+  "required": ["contract", "baseline", "public_abi", "c17_policy", "cpp17_policy", "macos_10_9_cpp17_subset", "legacy_lanes", "validation"],
+  "properties": {
+    "contract": {
+      "type": "object",
+      "required": ["id", "status", "owner", "purpose"],
+      "properties": {
+        "id": {"type": "string"},
+        "status": {"type": "string"},
+        "owner": {"type": "string"},
+        "purpose": {"type": "string"}
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "required": ["c_standard", "c_standard_number", "cxx_standard", "cxx_standard_number", "c_extensions", "cxx_extensions", "active_lang_mode"],
+      "properties": {
+        "c_standard": {"const": "c17"},
+        "c_standard_number": {"const": 17},
+        "cxx_standard": {"const": "cpp17"},
+        "cxx_standard_number": {"const": 17},
+        "c_extensions": {"const": false},
+        "cxx_extensions": {"const": false},
+        "active_lang_mode": {"const": "c17_cpp17"},
+        "active_os_floor": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "public_abi": {
+      "type": "object",
+      "required": ["abi_language", "stable_c_header_floor", "no_cpp_abi_leakage"],
+      "properties": {
+        "abi_language": {"const": "c_compatible"},
+        "stable_c_header_floor": {"const": "c17"},
+        "stable_cpp_header_floor": {"type": "string"},
+        "no_cpp_abi_leakage": {"const": true}
+      }
+    },
+    "c17_policy": {"type": "object"},
+    "cpp17_policy": {"type": "object"},
+    "macos_10_9_cpp17_subset": {
+      "type": "object",
+      "required": ["deployment_floor", "forbidden_required_library_surfaces"],
+      "properties": {
+        "deployment_floor": {"const": "10.9.5"},
+        "forbidden_required_library_surfaces": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "legacy_lanes": {
+      "type": "object",
+      "required": ["c89_cpp98_mainline_status", "retro_lane_status"],
+      "properties": {
+        "c89_cpp98_mainline_status": {"const": "retired_from_active_mainline"},
+        "retro_lane_status": {"type": "string"}
+      }
+    },
+    "validation": {"type": "object"}
+  },
+  "additionalProperties": true
+}
