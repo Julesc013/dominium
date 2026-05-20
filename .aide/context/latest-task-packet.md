@@ -6,15 +6,15 @@ foundation-lock
 
 ## GOAL
 
-Complete `COMMAND-SURFACE-01` by defining Dominium's command/result/view/event/
-refusal/evidence law, validator, fixtures, documentation, public-surface
-registration, and evidence.
+Complete `DIAGNOSTIC-CODE-REGISTRY-01` by defining Dominium's diagnostic code,
+severity, category, evidence, event, and refusal/recovery metadata surfaces.
 
 ## WHY
 
-Workbench, CLI, TUI, headless tools, server/admin surfaces, rendered UI,
-AIDE/Codex, and tests must share typed command/result/refusal/evidence contracts
-instead of calling private tools or implementation paths as separate authority.
+Free-text-only failures are not enough for CLI, TUI, Workbench, headless tools,
+tests, release proof, AIDE/Codex, setup, package validation, and runtime/service
+diagnostics. Conditions need stable codes, owners, severity, recovery actions,
+and evidence references.
 
 ## CONTEXT_REFS
 
@@ -25,22 +25,22 @@ instead of calling private tools or implementation paths as separate authority.
 - `contracts/public_surface/public_surface.contract.toml`
 - `contracts/abi/c_api.contract.toml`
 - `contracts/repo/dependency_directions.contract.toml`
+- `contracts/command/command_surface.contract.toml`
+- `contracts/refusal/refusal_code.registry.json`
 - `.aide/context/latest-context-packet.md`
 
 ## ALLOWED_PATHS
 
-- `contracts/command/**`
-- `contracts/result/**`
-- `contracts/view/**`
-- `contracts/event/**`
-- `contracts/refusal/**`
-- `contracts/document/**`
+- `contracts/diagnostics/**`
 - `contracts/evidence/**`
+- `contracts/event/**` for narrow diagnostic/evidence alignment
+- `contracts/refusal/**` for diagnostic cross-references
+- `contracts/command/**` for narrow diagnostic/evidence references
 - `contracts/public_surface/**` for narrow registry cross-reference
-- `docs/architecture/command_view_event_refusal.md`
-- `docs/development/command_surface_guidelines.md`
-- `tools/validators/contracts/check_command_surface.py`
-- `tests/contract/command_surface/**`
+- `docs/architecture/diagnostics_and_evidence.md`
+- `docs/development/diagnostic_code_guidelines.md`
+- `tools/validators/contracts/check_diagnostics_registry.py`
+- `tests/contract/diagnostics/**`
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
@@ -52,27 +52,27 @@ instead of calling private tools or implementation paths as separate authority.
 - `.dominium.local/**`
 - `.aide.local/**`
 - build, projection, release, installer, upload, cache, and generated output roots
-- gameplay, renderer, Workbench UI, native GUI, package runtime, command runtime
-  dispatch, and product behavior implementation paths
+- gameplay, renderer, Workbench UI, native GUI, package runtime, diagnostic
+  runtime dispatch, command runtime dispatch, and product behavior paths
 
 ## IMPLEMENTATION
 
-- Add command/result/view/event/refusal/document/evidence contracts and schemas.
-- Add a command-surface validator and fixture suite.
-- Register foundational validation/test command IDs conservatively.
-- Register command-surface surfaces in public-surface governance.
+- Add diagnostic code, severity, category, and policy contracts.
+- Add evidence packet/reference schemas and minimal event-schema alignment.
+- Link existing command refusal codes to diagnostic codes where direct.
+- Add diagnostics validator and fixture suite.
+- Register diagnostics/evidence/event surfaces in public-surface governance.
 - Record evidence honestly, including existing dependency-direction debt.
 
 ## VALIDATION
 
-- `python -m py_compile tools/validators/contracts/check_command_surface.py`
-- JSON parse for created schemas/registries/fixtures.
-- TOML parse for command/view/event contracts and fixtures.
-- `python tools/validators/contracts/check_command_surface.py --repo-root . --strict`
-- `python tools/validators/contracts/check_command_surface.py --repo-root . --fixtures`
-- `python tools/validators/repo/check_public_surface.py --repo-root . --strict`
-- `python tools/validators/repo/check_dependency_directions.py --repo-root . --strict`
-- `python tools/validators/abi/check_public_headers.py --repo-root . --strict`
+- `python -m py_compile tools/validators/contracts/check_diagnostics_registry.py`
+- JSON parse for created/touched schemas, registries, fixtures, and reports.
+- TOML parse/fallback for `contracts/diagnostics/diagnostic_policy.contract.toml`.
+- `python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict`
+- `python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --json`
+- `python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --fixtures`
+- command/public-surface/dependency-direction/ABI validators.
 - strict repo/root/distribution/component validators.
 - docs/build/UI/ABI supplemental checks.
 - `python tools/test/run_fast_strict.py --repo-root .`
@@ -80,38 +80,39 @@ instead of calling private tools or implementation paths as separate authority.
 
 ## TOKEN_ESTIMATE
 
-Expected review packet size is under 1,200 tokens. Detailed command-surface and
-validation evidence lives in `.aide/reports/COMMAND-SURFACE-01-*`.
+Expected review packet size is under 1,200 tokens. Detailed diagnostic registry
+and validation evidence lives in `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-*`.
 
 ## COMMITS
 
-Commit subject: `audit(command): add command surface law`
+Commit subject: `audit(diagnostics): add diagnostic code registry`
 
 ## EVIDENCE
 
-- `.aide/reports/COMMAND-SURFACE-01-status.md`
-- `.aide/reports/COMMAND-SURFACE-01-validation.md`
-- `.aide/reports/COMMAND-SURFACE-01-results.json`
-- `.aide/reports/COMMAND-SURFACE-01-initial-command-inventory.md`
-- `.aide/reports/COMMAND-SURFACE-01-fast-strict.json`
-- `.aide/reports/COMMAND-SURFACE-01-fast-strict.md`
-- `docs/repo/audits/COMMAND_SURFACE_01.md`
+- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-status.md`
+- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-validation.md`
+- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-results.json`
+- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-initial-diagnostic-inventory.md`
+- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-fast-strict.json`
+- `.aide/reports/DIAGNOSTIC-CODE-REGISTRY-01-fast-strict.md`
+- `docs/repo/audits/DIAGNOSTIC_CODE_REGISTRY_01.md`
 
 ## NON_GOALS
 
-No command runtime implementation, Workbench UI, gameplay, renderer, package
-runtime, provider model, full diagnostic registry, public release, tag, upload,
-or full CTest proof.
+No diagnostic runtime dispatch, Workbench UI, gameplay, renderer, package
+runtime change, capability/refusal law, provider model, public release, tag,
+upload, or full CTest proof.
 
 ## ACCEPTANCE
 
-Command-surface law and validator exist, fixtures pass, initial commands are
-provisional and honest, surrounding validators run, and feature work stays
+Diagnostic registry law and validator exist, fixtures pass, initial diagnostics
+are provisional and honest, surrounding validators run, and feature work stays
 blocked pending Foundation Lock.
 
 ## OUTPUT_SCHEMA
 
 Final report includes branch, starting HEAD, ending HEAD, origin/main, push
-status, result, created contracts/schemas/docs/tools, command/refusal counts,
-public-surface update status, validator status, fast strict status, known
-warnings, worktree status, and next task.
+status, result, created contracts/schemas/docs/tools, diagnostic and
+severity/category counts, public-surface update status, command/refusal update
+status, validator status, fast strict status, known warnings, worktree status,
+and next task.

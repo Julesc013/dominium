@@ -30,7 +30,42 @@
         "refusal"
       ]
     },
+    "event_kind": {
+      "type": "string",
+      "description": "Alias for event_type used by diagnostic/event evidence surfaces."
+    },
+    "source": {
+      "type": "string",
+      "description": "Tool, service, validator, command, or subsystem that emitted the event."
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "trace",
+        "debug",
+        "info",
+        "notice",
+        "warning",
+        "error",
+        "fatal"
+      ]
+    },
+    "diagnostic_code": {
+      "type": "string"
+    },
     "source_command_id": {
+      "type": "string"
+    },
+    "command_id": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "evidence_ref": {
+      "type": "string"
+    },
+    "timestamp": {
       "type": "string"
     },
     "payload": {

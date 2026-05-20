@@ -581,6 +581,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/COMPLEXITY_AND_SCALE.md`
 - `docs/architecture/CORE_ABSTRACTIONS.md`
 - `docs/architecture/dependency_direction_law.md`
+- `docs/architecture/diagnostics_and_evidence.md`
 - `docs/architecture/DEPRECATION_AND_QUARANTINE.md`
 - `docs/architecture/DEPRECATION_LIFECYCLE.md`
 - `docs/architecture/DIRECTORY_CONTEXT.md`

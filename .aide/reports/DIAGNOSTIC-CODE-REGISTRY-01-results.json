@@ -1,0 +1,23 @@
+{
+  "task": "DIAGNOSTIC-CODE-REGISTRY-01",
+  "result": "PASS_WITH_WARNINGS",
+  "diagnostic_codes_registered": 14,
+  "severity_count": 7,
+  "category_count": 26,
+  "validator_status": "pass",
+  "public_surface_registry_updated": true,
+  "command_refusal_registry_updated": true,
+  "fast_strict_status": "pass",
+  "fast_strict_elapsed_seconds": 351.282,
+  "fast_strict_commands_total": 32,
+  "fast_strict_commands_passed": 32,
+  "dependency_direction_status": "fail_existing_debt",
+  "dependency_direction_violations": 358,
+  "dependency_direction_warnings": 38,
+  "known_warnings": [
+    "dependency_direction_existing_debt",
+    "abi_warning_debt",
+    "full_ctest_t4_debt_not_run"
+  ],
+  "next_task": "ARTIFACT-IDENTITY-LAW-01"
+}

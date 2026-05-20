@@ -1,0 +1,19 @@
+{
+  "id": "dominium.diagnostic.fixture.unknown_severity",
+  "code": "DOM-FIXTURE-UNKNOWN-SEVERITY",
+  "owner": "tests.contract",
+  "severity": "catastrophic",
+  "category": "validation",
+  "stability": "fixture",
+  "summary": "Fixture diagnostic has unknown severity.",
+  "cause": "The severity value is intentionally absent from the severity registry.",
+  "recovery": "Use a registered diagnostic severity.",
+  "evidence_expectation": "Fixture validator output.",
+  "related_refusal_codes": [],
+  "related_command_ids": [],
+  "related_public_surface_ids": [],
+  "related_artifact_types": [
+    "fixture"
+  ],
+  "proof": []
+}

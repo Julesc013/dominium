@@ -1,0 +1,16 @@
+{
+  "evidence_id": "dominium.evidence.fixture.missing_subject",
+  "subject_kind": "validator",
+  "command_id": "dominium.validation.run",
+  "run_id": "diagnostic-fixture-run-002",
+  "diagnostic_codes": [
+    "DOM-EVIDENCE-MISSING"
+  ],
+  "status": "fail",
+  "generated_at": "2026-05-21T00:00:00Z",
+  "tool": "tools/validators/contracts/check_diagnostics_registry.py",
+  "summary": "Invalid evidence fixture missing subject_id.",
+  "proof": [
+    "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --fixtures"
+  ]
+}

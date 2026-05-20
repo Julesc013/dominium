@@ -1,0 +1,32 @@
+{
+  "evidence_id": "dominium.evidence.fixture.valid",
+  "subject_id": "dominium.diagnostic.fixture.valid",
+  "subject_kind": "validator",
+  "command_id": "dominium.validation.run",
+  "run_id": "diagnostic-fixture-run-001",
+  "diagnostic_codes": [
+    "DOM-FIXTURE-VALID"
+  ],
+  "status": "pass",
+  "generated_at": "2026-05-21T00:00:00Z",
+  "repo_commit": "fixture",
+  "tool": "tools/validators/contracts/check_diagnostics_registry.py",
+  "inputs": {
+    "fixture": true
+  },
+  "outputs": {
+    "status": "pass"
+  },
+  "files": [
+    "tests/contract/diagnostics/fixtures/valid_diagnostic_code.json"
+  ],
+  "summary": "Valid diagnostic fixture evidence.",
+  "proof": [
+    "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --fixtures"
+  ],
+  "provenance": {
+    "source": "fixture"
+  },
+  "related_artifacts": [],
+  "notes": "Valid fixture only."
+}

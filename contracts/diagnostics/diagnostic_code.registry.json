@@ -1,0 +1,377 @@
+{
+  "schema_version": "dominium.diagnostics.code_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.diagnostics",
+  "codes": [
+    {
+      "id": "dominium.diagnostic.repo.layout_violation",
+      "code": "DOM-REPO-LAYOUT-VIOLATION",
+      "owner": "tools.repo",
+      "severity": "error",
+      "category": "repo",
+      "stability": "provisional",
+      "summary": "Repository layout does not satisfy the declared layout contract.",
+      "cause": "A tracked root, file, or required layout element violates contracts/repo layout law.",
+      "recovery": "Run the repo layout validator, inspect the reported root or path, and either move it to the correct owner or add a reviewed precise exception.",
+      "evidence_expectation": "Validator output from tools/validators/check_repo_layout.py.",
+      "related_refusal_codes": [
+        "dominium.refusal.validation.invalid_target"
+      ],
+      "related_command_ids": [
+        "dominium.validation.run"
+      ],
+      "related_public_surface_ids": [
+        "dominium.repo.layout.v1"
+      ],
+      "related_artifact_types": [
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/check_repo_layout.py --repo-root . --strict"
+      ],
+      "notes": "Initial Foundation Lock diagnostic for repo layout validation."
+    },
+    {
+      "id": "dominium.diagnostic.repo.forbidden_root",
+      "code": "DOM-REPO-FORBIDDEN-ROOT",
+      "owner": "tools.repo",
+      "severity": "error",
+      "category": "repo",
+      "stability": "provisional",
+      "summary": "A forbidden or unreviewed repository root is present.",
+      "cause": "A tracked root violates the root allowlist or canonical root policy.",
+      "recovery": "Use the root allowlist validator output to remove, relocate, or precisely except the root.",
+      "evidence_expectation": "Validator output from tools/validators/check_root_allowlist.py.",
+      "related_refusal_codes": [
+        "dominium.refusal.validation.invalid_target"
+      ],
+      "related_command_ids": [
+        "dominium.validation.run"
+      ],
+      "related_public_surface_ids": [
+        "dominium.repo.root_allowlist.v1"
+      ],
+      "related_artifact_types": [
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/check_root_allowlist.py --repo-root . --strict"
+      ],
+      "notes": "Initial Foundation Lock diagnostic for root allowlist validation."
+    },
+    {
+      "id": "dominium.diagnostic.repo.dependency_direction_violation",
+      "code": "DOM-REPO-DEPENDENCY-DIRECTION-VIOLATION",
+      "owner": "tools.repo",
+      "severity": "error",
+      "category": "dependency",
+      "stability": "provisional",
+      "summary": "A high-confidence dependency direction violation is present.",
+      "cause": "An active root imports, includes, or depends on a forbidden owner root.",
+      "recovery": "Move the dependency to the correct owner, introduce a contract/service boundary, or add a precise temporary exception with owner and retirement task.",
+      "evidence_expectation": "JSON or text output from tools/validators/repo/check_dependency_directions.py.",
+      "related_refusal_codes": [
+        "dominium.refusal.validation.invalid_target"
+      ],
+      "related_command_ids": [
+        "dominium.dependency_direction.validate"
+      ],
+      "related_public_surface_ids": [
+        "dominium.repo.dependency_directions.v1"
+      ],
+      "related_artifact_types": [
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/repo/check_dependency_directions.py --repo-root . --strict"
+      ],
+      "notes": "Current repo still has known dependency-direction debt; this diagnostic remains provisional."
+    },
+    {
+      "id": "dominium.diagnostic.abi.public_header_violation",
+      "code": "DOM-ABI-PUBLIC-HEADER-VIOLATION",
+      "owner": "tools.abi",
+      "severity": "error",
+      "category": "abi",
+      "stability": "provisional",
+      "summary": "A public header violates the API/ABI canon.",
+      "cause": "A candidate public header leaks forbidden C++ ABI, platform headers, private includes, or high-confidence naming/structure violations.",
+      "recovery": "Fix the header boundary or keep the surface provisional with explicit warning debt until ABI promotion.",
+      "evidence_expectation": "Validator output from tools/validators/abi/check_public_headers.py.",
+      "related_refusal_codes": [],
+      "related_command_ids": [
+        "dominium.abi.public_headers.validate"
+      ],
+      "related_public_surface_ids": [
+        "dominium.abi.c_api.v1"
+      ],
+      "related_artifact_types": [
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/abi/check_public_headers.py --repo-root . --strict"
+      ],
+      "notes": "ABI warning debt remains separate from high-confidence violation status."
+    },
+    {
+      "id": "dominium.diagnostic.public_surface.invalid",
+      "code": "DOM-PUBLIC-SURFACE-INVALID",
+      "owner": "tools.repo",
+      "severity": "error",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Public surface registry entry is invalid.",
+      "cause": "A surface has missing owner, invalid kind, invalid stability, duplicate ID, missing path, or insufficient proof for its stability.",
+      "recovery": "Correct the registry entry or lower its stability until required proof exists.",
+      "evidence_expectation": "Validator output from tools/validators/repo/check_public_surface.py.",
+      "related_refusal_codes": [
+        "dominium.refusal.validation.invalid_target"
+      ],
+      "related_command_ids": [
+        "dominium.public_surface.validate"
+      ],
+      "related_public_surface_ids": [],
+      "related_artifact_types": [
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/repo/check_public_surface.py --repo-root . --strict"
+      ],
+      "notes": "Initial diagnostic for public surface registry validation."
+    },
+    {
+      "id": "dominium.diagnostic.command.invalid_input",
+      "code": "DOM-CMD-INVALID-INPUT",
+      "owner": "contracts.command",
+      "severity": "error",
+      "category": "command",
+      "stability": "provisional",
+      "summary": "Command input does not satisfy its declared input schema.",
+      "cause": "The provided command input is missing required fields, has invalid values, or targets an unsupported shape.",
+      "recovery": "Validate input against the command input schema and rerun the command.",
+      "evidence_expectation": "Command result or evidence packet citing the invalid input diagnostic.",
+      "related_refusal_codes": [
+        "dominium.refusal.command.invalid_input"
+      ],
+      "related_command_ids": [
+        "dominium.validation.run"
+      ],
+      "related_public_surface_ids": [
+        "dominium.command.surface.v1"
+      ],
+      "related_artifact_types": [
+        "command_result",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_command_surface.py --repo-root . --strict"
+      ],
+      "notes": "Command-level diagnostic paired with the command refusal scaffold."
+    },
+    {
+      "id": "dominium.diagnostic.command.unsupported_surface",
+      "code": "DOM-CMD-UNSUPPORTED-SURFACE",
+      "owner": "contracts.command",
+      "severity": "error",
+      "category": "command",
+      "stability": "provisional",
+      "summary": "Command is not declared for the requested surface.",
+      "cause": "A caller requested CLI, TUI, headless, Workbench, server, rendered, test, or AIDE exposure that the command registry does not allow.",
+      "recovery": "Use a supported surface or update the command registry with proof and compatibility notes.",
+      "evidence_expectation": "Command result or evidence packet citing the unsupported surface.",
+      "related_refusal_codes": [
+        "dominium.refusal.command.unsupported_surface"
+      ],
+      "related_command_ids": [
+        "dominium.validation.run"
+      ],
+      "related_public_surface_ids": [
+        "dominium.command.surface.v1"
+      ],
+      "related_artifact_types": [
+        "command_result",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_command_surface.py --repo-root . --strict"
+      ],
+      "notes": "Command-level diagnostic paired with the unsupported-surface refusal."
+    },
+    {
+      "id": "dominium.diagnostic.capability.missing",
+      "code": "DOM-CAPABILITY-MISSING",
+      "owner": "contracts.capability",
+      "severity": "error",
+      "category": "capability",
+      "stability": "provisional",
+      "summary": "Required capability is missing.",
+      "cause": "The caller, profile, pack, authority context, or product surface lacks a capability required by the command or service.",
+      "recovery": "Acquire the required capability through an approved profile, pack, authority, or capability binding path.",
+      "evidence_expectation": "Command result, refusal payload, or capability validation report naming the missing capability.",
+      "related_refusal_codes": [
+        "dominium.refusal.command.capability_missing"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [],
+      "related_artifact_types": [
+        "refusal_payload",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"
+      ],
+      "notes": "Capability/refusal law remains a later task; this is a provisional diagnostic anchor."
+    },
+    {
+      "id": "dominium.diagnostic.package.invalid_manifest",
+      "code": "DOM-PACK-INVALID-MANIFEST",
+      "owner": "runtime.package",
+      "severity": "error",
+      "category": "package",
+      "stability": "provisional",
+      "summary": "Package or pack manifest is invalid.",
+      "cause": "The manifest is missing required fields, violates schema, or fails pack/package validation.",
+      "recovery": "Validate the manifest against its declared schema and repair the failing fields before loading or packaging.",
+      "evidence_expectation": "Package validator output or evidence packet with manifest path and schema version.",
+      "related_refusal_codes": [],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.content.packs.v1"
+      ],
+      "related_artifact_types": [
+        "package_manifest",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"
+      ],
+      "notes": "Mod-pack trust and package runtime validation remain later Foundation Lock tasks."
+    },
+    {
+      "id": "dominium.diagnostic.schema.unsupported_version",
+      "code": "DOM-SCHEMA-UNSUPPORTED-VERSION",
+      "owner": "contracts.schema",
+      "severity": "error",
+      "category": "schema",
+      "stability": "provisional",
+      "summary": "Schema version is unsupported.",
+      "cause": "Input data declares a schema version that is unknown, retired, incompatible, or lacks migration/refusal policy.",
+      "recovery": "Use a supported schema version or provide an explicit migration/refusal path.",
+      "evidence_expectation": "Schema validation output naming schema ID, version, and compatibility decision.",
+      "related_refusal_codes": [],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.schema.catalog.v1"
+      ],
+      "related_artifact_types": [
+        "schema_validation_report"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"
+      ],
+      "notes": "Full schema/protocol evolution law remains a later task."
+    },
+    {
+      "id": "dominium.diagnostic.evidence.missing",
+      "code": "DOM-EVIDENCE-MISSING",
+      "owner": "tools.validation",
+      "severity": "warning",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Expected evidence is missing.",
+      "cause": "A task, command, validator, or promotion gate expected an evidence packet or proof artifact that was not produced.",
+      "recovery": "Rerun the command with evidence outputs enabled or record why the evidence could not be generated.",
+      "evidence_expectation": "A status report explaining the missing evidence or a replacement evidence packet.",
+      "related_refusal_codes": [
+        "dominium.refusal.validation.tool_unavailable"
+      ],
+      "related_command_ids": [
+        "dominium.validation.run"
+      ],
+      "related_public_surface_ids": [
+        "dominium.evidence.packet.v1"
+      ],
+      "related_artifact_types": [
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"
+      ],
+      "notes": "Severity may become error for release or stable promotion gates."
+    },
+    {
+      "id": "dominium.diagnostic.test.full_gate_debt",
+      "code": "DOM-FULL-GATE-DEBT",
+      "owner": "tools.test",
+      "severity": "warning",
+      "category": "test",
+      "stability": "provisional",
+      "summary": "Full gate remains known debt and is not normal-gate proof.",
+      "cause": "Full CTest or release/full-certification proof is too broad, too slow, failing, or not required for the normal fast strict gate.",
+      "recovery": "Run or repair the full/release gate in a dedicated full-gate debt task before release or trust promotion.",
+      "evidence_expectation": "Fast strict evidence plus explicit full-gate debt report or full-gate run evidence.",
+      "related_refusal_codes": [],
+      "related_command_ids": [
+        "dominium.repo.fast_strict.run"
+      ],
+      "related_public_surface_ids": [
+        "dominium.testing.test_tiers.v1"
+      ],
+      "related_artifact_types": [
+        "test_gate_report"
+      ],
+      "proof": [
+        "python tools/test/run_fast_strict.py --repo-root ."
+      ],
+      "notes": "This diagnostic keeps full/release debt visible without making it part of ordinary development proof."
+    },
+    {
+      "id": "dominium.diagnostic.aide.task_blocked",
+      "code": "DOM-AIDE-TASK-BLOCKED",
+      "owner": "tools.aide",
+      "severity": "error",
+      "category": "aide",
+      "stability": "provisional",
+      "summary": "AIDE/Codex task is blocked.",
+      "cause": "A required precondition, validator, evidence packet, or repository state prevents safe task completion.",
+      "recovery": "Record the blocker, preserve evidence, and continue only after the blocking condition is resolved or scoped by a reviewed task.",
+      "evidence_expectation": "AIDE status, validation report, or task evidence packet naming the blocker.",
+      "related_refusal_codes": [],
+      "related_command_ids": [],
+      "related_public_surface_ids": [],
+      "related_artifact_types": [
+        "aide_status_report",
+        "evidence_packet"
+      ],
+      "proof": [
+        "py -3 .aide/scripts/aide_lite.py validate"
+      ],
+      "notes": "AIDE is orchestration and evidence, not product authority."
+    },
+    {
+      "id": "dominium.diagnostic.release.promotion_blocked",
+      "code": "DOM-RELEASE-PROMOTION-BLOCKED",
+      "owner": "release",
+      "severity": "error",
+      "category": "release",
+      "stability": "provisional",
+      "summary": "Release promotion is blocked.",
+      "cause": "A release, signing, package, trust, compatibility, or full-proof prerequisite is absent or failing.",
+      "recovery": "Run the release/full proof lane, repair failing promotion checks, and preserve release evidence before promotion.",
+      "evidence_expectation": "Release proof report, full gate evidence, or promotion-blocker report.",
+      "related_refusal_codes": [],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.release.control_plane.v1"
+      ],
+      "related_artifact_types": [
+        "release_proof",
+        "promotion_report"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"
+      ],
+      "notes": "No release artifact is generated or promoted by this task."
+    }
+  ]
+}

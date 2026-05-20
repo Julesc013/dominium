@@ -5,12 +5,30 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `COMMAND-SURFACE-01`.
+Latest task: `DIAGNOSTIC-CODE-REGISTRY-01`.
 
-Result: PASS_WITH_WARNINGS for the provisional command-surface law, assuming the
-final fast strict rerun remains green. The command/result/view/event/refusal/
-evidence contracts, validator, fixtures, docs, and evidence exist. Existing
+Result: PASS_WITH_WARNINGS for the provisional diagnostic/evidence registry,
+assuming the final fast strict rerun remains green. Diagnostic code, severity,
+category, evidence, event, and refusal cross-reference surfaces exist. Existing
 dependency-direction debt remains visible and is not hidden by this task.
+
+## DIAGNOSTIC-CODE-REGISTRY-01 Update
+
+DIAGNOSTIC-CODE-REGISTRY-01 is PASS_WITH_WARNINGS.
+
+- diagnostic registry: `contracts/diagnostics/diagnostic_code.registry.json`.
+- diagnostic policy: `contracts/diagnostics/diagnostic_policy.contract.toml`.
+- validator: `tools/validators/contracts/check_diagnostics_registry.py`.
+- diagnostic codes registered: 14 provisional foundational codes.
+- severities registered: 7.
+- categories registered: 26.
+- evidence packet and evidence reference schemas exist under `contracts/evidence/`.
+- public surface registry updated with diagnostic/evidence surfaces.
+
+Next task:
+`ARTIFACT-IDENTITY-LAW-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## COMMAND-SURFACE-01 Update
 

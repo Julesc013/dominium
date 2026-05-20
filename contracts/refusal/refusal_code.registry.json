@@ -9,7 +9,12 @@
       "stability": "provisional",
       "reason": "The requested validation target is absent, malformed, out of scope, or not registered.",
       "recovery": "Choose a registered command target, schema, tier, or repository path and rerun.",
-      "evidence_reference": "contracts/evidence/evidence_packet.schema.json"
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "related_diagnostic_codes": [
+        "DOM-REPO-LAYOUT-VIOLATION",
+        "DOM-REPO-FORBIDDEN-ROOT",
+        "DOM-PUBLIC-SURFACE-INVALID"
+      ]
     },
     {
       "code": "dominium.refusal.validation.tool_unavailable",
@@ -17,7 +22,10 @@
       "stability": "provisional",
       "reason": "The requested validator or proof command is not available in this repository checkout.",
       "recovery": "Install or restore the owning tool, or choose a command whose implementation is registered.",
-      "evidence_reference": "contracts/evidence/evidence_packet.schema.json"
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "related_diagnostic_codes": [
+        "DOM-EVIDENCE-MISSING"
+      ]
     },
     {
       "code": "dominium.refusal.command.unsupported_surface",
@@ -25,7 +33,10 @@
       "stability": "provisional",
       "reason": "The command is not declared for the requested CLI, TUI, headless, Workbench, server, rendered, test, or AIDE surface.",
       "recovery": "Use an allowed surface or update the command registry with proof and compatibility notes.",
-      "evidence_reference": "contracts/evidence/evidence_packet.schema.json"
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "related_diagnostic_codes": [
+        "DOM-CMD-UNSUPPORTED-SURFACE"
+      ]
     },
     {
       "code": "dominium.refusal.command.invalid_input",
@@ -33,7 +44,10 @@
       "stability": "provisional",
       "reason": "The command input does not satisfy the declared input schema.",
       "recovery": "Validate the input against the command input schema and rerun.",
-      "evidence_reference": "contracts/evidence/evidence_packet.schema.json"
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "related_diagnostic_codes": [
+        "DOM-CMD-INVALID-INPUT"
+      ]
     },
     {
       "code": "dominium.refusal.command.capability_missing",
@@ -41,7 +55,10 @@
       "stability": "provisional",
       "reason": "The caller lacks a required declared capability for the command.",
       "recovery": "Acquire the required capability through an approved profile, pack, or authority path.",
-      "evidence_reference": "contracts/evidence/evidence_packet.schema.json"
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "related_diagnostic_codes": [
+        "DOM-CAPABILITY-MISSING"
+      ]
     }
   ],
   "full_registry_owner": "DIAGNOSTIC-CODE-REGISTRY-01 and CAPABILITY-REFUSAL-LAW-01",

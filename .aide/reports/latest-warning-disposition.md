@@ -1,45 +1,27 @@
 # Latest Warning Disposition
 
-Current task: `COMMAND-SURFACE-01`.
+Current task: `DIAGNOSTIC-CODE-REGISTRY-01`.
 
-## Accepted Local/Generated Warnings
+## Accepted Known Warnings
 
-- `.aide.local/**`, `.dominium.local/**`, `.xstack_cache/**`, `build/`, `out/`,
-  `dist/`, `artifacts/`, `tmp/`, and `__pycache__/` remain local/generated roots
-  and must not be tracked.
-- Generated/archive material is not source truth unless a stronger contract
-  explicitly promotes it.
+- Full CTest remains T4 full/release proof debt and is not claimed green.
+- Dependency-direction validator still reports existing active dependency debt
+  from DEPENDENCY-DIRECTION-01.
+- ABI public-header validator still reports provisional warning debt that blocks
+  stable/frozen ABI promotion.
+- The diagnostic registry is initial and provisional.
+- Runtime diagnostic dispatch is not implemented by this task.
+- Workbench diagnostic presentation is not implemented by this task.
+- Capability/refusal law and artifact identity law remain later tasks.
 
-## Dependency Direction Warnings And Debt
+## Not Hidden
 
-- Dependency-direction validator strict result: FAIL on existing debt.
-- High-confidence violations: 358.
-- Warnings: 38.
-- Active exceptions: 0.
-- Broad exceptions: 0.
+- No failing full CTest result was reclassified as normal-gate success.
+- No dependency-direction violation was silenced or broadly excepted.
+- No diagnostic code was promoted to stable.
+- No release, package runtime, gameplay, renderer, or Workbench behavior was
+  implemented.
 
-These findings are not accepted as clean. They are recorded as current debt. A
-later bounded task must remove dependencies, move code to the correct owner, add
-proper contracts/service boundaries, or add precise temporary exceptions with
-owner and retirement task.
+## Next
 
-## Command Surface Warnings
-
-- Command surface is provisional.
-- Runtime dispatch is not implemented by COMMAND-SURFACE-01.
-- Workbench integration is not implemented by COMMAND-SURFACE-01.
-- Full diagnostic and capability/refusal registries remain later tasks.
-
-## ABI Warnings
-
-- `tools/validators/abi/check_public_headers.py --repo-root . --strict` reports
-  PASS with 2,851 warnings and 0 high-confidence violations.
-- These warnings block stable or frozen ABI promotion until explicitly resolved
-  or excepted.
-
-## Blocking Warnings
-
-- Full CTest remains T4 full/release debt.
-- Feature work and DOE-00 remain blocked until Foundation Lock closes.
-
-Next task: `DIAGNOSTIC-CODE-REGISTRY-01`.
+Next task: `ARTIFACT-IDENTITY-LAW-01`.

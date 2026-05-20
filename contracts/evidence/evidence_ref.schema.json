@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.evidence.ref_schema.v1",
+  "title": "Dominium Evidence Reference",
+  "type": "object",
+  "required": [
+    "evidence_id",
+    "path",
+    "subject_id",
+    "status"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "evidence_id": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "subject_id": {
+      "type": "string"
+    },
+    "subject_kind": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "pass_with_warnings",
+        "fail",
+        "blocked",
+        "not_run",
+        "partial",
+        "ok",
+        "warning",
+        "refused",
+        "error"
+      ]
+    },
+    "diagnostic_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "summary": {
+      "type": "string"
+    }
+  }
+}

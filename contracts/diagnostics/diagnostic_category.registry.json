@@ -1,0 +1,33 @@
+{
+  "schema_version": "dominium.diagnostics.category_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.diagnostics",
+  "categories": [
+    {"id": "repo", "description": "Repository layout, root, ownership, or hygiene diagnostics."},
+    {"id": "build", "description": "Configure, compile, link, generated-source, or build-target diagnostics."},
+    {"id": "test", "description": "Test, proof gate, CTest, or validation lane diagnostics."},
+    {"id": "validation", "description": "Validator and contract-check diagnostics."},
+    {"id": "command", "description": "Command surface, command input, command output, or unsupported surface diagnostics."},
+    {"id": "refusal", "description": "Lawful refusal and recovery diagnostics."},
+    {"id": "package", "description": "Pack, package, manifest, bundle, or content package diagnostics."},
+    {"id": "profile", "description": "Profile, bundle, or parameter set diagnostics."},
+    {"id": "artifact", "description": "Produced artifact, evidence, manifest, release output, or generated output diagnostics."},
+    {"id": "schema", "description": "Schema parse, schema version, migration, or compatibility diagnostics."},
+    {"id": "protocol", "description": "Protocol, handshake, message, or compatibility exchange diagnostics."},
+    {"id": "abi", "description": "Public API/ABI, header, symbol, or language-boundary diagnostics."},
+    {"id": "dependency", "description": "Dependency direction, include/import graph, or ownership dependency diagnostics."},
+    {"id": "capability", "description": "Capability grant, denial, absence, or scope diagnostics."},
+    {"id": "provider", "description": "Provider, plugin, backend, or adapter diagnostics."},
+    {"id": "runtime", "description": "Runtime service, host, scheduling, persistence, or platform diagnostics."},
+    {"id": "engine", "description": "Engine substrate and deterministic mechanism diagnostics."},
+    {"id": "game", "description": "Game/domain law and simulation-facing diagnostics."},
+    {"id": "workbench", "description": "Workbench module, workspace, and presentation diagnostics."},
+    {"id": "release", "description": "Release, promotion, signing, update, or distribution diagnostics."},
+    {"id": "security", "description": "Security, trust, signing, permission, or tamper diagnostics."},
+    {"id": "safety", "description": "Safety, containment, anti-cheat, or risk-control diagnostics."},
+    {"id": "performance", "description": "Performance, timeout, budget, or runtime cost diagnostics."},
+    {"id": "portability", "description": "Platform, toolchain, deployment-target, or portability diagnostics."},
+    {"id": "aide", "description": "AIDE/Codex task, evidence, review, or orchestration diagnostics."},
+    {"id": "unknown", "description": "Temporary category for imported or historical diagnostics that require classification."}
+  ]
+}

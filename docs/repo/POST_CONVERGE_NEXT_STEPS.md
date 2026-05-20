@@ -9,6 +9,24 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## DIAGNOSTIC-CODE-REGISTRY-01 Update
+
+DIAGNOSTIC-CODE-REGISTRY-01 adds the provisional diagnostic/evidence registry.
+
+- registry: `contracts/diagnostics/diagnostic_code.registry.json`
+- policy: `contracts/diagnostics/diagnostic_policy.contract.toml`
+- validator: `python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict`
+- diagnostic codes registered: 14 provisional foundational codes
+- severities registered: 7
+- categories registered: 26
+- evidence packet and evidence reference schemas exist under `contracts/evidence/`
+- command/refusal/event surfaces carry narrow diagnostic/evidence alignment
+- next Foundation Lock task: `ARTIFACT-IDENTITY-LAW-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Runtime
+diagnostic dispatch, Workbench presentation, package behavior, and release
+publication remain outside this task.
+
 ## COMMAND-SURFACE-01 Update
 
 COMMAND-SURFACE-01 adds the provisional command/result/view/event/refusal/evidence law.

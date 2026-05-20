@@ -1,0 +1,22 @@
+{
+  "id": "dominium.diagnostic.fixture.valid",
+  "code": "DOM-FIXTURE-VALID",
+  "owner": "tests.contract",
+  "severity": "warning",
+  "category": "validation",
+  "stability": "fixture",
+  "summary": "Fixture diagnostic is valid.",
+  "cause": "The fixture models the minimum diagnostic code fields.",
+  "recovery": "No recovery is required for the valid fixture.",
+  "evidence_expectation": "Fixture validator output.",
+  "related_refusal_codes": [],
+  "related_command_ids": [],
+  "related_public_surface_ids": [],
+  "related_artifact_types": [
+    "fixture"
+  ],
+  "proof": [
+    "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --fixtures"
+  ],
+  "notes": "Valid fixture only."
+}

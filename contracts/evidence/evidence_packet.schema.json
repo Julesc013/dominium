@@ -4,20 +4,46 @@
   "title": "Dominium Evidence Packet",
   "type": "object",
   "required": [
-    "command_id",
-    "run_id",
     "status",
-    "started_at",
-    "finished_at",
     "proof"
   ],
   "additionalProperties": true,
   "properties": {
+    "evidence_id": {
+      "type": "string",
+      "description": "Stable or run-scoped evidence packet identifier."
+    },
+    "subject_id": {
+      "type": "string",
+      "description": "Command, task, artifact, validator, or surface being evidenced."
+    },
+    "subject_kind": {
+      "type": "string",
+      "enum": [
+        "command",
+        "task",
+        "validator",
+        "surface",
+        "artifact",
+        "release",
+        "test",
+        "runtime",
+        "aide",
+        "unknown"
+      ]
+    },
     "command_id": {
       "type": "string"
     },
     "run_id": {
       "type": "string"
+    },
+    "diagnostic_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
     },
     "status": {
       "type": "string",
@@ -25,8 +51,17 @@
         "ok",
         "warning",
         "refused",
-        "error"
+        "error",
+        "pass",
+        "pass_with_warnings",
+        "fail",
+        "blocked",
+        "not_run",
+        "partial"
       ]
+    },
+    "generated_at": {
+      "type": "string"
     },
     "started_at": {
       "type": "string"
@@ -34,11 +69,26 @@
     "finished_at": {
       "type": "string"
     },
+    "repo_commit": {
+      "type": "string"
+    },
+    "tool": {
+      "type": "string"
+    },
     "inputs": {
       "type": "object"
     },
     "outputs": {
       "type": "object"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "summary": {
+      "type": "string"
     },
     "diagnostics": {
       "type": "array",
@@ -52,8 +102,20 @@
         "type": "string"
       }
     },
+    "provenance": {
+      "type": "object"
+    },
+    "related_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "validation_context": {
       "type": "object"
+    },
+    "notes": {
+      "type": "string"
     }
   }
 }

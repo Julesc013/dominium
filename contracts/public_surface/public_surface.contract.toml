@@ -380,7 +380,7 @@ owner = "contracts.event"
 stability = "provisional"
 version = "1.0.0"
 introduced = "COMMAND-SURFACE-01"
-proof = ["python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+proof = ["python tools/validators/contracts/check_command_surface.py --repo-root . --strict", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_command_surface_law_update"
 notes = "Event surface law for command progress, diagnostics, refusals, and evidence links."
@@ -393,10 +393,10 @@ owner = "contracts.refusal"
 stability = "provisional"
 version = "1.0.0"
 introduced = "COMMAND-SURFACE-01"
-proof = ["python -m json.tool contracts/refusal/refusal_code.registry.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+proof = ["python -m json.tool contracts/refusal/refusal_code.registry.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_diagnostic_code_registry_or_capability_refusal_law_update"
-notes = "Command-level refusal scaffold; the full diagnostic and capability refusal registries remain later Foundation Lock work."
+notes = "Command-level refusal scaffold with diagnostic cross-references; the full capability refusal law remains later Foundation Lock work."
 
 [[surface]]
 id = "dominium.document.surface.v1"
@@ -419,10 +419,114 @@ owner = "contracts.evidence"
 stability = "provisional"
 version = "1.0.0"
 introduced = "COMMAND-SURFACE-01"
-proof = ["python -m json.tool contracts/evidence/evidence_packet.schema.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+proof = ["python -m json.tool contracts/evidence/evidence_packet.schema.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_artifact_identity_law_or_command_surface_law_update"
-notes = "Evidence packet schema for command proof outputs; evidence is not source truth."
+notes = "Evidence packet schema for command and diagnostic proof outputs; evidence is not source truth."
+
+[[surface]]
+id = "dominium.diagnostics.registry.v1"
+kind = "diagnostic_code"
+path = "contracts/diagnostics/diagnostic_code.registry.json"
+owner = "contracts.diagnostics"
+stability = "provisional"
+version = "1.0.0"
+introduced = "DIAGNOSTIC-CODE-REGISTRY-01"
+proof = ["python -m json.tool contracts/diagnostics/diagnostic_code.registry.json", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_diagnostic_registry_update"
+notes = "Initial provisional diagnostic code registry for repo, command, ABI, package, schema, evidence, AIDE, and release conditions."
+
+[[surface]]
+id = "dominium.diagnostics.policy.v1"
+kind = "registry"
+path = "contracts/diagnostics/diagnostic_policy.contract.toml"
+owner = "contracts.diagnostics"
+stability = "provisional"
+version = "1.0.0"
+introduced = "DIAGNOSTIC-CODE-REGISTRY-01"
+proof = ["python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_diagnostic_registry_update"
+notes = "Diagnostic policy for code naming, severity, categories, evidence, refusal relations, and UI/AIDE presentation."
+
+[[surface]]
+id = "dominium.diagnostics.severity_registry.v1"
+kind = "registry"
+path = "contracts/diagnostics/diagnostic_severity.registry.json"
+owner = "contracts.diagnostics"
+stability = "provisional"
+version = "1.0.0"
+introduced = "DIAGNOSTIC-CODE-REGISTRY-01"
+proof = ["python -m json.tool contracts/diagnostics/diagnostic_severity.registry.json", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_diagnostic_registry_update"
+notes = "Severity vocabulary used by diagnostic codes and events."
+
+[[surface]]
+id = "dominium.diagnostics.category_registry.v1"
+kind = "registry"
+path = "contracts/diagnostics/diagnostic_category.registry.json"
+owner = "contracts.diagnostics"
+stability = "provisional"
+version = "1.0.0"
+introduced = "DIAGNOSTIC-CODE-REGISTRY-01"
+proof = ["python -m json.tool contracts/diagnostics/diagnostic_category.registry.json", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_diagnostic_registry_update"
+notes = "Category vocabulary used to route diagnostic ownership and presentation."
+
+[[surface]]
+id = "dominium.evidence.ref.v1"
+kind = "schema"
+path = "contracts/evidence/evidence_ref.schema.json"
+owner = "contracts.evidence"
+stability = "provisional"
+version = "1.0.0"
+introduced = "DIAGNOSTIC-CODE-REGISTRY-01"
+proof = ["python -m json.tool contracts/evidence/evidence_ref.schema.json", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_evidence_schema_update"
+notes = "Reusable evidence-reference schema for diagnostics, events, command results, and future release proof."
+
+[[surface]]
+id = "dominium.event.schema.v1"
+kind = "event"
+path = "contracts/event/event.schema.json"
+owner = "contracts.event"
+stability = "provisional"
+version = "1.0.0"
+introduced = "DIAGNOSTIC-CODE-REGISTRY-01"
+proof = ["python -m json.tool contracts/event/event.schema.json", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_event_surface_update"
+notes = "Minimal event schema aligned with diagnostic and evidence references."
+
+[[surface]]
+id = "dominium.diagnostics.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_diagnostics_registry.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "DIAGNOSTIC-CODE-REGISTRY-01"
+proof = ["python -m py_compile tools/validators/contracts/check_diagnostics_registry.py", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_diagnostic_registry_update"
+notes = "Validator implementation for diagnostic, evidence, and refusal cross-reference registry checks."
+
+[[surface]]
+id = "dominium.diagnostics.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/diagnostics"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "DIAGNOSTIC-CODE-REGISTRY-01"
+proof = ["python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_diagnostics_validator_tests"
+notes = "Fixture suite for diagnostic registry and evidence packet validator behavior."
 
 [[surface]]
 id = "dominium.command_surface.validator.v1"

@@ -5,7 +5,25 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, and COMMAND-SURFACE-01.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, and DIAGNOSTIC-CODE-REGISTRY-01.
+
+## DIAGNOSTIC-CODE-REGISTRY-01 Proof Note
+
+DIAGNOSTIC-CODE-REGISTRY-01 adds the provisional diagnostic/evidence registry.
+
+- registry: `contracts/diagnostics/diagnostic_code.registry.json`.
+- validator: `python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict`.
+- diagnostic codes registered: 14 provisional foundational codes.
+- severities registered: 7.
+- categories registered: 26.
+- fixtures: `tests/contract/diagnostics/**`.
+- public surface registry updated with diagnostics, evidence reference, event
+  schema, validator, and fixture surfaces.
+- runtime diagnostic dispatch, Workbench presentation, and release publication
+  are not implemented by this task.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `ARTIFACT-IDENTITY-LAW-01`.
 
 ## COMMAND-SURFACE-01 Proof Note
 
