@@ -76,6 +76,16 @@ EOF in four markdown files. Those whitespace findings were fixed and
 - `git status --short --branch`: dirty with intended task files before commit
 - `git diff --cached --check`: PASS
 
+## Post-Commit Check
+
+- `py -3 .aide/scripts/aide_lite.py commit check --latest`: WARN on the
+  `audit(abi): add public api canon` commit message only.
+
+The task prompt required the API/ABI commit body shape, while local AIDE policy
+also requires `## Changelog`, `## Risks`, and `AIDE-Token-Impact`. The task
+forbids amending existing commits, so this finding is recorded in a follow-up
+audit commit instead of rewriting the API/ABI commit.
+
 ## Not Run
 
 - Full CTest was not run. It remains T4 full/release proof and known broad debt,
