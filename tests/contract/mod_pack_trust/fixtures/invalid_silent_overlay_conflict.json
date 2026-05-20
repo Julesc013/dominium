@@ -1,0 +1,42 @@
+{
+  "mod_id": "dominium.mod.example.invalid_silent_overlay",
+  "mod_kind": "schema_validated_pack",
+  "trust_level": "schema_validated",
+  "owner": "tests.contract",
+  "version": "0.1.0",
+  "capabilities": ["dominium.mod.schema_validated", "dominium.pack.overlay"],
+  "permissions": ["read_pack_data", "generate_artifact"],
+  "declared_permissions": {
+    "read_pack_data": {"scope": "own_pack_payload", "reason": "Read data."},
+    "generate_artifact": {"scope": "validation_report", "reason": "Produce evidence."}
+  },
+  "dependencies": [],
+  "conflicts": ["dominium.mod.example.data_only"],
+  "payloads": [{"kind": "overlay", "path_hint": "overlays/example.json"}],
+  "schemas_used": ["contracts/modding/mod_descriptor.schema.json"],
+  "determinism_impact": {
+    "classification": "deterministic",
+    "replay_policy": "allowed_after_schema_validation",
+    "authoritative_state_impact": "declared_overlay_only"
+  },
+  "security_impact": {"classification": "medium", "summary": "Invalid silent overwrite."},
+  "filesystem_access": "none",
+  "network_access": "none",
+  "process_access": "none",
+  "native_code": false,
+  "external_process": false,
+  "sandbox_required": false,
+  "review_required": false,
+  "signature_required": false,
+  "allowed_contexts": ["none"],
+  "review_status": "validated",
+  "compatibility_range": {"mode": "any_provisional"},
+  "validation_fixtures": [],
+  "diagnostic_codes": ["DOM-PACK-SILENT-OVERWRITE-FORBIDDEN", "DOM-PACK-OVERLAY-CONFLICT"],
+  "refusal_codes": ["dominium.refusal.pack.silent_overwrite_forbidden", "dominium.refusal.pack.overlay_conflict"],
+  "overlays": [
+    {"target": "dominium.mod.example.data_only", "conflicts_with": "dominium.mod.example.data_only", "conflict_policy": "silent_overwrite"}
+  ],
+  "evidence": [],
+  "notes": "Invalid silent overlay fixture."
+}

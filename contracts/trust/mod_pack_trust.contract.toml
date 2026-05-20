@@ -1,0 +1,98 @@
+schema_version = "dominium.mod_pack.trust_model.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.trust"
+
+[contract]
+id = "dominium.mod_pack.trust_model.v1"
+status = "provisional"
+owner = "contracts.trust"
+purpose = "Defines default-deny trust, permission, sandbox, review, determinism, overlay, native provider, and external adapter law for mods and packs."
+
+[law]
+packs_are_not_code_authority = true
+modules_are_not_permissions = true
+providers_are_not_trusted_by_default = true
+native_providers_are_not_allowed_by_default = true
+external_adapters_are_visible_surfaces = true
+silent_authority_expansion_forbidden = true
+silent_overlay_overwrite_forbidden = true
+deterministic_replay_must_refuse_or_isolate_nondeterministic_extensions = true
+
+[identity]
+id_fields = ["mod_id", "pack_id", "module_id", "provider_id", "artifact_id"]
+ids_must_not_be_paths = true
+path_is_never_identity = true
+temporary_status_must_not_be_encoded_in_id = true
+
+[trust_ladder]
+levels = ["data_only", "schema_validated", "scriptless_rule_data_pack", "workbench_authored_module", "external_process_adapter", "trusted_native_provider", "signed_native_provider"]
+default_level = "data_only"
+default_policy = "deny_authority_until_declared"
+
+[permissions]
+permission_registry = "contracts/trust/permission_kind.registry.json"
+permission_declaration_required = true
+data_only_permissions = ["read_pack_data"]
+native_permissions_require_native_trust = ["native_code", "load_dynamic_library"]
+external_permissions_require_adapter_policy = ["spawn_process", "network_client", "network_server", "read_user_file", "write_user_file"]
+
+[review]
+policy = "contracts/trust/review_policy.contract.toml"
+review_required_for_levels = ["workbench_authored_module", "external_process_adapter", "trusted_native_provider", "signed_native_provider"]
+signed_native_provider_requires_future_assurance_policy = true
+
+[sandbox]
+policy = "contracts/trust/sandbox_policy.contract.toml"
+sandbox_required_for_levels = ["external_process_adapter", "trusted_native_provider", "signed_native_provider"]
+runtime_sandbox_not_implemented_by_this_contract = true
+
+[determinism]
+policy = "contracts/trust/determinism_impact_policy.contract.toml"
+impact_declaration_required = true
+replay_path_requires_deterministic_or_explicit_isolation = true
+unknown_impact_refuses = true
+
+[native_provider]
+policy = "contracts/trust/native_provider_policy.contract.toml"
+native_dynamic_loading_default = "forbidden"
+trusted_native_provider_is_provisional = true
+signed_native_provider_is_future = true
+
+[external_adapter]
+policy = "contracts/trust/external_adapter_policy.contract.toml"
+ipc_protocol_required = true
+filesystem_network_process_permissions_required = true
+not_allowed_in_replay_path_without_explicit_policy = true
+
+[overlay]
+policy = "contracts/modding/pack_overlay_policy.contract.toml"
+ordered_overlays_required = true
+conflicts_must_be_declared = true
+silent_overwrite_forbidden = true
+lockfile_mount_plan_future = true
+
+[relationships]
+capability_registry = "contracts/capability/capability.registry.json"
+refusal_registry = "contracts/refusal/refusal_code.registry.json"
+diagnostic_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+artifact_identity_law = "contracts/artifact/artifact_identity.contract.toml"
+provider_model = "contracts/provider/provider.contract.toml"
+module_composition = "contracts/module/module_surface.contract.toml"
+versioning_law = "contracts/versioning/versioning.contract.toml"
+replacement_protocol = "contracts/replacement/replacement.contract.toml"
+
+[proof]
+validator = "tools/validators/package/check_mod_pack_trust.py"
+fixtures = "tests/contract/mod_pack_trust"
+fast_strict = "tools/test/run_fast_strict.py"
+
+[scope_guard]
+implements_loader = false
+implements_scripting = false
+implements_sandbox_runtime = false
+implements_native_plugin_loading = false
+implements_dynamic_loader = false
+implements_provider_runtime = false
+implements_package_mounting = false
+implements_workbench_ui = false

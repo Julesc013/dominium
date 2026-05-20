@@ -1,0 +1,29 @@
+{
+  "schema_version": "dominium.mod_pack.permission.registry.v1",
+  "status": "provisional",
+  "owner": "contracts.trust",
+  "permission_kinds": [
+    {"permission": "read_pack_data", "category": "data", "summary": "Read declared data within the pack payload."},
+    {"permission": "write_profile", "category": "filesystem", "summary": "Write declared profile data through governed profile paths."},
+    {"permission": "write_save", "category": "filesystem", "summary": "Write save data through governed save paths."},
+    {"permission": "write_cache", "category": "filesystem", "summary": "Write cache data through governed cache paths."},
+    {"permission": "read_user_file", "category": "filesystem", "summary": "Read an explicitly selected user file."},
+    {"permission": "write_user_file", "category": "filesystem", "summary": "Write an explicitly selected user file."},
+    {"permission": "network_client", "category": "network", "summary": "Open declared outbound network connections."},
+    {"permission": "network_server", "category": "network", "summary": "Listen for declared inbound network connections."},
+    {"permission": "spawn_process", "category": "process", "summary": "Launch a declared external process."},
+    {"permission": "native_code", "category": "native", "summary": "Execute native code inside a trusted provider boundary."},
+    {"permission": "load_dynamic_library", "category": "native", "summary": "Load a dynamic library under future signed native provider policy."},
+    {"permission": "access_clipboard", "category": "platform", "summary": "Access clipboard data through a platform provider."},
+    {"permission": "access_input", "category": "platform", "summary": "Access input devices through a provider."},
+    {"permission": "access_audio", "category": "platform", "summary": "Access audio output or capture through a provider."},
+    {"permission": "access_renderer", "category": "platform", "summary": "Access renderer or presentation provider surfaces."},
+    {"permission": "invoke_command", "category": "command", "summary": "Invoke registered commands through command law."},
+    {"permission": "provide_command", "category": "command", "summary": "Provide registered commands through command law."},
+    {"permission": "provide_provider", "category": "provider", "summary": "Provide a provider descriptor governed by provider law."},
+    {"permission": "provide_module", "category": "module", "summary": "Provide a module descriptor governed by module law."},
+    {"permission": "modify_registry", "category": "registry", "summary": "Contribute declared registry data through schema and overlay policy."},
+    {"permission": "modify_world_state", "category": "truth", "summary": "Request world-state mutation through lawful process data, never direct mutation."},
+    {"permission": "generate_artifact", "category": "artifact", "summary": "Generate declared artifacts with provenance and identity."}
+  ]
+}

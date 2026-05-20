@@ -1,0 +1,39 @@
+{
+  "mod_id": "dominium.mod.example.invalid_data_network",
+  "mod_kind": "data_pack",
+  "trust_level": "data_only",
+  "owner": "tests.contract",
+  "version": "0.1.0",
+  "capabilities": ["dominium.mod.data_only"],
+  "permissions": ["read_pack_data", "network_client"],
+  "declared_permissions": {
+    "read_pack_data": {"scope": "own_pack_payload", "reason": "Read data."},
+    "network_client": {"scope": "internet", "reason": "Invalid data pack request."}
+  },
+  "dependencies": [],
+  "conflicts": [],
+  "payloads": [{"kind": "data", "path_hint": "data/example.json"}],
+  "schemas_used": ["contracts/modding/mod_descriptor.schema.json"],
+  "determinism_impact": {
+    "classification": "deterministic",
+    "replay_policy": "allowed",
+    "authoritative_state_impact": "none"
+  },
+  "security_impact": {"classification": "high", "summary": "Invalid network authority."},
+  "filesystem_access": "none",
+  "network_access": "declared_client",
+  "process_access": "none",
+  "native_code": false,
+  "external_process": false,
+  "sandbox_required": false,
+  "review_required": false,
+  "signature_required": false,
+  "allowed_contexts": ["none"],
+  "review_status": "unreviewed",
+  "compatibility_range": {"mode": "any_provisional"},
+  "validation_fixtures": [],
+  "diagnostic_codes": ["DOM-MOD-NETWORK-PERMISSION-DENIED"],
+  "refusal_codes": ["dominium.refusal.mod.network_denied"],
+  "evidence": [],
+  "notes": "Invalid data-only network permission fixture."
+}

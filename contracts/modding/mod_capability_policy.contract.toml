@@ -1,0 +1,22 @@
+schema_version = "dominium.mod_pack.capability_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.modding"
+
+[contract]
+id = "dominium.mod_pack.capability_policy.v1"
+status = "provisional"
+owner = "contracts.modding"
+purpose = "Defines how mod and pack descriptors relate trust levels, permissions, and capability declarations."
+
+[policy]
+capabilities_are_not_permissions = true
+permissions_are_not_capabilities = true
+declared_capability_required_for_authority = true
+declared_permission_required_for_authority = true
+required_capabilities_must_reference_capability_registry_when_present = true
+missing_capability_must_refuse = true
+optional_capability_must_degrade_explicitly = true
+
+[initial_capabilities]
+ids = ["dominium.mod.data_only", "dominium.mod.schema_validated", "dominium.mod.scriptless_rule_data", "dominium.mod.workbench_authored_module", "dominium.mod.external_process_adapter", "dominium.mod.trusted_native_provider", "dominium.mod.signed_native_provider", "dominium.pack.overlay", "dominium.pack.bundle"]

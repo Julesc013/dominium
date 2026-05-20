@@ -9,6 +9,35 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## MOD-PACK-TRUST-MODEL-01 Update
+
+MOD-PACK-TRUST-MODEL-01 adds the provisional mod/pack trust law.
+
+- trust law: `contracts/trust/mod_pack_trust.contract.toml`
+- trust registry: `contracts/trust/trust_level.registry.json`
+- permission registry: `contracts/trust/permission_kind.registry.json`
+- trust decision schema: `contracts/trust/trust_decision.schema.json`
+- mod descriptor schema: `contracts/modding/mod_descriptor.schema.json`
+- policies:
+  - `contracts/trust/review_policy.contract.toml`
+  - `contracts/trust/sandbox_policy.contract.toml`
+  - `contracts/trust/determinism_impact_policy.contract.toml`
+  - `contracts/trust/native_provider_policy.contract.toml`
+  - `contracts/trust/external_adapter_policy.contract.toml`
+  - `contracts/modding/mod_capability_policy.contract.toml`
+  - `contracts/modding/pack_overlay_policy.contract.toml`
+- validator:
+  - `python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict`
+- fixture suite: `tests/contract/mod_pack_trust/**`
+- trust levels registered: 7
+- permission kinds registered: 22
+- next Foundation Lock task: `PORTABILITY-MATRIX-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Runtime
+mod loading, sandboxing, native provider loading, dynamic libraries, package
+mounting, Workbench UI, gameplay, renderer, native GUI, and product behavior
+are not implemented.
+
 ## VERSION-DEPRECATION-LAW-01 Update
 
 VERSION-DEPRECATION-LAW-01 adds the provisional versioning, lifecycle,

@@ -1,0 +1,29 @@
+schema_version = "dominium.mod_pack.sandbox_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.trust"
+
+[contract]
+id = "dominium.mod_pack.sandbox_policy.v1"
+status = "provisional"
+owner = "contracts.trust"
+purpose = "Defines policy expectations for isolation and containment without implementing a sandbox runtime."
+
+[policy]
+runtime_sandbox_implemented = false
+default_filesystem_access = "none"
+default_network_access = "none"
+default_process_access = "none"
+default_native_code = false
+default_external_process = false
+explicit_permission_required = true
+evidence_required_for_authority = true
+
+[isolation]
+data_only = "schema_and_mount_boundary"
+schema_validated = "schema_and_mount_boundary"
+scriptless_rule_data_pack = "schema_validator_boundary"
+workbench_authored_module = "command_surface_boundary"
+external_process_adapter = "process_ipc_boundary_required"
+trusted_native_provider = "trusted_build_boundary_required"
+signed_native_provider = "future_signed_provider_boundary_required"

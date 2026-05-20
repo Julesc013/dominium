@@ -1,19 +1,21 @@
 # Latest Dominium Status
 
-Current task: `VERSION-DEPRECATION-LAW-01`.
+Current task: `MOD-PACK-TRUST-MODEL-01`.
 
 Result: PASS_WITH_WARNINGS, pending final commit and post-commit checks.
 
 ## Current Green State
 
-- Versioning/deprecation contracts and schemas exist under `contracts/versioning/**`.
-- Version/deprecation validator passes strict mode with 0 findings.
-- Fixture validation passes: 3 valid fixtures and 4 negative fixtures.
-- Lifecycle state registry includes 9 provisional lifecycle states.
-- Diagnostics registry includes version/deprecation diagnostic codes.
-- Refusal registry includes version/deprecation refusal codes.
-- Public surface registry includes version/deprecation surfaces.
-- Initial inventory classifies current version-like surfaces descriptively.
+- Mod/pack trust contracts and schemas exist under `contracts/trust/**` and `contracts/modding/**`.
+- Mod/pack trust validator passes strict mode with 0 findings.
+- Fixture validation passes: 5 valid fixtures and 5 negative fixtures.
+- Trust level registry includes 7 provisional trust levels.
+- Permission registry includes 22 permission kinds.
+- Diagnostics registry includes mod/pack trust diagnostic codes.
+- Refusal registry includes mod/pack trust refusal codes.
+- Capability registry includes 9 provisional mod/pack trust capabilities.
+- Public surface registry includes mod/pack trust surfaces.
+- Initial inventory classifies current pack, trust, native, and modding surfaces descriptively.
 
 ## Current Dependency Debt
 
@@ -24,12 +26,12 @@ Result: PASS_WITH_WARNINGS, pending final commit and post-commit checks.
 
 ## Remaining Blockers
 
-- Existing version-like surfaces are inventoried but not migrated.
-- No active surface is deprecated, retired, removed, or promoted to stable.
-- Runtime migration is not implemented.
-- Release promotion gate is not implemented.
-- Compatibility corpus is not populated.
-- Mod/pack trust model is not implemented yet.
+- Existing pack trust metadata is inventoried but not migrated.
+- Runtime mod loader is not implemented.
+- Sandbox runtime is not implemented.
+- Native provider loading and dynamic loading are not implemented.
+- Package mounting and Workbench UI are not implemented.
+- Portability matrix is not implemented yet.
 - Existing ABI warnings remain provisional stable-promotion debt.
 - Full CTest remains T4 full/release proof and is not run for this task unless fast strict requires it.
 - Feature implementation remains blocked until Foundation Lock closes.
@@ -38,4 +40,4 @@ DOE-00 readiness: no.
 
 Feature implementation authorized: no.
 
-Next task: `MOD-PACK-TRUST-MODEL-01`.
+Next task: `PORTABILITY-MATRIX-01`.

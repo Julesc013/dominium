@@ -1,0 +1,29 @@
+schema_version = "dominium.mod_pack.review_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.trust"
+
+[contract]
+id = "dominium.mod_pack.review_policy.v1"
+status = "provisional"
+owner = "contracts.trust"
+purpose = "Defines review expectations for packs, modules, external adapters, native providers, and signed providers."
+
+[review_status]
+values = ["unreviewed", "self_reviewed", "validated", "reviewed", "trusted", "signed", "blocked", "quarantined", "historical"]
+default = "unreviewed"
+
+[policy]
+data_only_may_be_unreviewed_if_schema_valid = true
+schema_validated_requires_validator = true
+scriptless_rule_data_requires_validation = true
+workbench_authored_module_requires_command_surface_review = true
+external_process_adapter_requires_security_review = true
+trusted_native_provider_requires_conformance_review = true
+signed_native_provider_requires_future_assurance_review = true
+blocked_or_quarantined_must_refuse = true
+
+[evidence]
+required_for_reviewed = ["validator_output", "diagnostic_report"]
+required_for_trusted_native_provider = ["abi_proof", "provider_conformance", "security_review"]
+required_for_signed_native_provider = ["future_signature_policy", "release_trust_policy", "assurance_profile"]

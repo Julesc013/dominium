@@ -1,0 +1,39 @@
+{
+  "mod_id": "dominium.mod.example.schema_validated",
+  "mod_kind": "schema_validated_pack",
+  "trust_level": "schema_validated",
+  "owner": "tests.contract",
+  "version": "0.1.0",
+  "capabilities": ["dominium.mod.schema_validated"],
+  "permissions": ["read_pack_data", "generate_artifact"],
+  "declared_permissions": {
+    "read_pack_data": {"scope": "own_pack_payload", "reason": "Read validated data."},
+    "generate_artifact": {"scope": "validation_report", "reason": "Produce validation evidence."}
+  },
+  "dependencies": ["dominium.mod.example.data_only"],
+  "conflicts": [],
+  "payloads": [{"kind": "schema_validated_data", "path_hint": "data/validated.json"}],
+  "schemas_used": ["contracts/modding/mod_descriptor.schema.json"],
+  "determinism_impact": {
+    "classification": "deterministic",
+    "replay_policy": "allowed_after_schema_validation",
+    "authoritative_state_impact": "declared_data_only"
+  },
+  "security_impact": {"classification": "low", "summary": "No executable authority."},
+  "filesystem_access": "none",
+  "network_access": "none",
+  "process_access": "none",
+  "native_code": false,
+  "external_process": false,
+  "sandbox_required": false,
+  "review_required": false,
+  "signature_required": false,
+  "allowed_contexts": ["validation", "local_lab"],
+  "review_status": "validated",
+  "compatibility_range": {"mode": "any_provisional"},
+  "validation_fixtures": ["tests/contract/mod_pack_trust/fixtures/valid_schema_validated_pack.json"],
+  "diagnostic_codes": ["DOM-PACK-TRUST-LEVEL-UNKNOWN"],
+  "refusal_codes": ["dominium.refusal.mod.trust_insufficient"],
+  "evidence": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+  "notes": "Schema-validated fixture."
+}

@@ -1,0 +1,29 @@
+schema_version = "dominium.mod_pack.overlay_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.modding"
+
+[contract]
+id = "dominium.mod_pack.overlay_policy.v1"
+status = "provisional"
+owner = "contracts.modding"
+purpose = "Defines pack composition and overlay conflict policy without implementing runtime mounting."
+
+[policy]
+ordered_overlays_required = true
+conflict_declaration_required = true
+silent_overwrite_forbidden = true
+overlay_policy_must_be_in_mount_plan_later = true
+trust_decision_required_later = true
+capability_report_required_later = true
+compatibility_report_required_later = true
+
+[allowed_conflict_policies]
+values = ["refuse", "explicit_replace", "explicit_merge", "first_wins", "last_wins_with_evidence"]
+default = "refuse"
+forbidden = ["silent_overwrite", "implicit_last_wins"]
+
+[future]
+lockfile = "package lock or mount plan records overlays later"
+bundle_composition = "bundle trust is future work"
+runtime_mounting = "not implemented by this task"

@@ -1,0 +1,46 @@
+{
+  "mod_id": "dominium.mod.example.external_adapter",
+  "mod_kind": "external_process_adapter_pack",
+  "trust_level": "external_process_adapter",
+  "owner": "tests.contract",
+  "version": "0.1.0",
+  "capabilities": ["dominium.mod.external_process_adapter"],
+  "permissions": ["read_pack_data", "spawn_process", "network_client", "read_user_file", "invoke_command", "generate_artifact"],
+  "declared_permissions": {
+    "read_pack_data": {"scope": "own_pack_payload", "reason": "Read adapter descriptor."},
+    "spawn_process": {"scope": "declared_binary", "reason": "Start declared helper process."},
+    "network_client": {"scope": "declared_loopback_endpoint", "reason": "Communicate with helper service."},
+    "read_user_file": {"scope": "user_selected_file", "reason": "Read explicitly selected input."},
+    "invoke_command": {"scope": "registered_commands_only", "reason": "Invoke adapter validation command."},
+    "generate_artifact": {"scope": "evidence_packet", "reason": "Produce adapter evidence."}
+  },
+  "dependencies": [],
+  "conflicts": [],
+  "payloads": [
+    {"kind": "external_adapter_descriptor", "adapter_id": "dominium.adapter.example.external"},
+    {"kind": "ipc_protocol", "protocol_id": "dominium.protocol.example.external_adapter.v1"}
+  ],
+  "schemas_used": ["contracts/modding/mod_descriptor.schema.json"],
+  "determinism_impact": {
+    "classification": "nondeterministic_isolated",
+    "replay_policy": "refuse_in_authoritative_replay_path",
+    "authoritative_state_impact": "none_without_explicit_import"
+  },
+  "security_impact": {"classification": "high", "summary": "External process with declared network and filesystem access."},
+  "filesystem_access": "declared_read_only_user_selected_files",
+  "network_access": "declared_loopback_client",
+  "process_access": "declared_helper_process",
+  "native_code": false,
+  "external_process": true,
+  "sandbox_required": true,
+  "review_required": true,
+  "signature_required": false,
+  "allowed_contexts": ["tooling"],
+  "review_status": "reviewed",
+  "compatibility_range": {"mode": "any_provisional"},
+  "validation_fixtures": ["tests/contract/mod_pack_trust/fixtures/valid_external_adapter_pack.json"],
+  "diagnostic_codes": ["DOM-MOD-EXTERNAL-ADAPTER-BLOCKED", "DOM-MOD-NETWORK-PERMISSION-DENIED", "DOM-MOD-FILESYSTEM-PERMISSION-DENIED"],
+  "refusal_codes": ["dominium.refusal.mod.external_adapter_blocked", "dominium.refusal.mod.network_denied", "dominium.refusal.mod.filesystem_denied"],
+  "evidence": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+  "notes": "External adapter fixture; no runtime process launching is implemented."
+}

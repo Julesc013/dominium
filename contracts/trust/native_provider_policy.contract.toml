@@ -1,0 +1,26 @@
+schema_version = "dominium.mod_pack.native_provider_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.trust"
+
+[contract]
+id = "dominium.mod_pack.native_provider_policy.v1"
+status = "provisional"
+owner = "contracts.trust"
+purpose = "Defines policy scaffold for trusted and signed native providers without enabling runtime loading."
+
+[policy]
+native_provider_default = "blocked"
+dynamic_untrusted_loading = "forbidden"
+trusted_native_provider_requires_trusted_build_boundary = true
+trusted_native_provider_requires_abi = true
+trusted_native_provider_requires_provider_descriptor = true
+trusted_native_provider_requires_conformance_tests = true
+signed_native_provider_requires_future_assurance_profile = true
+signed_native_provider_requires_release_signing_policy = true
+
+[non_goals]
+implements_dynamic_loader = false
+implements_native_plugin_runtime = false
+implements_signature_verifier = false
+implements_sandbox_runtime = false

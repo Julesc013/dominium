@@ -2,10 +2,11 @@
 
 ## Review Objective
 
-Review `VERSION-DEPRECATION-LAW-01`: versioning law, lifecycle registry,
-compatibility/deprecation/transition schemas, deprecation/retirement/removal
-policies, validator, fixtures, docs, public-surface registration,
-diagnostics/refusal integration, inventory, and evidence.
+Review `MOD-PACK-TRUST-MODEL-01`: mod/pack trust contract, trust and permission
+registries, trust decision schema, mod descriptor schema, review/sandbox/
+determinism/native/external adapter policies, overlay policy, validator,
+fixtures, docs, public-surface registration, diagnostics/refusal/capability
+integration, inventory, and evidence.
 
 ## Decision Requested
 
@@ -21,62 +22,69 @@ diagnostics/refusal integration, inventory, and evidence.
 
 ## Verification Report Reference
 
-`.aide/reports/VERSION-DEPRECATION-LAW-01-validation.md`
+`.aide/reports/MOD-PACK-TRUST-MODEL-01-validation.md`
 
 ## Evidence Packet References
 
-- `contracts/versioning/versioning.contract.toml`
-- `contracts/versioning/lifecycle_state.registry.json`
-- `contracts/versioning/version_compatibility.schema.json`
-- `contracts/versioning/compatibility_range.schema.json`
-- `contracts/versioning/deprecation_notice.schema.json`
-- `contracts/versioning/version_transition.schema.json`
-- `contracts/versioning/deprecation_policy.contract.toml`
-- `contracts/versioning/retirement_policy.contract.toml`
-- `contracts/versioning/removal_policy.contract.toml`
-- `contracts/versioning/surface_lifecycle.contract.toml`
-- `tools/validators/contracts/check_version_deprecation.py`
-- `tests/contract/versioning/**`
-- `docs/architecture/versioning_and_deprecation.md`
-- `docs/development/versioning_deprecation_guidelines.md`
-- `.aide/reports/VERSION-DEPRECATION-LAW-01-status.md`
-- `.aide/reports/VERSION-DEPRECATION-LAW-01-results.json`
-- `.aide/reports/VERSION-DEPRECATION-LAW-01-fast-strict.md`
-- `docs/repo/audits/VERSION_DEPRECATION_LAW_01.md`
+- `contracts/trust/mod_pack_trust.contract.toml`
+- `contracts/trust/trust_level.registry.json`
+- `contracts/trust/permission_kind.registry.json`
+- `contracts/trust/trust_decision.schema.json`
+- `contracts/trust/review_policy.contract.toml`
+- `contracts/trust/sandbox_policy.contract.toml`
+- `contracts/trust/determinism_impact_policy.contract.toml`
+- `contracts/trust/native_provider_policy.contract.toml`
+- `contracts/trust/external_adapter_policy.contract.toml`
+- `contracts/modding/mod_descriptor.schema.json`
+- `contracts/modding/mod_capability_policy.contract.toml`
+- `contracts/modding/pack_overlay_policy.contract.toml`
+- `contracts/modding/mod_lifecycle.registry.json`
+- `tools/validators/package/check_mod_pack_trust.py`
+- `tests/contract/mod_pack_trust/**`
+- `docs/architecture/mod_pack_trust_model.md`
+- `docs/development/mod_pack_trust_guidelines.md`
+- `docs/modding/trust_ladder.md`
+- `.aide/reports/MOD-PACK-TRUST-MODEL-01-status.md`
+- `.aide/reports/MOD-PACK-TRUST-MODEL-01-results.json`
+- `.aide/reports/MOD-PACK-TRUST-MODEL-01-fast-strict.md`
+- `docs/repo/audits/MOD_PACK_TRUST_MODEL_01.md`
 
 ## Changed Files Summary
 
-Adds a provisional versioning/deprecation governance spine. Registers lifecycle,
-compatibility, deprecation, retirement, removal, transition, diagnostic, refusal,
-and validator surfaces without deprecating, retiring, removing, migrating, or
-promoting any active surface.
+Adds a provisional default-deny mod/pack trust model. Registers trust levels,
+permission kinds, mod descriptors, overlay policy, diagnostics, refusals,
+capabilities, and public surfaces without implementing mod loading, sandboxing,
+native loading, package mounting, Workbench UI, or product behavior.
 
 ## Validation Summary
 
-Version/deprecation validator compiles and passes strict mode with 0 findings.
-Fixture mode passes with 3 valid fixtures and 4 negative fixtures. Inventory mode
-classifies current version-like surfaces descriptively. Dependency-direction debt
-remains known existing debt.
+Mod/pack trust validator compiles and passes strict mode with 0 findings.
+Fixture mode passes with 5 valid fixtures and 5 negative fixtures. Inventory
+mode classifies current pack/trust/native/modding surfaces descriptively. Fast
+strict passes 32 commands in 309.297 seconds. Dependency-direction debt remains
+known existing debt.
 
 ## Token Summary
 
 This review packet is compact; full validation details live in
-`.aide/reports/VERSION-DEPRECATION-LAW-01-validation.md`.
+`.aide/reports/MOD-PACK-TRUST-MODEL-01-validation.md`.
 
 ## Risk Summary
 
-Version/deprecation law is provisional. Existing version-like surfaces are
-inventoried but not migrated. Runtime migration, release promotion,
-compatibility corpus, and mod/pack trust remain future work.
+Trust law is provisional. Existing pack trust metadata is inventoried but not
+migrated. Runtime loader, sandbox, native provider loading, dynamic loading,
+signed provider assurance, package mounting, and Workbench UI remain future
+work.
 
 ## Non-Goals / Scope Guard
 
-No actual deprecation, retirement, removal, migration runtime, release
-promotion, Workbench UI, product behavior, gameplay, renderer, native GUI, or
-active version rewrite.
+No runtime mod loader, scripting, sandbox, native loader, dynamic loader,
+provider runtime, package/profile mounting, Workbench UI, gameplay, renderer,
+native GUI, release publication, or product behavior.
 
 ## Reviewer Instructions
 
-Confirm that stable surfaces require compatibility/proof, lifecycle transitions
-are explicit, deprecation requires replacement or no-replacement reason, and
-removal requires retirement history or deterministic refusal/bridge policy.
+Confirm that trust levels are default-deny, permissions are explicit, data-only
+packs cannot request filesystem/network/process/native authority, overlays
+cannot silently overwrite, external adapters/native providers require evidence,
+and nondeterministic replay impact refuses or isolates.

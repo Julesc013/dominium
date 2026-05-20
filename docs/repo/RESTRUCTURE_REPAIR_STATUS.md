@@ -5,13 +5,44 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `VERSION-DEPRECATION-LAW-01`.
+Latest task: `MOD-PACK-TRUST-MODEL-01`.
 
-Result: PASS_WITH_WARNINGS for the provisional version/deprecation law.
-Versioning contracts, lifecycle registry, compatibility/deprecation/transition
-schemas, validator, fixtures, docs, diagnostics/refusal codes, public surface
-registrations, and evidence exist. Existing dependency-direction debt remains
-visible and is not hidden by this task.
+Result: PASS_WITH_WARNINGS for the provisional mod/pack trust law.
+Trust contracts, trust/permission registries, mod descriptor schema, policy
+contracts, validator, fixtures, docs, diagnostics/refusal/capability codes,
+public surface registrations, and evidence exist. Existing dependency-direction
+debt remains visible and is not hidden by this task.
+
+## MOD-PACK-TRUST-MODEL-01 Update
+
+MOD-PACK-TRUST-MODEL-01 is PASS_WITH_WARNINGS.
+
+- trust law: `contracts/trust/mod_pack_trust.contract.toml`.
+- trust level registry: `contracts/trust/trust_level.registry.json`.
+- permission kind registry: `contracts/trust/permission_kind.registry.json`.
+- trust decision schema: `contracts/trust/trust_decision.schema.json`.
+- mod descriptor schema: `contracts/modding/mod_descriptor.schema.json`.
+- policies:
+  - `contracts/trust/review_policy.contract.toml`.
+  - `contracts/trust/sandbox_policy.contract.toml`.
+  - `contracts/trust/determinism_impact_policy.contract.toml`.
+  - `contracts/trust/native_provider_policy.contract.toml`.
+  - `contracts/trust/external_adapter_policy.contract.toml`.
+  - `contracts/modding/mod_capability_policy.contract.toml`.
+  - `contracts/modding/pack_overlay_policy.contract.toml`.
+- validator: `tools/validators/package/check_mod_pack_trust.py`.
+- fixtures: `tests/contract/mod_pack_trust/**`.
+- trust levels registered: 7.
+- permission kinds registered: 22.
+- diagnostic codes added: 10 mod/pack trust codes.
+- refusal codes added: 9 mod/pack trust refusal codes.
+- capabilities added: 9 mod/pack trust capabilities.
+- existing pack trust surfaces are inventoried but not migrated.
+
+Next task:
+`PORTABILITY-MATRIX-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## VERSION-DEPRECATION-LAW-01 Update
 

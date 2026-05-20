@@ -5,7 +5,31 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, PROVIDER-MODEL-01, MODULE-COMPOSITION-LAW-01, REPLACEMENT-PROTOCOL-01, and VERSION-DEPRECATION-LAW-01.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, PROVIDER-MODEL-01, MODULE-COMPOSITION-LAW-01, REPLACEMENT-PROTOCOL-01, VERSION-DEPRECATION-LAW-01, and MOD-PACK-TRUST-MODEL-01.
+
+## MOD-PACK-TRUST-MODEL-01 Proof Note
+
+MOD-PACK-TRUST-MODEL-01 adds the provisional mod/pack trust law.
+
+- trust law: `contracts/trust/mod_pack_trust.contract.toml`.
+- trust level registry: `contracts/trust/trust_level.registry.json`.
+- permission kind registry: `contracts/trust/permission_kind.registry.json`.
+- trust decision schema: `contracts/trust/trust_decision.schema.json`.
+- mod descriptor schema: `contracts/modding/mod_descriptor.schema.json`.
+- review, sandbox, determinism, native provider, external adapter, capability,
+  and overlay policies under `contracts/trust/**` and `contracts/modding/**`.
+- validator: `python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict`.
+- fixtures: `tests/contract/mod_pack_trust/**`.
+- trust levels registered: 7.
+- permission kinds registered: 22.
+- public surface, diagnostics, refusal, and capability registries updated with
+  mod/pack trust surfaces, codes, and capabilities.
+- existing pack trust metadata is inventoried but not migrated.
+- runtime mod loader, sandbox, native provider loading, package mounting,
+  Workbench UI, and product behavior are not implemented by this task.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `PORTABILITY-MATRIX-01`.
 
 ## VERSION-DEPRECATION-LAW-01 Proof Note
 

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.mod_pack.trust_decision.v1",
+  "title": "Dominium Mod Pack Trust Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_id",
+    "subject_id",
+    "trust_level",
+    "decision",
+    "permissions",
+    "capabilities",
+    "determinism_impact",
+    "security_impact",
+    "review_status",
+    "diagnostic_codes",
+    "refusal_codes",
+    "evidence_ref"
+  ],
+  "properties": {
+    "decision_id": {"type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9_-]+)+$"},
+    "subject_id": {"type": "string"},
+    "subject_kind": {"type": "string"},
+    "trust_level": {"type": "string"},
+    "decision": {"type": "string", "enum": ["accepted", "degraded", "refused", "quarantined", "review_required", "not_applicable"]},
+    "permissions": {"type": "array", "items": {"type": "string"}},
+    "capabilities": {"type": "array", "items": {"type": "string"}},
+    "determinism_impact": {"type": "object"},
+    "security_impact": {"type": "object"},
+    "sandbox_required": {"type": "boolean"},
+    "review_status": {"type": "string"},
+    "diagnostic_codes": {"type": "array", "items": {"type": "string"}},
+    "refusal_codes": {"type": "array", "items": {"type": "string"}},
+    "recovery": {"type": "object"},
+    "evidence_ref": {"type": "string"},
+    "notes": {"type": "string"}
+  }
+}

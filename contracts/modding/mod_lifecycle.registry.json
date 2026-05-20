@@ -1,0 +1,18 @@
+{
+  "schema_version": "dominium.mod_pack.lifecycle.registry.v1",
+  "status": "provisional",
+  "owner": "contracts.modding",
+  "states": [
+    {"state": "draft", "summary": "Descriptor exists but is not validated."},
+    {"state": "local", "summary": "Local development or lab-only mod/pack."},
+    {"state": "validated", "summary": "Schema and trust validator checks pass."},
+    {"state": "reviewed", "summary": "Human or policy review is recorded."},
+    {"state": "trusted", "summary": "Trusted for a declared context and capability set."},
+    {"state": "signed", "summary": "Signed under future signing and assurance policy."},
+    {"state": "deprecated", "summary": "Still supported but replacement or migration policy is declared."},
+    {"state": "retired", "summary": "Not active for new use; old references have policy."},
+    {"state": "blocked", "summary": "Refused by policy."},
+    {"state": "quarantined", "summary": "Isolated pending review or migration."},
+    {"state": "historical", "summary": "Archive-only historical record."}
+  ]
+}

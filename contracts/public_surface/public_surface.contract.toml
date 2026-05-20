@@ -1738,6 +1738,97 @@ replacement_policy = "fixture_changes_follow_version_deprecation_validator_tests
 notes = "Fixture suite for version/deprecation validator behavior."
 
 [[surface]]
+id = "dominium.mod_pack.trust_model.v1"
+kind = "documentation"
+path = "contracts/trust/mod_pack_trust.contract.toml"
+owner = "contracts.trust"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MOD-PACK-TRUST-MODEL-01"
+proof = ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_mod_pack_trust_model_update"
+notes = "Default-deny mod/pack trust, permission, sandbox, review, determinism, overlay, native provider, and external adapter law."
+
+[[surface]]
+id = "dominium.mod_pack.trust_level.registry.v1"
+kind = "registry"
+path = "contracts/trust/trust_level.registry.json"
+owner = "contracts.trust"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MOD-PACK-TRUST-MODEL-01"
+proof = ["python -m json.tool contracts/trust/trust_level.registry.json", "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_mod_pack_trust_model_update"
+notes = "Trust ladder registry for data-only, schema-validated, scriptless, Workbench module, external adapter, and native provider levels."
+
+[[surface]]
+id = "dominium.mod_pack.permission.registry.v1"
+kind = "registry"
+path = "contracts/trust/permission_kind.registry.json"
+owner = "contracts.trust"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MOD-PACK-TRUST-MODEL-01"
+proof = ["python -m json.tool contracts/trust/permission_kind.registry.json", "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_mod_pack_trust_model_update"
+notes = "Permission kind registry for pack, module, adapter, native, filesystem, network, process, command, provider, and artifact authority."
+
+[[surface]]
+id = "dominium.mod_pack.mod_descriptor.v1"
+kind = "schema"
+path = "contracts/modding/mod_descriptor.schema.json"
+owner = "contracts.modding"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MOD-PACK-TRUST-MODEL-01"
+proof = ["python -m json.tool contracts/modding/mod_descriptor.schema.json", "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_mod_pack_trust_model_update"
+notes = "Mod descriptor schema for trust level, permissions, capabilities, payloads, determinism, security, diagnostics, and refusals."
+
+[[surface]]
+id = "dominium.mod_pack.overlay_policy.v1"
+kind = "documentation"
+path = "contracts/modding/pack_overlay_policy.contract.toml"
+owner = "contracts.modding"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MOD-PACK-TRUST-MODEL-01"
+proof = ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_mod_pack_trust_model_update"
+notes = "Pack overlay policy forbidding silent overwrite and requiring explicit conflict handling."
+
+[[surface]]
+id = "dominium.mod_pack.trust_validator.v1"
+kind = "documentation"
+path = "tools/validators/package/check_mod_pack_trust.py"
+owner = "tools.validators.package"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MOD-PACK-TRUST-MODEL-01"
+proof = ["python -m py_compile tools/validators/package/check_mod_pack_trust.py", "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_mod_pack_trust_model_update"
+notes = "Validator for mod/pack trust contracts, registries, fixtures, and inventory."
+
+[[surface]]
+id = "dominium.mod_pack.trust_fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/mod_pack_trust"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "MOD-PACK-TRUST-MODEL-01"
+proof = ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_mod_pack_trust_validator_tests"
+notes = "Fixture suite for mod/pack trust validator behavior."
+
+[[surface]]
 id = "dominium.retired.root_schema.v1"
 kind = "archive_record"
 path = "schema"

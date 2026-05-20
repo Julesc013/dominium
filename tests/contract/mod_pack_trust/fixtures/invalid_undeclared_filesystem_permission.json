@@ -1,0 +1,39 @@
+{
+  "mod_id": "dominium.mod.example.invalid_undeclared_filesystem",
+  "mod_kind": "external_process_adapter_pack",
+  "trust_level": "external_process_adapter",
+  "owner": "tests.contract",
+  "version": "0.1.0",
+  "capabilities": ["dominium.mod.external_process_adapter"],
+  "permissions": ["read_pack_data", "spawn_process", "read_user_file"],
+  "declared_permissions": {
+    "read_pack_data": {"scope": "own_pack_payload", "reason": "Read adapter descriptor."},
+    "spawn_process": {"scope": "declared_binary", "reason": "Start helper process."}
+  },
+  "dependencies": [],
+  "conflicts": [],
+  "payloads": [{"kind": "ipc_protocol", "protocol_id": "dominium.protocol.example.external_adapter.v1"}],
+  "schemas_used": ["contracts/modding/mod_descriptor.schema.json"],
+  "determinism_impact": {
+    "classification": "nondeterministic_isolated",
+    "replay_policy": "refuse_in_authoritative_replay_path",
+    "authoritative_state_impact": "none"
+  },
+  "security_impact": {"classification": "high", "summary": "Filesystem permission is undeclared."},
+  "filesystem_access": "declared_read_only_user_selected_files",
+  "network_access": "none",
+  "process_access": "declared_helper_process",
+  "native_code": false,
+  "external_process": true,
+  "sandbox_required": true,
+  "review_required": true,
+  "signature_required": false,
+  "allowed_contexts": ["tooling"],
+  "review_status": "reviewed",
+  "compatibility_range": {"mode": "any_provisional"},
+  "validation_fixtures": [],
+  "diagnostic_codes": ["DOM-MOD-PERMISSION-UNDECLARED", "DOM-MOD-FILESYSTEM-PERMISSION-DENIED"],
+  "refusal_codes": ["dominium.refusal.mod.permission_undeclared", "dominium.refusal.mod.filesystem_denied"],
+  "evidence": [],
+  "notes": "Invalid undeclared filesystem permission fixture."
+}

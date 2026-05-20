@@ -4,114 +4,118 @@
 
 foundation-lock
 
+## TASK
+
+`MOD-PACK-TRUST-MODEL-01`
+
 ## GOAL
 
-Complete `VERSION-DEPRECATION-LAW-01` by defining Dominium's versioning,
-lifecycle, deprecation, retirement, removal, compatibility, transition,
-migration, and refusal law.
+Define Dominium's mod/pack trust law for content packs, profile/theme/UI/module
+packs, Workbench-authored modules, external process adapters, native providers,
+permissions, sandbox expectations, review, deterministic impact, overlay policy,
+diagnostics, refusals, and evidence.
 
 ## WHY
 
-Dominium public surfaces and durable artifacts must evolve without silent
-breakage. Nothing becomes stable by existing; nothing is removed without
-replacement, migration, compatibility bridge, or explicit refusal policy.
+Dominium needs pack-driven extension without silent authority expansion,
+unreviewed native code, hidden external adapters, undeclared permissions,
+nondeterministic replay behavior, or silent content overwrites.
 
 ## CONTEXT_REFS
 
 - `AGENTS.md`
+- `docs/canon/constitution_v1.md`
+- `docs/canon/glossary_v1.md`
+- `contracts/capability/capability.contract.toml`
+- `contracts/provider/provider.contract.toml`
+- `contracts/module/module.schema.json`
+- `contracts/replacement/replacement.contract.toml`
 - `contracts/versioning/versioning.contract.toml`
-- `contracts/versioning/lifecycle_state.registry.json`
-- `contracts/versioning/version_compatibility.schema.json`
-- `contracts/versioning/deprecation_notice.schema.json`
-- `contracts/versioning/version_transition.schema.json`
-- `contracts/public_surface/public_surface.contract.toml`
-- `contracts/diagnostics/diagnostic_code.registry.json`
-- `contracts/refusal/refusal_code.registry.json`
-- `docs/architecture/versioning_and_deprecation.md`
-- `docs/development/versioning_deprecation_guidelines.md`
-- `.aide/reports/VERSION-DEPRECATION-LAW-01-validation.md`
+- `.aide/reports/MOD-PACK-TRUST-MODEL-01-validation.md`
+
+## SCOPE
+
+- `contracts/trust/**`
+- `contracts/modding/**`
+- `tools/validators/package/check_mod_pack_trust.py`
+- `tests/contract/mod_pack_trust/**`
+- `docs/architecture/mod_pack_trust_model.md`
+- `docs/development/mod_pack_trust_guidelines.md`
+- `docs/modding/trust_ladder.md`
+- `.aide/reports/MOD-PACK-TRUST-MODEL-01-*`
+- `docs/repo/audits/MOD_PACK_TRUST_MODEL_01.md`
+- narrow registry/status updates for diagnostics, refusals, capabilities, public
+  surfaces, repo status, and AIDE status.
 
 ## ALLOWED_PATHS
 
-- `contracts/versioning/**`
-- `contracts/public_surface/**` for narrow version/deprecation registration
-- `contracts/diagnostics/**` for narrow version/deprecation diagnostic codes
-- `contracts/refusal/**` for narrow version/deprecation refusal codes
-- `docs/architecture/versioning_and_deprecation.md`
-- `docs/development/versioning_deprecation_guidelines.md`
-- `tools/validators/contracts/check_version_deprecation.py`
-- `tests/contract/versioning/**`
-- `.aide/context/**`
+- `contracts/trust/**`
+- `contracts/modding/**`
+- `tools/validators/package/check_mod_pack_trust.py`
+- `tests/contract/mod_pack_trust/**`
+- `docs/architecture/mod_pack_trust_model.md`
+- `docs/development/mod_pack_trust_guidelines.md`
+- `docs/modding/trust_ladder.md`
 - `.aide/reports/**`
-- `.aide/ledgers/**`
-- `docs/repo/audits/**`
-- `docs/repo/POST_CONVERGE_NEXT_STEPS.md`
-- `docs/repo/POST_RESTRUCTURE_PROOF.md`
-- `docs/repo/RESTRUCTURE_REPAIR_STATUS.md`
-- `docs/architecture/CANON_INDEX.md`
+- `.aide/context/**`
+- `.aide/ledgers/migration_ledger.jsonl`
+- `docs/repo/**`
+- narrow registry updates named by the task.
 
 ## FORBIDDEN_PATHS
 
-- `.dominium.local/**`
 - `.aide.local/**`
+- `.dominium.local/**`
 - generated build/projection/release outputs
-- runtime provider, migration, package, Workbench, gameplay, renderer, native GUI, release publication, or product behavior implementation paths
+- runtime loader, sandbox, provider runtime, Workbench UI, gameplay, renderer,
+  native GUI, release publication, and product behavior implementation paths.
 
 ## IMPLEMENTATION
 
-- Define law, schemas, registries, validator, fixtures, documentation, inventory, and evidence only.
-- Do not actually deprecate, retire, remove, migrate, or promote active surfaces.
-- Keep public surface, diagnostic, and refusal updates provisional.
-- Record existing version-like surfaces as inventory only.
-
-## VALIDATION
-
-- `python -m py_compile tools/validators/contracts/check_version_deprecation.py`
-- `python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict`
-- `python tools/validators/contracts/check_version_deprecation.py --repo-root . --json`
-- `python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures`
-- `python tools/validators/contracts/check_version_deprecation.py --repo-root . --inventory`
-- cross-validators for replacement, module/workbench/app, provider, capability/refusal, schema/protocol, artifact, diagnostics, command, public surface, dependency direction, and ABI
-- fast strict gate
-- `git diff --check`
-
-## EVIDENCE
-
-- `.aide/reports/VERSION-DEPRECATION-LAW-01-status.md`
-- `.aide/reports/VERSION-DEPRECATION-LAW-01-validation.md`
-- `.aide/reports/VERSION-DEPRECATION-LAW-01-results.json`
-- `.aide/reports/VERSION-DEPRECATION-LAW-01-initial-versioning-inventory.md`
-- `docs/repo/audits/VERSION_DEPRECATION_LAW_01.md`
+Define contracts, registries, schemas, fixtures, validator, docs, evidence, and
+registry cross-references only. Inventory existing packs descriptively and do
+not migrate current manifests.
 
 ## NON_GOALS
 
-- No actual deprecation or removal.
-- No broad version rewrites.
-- No migration runtime.
-- No release promotion runtime.
-- No Workbench UI.
-- No gameplay, renderer, native GUI, or product behavior changes.
+No mod loader, scripting runtime, sandbox runtime, native plugin loader, dynamic
+loader, provider runtime, package/profile mounting, Workbench UI, gameplay,
+renderer, native GUI, release publication, or product behavior.
+
+## VALIDATION
+
+- `python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict`
+- `python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures`
+- `python tools/validators/package/check_mod_pack_trust.py --repo-root . --inventory`
+- cross-contract validators for versioning, replacement, module/workbench/app,
+  provider, capability/refusal, schema/protocol, artifact, diagnostics, command,
+  public surface, dependency direction, and ABI.
+- fast strict gate evidence:
+  `.aide/reports/MOD-PACK-TRUST-MODEL-01-fast-strict.md`
+
+## EVIDENCE
+
+- `.aide/reports/MOD-PACK-TRUST-MODEL-01-status.md`
+- `.aide/reports/MOD-PACK-TRUST-MODEL-01-validation.md`
+- `.aide/reports/MOD-PACK-TRUST-MODEL-01-results.json`
+- `.aide/reports/MOD-PACK-TRUST-MODEL-01-initial-trust-inventory.md`
+- `.aide/reports/MOD-PACK-TRUST-MODEL-01-fast-strict.md`
 
 ## ACCEPTANCE
 
-- Version/deprecation validator strict and fixture modes pass.
-- Lifecycle state count is 9.
-- Public surface, diagnostics, and refusal registries are updated if present.
-- Fast strict passes or warning status records why it did not.
-- Next task is `MOD-PACK-TRUST-MODEL-01`.
+- trust contracts and registries exist;
+- validator strict/json/fixtures pass;
+- inventory is recorded without migration;
+- public surface, diagnostics, refusal, and capability registries are updated;
+- fast strict passes;
+- next task is `PORTABILITY-MATRIX-01`.
 
 ## OUTPUT_SCHEMA
 
-Return branch, starting HEAD, ending HEAD, origin/main, pushed status, result
-status, created contracts/schemas/docs/tools, lifecycle count, fixture status,
-inventory summary, registry update status, validator status, fast strict status,
-known warnings, worktree status, and next task.
+Result status: `PASS_WITH_WARNINGS`
+
+Next task: `PORTABILITY-MATRIX-01`
 
 ## TOKEN_ESTIMATE
 
-- method: chars / 4, rounded up
-- chars: 4320
-- approx_tokens: 1080
-- budget_status: PASS
-- warnings:
-  - none
+Compact packet; under 1,200 tokens.

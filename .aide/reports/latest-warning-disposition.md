@@ -1,6 +1,6 @@
 # Latest Warning Disposition
 
-Current task: `VERSION-DEPRECATION-LAW-01`.
+Current task: `MOD-PACK-TRUST-MODEL-01`.
 
 ## Accepted Known Warnings
 
@@ -9,11 +9,12 @@ Current task: `VERSION-DEPRECATION-LAW-01`.
   from DEPENDENCY-DIRECTION-01.
 - ABI public-header validator still reports provisional warning debt that blocks
   stable/frozen ABI promotion.
-- Version/deprecation law is initial and provisional.
-- Existing version-like surfaces are inventoried but not migrated.
-- Runtime migration and release promotion gates are not implemented.
-- Compatibility corpus is not populated.
-- Mod/pack trust model remains the next Foundation Lock task.
+- Mod/pack trust law is initial and provisional.
+- Existing pack trust metadata is inventoried but not migrated.
+- Runtime mod loader and sandbox are not implemented.
+- Native provider loading, dynamic loading, and signed provider assurance are not implemented.
+- Package mounting, Workbench UI, and provider runtime behavior are not implemented.
+- Portability matrix remains the next Foundation Lock task.
 
 ## Not Hidden
 
@@ -21,11 +22,12 @@ Current task: `VERSION-DEPRECATION-LAW-01`.
 - No dependency-direction violation is silenced or broadly excepted.
 - No public surface, artifact, schema, protocol, command, provider, module,
   app, pack, save, replay, or release surface is promoted to stable.
-- No active surface is deprecated, retired, removed, or migrated.
-- No runtime migration, release promotion, Workbench UI, product behavior,
-  gameplay, renderer, native GUI, or mod/pack trust behavior is implemented.
-- No silent compatibility, silent migration, or path-as-identity policy is introduced.
+- No active pack manifest is migrated or rewritten.
+- No runtime mod loader, sandbox, external adapter launcher, native loader,
+  Workbench UI, product behavior, gameplay, renderer, or native GUI is implemented.
+- No silent permission escalation, silent overlay overwrite, silent compatibility,
+  silent migration, or path-as-identity policy is introduced.
 
 ## Next
 
-Next task: `MOD-PACK-TRUST-MODEL-01`.
+Next task: `PORTABILITY-MATRIX-01`.

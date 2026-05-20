@@ -160,6 +160,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/MMO_SAFETY_MODEL.md`
 - `docs/architecture/MODPACK_FORMAT.md`
 - `docs/architecture/MOD_ECOSYSTEM_RULES.md`
+- `docs/architecture/mod_pack_trust_model.md`
 - `docs/architecture/MOVEMENT_AS_LOGISTICS.md`
 - `docs/architecture/NAMESPACING_RULES.md`
 - `docs/architecture/NON_INTERFERENCE.md`

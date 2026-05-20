@@ -1,0 +1,98 @@
+{
+  "schema_version": "dominium.mod_pack.trust_level.registry.v1",
+  "status": "provisional",
+  "owner": "contracts.trust",
+  "levels": [
+    {
+      "trust_level": "data_only",
+      "owner": "contracts.trust",
+      "stability": "provisional",
+      "summary": "Authored data only with no executable, external process, filesystem, network, or native authority.",
+      "allowed_permissions": ["read_pack_data"],
+      "requires_review": false,
+      "requires_sandbox": false,
+      "allows_native_code": false,
+      "allows_external_process": false,
+      "determinism_expectation": "deterministic_if_schema_and_data_rules_pass",
+      "notes": "Default trust level for packs unless a higher reviewed level is declared."
+    },
+    {
+      "trust_level": "schema_validated",
+      "owner": "contracts.trust",
+      "stability": "provisional",
+      "summary": "Data validated by schemas or contracts; may contribute declared data, registries, content, themes, or UI documents.",
+      "allowed_permissions": ["read_pack_data", "generate_artifact"],
+      "requires_review": false,
+      "requires_sandbox": false,
+      "allows_native_code": false,
+      "allows_external_process": false,
+      "determinism_expectation": "schema_validated_deterministic_data",
+      "notes": "No executable code or hidden authority is implied."
+    },
+    {
+      "trust_level": "scriptless_rule_data_pack",
+      "owner": "contracts.trust",
+      "stability": "provisional",
+      "summary": "Declarative rule/data contributions without arbitrary scripting.",
+      "allowed_permissions": ["read_pack_data", "modify_registry", "modify_world_state", "generate_artifact"],
+      "requires_review": true,
+      "requires_sandbox": false,
+      "allows_native_code": false,
+      "allows_external_process": false,
+      "determinism_expectation": "determinism_impact_must_be_declared",
+      "notes": "Validator proof is required before active composition."
+    },
+    {
+      "trust_level": "workbench_authored_module",
+      "owner": "contracts.trust",
+      "stability": "provisional",
+      "summary": "Workbench-authored module descriptors, views, and command bindings.",
+      "allowed_permissions": ["read_pack_data", "invoke_command", "provide_command", "provide_module", "generate_artifact"],
+      "requires_review": true,
+      "requires_sandbox": true,
+      "allows_native_code": false,
+      "allows_external_process": false,
+      "determinism_expectation": "registered_commands_only",
+      "notes": "Workbench-authored modules must not call private tools directly."
+    },
+    {
+      "trust_level": "external_process_adapter",
+      "owner": "contracts.trust",
+      "stability": "provisional",
+      "summary": "Adapter that communicates with an external process through a declared protocol.",
+      "allowed_permissions": ["read_pack_data", "read_user_file", "write_user_file", "network_client", "network_server", "spawn_process", "invoke_command", "provide_command", "generate_artifact"],
+      "requires_review": true,
+      "requires_sandbox": true,
+      "allows_native_code": false,
+      "allows_external_process": true,
+      "determinism_expectation": "not_replay_safe_without_explicit_policy",
+      "notes": "IPC/protocol, filesystem, network, process, security, and determinism impact must be declared."
+    },
+    {
+      "trust_level": "trusted_native_provider",
+      "owner": "contracts.trust",
+      "stability": "provisional",
+      "summary": "Native implementation inside the trusted build or release boundary.",
+      "allowed_permissions": ["read_pack_data", "native_code", "access_input", "access_audio", "access_renderer", "provide_provider", "generate_artifact"],
+      "requires_review": true,
+      "requires_sandbox": true,
+      "allows_native_code": true,
+      "allows_external_process": false,
+      "determinism_expectation": "provider_conformance_required",
+      "notes": "Native providers remain provisional until assurance and release trust mature."
+    },
+    {
+      "trust_level": "signed_native_provider",
+      "owner": "contracts.trust",
+      "stability": "provisional",
+      "summary": "Future signed native provider requiring signing, trust, release, and assurance policy.",
+      "allowed_permissions": ["read_pack_data", "native_code", "load_dynamic_library", "access_input", "access_audio", "access_renderer", "provide_provider", "generate_artifact"],
+      "requires_review": true,
+      "requires_sandbox": true,
+      "allows_native_code": true,
+      "allows_external_process": false,
+      "determinism_expectation": "future_assurance_required",
+      "notes": "Defined as policy scaffold only; dynamic untrusted loading is not enabled."
+    }
+  ]
+}

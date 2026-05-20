@@ -1,0 +1,25 @@
+schema_version = "dominium.mod_pack.external_adapter_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.trust"
+
+[contract]
+id = "dominium.mod_pack.external_adapter_policy.v1"
+status = "provisional"
+owner = "contracts.trust"
+purpose = "Defines visibility, permission, and determinism rules for external process adapters."
+
+[policy]
+external_process_default = "blocked"
+adapter_must_declare_ipc_protocol = true
+adapter_must_declare_process_access = true
+adapter_must_declare_network_access = true
+adapter_must_declare_filesystem_access = true
+adapter_must_declare_determinism_impact = true
+adapter_must_declare_security_impact = true
+replay_path_default = "refuse_or_isolate"
+
+[non_goals]
+implements_process_launcher = false
+implements_ipc_runtime = false
+implements_network_runtime = false

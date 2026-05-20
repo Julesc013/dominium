@@ -1,0 +1,41 @@
+{
+  "mod_id": "dominium.mod.example.workbench_module",
+  "mod_kind": "workbench_module_pack",
+  "trust_level": "workbench_authored_module",
+  "owner": "tests.contract",
+  "version": "0.1.0",
+  "capabilities": ["dominium.mod.workbench_authored_module", "dominium.workbench.module.validation"],
+  "permissions": ["read_pack_data", "invoke_command", "provide_module", "generate_artifact"],
+  "declared_permissions": {
+    "read_pack_data": {"scope": "own_pack_payload", "reason": "Read module descriptor."},
+    "invoke_command": {"scope": "registered_commands_only", "reason": "Run validation command."},
+    "provide_module": {"scope": "declared_module_descriptor", "reason": "Provide Workbench module descriptor."},
+    "generate_artifact": {"scope": "evidence_packet", "reason": "Present validation evidence."}
+  },
+  "dependencies": ["dominium.command.fast_strict"],
+  "conflicts": [],
+  "payloads": [{"kind": "module_descriptor", "module_id": "dominium.workbench.validation"}],
+  "schemas_used": ["contracts/module/module.schema.json", "contracts/modding/mod_descriptor.schema.json"],
+  "determinism_impact": {
+    "classification": "tooling_only",
+    "replay_policy": "not_authoritative",
+    "authoritative_state_impact": "none"
+  },
+  "security_impact": {"classification": "medium", "summary": "Command invocation is restricted to registered commands."},
+  "filesystem_access": "none",
+  "network_access": "none",
+  "process_access": "none",
+  "native_code": false,
+  "external_process": false,
+  "sandbox_required": true,
+  "review_required": true,
+  "signature_required": false,
+  "allowed_contexts": ["workbench", "validation"],
+  "review_status": "reviewed",
+  "compatibility_range": {"mode": "any_provisional"},
+  "validation_fixtures": ["tests/contract/mod_pack_trust/fixtures/valid_workbench_module_pack.json"],
+  "diagnostic_codes": ["DOM-MOD-PERMISSION-UNDECLARED"],
+  "refusal_codes": ["dominium.refusal.mod.permission_undeclared"],
+  "evidence": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+  "notes": "Workbench module fixture."
+}

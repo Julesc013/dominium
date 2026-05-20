@@ -1,0 +1,22 @@
+schema_version = "dominium.mod_pack.determinism_impact_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.trust"
+
+[contract]
+id = "dominium.mod_pack.determinism_impact_policy.v1"
+status = "provisional"
+owner = "contracts.trust"
+purpose = "Defines determinism impact declaration rules for mods, packs, adapters, and providers."
+
+[impact]
+classifications = ["deterministic", "presentation_only", "tooling_only", "nondeterministic_isolated", "nondeterministic_forbidden", "unknown"]
+required_fields = ["classification", "replay_policy", "authoritative_state_impact"]
+unknown_refuses = true
+missing_refuses = true
+
+[replay]
+deterministic_replay_path_allowed = ["deterministic", "presentation_only", "tooling_only"]
+nondeterministic_requires_isolation = true
+nondeterministic_forbidden_by_default = true
+replay_exception_requires_evidence = true
