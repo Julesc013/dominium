@@ -13,33 +13,33 @@
   },
   "fixed_seed_scenarios": {
     "degrade": {
-      "report_path": "D:/Projects/Dominium/dominium/build/process/proc9_degrade_report.json",
+      "report_path": "build/process/proc9_degrade_report.json",
       "scenario_id": "scenario.proc.stress.b76c73dab27a",
-      "scenario_path": "D:/Projects/Dominium/dominium/build/process/proc9_degrade_scenario.json",
+      "scenario_path": "build/process/proc9_degrade_scenario.json",
       "scenario_seed": 99141
     },
     "drift_revalidation": {
-      "report_path": "D:/Projects/Dominium/dominium/build/process/proc9_drift_revalidation_report.json",
+      "report_path": "build/process/proc9_drift_revalidation_report.json",
       "scenario_id": "scenario.proc.stress.61476f54af9c",
-      "scenario_path": "D:/Projects/Dominium/dominium/build/process/proc9_drift_revalidation_scenario.json",
+      "scenario_path": "build/process/proc9_drift_revalidation_scenario.json",
       "scenario_seed": 99111
     },
     "research_candidate_promotion": {
-      "report_path": "D:/Projects/Dominium/dominium/build/process/proc9_research_candidate_promotion_report.json",
+      "report_path": "build/process/proc9_research_candidate_promotion_report.json",
       "scenario_id": "scenario.proc.stress.0b9a2d102a99",
-      "scenario_path": "D:/Projects/Dominium/dominium/build/process/proc9_research_candidate_promotion_scenario.json",
+      "scenario_path": "build/process/proc9_research_candidate_promotion_scenario.json",
       "scenario_seed": 99121
     },
     "software_pipeline": {
-      "report_path": "D:/Projects/Dominium/dominium/build/process/proc9_software_pipeline_report.json",
+      "report_path": "build/process/proc9_software_pipeline_report.json",
       "scenario_id": "scenario.proc.stress.0983bcbefb10",
-      "scenario_path": "D:/Projects/Dominium/dominium/build/process/proc9_software_pipeline_scenario.json",
+      "scenario_path": "build/process/proc9_software_pipeline_scenario.json",
       "scenario_seed": 99131
     },
     "stabilized_capsule_heavy": {
-      "report_path": "D:/Projects/Dominium/dominium/build/process/proc9_stabilized_capsule_heavy_report.json",
+      "report_path": "build/process/proc9_stabilized_capsule_heavy_report.json",
       "scenario_id": "scenario.proc.stress.c98cd9e1d157",
-      "scenario_path": "D:/Projects/Dominium/dominium/build/process/proc9_stabilized_capsule_heavy_scenario.json",
+      "scenario_path": "build/process/proc9_stabilized_capsule_heavy_scenario.json",
       "scenario_seed": 99101
     }
   },

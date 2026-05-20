@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-20
+Supersedes: none
+Superseded By: none
+
 # Adapter Template
 
 ## Metadata
@@ -14,9 +19,9 @@
 
 ## Canonical Mapping
 - Mapping steps:
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## Determinism Notes
 - Ordering guarantees:

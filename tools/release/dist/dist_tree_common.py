@@ -60,8 +60,8 @@ DEFAULT_RELEASE_MANIFEST_REL = os.path.join("manifests", "release_manifest.json"
 DEFAULT_FILELIST_REL = os.path.join("manifests", "filelist.txt")
 DEFAULT_INSTALL_MANIFEST_NAME = "install.manifest.json"
 DEFAULT_INSTANCE_MANIFEST_REL = os.path.join("instances", "default", "instance.manifest.json")
-DEFAULT_PROFILE_BUNDLE_SOURCE = os.path.join("profiles", "bundles", "bundle.mvp_default.json")
-DEFAULT_PACK_LOCK_SOURCE = os.path.join("locks", "pack_lock.mvp_default.json")
+DEFAULT_PROFILE_BUNDLE_SOURCE = os.path.join("content", "profiles", "bundles", "bundle.mvp_default.json")
+DEFAULT_PACK_LOCK_SOURCE = os.path.join("contracts", "package", "locks", "pack_lock.mvp_default.json")
 DEFAULT_COMPAT_DOC_REL = os.path.join("docs", "COMPATIBILITY.md")
 DEFAULT_RELEASE_NOTES_REL = os.path.join("docs", "RELEASE_NOTES_v0_0_0_mock.md")
 DEFAULT_STORE_ROOT_ID = "store.default"
@@ -75,12 +75,13 @@ PREFERRED_RUNTIME_LOCKS = (
 )
 
 PRODUCT_SPECS = (
-    {"product_id": "engine", "module": "tools.validators.shell.product_stub_cli", "callable": "main", "prefix": ["--product-id", "engine", "--"]},
-    {"product_id": "game", "module": "tools.validators.shell.product_stub_cli", "callable": "main", "prefix": ["--product-id", "game", "--"]},
-    {"product_id": "client", "module": "tools.release.mvp.runtime_entry", "callable": "client_main", "prefix": []},
-    {"product_id": "server", "module": "tools.release.mvp.runtime_entry", "callable": "server_main", "prefix": []},
-    {"product_id": "setup", "module": "tools.package.setup.setup_cli", "callable": "main", "prefix": []},
-    {"product_id": "launcher", "module": "tools.package.launcher.launch", "callable": "main", "prefix": []},
+    {"product_id": "engine", "bin_names": ["engine"], "module": "tools.validators.shell.product_stub_cli", "callable": "main", "prefix": ["--product-id", "engine", "--"]},
+    {"product_id": "game", "bin_names": ["game"], "module": "tools.validators.shell.product_stub_cli", "callable": "main", "prefix": ["--product-id", "game", "--"]},
+    {"product_id": "client", "bin_names": ["client", "dominium_client"], "module": "tools.release.mvp.runtime_entry", "callable": "client_main", "prefix": []},
+    {"product_id": "server", "bin_names": ["server", "dominium_server"], "module": "tools.release.mvp.runtime_entry", "callable": "server_main", "prefix": []},
+    {"product_id": "setup", "bin_names": ["setup"], "module": "tools.package.setup.setup_cli", "callable": "main", "prefix": []},
+    {"product_id": "launcher", "bin_names": ["launcher"], "module": "tools.package.launcher.launch", "callable": "main", "prefix": []},
+    {"product_id": "tool.attach_console_stub", "bin_names": ["tool_attach_console_stub"], "module": "tools.validators.shell.product_stub_cli", "callable": "main", "prefix": ["--product-id", "tool.attach_console_stub", "--"]},
 )
 PRODUCT_IDS = tuple(str(row["product_id"]) for row in PRODUCT_SPECS)
 NATIVE_PRODUCT_OUTPUTS = ("setup", "launcher", "client", "server", "tools")
@@ -97,7 +98,6 @@ EXCLUDED_RUNTIME_PREFIXES = (
     "tools/xstack/auditx",
     "tools/migration/convergence",
     "tools/release/dist",
-    "tools/release",
     "tools/xstack/ci",
     "tools/xstack/auditx",
     "tools/xstack/controlx",
@@ -127,6 +127,24 @@ def _selected_product_specs(component_plan: Mapping[str, object] | None) -> list
         return list(PRODUCT_SPECS)
     rows = [dict(spec) for spec in PRODUCT_SPECS if "binary.{}".format(str(spec.get("product_id"))) in selected_ids]
     return rows or [dict(spec) for spec in PRODUCT_SPECS]
+
+
+def _product_bin_names(product_spec: Mapping[str, object]) -> list[str]:
+    rows = [
+        _token(item)
+        for item in list(product_spec.get("bin_names") or [])
+        if _token(item)
+    ]
+    return rows or [_token(product_spec.get("product_id"))]
+
+
+def _primary_product_bin_name(product_id: str) -> str:
+    target = _token(product_id)
+    for spec in PRODUCT_SPECS:
+        if _token(spec.get("product_id")) == target:
+            names = _product_bin_names(spec)
+            return names[0] if names else target
+    return target
 EXCLUDED_RUNTIME_BASENAMES = {"__pycache__"}
 EXCLUDED_RUNTIME_FILES = {
     "tools/xstack/bundle_list.py",
@@ -294,7 +312,7 @@ def _source_is_excluded(rel_path: str) -> bool:
 def _compile_runtime_tree(repo_root: str, bundle_root: str) -> dict:
     source_root = _repo_root(repo_root)
     target_root = os.path.normpath(os.path.abspath(bundle_root))
-    helper_path = os.path.join(source_root, "tools", "dist", "runtime_compile_helper.py")
+    helper_path = os.path.join(source_root, "tools", "release", "dist", "runtime_compile_helper.py")
     env_map = dict(os.environ)
     env_map["PYTHONHASHSEED"] = "0"
     proc = subprocess.run(
@@ -344,7 +362,7 @@ def _copy_runtime_data(repo_root: str, bundle_root: str) -> dict:
     repo_root_abs = _repo_root(repo_root)
     copied: list[str] = []
     for source_rel_path, dest_rel_path in (
-        ("data/registries", "data/registries"),
+        ("contracts/registry", "contracts/registry"),
         ("contracts/governance/governance_profile.json", "contracts/governance/governance_profile.json"),
         ("content/templates/session/session.mvp_default.json", "content/templates/session/session.mvp_default.json"),
         ("contracts/schema", "schema"),
@@ -601,7 +619,7 @@ def _wrapper_script_text(product_spec: Mapping[str, object]) -> str:
             "    return prefix + values",
             "",
             "def _emit_descriptor(values: list[str]) -> int:",
-            "    from compat import descriptor_json_text, emit_product_descriptor",
+            "    from tools.validators.compatibility import descriptor_json_text, emit_product_descriptor",
             "    from runtime.platform.platform_probe import probe_platform_descriptor",
             "",
             "    descriptor_file = _value_after(values, '--descriptor-file')",
@@ -646,13 +664,23 @@ def _write_product_wrappers(bundle_root: str, component_plan: Mapping[str, objec
     product_rows: list[dict[str, str]] = []
     for spec in _selected_product_specs(component_plan):
         product_id = _token(spec.get("product_id"))
-        script_path = _write_text(os.path.join(bundle_root, "bin", product_id), _wrapper_script_text(spec))
-        cmd_path = _write_text(os.path.join(bundle_root, "bin", product_id + ".cmd"), _wrapper_cmd_text(product_id), newline="")
+        bin_names = _product_bin_names(spec)
+        script_text = _wrapper_script_text(spec)
+        script_paths = []
+        cmd_paths = []
+        for bin_name in bin_names:
+            script_path = _write_text(os.path.join(bundle_root, "bin", bin_name), script_text)
+            cmd_path = _write_text(os.path.join(bundle_root, "bin", bin_name + ".cmd"), _wrapper_cmd_text(bin_name), newline="")
+            script_paths.append(_norm(os.path.relpath(script_path, bundle_root)))
+            cmd_paths.append(_norm(os.path.relpath(cmd_path, bundle_root)))
         product_rows.append(
             {
                 "product_id": product_id,
-                "script_path": _norm(os.path.relpath(script_path, bundle_root)),
-                "cmd_path": _norm(os.path.relpath(cmd_path, bundle_root)),
+                "bin_names": bin_names,
+                "script_path": script_paths[0] if script_paths else "",
+                "script_paths": script_paths,
+                "cmd_path": cmd_paths[0] if cmd_paths else "",
+                "cmd_paths": cmd_paths,
             }
         )
     return {"products": product_rows}
@@ -684,7 +712,7 @@ def _copy_native_product_binaries(repo_root: str, bundle_root: str) -> dict:
 
 
 def _run_wrapper(bundle_root: str, product_id: str, args: Sequence[str]) -> dict:
-    wrapper_path = os.path.join(bundle_root, "bin", _token(product_id))
+    wrapper_path = os.path.join(bundle_root, "bin", _primary_product_bin_name(_token(product_id)))
     proc = subprocess.run(
         [sys.executable, wrapper_path] + [str(item) for item in list(args or [])],
         cwd=bundle_root,
@@ -746,7 +774,7 @@ def _build_install_manifest(bundle_root: str, repo_root: str, platform_tag: str,
         protocol_rows.extend(list(descriptor.get("protocol_versions_supported") or []))
         contract_rows.extend(list(descriptor.get("semantic_contract_versions_supported") or []))
 
-    semantic_registry_path = os.path.join(bundle_root, "data", "registries", "semantic_contract_registry.json")
+    semantic_registry_path = os.path.join(bundle_root, "contracts", "registry", "semantic_contract_registry.json")
     semantic_registry_hash = canonical_sha256(_read_json(semantic_registry_path))
     install_id = stable_install_id(
         {
@@ -997,7 +1025,7 @@ def _write_portable_contract_surface(bundle_root: str) -> dict:
         created_dirs.append(_norm(rel_dir))
 
     manifest_copies: list[str] = []
-    semantic_registry_source = os.path.join(bundle_root, "data", "registries", "semantic_contract_registry.json")
+    semantic_registry_source = os.path.join(bundle_root, "contracts", "registry", "semantic_contract_registry.json")
     if os.path.isfile(semantic_registry_source):
         _copy_file(semantic_registry_source, os.path.join(bundle_root, "semantic_contract_registry.json"))
         manifest_copies.append("semantic_contract_registry.json")
@@ -1042,7 +1070,7 @@ def _run_smoke_checks(bundle_root: str, component_plan: Mapping[str, object] | N
             continue
         if product_id == "setup":
             if (not selected_ids) or ("lock.pack_lock.mvp_default" in selected_ids):
-                checks.append(("setup_packs_verify", "setup", ["packs", "verify"], "complete"))
+                checks.append(("setup_packs_verify", "setup", ["packs", "verify"], ("complete", "ok")))
             continue
         if product_id == "launcher":
             if (not selected_ids) or ("manifest.instance.default" in selected_ids):
@@ -1065,6 +1093,9 @@ def _run_smoke_checks(bundle_root: str, component_plan: Mapping[str, object] | N
         if expected_result == "descriptor":
             if _token(payload.get("product_id")) != product_id:
                 raise RuntimeError("descriptor smoke check '{}' did not emit product descriptor".format(check_id))
+        elif isinstance(expected_result, tuple):
+            if row["result"] not in expected_result:
+                raise RuntimeError("smoke check '{}' returned '{}'".format(check_id, row["result"]))
         elif row["result"] != expected_result:
             raise RuntimeError("smoke check '{}' returned '{}'".format(check_id, row["result"]))
         rows.append(row)

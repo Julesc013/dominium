@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-20
+Supersedes: none
+Superseded By: none
+
 Status: implemented with documented residual validator debt outside the docs taxonomy fold
 Task: DOCS-CANON-01
 Starting Commit: 2241a7d7a2c748178bae003659e7c8858d77f8e0

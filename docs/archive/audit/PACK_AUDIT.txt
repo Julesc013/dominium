@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-08
+Last Reviewed: 2026-05-20
 Supersedes: none
 Superseded By: none
 
@@ -8,34 +8,40 @@ for descriptive purposes only. Such references do not confer
 authority and are not normative.
 
 Pack audit report
-Repo root: c:\Inbox\Git Repos\dominium
-Pack root: c:\Inbox\Git Repos\dominium\data\packs
+Repo root: C:\Inbox\Git Repos\dominium
+Pack root: C:\Inbox\Git Repos\dominium\content\packs
 
-== data\packs\org.dominium.base.body.earth_macro ==
+== content\packs\core\org.dominium.base.body.earth_macro ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.base.body.earth_macro","--format","text"]},"deterministic_fingerprint":"faee4b4b59b3c7b431ad8e6602194890bcd92a0e7179ccfc8510b7c7586e8ead","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.base.rules ==
+== content\packs\core\org.dominium.base.rules ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.base.rules","--format","text"]},"deterministic_fingerprint":"298420bb69856f41798704d701a91299ca1472cbd6924a6d5b6e16d48fca5555","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.base.scenarios.minimal ==
+== content\packs\core\org.dominium.base.scenarios.minimal ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.base.scenarios.minimal","--format","text"]},"deterministic_fingerprint":"19c900d762af3ba2b51f79dffd989d45428498c2ea45bf7e8220f8d5f6fca261","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.base.system.sol ==
+== content\packs\core\org.dominium.base.system.sol ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.base.system.sol","--format","text"]},"deterministic_fingerprint":"fe7c652d0f45d49755c0a855a02d21b086d664e783c97aafa50ba7783329419f","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.base.topology ==
+== content\packs\core\org.dominium.base.topology ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.base.topology","--format","text"]},"deterministic_fingerprint":"637aa07a1860a65c98d851c57f6a888c0787002452f48d2f52bc0a23fe2fbab3","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.base.universe.milkyway ==
+== content\packs\core\org.dominium.base.universe.milkyway ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.base.universe.milkyway","--format","text"]},"deterministic_fingerprint":"cdbfa17974a7e2f6ff854d542fb40b49c222bd542619ab4ee5b960c194ee8ff3","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.assemblies.extended ==
+== content\packs\core\org.dominium.core.assemblies.extended ==
 pack_validate: failed
 fab_ref_interface_missing fab_pack.assemblies[0].edges[0].from_interface_id interface reference missing
 fab_ref_interface_missing fab_pack.assemblies[0].edges[0].interface_id interface reference missing
@@ -81,51 +87,61 @@ fab_ref_part_missing fab_pack.assemblies[5].nodes[0] part reference missing
 fab_ref_part_missing fab_pack.assemblies[5].nodes[1] part reference missing
 fab_ref_part_missing fab_pack.assemblies[5].nodes[2] part reference missing
 fab_ref_part_missing fab_pack.assemblies[5].nodes[3] part reference missing
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.assemblies.extended","--format","text"]},"deterministic_fingerprint":"252b236f581e1686bdbb9742902279e9d946b5ef83b53de103e5cb8368d88cf4","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.core.civ_stress.basic ==
+== content\packs\core\org.dominium.core.civ_stress.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.civ_stress.basic","--format","text"]},"deterministic_fingerprint":"5aaa175ff84ba134ce491f17b313200166d34a3215e25987f9e60a2e508fe1da","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.contracts.basic ==
+== content\packs\core\org.dominium.core.contracts.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.contracts.basic","--format","text"]},"deterministic_fingerprint":"7ba545c122d15d1dca70f26674d93abdf8604a9f8f74ceb61ab0ac053b4e06dc","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.ecology.basic ==
+== content\packs\core\org.dominium.core.ecology.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.ecology.basic","--format","text"]},"deterministic_fingerprint":"235e9b84c7cc26ac59373ea7483ed82791135afd5cb5cdf81752b07d9bd53708","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.enforcement.basic ==
+== content\packs\core\org.dominium.core.enforcement.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.enforcement.basic","--format","text"]},"deterministic_fingerprint":"9647b070199eeba8c033d86f81b32950c75f71b99d3164f60bf9f036b0e13bcb","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.hazards.extended ==
+== content\packs\core\org.dominium.core.hazards.extended ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.hazards.extended","--format","text"]},"deterministic_fingerprint":"449cfd3684e325c854373c6d33532aee82de42c0628c5b1551bdb469c120c5be","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.infrastructure.basic ==
+== content\packs\core\org.dominium.core.infrastructure.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.infrastructure.basic","--format","text"]},"deterministic_fingerprint":"869d7e044eb29613f95d55673748efec04ec57c61d50e846f3ce71809e4e449b","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.institutions.basic ==
+== content\packs\core\org.dominium.core.institutions.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.institutions.basic","--format","text"]},"deterministic_fingerprint":"6e0fd99789f35331f6dbfd38fc1cb09335889d9651050ca6f932eb4aaf27b32a","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.instruments.extended ==
+== content\packs\core\org.dominium.core.instruments.extended ==
 pack_validate: failed
 fab_ref_standard_missing fab_pack.instruments[0].required_standards[0] standard reference missing
 fab_ref_standard_missing fab_pack.instruments[1].required_standards[0] standard reference missing
 fab_ref_standard_missing fab_pack.instruments[2].required_standards[0] standard reference missing
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.instruments.extended","--format","text"]},"deterministic_fingerprint":"d62a3736a834a38dff93f25c3908a7d15cc5f0fa95ec95043cd4b47aa2515062","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.core.instruments.inspection ==
+== content\packs\core\org.dominium.core.instruments.inspection ==
 pack_validate: failed
 fab_ref_standard_missing fab_pack.instruments[0].required_standards[0] standard reference missing
 fab_ref_standard_missing fab_pack.instruments[1].required_standards[0] standard reference missing
 fab_ref_standard_missing fab_pack.process_families[0].required_standards[0] standard reference missing
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.instruments.inspection","--format","text"]},"deterministic_fingerprint":"add2c08e2b0cf68a394ec2cb451c296cf9b38422722e5a40aef66b4aaf1528e5","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.core.interaction.baseline ==
+== content\packs\core\org.dominium.core.interaction.baseline ==
 pack_validate: failed
 fab_ref_standard_missing fab_pack.instruments[0].required_standards[0] standard reference missing
 fab_ref_interface_missing fab_pack.parts[0].interfaces[0] interface reference missing
@@ -134,25 +150,30 @@ fab_ref_interface_missing fab_pack.parts[1].interfaces[0] interface reference mi
 fab_ref_material_missing fab_pack.parts[1].material_ref material reference missing
 fab_ref_interface_missing fab_pack.parts[2].interfaces[0] interface reference missing
 fab_ref_material_missing fab_pack.parts[2].material_ref material reference missing
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.interaction.baseline","--format","text"]},"deterministic_fingerprint":"1bfa0473a18b0149aaed01249868f0846d18e1b42a1666da6bf67c0d2b8347a3","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.core.interfaces ==
+== content\packs\core\org.dominium.core.interfaces ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.interfaces","--format","text"]},"deterministic_fingerprint":"60d4eb0c625ef5830de437df9016ff795badfc9fd4e615b0146b314bd9dfe1fe","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.law.basic ==
+== content\packs\core\org.dominium.core.law.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.law.basic","--format","text"]},"deterministic_fingerprint":"4425c71c2f953f89464ef1e1d85c402cae6686037813e441148e27db6f91f78c","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.materials.basic ==
+== content\packs\core\org.dominium.core.materials.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.materials.basic","--format","text"]},"deterministic_fingerprint":"c4e93b67cd43d0e3aa112a27df21636a72a397bb4bc8870204fc1cb86e257280","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.materials.extended ==
+== content\packs\core\org.dominium.core.materials.extended ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.materials.extended","--format","text"]},"deterministic_fingerprint":"1c9b52ab4d1053a4eccc82cbbc1e2265d8c05ceb817a95bb5aab917ba35b80af","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.parts.basic ==
+== content\packs\core\org.dominium.core.parts.basic ==
 pack_validate: failed
 fab_ref_interface_missing fab_pack.parts[0].interfaces[0] interface reference missing
 fab_ref_material_missing fab_pack.parts[0].material_ref material reference missing
@@ -164,9 +185,10 @@ fab_ref_interface_missing fab_pack.parts[3].interfaces[0] interface reference mi
 fab_ref_material_missing fab_pack.parts[3].material_ref material reference missing
 fab_ref_interface_missing fab_pack.parts[4].interfaces[0] interface reference missing
 fab_ref_material_missing fab_pack.parts[4].material_ref material reference missing
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.parts.basic","--format","text"]},"deterministic_fingerprint":"792b743f6d819b670dbe65b472abdb235e48e4b70f2d9420ec5ff787bce39f08","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.core.parts.extended ==
+== content\packs\core\org.dominium.core.parts.extended ==
 pack_validate: failed
 fab_ref_material_missing fab_pack.parts[0].material_ref material reference missing
 fab_ref_material_missing fab_pack.parts[1].material_ref material reference missing
@@ -174,17 +196,20 @@ fab_ref_material_missing fab_pack.parts[2].material_ref material reference missi
 fab_ref_material_missing fab_pack.parts[3].material_ref material reference missing
 fab_ref_material_missing fab_pack.parts[4].material_ref material reference missing
 fab_ref_material_missing fab_pack.parts[5].material_ref material reference missing
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.parts.extended","--format","text"]},"deterministic_fingerprint":"7bb466ddbe6c49c9718483fa62299104c26a1d1766034c6504a1b51f0ce80c64","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.core.population.basic ==
+== content\packs\core\org.dominium.core.population.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.population.basic","--format","text"]},"deterministic_fingerprint":"4dc9fb3ee6d6e9b5455198afbed2d3b612986eb12e7834a1f529845501f92b5c","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.processes.basic ==
+== content\packs\core\org.dominium.core.processes.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.processes.basic","--format","text"]},"deterministic_fingerprint":"08688aa53414f594ba8f95a0406d33771984d92522f8a2d34ea07bf327a2f567","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.processes.extended ==
+== content\packs\core\org.dominium.core.processes.extended ==
 pack_validate: failed
 fab_ref_instrument_missing fab_pack.process_families[0].required_instruments[0] instrument reference missing
 fab_ref_standard_missing fab_pack.process_families[0].required_standards[0] standard reference missing
@@ -192,17 +217,20 @@ fab_ref_instrument_missing fab_pack.process_families[1].required_instruments[0] 
 fab_ref_standard_missing fab_pack.process_families[1].required_standards[0] standard reference missing
 fab_ref_instrument_missing fab_pack.process_families[2].required_instruments[0] instrument reference missing
 fab_ref_standard_missing fab_pack.process_families[2].required_standards[0] standard reference missing
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.processes.extended","--format","text"]},"deterministic_fingerprint":"5d93262bcf2e402f9ac2dd3f683a9b5491d22bde1218fa68757faa2ac373422b","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.core.quality.extended ==
+== content\packs\core\org.dominium.core.quality.extended ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.quality.extended","--format","text"]},"deterministic_fingerprint":"f631f3a9505314a2f6236dcb9d856edc52d7aaa493992dd533022590c781e08c","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.settlements.basic ==
+== content\packs\core\org.dominium.core.settlements.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.settlements.basic","--format","text"]},"deterministic_fingerprint":"7cb056b49b5fdd8ddc7c9624a87fe791a913437206b8aa96bb50a6d6243a88f0","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.signals.baseline ==
+== content\packs\core\org.dominium.core.signals.baseline ==
 pack_validate: failed
 fab_ref_interface_missing fab_pack.parts[0].interfaces[0] interface reference missing
 fab_ref_material_missing fab_pack.parts[0].material_ref material reference missing
@@ -214,132 +242,183 @@ fab_ref_interface_missing fab_pack.parts[3].interfaces[0] interface reference mi
 fab_ref_material_missing fab_pack.parts[3].material_ref material reference missing
 fab_ref_interface_missing fab_pack.parts[4].interfaces[0] interface reference missing
 fab_ref_material_missing fab_pack.parts[4].material_ref material reference missing
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.signals.baseline","--format","text"]},"deterministic_fingerprint":"2be47ab687cae4d475fd27d84ffb57f42214441a802192f679f9fd00f7f390d6","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.core.signals.basic ==
+== content\packs\core\org.dominium.core.signals.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.signals.basic","--format","text"]},"deterministic_fingerprint":"bf448d302ce98dde62b1a8e9abdcece27fd23e7c6d7c92bd351736103139612f","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.standards.basic ==
+== content\packs\core\org.dominium.core.standards.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.standards.basic","--format","text"]},"deterministic_fingerprint":"5f7440cab795a6db7ae2e22c9a93b6315dcb7c850313ba53b4e688a4680c9bbd","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.standards.certification ==
+== content\packs\core\org.dominium.core.standards.certification ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.standards.certification","--format","text"]},"deterministic_fingerprint":"c98f16711cbf4080d9caa6816ef92582c71cf7bd899500bd152ae3aeb0c73cd9","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.standards.extended ==
+== content\packs\core\org.dominium.core.standards.extended ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.standards.extended","--format","text"]},"deterministic_fingerprint":"9de32838121804d5d77091903f11f21d0d4105d6249b25c95425d5063d9fe502","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.trade.basic ==
+== content\packs\core\org.dominium.core.trade.basic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.trade.basic","--format","text"]},"deterministic_fingerprint":"44d6ac4f351c08edd2047f873d2faf23d12daf13881d5345176fb52e14cbfd88","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.core.units ==
+== content\packs\core\org.dominium.core.units ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\core\\org.dominium.core.units","--format","text"]},"deterministic_fingerprint":"039993bbb006ae114c0d5489ab027985e8072460c5e5fc6d49f8f938194f3157","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.epistemics.core ==
+== content\packs\domain\org.dominium.content.institutions.placeholder ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\domain\\org.dominium.content.institutions.placeholder","--format","text"]},"deterministic_fingerprint":"4c95e8ff7c2af2b9a2001d569b470b1764d354c26869d024aaa7239910a09d78","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.examples.false_science ==
+== content\packs\domain\org.dominium.content.resources.placeholder ==
+pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\domain\\org.dominium.content.resources.placeholder","--format","text"]},"deterministic_fingerprint":"5a61099d97b06d818462ed283e7e1c94feca55f03ce59b46617afd2db0159bb6","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
+status: PASS
+
+== content\packs\domain\org.dominium.content.terrain.placeholder ==
+pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\domain\\org.dominium.content.terrain.placeholder","--format","text"]},"deterministic_fingerprint":"c58d38825fcae7a3f241b4e00ddb62e05537fa8eaa8e25e9cc131fbf95efc281","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
+status: PASS
+
+== content\packs\domain\org.dominium.content.worldgen.placeholder ==
+pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\domain\\org.dominium.content.worldgen.placeholder","--format","text"]},"deterministic_fingerprint":"6745e37beac599382793a5d5bb76103565926948fbbf0776ed9df8a8ec006022","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
+status: PASS
+
+== content\packs\domain\org.dominium.epistemics.core ==
+pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\domain\\org.dominium.epistemics.core","--format","text"]},"deterministic_fingerprint":"3f0eb8589a2b34cb37684d2c810bb4d596170a325821a04680c8311199efc00b","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
+status: PASS
+
+== content\packs\domain\org.dominium.lib.on_planet.primitives ==
+pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\domain\\org.dominium.lib.on_planet.primitives","--format","text"]},"deterministic_fingerprint":"b0421c00c96a6b0dc71aadef186b6bc9f24a7959d6368e7bc2ba01ed88a61685","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
+status: PASS
+
+== content\packs\domain\org.dominium.lib.on_planet.processes ==
 pack_validate: failed
 dependencies_mismatch record.dependencies depends and dependencies mismatch
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\domain\\org.dominium.lib.on_planet.processes","--format","text"]},"deterministic_fingerprint":"462b92b50d84d2d83ccb40fd5aed917a3b749ff7a0a6e86b9ee6881e915fb66b","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.examples.lost_civilization ==
+== content\packs\example\org.dominium.examples.false_science ==
 pack_validate: failed
 dependencies_mismatch record.dependencies depends and dependencies mismatch
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\example\\org.dominium.examples.false_science","--format","text"]},"deterministic_fingerprint":"f24de3b890233ad83e891b19424f83d5b962516acbe0e678112431096151e1cb","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.examples.magic_earth ==
+== content\packs\example\org.dominium.examples.lost_civilization ==
 pack_validate: failed
 dependencies_mismatch record.dependencies depends and dependencies mismatch
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\example\\org.dominium.examples.lost_civilization","--format","text"]},"deterministic_fingerprint":"d9ca20f8c59a18767a9cea348d7dc8b40d7e1f6407f4d6d93a4368f97e41af7e","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.examples.multicosmology ==
+== content\packs\example\org.dominium.examples.magic_earth ==
 pack_validate: failed
 dependencies_mismatch record.dependencies depends and dependencies mismatch
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\example\\org.dominium.examples.magic_earth","--format","text"]},"deterministic_fingerprint":"76a5099c488e74efcb37323a412fc2d0c286cf4d05469f40351a2bdcd230fad7","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.examples.realistic_earth ==
+== content\packs\example\org.dominium.examples.multicosmology ==
 pack_validate: failed
 dependencies_mismatch record.dependencies depends and dependencies mismatch
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\example\\org.dominium.examples.multicosmology","--format","text"]},"deterministic_fingerprint":"9206592fa620c45b41cf0b44fe307aada3d6dc6aa08cbdad676a29a5f54c8754","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.lib.on_planet.primitives ==
-pack_validate: ok
-status: PASS
-
-== data\packs\org.dominium.lib.on_planet.processes ==
+== content\packs\example\org.dominium.examples.realistic_earth ==
 pack_validate: failed
 dependencies_mismatch record.dependencies depends and dependencies mismatch
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\example\\org.dominium.examples.realistic_earth","--format","text"]},"deterministic_fingerprint":"229878ed0a59e04aabd837ee82494e4fa62ce8d37455e13e1e57e10327249a0d","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: FAIL
 
-== data\packs\org.dominium.realities.alchemy ==
+== content\packs\reality\org.dominium.realities.alchemy ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\reality\\org.dominium.realities.alchemy","--format","text"]},"deterministic_fingerprint":"11a9a3a513324c13d8adef3a8cd5b46a38fbe346c5776dd18cb5a90ba070555f","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.realities.alt_physics ==
+== content\packs\reality\org.dominium.realities.alt_physics ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\reality\\org.dominium.realities.alt_physics","--format","text"]},"deterministic_fingerprint":"c7b18d4f9f3e0c4fa5cb1f6f55ed1caec8b17eebfd20d97f76760de4a4d4d21b","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.realities.astrology ==
+== content\packs\reality\org.dominium.realities.astrology ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\reality\\org.dominium.realities.astrology","--format","text"]},"deterministic_fingerprint":"2051893b92085ca758e10a3a634b495b73ae2230fd5c6f9541d301ecedb94826","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.realities.hyperspace ==
+== content\packs\reality\org.dominium.realities.hyperspace ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\reality\\org.dominium.realities.hyperspace","--format","text"]},"deterministic_fingerprint":"b084b2c7f83530e6a18cfad21c95885f4ac3c747e8144c229265ea6f675bb06d","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.realities.magic ==
+== content\packs\reality\org.dominium.realities.magic ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\reality\\org.dominium.realities.magic","--format","text"]},"deterministic_fingerprint":"71b9d934023e1b34e520ed0d4c1c5d0e339d48ca3440a5154856c3b27861efcb","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.worldgen.anchors.planetary ==
+== content\packs\worldgen\org.dominium.worldgen.anchors.planetary ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\worldgen\\org.dominium.worldgen.anchors.planetary","--format","text"]},"deterministic_fingerprint":"d3a3e4d0ff18a0b14e9d73573dcef7101cb305c51196ca953f54e6f6dd9ef91f","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.worldgen.anchors.system ==
+== content\packs\worldgen\org.dominium.worldgen.anchors.system ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\worldgen\\org.dominium.worldgen.anchors.system","--format","text"]},"deterministic_fingerprint":"e0d7c88bb1da03d9145299a26f573a4e52dc527ddc94f7ce4180737434323278","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.worldgen.base.body ==
+== content\packs\worldgen\org.dominium.worldgen.base.body ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\worldgen\\org.dominium.worldgen.base.body","--format","text"]},"deterministic_fingerprint":"c24bf145bcc4b97e1fe3f33c8f9fad614f6a3361f2773a356a1dae86685a3498","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.worldgen.base.cosmology ==
+== content\packs\worldgen\org.dominium.worldgen.base.cosmology ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\worldgen\\org.dominium.worldgen.base.cosmology","--format","text"]},"deterministic_fingerprint":"8d0ba7084bd94171f12e1489b29a963432801f5fb13a8c404984d503b5bb4d4f","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.worldgen.base.galaxy ==
+== content\packs\worldgen\org.dominium.worldgen.base.galaxy ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\worldgen\\org.dominium.worldgen.base.galaxy","--format","text"]},"deterministic_fingerprint":"891ac8d1f78b9e3bca627f39d3d119c98c274aa0dd3269325695dd1ab2e67e65","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.worldgen.base.surface_micro ==
+== content\packs\worldgen\org.dominium.worldgen.base.surface_micro ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\worldgen\\org.dominium.worldgen.base.surface_micro","--format","text"]},"deterministic_fingerprint":"e22c6d79651b8c63b8e14e1bf341fbcf322500c60f27b18bf8000fe66df0c808","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.worldgen.base.system ==
+== content\packs\worldgen\org.dominium.worldgen.base.system ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\worldgen\\org.dominium.worldgen.base.system","--format","text"]},"deterministic_fingerprint":"674041e28af95383a00aca236b69543bfa9ef6972d396e909e958973ce586992","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.worldgen.minimal ==
+== content\packs\worldgen\org.dominium.worldgen.minimal ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\worldgen\\org.dominium.worldgen.minimal","--format","text"]},"deterministic_fingerprint":"912bd717280cb4b4c294d608232ce2d2e8b808a72467cb14c2012136695ddcf6","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.worldgen.real.earth_macro ==
+== content\packs\worldgen\org.dominium.worldgen.real.earth_macro ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\worldgen\\org.dominium.worldgen.real.earth_macro","--format","text"]},"deterministic_fingerprint":"40ce84116f767b0b913935eed2fdabf803c0011528488451a65c9f01bb9e8a35","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.worldgen.real.milkyway ==
+== content\packs\worldgen\org.dominium.worldgen.real.milkyway ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\worldgen\\org.dominium.worldgen.real.milkyway","--format","text"]},"deterministic_fingerprint":"11ef321f0e73f0a186022382407b440fc83d6714b23db6c5de035c1b0070ef33","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-== data\packs\org.dominium.worldgen.real.sol ==
+== content\packs\worldgen\org.dominium.worldgen.real.sol ==
 pack_validate: ok
+{"details":{"argv":["--repo-root",".","--pack-root",".\\content\\packs\\worldgen\\org.dominium.worldgen.real.sol","--format","text"]},"deterministic_fingerprint":"f2e5f3692d420f556ea08671571eddf1a8ebdbbba82e771be774df03673350ef","message_key":"warn.deprecated_tool_usage","original_surface":"tools/package/pack/pack_validate.py","replacement_surface":"dom pack validate-manifest","shim_id":"shim.tool.pack_validate","warning_code":"deprecated_tool_usage","warning_id":"warning.shim_tool_pack_validate"}
 status: PASS
 
-Summary: 59 packs, 14 failures
+Summary: 63 packs, 14 failures

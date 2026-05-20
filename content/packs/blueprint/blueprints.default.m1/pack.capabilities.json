@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_templates"
+  ],
+  "deterministic_fingerprint": "4941976219525e2067a4931050309a734b2740ad1433508e096bb63b3923920d",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "blueprints.default.m1",
+  "schema_version": "1.0.0"
+}

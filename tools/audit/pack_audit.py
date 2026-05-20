@@ -4,17 +4,24 @@ import sys
 from datetime import date
 
 
+MANIFEST_NAMES = ("pack_manifest.json",)
+
+
+def discover_pack_dirs(packs_root):
+    pack_dirs = []
+    for dirpath, _dirnames, filenames in os.walk(packs_root):
+        if any(name in filenames for name in MANIFEST_NAMES):
+            pack_dirs.append(dirpath)
+    return sorted(pack_dirs)
+
+
 def main():
     repo_root = "."
-    packs_root = os.path.join(repo_root, "data", "packs")
-    report_path = os.path.join("docs", "audit", "PACK_AUDIT.txt")
+    packs_root = os.path.join(repo_root, "content", "packs")
+    report_path = os.path.join("docs", "archive", "audit", "PACK_AUDIT.txt")
     os.makedirs(os.path.dirname(report_path), exist_ok=True)
 
-    pack_dirs = [
-        os.path.join(packs_root, d)
-        for d in sorted(os.listdir(packs_root))
-        if os.path.isdir(os.path.join(packs_root, d))
-    ]
+    pack_dirs = discover_pack_dirs(packs_root)
 
     failures = 0
     with open(report_path, "w", encoding="utf-8") as report:
@@ -34,7 +41,7 @@ def main():
             rel = os.path.relpath(pack_dir, repo_root)
             cmd = [
                 sys.executable,
-                os.path.join("tools", "pack", "pack_validate.py"),
+                os.path.join("tools", "package", "pack", "pack_validate.py"),
                 "--repo-root",
                 repo_root,
                 "--pack-root",

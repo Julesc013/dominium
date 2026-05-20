@@ -12,7 +12,7 @@ def file_hash(path):
 
 
 def run_pack_validate(repo_root, pack_root):
-    script = os.path.join(repo_root, "tools", "pack", "pack_validate.py")
+    script = os.path.join(repo_root, "tools", "package", "pack", "pack_validate.py")
     cmd = [sys.executable, script, "--pack-root", pack_root, "--repo-root", repo_root, "--format", "json"]
     output = subprocess.check_output(cmd, cwd=repo_root)
     return json.loads(output.decode("utf-8"))

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-20
+Supersedes: none
+Superseded By: none
+
 # TOOLS-FOLD-01 Audit
 
 Status: implemented with documented residual validator debt outside the tools fold.

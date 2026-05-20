@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-20
+Supersedes: none
+Superseded By: none
+
 # Milky Way Canonical Data (CONTENT3)
 
 Version: 1.0.0

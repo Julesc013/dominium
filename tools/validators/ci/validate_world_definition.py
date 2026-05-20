@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 def _import_lib(repo_root):
-    sys.path.insert(0, str(repo_root / "tools" / "worldgen_offline"))
+    sys.path.insert(0, str(repo_root / "tools" / "domain" / "worldgen" / "offline"))
     import world_definition_lib as wdlib
     return wdlib
 
@@ -144,7 +144,7 @@ def main():
            "template refusal code mismatch", errors)
 
     # Built-in vs pack template equivalence (if pack exists)
-    packs_root = repo_root / "data" / "packs"
+    packs_root = repo_root / "content" / "packs"
     if packs_root.exists():
         manifest_paths = sorted(packs_root.rglob("pack_manifest.json"))
     else:

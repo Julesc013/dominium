@@ -9,8 +9,8 @@ from typing import Mapping, Sequence
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
-DEFAULT_TRUST_POLICY_REGISTRY_REL = os.path.join("data", "registries", "trust_policy_registry.json")
-DEFAULT_TRUST_ROOT_REGISTRY_REL = os.path.join("data", "registries", "trust_root_registry.json")
+DEFAULT_TRUST_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "trust_policy_registry.json")
+DEFAULT_TRUST_ROOT_REGISTRY_REL = os.path.join("contracts", "registry", "trust_root_registry.json")
 DEFAULT_LOCAL_TRUST_ROOT_REGISTRY_REL = os.path.join("manifests", "trust_root_registry.local.json")
 DEFAULT_TRUST_POLICY_ID = "trust.default_mock"
 TRUST_POLICY_STRICT = "trust.strict_ranked"

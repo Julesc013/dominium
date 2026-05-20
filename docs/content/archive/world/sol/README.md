@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-20
+Supersedes: none
+Superseded By: none
+
 # Sol System Canonical Data (CONTENT1)
 
 Version: 1.0.0

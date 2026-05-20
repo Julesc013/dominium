@@ -5,12 +5,12 @@ import re
 import sys
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, os.pardir, os.pardir))
+REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, os.pardir, os.pardir, os.pardir))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "package", "distribution")))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "fab")))
+sys.path.append(os.path.abspath(os.path.join(THIS_DIR, os.pardir, "distribution")))
+sys.path.append(os.path.abspath(os.path.join(REPO_ROOT_HINT, "tools", "domain", "fabrication")))
 
 from tools.validators.compatibility.shims import emit_legacy_tool_warning, redirect_legacy_path
 from distribution_lib import (  # noqa: E402

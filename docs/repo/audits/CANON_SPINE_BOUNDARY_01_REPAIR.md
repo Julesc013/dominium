@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-20
+Supersedes: none
+Superseded By: none
+
 # CANON-SPINE-BOUNDARY-01 Repair
 
 Status: PASS_WITH_WARNINGS.

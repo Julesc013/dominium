@@ -1,4 +1,4 @@
-Status: CANONICAL
+Status: DERIVED
 Last Reviewed: 2026-05-18
 Supersedes: interim bad-root exception layout as final target shape
 Superseded By: none

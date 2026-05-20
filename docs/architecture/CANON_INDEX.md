@@ -510,6 +510,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/development/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`
 
 ## DERIVED
+- `docs/repo/final_repository_structure.md`
 - `docs/architecture/ROOT_ARCHITECTURE.md`
 - `docs/game/CAPABILITY_STAGES.md`
 - `docs/development/CODE_CHANGE_JUSTIFICATION.md`
@@ -2260,7 +2261,6 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/archive/stray_root_docs/CIV3_KNOWLEDGE_TECH.md`
 - `docs/archive/stray_root_docs/CIV4_SCALE_AND_LOGISTICS.md`
 - `docs/archive/stray_root_docs/CI_ENFORCEMENT_MATRIX.md`
-- `docs/archive/stray_root_docs/development/CONTRIBUTING.md`
 - `docs/archive/stray_root_docs/DETERMINISM_TEST_MATRIX.md`
 - `docs/archive/stray_root_docs/GOVERNANCE.md`
 - `docs/archive/stray_root_docs/MODDING.md`

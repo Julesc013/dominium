@@ -28,8 +28,8 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    common_path = os.path.join(repo_root, "tools", "worldgen_offline", "_common.py")
-    wd_path = os.path.join(repo_root, "tools", "worldgen_offline", "world_definition_lib.py")
+    common_path = os.path.join(repo_root, "tools", "domain", "worldgen", "offline", "_common.py")
+    wd_path = os.path.join(repo_root, "tools", "domain", "worldgen", "offline", "world_definition_lib.py")
 
     if not os.path.isfile(common_path):
         print("missing _common.py")

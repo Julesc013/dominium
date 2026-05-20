@@ -27,7 +27,7 @@
       "L3.earth_terrain_projection"
     ],
     "worldgen_lock_version": 0,
-    "deterministic_fingerprint": "b0a67499bc36ca58f0a98408230085fc470f3d46226d6a9fe9e93872bd28fa87",
+    "deterministic_fingerprint": "d8938f09492dbd7a3f1d6cfaa40c09ee91bebbe6bea5007d22096bccf9903c24",
     "stability_class": "stable",
     "extensions": {
       "canonical_serialization": "tools.xstack.compatx.canonical_json.canonical_json_text",

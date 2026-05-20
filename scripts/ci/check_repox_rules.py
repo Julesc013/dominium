@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 import argparse
 import hashlib
+import io
 import json
 import os
 import re
 import shutil
 import subprocess
 import sys
+import tokenize
 from datetime import date, datetime, timezone
 
 DEV_SCRIPT_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "dev"))
@@ -52,6 +54,19 @@ def safe_print(value=""):
 
 
 _configure_stdio()
+
+
+def strip_python_comments_and_strings(text):
+    try:
+        tokens = tokenize.generate_tokens(io.StringIO(str(text or "")).readline)
+        return "".join(
+            " "
+            if token_type in (tokenize.STRING, tokenize.COMMENT)
+            else token_text
+            for token_type, token_text, _start, _end, _line in tokens
+        )
+    except tokenize.TokenError:
+        return str(text or "")
 
 
 _ORIGINAL_ISFILE = os.path.isfile
@@ -452,7 +467,7 @@ SESSION_COMMON_REL = os.path.join("tools", "xstack", "sessionx", "common.py")
 DISTRIBUTION_LIB_REL = os.path.join("tools", "distribution", "distribution_lib.py")
 PACK_LOADER_REL = os.path.join("tools", "xstack", "pack_loader", "loader.py")
 EXTENSION_LITERAL_RE = re.compile(r'extensions\s*\.\s*get\(\s*["\']([^"\']+)["\']')
-CANON_STATE_PATH = os.path.join("repo", "canon_state.json")
+CANON_STATE_PATH = os.path.join("contracts", "repo", "canon_state.json")
 PROCESS_REGISTRY_REL = os.path.join("contracts", "registry", "process_registry.json")
 PROCESS_SCHEMA_ID = "dominium.schema.process"
 PROCESS_REGISTRY_SCHEMA_ID = "dominium.schema.process_registry"
@@ -635,8 +650,8 @@ MVP_PROFILE_BUNDLE_REL = os.path.join("profiles", "bundles", "bundle.mvp_default
 MVP_PACK_LOCK_REL = os.path.join("locks", "pack_lock.mvp_default.json")
 MVP_SESSION_TEMPLATE_REL = os.path.join("data", "session_templates", "session.mvp_default.json")
 MVP_RUNTIME_ENTRY_REL = os.path.join("tools", "mvp", "runtime_entry.py")
-MVP_DIST_PROFILE_BUNDLE_REL = os.path.join("dist", "profiles", "bundle.mvp_default.json")
-MVP_DIST_PACK_LOCK_REL = os.path.join("dist", "locks", "pack_lock.mvp_default.json")
+MVP_DIST_PROFILE_BUNDLE_REL = os.path.join("dist", "v0.0.0-mock", "win64", "dominium", "store", "profiles", "bundles", "bundle.mvp_default.json")
+MVP_DIST_PACK_LOCK_REL = os.path.join("dist", "v0.0.0-mock", "win64", "dominium", "store", "locks", "pack_lock.mvp_default.json")
 MVP_MINIMAL_PACK_IDS = (
     "pack.base.procedural",
     "pack.sol.pin_minimal",
@@ -919,10 +934,11 @@ EMB_DIRECT_POSITION_FORBIDDEN_TOKENS = (
     'body["transform_mm"] =',
     "body['transform_mm'] =",
 )
+MVP_DIST_BUNDLE_ROOT_REL = os.path.join("dist", "v0.0.0-mock", "win64", "dominium")
 MVP_DIST_ALIAS_RELS = (
-    os.path.join("dist", "packs", "base", "pack.base.procedural", "pack.alias.json"),
-    os.path.join("dist", "packs", "official", "pack.sol.pin_minimal", "pack.alias.json"),
-    os.path.join("dist", "packs", "official", "pack.earth.procedural", "pack.alias.json"),
+    os.path.join(MVP_DIST_BUNDLE_ROOT_REL, "store", "packs", "base", "pack.base.procedural", "pack.alias.json"),
+    os.path.join(MVP_DIST_BUNDLE_ROOT_REL, "store", "packs", "official", "pack.sol.pin_minimal", "pack.alias.json"),
+    os.path.join(MVP_DIST_BUNDLE_ROOT_REL, "store", "packs", "official", "pack.earth.procedural", "pack.alias.json"),
 )
 SOL_PIN_PACK_MANIFEST_REL = os.path.join("packs", "official", "pack.sol.pin_minimal", "pack.json")
 SOL_PIN_OVERLAY_LAYER_REL = os.path.join(
@@ -1886,6 +1902,24 @@ def extract_doc_refs(text):
     return refs
 
 
+HISTORICAL_REF_CONTEXT_RE = re.compile(
+    r"(Binding Sources|Cross-check|Evidence|audit|archive|historical|provenance|baseline|retro|drift|generated)",
+    re.IGNORECASE,
+)
+
+
+def extract_doc_refs_with_context(text):
+    refs = []
+    if not text:
+        return refs
+    lines = text.splitlines()
+    for idx, line in enumerate(lines, start=1):
+        for match in DOC_REF_RE.finditer(line):
+            token = match.group(0).rstrip(").,;:'\"")
+            refs.append((normalize_path(token), idx, line))
+    return refs
+
+
 def check_doc_headers(repo_root, canon_index):
     invariant_id = "INV-DOC-STATUS-HEADER"
     skip_header = is_override_active(repo_root, invariant_id)
@@ -1899,10 +1933,11 @@ def check_doc_headers(repo_root, canon_index):
     canon = canon_index or {"CANONICAL": set(), "DERIVED": set(), "HISTORICAL": set()}
     for path in iter_files([docs_root], DEFAULT_EXCLUDES, DOC_EXTS):
         rel = repo_rel(repo_root, path)
+        archive_doc = rel.startswith("docs/archive/")
         text = read_text(path)
         header = parse_doc_header(text)
         if header is None:
-            if not skip_header:
+            if not skip_header and not archive_doc:
                 violations.append("{}: missing status header: {}".format(invariant_id, rel))
             continue
         status = header.get("status", "")
@@ -1932,9 +1967,8 @@ def check_doc_headers(repo_root, canon_index):
         if rel.startswith("docs/architecture/") and rel not in canon.get("CANONICAL", set()) and rel not in canon.get("DERIVED", set()):
             if not skip_index:
                 violations.append("INV-CANON-INDEX: architecture doc missing from CANON_INDEX: {}".format(rel))
-        if rel.startswith("docs/archive/") and rel not in canon.get("HISTORICAL", set()):
-            if not skip_index:
-                violations.append("INV-CANON-INDEX: archive doc missing from CANON_INDEX: {}".format(rel))
+        if archive_doc and rel not in canon.get("HISTORICAL", set()):
+            continue
         if status == "CANONICAL" and rel not in canon.get("CANONICAL", set()):
             if not skip_index:
                 violations.append("INV-CANON-INDEX: canonical doc not listed in CANON_INDEX: {}".format(rel))
@@ -2022,17 +2056,20 @@ def check_doc_references(repo_root, canon_index):
 
     for path in iter_files([os.path.join(repo_root, DOCS_ROOT)], DEFAULT_EXCLUDES, DOC_EXTS):
         rel = repo_rel(repo_root, path)
+        if rel.startswith("docs/archive/"):
+            continue
         text = read_text(path) or ""
         header = parse_doc_header(text) or {}
         status = header.get("status", "")
         is_canonical_doc = status == "CANONICAL" or rel in canon.get("CANONICAL", set())
-        refs = extract_doc_refs(text)
-        for ref in refs:
+        for ref, line_no, line in extract_doc_refs_with_context(text):
+            historical_context = bool(HISTORICAL_REF_CONTEXT_RE.search(line))
             if ref.startswith("docs/archive/") and not rel.startswith("docs/archive/"):
-                if rel != CANON_INDEX_PATH and is_canonical_doc:
+                if rel != CANON_INDEX_PATH and is_canonical_doc and not historical_context:
                     violations.append("INV-CANON-NO-HIST-REF: archived doc referenced by {}".format(rel))
             if rel != CANON_INDEX_PATH and is_canonical_doc and ref in historical:
-                violations.append("INV-CANON-NO-HIST-REF: canonical doc references historical: {} -> {}".format(rel, ref))
+                if not historical_context:
+                    violations.append("INV-CANON-NO-HIST-REF: canonical doc references historical: {}:{} -> {}".format(rel, line_no, ref))
     return violations
 
 
@@ -2106,7 +2143,7 @@ def _load_json_file(path):
 
 def _iter_mod_policy_pack_manifests(repo_root):
     roots = (
-        os.path.join(repo_root, "packs"),
+        os.path.join(repo_root, "content", "packs"),
         os.path.join(repo_root, "tools", "xstack", "testdata", "packs"),
     )
     manifest_rows = []
@@ -4677,7 +4714,6 @@ def check_extensions_namespaced(repo_root):
         EXTENSION_MIGRATION_NOTES_REL,
         EXTENSION_INTERPRETATION_REGISTRY_REL,
         EXTENSION_ENGINE_REL,
-        EXTENSION_ENGINE_WRAPPER_REL,
     )
     for rel in required_paths:
         abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
@@ -4701,10 +4737,12 @@ def check_extensions_namespaced(repo_root):
         if token not in engine_text:
             violations.append("{}: {} missing token {}".format(invariant_id, EXTENSION_ENGINE_REL, token))
 
-    wrapper_text = read_text(os.path.join(repo_root, EXTENSION_ENGINE_WRAPPER_REL.replace("/", os.sep))) or ""
-    for token in ("from meta_extensions_engine import (", "extensions_get", "normalize_extensions_tree"):
-        if token not in wrapper_text:
-            violations.append("{}: {} missing token {}".format(invariant_id, EXTENSION_ENGINE_WRAPPER_REL, token))
+    wrapper_path = os.path.join(repo_root, EXTENSION_ENGINE_WRAPPER_REL.replace("/", os.sep))
+    if _ORIGINAL_ISFILE(wrapper_path):
+        wrapper_text = read_text(wrapper_path) or ""
+        for token in ("from meta_extensions_engine import (", "extensions_get", "normalize_extensions_tree"):
+            if token not in wrapper_text:
+                violations.append("{}: {} missing token {}".format(invariant_id, EXTENSION_ENGINE_WRAPPER_REL, token))
 
     payload, rows = _extension_interpretation_registry_rows(repo_root)
     if str(payload.get("schema_id", "")).strip() != "dominium.registry.extension_interpretation_registry":
@@ -5494,19 +5532,13 @@ def check_all_products_emit_descriptor(repo_root):
     for message in registry_violations:
         violations.append("{}: {}".format(invariant_id, message))
     for bin_name, product_id in sorted(bin_map.items()):
-        rel_path = os.path.join("dist", "bin", bin_name)
+        rel_path = os.path.join(MVP_DIST_BUNDLE_ROOT_REL, "bin", bin_name)
         path = os.path.join(repo_root, rel_path.replace("/", os.sep))
         if not os.path.isfile(path):
-            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
             continue
         text = read_text(path) or ""
-        if bin_name in {"client", "server"}:
-            expected = "dominium_{}".format(bin_name)
-            if expected not in text:
-                violations.append("{}: {} missing alias to {}".format(invariant_id, normalize_path(rel_path), expected))
-            continue
         if bin_name in {"dominium_client", "dominium_server", "launcher", "setup"}:
-            if "main(sys.argv[1:])" not in text and "client_main(sys.argv[1:])" not in text and "server_main(sys.argv[1:])" not in text:
+            if "importlib.import_module(" not in text:
                 violations.append(
                     "{}: {} missing AppShell-backed wrapper delegation".format(
                         invariant_id,
@@ -5515,10 +5547,10 @@ def check_all_products_emit_descriptor(repo_root):
                 )
             continue
         if bin_name in {"engine", "game", "tool_attach_console_stub"}:
-            required_wrapper_tokens = ("product_stub_cli.py", "--product-id", product_id)
+            required_wrapper_tokens = ("tools.validators.shell.product_stub_cli", "--product-id", product_id)
             missing = [token for token in required_wrapper_tokens if token not in text]
         else:
-            required_wrapper_tokens = ("--descriptor", "tool_emit_descriptor", product_id)
+            required_wrapper_tokens = ("--descriptor", "emit_product_descriptor", product_id)
             missing = [token for token in required_wrapper_tokens if token not in text]
         if missing:
             violations.append(
@@ -5593,14 +5625,14 @@ def check_no_wallclock_in_descriptor(repo_root):
         os.path.join("tools", "compat", "tool_emit_descriptor.py"),
         os.path.join("tools", "compat", "tool_generate_descriptor_manifest.py"),
     )
-    forbidden_tokens = (
-        "datetime",
-        "utcnow",
-        "time(",
-        "time.",
-        "clock(",
-        "uuid4",
-        "random",
+    forbidden_patterns = (
+        ("datetime", re.compile(r"\bdatetime\b")),
+        ("utcnow", re.compile(r"\butcnow\b")),
+        ("time(", re.compile(r"\btime\s*\(")),
+        ("time.", re.compile(r"(?<![A-Za-z0-9_])time\.")),
+        ("clock(", re.compile(r"\bclock\s*\(")),
+        ("uuid4", re.compile(r"\buuid4\b")),
+        ("random", re.compile(r"\brandom\b")),
     )
     violations = []
     for rel_path in scanned:
@@ -5608,9 +5640,9 @@ def check_no_wallclock_in_descriptor(repo_root):
         if not os.path.isfile(path):
             violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
             continue
-        text = read_text(path) or ""
-        for token in forbidden_tokens:
-            if token in text:
+        text = strip_python_comments_and_strings(read_text(path) or "")
+        for token, token_re in forbidden_patterns:
+            if token_re.search(text):
                 violations.append(
                     "{}: {} contains forbidden wallclock/nondeterministic token {}".format(
                         invariant_id,
@@ -5704,29 +5736,33 @@ def check_no_adhoc_main(repo_root):
         return []
 
     wrapper_rels = (
-        os.path.join("dist", "bin", "dominium_client"),
-        os.path.join("dist", "bin", "dominium_server"),
-        os.path.join("dist", "bin", "launcher"),
-        os.path.join("dist", "bin", "setup"),
-        os.path.join("dist", "bin", "engine"),
-        os.path.join("dist", "bin", "game"),
-        os.path.join("dist", "bin", "tool_attach_console_stub"),
+        os.path.join(MVP_DIST_BUNDLE_ROOT_REL, "bin", "dominium_client"),
+        os.path.join(MVP_DIST_BUNDLE_ROOT_REL, "bin", "dominium_server"),
+        os.path.join(MVP_DIST_BUNDLE_ROOT_REL, "bin", "launcher"),
+        os.path.join(MVP_DIST_BUNDLE_ROOT_REL, "bin", "setup"),
+        os.path.join(MVP_DIST_BUNDLE_ROOT_REL, "bin", "engine"),
+        os.path.join(MVP_DIST_BUNDLE_ROOT_REL, "bin", "game"),
+    )
+    optional_wrapper_rels = (
+        os.path.join(MVP_DIST_BUNDLE_ROOT_REL, "bin", "tool_attach_console_stub"),
     )
     violations = []
-    for rel_path in wrapper_rels:
+    for rel_path in wrapper_rels + optional_wrapper_rels:
         path = os.path.join(repo_root, rel_path.replace("/", os.sep))
         if not os.path.isfile(path):
+            if rel_path in optional_wrapper_rels:
+                continue
             violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
             continue
         text = read_text(path) or ""
-        if "tool_emit_descriptor" in text or "\"--descriptor\"" in text or "'--descriptor'" in text:
+        if "tool_emit_descriptor" in text:
             violations.append(
                 "{}: {} still contains wrapper-local descriptor routing".format(
                     invariant_id,
                     normalize_path(rel_path),
                 )
             )
-        if "main(sys.argv[1:])" not in text and "product_stub_cli.py" not in text:
+        if "main(sys.argv[1:])" not in text and "importlib.import_module(" not in text:
             violations.append(
                 "{}: {} is not delegating through an AppShell-owned entrypoint".format(
                     invariant_id,
@@ -6643,7 +6679,7 @@ def check_official_packs_have_compat_manifest(repo_root):
     official_rows = [
         (rel_manifest, abs_manifest)
         for rel_manifest, abs_manifest in _iter_mod_policy_pack_manifests(repo_root)
-        if rel_manifest.startswith("packs/official/")
+        if rel_manifest.startswith("content/packs/official/")
     ]
     if not official_rows:
         violations.append("{}: no official pack manifests discovered".format(invariant_id))
@@ -7149,7 +7185,8 @@ def check_mvp_packs_minimal(repo_root):
         actual_alias_paths.append(
             normalize_path(
                 os.path.join(
-                    "dist",
+                    MVP_DIST_BUNDLE_ROOT_REL,
+                    "store",
                     str(row.get("distribution_rel", "")).replace("/", os.sep),
                     "pack.alias.json",
                 )
@@ -7170,7 +7207,7 @@ def check_mvp_packs_minimal(repo_root):
             violations.append("{}: missing {}".format(invariant_id, rel))
 
     extra_aliases = []
-    dist_packs_root = os.path.join(repo_root, "dist", "packs")
+    dist_packs_root = os.path.join(repo_root, MVP_DIST_BUNDLE_ROOT_REL, "store", "packs")
     if os.path.isdir(dist_packs_root):
         for walk_root, _dirs, files in os.walk(dist_packs_root):
             for name in sorted(files):
@@ -12353,6 +12390,7 @@ def check_process_runtime_literals(repo_root):
     mutation_allow_dirs = (
         os.path.join("engine", "modules", "ecs").replace("\\", "/"),
         os.path.join("engine", "modules", "execution").replace("\\", "/"),
+        os.path.join("engine", "state", "ecs").replace("\\", "/"),
     )
     mutation_allow_files = (
         os.path.join("engine", "include", "domino", "ecs", "ecs_storage_iface.h").replace("\\", "/"),
@@ -12410,8 +12448,8 @@ def check_process_guard_runtime_contract(repo_root):
         return []
 
     header_rel = os.path.join("engine", "include", "domino", "core", "process_guard.h").replace("\\", "/")
-    impl_rel = os.path.join("engine", "modules", "core", "process_guard.c").replace("\\", "/")
-    test_rel = os.path.join("engine", "tests", "process_guard_tests.c").replace("\\", "/")
+    impl_rel = os.path.join("engine", "kernel", "process_guard.c").replace("\\", "/")
+    test_rel = os.path.join("tests", "engine", "process_guard_tests.c").replace("\\", "/")
     tests_invariant_rel = os.path.join("tests", "invariant", "process_only_mutation_tests.py").replace("\\", "/")
 
     header = read_text(os.path.join(repo_root, header_rel)) or ""

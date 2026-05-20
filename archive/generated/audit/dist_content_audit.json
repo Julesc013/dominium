@@ -4,9 +4,45 @@
     "store/packs/official/pack.earth.procedural",
     "store/packs/official/pack.sol.pin_minimal"
   ],
-  "bundle_root": "D:/Projects/Dominium/dominium/archive/generated/dist/v0.0.0-mock/win64/dominium",
-  "deterministic_fingerprint": "c1477b3d8394cfb3277ef35bcfb2048ea6ebd6ce1437508f4b8e7dcf8cf032a6",
-  "dev_artifacts": [],
+  "bundle_root": "C:/Inbox/Git Repos/dominium/dist/v0.0.0-mock/win64/dominium",
+  "deterministic_fingerprint": "22ead211d7bc6304d54919dc24e55e395acf3a5e9becaf4846c82fd7cbe78065",
+  "dev_artifacts": [
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_adapter_compiler.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_aide_lite.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_cache_local_state.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_export_import.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_gateway_commands.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_golden_tasks.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_outcome_controller.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_provider_adapter.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q27_commit_recovery.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q28_git_workflow.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q29_git_helper.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q31_export_pack_governance.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q34_changelog_release.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q35_github_advisory.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q36_intent_compiler.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q37_repo_intelligence.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q38_file_quality.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q39_refactor_control.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q40_root_recycling.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q41_tool_absorption.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q42_move_map_aliases.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q43_install_plan.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q44_repair_doctor.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q45_upgrade_model.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q46_rollback_uninstall.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q47_release_bundle.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q48_github_release_draft.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_review_pack.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_router_profile.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_token_ledger.pyc",
+    "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_verifier.pyc",
+    "release/packaging/setup/scripts/packaging/tests/exe_validation_test.pyc",
+    "release/packaging/setup/scripts/packaging/tests/macos_validation_test.pyc",
+    "release/packaging/setup/scripts/packaging/tests/msi_validation_test.pyc",
+    "release/packaging/setup/scripts/packaging/tests/packaging_validation_test.pyc"
+  ],
   "expected_packs": [
     "store/packs/base/pack.base.procedural",
     "store/packs/official/pack.earth.procedural",
@@ -14,8 +50,36 @@
   ],
   "large_files": [
     {
+      "path": "bin/client.exe",
+      "size_bytes": 2562048
+    },
+    {
+      "path": "bin/launcher.exe",
+      "size_bytes": 1774592
+    },
+    {
+      "path": "bin/server.exe",
+      "size_bytes": 2337792
+    },
+    {
+      "path": "bin/setup.exe",
+      "size_bytes": 1412096
+    },
+    {
+      "path": "bin/tools.exe",
+      "size_bytes": 2465280
+    },
+    {
+      "path": "contracts/registry/architecture/module_registry.json",
+      "size_bytes": 1874744
+    },
+    {
+      "path": "contracts/registry/architecture/module_registry.v1.json",
+      "size_bytes": 1874968
+    },
+    {
       "path": "tools/xstack/sessionx/process_runtime.pyc",
-      "size_bytes": 4395900
+      "size_bytes": 1731238
     }
   ],
   "lock_paths": [
@@ -28,5 +92,16 @@
   "report_id": "dist.content.audit.v1",
   "result": "complete",
   "unexpected_pack_paths": [],
-  "unexpected_top_level": []
+  "unexpected_top_level": [
+    "LICENSES",
+    "cache",
+    "content",
+    "contracts",
+    "descriptors",
+    "exports",
+    "logs",
+    "ops",
+    "release.manifest.json",
+    "semantic_contract_registry.json"
+  ]
 }

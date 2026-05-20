@@ -75,7 +75,7 @@ def main():
         sys.stderr.write("FAIL: replay missing\n")
         return 1
 
-    script = os.path.join(repo_root, "tools", "playtest", "replay_run.py")
+    script = os.path.join(repo_root, "tools", "test", "playtest", "replay_run.py")
     run_a = run_replay_run(sys.executable, script, replay_path, 1)
     run_b = run_replay_run(sys.executable, script, replay_path, 4)
 

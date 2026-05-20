@@ -60,7 +60,7 @@ def main():
     temp_root = os.path.abspath(args.temp_root)
     ensure_clean_dir(temp_root)
 
-    sys.path.insert(0, os.path.join(repo_root, "tools", "playtest"))
+    sys.path.insert(0, os.path.join(repo_root, "tools", "test", "playtest"))
     try:
         from playtest_lib import parse_replay, hash_events
     except Exception:

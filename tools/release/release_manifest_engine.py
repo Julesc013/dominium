@@ -558,7 +558,7 @@ def _semantic_contract_registry_hash(
         raise RuntimeError("binary descriptors disagree on semantic_contract_registry_hash")
     repo_token = _token(repo_root)
     if repo_token:
-        registry_path = os.path.join(repo_token, "data", "registries", "semantic_contract_registry.json")
+        registry_path = os.path.join(repo_token, "contracts", "registry", "semantic_contract_registry.json")
         if os.path.isfile(registry_path):
             return _sha256_file(registry_path)
     raise RuntimeError("semantic_contract_registry_hash is not discoverable from the distribution")
@@ -1058,7 +1058,7 @@ def verify_release_manifest(
             }
         )
     elif _token(repo_root):
-        registry_path = os.path.join(_token(repo_root), "data", "registries", "semantic_contract_registry.json")
+        registry_path = os.path.join(_token(repo_root), "contracts", "registry", "semantic_contract_registry.json")
         if os.path.isfile(registry_path):
             repo_hash = _sha256_file(registry_path)
             if repo_hash != _token(payload.get("semantic_contract_registry_hash")).lower():

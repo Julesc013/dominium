@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "99484d948fa3de91e04ab7ca40ca5ec72b47fb883eacf143a788dd11c9625d63",
+  "extensions": {
+    "official.signature_status": "unsigned",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "blueprints.default.m1",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.local_dev"
+}

@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-19T23:57:01Z",
+  "generated_at_utc": "2026-05-20T02:20:40Z",
   "repo_root": ".",
-  "head_sha": "e201f72d6825c5f815f3850692885ed185745b6b",
+  "head_sha": "7e8879e6d0e6b13eebb181d3cd41cef3acb71dfa",
   "source_branch": "main",
   "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
   "active_exception_count": 8,

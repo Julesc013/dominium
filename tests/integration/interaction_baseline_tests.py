@@ -244,7 +244,7 @@ def main():
         ok = ok and require(file_hash(replay_path) == file_hash(replay2_path),
                             "replay hash mismatch (non-deterministic)")
 
-    inspector = os.path.join(repo_root, "tools", "inspect", "interaction_inspector.py")
+    inspector = os.path.join(repo_root, "tools", "test", "inspect", "interaction_inspector.py")
     ok = ok and run_cmd(
         [sys.executable, inspector, "--save", save_path, "--format", "text"],
         cwd=repo_root,
