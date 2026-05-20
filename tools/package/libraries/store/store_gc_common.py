@@ -45,13 +45,13 @@ from tools.package.libraries.store.content_store import (
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
-RETRO_AUDIT_DOC_REL = os.path.join("docs", "audit", "STORE_GC0_RETRO_AUDIT.md")
-DOCTRINE_DOC_REL = os.path.join("docs", "lib", "STORE_INTEGRITY_AND_GC.md")
-BASELINE_DOC_REL = os.path.join("docs", "audit", "STORE_GC_BASELINE.md")
-VERIFY_REPORT_DOC_REL = os.path.join("docs", "audit", "STORE_VERIFY_REPORT.md")
-VERIFY_REPORT_JSON_REL = os.path.join("data", "audit", "store_verify_report.json")
-GC_REPORT_JSON_REL = os.path.join("data", "audit", "store_gc_report.json")
-GC_POLICY_REGISTRY_REL = os.path.join("data", "registries", "gc_policy_registry.json")
+RETRO_AUDIT_DOC_REL = os.path.join("docs", "archive", "audit", "STORE_GC0_RETRO_AUDIT.md")
+DOCTRINE_DOC_REL = os.path.join("docs", "runtime", "storage", "STORE_INTEGRITY_AND_GC.md")
+BASELINE_DOC_REL = os.path.join("docs", "archive", "audit", "STORE_GC_BASELINE.md")
+VERIFY_REPORT_DOC_REL = os.path.join("docs", "archive", "audit", "STORE_VERIFY_REPORT.md")
+VERIFY_REPORT_JSON_REL = os.path.join("archive", "generated", "audit", "store_verify_report.json")
+GC_REPORT_JSON_REL = os.path.join("archive", "generated", "audit", "store_gc_report.json")
+GC_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "gc_policy_registry.json")
 RULE_GRAPH = "INV-GC-USES-REACHABILITY-GRAPH"
 RULE_DETERMINISTIC = "INV-GC-DETERMINISTIC"
 RULE_POLICY = "INV-NO-DELETE-WITHOUT-POLICY"

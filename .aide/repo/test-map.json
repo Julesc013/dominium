@@ -326,41 +326,19 @@
       "confidence": "low",
       "likely_targets": [],
       "reasons": [
-        "test_path_detected"
+        "test_prefix_filename"
       ],
-      "test_path": "tests/server/domain_shard_partition_tests.cpp"
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_adapter_compiler.py"
     },
     {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
+      "confidence": "high",
+      "likely_targets": [
+        "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/aide_lite.py"
       ],
-      "test_path": "tests/server/integrity_checkpoint_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
       "reasons": [
-        "test_path_detected"
+        "test_prefix_filename"
       ],
-      "test_path": "tests/server/shard_api_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/server/shard_regression_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/server/shard_routing_tests.cpp"
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_aide_lite.py"
     },
     {
       "confidence": "low",
@@ -368,39 +346,219 @@
       "reasons": [
         "test_prefix_filename"
       ],
-      "test_path": "release/packaging/setup/scripts/ci/test_support_bundle_determinism.py"
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_cache_local_state.py"
+    },
+    {
+      "confidence": "high",
+      "likely_targets": [
+        ".aide/policies/export-import.yaml"
+      ],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_export_import.py"
     },
     {
       "confidence": "low",
       "likely_targets": [],
       "reasons": [
-        "test_suffix_filename"
+        "test_prefix_filename"
       ],
-      "test_path": "release/packaging/setup/scripts/packaging/tests/exe_validation_test.py"
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_gateway_commands.py"
     },
     {
       "confidence": "low",
       "likely_targets": [],
       "reasons": [
-        "test_suffix_filename"
+        "test_prefix_filename"
       ],
-      "test_path": "release/packaging/setup/scripts/packaging/tests/macos_validation_test.py"
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_golden_tasks.py"
     },
     {
       "confidence": "low",
       "likely_targets": [],
       "reasons": [
-        "test_suffix_filename"
+        "test_prefix_filename"
       ],
-      "test_path": "release/packaging/setup/scripts/packaging/tests/msi_validation_test.py"
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_outcome_controller.py"
     },
     {
       "confidence": "low",
       "likely_targets": [],
       "reasons": [
-        "test_suffix_filename"
+        "test_prefix_filename"
       ],
-      "test_path": "release/packaging/setup/scripts/packaging/tests/packaging_validation_test.py"
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_provider_adapter.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q27_commit_recovery.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q28_git_workflow.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q29_git_helper.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q31_export_pack_governance.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q34_changelog_release.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q35_github_advisory.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q36_intent_compiler.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q37_repo_intelligence.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q38_file_quality.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q39_refactor_control.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q40_root_recycling.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q41_tool_absorption.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q42_move_map_aliases.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q43_install_plan.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q45_upgrade_model.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q47_release_bundle.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_q48_github_release_draft.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_review_pack.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_router_profile.py"
+    },
+    {
+      "confidence": "high",
+      "likely_targets": [
+        ".aide/policies/token-ledger.yaml"
+      ],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_token_ledger.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "archive/generated/aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_verifier.py"
     },
     {
       "confidence": "low",
@@ -1374,73 +1532,9 @@
       "confidence": "low",
       "likely_targets": [],
       "reasons": [
-        "test_path_detected"
+        "test_prefix_filename"
       ],
-      "test_path": "tests/engine/CMakeLists.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/agent_foundation_contract_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/agent_mvp_core_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/agent_mvp_social_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/budget_model_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/domain_volume_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/ecs_packed_view_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/ecs_soa_storage_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/ecs_storage_iface_tests.cpp"
+      "test_path": "release/packaging/setup/scripts/ci/test_support_bundle_determinism.py"
     },
     {
       "confidence": "low",
@@ -1448,7 +1542,7 @@
       "reasons": [
         "test_suffix_filename"
       ],
-      "test_path": "tests/engine/engine_data_validate_test.c"
+      "test_path": "release/packaging/setup/scripts/packaging/tests/exe_validation_test.py"
     },
     {
       "confidence": "low",
@@ -1456,7 +1550,7 @@
       "reasons": [
         "test_suffix_filename"
       ],
-      "test_path": "tests/engine/engine_det_order_test.c"
+      "test_path": "release/packaging/setup/scripts/packaging/tests/macos_validation_test.py"
     },
     {
       "confidence": "low",
@@ -1464,7 +1558,7 @@
       "reasons": [
         "test_suffix_filename"
       ],
-      "test_path": "tests/engine/engine_due_sched_test.c"
+      "test_path": "release/packaging/setup/scripts/packaging/tests/msi_validation_test.py"
     },
     {
       "confidence": "low",
@@ -1472,455 +1566,7 @@
       "reasons": [
         "test_suffix_filename"
       ],
-      "test_path": "tests/engine/engine_perf_budget_test.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_suffix_filename"
-      ],
-      "test_path": "tests/engine/engine_perf_no_modal_test.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_suffix_filename"
-      ],
-      "test_path": "tests/engine/engine_smoke_test.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/execution_contract_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/execution_equivalence_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/execution_ir_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/execution_perf_regression_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/execution_policy_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/execution_scheduler_law_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/execution_scheduler_ref_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/kernel_gpu_fallback_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/kernel_iface_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/kernel_policy_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/kernel_scalar_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/kernel_simd_equivalence_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/macro_capsule_store_tests.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/physicalization_mvp_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/player_embodiment_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/process_guard_tests.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/render_prep_work_ir_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/streaming_work_ir_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/sys_caps_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/engine/visitability_contract_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/CMakeLists.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/agent1_goal_planning_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/agent2_doctrine_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/agent3_aggregation_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/agent_work_ir_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/civ0/dom_civ0_population_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/civ0a/dom_civ0a_survival_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/civ1/dom_civ1_city_infra_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/civ1/dom_civ1_stub_refusal_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/civ2/civ2_governance_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/civ3/dom_civ3_knowledge_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/civ4/dom_civ4_scale_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/civ5_war1_security_force_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/civ5_war2_engagement_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/civ5_war3_occupation_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/civ5_war4_scale_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/economy_work_ir_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/epistemic/dom_epistemic_tests.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/epistemic/epistemic_ui_bypass.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/epistemic/epistemic_ui_bypass_trycompile.cmake.in"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/execution_emit_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/fidelity/dom_fidelity_tests.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/governance_work_ir_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/interest/dom_interest_tests.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/interest_work_ir_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/jurisdiction_domain_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/life/dom_life_birth_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/life/dom_life_continuation_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/life/dom_life_death_pipeline_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/life/dom_life_remains_salvage_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/mod0_compat_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/mp0/dom_mp0_parity_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/phase6/CMakeLists.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/policy_bridge_tests.cpp"
+      "test_path": "release/packaging/setup/scripts/packaging/tests/packaging_validation_test.py"
     },
     {
       "confidence": "low",
@@ -1928,95 +1574,7 @@
       "reasons": [
         "test_prefix_filename"
       ],
-      "test_path": "tests/game/test_stub.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/determinism/det_agents.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/determinism/det_common.h"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/determinism/det_decor.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/determinism/det_domains.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/determinism/det_graph.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/determinism/det_knowledge.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/determinism/det_lod.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/determinism/det_packets.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/determinism/det_sched.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/determinism/det_struct.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/determinism/det_trans.c"
+      "test_path": "scripts/test_impacted.py"
     },
     {
       "confidence": "low",
@@ -2024,23 +1582,7 @@
       "reasons": [
         "test_prefix_filename"
       ],
-      "test_path": "tests/tests/game/determinism/test_spacetime_conversions.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_suffix_filename"
-      ],
-      "test_path": "tests/tests/game/dominium_integration/launcher_discovery_test.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_suffix_filename"
-      ],
-      "test_path": "tests/tests/game/dominium_integration/setup_flow_test.cpp"
+      "test_path": "scripts/test_tier.py"
     },
     {
       "confidence": "low",
@@ -2048,903 +1590,7 @@
       "reasons": [
         "test_prefix_filename"
       ],
-      "test_path": "tests/tests/game/domino_core/test_dom_core_smoke.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_decor/test_dg_decor_compile_determinism.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/domino_gfx/dgfx_demo.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_gfx/test_dgfx_caps_contract.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_gfx/test_dgfx_conformance.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_gfx/test_dgfx_soft_hash.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_gfx/test_dgfx_stall_watchdog.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_gfx/test_domino_canvas_build.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_gfx/test_gfx_soft.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_suffix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_mod/manifest_io_test.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_sim/test_dg_domains_frames_prop.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_sim/test_dg_lod_framework.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_sim/test_dg_pose_anchor_quant.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_sim/test_domino_dominium_sim.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_struct/test_dg_struct_compile_determinism.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_sys/test_dsys_posix.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_sys/test_dsys_stub.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_sys/test_dsys_x11.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_sys/test_dynarray.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_sys/test_input_trace.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_sys/test_platform_probe.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/domino_trans/test_dg_trans_compile_determinism.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/CMakeLists.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/conformance/setup_conformance_repeat_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/conformance/setup_conformance_runner.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/gold_master/setup_gold_master_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/golden/cli_apply_dry_run.json"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/golden/cli_audit_dump.json"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/golden/cli_plan.json"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/golden/cli_state_dump.json"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/golden/cli_status.json"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/golden/cli_verify.json"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/golden/conformance_summary.json"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/golden/plan_custom.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/golden/plan_default.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/parity/setup_parity_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/parity_lock/setup_parity_lock_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/setup/setup_kernel_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_adapter_linux_wrappers.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_adapter_macos_gui.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_adapter_macos_pkg.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_adapter_steam.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_adapter_windows_exe.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_adapter_wrapper_scripts.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_apply.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_cli_golden.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_import_legacy_state.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_kernel_uses_services_platform.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_plan.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_services_fs_sandbox.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_services_platform_fake.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_prefix_filename"
-      ],
-      "test_path": "tests/tests/game/setup/test_splat_selection.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/gen_tlv_vectors.py"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/caps_snapshot/caps_v1_basic.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/caps_snapshot/caps_v1_basic.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/caps_snapshot/caps_v1_basic.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/caps_snapshot/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/core_job_def/job_def_v1.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/core_job_def/job_def_v1.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/core_job_def/job_def_v1.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/core_job_def/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/core_job_state/job_state_v1.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/core_job_state/job_state_v1.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/core_job_state/job_state_v1.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/core_job_state/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/diag_bundle_index/bundle_index_v1.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/diag_bundle_index/bundle_index_v1.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/diag_bundle_index/bundle_index_v1.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/diag_bundle_index/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/diag_bundle_meta/bundle_meta_v1.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/diag_bundle_meta/bundle_meta_v1.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/diag_bundle_meta/bundle_meta_v1.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/diag_bundle_meta/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/installed_state/installed_state_v1.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/installed_state/installed_state_v1.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/installed_state/installed_state_v1.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/installed_state/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/instance_manifest/instance_v1_legacy.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/instance_manifest/instance_v1_legacy.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/instance_manifest/instance_v1_legacy.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/instance_manifest/instance_v2_basic.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/instance_manifest/instance_v2_basic.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/instance_manifest/instance_v2_basic.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/instance_manifest/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/launcher_audit/audit_v1_basic.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/launcher_audit/audit_v1_basic.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/launcher_audit/audit_v1_basic.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/launcher_audit/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/launcher_handshake/handshake_v1_basic.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/launcher_handshake/handshake_v1_basic.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/launcher_handshake/handshake_v1_basic.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/launcher_handshake/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/pack_manifest/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/pack_manifest/pack_base_v1.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/pack_manifest/pack_base_v1.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/pack_manifest/pack_base_v1.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/pack_manifest/pack_conflict_v1.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/pack_manifest/pack_conflict_v1.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/pack_manifest/pack_conflict_v1.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/pack_manifest/pack_core_v1.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/pack_manifest/pack_core_v1.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/pack_manifest/pack_core_v1.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/selection_summary/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/selection_summary/selection_v1_basic.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/selection_summary/selection_v1_basic.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/selection_summary/selection_v1_basic.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/tools_registry/manifest.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/tools_registry/tools_v1_basic.expected.txt"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/tools_registry/tools_v1_basic.sha256"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/tests/game/vectors/tlv/tools_registry/tools_v1_basic.tlv"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/tests_runner.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/war_work_ir_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tests/game/work_ir_completeness_tests.cpp"
+      "test_path": "scripts/test_timing_report.py"
     },
     {
       "confidence": "low",
@@ -3017,6 +1663,14 @@
         "test_path_detected"
       ],
       "test_path": "tests/app/app_scaffold_contract_tests.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/app/app_thinness_validator_tests.py"
     },
     {
       "confidence": "low",
@@ -3192,6 +1846,14 @@
       "reasons": [
         "test_path_detected"
       ],
+      "test_path": "tests/app/semantic_lint_common.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
       "test_path": "tests/app/semantic_stability_tests.py"
     },
     {
@@ -3256,6 +1918,14 @@
       "reasons": [
         "test_path_detected"
       ],
+      "test_path": "tests/app/workbench_module_names_validator_tests.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
       "test_path": "tests/authority/CMakeLists.txt"
     },
     {
@@ -3297,6 +1967,14 @@
         "test_path_detected"
       ],
       "test_path": "tests/contentlib/CMakeLists.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/contentlib/content_layout_validator_tests.py"
     },
     {
       "confidence": "low",
@@ -3784,6 +2462,286 @@
       "reasons": [
         "test_path_detected"
       ],
+      "test_path": "tests/engine/CMakeLists.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/agent_foundation_contract_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/agent_mvp_core_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/agent_mvp_social_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/budget_model_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/domain_volume_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/ecs_packed_view_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/ecs_soa_storage_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/ecs_storage_iface_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_suffix_filename"
+      ],
+      "test_path": "tests/engine/engine_data_validate_test.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_suffix_filename"
+      ],
+      "test_path": "tests/engine/engine_det_order_test.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_suffix_filename"
+      ],
+      "test_path": "tests/engine/engine_due_sched_test.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_suffix_filename"
+      ],
+      "test_path": "tests/engine/engine_perf_budget_test.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_suffix_filename"
+      ],
+      "test_path": "tests/engine/engine_perf_no_modal_test.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_suffix_filename"
+      ],
+      "test_path": "tests/engine/engine_smoke_test.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/execution_contract_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/execution_equivalence_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/execution_ir_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/execution_perf_regression_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/execution_policy_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/execution_scheduler_law_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/execution_scheduler_ref_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/kernel_gpu_fallback_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/kernel_iface_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/kernel_policy_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/kernel_scalar_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/kernel_simd_equivalence_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/macro_capsule_store_tests.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/physicalization_mvp_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/player_embodiment_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/process_guard_tests.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/render_prep_work_ir_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/streaming_work_ir_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/sys_caps_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/engine/visitability_contract_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
       "test_path": "tests/entitlement/CMakeLists.txt"
     },
     {
@@ -3849,6 +2807,1302 @@
         "test_path_detected"
       ],
       "test_path": "tests/fab/fab_refusal_tests.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/CMakeLists.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/agent1_goal_planning_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/agent2_doctrine_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/agent3_aggregation_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/agent_work_ir_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/civ0/dom_civ0_population_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/civ0a/dom_civ0a_survival_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/civ1/dom_civ1_city_infra_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/civ1/dom_civ1_stub_refusal_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/civ2/civ2_governance_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/civ3/dom_civ3_knowledge_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/civ4/dom_civ4_scale_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/civ5_war1_security_force_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/civ5_war2_engagement_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/civ5_war3_occupation_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/civ5_war4_scale_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/economy_work_ir_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/epistemic/dom_epistemic_tests.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/epistemic/epistemic_ui_bypass.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/epistemic/epistemic_ui_bypass_trycompile.cmake.in"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/execution_emit_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/fidelity/dom_fidelity_tests.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/governance_work_ir_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/interest/dom_interest_tests.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/interest_work_ir_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/jurisdiction_domain_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/life/dom_life_birth_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/life/dom_life_continuation_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/life/dom_life_death_pipeline_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/life/dom_life_remains_salvage_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/mod0_compat_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/mp0/dom_mp0_parity_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/phase6/CMakeLists.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/policy_bridge_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/test_stub.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/determinism/det_agents.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/determinism/det_common.h"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/determinism/det_decor.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/determinism/det_domains.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/determinism/det_graph.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/determinism/det_knowledge.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/determinism/det_lod.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/determinism/det_packets.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/determinism/det_sched.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/determinism/det_struct.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/determinism/det_trans.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/determinism/test_spacetime_conversions.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_suffix_filename"
+      ],
+      "test_path": "tests/game/tests/dominium_integration/launcher_discovery_test.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_suffix_filename"
+      ],
+      "test_path": "tests/game/tests/dominium_integration/setup_flow_test.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_core/test_dom_core_smoke.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_decor/test_dg_decor_compile_determinism.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/domino_gfx/dgfx_demo.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_gfx/test_dgfx_caps_contract.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_gfx/test_dgfx_conformance.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_gfx/test_dgfx_soft_hash.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_gfx/test_dgfx_stall_watchdog.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_gfx/test_domino_canvas_build.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_gfx/test_gfx_soft.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_suffix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_mod/manifest_io_test.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_sim/test_dg_domains_frames_prop.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_sim/test_dg_lod_framework.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_sim/test_dg_pose_anchor_quant.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_sim/test_domino_dominium_sim.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_struct/test_dg_struct_compile_determinism.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_sys/test_dsys_posix.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_sys/test_dsys_stub.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_sys/test_dsys_x11.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_sys/test_dynarray.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_sys/test_input_trace.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_sys/test_platform_probe.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/domino_trans/test_dg_trans_compile_determinism.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/CMakeLists.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/conformance/setup_conformance_repeat_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/conformance/setup_conformance_runner.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/gold_master/setup_gold_master_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/golden/cli_apply_dry_run.json"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/golden/cli_audit_dump.json"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/golden/cli_plan.json"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/golden/cli_state_dump.json"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/golden/cli_status.json"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/golden/cli_verify.json"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/golden/conformance_summary.json"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/golden/plan_custom.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/golden/plan_default.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/parity/setup_parity_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/parity_lock/setup_parity_lock_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/setup/setup_kernel_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_adapter_linux_wrappers.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_adapter_macos_gui.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_adapter_macos_pkg.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_adapter_steam.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_adapter_windows_exe.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_adapter_wrapper_scripts.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_apply.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_cli_golden.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_import_legacy_state.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_kernel_uses_services_platform.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_plan.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_services_fs_sandbox.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_services_platform_fake.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_prefix_filename"
+      ],
+      "test_path": "tests/game/tests/setup/test_splat_selection.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/gen_tlv_vectors.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/caps_snapshot/caps_v1_basic.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/caps_snapshot/caps_v1_basic.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/caps_snapshot/caps_v1_basic.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/caps_snapshot/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/core_job_def/job_def_v1.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/core_job_def/job_def_v1.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/core_job_def/job_def_v1.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/core_job_def/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/core_job_state/job_state_v1.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/core_job_state/job_state_v1.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/core_job_state/job_state_v1.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/core_job_state/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/diag_bundle_index/bundle_index_v1.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/diag_bundle_index/bundle_index_v1.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/diag_bundle_index/bundle_index_v1.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/diag_bundle_index/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/diag_bundle_meta/bundle_meta_v1.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/diag_bundle_meta/bundle_meta_v1.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/diag_bundle_meta/bundle_meta_v1.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/diag_bundle_meta/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/installed_state/installed_state_v1.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/installed_state/installed_state_v1.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/installed_state/installed_state_v1.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/installed_state/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/instance_manifest/instance_v1_legacy.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/instance_manifest/instance_v1_legacy.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/instance_manifest/instance_v1_legacy.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/instance_manifest/instance_v2_basic.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/instance_manifest/instance_v2_basic.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/instance_manifest/instance_v2_basic.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/instance_manifest/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/launcher_audit/audit_v1_basic.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/launcher_audit/audit_v1_basic.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/launcher_audit/audit_v1_basic.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/launcher_audit/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/launcher_handshake/handshake_v1_basic.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/launcher_handshake/handshake_v1_basic.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/launcher_handshake/handshake_v1_basic.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/launcher_handshake/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/pack_manifest/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/pack_manifest/pack_base_v1.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/pack_manifest/pack_base_v1.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/pack_manifest/pack_base_v1.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/pack_manifest/pack_conflict_v1.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/pack_manifest/pack_conflict_v1.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/pack_manifest/pack_conflict_v1.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/pack_manifest/pack_core_v1.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/pack_manifest/pack_core_v1.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/pack_manifest/pack_core_v1.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/selection_summary/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/selection_summary/selection_v1_basic.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/selection_summary/selection_v1_basic.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/selection_summary/selection_v1_basic.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/tools_registry/manifest.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/tools_registry/tools_v1_basic.expected.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/tools_registry/tools_v1_basic.sha256"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests/vectors/tlv/tools_registry/tools_v1_basic.tlv"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/tests_runner.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/war_work_ir_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/game/work_ir_completeness_tests.cpp"
     },
     {
       "confidence": "low",
@@ -5528,6 +5782,14 @@
       "reasons": [
         "test_path_detected"
       ],
+      "test_path": "tests/schema/schema_taxonomy_validator_tests.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
       "test_path": "tests/schema/schema_unit_annotation_tests.py"
     },
     {
@@ -5545,6 +5807,46 @@
         "test_path_detected"
       ],
       "test_path": "tests/schema/schema_version_immutability_tests.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/server/domain_shard_partition_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/server/integrity_checkpoint_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/server/shard_api_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/server/shard_regression_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/server/shard_routing_tests.cpp"
     },
     {
       "confidence": "low",
@@ -6088,7 +6390,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/auditx_canonical_hash_stability_tests.py"
+      "test_path": "tests/tools/auditx_canonical_hash_stability_tests.py"
     },
     {
       "confidence": "low",
@@ -6096,7 +6398,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/auditx_environment_tests.py"
+      "test_path": "tests/tools/auditx_environment_tests.py"
     },
     {
       "confidence": "low",
@@ -6104,7 +6406,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/compatx_migration_tests.py"
+      "test_path": "tests/tools/compatx_migration_tests.py"
     },
     {
       "confidence": "low",
@@ -6112,7 +6414,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/compatx_pack_matrix_tests.py"
+      "test_path": "tests/tools/compatx_pack_matrix_tests.py"
     },
     {
       "confidence": "low",
@@ -6120,7 +6422,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/compatx_save_replay_tests.py"
+      "test_path": "tests/tools/compatx_save_replay_tests.py"
     },
     {
       "confidence": "low",
@@ -6128,7 +6430,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/compatx_schema_diff_tests.py"
+      "test_path": "tests/tools/compatx_schema_diff_tests.py"
     },
     {
       "confidence": "low",
@@ -6136,7 +6438,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/controlx_adversarial_queue_tests.py"
+      "test_path": "tests/tools/controlx_adversarial_queue_tests.py"
     },
     {
       "confidence": "low",
@@ -6144,7 +6446,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/controlx_parallel_workspace_tests.py"
+      "test_path": "tests/tools/controlx_parallel_workspace_tests.py"
     },
     {
       "confidence": "low",
@@ -6152,7 +6454,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/controlx_smoke_tests.py"
+      "test_path": "tests/tools/controlx_smoke_tests.py"
     },
     {
       "confidence": "low",
@@ -6160,7 +6462,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/performx_determinism_tests.py"
+      "test_path": "tests/tools/performx_determinism_tests.py"
     },
     {
       "confidence": "low",
@@ -6168,7 +6470,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/performx_environment_tests.py"
+      "test_path": "tests/tools/performx_environment_tests.py"
     },
     {
       "confidence": "low",
@@ -6176,7 +6478,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/performx_regression_detection_tests.py"
+      "test_path": "tests/tools/performx_regression_detection_tests.py"
     },
     {
       "confidence": "low",
@@ -6184,7 +6486,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/performx_smoke_tests.py"
+      "test_path": "tests/tools/performx_smoke_tests.py"
     },
     {
       "confidence": "low",
@@ -6192,7 +6494,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/performx_workspace_isolation_tests.py"
+      "test_path": "tests/tools/performx_workspace_isolation_tests.py"
     },
     {
       "confidence": "low",
@@ -6216,7 +6518,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/securex_boundary_tests.py"
+      "test_path": "tests/tools/securex_boundary_tests.py"
     },
     {
       "confidence": "low",
@@ -6224,7 +6526,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/securex_pack_signature_tests.py"
+      "test_path": "tests/tools/securex_pack_signature_tests.py"
     },
     {
       "confidence": "low",
@@ -6232,7 +6534,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/securex_privilege_tests.py"
+      "test_path": "tests/tools/securex_privilege_tests.py"
     },
     {
       "confidence": "low",
@@ -6240,7 +6542,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/tools/xstack/securex_reproducible_build_tests.py"
+      "test_path": "tests/tools/securex_reproducible_build_tests.py"
     },
     {
       "confidence": "low",
@@ -6358,6 +6660,14 @@
       "confidence": "low",
       "likely_targets": [],
       "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tests/validation_tiers.json"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
         "test_prefix_filename"
       ],
       "test_path": "tools/audit/test_matrix.py"
@@ -6374,33 +6684,241 @@
       "confidence": "low",
       "likely_targets": [],
       "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/cpp/registry_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/cpp/tool0_inspection_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/cpp/vis3_observability_tests.cpp"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/dgfx_demo/dgfx_demo.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/dgfx_demo/dgfx_demo.h"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/dgfx_demo/dgfx_demo_main.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/domino/dom_inspect/CMakeLists.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/domino/dom_inspect/dom_inspect.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/domino/dom_validate_content/CMakeLists.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/domino/dom_validate_content/dom_validate_content.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/domino/tools_main.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/network/net_cli.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/network/tool_anti_cheat_report.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/network/tool_export_ranked_proof_bundle.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/network/tool_handshake_matrix_report.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/network/tool_net_loopback_sim.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/network/tool_proto_encode_decode.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/playtest/playtest_lib.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/playtest/replay_diff.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/playtest/replay_metrics.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/playtest/replay_run.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/playtest/replay_timeline.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/replay/CMakeLists.txt"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/replay/tool_replay.c"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/server/__init__.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/server/server_mvp0_probe.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/server/server_mvp1_probe.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/server/tool_replay_local_singleplayer.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
+        "test_path_detected"
+      ],
+      "test_path": "tools/test/server/tool_replay_server_window.py"
+    },
+    {
+      "confidence": "low",
+      "likely_targets": [],
+      "reasons": [
         "test_suffix_filename"
       ],
       "test_path": "tools/test/tool_test.c"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tools/tests/registry_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tools/tests/tool0_inspection_tests.cpp"
-    },
-    {
-      "confidence": "low",
-      "likely_targets": [],
-      "reasons": [
-        "test_path_detected"
-      ],
-      "test_path": "tools/tests/vis3_observability_tests.cpp"
     },
     {
       "confidence": "low",
@@ -20316,5 +20834,5 @@
     }
   ],
   "schema_version": "aide.test-map.v0",
-  "source_commit": "6697758d8754c643020d95779bab71003f194b5b"
+  "source_commit": "e201f72d6825c5f815f3850692885ed185745b6b"
 }

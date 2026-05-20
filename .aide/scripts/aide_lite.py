@@ -5313,15 +5313,45 @@ def repo_git_files(repo_root: Path) -> list[str]:
 
 def repo_is_local_forbidden_path(rel_path: str) -> bool:
     rel = normalize_rel(rel_path)
-    return rel == ".env" or rel == ".aide.local" or rel.startswith(".aide.local/") or rel.startswith("secrets/")
+    return (
+        rel == ".env"
+        or rel == ".aide.local"
+        or rel.startswith(".aide.local/")
+        or rel == ".dominium.local"
+        or rel.startswith(".dominium.local/")
+        or rel.startswith("secrets/")
+    )
 
 
 def repo_walk_files(repo_root: Path) -> list[str]:
-    excluded_dirs = {".git", ".aide.local", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", "node_modules", "dist", "build"}
+    excluded_dirs = {
+        ".git",
+        ".aide.local",
+        ".dominium.local",
+        "__pycache__",
+        ".pytest_cache",
+        ".mypy_cache",
+        ".ruff_cache",
+        "node_modules",
+        "artifacts",
+        "build",
+        "dist",
+        "out",
+        "reports",
+        "target",
+        "tmp",
+    }
     files: list[str] = []
     for current_root, dirs, filenames in os.walk(repo_root):
-        dirs[:] = sorted(name for name in dirs if name not in excluded_dirs)
         current = Path(current_root)
+        dirs[:] = sorted(
+            name
+            for name in dirs
+            if name not in excluded_dirs
+            and not normalize_rel((current / name).relative_to(repo_root)).startswith(
+                ("archive/generated", "archive/legacy", "archive/historical")
+            )
+        )
         for filename in sorted(filenames):
             rel = normalize_rel((current / filename).relative_to(repo_root))
             if repo_is_local_forbidden_path(rel):

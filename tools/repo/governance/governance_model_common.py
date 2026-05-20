@@ -28,14 +28,14 @@ from tools.release.update_model_common import build_update_model_report
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
-RETRO_AUDIT_DOC_REL = os.path.join("docs", "audit", "GOVERNANCE0_RETRO_AUDIT.md")
+RETRO_AUDIT_DOC_REL = os.path.join("docs", "archive", "audit", "GOVERNANCE0_RETRO_AUDIT.md")
 DOCTRINE_DOC_REL = os.path.join("docs", "governance", "GOVERNANCE_MODEL.md")
 TRUST_ROOT_DOC_REL = os.path.join("docs", "governance", "TRUST_ROOT_GOVERNANCE.md")
 LICENSING_DOC_REL = os.path.join("docs", "governance", "LICENSING_STRATEGY.md")
-BASELINE_DOC_REL = os.path.join("docs", "audit", "GOVERNANCE_POLICY_BASELINE.md")
-REPORT_JSON_REL = os.path.join("data", "audit", "governance_policy_report.json")
-GOVERNANCE_PROFILE_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "governance_profile.schema")
-GOVERNANCE_PROFILE_SCHEMA_JSON_REL = os.path.join("contracts", "schemas", "governance_profile.schema.json")
+BASELINE_DOC_REL = os.path.join("docs", "archive", "audit", "GOVERNANCE_POLICY_BASELINE.md")
+REPORT_JSON_REL = os.path.join("archive", "generated", "audit", "governance_policy_report.json")
+GOVERNANCE_PROFILE_SCHEMA_REL = os.path.join("contracts", "schema", "governance", "governance_profile.schema")
+GOVERNANCE_PROFILE_SCHEMA_JSON_REL = os.path.join("contracts", "schema", "governance_profile.schema.json")
 RULE_PROFILE = "INV-GOVERNANCE-PROFILE-PRESENT-IN-RELEASE"
 LAST_REVIEWED = "2026-03-14"
 

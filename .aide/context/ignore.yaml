@@ -8,6 +8,10 @@ exclude:
   - .env
   - secrets/**
   - .aide.local/**
+  - .dominium.local/**
+  - archive/generated/**
+  - archive/legacy/**
+  - archive/historical/**
   - caches/**
   - cache/**
   - .cache/**

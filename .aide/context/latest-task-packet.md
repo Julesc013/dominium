@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - REPOX-TESTX-CANON-PATHS-01
+UNSPECIFIED - CANON-REMEDIATION-FULL-PROOF-01
 
 ## GOAL
 
-REPOX-TESTX-CANON-PATHS-01
+CANON-REMEDIATION-FULL-PROOF-01
 
 ## WHY
 
@@ -113,8 +113,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4114
-- approx_tokens: 1029
+- chars: 4124
+- approx_tokens: 1031
 - budget_status: PASS
 - warnings:
   - none

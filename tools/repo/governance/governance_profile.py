@@ -11,8 +11,8 @@ from typing import Mapping
 from meta_extensions_engine import normalize_extensions_tree
 
 
-DEFAULT_GOVERNANCE_PROFILE_REL = os.path.join("data", "governance", "governance_profile.json")
-DEFAULT_GOVERNANCE_MODE_REGISTRY_REL = os.path.join("data", "registries", "governance_mode_registry.json")
+DEFAULT_GOVERNANCE_PROFILE_REL = os.path.join("contracts", "governance", "governance_profile.json")
+DEFAULT_GOVERNANCE_MODE_REGISTRY_REL = os.path.join("contracts", "registry", "governance_mode_registry.json")
 
 GOVERNANCE_MODE_OPEN = "gov.open"
 GOVERNANCE_MODE_CORE_CLOSED = "gov.core_closed_ecosystem_open"
