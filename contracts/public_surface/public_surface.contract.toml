@@ -1829,6 +1829,110 @@ replacement_policy = "fixture_changes_follow_mod_pack_trust_validator_tests"
 notes = "Fixture suite for mod/pack trust validator behavior."
 
 [[surface]]
+id = "dominium.portability.matrix.v1"
+kind = "registry"
+path = "contracts/platform/portability_matrix.contract.toml"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-MATRIX-01"
+proof = ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_portability_matrix_update"
+notes = "Evidence-backed portability matrix law for platform, toolchain, provider, product, package, and release claims."
+
+[[surface]]
+id = "dominium.platform.floor.registry.v1"
+kind = "registry"
+path = "contracts/platform/platform_floor.registry.json"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-MATRIX-01"
+proof = ["python -m json.tool contracts/platform/platform_floor.registry.json", "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_portability_matrix_update"
+notes = "Platform floor registry with conservative planned/research/proven statuses."
+
+[[surface]]
+id = "dominium.platform.toolchain.registry.v1"
+kind = "registry"
+path = "contracts/platform/toolchain.registry.json"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-MATRIX-01"
+proof = ["python -m json.tool contracts/platform/toolchain.registry.json", "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_portability_matrix_update"
+notes = "Toolchain registry entries are not support claims without evidence."
+
+[[surface]]
+id = "dominium.runtime.portability.matrix.v1"
+kind = "registry"
+path = "contracts/platform/runtime_portability.matrix.json"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-MATRIX-01"
+proof = ["python -m json.tool contracts/platform/runtime_portability.matrix.json", "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_portability_matrix_update"
+notes = "Runtime/provider portability matrix."
+
+[[surface]]
+id = "dominium.renderer.portability.matrix.v1"
+kind = "registry"
+path = "contracts/platform/renderer_portability.matrix.json"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-MATRIX-01"
+proof = ["python -m json.tool contracts/platform/renderer_portability.matrix.json", "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_portability_matrix_update"
+notes = "Renderer portability matrix; GPU rows remain research unless evidence exists."
+
+[[surface]]
+id = "dominium.product_mode.portability.matrix.v1"
+kind = "registry"
+path = "contracts/platform/product_mode_portability.matrix.json"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-MATRIX-01"
+proof = ["python -m json.tool contracts/platform/product_mode_portability.matrix.json", "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_portability_matrix_update"
+notes = "Product mode portability matrix."
+
+[[surface]]
+id = "dominium.package.portability.matrix.v1"
+kind = "registry"
+path = "contracts/platform/package_portability.matrix.json"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-MATRIX-01"
+proof = ["python -m json.tool contracts/platform/package_portability.matrix.json", "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_portability_matrix_update"
+notes = "Package and release-artifact portability matrix."
+
+[[surface]]
+id = "dominium.portability.validator.v1"
+kind = "documentation"
+path = "tools/validators/platform/check_portability_matrix.py"
+owner = "tools.validators.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-MATRIX-01"
+proof = ["python -m py_compile tools/validators/platform/check_portability_matrix.py", "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_portability_matrix_update"
+notes = "Validator for portability contracts, registries, matrices, fixtures, and inventory."
+
+[[surface]]
 id = "dominium.retired.root_schema.v1"
 kind = "archive_record"
 path = "schema"

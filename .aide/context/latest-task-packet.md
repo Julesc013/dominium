@@ -2,120 +2,133 @@
 
 ## PHASE
 
-foundation-lock
-
-## TASK
-
-`MOD-PACK-TRUST-MODEL-01`
+Foundation Lock - PORTABILITY-MATRIX-01
 
 ## GOAL
 
-Define Dominium's mod/pack trust law for content packs, profile/theme/UI/module
-packs, Workbench-authored modules, external process adapters, native providers,
-permissions, sandbox expectations, review, deterministic impact, overlay policy,
-diagnostics, refusals, and evidence.
+Define Dominium's platform, architecture, toolchain, ABI, renderer, package,
+runtime, product mode, and release evidence portability matrix without adding
+build targets, CI lanes, provider/runtime behavior, renderer behavior, package
+runtime, Workbench UI, or release outputs.
 
 ## WHY
 
-Dominium needs pack-driven extension without silent authority expansion,
-unreviewed native code, hidden external adapters, undeclared permissions,
-nondeterministic replay behavior, or silent content overwrites.
+Portability claims must be matrix-backed and evidence-backed. Planned,
+research, experimental, and provisional rows must not become support claims by
+folder presence, preset presence, installed toolchain presence, or prose.
 
 ## CONTEXT_REFS
 
 - `AGENTS.md`
-- `docs/canon/constitution_v1.md`
-- `docs/canon/glossary_v1.md`
-- `contracts/capability/capability.contract.toml`
-- `contracts/provider/provider.contract.toml`
-- `contracts/module/module.schema.json`
-- `contracts/replacement/replacement.contract.toml`
-- `contracts/versioning/versioning.contract.toml`
-- `.aide/reports/MOD-PACK-TRUST-MODEL-01-validation.md`
-
-## SCOPE
-
-- `contracts/trust/**`
-- `contracts/modding/**`
-- `tools/validators/package/check_mod_pack_trust.py`
-- `tests/contract/mod_pack_trust/**`
-- `docs/architecture/mod_pack_trust_model.md`
-- `docs/development/mod_pack_trust_guidelines.md`
-- `docs/modding/trust_ladder.md`
-- `.aide/reports/MOD-PACK-TRUST-MODEL-01-*`
-- `docs/repo/audits/MOD_PACK_TRUST_MODEL_01.md`
-- narrow registry/status updates for diagnostics, refusals, capabilities, public
-  surfaces, repo status, and AIDE status.
+- `contracts/platform/**`
+- `contracts/build/**`
+- `contracts/provider/**`
+- `contracts/capability/**`
+- `contracts/public_surface/public_surface.contract.toml`
+- `contracts/diagnostics/diagnostic_code.registry.json`
+- `contracts/refusal/refusal_code.registry.json`
+- `.aide/reports/PORTABILITY-MATRIX-01-validation.md`
+- `.aide/reports/PORTABILITY-MATRIX-01-fast-strict.md`
+- `.aide/context/latest-context-packet.md`
 
 ## ALLOWED_PATHS
 
-- `contracts/trust/**`
-- `contracts/modding/**`
-- `tools/validators/package/check_mod_pack_trust.py`
-- `tests/contract/mod_pack_trust/**`
-- `docs/architecture/mod_pack_trust_model.md`
-- `docs/development/mod_pack_trust_guidelines.md`
-- `docs/modding/trust_ladder.md`
+- `contracts/platform/**`
+- `contracts/build/**` only for narrow references
+- `contracts/provider/**` only for narrow references
+- `contracts/capability/**` only for narrow references
+- `contracts/release/**` only for narrow references
+- `contracts/artifact/**` only for narrow references
+- `contracts/diagnostics/**`
+- `contracts/refusal/**`
+- `contracts/public_surface/**`
+- `docs/architecture/portability_matrix.md`
+- `docs/development/portability_guidelines.md`
+- `docs/build/toolchain_portability.md`
+- `docs/release/platform_support_policy.md`
+- `tools/validators/platform/check_portability_matrix.py`
+- `tests/contract/portability/**`
 - `.aide/reports/**`
 - `.aide/context/**`
-- `.aide/ledgers/migration_ledger.jsonl`
-- `docs/repo/**`
-- narrow registry updates named by the task.
+- `.aide/ledgers/**`
+- `docs/repo/audits/**`
+- `docs/repo/POST_CONVERGE_NEXT_STEPS.md`
+- `docs/repo/POST_RESTRUCTURE_PROOF.md`
+- `docs/repo/RESTRUCTURE_REPAIR_STATUS.md`
 
 ## FORBIDDEN_PATHS
 
+- `.git/**`
 - `.aide.local/**`
 - `.dominium.local/**`
 - generated build/projection/release outputs
-- runtime loader, sandbox, provider runtime, Workbench UI, gameplay, renderer,
-  native GUI, release publication, and product behavior implementation paths.
+- CMake presets, CI workflow mutation, new build targets, runtime provider
+  implementations, renderer implementations, package runtime, Workbench UI,
+  gameplay/domain/native GUI behavior, release tags, uploads, or GitHub
+  settings.
 
 ## IMPLEMENTATION
 
-Define contracts, registries, schemas, fixtures, validator, docs, evidence, and
-registry cross-references only. Inventory existing packs descriptively and do
-not migrate current manifests.
-
-## NON_GOALS
-
-No mod loader, scripting runtime, sandbox runtime, native plugin loader, dynamic
-loader, provider runtime, package/profile mounting, Workbench UI, gameplay,
-renderer, native GUI, release publication, or product behavior.
+- Added provisional portability contracts, registries, matrices, validator,
+  fixtures, docs, public-surface entries, diagnostics, refusals, and
+  capabilities.
+- Preserved existing release/platform docs as evidence references, not support
+  claims.
+- Refreshed `docs/archive/audit/identity_fingerprint.json` after updating
+  `docs/architecture/CANON_INDEX.md`.
 
 ## VALIDATION
 
-- `python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict`
-- `python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures`
-- `python tools/validators/package/check_mod_pack_trust.py --repo-root . --inventory`
-- cross-contract validators for versioning, replacement, module/workbench/app,
-  provider, capability/refusal, schema/protocol, artifact, diagnostics, command,
-  public surface, dependency direction, and ABI.
-- fast strict gate evidence:
-  `.aide/reports/MOD-PACK-TRUST-MODEL-01-fast-strict.md`
+- `python -m py_compile tools/validators/platform/check_portability_matrix.py`
+- `python tools/validators/platform/check_portability_matrix.py --repo-root . --strict`
+- `python tools/validators/platform/check_portability_matrix.py --repo-root . --json`
+- `python tools/validators/platform/check_portability_matrix.py --repo-root . --fixtures`
+- `python tools/validators/platform/check_portability_matrix.py --repo-root . --inventory`
+- Cross-law validators listed in `.aide/reports/PORTABILITY-MATRIX-01-validation.md`
+- `python tools/test/run_fast_strict.py --repo-root . --json-out .aide/reports/PORTABILITY-MATRIX-01-fast-strict.json --md-out .aide/reports/PORTABILITY-MATRIX-01-fast-strict.md`
+- `git diff --check`
 
 ## EVIDENCE
 
-- `.aide/reports/MOD-PACK-TRUST-MODEL-01-status.md`
-- `.aide/reports/MOD-PACK-TRUST-MODEL-01-validation.md`
-- `.aide/reports/MOD-PACK-TRUST-MODEL-01-results.json`
-- `.aide/reports/MOD-PACK-TRUST-MODEL-01-initial-trust-inventory.md`
-- `.aide/reports/MOD-PACK-TRUST-MODEL-01-fast-strict.md`
+- `contracts/platform/**`
+- `tools/validators/platform/check_portability_matrix.py`
+- `tests/contract/portability/**`
+- `docs/architecture/portability_matrix.md`
+- `docs/development/portability_guidelines.md`
+- `docs/build/toolchain_portability.md`
+- `docs/release/platform_support_policy.md`
+- `.aide/reports/PORTABILITY-MATRIX-01-status.md`
+- `.aide/reports/PORTABILITY-MATRIX-01-validation.md`
+- `.aide/reports/PORTABILITY-MATRIX-01-results.json`
+- `.aide/reports/PORTABILITY-MATRIX-01-fast-strict.md`
+- `docs/repo/audits/PORTABILITY_MATRIX_01.md`
+
+## NON_GOALS
+
+- No new platform/toolchain support claim.
+- No CMake preset, CI job, build target, provider implementation, renderer
+  implementation, package runtime, product behavior, Workbench UI, release
+  artifact, tag, upload, or GitHub settings mutation.
 
 ## ACCEPTANCE
 
-- trust contracts and registries exist;
-- validator strict/json/fixtures pass;
-- inventory is recorded without migration;
-- public surface, diagnostics, refusal, and capability registries are updated;
-- fast strict passes;
-- next task is `PORTABILITY-MATRIX-01`.
+- Portability validator passes strict/json/fixtures modes.
+- Fast strict passes.
+- Existing known debt is reported, not hidden.
+- Support claims remain evidence-backed and provisional rows remain
+  non-support claims.
 
 ## OUTPUT_SCHEMA
 
-Result status: `PASS_WITH_WARNINGS`
-
-Next task: `PORTABILITY-MATRIX-01`
+Return branch, starting/ending HEAD, origin/main, push status, result status,
+created artifacts, counts, registry updates, validator status, fast strict
+status, known warnings, worktree status, and next task.
 
 ## TOKEN_ESTIMATE
 
-Compact packet; under 1,200 tokens.
+- method: chars / 4, rounded up
+- chars: 4747
+- approx_tokens: 1187
+- budget_status: PASS
+- warnings:
+  - none

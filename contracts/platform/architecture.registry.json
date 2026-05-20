@@ -1,0 +1,49 @@
+{
+  "schema_version": "dominium.platform.architecture.registry.v1",
+  "status": "provisional",
+  "owner": "contracts.platform",
+  "architectures": [
+    {
+      "architecture": "x86",
+      "word_size": 32,
+      "endianness": "little",
+      "support_status": "research",
+      "notes": "Legacy 32-bit lane; no current support claim."
+    },
+    {
+      "architecture": "x64",
+      "word_size": 64,
+      "endianness": "little",
+      "support_status": "smoke_proven",
+      "notes": "Current host architecture lane; support remains matrix-scoped."
+    },
+    {
+      "architecture": "arm64",
+      "word_size": 64,
+      "endianness": "little",
+      "support_status": "research",
+      "notes": "Planned/research architecture until toolchain and platform proof exists."
+    },
+    {
+      "architecture": "ppc",
+      "word_size": "32_or_64_declared_by_target",
+      "endianness": "big_or_little_declared_by_target",
+      "support_status": "research",
+      "notes": "Historical/exotic architecture lane only."
+    },
+    {
+      "architecture": "wasm32",
+      "word_size": 32,
+      "endianness": "little",
+      "support_status": "research",
+      "notes": "WebAssembly is not an active build or release support target."
+    },
+    {
+      "architecture": "host",
+      "word_size": "host_declared",
+      "endianness": "host_declared",
+      "support_status": "smoke_proven",
+      "notes": "Host-default validation lane; not portable support by itself."
+    }
+  ]
+}

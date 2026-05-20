@@ -450,6 +450,20 @@ layer after MOVE-ROUTER-01 while preserving the routed root cleanup.
 This is not final proof. Remaining blockers are assigned to
 `MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing`.
 
+## PORTABILITY-MATRIX-01 Proof Note
+
+PORTABILITY-MATRIX-01 defines evidence-backed portability law without changing
+runtime/build behavior.
+
+- Platform floors registered: 8.
+- Architectures registered: 6.
+- Toolchains registered: 10.
+- Matrix rows: runtime 3, renderer 6, product mode 4, package 3.
+- The portability validator passes strict/json/fixtures/inventory modes.
+- Existing dependency-direction and full/release proof debt remains visible.
+
+Next task: `FOUNDATION-CLOSEOUT-01`.
+
 ## CANON-SPINE-NEW Proof Note
 
 CANON-SPINE-NEW completed the structural second-level source-spine cleanup after

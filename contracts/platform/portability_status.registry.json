@@ -1,0 +1,20 @@
+{
+  "schema_version": "dominium.platform.portability_status.registry.v1",
+  "status": "provisional",
+  "owner": "contracts.platform",
+  "statuses": [
+    {"status": "unsupported", "support_claim_allowed": false, "proof_required": []},
+    {"status": "planned", "support_claim_allowed": false, "proof_required": []},
+    {"status": "research", "support_claim_allowed": false, "proof_required": []},
+    {"status": "experimental", "support_claim_allowed": false, "proof_required": ["label"]},
+    {"status": "provisional", "support_claim_allowed": false, "proof_required": []},
+    {"status": "build_proven", "support_claim_allowed": false, "proof_required": ["build"]},
+    {"status": "smoke_proven", "support_claim_allowed": false, "proof_required": ["smoke"]},
+    {"status": "product_proven", "support_claim_allowed": false, "proof_required": ["product"]},
+    {"status": "release_candidate", "support_claim_allowed": false, "proof_required": ["release"]},
+    {"status": "supported", "support_claim_allowed": true, "proof_required": ["build", "smoke", "product", "package", "release"]},
+    {"status": "deprecated", "support_claim_allowed": false, "proof_required": ["version_policy", "refusal_or_migration"]},
+    {"status": "retired", "support_claim_allowed": false, "proof_required": ["retirement_policy", "refusal"]},
+    {"status": "historical", "support_claim_allowed": false, "proof_required": []}
+  ]
+}

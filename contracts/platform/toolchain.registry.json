@@ -1,0 +1,143 @@
+{
+  "schema_version": "dominium.platform.toolchain.registry.v1",
+  "status": "provisional",
+  "owner": "contracts.platform",
+  "toolchains": [
+    {
+      "toolchain": "msvc143",
+      "compiler": "msvc",
+      "version_floor": "19.3x",
+      "language_floor": "c17_cpp17",
+      "abi": "msvc_x64_c_abi_internal_cpp_not_public",
+      "crt_runtime": "host_configured",
+      "support_status": "build_proven",
+      "evidence": [
+        {
+          "evidence_id": "portability.msvc143.fast_strict",
+          "kind": "build",
+          "path": ".aide/reports/PORTABILITY-MATRIX-01-fast-strict.md",
+          "status": "expected_current_task",
+          "notes": "Current host proof when run under VS2022/v143; no release support claim."
+        }
+      ],
+      "known_limitations": ["No stable ABI or release support is claimed."],
+      "notes": "Registry entry only; machine-local install paths are forbidden."
+    },
+    {
+      "toolchain": "msvc141",
+      "compiler": "msvc",
+      "version_floor": "19.1x",
+      "language_floor": "c17_cpp17_review_required",
+      "abi": "msvc_c_abi_research",
+      "crt_runtime": "declared_by_tuple",
+      "support_status": "research",
+      "evidence": [],
+      "known_limitations": ["No current build proof."],
+      "notes": "Legacy toolchain lane."
+    },
+    {
+      "toolchain": "msvc141_xp",
+      "compiler": "msvc",
+      "version_floor": "19.1x_xp",
+      "language_floor": "legacy_review_required",
+      "abi": "msvc_xp_research",
+      "crt_runtime": "declared_by_tuple",
+      "support_status": "research",
+      "evidence": [],
+      "known_limitations": ["No current XP build proof."],
+      "notes": "XP lane remains research."
+    },
+    {
+      "toolchain": "msvc100",
+      "compiler": "msvc",
+      "version_floor": "16.0",
+      "language_floor": "legacy_review_required",
+      "abi": "legacy_msvc_research",
+      "crt_runtime": "declared_by_tuple",
+      "support_status": "research",
+      "evidence": [],
+      "known_limitations": ["No current proof; likely incompatible with active language floor."],
+      "notes": "Recorded for historical planning only."
+    },
+    {
+      "toolchain": "vc6",
+      "compiler": "msvc",
+      "version_floor": "6.0",
+      "language_floor": "legacy_c_review_required",
+      "abi": "legacy_msvc_research",
+      "crt_runtime": "declared_by_tuple",
+      "support_status": "research",
+      "evidence": [],
+      "known_limitations": ["No current proof; not compatible with active mainline language floor."],
+      "notes": "Historical research only."
+    },
+    {
+      "toolchain": "gcc",
+      "compiler": "gcc",
+      "version_floor": "unspecified",
+      "language_floor": "c17_cpp17",
+      "abi": "platform_c_abi_declared_by_tuple",
+      "crt_runtime": "libstdc_or_target_declared",
+      "support_status": "planned",
+      "evidence": [],
+      "known_limitations": ["No current task proof."],
+      "notes": "Planned POSIX compiler family."
+    },
+    {
+      "toolchain": "clang",
+      "compiler": "clang",
+      "version_floor": "unspecified",
+      "language_floor": "c17_cpp17",
+      "abi": "platform_c_abi_declared_by_tuple",
+      "crt_runtime": "target_declared",
+      "support_status": "planned",
+      "evidence": [],
+      "known_limitations": ["No current task proof."],
+      "notes": "Planned compiler family."
+    },
+    {
+      "toolchain": "xcode",
+      "compiler": "apple_clang",
+      "version_floor": "unspecified",
+      "language_floor": "c17_cpp17",
+      "abi": "darwin_c_abi_research",
+      "crt_runtime": "darwin_system",
+      "support_status": "research",
+      "evidence": [],
+      "known_limitations": ["No current macOS proof."],
+      "notes": "macOS research toolchain lane."
+    },
+    {
+      "toolchain": "codewarrior",
+      "compiler": "codewarrior",
+      "version_floor": "unspecified",
+      "language_floor": "legacy_review_required",
+      "abi": "legacy_research",
+      "crt_runtime": "declared_by_tuple",
+      "support_status": "research",
+      "evidence": [],
+      "known_limitations": ["No current proof."],
+      "notes": "Historical/exotic lane."
+    },
+    {
+      "toolchain": "host_default",
+      "compiler": "host_default",
+      "version_floor": "host_declared",
+      "language_floor": "host_declared_by_validation",
+      "abi": "host_declared",
+      "crt_runtime": "host_declared",
+      "support_status": "smoke_proven",
+      "evidence": [
+        {
+          "evidence_id": "portability.host_default.fast_strict",
+          "kind": "smoke",
+          "path": ".aide/reports/PORTABILITY-MATRIX-01-fast-strict.md",
+          "status": "expected_current_task",
+          "notes": "Host-default validation proof; not a portable release claim."
+        }
+      ],
+      "known_limitations": ["Host-default is not a release tuple."],
+      "notes": "Used by validators and inventory rows."
+    }
+  ]
+}

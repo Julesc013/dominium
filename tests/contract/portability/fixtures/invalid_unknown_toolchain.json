@@ -1,0 +1,18 @@
+{
+  "fixture_kind": "portability_row",
+  "target_id": "fixture.runtime.unknown_toolchain",
+  "target_kind": "runtime_provider",
+  "owner": "tests.contract",
+  "support_status": "planned",
+  "platform_floor": "headless_host",
+  "architecture": "host",
+  "toolchain": "missing_toolchain",
+  "language_floor": "host_declared_by_validation",
+  "abi": "host_internal",
+  "provider_capabilities": [],
+  "runtime_capabilities": [],
+  "test_evidence": [],
+  "diagnostic_codes": ["DOM-PORTABILITY-UNSUPPORTED-TOOLCHAIN"],
+  "refusal_codes": ["dominium.refusal.portability.toolchain_unsupported"],
+  "notes": "Invalid because toolchain is absent from registry."
+}

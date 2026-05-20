@@ -1,0 +1,19 @@
+{
+  "fixture_kind": "platform_floor",
+  "platform_floor": "fixture_os_x64",
+  "target_kind": "platform_floor",
+  "os_family": "fixture_os",
+  "os_version_min": "1.0",
+  "architecture": "x64",
+  "endianness": "little",
+  "word_size": 64,
+  "filesystem_policy": "fixture_paths",
+  "path_encoding": "utf8",
+  "case_sensitivity": "case_sensitive_default",
+  "dynamic_loading": "not_required",
+  "threading": "fixture_threads",
+  "support_status": "planned",
+  "evidence": [],
+  "known_limitations": ["Fixture only."],
+  "notes": "Valid platform floor fixture."
+}

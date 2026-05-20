@@ -1,43 +1,43 @@
 # Latest Dominium Status
 
-Current task: `MOD-PACK-TRUST-MODEL-01`.
+Current task: `PORTABILITY-MATRIX-01`.
 
 Result: PASS_WITH_WARNINGS, pending final commit and post-commit checks.
 
 ## Current Green State
 
-- Mod/pack trust contracts and schemas exist under `contracts/trust/**` and `contracts/modding/**`.
-- Mod/pack trust validator passes strict mode with 0 findings.
-- Fixture validation passes: 5 valid fixtures and 5 negative fixtures.
-- Trust level registry includes 7 provisional trust levels.
-- Permission registry includes 22 permission kinds.
-- Diagnostics registry includes mod/pack trust diagnostic codes.
-- Refusal registry includes mod/pack trust refusal codes.
-- Capability registry includes 9 provisional mod/pack trust capabilities.
-- Public surface registry includes mod/pack trust surfaces.
-- Initial inventory classifies current pack, trust, native, and modding surfaces descriptively.
+- Portability contracts, registries, matrices, validator, fixtures, docs, and
+  evidence exist under the allowed task scope.
+- Portability validator passes strict/json/fixtures/inventory modes.
+- Fixture validation passes: 4 valid fixtures and 4 negative fixtures.
+- Platform floor registry includes 8 entries.
+- Architecture registry includes 6 entries.
+- Toolchain registry includes 10 entries.
+- Matrix rows: runtime 3, renderer 6, product mode 4, package 3.
+- Diagnostics registry includes portability diagnostic codes.
+- Refusal registry includes portability refusal codes.
+- Capability registry includes provisional portability capabilities.
+- Public surface registry includes portability surfaces.
+- Fast strict passes 32 commands in 312.297 seconds.
 
 ## Current Dependency Debt
 
 - `python tools/validators/repo/check_dependency_directions.py --repo-root . --strict`
-  fails by design on existing repo debt.
-- Existing dependency-direction debt remains visible.
-- No broad exceptions are added by VERSION-DEPRECATION-LAW-01.
+  still reports known existing repo debt: 358 violations and 38 warnings.
+- ABI public-header validator passes with 2851 stable-promotion warnings.
+- Full CTest/full release gates remain outside this task.
 
 ## Remaining Blockers
 
-- Existing pack trust metadata is inventoried but not migrated.
-- Runtime mod loader is not implemented.
-- Sandbox runtime is not implemented.
-- Native provider loading and dynamic loading are not implemented.
-- Package mounting and Workbench UI are not implemented.
-- Portability matrix is not implemented yet.
-- Existing ABI warnings remain provisional stable-promotion debt.
-- Full CTest remains T4 full/release proof and is not run for this task unless fast strict requires it.
+- Portability matrix is provisional.
+- No new platform/toolchain/product/package/release support is claimed.
+- Runtime provider resolver, renderer fallback/runtime support, package runtime,
+  product release support, new CMake targets, and CI portability lanes are not
+  implemented.
 - Feature implementation remains blocked until Foundation Lock closes.
 
 DOE-00 readiness: no.
 
 Feature implementation authorized: no.
 
-Next task: `PORTABILITY-MATRIX-01`.
+Next task: `FOUNDATION-CLOSEOUT-01`.

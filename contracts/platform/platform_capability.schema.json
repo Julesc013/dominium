@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.platform.capability.schema.v1",
+  "title": "Dominium Platform Capability Row",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "target_id",
+    "target_kind",
+    "support_status",
+    "provider_capabilities",
+    "test_evidence"
+  ],
+  "properties": {
+    "target_id": {"type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9_]+)+$"},
+    "target_kind": {"type": "string"},
+    "support_status": {"type": "string"},
+    "platform_floor": {"type": "string"},
+    "architecture": {"type": "string"},
+    "toolchain": {"type": "string"},
+    "language_floor": {"type": "string"},
+    "abi": {"type": "string"},
+    "provider_id": {"type": "string"},
+    "provider_capabilities": {"type": "array", "items": {"type": "string"}},
+    "runtime_capabilities": {"type": "array", "items": {"type": "string"}},
+    "test_evidence": {
+      "type": "array",
+      "items": {"$ref": "portability_evidence.schema.json"}
+    },
+    "diagnostic_codes": {"type": "array", "items": {"type": "string"}},
+    "refusal_codes": {"type": "array", "items": {"type": "string"}},
+    "known_limitations": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  }
+}

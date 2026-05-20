@@ -2,11 +2,11 @@
 
 ## Review Objective
 
-Review `MOD-PACK-TRUST-MODEL-01`: mod/pack trust contract, trust and permission
-registries, trust decision schema, mod descriptor schema, review/sandbox/
-determinism/native/external adapter policies, overlay policy, validator,
-fixtures, docs, public-surface registration, diagnostics/refusal/capability
-integration, inventory, and evidence.
+Review `PORTABILITY-MATRIX-01`: portability contract, platform floor registry,
+architecture registry, toolchain registry, status registry, runtime/renderer/
+product/package matrices, evidence schema, refusal policy, validator, fixtures,
+docs, public-surface registration, diagnostics/refusal/capability integration,
+inventory, and fast strict proof.
 
 ## Decision Requested
 
@@ -22,69 +22,69 @@ integration, inventory, and evidence.
 
 ## Verification Report Reference
 
-`.aide/reports/MOD-PACK-TRUST-MODEL-01-validation.md`
+`.aide/reports/PORTABILITY-MATRIX-01-validation.md`
 
 ## Evidence Packet References
 
-- `contracts/trust/mod_pack_trust.contract.toml`
-- `contracts/trust/trust_level.registry.json`
-- `contracts/trust/permission_kind.registry.json`
-- `contracts/trust/trust_decision.schema.json`
-- `contracts/trust/review_policy.contract.toml`
-- `contracts/trust/sandbox_policy.contract.toml`
-- `contracts/trust/determinism_impact_policy.contract.toml`
-- `contracts/trust/native_provider_policy.contract.toml`
-- `contracts/trust/external_adapter_policy.contract.toml`
-- `contracts/modding/mod_descriptor.schema.json`
-- `contracts/modding/mod_capability_policy.contract.toml`
-- `contracts/modding/pack_overlay_policy.contract.toml`
-- `contracts/modding/mod_lifecycle.registry.json`
-- `tools/validators/package/check_mod_pack_trust.py`
-- `tests/contract/mod_pack_trust/**`
-- `docs/architecture/mod_pack_trust_model.md`
-- `docs/development/mod_pack_trust_guidelines.md`
-- `docs/modding/trust_ladder.md`
-- `.aide/reports/MOD-PACK-TRUST-MODEL-01-status.md`
-- `.aide/reports/MOD-PACK-TRUST-MODEL-01-results.json`
-- `.aide/reports/MOD-PACK-TRUST-MODEL-01-fast-strict.md`
-- `docs/repo/audits/MOD_PACK_TRUST_MODEL_01.md`
+- `contracts/platform/portability_matrix.contract.toml`
+- `contracts/platform/platform_floor.registry.json`
+- `contracts/platform/architecture.registry.json`
+- `contracts/platform/toolchain.registry.json`
+- `contracts/platform/platform_capability.schema.json`
+- `contracts/platform/portability_evidence.schema.json`
+- `contracts/platform/runtime_portability.matrix.json`
+- `contracts/platform/renderer_portability.matrix.json`
+- `contracts/platform/product_mode_portability.matrix.json`
+- `contracts/platform/package_portability.matrix.json`
+- `contracts/platform/portability_status.registry.json`
+- `contracts/platform/portability_refusal_policy.contract.toml`
+- `tools/validators/platform/check_portability_matrix.py`
+- `tests/contract/portability/**`
+- `docs/architecture/portability_matrix.md`
+- `docs/development/portability_guidelines.md`
+- `docs/build/toolchain_portability.md`
+- `docs/release/platform_support_policy.md`
+- `.aide/reports/PORTABILITY-MATRIX-01-status.md`
+- `.aide/reports/PORTABILITY-MATRIX-01-results.json`
+- `.aide/reports/PORTABILITY-MATRIX-01-fast-strict.md`
+- `docs/repo/audits/PORTABILITY_MATRIX_01.md`
 
 ## Changed Files Summary
 
-Adds a provisional default-deny mod/pack trust model. Registers trust levels,
-permission kinds, mod descriptors, overlay policy, diagnostics, refusals,
-capabilities, and public surfaces without implementing mod loading, sandboxing,
-native loading, package mounting, Workbench UI, or product behavior.
+Adds a provisional portability matrix and validator. Registers platform floors,
+architectures, toolchains, runtime/renderer/product/package portability rows,
+diagnostics, refusals, capabilities, and public surfaces without implementing
+new build targets, CI jobs, providers, renderers, package runtime, product
+behavior, or release artifacts.
 
 ## Validation Summary
 
-Mod/pack trust validator compiles and passes strict mode with 0 findings.
-Fixture mode passes with 5 valid fixtures and 5 negative fixtures. Inventory
-mode classifies current pack/trust/native/modding surfaces descriptively. Fast
-strict passes 32 commands in 309.297 seconds. Dependency-direction debt remains
-known existing debt.
+Portability validator compiles and passes strict/json/fixtures/inventory modes.
+Fixtures pass with 4 valid fixtures and 4 negative fixtures. Fast strict passes
+32 commands in 312.297 seconds. Dependency-direction debt remains known existing
+debt; ABI stable-promotion warnings remain known debt.
 
 ## Token Summary
 
 This review packet is compact; full validation details live in
-`.aide/reports/MOD-PACK-TRUST-MODEL-01-validation.md`.
+`.aide/reports/PORTABILITY-MATRIX-01-validation.md`.
 
 ## Risk Summary
 
-Trust law is provisional. Existing pack trust metadata is inventoried but not
-migrated. Runtime loader, sandbox, native provider loading, dynamic loading,
-signed provider assurance, package mounting, and Workbench UI remain future
-work.
+Portability law is provisional. Existing release/platform docs are inventoried
+as evidence sources, not support claims. No runtime provider, renderer,
+package, product mode, build target, CI job, or release behavior is implemented.
 
 ## Non-Goals / Scope Guard
 
-No runtime mod loader, scripting, sandbox, native loader, dynamic loader,
-provider runtime, package/profile mounting, Workbench UI, gameplay, renderer,
-native GUI, release publication, or product behavior.
+No new platform/toolchain support claim, CMake preset, CI job, build target,
+provider runtime, renderer implementation, package runtime, Workbench UI,
+gameplay/domain/native GUI behavior, release tag, upload, or GitHub settings
+mutation.
 
 ## Reviewer Instructions
 
-Confirm that trust levels are default-deny, permissions are explicit, data-only
-packs cannot request filesystem/network/process/native authority, overlays
-cannot silently overwrite, external adapters/native providers require evidence,
-and nondeterministic replay impact refuses or isolates.
+Confirm that support claims require evidence, planned/research/provisional rows
+are not presented as supported, product modes reference runtime capabilities,
+provider/render fallback is not silent, and unsupported requests have typed
+diagnostics/refusals.

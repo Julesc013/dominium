@@ -1,0 +1,27 @@
+{
+  "fixture_kind": "portability_row",
+  "target_id": "fixture.runtime.stable_without_proof",
+  "target_kind": "runtime_provider",
+  "owner": "tests.contract",
+  "stability": "stable",
+  "support_status": "product_proven",
+  "platform_floor": "headless_host",
+  "architecture": "host",
+  "toolchain": "host_default",
+  "language_floor": "host_declared_by_validation",
+  "abi": "host_internal",
+  "provider_capabilities": ["domino.platform.headless"],
+  "runtime_capabilities": ["domino.platform.headless"],
+  "test_evidence": [
+    {
+      "evidence_id": "fixture.runtime.stable_without_proof.smoke",
+      "kind": "smoke",
+      "path": "tests/contract/portability/README.md",
+      "status": "present",
+      "notes": "Missing product evidence."
+    }
+  ],
+  "diagnostic_codes": ["DOM-PORTABILITY-PRODUCT-PROOF-MISSING"],
+  "refusal_codes": ["dominium.refusal.portability.release_not_proven"],
+  "notes": "Invalid because stable/product_proven rows need required proof kinds."
+}

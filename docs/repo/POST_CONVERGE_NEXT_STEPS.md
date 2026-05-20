@@ -864,6 +864,21 @@ prompt chain.
 MOVE-ROUTER-00 changes the active cleanup path from batch micro-planning to a
 deterministic route table.
 
+## PORTABILITY-MATRIX-01 Update
+
+PORTABILITY-MATRIX-01 adds the provisional portability matrix scaffold:
+
+- `contracts/platform/**` defines platform floors, architectures, toolchains,
+  statuses, runtime/renderer/product/package portability matrices, evidence,
+  and refusal policy.
+- `tools/validators/platform/check_portability_matrix.py` validates matrix rows,
+  fixtures, registry references, and descriptive inventory.
+- No CMake presets, CI jobs, build targets, providers, renderers, product modes,
+  packages, or release behavior are implemented or promoted by this task.
+- Feature work remains blocked pending Foundation Lock closeout.
+
+Next task: `FOUNDATION-CLOSEOUT-01`.
+
 - Naming canon: active.
 - Bad-root routing contract: active.
 - Dry-run router: `tools/migration/route_bad_roots.py`.

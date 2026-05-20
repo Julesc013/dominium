@@ -1,0 +1,19 @@
+{
+  "fixture_kind": "portability_row",
+  "target_id": "fixture.product.mode.rendered",
+  "target_kind": "product_mode",
+  "owner": "tests.contract",
+  "support_status": "provisional",
+  "platform_floor": "headless_host",
+  "architecture": "host",
+  "toolchain": "host_default",
+  "language_floor": "host_declared_by_validation",
+  "abi": "host_internal",
+  "provider_capabilities": ["dominium.product.mode.rendered"],
+  "runtime_capabilities": [],
+  "product_modes": ["rendered"],
+  "test_evidence": [],
+  "diagnostic_codes": ["DOM-PORTABILITY-MODE-UNSUPPORTED"],
+  "refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
+  "notes": "Invalid because product modes must cite runtime/provider capabilities."
+}

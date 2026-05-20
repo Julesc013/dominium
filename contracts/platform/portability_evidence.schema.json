@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.portability.evidence.schema.v1",
+  "title": "Dominium Portability Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["evidence_id", "kind", "path", "status"],
+  "properties": {
+    "evidence_id": {"type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9_]+)+$"},
+    "kind": {"type": "string", "enum": ["build", "smoke", "product", "package", "release", "schema", "validator", "inventory", "historical", "planned"]},
+    "path": {"type": "string"},
+    "status": {"type": "string", "enum": ["expected_current_task", "present", "not_run", "historical", "planned"]},
+    "command": {"type": "string"},
+    "commit": {"type": "string"},
+    "notes": {"type": "string"}
+  }
+}

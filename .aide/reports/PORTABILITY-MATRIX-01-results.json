@@ -1,0 +1,33 @@
+{
+  "task": "PORTABILITY-MATRIX-01",
+  "result": "PASS_WITH_WARNINGS",
+  "platform_floors_registered": 8,
+  "architectures_registered": 6,
+  "toolchains_registered": 10,
+  "runtime_rows": 3,
+  "renderer_rows": 6,
+  "product_mode_rows": 4,
+  "package_rows": 3,
+  "validator_status": "pass",
+  "fixtures_status": "pass",
+  "inventory_status": "pass_with_warnings",
+  "public_surface_registry_updated": true,
+  "diagnostics_registry_updated": true,
+  "refusal_registry_updated": true,
+  "capability_registry_updated": true,
+  "public_surface_count": 148,
+  "diagnostic_codes_total": 89,
+  "refusal_codes_total": 44,
+  "capabilities_total": 30,
+  "fast_strict_status": "pass",
+  "fast_strict_commands_total": 32,
+  "fast_strict_elapsed_seconds": 312.297,
+  "known_warnings": [
+    "Portability matrix is initial and provisional.",
+    "No new platform/toolchain/product/package/release support is claimed.",
+    "Dependency-direction validator reports known existing debt.",
+    "ABI validator has known stable-promotion warning debt.",
+    "Full CTest/full release gates remain out of scope."
+  ],
+  "next_task": "FOUNDATION-CLOSEOUT-01"
+}

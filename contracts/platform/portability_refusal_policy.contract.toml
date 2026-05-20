@@ -1,0 +1,38 @@
+schema_version = "dominium.portability.refusal_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.platform"
+
+[contract]
+id = "dominium.portability.refusal_policy.v1"
+status = "provisional"
+owner = "contracts.platform"
+purpose = "Defines refusal behavior when a platform, architecture, toolchain, provider, product mode, package mode, or release artifact is unavailable or unproven."
+
+[policy]
+unsupported_platform_refuses = true
+unsupported_arch_refuses = true
+unsupported_toolchain_refuses = true
+unavailable_provider_refuses_or_degrades_explicitly = true
+unsupported_product_mode_refuses = true
+release_not_proven_refuses_release_claim = true
+diagnostic_required = true
+evidence_required = true
+recovery_required = true
+silent_fallback_forbidden = true
+
+[refusal_codes]
+platform_unsupported = "dominium.refusal.portability.platform_unsupported"
+arch_unsupported = "dominium.refusal.portability.arch_unsupported"
+toolchain_unsupported = "dominium.refusal.portability.toolchain_unsupported"
+provider_unavailable = "dominium.refusal.portability.provider_unavailable"
+product_mode_unsupported = "dominium.refusal.portability.product_mode_unsupported"
+release_not_proven = "dominium.refusal.portability.release_not_proven"
+
+[diagnostic_codes]
+unsupported_platform = "DOM-PORTABILITY-UNSUPPORTED-PLATFORM"
+unsupported_arch = "DOM-PORTABILITY-UNSUPPORTED-ARCH"
+unsupported_toolchain = "DOM-PORTABILITY-UNSUPPORTED-TOOLCHAIN"
+provider_unavailable = "DOM-PORTABILITY-PROVIDER-UNAVAILABLE"
+mode_unsupported = "DOM-PORTABILITY-MODE-UNSUPPORTED"
+release_proof_missing = "DOM-PORTABILITY-RELEASE-PROOF-MISSING"

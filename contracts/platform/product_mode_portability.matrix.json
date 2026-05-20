@@ -1,0 +1,99 @@
+{
+  "schema_version": "dominium.product_mode.portability.matrix.v1",
+  "status": "provisional",
+  "owner": "contracts.platform",
+  "rows": [
+    {
+      "target_id": "dominium.product.mode.cli",
+      "target_kind": "product_mode",
+      "owner": "runtime.shell",
+      "support_status": "smoke_proven",
+      "platform_floor": "headless_host",
+      "architecture": "host",
+      "toolchain": "host_default",
+      "language_floor": "host_declared_by_validation",
+      "abi": "host_internal",
+      "provider_capabilities": ["dominium.product.mode.cli"],
+      "runtime_capabilities": ["domino.platform.headless"],
+      "product_modes": ["cli"],
+      "test_evidence": [
+        {
+          "evidence_id": "portability.product_mode.cli.fast_strict",
+          "kind": "smoke",
+          "path": ".aide/reports/PORTABILITY-MATRIX-01-fast-strict.md",
+          "status": "expected_current_task",
+          "notes": "Validator/CLI proof lane."
+        }
+      ],
+      "diagnostic_codes": ["DOM-PORTABILITY-MODE-UNSUPPORTED"],
+      "refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
+      "known_limitations": ["CLI smoke proof is not release support."],
+      "notes": "Command-line validation mode."
+    },
+    {
+      "target_id": "dominium.product.mode.headless",
+      "target_kind": "product_mode",
+      "owner": "runtime.shell",
+      "support_status": "smoke_proven",
+      "platform_floor": "headless_host",
+      "architecture": "host",
+      "toolchain": "host_default",
+      "language_floor": "host_declared_by_validation",
+      "abi": "host_internal",
+      "provider_capabilities": ["dominium.product.mode.headless"],
+      "runtime_capabilities": ["domino.platform.headless", "domino.render.null"],
+      "product_modes": ["headless"],
+      "test_evidence": [
+        {
+          "evidence_id": "portability.product_mode.headless.fast_strict",
+          "kind": "smoke",
+          "path": ".aide/reports/PORTABILITY-MATRIX-01-fast-strict.md",
+          "status": "expected_current_task",
+          "notes": "Headless validation proof lane."
+        }
+      ],
+      "diagnostic_codes": ["DOM-PORTABILITY-MODE-UNSUPPORTED"],
+      "refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
+      "known_limitations": ["No release support claim."],
+      "notes": "Headless mode remains the proof baseline."
+    },
+    {
+      "target_id": "dominium.product.mode.rendered",
+      "target_kind": "product_mode",
+      "owner": "runtime.shell",
+      "support_status": "provisional",
+      "platform_floor": "winnt10_x64",
+      "architecture": "x64",
+      "toolchain": "msvc143",
+      "language_floor": "c17_cpp17",
+      "abi": "internal",
+      "provider_capabilities": ["dominium.product.mode.rendered", "domino.render.software"],
+      "runtime_capabilities": ["domino.platform.win32", "domino.render.software"],
+      "product_modes": ["rendered"],
+      "test_evidence": [],
+      "diagnostic_codes": ["DOM-PORTABILITY-PRODUCT-PROOF-MISSING"],
+      "refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
+      "known_limitations": ["Rendered product mode is not supported until product boot and renderer evidence exist."],
+      "notes": "Provisional row only."
+    },
+    {
+      "target_id": "dominium.product.mode.native",
+      "target_kind": "product_mode",
+      "owner": "runtime.shell",
+      "support_status": "research",
+      "platform_floor": "winnt10_x64",
+      "architecture": "x64",
+      "toolchain": "msvc143",
+      "language_floor": "c17_cpp17",
+      "abi": "internal",
+      "provider_capabilities": [],
+      "runtime_capabilities": [],
+      "product_modes": ["native"],
+      "test_evidence": [],
+      "diagnostic_codes": ["DOM-PORTABILITY-PRODUCT-PROOF-MISSING"],
+      "refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
+      "known_limitations": ["Native product shell support is not claimed."],
+      "notes": "Research row only."
+    }
+  ]
+}

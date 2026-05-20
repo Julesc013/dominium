@@ -475,3 +475,12 @@ CANON-SPINE-NEW is PASS_WITH_WARNINGS.
 
 Next task:
 `CANON-SPINE-BOUNDARY-01 - Repair Remaining Boundary Imports and Full Proof`
+
+## PORTABILITY-MATRIX-01 Update
+
+PORTABILITY-MATRIX-01 is a Foundation Lock contract task. It adds a provisional
+portability matrix and validator, but does not alter the build graph, CMake
+presets, CI, providers, renderers, runtime behavior, packages, or release
+publication.
+
+Foundation Lock next task: `FOUNDATION-CLOSEOUT-01`.

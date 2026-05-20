@@ -1,0 +1,9 @@
+{
+  "fixture_kind": "evidence",
+  "evidence_id": "fixture.portability.evidence",
+  "kind": "build",
+  "path": "tests/contract/portability/README.md",
+  "status": "present",
+  "command": "python tools/validators/platform/check_portability_matrix.py --repo-root . --fixtures",
+  "notes": "Valid evidence fixture."
+}

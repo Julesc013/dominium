@@ -173,6 +173,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/PERFORMANCE_PROOF.md`
 - `docs/architecture/PIRACY_CONTAINMENT.md`
 - `docs/architecture/PLATFORM_RESPONSIBILITY.md`
+- `docs/architecture/portability_matrix.md`
 - `docs/architecture/PROCESS_ONLY_MUTATION.md`
 - `docs/architecture/PRODUCT_SHELL_CONTRACT.md`
 - `docs/architecture/PROJECTION_LIFECYCLE.md`
@@ -286,7 +287,9 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/reference/contracts/SEMANTIC_CONTRACT_MODEL.md`
 - `docs/governance/control/CONTROL_EXTENSION_CONTRACT.md`
 - `docs/governance/control/CONTROL_PLANE_CONSTITUTION.md`
+- `docs/build/toolchain_portability.md`
 - `docs/development/NOW_SOON_LATER_ROADMAP.md`
+- `docs/development/portability_guidelines.md`
 - `docs/runtime/diagnostics/REPRO_BUNDLE_MODEL.md`
 - `docs/domains/embodiment/EMBODIMENT_BASELINE.md`
 - `docs/domains/embodiment/LOCOMOTION_POLISH_MODEL.md`
@@ -349,6 +352,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/release/RELEASE_IDENTITY_CONSTITUTION.md`
 - `docs/release/RELEASE_MANIFEST_MODEL.md`
 - `docs/release/RELEASE_NOTES_v0_0_0_mock.md`
+- `docs/release/platform_support_policy.md`
 - `docs/release/REPRODUCIBLE_BUILD_RULES.md`
 - `docs/release/SIGNING_POLICY.md`
 - `docs/archive/restructure/FUTURE_LAYOUT_PROPOSAL.md`

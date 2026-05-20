@@ -1,0 +1,71 @@
+schema_version = "dominium.portability.matrix.contract.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.platform"
+
+[contract]
+id = "dominium.portability.matrix.v1"
+status = "provisional"
+owner = "contracts.platform"
+purpose = "Defines evidence-backed portability claims for platforms, toolchains, providers, product modes, packages, and release artifacts."
+
+[policy]
+portability_claims_require_matrix_row = true
+support_is_not_inferred_from_source_paths = true
+support_is_not_inferred_from_installed_toolchains = true
+support_is_not_inferred_from_single_success = true
+planned_is_not_supported = true
+research_is_not_supported = true
+experimental_is_not_supported = true
+provisional_is_not_supported = true
+supported_requires_build_smoke_product_package_release_evidence = true
+release_candidate_requires_release_gate_evidence = true
+product_proven_requires_product_boot_evidence = true
+smoke_proven_requires_smoke_evidence = true
+build_proven_requires_configure_or_build_evidence = true
+unsupported_requests_require_refusal = true
+no_silent_renderer_or_provider_fallback = true
+no_machine_local_paths_in_support_claims = true
+
+[target_kinds]
+allowed = ["platform_floor", "architecture", "toolchain", "build_tuple", "runtime_provider", "renderer_provider", "product_mode", "package_mode", "release_artifact", "test_fixture", "historical"]
+
+[matrix_fields]
+required = ["target_id", "target_kind", "support_status", "owner", "platform_floor", "architecture", "toolchain", "language_floor", "abi", "endianness", "word_size", "filesystem_policy", "path_encoding", "dynamic_loading", "threading", "provider_capabilities", "test_evidence", "diagnostic_codes", "refusal_codes"]
+identity_is_not_path = true
+target_ids_are_dotted_lowercase = true
+provider_support_references_provider_or_capability_ids = true
+product_mode_support_references_runtime_capabilities = true
+release_support_references_artifact_identity = true
+
+[abi_and_language]
+c_public_abi = "C-compatible surfaces obey API-ABI-CANON-01."
+language_floor = "C17/C++17 mainline source rules remain governed by contracts/build/language_baseline.contract.toml."
+endianness_word_size = "Rows must state assumptions; cross-endian support is not claimed without proof."
+
+[filesystem_and_runtime]
+path_behavior_declared = true
+case_sensitivity_declared = true
+dynamic_loading_declared = true
+threading_declared = true
+networking_declared = true
+provider_availability_declared = true
+
+[relationships]
+build_contract = "contracts/build/build_contract.schema.json"
+language_baseline = "contracts/build/language_baseline.contract.toml"
+abi_contract = "contracts/abi/c_api.contract.toml"
+provider_model = "contracts/provider/provider.contract.toml"
+capability_law = "contracts/capability/capability.contract.toml"
+artifact_identity = "contracts/artifact/artifact_identity.contract.toml"
+versioning_law = "contracts/versioning/versioning.contract.toml"
+release_policy = "contracts/repo/release_policy.toml"
+diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+refusal_registry = "contracts/refusal/refusal_code.registry.json"
+test_tiers = "contracts/testing/test_tiers.contract.toml"
+
+[generated_fixture_historical]
+generated_rows_require_generator = true
+fixture_rows_are_test_only = true
+historical_rows_may_record_old_evidence = true
+historical_rows_do_not_claim_current_support = true

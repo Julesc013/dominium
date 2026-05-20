@@ -1,0 +1,18 @@
+{
+  "fixture_kind": "portability_row",
+  "target_id": "fixture.runtime.unsafely_supported",
+  "target_kind": "runtime_provider",
+  "owner": "tests.contract",
+  "support_status": "supported",
+  "platform_floor": "headless_host",
+  "architecture": "host",
+  "toolchain": "host_default",
+  "language_floor": "host_declared_by_validation",
+  "abi": "host_internal",
+  "provider_capabilities": ["domino.platform.headless"],
+  "runtime_capabilities": ["domino.platform.headless"],
+  "test_evidence": [],
+  "diagnostic_codes": [],
+  "refusal_codes": [],
+  "notes": "Invalid because supported requires build, smoke, product, package, and release evidence."
+}

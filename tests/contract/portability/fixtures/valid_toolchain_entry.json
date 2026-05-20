@@ -1,0 +1,13 @@
+{
+  "fixture_kind": "toolchain",
+  "toolchain": "fixture_toolchain",
+  "compiler": "fixturecc",
+  "version_floor": "1.0",
+  "language_floor": "c17_cpp17",
+  "abi": "fixture_c_abi",
+  "crt_runtime": "fixture_runtime",
+  "support_status": "planned",
+  "evidence": [],
+  "known_limitations": ["Fixture only."],
+  "notes": "Valid toolchain fixture."
+}
