@@ -32,6 +32,11 @@ Task: FAST-STRICT-TEST-TIER-01
 - `python -m json.tool .aide/reports/FAST-STRICT-TEST-TIER-01-repox-profile.json`: PASS
 - `python -m json.tool contracts/testing/test_tiers.schema.json`: PASS
 - `git diff --check`: PASS
+- pre-commit `git diff --cached --check`: PASS
+- post-commit `py -3 .aide/scripts/aide_lite.py commit check --latest`: FAIL on
+  commit-message policy only. The task-specified commit body omitted local
+  AIDE-required `## Changelog`, `## Risks`, and `AIDE-Token-Impact` fields.
+  The failed commit was not amended because the task forbids amend/reset.
 
 ## Normal Gate
 
