@@ -6,7 +6,9 @@ Starting HEAD: `6fef00a6f16488844984eb64e0305aee54a738ca`
 
 Origin/main at start: `6fef00a6f16488844984eb64e0305aee54a738ca`
 
-Ending HEAD: pending commit
+Implementation commit: `f7bebb9604a9557e745f235ceb03d6b2160d0524`
+
+Final HEAD: see final task response after post-commit proof.
 
 ## Created Files
 
@@ -55,5 +57,9 @@ Fixture validation result: pass
 Inventory result: warning
 
 Fast strict result: PASS, 32/32 commands, 313.656 seconds
+
+AIDE commit-message policy note: the implementation commit was followed by a
+small evidence-only commit because the local post-commit checker requires a
+machine-readable changelog category prefix in the latest commit message.
 
 Next task: `PROVIDER-MODEL-01`
