@@ -576,6 +576,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/BOUNDARY_ENFORCEMENT.md`
 - `docs/architecture/BUDGET_POLICY.md`
 - `docs/architecture/C_COMPATIBLE_ABI_BOUNDARY.md`
+- `docs/architecture/command_view_event_refusal.md`
 - `docs/architecture/COLLAPSE_EXPAND_SOLVERS.md`
 - `docs/architecture/COMPLEXITY_AND_SCALE.md`
 - `docs/architecture/CORE_ABSTRACTIONS.md`

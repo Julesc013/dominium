@@ -2,8 +2,9 @@
 
 ## Review Objective
 
-Review `DEPENDENCY-DIRECTION-01`: repository dependency-direction law,
-validator, fixtures, documentation, public-surface registration, and evidence.
+Review `COMMAND-SURFACE-01`: command/result/view/event/refusal/evidence surface
+law, validator, fixtures, documentation, public-surface registration, and
+evidence.
 
 ## Decision Requested
 
@@ -19,54 +20,58 @@ validator, fixtures, documentation, public-surface registration, and evidence.
 
 ## Verification Report Reference
 
-`.aide/reports/DEPENDENCY-DIRECTION-01-validation.md`
+`.aide/reports/COMMAND-SURFACE-01-validation.md`
 
 ## Evidence Packet References
 
-- `contracts/repo/dependency_directions.contract.toml`
-- `contracts/repo/dependency_direction.schema.json`
-- `contracts/repo/dependency_direction_exceptions.toml`
-- `tools/validators/repo/check_dependency_directions.py`
-- `docs/architecture/dependency_direction_law.md`
-- `docs/development/dependency_direction_guidelines.md`
-- `tests/contract/dependency_direction/**`
-- `.aide/reports/DEPENDENCY-DIRECTION-01-status.md`
-- `.aide/reports/DEPENDENCY-DIRECTION-01-results.json`
-- `.aide/reports/DEPENDENCY-DIRECTION-01-initial-scan.md`
-- `.aide/reports/DEPENDENCY-DIRECTION-01-initial-scan.json`
-- `.aide/reports/DEPENDENCY-DIRECTION-01-fast-strict.md`
-- `docs/repo/audits/DEPENDENCY_DIRECTION_01.md`
+- `contracts/command/command_surface.contract.toml`
+- `contracts/command/command.schema.json`
+- `contracts/result/result.schema.json`
+- `contracts/view/view_surface.contract.toml`
+- `contracts/event/event_surface.contract.toml`
+- `contracts/refusal/refusal_code.registry.json`
+- `contracts/evidence/evidence_packet.schema.json`
+- `tools/validators/contracts/check_command_surface.py`
+- `docs/architecture/command_view_event_refusal.md`
+- `docs/development/command_surface_guidelines.md`
+- `tests/contract/command_surface/**`
+- `.aide/reports/COMMAND-SURFACE-01-status.md`
+- `.aide/reports/COMMAND-SURFACE-01-results.json`
+- `.aide/reports/COMMAND-SURFACE-01-fast-strict.md`
+- `docs/repo/audits/COMMAND_SURFACE_01.md`
 
 ## Changed Files Summary
 
-Adds provisional repository dependency-direction law and a strict tracked-file
-validator. Registers the law in public-surface governance and records current
-dependency-direction violations as debt rather than hiding them.
+Adds a provisional command-surface governance spine and validator. Registers
+foundational validation/test commands without implementing runtime dispatch or
+Workbench behavior.
 
 ## Validation Summary
 
-The validator compiles and parser checks pass. The dependency-direction strict
-scan currently fails with existing repo debt: 358 violations and 38 warnings in
-the initial scan. Surrounding public-surface, ABI, repo layout, root allowlist,
-distribution, component, docs, build-boundary, UI, and ABI checks pass.
+The command validator compiles and passes strict mode with 5 provisional
+commands and 0 findings. Fixture mode passes. Public-surface validation passes
+with command-related surfaces registered. Dependency-direction strict validation
+still fails on known existing debt from DEPENDENCY-DIRECTION-01.
 
 ## Token Summary
 
-This review packet is intentionally compact; full scan findings live in
-`.aide/reports/DEPENDENCY-DIRECTION-01-initial-scan.json`.
+This review packet is intentionally compact; full validation details live in
+`.aide/reports/COMMAND-SURFACE-01-validation.md`.
 
 ## Risk Summary
 
-The dependency graph is not clean. Existing Python imports from active roots into
-`tools/` remain current debt and must be repaired or precisely excepted in a
-future bounded task.
+The command surface is provisional. Runtime dispatch, Workbench integration,
+full diagnostic codes, and capability/refusal law remain future Foundation Lock
+work.
 
 ## Non-Goals / Scope Guard
 
-No feature implementation, command surface, provider model, compatibility corpus,
-package runtime change, public release, or full CTest proof.
+No feature implementation, command runtime dispatch, Workbench UI, provider
+model, compatibility corpus, package runtime change, public release, or full
+CTest proof.
 
 ## Reviewer Instructions
 
-Confirm that the law is explicit, the validator does not silently weaken real
-violations, and current debt is reported honestly.
+Confirm that command IDs, schemas, refusals, views, events, and evidence are
+registered honestly and that Workbench/CLI/AIDE surfaces are not granted
+separate authority.

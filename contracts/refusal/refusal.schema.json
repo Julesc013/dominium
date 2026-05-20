@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.refusal.refusal_schema.v1",
+  "title": "Dominium Refusal",
+  "type": "object",
+  "required": [
+    "code",
+    "owner",
+    "reason",
+    "recovery",
+    "stability"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "code": {
+      "type": "string",
+      "pattern": "^dominium\\.refusal\\.[a-z0-9][a-z0-9_.-]+$"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "recovery": {
+      "type": "string"
+    },
+    "stability": {
+      "type": "string"
+    },
+    "evidence_reference": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.result.result_schema.v1",
+  "title": "Dominium Command Result",
+  "type": "object",
+  "required": [
+    "command_id",
+    "status",
+    "summary"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "command_id": {
+      "type": "string",
+      "pattern": "^(domino|dominium)(\\.[a-z0-9][a-z0-9_-]*)+$"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "warning",
+        "refused",
+        "error"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "payload": {
+      "type": [
+        "object",
+        "array",
+        "string",
+        "number",
+        "boolean",
+        "null"
+      ]
+    }
+  }
+}

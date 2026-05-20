@@ -1,0 +1,8 @@
+{
+  "code": "dominium.refusal.command.invalid_input",
+  "owner": "contracts.command",
+  "reason": "The command input does not satisfy the declared input schema.",
+  "recovery": "Validate the input against the command input schema and rerun.",
+  "stability": "provisional",
+  "evidence_reference": "tests/contract/command_surface/fixtures/valid_evidence_packet.json"
+}

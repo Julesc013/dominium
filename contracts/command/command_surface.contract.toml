@@ -1,0 +1,145 @@
+schema_version = "dominium.command.surface.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.command"
+
+[contract]
+id = "dominium.command.surface.v1"
+status = "provisional"
+owner = "contracts.command"
+purpose = "Defines typed command/result/refusal/event/evidence surfaces shared by CLI, TUI, headless tools, server/admin surfaces, rendered UI, Workbench, AIDE/Codex, and tests."
+
+[policy]
+workbench_is_authority = false
+cli_is_separate_authority = false
+tui_is_separate_authority = false
+headless_is_separate_authority = false
+aide_is_authority = false
+commands_require_result_schema = true
+stable_commands_require_refusal_policy = true
+stable_commands_require_proof = true
+results_are_ui_independent = true
+events_replace_final_result = false
+evidence_is_required_for_validation_commands = true
+evidence_is_required_for_test_commands = true
+direct_private_tool_calls_are_legacy = true
+runtime_dispatch_implemented_here = false
+normal_gate = "fast_strict"
+
+[naming]
+reusable_prefix = "domino."
+product_prefix = "dominium."
+id_format = "lowercase_dotted_semantic_id"
+paths_are_identity = false
+file_paths_in_command_ids = false
+
+[compatibility]
+stable_command_requires_result_compatibility = true
+stable_command_requires_refusal_compatibility = true
+replacement_requires_command_surface_update = true
+deprecated_command_requires_replacement_or_retirement_reason = true
+
+[integration]
+result_schema = "contracts/result/result.schema.json"
+view_contract = "contracts/view/view_surface.contract.toml"
+event_contract = "contracts/event/event_surface.contract.toml"
+refusal_registry = "contracts/refusal/refusal_code.registry.json"
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"
+public_surface_registry = "contracts/public_surface/public_surface.contract.toml"
+dependency_direction_law = "contracts/repo/dependency_directions.contract.toml"
+abi_canon = "contracts/abi/c_api.contract.toml"
+
+[[command]]
+id = "dominium.validation.run"
+version = "0.1.0"
+kind = "validation"
+owner = "tools.validators"
+stability = "provisional"
+surfaces = ["cli", "headless", "workbench", "aide", "test"]
+input_schema = "contracts/command/validation_run_input.schema.json"
+result_schema = "contracts/result/result.schema.json"
+refusals = ["dominium.refusal.validation.invalid_target", "dominium.refusal.validation.tool_unavailable", "dominium.refusal.command.invalid_input", "dominium.refusal.command.unsupported_surface"]
+events = ["dominium.event.command.started", "dominium.event.command.finished", "dominium.event.command.evidence"]
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"
+required_capabilities = []
+service_owner = "tools.validators"
+proof = ["python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_command_surface_update"
+notes = "Umbrella validation command for registered validators; it does not implement runtime dispatch in this task."
+
+[[command]]
+id = "dominium.repo.fast_strict.run"
+version = "0.1.0"
+kind = "test"
+owner = "tools.test"
+stability = "provisional"
+surfaces = ["cli", "headless", "aide", "test"]
+input_schema = "contracts/command/validation_run_input.schema.json"
+result_schema = "contracts/result/result.schema.json"
+refusals = ["dominium.refusal.validation.invalid_target", "dominium.refusal.validation.tool_unavailable", "dominium.refusal.command.invalid_input"]
+events = ["dominium.event.command.started", "dominium.event.command.finished", "dominium.event.command.evidence"]
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"
+required_capabilities = []
+service_owner = "tools.test"
+proof = ["python tools/test/run_fast_strict.py --repo-root ."]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_test_tier_contract_update_and_command_surface_update"
+notes = "Registered command identity for the fast strict development proof gate."
+
+[[command]]
+id = "dominium.public_surface.validate"
+version = "0.1.0"
+kind = "validation"
+owner = "tools.validators.repo"
+stability = "provisional"
+surfaces = ["cli", "headless", "aide", "test"]
+input_schema = "contracts/command/validation_run_input.schema.json"
+result_schema = "contracts/result/result.schema.json"
+refusals = ["dominium.refusal.validation.invalid_target", "dominium.refusal.validation.tool_unavailable", "dominium.refusal.command.invalid_input"]
+events = ["dominium.event.command.started", "dominium.event.command.finished", "dominium.event.command.evidence"]
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"
+required_capabilities = []
+service_owner = "tools.validators.repo"
+proof = ["python tools/validators/repo/check_public_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_public_surface_registry_update_and_command_surface_update"
+notes = "Registered command identity for public-surface registry validation."
+
+[[command]]
+id = "dominium.abi.public_headers.validate"
+version = "0.1.0"
+kind = "validation"
+owner = "tools.validators.abi"
+stability = "provisional"
+surfaces = ["cli", "headless", "aide", "test"]
+input_schema = "contracts/command/validation_run_input.schema.json"
+result_schema = "contracts/result/result.schema.json"
+refusals = ["dominium.refusal.validation.invalid_target", "dominium.refusal.validation.tool_unavailable", "dominium.refusal.command.invalid_input"]
+events = ["dominium.event.command.started", "dominium.event.command.finished", "dominium.event.command.evidence"]
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"
+required_capabilities = []
+service_owner = "tools.validators.abi"
+proof = ["python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_api_abi_canon_update_and_command_surface_update"
+notes = "Registered command identity for public-header ABI validation."
+
+[[command]]
+id = "dominium.dependency_direction.validate"
+version = "0.1.0"
+kind = "validation"
+owner = "tools.validators.repo"
+stability = "provisional"
+surfaces = ["cli", "headless", "aide", "test"]
+input_schema = "contracts/command/validation_run_input.schema.json"
+result_schema = "contracts/result/result.schema.json"
+refusals = ["dominium.refusal.validation.invalid_target", "dominium.refusal.validation.tool_unavailable", "dominium.refusal.command.invalid_input"]
+events = ["dominium.event.command.started", "dominium.event.command.finished", "dominium.event.command.evidence"]
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"
+required_capabilities = []
+service_owner = "tools.validators.repo"
+proof = ["python tools/validators/repo/check_dependency_directions.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_dependency_direction_law_update_and_command_surface_update"
+notes = "Registered command identity for dependency-direction validation; existing dependency violations remain separately tracked debt from DEPENDENCY-DIRECTION-01."

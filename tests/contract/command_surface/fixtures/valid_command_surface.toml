@@ -1,0 +1,18 @@
+[[command]]
+id = "dominium.validation.fixture"
+version = "0.1.0"
+kind = "validation"
+owner = "tests.contract"
+stability = "provisional"
+surfaces = ["cli", "headless", "test"]
+input_schema = "contracts/command/validation_run_input.schema.json"
+result_schema = "contracts/result/result.schema.json"
+refusals = ["dominium.refusal.validation.invalid_target", "dominium.refusal.command.invalid_input"]
+events = ["dominium.event.command.started", "dominium.event.command.finished"]
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"
+required_capabilities = []
+service_owner = "tests.contract"
+proof = ["python tools/validators/contracts/check_command_surface.py --repo-root . --fixtures"]
+compatibility = "fixture_only"
+replacement_policy = "fixture_changes_follow_validator_tests"
+notes = "Valid fixture command."

@@ -1,0 +1,73 @@
+{
+  "schema_version": "dominium.command.kind_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.command",
+  "kinds": [
+    {
+      "id": "query",
+      "description": "Read-only command that returns a typed result without authoritative mutation."
+    },
+    {
+      "id": "mutation",
+      "description": "Command that requests lawful mutation through a registered service or Process path."
+    },
+    {
+      "id": "validation",
+      "description": "Command that validates contracts, repository state, inputs, or artifacts."
+    },
+    {
+      "id": "build",
+      "description": "Command that configures, builds, packages, or otherwise produces build outputs."
+    },
+    {
+      "id": "test",
+      "description": "Command that executes tests or proof gates and emits evidence."
+    },
+    {
+      "id": "package",
+      "description": "Command that inspects, validates, or prepares package and pack surfaces."
+    },
+    {
+      "id": "inspection",
+      "description": "Command that inspects state, contracts, or artifacts without mutating authority."
+    },
+    {
+      "id": "projection",
+      "description": "Command that produces a derived projection, view, or portable artifact."
+    },
+    {
+      "id": "diagnostic",
+      "description": "Command that emits diagnostics, repro bundles, or troubleshooting evidence."
+    },
+    {
+      "id": "release",
+      "description": "Command that participates in release, promotion, signing, or distribution proof."
+    },
+    {
+      "id": "workbench",
+      "description": "Command intended for Workbench orchestration through registered command surfaces."
+    },
+    {
+      "id": "aide",
+      "description": "Command intended for AIDE/Codex orchestration and evidence collection."
+    }
+  ],
+  "allowed_surfaces": [
+    "cli",
+    "tui",
+    "headless",
+    "workbench",
+    "server",
+    "rendered",
+    "test",
+    "aide"
+  ],
+  "stability_classes": [
+    "stable_command_contract",
+    "provisional",
+    "internal",
+    "experimental",
+    "historical",
+    "retired"
+  ]
+}

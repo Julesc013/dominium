@@ -1,0 +1,40 @@
+schema_version = "dominium.view.surface.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.view"
+
+[contract]
+id = "dominium.view.surface.v1"
+status = "provisional"
+owner = "contracts.view"
+purpose = "Defines how CLI, TUI, rendered, Workbench, headless, AIDE, and test surfaces present command result documents without becoming authority."
+
+[policy]
+views_are_authority = false
+views_mutate_truth = false
+views_reference_result_or_document_schema = true
+same_result_may_have_multiple_views = true
+workbench_view_is_projection = true
+cli_view_is_projection = true
+tui_view_is_projection = true
+rendered_view_is_projection = true
+headless_view_is_projection = true
+view_stability_requires_source_result_stability = true
+
+[[view]]
+id = "dominium.view.validation.summary"
+owner = "contracts.view"
+stability = "provisional"
+source_result_schema = "contracts/result/result.schema.json"
+surface = "cli"
+presentation_only = true
+notes = "Initial validation summary view; exact presentation remains implementation-specific and non-authoritative."
+
+[[view]]
+id = "dominium.view.validation.evidence"
+owner = "contracts.view"
+stability = "provisional"
+source_result_schema = "contracts/evidence/evidence_packet.schema.json"
+surface = "headless"
+presentation_only = true
+notes = "Initial headless evidence packet view for AIDE/Codex and CI collection."

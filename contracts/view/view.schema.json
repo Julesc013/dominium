@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.view.view_schema.v1",
+  "title": "Dominium View Surface",
+  "type": "object",
+  "required": [
+    "id",
+    "owner",
+    "stability",
+    "source_result_schema",
+    "surface"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^(domino|dominium)(\\.[a-z0-9][a-z0-9_-]*)+$"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "stability": {
+      "type": "string"
+    },
+    "source_result_schema": {
+      "type": "string"
+    },
+    "surface": {
+      "type": "string",
+      "enum": [
+        "cli",
+        "tui",
+        "headless",
+        "workbench",
+        "server",
+        "rendered",
+        "test",
+        "aide"
+      ]
+    },
+    "presentation_only": {
+      "type": "boolean",
+      "const": true
+    }
+  }
+}

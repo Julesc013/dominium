@@ -1,0 +1,13 @@
+{
+  "command_id": "dominium.validation.fixture",
+  "run_id": "fixture-run-001",
+  "status": "ok",
+  "summary": "Fixture validation completed.",
+  "diagnostics": [],
+  "evidence": [
+    "tests/contract/command_surface/fixtures/valid_evidence_packet.json"
+  ],
+  "payload": {
+    "checked": true
+  }
+}

@@ -1,20 +1,22 @@
 # Latest Dominium Status
 
-Current task: `DEPENDENCY-DIRECTION-01`.
+Current task: `COMMAND-SURFACE-01`.
 
-Result: PARTIAL.
+Result: PASS_WITH_WARNINGS, pending final commit/post-commit checks.
 
 ## Current Green State
 
-- Dependency-direction law, schema, exception ledger, validator, fixtures, docs,
-  and evidence exist.
-- Public surface registry includes dependency-direction contract/exception/
-  validator surfaces.
-- Public surface validator passes with 30 surfaces.
+- Command/result/view/event/refusal/document/evidence contracts and schemas
+  exist.
+- Command-surface validator passes with 5 provisional registered commands and
+  0 findings.
+- Command-surface fixture validation passes.
+- Public surface registry includes command/result/view/event/refusal/document/
+  evidence/validator/fixture surfaces and passes with 39 surfaces.
 - ABI validator passes with 375 headers, 0 errors, and existing warning debt.
 - Strict repo/root/distribution/component validators pass.
 - Docs/build/UI/ABI supplemental checks pass.
-- Fast strict gate passes: 32/32 commands in 334.907 seconds.
+- Fast strict gate passes: 32/32 commands in 309.969 seconds.
 
 ## Current Dependency Debt
 
@@ -46,4 +48,4 @@ DOE-00 readiness: no.
 
 Feature implementation authorized: no.
 
-Next task: `COMMAND-SURFACE-01`.
+Next task: `DIAGNOSTIC-CODE-REGISTRY-01`.

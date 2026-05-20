@@ -334,6 +334,123 @@ replacement_policy = "requires_dependency_direction_law_update"
 notes = "Validator implementation for the dependency-direction contract; registered to keep the proof surface discoverable."
 
 [[surface]]
+id = "dominium.command.surface.v1"
+kind = "command"
+path = "contracts/command/command_surface.contract.toml"
+owner = "contracts.command"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-SURFACE-01"
+proof = ["python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_command_surface_law_update"
+notes = "Provisional command/result/refusal/event/evidence law; runtime dispatch is not implemented by this registry."
+
+[[surface]]
+id = "dominium.result.surface.v1"
+kind = "schema"
+path = "contracts/result/result.schema.json"
+owner = "contracts.result"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-SURFACE-01"
+proof = ["python -m json.tool contracts/result/result.schema.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_command_surface_law_update"
+notes = "Base UI-independent command result schema."
+
+[[surface]]
+id = "dominium.view.surface.v1"
+kind = "view"
+path = "contracts/view/view_surface.contract.toml"
+owner = "contracts.view"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-SURFACE-01"
+proof = ["python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_command_surface_law_update"
+notes = "View surface law; views present results and are not authority."
+
+[[surface]]
+id = "dominium.event.surface.v1"
+kind = "event"
+path = "contracts/event/event_surface.contract.toml"
+owner = "contracts.event"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-SURFACE-01"
+proof = ["python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_command_surface_law_update"
+notes = "Event surface law for command progress, diagnostics, refusals, and evidence links."
+
+[[surface]]
+id = "dominium.refusal.registry.v1"
+kind = "refusal"
+path = "contracts/refusal/refusal_code.registry.json"
+owner = "contracts.refusal"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-SURFACE-01"
+proof = ["python -m json.tool contracts/refusal/refusal_code.registry.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_diagnostic_code_registry_or_capability_refusal_law_update"
+notes = "Command-level refusal scaffold; the full diagnostic and capability refusal registries remain later Foundation Lock work."
+
+[[surface]]
+id = "dominium.document.surface.v1"
+kind = "schema"
+path = "contracts/document/document.schema.json"
+owner = "contracts.document"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-SURFACE-01"
+proof = ["python -m json.tool contracts/document/document.schema.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_command_surface_law_update"
+notes = "Base result document schema for command output payloads."
+
+[[surface]]
+id = "dominium.evidence.packet.v1"
+kind = "artifact_format"
+path = "contracts/evidence/evidence_packet.schema.json"
+owner = "contracts.evidence"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-SURFACE-01"
+proof = ["python -m json.tool contracts/evidence/evidence_packet.schema.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_artifact_identity_law_or_command_surface_law_update"
+notes = "Evidence packet schema for command proof outputs; evidence is not source truth."
+
+[[surface]]
+id = "dominium.command_surface.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_command_surface.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-SURFACE-01"
+proof = ["python -m py_compile tools/validators/contracts/check_command_surface.py", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_command_surface_law_update"
+notes = "Validator implementation for command/result/refusal/event/evidence surface law."
+
+[[surface]]
+id = "dominium.command_surface.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/command_surface"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "COMMAND-SURFACE-01"
+proof = ["python tools/validators/contracts/check_command_surface.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_command_surface_validator_tests"
+notes = "Fixture suite for command-surface validator behavior."
+
+[[surface]]
 id = "dominium.release.update_channels.v1"
 kind = "registry"
 path = "release/updates"

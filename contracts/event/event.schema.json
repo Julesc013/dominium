@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.event.event_schema.v1",
+  "title": "Dominium Command Event",
+  "type": "object",
+  "required": [
+    "event_id",
+    "owner",
+    "event_type",
+    "source_command_id",
+    "payload"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^(domino|dominium)(\\.[a-z0-9][a-z0-9_-]*)+$"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "progress",
+        "state_transition",
+        "warning",
+        "diagnostic",
+        "evidence",
+        "refusal"
+      ]
+    },
+    "source_command_id": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "replaces_result": {
+      "type": "boolean",
+      "const": false
+    }
+  }
+}

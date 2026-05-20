@@ -9,6 +9,23 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## COMMAND-SURFACE-01 Update
+
+COMMAND-SURFACE-01 adds the provisional command/result/view/event/refusal/evidence law.
+
+- contract: `contracts/command/command_surface.contract.toml`
+- validator: `python tools/validators/contracts/check_command_surface.py --repo-root . --strict`
+- commands registered: 5 provisional foundational validation/test commands
+- refusal codes registered: 5 command-level refusal scaffold codes
+- result/view/event/document/evidence schemas exist under `contracts/*/`
+- public surface registry now includes command, result, view, event, refusal, evidence, validator, and fixture surfaces
+- Workbench, CLI, TUI, headless, rendered, server/admin, AIDE, and test surfaces are declared projections over registered commands, not separate authorities
+- next Foundation Lock task: `DIAGNOSTIC-CODE-REGISTRY-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Runtime
+command dispatch, Workbench UI, product behavior, and full diagnostic registry
+work remain outside this task.
+
 ## DEPENDENCY-DIRECTION-01 Update
 
 DEPENDENCY-DIRECTION-01 adds the provisional repository dependency-direction law.

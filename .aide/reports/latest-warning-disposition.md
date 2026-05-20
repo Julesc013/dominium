@@ -1,6 +1,6 @@
 # Latest Warning Disposition
 
-Current task: `DEPENDENCY-DIRECTION-01`.
+Current task: `COMMAND-SURFACE-01`.
 
 ## Accepted Local/Generated Warnings
 
@@ -23,6 +23,13 @@ later bounded task must remove dependencies, move code to the correct owner, add
 proper contracts/service boundaries, or add precise temporary exceptions with
 owner and retirement task.
 
+## Command Surface Warnings
+
+- Command surface is provisional.
+- Runtime dispatch is not implemented by COMMAND-SURFACE-01.
+- Workbench integration is not implemented by COMMAND-SURFACE-01.
+- Full diagnostic and capability/refusal registries remain later tasks.
+
 ## ABI Warnings
 
 - `tools/validators/abi/check_public_headers.py --repo-root . --strict` reports
@@ -35,4 +42,4 @@ owner and retirement task.
 - Full CTest remains T4 full/release debt.
 - Feature work and DOE-00 remain blocked until Foundation Lock closes.
 
-Next task: `COMMAND-SURFACE-01`.
+Next task: `DIAGNOSTIC-CODE-REGISTRY-01`.

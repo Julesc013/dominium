@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.command.validation_run_input.v1",
+  "title": "Validation Command Input",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "target": {
+      "type": "string",
+      "description": "Optional target path, command ID, gate, tier, or validator scope."
+    },
+    "strict": {
+      "type": "boolean",
+      "default": true
+    },
+    "json_out": {
+      "type": "string"
+    },
+    "md_out": {
+      "type": "string"
+    },
+    "continue_on_fail": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,18 @@
+[[command]]
+id = "dominium.validation.fixture_stable_without_refusal"
+version = "1.0.0"
+kind = "validation"
+owner = "tests.contract"
+stability = "stable_command_contract"
+surfaces = ["cli", "headless", "test"]
+input_schema = "contracts/command/validation_run_input.schema.json"
+result_schema = "contracts/result/result.schema.json"
+refusals = []
+events = []
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"
+required_capabilities = []
+service_owner = "tests.contract"
+proof = []
+compatibility = "stable_fixture_missing_policy"
+replacement_policy = "fixture_changes_follow_validator_tests"
+notes = "Invalid fixture: stable command lacks proof and refusal policy."

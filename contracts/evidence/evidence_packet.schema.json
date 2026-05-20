@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.evidence.packet_schema.v1",
+  "title": "Dominium Evidence Packet",
+  "type": "object",
+  "required": [
+    "command_id",
+    "run_id",
+    "status",
+    "started_at",
+    "finished_at",
+    "proof"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "command_id": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "warning",
+        "refused",
+        "error"
+      ]
+    },
+    "started_at": {
+      "type": "string"
+    },
+    "finished_at": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "outputs": {
+      "type": "object"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "proof": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_context": {
+      "type": "object"
+    }
+  }
+}

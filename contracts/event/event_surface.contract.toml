@@ -1,0 +1,45 @@
+schema_version = "dominium.event.surface.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.event"
+
+[contract]
+id = "dominium.event.surface.v1"
+status = "provisional"
+owner = "contracts.event"
+purpose = "Defines typed event outputs associated with command execution, progress, warnings, diagnostics, refusals, and evidence."
+
+[policy]
+events_replace_final_result = false
+events_may_report_progress = true
+events_may_reference_evidence = true
+events_may_reference_diagnostics = true
+events_must_be_owner_scoped = true
+event_streams_are_not_command_authority = true
+
+[[event]]
+event_id = "dominium.event.command.started"
+owner = "contracts.event"
+event_type = "state_transition"
+source_command_id = "dominium.validation.run"
+payload_schema = "contracts/event/event.schema.json"
+replaces_result = false
+stability = "provisional"
+
+[[event]]
+event_id = "dominium.event.command.finished"
+owner = "contracts.event"
+event_type = "state_transition"
+source_command_id = "dominium.validation.run"
+payload_schema = "contracts/event/event.schema.json"
+replaces_result = false
+stability = "provisional"
+
+[[event]]
+event_id = "dominium.event.command.evidence"
+owner = "contracts.event"
+event_type = "evidence"
+source_command_id = "dominium.validation.run"
+payload_schema = "contracts/evidence/evidence_packet.schema.json"
+replaces_result = false
+stability = "provisional"

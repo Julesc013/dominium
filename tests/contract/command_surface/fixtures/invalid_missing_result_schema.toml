@@ -1,0 +1,18 @@
+[[command]]
+id = "dominium.validation.fixture_missing_result"
+version = "0.1.0"
+kind = "validation"
+owner = "tests.contract"
+stability = "provisional"
+surfaces = ["cli", "headless", "test"]
+input_schema = "contracts/command/validation_run_input.schema.json"
+result_schema = "contracts/result/missing_result.schema.json"
+refusals = ["dominium.refusal.validation.invalid_target"]
+events = []
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"
+required_capabilities = []
+service_owner = "tests.contract"
+proof = []
+compatibility = "fixture_only"
+replacement_policy = "fixture_changes_follow_validator_tests"
+notes = "Invalid fixture: result schema path is intentionally missing."

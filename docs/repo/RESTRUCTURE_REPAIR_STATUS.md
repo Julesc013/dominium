@@ -5,12 +5,30 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `DEPENDENCY-DIRECTION-01`.
+Latest task: `COMMAND-SURFACE-01`.
 
-Result: PARTIAL for the provisional dependency-direction law. The law, schema,
-validator, fixtures, docs, and evidence exist, but the initial strict scan
-exposes existing active dependency-direction debt that is not hidden by broad
-exceptions.
+Result: PASS_WITH_WARNINGS for the provisional command-surface law, assuming the
+final fast strict rerun remains green. The command/result/view/event/refusal/
+evidence contracts, validator, fixtures, docs, and evidence exist. Existing
+dependency-direction debt remains visible and is not hidden by this task.
+
+## COMMAND-SURFACE-01 Update
+
+COMMAND-SURFACE-01 is PASS_WITH_WARNINGS.
+
+- command contract: `contracts/command/command_surface.contract.toml`.
+- base result schema: `contracts/result/result.schema.json`.
+- view/event/refusal/document/evidence schemas and registries exist under
+  `contracts/`.
+- validator: `tools/validators/contracts/check_command_surface.py`.
+- commands registered: 5 provisional foundational validation/test commands.
+- refusal codes registered: 5 command-level scaffold codes.
+- public surface registry updated with command-surface surfaces.
+
+Next task:
+`DIAGNOSTIC-CODE-REGISTRY-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## DEPENDENCY-DIRECTION-01 Update
 
