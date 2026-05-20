@@ -1,0 +1,752 @@
+schema_version = "dominium.test_tiers.v1"
+status = "active"
+last_reviewed = "2026-05-20"
+owner = "validation_audit"
+default_gate = "fast_strict"
+foundation_lock_task = "FAST-STRICT-TEST-TIER-01"
+
+[contract]
+id = "dominium.testing.test_tiers.v1"
+status = "provisional"
+owner = "tools.test"
+purpose = "Defines normal, extended, release, and full proof tiers."
+
+[policy]
+normal_development_gate = "fast_strict"
+extended_gate = "extended"
+release_gate = "release"
+release_candidate_alias = "release_candidate"
+full_certification_gate = "full"
+feature_work_before_foundation_closeout = "bounded_foundation_only"
+full_ctest_normal_gate = false
+known_debt_follow_up = "FULL-GATE-DEBT-01"
+known_debt_policy = "Known full-gate debt must remain visible and must not be converted into pass, warning, deletion, or silent skip."
+allowed_warning_policy = "Warnings are allowed only when the command is explicitly optional or the contract says the finding is advisory evidence."
+promotion_rules = [
+  "fast_strict is required for ordinary Foundation Lock work.",
+  "extended is task-dependent and adds T3 product/projection proof when relevant.",
+  "release is required before release, projection, product, trust, or compatibility promotion.",
+  "release_candidate is a compatibility alias for the release gate.",
+  "full is required for full certification and broad replacement or trust-bearing work.",
+  "A green fast_strict gate does not claim full CTest or full release proof is green.",
+]
+
+[gates.fast_strict]
+name = "Fast Strict Development Gate"
+purpose = "Normal development proof loop for bounded feature, refactor, and Foundation Lock work."
+tiers = ["T0", "T1", "T2"]
+target_seconds = 600
+default_command = "python tools/test/run_fast_strict.py --repo-root ."
+failure_policy = "Any required T0, T1, or T2 failure fails the gate. Optional warnings remain visible."
+evidence_outputs = [
+  ".aide/reports/FAST-STRICT-TEST-TIER-01-run.json",
+  ".aide/reports/FAST-STRICT-TEST-TIER-01-run.md",
+]
+
+[gates.release_candidate]
+name = "Release Candidate Proof Gate Alias"
+purpose = "Compatibility alias for the release proof gate."
+tiers = ["T0", "T1", "T2", "T3", "T4"]
+target_seconds = 3600
+default_command = "python tools/test/run_fast_strict.py --repo-root . --gate release_candidate"
+failure_policy = "Required release_candidate commands must pass. Selected T4 commands are explicit and do not imply full certification."
+evidence_outputs = [
+  ".aide/reports/latest-release-candidate-result.json",
+  ".aide/reports/latest-release-candidate-result.md",
+]
+
+[gates.extended]
+name = "Task-Dependent Extended Proof Gate"
+purpose = "Normal proof plus relevant T3 product/projection confidence checks when the task touches those surfaces."
+tiers = ["T0", "T1", "T2", "T3"]
+target_seconds = 1500
+default_command = "python tools/test/run_fast_strict.py --repo-root . --gate extended"
+failure_policy = "Required T0-T3 commands selected for the task must pass. T3 is not part of ordinary edit-loop work."
+evidence_outputs = [
+  ".aide/reports/latest-extended-proof-result.json",
+  ".aide/reports/latest-extended-proof-result.md",
+]
+
+[gates.release]
+name = "Release Proof Gate"
+purpose = "Release/projection/product proof with selected T4 trust checks."
+tiers = ["T0", "T1", "T2", "T3", "T4"]
+target_seconds = 3600
+default_command = "python tools/test/run_fast_strict.py --repo-root . --gate release"
+failure_policy = "Required release commands must pass. Selected T4 commands are explicit and do not imply full certification."
+evidence_outputs = [
+  ".aide/reports/latest-release-proof-result.json",
+  ".aide/reports/latest-release-proof-result.md",
+]
+
+[gates.full]
+name = "Full Certification Proof Gate"
+purpose = "Full release/trust/certification proof. This is not the normal development gate."
+tiers = ["T0", "T1", "T2", "T3", "T4"]
+target_seconds = 7200
+default_command = "python tools/test/run_fast_strict.py --repo-root . --gate full"
+failure_policy = "All required available full commands must pass. Current full CTest debt remains blocking until remediated."
+evidence_outputs = [
+  ".aide/reports/latest-full-proof-result.json",
+  ".aide/reports/latest-full-proof-result.md",
+]
+
+[tiers.T0]
+name = "Static Format and Repo Hygiene"
+purpose = "Catch malformed files, accidental generated output staging, and obvious root hygiene violations quickly."
+owner = "repo_hygiene"
+normal_gate_member = true
+release_gate_member = true
+full_gate_member = true
+timeout_guidance = "Target under 2 minutes."
+failure_policy = "Required T0 failures fail every gate."
+known_debt_policy = "No known debt is accepted for required T0 checks."
+promotion_rule = "T0 must pass before T1/T2 evidence can promote a normal task."
+
+[tiers.T1]
+name = "Strict Repo and Contract Hygiene"
+purpose = "Prove the repository remains inside the canonical ownership, layout, contract, and AIDE spine."
+owner = "repo_contract_hygiene"
+normal_gate_member = true
+release_gate_member = true
+full_gate_member = true
+timeout_guidance = "Target under 5 minutes; RepoX STRICT may dominate runtime."
+failure_policy = "Required T1 failures fail the gate. Optional naming-debt classifiers may warn only when marked optional."
+known_debt_policy = "Current optional naming classifiers are advisory; strict layout/root/distribution/component and RepoX checks remain required."
+promotion_rule = "T1 must pass for ordinary Foundation Lock work."
+
+[tiers.T2]
+name = "Build and Smoke Proof"
+purpose = "Prove the verify preset configures, the build-only verify target runs, and short CTest smoke passes."
+owner = "build_smoke"
+normal_gate_member = true
+release_gate_member = true
+full_gate_member = true
+timeout_guidance = "Target under 10 minutes together with T0/T1 where possible."
+failure_policy = "Required T2 failures fail fast_strict."
+known_debt_policy = "Full CTest, public-header consumer, and broad focused portability debt are not part of T2; smoke must not be weakened."
+promotion_rule = "T2 completes the normal fast_strict development gate."
+
+[tiers.T3]
+name = "Product and Projection Proof"
+purpose = "Prove product command surfaces, portable projection, and internal pilot release evidence when release/projection work is in scope."
+owner = "product_projection"
+normal_gate_member = false
+release_gate_member = true
+full_gate_member = true
+timeout_guidance = "Release/projection lane; not part of normal fast_strict."
+failure_policy = "Required T3 failures block release_candidate and full gates."
+known_debt_policy = "Missing local projection or release roots are release blockers, not normal-gate blockers."
+promotion_rule = "T3 is required before release/projection promotion."
+
+[tiers.T4]
+name = "Full, Release, and Trust Proof"
+purpose = "Full confidence lane for full CTest, compatibility, trust, replay, migration, provider, portability, and release certification."
+owner = "release_trust"
+normal_gate_member = false
+release_gate_member = true
+full_gate_member = true
+timeout_guidance = "Slow lane. Full CTest may exceed normal development budgets."
+failure_policy = "Required T4 failures block full certification. Selected T4 failures block release_candidate when selected."
+known_debt_policy = "Full CTest and broad release/trust debt must remain visible and tracked under FULL-GATE-DEBT-01."
+promotion_rule = "T4 is required for full certification and selected release/trust promotions."
+
+[[commands]]
+id = "t0.git_diff_check"
+tier = "T0"
+name = "Git diff whitespace check"
+type = "argv"
+argv = ["git", "diff", "--check"]
+owner = "repo_hygiene"
+timeout_seconds = 60
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t0.staged_generated_output_check"
+tier = "T0"
+name = "Generated/local output staging check"
+type = "builtin"
+builtin = "staged_generated_output_check"
+owner = "repo_hygiene"
+timeout_seconds = 30
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "forbidden_staged_path_fails_gate"
+missing_policy = "not_applicable"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t0.changed_json_parse"
+tier = "T0"
+name = "Changed JSON and JSONL parse check"
+type = "builtin"
+builtin = "changed_json_parse"
+owner = "repo_hygiene"
+timeout_seconds = 60
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "parse_error_fails_gate"
+missing_policy = "not_applicable"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t0.changed_toml_parse"
+tier = "T0"
+name = "Changed TOML parse check"
+type = "builtin"
+builtin = "changed_toml_parse"
+owner = "repo_hygiene"
+timeout_seconds = 60
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "parse_error_fails_gate"
+missing_policy = "not_applicable"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t0.forbidden_active_roots"
+tier = "T0"
+name = "Forbidden active top-level root check"
+type = "builtin"
+builtin = "forbidden_active_roots"
+owner = "repo_hygiene"
+timeout_seconds = 30
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "forbidden_root_fails_gate"
+missing_policy = "not_applicable"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.aide_doctor"
+tier = "T1"
+name = "AIDE doctor"
+type = "argv"
+argv = ["py", "-3", ".aide/scripts/aide_lite.py", "doctor"]
+owner = "aide"
+timeout_seconds = 180
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "tool_warnings_must_be_reported"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.aide_validate"
+tier = "T1"
+name = "AIDE validate"
+type = "argv"
+argv = ["py", "-3", ".aide/scripts/aide_lite.py", "validate"]
+owner = "aide"
+timeout_seconds = 180
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "tool_warnings_must_be_reported"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.aide_test"
+tier = "T1"
+name = "AIDE test"
+type = "argv"
+argv = ["py", "-3", ".aide/scripts/aide_lite.py", "test"]
+owner = "aide"
+timeout_seconds = 180
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "tool_warnings_must_be_reported"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.aide_selftest"
+tier = "T1"
+name = "AIDE selftest"
+type = "argv"
+argv = ["py", "-3", ".aide/scripts/aide_lite.py", "selftest"]
+owner = "aide"
+timeout_seconds = 180
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "tool_warnings_must_be_reported"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.aide_tools_validate"
+tier = "T1"
+name = "AIDE tools validate"
+type = "argv"
+argv = ["py", "-3", ".aide/scripts/aide_lite.py", "tools", "validate"]
+owner = "aide"
+timeout_seconds = 180
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "tool_warnings_must_be_reported"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.aide_roots_validate"
+tier = "T1"
+name = "AIDE roots validate"
+type = "argv"
+argv = ["py", "-3", ".aide/scripts/aide_lite.py", "roots", "validate"]
+owner = "aide"
+timeout_seconds = 180
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "tool_warnings_must_be_reported"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.aide_repo_validate"
+tier = "T1"
+name = "AIDE repo validate"
+type = "argv"
+argv = ["py", "-3", ".aide/scripts/aide_lite.py", "repo", "validate"]
+owner = "aide"
+timeout_seconds = 180
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "tool_warnings_must_be_reported"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.repo_layout_strict"
+tier = "T1"
+name = "Strict repository layout validator"
+type = "argv"
+argv = ["{python}", "tools/validators/check_repo_layout.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.root_allowlist_strict"
+tier = "T1"
+name = "Strict root allowlist validator"
+type = "argv"
+argv = ["{python}", "tools/validators/check_root_allowlist.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.distribution_layout_strict"
+tier = "T1"
+name = "Strict distribution layout validator"
+type = "argv"
+argv = ["{python}", "tools/validators/check_distribution_layout.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.component_matrices_strict"
+tier = "T1"
+name = "Strict component matrix validator"
+type = "argv"
+argv = ["{python}", "tools/validators/check_component_matrices.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.no_src_source_dirs"
+tier = "T1"
+name = "No active src/source/sources directory validator"
+type = "argv"
+argv = ["{python}", "tools/validators/repo/check_no_src_source_dirs.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.forbidden_root_names"
+tier = "T1"
+name = "Forbidden root names validator"
+type = "argv"
+argv = ["{python}", "tools/validators/repo/check_forbidden_root_names.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.bad_root_absence"
+tier = "T1"
+name = "Bad root absence validator"
+type = "argv"
+argv = ["{python}", "tools/validators/repo/check_bad_root_absence.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.directory_naming_advisory"
+tier = "T1"
+name = "Directory naming advisory classifier"
+type = "argv"
+argv = ["{python}", "tools/validators/repo/check_directory_naming.py", "--repo-root", "{repo_root}", "--strict", "--max-findings", "50"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = false
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_records_warning"
+missing_policy = "missing_records_warning"
+warning_policy = "current naming debt remains advisory until a naming migration task"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.test_tiers_contract"
+tier = "T1"
+name = "Test tier contract validator"
+type = "argv"
+argv = ["{python}", "tools/validators/testing/check_test_tiers.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "validation_audit"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.docs_sanity"
+tier = "T1"
+name = "Docs sanity"
+type = "argv"
+argv = ["{python}", "scripts/verify_docs_sanity.py", "--repo-root", "{repo_root}"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.include_sanity"
+tier = "T1"
+name = "Include sanity"
+type = "argv"
+argv = ["{python}", "scripts/verify_includes_sanity.py", "--repo-root", "{repo_root}"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.build_target_boundaries"
+tier = "T1"
+name = "Build target boundary check"
+type = "argv"
+argv = ["{python}", "scripts/verify_build_target_boundaries.py", "--repo-root", "{repo_root}"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.ui_shell_purity"
+tier = "T1"
+name = "UI shell purity check"
+type = "argv"
+argv = ["{python}", "scripts/verify_ui_shell_purity.py", "--repo-root", "{repo_root}"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.abi_boundaries"
+tier = "T1"
+name = "ABI boundary check"
+type = "argv"
+argv = ["{python}", "scripts/verify_abi_boundaries.py", "--repo-root", "{repo_root}"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t1.repox_strict"
+tier = "T1"
+name = "RepoX STRICT"
+type = "argv"
+argv = ["{python}", "scripts/ci/check_repox_rules.py", "--repo-root", "{repo_root}", "--profile", "STRICT", "--proof-manifest-out", ".aide/reports/FAST-STRICT-TEST-TIER-01-repox-proof-manifest.json", "--profile-out", ".aide/reports/FAST-STRICT-TEST-TIER-01-repox-profile.json"]
+owner = "repo_contract_hygiene"
+timeout_seconds = 420
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "RepoX warnings must be reported and may not be converted to pass if failures exist."
+evidence_outputs = ["runner_json", "runner_markdown", ".dominium.local/ctest/repox when invoked by CTest"]
+
+[[commands]]
+id = "t2.cmake_configure_verify"
+tier = "T2"
+name = "CMake configure verify preset"
+type = "argv"
+argv = ["cmake", "--preset", "verify"]
+owner = "build_smoke"
+timeout_seconds = 300
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "configure warnings must be reported"
+evidence_outputs = ["runner_json", "runner_markdown", "out/build/vs2026/verify local build tree"]
+
+[[commands]]
+id = "t2.cmake_build_all_build"
+tier = "T2"
+name = "CMake build verify preset without test target"
+type = "argv"
+argv = ["cmake", "--build", "--preset", "verify", "--target", "ALL_BUILD"]
+owner = "build_smoke"
+timeout_seconds = 600
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "build warnings must be reported; test execution remains in explicit CTest commands"
+evidence_outputs = ["runner_json", "runner_markdown", "out/build/vs2026/verify local build tree"]
+
+[[commands]]
+id = "t2.ctest_smoke"
+tier = "T2"
+name = "Smoke CTest"
+type = "argv"
+argv = ["ctest", "--preset", "verify", "-L", "smoke", "--output-on-failure", "--timeout", "300"]
+owner = "build_smoke"
+timeout_seconds = 360
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown", "CTest output"]
+
+[[commands]]
+id = "t4.ctest_schema_pack_content"
+tier = "T4"
+name = "Focused schema, pack, and content CTest debt lane"
+type = "argv"
+argv = ["ctest", "--preset", "verify", "-R", "^(schema_|pack_scope|content_layout|contentlib_pack|dominium_content)", "--output-on-failure", "--timeout", "300"]
+owner = "release_trust"
+timeout_seconds = 360
+required = true
+gates = ["full"]
+failure_policy = "nonzero_fails_full_certification"
+missing_policy = "missing_fails_full_certification"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown", "CTest output"]
+
+[[commands]]
+id = "t4.public_header_c89"
+tier = "T4"
+name = "Engine public header C89 consumer check"
+type = "argv"
+argv = ["{python}", "tests/contract/public_header_c89_compile.py", "--repo-root", "{repo_root}"]
+owner = "release_trust"
+timeout_seconds = 120
+required = true
+gates = ["full"]
+failure_policy = "nonzero_fails_full_certification"
+missing_policy = "missing_fails_full_certification"
+warning_policy = "public header consumer failures are full-gate debt until remediated"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t4.public_header_cpp98"
+tier = "T4"
+name = "Game public header C++98 consumer check"
+type = "argv"
+argv = ["{python}", "tests/contract/public_header_cpp98_compile.py", "--repo-root", "{repo_root}"]
+owner = "release_trust"
+timeout_seconds = 120
+required = true
+gates = ["full"]
+failure_policy = "nonzero_fails_full_certification"
+missing_policy = "missing_fails_full_certification"
+warning_policy = "public header consumer failures are full-gate debt until remediated"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t3.product_boot_matrix"
+tier = "T3"
+name = "Product boot matrix strict smoke"
+type = "argv"
+argv = ["{python}", "tools/validators/check_product_boot_matrix.py", "--repo-root", "{repo_root}", "--json", "--strict", "--run-smoke", "--timeout", "30"]
+owner = "product_projection"
+timeout_seconds = 300
+required = true
+gates = ["extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_release_gate"
+missing_policy = "missing_fails_release_gate"
+warning_policy = "product boot warnings must be reported"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
+id = "t3.portable_projection"
+tier = "T3"
+name = "Portable projection strict validator"
+type = "argv"
+argv = ["{python}", "tools/validators/check_portable_projection.py", "--repo-root", "{repo_root}", "--projection-root", ".dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium", "--json", "--strict"]
+owner = "product_projection"
+timeout_seconds = 300
+required = true
+gates = ["extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_release_gate"
+missing_policy = "missing_fails_release_gate"
+warning_policy = "local projection root must be current and ignored"
+evidence_outputs = ["runner_json", "runner_markdown", ".dominium.local/projections/** local ignored evidence"]
+
+[[commands]]
+id = "t3.internal_pilot_release"
+tier = "T3"
+name = "Internal pilot release strict validator"
+type = "argv"
+argv = ["{python}", "tools/validators/check_internal_pilot_release.py", "--repo-root", "{repo_root}", "--release-root", ".dominium.local/releases/internal-pilot-0", "--json", "--strict"]
+owner = "product_projection"
+timeout_seconds = 300
+required = true
+gates = ["extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_release_gate"
+missing_policy = "missing_fails_release_gate"
+warning_policy = "local release root must be current and ignored"
+evidence_outputs = ["runner_json", "runner_markdown", ".dominium.local/releases/** local ignored evidence"]
+
+[[commands]]
+id = "t4.ctest_audit_shard"
+tier = "T4"
+name = "Selected AuditX slow shard"
+type = "argv"
+argv = ["ctest", "--preset", "verify", "-L", "audit", "--output-on-failure", "--timeout", "1200"]
+owner = "release_trust"
+timeout_seconds = 1500
+required = true
+gates = ["release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_selected_t4_gate"
+missing_policy = "missing_fails_selected_t4_gate"
+warning_policy = "slow shard warnings must be reported"
+evidence_outputs = ["runner_json", "runner_markdown", "CTest output"]
+
+[[commands]]
+id = "t4.full_ctest"
+tier = "T4"
+name = "Full CTest"
+type = "argv"
+argv = ["ctest", "--preset", "verify", "--output-on-failure"]
+owner = "release_trust"
+timeout_seconds = 3600
+required = true
+gates = ["full"]
+failure_policy = "nonzero_fails_full_certification"
+missing_policy = "missing_fails_full_certification"
+warning_policy = "Full CTest failures are real debt and must remain visible."
+evidence_outputs = ["runner_json", "runner_markdown", "CTest output"]
+
+[[commands]]
+id = "t4.verify_full_build"
+tier = "T4"
+name = "Full verify build target"
+type = "argv"
+argv = ["cmake", "--build", "--preset", "msvc-verify-full"]
+owner = "release_trust"
+timeout_seconds = 3600
+required = true
+gates = ["full"]
+failure_policy = "nonzero_fails_full_certification"
+missing_policy = "missing_fails_full_certification"
+warning_policy = "Full build failures are real debt and must remain visible."
+evidence_outputs = ["runner_json", "runner_markdown", "out/build/vs2026/msvc-verify-full local build tree"]
+
+[[commands]]
+id = "t4.full_promotion_tier"
+tier = "T4"
+name = "Legacy full promotion tier wrapper"
+type = "argv"
+argv = ["{python}", "scripts/test_tier.py", "--tier", "full-promotion"]
+owner = "release_trust"
+timeout_seconds = 3600
+required = false
+gates = ["full"]
+failure_policy = "nonzero_records_full_debt_warning_unless_promoted_required"
+missing_policy = "missing_records_warning"
+warning_policy = "Wrapper is advisory until full gate debt is closed."
+evidence_outputs = ["runner_json", "runner_markdown"]

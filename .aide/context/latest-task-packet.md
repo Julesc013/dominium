@@ -1,121 +1,85 @@
 # AIDE Latest Task Packet
 
-## PHASE
+## Phase
 
-UNSPECIFIED - CANON-REMEDIATION-FULL-PROOF-01
+foundation-lock
 
-## GOAL
+## Goal
 
-CANON-REMEDIATION-FULL-PROOF-01
+`FAST-STRICT-TEST-TIER-01`
 
-## WHY
+Define Dominium's normal fast strict development proof gate and keep full CTest
+as separate T4 release/full-certification proof.
 
-Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
+## Relevant Invariants
 
-## CONTEXT_REFS
+- `AGENTS.md`
+- `docs/canon/constitution_v1.md`
+- `docs/canon/glossary_v1.md`
+- `docs/planning/AUTHORITY_ORDER.md`
+- `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`
+- `docs/planning/GATES_AND_PROOFS.md`
 
-- `.aide/memory/project-state.md`
-- `.aide/memory/decisions.md`
-- `.aide/memory/open-risks.md`
-- `.aide/context/repo-snapshot.json` (present)
-- `.aide/context/repo-map.json` (present)
-- `.aide/context/repo-map.md` (present)
-- `.aide/context/test-map.json` (present)
-- `.aide/context/context-index.json` (present)
-- `.aide/context/latest-context-packet.md` (present)
-- `.aide/repo/latest-repo-intelligence.md` (present)
-- `.aide/repo/file-inventory.json` (present)
-- `.aide/reports/file-quality-summary.md` (present)
-- `.aide/reports/file-quality-ledger.json` (present)
-- `.aide/refactors/latest-refactor-readiness.md` (present)
-- `.aide/refactors/latest-refactor-plan.example.json` (present)
-- `.aide/routing/latest-route-decision.json` (present)
-- `.aide/routing/latest-route-decision.md` (present)
-- `.aide/cache/latest-cache-keys.json` (present)
-- `.aide/cache/latest-cache-keys.md` (present)
-- `.aide/prompts/compact-task.md`
-- `.aide/policies/token-budget.yaml`
-- `.aide/policies/cache.yaml`
-- `.aide/policies/local-state.yaml`
+## Allowed Paths
 
-## ALLOWED_PATHS
-
-- `<fill from the next reviewed queue packet>`
+- `contracts/testing/**`
+- `docs/testing/**`
+- `tools/test/**`
+- `tools/validators/testing/**`
+- `.aide/reports/**`
 - `.aide/context/**`
-- `.aide/queue/unspecified-*` if this task becomes a queue item
-- root docs only when behavior or documentation links change
+- `.aide/ledgers/**`
+- `docs/repo/audits/**`
+- narrow status notes in `docs/repo/POST_CONVERGE_NEXT_STEPS.md`,
+  `docs/repo/POST_RESTRUCTURE_PROOF.md`, and
+  `docs/repo/RESTRUCTURE_REPAIR_STATUS.md`
 
-## FORBIDDEN_PATHS
+## Deliverables
 
-- `.git/**`
-- `.env`
-- `secrets/**`
-- `.aide.local/**`
-- raw provider credentials, API keys, local caches, raw prompt logs
-- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
+- `contracts/testing/test_tiers.contract.toml`
+- `contracts/testing/test_tiers.schema.json`
+- `tools/test/run_fast_strict.py`
+- `tools/validators/testing/check_test_tiers.py`
+- `docs/testing/fast_strict_test_tier.md`
+- `docs/testing/test_tier_policy.md`
+- `.aide/reports/FAST-STRICT-TEST-TIER-01-*`
+- `docs/repo/audits/FAST_STRICT_TEST_TIER_01.md`
 
-## IMPLEMENTATION
+## Normal Gate
 
-- Read the queue packet and relevant repo refs first.
-- Keep changes inside the allowed paths.
-- Make the smallest coherent diff that satisfies acceptance.
-- Preserve generated/manual boundaries.
-- Do not inline whole source files unless exact contents are required.
-- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
+Run:
 
-## VALIDATION
+```text
+python tools/test/run_fast_strict.py --repo-root .
+```
 
-- `py -3 .aide/scripts/aide_lite.py doctor`
-- `py -3 .aide/scripts/aide_lite.py validate`
-- `py -3 .aide/scripts/aide_lite.py index`
-- `py -3 .aide/scripts/aide_lite.py context`
-- `py -3 .aide/scripts/aide_lite.py repo inventory`
-- `py -3 .aide/scripts/aide_lite.py repo validate`
-- `py -3 .aide/scripts/aide_lite.py verify`
-- `py -3 .aide/scripts/aide_lite.py review-pack`
-- `py -3 .aide/scripts/aide_lite.py route explain`
-- `py -3 .aide/scripts/aide_lite.py test`
-- `py -3 .aide/scripts/aide_lite.py selftest`
-- `py -3 scripts/aide validate`
+The normal gate is `fast_strict` = T0 + T1 + T2. It excludes T3
+product/projection proof and T4 full/release proof unless a later task selects
+them explicitly.
+
+## Validation
+
+- `python -m py_compile tools/test/run_fast_strict.py tools/validators/testing/check_test_tiers.py`
+- `python tools/validators/testing/check_test_tiers.py --repo-root . --strict`
+- `python tools/validators/testing/check_test_tiers.py --repo-root . --json`
+- `python tools/test/run_fast_strict.py --repo-root . --list`
+- `python tools/test/run_fast_strict.py --repo-root . --dry-run`
+- `python tools/test/run_fast_strict.py --repo-root . --json-out .aide/reports/FAST-STRICT-TEST-TIER-01-run.json --md-out .aide/reports/FAST-STRICT-TEST-TIER-01-run.md`
 - `git diff --check`
 
-## COMMITS
+## Current Result
 
-- Commit coherent subdeliverables with verbose bodies.
-- Stop at review gates.
+`PASS_WITH_WARNINGS`: the normal fast strict gate passed 30/30 commands in
+332.828 seconds. Full CTest was not rerun and remains T4 known debt, with the
+previous recorded result of 440/503 passed, 63 failed, and about 3227.41 seconds.
 
-## EVIDENCE
+## Non-Goals
 
-- changed files
-- validation commands and results
-- verifier result
-- review packet path and result when review-pack is available
-- advisory route decision path and result when Q17 routing is available
-- compact packet size and budget status
-- unresolved risks and deferrals
+- No gameplay, Workbench, renderer, platform, native GUI, worldgen, package
+  format, provider, public-surface registry, or release artifact work.
+- No deletion or weakening of existing tests.
+- No false claim that full CTest is green.
 
-## NON_GOALS
+## Next
 
-- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
-
-## ACCEPTANCE
-
-- Task-specific acceptance criteria are met.
-- Validation is run and recorded.
-- Evidence is written.
-- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
-
-## OUTPUT_SCHEMA
-
-Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
-Include the verifier result when Q12 verifier behavior is available.
-
-## TOKEN_ESTIMATE
-
-- method: chars / 4, rounded up
-- chars: 4124
-- approx_tokens: 1031
-- budget_status: PASS
-- warnings:
-  - none
-- formal ledger: `.aide/reports/token-ledger.jsonl`
+`PUBLIC-SURFACE-REGISTRY-01`

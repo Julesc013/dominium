@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.contracts.testing.test_tiers.v1",
+  "title": "Dominium Test Tier Contract Shape",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "status",
+    "contract",
+    "default_gate",
+    "policy",
+    "gates",
+    "tiers",
+    "commands"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "dominium.test_tiers.v1"
+    },
+    "status": {
+      "type": "string"
+    },
+    "default_gate": {
+      "type": "string"
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "normal_development_gate",
+        "extended_gate",
+        "release_gate",
+        "full_certification_gate",
+        "full_ctest_normal_gate",
+        "known_debt_policy",
+        "promotion_rules"
+      ]
+    },
+    "contract": {
+      "type": "object",
+      "required": [
+        "id",
+        "status",
+        "owner",
+        "purpose"
+      ]
+    },
+    "gates": {
+      "type": "object",
+      "required": [
+        "fast_strict",
+        "extended",
+        "release",
+        "full"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "name",
+          "purpose",
+          "tiers",
+          "target_seconds",
+          "default_command",
+          "failure_policy",
+          "evidence_outputs"
+        ],
+        "properties": {
+          "tiers": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "T0",
+                "T1",
+                "T2",
+                "T3",
+                "T4"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "tiers": {
+      "type": "object",
+      "required": [
+        "T0",
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "name",
+          "purpose",
+          "owner",
+          "normal_gate_member",
+          "release_gate_member",
+          "full_gate_member",
+          "timeout_guidance",
+          "failure_policy",
+          "known_debt_policy",
+          "promotion_rule"
+        ]
+      }
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "tier",
+          "name",
+          "type",
+          "owner",
+          "timeout_seconds",
+          "required",
+          "gates",
+          "failure_policy",
+          "missing_policy",
+          "warning_policy",
+          "evidence_outputs"
+        ],
+        "properties": {
+          "tier": {
+            "enum": [
+              "T0",
+              "T1",
+              "T2",
+              "T3",
+              "T4"
+            ]
+          },
+          "type": {
+            "enum": [
+              "argv",
+              "builtin"
+            ]
+          },
+          "argv": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "builtin": {
+            "type": "string"
+          },
+          "gates": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "fast_strict",
+                "extended",
+                "release",
+                "release_candidate",
+                "full"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "task": "FAST-STRICT-TEST-TIER-01",
+  "result": "PASS_WITH_WARNINGS",
+  "normal_gate": {
+    "tiers": [
+      "T0",
+      "T1",
+      "T2"
+    ],
+    "status": "PASS",
+    "elapsed_seconds": 332.828,
+    "commands_total": 30,
+    "commands_passed": 30,
+    "commands_failed": 0,
+    "commands_skipped": 0
+  },
+  "full_gate": {
+    "status": "known_debt",
+    "full_ctest_required_for_normal_gate": false,
+    "recorded_prior_full_ctest": {
+      "passed": 440,
+      "total": 503,
+      "failed": 63,
+      "elapsed_seconds": 3227.41
+    }
+  },
+  "next_task": "PUBLIC-SURFACE-REGISTRY-01"
+}

@@ -7,6 +7,19 @@ Superseded By: none
 
 Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, and NAME-00 naming-law follow-up.
 
+## FAST-STRICT-TEST-TIER-01 Proof Note
+
+FAST-STRICT-TEST-TIER-01 adds the normal development gate:
+
+- `fast_strict` = T0 + T1 + T2.
+- command: `python tools/test/run_fast_strict.py --repo-root .`
+- latest result: PASS, 30/30 commands, 332.828 seconds.
+- T3 product/projection proof remains task-dependent.
+- T4 full/release proof still owns full CTest and known broad debt.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `PUBLIC-SURFACE-REGISTRY-01`.
+
 ## Passing Proof Surfaces
 
 - AIDE doctor/validate/test/selftest/tools/roots/repo.

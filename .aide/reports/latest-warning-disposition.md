@@ -1,22 +1,23 @@
 # Latest Warning Disposition
 
-Current task: `CANON-SPINE-BOUNDARY-01`.
+Current task: `FAST-STRICT-TEST-TIER-01`.
 
 ## Accepted Local/Generated Warnings
 
-- `.aide.local/**`, `.dominium.local/**`, `.xstack_cache/**`, `build/`, `out/`, `dist/`, `artifacts/`, `tmp/`, and `__pycache__/` are local/generated roots and must not be tracked.
-- Historical/archive and fixture paths may still contain legacy terms; new active source must follow the naming canon.
+- `.aide.local/**`, `.dominium.local/**`, `.xstack_cache/**`, `build/`, `out/`, `dist/`, `artifacts/`, `tmp/`, and `__pycache__/` remain local/generated roots and must not be tracked.
+- Task evidence under `.aide/reports/FAST-STRICT-TEST-TIER-01-*` is tracked audit evidence, not local cache output.
 
 ## Repaired Warnings
 
-- Former bad-root tracked file count remains 0.
-- Build boundary validation now passes with 0 active failures.
-- `ALL_BUILD`, smoke CTest, and focused spine CTest pass.
-- Active release Python and tracked generated/local roots were checked and found clean.
+- Dominium now has an explicit normal development proof gate: `fast_strict` = T0 + T1 + T2.
+- The normal gate passed 30/30 commands in 332.828 seconds.
+- Full CTest is no longer treated as the routine edit-loop gate.
 
 ## Blocking Warnings
 
-- Full CTest is not green yet.
-- Feature work and DOE-00 remain blocked.
+- Full CTest is still not green and remains T4 full/release debt.
+- The previous recorded full CTest result is 440/503 passed, 63 failed, about 3227.41 seconds; this task did not rerun it.
+- `FULL-GATE-DEBT-01` remains required for broad full-proof debt.
+- Feature work and DOE-00 remain blocked until Foundation Lock closes.
 
-Next task: `POST-RESTRUCTURE-02 - Full Green Proof and Origin Sync`.
+Next task: `PUBLIC-SURFACE-REGISTRY-01`.

@@ -9,6 +9,16 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## FAST-STRICT-TEST-TIER-01 Update
+
+FAST-STRICT-TEST-TIER-01 defines the normal development proof gate as
+`fast_strict` = T0 + T1 + T2.
+
+- command: `python tools/test/run_fast_strict.py --repo-root .`
+- latest result: PASS, 30/30 commands, 332.828 seconds
+- full CTest remains T4 full/release debt and is not claimed green
+- next Foundation Lock task: `PUBLIC-SURFACE-REGISTRY-01`
+
 ## Current Correction After POST-CONVERGE-10E
 
 POST-CONVERGE-00 confirmed that exception retirement and build/runtime proof must precede platform, render, native shell, worldgen, and broad domain expansion.

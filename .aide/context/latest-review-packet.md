@@ -2,8 +2,9 @@
 
 ## Review Objective
 
-Review CANON-SPINE-NEW: broad structural cleanup of second-level source-spine
-duplication after bad-root routing.
+Review `FAST-STRICT-TEST-TIER-01`: the Foundation Lock task that defines the
+normal fast strict development proof gate and separates it from T4 full/release
+proof.
 
 ## Decision Requested
 
@@ -13,54 +14,41 @@ duplication after bad-root routing.
 
 `.aide/context/latest-task-packet.md`
 
-## Context Packet Reference
-
-`.aide/context/latest-context-packet.md`
-
-## Verification Report Reference
-
-`.aide/verification/latest-verification-report.md`
-
 ## Evidence Packet References
 
-- `.aide/reports/CANON-SPINE-NEW-status.md`
-- `.aide/reports/CANON-SPINE-NEW-validation.md`
-- `.aide/reports/CANON-SPINE-NEW-blockers.md`
-- `.aide/reports/CANON-SPINE-NEW-summary.json`
-- `docs/repo/audits/CANON_SPINE_NEW_SOURCE_SPINE_CLEANUP.md`
-- `docs/repo/root-recycling/CANON_SPINE_NEW_RESULT.md`
-- `docs/repo/final_repository_structure.md`
-- `.aide/reports/latest-dominium-status.md`
-- `.aide/reports/latest-warning-disposition.md`
+- `contracts/testing/test_tiers.contract.toml`
+- `contracts/testing/test_tiers.schema.json`
+- `tools/test/run_fast_strict.py`
+- `tools/validators/testing/check_test_tiers.py`
+- `docs/testing/fast_strict_test_tier.md`
+- `docs/testing/test_tier_policy.md`
+- `.aide/reports/FAST-STRICT-TEST-TIER-01-status.md`
+- `.aide/reports/FAST-STRICT-TEST-TIER-01-validation.md`
+- `.aide/reports/FAST-STRICT-TEST-TIER-01-results.json`
+- `.aide/reports/FAST-STRICT-TEST-TIER-01-run.json`
+- `.aide/reports/FAST-STRICT-TEST-TIER-01-run.md`
+- `.aide/reports/FAST-STRICT-TEST-TIER-01-full-gate-debt.md`
+- `docs/repo/audits/FAST_STRICT_TEST_TIER_01.md`
 
 ## Changed Files Summary
 
-The task moves and repairs active source-spine paths across apps, runtime,
-engine, game, contracts, content, docs, tests, tools, release, and archive
-surfaces. It also updates AIDE generated-root policy so root generated outputs
-do not pollute context while source-owned `tools/build/` remains visible.
+The task adds a machine-readable tier contract, a stdlib fast strict runner, a
+contract validator, test-tier docs, AIDE evidence, and narrow status pointers.
+It does not change product, gameplay, renderer, platform, or native GUI behavior.
 
 ## Validation Summary
 
-AIDE and strict layout validators pass. Smoke CTest and focused spine CTest
-pass. Build boundary validation and broad full CTest remain follow-up blockers.
+The normal `fast_strict` gate passed 30/30 commands in 332.828 seconds. The gate
+includes T0 static hygiene, T1 strict repo/governance checks, and T2 CMake
+configure/build plus smoke CTest.
 
 ## Risk Summary
 
-Remaining risks are stale boundary imports, broader test/proof path drift, and
-generated projection/distribution proof refresh. No feature work is authorized.
-
-## Token Summary
-
-The review packet stays compact and references evidence by path.
-
-## Non-Goals / Scope Guard
-
-No feature implementation, public release, tag, upload, semantic ID mutation,
-or false full-proof claim.
+Full CTest remains known T4 full/release debt and was not rerun for this task.
+Feature work remains blocked until Foundation Lock closes.
 
 ## Reviewer Instructions
 
-Confirm that former bad roots remain empty, generated/local roots are untracked,
-the source spine is materially cleaner, and remaining blockers are assigned to
-the next boundary/full-proof task.
+Confirm that T0/T1/T2 are strict enough for normal task closeout, that T3/T4
+remain outside the normal gate, and that full CTest debt is visible rather than
+hidden or marked green.

@@ -9,6 +9,19 @@ Latest task: `MOVE-SCRIPT-00`.
 
 Result: PARTIAL, with naming law locked, CTest sharding honest, semantic lint blockers resolved, and deterministic bad-root routing evidence generated without applying moves.
 
+## FAST-STRICT-TEST-TIER-01 Update
+
+FAST-STRICT-TEST-TIER-01 is PASS_WITH_WARNINGS.
+
+- normal gate: `fast_strict` = T0 + T1 + T2.
+- command: `python tools/test/run_fast_strict.py --repo-root .`
+- latest result: PASS, 30/30 commands, 332.828 seconds.
+- full CTest remains T4 full/release debt and was not rerun for this task.
+- feature implementation remains blocked until Foundation Lock closes.
+
+Next task:
+`PUBLIC-SURFACE-REGISTRY-01`
+
 ## Current Green Gates
 
 - AIDE doctor/validate/test/selftest/tools/roots/repo pass.
