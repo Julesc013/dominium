@@ -9,6 +9,24 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## SCHEMA-PROTOCOL-LAW-01 Update
+
+SCHEMA-PROTOCOL-LAW-01 adds the provisional schema/protocol evolution law.
+
+- schema law: `contracts/schema/schema_evolution.contract.toml`
+- protocol law: `contracts/protocol/protocol_evolution.contract.toml`
+- registry law: `contracts/registry/registry_evolution.contract.toml`
+- canonical serialization: `contracts/serialization/canonical_serialization.contract.toml`
+- migration/refusal policy: `contracts/migration/migration_policy.contract.toml`
+- validator: `python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict`
+- fixture suite: `tests/contract/schema_protocol/**`
+- initial inventory: 17,808 tracked files scanned; 2,489 schema/protocol-like files classified descriptively
+- next Foundation Lock task: `CAPABILITY-REFUSAL-LAW-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Existing
+schemas, protocols, registries, and manifests are inventoried but not migrated
+by this task.
+
 ## ARTIFACT-IDENTITY-LAW-01 Update
 
 ARTIFACT-IDENTITY-LAW-01 adds the provisional artifact identity law.

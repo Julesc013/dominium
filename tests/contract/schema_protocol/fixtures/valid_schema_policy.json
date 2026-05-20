@@ -1,0 +1,18 @@
+{
+  "schema_id": "dominium.fixture.schema_policy.v1",
+  "owner": "tests.contract",
+  "version": "1.0.0",
+  "stability": "provisional",
+  "artifact_kinds": ["test_fixture"],
+  "compatibility_range": "1.x",
+  "unknown_field_policy": "reject",
+  "required_field_policy": "must_exist",
+  "default_policy": "explicit_default_only",
+  "canonical_serialization": "json_sorted_utf8",
+  "migration_policy": "refuse_with_diagnostic",
+  "refusal_policy": "diagnostic_required",
+  "fixtures": ["tests/contract/schema_protocol/fixtures/valid_schema_policy.json"],
+  "negative_fixtures": ["tests/contract/schema_protocol/fixtures/invalid_schema_missing_id.json"],
+  "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --fixtures"],
+  "notes": "Valid provisional schema policy fixture."
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "dominium.protocol.stability_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.protocol",
+  "values": [
+    {"id": "experimental", "description": "Exploratory protocol with no compatibility promise."},
+    {"id": "provisional", "description": "Governed protocol with initial compatibility policy and incomplete stable proof."},
+    {"id": "stable", "description": "Stable protocol with compatibility range, fixtures, proof, and refusal behavior."},
+    {"id": "deprecated", "description": "Protocol remains recognized but should not be used for new surfaces."},
+    {"id": "retired", "description": "Protocol is no longer active and must refuse or migrate through explicit policy."},
+    {"id": "generated", "description": "Protocol description is generated and must declare source before promotion."},
+    {"id": "fixture", "description": "Protocol description exists only for test fixtures."},
+    {"id": "historical", "description": "Protocol description is retained for archive or audit context only."}
+  ]
+}

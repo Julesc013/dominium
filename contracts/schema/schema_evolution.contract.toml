@@ -1,0 +1,73 @@
+schema_version = "dominium.schema.evolution.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.schema"
+
+[contract]
+id = "dominium.schema.evolution.v1"
+status = "provisional"
+owner = "contracts.schema"
+purpose = "Defines versioning, compatibility, migration, refusal, and proof law for durable schemas."
+
+[policy]
+silent_schema_changes_allowed = false
+silent_protocol_changes_allowed = false
+silent_defaults_allowed = false
+unversioned_stable_contract_allowed = false
+path_as_identity_allowed = false
+best_effort_migration_allowed = false
+stable_schemas_require_compatibility_range = true
+stable_schemas_require_fixtures = true
+stable_schemas_require_proof = true
+stable_schemas_require_refusal_policy = true
+generated_schema_is_authority_without_source = false
+
+[identity]
+schema_id_required = true
+schema_id_is_not_path = true
+schema_id_format = "lowercase dotted semantic id"
+version_required = true
+owner_required = true
+stability_required = true
+schema_id_examples = ["dominium.artifact.manifest.v1", "dominium.command.result.v1", "domino.replay.log.v1"]
+
+[unknown_fields]
+allowed_policies = ["reject", "ignore_with_diagnostic", "preserve_roundtrip", "allow_if_extension_declared"]
+silent_discard_allowed = false
+stable_schema_default_policy = "reject"
+
+[required_fields]
+allowed_policies = ["must_exist", "default_if_missing", "migrate_if_missing", "refuse_if_missing"]
+required_fields_added_to_stable_require_migration_or_refusal = true
+
+[defaults]
+allowed_policies = ["explicit_default_only", "no_default", "schema_defined_default", "migration_defined_default"]
+silent_default_allowed = false
+default_source_must_be_declared = true
+
+[serialization]
+canonical_policy = "contracts/serialization/canonical_serialization.contract.toml"
+stable_schemas_require_canonical_serialization = true
+canonical_serialization_values = ["json_sorted_utf8", "toml_normalized", "binary_canonical", "not_applicable", "deferred"]
+
+[migration]
+policy = "contracts/migration/migration_policy.contract.toml"
+allowed_policies = ["none", "explicit_migration_required", "compatible_read", "refuse_with_diagnostic", "deferred"]
+silent_migration_allowed = false
+
+[refusal]
+allowed_policies = ["diagnostic_required", "refusal_code_required", "structured_error_required"]
+incompatible_schema_requires_diagnostic = true
+incompatible_schema_requires_refusal_for_public_commands = true
+
+[fixtures]
+positive_fixtures_required_for_stable = true
+negative_fixtures_required_for_stable = true
+fixture_schema_surfaces_are_not_product_contracts = true
+
+[integration]
+artifact_identity = "contracts/artifact/artifact_identity.contract.toml"
+command_surface = "contracts/command/command_surface.contract.toml"
+diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+public_surface_registry = "contracts/public_surface/public_surface.contract.toml"
+compatibility_corpus_future_task = "COMPATIBILITY-CORPUS-01"

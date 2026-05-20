@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.protocol.policy_schema.v1",
+  "title": "Dominium Protocol Policy",
+  "type": "object",
+  "required": [
+    "protocol_id",
+    "owner",
+    "version",
+    "stability",
+    "message_kinds",
+    "compatibility_range",
+    "unknown_message_policy",
+    "unknown_field_policy",
+    "required_field_policy",
+    "ordering_policy",
+    "canonical_encoding",
+    "migration_policy",
+    "refusal_policy"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "protocol_id": {"type": "string", "minLength": 3},
+    "owner": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "stability": {"type": "string"},
+    "transport": {"type": "string"},
+    "message_kinds": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+    "compatibility_range": {"type": ["string", "object"]},
+    "unknown_message_policy": {"type": "string"},
+    "unknown_field_policy": {"type": "string"},
+    "required_field_policy": {"type": "string"},
+    "ordering_policy": {"type": "string"},
+    "canonical_encoding": {"type": "string"},
+    "migration_policy": {"type": "string"},
+    "refusal_policy": {"type": "string"},
+    "fixtures": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "proof": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "notes": {"type": "string"}
+  }
+}

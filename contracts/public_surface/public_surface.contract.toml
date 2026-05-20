@@ -659,6 +659,136 @@ replacement_policy = "fixture_changes_follow_artifact_identity_validator_tests"
 notes = "Fixture suite for artifact identity validator behavior."
 
 [[surface]]
+id = "dominium.schema.evolution.v1"
+kind = "registry"
+path = "contracts/schema/schema_evolution.contract.toml"
+owner = "contracts.schema"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SCHEMA-PROTOCOL-LAW-01"
+proof = ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_schema_protocol_law_update"
+notes = "Provisional schema evolution law; existing schemas are inventoried but not migrated by this task."
+
+[[surface]]
+id = "dominium.protocol.evolution.v1"
+kind = "protocol"
+path = "contracts/protocol/protocol_evolution.contract.toml"
+owner = "contracts.protocol"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SCHEMA-PROTOCOL-LAW-01"
+proof = ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_schema_protocol_law_update"
+notes = "Provisional protocol evolution law."
+
+[[surface]]
+id = "dominium.registry.evolution.v1"
+kind = "registry"
+path = "contracts/registry/registry_evolution.contract.toml"
+owner = "contracts.registry"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SCHEMA-PROTOCOL-LAW-01"
+proof = ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_schema_protocol_law_update"
+notes = "Provisional registry evolution law."
+
+[[surface]]
+id = "dominium.serialization.canonical.v1"
+kind = "registry"
+path = "contracts/serialization/canonical_serialization.contract.toml"
+owner = "contracts.serialization"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SCHEMA-PROTOCOL-LAW-01"
+proof = ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_schema_protocol_law_update"
+notes = "Canonical serialization policy for schema/protocol/artifact hash behavior."
+
+[[surface]]
+id = "dominium.migration.policy.v1"
+kind = "registry"
+path = "contracts/migration/migration_policy.contract.toml"
+owner = "contracts.migration"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SCHEMA-PROTOCOL-LAW-01"
+proof = ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_schema_protocol_law_update"
+notes = "Migration/refusal policy scaffold for durable data-contract evolution."
+
+[[surface]]
+id = "dominium.schema.policy_schema.v1"
+kind = "schema"
+path = "contracts/schema/schema_policy.schema.json"
+owner = "contracts.schema"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SCHEMA-PROTOCOL-LAW-01"
+proof = ["python -m json.tool contracts/schema/schema_policy.schema.json", "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_schema_protocol_law_update"
+notes = "Schema policy JSON schema."
+
+[[surface]]
+id = "dominium.protocol.policy_schema.v1"
+kind = "schema"
+path = "contracts/protocol/protocol_policy.schema.json"
+owner = "contracts.protocol"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SCHEMA-PROTOCOL-LAW-01"
+proof = ["python -m json.tool contracts/protocol/protocol_policy.schema.json", "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_schema_protocol_law_update"
+notes = "Protocol policy JSON schema."
+
+[[surface]]
+id = "dominium.registry.policy_schema.v1"
+kind = "schema"
+path = "contracts/registry/registry_policy.schema.json"
+owner = "contracts.registry"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SCHEMA-PROTOCOL-LAW-01"
+proof = ["python -m json.tool contracts/registry/registry_policy.schema.json", "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_schema_protocol_law_update"
+notes = "Registry policy JSON schema."
+
+[[surface]]
+id = "dominium.schema_protocol.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_schema_protocol_evolution.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SCHEMA-PROTOCOL-LAW-01"
+proof = ["python -m py_compile tools/validators/contracts/check_schema_protocol_evolution.py", "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_schema_protocol_law_update"
+notes = "Validator implementation for schema/protocol evolution law."
+
+[[surface]]
+id = "dominium.schema_protocol.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/schema_protocol"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "SCHEMA-PROTOCOL-LAW-01"
+proof = ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_schema_protocol_validator_tests"
+notes = "Fixture suite for schema/protocol evolution validator behavior."
+
+[[surface]]
 id = "dominium.command_surface.validator.v1"
 kind = "documentation"
 path = "tools/validators/contracts/check_command_surface.py"

@@ -1,0 +1,42 @@
+{
+  "schema_version": "dominium.schema.field_policy_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.schema",
+  "unknown_field_policies": [
+    {"id": "reject", "description": "Reject unknown fields with structured diagnostic/refusal behavior."},
+    {"id": "ignore_with_diagnostic", "description": "Ignore only with a diagnostic or evidence note."},
+    {"id": "preserve_roundtrip", "description": "Preserve unknown fields during read/write roundtrip."},
+    {"id": "allow_if_extension_declared", "description": "Allow unknown fields only under an explicit extension namespace or declaration."}
+  ],
+  "required_field_policies": [
+    {"id": "must_exist", "description": "Required field must be present."},
+    {"id": "default_if_missing", "description": "Missing field can use a declared default; silent defaults remain forbidden."},
+    {"id": "migrate_if_missing", "description": "Missing field requires explicit migration."},
+    {"id": "refuse_if_missing", "description": "Missing field refuses with diagnostic/refusal output."}
+  ],
+  "default_policies": [
+    {"id": "explicit_default_only", "description": "Defaults must be declared explicitly in schema/policy."},
+    {"id": "no_default", "description": "No default is allowed."},
+    {"id": "schema_defined_default", "description": "Default value is defined by the schema and visible to consumers."},
+    {"id": "migration_defined_default", "description": "Default value is introduced only by an explicit migration."}
+  ],
+  "canonical_serialization_policies": [
+    {"id": "json_sorted_utf8", "description": "Canonical JSON uses UTF-8, sorted keys, and normalized line endings."},
+    {"id": "toml_normalized", "description": "Canonical TOML uses normalized formatting when declared."},
+    {"id": "binary_canonical", "description": "Binary canonical encoding is declared and byte-exact."},
+    {"id": "not_applicable", "description": "Canonical serialization does not apply."},
+    {"id": "deferred", "description": "Canonical serialization policy is not yet stable."}
+  ],
+  "migration_policies": [
+    {"id": "none", "description": "No migration is available or required."},
+    {"id": "explicit_migration_required", "description": "Consumers must run a declared migration before use."},
+    {"id": "compatible_read", "description": "Older form can be read without mutating source."},
+    {"id": "refuse_with_diagnostic", "description": "Incompatible form must refuse with diagnostic output."},
+    {"id": "deferred", "description": "Policy is not yet mature; stable promotion is blocked."}
+  ],
+  "refusal_policies": [
+    {"id": "diagnostic_required", "description": "Refusal must include diagnostic code or evidence reference."},
+    {"id": "refusal_code_required", "description": "Refusal must include a stable refusal code."},
+    {"id": "structured_error_required", "description": "Refusal must be represented as structured result/error data."}
+  ]
+}

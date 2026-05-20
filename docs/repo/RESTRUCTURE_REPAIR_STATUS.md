@@ -5,13 +5,34 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `ARTIFACT-IDENTITY-LAW-01`.
+Latest task: `SCHEMA-PROTOCOL-LAW-01`.
 
-Result: PASS_WITH_WARNINGS for the provisional artifact identity law, assuming
-the final fast strict rerun remains green. Artifact identity, manifest, kind,
-lifecycle, hash, compatibility, trust, ref, validator, fixtures, docs, and
+Result: PASS_WITH_WARNINGS for the provisional schema/protocol evolution law,
+assuming the final fast strict rerun remains green. Schema, protocol, registry,
+canonical serialization, migration/refusal, validator, fixtures, docs, and
 evidence surfaces exist. Existing dependency-direction debt remains visible and
 is not hidden by this task.
+
+## SCHEMA-PROTOCOL-LAW-01 Update
+
+SCHEMA-PROTOCOL-LAW-01 is PASS_WITH_WARNINGS.
+
+- schema law: `contracts/schema/schema_evolution.contract.toml`.
+- protocol law: `contracts/protocol/protocol_evolution.contract.toml`.
+- registry law: `contracts/registry/registry_evolution.contract.toml`.
+- validator: `tools/validators/contracts/check_schema_protocol_evolution.py`.
+- fixtures: `tests/contract/schema_protocol/**`.
+- diagnostic codes registered: 11 new schema/protocol/migration/registry codes
+  plus the existing unsupported-schema-version code.
+- inventory: 17,808 tracked files scanned; 2,489 schema/protocol-like files
+  classified.
+- existing schemas, protocols, registries, and manifests are inventoried but
+  not migrated.
+
+Next task:
+`CAPABILITY-REFUSAL-LAW-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## ARTIFACT-IDENTITY-LAW-01 Update
 

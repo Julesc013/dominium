@@ -1,0 +1,13 @@
+schema_version = "dominium.fixture.migration_policy.v1"
+status = "fixture"
+owner = "tests.contract"
+
+[migration]
+id = "dominium.fixture.migration.v1_to_v2"
+owner = "tests.contract"
+version = "1.0.0"
+source_schema_id = "dominium.fixture.source.v1"
+target_schema_id = "dominium.fixture.target.v2"
+migration_policy = "explicit_migration_required"
+refusal_policy = "diagnostic_required"
+diagnostic_codes = ["DOM-MIGRATION-REQUIRED"]

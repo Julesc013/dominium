@@ -1,0 +1,45 @@
+schema_version = "dominium.migration.policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.migration"
+
+[contract]
+id = "dominium.migration.policy.v1"
+status = "provisional"
+owner = "contracts.migration"
+purpose = "Defines explicit migration, compatible-read, refusal, diagnostic, and provenance policy for durable data contracts."
+
+[policy]
+silent_migration_allowed = false
+silent_mutation_allowed = false
+silent_fallback_allowed = false
+best_effort_migration_allowed = false
+incompatible_input_requires_refusal_or_diagnostic = true
+durable_artifact_migration_requires_provenance = true
+stable_migration_requires_fixture = true
+stable_migration_requires_negative_fixture = true
+
+[migration_modes]
+allowed = ["none", "explicit_migration_required", "compatible_read", "refuse_with_diagnostic", "deferred"]
+compatible_read_must_not_mutate_source = true
+explicit_migration_must_record_source_and_target = true
+deferred_means_not_compatible = true
+
+[refusal]
+allowed_policies = ["diagnostic_required", "refusal_code_required", "structured_error_required"]
+missing_migration_requires_refusal = true
+unsupported_version_requires_diagnostic = true
+
+[provenance]
+record_source_schema_id = true
+record_source_version = true
+record_target_schema_id = true
+record_target_version = true
+record_tool = true
+record_time_when_available = true
+rollback_or_backup_expectation_required_for_user_artifacts = true
+
+[integration]
+diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+artifact_identity = "contracts/artifact/artifact_identity.contract.toml"
+schema_evolution = "contracts/schema/schema_evolution.contract.toml"

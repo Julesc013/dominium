@@ -1,0 +1,43 @@
+schema_version = "dominium.serialization.canonical.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.serialization"
+
+[contract]
+id = "dominium.serialization.canonical.v1"
+status = "provisional"
+owner = "contracts.serialization"
+purpose = "Defines canonical serialization policy for stable hashes, artifacts, schemas, and protocols."
+
+[json_sorted_utf8]
+encoding = "utf-8"
+sort_object_keys = true
+line_endings = "lf"
+trailing_whitespace_allowed = false
+path_dependent_output_allowed = false
+nonfinite_numbers_allowed = false
+stable_hash_input = true
+
+[toml_normalized]
+encoding = "utf-8"
+line_endings = "lf"
+preserve_semantic_values = true
+path_dependent_output_allowed = false
+stable_hash_input = "only when declared by artifact policy"
+
+[binary_canonical]
+status = "deferred"
+byte_order_must_be_declared = true
+alignment_padding_must_be_explicit = true
+raw_struct_serialization_allowed = false
+
+[hash_relationship]
+default_hash_algorithm = "sha256"
+local_paths_are_not_hash_input_unless_declared = true
+directory_hashes_require_sorted_relative_paths = true
+directory_hashes_require_per_file_hashes = true
+aggregate_hash_requires_manifest_policy = true
+
+[integration]
+artifact_hash_policy = "contracts/artifact/artifact_hash_policy.contract.toml"
+schema_evolution = "contracts/schema/schema_evolution.contract.toml"

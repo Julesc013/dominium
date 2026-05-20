@@ -1,0 +1,14 @@
+{
+  "protocol_id": "dominium.fixture.protocol_missing_version.v1",
+  "owner": "tests.contract",
+  "stability": "provisional",
+  "message_kinds": ["fixture.message"],
+  "compatibility_range": "1.x",
+  "unknown_message_policy": "reject",
+  "unknown_field_policy": "reject",
+  "required_field_policy": "must_exist",
+  "ordering_policy": "deterministic_order_declared",
+  "canonical_encoding": "json_sorted_utf8",
+  "migration_policy": "refuse_with_diagnostic",
+  "refusal_policy": "diagnostic_required"
+}

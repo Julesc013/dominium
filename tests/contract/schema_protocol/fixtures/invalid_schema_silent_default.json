@@ -1,0 +1,14 @@
+{
+  "schema_id": "dominium.fixture.invalid_silent_default.v1",
+  "owner": "tests.contract",
+  "version": "1.0.0",
+  "stability": "provisional",
+  "compatibility_range": "1.x",
+  "unknown_field_policy": "reject",
+  "required_field_policy": "default_if_missing",
+  "default_policy": "silent_default",
+  "defaults_are_silent": true,
+  "canonical_serialization": "json_sorted_utf8",
+  "migration_policy": "refuse_with_diagnostic",
+  "refusal_policy": "diagnostic_required"
+}

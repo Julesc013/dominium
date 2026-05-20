@@ -1,0 +1,42 @@
+schema_version = "dominium.registry.evolution.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.registry"
+
+[contract]
+id = "dominium.registry.evolution.v1"
+status = "provisional"
+owner = "contracts.registry"
+purpose = "Defines versioning, identity, duplicate, lifecycle, and compatibility law for registries."
+
+[policy]
+registry_id_required = true
+version_required = true
+owner_required = true
+stability_required = true
+entry_ids_required = true
+duplicate_entries_allowed = false
+path_as_entry_identity_allowed = false
+stable_registries_require_proof = true
+stable_registries_require_compatibility_policy = true
+
+[entries]
+entry_id_policy = "stable semantic id"
+duplicate_policy = "reject"
+unknown_entry_policy = "diagnostic_required"
+entry_lifecycle_policy = "explicit lifecycle where entries can be retired"
+
+[lifecycle]
+allowed_entry_states = ["experimental", "provisional", "stable", "deprecated", "retired", "generated", "fixture", "historical"]
+retired_entries_must_not_be_reused = true
+renamed_entries_require_replacement_or_migration_note = true
+
+[compatibility]
+unknown_entry_policy_values = ["reject", "ignore_with_diagnostic", "allow_if_extension_declared"]
+duplicate_policy_values = ["reject", "refuse_with_diagnostic"]
+stable_registry_entry_removal_requires_deprecation = true
+
+[integration]
+schema_evolution = "contracts/schema/schema_evolution.contract.toml"
+diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+public_surface_registry = "contracts/public_surface/public_surface.contract.toml"

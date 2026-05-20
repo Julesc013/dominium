@@ -1,0 +1,15 @@
+{
+  "schema_version": "dominium.schema.stability_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.schema",
+  "values": [
+    {"id": "experimental", "description": "Exploratory active schema; compatibility is not promised."},
+    {"id": "provisional", "description": "Initial governed schema; compatibility policy exists but stable proof is incomplete."},
+    {"id": "stable", "description": "Schema is a stable data contract with compatibility range, fixtures, and proof."},
+    {"id": "deprecated", "description": "Schema remains readable or refusably recognizable but should not be used for new artifacts."},
+    {"id": "retired", "description": "Schema is no longer active; consumers should refuse or migrate through explicit policy."},
+    {"id": "generated", "description": "Schema is generated from another source and must declare its source before promotion."},
+    {"id": "fixture", "description": "Schema exists only as a test fixture and is not a product compatibility promise."},
+    {"id": "historical", "description": "Schema is retained for archive or audit context only."}
+  ]
+}

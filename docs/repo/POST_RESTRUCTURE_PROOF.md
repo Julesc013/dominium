@@ -5,7 +5,28 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, and ARTIFACT-IDENTITY-LAW-01.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, and SCHEMA-PROTOCOL-LAW-01.
+
+## SCHEMA-PROTOCOL-LAW-01 Proof Note
+
+SCHEMA-PROTOCOL-LAW-01 adds the provisional schema/protocol/registry evolution
+law.
+
+- schema law: `contracts/schema/schema_evolution.contract.toml`.
+- protocol law: `contracts/protocol/protocol_evolution.contract.toml`.
+- registry law: `contracts/registry/registry_evolution.contract.toml`.
+- canonical serialization: `contracts/serialization/canonical_serialization.contract.toml`.
+- migration policy: `contracts/migration/migration_policy.contract.toml`.
+- validator: `python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict`.
+- fixtures: `tests/contract/schema_protocol/**`.
+- inventory: 17,808 tracked files scanned; 2,489 schema/protocol-like files
+  classified descriptively.
+- public surface and diagnostic registries updated with schema/protocol
+  surfaces/codes.
+- existing schemas and registries are not migrated by this task.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `CAPABILITY-REFUSAL-LAW-01`.
 
 ## ARTIFACT-IDENTITY-LAW-01 Proof Note
 

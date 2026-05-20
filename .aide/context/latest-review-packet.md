@@ -2,10 +2,10 @@
 
 ## Review Objective
 
-Review `ARTIFACT-IDENTITY-LAW-01`: artifact identity contracts, manifest/ref
-schemas, kind/lifecycle registries, hash/compatibility/trust policy, validator,
-fixtures, documentation, public-surface registration, diagnostics integration,
-inventory, and evidence.
+Review `SCHEMA-PROTOCOL-LAW-01`: schema/protocol/registry evolution contracts,
+canonical serialization, migration/refusal policy, validator, fixtures,
+documentation, public-surface registration, diagnostics integration, inventory,
+and evidence.
 
 ## Decision Requested
 
@@ -21,58 +21,60 @@ inventory, and evidence.
 
 ## Verification Report Reference
 
-`.aide/reports/ARTIFACT-IDENTITY-LAW-01-validation.md`
+`.aide/reports/SCHEMA-PROTOCOL-LAW-01-validation.md`
 
 ## Evidence Packet References
 
-- `contracts/artifact/artifact_identity.contract.toml`
-- `contracts/artifact/artifact_manifest.schema.json`
-- `contracts/artifact/artifact_kind.registry.json`
-- `contracts/artifact/artifact_lifecycle.registry.json`
-- `contracts/artifact/artifact_ref.schema.json`
-- `contracts/artifact/artifact_hash_policy.contract.toml`
-- `contracts/artifact/artifact_compatibility.contract.toml`
-- `contracts/artifact/artifact_trust_policy.contract.toml`
-- `tools/validators/contracts/check_artifact_identity.py`
-- `docs/architecture/artifact_identity_law.md`
-- `docs/development/artifact_identity_guidelines.md`
-- `tests/contract/artifact_identity/**`
-- `.aide/reports/ARTIFACT-IDENTITY-LAW-01-status.md`
-- `.aide/reports/ARTIFACT-IDENTITY-LAW-01-results.json`
-- `.aide/reports/ARTIFACT-IDENTITY-LAW-01-fast-strict.md`
-- `docs/repo/audits/ARTIFACT_IDENTITY_LAW_01.md`
+- `contracts/schema/schema_evolution.contract.toml`
+- `contracts/protocol/protocol_evolution.contract.toml`
+- `contracts/registry/registry_evolution.contract.toml`
+- `contracts/serialization/canonical_serialization.contract.toml`
+- `contracts/migration/migration_policy.contract.toml`
+- `contracts/schema/schema_policy.schema.json`
+- `contracts/protocol/protocol_policy.schema.json`
+- `contracts/registry/registry_policy.schema.json`
+- `tools/validators/contracts/check_schema_protocol_evolution.py`
+- `docs/architecture/schema_protocol_evolution.md`
+- `docs/development/schema_protocol_guidelines.md`
+- `tests/contract/schema_protocol/**`
+- `.aide/reports/SCHEMA-PROTOCOL-LAW-01-status.md`
+- `.aide/reports/SCHEMA-PROTOCOL-LAW-01-results.json`
+- `.aide/reports/SCHEMA-PROTOCOL-LAW-01-fast-strict.md`
+- `docs/repo/audits/SCHEMA_PROTOCOL_LAW_01.md`
 
 ## Changed Files Summary
 
-Adds a provisional artifact identity governance spine and validator. Registers
-artifact identity surfaces and diagnostics without implementing artifact loading,
-save/replay/package runtime, release publication, or Workbench behavior.
+Adds a provisional schema/protocol evolution governance spine and validator.
+Registers schema/protocol law surfaces and diagnostics without implementing
+runtime migration, protocol dispatch, package/save/replay loading, or Workbench
+behavior.
 
 ## Validation Summary
 
-The artifact validator compiles and passes strict mode with 23 artifact kinds,
-11 lifecycle states, and 0 findings. Fixture mode passes. Inventory mode scans
-17,782 tracked files and classifies 1,890 artifact-like files descriptively.
-Diagnostics and public-surface validators pass after artifact integration.
+The schema/protocol validator compiles and passes strict mode with 0 findings.
+Fixture mode passes with 7 fixtures. Inventory mode scans 17,808 tracked files
+and classifies 2,489 schema/protocol-like files descriptively. Diagnostics and
+public-surface validators pass after schema/protocol integration.
 
 ## Token Summary
 
 This review packet is intentionally compact; full validation details live in
-`.aide/reports/ARTIFACT-IDENTITY-LAW-01-validation.md`.
+`.aide/reports/SCHEMA-PROTOCOL-LAW-01-validation.md`.
 
 ## Risk Summary
 
-The artifact identity law is provisional. Existing artifacts are inventoried but
-not migrated. Compatibility corpus, schema/protocol law, artifact runtime
-loading, and release trust remain future Foundation Lock work.
+The schema/protocol law is provisional. Existing schemas and registries are
+inventoried but not migrated. Compatibility corpus, capability/refusal law,
+provider model, runtime migration, and Workbench presentation remain future
+Foundation Lock work.
 
 ## Non-Goals / Scope Guard
 
-No feature implementation, artifact runtime loading, save/replay/package system,
-Workbench UI, provider model, public release, or full CTest proof.
+No feature implementation, runtime migration, protocol dispatch, package/save/
+replay loader, Workbench UI, provider model, public release, or full CTest proof.
 
 ## Reviewer Instructions
 
-Confirm that artifact identity is manifest/schema/version/hash/trust based, not
-path-based, and that existing artifacts are inventoried rather than silently
+Confirm that schema/protocol identity is semantic ID plus version/policy, not
+path-based, and that existing schemas are inventoried rather than silently
 migrated.

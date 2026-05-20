@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.registry.policy_schema.v1",
+  "title": "Dominium Registry Policy",
+  "type": "object",
+  "required": [
+    "registry_id",
+    "owner",
+    "version",
+    "stability",
+    "entry_id_policy",
+    "entry_lifecycle_policy",
+    "duplicate_policy",
+    "unknown_entry_policy",
+    "compatibility_policy"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "registry_id": {"type": "string", "minLength": 3},
+    "owner": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "stability": {"type": "string"},
+    "entry_id_policy": {"type": "string"},
+    "entry_lifecycle_policy": {"type": "string"},
+    "duplicate_policy": {"type": "string"},
+    "unknown_entry_policy": {"type": "string"},
+    "compatibility_policy": {"type": "string"},
+    "proof": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "notes": {"type": "string"}
+  }
+}

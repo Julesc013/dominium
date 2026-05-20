@@ -1,0 +1,19 @@
+{
+  "protocol_id": "dominium.fixture.protocol_policy.v1",
+  "owner": "tests.contract",
+  "version": "1.0.0",
+  "stability": "provisional",
+  "transport": "fixture",
+  "message_kinds": ["fixture.message"],
+  "compatibility_range": "1.x",
+  "unknown_message_policy": "reject",
+  "unknown_field_policy": "reject",
+  "required_field_policy": "must_exist",
+  "ordering_policy": "deterministic_order_declared",
+  "canonical_encoding": "json_sorted_utf8",
+  "migration_policy": "refuse_with_diagnostic",
+  "refusal_policy": "diagnostic_required",
+  "fixtures": ["tests/contract/schema_protocol/fixtures/valid_protocol_policy.json"],
+  "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --fixtures"],
+  "notes": "Valid provisional protocol policy fixture."
+}

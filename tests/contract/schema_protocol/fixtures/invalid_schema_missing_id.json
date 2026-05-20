@@ -1,0 +1,12 @@
+{
+  "owner": "tests.contract",
+  "version": "1.0.0",
+  "stability": "provisional",
+  "compatibility_range": "1.x",
+  "unknown_field_policy": "reject",
+  "required_field_policy": "must_exist",
+  "default_policy": "explicit_default_only",
+  "canonical_serialization": "json_sorted_utf8",
+  "migration_policy": "refuse_with_diagnostic",
+  "refusal_policy": "diagnostic_required"
+}

@@ -1,0 +1,57 @@
+schema_version = "dominium.protocol.evolution.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.protocol"
+
+[contract]
+id = "dominium.protocol.evolution.v1"
+status = "provisional"
+owner = "contracts.protocol"
+purpose = "Defines versioning, compatibility, ordering, migration, and refusal law for protocol surfaces."
+
+[policy]
+protocol_id_required = true
+version_required = true
+owner_required = true
+stability_required = true
+message_kinds_required = true
+silent_protocol_changes_allowed = false
+stable_protocols_require_fixture = true
+stable_protocols_require_proof = true
+stable_protocols_require_compatibility_range = true
+stable_protocols_require_refusal_policy = true
+
+[identity]
+protocol_id_format = "lowercase dotted semantic id"
+protocol_id_is_not_path = true
+protocol_id_examples = ["dominium.command.surface.v1", "domino.replay.stream.v1", "dominium.provider.handshake.v1"]
+
+[messages]
+unknown_message_policies = ["reject", "ignore_with_diagnostic", "allow_if_extension_declared"]
+unknown_field_policies = ["reject", "ignore_with_diagnostic", "preserve_roundtrip", "allow_if_extension_declared"]
+required_field_policies = ["must_exist", "migrate_if_missing", "refuse_if_missing"]
+message_kind_ids_are_stable = true
+
+[ordering]
+ordering_policy_required_for_replay_or_network = true
+ordering_policy_must_not_depend_on_hash_iteration = true
+ordering_policy_must_not_depend_on_thread_completion = true
+
+[encoding]
+canonical_encoding_values = ["json_sorted_utf8", "binary_canonical", "not_applicable", "deferred"]
+canonical_serialization_policy = "contracts/serialization/canonical_serialization.contract.toml"
+
+[migration]
+policy = "contracts/migration/migration_policy.contract.toml"
+silent_migration_allowed = false
+incompatible_protocol_refuses_deterministically = true
+
+[refusal]
+diagnostic_required = true
+refusal_code_required_for_public_commands = true
+structured_error_required = true
+
+[integration]
+artifact_identity = "contracts/artifact/artifact_identity.contract.toml"
+diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+public_surface_registry = "contracts/public_surface/public_surface.contract.toml"

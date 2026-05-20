@@ -39,7 +39,7 @@ artifact_id_examples = ["dominium.pack.core.units", "dominium.profile.default", 
 schema_id_required = true
 schema_version_required = true
 schema_identity_is_not_file_path = true
-schema_protocol_law_future_task = "SCHEMA-PROTOCOL-LAW-01"
+schema_protocol_law = "contracts/schema/schema_evolution.contract.toml"
 
 [version]
 artifact_version_required = true
