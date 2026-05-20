@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.capability.decision_schema.v1",
+  "title": "Dominium Capability Decision",
+  "type": "object",
+  "required": ["request_id", "capability_id", "decision", "diagnostic_codes", "recovery", "evidence_ref"],
+  "additionalProperties": true,
+  "properties": {
+    "request_id": {"type": "string", "minLength": 1},
+    "capability_id": {"type": "string"},
+    "decision": {"type": "string", "enum": ["selected", "degraded", "refused", "unavailable", "not_required"]},
+    "selected_provider": {"type": "string"},
+    "selected_capability": {"type": "string"},
+    "degraded_from": {"type": "string"},
+    "degraded_to": {"type": "string"},
+    "refusal_code": {"type": "string"},
+    "diagnostic_codes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "recovery": {"type": "object"},
+    "evidence_ref": {"type": "string"},
+    "notes": {"type": "string"}
+  }
+}

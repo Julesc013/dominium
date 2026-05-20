@@ -5,13 +5,35 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `SCHEMA-PROTOCOL-LAW-01`.
+Latest task: `CAPABILITY-REFUSAL-LAW-01`.
 
-Result: PASS_WITH_WARNINGS for the provisional schema/protocol evolution law,
-assuming the final fast strict rerun remains green. Schema, protocol, registry,
-canonical serialization, migration/refusal, validator, fixtures, docs, and
-evidence surfaces exist. Existing dependency-direction debt remains visible and
+Result: PASS_WITH_WARNINGS for the provisional capability/refusal law. Capability
+registry, request/decision schemas, degradation/recovery policy, refusal
+contract/schema/registry, validator, fixtures, docs, and evidence surfaces
+exist. Fast strict passes. Existing dependency-direction debt remains visible and
 is not hidden by this task.
+
+## CAPABILITY-REFUSAL-LAW-01 Update
+
+CAPABILITY-REFUSAL-LAW-01 is PASS_WITH_WARNINGS.
+
+- capability law: `contracts/capability/capability.contract.toml`.
+- capability registry: `contracts/capability/capability.registry.json`.
+- refusal law: `contracts/refusal/refusal.contract.toml`.
+- validator: `tools/validators/contracts/check_capability_refusal.py`.
+- fixtures: `tests/contract/capability_refusal/**`.
+- capabilities registered: 9.
+- refusal codes registered: 13.
+- diagnostic codes added: 7 new capability/refusal/provider/platform/fallback
+  codes plus the existing missing-capability code.
+- inventory: 17,837 tracked files scanned; 1,190 capability/refusal/provider/
+  trust candidates classified.
+- current providers and runtime systems are inventoried but not migrated.
+
+Next task:
+`PROVIDER-MODEL-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## SCHEMA-PROTOCOL-LAW-01 Update
 

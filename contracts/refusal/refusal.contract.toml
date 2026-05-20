@@ -1,0 +1,31 @@
+schema_version = "dominium.refusal.contract.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.refusal"
+
+[contract]
+id = "dominium.refusal.contract.v1"
+status = "provisional"
+owner = "contracts.refusal"
+purpose = "Defines typed refusal semantics, recovery, diagnostics, and evidence relationships."
+
+[policy]
+free_text_only_refusal_allowed = false
+exception_text_is_refusal = false
+refusal_code_required = true
+owner_required = true
+reason_required = true
+recovery_required = true
+diagnostic_link_required_for_public_refusal = true
+evidence_reference_required = true
+stable_refusals_require_proof = true
+silent_fallback_is_refusal_violation = true
+
+[categories]
+allowed = ["capability", "command", "artifact", "schema", "provider", "security", "policy", "platform", "dependency", "runtime", "validation", "release"]
+
+[integration]
+capability_contract = "contracts/capability/capability.contract.toml"
+diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+command_surface = "contracts/command/command_surface.contract.toml"
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"

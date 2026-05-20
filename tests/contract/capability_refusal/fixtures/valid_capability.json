@@ -1,0 +1,17 @@
+{
+  "capability_id": "dominium.fixture.capability",
+  "kind": "test",
+  "owner": "tests.contract",
+  "version": "1.0.0",
+  "stability": "fixture",
+  "description": "Fixture capability for validator tests.",
+  "provided_by": ["tests.fixture"],
+  "requires": [],
+  "conflicts": [],
+  "scope": "test fixture",
+  "determinism_impact": "none",
+  "security_impact": "none",
+  "platform_constraints": [],
+  "proof": [],
+  "notes": "Valid fixture only."
+}

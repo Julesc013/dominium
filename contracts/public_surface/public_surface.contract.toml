@@ -393,10 +393,153 @@ owner = "contracts.refusal"
 stability = "provisional"
 version = "1.0.0"
 introduced = "COMMAND-SURFACE-01"
-proof = ["python -m json.tool contracts/refusal/refusal_code.registry.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict"]
+proof = ["python -m json.tool contracts/refusal/refusal_code.registry.json", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict", "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_diagnostic_code_registry_or_capability_refusal_law_update"
-notes = "Command-level refusal scaffold with diagnostic cross-references; the full capability refusal law remains later Foundation Lock work."
+notes = "Capability/refusal registry with command, capability, artifact, schema, provider, platform, and policy refusal scaffold codes."
+
+[[surface]]
+id = "dominium.refusal.contract.v1"
+kind = "refusal"
+path = "contracts/refusal/refusal.contract.toml"
+owner = "contracts.refusal"
+stability = "provisional"
+version = "1.0.0"
+introduced = "CAPABILITY-REFUSAL-LAW-01"
+proof = ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_capability_refusal_law_update"
+notes = "Typed refusal policy contract; refusals are not exception text."
+
+[[surface]]
+id = "dominium.refusal.schema.v1"
+kind = "schema"
+path = "contracts/refusal/refusal.schema.json"
+owner = "contracts.refusal"
+stability = "provisional"
+version = "1.0.0"
+introduced = "CAPABILITY-REFUSAL-LAW-01"
+proof = ["python -m json.tool contracts/refusal/refusal.schema.json", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_capability_refusal_law_update"
+notes = "Refusal object schema with recovery, diagnostics, related capabilities, related commands, and evidence links."
+
+[[surface]]
+id = "dominium.capability.contract.v1"
+kind = "capability_id"
+path = "contracts/capability/capability.contract.toml"
+owner = "contracts.capability"
+stability = "provisional"
+version = "1.0.0"
+introduced = "CAPABILITY-REFUSAL-LAW-01"
+proof = ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_capability_refusal_law_update"
+notes = "Capability request/decision/refusal law; runtime resolver is not implemented by this surface."
+
+[[surface]]
+id = "dominium.capability.registry.v1"
+kind = "capability_id"
+path = "contracts/capability/capability.registry.json"
+owner = "contracts.capability"
+stability = "provisional"
+version = "1.0.0"
+introduced = "CAPABILITY-REFUSAL-LAW-01"
+proof = ["python -m json.tool contracts/capability/capability.registry.json", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_capability_refusal_law_update"
+notes = "Initial conservative capability registry."
+
+[[surface]]
+id = "dominium.capability.kind.registry.v1"
+kind = "registry"
+path = "contracts/capability/capability_kind.registry.json"
+owner = "contracts.capability"
+stability = "provisional"
+version = "1.0.0"
+introduced = "CAPABILITY-REFUSAL-LAW-01"
+proof = ["python -m json.tool contracts/capability/capability_kind.registry.json", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_capability_refusal_law_update"
+notes = "Capability kind, decision value, stability, and recovery action registry."
+
+[[surface]]
+id = "dominium.capability.request.v1"
+kind = "schema"
+path = "contracts/capability/capability_request.schema.json"
+owner = "contracts.capability"
+stability = "provisional"
+version = "1.0.0"
+introduced = "CAPABILITY-REFUSAL-LAW-01"
+proof = ["python -m json.tool contracts/capability/capability_request.schema.json", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_capability_refusal_law_update"
+notes = "Capability request schema."
+
+[[surface]]
+id = "dominium.capability.decision.v1"
+kind = "schema"
+path = "contracts/capability/capability_decision.schema.json"
+owner = "contracts.capability"
+stability = "provisional"
+version = "1.0.0"
+introduced = "CAPABILITY-REFUSAL-LAW-01"
+proof = ["python -m json.tool contracts/capability/capability_decision.schema.json", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_capability_refusal_law_update"
+notes = "Capability decision schema for selected, degraded, refused, unavailable, and not-required outcomes."
+
+[[surface]]
+id = "dominium.capability.degradation_policy.v1"
+kind = "registry"
+path = "contracts/capability/degradation_policy.contract.toml"
+owner = "contracts.capability"
+stability = "provisional"
+version = "1.0.0"
+introduced = "CAPABILITY-REFUSAL-LAW-01"
+proof = ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_capability_refusal_law_update"
+notes = "Explicit degradation policy; silent fallback remains forbidden."
+
+[[surface]]
+id = "dominium.capability.recovery_policy.v1"
+kind = "registry"
+path = "contracts/capability/recovery_policy.contract.toml"
+owner = "contracts.capability"
+stability = "provisional"
+version = "1.0.0"
+introduced = "CAPABILITY-REFUSAL-LAW-01"
+proof = ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_capability_refusal_law_update"
+notes = "Typed recovery action policy for capability/refusal decisions."
+
+[[surface]]
+id = "dominium.capability_refusal.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_capability_refusal.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "CAPABILITY-REFUSAL-LAW-01"
+proof = ["python -m py_compile tools/validators/contracts/check_capability_refusal.py", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_capability_refusal_law_update"
+notes = "Validator implementation for capability/refusal law."
+
+[[surface]]
+id = "dominium.capability_refusal.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/capability_refusal"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "CAPABILITY-REFUSAL-LAW-01"
+proof = ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_capability_refusal_validator_tests"
+notes = "Fixture suite for capability/refusal validator behavior."
 
 [[surface]]
 id = "dominium.document.surface.v1"

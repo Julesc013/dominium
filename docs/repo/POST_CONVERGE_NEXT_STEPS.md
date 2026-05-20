@@ -9,6 +9,24 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## CAPABILITY-REFUSAL-LAW-01 Update
+
+CAPABILITY-REFUSAL-LAW-01 adds the provisional capability/refusal law.
+
+- contract: `contracts/capability/capability.contract.toml`
+- registry: `contracts/capability/capability.registry.json`
+- refusal contract: `contracts/refusal/refusal.contract.toml`
+- validator: `python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict`
+- fixture suite: `tests/contract/capability_refusal/**`
+- capabilities registered: 9
+- refusal codes registered: 13
+- inventory: 17,837 tracked files scanned; 1,190 capability/refusal/provider/trust candidates classified descriptively
+- next Foundation Lock task: `PROVIDER-MODEL-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Runtime
+capability resolution, provider selection, renderer/platform fallback, package
+runtime, and Workbench UI are not implemented by this task.
+
 ## SCHEMA-PROTOCOL-LAW-01 Update
 
 SCHEMA-PROTOCOL-LAW-01 adds the provisional schema/protocol evolution law.

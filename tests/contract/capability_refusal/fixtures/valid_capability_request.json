@@ -1,0 +1,10 @@
+{
+  "request_id": "capability-fixture-request-001",
+  "requested_by": "tests.contract",
+  "capability_id": "domino.render.software",
+  "required": true,
+  "minimum_version": "0.1.0",
+  "acceptable_degradation": ["domino.render.null"],
+  "context": {"surface": "test"},
+  "evidence_requested": true
+}

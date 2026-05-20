@@ -24,6 +24,9 @@ evidence_is_required_for_validation_commands = true
 evidence_is_required_for_test_commands = true
 direct_private_tool_calls_are_legacy = true
 runtime_dispatch_implemented_here = false
+commands_may_require_capabilities = true
+missing_required_capability_refuses = true
+capability_refusals_must_be_typed = true
 normal_gate = "fast_strict"
 
 [naming]
@@ -49,6 +52,8 @@ diagnostic_registry = "contracts/diagnostics/diagnostic_code.registry.json"
 public_surface_registry = "contracts/public_surface/public_surface.contract.toml"
 dependency_direction_law = "contracts/repo/dependency_directions.contract.toml"
 abi_canon = "contracts/abi/c_api.contract.toml"
+capability_contract = "contracts/capability/capability.contract.toml"
+capability_decision_schema = "contracts/capability/capability_decision.schema.json"
 
 [[command]]
 id = "dominium.validation.run"

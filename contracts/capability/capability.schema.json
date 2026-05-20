@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.capability.capability_schema.v1",
+  "title": "Dominium Capability",
+  "type": "object",
+  "required": ["capability_id", "kind", "owner", "version", "stability", "description", "scope", "determinism_impact", "security_impact"],
+  "additionalProperties": true,
+  "properties": {
+    "capability_id": {"type": "string", "pattern": "^(domino|dominium)(\\.[a-z0-9][a-z0-9_-]*)+$"},
+    "kind": {"type": "string"},
+    "owner": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "stability": {"type": "string"},
+    "description": {"type": "string", "minLength": 1},
+    "provided_by": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "requires": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "conflicts": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "scope": {"type": "string"},
+    "determinism_impact": {"type": "string"},
+    "security_impact": {"type": "string"},
+    "platform_constraints": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "proof": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "notes": {"type": "string"}
+  }
+}

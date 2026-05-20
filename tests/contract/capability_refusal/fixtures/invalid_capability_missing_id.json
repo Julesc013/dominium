@@ -1,0 +1,10 @@
+{
+  "kind": "test",
+  "owner": "tests.contract",
+  "version": "1.0.0",
+  "stability": "fixture",
+  "description": "Invalid fixture missing capability_id.",
+  "scope": "test fixture",
+  "determinism_impact": "none",
+  "security_impact": "none"
+}

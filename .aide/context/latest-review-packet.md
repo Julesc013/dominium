@@ -2,10 +2,10 @@
 
 ## Review Objective
 
-Review `SCHEMA-PROTOCOL-LAW-01`: schema/protocol/registry evolution contracts,
-canonical serialization, migration/refusal policy, validator, fixtures,
-documentation, public-surface registration, diagnostics integration, inventory,
-and evidence.
+Review `CAPABILITY-REFUSAL-LAW-01`: capability registry, request/decision
+schemas, degradation/recovery policy, refusal contract/schema/registry,
+validator, fixtures, documentation, public-surface registration, diagnostics and
+command-surface integration, inventory, and evidence.
 
 ## Decision Requested
 
@@ -21,40 +21,43 @@ and evidence.
 
 ## Verification Report Reference
 
-`.aide/reports/SCHEMA-PROTOCOL-LAW-01-validation.md`
+`.aide/reports/CAPABILITY-REFUSAL-LAW-01-validation.md`
 
 ## Evidence Packet References
 
-- `contracts/schema/schema_evolution.contract.toml`
-- `contracts/protocol/protocol_evolution.contract.toml`
-- `contracts/registry/registry_evolution.contract.toml`
-- `contracts/serialization/canonical_serialization.contract.toml`
-- `contracts/migration/migration_policy.contract.toml`
-- `contracts/schema/schema_policy.schema.json`
-- `contracts/protocol/protocol_policy.schema.json`
-- `contracts/registry/registry_policy.schema.json`
-- `tools/validators/contracts/check_schema_protocol_evolution.py`
-- `docs/architecture/schema_protocol_evolution.md`
-- `docs/development/schema_protocol_guidelines.md`
-- `tests/contract/schema_protocol/**`
-- `.aide/reports/SCHEMA-PROTOCOL-LAW-01-status.md`
-- `.aide/reports/SCHEMA-PROTOCOL-LAW-01-results.json`
-- `.aide/reports/SCHEMA-PROTOCOL-LAW-01-fast-strict.md`
-- `docs/repo/audits/SCHEMA_PROTOCOL_LAW_01.md`
+- `contracts/capability/capability.contract.toml`
+- `contracts/capability/capability.registry.json`
+- `contracts/capability/capability.schema.json`
+- `contracts/capability/capability_request.schema.json`
+- `contracts/capability/capability_decision.schema.json`
+- `contracts/capability/degradation_policy.contract.toml`
+- `contracts/capability/recovery_policy.contract.toml`
+- `contracts/refusal/refusal.contract.toml`
+- `contracts/refusal/refusal_code.registry.json`
+- `contracts/refusal/refusal.schema.json`
+- `tools/validators/contracts/check_capability_refusal.py`
+- `docs/architecture/capability_refusal_law.md`
+- `docs/development/capability_refusal_guidelines.md`
+- `tests/contract/capability_refusal/**`
+- `.aide/reports/CAPABILITY-REFUSAL-LAW-01-status.md`
+- `.aide/reports/CAPABILITY-REFUSAL-LAW-01-results.json`
+- `.aide/reports/CAPABILITY-REFUSAL-LAW-01-fast-strict.md`
+- `docs/repo/audits/CAPABILITY_REFUSAL_LAW_01.md`
 
 ## Changed Files Summary
 
-Adds a provisional schema/protocol evolution governance spine and validator.
-Registers schema/protocol law surfaces and diagnostics without implementing
-runtime migration, protocol dispatch, package/save/replay loading, or Workbench
-behavior.
+Adds a provisional capability/refusal governance spine and validator. Registers
+capability/refusal law surfaces and diagnostics without implementing runtime
+capability resolution, provider selection, renderer/platform fallback, package
+runtime, or Workbench behavior.
 
 ## Validation Summary
 
-The schema/protocol validator compiles and passes strict mode with 0 findings.
-Fixture mode passes with 7 fixtures. Inventory mode scans 17,808 tracked files
-and classifies 2,489 schema/protocol-like files descriptively. Diagnostics and
-public-surface validators pass after schema/protocol integration.
+The capability/refusal validator compiles and passes strict mode with 0
+findings. Fixture mode passes with 8 fixtures. Inventory mode scans 17,837
+tracked files and classifies 1,190 capability/refusal/provider/trust candidates
+descriptively. Diagnostics, command-surface, and public-surface validators are
+expected to pass after integration.
 
 ## Token Summary
 
@@ -63,18 +66,19 @@ This review packet is intentionally compact; full validation details live in
 
 ## Risk Summary
 
-The schema/protocol law is provisional. Existing schemas and registries are
-inventoried but not migrated. Compatibility corpus, capability/refusal law,
-provider model, runtime migration, and Workbench presentation remain future
-Foundation Lock work.
+The capability/refusal law is provisional. Current providers, backends, packs,
+and Workbench modules are inventoried but not migrated. Provider model, runtime
+capability resolution, mod/pack trust runtime, and Workbench presentation remain
+future Foundation Lock work.
 
 ## Non-Goals / Scope Guard
 
-No feature implementation, runtime migration, protocol dispatch, package/save/
-replay loader, Workbench UI, provider model, public release, or full CTest proof.
+No feature implementation, provider model, runtime capability resolver,
+renderer/platform fallback, package/mod trust runtime, Workbench UI, public
+release, or full CTest proof.
 
 ## Reviewer Instructions
 
-Confirm that schema/protocol identity is semantic ID plus version/policy, not
-path-based, and that existing schemas are inventoried rather than silently
-migrated.
+Confirm that capability/refusal outcomes are typed and evidenced, that silent
+fallback is forbidden, and that current providers are inventoried rather than
+silently migrated.

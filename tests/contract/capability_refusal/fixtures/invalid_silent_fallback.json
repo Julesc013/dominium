@@ -1,0 +1,10 @@
+{
+  "request_id": "capability-fixture-request-004",
+  "capability_id": "domino.render.software",
+  "decision": "selected",
+  "selected_capability": "domino.render.null",
+  "diagnostic_codes": ["DOM-CAPABILITY-DEGRADED"],
+  "recovery": {"action": "use_degraded_mode", "summary": "This should have been an explicit degraded decision."},
+  "evidence_ref": "tests.contract.capability.silent_fallback",
+  "notes": "Invalid because selected silently changes capability instead of using degraded."
+}

@@ -1,0 +1,11 @@
+{
+  "request_id": "capability-fixture-request-001",
+  "capability_id": "domino.render.software",
+  "decision": "selected",
+  "selected_provider": "tests.provider.software",
+  "selected_capability": "domino.render.software",
+  "diagnostic_codes": ["DOM-REFUSAL-ISSUED"],
+  "recovery": {"action": "inspect_evidence", "summary": "Inspect the selected capability evidence."},
+  "evidence_ref": "tests.contract.capability.selected",
+  "notes": "Valid selected decision fixture."
+}

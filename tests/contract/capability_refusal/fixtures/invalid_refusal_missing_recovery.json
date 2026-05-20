@@ -1,0 +1,11 @@
+{
+  "refusal_id": "dominium.refusal.fixture.missing_recovery",
+  "code": "dominium.refusal.fixture.missing_recovery",
+  "owner": "tests.contract",
+  "category": "capability",
+  "stability": "fixture",
+  "summary": "Invalid refusal fixture missing recovery.",
+  "reason": "The refusal lacks a recovery action.",
+  "diagnostic_codes": ["DOM-REFUSAL-ISSUED"],
+  "evidence_reference": "contracts/evidence/evidence_packet.schema.json"
+}

@@ -3,15 +3,13 @@
   "$id": "dominium.refusal.refusal_schema.v1",
   "title": "Dominium Refusal",
   "type": "object",
-  "required": [
-    "code",
-    "owner",
-    "reason",
-    "recovery",
-    "stability"
-  ],
+  "required": ["code", "owner", "reason", "recovery", "stability"],
   "additionalProperties": true,
   "properties": {
+    "refusal_id": {
+      "type": "string",
+      "pattern": "^dominium\\.refusal\\.[a-z0-9][a-z0-9_.-]+$"
+    },
     "code": {
       "type": "string",
       "pattern": "^dominium\\.refusal\\.[a-z0-9][a-z0-9_.-]+$"
@@ -19,16 +17,50 @@
     "owner": {
       "type": "string"
     },
-    "reason": {
-      "type": "string"
-    },
-    "recovery": {
+    "category": {
       "type": "string"
     },
     "stability": {
       "type": "string"
     },
+    "summary": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "recovery": {
+      "type": ["string", "object"]
+    },
+    "diagnostic_codes": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "related_diagnostic_codes": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "related_capabilities": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "related_commands": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "proof": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
     "evidence_reference": {
+      "type": "string"
+    },
+    "notes": {
       "type": "string"
     }
   }

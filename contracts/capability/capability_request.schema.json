@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.capability.request_schema.v1",
+  "title": "Dominium Capability Request",
+  "type": "object",
+  "required": ["request_id", "requested_by", "capability_id", "required", "context", "evidence_requested"],
+  "additionalProperties": true,
+  "properties": {
+    "request_id": {"type": "string", "minLength": 1},
+    "requested_by": {"type": "string", "minLength": 1},
+    "capability_id": {"type": "string"},
+    "required": {"type": "boolean"},
+    "minimum_version": {"type": "string"},
+    "acceptable_degradation": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "context": {"type": "object"},
+    "evidence_requested": {"type": "boolean"}
+  }
+}

@@ -1,0 +1,23 @@
+schema_version = "dominium.capability.recovery_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.capability"
+
+[contract]
+id = "dominium.capability.recovery_policy.v1"
+status = "provisional"
+owner = "contracts.capability"
+purpose = "Defines typed recovery actions for capability decisions and refusals."
+
+[policy]
+recovery_required_for_refusal = true
+recovery_required_for_degradation = true
+free_text_only_recovery_allowed = false
+recovery_action_must_be_machine_readable = true
+
+[actions]
+allowed = ["install_provider", "enable_pack", "upgrade_schema", "select_alternative", "run_migration", "use_degraded_mode", "disable_feature", "inspect_evidence", "contact_support", "not_recoverable"]
+
+[integration]
+diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"

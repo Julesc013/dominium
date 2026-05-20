@@ -1,0 +1,12 @@
+{
+  "request_id": "capability-fixture-request-002",
+  "capability_id": "domino.render.software",
+  "decision": "degraded",
+  "selected_capability": "domino.render.null",
+  "degraded_from": "domino.render.software",
+  "degraded_to": "domino.render.null",
+  "diagnostic_codes": ["DOM-CAPABILITY-DEGRADED"],
+  "recovery": {"action": "use_degraded_mode", "summary": "Continue with explicit null rendering."},
+  "evidence_ref": "tests.contract.capability.degraded",
+  "notes": "Valid degraded decision fixture."
+}

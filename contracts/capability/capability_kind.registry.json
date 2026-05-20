@@ -1,0 +1,30 @@
+{
+  "schema_version": "dominium.capability.kind_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.capability",
+  "kinds": [
+    {"id": "render", "description": "Rendering or presentation backend capability."},
+    {"id": "platform", "description": "Operating-system, windowing, shell, or host platform capability."},
+    {"id": "storage", "description": "Persistence or local/remote storage capability."},
+    {"id": "network", "description": "Networking, transport, replication, or server communication capability."},
+    {"id": "audio", "description": "Audio output/input capability."},
+    {"id": "input", "description": "Input device or input processing capability."},
+    {"id": "package", "description": "Package, pack, profile, bundle, or manifest capability."},
+    {"id": "profile", "description": "Profile loading or profile policy capability."},
+    {"id": "schema", "description": "Schema validation, migration, or compatibility capability."},
+    {"id": "command", "description": "Command execution or command-surface capability."},
+    {"id": "diagnostic", "description": "Diagnostic, evidence, or report capability."},
+    {"id": "workbench", "description": "Workbench module or workspace capability."},
+    {"id": "module", "description": "Module composition or module descriptor capability."},
+    {"id": "provider", "description": "Provider implementation or adapter capability."},
+    {"id": "mod", "description": "Mod or user pack capability."},
+    {"id": "release", "description": "Release, installer, promotion, or update capability."},
+    {"id": "server", "description": "Server/admin/authority capability."},
+    {"id": "security", "description": "Security, trust, signing, or policy capability."},
+    {"id": "test", "description": "Testing, validation, or proof capability."},
+    {"id": "aide", "description": "AIDE/Codex orchestration or evidence capability."}
+  ],
+  "decision_values": ["selected", "degraded", "refused", "unavailable", "not_required"],
+  "stability_values": ["experimental", "provisional", "stable", "deprecated", "retired", "internal", "fixture", "historical"],
+  "recovery_actions": ["install_provider", "enable_pack", "upgrade_schema", "select_alternative", "run_migration", "use_degraded_mode", "disable_feature", "inspect_evidence", "contact_support", "not_recoverable"]
+}

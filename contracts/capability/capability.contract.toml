@@ -1,0 +1,75 @@
+schema_version = "dominium.capability.contract.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.capability"
+
+[contract]
+id = "dominium.capability.contract.v1"
+status = "provisional"
+owner = "contracts.capability"
+purpose = "Defines capability request, selection, degradation, refusal, recovery, and evidence law."
+
+[policy]
+silent_fallback_allowed = false
+hidden_capability_assumptions_allowed = false
+free_text_only_refusal_allowed = false
+optional_provider_assumed_present = false
+best_effort_invalid_artifact_allowed = false
+stable_capabilities_require_proof = true
+required_capability_missing_refuses = true
+optional_capability_missing_may_degrade = true
+degraded_decisions_require_from_to = true
+degraded_decisions_require_diagnostic = true
+refused_decisions_require_refusal_code = true
+refused_decisions_require_recovery = true
+decisions_require_evidence_reference = true
+
+[identity]
+capability_id_required = true
+capability_id_format = "lowercase dotted semantic id"
+path_as_capability_id_allowed = false
+temporary_status_in_id_allowed = false
+reusable_prefix = "domino."
+product_prefix = "dominium."
+examples = ["domino.render.software", "domino.storage.local", "dominium.workbench.validation"]
+
+[requests]
+request_schema = "contracts/capability/capability_request.schema.json"
+required_field_means_refuse_if_missing = true
+acceptable_degradation_must_be_declared = true
+evidence_requested_should_default_true_for_tools = true
+
+[decisions]
+decision_schema = "contracts/capability/capability_decision.schema.json"
+decision_values = ["selected", "degraded", "refused", "unavailable", "not_required"]
+selected_requires_selected_capability_or_provider = true
+degraded_requires_degradation_record = true
+refused_requires_refusal_record = true
+unavailable_requires_diagnostic = true
+
+[degradation]
+policy = "contracts/capability/degradation_policy.contract.toml"
+silent_fallback_forbidden = true
+compatibility_impact_required = true
+determinism_impact_required = true
+user_visible_summary_required = true
+
+[refusal]
+policy = "contracts/refusal/refusal.contract.toml"
+registry = "contracts/refusal/refusal_code.registry.json"
+schema = "contracts/refusal/refusal.schema.json"
+refusal_is_not_exception_text = true
+
+[recovery]
+policy = "contracts/capability/recovery_policy.contract.toml"
+recovery_action_required_for_refusal = true
+
+[integration]
+command_surface = "contracts/command/command_surface.contract.toml"
+diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"
+artifact_identity = "contracts/artifact/artifact_identity.contract.toml"
+schema_protocol_law = "contracts/schema/schema_evolution.contract.toml"
+public_surface_registry = "contracts/public_surface/public_surface.contract.toml"
+provider_model_future_task = "PROVIDER-MODEL-01"
+mod_pack_trust_future_task = "MOD-PACK-TRUST-MODEL-01"

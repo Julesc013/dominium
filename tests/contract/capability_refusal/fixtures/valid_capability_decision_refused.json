@@ -1,0 +1,10 @@
+{
+  "request_id": "capability-fixture-request-003",
+  "capability_id": "domino.platform.win32.window",
+  "decision": "refused",
+  "refusal_code": "dominium.refusal.platform.unsupported",
+  "diagnostic_codes": ["DOM-PLATFORM-UNSUPPORTED"],
+  "recovery": {"action": "select_alternative", "summary": "Select a supported platform or provider."},
+  "evidence_ref": "tests.contract.capability.refused",
+  "notes": "Valid refused decision fixture."
+}

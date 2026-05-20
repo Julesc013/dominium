@@ -5,7 +5,28 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, and SCHEMA-PROTOCOL-LAW-01.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, and CAPABILITY-REFUSAL-LAW-01.
+
+## CAPABILITY-REFUSAL-LAW-01 Proof Note
+
+CAPABILITY-REFUSAL-LAW-01 adds the provisional capability/refusal law.
+
+- contract: `contracts/capability/capability.contract.toml`.
+- registry: `contracts/capability/capability.registry.json`.
+- refusal policy: `contracts/refusal/refusal.contract.toml`.
+- validator: `python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict`.
+- fixtures: `tests/contract/capability_refusal/**`.
+- capabilities registered: 9.
+- refusal codes registered: 13.
+- inventory: 17,837 tracked files scanned; 1,190 capability/refusal/provider/trust
+  candidates classified descriptively.
+- public surface, command, and diagnostic registries updated with
+  capability/refusal surfaces and codes.
+- runtime capability resolution and provider selection are not implemented by
+  this task.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `PROVIDER-MODEL-01`.
 
 ## SCHEMA-PROTOCOL-LAW-01 Proof Note
 

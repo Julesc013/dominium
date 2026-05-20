@@ -1,0 +1,32 @@
+schema_version = "dominium.capability.degradation_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.capability"
+
+[contract]
+id = "dominium.capability.degradation_policy.v1"
+status = "provisional"
+owner = "contracts.capability"
+purpose = "Defines explicit non-fatal fallback/degradation policy for capability decisions."
+
+[policy]
+silent_degradation_allowed = false
+requested_capability_required = true
+selected_capability_required = true
+diagnostic_code_required = true
+evidence_required = true
+user_visible_summary_required = true
+compatibility_impact_required = true
+determinism_impact_required = true
+security_impact_required_when_security_related = true
+
+[examples]
+renderer = "requested domino.render.opengl, selected domino.render.software"
+audio = "requested audio output, selected null audio"
+ui = "requested native UI, selected CLI/TUI"
+workbench = "requested optional Workbench module, omitted with warning"
+
+[forbidden]
+fallback_without_diagnostic = true
+fallback_without_evidence = true
+fallback_by_private_implementation_choice = true
