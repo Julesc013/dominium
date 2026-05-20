@@ -1192,6 +1192,253 @@ replacement_policy = "fixture_changes_follow_provider_validator_tests"
 notes = "Fixture suite for provider model validator behavior."
 
 [[surface]]
+id = "dominium.module.descriptor.v1"
+kind = "schema"
+path = "contracts/module/module.schema.json"
+owner = "contracts.module"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python -m json.tool contracts/module/module.schema.json", "python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Module descriptor schema; module identity is not implementation path."
+
+[[surface]]
+id = "dominium.module.composition.v1"
+kind = "schema"
+path = "contracts/module/module_composition.schema.json"
+owner = "contracts.module"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python -m json.tool contracts/module/module_composition.schema.json", "python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Composite module schema for module-to-module assembly."
+
+[[surface]]
+id = "dominium.module.kind.registry.v1"
+kind = "registry"
+path = "contracts/module/module_kind.registry.json"
+owner = "contracts.module"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python -m json.tool contracts/module/module_kind.registry.json", "python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Registry of module kinds and implementation-status vocabulary."
+
+[[surface]]
+id = "dominium.module.surface.v1"
+kind = "documentation"
+path = "contracts/module/module_surface.contract.toml"
+owner = "contracts.module"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Module identity and binding law."
+
+[[surface]]
+id = "dominium.module.dependency_policy.v1"
+kind = "documentation"
+path = "contracts/module/module_dependency_policy.contract.toml"
+owner = "contracts.module"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Module dependency policy; modules bind commands, services, views, capabilities, and providers, not private paths."
+
+[[surface]]
+id = "dominium.module.pack_provided_policy.v1"
+kind = "documentation"
+path = "contracts/module/pack_provided_module_policy.contract.toml"
+owner = "contracts.module"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_or_mod_pack_trust_update"
+notes = "Pack-provided module policy; detailed mod/pack trust remains later work."
+
+[[surface]]
+id = "dominium.workbench.workspace.v1"
+kind = "schema"
+path = "contracts/workbench/workspace.schema.json"
+owner = "contracts.workbench"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python -m json.tool contracts/workbench/workspace.schema.json", "python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Workbench workspace schema; Workbench is presentation, not authority."
+
+[[surface]]
+id = "dominium.workbench.panel.v1"
+kind = "schema"
+path = "contracts/workbench/panel.schema.json"
+owner = "contracts.workbench"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python -m json.tool contracts/workbench/panel.schema.json", "python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Workbench panel schema."
+
+[[surface]]
+id = "dominium.workbench.view_binding.v1"
+kind = "schema"
+path = "contracts/workbench/view_binding.schema.json"
+owner = "contracts.workbench"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python -m json.tool contracts/workbench/view_binding.schema.json", "python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Workbench view binding schema for command/result/document projections."
+
+[[surface]]
+id = "dominium.workbench.surface.v1"
+kind = "documentation"
+path = "contracts/workbench/workbench_surface.contract.toml"
+owner = "contracts.workbench"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Workbench workspace/panel/view-binding law."
+
+[[surface]]
+id = "dominium.app.descriptor.v1"
+kind = "schema"
+path = "contracts/app/app_descriptor.schema.json"
+owner = "contracts.app"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python -m json.tool contracts/app/app_descriptor.schema.json", "python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "App descriptor schema; app identity is not executable filename."
+
+[[surface]]
+id = "dominium.app.composition.v1"
+kind = "schema"
+path = "contracts/app/app_composition.schema.json"
+owner = "contracts.app"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python -m json.tool contracts/app/app_composition.schema.json", "python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "App composition schema for product assemblies from modules, packs, providers, and capabilities."
+
+[[surface]]
+id = "dominium.app.surface.v1"
+kind = "documentation"
+path = "contracts/app/app_surface.contract.toml"
+owner = "contracts.app"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "App composition law."
+
+[[surface]]
+id = "dominium.module.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_module_descriptors.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python -m py_compile tools/validators/contracts/check_module_descriptors.py", "python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Validator for module descriptors and fixtures."
+
+[[surface]]
+id = "dominium.workbench.workspace.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_workbench_workspaces.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python -m py_compile tools/validators/contracts/check_workbench_workspaces.py", "python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Validator for Workbench workspace, panel, and view-binding descriptors."
+
+[[surface]]
+id = "dominium.app.descriptor.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_app_descriptors.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python -m py_compile tools/validators/contracts/check_app_descriptors.py", "python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_module_composition_update"
+notes = "Validator for app descriptors and app compositions."
+
+[[surface]]
+id = "dominium.module.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/module"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_module_validator_tests"
+notes = "Fixture suite for module descriptor validator behavior."
+
+[[surface]]
+id = "dominium.workbench.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/workbench"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_workbench_validator_tests"
+notes = "Fixture suite for Workbench workspace validator behavior."
+
+[[surface]]
+id = "dominium.app.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/app"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "MODULE-COMPOSITION-LAW-01"
+proof = ["python tools/validators/contracts/check_app_descriptors.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_app_validator_tests"
+notes = "Fixture suite for app descriptor validator behavior."
+
+[[surface]]
 id = "dominium.retired.root_schema.v1"
 kind = "archive_record"
 path = "schema"

@@ -1,0 +1,15 @@
+[contract]
+id = "dominium.module.dependency_policy.v1"
+status = "provisional"
+owner = "contracts.module"
+purpose = "Defines how modules bind to services, commands, views, capabilities, providers, documents, and artifacts."
+
+[policy]
+private_path_dependencies_allowed = false
+command_surface_required_when_available = true
+capability_references_use_registry = true
+provider_references_use_registry = true
+view_bindings_are_presentation_only = true
+stable_modules_require_compatibility_policy = true
+stable_modules_require_replacement_policy = true
+source_folder_is_not_module_by_default = true

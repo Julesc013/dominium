@@ -1,0 +1,10 @@
+{
+  "workspace_id": "dominium.workbench.workspace.empty",
+  "owner": "apps.workbench",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "modules": [],
+  "panels": ["dominium.workbench.panel.validation_table"],
+  "views": ["view.table"],
+  "proof": []
+}

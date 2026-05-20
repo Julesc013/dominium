@@ -1,0 +1,9 @@
+{
+  "module_id": "dominium.module.unknown_kind",
+  "module_kind": "junk_drawer",
+  "owner": "contracts.module",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "required_commands": [],
+  "proof": []
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.workbench.workspace.v1",
+  "title": "Dominium Workbench Workspace",
+  "type": "object",
+  "required": ["workspace_id", "owner", "version", "stability", "modules", "panels", "views"],
+  "properties": {
+    "workspace_id": {"type": "string"},
+    "owner": {"type": "string"},
+    "version": {"type": "string"},
+    "stability": {"type": "string"},
+    "modules": {"type": "array", "items": {"type": "string"}},
+    "panels": {"type": "array", "items": {"type": "string"}},
+    "views": {"type": "array", "items": {"type": "string"}},
+    "commands": {"type": "array", "items": {"type": "string"}},
+    "layouts": {"type": "array", "items": {"type": "string"}},
+    "required_capabilities": {"type": "array", "items": {"type": "string"}},
+    "default_perspective": {"type": "string"},
+    "evidence_surfaces": {"type": "array", "items": {"type": "string"}},
+    "proof": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}

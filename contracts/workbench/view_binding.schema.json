@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.workbench.view_binding.v1",
+  "title": "Dominium Workbench View Binding",
+  "type": "object",
+  "required": ["binding_id", "owner", "view_id", "result_schema"],
+  "properties": {
+    "binding_id": {"type": "string"},
+    "owner": {"type": "string"},
+    "view_id": {"type": "string"},
+    "command_id": {"type": "string"},
+    "document_schema": {"type": "string"},
+    "result_schema": {"type": "string"},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}

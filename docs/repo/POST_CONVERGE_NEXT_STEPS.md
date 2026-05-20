@@ -9,6 +9,28 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## MODULE-COMPOSITION-LAW-01 Update
+
+MODULE-COMPOSITION-LAW-01 adds the provisional module, Workbench workspace, and app composition law.
+
+- module law: `contracts/module/module_surface.contract.toml`
+- module schema: `contracts/module/module.schema.json`
+- Workbench workspace schema: `contracts/workbench/workspace.schema.json`
+- app descriptor schema: `contracts/app/app_descriptor.schema.json`
+- validators:
+  - `python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict`
+  - `python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict`
+  - `python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict`
+- fixture suites: `tests/contract/module/**`, `tests/contract/workbench/**`, `tests/contract/app/**`
+- module kinds registered: 12
+- public surfaces after registration: 110
+- inventory: 17,896 tracked files scanned per validator; module, Workbench, and app candidates classified descriptively
+- next Foundation Lock task: `REPLACEMENT-PROTOCOL-01`
+
+Feature implementation remains blocked until Foundation Lock closes. Runtime
+module loading, Workbench UI, App Composer, pack runtime, provider runtime, and
+module discovery runtime are not implemented by this task.
+
 ## PROVIDER-MODEL-01 Update
 
 PROVIDER-MODEL-01 adds the provisional provider model law.

@@ -1,0 +1,22 @@
+{
+  "schema_version": "dominium.module.kind_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.module",
+  "kinds": [
+    {"id": "source_component", "description": "Source/build ownership unit exposed as module metadata only when declared."},
+    {"id": "runtime_service", "description": "Declared module backed by a runtime service surface."},
+    {"id": "runtime_provider", "description": "Declared module backed by a governed provider descriptor."},
+    {"id": "workbench_module", "description": "User-facing Workbench module projection over commands, services, documents, and views."},
+    {"id": "workbench_workspace", "description": "Large Workbench composition made from modules, panels, views, and commands."},
+    {"id": "command_module", "description": "Module exposing or composing command-surface behavior."},
+    {"id": "document_module", "description": "Module centered on governed document/result schemas."},
+    {"id": "view_module", "description": "Module centered on view bindings and presentation projections."},
+    {"id": "content_pack_module", "description": "Pack-provided module declared through pack/module manifests."},
+    {"id": "app_composition", "description": "Product composition declared as a module-like app assembly."},
+    {"id": "external_adapter", "description": "Module representing an external process or adapter boundary."},
+    {"id": "test_fixture_module", "description": "Fixture-only module used to prove validator behavior."}
+  ],
+  "stability_values": ["experimental", "provisional", "stable", "deprecated", "retired", "generated", "fixture", "historical"],
+  "implementation_status_values": ["planned", "declared", "implemented", "generated", "fixture", "historical"],
+  "service_prefixes": ["service.", "runtime.", "command.", "view.", "document.", "provider.", "capability."]
+}

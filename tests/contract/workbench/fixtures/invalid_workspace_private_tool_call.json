@@ -1,0 +1,11 @@
+{
+  "workspace_id": "dominium.workbench.workspace.private_tool",
+  "owner": "apps.workbench",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "modules": ["dominium.workbench.validation"],
+  "panels": ["dominium.workbench.panel.validation_table"],
+  "views": ["view.table"],
+  "private_tool_calls": ["tools/validators/repo/check_public_surface.py"],
+  "proof": []
+}

@@ -5,13 +5,38 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `PROVIDER-MODEL-01`.
+Latest task: `MODULE-COMPOSITION-LAW-01`.
 
-Result: PASS_WITH_WARNINGS for the provisional provider model law. Provider
-contracts, descriptor and selection schemas, kind/lifecycle registries,
-conformance/capability/trust policies, validator, fixtures, docs, and evidence
-surfaces exist. Existing dependency-direction debt remains visible and is not
-hidden by this task.
+Result: PASS_WITH_WARNINGS for the provisional module/workspace/app composition
+law. Module, Workbench, and app contracts, schemas, validators, fixtures, docs,
+and evidence surfaces exist. Existing dependency-direction debt remains visible
+and is not hidden by this task.
+
+## MODULE-COMPOSITION-LAW-01 Update
+
+MODULE-COMPOSITION-LAW-01 is PASS_WITH_WARNINGS.
+
+- module law: `contracts/module/module_surface.contract.toml`.
+- module schema: `contracts/module/module.schema.json`.
+- Workbench workspace schema: `contracts/workbench/workspace.schema.json`.
+- app descriptor schema: `contracts/app/app_descriptor.schema.json`.
+- validators:
+  - `tools/validators/contracts/check_module_descriptors.py`.
+  - `tools/validators/contracts/check_workbench_workspaces.py`.
+  - `tools/validators/contracts/check_app_descriptors.py`.
+- fixtures: `tests/contract/module/**`, `tests/contract/workbench/**`, and `tests/contract/app/**`.
+- module kinds registered: 12.
+- diagnostic codes added: 8 module/workspace/app codes.
+- capabilities added: 4 module/workspace/app capabilities.
+- inventory: 17,896 tracked files scanned per validator; module, Workbench,
+  and app candidates classified.
+- current app, Workbench, runtime, pack, and tool systems are inventoried but
+  not migrated.
+
+Next task:
+`REPLACEMENT-PROTOCOL-01`
+
+Feature implementation remains blocked until Foundation Lock closes.
 
 ## PROVIDER-MODEL-01 Update
 

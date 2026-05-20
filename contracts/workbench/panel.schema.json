@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.workbench.panel.v1",
+  "title": "Dominium Workbench Panel",
+  "type": "object",
+  "required": ["panel_id", "owner", "panel_kind", "view_binding"],
+  "properties": {
+    "panel_id": {"type": "string"},
+    "owner": {"type": "string"},
+    "panel_kind": {"type": "string"},
+    "view_binding": {"type": "string"},
+    "commands": {"type": "array", "items": {"type": "string"}},
+    "documents": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}

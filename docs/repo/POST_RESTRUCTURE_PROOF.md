@@ -5,7 +5,30 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, and PROVIDER-MODEL-01.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, PROVIDER-MODEL-01, and MODULE-COMPOSITION-LAW-01.
+
+## MODULE-COMPOSITION-LAW-01 Proof Note
+
+MODULE-COMPOSITION-LAW-01 adds the provisional module/workspace/app composition
+law.
+
+- module law: `contracts/module/module_surface.contract.toml`.
+- module schema: `contracts/module/module.schema.json`.
+- Workbench workspace schema: `contracts/workbench/workspace.schema.json`.
+- app descriptor schema: `contracts/app/app_descriptor.schema.json`.
+- validators:
+  - `python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict`.
+  - `python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict`.
+  - `python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict`.
+- fixtures: `tests/contract/module/**`, `tests/contract/workbench/**`, and `tests/contract/app/**`.
+- module kinds registered: 12.
+- public surface, diagnostics, and capability registries updated with module,
+  Workbench, and app surfaces/codes/capabilities.
+- runtime module loading, Workbench UI, App Composer, pack runtime, and provider
+  runtime are not implemented by this task.
+
+Feature implementation and DOE-00 remain blocked until Foundation Lock closes.
+Next task: `REPLACEMENT-PROTOCOL-01`.
 
 ## PROVIDER-MODEL-01 Proof Note
 

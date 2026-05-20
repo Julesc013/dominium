@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.app.descriptor.v1",
+  "title": "Dominium App Descriptor",
+  "type": "object",
+  "required": ["app_id", "product_id", "owner", "version", "stability", "modes"],
+  "properties": {
+    "app_id": {"type": "string"},
+    "product_id": {"type": "string"},
+    "owner": {"type": "string"},
+    "version": {"type": "string"},
+    "stability": {"type": "string"},
+    "modes": {"type": "array", "items": {"type": "string"}},
+    "required_services": {"type": "array", "items": {"type": "string"}},
+    "enabled_modules": {"type": "array", "items": {"type": "string"}},
+    "default_packs": {"type": "array", "items": {"type": "string"}},
+    "default_profiles": {"type": "array", "items": {"type": "string"}},
+    "default_theme": {"type": "string"},
+    "provider_preferences": {"type": "array", "items": {"type": "string"}},
+    "required_capabilities": {"type": "array", "items": {"type": "string"}},
+    "release_profiles": {"type": "array", "items": {"type": "string"}},
+    "proof": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}

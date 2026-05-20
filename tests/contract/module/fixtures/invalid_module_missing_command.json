@@ -1,0 +1,9 @@
+{
+  "module_id": "dominium.workbench.validation_missing_command",
+  "module_kind": "workbench_module",
+  "owner": "apps.workbench",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "required_commands": [],
+  "proof": []
+}

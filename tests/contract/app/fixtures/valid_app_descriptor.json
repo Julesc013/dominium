@@ -1,0 +1,18 @@
+{
+  "app_id": "dominium.workbench",
+  "product_id": "dominium.product.workbench",
+  "owner": "apps.workbench",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "modes": ["native", "headless"],
+  "required_services": ["service.command", "service.diagnostics"],
+  "enabled_modules": ["dominium.workbench.validation"],
+  "default_packs": [],
+  "default_profiles": [],
+  "default_theme": "dominium.theme.default",
+  "provider_preferences": ["dominium.provider.workbench.validation"],
+  "required_capabilities": ["dominium.app.composition"],
+  "release_profiles": [],
+  "proof": [],
+  "notes": "Descriptor fixture only; app composer is not implemented."
+}

@@ -1,0 +1,14 @@
+[contract]
+id = "dominium.module.pack_provided_policy.v1"
+status = "provisional"
+owner = "contracts.module"
+purpose = "Defines pack-provided module declaration and trust requirements."
+
+[policy]
+pack_module_descriptor_required = true
+pack_module_id_is_path = false
+data_only_packs_may_provide_native_code = false
+silent_module_activation_allowed = false
+trust_policy_required = true
+package_mount_records_modules = true
+mod_pack_trust_model_deepens_later = true

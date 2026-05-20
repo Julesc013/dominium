@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.module.composition.v1",
+  "title": "Dominium Module Composition",
+  "type": "object",
+  "required": ["composition_id", "owner", "version", "stability", "modules"],
+  "properties": {
+    "composition_id": {"type": "string"},
+    "owner": {"type": "string"},
+    "version": {"type": "string"},
+    "stability": {"type": "string"},
+    "modules": {"type": "array", "items": {"type": "string"}},
+    "required_surfaces": {"type": "array", "items": {"type": "string"}},
+    "required_services": {"type": "array", "items": {"type": "string"}},
+    "required_commands": {"type": "array", "items": {"type": "string"}},
+    "required_capabilities": {"type": "array", "items": {"type": "string"}},
+    "required_providers": {"type": "array", "items": {"type": "string"}},
+    "proof": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}

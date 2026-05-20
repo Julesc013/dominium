@@ -6,44 +6,50 @@ foundation-lock
 
 ## GOAL
 
-Complete `PROVIDER-MODEL-01` by adding provider contracts, descriptor and
-selection schemas, provider kind and lifecycle registries, conformance,
-capability, and trust policies, validator, fixtures, docs, public-surface
-registration, diagnostics/refusal/capability cross-references, and evidence.
+Complete `MODULE-COMPOSITION-LAW-01` by adding module, Workbench workspace, and
+app composition contracts, schemas, validators, fixtures, docs, public-surface
+registration, diagnostics/capability cross-references, and evidence.
 
 ## WHY
 
-Dominium must make renderers, platforms, storage backends, package/profile
-loaders, Workbench modules, external adapters, and future native providers
-replaceable through typed provider identity, capability declarations, selection
-decisions, refusals, degradation records, diagnostics, and conformance proof.
+Dominium must distinguish component, service, provider, pack, module,
+workspace, app, and artifact. Module identity must come from descriptors, not
+folders, executable names, Workbench layout files, or private tool wiring.
 
 ## CONTEXT_REFS
 
 - `AGENTS.md`
-- `contracts/provider/provider.contract.toml`
-- `contracts/provider/provider.registry.json`
-- `contracts/provider/provider_descriptor.schema.json`
-- `contracts/provider/provider_selection_request.schema.json`
-- `contracts/provider/provider_selection_decision.schema.json`
+- `contracts/module/module_surface.contract.toml`
+- `contracts/module/module.schema.json`
+- `contracts/workbench/workspace.schema.json`
+- `contracts/app/app_descriptor.schema.json`
+- `contracts/command/command_surface.contract.toml`
 - `contracts/capability/capability.registry.json`
-- `contracts/refusal/refusal_code.registry.json`
+- `contracts/provider/provider.registry.json`
 - `contracts/diagnostics/diagnostic_code.registry.json`
 - `contracts/public_surface/public_surface.contract.toml`
-- `docs/architecture/provider_model.md`
+- `docs/architecture/module_composition_law.md`
 - `.aide/context/latest-context-packet.md`
 
 ## ALLOWED_PATHS
 
-- `contracts/provider/**`
-- `contracts/capability/**` for narrow provider/capability cross-references
-- `contracts/refusal/**` for narrow provider refusal additions
-- `contracts/diagnostics/**` for narrow provider diagnostic additions
+- `contracts/module/**`
+- `contracts/workbench/**`
+- `contracts/app/**`
+- `contracts/diagnostics/**` for narrow diagnostic additions
+- `contracts/capability/**` for narrow capability additions
 - `contracts/public_surface/**` for conservative registration
-- `docs/architecture/provider_model.md`
-- `docs/development/provider_guidelines.md`
-- `tools/validators/contracts/check_provider_model.py`
-- `tests/contract/provider/**`
+- `docs/architecture/module_composition_law.md`
+- `docs/architecture/workbench_workspace_model.md`
+- `docs/architecture/app_composition_model.md`
+- `docs/development/module_development_guidelines.md`
+- `docs/development/workbench_module_guidelines.md`
+- `tools/validators/contracts/check_module_descriptors.py`
+- `tools/validators/contracts/check_workbench_workspaces.py`
+- `tools/validators/contracts/check_app_descriptors.py`
+- `tests/contract/module/**`
+- `tests/contract/workbench/**`
+- `tests/contract/app/**`
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
@@ -57,62 +63,64 @@ decisions, refusals, degradation records, diagnostics, and conformance proof.
 - `.dominium.local/**`
 - `.aide.local/**`
 - generated build/projection/release outputs
-- provider runtime resolver implementation
-- plugin or dynamic loader implementation
-- renderer/platform fallback implementation
-- package/profile loader runtime behavior
 - Workbench UI implementation
+- runtime module loader implementation
+- app composer implementation
+- pack runtime or module discovery runtime
+- provider runtime
 - gameplay/domain/renderer/native GUI feature code
 - release publication, tags, installers, or GitHub settings
 
 ## IMPLEMENTATION
 
 - Keep the task to governance, validation, fixtures, docs, and evidence.
-- Define provider IDs, kinds, lifecycle, descriptors, selection request and
-  decision schemas, conformance, capability, and trust policies.
-- Register only conservative provisional provider descriptors.
-- Merge provider diagnostic and refusal codes without renaming existing codes.
-- Inventory current backend/provider-like surfaces without migrating them.
+- Define module descriptors, module composition, module kinds, Workbench
+  workspace/panel/view-binding schemas, app descriptors, and app composition.
+- Register only conservative provisional surfaces.
+- Inventory current app/workbench/module-like surfaces without migrating them.
 
 ## VALIDATION
 
-- `python -m py_compile tools/validators/contracts/check_provider_model.py`
-- `python tools/validators/contracts/check_provider_model.py --repo-root . --strict`
-- `python tools/validators/contracts/check_provider_model.py --repo-root . --json`
-- `python tools/validators/contracts/check_provider_model.py --repo-root . --fixtures`
-- `python tools/validators/contracts/check_provider_model.py --repo-root . --json --inventory`
-- Existing capability/refusal, schema/protocol, artifact, diagnostics, command,
-  public-surface, dependency-direction, and ABI validators where present
-- `python tools/test/run_fast_strict.py --repo-root . --json-out .aide/reports/PROVIDER-MODEL-01-fast-strict.json --md-out .aide/reports/PROVIDER-MODEL-01-fast-strict.md`
+- `python -m py_compile tools/validators/contracts/check_module_descriptors.py tools/validators/contracts/check_workbench_workspaces.py tools/validators/contracts/check_app_descriptors.py`
+- `python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict`
+- `python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures`
+- `python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict`
+- `python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --fixtures`
+- `python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict`
+- `python tools/validators/contracts/check_app_descriptors.py --repo-root . --fixtures`
+- Existing provider, capability/refusal, schema/protocol, artifact,
+  diagnostics, command, public-surface, dependency-direction, and ABI validators
+  where present
+- `python tools/test/run_fast_strict.py --repo-root . --json-out .aide/reports/MODULE-COMPOSITION-LAW-01-fast-strict.json --md-out .aide/reports/MODULE-COMPOSITION-LAW-01-fast-strict.md`
 - `git diff --check`
 
 ## EVIDENCE
 
-- `.aide/reports/PROVIDER-MODEL-01-status.md`
-- `.aide/reports/PROVIDER-MODEL-01-validation.md`
-- `.aide/reports/PROVIDER-MODEL-01-results.json`
-- `.aide/reports/PROVIDER-MODEL-01-initial-provider-inventory.md`
-- `.aide/reports/PROVIDER-MODEL-01-fast-strict.md`
-- `.aide/reports/PROVIDER-MODEL-01-fast-strict.json`
-- `docs/repo/audits/PROVIDER_MODEL_01.md`
+- `.aide/reports/MODULE-COMPOSITION-LAW-01-status.md`
+- `.aide/reports/MODULE-COMPOSITION-LAW-01-validation.md`
+- `.aide/reports/MODULE-COMPOSITION-LAW-01-results.json`
+- `.aide/reports/MODULE-COMPOSITION-LAW-01-initial-module-inventory.md`
+- `.aide/reports/MODULE-COMPOSITION-LAW-01-fast-strict.md`
+- `.aide/reports/MODULE-COMPOSITION-LAW-01-fast-strict.json`
+- `docs/repo/audits/MODULE_COMPOSITION_LAW_01.md`
 
 ## NON_GOALS
 
-- No provider runtime.
-- No dynamic loader.
-- No renderer/platform fallback.
-- No package/profile loader runtime behavior.
+- No runtime module loader.
 - No Workbench UI.
+- No App Composer.
+- No pack runtime or module discovery runtime.
+- No provider runtime.
 - No gameplay/domain/renderer/native GUI feature behavior.
 - No release publication.
 - No full CTest claim.
 
 ## ACCEPTANCE
 
-- Provider validator compiles and passes strict mode.
-- Fixture mode passes.
-- Inventory mode reports candidates descriptively without migrating them.
-- Public surface, diagnostics, refusal, and capability registries remain valid.
+- Module, Workbench, and app validators compile and pass strict mode.
+- Fixture modes pass.
+- Inventory modes report candidates descriptively without migrating them.
+- Public surface, diagnostics, capability, provider, and command registries remain valid.
 - Fast strict passes.
 - Evidence and audit records are written.
 - Worktree excludes local/generated forbidden outputs.
@@ -124,6 +132,6 @@ decisions, refusals, degradation records, diagnostics, and conformance proof.
 ## OUTPUT_SCHEMA
 
 Final report includes branch, starting HEAD, ending HEAD, origin/main, push
-status, result, created contracts/schemas/docs/tools, provider kind and
-lifecycle counts, fixture and inventory status, registry updates, validator
-status, fast strict status, known warnings, worktree status, and next task.
+status, result, created contracts/schemas/docs/tools, module kind count, fixture
+and inventory status, registry updates, validator status, fast strict status,
+known warnings, worktree status, and next task.

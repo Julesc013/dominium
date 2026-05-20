@@ -2,10 +2,11 @@
 
 ## Review Objective
 
-Review `PROVIDER-MODEL-01`: provider model contract, descriptor and selection
-schemas, kind/lifecycle registries, conformance/capability/trust policies,
-validator, fixtures, documentation, public-surface registration,
-diagnostics/refusal/capability integration, inventory, and evidence.
+Review `MODULE-COMPOSITION-LAW-01`: module descriptors, module composition,
+module kind registry, Workbench workspace/panel/view binding schemas, app
+descriptors, app composition, validators, fixtures, documentation,
+public-surface registration, diagnostics/capability integration, inventory, and
+evidence.
 
 ## Decision Requested
 
@@ -21,66 +22,67 @@ diagnostics/refusal/capability integration, inventory, and evidence.
 
 ## Verification Report Reference
 
-`.aide/reports/PROVIDER-MODEL-01-validation.md`
+`.aide/reports/MODULE-COMPOSITION-LAW-01-validation.md`
 
 ## Evidence Packet References
 
-- `contracts/provider/provider.contract.toml`
-- `contracts/provider/provider.registry.json`
-- `contracts/provider/provider.schema.json`
-- `contracts/provider/provider_descriptor.schema.json`
-- `contracts/provider/provider_kind.registry.json`
-- `contracts/provider/provider_lifecycle.registry.json`
-- `contracts/provider/provider_selection_request.schema.json`
-- `contracts/provider/provider_selection_decision.schema.json`
-- `contracts/provider/provider_conformance.contract.toml`
-- `contracts/provider/provider_capability_policy.contract.toml`
-- `contracts/provider/provider_trust_policy.contract.toml`
-- `tools/validators/contracts/check_provider_model.py`
-- `docs/architecture/provider_model.md`
-- `docs/development/provider_guidelines.md`
-- `tests/contract/provider/**`
-- `.aide/reports/PROVIDER-MODEL-01-status.md`
-- `.aide/reports/PROVIDER-MODEL-01-results.json`
-- `.aide/reports/PROVIDER-MODEL-01-fast-strict.md`
-- `docs/repo/audits/PROVIDER_MODEL_01.md`
+- `contracts/module/module_surface.contract.toml`
+- `contracts/module/module.schema.json`
+- `contracts/module/module_composition.schema.json`
+- `contracts/module/module_kind.registry.json`
+- `contracts/workbench/workspace.schema.json`
+- `contracts/workbench/panel.schema.json`
+- `contracts/workbench/view_binding.schema.json`
+- `contracts/app/app_descriptor.schema.json`
+- `contracts/app/app_composition.schema.json`
+- `tools/validators/contracts/check_module_descriptors.py`
+- `tools/validators/contracts/check_workbench_workspaces.py`
+- `tools/validators/contracts/check_app_descriptors.py`
+- `docs/architecture/module_composition_law.md`
+- `docs/architecture/workbench_workspace_model.md`
+- `docs/architecture/app_composition_model.md`
+- `tests/contract/module/**`
+- `tests/contract/workbench/**`
+- `tests/contract/app/**`
+- `.aide/reports/MODULE-COMPOSITION-LAW-01-status.md`
+- `.aide/reports/MODULE-COMPOSITION-LAW-01-results.json`
+- `.aide/reports/MODULE-COMPOSITION-LAW-01-fast-strict.md`
+- `docs/repo/audits/MODULE_COMPOSITION_LAW_01.md`
 
 ## Changed Files Summary
 
-Adds a provisional provider governance spine and validator. Registers provider
-model surfaces and provider diagnostics/refusals without implementing runtime
-provider resolution, dynamic loading, renderer/platform fallback, package
-runtime, or Workbench behavior.
+Adds a provisional module/workspace/app composition governance spine and
+validators. Registers module, Workbench, and app surfaces and diagnostics
+without implementing runtime module loading, Workbench UI, app composition, pack
+runtime, or provider runtime.
 
 ## Validation Summary
 
-The provider validator compiles and passes strict mode with 0 findings. Fixture
-mode passes with 9 fixtures. Inventory mode scans 17,865 tracked files and
-classifies 1,396 provider/backend/service/adapter/capability candidates
-descriptively. Capability/refusal, diagnostics, command-surface, public-surface,
-schema/protocol, artifact, and ABI validators pass. Dependency-direction debt
-remains known existing debt.
+Module, Workbench, and app validators compile and pass strict mode with 0
+findings. Fixture modes pass with 6 module fixtures, 5 Workbench fixtures, and
+4 app fixtures. Inventory modes scan 17,896 tracked files and classify module,
+Workbench, and app candidates descriptively. Dependency-direction debt remains
+known existing debt.
 
 ## Token Summary
 
 This review packet is intentionally compact; full validation details live in
-`.aide/reports/PROVIDER-MODEL-01-validation.md`.
+`.aide/reports/MODULE-COMPOSITION-LAW-01-validation.md`.
 
 ## Risk Summary
 
-The provider model is provisional. Current providers, backends, Workbench
-modules, packs, and runtime systems are inventoried but not migrated. Runtime
-provider selection, dynamic/native loading, conformance suites, and mod/native
-trust hardening remain future work.
+The law is provisional. Current app, Workbench, runtime, pack, and tool files
+are inventoried but not migrated. Runtime module loading, Workbench UI, App
+Composer, pack module activation, and module conformance proof remain future
+work.
 
 ## Non-Goals / Scope Guard
 
-No feature implementation, provider runtime resolver, dynamic loader,
-renderer/platform fallback, package/profile loader runtime, Workbench UI, public
-release, or full CTest proof.
+No feature implementation, runtime module loader, Workbench UI, App Composer,
+pack runtime, provider runtime, public release, or full CTest proof.
 
 ## Reviewer Instructions
 
-Confirm that provider identity is not path identity, that selection/fallback is
-typed through capability/refusal/degradation/evidence law, and that current
-providers are inventoried rather than silently migrated.
+Confirm that module/workspace/app identity is not path identity, that Workbench
+is not authority, and that descriptors bind commands/services/views/capabilities
+and providers instead of private tools.

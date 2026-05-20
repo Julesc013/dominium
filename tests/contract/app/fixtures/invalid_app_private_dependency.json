@@ -1,0 +1,10 @@
+{
+  "app_id": "dominium.workbench.private",
+  "product_id": "dominium.product.workbench",
+  "owner": "apps.workbench",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "modes": ["native"],
+  "private_dependencies": ["../../../tools/validators"],
+  "enabled_modules": ["dominium.workbench.validation"]
+}

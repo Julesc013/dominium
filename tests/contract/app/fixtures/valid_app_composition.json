@@ -1,0 +1,13 @@
+{
+  "composition_id": "dominium.app.composition.workbench_validation",
+  "product_id": "dominium.product.workbench",
+  "owner": "apps.workbench",
+  "apps": ["dominium.workbench"],
+  "modules": ["dominium.workbench.validation"],
+  "packs": [],
+  "providers": ["dominium.provider.workbench.validation"],
+  "capabilities": ["dominium.app.composition", "dominium.workbench.module.validation"],
+  "release_profiles": [],
+  "proof": [],
+  "notes": "Composition fixture only."
+}

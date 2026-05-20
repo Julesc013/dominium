@@ -1,0 +1,9 @@
+{
+  "module_id": "apps/workbench/module/validation",
+  "module_kind": "workbench_module",
+  "owner": "apps.workbench",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "required_commands": ["dominium.validation.run"],
+  "proof": []
+}

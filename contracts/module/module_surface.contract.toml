@@ -1,0 +1,42 @@
+[contract]
+id = "dominium.module.surface.v1"
+status = "provisional"
+owner = "contracts.module"
+purpose = "Defines module identity, composition, and binding law."
+
+[policy]
+module_identity_is_path = false
+workbench_is_authority = false
+stable_modules_require_proof = true
+modules_depend_on_private_paths = false
+pack_modules_require_declared_descriptor = true
+runtime_loader_implemented = false
+replacement_protocol_required_for_stable_replacement = true
+
+[[module]]
+module_id = "dominium.workbench.validation"
+module_kind = "workbench_module"
+owner = "apps.workbench"
+version = "0.1.0"
+stability = "provisional"
+implementation_status = "planned"
+implementation_path = "apps/workbench"
+implementation_path_is_identity = false
+provided_surfaces = ["dominium.module.descriptor.v1"]
+required_surfaces = ["dominium.command.surface.v1", "dominium.diagnostics.registry.v1"]
+required_services = ["service.command", "service.validation", "service.diagnostics"]
+required_commands = ["dominium.validation.run"]
+required_capabilities = ["dominium.workbench.module.validation"]
+required_providers = ["dominium.provider.workbench.validation"]
+documents = ["document.validation_result"]
+views = ["view.table", "view.inspector"]
+events = ["event.validation.progress"]
+refusals = ["dominium.refusal.command.capability_missing"]
+diagnostics = ["DOM-PUBLIC-SURFACE-INVALID", "DOM-MODULE-MISSING-REQUIRED-COMMAND"]
+artifacts = ["evidence_packet"]
+packs = []
+tests = []
+proof = []
+replacement_policy = "requires_module_surface_update"
+compatibility_policy = "not_yet_stable"
+notes = "Planned Workbench validation module; WORKBENCH-VALIDATION-SLICE-01 owns implementation."

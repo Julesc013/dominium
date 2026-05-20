@@ -1,0 +1,14 @@
+[contract]
+id = "dominium.app.surface.v1"
+status = "provisional"
+owner = "contracts.app"
+purpose = "Defines product app descriptor and app composition law."
+
+[policy]
+app_identity_is_executable_filename = false
+apps_are_product_compositions = true
+apps_bind_modules_packs_providers_capabilities = true
+private_implementation_dependencies_allowed = false
+stable_apps_require_proof = true
+app_composer_implemented = false
+release_publication_implemented = false

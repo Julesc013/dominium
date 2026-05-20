@@ -1,0 +1,9 @@
+{
+  "panel_id": "dominium.workbench.panel.validation_table",
+  "owner": "apps.workbench",
+  "panel_kind": "table",
+  "view_binding": "dominium.workbench.binding.validation_result_table",
+  "commands": ["dominium.validation.run"],
+  "documents": ["document.validation_result"],
+  "notes": "Panel fixture only."
+}

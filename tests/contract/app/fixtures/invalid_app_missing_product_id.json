@@ -1,0 +1,8 @@
+{
+  "app_id": "dominium.client",
+  "owner": "apps.client",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "modes": ["rendered"],
+  "enabled_modules": []
+}

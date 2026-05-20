@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.app.composition.v1",
+  "title": "Dominium App Composition",
+  "type": "object",
+  "required": ["composition_id", "product_id", "owner", "apps", "modules"],
+  "properties": {
+    "composition_id": {"type": "string"},
+    "product_id": {"type": "string"},
+    "owner": {"type": "string"},
+    "apps": {"type": "array", "items": {"type": "string"}},
+    "modules": {"type": "array", "items": {"type": "string"}},
+    "packs": {"type": "array", "items": {"type": "string"}},
+    "providers": {"type": "array", "items": {"type": "string"}},
+    "capabilities": {"type": "array", "items": {"type": "string"}},
+    "release_profiles": {"type": "array", "items": {"type": "string"}},
+    "proof": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}

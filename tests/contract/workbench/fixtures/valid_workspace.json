@@ -1,0 +1,16 @@
+{
+  "workspace_id": "dominium.workbench.workspace.project_graph",
+  "owner": "apps.workbench",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "modules": ["dominium.workbench.validation"],
+  "panels": ["dominium.workbench.panel.validation_table"],
+  "views": ["view.table", "view.inspector"],
+  "commands": ["dominium.validation.run"],
+  "layouts": ["layout.project_graph.default"],
+  "required_capabilities": ["dominium.workbench.workspace.project_graph"],
+  "default_perspective": "project_graph",
+  "evidence_surfaces": ["dominium.evidence.packet.v1"],
+  "proof": [],
+  "notes": "Planned workspace fixture only."
+}

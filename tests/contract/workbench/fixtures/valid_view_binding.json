@@ -1,0 +1,10 @@
+{
+  "binding_id": "dominium.workbench.binding.validation_result_table",
+  "owner": "apps.workbench",
+  "view_id": "view.table",
+  "command_id": "dominium.validation.run",
+  "document_schema": "contracts/document/document.schema.json",
+  "result_schema": "contracts/result/result.schema.json",
+  "evidence_refs": ["contracts/evidence/evidence_ref.schema.json"],
+  "notes": "View binding fixture only."
+}

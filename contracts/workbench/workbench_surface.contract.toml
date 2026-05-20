@@ -1,0 +1,14 @@
+[contract]
+id = "dominium.workbench.surface.v1"
+status = "provisional"
+owner = "contracts.workbench"
+purpose = "Defines Workbench workspace, panel, and view-binding law."
+
+[policy]
+workbench_is_authority = false
+workbench_may_call_private_tools_directly = false
+workspaces_require_modules = true
+panels_bind_views_not_private_paths = true
+views_present_results = true
+reusable_ui_primitives_live_in_runtime_ui = true
+workspace_runtime_implemented = false
