@@ -1,18 +1,37 @@
 schema_version = "dominium.aide.queue.current.v1"
-status = "architecture_policy_pass_with_warnings"
-last_reviewed = "2026-05-21"
+status = "post_wave_1_pass_with_warnings"
+last_reviewed = "2026-05-22"
 
 [current]
-task = "PORTABILITY-ARCH-POLICY-02"
+task = "QUEUE-RECONCILE-00"
 result = "PASS_WITH_WARNINGS"
-next_task = "WORKBENCH-VALIDATION-SLICE-01"
+foundation_lock = "PASS_WITH_WARNINGS"
+matrix_cleanup_00 = "PASS_WITH_WARNINGS"
+workbench_validation_slice_01 = "PASS_WITH_WARNINGS"
+wave_1_substrates = "PASS_WITH_WARNINGS"
+next_task = "COMMAND-RESULT-VIEW-SLICE-01"
+alternate_next_task = "PACKAGE-MOUNT-SLICE-01"
 secondary_follow_up = "POINTER-WIDTH-SERIALIZATION-AUDIT-01"
 workbench_validation_slice_authorized = true
+workbench_validation_slice_completed = true
+matrix_cleanup_completed = true
 broad_feature_work_authorized = false
+
+[completed]
+foundation_closeout_02 = "PASS_WITH_WARNINGS"
+portability_arch_policy_02 = "PASS_WITH_WARNINGS"
+matrix_cleanup_00 = "PASS_WITH_WARNINGS"
+service_conformance_law_01 = "PASS"
+document_patch_transaction_runtime_01 = "PASS_WITH_WARNINGS"
+project_graph_service_01 = "PASS"
+composition_resolver_law_01 = "PASS"
+dominium_doctrine_recovery_matrix_01 = "PASS"
+workbench_validation_slice_01 = "PASS_WITH_WARNINGS"
 
 [validation]
 architecture_policy = "PASS"
 portability_matrix = "PASS"
+component_matrix = "PASS"
 dependency_direction_strict = "PASS"
 fast_strict = "PASS"
 aide = "PASS"
@@ -20,3 +39,13 @@ repox_strict = "PASS_WITH_WARNINGS"
 cmake_configure_build = "PASS_THROUGH_FAST_STRICT"
 smoke_ctest = "PASS_THROUGH_FAST_STRICT"
 full_ctest = "NOT_RUN_T4_DEBT"
+
+[constraints]
+broad_workbench_ui = "BLOCKED"
+runtime_module_loader = "BLOCKED"
+provider_runtime = "BLOCKED"
+package_runtime = "BLOCKED"
+gameplay = "BLOCKED"
+renderer_implementation = "BLOCKED"
+native_gui = "BLOCKED"
+release_publication = "BLOCKED"

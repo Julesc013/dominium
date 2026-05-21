@@ -2,48 +2,42 @@
 
 ## PHASE
 
-UNSPECIFIED - MATRIX-CLEANUP-00 renderer platform baseline cleanup
+Post-Foundation Lock / post-MATRIX-CLEANUP-00 / post-WORKBENCH-VALIDATION-SLICE-01
 
 ## GOAL
 
-MATRIX-CLEANUP-00 renderer platform baseline cleanup
+COMMAND-RESULT-VIEW-SLICE-01 - define the next narrow Workbench/app projection for command result display without building a broad Workbench shell.
 
 ## WHY
 
-Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
+Foundation Lock is closed as `PASS_WITH_WARNINGS`. `MATRIX-CLEANUP-00` and `WORKBENCH-VALIDATION-SLICE-01` have both landed. The next useful product-spine step is a narrow command/result/evidence view that consumes existing command surfaces without adding renderer, native GUI, workspace runtime, provider runtime, package runtime, gameplay, or release behavior.
 
 ## CONTEXT_REFS
 
-- `.aide/memory/project-state.md`
-- `.aide/memory/decisions.md`
-- `.aide/memory/open-risks.md`
-- `.aide/context/repo-snapshot.json` (present)
-- `.aide/context/repo-map.json` (present)
-- `.aide/context/repo-map.md` (present)
-- `.aide/context/test-map.json` (present)
-- `.aide/context/context-index.json` (present)
-- `.aide/context/latest-context-packet.md` (present)
-- `.aide/repo/latest-repo-intelligence.md` (present)
-- `.aide/repo/file-inventory.json` (present)
-- `.aide/reports/file-quality-summary.md` (present)
-- `.aide/reports/file-quality-ledger.json` (present)
-- `.aide/refactors/latest-refactor-readiness.md` (present)
-- `.aide/refactors/latest-refactor-plan.example.json` (present)
-- `.aide/routing/latest-route-decision.json` (present)
-- `.aide/routing/latest-route-decision.md` (present)
-- `.aide/cache/latest-cache-keys.json` (present)
-- `.aide/cache/latest-cache-keys.md` (present)
-- `.aide/prompts/compact-task.md`
-- `.aide/policies/token-budget.yaml`
-- `.aide/policies/cache.yaml`
-- `.aide/policies/local-state.yaml`
+- `AGENTS.md`
+- `docs/canon/constitution_v1.md`
+- `docs/canon/glossary_v1.md`
+- `docs/planning/AUTHORITY_ORDER.md`
+- `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`
+- `docs/repo/FOUNDATION_LOCK.md`
+- `docs/repo/audits/MATRIX_CLEANUP_00.md`
+- `docs/repo/audits/WORKBENCH_VALIDATION_SLICE_01.md`
+- `docs/development/workbench_validation_slice.md`
+- `contracts/module/module_surface.contract.toml`
+- `contracts/command/validation_run_input.schema.json`
+- `contracts/diagnostics/diagnostic_code.registry.json`
+- `.aide/queue/current.toml`
+- `.aide/context/latest-context-packet.md`
 
 ## ALLOWED_PATHS
 
-- `<fill from the next reviewed queue packet>`
-- `.aide/context/**`
-- `.aide/queue/unspecified-*` if this task becomes a queue item
-- root docs only when behavior or documentation links change
+- `apps/workbench/module/**` only for a narrow command/result projection module or existing validation module integration points
+- `contracts/module/module_surface.contract.toml` only for registering the narrow module surface
+- `contracts/command/**` only for command/view contract additions directly required by the slice
+- `contracts/diagnostics/diagnostic_code.registry.json` only for distinct diagnostic codes required by the slice
+- `docs/development/**` for slice documentation
+- `docs/repo/audits/**` for task audit evidence
+- `tests/app/**` and `tests/contract/**` for targeted tests
 
 ## FORBIDDEN_PATHS
 
@@ -52,70 +46,74 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 - `secrets/**`
 - `.aide.local/**`
 - raw provider credentials, API keys, local caches, raw prompt logs
-- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
+- `.aide/context/latest-task-packet.md` unless the task is a coordinator queue task
+- `.aide/context/latest-review-packet.md` unless the task is a coordinator queue task
+- `.aide/reports/latest-dominium-status.md` unless the task is a coordinator queue task
+- `.aide/reports/latest-warning-disposition.md` unless the task is a coordinator queue task
+- `.aide/queue/current.toml` unless the task is a coordinator queue task
+- `docs/repo/FOUNDATION_LOCK.md`
+- broad Workbench shell, renderer, native GUI, gameplay, provider runtime, package runtime, runtime module loader, release publication, or product-wide implementation paths
 
 ## IMPLEMENTATION
 
-- Read the queue packet and relevant repo refs first.
-- Keep changes inside the allowed paths.
-- Make the smallest coherent diff that satisfies acceptance.
-- Preserve generated/manual boundaries.
-- Do not inline whole source files unless exact contents are required.
-- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
+- Keep the slice command-driven and projection-only.
+- Consume public command/result/refusal/diagnostic/evidence surfaces; do not call private validators directly from Workbench.
+- Do not set `workspace_runtime_implemented=true`.
+- Do not implement renderer, native GUI, package runtime, provider runtime, runtime module loading, gameplay, or broad app behavior.
+- Preserve `MATRIX-CLEANUP-00` renderer/platform terminology: `software`, `opengl`, `direct3d`, `metal`, `vulkan`, and canvas as drawing layer.
 
 ## VALIDATION
 
 - `py -3 .aide/scripts/aide_lite.py doctor`
 - `py -3 .aide/scripts/aide_lite.py validate`
-- `py -3 .aide/scripts/aide_lite.py index`
-- `py -3 .aide/scripts/aide_lite.py context`
-- `py -3 .aide/scripts/aide_lite.py repo inventory`
-- `py -3 .aide/scripts/aide_lite.py repo validate`
-- `py -3 .aide/scripts/aide_lite.py verify`
-- `py -3 .aide/scripts/aide_lite.py review-pack`
-- `py -3 .aide/scripts/aide_lite.py route explain`
-- `py -3 .aide/scripts/aide_lite.py test`
-- `py -3 .aide/scripts/aide_lite.py selftest`
-- `py -3 scripts/aide validate`
+- targeted app tests for the new projection
+- touched JSON/TOML parse checks
+- `py -3 tools/validators/contracts/check_command_surface.py --repo-root . --strict`
+- `py -3 tools/validators/contracts/check_module_descriptors.py --repo-root . --strict`
+- `py -3 tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict`
+- `py -3 tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict`
 - `git diff --check`
 
 ## COMMITS
 
 - Commit coherent subdeliverables with verbose bodies.
-- Stop at review gates.
+- Do not commit ignored transient validation reports unless the task explicitly promotes them as evidence.
 
 ## EVIDENCE
 
 - changed files
 - validation commands and results
-- verifier result
-- review packet path and result when review-pack is available
-- advisory route decision path and result when Q17 routing is available
-- compact packet size and budget status
+- result/refusal/diagnostic/evidence parity proof
 - unresolved risks and deferrals
 
 ## NON_GOALS
 
-- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
+- No full Workbench shell.
+- No rendered GUI.
+- No workspace runtime.
+- No runtime module loader.
+- No provider runtime.
+- No package runtime.
+- No renderer backend implementation.
+- No native GUI.
+- No gameplay, worldgen, release publication, or broad app behavior.
 
 ## ACCEPTANCE
 
-- Task-specific acceptance criteria are met.
-- Validation is run and recorded.
-- Evidence is written.
-- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
+- Command/result projection is narrow and service/command mediated.
+- CLI/headless semantics remain the source of behavior; Workbench projection is not authority.
+- Same result/refusal/diagnostic/evidence packet can be displayed without private tool binding.
+- Broad blockers remain explicit.
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
-Include the verifier result when Q12 verifier behavior is available.
+Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, `RISKS`, and `NEXT`.
 
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4166
-- approx_tokens: 1042
+- chars: 4990
+- approx_tokens: 1248
 - budget_status: PASS
 - warnings:
-  - none
-- formal ledger: `.aide/reports/token-ledger.jsonl`
+  - next task is a narrow product-spine candidate and must remain inside the allowed paths
