@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.project_graph.snapshot.v1",
+  "title": "Dominium Project Graph Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["snapshot_id", "repo_ref", "source_commit", "generator_id", "generator_version", "graph_schema_version", "node_count", "edge_count", "diagnostics", "evidence_ref", "completeness_level", "known_gaps"],
+  "properties": {
+    "snapshot_id": {"type": "string"},
+    "repo_ref": {"type": "string"},
+    "source_commit": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "generator_id": {"type": "string"},
+    "generator_version": {"type": "string"},
+    "graph_schema_version": {"type": "string"},
+    "node_count": {"type": "integer"},
+    "edge_count": {"type": "integer"},
+    "node_refs": {"$ref": "#/$defs/string_list"},
+    "edge_refs": {"$ref": "#/$defs/string_list"},
+    "nodes": {"type": "array"},
+    "edges": {"type": "array"},
+    "diagnostics": {"$ref": "#/$defs/string_list"},
+    "evidence_ref": {"type": "string"},
+    "completeness_level": {"type": "string"},
+    "known_gaps": {"$ref": "#/$defs/string_list"},
+    "authority_class": {"type": "string", "enum": ["derived_index"]},
+    "graph_is_source_truth": {"type": "boolean", "const": false}
+  },
+  "$defs": {"string_list": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}}
+}

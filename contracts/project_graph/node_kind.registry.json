@@ -1,0 +1,16 @@
+{
+  "schema_version": "dominium.project_graph.node_kind_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.project_graph",
+  "kinds": [
+    {"id": "file"}, {"id": "source_root"}, {"id": "component"}, {"id": "public_surface"},
+    {"id": "contract"}, {"id": "schema"}, {"id": "registry"}, {"id": "protocol"},
+    {"id": "command"}, {"id": "result"}, {"id": "refusal"}, {"id": "diagnostic"},
+    {"id": "service"}, {"id": "provider"}, {"id": "capability"}, {"id": "module"},
+    {"id": "workspace"}, {"id": "app"}, {"id": "pack"}, {"id": "profile"},
+    {"id": "artifact"}, {"id": "test"}, {"id": "validator"}, {"id": "evidence_packet"},
+    {"id": "release_artifact"}, {"id": "replacement_packet"}, {"id": "version_surface"},
+    {"id": "portability_row"}, {"id": "aide_task"}, {"id": "domain"},
+    {"id": "document_type"}, {"id": "patch_type"}, {"id": "transaction_type"}
+  ]
+}

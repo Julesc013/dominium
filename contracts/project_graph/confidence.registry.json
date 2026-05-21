@@ -1,0 +1,11 @@
+{
+  "schema_version": "dominium.project_graph.confidence_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.project_graph",
+  "levels": [
+    {"id": "asserted"},
+    {"id": "derived"},
+    {"id": "inferred"},
+    {"id": "observed"}
+  ]
+}

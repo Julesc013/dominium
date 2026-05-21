@@ -1,0 +1,81 @@
+schema_version = "dominium.project_graph.model_contract.v1"
+status = "provisional"
+last_reviewed = "2026-05-22"
+owner = "contracts.project_graph"
+
+[contract]
+id = "dominium.project_graph.model.v1"
+purpose = "Defines the machine-readable project graph vocabulary, node and edge model, snapshots, impact queries, provenance, and usage rules."
+scope = "contract_docs_validator_fixture"
+runtime_graph_service_implemented = false
+workbench_graph_viewer_implemented = false
+graph_generator_implemented = false
+
+[authority]
+graph_is_source_truth = false
+graph_is_derived_index = true
+source_truth_remains_in_contracts_manifests_registries_headers_descriptors_tests_and_evidence = true
+graph_facts_must_cite_source_ref = true
+missing_graph_facts_imply_missing_functionality = false
+graph_drift_must_be_detectable = true
+workbench_may_present_graph = true
+workbench_may_override_authority = false
+aide_may_use_for_context_selection = true
+aide_may_override_allowed_paths = false
+
+[vocabulary]
+project_graph = "An indexed, machine-readable, evidence-bearing map over the current repo, product contracts, manifests, registries, descriptors, tests, and artifacts."
+graph_snapshot = "A deterministic capture of graph facts at a repo state, tied to source commit, graph schema version, generator id, and generator version."
+graph_node = "A typed entity such as a command, service, provider, module, app, pack, test, artifact, file, contract, or evidence packet."
+graph_edge = "A typed relationship such as owns, implements, consumes, validates, emits, packages, supersedes, or blocks."
+graph_query = "A structured question over graph facts, such as impact, provenance, proof coverage, ownership, release inclusion, or task lineage."
+graph_evidence = "Proof of how a graph fact was derived, observed, asserted, validated, or rejected."
+graph_source = "The canonical source file, contract, manifest, registry, descriptor, test, or evidence packet that produced graph facts."
+
+[schemas]
+node_schema = "contracts/project_graph/node.schema.json"
+edge_schema = "contracts/project_graph/edge.schema.json"
+snapshot_schema = "contracts/project_graph/snapshot.schema.json"
+impact_query_schema = "contracts/project_graph/impact_query.schema.json"
+
+[registries]
+node_kind_registry = "contracts/project_graph/node_kind.registry.json"
+edge_kind_registry = "contracts/project_graph/edge_kind.registry.json"
+confidence_registry = "contracts/project_graph/confidence.registry.json"
+completeness_level_registry = "contracts/project_graph/completeness_level.registry.json"
+query_kind_registry = "contracts/project_graph/query_kind.registry.json"
+
+[ownership_rules]
+node_owner_required = true
+edge_source_ref_required = true
+node_source_ref_required = true
+generated_nodes_must_identify_derived_from = true
+path_refs_are_evidence_or_location_refs_not_identity_for_stable_nodes = true
+source_include_import_dependencies_are_not_graph_edges_without_explicit_edge_kind = true
+
+[usage.workbench]
+may_render_graph_facts = true
+may_filter_by_workspace = true
+may_show_incomplete_queries = true
+may_mutate_source_truth = false
+may_override_contracts_or_registries = false
+
+[usage.aide_codex]
+may_select_context = true
+may_route_tasks = true
+must_respect_explicit_allowed_paths = true
+must_treat_graph_as_derived = true
+must_not_expand_scope_from_graph_alone = true
+
+[usage.release_proof]
+may_index_release_artifact_inclusion = true
+may_index_tests_and_evidence = true
+proof_index_requires_evidence_ref = true
+release_index_requires_evidence_ref = true
+snapshot_cache_requires_commit_and_generator_version_match = true
+
+[validation]
+validator = "tools/validators/contracts/check_project_graph.py"
+fixture_dir = "tests/contract/project_graph/fixtures"
+strict_validates_fixtures = true
+inventory_is_warning_only = true

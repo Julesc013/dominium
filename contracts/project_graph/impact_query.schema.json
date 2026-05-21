@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.project_graph.impact_query.v1",
+  "title": "Dominium Project Graph Impact Query Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["query_id", "query_kind", "input_nodes", "result_nodes", "result_edges", "confidence", "diagnostics", "evidence_ref"],
+  "properties": {
+    "query_id": {"type": "string"},
+    "query_kind": {"type": "string"},
+    "input_nodes": {"$ref": "#/$defs/string_list"},
+    "result_nodes": {"$ref": "#/$defs/string_list"},
+    "result_edges": {"$ref": "#/$defs/string_list"},
+    "confidence": {"type": "string", "enum": ["asserted", "derived", "inferred", "observed"]},
+    "diagnostics": {"$ref": "#/$defs/string_list"},
+    "evidence_ref": {"type": "string"},
+    "incomplete_reason": {"type": "string"}
+  },
+  "$defs": {"string_list": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}}
+}

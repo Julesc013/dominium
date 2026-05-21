@@ -1,0 +1,16 @@
+{
+  "schema_version": "dominium.project_graph.query_kind_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.project_graph",
+  "kinds": [
+    {"id": "what_depends_on"},
+    {"id": "what_does_this_command_use"},
+    {"id": "which_apps_expose"},
+    {"id": "which_tests_prove"},
+    {"id": "which_modules_display"},
+    {"id": "which_packs_provide"},
+    {"id": "which_release_artifacts_include"},
+    {"id": "which_public_surfaces_are_affected_by"},
+    {"id": "which_tasks_touched"}
+  ]
+}

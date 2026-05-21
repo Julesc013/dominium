@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.project_graph.node.v1",
+  "title": "Dominium Project Graph Node",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["node_id", "node_kind", "label", "owner", "stability", "source_ref", "path_refs", "public_surface_refs", "artifact_refs", "capability_refs", "version_refs", "evidence_refs", "tags", "status", "generated", "derived_from"],
+  "properties": {
+    "node_id": {"type": "string"},
+    "node_kind": {"type": "string"},
+    "stable_ref": {"type": "string"},
+    "label": {"type": "string"},
+    "owner": {"type": "string"},
+    "stability": {"type": "string"},
+    "source_ref": {"$ref": "#/$defs/source_ref"},
+    "path_refs": {"$ref": "#/$defs/string_list"},
+    "public_surface_refs": {"$ref": "#/$defs/string_list"},
+    "artifact_refs": {"$ref": "#/$defs/string_list"},
+    "capability_refs": {"$ref": "#/$defs/string_list"},
+    "version_refs": {"$ref": "#/$defs/string_list"},
+    "evidence_refs": {"$ref": "#/$defs/string_list"},
+    "tags": {"$ref": "#/$defs/string_list"},
+    "status": {"type": "string"},
+    "generated": {"type": "boolean"},
+    "derived_from": {"$ref": "#/$defs/string_list"}
+  },
+  "$defs": {
+    "string_list": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "source_ref": {"type": "object", "required": ["source_kind", "path"], "properties": {"source_kind": {"type": "string"}, "path": {"type": "string"}, "source_id": {"type": "string"}, "line_ref": {"type": "string"}, "commit": {"type": "string"}}}
+  }
+}

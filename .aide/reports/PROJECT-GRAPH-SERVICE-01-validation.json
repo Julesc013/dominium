@@ -1,0 +1,58 @@
+{
+  "fast_strict": {
+    "json": ".aide/reports/PROJECT-GRAPH-SERVICE-01-fast-strict.json",
+    "markdown": ".aide/reports/PROJECT-GRAPH-SERVICE-01-fast-strict.md",
+    "status": "PASS"
+  },
+  "non_goals": [
+    "runtime project graph service",
+    "Workbench graph viewer",
+    "Project Graph Explorer",
+    "graph generator",
+    "AIDE graph-driven routing",
+    "release publication",
+    "full CTest"
+  ],
+  "related_validators": {
+    "aide_lite_doctor": "PASS",
+    "aide_lite_validate": "PASS_WITH_REVIEW_PACKET_WARNINGS",
+    "check_app_descriptors": "PASS",
+    "check_artifact_identity": "PASS",
+    "check_capability_refusal": "PASS",
+    "check_command_surface": "PASS",
+    "check_component_matrices": "PASS",
+    "check_dependency_directions": "PASS_WITH_68_WARNINGS",
+    "check_diagnostics_registry": "PASS",
+    "check_module_descriptors": "PASS",
+    "check_portability_matrix": "PASS",
+    "check_provider_model": "PASS",
+    "check_public_surface": "PASS",
+    "check_replacement_packet": "PASS",
+    "check_schema_protocol_evolution": "PASS",
+    "check_service_conformance": "PASS_WITH_6_WARNINGS",
+    "check_version_deprecation": "PASS",
+    "check_workbench_workspaces": "PASS",
+    "repox_strict_direct_final": "PASS_WITH_AUDITX_STALE_WARNING",
+    "verify_abi_boundaries": "PASS",
+    "verify_build_target_boundaries": "PASS",
+    "verify_docs_sanity": "PASS",
+    "verify_ui_shell_purity": "PASS"
+  },
+  "schema_version": "dominium.aide.validation_report.v1",
+  "status": "PASS_WITH_WARNINGS",
+  "targeted": {
+    "check_project_graph_fixtures": "PASS",
+    "check_project_graph_inventory": "PASS_WITH_WARNING",
+    "check_project_graph_json": "PASS",
+    "check_project_graph_strict": "PASS",
+    "py_compile": "PASS"
+  },
+  "task": "PROJECT-GRAPH-SERVICE-01",
+  "warnings": [
+    "AuditX output stale warning remains",
+    "dependency-direction strict reports 68 warnings and 0 violations",
+    "AIDE validate review-packet reference warnings remain",
+    "graph runtime, generator, and Workbench graph viewer are non-goals",
+    "snapshots are fixture/contract-level only"
+  ]
+}

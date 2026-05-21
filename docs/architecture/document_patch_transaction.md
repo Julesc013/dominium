@@ -1,4 +1,4 @@
-Status: PROVISIONAL
+Status: DERIVED
 Last Reviewed: 2026-05-22
 Supersedes: none
 Superseded By: none

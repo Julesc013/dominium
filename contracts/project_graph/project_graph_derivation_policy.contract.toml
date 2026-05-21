@@ -1,0 +1,120 @@
+schema_version = "dominium.project_graph.derivation_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-22"
+owner = "contracts.project_graph"
+
+[policy]
+id = "dominium.project_graph.derivation_policy.v1"
+purpose = "Defines how project graph facts are derived from source truth without becoming source truth themselves."
+graph_output_is_source_truth = false
+derived_outputs_are_evidence_only = true
+missing_graph_facts_imply_missing_functionality = false
+
+[source_truth]
+contracts = true
+manifests = true
+registries = true
+public_headers = true
+package_manifests = true
+app_descriptors = true
+module_descriptors = true
+provider_descriptors = true
+tests = true
+evidence_packets = true
+
+[derivation]
+facts_must_cite_source_ref = true
+stale_source_refs_produce_diagnostics = true
+asserted_confidence_precedes_derived = true
+inferred_facts_are_lower_confidence_than_asserted_facts = true
+source_include_import_edges_require_explicit_edge_kind = true
+
+[cache]
+snapshots_may_be_cached = true
+cache_invalid_when_source_commit_changes = true
+cache_invalid_when_generator_version_changes = true
+cache_invalid_when_graph_schema_version_changes = true
+
+[[source_map]]
+source = "public_surface_registry"
+paths = ["contracts/public_surface/**"]
+allowed_node_kinds = ["public_surface", "component", "file"]
+allowed_edge_kinds = ["declares", "owns", "documented_by", "depends_on"]
+
+[[source_map]]
+source = "command_registry"
+paths = ["contracts/command/**"]
+allowed_node_kinds = ["command", "result", "schema", "capability"]
+allowed_edge_kinds = ["declares", "produces", "consumes", "requires_capability", "refuses_with"]
+
+[[source_map]]
+source = "diagnostics_registry"
+paths = ["contracts/diagnostics/**"]
+allowed_node_kinds = ["diagnostic", "registry"]
+allowed_edge_kinds = ["declares", "emits", "documented_by"]
+
+[[source_map]]
+source = "artifact_manifests"
+paths = ["contracts/artifact/**"]
+allowed_node_kinds = ["artifact", "release_artifact", "evidence_packet"]
+allowed_edge_kinds = ["declares", "packages", "proven_by", "generated_by"]
+
+[[source_map]]
+source = "schemas_and_protocols"
+paths = ["contracts/schema/**", "contracts/protocol/**"]
+allowed_node_kinds = ["schema", "protocol", "version_surface"]
+allowed_edge_kinds = ["declares", "supersedes", "deprecates", "consumes"]
+
+[[source_map]]
+source = "provider_descriptors"
+paths = ["contracts/provider/**", "contracts/service/**"]
+allowed_node_kinds = ["provider", "service", "capability"]
+allowed_edge_kinds = ["implements", "provides_capability", "requires_capability", "selected_by"]
+
+[[source_map]]
+source = "module_descriptors"
+paths = ["contracts/module/**"]
+allowed_node_kinds = ["module", "service", "capability", "result"]
+allowed_edge_kinds = ["implements", "consumes", "displayed_by", "requires_capability"]
+
+[[source_map]]
+source = "app_descriptors"
+paths = ["contracts/app/**"]
+allowed_node_kinds = ["app", "command", "module", "workspace"]
+allowed_edge_kinds = ["contains", "mounts", "selected_by", "displayed_by"]
+
+[[source_map]]
+source = "workbench_workspaces"
+paths = ["contracts/workbench/**"]
+allowed_node_kinds = ["workspace", "module", "command", "result"]
+allowed_edge_kinds = ["contains", "mounts", "displayed_by", "invokes"]
+
+[[source_map]]
+source = "replacement_packets"
+paths = ["contracts/replacement/**"]
+allowed_node_kinds = ["replacement_packet", "component", "file"]
+allowed_edge_kinds = ["replaces", "supersedes", "affected_by", "proven_by"]
+
+[[source_map]]
+source = "version_deprecation_records"
+paths = ["contracts/versioning/**"]
+allowed_node_kinds = ["version_surface", "schema", "protocol", "contract"]
+allowed_edge_kinds = ["supersedes", "deprecates", "documented_by"]
+
+[[source_map]]
+source = "portability_matrices"
+paths = ["contracts/platform/**"]
+allowed_node_kinds = ["portability_row", "component", "public_surface"]
+allowed_edge_kinds = ["declares", "blocks", "unblocks", "affected_by"]
+
+[[source_map]]
+source = "aide_evidence_packets"
+paths = [".aide/reports/**", ".aide/context/**"]
+allowed_node_kinds = ["aide_task", "evidence_packet", "validator"]
+allowed_edge_kinds = ["proven_by", "generated_by", "documented_by", "affected_by"]
+
+[[source_map]]
+source = "tests_and_validators"
+paths = ["tests/**", "tools/validators/**"]
+allowed_node_kinds = ["test", "validator", "evidence_packet"]
+allowed_edge_kinds = ["validates", "tests", "proven_by", "generated_by"]

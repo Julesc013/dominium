@@ -597,10 +597,12 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/dependency_direction_law.md`
 - `docs/architecture/diagnostics_and_evidence.md`
 - `docs/architecture/document_patch_transaction_runtime.md`
+- `docs/architecture/document_patch_transaction.md`
 - `docs/architecture/lockfile_law.md`
 - `docs/architecture/module_composition_law.md`
 - `docs/architecture/pack_mount_model.md`
 - `docs/architecture/project_graph_service.md`
+- `docs/architecture/project_graph_impact_model.md`
 - `docs/architecture/provider_model.md`
 - `docs/architecture/provider_selection_model.md`
 - `docs/architecture/replacement_protocol.md`

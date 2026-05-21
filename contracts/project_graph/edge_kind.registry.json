@@ -1,0 +1,15 @@
+{
+  "schema_version": "dominium.project_graph.edge_kind_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.project_graph",
+  "kinds": [
+    {"id": "owns"}, {"id": "contains"}, {"id": "declares"}, {"id": "implements"},
+    {"id": "consumes"}, {"id": "invokes"}, {"id": "produces"}, {"id": "emits"},
+    {"id": "validates"}, {"id": "tests"}, {"id": "packages"}, {"id": "mounts"},
+    {"id": "depends_on"}, {"id": "supersedes"}, {"id": "replaces"}, {"id": "deprecates"},
+    {"id": "refuses_with"}, {"id": "requires_capability"}, {"id": "provides_capability"},
+    {"id": "selected_by"}, {"id": "displayed_by"}, {"id": "generated_by"},
+    {"id": "documented_by"}, {"id": "proven_by"}, {"id": "affected_by"},
+    {"id": "blocks"}, {"id": "unblocks"}
+  ]
+}

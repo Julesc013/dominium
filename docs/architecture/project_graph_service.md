@@ -1,79 +1,41 @@
 Status: DERIVED
-Last Reviewed: 2026-05-21
-Supersedes: none
+Last Reviewed: 2026-05-22
+Supersedes: prior narrow project graph service note dated 2026-05-21
 Superseded By: none
 Stability: provisional
 
 # Project Graph Service
 
-The project graph service is a narrow contract-data helper for loading,
-validating, sorting, and fingerprinting project graph payloads. It models
-nodes, edges, dependencies, and proofs so validators and future governed tools
-can reason over a bounded graph without inventing a Workbench project explorer
-or release projection.
+The project graph is an indexed, machine-readable, evidence-bearing map over repo source truth. It exists so validators, Workbench, AIDE/Codex, release tooling, and future agents can ask impact and provenance questions without treating the graph as a second authority.
 
-## Boundary
+Source truth remains in contracts, manifests, registries, public headers, package manifests, app descriptors, module descriptors, provider descriptors, tests, and evidence packets. A graph fact must cite `source_ref`; missing graph facts do not imply missing functionality. Graph drift must be detectable by comparing source commit, generator identity, generator version, schema version, and source references.
 
-- Contract owner: `contracts/project_graph/project_graph_service.contract.toml`.
-- Payload schema: `contracts/project_graph/project_graph.schema.json`.
-- Runtime helper: `runtime/project_graph/service.py`.
-- Validator: `tools/validators/contracts/check_project_graph_service.py`.
+## Contract Surface
 
-The helper is read-only over payloads. It does not mutate authoritative project
-truth, does not write repository state, and does not create Process outcomes.
-Any future truth mutation must remain process-only and must be introduced by a
-separate, reviewed task.
+- Model law: `contracts/project_graph/project_graph_model.contract.toml`
+- Derivation policy: `contracts/project_graph/project_graph_derivation_policy.contract.toml`
+- Node schema: `contracts/project_graph/node.schema.json`
+- Edge schema: `contracts/project_graph/edge.schema.json`
+- Snapshot schema: `contracts/project_graph/snapshot.schema.json`
+- Impact query schema: `contracts/project_graph/impact_query.schema.json`
+- Registries: `node_kind`, `edge_kind`, `confidence`, `completeness_level`, and `query_kind`
+- Validator: `tools/validators/contracts/check_project_graph.py`
+- Fixtures: `tests/contract/project_graph/fixtures/**`
 
-## Payload Shape
+The earlier narrow runtime helper and payload schema remain separate and read-only. This task does not extend runtime graph behavior.
 
-Project graph payloads contain:
+## Node And Edge Model
 
-- `nodes`: stable dotted identifiers with kind, title, status, optional paths,
-  and optional evidence references.
-- `edges`: descriptive relationships between known nodes.
-- `dependencies`: DAG-enforced ordering or validation requirements between
-  known nodes.
-- `proofs`: evidence-backed or result-backed proof rows for nodes.
+Nodes identify typed entities such as files, roots, components, contracts, schemas, registries, commands, results, refusals, diagnostics, services, providers, capabilities, modules, workspaces, apps, packs, profiles, artifacts, tests, evidence packets, release artifacts, replacement packets, version surfaces, portability rows, AIDE tasks, domains, document types, patch types, and transaction types.
 
-Proof rows may reference `contracts/evidence/evidence_ref.schema.json` and
-`contracts/result/result.schema.json`. Passing proofs must carry at least one
-evidence or result reference.
+Edges identify explicit relationships such as ownership, containment, declaration, implementation, consumption, invocation, production, emission, validation, test coverage, packaging, mounting, dependency, supersession, replacement, deprecation, refusal, capability requirement/provision, selection, display, generation, documentation, proof, impact, blocking, and unblocking.
 
-## Determinism
+Graph edges are not source include/import dependencies unless a source explicitly emits an edge with a graph `edge_kind`.
 
-The helper sorts known graph rows deterministically:
+## Snapshot And Evidence
 
-- nodes by `node_id`
-- edges by `(source_node_id, target_node_id, edge_kind, edge_id)`
-- dependencies by `(node_id, depends_on_node_id, dependency_kind, dependency_id)`
-- proofs by `proof_id`
-
-Dependency order is computed with a deterministic topological sort using
-lexicographic tie-breaking. Cycles are refused as validation errors. The graph
-fingerprint is `sha256` over canonical JSON of the sorted payload. No RNG
-streams are used.
+A graph snapshot records `snapshot_id`, repo ref, source commit, generator id/version, graph schema version, node/edge counts, diagnostics, evidence, completeness level, and known gaps. `proof_index` and `release_index` snapshots require evidence. Fixture-level snapshots are sufficient for this task.
 
 ## Non-Goals
 
-This service does not:
-
-- implement a broad project UI or Workbench explorer
-- publish release, install, or update projections
-- infer canon from graph convenience
-- promote generated graph outputs into semantic authority
-- reconcile ownership splits outside the payload contract
-- mutate authoritative state or bypass Process-only mutation
-
-## Validation
-
-The targeted validator is:
-
-```text
-python tools/validators/contracts/check_project_graph_service.py --repo-root . --strict --fixtures
-```
-
-The contract test script is:
-
-```text
-python tests/contract/project_graph_service/project_graph_service_contract_tests.py
-```
+This task does not implement a graph generator, runtime project graph engine, Workbench graph viewer, Project Graph Explorer, graph-driven AIDE routing, package runtime, module loader, release publisher, gameplay code, renderer code, or CMake target.

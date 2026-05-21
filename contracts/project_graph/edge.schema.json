@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.project_graph.edge.v1",
+  "title": "Dominium Project Graph Edge",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["edge_id", "edge_kind", "from_node", "to_node", "source_ref", "stability", "confidence", "required", "direction", "diagnostic_refs", "tags"],
+  "properties": {
+    "edge_id": {"type": "string"},
+    "edge_kind": {"type": "string"},
+    "from_node": {"type": "string"},
+    "to_node": {"type": "string"},
+    "source_ref": {"$ref": "#/$defs/source_ref"},
+    "evidence_ref": {"type": "string"},
+    "stability": {"type": "string"},
+    "confidence": {"type": "string", "enum": ["asserted", "derived", "inferred", "observed"]},
+    "required": {"type": "boolean"},
+    "direction": {"type": "string"},
+    "diagnostic_refs": {"$ref": "#/$defs/string_list"},
+    "tags": {"$ref": "#/$defs/string_list"}
+  },
+  "$defs": {
+    "string_list": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "source_ref": {"type": "object", "required": ["source_kind", "path"], "properties": {"source_kind": {"type": "string"}, "path": {"type": "string"}, "source_id": {"type": "string"}, "line_ref": {"type": "string"}, "commit": {"type": "string"}}}
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": "dominium.project_graph.completeness_level_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.project_graph",
+  "levels": [
+    {"id": "fixture_only"},
+    {"id": "partial_inventory"},
+    {"id": "contract_index"},
+    {"id": "proof_index"},
+    {"id": "release_index"}
+  ]
+}
