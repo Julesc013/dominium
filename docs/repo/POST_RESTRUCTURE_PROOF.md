@@ -5,7 +5,26 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: READY_FOR_FOUNDATION-CLOSEOUT-02 after `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
+Latest proof state: FOUNDATION_LOCK_PASS_WITH_WARNINGS after `FOUNDATION-CLOSEOUT-02`.
+
+## FOUNDATION-CLOSEOUT-02 Proof Note
+
+FOUNDATION-CLOSEOUT-02 closes Foundation Lock with warnings.
+
+- dependency-direction strict: PASS with `0` violations and `68` warnings.
+- Foundation validator matrix: PASS.
+- AIDE doctor/validate/test/selftest/tools/roots/repo: PASS.
+- RepoX STRICT: PASS with stale AuditX warning.
+- fast strict: PASS, `32` commands, `272.607` seconds.
+- CMake configure/build and smoke CTest: PASS through fast strict.
+- full CTest remains T4/full-gate debt and was not run.
+- `WORKBENCH-VALIDATION-SLICE-01` is authorized as a narrow governed product slice.
+- broad feature work remains blocked.
+
+Recommended next order:
+
+1. `PORTABILITY-ARCH-POLICY-02`
+2. `WORKBENCH-VALIDATION-SLICE-01`
 
 ## FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01 Proof Note
 

@@ -1,0 +1,27 @@
+{
+  "schema_version": "dominium.aide.foundation_closeout.readiness.v1",
+  "task": "FOUNDATION-CLOSEOUT-02",
+  "foundation_lock_result": "PASS_WITH_WARNINGS",
+  "dependency_direction_strict": "PASS",
+  "foundation_validator_matrix": "PASS",
+  "aide": "PASS",
+  "repox_strict": "PASS_WITH_WARNINGS",
+  "fast_strict": "PASS",
+  "cmake_configure_build": "PASS_THROUGH_FAST_STRICT",
+  "smoke_ctest": "PASS_THROUGH_FAST_STRICT",
+  "generated_output_policy": "PASS",
+  "full_ctest": "NOT_RUN_T4_DEBT",
+  "workbench_validation_slice_authorized": true,
+  "broad_feature_work_authorized": false,
+  "next_recommended_tasks": [
+    "PORTABILITY-ARCH-POLICY-02",
+    "WORKBENCH-VALIDATION-SLICE-01"
+  ],
+  "known_warnings": {
+    "dependency_direction_warnings": 68,
+    "dependency_direction_exception_edges": 28,
+    "dependency_direction_unlisted_active_edges": 40,
+    "abi_public_header_warnings": 2851,
+    "repox_warning": "INV-AUDITX-OUTPUT-STALE"
+  }
+}

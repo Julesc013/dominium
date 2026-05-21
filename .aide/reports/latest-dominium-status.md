@@ -1,17 +1,20 @@
 # Latest Dominium Status
 
-Current task: `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
+Current task: `FOUNDATION-CLOSEOUT-02`.
 
-Result: PASS.
+Result: PASS_WITH_WARNINGS.
 
 ## Current State
 
-- Dependency-direction strict validation now passes: `0` violations, `68` warnings.
-- Fast strict passes `32` commands in `312.147` seconds.
+- Foundation Lock is closed with warnings.
+- Dependency-direction strict validation passes: `0` violations, `68` warnings.
+- Foundation validator matrix passes.
+- AIDE doctor/validate/test/selftest/tools/roots/repo pass.
+- Fast strict passes `32` commands in `272.607` seconds.
 - RepoX STRICT passes with the known stale AuditX warning.
 - CMake configure/build and smoke CTest pass through fast strict.
-- Foundation Lock is ready for `FOUNDATION-CLOSEOUT-02`.
-- `WORKBENCH-VALIDATION-SLICE-01` is not authorized by this repair task.
+- `WORKBENCH-VALIDATION-SLICE-01` is authorized as a narrow governed product slice.
+- Broad feature work remains blocked.
 
 ## Remaining Debt
 
@@ -20,8 +23,8 @@ Result: PASS.
 - API/ABI validator passes with stable-promotion warnings.
 - Full CTest remains T4/full-gate debt and is not claimed green.
 
-Feature implementation authorized: no.
+Narrow product slice authorized: `WORKBENCH-VALIDATION-SLICE-01`.
 
 Broad feature work authorized: no.
 
-Next task: `FOUNDATION-CLOSEOUT-02`.
+Next recommended task: `PORTABILITY-ARCH-POLICY-02`, then `WORKBENCH-VALIDATION-SLICE-01`.

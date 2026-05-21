@@ -7,9 +7,9 @@ Superseded By: none
 
 Foundation Lock is the repository decision gate that determines whether Dominium can leave the Foundation Lock queue and begin a first narrow governed product slice.
 
-Current repair result: READY_FOR_FOUNDATION-CLOSEOUT-02.
+Current closeout result: PASS_WITH_WARNINGS.
 
-Foundation Lock is not yet declared closed by this document. `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01` repaired the dependency-direction strict blocker and the lock must now be rerun by `FOUNDATION-CLOSEOUT-02`.
+`FOUNDATION-CLOSEOUT-02` reran the Foundation Lock gate after `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01` and closed the lock with warnings.
 
 ## What It Means
 
@@ -37,24 +37,34 @@ Foundation Lock does not mean full CTest is green, every compatibility corpus ex
 
 ## Closeout Decision
 
-All required files for the 15 Foundation Lock layers are present. Most validators pass in strict and fixture scope.
+All required files for the 15 Foundation Lock layers are present.
 
 `FOUNDATION-CLOSEOUT-01` was blocked because dependency-direction strict reported `358` violations and `38` warnings.
 
-`FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01` now reports dependency-direction strict PASS with `0` violations and `68` warnings. Fast strict also passes, including RepoX STRICT, CMake configure/build, and smoke CTest.
+`FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01` reports dependency-direction strict PASS with `0` violations and `68` warnings.
 
-This repair is not a closeout decision by itself. `FOUNDATION-CLOSEOUT-02` must rerun the closeout gate before any product slice is authorized.
+`FOUNDATION-CLOSEOUT-02` reports:
+
+- dependency-direction strict: PASS with `0` violations and `68` warnings.
+- Foundation validator matrix: PASS.
+- AIDE doctor/validate/test/selftest/tools/roots/repo: PASS.
+- RepoX STRICT: PASS with stale AuditX warning.
+- fast strict: PASS, `32` commands, `272.607` seconds.
+- CMake configure/build and smoke CTest: PASS through fast strict.
+- full CTest: T4/full-gate debt, not run.
+
+Foundation Lock is PASS_WITH_WARNINGS.
 
 ## Allowed Work
 
-- Run `FOUNDATION-CLOSEOUT-02`.
-- Continue documentation and evidence updates that do not bypass closeout.
+- Run `PORTABILITY-ARCH-POLICY-02`.
+- Run `WORKBENCH-VALIDATION-SLICE-01` after the architecture-policy follow-up unless the operator explicitly chooses the product slice first.
+- Continue documentation and evidence updates that do not bypass Foundation laws.
 - Continue documentation and evidence updates that keep remaining warnings and full-gate debt visible.
 - Keep Queue B hardening planned but not a substitute for the blocker repair.
 
 ## Blocked Work
 
-- `WORKBENCH-VALIDATION-SLICE-01` is not authorized by this repair task.
 - Broad feature work remains blocked.
 - Workbench UI, runtime module loading, provider runtime, package runtime, gameplay, renderer, native GUI, release publication, and broad rewrites remain blocked.
 
@@ -62,4 +72,13 @@ This repair is not a closeout decision by itself. `FOUNDATION-CLOSEOUT-02` must 
 
 When the lock eventually passes, future narrow slices must register public surfaces, expose typed commands, use diagnostic and refusal codes, preserve artifact identity, declare capabilities and providers, use module descriptors where applicable, and use the replacement protocol for rewrites.
 
-Next task: `FOUNDATION-CLOSEOUT-02`.
+## Authorized Narrow Product Slice
+
+`WORKBENCH-VALIDATION-SLICE-01` is authorized by `FOUNDATION-CLOSEOUT-02`.
+
+This authorization is narrow. It does not authorize broad Workbench UI, gameplay, renderer, native GUI, runtime provider expansion, release publication, or domain feature work.
+
+Next recommended tasks:
+
+1. `PORTABILITY-ARCH-POLICY-02`
+2. `WORKBENCH-VALIDATION-SLICE-01`

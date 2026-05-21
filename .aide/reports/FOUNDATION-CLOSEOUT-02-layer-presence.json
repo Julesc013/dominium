@@ -1,0 +1,127 @@
+{
+  "schema_version": "dominium.aide.foundation_closeout.layer_presence.v1",
+  "task": "FOUNDATION-CLOSEOUT-02",
+  "overall_status": "PASS",
+  "layers": [
+    {
+      "id": "01_fast_strict_test_tier",
+      "status": "PASS",
+      "primary_contract": "contracts/testing/test_tiers.contract.toml",
+      "primary_validator": "tools/validators/testing/check_test_tiers.py",
+      "primary_documentation": "docs/repo/audits/FAST_STRICT_TEST_TIER_01.md",
+      "fixture_or_test_path": "tools/test/run_fast_strict.py"
+    },
+    {
+      "id": "02_public_surface_registry",
+      "status": "PASS",
+      "primary_contract": "contracts/public_surface/public_surface.contract.toml",
+      "primary_validator": "tools/validators/repo/check_public_surface.py",
+      "primary_documentation": "docs/repo/audits/PUBLIC_SURFACE_REGISTRY_01.md",
+      "fixture_or_test_path": "tests/contract/public_surface/fixtures/valid_minimal_public_surface.toml"
+    },
+    {
+      "id": "03_api_abi_canon",
+      "status": "PASS",
+      "primary_contract": "contracts/abi/c_api.contract.toml",
+      "primary_validator": "tools/validators/abi/check_public_headers.py",
+      "primary_documentation": "docs/repo/audits/API_ABI_CANON_01.md",
+      "fixture_or_test_path": "tests/contract/public_headers/fixtures/valid_consumer.c"
+    },
+    {
+      "id": "04_dependency_direction_law",
+      "status": "PASS",
+      "primary_contract": "contracts/repo/dependency_directions.contract.toml",
+      "primary_validator": "tools/validators/repo/check_dependency_directions.py",
+      "primary_documentation": "docs/architecture/dependency_direction_law.md",
+      "fixture_or_test_path": "tests/contract/dependency_direction/fixtures/valid_dependency_edges.json"
+    },
+    {
+      "id": "05_command_surface",
+      "status": "PASS",
+      "primary_contract": "contracts/command/command_surface.contract.toml",
+      "primary_validator": "tools/validators/contracts/check_command_surface.py",
+      "primary_documentation": "docs/development/command_surface_guidelines.md",
+      "fixture_or_test_path": "tests/contract/command_surface/fixtures/valid_command_surface.toml"
+    },
+    {
+      "id": "06_diagnostic_evidence_registry",
+      "status": "PASS",
+      "primary_contract": "contracts/diagnostics/diagnostic_code.registry.json",
+      "primary_validator": "tools/validators/contracts/check_diagnostics_registry.py",
+      "primary_documentation": "docs/development/diagnostic_code_guidelines.md",
+      "fixture_or_test_path": "tests/contract/diagnostics/fixtures/valid_diagnostic_code.json"
+    },
+    {
+      "id": "07_artifact_identity_law",
+      "status": "PASS",
+      "primary_contract": "contracts/artifact/artifact_identity.contract.toml",
+      "primary_validator": "tools/validators/contracts/check_artifact_identity.py",
+      "primary_documentation": "docs/development/artifact_identity_guidelines.md",
+      "fixture_or_test_path": "tests/contract/artifact_identity/fixtures/valid_evidence_artifact.manifest.json"
+    },
+    {
+      "id": "08_schema_protocol_evolution_law",
+      "status": "PASS",
+      "primary_contract": "contracts/schema/schema_evolution.contract.toml",
+      "primary_validator": "tools/validators/contracts/check_schema_protocol_evolution.py",
+      "primary_documentation": "docs/architecture/schema_protocol_evolution.md",
+      "fixture_or_test_path": "tests/contract/schema_protocol/fixtures/valid_schema_policy.json"
+    },
+    {
+      "id": "09_capability_refusal_law",
+      "status": "PASS",
+      "primary_contract": "contracts/capability/capability.contract.toml",
+      "primary_validator": "tools/validators/contracts/check_capability_refusal.py",
+      "primary_documentation": "docs/repo/audits/CAPABILITY_REFUSAL_LAW_01.md",
+      "fixture_or_test_path": "tests/contract/capability_refusal/fixtures/valid_capability.json"
+    },
+    {
+      "id": "10_provider_model",
+      "status": "PASS",
+      "primary_contract": "contracts/provider/provider.contract.toml",
+      "primary_validator": "tools/validators/contracts/check_provider_model.py",
+      "primary_documentation": "docs/architecture/provider_model.md",
+      "fixture_or_test_path": "tests/contract/provider/fixtures/valid_provider_descriptor.json"
+    },
+    {
+      "id": "11_module_workbench_app_composition",
+      "status": "PASS",
+      "primary_contract": "contracts/module/module_surface.contract.toml",
+      "primary_validator": "tools/validators/contracts/check_module_descriptors.py",
+      "primary_documentation": "docs/repo/audits/MODULE_COMPOSITION_LAW_01.md",
+      "fixture_or_test_path": "tests/contract/module/fixtures/valid_workbench_module.json"
+    },
+    {
+      "id": "12_replacement_protocol",
+      "status": "PASS",
+      "primary_contract": "contracts/replacement/replacement.contract.toml",
+      "primary_validator": "tools/validators/repo/check_replacement_packet.py",
+      "primary_documentation": "docs/repo/audits/REPLACEMENT_PROTOCOL_01.md",
+      "fixture_or_test_path": "tests/contract/replacement/fixtures/valid_provider_replacement.json"
+    },
+    {
+      "id": "13_version_deprecation_law",
+      "status": "PASS",
+      "primary_contract": "contracts/versioning/versioning.contract.toml",
+      "primary_validator": "tools/validators/contracts/check_version_deprecation.py",
+      "primary_documentation": "docs/repo/audits/VERSION_DEPRECATION_LAW_01.md",
+      "fixture_or_test_path": "tests/contract/versioning/fixtures/valid_version_transition.json"
+    },
+    {
+      "id": "14_mod_pack_trust_model",
+      "status": "PASS",
+      "primary_contract": "contracts/trust/mod_pack_trust.contract.toml",
+      "primary_validator": "tools/validators/package/check_mod_pack_trust.py",
+      "primary_documentation": "docs/architecture/mod_pack_trust_model.md",
+      "fixture_or_test_path": "tests/contract/mod_pack_trust/fixtures/valid_data_only_pack.json"
+    },
+    {
+      "id": "15_portability_matrix",
+      "status": "PASS",
+      "primary_contract": "contracts/platform/portability_matrix.contract.toml",
+      "primary_validator": "tools/validators/platform/check_portability_matrix.py",
+      "primary_documentation": "docs/architecture/portability_matrix.md",
+      "fixture_or_test_path": "tests/contract/portability/fixtures/valid_runtime_portability_row.json"
+    }
+  ]
+}

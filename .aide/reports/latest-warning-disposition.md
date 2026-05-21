@@ -1,10 +1,11 @@
 # Latest Warning Disposition
 
-Current task: `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
+Current task: `FOUNDATION-CLOSEOUT-02`.
 
 ## Resolved Blocker
 
 - Dependency-direction strict is no longer red. Final result: PASS with `0` violations and `68` warnings.
+- Foundation Lock is closed with warnings.
 
 ## Accepted Known Warnings
 
@@ -14,12 +15,12 @@ Current task: `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
 - API/ABI public-header validator passes with stable-promotion warnings.
 - Full CTest remains T4 full/release proof debt and is not claimed green.
 
-## Not Hidden
+## Authorization
 
-- Foundation Lock is not claimed closed by this repair task.
-- `WORKBENCH-VALIDATION-SLICE-01` is not authorized by this repair task.
+- `WORKBENCH-VALIDATION-SLICE-01` is authorized as a narrow governed product slice.
 - Broad feature work remains blocked.
+- Full CTest remains T4/full-gate debt and is not claimed green.
 
 ## Next
 
-Next task: `FOUNDATION-CLOSEOUT-02`.
+Recommended next task: `PORTABILITY-ARCH-POLICY-02`, then `WORKBENCH-VALIDATION-SLICE-01`.

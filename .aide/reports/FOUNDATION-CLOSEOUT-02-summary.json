@@ -1,0 +1,36 @@
+{
+  "schema_version": "dominium.aide.foundation_closeout.summary.v1",
+  "task": "FOUNDATION-CLOSEOUT-02",
+  "result": "PASS_WITH_WARNINGS",
+  "foundation_lock": "PASS_WITH_WARNINGS",
+  "dependency_direction": {
+    "status": "PASS",
+    "files_scanned": 16598,
+    "violations": 0,
+    "warnings": 68,
+    "exceptions_active": 12,
+    "exception_edges": 28,
+    "unlisted_active_warning_edges": 40
+  },
+  "validation": {
+    "layer_presence": "PASS",
+    "foundation_validator_matrix": "PASS",
+    "aide": "PASS",
+    "repox_strict": "PASS_WITH_WARNINGS",
+    "fast_strict": "PASS",
+    "fast_strict_commands": 32,
+    "fast_strict_elapsed_seconds": 272.607,
+    "cmake_configure_build": "PASS_THROUGH_FAST_STRICT",
+    "smoke_ctest": "PASS_THROUGH_FAST_STRICT",
+    "generated_output_policy": "PASS",
+    "full_ctest": "NOT_RUN_T4_DEBT"
+  },
+  "authorization": {
+    "workbench_validation_slice_authorized": true,
+    "broad_feature_work_authorized": false
+  },
+  "next_recommended_tasks": [
+    "PORTABILITY-ARCH-POLICY-02",
+    "WORKBENCH-VALIDATION-SLICE-01"
+  ]
+}

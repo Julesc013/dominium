@@ -1,0 +1,108 @@
+{
+    "schema_version":  "dominium.aide.foundation_closeout.aide_validation.v1",
+    "task":  "FOUNDATION-CLOSEOUT-02",
+    "overall_status":  "PASS",
+    "generated_at_local":  "2026-05-21T20:01:21+10:00",
+    "results":  [
+                    {
+                        "id":  "aide_doctor",
+                        "command":  "py -3 .aide/scripts/aide_lite.py doctor",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  11.779,
+                        "summary":  "AIDE Lite doctor\nstatus: PASS\n- repo_root: C:/Inbox/Git Repos/dominium\n- PASS required: .aide/policies/token-budget.yaml\n- PASS required: .aide/memory/project-state.md\n- PASS required: .aide/memory/decisions.md\n- PASS required: .aide/memory/open-risks.md\n- PASS required: .aide/prompts/compact-task.md\n- PASS required: .aide/prompts/evidence-review.md\n- PASS required: .aide/prompts/codex-token-mode.md\n...\n- PASS provider adapter artifact exists: .aide/providers/latest-provider-status.json\n- PASS provider adapter artifact exists: .aide/providers/latest-provider-status.md\n- PASS adapter status: current; no action needed\n- PASS repair plan available: .aide/repair/latest-repair-plan.md\n- PASS repair doctor report available: .aide/repair/latest-doctor-repair-report.md\n- PASS upgrade plan available: .aide/upgrade/latest-upgrade-plan.md\n- PASS upgrade dry-run available: .aide/upgrade/latest-upgrade-dry-run.md\n- PASS rollback plan available: .aide/rollback/latest-rollback-plan.md\n- PASS uninstall plan available: .aide/uninstall/latest-uninstall-plan.md\n- PASS validation should be run: no hard validation failures detected",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "aide_validate",
+                        "command":  "py -3 .aide/scripts/aide_lite.py validate",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  10.831,
+                        "summary":  "AIDE Lite validate\nstatus: PASS\n- PASS required file: .aide/policies/token-budget.yaml\n- PASS required file: .aide/memory/project-state.md\n- PASS required file: .aide/memory/decisions.md\n- PASS required file: .aide/memory/open-risks.md\n- PASS required file: .aide/prompts/compact-task.md\n- PASS required file: .aide/prompts/evidence-review.md\n- PASS required file: .aide/prompts/codex-token-mode.md\n- PASS required file: .aide/context/ignore.yaml\n...\n- PASS latest task packet tokens: 732\n- WARN review packet review ref missing: .aide/verification/latest-verification-report.md\n- WARN review packet review ref missing: .aide/verification/review-decision-policy.yaml\n- PASS review packet tokens: 559\n- PASS repo map records: 17957\n- PASS test map mappings: 5559\n- PASS context index is readable\n- PASS latest context packet tokens: 450\n- PASS AGENTS token-survival managed section is current\n- PASS no obvious secrets in token-survival files",
+                        "warnings":  [
+                                         "- WARN review packet review ref missing: .aide/verification/latest-verification-report.md",
+                                         "- WARN review packet review ref missing: .aide/verification/review-decision-policy.yaml"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "aide_test",
+                        "command":  "py -3 .aide/scripts/aide_lite.py test",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  14.571,
+                        "summary":  "AIDE Lite test\nstatus: PASS\n- PASS internal estimate, ignore, snapshot, index, context, pack, adapt, drift, line-ref, verifier, review-pack, ledger, eval, commit, changelog, GitHub advisory, task, git workflow, intent, repo intelligence, quality, refactor, roots, tools, install, repair, upgrade, rollback, uninstall, outcome, optimize, route, cache, gateway, provider, adapter, and validate checks",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "aide_selftest",
+                        "command":  "py -3 .aide/scripts/aide_lite.py selftest",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  13.835,
+                        "summary":  "AIDE Lite selftest\nstatus: PASS\n- PASS internal estimate, ignore, snapshot, index, context, pack, adapt, drift, line-ref, verifier, review-pack, ledger, eval, commit, changelog, GitHub advisory, task, git workflow, intent, repo intelligence, quality, refactor, roots, tools, install, repair, upgrade, rollback, uninstall, outcome, optimize, route, cache, gateway, provider, adapter, and validate checks",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "aide_tools_validate",
+                        "command":  "py -3 .aide/scripts/aide_lite.py tools validate",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  1.68,
+                        "summary":  "AIDE Lite tools validate\nresult: PASS\n- PASS Q41 required file exists: .aide/policies/tool-absorption.yaml\n- PASS Q41 required file exists: .aide/policies/tool-inventory.yaml\n- PASS Q41 required file exists: .aide/policies/tool-fates.yaml\n- PASS Q41 required file exists: .aide/policies/tool-wrapping.yaml\n- PASS Q41 required file exists: .aide/policies/tool-risk.yaml\n- PASS Q41 required file exists: .aide/policies/tool-capabilities.yaml\n- PASS Q41 required file exists: .aide/tools/tool-inventory.schema.json\n- PASS Q41 required file exists: .aide/tools/tool-record.schema.json\n...\n- PASS tool wrap outputs exclude forbidden phrase: rename approved\n- PASS tool wrap outputs exclude forbidden phrase: migration approved\n- PASS tool wrap outputs exclude forbidden phrase: target_repo_mutation\": true\n- PASS tool wrap outputs exclude forbidden phrase: execute now\nprovider_or_model_calls: none\nnetwork_calls: none\nunknown_tool_execution: false\ntool_deletion: false\ntool_rename: false\ntool_migration: false",
+                        "warnings":  [
+                                         "- PASS tool inventory contains required field: warnings",
+                                         "- PASS tool adapter map contains required field: warnings"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "aide_roots_validate",
+                        "command":  "py -3 .aide/scripts/aide_lite.py roots validate",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  1.436,
+                        "summary":  "AIDE Lite roots validate\nresult: PASS\n- PASS Q40 required file exists: .aide/policies/root-recycling.yaml\n- PASS Q40 required file exists: .aide/policies/root-inventory.yaml\n- PASS Q40 required file exists: .aide/policies/root-fates.yaml\n- PASS Q40 required file exists: .aide/policies/root-exceptions.yaml\n- PASS Q40 required file exists: .aide/policies/root-risk.yaml\n- PASS Q40 required file exists: .aide/refactors/root-inventory.schema.json\n- PASS Q40 required file exists: .aide/refactors/root-record.schema.json\n- PASS Q40 required file exists: .aide/refactors/root-file-classification.schema.json\n...\n- PASS root exception q40-aide-control-plane-mixed-root contains required field: status\n- PASS root exception q40-aide-control-plane-mixed-root contains required field: owner\n- PASS root exception q40-aide-control-plane-mixed-root contains required field: retirement_condition\n- PASS root exception q40-aide-control-plane-mixed-root contains required field: evidence_refs\n- PASS root exception q40-aide-control-plane-mixed-root has retirement condition\nprovider_or_model_calls: none\nnetwork_calls: none\nfile_moves: false\nfile_deletes: false\nreference_rewrites: false",
+                        "warnings":  [
+                                         "- PASS root inventory contains required field: warnings"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "aide_repo_validate",
+                        "command":  "py -3 .aide/scripts/aide_lite.py repo validate",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  1.675,
+                        "summary":  "AIDE Lite repo validate\nresult: PASS\n- PASS Q37 required file exists: .aide/policies/repo-intelligence.yaml\n- PASS Q37 required file exists: .aide/policies/file-classification.yaml\n- PASS Q37 required file exists: .aide/policies/ownership-map.yaml\n- PASS Q37 required file exists: .aide/policies/dependency-map.yaml\n- PASS Q37 required file exists: .aide/policies/test-map.yaml\n- PASS Q37 required file exists: .aide/policies/doc-link-map.yaml\n- PASS Q37 required file exists: .aide/repo/file-inventory.schema.json\n- PASS Q37 required file exists: .aide/repo/ownership-map.schema.json\n...\n- PASS unknown file classifications: 0\n- PASS .aide/repo/ownership-map.json schema version is aide.ownership-map.v0\n- PASS .aide/repo/dependency-map.json schema version is aide.dependency-map.v0\n- PASS .aide/repo/test-map.json schema version is aide.test-map.v0\n- PASS .aide/repo/doc-link-map.json schema version is aide.doc-link-map.v0\n- PASS .aide/repo/generated-map.json schema version is aide.generated-map.v0\n- PASS .aide/repo/orphan-candidates.json schema version is aide.orphan-candidates.v0\n- PASS repo intelligence Markdown exists: .aide/repo/latest-repo-intelligence.md\nprovider_or_model_calls: none\nnetwork_calls: none",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    }
+                ]
+}

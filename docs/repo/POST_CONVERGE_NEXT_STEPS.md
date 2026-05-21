@@ -23,6 +23,25 @@ FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01 is PASS.
 
 Next task: `FOUNDATION-CLOSEOUT-02`.
 
+## FOUNDATION-CLOSEOUT-02 Update
+
+FOUNDATION-CLOSEOUT-02 is PASS_WITH_WARNINGS.
+
+- dependency-direction strict passes with `0` violations and `68` warnings.
+- all Foundation layer validators pass.
+- AIDE doctor/validate/test/selftest/tools/roots/repo pass.
+- RepoX STRICT passes with the known stale AuditX warning.
+- fast strict passes `32` commands in `272.607` seconds, including CMake configure/build and smoke CTest.
+- Foundation Lock is closed with warnings.
+- `WORKBENCH-VALIDATION-SLICE-01` is authorized as a narrow governed product slice.
+- broad feature work remains blocked.
+- full CTest remains T4/full-gate debt and was not run.
+
+Recommended next order:
+
+1. `PORTABILITY-ARCH-POLICY-02`
+2. `WORKBENCH-VALIDATION-SLICE-01`
+
 ## FOUNDATION-CLOSEOUT-01 Update
 
 FOUNDATION-CLOSEOUT-01 is BLOCKED.

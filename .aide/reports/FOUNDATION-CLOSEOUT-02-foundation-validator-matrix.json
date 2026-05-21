@@ -1,0 +1,418 @@
+{
+    "schema_version":  "dominium.aide.foundation_closeout.validator_matrix.v1",
+    "task":  "FOUNDATION-CLOSEOUT-02",
+    "overall_status":  "PASS",
+    "generated_at_local":  "2026-05-21T20:19:19+10:00",
+    "results":  [
+                    {
+                        "id":  "test_tiers",
+                        "command":  "py -3 tools/validators/testing/check_test_tiers.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.338,
+                        "summary":  "test tier contract validation: PASS",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "repo_layout",
+                        "command":  "py -3 tools/validators/check_repo_layout.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  4.547,
+                        "summary":  "Repo layout audit\ncontract_id: dominium.repo.layout.v1\ncontract_phase: CONVERGE-10\nexception_contract_id: dominium.repo.layout_exceptions.v1\nactive_exception_count: 8\nhead_sha: 37272313ad09f749f6b0b4305bf80192351ad6d5\n\nSummary counts:\n...\n- tool_ui_bind_cmd: unknown_or_violating_root: tool_ui_bind.cmd: unknown or violating root\n- tool_ui_doc_annotate_cmd: unknown_or_violating_root: tool_ui_doc_annotate.cmd: unknown or violating root\n- tool_ui_validate_cmd: unknown_or_violating_root: tool_ui_validate.cmd: unknown or violating root\n\nUnexcepted violations:\n- none\n\nStrict-mode result: pass",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "root_allowlist",
+                        "command":  "py -3 tools/validators/check_root_allowlist.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  4.468,
+                        "summary":  "Root allowlist audit\ncontract_id: dominium.repo.root_allowlist.v1\nphase: CONVERGE-10\nexception_contract_id: dominium.repo.layout_exceptions.v1\nactive_exception_count: 8\nhead_sha: 37272313ad09f749f6b0b4305bf80192351ad6d5\n\nSummary counts:\n...\n- tool_ui_bind_cmd: unknown_or_violating_root_entry: tool_ui_bind.cmd: unknown or violating root entry\n- tool_ui_doc_annotate_cmd: unknown_or_violating_root_entry: tool_ui_doc_annotate.cmd: unknown or violating root entry\n- tool_ui_validate_cmd: unknown_or_violating_root_entry: tool_ui_validate.cmd: unknown or violating root entry\n\nUnexcepted violations:\n- none\n\nStrict-mode result: pass",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "distribution_layout",
+                        "command":  "py -3 tools/validators/check_distribution_layout.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.371,
+                        "summary":  "Distribution layout audit\ncontract_id: dominium.distribution.layout.v1\nphase: CONVERGE-04\nhead_sha: 37272313ad09f749f6b0b4305bf80192351ad6d5\n\nSummary:\n- logical_roots_declared: 20\n- projections_declared: 11\n...\n\nMissing projections:\n- none\n\nWarnings:\n- none\n\nStrict-mode result: pass",
+                        "warnings":  [
+                                         "- warnings: 0",
+                                         "Warnings:"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "component_matrices",
+                        "command":  "py -3 tools/validators/check_component_matrices.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.379,
+                        "summary":  "Component matrix audit\ncontract_id: dominium.release.component_matrix.v1\nphase: CONVERGE-11\nhead_sha: 37272313ad09f749f6b0b4305bf80192351ad6d5\n\nSummary:\n- matrix_sections: 12\n- support_tiers: 6\n...\n\nMissing evidence:\n- none\n\nWarnings:\n- none\n\nStrict-mode result: pass",
+                        "warnings":  [
+                                         "- warnings: 0",
+                                         "Warnings:"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "public_surface",
+                        "command":  "py -3 tools/validators/repo/check_public_surface.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.348,
+                        "summary":  "public surface validation: PASS\nsurfaces: 148 stable: 2 kinds: 25 stability_classes: 12",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "public_headers",
+                        "command":  "py -3 tools/validators/abi/check_public_headers.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.742,
+                        "summary":  "public header ABI validation: PASS\nheaders: 375 errors: 0 warnings: 2851\nWARNING legacy_public_typedef_prefix: engine/include/domino/abi.h:13: legacy public typedef uses dom_abi_version; stable ABI promotion requires domino_*_t/dominium_*_t or explicit exception\nWARNING legacy_public_typedef_prefix: engine/include/domino/abi.h:15: legacy public typedef uses dom_iid; stable ABI promotion requires domino_*_t/dominium_*_t or explicit exception\nWARNING legacy_public_typedef_prefix: engine/include/domino/abi.h:17: legacy public typedef uses dom_abi_result; stable ABI promotion requires domino_*_t/dominium_*_t or explicit exception\nWARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:93: legacy public symbol uses dom_agent_create; stable ABI promotion requires domino_/dominium_ or explicit exception\nWARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:98: legacy public symbol uses dom_agent_query; stable ABI promotion requires domino_/dominium_ or explicit exception\nWARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:102: legacy public symbol uses dom_agent_capabilities; stable ABI promotion requires domino_/dominium_ or explicit exception\n...\nWARNING abi_struct_without_struct_size: engine/include/domino/core.h:152: ABI-like struct dom_query_inst_info_out should include struct_size before stable promotion\nWARNING legacy_public_symbol_prefix: engine/include/domino/core/d_tlv_kv.h:14: legacy public symbol uses d_tlv_kv_next; stable ABI promotion requires domino_/dominium_ or explicit exception\nWARNING legacy_public_symbol_prefix: engine/include/domino/core/d_tlv_kv.h:18: legacy public symbol uses d_tlv_kv_read_u32; stable ABI promotion requires domino_/dominium_ or explicit exception\nWARNING legacy_public_symbol_prefix: engine/include/domino/core/d_tlv_kv.h:19: legacy public symbol uses d_tlv_kv_read_u16; stable ABI promotion requires domino_/dominium_ or explicit exception\nWARNING legacy_public_symbol_prefix: engine/include/domino/core/d_tlv_kv.h:20: legacy public symbol uses d_tlv_kv_read_q16_16; stable ABI promotion requires domino_/dominium_ or explicit exception\nWARNING legacy_public_symbol_prefix: engine/include/domino/core/det_order.h:26: legacy public symbol uses dom_det_order_item_cmp; stable ABI promotion requires domino_/dominium_ or explicit exception\nWARNING legacy_public_symbol_prefix: engine/include/domino/core/det_order.h:29: legacy public symbol uses dom_det_order_sort; stable ABI promotion requires domino_/dominium_ or explicit exception\n... 2771 additional findings omitted from text output; use --json for full detail",
+                        "warnings":  [
+                                         "headers: 375 errors: 0 warnings: 2851",
+                                         "WARNING legacy_public_typedef_prefix: engine/include/domino/abi.h:13: legacy public typedef uses dom_abi_version; stable ABI promotion requires domino_*_t/dominium_*_t or explicit exception",
+                                         "WARNING legacy_public_typedef_prefix: engine/include/domino/abi.h:15: legacy public typedef uses dom_iid; stable ABI promotion requires domino_*_t/dominium_*_t or explicit exception",
+                                         "WARNING legacy_public_typedef_prefix: engine/include/domino/abi.h:17: legacy public typedef uses dom_abi_result; stable ABI promotion requires domino_*_t/dominium_*_t or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:93: legacy public symbol uses dom_agent_create; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:98: legacy public symbol uses dom_agent_query; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:102: legacy public symbol uses dom_agent_capabilities; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:107: legacy public symbol uses dom_agent_capabilities_release; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:110: legacy public symbol uses dom_agent_authority; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:115: legacy public symbol uses dom_agent_authority_release; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:118: legacy public symbol uses dom_agent_snapshot; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:124: legacy public symbol uses dom_agent_history; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:129: legacy public symbol uses dom_agent_history_query; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:133: legacy public symbol uses dom_agent_history_release; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/agent.h:136: legacy public symbol uses dom_agent_terminate; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_typedef_prefix: engine/include/domino/agent.h:17: legacy public typedef uses dom_agent_id; stable ABI promotion requires domino_*_t/dominium_*_t or explicit exception",
+                                         "WARNING legacy_public_typedef_prefix: engine/include/domino/agent.h:21: legacy public typedef uses dom_agent_capability_handle; stable ABI promotion requires domino_*_t/dominium_*_t or explicit exception",
+                                         "WARNING legacy_public_typedef_prefix: engine/include/domino/agent.h:22: legacy public typedef uses dom_agent_authority_handle; stable ABI promotion requires domino_*_t/dominium_*_t or explicit exception",
+                                         "WARNING legacy_public_typedef_prefix: engine/include/domino/agent.h:23: legacy public typedef uses dom_agent_history_handle; stable ABI promotion requires domino_*_t/dominium_*_t or explicit exception",
+                                         "WARNING abi_struct_without_struct_size: engine/include/domino/agent.h:42: ABI-like struct dom_agent_desc should include struct_size before stable promotion",
+                                         "WARNING abi_struct_without_struct_size: engine/include/domino/agent.h:76: ABI-like struct dom_agent_history_desc should include struct_size before stable promotion",
+                                         "WARNING abi_struct_without_struct_size: engine/include/domino/agent.h:84: ABI-like struct dom_agent_history_query_desc should include struct_size before stable promotion",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/authority.h:127: legacy public symbol uses dom_authority_is_valid; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/authority.h:136: legacy public symbol uses dom_authority_describe; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_typedef_prefix: engine/include/domino/authority.h:37: legacy public typedef uses dom_authority_token; stable ABI promotion requires domino_*_t/dominium_*_t or explicit exception",
+                                         "WARNING abi_struct_without_struct_size: engine/include/domino/authority.h:109: ABI-like struct dom_authority_token_desc should include struct_size before stable promotion",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/build_info.h:30: legacy public symbol uses dom_build_info_v1_get; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/build_info.h:33: legacy public symbol uses dom_build_id; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/build_info.h:35: legacy public symbol uses dom_git_hash; stable ABI promotion requires domino_/dominium_ or explicit exception",
+                                         "WARNING legacy_public_symbol_prefix: engine/include/domino/build_info.h:37: legacy public symbol uses dom_toolchain_id; stable ABI promotion requires domino_/dominium_ or explicit exception"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "dependency_directions",
+                        "command":  "py -3 tools/validators/repo/check_dependency_directions.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  11.745,
+                        "summary":  "dependency direction validation: PASS (16598 files scanned, 0 violations, 68 warnings)\nwarning: apps/server/server_boot.py:9: exception_applied: apps-\u003etools import tools.validators.modding\n  product/runtime/engine/game code must not depend on tools\nwarning: apps/server/server_boot.py:10: exception_applied: apps-\u003etools import tools.validators.network.policies.policy_server_authoritative\n  product/runtime/engine/game code must not depend on tools\nwarning: apps/server/server_boot.py:24: exception_applied: apps-\u003etools import tools.release.mvp.runtime_bundle\n  product/runtime/engine/game code must not depend on tools\nwarning: apps/server/server_boot.py:31: exception_applied: apps-\u003etools import tools.xstack.sessionx.creator\n...\nwarning: runtime/ui/client/viewer_shell.py:29: unlisted_active_dependency: runtime-\u003egame import game.domain.worldgen.refinement.refinement_scheduler\n  dependency is not listed as an allowed broad edge; review before stable promotion\nwarning: runtime/ui/client/viewer_shell.py:35: exception_applied: runtime-\u003etools import tools.release.mvp.runtime_bundle\n  forbidden high-confidence dependency direction\nwarning: runtime/ui/ui_model.py:20: exception_applied: runtime-\u003etools import tools.package.libraries.instance\n  forbidden high-confidence dependency direction\nwarning: runtime/ui/ui_model.py:21: exception_applied: runtime-\u003etools import tools.package.libraries.save\n  forbidden high-confidence dependency direction",
+                        "warnings":  [
+                                         "dependency direction validation: PASS (16598 files scanned, 0 violations, 68 warnings)",
+                                         "warning: apps/server/server_boot.py:9: exception_applied: apps-\u003etools import tools.validators.modding",
+                                         "warning: apps/server/server_boot.py:10: exception_applied: apps-\u003etools import tools.validators.network.policies.policy_server_authoritative",
+                                         "warning: apps/server/server_boot.py:24: exception_applied: apps-\u003etools import tools.release.mvp.runtime_bundle",
+                                         "warning: apps/server/server_boot.py:31: exception_applied: apps-\u003etools import tools.xstack.sessionx.creator",
+                                         "warning: apps/server/server_boot.py:38: exception_applied: apps-\u003etools import tools.xstack.sessionx.runner",
+                                         "warning: apps/server/server_boot.py:49: exception_applied: apps-\u003etools import tools.xstack.sessionx.universe_physics",
+                                         "warning: apps/server/server_console.py:12: unlisted_active_dependency: apps-\u003eengine import engine.time",
+                                         "warning: apps/workbench/module/domain/item/main_item_editor.cpp:21: unlisted_active_dependency: apps-\u003econtent include content/d_content_schema.h",
+                                         "warning: apps/workbench/module/domain/technology/main_tech_editor.cpp:21: unlisted_active_dependency: apps-\u003econtent include content/d_content_schema.h",
+                                         "warning: apps/workbench/module/domain/transport/main_transport_editor.cpp:21: unlisted_active_dependency: apps-\u003econtent include content/d_content_schema.h",
+                                         "warning: apps/workbench/module/pack/editor/main_pack_editor.cpp:21: unlisted_active_dependency: apps-\u003econtent include content/d_content_schema.h",
+                                         "warning: apps/workbench/module/policy/editor/main_policy_editor.cpp:21: unlisted_active_dependency: apps-\u003econtent include content/d_content_schema.h",
+                                         "warning: apps/workbench/module/process/editor/main_process_editor.cpp:21: unlisted_active_dependency: apps-\u003econtent include content/d_content_schema.h",
+                                         "warning: apps/workbench/module/schema/blueprint/main_blueprint_editor.cpp:21: unlisted_active_dependency: apps-\u003econtent include content/d_content_schema.h",
+                                         "warning: apps/workbench/module/schema/structure/main_struct_editor.cpp:21: unlisted_active_dependency: apps-\u003econtent include content/d_content_schema.h",
+                                         "warning: game/domain/chemistry/degradation/degradation_engine.py:7: unlisted_active_dependency: game-\u003eruntime import runtime.capability.effects",
+                                         "warning: game/domain/embodiment/tools/logic_tool.py:7: unlisted_active_dependency: game-\u003eruntime import runtime.compatibility",
+                                         "warning: game/domain/embodiment/tools/teleport_tool.py:8: unlisted_active_dependency: game-\u003eruntime import runtime.ui.client.teleport_controller",
+                                         "warning: game/domain/fluids/network/fluid_network_engine.py:7: unlisted_active_dependency: game-\u003eruntime import runtime.capability.effects",
+                                         "warning: game/domain/inspection/inspection_engine.py:7: unlisted_active_dependency: game-\u003eruntime import runtime.capability.fidelity",
+                                         "warning: game/domain/interaction/action_surface_engine.py:7: unlisted_active_dependency: game-\u003eruntime import runtime.capability.core",
+                                         "warning: game/domain/materials/blueprint_engine.py:9: unlisted_active_dependency: game-\u003eruntime import runtime.compatibility.data_format_loader",
+                                         "warning: game/domain/materials/commitments/commitment_engine.py:7: unlisted_active_dependency: game-\u003eruntime import runtime.capability.fidelity",
+                                         "warning: game/domain/materials/materialization/materialization_engine.py:7: unlisted_active_dependency: game-\u003eruntime import runtime.capability.fidelity",
+                                         "warning: game/domain/mechanics/structural_graph_engine.py:7: unlisted_active_dependency: game-\u003eruntime import runtime.capability.effects",
+                                         "warning: game/domain/signals/institutions/dispatch_engine.py:9: unlisted_active_dependency: game-\u003eruntime import runtime.capability.control_plane_engine",
+                                         "warning: game/domain/thermal/network/thermal_network_engine.py:7: unlisted_active_dependency: game-\u003eruntime import runtime.capability.effects",
+                                         "warning: runtime/network/server/loopback_transport.py:18: exception_applied: runtime-\u003etools import tools.validators.network.policies.policy_server_authoritative",
+                                         "warning: runtime/render/backend/representation_resolver.py:8: unlisted_active_dependency: runtime-\u003egame import game.domain.geology"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "command_surface",
+                        "command":  "py -3 tools/validators/contracts/check_command_surface.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.379,
+                        "summary":  "command_surface: pass\ncommands: 5\nerrors: 0\nwarnings: 0",
+                        "warnings":  [
+                                         "warnings: 0"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "diagnostics_registry",
+                        "command":  "py -3 tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.341,
+                        "summary":  "diagnostics registry: pass\ndiagnostic_codes: 89\nseverities: 7\ncategories: 26\nerrors: 0\nwarnings: 0",
+                        "warnings":  [
+                                         "warnings: 0"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "artifact_identity",
+                        "command":  "py -3 tools/validators/contracts/check_artifact_identity.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.342,
+                        "summary":  "artifact identity: pass\nartifact_kinds: 23\nlifecycle_states: 11\nerrors: 0\nwarnings: 0",
+                        "warnings":  [
+                                         "warnings: 0"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "schema_protocol_evolution",
+                        "command":  "py -3 tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.35,
+                        "summary":  "schema/protocol evolution: pass\nerrors: 0\nwarnings: 0",
+                        "warnings":  [
+                                         "warnings: 0"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "capability_refusal",
+                        "command":  "py -3 tools/validators/contracts/check_capability_refusal.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.346,
+                        "summary":  "capability/refusal: pass\ncapabilities: 30\nrefusal_codes: 44\nerrors: 0\nwarnings: 0",
+                        "warnings":  [
+                                         "warnings: 0"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "provider_model",
+                        "command":  "py -3 tools/validators/contracts/check_provider_model.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.345,
+                        "summary":  "provider model: pass\nproviders: 5\nprovider_kinds: 15\nerrors: 0\nwarnings: 0",
+                        "warnings":  [
+                                         "warnings: 0"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "module_descriptors",
+                        "command":  "py -3 tools/validators/contracts/check_module_descriptors.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.336,
+                        "summary":  "module descriptors: pass\nmodule_kinds: 12\nerrors: 0\nwarnings: 0",
+                        "warnings":  [
+                                         "warnings: 0"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "workbench_workspaces",
+                        "command":  "py -3 tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.362,
+                        "summary":  "workbench workspaces: pass\nerrors: 0\nwarnings: 0",
+                        "warnings":  [
+                                         "warnings: 0"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "app_descriptors",
+                        "command":  "py -3 tools/validators/contracts/check_app_descriptors.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.33,
+                        "summary":  "app descriptors: pass\nerrors: 0\nwarnings: 0",
+                        "warnings":  [
+                                         "warnings: 0"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "replacement_packet",
+                        "command":  "py -3 tools/validators/repo/check_replacement_packet.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.354,
+                        "summary":  "Dominium replacement protocol validation\nstatus: pass\nreplacement_kinds: 19\nreplacement_statuses: 10\nfindings: 0\nfixtures: valid=4 invalid=4 status=pass",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "version_deprecation",
+                        "command":  "py -3 tools/validators/contracts/check_version_deprecation.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.357,
+                        "summary":  "version/deprecation law: pass\nlifecycle_states: 9\nerrors: 0\nwarnings: 0\nfixtures: pass valid=3 invalid=4",
+                        "warnings":  [
+                                         "warnings: 0"
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "mod_pack_trust",
+                        "command":  "py -3 tools/validators/package/check_mod_pack_trust.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.38,
+                        "summary":  "MOD-PACK-TRUST-MODEL-01: PASS\nINFO: {\n  \"fixtures_checked\": 10,\n  \"fixtures_expected_behavior_observed\": 10,\n  \"mod_lifecycle_states_registered\": 11,\n  \"permission_kinds_registered\": 22,\n  \"trust_levels_registered\": 7\n}",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "portability_matrix",
+                        "command":  "py -3 tools/validators/platform/check_portability_matrix.py --repo-root . --strict",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.375,
+                        "summary":  "PORTABILITY-MATRIX: PASS\n{\n  \"architectures_registered\": 6,\n  \"fixtures\": {\n    \"invalid\": 4,\n    \"valid\": 4\n  },\n  \"matrix_rows\": {\n...\n    \"product_mode_portability.matrix.json\": 4,\n    \"renderer_portability.matrix.json\": 6,\n    \"runtime_portability.matrix.json\": 3\n  },\n  \"platform_floors_registered\": 8,\n  \"statuses_registered\": 13,\n  \"toolchains_registered\": 10\n}",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "docs_sanity",
+                        "command":  "py -3 scripts/verify_docs_sanity.py --repo-root .",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.341,
+                        "summary":  "Docs sanity OK.",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "build_target_boundaries",
+                        "command":  "py -3 scripts/verify_build_target_boundaries.py --repo-root .",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  2.885,
+                        "summary":  "BOUNDARY-OK: build boundary checks passed",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "ui_shell_purity",
+                        "command":  "py -3 scripts/verify_ui_shell_purity.py --repo-root .",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.318,
+                        "summary":  "UI shell purity OK.",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    },
+                    {
+                        "id":  "abi_boundaries",
+                        "command":  "py -3 scripts/verify_abi_boundaries.py --repo-root .",
+                        "status":  "PASS",
+                        "exit_code":  0,
+                        "elapsed_seconds":  0.43,
+                        "summary":  "ABI boundary check OK.",
+                        "warnings":  [
+
+                                     ],
+                        "blockers":  {
+
+                                     }
+                    }
+                ]
+}
