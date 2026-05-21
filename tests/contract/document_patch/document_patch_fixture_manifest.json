@@ -1,0 +1,122 @@
+{
+  "schema_id": "dominium.document_patch.fixture_manifest",
+  "schema_version": "1.0.0",
+  "fixtures": [
+    {
+      "path": "tests/contract/document_patch/valid_document_type.json",
+      "fixture_kind": "document_type",
+      "expected": "pass",
+      "expected_codes": []
+    },
+    {
+      "path": "tests/contract/document_patch/valid_document_ref.json",
+      "fixture_kind": "document_ref",
+      "expected": "pass",
+      "expected_codes": []
+    },
+    {
+      "path": "tests/contract/document_patch/valid_patch.json",
+      "fixture_kind": "patch",
+      "expected": "pass",
+      "expected_codes": []
+    },
+    {
+      "path": "tests/contract/document_patch/valid_transaction.json",
+      "fixture_kind": "transaction",
+      "expected": "pass",
+      "expected_codes": []
+    },
+    {
+      "path": "tests/contract/document_patch/valid_rollback_handle.json",
+      "fixture_kind": "rollback",
+      "expected": "pass",
+      "expected_codes": []
+    },
+    {
+      "path": "tests/contract/transaction/valid_document_transaction.json",
+      "fixture_kind": "transaction",
+      "expected": "pass",
+      "expected_codes": []
+    },
+    {
+      "path": "tests/contract/document_patch/invalid_unknown_document_type.json",
+      "fixture_kind": "patch",
+      "expected": "fail",
+      "expected_codes": [
+        "DOCUMENT-UNKNOWN-TYPE"
+      ]
+    },
+    {
+      "path": "tests/contract/document_patch/invalid_patch_unknown_operation.json",
+      "fixture_kind": "patch",
+      "expected": "fail",
+      "expected_codes": [
+        "PATCH-UNKNOWN-OPERATION"
+      ]
+    },
+    {
+      "path": "tests/contract/document_patch/invalid_missing_diagnostic_ref.json",
+      "fixture_kind": "patch",
+      "expected": "fail",
+      "expected_codes": [
+        "DIAGNOSTIC-REF-UNKNOWN"
+      ]
+    },
+    {
+      "path": "tests/contract/document_patch/invalid_transaction_committed_without_evidence.json",
+      "fixture_kind": "transaction",
+      "expected": "fail",
+      "expected_codes": [
+        "TX-COMMITTED-MISSING-EVIDENCE"
+      ]
+    },
+    {
+      "path": "tests/contract/document_patch/invalid_patch_target_outside_allowed_root.json",
+      "fixture_kind": "patch",
+      "expected": "fail",
+      "expected_codes": [
+        "PATCH-TARGET-OUTSIDE-ROOT"
+      ]
+    },
+    {
+      "path": "tests/contract/document_patch/invalid_transaction_dry_run_only_committed.json",
+      "fixture_kind": "transaction",
+      "expected": "fail",
+      "expected_codes": [
+        "TX-DRY-RUN-ONLY-COMMITTED"
+      ]
+    },
+    {
+      "path": "tests/contract/document_patch/invalid_planned_document_type_stable_claim.json",
+      "fixture_kind": "document_type",
+      "expected": "fail",
+      "expected_codes": [
+        "DOCUMENT-STABILITY-CLAIM-FALSE"
+      ]
+    },
+    {
+      "path": "tests/contract/document_patch/invalid_patch_missing_document_id.json",
+      "fixture_kind": "patch",
+      "expected": "fail",
+      "expected_codes": [
+        "PATCH-MISSING-DOCUMENT-REF"
+      ]
+    },
+    {
+      "path": "tests/contract/document_patch/invalid_transaction_missing_evidence.json",
+      "fixture_kind": "transaction",
+      "expected": "fail",
+      "expected_codes": [
+        "TX-COMMITTED-MISSING-EVIDENCE"
+      ]
+    },
+    {
+      "path": "tests/contract/document_patch/invalid_rollback_missing_transaction.json",
+      "fixture_kind": "rollback",
+      "expected": "fail",
+      "expected_codes": [
+        "ROLLBACK-MISSING-TRANSACTION"
+      ]
+    }
+  ]
+}

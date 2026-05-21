@@ -1,0 +1,98 @@
+{
+  "transaction_id": "dominium.transaction.pack_manifest.description.set",
+  "transaction_kind": "document_patch_transaction",
+  "command_ref": "dominium.validation.run",
+  "input_ref": "tests/contract/document_patch/valid_patch.json",
+  "patches": [
+    {
+      "patch_id": "dominium.patch.pack_manifest.description.set",
+      "patch_kind": "document_patch",
+      "document_ref": {
+        "document_ref_id": "dominium.document_ref.pack_manifest.example",
+        "logical_id": "example.pack_manifest",
+        "document_type_id": "dominium.document_type.pack_manifest",
+        "artifact_ref": {
+          "artifact_kind": "pack",
+          "artifact_ref_id": "dominium.artifact.pack.example"
+        },
+        "schema_version": "1.0.0",
+        "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "source_kind": "repo",
+        "path": "tests/contract/document_patch/fixtures/example.pack.json",
+        "path_authoritative": false,
+        "provenance": {
+          "introduced_by": "DOCUMENT-PATCH-TRANSACTION-RUNTIME-01"
+        }
+      },
+      "operation": "set",
+      "path_or_selector": "/description",
+      "target_path": "tests/contract/document_patch/fixtures/example.pack.json",
+      "before_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "after_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "value": "Updated description",
+      "preconditions": [
+        {
+          "kind": "content_hash",
+          "hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      ],
+      "capability_refs": [
+        "dominium.capability.document.patch.review"
+      ],
+      "diagnostics_expected": [],
+      "refusal_refs": [],
+      "author": {
+        "surface": "fixture"
+      },
+      "provenance": {
+        "task": "DOCUMENT-PATCH-TRANSACTION-RUNTIME-01"
+      },
+      "deterministic_order_key": "0001-pack-description"
+    }
+  ],
+  "affected_documents": [
+    {
+      "document_ref_id": "dominium.document_ref.pack_manifest.example",
+      "logical_id": "example.pack_manifest",
+      "document_type_id": "dominium.document_type.pack_manifest",
+      "artifact_ref": {
+        "artifact_kind": "pack",
+        "artifact_ref_id": "dominium.artifact.pack.example"
+      },
+      "schema_version": "1.0.0",
+      "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "source_kind": "repo",
+      "path": "tests/contract/document_patch/fixtures/example.pack.json",
+      "path_authoritative": false,
+      "provenance": {
+        "introduced_by": "DOCUMENT-PATCH-TRANSACTION-RUNTIME-01"
+      }
+    }
+  ],
+  "affected_artifacts": [
+    {
+      "artifact_kind": "pack",
+      "artifact_ref_id": "dominium.artifact.pack.example"
+    }
+  ],
+  "capability_decision_refs": [
+    "dominium.capability_decision.fixture.allowed"
+  ],
+  "validation_results": [
+    {
+      "status": "pass",
+      "validator": "tools/validators/contracts/check_document_patch_transaction.py"
+    }
+  ],
+  "diagnostics": [],
+  "refusal_refs": [],
+  "evidence_packet_ref": ".aide/reports/DOCUMENT-PATCH-TRANSACTION-RUNTIME-01-validation.json",
+  "dry_run_result": {
+    "status": "passed",
+    "mutated": false,
+    "diagnostics": []
+  },
+  "commit_policy": "manual_review_required",
+  "rollback_policy": "reverse_patch_available",
+  "status": "committed"
+}

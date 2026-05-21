@@ -1,0 +1,273 @@
+{
+  "schema_id": "dominium.document.type.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.document",
+  "document_types": [
+    {
+      "version": "1.0.0",
+      "stability": "provisional",
+      "support_claim": "provisional",
+      "owner": "contracts.document",
+      "command_refs": [
+        "dominium.validation.run"
+      ],
+      "view_refs": [
+        "dominium.workbench.view.document.inspect"
+      ],
+      "patch_operation_refs": [
+        "set",
+        "insert",
+        "remove",
+        "move",
+        "replace",
+        "merge",
+        "annotate",
+        "import_asset",
+        "generate",
+        "no_op"
+      ],
+      "validation_policy_ref": "dominium.document_patch.validation.schema_capability_dry_run",
+      "canonical_serialization_policy_ref": "dominium.document_patch.serialization.canonical_or_declared",
+      "compatibility_policy_ref": "dominium.schema_protocol.explicit_version_no_silent_migration",
+      "evidence_policy_ref": "dominium.document_patch.evidence.required_for_commit_export_refusal",
+      "document_type_id": "dominium.document_type.pack_manifest",
+      "schema_ref": "contracts/package/pack_manifest.schema.json",
+      "artifact_kind_refs": [
+        "pack"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "stability": "provisional",
+      "support_claim": "provisional",
+      "owner": "contracts.document",
+      "command_refs": [
+        "dominium.validation.run"
+      ],
+      "view_refs": [
+        "dominium.workbench.view.document.inspect"
+      ],
+      "patch_operation_refs": [
+        "set",
+        "insert",
+        "remove",
+        "move",
+        "replace",
+        "merge",
+        "annotate",
+        "import_asset",
+        "generate",
+        "no_op"
+      ],
+      "validation_policy_ref": "dominium.document_patch.validation.schema_capability_dry_run",
+      "canonical_serialization_policy_ref": "dominium.document_patch.serialization.canonical_or_declared",
+      "compatibility_policy_ref": "dominium.schema_protocol.explicit_version_no_silent_migration",
+      "evidence_policy_ref": "dominium.document_patch.evidence.required_for_commit_export_refusal",
+      "document_type_id": "dominium.document_type.module_descriptor",
+      "schema_ref": "contracts/module/module_descriptor.schema.json",
+      "artifact_kind_refs": [
+        "module_descriptor"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "stability": "provisional",
+      "support_claim": "provisional",
+      "owner": "contracts.document",
+      "command_refs": [
+        "dominium.validation.run"
+      ],
+      "view_refs": [
+        "dominium.workbench.view.document.inspect"
+      ],
+      "patch_operation_refs": [
+        "set",
+        "insert",
+        "remove",
+        "move",
+        "replace",
+        "merge",
+        "annotate",
+        "import_asset",
+        "generate",
+        "no_op"
+      ],
+      "validation_policy_ref": "dominium.document_patch.validation.schema_capability_dry_run",
+      "canonical_serialization_policy_ref": "dominium.document_patch.serialization.canonical_or_declared",
+      "compatibility_policy_ref": "dominium.schema_protocol.explicit_version_no_silent_migration",
+      "evidence_policy_ref": "dominium.document_patch.evidence.required_for_commit_export_refusal",
+      "document_type_id": "dominium.document_type.workbench_workspace",
+      "schema_ref": "contracts/workbench/workspace.schema.json",
+      "artifact_kind_refs": [
+        "workbench_workspace"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "stability": "provisional",
+      "support_claim": "provisional",
+      "owner": "contracts.document",
+      "command_refs": [
+        "dominium.validation.run"
+      ],
+      "view_refs": [
+        "dominium.workbench.view.document.inspect"
+      ],
+      "patch_operation_refs": [
+        "set",
+        "insert",
+        "remove",
+        "move",
+        "replace",
+        "merge",
+        "annotate",
+        "import_asset",
+        "generate",
+        "no_op"
+      ],
+      "validation_policy_ref": "dominium.document_patch.validation.schema_capability_dry_run",
+      "canonical_serialization_policy_ref": "dominium.document_patch.serialization.canonical_or_declared",
+      "compatibility_policy_ref": "dominium.schema_protocol.explicit_version_no_silent_migration",
+      "evidence_policy_ref": "dominium.document_patch.evidence.required_for_commit_export_refusal",
+      "document_type_id": "dominium.document_type.theme_profile",
+      "schema_ref": "contracts/profile/profile_composition.schema.json",
+      "artifact_kind_refs": [
+        "theme",
+        "profile"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "stability": "provisional",
+      "support_claim": "provisional",
+      "owner": "contracts.document",
+      "command_refs": [
+        "dominium.validation.run"
+      ],
+      "view_refs": [
+        "dominium.workbench.view.document.inspect"
+      ],
+      "patch_operation_refs": [
+        "set",
+        "insert",
+        "remove",
+        "move",
+        "replace",
+        "merge",
+        "annotate",
+        "import_asset",
+        "generate",
+        "no_op"
+      ],
+      "validation_policy_ref": "dominium.document_patch.validation.schema_capability_dry_run",
+      "canonical_serialization_policy_ref": "dominium.document_patch.serialization.canonical_or_declared",
+      "compatibility_policy_ref": "dominium.schema_protocol.explicit_version_no_silent_migration",
+      "evidence_policy_ref": "dominium.document_patch.evidence.required_for_commit_export_refusal",
+      "document_type_id": "dominium.document_type.command_descriptor",
+      "schema_ref": "contracts/command/command_surface.contract.toml",
+      "artifact_kind_refs": [
+        "command_registry"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "stability": "provisional",
+      "support_claim": "provisional",
+      "owner": "contracts.document",
+      "command_refs": [
+        "dominium.validation.run"
+      ],
+      "view_refs": [
+        "dominium.workbench.view.document.inspect"
+      ],
+      "patch_operation_refs": [
+        "set",
+        "insert",
+        "remove",
+        "move",
+        "replace",
+        "merge",
+        "annotate",
+        "import_asset",
+        "generate",
+        "no_op"
+      ],
+      "validation_policy_ref": "dominium.document_patch.validation.schema_capability_dry_run",
+      "canonical_serialization_policy_ref": "dominium.document_patch.serialization.canonical_or_declared",
+      "compatibility_policy_ref": "dominium.schema_protocol.explicit_version_no_silent_migration",
+      "evidence_policy_ref": "dominium.document_patch.evidence.required_for_commit_export_refusal",
+      "document_type_id": "dominium.document_type.schema_document",
+      "schema_ref": "contracts/schema/schema_evolution_policy.contract.toml",
+      "artifact_kind_refs": [
+        "schema_registry"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "stability": "provisional",
+      "support_claim": "provisional",
+      "owner": "contracts.document",
+      "command_refs": [
+        "dominium.validation.run"
+      ],
+      "view_refs": [
+        "dominium.workbench.view.document.inspect"
+      ],
+      "patch_operation_refs": [
+        "set",
+        "insert",
+        "remove",
+        "move",
+        "replace",
+        "merge",
+        "annotate",
+        "import_asset",
+        "generate",
+        "no_op"
+      ],
+      "validation_policy_ref": "dominium.document_patch.validation.schema_capability_dry_run",
+      "canonical_serialization_policy_ref": "dominium.document_patch.serialization.canonical_or_declared",
+      "compatibility_policy_ref": "dominium.schema_protocol.explicit_version_no_silent_migration",
+      "evidence_policy_ref": "dominium.document_patch.evidence.required_for_commit_export_refusal",
+      "document_type_id": "dominium.document_type.release_plan",
+      "schema_ref": "contracts/artifact/artifact_manifest.schema.json",
+      "artifact_kind_refs": [
+        "release_artifact"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "stability": "provisional",
+      "support_claim": "provisional",
+      "owner": "contracts.document",
+      "command_refs": [
+        "dominium.validation.run"
+      ],
+      "view_refs": [
+        "dominium.workbench.view.document.inspect"
+      ],
+      "patch_operation_refs": [
+        "set",
+        "insert",
+        "remove",
+        "move",
+        "replace",
+        "merge",
+        "annotate",
+        "import_asset",
+        "generate",
+        "no_op"
+      ],
+      "validation_policy_ref": "dominium.document_patch.validation.schema_capability_dry_run",
+      "canonical_serialization_policy_ref": "dominium.document_patch.serialization.canonical_or_declared",
+      "compatibility_policy_ref": "dominium.schema_protocol.explicit_version_no_silent_migration",
+      "evidence_policy_ref": "dominium.document_patch.evidence.required_for_commit_export_refusal",
+      "document_type_id": "dominium.document_type.evidence_packet",
+      "schema_ref": "contracts/evidence/evidence_packet.schema.json",
+      "artifact_kind_refs": [
+        "evidence_packet"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "elapsed_seconds": 0.14,
+      "failure_policy": "nonzero_fails_gate",
+      "id": "t0.git_diff_check",
+      "name": "Git diff whitespace check",
+      "output_summary": "",
+      "owner": "repo_hygiene",
+      "required": true,
+      "returncode": 0,
+      "status": "pass",
+      "tier": "T0",
+      "timeout_seconds": 60,
+      "type": "argv",
+      "warning_policy": "no_warnings_allowed"
+    },
+    {
+      "builtin": "staged_generated_output_check",
+      "elapsed_seconds": 0.094,
+      "failure_policy": "forbidden_staged_path_fails_gate",
+      "id": "t0.staged_generated_output_check",
+      "name": "Generated/local output staging check",
+      "output_summary": "no forbidden generated/local output paths are staged",
+      "owner": "repo_hygiene",
+      "required": true,
+      "returncode": 0,
+      "status": "pass",
+      "tier": "T0",
+      "timeout_seconds": 30,
+      "type": "builtin",
+      "warning_policy": "no_warnings_allowed"
+    },
+    {
+      "builtin": "changed_json_parse",
+      "elapsed_seconds": 0.719,
+      "failure_policy": "parse_error_fails_gate",
+      "id": "t0.changed_json_parse",
+      "name": "Changed JSON and JSONL parse check",
+      "output_summary": "JSON parse failures:\ncontracts/conformance/conformance_suite.schema.json: Invalid \\escape: line 8 column 63 (char 502)\ncontracts/service/service_descriptor.schema.json: Invalid \\escape: line 8 column 68 (char 686)",
+      "owner": "repo_hygiene",
+      "required": true,
+      "returncode": 1,
+      "status": "fail",
+      "tier": "T0",
+      "timeout_seconds": 60,
+      "type": "builtin",
+      "warning_policy": "no_warnings_allowed"
+    }
+  ],
+  "completed_at_utc": "2026-05-21T16:26:32Z",
+  "continue_on_fail": false,
+  "dry_run": false,
+  "elapsed_seconds": 0.953,
+  "known_full_gate_debt_policy": "Known full-gate debt must remain visible and must not be converted into pass, warning, deletion, or silent skip.",
+  "mode": "fast_strict",
+  "not_run_commands": [
+    {
+      "id": "t4.ctest_schema_pack_content",
+      "name": "Focused schema, pack, and content CTest debt lane",
+      "status": "not_run",
+      "tier": "T4"
+    },
+    {
+      "id": "t4.public_header_c17",
+      "name": "Engine public header C17 consumer check",
+      "status": "not_run",
+      "tier": "T4"
+    },
+    {
+      "id": "t4.public_header_cpp17",
+      "name": "Game public header C++17 consumer check",
+      "status": "not_run",
+      "tier": "T4"
+    },
+    {
+      "id": "t3.product_boot_matrix",
+      "name": "Product boot matrix strict smoke",
+      "status": "not_run",
+      "tier": "T3"
+    },
+    {
+      "id": "t3.portable_projection",
+      "name": "Portable projection strict validator",
+      "status": "not_run",
+      "tier": "T3"
+    },
+    {
+      "id": "t3.internal_pilot_release",
+      "name": "Internal pilot release strict validator",
+      "status": "not_run",
+      "tier": "T3"
+    },
+    {
+      "id": "t4.ctest_audit_shard",
+      "name": "Selected AuditX slow shard",
+      "status": "not_run",
+      "tier": "T4"
+    },
+    {
+      "id": "t4.full_ctest",
+      "name": "Full CTest",
+      "status": "not_run",
+      "tier": "T4"
+    },
+    {
+      "id": "t4.verify_full_build",
+      "name": "Full verify build target",
+      "status": "not_run",
+      "tier": "T4"
+    },
+    {
+      "id": "t4.full_promotion_tier",
+      "name": "Legacy full promotion tier wrapper",
+      "status": "not_run",
+      "tier": "T4"
+    }
+  ],
+  "repo_root": "C:\\Inbox\\Git Repos\\dominium",
+  "schema_version": "dominium.fast_strict_result.v1",
+  "selected_tiers": [
+    "T0",
+    "T1",
+    "T2"
+  ],
+  "started_at_utc": "2026-05-21T16:26:31Z",
+  "status": "FAIL"
+}

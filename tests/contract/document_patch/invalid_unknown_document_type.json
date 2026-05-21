@@ -1,0 +1,49 @@
+{
+  "patch_id": "dominium.patch.unknown_document_type.fixture",
+  "patch_kind": "document_patch",
+  "document_ref": {
+    "document_ref_id": "dominium.document_ref.unknown.fixture",
+    "logical_id": "example.pack_manifest",
+    "document_type_id": "dominium.document_type.unknown_fixture",
+    "artifact_ref": {
+      "artifact_kind": "pack",
+      "artifact_ref_id": "dominium.artifact.pack.example"
+    },
+    "schema_version": "1.0.0",
+    "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "source_kind": "repo",
+    "path": "tests/contract/document_patch/fixtures/example.pack.json",
+    "path_authoritative": false,
+    "provenance": {
+      "introduced_by": "DOCUMENT-PATCH-TRANSACTION-RUNTIME-01"
+    }
+  },
+  "operation": "set",
+  "path_or_selector": "/description",
+  "target_path": "tests/contract/document_patch/fixtures/example.pack.json",
+  "before_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "after_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "value": "Updated description",
+  "preconditions": [
+    {
+      "kind": "content_hash",
+      "hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  ],
+  "capability_refs": [
+    "dominium.capability.document.patch.review"
+  ],
+  "diagnostics_expected": [
+    "dominium.diagnostic.document_patch.unknown_document_type"
+  ],
+  "refusal_refs": [
+    "dominium.refusal.document_patch.unknown_document_type"
+  ],
+  "author": {
+    "surface": "fixture"
+  },
+  "provenance": {
+    "task": "DOCUMENT-PATCH-TRANSACTION-RUNTIME-01"
+  },
+  "deterministic_order_key": "0001-pack-description"
+}

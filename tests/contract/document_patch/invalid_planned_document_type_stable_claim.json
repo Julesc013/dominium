@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0",
+  "stability": "planned",
+  "support_claim": "stable",
+  "owner": "contracts.document",
+  "command_refs": [
+    "dominium.validation.run"
+  ],
+  "view_refs": [
+    "dominium.workbench.view.document.inspect"
+  ],
+  "patch_operation_refs": [
+    "set",
+    "insert",
+    "remove",
+    "move",
+    "replace",
+    "merge",
+    "annotate",
+    "import_asset",
+    "generate",
+    "no_op"
+  ],
+  "validation_policy_ref": "dominium.document_patch.validation.schema_capability_dry_run",
+  "canonical_serialization_policy_ref": "dominium.document_patch.serialization.canonical_or_declared",
+  "compatibility_policy_ref": "dominium.schema_protocol.explicit_version_no_silent_migration",
+  "evidence_policy_ref": "dominium.document_patch.evidence.required_for_commit_export_refusal",
+  "document_type_id": "dominium.document_type.fixture_planned_claim",
+  "schema_ref": "contracts/document/document_ref.schema.json",
+  "artifact_kind_refs": [
+    "test_fixture"
+  ]
+}

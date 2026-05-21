@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.document.document_type_schema.v1",
+  "title": "Dominium Document Type",
+  "type": "object",
+  "required": [
+    "document_type_id",
+    "version",
+    "stability",
+    "owner",
+    "schema_ref",
+    "artifact_kind_refs",
+    "command_refs",
+    "patch_operation_refs",
+    "validation_policy_ref",
+    "canonical_serialization_policy_ref",
+    "compatibility_policy_ref",
+    "evidence_policy_ref"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "document_type_id": {
+      "type": "string",
+      "pattern": "^dominium\\.document_type\\.[a-z0-9][a-z0-9_.-]+$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stability": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "fixture",
+        "provisional",
+        "stable",
+        "deprecated",
+        "retired"
+      ]
+    },
+    "support_claim": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "fixture",
+        "provisional",
+        "stable",
+        "retired"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_kind_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "command_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "view_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "patch_operation_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "validation_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canonical_serialization_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "compatibility_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.document.document_descriptor_schema.v1",
+  "title": "Dominium Document Descriptor Compatibility Envelope",
+  "type": "object",
+  "required": [
+    "document_ref",
+    "document_type",
+    "stability",
+    "owner"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "document_ref": {
+      "$ref": "document_ref.schema.json"
+    },
+    "document_type": {
+      "$ref": "document_type.schema.json"
+    },
+    "stability": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

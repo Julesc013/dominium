@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.transaction.transaction_schema.v1",
+  "title": "Dominium Transaction Envelope",
+  "type": "object",
+  "required": [
+    "transaction_id",
+    "transaction_kind",
+    "command_ref",
+    "patches",
+    "affected_documents",
+    "affected_artifacts",
+    "capability_decision_refs",
+    "validation_results",
+    "diagnostics",
+    "dry_run_result",
+    "commit_policy",
+    "rollback_policy",
+    "status"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "transaction_id": {
+      "type": "string",
+      "pattern": "^dominium\\.transaction\\.[a-z0-9][a-z0-9_.-]+$"
+    },
+    "transaction_kind": {
+      "type": "string"
+    },
+    "command_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_ref": {
+      "type": "string"
+    },
+    "patches": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "minItems": 1
+    },
+    "affected_documents": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "affected_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "capability_decision_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_results": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "refusal_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_packet_ref": {
+      "type": "string"
+    },
+    "dry_run_result": {
+      "type": "object"
+    },
+    "commit_policy": {
+      "type": "string",
+      "enum": [
+        "dry_run_only",
+        "manual_review_required",
+        "auto_commit_allowed",
+        "package_export_only",
+        "evidence_only"
+      ]
+    },
+    "rollback_policy": {
+      "type": "string",
+      "enum": [
+        "reverse_patch_available",
+        "snapshot_restore_available",
+        "manual_only",
+        "unavailable",
+        "not_applicable"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "validated",
+        "refused",
+        "dry_run_passed",
+        "dry_run_failed",
+        "committed",
+        "rolled_back",
+        "superseded",
+        "retired"
+      ]
+    }
+  }
+}

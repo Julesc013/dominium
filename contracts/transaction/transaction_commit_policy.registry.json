@@ -1,0 +1,28 @@
+{
+  "schema_id": "dominium.transaction.commit_policy.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.transaction",
+  "commit_policies": [
+    {
+      "id": "dry_run_only",
+      "summary": "Transaction may validate and dry-run but may not commit outputs."
+    },
+    {
+      "id": "manual_review_required",
+      "summary": "Human or authorized review must accept before commit/export."
+    },
+    {
+      "id": "auto_commit_allowed",
+      "summary": "Command policy may commit after validation and dry-run pass."
+    },
+    {
+      "id": "package_export_only",
+      "summary": "Outputs may be exported as package artifacts but not mutate source truth."
+    },
+    {
+      "id": "evidence_only",
+      "summary": "Transaction records proof or refusal only; no output commit is allowed."
+    }
+  ]
+}

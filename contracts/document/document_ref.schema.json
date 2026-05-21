@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.document.document_ref_schema.v1",
+  "title": "Dominium Document Reference",
+  "type": "object",
+  "required": [
+    "document_ref_id",
+    "document_type_id",
+    "schema_version",
+    "source_kind"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "document_ref_id": {
+      "type": "string",
+      "pattern": "^dominium\\.document_ref\\.[a-z0-9][a-z0-9_.-]+$"
+    },
+    "logical_id": {
+      "type": "string"
+    },
+    "document_type_id": {
+      "type": "string",
+      "pattern": "^dominium\\.document_type\\.[a-z0-9][a-z0-9_.-]+$"
+    },
+    "artifact_ref": {
+      "type": "object"
+    },
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_hash": {
+      "type": "string"
+    },
+    "source_kind": {
+      "type": "string",
+      "enum": [
+        "repo",
+        "artifact",
+        "generated",
+        "workbench",
+        "cli",
+        "aide",
+        "codex",
+        "memory",
+        "external",
+        "fixture"
+      ]
+    },
+    "path": {
+      "type": "string",
+      "description": "Optional locator only; path is not document identity."
+    },
+    "path_authoritative": {
+      "type": "boolean",
+      "const": false
+    },
+    "provenance": {
+      "type": "object"
+    }
+  }
+}

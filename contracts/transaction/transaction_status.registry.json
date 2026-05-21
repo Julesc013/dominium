@@ -1,0 +1,44 @@
+{
+  "schema_id": "dominium.transaction.status.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.transaction",
+  "statuses": [
+    {
+      "id": "proposed",
+      "summary": "Transaction has intent and patches but no successful validation claim."
+    },
+    {
+      "id": "validated",
+      "summary": "Validation passed, but the transaction is not yet dry-run passed or committed."
+    },
+    {
+      "id": "refused",
+      "summary": "Transaction was lawfully refused with diagnostic and refusal evidence."
+    },
+    {
+      "id": "dry_run_passed",
+      "summary": "Dry-run passed without authoritative mutation."
+    },
+    {
+      "id": "dry_run_failed",
+      "summary": "Dry-run failed without authoritative mutation."
+    },
+    {
+      "id": "committed",
+      "summary": "Accepted transaction outputs were committed or exported with evidence."
+    },
+    {
+      "id": "rolled_back",
+      "summary": "Committed transaction was reversed through an explicit rollback policy or handle."
+    },
+    {
+      "id": "superseded",
+      "summary": "Transaction was replaced by a later transaction."
+    },
+    {
+      "id": "retired",
+      "summary": "Transaction record is retained but no longer active for future mutation."
+    }
+  ]
+}

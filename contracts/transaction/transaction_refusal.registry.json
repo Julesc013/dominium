@@ -1,0 +1,58 @@
+{
+  "schema_id": "dominium.transaction.refusal.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.transaction",
+  "refusals": [
+    {
+      "id": "dominium.refusal.document_patch.unknown_document_type",
+      "summary": "Refuse a patch or transaction for an unknown document type.",
+      "diagnostic_ref": "dominium.diagnostic.document_patch.unknown_document_type"
+    },
+    {
+      "id": "dominium.refusal.document_patch.unsupported_patch_operation",
+      "summary": "Refuse an unsupported patch operation.",
+      "diagnostic_ref": "dominium.diagnostic.document_patch.unsupported_patch_operation"
+    },
+    {
+      "id": "dominium.refusal.document_patch.precondition_failed",
+      "summary": "Refuse when a patch precondition fails.",
+      "diagnostic_ref": "dominium.diagnostic.document_patch.precondition_failed"
+    },
+    {
+      "id": "dominium.refusal.document_patch.capability_missing",
+      "summary": "Refuse when required capability is absent.",
+      "diagnostic_ref": "dominium.diagnostic.document_patch.capability_missing"
+    },
+    {
+      "id": "dominium.refusal.document_patch.validation_failed",
+      "summary": "Refuse when validation fails.",
+      "diagnostic_ref": "dominium.diagnostic.document_patch.validation_failed"
+    },
+    {
+      "id": "dominium.refusal.document_patch.dry_run_failed",
+      "summary": "Refuse when dry-run fails.",
+      "diagnostic_ref": "dominium.diagnostic.document_patch.dry_run_failed"
+    },
+    {
+      "id": "dominium.refusal.document_patch.rollback_unavailable",
+      "summary": "Refuse when rollback policy is required but unavailable.",
+      "diagnostic_ref": "dominium.diagnostic.document_patch.rollback_unavailable"
+    },
+    {
+      "id": "dominium.refusal.document_patch.target_outside_allowed_root",
+      "summary": "Refuse targets outside allowed roots.",
+      "diagnostic_ref": "dominium.diagnostic.document_patch.target_outside_allowed_root"
+    },
+    {
+      "id": "dominium.refusal.document_patch.schema_mismatch",
+      "summary": "Refuse schema identity or version mismatch.",
+      "diagnostic_ref": "dominium.diagnostic.document_patch.schema_mismatch"
+    },
+    {
+      "id": "dominium.refusal.document_patch.evidence_required_missing",
+      "summary": "Refuse committed/exported claims without evidence.",
+      "diagnostic_ref": "dominium.diagnostic.document_patch.evidence_missing"
+    }
+  ]
+}

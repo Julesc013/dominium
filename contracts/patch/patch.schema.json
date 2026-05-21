@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.patch.patch_schema.v1",
+  "title": "Dominium Patch Envelope",
+  "type": "object",
+  "required": [
+    "patch_id",
+    "patch_kind",
+    "document_ref",
+    "operation",
+    "path_or_selector",
+    "preconditions",
+    "capability_refs",
+    "deterministic_order_key"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "patch_id": {
+      "type": "string",
+      "pattern": "^dominium\\.patch\\.[a-z0-9][a-z0-9_.-]+$"
+    },
+    "patch_kind": {
+      "type": "string"
+    },
+    "document_ref": {
+      "type": "object"
+    },
+    "operation": {
+      "type": "string",
+      "enum": [
+        "set",
+        "insert",
+        "remove",
+        "move",
+        "replace",
+        "merge",
+        "annotate",
+        "import_asset",
+        "generate",
+        "no_op"
+      ]
+    },
+    "path_or_selector": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_path": {
+      "type": "string",
+      "description": "Optional repo-relative output target; never document identity."
+    },
+    "before_hash": {
+      "type": "string"
+    },
+    "after_hash": {
+      "type": "string"
+    },
+    "value": {},
+    "payload_ref": {
+      "type": "string"
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "capability_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "diagnostics_expected": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "refusal_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "author": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "deterministic_order_key": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

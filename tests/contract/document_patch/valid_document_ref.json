@@ -1,0 +1,17 @@
+{
+  "document_ref_id": "dominium.document_ref.pack_manifest.example",
+  "logical_id": "example.pack_manifest",
+  "document_type_id": "dominium.document_type.pack_manifest",
+  "artifact_ref": {
+    "artifact_kind": "pack",
+    "artifact_ref_id": "dominium.artifact.pack.example"
+  },
+  "schema_version": "1.0.0",
+  "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "source_kind": "repo",
+  "path": "tests/contract/document_patch/fixtures/example.pack.json",
+  "path_authoritative": false,
+  "provenance": {
+    "introduced_by": "DOCUMENT-PATCH-TRANSACTION-RUNTIME-01"
+  }
+}

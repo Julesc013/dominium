@@ -1,0 +1,48 @@
+{
+  "schema_id": "dominium.patch.operation.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.patch",
+  "operations": [
+    {
+      "id": "set",
+      "summary": "Set a scalar, object, array, or document field value at the selector."
+    },
+    {
+      "id": "insert",
+      "summary": "Insert a value into an ordered document location."
+    },
+    {
+      "id": "remove",
+      "summary": "Remove a value from a document when preconditions pass."
+    },
+    {
+      "id": "move",
+      "summary": "Move a value from one selector to another in deterministic order."
+    },
+    {
+      "id": "replace",
+      "summary": "Replace an existing value while preserving explicit before/after proof."
+    },
+    {
+      "id": "merge",
+      "summary": "Merge structured content under an explicit deterministic merge policy."
+    },
+    {
+      "id": "annotate",
+      "summary": "Attach annotation metadata without silently changing authoritative content."
+    },
+    {
+      "id": "import_asset",
+      "summary": "Import an asset reference through artifact and capability law."
+    },
+    {
+      "id": "generate",
+      "summary": "Generate content with declared generator, provenance, and evidence."
+    },
+    {
+      "id": "no_op",
+      "summary": "Record an intentional no-op transaction member with evidence."
+    }
+  ]
+}

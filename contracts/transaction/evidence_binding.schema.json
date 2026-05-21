@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.transaction.evidence_binding_schema.v1",
+  "title": "Dominium Transaction Evidence Binding",
+  "type": "object",
+  "required": [
+    "evidence_packet_ref",
+    "transaction_id",
+    "evidence_kind",
+    "status",
+    "producer"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "evidence_packet_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "transaction_id": {
+      "type": "string",
+      "pattern": "^dominium\\.transaction\\.[a-z0-9][a-z0-9_.-]+$"
+    },
+    "evidence_kind": {
+      "type": "string",
+      "enum": [
+        "intent",
+        "capability_decision",
+        "validation",
+        "dry_run",
+        "commit",
+        "export",
+        "refusal",
+        "rollback",
+        "audit"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "pass_with_warnings",
+        "fail",
+        "refused",
+        "not_run",
+        "blocked"
+      ]
+    },
+    "producer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "refusals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

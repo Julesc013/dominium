@@ -1,0 +1,29 @@
+schema_version = "dominium.patch.policy.v1"
+status = "provisional"
+owner = "contracts.patch"
+
+[contract]
+id = "dominium.patch.policy.v1"
+stability = "provisional"
+purpose = "Defines deterministic patch envelope rules for document and artifact mutation proposals."
+
+[identity]
+patch_identity_is_git_diff_path = false
+patch_identity_is_file_path = false
+required_identity_field = "patch_id"
+deterministic_order_required = true
+
+[operation]
+registry = "contracts/patch/patch_operation.registry.json"
+allowed_operations = ["set", "insert", "remove", "move", "replace", "merge", "annotate", "import_asset", "generate", "no_op"]
+unknown_operation_policy = "refuse_with_diagnostic_and_refusal"
+json_patch_compatible_concepts_allowed = true
+dominium_envelope_required = true
+
+[validation]
+preconditions_required = true
+capability_refs_required = true
+document_ref_required = true
+path_or_selector_required = true
+outside_allowed_root_policy = "refuse"
+evidence_for_generate_required = true

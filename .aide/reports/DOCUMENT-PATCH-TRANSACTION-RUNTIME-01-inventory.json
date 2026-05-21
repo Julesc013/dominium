@@ -1,0 +1,105 @@
+{
+  "status": "inventory",
+  "findings": [],
+  "inventory": {
+    "document_types": [
+      "dominium.document_type.command_descriptor",
+      "dominium.document_type.evidence_packet",
+      "dominium.document_type.module_descriptor",
+      "dominium.document_type.pack_manifest",
+      "dominium.document_type.release_plan",
+      "dominium.document_type.schema_document",
+      "dominium.document_type.theme_profile",
+      "dominium.document_type.workbench_workspace"
+    ],
+    "patch_operations": [
+      "annotate",
+      "generate",
+      "import_asset",
+      "insert",
+      "merge",
+      "move",
+      "no_op",
+      "remove",
+      "replace",
+      "set"
+    ],
+    "transaction_statuses": [
+      "committed",
+      "dry_run_failed",
+      "dry_run_passed",
+      "proposed",
+      "refused",
+      "retired",
+      "rolled_back",
+      "superseded",
+      "validated"
+    ],
+    "commit_policies": [
+      "auto_commit_allowed",
+      "dry_run_only",
+      "evidence_only",
+      "manual_review_required",
+      "package_export_only"
+    ],
+    "diagnostics": [
+      "dominium.diagnostic.document_patch.capability_missing",
+      "dominium.diagnostic.document_patch.dry_run_failed",
+      "dominium.diagnostic.document_patch.evidence_missing",
+      "dominium.diagnostic.document_patch.precondition_failed",
+      "dominium.diagnostic.document_patch.rollback_unavailable",
+      "dominium.diagnostic.document_patch.schema_mismatch",
+      "dominium.diagnostic.document_patch.target_outside_allowed_root",
+      "dominium.diagnostic.document_patch.unknown_document_type",
+      "dominium.diagnostic.document_patch.unsupported_patch_operation",
+      "dominium.diagnostic.document_patch.validation_failed"
+    ],
+    "refusals": [
+      "dominium.refusal.document_patch.capability_missing",
+      "dominium.refusal.document_patch.dry_run_failed",
+      "dominium.refusal.document_patch.evidence_required_missing",
+      "dominium.refusal.document_patch.precondition_failed",
+      "dominium.refusal.document_patch.rollback_unavailable",
+      "dominium.refusal.document_patch.schema_mismatch",
+      "dominium.refusal.document_patch.target_outside_allowed_root",
+      "dominium.refusal.document_patch.unknown_document_type",
+      "dominium.refusal.document_patch.unsupported_patch_operation",
+      "dominium.refusal.document_patch.validation_failed"
+    ],
+    "commands_seen": [
+      "dominium.abi.public_headers.validate",
+      "dominium.dependency_direction.validate",
+      "dominium.public_surface.validate",
+      "dominium.repo.fast_strict.run",
+      "dominium.validation.run"
+    ],
+    "artifact_kinds_seen": [
+      "app_descriptor",
+      "archive_record",
+      "asset",
+      "bundle",
+      "capability_registry",
+      "command_registry",
+      "composition_lock",
+      "composition_report",
+      "diagnostic",
+      "evidence_packet",
+      "generated_report",
+      "instance",
+      "module_descriptor",
+      "pack",
+      "profile",
+      "provider_registry",
+      "public_surface_registry",
+      "release_artifact",
+      "replay",
+      "save",
+      "schema_registry",
+      "test_fixture",
+      "theme",
+      "workbench_workspace",
+      "worldgen_baseline"
+    ],
+    "fixture_count": 16
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "rollback_id": "dominium.rollback.pack_manifest.missing_transaction",
+  "rollback_kind": "reverse_patch",
+  "preimage_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "postimage_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "evidence_packet_ref": ".aide/reports/DOCUMENT-PATCH-TRANSACTION-RUNTIME-01-validation.json"
+}

@@ -1,0 +1,68 @@
+{
+  "schema_id": "dominium.transaction.diagnostic.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.transaction",
+  "diagnostics": [
+    {
+      "id": "dominium.diagnostic.document_patch.unknown_document_type",
+      "summary": "Unknown document type.",
+      "severity": "error",
+      "category": "document_patch_transaction"
+    },
+    {
+      "id": "dominium.diagnostic.document_patch.unsupported_patch_operation",
+      "summary": "Unsupported patch operation.",
+      "severity": "error",
+      "category": "document_patch_transaction"
+    },
+    {
+      "id": "dominium.diagnostic.document_patch.precondition_failed",
+      "summary": "Patch precondition failed.",
+      "severity": "error",
+      "category": "document_patch_transaction"
+    },
+    {
+      "id": "dominium.diagnostic.document_patch.capability_missing",
+      "summary": "Required capability is missing.",
+      "severity": "error",
+      "category": "document_patch_transaction"
+    },
+    {
+      "id": "dominium.diagnostic.document_patch.validation_failed",
+      "summary": "Document, patch, or transaction validation failed.",
+      "severity": "error",
+      "category": "document_patch_transaction"
+    },
+    {
+      "id": "dominium.diagnostic.document_patch.dry_run_failed",
+      "summary": "Transaction dry-run failed.",
+      "severity": "error",
+      "category": "document_patch_transaction"
+    },
+    {
+      "id": "dominium.diagnostic.document_patch.rollback_unavailable",
+      "summary": "Rollback is unavailable or not proven.",
+      "severity": "error",
+      "category": "document_patch_transaction"
+    },
+    {
+      "id": "dominium.diagnostic.document_patch.target_outside_allowed_root",
+      "summary": "Transaction target is outside an allowed root.",
+      "severity": "error",
+      "category": "document_patch_transaction"
+    },
+    {
+      "id": "dominium.diagnostic.document_patch.schema_mismatch",
+      "summary": "Document schema version or identity mismatched.",
+      "severity": "error",
+      "category": "document_patch_transaction"
+    },
+    {
+      "id": "dominium.diagnostic.document_patch.evidence_missing",
+      "summary": "Required evidence packet or binding is missing.",
+      "severity": "error",
+      "category": "document_patch_transaction"
+    }
+  ]
+}

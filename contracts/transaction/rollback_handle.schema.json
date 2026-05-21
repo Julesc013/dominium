@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.transaction.rollback_handle_schema.v1",
+  "title": "Dominium Transaction Rollback Handle",
+  "type": "object",
+  "required": [
+    "rollback_id",
+    "transaction_id",
+    "rollback_kind",
+    "preimage_hash",
+    "postimage_hash",
+    "evidence_packet_ref"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "rollback_id": {
+      "type": "string",
+      "pattern": "^dominium\\.rollback\\.[a-z0-9][a-z0-9_.-]+$"
+    },
+    "transaction_id": {
+      "type": "string",
+      "pattern": "^dominium\\.transaction\\.[a-z0-9][a-z0-9_.-]+$"
+    },
+    "rollback_kind": {
+      "type": "string",
+      "enum": [
+        "reverse_patch",
+        "snapshot_restore",
+        "manual_reconstruction",
+        "not_available"
+      ]
+    },
+    "preimage_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "postimage_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_packet_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
