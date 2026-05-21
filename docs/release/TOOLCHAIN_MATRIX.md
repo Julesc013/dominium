@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-05-16
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 
@@ -35,21 +35,27 @@ No toolchain row is promoted by POST-CONVERGE-10.
 
 ## Baselines
 
-- Engine baseline: C89/C90 with extensions off.
-- Product shell baseline: C++98 with extensions off.
+- Engine/mainline C baseline: C17 with extensions off.
+- Product/runtime/mainline C++ baseline: C++17 with extensions off.
+- Public ABI remains C-compatible with opaque handles, versioned structs, explicit ownership, and no C++ ABI leakage.
 - Platform and native SDK lanes must not alter engine determinism or product identity.
 
 ## Toolchain Rows
 
-| Toolchain | Status | Tier | Families | Notes |
-| --- | --- | --- | --- | --- |
-| msvc | provisional | T1 | windows, winnt | CMakePresets define MSVC/VS 2022 lanes; local availability is host-dependent. |
-| gcc | provisional | T1 | linux, posix | Linux GCC lanes exist; support still requires preset, smoke, and package evidence. |
-| clang | provisional | T1 | linux, macosx, posix, windows | Linux Clang and Windows clang-cl lanes exist. |
-| xcode | planned | T1 | macosx | macOS Xcode lanes are declared; support requires host validation. |
-| mingw | experimental | T2 | windows | Windows policy prefers MSVC; MinGW remains experimental. |
-| legacy_vc6 | research | T3 | win9x, winnt | Retro lane requires frozen SDK/toolchain evidence. |
-| freestanding_16bit | research | T3 | dos, win16 | Declared lane only; no support claim. |
+| Toolchain | Status | Tier | Phase | Families | Notes |
+| --- | --- | --- | --- | --- | --- |
+| msvc | provisional | T1 | desktop | windows, winnt | CMakePresets define MSVC/VS 2022 lanes; local availability is host-dependent. |
+| gcc | provisional | T1 | desktop | linux, posix | Linux GCC lanes exist; support still requires preset, smoke, and package evidence. |
+| clang | provisional | T1 | desktop | linux, macosx, posix, windows | Linux Clang and Windows clang-cl lanes exist. |
+| xcode | planned | T1 | desktop | macosx | macOS Xcode lanes are declared; support requires host validation. |
+| mingw | experimental | T2 | older | windows | Windows policy prefers MSVC; MinGW remains experimental. |
+
+## Research And Back-Port Lanes
+
+| Lane | Status | Tier | Phase | Families | Notes |
+| --- | --- | --- | --- | --- | --- |
+| legacy_vc6 | research | T3 | older | win9x, winnt | Retro lane requires frozen SDK/toolchain evidence and must not govern first-wave architecture. |
+| freestanding_16bit | research | T3 | older | dos, win16 | Declared lane only; no support claim and not an active C17/C++17 floor. |
 
 ## Support Rule
 

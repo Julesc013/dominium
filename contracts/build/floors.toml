@@ -16,14 +16,14 @@ name = "Windows NT 10"
 family = "windows"
 status = "planned"
 minimum_os = "Windows 10 1507 or later"
-notes = "Current canonical Windows verify family; support requires build/test evidence."
+notes = "Later/current Windows family; not the minimum desktop floor. Support requires build/test evidence."
 
 [floors.winnt7]
 name = "Windows NT 6.1"
 family = "windows"
 status = "planned"
 minimum_os = "Windows 7 SP1"
-notes = "Compatibility floor only; no current proof."
+notes = "Primary Windows minimum floor for first-wave desktop support; no current proof."
 
 [floors.xp]
 name = "Windows XP"
@@ -43,8 +43,8 @@ notes = "Declared in CMake presets; host proof is required before support claims
 name = "macOS"
 family = "macos"
 status = "planned"
-minimum_os = "macOS floor defined by Xcode tuple"
-notes = "Declared in CMake presets; host proof is required before support claims."
+minimum_os = "Mac OS X 10.9.5"
+notes = "Primary macOS minimum floor for first-wave desktop support; host proof is required before support claims."
 
 [floors.classic_macos]
 name = "Classic Mac OS"

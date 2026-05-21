@@ -7,6 +7,7 @@ description = "Machine-readable component, product, platform, renderer, native a
 [policy]
 statuses = ["available", "implemented", "stub", "planned", "experimental", "provisional", "deprecated", "unsupported", "blocked", "research", "unknown"]
 support_tiers = ["T0", "T1", "T2", "T3", "T4", "T5"]
+phase_values = ["base", "desktop", "older", "advanced", "mobile"]
 unknown_defaults_to_unsupported = true
 stub_is_not_support = true
 planned_is_not_support = true
@@ -16,27 +17,33 @@ matrices_are_planning_contracts_not_implementations = true
 available_requires_evidence = true
 
 [support_tiers.T0]
-name = "correctness_baseline"
+name = "base"
+phase = "base"
 purpose = "Deterministic, headless, portable baseline for tests, replay, and minimal operation."
 
 [support_tiers.T1]
-name = "early_modern_desktop"
-purpose = "Initial public-ish desktop coverage on modern Windows, macOS, and Linux."
+name = "desktop"
+phase = "desktop"
+purpose = "Primary desktop coverage for Windows 7 SP1+, Mac OS X 10.9.5+, and supported practical Linux toolchains."
 
 [support_tiers.T2]
-name = "broad_compatibility"
-purpose = "Wider compatibility coverage including older desktop paths where feasible."
+name = "secondary"
+phase = "older"
+purpose = "Secondary compatibility or tooling lanes that do not define first-wave architecture."
 
 [support_tiers.T3]
-name = "retro_research"
-purpose = "Legacy/retro lanes requiring frozen toolchains and smoke tests."
+name = "backport_research"
+phase = "older"
+purpose = "Legacy, retro, or back-port lanes requiring frozen toolchains, smoke tests, and explicit review."
 
 [support_tiers.T4]
-name = "advanced_modern"
+name = "advanced"
+phase = "advanced"
 purpose = "Advanced GPU/render/platform/toolchain work after baseline stability."
 
 [support_tiers.T5]
 name = "mobile_web_exotic"
+phase = "mobile"
 purpose = "Mobile, web, exotic OS, console, and special-device research lanes."
 
 [products.client]
@@ -107,205 +114,252 @@ evidence = "Setup, launcher, client, and server have Win32 GUI source/stub surfa
 [platform_backends.null]
 status = "available"
 tier = "T0"
+phase = "base"
 purpose = "Null/headless platform backend."
 evidence = "DOM_PLATFORM accepts null and maps it to a platform ID."
 
-[platform_backends.posix_headless]
+[platform_backends.posix]
 status = "available"
 tier = "T0"
+phase = "base"
 purpose = "POSIX headless/server/CI path."
-evidence = "CMake defaults DOM_PLATFORM to posix_headless on UNIX hosts."
+aliases = ["posix_headless"]
+evidence = "CMake defaults DOM_PLATFORM to posix_headless on UNIX hosts; the release matrix treats this as the POSIX family baseline."
 
 [platform_backends.win32]
 status = "provisional"
 tier = "T1"
-purpose = "Windows native platform host."
-evidence = "DOM_PLATFORM accepts win32; Windows presets and Win32 app shell source surfaces exist."
-
-[platform_backends.win32_headless]
-status = "provisional"
-tier = "T0"
-purpose = "Windows headless platform host."
-evidence = "DOM_PLATFORM accepts win32_headless."
+phase = "desktop"
+minimum_os = "Windows 7 SP1"
+purpose = "Windows native platform host and headless/native substrate."
+aliases = ["win32_headless"]
+evidence = "DOM_PLATFORM accepts win32 and win32_headless; Windows presets and Win32 app shell source surfaces exist."
 
 [platform_backends.cocoa]
 status = "stub"
 tier = "T1"
+phase = "desktop"
+minimum_os = "Mac OS X 10.9.5"
 purpose = "macOS native platform host."
 evidence = "DOM_PLATFORM accepts cocoa and macOS Xcode presets exist; current platform docs describe cocoa as headless-safe stub."
 
-[platform_backends.posix_x11]
+[platform_backends.x11]
 status = "stub"
 tier = "T1"
+phase = "desktop"
 purpose = "Linux X11 desktop host."
+aliases = ["posix_x11"]
 evidence = "DOM_PLATFORM accepts posix_x11 and Linux presets reference it; current platform docs describe X11 as headless-safe stub."
 
-[platform_backends.posix_wayland]
+[platform_backends.wayland]
 status = "stub"
 tier = "T1"
+phase = "desktop"
 purpose = "Linux Wayland desktop host."
+aliases = ["posix_wayland"]
 evidence = "DOM_PLATFORM accepts posix_wayland; current platform docs describe Wayland as headless-safe stub."
 
-[platform_backends.sdl2]
+[platform_backends.sdl]
 status = "experimental"
 tier = "T1"
+phase = "desktop"
 purpose = "Convenience/dev portability adapter, not product identity."
+aliases = ["sdl2"]
 evidence = "DOM_PLATFORM accepts sdl2 and DOM_BACKEND_SDL2/DOM_FETCH_SDL2 exist; dependency availability gates actual use."
 
-[platform_backends.android]
+[platform_research_lanes.android]
 status = "research"
 tier = "T5"
+phase = "mobile"
 purpose = "Deferred mobile platform lane."
 evidence = "No current source implementation or build preset is treated as supported."
 
 [render_backends.null]
 status = "available"
 tier = "T0"
+phase = "base"
 purpose = "CI/server/headless renderer."
 evidence = "DOM_BACKEND_NULL defaults ON and registers dom_render_backend_null; renderer docs call null a required correctness path."
 
-[render_backends.soft]
+[render_backends.software]
 status = "available"
 tier = "T0"
+phase = "base"
 purpose = "Software renderer baseline."
+aliases = ["soft"]
 evidence = "DOM_BACKEND_SOFT defaults ON and registers dom_render_backend_soft; renderer docs call software a required correctness path."
 
-[render_backends.gl1]
-status = "research"
-tier = "T3"
-purpose = "Extreme legacy/fixed-function renderer."
-evidence = "DOM_BACKEND_GL1 exists but defaults OFF; current docs classify GPU backends as soft-backed stubs until native implementations land."
-
-[render_backends.gl2]
-status = "stub"
-tier = "T1"
-purpose = "OpenGL compatibility renderer."
-evidence = "DOM_BACKEND_GL2 exists and is Windows/WGL-gated; current docs classify GPU backends as soft-backed stubs."
-
-[render_backends.gl4]
-status = "stub"
-tier = "T4"
-purpose = "Modern OpenGL renderer."
-evidence = "DOM_BACKEND_GL4 exists but defaults OFF; native implementation support is not claimed."
-
-[render_backends.dx9]
-status = "research"
-tier = "T3"
-purpose = "Legacy Windows renderer."
-evidence = "DOM_BACKEND_DX9 exists and fallback presets reference DX9; current docs classify GPU backends as soft-backed stubs."
-
-[render_backends.dx11]
-status = "stub"
-tier = "T1"
-purpose = "First serious Windows hardware renderer."
-evidence = "DOM_BACKEND_DX11 exists but defaults OFF; native implementation support is not claimed."
-
-[render_backends.dx12]
+[render_backends.opengl]
 status = "planned"
-tier = "T4"
-purpose = "Advanced Windows renderer."
-evidence = "DOM_BACKEND_DX12 exists but defaults OFF; no implemented support is claimed."
+tier = "T1"
+phase = "desktop"
+minimum_version = "3.3"
+profile = "core-style shader pipeline"
+purpose = "First shader-based hardware renderer family."
+transitional_aliases = ["gl4"]
+backport_lanes = ["opengl_2_1", "opengl_1_1"]
+evidence = "DOM_BACKEND_GL4 exists as a transitional switch; the first-wave target is OpenGL 3.3-style shader architecture, with no support claim until native proof exists."
 
-[render_backends.vk1]
+[render_backends.direct3d]
 status = "planned"
-tier = "T4"
-purpose = "Modern Vulkan renderer."
-evidence = "DOM_BACKEND_VK1 exists but defaults OFF; no implemented support is claimed."
+tier = "T1"
+phase = "desktop"
+primary_version = "11"
+purpose = "Windows hardware renderer family."
+transitional_aliases = ["dx11"]
+advanced_lanes = ["direct3d_12"]
+backport_lanes = ["direct3d_9"]
+evidence = "DOM_BACKEND_DX11 exists but defaults OFF; D3D11 is the first-wave Windows hardware target and support still requires native proof."
 
 [render_backends.metal]
 status = "planned"
 tier = "T4"
-purpose = "Modern macOS native GPU renderer."
+phase = "advanced"
+purpose = "Later Apple-native GPU renderer."
 evidence = "DOM_BACKEND_METAL exists but defaults OFF; no implemented support is claimed."
 
-[render_backends.vector2d]
+[render_backends.vulkan]
 status = "planned"
-tier = "T2"
-purpose = "2D/UI/vector acceleration for setup/launcher/tools/overlays."
-evidence = "DOM_BACKEND_VECTOR2D exists but defaults OFF; CMakePresets reference it for selected lanes."
+tier = "T4"
+phase = "advanced"
+purpose = "Later advanced explicit GPU renderer."
+transitional_aliases = ["vk1"]
+evidence = "DOM_BACKEND_VK1 exists but defaults OFF; Vulkan remains a later advanced lane."
+
+[renderer_backport_lanes.opengl_2_1]
+status = "research"
+tier = "T3"
+phase = "older"
+purpose = "Deferred OpenGL compatibility/back-port lane."
+evidence = "DOM_BACKEND_GL2 exists as a transitional switch but must not shape first-wave renderer architecture."
+
+[renderer_backport_lanes.opengl_1_1]
+status = "research"
+tier = "T3"
+phase = "older"
+purpose = "Extreme fixed-function OpenGL back-port/research lane."
+evidence = "DOM_BACKEND_GL1 exists but defaults OFF and remains non-primary."
+
+[renderer_backport_lanes.direct3d_9]
+status = "research"
+tier = "T3"
+phase = "older"
+purpose = "Legacy Windows back-port/research lane."
+evidence = "DOM_BACKEND_DX9 exists and fallback presets reference DX9, but it is not first-wave architecture."
+
+[renderer_advanced_lanes.direct3d_12]
+status = "planned"
+tier = "T4"
+phase = "advanced"
+purpose = "Advanced Windows renderer lane after D3D11 and render-device contracts stabilize."
+evidence = "DOM_BACKEND_DX12 exists but defaults OFF; no implemented support is claimed."
+
+[drawing.canvas]
+status = "planned"
+tier = "T1"
+phase = "desktop"
+purpose = "Renderer-independent 2D drawing/canvas feature layer for UI, tools, overlays, and primitive drawing."
+implemented_by = ["software", "opengl", "direct3d", "metal", "vulkan"]
+transitional_aliases = ["vector2d"]
+evidence = "DOM_BACKEND_VECTOR2D exists as a transitional switch, but vector/canvas drawing is not a renderer backend identity."
 
 [native_shells.win32]
 status = "stub"
 products = ["setup", "launcher", "client", "server"]
 tier = "T1"
+phase = "desktop"
 evidence = "apps/*/gui contain Win32 source or stub files; product semantics remain outside native shells."
 
 [native_shells.appkit]
 status = "planned"
 products = ["setup", "launcher", "tools"]
 tier = "T1"
+phase = "desktop"
 evidence = "macOS cocoa/AppKit lanes are documented, but no implemented native shell is claimed."
 
 [native_shells.gtk]
 status = "planned"
 products = ["setup", "launcher", "tools"]
 tier = "T1"
+phase = "desktop"
 evidence = "Linux native GUI lane is planned; no implemented GTK shell is claimed."
 
 [native_shells.qt]
 status = "research"
 products = ["tools"]
 tier = "T2"
+phase = "older"
 evidence = "Qt is not current product identity and remains optional research if mentioned by later docs."
 
 [native_shells.winforms]
 status = "research"
 products = ["launcher", "tools"]
 tier = "T2"
+phase = "older"
 evidence = "Convenience/admin tooling lane only; no support claim."
 
 [native_shells.swiftui]
 status = "research"
 products = ["launcher", "tools"]
 tier = "T4"
+phase = "advanced"
 evidence = "Modern macOS layer/bridge research only."
 
-[native_shells.winui3]
+[native_shells.winui]
 status = "research"
 products = ["launcher", "tools"]
 tier = "T4"
+phase = "advanced"
+aliases = ["winui3", "windows_app_sdk"]
 evidence = "Modern Windows layer research only."
 
 [toolchains.msvc]
 status = "provisional"
 families = ["windows", "winnt"]
 tier = "T1"
+phase = "desktop"
 evidence = "CMakePresets define MSVC/VS 2022 lanes; local availability is host/toolchain dependent."
 
 [toolchains.gcc]
 status = "provisional"
 families = ["linux", "posix"]
 tier = "T1"
+phase = "desktop"
 evidence = "CMake toolchain policy accepts GCC on Linux and presets define Linux GCC lanes."
 
 [toolchains.clang]
 status = "provisional"
 families = ["linux", "macosx", "posix", "windows"]
 tier = "T1"
+phase = "desktop"
 evidence = "CMake toolchain policy accepts Clang on Linux and presets define Linux Clang and Windows clang-cl lanes."
 
 [toolchains.xcode]
 status = "planned"
 families = ["macosx"]
 tier = "T1"
+phase = "desktop"
 evidence = "CMakePresets define macOS Xcode lanes; implementation support remains host/toolchain dependent."
 
 [toolchains.mingw]
 status = "experimental"
 families = ["windows"]
 tier = "T2"
+phase = "older"
 evidence = "CMakePresets include Windows MinGW-w64 debug lane; Windows policy prefers MSVC."
 
-[toolchains.legacy_vc6]
+[toolchain_research_lanes.legacy_vc6]
 status = "research"
 families = ["win9x", "winnt"]
 tier = "T3"
+phase = "older"
 evidence = "Legacy IDE/preset lanes exist but are declared/research and require frozen toolchains."
 
-[toolchains.freestanding_16bit]
+[toolchain_research_lanes.freestanding_16bit]
 status = "research"
 families = ["dos", "win16"]
 tier = "T3"
+phase = "older"
 evidence = "Declared x86_16/DOS lanes exist; no current support claim."
 
 [packaging.dompkg]

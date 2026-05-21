@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -16,12 +16,28 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 
 ## Available
-- `soft`: CPU raster + platform present. Default for auto selection.
 - `null`: headless renderer with no presentation.
+- `software`: CPU raster + platform present. Current runtime alias: `soft`.
 
-## Unavailable (stubbed)
-- `dx9`, `dx11`, `gl2`, `vk1`, `metal`: compiled stubs are reported as
-  unavailable. Explicit selection fails loudly; auto selection skips them.
+## Primary Planned Hardware Families
+
+- `opengl`: first hardware renderer family, targeting an OpenGL 3.3 core-style shader pipeline. Current transitional alias: `gl4`.
+- `direct3d`: Windows hardware renderer family, primary version Direct3D 11. Current transitional alias: `dx11`.
+
+## Later Advanced Families
+
+- `metal`: later Apple-native renderer, not required for the Mac OS X 10.9.5 baseline.
+- `vulkan`: later explicit-GPU renderer. Current transitional alias: `vk1`.
+- `direct3d_12`: advanced Windows lane. Current transitional alias: `dx12`.
+
+## Back-Port / Research Lanes
+
+- `opengl_2_1`, `opengl_1_1`, and `direct3d_9` remain research/back-port lanes. Current transitional aliases include `gl2`, `gl1`, and `dx9`.
+- Explicit selection of unavailable compiled stubs fails loudly; auto selection skips them.
+
+## Drawing
+
+- `canvas`: renderer-independent drawing feature layer. `vector2d` is a transitional feature alias, not a renderer backend identity.
 
 ## Detection
 - `d_gfx_detect_backends` reports `supported` and `detail` strings.

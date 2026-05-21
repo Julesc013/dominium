@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-05-16
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 
@@ -27,15 +27,15 @@ The native app matrix records shell strategy for setup, launcher, admin/tools, c
 
 ## Native Shell Rows
 
-| Shell | Status | Tier | Products | Notes |
-| --- | --- | --- | --- | --- |
-| win32 | stub | T1 | setup, launcher, client, server | Win32 source/stub surfaces exist; support requires smoke/package evidence. |
-| appkit | planned | T1 | setup, launcher, tools | macOS baseline native shell lane. |
-| gtk | planned | T1 | setup, launcher, tools | Linux first native GUI lane. |
-| qt | research | T2 | tools | Optional/research only. |
-| winforms | research | T2 | launcher, tools | Convenience/admin/tools lane only. |
-| swiftui | research | T4 | launcher, tools | Modern macOS layer/bridge research. |
-| winui3 | research | T4 | launcher, tools | Modern Windows layer research. |
+| Shell | Status | Tier | Phase | Products | Notes |
+| --- | --- | --- | --- | --- | --- |
+| win32 | stub | T1 | desktop | setup, launcher, client, server | Windows 7 SP1+ baseline native shell. Win32 source/stub surfaces exist; support requires smoke/package evidence. |
+| appkit | planned | T1 | desktop | setup, launcher, tools | Mac OS X 10.9.5+ baseline native shell lane. |
+| gtk | planned | T1 | desktop | setup, launcher, tools | First Linux native GUI lane. |
+| qt | research | T2 | older | tools | Optional tools lane, not first-wave product identity. |
+| winforms | research | T2 | older | launcher, tools | Convenience/admin/tools lane only. |
+| swiftui | research | T4 | advanced | launcher, tools | Later modern macOS layer/bridge research. |
+| winui | research | T4 | advanced | launcher, tools | Later modern Windows layer research; current alias `winui3` is not baseline. |
 
 ## Rules
 

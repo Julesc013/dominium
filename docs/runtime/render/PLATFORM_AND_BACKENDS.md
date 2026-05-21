@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-16
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -49,11 +49,19 @@ Supported renderer classes:
 2. `software` renderer
    1. CPU fallback
    2. no external assets required
-3. `hardware_gl` renderer (optional)
-   1. consumes `RenderModel` only
-   2. platform `gfx` context/surface usage
+3. `opengl` renderer family (planned)
+   1. target OpenGL 3.3 core-style shader pipeline
+   2. consumes `RenderModel` only
+   3. platform `gfx` context/surface usage
+4. `direct3d` renderer family (planned)
+   1. target Direct3D 11 for the first Windows hardware path
+   2. consumes `RenderModel` only
+   3. platform `gfx` context/surface usage
+5. later `metal`, `vulkan`, and `direct3d_12` advanced lanes
 
 If a requested hardware backend is unavailable, deterministic fallback to software renderer is required with a run-meta event.
+
+OpenGL 2.1, OpenGL 1.1, and Direct3D 9 are back-port/research lanes only. They must not force fixed-function or immediate-mode assumptions into the first-wave renderer architecture.
 
 ## 3) Strict Boundaries
 
@@ -69,9 +77,9 @@ Hard constraints:
 
 Target host operating systems:
 
-1. Windows
-2. macOS
-3. Linux
+1. Windows 7 SP1+
+2. Mac OS X 10.9.5+
+3. supported practical Linux distributions/toolchains
 
 Portability contract:
 

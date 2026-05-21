@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -42,10 +42,13 @@ logic lives in engine/game subsystems.
 - Surface binding: `d_gfx_bind_surface`, `d_gfx_resize`, `d_gfx_get_native_window`
 
 ## Built-in backends
-- `soft`: CPU buffer + platform present (`d_system_present_framebuffer` with native window)
 - `null`: headless renderer, no presentation (use for tests/servers)
-- `dx9`/`dx11`/`gl2`/`vk1`/`metal`: compiled stubs are reported as unavailable;
-  explicit selection fails loudly until real backends land
+- `software`: CPU buffer + platform present (`d_system_present_framebuffer` with native window); current runtime alias is `soft`
+- `opengl`: planned first hardware family, target OpenGL 3.3 core-style shader pipeline; current transitional alias is `gl4`
+- `direct3d`: planned Windows hardware family, primary version Direct3D 11; current transitional alias is `dx11`
+- `metal` and `vulkan`: later advanced families; current Vulkan transitional alias is `vk1`
+- `opengl_2_1`, `opengl_1_1`, and `direct3d_9`: back-port/research lanes; current transitional aliases include `gl2`, `gl1`, and `dx9`
+- explicit selection of unavailable compiled stubs fails loudly until real backends land
 
 ## Capabilities
 - Opcode mask: `d_gfx_get_opcode_mask` and `d_gfx_get_opcode_mask_for_backend`

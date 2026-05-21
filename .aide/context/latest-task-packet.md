@@ -2,44 +2,48 @@
 
 ## PHASE
 
-foundation-hardening - PORTABILITY-ARCH-POLICY-02
+UNSPECIFIED - MATRIX-CLEANUP-00 renderer platform baseline cleanup
 
 ## GOAL
 
-Define, validate, document, and fast-strict integrate Dominium's 64-bit native architecture policy.
+MATRIX-CLEANUP-00 renderer platform baseline cleanup
 
 ## WHY
 
-Dominium mainline full-native products need an explicit architecture law so legacy 32-bit and vintage compatibility lanes do not govern the mainline. Public ABI and persisted formats must remain pointer-width independent.
+Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
 
 ## CONTEXT_REFS
 
-- `docs/repo/FOUNDATION_LOCK.md`
-- `docs/repo/audits/PORTABILITY_ARCH_POLICY_02.md`
-- `.aide/reports/PORTABILITY-ARCH-POLICY-02-validation.md`
-- `.aide/reports/PORTABILITY-ARCH-POLICY-02-readiness.md`
-- `.aide/reports/PORTABILITY-ARCH-POLICY-02-fast-strict.md`
-- `.aide/context/latest-context-packet.md`
+- `.aide/memory/project-state.md`
+- `.aide/memory/decisions.md`
+- `.aide/memory/open-risks.md`
+- `.aide/context/repo-snapshot.json` (present)
+- `.aide/context/repo-map.json` (present)
+- `.aide/context/repo-map.md` (present)
+- `.aide/context/test-map.json` (present)
+- `.aide/context/context-index.json` (present)
+- `.aide/context/latest-context-packet.md` (present)
+- `.aide/repo/latest-repo-intelligence.md` (present)
+- `.aide/repo/file-inventory.json` (present)
+- `.aide/reports/file-quality-summary.md` (present)
+- `.aide/reports/file-quality-ledger.json` (present)
+- `.aide/refactors/latest-refactor-readiness.md` (present)
+- `.aide/refactors/latest-refactor-plan.example.json` (present)
+- `.aide/routing/latest-route-decision.json` (present)
+- `.aide/routing/latest-route-decision.md` (present)
+- `.aide/cache/latest-cache-keys.json` (present)
+- `.aide/cache/latest-cache-keys.md` (present)
+- `.aide/prompts/compact-task.md`
+- `.aide/policies/token-budget.yaml`
+- `.aide/policies/cache.yaml`
+- `.aide/policies/local-state.yaml`
 
 ## ALLOWED_PATHS
 
-- `contracts/platform/**`
-- `contracts/public_surface/**`
-- `contracts/diagnostics/**`
-- `contracts/refusal/**`
-- `contracts/capability/**`
-- `contracts/testing/test_tiers.contract.toml`
-- `tools/validators/platform/**`
-- `tests/contract/architecture_policy/**`
-- `docs/architecture/**`
-- `docs/development/**`
-- `docs/build/**`
-- `docs/release/**`
-- `docs/repo/**`
+- `<fill from the next reviewed queue packet>`
 - `.aide/context/**`
-- `.aide/reports/**`
-- `.aide/queue/current.toml`
-- `.aide/ledgers/migration_ledger.jsonl`
+- `.aide/queue/unspecified-*` if this task becomes a queue item
+- root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
 
@@ -47,64 +51,71 @@ Dominium mainline full-native products need an explicit architecture law so lega
 - `.env`
 - `secrets/**`
 - `.aide.local/**`
-- `.dominium.local/**`
-- build output roots
-- Workbench/product feature implementation outside architecture-policy scope
+- raw provider credentials, API keys, local caches, raw prompt logs
+- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
 
 ## IMPLEMENTATION
 
-- Added architecture policy contracts, tier registry, pointer-width schema, endian policy, and architecture claim schema.
-- Added `tools/validators/platform/check_architecture_policy.py`.
-- Added architecture policy fixtures.
-- Updated portability rows with architecture tiers, word-size policy, and endian policy.
-- Registered public surfaces, diagnostics, refusals, and capabilities.
-- Added architecture validator to fast strict.
+- Read the queue packet and relevant repo refs first.
+- Keep changes inside the allowed paths.
+- Make the smallest coherent diff that satisfies acceptance.
+- Preserve generated/manual boundaries.
+- Do not inline whole source files unless exact contents are required.
+- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
 
 ## VALIDATION
 
-- architecture policy strict/json/fixtures/inventory: PASS.
-- portability matrix strict/json/fixtures: PASS.
-- dependency-direction strict: PASS, `0` violations, `68` warnings.
-- AIDE doctor/validate/test/selftest/tools/roots/repo: PASS after packet repair.
-- RepoX STRICT: PASS with stale AuditX warning.
-- FAST strict: PASS, `33` commands, `296.553` seconds.
-- CMake configure/build and smoke CTest: PASS through FAST strict.
-- full CTest: NOT RUN, T4/full-gate debt.
+- `py -3 .aide/scripts/aide_lite.py doctor`
+- `py -3 .aide/scripts/aide_lite.py validate`
+- `py -3 .aide/scripts/aide_lite.py index`
+- `py -3 .aide/scripts/aide_lite.py context`
+- `py -3 .aide/scripts/aide_lite.py repo inventory`
+- `py -3 .aide/scripts/aide_lite.py repo validate`
+- `py -3 .aide/scripts/aide_lite.py verify`
+- `py -3 .aide/scripts/aide_lite.py review-pack`
+- `py -3 .aide/scripts/aide_lite.py route explain`
+- `py -3 .aide/scripts/aide_lite.py test`
+- `py -3 .aide/scripts/aide_lite.py selftest`
+- `py -3 scripts/aide validate`
+- `git diff --check`
 
 ## COMMITS
 
-Create an audit-grade architecture policy commit after final fast strict remains green.
+- Commit coherent subdeliverables with verbose bodies.
+- Stop at review gates.
 
 ## EVIDENCE
 
-- `docs/repo/audits/PORTABILITY_ARCH_POLICY_02.md`
-- `.aide/reports/PORTABILITY-ARCH-POLICY-02-*`
-- `.aide/reports/latest-dominium-status.md`
-- `.aide/reports/latest-warning-disposition.md`
+- changed files
+- validation commands and results
+- verifier result
+- review packet path and result when review-pack is available
+- advisory route decision path and result when Q17 routing is available
+- compact packet size and budget status
+- unresolved risks and deferrals
 
 ## NON_GOALS
 
-- Do not implement `WORKBENCH-VALIDATION-SLICE-01` in this task.
-- Do not implement Workbench UI, gameplay, renderer expansion, native GUI, runtime module loading, package/provider runtime, or release publication.
-- Do not run full CTest unless a targeted blocker requires it.
+- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
 
 ## ACCEPTANCE
 
-- Architecture policy is PASS_WITH_WARNINGS.
-- Foundation Lock remains PASS_WITH_WARNINGS.
-- `WORKBENCH-VALIDATION-SLICE-01` remains authorized as the next narrow governed product slice.
-- Broad feature work remains blocked.
-- Worktree is clean after commit.
+- Task-specific acceptance criteria are met.
+- Validation is run and recorded.
+- Evidence is written.
+- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with `STATUS`, `COMMITS`, `VALIDATION`, `PUSH`, `RISKS`, and `NEXT`.
+Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
+Include the verifier result when Q12 verifier behavior is available.
 
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4218
-- approx_tokens: 1055
+- chars: 4166
+- approx_tokens: 1042
 - budget_status: PASS
 - warnings:
   - none
+- formal ledger: `.aide/reports/token-ledger.jsonl`

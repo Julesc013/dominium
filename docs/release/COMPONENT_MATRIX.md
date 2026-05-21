@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-05-16
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 
@@ -25,14 +25,14 @@ Allowed statuses are `available`, `implemented`, `stub`, `planned`, `experimenta
 
 See `docs/release/SUPPORT_TIERS.md`.
 
-| Tier | Name |
-| --- | --- |
-| T0 | correctness_baseline |
-| T1 | early_modern_desktop |
-| T2 | broad_compatibility |
-| T3 | retro_research |
-| T4 | advanced_modern |
-| T5 | mobile_web_exotic |
+| Tier | Name | Phase |
+| --- | --- | --- |
+| T0 | base | base |
+| T1 | desktop | desktop |
+| T2 | secondary | older |
+| T3 | backport_research | older |
+| T4 | advanced | advanced |
+| T5 | mobile_web_exotic | mobile |
 
 ## POST-CONVERGE-08 Boot Evidence
 
@@ -96,57 +96,76 @@ This evidence does not promote products, toolchains, or packaging rows in the ma
 
 ## Platform Backends
 
-| Backend | Status | Tier | Notes |
-| --- | --- | --- | --- |
-| null | available | T0 | Null/headless verification platform. |
-| posix_headless | available | T0 | UNIX default in CMake. |
-| win32 | provisional | T1 | CMake accepts `win32`; Windows presets exist. |
-| win32_headless | provisional | T0 | Windows headless lane. |
-| cocoa | stub | T1 | Accepted by CMake; native support is not claimed. |
-| posix_x11 | stub | T1 | Linux X11 lane, not implemented support. |
-| posix_wayland | stub | T1 | Linux Wayland lane, not implemented support. |
-| sdl2 | experimental | T1 | Dev/convenience adapter, dependency-gated. |
-| android | research | T5 | Deferred mobile lane. |
+| Backend | Status | Tier | Phase | Notes |
+| --- | --- | --- | --- | --- |
+| null | available | T0 | base | Null/headless verification platform. |
+| posix | available | T0 | base | POSIX headless/server substrate; current CMake alias is `posix_headless`. |
+| win32 | provisional | T1 | desktop | Windows 7 SP1+ native platform family; includes `win32_headless` as a headless variant. |
+| cocoa | stub | T1 | desktop | Mac OS X 10.9.5+ native platform family; native support is not claimed. |
+| x11 | stub | T1 | desktop | First Linux desktop window lane; current CMake alias is `posix_x11`. |
+| wayland | stub | T1 | desktop | Later Linux desktop window lane; current CMake alias is `posix_wayland`. |
+| sdl | experimental | T1 | desktop | Dev/convenience adapter, dependency-gated; current CMake alias is `sdl2`. |
+
+### Platform Research And Back-Port Lanes
+
+| Lane | Status | Tier | Phase | Notes |
+| --- | --- | --- | --- | --- |
+| android | research | T5 | mobile | Deferred mobile lane, not first-wave desktop architecture. |
 
 ## Render Backends
 
-| Backend | Status | Tier | Notes |
-| --- | --- | --- | --- |
-| null | available | T0 | Correctness/headless path. |
-| soft | available | T0 | Software renderer baseline. |
-| gl1 | research | T3 | Fixed-function legacy lane. |
-| gl2 | stub | T1 | OpenGL compatibility lane. |
-| gl4 | stub | T4 | Modern OpenGL lane. |
-| dx9 | research | T3 | Legacy Windows renderer lane. |
-| dx11 | stub | T1 | Windows hardware renderer lane. |
-| dx12 | planned | T4 | Advanced Windows lane. |
-| vk1 | planned | T4 | Vulkan lane. |
-| metal | planned | T4 | macOS GPU lane. |
-| vector2d | planned | T2 | UI/tools/overlay acceleration lane. |
+| Backend | Status | Tier | Phase | Notes |
+| --- | --- | --- | --- | --- |
+| null | available | T0 | base | Correctness/headless path. |
+| software | available | T0 | base | Software renderer baseline; current runtime/CMake alias is `soft`. |
+| opengl | planned | T1 | desktop | First hardware renderer family, targeting an OpenGL 3.3 core-style shader pipeline; current transitional alias is `gl4`. |
+| direct3d | planned | T1 | desktop | Windows hardware renderer family, primary version Direct3D 11. |
+| metal | planned | T4 | advanced | Later Apple-native renderer, not required for the Mac OS X 10.9.5 baseline. |
+| vulkan | planned | T4 | advanced | Later advanced explicit-GPU renderer; current transitional alias is `vk1`. |
+
+### Renderer Back-Port And Advanced Lanes
+
+| Lane | Status | Tier | Phase | Notes |
+| --- | --- | --- | --- | --- |
+| opengl_2_1 | research | T3 | older | Deferred compatibility/back-port lane; current CMake alias is `gl2`. |
+| opengl_1_1 | research | T3 | older | Fixed-function back-port/research lane; current CMake alias is `gl1`. |
+| direct3d_9 | research | T3 | older | Legacy Windows back-port/research lane; current CMake alias is `dx9`. |
+| direct3d_12 | planned | T4 | advanced | Advanced Windows renderer after D3D11 and render-device contracts stabilize; current CMake alias is `dx12`. |
+
+### Drawing Features
+
+| Feature | Status | Tier | Phase | Notes |
+| --- | --- | --- | --- | --- |
+| canvas | planned | T1 | desktop | Renderer-independent 2D drawing/canvas layer implemented by renderer families; `vector2d` is a transitional alias, not a renderer backend. |
 
 ## Native Shells
 
-| Shell | Status | Tier | Products |
-| --- | --- | --- | --- |
-| win32 | stub | T1 | setup, launcher, client, server |
-| appkit | planned | T1 | setup, launcher, tools |
-| gtk | planned | T1 | setup, launcher, tools |
-| qt | research | T2 | tools |
-| winforms | research | T2 | launcher, tools |
-| swiftui | research | T4 | launcher, tools |
-| winui3 | research | T4 | launcher, tools |
+| Shell | Status | Tier | Phase | Products |
+| --- | --- | --- | --- | --- |
+| win32 | stub | T1 | desktop | setup, launcher, client, server |
+| appkit | planned | T1 | desktop | setup, launcher, tools |
+| gtk | planned | T1 | desktop | setup, launcher, tools |
+| qt | research | T2 | older | tools |
+| winforms | research | T2 | older | launcher, tools |
+| swiftui | research | T4 | advanced | launcher, tools |
+| winui | research | T4 | advanced | launcher, tools |
 
 ## Toolchains
 
-| Toolchain | Status | Tier | Families |
-| --- | --- | --- | --- |
-| msvc | provisional | T1 | windows, winnt |
-| gcc | provisional | T1 | linux, posix |
-| clang | provisional | T1 | linux, macosx, posix, windows |
-| xcode | planned | T1 | macosx |
-| mingw | experimental | T2 | windows |
-| legacy_vc6 | research | T3 | win9x, winnt |
-| freestanding_16bit | research | T3 | dos, win16 |
+| Toolchain | Status | Tier | Phase | Families |
+| --- | --- | --- | --- | --- |
+| msvc | provisional | T1 | desktop | windows, winnt |
+| gcc | provisional | T1 | desktop | linux, posix |
+| clang | provisional | T1 | desktop | linux, macosx, posix, windows |
+| xcode | planned | T1 | desktop | macosx |
+| mingw | experimental | T2 | older | windows |
+
+### Toolchain Research And Back-Port Lanes
+
+| Lane | Status | Tier | Phase | Families |
+| --- | --- | --- | --- | --- |
+| legacy_vc6 | research | T3 | older | win9x, winnt |
+| freestanding_16bit | research | T3 | older | dos, win16 |
 
 ## Packaging
 

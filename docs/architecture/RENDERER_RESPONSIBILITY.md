@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -48,14 +48,14 @@ All backends expose identical abstract interfaces and identical UI semantics.
 - vector / ASCII / simple raster
 - zero GPU assumptions
 
-Current focus (this phase): null + software renderers are fully implemented and validated. GPU backends (DX9/DX11/DX12, VK1, GL1/GL2/GL4, Metal) are available as soft-backed stubs until their full native implementations land.
+Current focus: null and software renderers are the correctness floor. First-wave hardware renderer planning is shader-based: OpenGL targets a 3.3 core-style shader pipeline, and Direct3D targets version 11. Metal, Vulkan, and Direct3D 12 are later advanced lanes. OpenGL 2.1, OpenGL 1.1, and Direct3D 9 remain back-port/research lanes and must not shape first-wave renderer architecture.
 
 ### GPU renderers (capability-gated)
 
 - OpenGL
-- Vulkan
-- Direct3D (legacy + modern)
+- Direct3D 11
 - Metal
+- Vulkan
 
 Each GPU renderer must:
 
@@ -68,7 +68,7 @@ Each GPU renderer must:
 - GPU backends may ship as soft-backed stubs when APIs/drivers are unavailable.
 - Stubs must be deterministic and presentation-only.
 - Stubs must still report capabilities honestly and refuse unsupported features explicitly.
-- Legacy backends (VGA/CGA/EGA/XGA, QuickDraw, GDI, etc.) may be implemented as soft-backed stubs.
+- Legacy backends (OpenGL 2.1, OpenGL 1.1, Direct3D 9, VGA/CGA/EGA/XGA, QuickDraw, GDI, etc.) may be implemented as soft-backed stubs or research adapters only when explicitly scoped.
 
 ### Bare‑metal / minimal renderer
 
