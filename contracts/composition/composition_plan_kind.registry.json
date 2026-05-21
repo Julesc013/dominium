@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.composition.plan_kind.registry.v1",
+  "schema_id": "dominium.composition.plan_kind.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.composition",
+  "plan_kinds": [
+    {"id": "product_launch", "summary": "Resolve an app descriptor, profile set, packs, modules, providers, platform, renderer, and capabilities for a product launch."},
+    {"id": "workbench_workspace", "summary": "Resolve a Workbench workspace composition without implementing a workspace runtime."},
+    {"id": "package_mount", "summary": "Resolve a deterministic pack or package mount plan without mounting payloads."},
+    {"id": "profile_load", "summary": "Resolve profile inputs and explicit overrides without applying runtime profile state."},
+    {"id": "provider_selection", "summary": "Resolve provider candidates and decisions for requested service/backend kinds."},
+    {"id": "module_enablement", "summary": "Resolve module enablement from descriptors and declared capabilities."},
+    {"id": "release_projection", "summary": "Resolve release-facing composition projection without publishing release artifacts."},
+    {"id": "test_fixture", "summary": "Resolve fixture-only composition evidence that is not a support claim."}
+  ]
+}

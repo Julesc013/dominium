@@ -1,0 +1,23 @@
+{
+  "schema_id": "dominium.composition.decision",
+  "schema_version": "1.0.0",
+  "composition_decision_id": "dominium.composition.decision.invalid.degraded_without_trace",
+  "plan_ref": "dominium.composition.plan.workbench_validation.fixture",
+  "status": "degraded",
+  "selected_profile_refs": [],
+  "selected_pack_refs": [],
+  "selected_module_refs": ["dominium.workbench.validation"],
+  "selected_provider_refs": ["dominium.provider.workbench.validation"],
+  "capability_decisions": [],
+  "refusal_refs": [],
+  "diagnostic_refs": ["DOM-COMPOSITION-DEGRADED"],
+  "conflict_reports": [],
+  "lockfile_refs": [],
+  "evidence_ref": "evidence.composition.invalid",
+  "fallback_trace": [],
+  "limitations": ["degraded without trace should fail"],
+  "source_refs": ["tests/contract/composition/fixtures/invalid_degraded_fallback_without_trace.json"],
+  "generated_by": "tools/validators/contracts/check_composition_plan.py",
+  "deterministic_order_key": "000020:invalid",
+  "support_claim": false
+}

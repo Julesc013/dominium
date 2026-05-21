@@ -1,0 +1,30 @@
+{
+  "schema_id": "dominium.report.capability",
+  "schema_version": "1.0.0",
+  "report_id": "dominium.report.capability.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.workbench_validation.fixture",
+  "decision_ref": "dominium.composition.decision.workbench_validation.fixture",
+  "source_commit": null,
+  "source_artifact_refs": ["artifact.capability.fixture.input"],
+  "generated_by": "tools/validators/contracts/check_composition_plan.py",
+  "entries": [
+    {
+      "requested": "dominium.workbench.validation",
+      "available": ["dominium.workbench.validation"],
+      "selected": "dominium.workbench.validation",
+      "missing": [],
+      "degraded": [],
+      "refused": [],
+      "recovery": {"action": "inspect_evidence", "summary": "No recovery needed."},
+      "evidence_ref": "evidence.capability.fixture"
+    }
+  ],
+  "diagnostics": [],
+  "evidence_ref": "evidence.capability.fixture",
+  "content_hash": null,
+  "canonical_hash": null,
+  "limitations": ["fixture-only report"],
+  "status": "fixture_only"
+}

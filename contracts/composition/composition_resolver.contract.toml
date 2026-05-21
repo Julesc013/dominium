@@ -2,7 +2,7 @@
 id = "dominium.composition.resolver_law.v1"
 status = "provisional"
 owner = "contracts.composition"
-purpose = "Defines deterministic composition resolver plan law across app, module, workbench, and package descriptors."
+purpose = "Defines deterministic composition resolver law across app, profile, pack, module, provider, capability, trust, policy, and lockfile/report descriptors."
 
 [policy]
 runtime_loader_implemented = false
@@ -11,53 +11,47 @@ package_mounting_implemented = false
 resolver_mutates_truth = false
 descriptor_identity_is_path = false
 source_ref_is_semantic_authority = false
+lockfile_is_source_truth = false
+product_identity_is_executable = false
+workbench_overrides_composition = false
+AIDE_routing_overrides_task_scope = false
 private_dependencies_allowed = false
 deterministic_order_required = true
 duplicate_provides_require_conflict = true
 missing_dependencies_require_conflict = true
 silent_fallback_allowed = false
+silent_overlay_overwrite_allowed = false
+provider_fallback_requires_trace = true
+degraded_decisions_require_diagnostics = true
+fixture_only_implies_support = false
 stable_plans_require_proof = true
 schema_projection_promotes_schema_law = false
 pack_root_convergence_resolved = false
 
 [ordering]
 algorithm = "canonical_layered_stable_sort"
-source_kind_order = [
-  "package_descriptor",
-  "module_composition",
-  "workbench_workspace",
-  "app_composition",
-]
-tie_breakers = [
-  "source_kind_rank",
-  "descriptor_id_casefold",
-  "step_id_casefold",
-  "source_ref_casefold",
-]
+source_kind_order = ["package_descriptor", "module_composition", "workbench_workspace", "app_composition"]
+composition_order = ["app_descriptor", "profile", "base_pack", "official_pack", "mod_pack", "theme_pack", "user_profile_pack", "workspace_pack", "module", "provider", "capability"]
+tie_breakers = ["source_kind_rank", "descriptor_id_casefold", "step_id_casefold", "source_ref_casefold"]
 
 [conflicts]
-required_for = [
-  "duplicate_descriptor",
-  "duplicate_provide",
-  "missing_dependency",
-  "version_conflict",
-  "capability_conflict",
-  "ordering_ambiguity",
-  "private_path_binding",
-]
-allowed_decisions = [
-  "refused",
-  "degraded",
-  "selected_by_policy",
-  "deferred_for_review",
-]
-forbidden_decisions = [
-  "silent_fallback",
-  "ignored",
-  "best_effort",
-]
+required_for = ["duplicate_descriptor", "duplicate_provide", "missing_dependency", "version_conflict", "capability_conflict", "ordering_ambiguity", "private_path_binding"]
+allowed_decisions = ["refused", "degraded", "selected_by_policy", "deferred_for_review"]
+forbidden_decisions = ["silent_fallback", "ignored", "best_effort"]
+forbidden_overlay_behaviors = ["silent_overwrite", "implicit_last_wins", "ignored", "best_effort"]
+
+[lockfiles]
+artifact_class = "derived_evidence"
+source_truth = false
+schemas = ["contracts/lock/app_composition_lock.schema.json", "contracts/lock/pack_mount_lock.schema.json", "contracts/lock/module_plan_lock.schema.json", "contracts/lock/provider_selection_lock.schema.json", "contracts/lock/capability_report.schema.json", "contracts/lock/refusal_report.schema.json", "contracts/lock/compatibility_report.schema.json", "contracts/lock/trust_report.schema.json"]
+
+[reports]
+required = ["capability_report", "refusal_report", "compatibility_report", "trust_report", "conflict_report", "evidence_packet"]
 
 [non_goals]
 runtime_loader = "Not implemented by this contract."
 package_mounting = "Not implemented by this contract."
+provider_selection_runtime = "Not implemented by this contract."
+module_loader = "Not implemented by this contract."
+workbench_shell = "Not implemented by this contract."
 existing_schema_migration = "Existing app, module, workbench, and package schemas are not changed by this contract."

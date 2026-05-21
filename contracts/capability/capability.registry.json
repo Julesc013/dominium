@@ -693,6 +693,30 @@
         "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"
       ],
       "notes": "Architecture capability policy only; no provider or product support is implemented."
+    },
+    {
+      "capability_id": "dominium.composition.resolve",
+      "kind": "package",
+      "owner": "contracts.composition",
+      "version": "0.1.0",
+      "stability": "provisional",
+      "description": "Fixture-level composition plan, decision, lockfile, and report validation capability.",
+      "provided_by": [
+        "tools/validators/contracts/check_composition_plan.py"
+      ],
+      "requires": [
+        "dominium.app.composition",
+        "dominium.pack.overlay"
+      ],
+      "conflicts": [],
+      "scope": "contract validation for app/profile/pack/module/provider/capability composition",
+      "determinism_impact": "composition outputs must be deterministic for the same descriptor inputs",
+      "security_impact": "composition evidence must preserve trust and refusal policy; no runtime loading is authorized",
+      "platform_constraints": [],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --strict"
+      ],
+      "notes": "Contract and fixture capability only; runtime resolver is not implemented."
     }
   ]
 }

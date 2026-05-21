@@ -1,0 +1,16 @@
+{
+  "schema_id": "dominium.lock.app_composition",
+  "schema_version": "1.0.0",
+  "lock_id": "contracts/lock/app_composition.lock.json",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.workbench_validation.fixture",
+  "decision_ref": "dominium.composition.decision.workbench_validation.fixture",
+  "source_artifact_refs": ["artifact.composition.invalid"],
+  "generated_by": "tools/validators/contracts/check_composition_plan.py",
+  "entries": [],
+  "diagnostics": [],
+  "evidence_ref": "evidence.lock.invalid",
+  "limitations": [],
+  "status": "fixture_only"
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.lock.app_composition.v1",
+  "title": "Dominium App Composition Lock",
+  "type": "object",
+  "required": ["schema_id", "schema_version", "lock_id", "artifact_class", "source_truth", "source_plan_ref", "decision_ref", "source_artifact_refs", "generated_by", "entries", "diagnostics", "evidence_ref", "limitations", "status"],
+  "properties": {
+    "schema_id": {"type": "string", "const": "dominium.lock.app_composition"},
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "lock_id": {"type": "string"},
+    "artifact_class": {"type": "string", "const": "derived_evidence"},
+    "source_truth": {"type": "boolean", "const": false},
+    "source_plan_ref": {"type": "string"},
+    "decision_ref": {"type": "string"},
+    "source_commit": {"type": ["string", "null"]},
+    "source_artifact_refs": {"type": "array", "items": {"type": "string"}},
+    "generated_by": {"type": "string"},
+    "generated_at": {"type": ["string", "null"]},
+    "entries": {"type": "array", "items": {"type": "object"}},
+    "diagnostics": {"type": "array", "items": {"type": "string"}},
+    "evidence_ref": {"type": "string"},
+    "content_hash": {"type": ["string", "null"]},
+    "canonical_hash": {"type": ["string", "null"]},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "status": {"type": "string"}
+  },
+  "additionalProperties": true
+}

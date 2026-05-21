@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.composition.deterministic_order_policy.registry.v1",
+  "schema_id": "dominium.composition.deterministic_order_policy.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.composition",
+  "policies": [
+    {
+      "id": "dominium.composition.order.default.v1",
+      "summary": "Default composition ordering for fixture-level resolver outputs.",
+      "pack_order": ["declared_mount_order", "pack_id_casefold", "version_casefold"],
+      "module_order": ["declared_enable_order", "module_id_casefold", "version_casefold"],
+      "provider_order": ["provider_kind_casefold", "priority", "provider_id_casefold", "version_casefold"],
+      "capability_order": ["capability_id_casefold", "request_id_casefold"],
+      "conflict_order": ["subject_casefold", "conflict_type_casefold"],
+      "notes": "Version is a tie-breaker only where policy declares it; filesystem discovery order is never an ordering source."
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema_id": "dominium.composition.plan",
+  "schema_version": "1.0.0",
+  "stability": "fixture",
+  "composition_plan_id": "dominium.composition.plan.invalid.unknown_capability",
+  "plan_kind": "test_fixture",
+  "app_ref": "dominium.workbench",
+  "profile_refs": [],
+  "pack_refs": [],
+  "module_refs": [],
+  "provider_requests": [],
+  "capability_requests": [
+    {"request_id": "capability.request.invalid.unknown", "capability_ref": "dominium.capability.unknown", "required": true}
+  ],
+  "artifact_inputs": [],
+  "requested_outputs": ["capability_report.json"],
+  "evidence_policy_ref": "contracts/evidence/evidence_packet.schema.json",
+  "deterministic_order_policy_ref": "dominium.composition.order.default.v1",
+  "source_refs": ["tests/contract/composition/fixtures/invalid_unknown_capability_ref.json"],
+  "status": "fixture_only",
+  "support_claim": false
+}

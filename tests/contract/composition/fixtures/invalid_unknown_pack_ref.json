@@ -1,0 +1,20 @@
+{
+  "schema_id": "dominium.composition.plan",
+  "schema_version": "1.0.0",
+  "stability": "fixture",
+  "composition_plan_id": "dominium.composition.plan.invalid.unknown_pack",
+  "plan_kind": "test_fixture",
+  "app_ref": "dominium.workbench",
+  "profile_refs": [],
+  "pack_refs": ["pack.unknown.fixture"],
+  "module_refs": [],
+  "provider_requests": [],
+  "capability_requests": [],
+  "artifact_inputs": [],
+  "requested_outputs": ["pack_mount.lock.json"],
+  "evidence_policy_ref": "contracts/evidence/evidence_packet.schema.json",
+  "deterministic_order_policy_ref": "dominium.composition.order.default.v1",
+  "source_refs": ["tests/contract/composition/fixtures/invalid_unknown_pack_ref.json"],
+  "status": "fixture_only",
+  "support_claim": false
+}

@@ -1,0 +1,21 @@
+{
+  "schema_id": "dominium.report.trust",
+  "schema_version": "1.0.0",
+  "report_id": "dominium.report.trust.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.workbench_validation.fixture",
+  "decision_ref": "dominium.composition.decision.workbench_validation.fixture",
+  "source_commit": null,
+  "source_artifact_refs": ["artifact.trust.fixture.input"],
+  "generated_by": "tools/validators/contracts/check_composition_plan.py",
+  "entries": [
+    {"subject_ref": "pack.base.procedural", "trust_level": "data_only", "decision": "fixture_only", "diagnostics": [], "evidence_ref": "evidence.trust.fixture"}
+  ],
+  "diagnostics": [],
+  "evidence_ref": "evidence.trust.fixture",
+  "content_hash": null,
+  "canonical_hash": null,
+  "limitations": ["fixture-only report"],
+  "status": "fixture_only"
+}

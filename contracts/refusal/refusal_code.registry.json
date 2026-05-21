@@ -1470,6 +1470,123 @@
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Added by PORTABILITY-ARCH-POLICY-02."
+    },
+    {
+      "refusal_id": "dominium.refusal.composition.plan_invalid",
+      "code": "dominium.refusal.composition.plan_invalid",
+      "owner": "contracts.composition",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Composition plan is invalid.",
+      "reason": "The composition plan is malformed, unsupported, unordered, or missing required policy/evidence fields.",
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Inspect the composition validator findings, repair the plan, and rerun validation."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-COMPOSITION-PLAN-INVALID"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-COMPOSITION-PLAN-INVALID"
+      ],
+      "related_capabilities": [
+        "dominium.composition.resolve"
+      ],
+      "related_commands": [],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --strict",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Composition resolver contract refusal; no runtime resolver is implemented."
+    },
+    {
+      "refusal_id": "dominium.refusal.composition.reference_unknown",
+      "code": "dominium.refusal.composition.reference_unknown",
+      "owner": "contracts.composition",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Composition reference is unknown.",
+      "reason": "A composition fixture references an app, pack, module, provider, capability, refusal, diagnostic, or profile ID absent from the governing registries.",
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select a registered governed ID or add a reviewed registry entry before composing."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-COMPOSITION-REFERENCE-UNKNOWN"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-COMPOSITION-REFERENCE-UNKNOWN"
+      ],
+      "related_capabilities": [
+        "dominium.composition.resolve"
+      ],
+      "related_commands": [],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Prevents path or convenience references from becoming composition identity."
+    },
+    {
+      "refusal_id": "dominium.refusal.composition.silent_overwrite_forbidden",
+      "code": "dominium.refusal.composition.silent_overwrite_forbidden",
+      "owner": "contracts.composition",
+      "category": "policy",
+      "stability": "provisional",
+      "summary": "Silent composition overlay overwrite is forbidden.",
+      "reason": "A pack, profile, or workspace overlay attempts to overwrite an overlapping contribution without explicit conflict policy and evidence.",
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Declare explicit conflict behavior with evidence, select a different overlay, or refuse the composition."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-COMPOSITION-SILENT-OVERWRITE-FORBIDDEN"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-COMPOSITION-SILENT-OVERWRITE-FORBIDDEN"
+      ],
+      "related_capabilities": [
+        "dominium.composition.resolve",
+        "dominium.pack.overlay"
+      ],
+      "related_commands": [],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Extends pack overlay law to product composition lock/report surfaces."
+    },
+    {
+      "refusal_id": "dominium.refusal.composition.evidence_missing",
+      "code": "dominium.refusal.composition.evidence_missing",
+      "owner": "contracts.composition",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Composition evidence is missing.",
+      "reason": "A selected, degraded, refused, or locked composition lacks required diagnostics, fallback trace, conflict report, or evidence reference.",
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Produce the required evidence packet, fallback trace, diagnostic, or refusal report."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-COMPOSITION-EVIDENCE-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-COMPOSITION-EVIDENCE-MISSING"
+      ],
+      "related_capabilities": [
+        "dominium.composition.resolve"
+      ],
+      "related_commands": [],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Evidence is required before any composition result can be used as proof."
     }
   ],
   "full_registry_owner": "CAPABILITY-REFUSAL-LAW-01",

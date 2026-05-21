@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.composition.overlay_conflict_policy.registry.v1",
+  "schema_id": "dominium.composition.overlay_conflict_policy.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.composition",
+  "allowed_conflict_behaviors": [
+    "refuse",
+    "explicit_override",
+    "selected_by_policy",
+    "merge_with_evidence",
+    "degrade",
+    "defer_for_review"
+  ],
+  "forbidden_conflict_behaviors": [
+    "silent_overwrite",
+    "implicit_last_wins",
+    "best_effort",
+    "ignored"
+  ],
+  "rules": [
+    "overlays must declare conflict behavior before they can overlap a target",
+    "silent overwrite is forbidden",
+    "user profile overrides and workspace overrides must be explicit",
+    "overlapping payloads require conflict reports with diagnostics and evidence"
+  ]
+}

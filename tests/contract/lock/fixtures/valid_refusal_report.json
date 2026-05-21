@@ -1,0 +1,27 @@
+{
+  "schema_id": "dominium.report.refusal",
+  "schema_version": "1.0.0",
+  "report_id": "dominium.report.refusal.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.workbench_validation.fixture",
+  "decision_ref": "dominium.composition.decision.workbench_validation.fixture",
+  "source_commit": null,
+  "source_artifact_refs": ["artifact.refusal.fixture.input"],
+  "generated_by": "tools/validators/contracts/check_composition_plan.py",
+  "entries": [
+    {
+      "refusal_code": "dominium.refusal.composition.reference_unknown",
+      "diagnostic_codes": ["DOM-COMPOSITION-REFERENCE-UNKNOWN"],
+      "reason": "Fixture demonstrates typed refusal reporting.",
+      "recovery": {"action": "select_alternative", "summary": "Use a known governed reference."},
+      "evidence_ref": "evidence.refusal.fixture"
+    }
+  ],
+  "diagnostics": ["DOM-COMPOSITION-REFERENCE-UNKNOWN"],
+  "evidence_ref": "evidence.refusal.fixture",
+  "content_hash": null,
+  "canonical_hash": null,
+  "limitations": ["fixture-only report"],
+  "status": "fixture_only"
+}

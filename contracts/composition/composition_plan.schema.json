@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.composition.plan.v1",
+  "title": "Dominium Composition Plan",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "stability",
+    "composition_plan_id",
+    "plan_kind",
+    "app_ref",
+    "profile_refs",
+    "pack_refs",
+    "module_refs",
+    "provider_requests",
+    "capability_requests",
+    "artifact_inputs",
+    "requested_outputs",
+    "evidence_policy_ref",
+    "deterministic_order_policy_ref",
+    "source_refs",
+    "status"
+  ],
+  "properties": {
+    "schema_id": {"type": "string", "const": "dominium.composition.plan"},
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "stability": {"type": "string", "enum": ["experimental", "provisional", "stable", "fixture"]},
+    "composition_plan_id": {"type": "string"},
+    "plan_kind": {"type": "string"},
+    "app_ref": {"type": ["string", "null"]},
+    "profile_refs": {"type": "array", "items": {"type": "string"}},
+    "pack_refs": {"type": "array", "items": {"type": "string"}},
+    "module_refs": {"type": "array", "items": {"type": "string"}},
+    "provider_requests": {"type": "array", "items": {"$ref": "#/$defs/provider_request"}},
+    "capability_requests": {"type": "array", "items": {"$ref": "#/$defs/capability_request"}},
+    "platform_target_ref": {"type": ["string", "null"]},
+    "renderer_request": {"type": ["object", "null"]},
+    "trust_policy_ref": {"type": ["string", "null"]},
+    "compatibility_policy_ref": {"type": ["string", "null"]},
+    "overlay_policy_ref": {"type": ["string", "null"]},
+    "artifact_inputs": {"type": "array", "items": {"type": "string"}},
+    "requested_outputs": {"type": "array", "items": {"type": "string"}},
+    "evidence_policy_ref": {"type": "string"},
+    "deterministic_order_policy_ref": {"type": "string"},
+    "source_refs": {"type": "array", "items": {"type": "string"}},
+    "status": {"type": "string"},
+    "support_claim": {"type": "boolean"},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "provider_request": {
+      "type": "object",
+      "required": ["request_id", "provider_kind", "required_capabilities"],
+      "properties": {
+        "request_id": {"type": "string"},
+        "provider_kind": {"type": "string"},
+        "preferred_provider_ref": {"type": ["string", "null"]},
+        "required_capabilities": {"type": "array", "items": {"type": "string"}},
+        "optional_capabilities": {"type": "array", "items": {"type": "string"}},
+        "acceptable_degradation": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "capability_request": {
+      "type": "object",
+      "required": ["request_id", "capability_ref", "required"],
+      "properties": {
+        "request_id": {"type": "string"},
+        "capability_ref": {"type": "string"},
+        "required": {"type": "boolean"},
+        "requested_by": {"type": "string"},
+        "recovery": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    }
+  }
+}

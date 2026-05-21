@@ -1,0 +1,249 @@
+{
+  "schema_id": "dominium.aide.task_validation_summary.v1",
+  "task": "COMPOSITION-RESOLVER-LAW-01",
+  "status": "PASS_WITH_WARNINGS",
+  "result_basis": {
+    "composition_validator": "PASS",
+    "related_validators": "PASS",
+    "fast_strict": "PASS",
+    "warnings_remain": true
+  },
+  "schemas_added": [
+    "contracts/composition/composition_plan.schema.json",
+    "contracts/composition/composition_decision.schema.json",
+    "contracts/profile/profile_composition.schema.json",
+    "contracts/lock/app_composition_lock.schema.json",
+    "contracts/lock/pack_mount_lock.schema.json",
+    "contracts/lock/module_plan_lock.schema.json",
+    "contracts/lock/provider_selection_lock.schema.json",
+    "contracts/lock/capability_report.schema.json",
+    "contracts/lock/refusal_report.schema.json",
+    "contracts/lock/compatibility_report.schema.json",
+    "contracts/lock/trust_report.schema.json"
+  ],
+  "lock_report_types_added": [
+    "app_composition.lock.json",
+    "pack_mount.lock.json",
+    "module_plan.lock.json",
+    "provider_selection.lock.json",
+    "capability_report.json",
+    "refusal_report.json",
+    "compatibility_report.json",
+    "trust_report.json"
+  ],
+  "fixtures": {
+    "composition_validator_fixture_count": 23,
+    "positive_coverage": [
+      "composition plan",
+      "composition decision",
+      "fixture-only composition plan without support claim",
+      "app composition lock",
+      "pack mount lock",
+      "module plan lock",
+      "provider selection lock",
+      "capability report",
+      "refusal report",
+      "compatibility report",
+      "trust report",
+      "profile composition"
+    ],
+    "negative_coverage": [
+      "unknown pack ref",
+      "unknown module ref",
+      "unknown provider ref",
+      "unknown capability ref",
+      "silent overlay conflict",
+      "degraded fallback without fallback_trace",
+      "selected provider without required capability",
+      "stable lockfile raw path identity",
+      "fixture-only support claim",
+      "lockfile claiming source truth",
+      "refusal report without diagnostic/refusal code"
+    ]
+  },
+  "commands": [
+    {
+      "command": "git fetch origin",
+      "status": "PASS"
+    },
+    {
+      "command": "git switch main",
+      "status": "PASS"
+    },
+    {
+      "command": "git pull --ff-only origin main",
+      "status": "PASS"
+    },
+    {
+      "command": "git status --short",
+      "status": "PASS",
+      "note": "clean at task start"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py doctor",
+      "status": "PASS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py validate",
+      "status": "PASS_WITH_WARNINGS",
+      "note": "existing missing review-ref warnings"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py pack --task \"COMPOSITION-RESOLVER-LAW-01\"",
+      "status": "PASS"
+    },
+    {
+      "command": "python -m py_compile tools/validators/contracts/check_composition_plan.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_composition_plan.py --repo-root . --strict",
+      "status": "PASS",
+      "errors": 0,
+      "warnings": 0,
+      "fixtures": 23
+    },
+    {
+      "command": "python tools/validators/contracts/check_composition_plan.py --repo-root . --json",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures",
+      "status": "PASS",
+      "fixtures": 23
+    },
+    {
+      "command": "python tools/validators/contracts/check_composition_plan.py --repo-root . --inventory",
+      "status": "PASS_WITH_WARNING",
+      "note": "inventory mode is descriptive and warning-only"
+    },
+    {
+      "command": "python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_provider_model.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_command_surface.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_project_graph_service.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_document_patch_transactions.py --repo-root . --strict",
+      "status": "WARN",
+      "note": "local python 3.8 fallback TOML parser cannot parse an existing multi-line-array contract outside this task scope"
+    },
+    {
+      "command": "py -3 tools/validators/contracts/check_document_patch_transactions.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/repo/check_replacement_packet.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/repo/check_public_surface.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/repo/check_dependency_directions.py --repo-root . --strict",
+      "status": "PASS_WITH_WARNINGS",
+      "note": "0 violations, existing warnings"
+    },
+    {
+      "command": "python tools/validators/check_component_matrices.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/verify_docs_sanity.py --repo-root .",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/verify_build_target_boundaries.py --repo-root .",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/verify_ui_shell_purity.py --repo-root .",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/verify_abi_boundaries.py --repo-root .",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/ci/check_repox_rules.py --repo-root . --profile STRICT --proof-manifest-out .aide/reports/COMPOSITION-RESOLVER-LAW-01-repox-proof-manifest.json --profile-out .aide/reports/COMPOSITION-RESOLVER-LAW-01-repox-profile.json",
+      "status": "PASS_WITH_WARNINGS",
+      "note": "known stale AuditX warning"
+    },
+    {
+      "command": "python tools/test/run_fast_strict.py --repo-root . --json-out .aide/reports/COMPOSITION-RESOLVER-LAW-01-fast-strict.json --md-out .aide/reports/COMPOSITION-RESOLVER-LAW-01-fast-strict.md",
+      "status": "PASS",
+      "commands": 33,
+      "elapsed_seconds": 388.453
+    }
+  ],
+  "warnings": [
+    "RepoX reports existing stale AuditX output: INV-AUDITX-OUTPUT-STALE.",
+    "Dependency-direction strict remains PASS with existing warnings and 0 violations.",
+    "Local python is 3.8.1; the document patch transaction validator passes with py -3 but not with python 3.8 fallback TOML parsing.",
+    "Full CTest was not run; fast strict ran t2.ctest_smoke.",
+    "Runtime composition resolver, package mount runtime, module loader, and provider resolver are not implemented."
+  ],
+  "non_goals": [
+    "runtime composition resolver",
+    "package mounting",
+    "provider selection runtime",
+    "module loader",
+    "Workbench shell/UI",
+    "renderer backend",
+    "platform backend",
+    "gameplay/domain implementation",
+    "release publication"
+  ],
+  "next_recommended_task": "DOMINIUM-DOCTRINE-RECOVERY-MATRIX-01"
+}

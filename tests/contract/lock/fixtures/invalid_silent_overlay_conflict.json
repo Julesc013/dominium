@@ -1,0 +1,19 @@
+{
+  "schema_id": "dominium.lock.pack_mount",
+  "schema_version": "1.0.0",
+  "lock_id": "dominium.lock.pack_mount.invalid.silent_overlay",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.workbench_validation.fixture",
+  "decision_ref": "dominium.composition.decision.workbench_validation.fixture",
+  "source_artifact_refs": ["artifact.pack.invalid"],
+  "generated_by": "tools/validators/contracts/check_composition_plan.py",
+  "entries": [{"mount_order": 0, "pack_ref": "pack.base.procedural"}],
+  "overlays": [
+    {"target": "pack.base.procedural:data/example", "contributors": ["pack.base.procedural", "pack.sol.pin_minimal"], "conflict_behavior": "silent_overwrite"}
+  ],
+  "diagnostics": [],
+  "evidence_ref": "evidence.pack_mount.invalid",
+  "limitations": [],
+  "status": "fixture_only"
+}

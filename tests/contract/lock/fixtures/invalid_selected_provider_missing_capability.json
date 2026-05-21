@@ -1,0 +1,28 @@
+{
+  "schema_id": "dominium.lock.provider_selection",
+  "schema_version": "1.0.0",
+  "lock_id": "dominium.lock.provider_selection.invalid.missing_capability",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.workbench_validation.fixture",
+  "decision_ref": "dominium.composition.decision.workbench_validation.fixture",
+  "source_artifact_refs": ["artifact.provider.invalid"],
+  "generated_by": "tools/validators/contracts/check_composition_plan.py",
+  "entries": [
+    {
+      "request_id": "provider.request.invalid.missing_capability",
+      "provider_kind": "render_backend",
+      "required_capabilities": ["domino.render.software"],
+      "candidate_providers": ["domino.provider.render.null"],
+      "selected_provider": "domino.provider.render.null",
+      "selected_capabilities": ["domino.render.null"],
+      "rejected_providers": [],
+      "diagnostics": [],
+      "evidence_ref": "evidence.provider.invalid"
+    }
+  ],
+  "diagnostics": [],
+  "evidence_ref": "evidence.provider.invalid",
+  "limitations": [],
+  "status": "fixture_only"
+}

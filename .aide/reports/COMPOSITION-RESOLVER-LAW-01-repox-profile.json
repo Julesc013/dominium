@@ -1,0 +1,349 @@
+{
+  "artifact_class": "RUN_META",
+  "cache_hits": 5,
+  "cache_misses": 11,
+  "changed_files": [
+    ".aide/reports/MATRIX-CLEANUP-00-fast-strict.json",
+    ".aide/reports/MATRIX-CLEANUP-00-fast-strict.md",
+    ".aide/reports/MATRIX-CLEANUP-00-summary.md",
+    ".aide/reports/MATRIX-CLEANUP-00-validation.json",
+    ".aide/reports/WORKBENCH-VALIDATION-SLICE-01-fast-strict.json",
+    ".aide/reports/WORKBENCH-VALIDATION-SLICE-01-fast-strict.md",
+    ".aide/reports/WORKBENCH-VALIDATION-SLICE-01-summary.md",
+    ".aide/reports/WORKBENCH-VALIDATION-SLICE-01-validation.json",
+    "apps/workbench/module/validation/cli.py",
+    "apps/workbench/module/validation/command.py",
+    "apps/workbench/module/validation/service_adapter.py",
+    "apps/workbench/module/validation/workbench_projection.py",
+    "apps/workbench/workspace/validation/validation_workspace.json",
+    "contracts/command/command_surface.contract.toml",
+    "contracts/command/validation_run_input.schema.json",
+    "contracts/command/validation_run_result.schema.json",
+    "contracts/diagnostics/diagnostic_code.registry.json",
+    "contracts/module/module_surface.contract.toml",
+    "contracts/platform/package_portability.matrix.json",
+    "contracts/platform/platform_floor.registry.json",
+    "contracts/platform/product_mode_portability.matrix.json",
+    "contracts/platform/renderer_portability.matrix.json",
+    "contracts/refusal/refusal_code.registry.json",
+    "contracts/release/component_matrix.contract.toml",
+    "docs/architecture/RENDERER_RESPONSIBILITY.md",
+    "docs/build/CI_MATRIX.md",
+    "docs/build/PRESET_NAMING.md",
+    "docs/development/guides/BUILDING.md",
+    "docs/development/guides/context/dominium_newcontext.txt",
+    "docs/development/guides/dev/dominium_new_addendum.txt",
+    "docs/development/guides/dev/dominium_new_data_packs.txt",
+    "docs/development/guides/dev/dominium_new_engine_platform.txt",
+    "docs/development/guides/dev/dominium_new_engine_render.txt",
+    "docs/development/guides/dev/dominium_new_game_launcher.txt",
+    "docs/development/guides/dev/dominium_new_package.txt",
+    "docs/development/guides/dev/dominium_new_root.txt",
+    "docs/development/workbench_validation_slice.md",
+    "docs/release/COMPONENT_MATRIX.md",
+    "docs/release/RENDER_BACKEND_MATRIX.md",
+    "docs/repo/audits/MATRIX_CLEANUP_00.md",
+    "docs/repo/audits/WORKBENCH_VALIDATION_SLICE_01.md",
+    "docs/workbench/WORKBENCH_VALIDATION_SLICE.md",
+    "tests/app/workbench_validation_slice_tests.py",
+    "tests/contract/component_matrix/fixtures/invalid_direct3d_missing_version.json",
+    "tests/contract/component_matrix/fixtures/invalid_gl2_first_wave_renderer.json",
+    "tests/contract/component_matrix/fixtures/invalid_opengl_missing_version.json",
+    "tests/contract/component_matrix/fixtures/invalid_vector2d_renderer_backend.json",
+    "tests/contract/component_matrix/fixtures/valid_renderer_family_contract.json",
+    "tests/contract/component_matrix/fixtures/valid_research_backport_lanes.json",
+    "tests/contract/module/fixtures/valid_workbench_module.json",
+    "tests/contract/workbench/fixtures/valid_view_binding.json",
+    "tools/validators/check_component_matrices.py"
+  ],
+  "generated_utc": "2026-05-21T15:44:28Z",
+  "groups": [
+    {
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "cache_hit": true,
+      "dep_hash": "2df996c90975680882aee3da5b6ddb0643f2b27c62d0556305215462f1e96d61",
+      "duration_ms": 8,
+      "group_id": "repox.structure.code",
+      "scope_subtrees": [
+        "client",
+        "engine",
+        "game",
+        "server"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "cache_hit": true,
+      "dep_hash": "c72909a9f51482b27b9e07bd6e4205fab0d511402630a130ff6c85f237a76308",
+      "duration_ms": 3,
+      "group_id": "repox.structure.schema",
+      "scope_subtrees": [
+        "data",
+        "schema",
+        "tests"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "cache_hit": false,
+      "dep_hash": "61851c0d5b257697418c786282ee6febdb631ff94e5972f7c49d66d62f923792",
+      "duration_ms": 3660,
+      "group_id": "repox.structure.ruleset",
+      "scope_subtrees": [
+        "docs",
+        "repo",
+        "scripts"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "fee06a8def427311d1b51b6aeb4b94bb0582fa9abd2cfc94a8ec01ef45150ebd",
+      "duration_ms": 7442,
+      "group_id": "repox.docs.canon",
+      "scope_subtrees": [
+        "docs",
+        "repo"
+      ],
+      "violation_count": 1
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "c0ca4919ca4eff119b12d37789ace80266465086e3e8d78ba22cf0524cef63f4",
+      "duration_ms": 668,
+      "group_id": "repox.schema.compat",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "schema"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": true,
+      "dep_hash": "35e66e08a28fb1c10d134173361c992117fc8dc2410b32b1713e7aa5e2408aa7",
+      "duration_ms": 1013,
+      "group_id": "repox.dist.platform",
+      "scope_subtrees": [
+        "data",
+        "dist",
+        "schema",
+        "scripts"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "cache_hit": true,
+      "dep_hash": "4796da247bf2c3880c4cc5c4ffb7d92472274860c0e469791a584b24416f550b",
+      "duration_ms": 8952,
+      "group_id": "repox.runtime.policy",
+      "scope_subtrees": [
+        "client",
+        "data",
+        "engine",
+        "game",
+        "schema",
+        "server"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "1dadcbf83b390d682dfb09f3cbfae88d630d07068da626c3f8699539086c3f71",
+      "duration_ms": 221,
+      "group_id": "repox.runtime.modding",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "packs",
+        "schema",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "8190098fad74c10e6e41ff4b458d771d5e50daba764e284a6b895cd36d92b41e",
+      "duration_ms": 11,
+      "group_id": "repox.runtime.server",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "schema",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "3d46c2e5dce134aae2a972eefa9ddfe7506264bdbc41718c8d2306c5dd0b834c",
+      "duration_ms": 69,
+      "group_id": "repox.runtime.compat",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "schema",
+        "schemas",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "60a14bb423b56be64a9c78984152d75ae3fee006f6f985844e3c2a20fa23a721",
+      "duration_ms": 4,
+      "group_id": "repox.runtime.diag",
+      "scope_subtrees": [
+        "docs",
+        "schema",
+        "schemas",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": true,
+      "dep_hash": "52e5b54780ea699cde3033002880db4d6cfb7e2b849a63ed23030af62dd50363",
+      "duration_ms": 981,
+      "group_id": "repox.runtime.bundle",
+      "scope_subtrees": [
+        "data",
+        "dist",
+        "locks",
+        "profiles",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "8190098fad74c10e6e41ff4b458d771d5e50daba764e284a6b895cd36d92b41e",
+      "duration_ms": 47549,
+      "group_id": "repox.runtime.worldgen",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "schema",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "8190098fad74c10e6e41ff4b458d771d5e50daba764e284a6b895cd36d92b41e",
+      "duration_ms": 84,
+      "group_id": "repox.runtime.embodiment",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "schema",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "54c8da759f78502cc97735b640d9f7d12f50e5e821adc68aa9d91dcce6666337",
+      "duration_ms": 45579,
+      "group_id": "repox.runtime.viewer",
+      "scope_subtrees": [
+        "docs",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "53fc8e720addffc9f3301bbbe082d81766867a29c45f882f6fe57ddc6ef587e6",
+      "duration_ms": 23358,
+      "group_id": "repox.runtime.heavy_scans",
+      "scope_subtrees": [
+        "client",
+        "data",
+        "docs",
+        "engine",
+        "game",
+        "schema",
+        "server",
+        "tests",
+        "tools"
+      ],
+      "violation_count": 0
+    }
+  ],
+  "impacted_roots": [
+    "docs",
+    "repo",
+    "tests",
+    "tools"
+  ],
+  "profile": "STRICT",
+  "status": "DERIVED",
+  "total_duration_ms": 142538
+}

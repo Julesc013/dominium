@@ -1,0 +1,25 @@
+{
+  "schema_id": "dominium.lock.pack_mount",
+  "schema_version": "1.0.0",
+  "lock_id": "dominium.lock.pack_mount.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.workbench_validation.fixture",
+  "decision_ref": "dominium.composition.decision.workbench_validation.fixture",
+  "source_commit": null,
+  "source_artifact_refs": ["artifact.pack.fixture.input"],
+  "generated_by": "tools/validators/contracts/check_composition_plan.py",
+  "entries": [
+    {"mount_order": 0, "pack_ref": "pack.base.procedural", "pack_role": "base_pack", "version": "0.0.0", "canonical_hash": "fixture-hash"}
+  ],
+  "overlays": [
+    {"target": "pack.base.procedural:data/example", "contributors": ["pack.base.procedural"], "conflict_behavior": "refuse", "evidence_ref": "evidence.overlay.fixture"}
+  ],
+  "conflict_reports": [],
+  "diagnostics": [],
+  "evidence_ref": "evidence.pack_mount.fixture",
+  "content_hash": null,
+  "canonical_hash": null,
+  "limitations": ["fixture-only lock"],
+  "status": "fixture_only"
+}

@@ -1,0 +1,23 @@
+{
+  "schema_id": "dominium.report.refusal",
+  "schema_version": "1.0.0",
+  "report_id": "dominium.report.refusal.invalid.missing_code",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.workbench_validation.fixture",
+  "decision_ref": "dominium.composition.decision.workbench_validation.fixture",
+  "source_artifact_refs": ["artifact.refusal.invalid"],
+  "generated_by": "tools/validators/contracts/check_composition_plan.py",
+  "entries": [
+    {
+      "diagnostic_codes": [],
+      "reason": "Missing refusal_code and diagnostics should fail.",
+      "recovery": {"action": "inspect_evidence", "summary": "Add refusal and diagnostic code."},
+      "evidence_ref": "evidence.refusal.invalid"
+    }
+  ],
+  "diagnostics": [],
+  "evidence_ref": "evidence.refusal.invalid",
+  "limitations": [],
+  "status": "fixture_only"
+}

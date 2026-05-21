@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.profile.registry.v1",
+  "schema_id": "dominium.profile.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.profile",
+  "profiles": [
+    {
+      "profile_id": "dominium.profile.fixture.default",
+      "profile_kind": "test_fixture",
+      "owner": "contracts.profile",
+      "stability": "fixture",
+      "support_claim": false,
+      "notes": "Fixture profile for composition contract validation only."
+    }
+  ]
+}

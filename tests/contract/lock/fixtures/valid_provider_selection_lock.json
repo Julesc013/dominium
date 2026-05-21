@@ -1,0 +1,34 @@
+{
+  "schema_id": "dominium.lock.provider_selection",
+  "schema_version": "1.0.0",
+  "lock_id": "dominium.lock.provider_selection.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.workbench_validation.fixture",
+  "decision_ref": "dominium.composition.decision.workbench_validation.fixture",
+  "source_commit": null,
+  "source_artifact_refs": ["artifact.provider.fixture.input"],
+  "generated_by": "tools/validators/contracts/check_composition_plan.py",
+  "entries": [
+    {
+      "request_id": "provider.request.workbench.validation.fixture",
+      "provider_kind": "workbench_module",
+      "required_capabilities": ["dominium.workbench.validation"],
+      "optional_capabilities": [],
+      "candidate_providers": ["dominium.provider.workbench.validation"],
+      "selected_provider": "dominium.provider.workbench.validation",
+      "selected_capabilities": ["dominium.workbench.validation"],
+      "rejected_providers": [],
+      "degradation": null,
+      "refusal_reasons": [],
+      "diagnostics": [],
+      "evidence_ref": "evidence.provider_selection.fixture"
+    }
+  ],
+  "diagnostics": [],
+  "evidence_ref": "evidence.provider_selection.fixture",
+  "content_hash": null,
+  "canonical_hash": null,
+  "limitations": ["fixture-only lock; no provider resolver runtime implemented"],
+  "status": "fixture_only"
+}

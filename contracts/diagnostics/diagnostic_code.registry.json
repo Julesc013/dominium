@@ -2609,6 +2609,197 @@
         "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"
       ],
       "notes": "Added by PORTABILITY-ARCH-POLICY-02."
+    },
+    {
+      "id": "dominium.diagnostic.composition.plan_invalid",
+      "code": "DOM-COMPOSITION-PLAN-INVALID",
+      "owner": "contracts.composition",
+      "severity": "error",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Composition plan is invalid.",
+      "cause": "A composition plan, decision, lockfile, or report is malformed, unordered, unsupported, or missing required policy/evidence fields.",
+      "recovery": "Repair the plan or derived artifact and rerun the composition plan validator.",
+      "evidence_expectation": "Validator output from tools/validators/contracts/check_composition_plan.py.",
+      "related_refusal_codes": [
+        "dominium.refusal.composition.plan_invalid"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.composition.plan.schema.v1",
+        "dominium.composition.decision.schema.v1"
+      ],
+      "related_artifact_types": [
+        "validation_report",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --strict"
+      ],
+      "notes": "Composition contracts only; no runtime resolver is implemented."
+    },
+    {
+      "id": "dominium.diagnostic.composition.reference_unknown",
+      "code": "DOM-COMPOSITION-REFERENCE-UNKNOWN",
+      "owner": "contracts.composition",
+      "severity": "error",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Composition reference is unknown.",
+      "cause": "A composition fixture references an app, pack, module, provider, capability, refusal, diagnostic, or profile ID absent from the governing registries.",
+      "recovery": "Use a registered governed ID or add a reviewed registry entry before composing.",
+      "evidence_expectation": "Composition validator output naming the unknown reference and fixture path.",
+      "related_refusal_codes": [
+        "dominium.refusal.composition.reference_unknown"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.composition.plan.schema.v1"
+      ],
+      "related_artifact_types": [
+        "validation_report",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures"
+      ],
+      "notes": "Paths are not identity; composition references must be governed IDs."
+    },
+    {
+      "id": "dominium.diagnostic.composition.capability_missing",
+      "code": "DOM-COMPOSITION-CAPABILITY-MISSING",
+      "owner": "contracts.composition",
+      "severity": "error",
+      "category": "capability",
+      "stability": "provisional",
+      "summary": "Composition capability is missing.",
+      "cause": "A required capability request cannot be satisfied by the selected provider, module, pack, or profile set.",
+      "recovery": "Select a provider or pack that declares the required capability, degrade explicitly, or refuse the composition.",
+      "evidence_expectation": "Capability report with requested, available, selected, missing, degraded, refused, recovery, and evidence fields.",
+      "related_refusal_codes": [
+        "dominium.refusal.capability.missing"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.capability.registry.v1",
+        "dominium.composition.lock.schemas.v1"
+      ],
+      "related_artifact_types": [
+        "evidence_packet",
+        "generated_report"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures"
+      ],
+      "notes": "No silent fallback."
+    },
+    {
+      "id": "dominium.diagnostic.composition.provider_unavailable",
+      "code": "DOM-COMPOSITION-PROVIDER-UNAVAILABLE",
+      "owner": "contracts.composition",
+      "severity": "error",
+      "category": "provider",
+      "stability": "provisional",
+      "summary": "Composition provider is unavailable.",
+      "cause": "No candidate provider satisfies the requested provider kind, trust policy, platform constraints, and required capabilities.",
+      "recovery": "Select a compatible provider, use explicit degraded behavior with fallback trace, or refuse.",
+      "evidence_expectation": "Provider selection lock with candidates, selected provider, rejected providers, diagnostics, and evidence.",
+      "related_refusal_codes": [
+        "dominium.refusal.provider.unavailable"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.provider.registry.v1",
+        "dominium.composition.lock.schemas.v1"
+      ],
+      "related_artifact_types": [
+        "provider_registry",
+        "generated_report"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures"
+      ],
+      "notes": "Provider fallback must be explicit and traced."
+    },
+    {
+      "id": "dominium.diagnostic.composition.silent_overwrite_forbidden",
+      "code": "DOM-COMPOSITION-SILENT-OVERWRITE-FORBIDDEN",
+      "owner": "contracts.composition",
+      "severity": "error",
+      "category": "package",
+      "stability": "provisional",
+      "summary": "Silent overlay overwrite is forbidden in composition.",
+      "cause": "A pack, profile, workspace, or module overlay overlaps a target with silent overwrite or implicit last-wins behavior.",
+      "recovery": "Declare explicit conflict behavior with evidence, choose a different overlay, or refuse the composition.",
+      "evidence_expectation": "Conflict report naming participants, target, conflict behavior, diagnostic, refusal, and evidence.",
+      "related_refusal_codes": [
+        "dominium.refusal.composition.silent_overwrite_forbidden"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.composition.plan.schema.v1",
+        "dominium.mod_pack.overlay_policy.v1"
+      ],
+      "related_artifact_types": [
+        "validation_report",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures"
+      ],
+      "notes": "Extends existing pack overlay law into lockfile/report fixtures."
+    },
+    {
+      "id": "dominium.diagnostic.composition.degraded",
+      "code": "DOM-COMPOSITION-DEGRADED",
+      "owner": "contracts.composition",
+      "severity": "warning",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Composition resolved with explicit degradation.",
+      "cause": "The selected composition could not satisfy all optional or preferred requests and recorded a degraded decision.",
+      "recovery": "Inspect fallback_trace, diagnostics, limitations, and evidence before treating the result as acceptable.",
+      "evidence_expectation": "Composition decision and provider/capability reports with fallback trace and diagnostic references.",
+      "related_refusal_codes": [],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.composition.decision.schema.v1"
+      ],
+      "related_artifact_types": [
+        "generated_report",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures"
+      ],
+      "notes": "Degradation is lawful only when explicit and evidenced."
+    },
+    {
+      "id": "dominium.diagnostic.composition.evidence_missing",
+      "code": "DOM-COMPOSITION-EVIDENCE-MISSING",
+      "owner": "contracts.composition",
+      "severity": "error",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Composition evidence is missing.",
+      "cause": "A selected, degraded, refused, or locked composition lacks required diagnostics, fallback trace, conflict report, or evidence reference.",
+      "recovery": "Produce the required evidence packet, diagnostic, refusal report, or fallback trace before using the result.",
+      "evidence_expectation": "Composition validator output and the missing evidence packet or report reference.",
+      "related_refusal_codes": [
+        "dominium.refusal.composition.evidence_missing"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.composition.lock.schemas.v1"
+      ],
+      "related_artifact_types": [
+        "evidence_packet",
+        "generated_report"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures"
+      ],
+      "notes": "Locks and reports are evidence only."
     }
   ]
 }

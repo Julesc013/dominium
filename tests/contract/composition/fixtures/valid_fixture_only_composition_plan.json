@@ -1,0 +1,22 @@
+{
+  "schema_id": "dominium.composition.plan",
+  "schema_version": "1.0.0",
+  "stability": "fixture",
+  "composition_plan_id": "dominium.composition.plan.fixture_only.no_support",
+  "plan_kind": "test_fixture",
+  "app_ref": "dominium.workbench",
+  "profile_refs": [],
+  "pack_refs": [],
+  "module_refs": ["dominium.workbench.validation"],
+  "provider_requests": [],
+  "capability_requests": [],
+  "artifact_inputs": [],
+  "requested_outputs": ["capability_report.json"],
+  "evidence_policy_ref": "contracts/evidence/evidence_packet.schema.json",
+  "deterministic_order_policy_ref": "dominium.composition.order.default.v1",
+  "source_refs": ["tests/contract/composition/fixtures/valid_fixture_only_composition_plan.json"],
+  "status": "fixture_only",
+  "support_claim": false,
+  "limitations": ["fixture-only rows do not imply support"],
+  "notes": "Positive proof that fixture-only composition is not a runtime support claim."
+}

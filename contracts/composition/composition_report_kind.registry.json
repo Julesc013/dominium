@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.composition.report_kind.registry.v1",
+  "schema_id": "dominium.composition.report_kind.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.composition",
+  "report_kinds": [
+    "capability_report",
+    "refusal_report",
+    "compatibility_report",
+    "trust_report",
+    "conflict_report",
+    "evidence_packet"
+  ]
+}

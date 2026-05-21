@@ -2038,6 +2038,97 @@ retirement_reason = "Root-level schema was retired; active schema law belongs un
 notes = "Registered retired root so future work does not recreate it as a public surface."
 
 [[surface]]
+id = "dominium.composition.plan.schema.v1"
+kind = "schema"
+path = "contracts/composition/composition_plan.schema.json"
+owner = "contracts.composition"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMPOSITION-RESOLVER-LAW-01"
+proof = ["python tools/validators/contracts/check_composition_plan.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_composition_resolver_law_update"
+notes = "Unresolved product, Workbench, package, profile, provider, module, release, or fixture composition request schema."
+
+[[surface]]
+id = "dominium.composition.decision.schema.v1"
+kind = "schema"
+path = "contracts/composition/composition_decision.schema.json"
+owner = "contracts.composition"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMPOSITION-RESOLVER-LAW-01"
+proof = ["python tools/validators/contracts/check_composition_plan.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_composition_resolver_law_update"
+notes = "Selected, degraded, refused, partial, planned, or fixture-only composition decision schema."
+
+[[surface]]
+id = "dominium.composition.registry.v1"
+kind = "registry"
+path = "contracts/composition"
+owner = "contracts.composition"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMPOSITION-RESOLVER-LAW-01"
+proof = ["python tools/validators/contracts/check_composition_plan.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_composition_resolver_law_update"
+notes = "Composition plan kind, status, deterministic ordering, overlay conflict, and report kind registry surface."
+
+[[surface]]
+id = "dominium.composition.lock.schemas.v1"
+kind = "schema"
+path = "contracts/lock"
+owner = "contracts.lock"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMPOSITION-RESOLVER-LAW-01"
+proof = ["python tools/validators/contracts/check_composition_plan.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_lockfile_law_update"
+notes = "Derived composition lock/report schemas for app composition, pack mount, module plan, provider selection, capability, refusal, compatibility, and trust evidence."
+
+[[surface]]
+id = "dominium.profile.composition.schema.v1"
+kind = "schema"
+path = "contracts/profile/profile_composition.schema.json"
+owner = "contracts.profile"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMPOSITION-RESOLVER-LAW-01"
+proof = ["python tools/validators/contracts/check_composition_plan.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_profile_composition_law_update"
+notes = "Profile composition input schema for product, user, workspace, or fixture profile contribution."
+
+[[surface]]
+id = "dominium.composition.plan.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_composition_plan.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMPOSITION-RESOLVER-LAW-01"
+proof = ["python -m py_compile tools/validators/contracts/check_composition_plan.py", "python tools/validators/contracts/check_composition_plan.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_composition_validator_update"
+notes = "Validator for composition schemas, lock/report schemas, registries, fixture references, path identity refusals, fallback traces, and source-truth boundaries."
+
+[[surface]]
+id = "dominium.composition.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/composition"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "COMPOSITION-RESOLVER-LAW-01"
+proof = ["python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_composition_validator_tests"
+notes = "Fixture suite for valid and invalid composition plan, decision, lock, report, and profile behavior."
+
+[[surface]]
 id = "dominium.retired.root_schemas.v1"
 kind = "archive_record"
 path = "schemas"

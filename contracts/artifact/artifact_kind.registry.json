@@ -25,7 +25,9 @@
     {"id": "worldgen_baseline", "description": "Worldgen baseline, reference run, or generated model artifact.", "expected_owner": "content.worldgen or tests", "manifest_required_for_stable": true},
     {"id": "test_fixture", "description": "Test-only artifact fixture.", "expected_owner": "tests", "manifest_required_for_stable": false},
     {"id": "generated_report", "description": "Generated report or proof output artifact.", "expected_owner": "owning generator", "manifest_required_for_stable": false},
-    {"id": "archive_record", "description": "Historical, retained, or archived artifact record.", "expected_owner": "archive", "manifest_required_for_stable": false}
+    {"id": "archive_record", "description": "Historical, retained, or archived artifact record.", "expected_owner": "archive", "manifest_required_for_stable": false},
+    {"id": "composition_lock", "description": "Derived composition lockfile for app, pack, module, provider, capability, compatibility, or trust resolution evidence.", "expected_owner": "contracts.composition or contracts.lock", "manifest_required_for_stable": true},
+    {"id": "composition_report", "description": "Derived composition capability, refusal, compatibility, trust, conflict, or evidence report.", "expected_owner": "contracts.composition or tools.validation", "manifest_required_for_stable": true}
   ],
   "trust_levels": [
     "local_untrusted",

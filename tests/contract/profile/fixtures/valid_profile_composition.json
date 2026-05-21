@@ -1,0 +1,15 @@
+{
+  "schema_id": "dominium.profile.composition",
+  "schema_version": "1.0.0",
+  "profile_id": "dominium.profile.fixture.default",
+  "owner": "contracts.profile",
+  "stability": "fixture",
+  "profile_kind": "test_fixture",
+  "capabilities": ["dominium.app.composition"],
+  "pack_refs": [],
+  "provider_preferences": [],
+  "overlay_policy_ref": "dominium.composition.overlay.default.v1",
+  "evidence_ref": "evidence.profile.fixture",
+  "support_claim": false,
+  "notes": "Fixture-only profile composition; no runtime profile loader is implemented."
+}

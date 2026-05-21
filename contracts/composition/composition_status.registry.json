@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.composition.status.registry.v1",
+  "schema_id": "dominium.composition.status.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.composition",
+  "plan_statuses": [
+    "requested",
+    "planned",
+    "fixture_only",
+    "validated",
+    "invalid",
+    "refused"
+  ],
+  "decision_statuses": [
+    "selected",
+    "degraded",
+    "refused",
+    "partial",
+    "fixture_only",
+    "planned"
+  ],
+  "lock_statuses": [
+    "selected",
+    "degraded",
+    "refused",
+    "partial",
+    "fixture_only",
+    "planned",
+    "stale",
+    "invalid"
+  ],
+  "support_status_rule": "planned and fixture_only rows are evidence rows only and must not claim runtime support."
+}

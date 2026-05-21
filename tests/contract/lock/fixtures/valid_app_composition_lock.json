@@ -1,0 +1,22 @@
+{
+  "schema_id": "dominium.lock.app_composition",
+  "schema_version": "1.0.0",
+  "lock_id": "dominium.lock.app_composition.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.workbench_validation.fixture",
+  "decision_ref": "dominium.composition.decision.workbench_validation.fixture",
+  "source_commit": null,
+  "source_artifact_refs": ["artifact.composition.fixture.input"],
+  "generated_by": "tools/validators/contracts/check_composition_plan.py",
+  "generated_at": null,
+  "entries": [
+    {"app_ref": "dominium.workbench", "profiles": ["dominium.profile.fixture.default"], "packs": ["pack.base.procedural"], "modules": ["dominium.workbench.validation"], "providers": ["dominium.provider.workbench.validation"]}
+  ],
+  "diagnostics": [],
+  "evidence_ref": "evidence.composition.fixture",
+  "content_hash": null,
+  "canonical_hash": null,
+  "limitations": ["fixture-only lock"],
+  "status": "fixture_only"
+}

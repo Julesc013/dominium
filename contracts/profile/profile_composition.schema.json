@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.profile.composition.v1",
+  "title": "Dominium Profile Composition",
+  "type": "object",
+  "required": ["schema_id", "schema_version", "profile_id", "owner", "stability", "profile_kind", "capabilities", "pack_refs", "provider_preferences", "overlay_policy_ref", "evidence_ref", "support_claim"],
+  "properties": {
+    "schema_id": {"type": "string", "const": "dominium.profile.composition"},
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "profile_id": {"type": "string"},
+    "owner": {"type": "string"},
+    "stability": {"type": "string"},
+    "profile_kind": {"type": "string"},
+    "capabilities": {"type": "array", "items": {"type": "string"}},
+    "pack_refs": {"type": "array", "items": {"type": "string"}},
+    "provider_preferences": {"type": "array", "items": {"type": "string"}},
+    "overlay_policy_ref": {"type": "string"},
+    "evidence_ref": {"type": "string"},
+    "support_claim": {"type": "boolean", "const": false},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}
