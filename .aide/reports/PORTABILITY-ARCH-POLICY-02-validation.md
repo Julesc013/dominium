@@ -36,3 +36,11 @@ PASS_WITH_WARNINGS. Architecture policy and fast strict are green. Known warning
 - address_hash: 1
 
 Inventory is descriptive. No persisted-format violation is claimed by this task.
+
+## Post-Commit Check
+
+The implementation commit was created before the current AIDE commit-message
+policy requirement for `## Changelog` and `AIDE-Token-Impact` was reflected in
+this task body. Because the task forbids amend/rebase/reset, this evidence
+update is carried in a follow-up closeout commit with the required commit
+message shape.
