@@ -37,7 +37,7 @@ from tools.release.mvp.runtime_bundle import (
     MVP_PROFILE_BUNDLE_REL,
     build_runtime_bootstrap,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 STATE_BOOT = "Boot"

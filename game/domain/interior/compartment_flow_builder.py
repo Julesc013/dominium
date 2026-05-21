@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.validators.core.flow.flow_engine import normalize_flow_channel
+from engine.foundation.core.flow.flow_engine import normalize_flow_channel
 from engine.state.state.state_machine_engine import StateMachineError, normalize_state_machine
 from game.domain.interior.interior_engine import normalize_interior_graph, portal_rows_by_id, volume_rows_by_id
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_INTERIOR_FLOW_INVALID = "refusal.interior.flow.invalid"

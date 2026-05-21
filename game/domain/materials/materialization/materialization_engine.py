@@ -11,7 +11,7 @@ from runtime.capability.fidelity import (
     arbitrate_fidelity_requests,
     build_fidelity_request,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED = "refusal.materialization.budget_exceeded"

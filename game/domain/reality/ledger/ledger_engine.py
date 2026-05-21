@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Tuple
 
-from tools.repo.meta.numeric import quantity_tolerance_rows_by_id
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.meta.numeric import quantity_tolerance_rows_by_id
+from engine.serialization.canonical_json import canonical_sha256
 
 
 MODE_ENFORCE_STRICT = "enforce_strict"

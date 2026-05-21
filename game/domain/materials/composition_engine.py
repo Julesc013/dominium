@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from .dimension_engine import fixed_point_config_from_policy
 

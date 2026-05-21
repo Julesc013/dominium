@@ -34,11 +34,11 @@ from runtime.shell.paths import (
     vpath_root,
 )
 from runtime.shell.pack_verifier_adapter import verify_pack_root
-from tools.validators.compatibility import emit_product_descriptor
+from runtime.compatibility import emit_product_descriptor
 from runtime.process_spawn import build_python_process_spec, poll_process, spawn_process
 from runtime.shell.supervisor.args_canonicalizer import canonicalize_args
-from tools.xstack.compatx.canonical_json import canonical_sha256
-from tools.xstack.sessionx.common import norm, read_json_object, refusal, write_canonical_json
+from engine.serialization.canonical_json import canonical_sha256
+from engine.session.common import norm, read_json_object, refusal, write_canonical_json
 
 
 SUPERVISOR_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "supervisor_policy_registry.json")

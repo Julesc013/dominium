@@ -6,7 +6,7 @@ import json
 import os
 from typing import Dict, List, Mapping, Sequence, Tuple
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.geology.frame.domain_adapters import field_sampling_cell_key
 from game.domain.geology.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key, geo_cell_key_from_position, geo_refine_cell_key

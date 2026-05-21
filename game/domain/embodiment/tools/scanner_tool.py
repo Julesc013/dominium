@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from .toolbelt_engine import evaluate_tool_access
 

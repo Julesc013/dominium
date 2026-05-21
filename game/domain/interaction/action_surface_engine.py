@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict, List, Mapping
 
 from runtime.capability.core import resolve_missing_capabilities
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 def _to_int(value: object, default_value: int = 0) -> int:

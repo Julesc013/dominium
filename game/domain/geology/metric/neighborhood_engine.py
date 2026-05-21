@@ -5,7 +5,7 @@ from __future__ import annotations
 import itertools
 from typing import List, Mapping, Sequence
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.geology.index.geo_index_engine import (
     _build_geo_cell_key,

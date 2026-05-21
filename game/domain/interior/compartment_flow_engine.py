@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.validators.core.flow.flow_engine import FlowEngineError, flow_solver_policy_rows_by_id, tick_flow_channels
-from tools.validators.core.hazards.hazard_engine import tick_hazard_models
+from engine.foundation.core.flow.flow_engine import FlowEngineError, flow_solver_policy_rows_by_id, tick_flow_channels
+from engine.foundation.core.hazards.hazard_engine import tick_hazard_models
 from game.domain.interior.compartment_flow_builder import (
     CompartmentFlowBuilderError,
     build_compartment_flow_channels,
@@ -14,7 +14,7 @@ from game.domain.interior.compartment_flow_builder import (
     leak_hazard_rows_by_id,
 )
 from game.domain.interior.interior_engine import normalize_interior_volume, volume_rows_by_id
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_COMPARTMENT_FLOW_INVALID = "refusal.interior.flow.invalid"

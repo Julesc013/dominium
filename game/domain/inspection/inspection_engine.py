@@ -12,7 +12,7 @@ from runtime.capability.fidelity import (
     build_fidelity_request,
 )
 from game.domain.interior import InteriorError, path_exists
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_INSPECT_FORBIDDEN_BY_LAW = "refusal.inspect.forbidden_by_law"

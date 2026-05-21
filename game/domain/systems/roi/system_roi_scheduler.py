@@ -6,7 +6,7 @@ from typing import Dict, Iterable, List, Mapping, Sequence
 
 from game.domain.geology import roi_distance_mm
 from game.domain.geology.worldgen import build_worldgen_requests_for_roi
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_SYSTEM_TIER_CONTRACT_MISSING = "refusal.system.tier_contract_missing"

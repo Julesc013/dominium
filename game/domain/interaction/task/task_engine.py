@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict, List, Mapping
 
 from game.domain.materials.dimension_engine import FixedPointOverflow, fixed_point_add, fixed_point_config_from_policy, fixed_point_type
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_TASK_TOOL_REQUIRED = "refusal.task.tool_required"

@@ -11,7 +11,7 @@ from typing import Dict, Mapping
 from game.domain.astronomy import build_view_artifact_from_directions
 from game.domain.worldgen.mw import normalize_planet_basic_artifact_rows, normalize_star_artifact_rows
 from game.domain.worldgen.mw.mw_cell_generator import galaxy_priors_registry_hash, galaxy_priors_rows
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from .astronomy_proxy_engine import moon_direction_proxy, sun_direction_proxy
 from .sky_gradient_model import evaluate_sky_gradient

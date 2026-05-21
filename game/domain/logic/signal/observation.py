@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from tools.repo.meta.instrumentation import generate_measurement_observation, validate_control_access
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.meta.instrumentation import generate_measurement_observation, validate_control_access
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.logic.signal.signal_store import REFUSAL_SIGNAL_INVALID, normalize_signal_store_state
 

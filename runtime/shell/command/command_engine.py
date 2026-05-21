@@ -10,7 +10,7 @@ import json
 import os
 from typing import Mapping, Sequence
 
-from tools.validators.compatibility import build_compat_status_payload, build_product_descriptor, negotiate_product_endpoints
+from runtime.compatibility import build_compat_status_payload, build_product_descriptor, negotiate_product_endpoints
 from runtime.shell.command_registry import build_root_command_descriptors, find_command_descriptor, format_help_text
 from runtime.shell.compat_adapter import build_version_payload, emit_descriptor_payload
 from runtime.shell.config_loader import list_pack_manifests, list_profile_bundles

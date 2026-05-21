@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Sequence
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
-from tools.repo.specs import latest_spec_binding_for_target, spec_sheet_rows_by_id
+from engine.foundation.specs import latest_spec_binding_for_target, spec_sheet_rows_by_id
 from game.domain.systems.system_collapse_engine import normalize_system_rows
 
 

@@ -5,21 +5,21 @@ from __future__ import annotations
 import math
 from typing import Dict, List, Mapping, Tuple
 
-from tools.validators.core.flow import normalize_flow_channel
-from tools.validators.core.graph.network_graph_engine import normalize_network_graph
+from engine.foundation.core.flow import normalize_flow_channel
+from engine.foundation.core.graph.network_graph_engine import normalize_network_graph
 from game.domain.electricity.storage import (
     SOC_SCALE,
     apply_storage_charge,
     apply_storage_discharge,
     normalize_storage_state_rows,
 )
-from tools.repo.models.model_engine import (
+from engine.foundation.models.model_engine import (
     cache_policy_rows_by_id,
     evaluate_model_bindings,
     model_type_rows_by_id,
     normalize_constitutive_model_rows,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_ELEC_NETWORK_INVALID = "refusal.elec.network_invalid"

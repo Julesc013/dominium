@@ -7,7 +7,7 @@ import os
 from functools import lru_cache
 from typing import Dict, Iterable, List, Mapping, Sequence
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.fields import field_get_value
 from game.domain.geology.edit import geometry_get_cell_state

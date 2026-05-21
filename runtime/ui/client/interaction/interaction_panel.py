@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 def _sorted_unique_strings(values: List[object]) -> List[str]:

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.repo.models.model_engine import resolve_speed_multiplier_permille
+from engine.foundation.models.model_engine import resolve_speed_multiplier_permille
 from game.domain.mobility.travel.itinerary_engine import normalize_itinerary_rows
 from game.domain.mobility.traffic import (
     apply_congestion_to_speed,
@@ -14,7 +14,7 @@ from game.domain.mobility.traffic import (
     normalize_edge_occupancy_rows,
 )
 from game.domain.mobility.vehicle.vehicle_engine import build_motion_state, normalize_motion_state_rows
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 _VALID_COMMITMENT_KINDS = {"depart", "arrive", "waypoint"}

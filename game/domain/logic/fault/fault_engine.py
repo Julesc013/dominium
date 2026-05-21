@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping
 
-from tools.repo.meta.explain import build_explain_artifact
-from tools.validators.safety.safety_engine import build_safety_event
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.meta.explain import build_explain_artifact
+from engine.foundation.safety.safety_engine import build_safety_event
+from engine.serialization.canonical_json import canonical_sha256
 
 
 PROCESS_LOGIC_FAULT_SET = "process.logic_fault_set"

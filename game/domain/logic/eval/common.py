@@ -7,7 +7,7 @@ import re
 from typing import Dict, Iterable, List, Mapping, Sequence
 
 from game.domain.logic.signal.signal_store import normalize_signal_store_state
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 SCALAR_FIXED_ONE = 1000

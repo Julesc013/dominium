@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from tools.validators.network.transport.loopback import LoopbackTransport
-from tools.xstack.compatx.canonical_json import canonical_sha256
-from tools.xstack.sessionx.net_protocol import build_proto_message, decode_proto_message, encode_proto_message
+from runtime.network.transport import LoopbackTransport
+from engine.serialization.canonical_json import canonical_sha256
+from runtime.session.net_protocol import build_proto_message, decode_proto_message, encode_proto_message
 
 
 def _decode(repo_root: str, recv_result: Mapping[str, object]) -> dict:

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Sequence
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.geology.kernel.geo_kernel import (
     REFUSAL_GEO_PROFILE_MISSING,

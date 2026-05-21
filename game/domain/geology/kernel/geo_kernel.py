@@ -10,7 +10,7 @@ import os
 from functools import lru_cache
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_GEO_INVALID = "refusal.geo.invalid"

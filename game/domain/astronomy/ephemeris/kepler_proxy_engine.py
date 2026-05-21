@@ -13,7 +13,7 @@ from game.domain.astronomy.illumination.illumination_geometry_engine import (
     sin_permille_from_angle_mdeg,
 )
 from game.domain.geology import build_position_ref
-from tools.package.libraries.provides.provider_resolution import resolve_providers
+from engine.foundation.package.libraries.provides import resolve_providers
 from numeric_discipline import debug_assert_no_float_payload
 from game.domain.worldgen.mw import (
     normalize_planet_basic_artifact_rows,
@@ -21,7 +21,7 @@ from game.domain.worldgen.mw import (
     normalize_star_artifact_rows,
 )
 from game.domain.worldgen.mw.insolation_proxy import orbital_period_proxy_ticks
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 EPHEMERIS_PROVIDER_REGISTRY_REL = os.path.join("data", "registries", "ephemeris_provider_registry.json")

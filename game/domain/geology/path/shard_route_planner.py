@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.geology.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from game.domain.geology.kernel.geo_kernel import _as_int, _as_map

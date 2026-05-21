@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.validators.core.graph.routing_engine import RoutingError, query_route_result
+from engine.foundation.core.graph.routing_engine import RoutingError, query_route_result
 from game.domain.signals.addressing import address_from_recipient_address, resolve_address_recipients
 from game.domain.signals.trust import (
     belief_policy_rows_by_id,
     evaluate_receipt_acceptance,
     trust_weight_for_pair,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 from .channel_executor import execute_channel_transport_tick
 
 

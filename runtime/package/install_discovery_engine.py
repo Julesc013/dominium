@@ -7,7 +7,7 @@ import os
 import sys
 from typing import Iterable, Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 INSTALL_MANIFEST_NAME = "install.manifest.json"

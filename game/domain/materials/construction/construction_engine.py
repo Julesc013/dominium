@@ -13,7 +13,7 @@ from game.domain.materials.blueprint_engine import (
     BlueprintCompileError,
     compile_blueprint_artifacts,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_CONSTRUCTION_BLUEPRINT_MISSING = "refusal.construction.blueprint_missing"

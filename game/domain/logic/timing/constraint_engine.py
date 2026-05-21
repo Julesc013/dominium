@@ -5,9 +5,9 @@ from __future__ import annotations
 from typing import Mapping
 
 from game.domain.logic.eval.common import as_int, as_map, canon, token
-from tools.repo.meta.explain import build_explain_artifact
+from engine.foundation.meta.explain import build_explain_artifact
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 def declared_timing_constraint(binding_row: Mapping[str, object] | None) -> dict:

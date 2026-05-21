@@ -7,7 +7,7 @@ import shutil
 from typing import Mapping, Sequence
 
 from tools.package.libraries.install.install_validator import default_install_registry_path
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from tools.package.libraries.store.reachability_engine import (
     ARTIFACT_JSON_PAYLOAD,

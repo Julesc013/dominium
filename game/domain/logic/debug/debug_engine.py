@@ -18,9 +18,9 @@ from game.domain.logic.network.instrumentation_binding import (
     observe_logic_network_node,
 )
 from game.domain.logic.signal import normalize_signal_store_state, observe_signal_row
-from tools.repo.meta.explain import build_explain_artifact, normalize_explain_artifact_rows
-from tools.repo.meta.instrumentation import generate_measurement_observation
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.meta.explain import build_explain_artifact, normalize_explain_artifact_rows
+from engine.foundation.meta.instrumentation import generate_measurement_observation
+from engine.serialization.canonical_json import canonical_sha256
 
 from .compute_hooks import request_logic_debug_compute
 from .runtime_state import (

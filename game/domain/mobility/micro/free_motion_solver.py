@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Sequence, Tuple
 
-from tools.repo.meta.numeric import deterministic_divide
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.meta.numeric import deterministic_divide
+from engine.serialization.canonical_json import canonical_sha256
 
 
 _VALID_CORRIDOR_ENFORCEMENT_MODES = {"clamp", "refuse", "warn"}

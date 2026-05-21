@@ -11,9 +11,9 @@ from typing import Mapping, Sequence
 
 from runtime.shell.paths import VROOT_EXPORTS, get_current_virtual_paths, vpath_resolve
 from meta_extensions_engine import normalize_extensions_tree
-from tools.xstack.compatx.canonical_json import canonical_sha256
-from tools.xstack.compatx.validator import validate_instance
-from tools.xstack.sessionx.common import norm, write_canonical_json
+from engine.serialization.canonical_json import canonical_sha256
+from engine.compatx.validator import validate_instance
+from engine.session.common import norm, write_canonical_json
 
 
 REPRO_BUNDLE_VERSION = "1.0.0"

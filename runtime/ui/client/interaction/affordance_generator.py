@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, List
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
-from tools.xstack.compatx.validator import validate_instance
+from engine.serialization.canonical_json import canonical_sha256
+from engine.compatx.validator import validate_instance
 from game.domain.interaction import resolve_action_surfaces
 
 

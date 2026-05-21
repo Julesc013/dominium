@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.logic.eval.common import as_int, as_list, as_map, canon, token
 from game.domain.logic.signal.signal_store import canonical_signal_snapshot
-from tools.repo.meta.explain import build_explain_artifact
+from engine.foundation.meta.explain import build_explain_artifact
 
 
 def _graph_element_ids(graph_row: Mapping[str, object]) -> list[str]:

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from tools.repo.meta.explain import build_explain_artifact
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.meta.explain import build_explain_artifact
+from engine.serialization.canonical_json import canonical_sha256
 from game.domain.logic.protocol import arbitrate_logic_protocol_frames, transport_logic_sig_receipts
 
 from .common import as_int, as_list, as_map, canon, rows_by_id, token

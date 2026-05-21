@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping, Sequence
 
-from tools.repo.meta.instrumentation import (
+from engine.foundation.meta.instrumentation import (
     generate_measurement_observation,
     resolve_instrumentation_surface,
     route_forensics_request,

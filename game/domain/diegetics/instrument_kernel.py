@@ -5,7 +5,7 @@ from __future__ import annotations
 import copy
 from typing import Dict, List
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 NOTEBOOK_TEXT_MAX = 280

@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Sequence
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.chemistry.process_run_engine import build_batch_quality_row
-from tools.repo.meta.compile import compiled_model_execute, compiled_model_is_valid, compiled_model_rows_by_id
+from engine.foundation.meta.compile import compiled_model_execute, compiled_model_is_valid, compiled_model_rows_by_id
 from game.domain.processes.capsules.capsule_builder import (
     REFUSAL_PROCESS_CAPSULE_INVALID,
     normalize_process_capsule_rows,

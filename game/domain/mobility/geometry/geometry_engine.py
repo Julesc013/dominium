@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict, List, Mapping, Sequence, Tuple
 
 from game.domain.geology import geo_distance
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 _VALID_GEOMETRY_TYPES = {

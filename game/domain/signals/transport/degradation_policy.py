@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import List, Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_SIG_NONESSENTIAL_SEND = "refusal.sig.nonessential_send_budget"

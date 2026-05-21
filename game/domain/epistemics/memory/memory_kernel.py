@@ -5,7 +5,7 @@ from __future__ import annotations
 import copy
 from typing import Dict, List, Tuple
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 SOURCE_TICK_BUCKET_SIZE = 32

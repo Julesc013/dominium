@@ -8,7 +8,7 @@ import os
 from functools import lru_cache
 from typing import Dict, List, Mapping, Sequence
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.geology.frame.frame_engine import (
     _frame_nodes_by_id,

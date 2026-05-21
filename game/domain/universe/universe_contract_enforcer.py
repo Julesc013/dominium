@@ -5,14 +5,14 @@ from __future__ import annotations
 import os
 from typing import Mapping
 
-from tools.xstack.compatx.core.semantic_contract_validator import (
+from engine.compatx.core.semantic_contract_validator import (
     build_semantic_contract_proof_bundle,
     bundle_hash,
     load_semantic_contract_registry,
     validate_semantic_contract_registry,
     validate_universe_contract_bundle,
 )
-from tools.xstack.sessionx.common import norm, read_json_object, refusal
+from engine.session.common import norm, read_json_object, refusal
 
 
 DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF = "universe_contract_bundle.json"

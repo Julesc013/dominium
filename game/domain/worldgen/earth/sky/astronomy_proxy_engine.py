@@ -17,7 +17,7 @@ from game.domain.worldgen.earth.tide_phase_engine import (
     phase_cosine_proxy_permille,
     rotation_phase_from_params,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 EARTH_SKY_ASTRONOMY_ENGINE_VERSION = "EARTH4-3"

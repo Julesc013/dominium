@@ -6,8 +6,8 @@ import copy
 import os
 from typing import Dict, Mapping
 
-from tools.validators.compatibility.data_format_loader import load_versioned_artifact
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from runtime.compatibility.data_format_loader import load_versioned_artifact
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_BLUEPRINT_MISSING_PART_CLASS = "refusal.blueprint.missing_part_class"

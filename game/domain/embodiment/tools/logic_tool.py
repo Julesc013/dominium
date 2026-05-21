@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from tools.validators.compatibility import REFUSAL_COMPAT_FEATURE_DISABLED, enforce_negotiated_capability
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from runtime.compatibility import REFUSAL_COMPAT_FEATURE_DISABLED, enforce_negotiated_capability
+from engine.serialization.canonical_json import canonical_sha256
 
 from .toolbelt_engine import evaluate_tool_access, tool_capability_rows_by_id
 

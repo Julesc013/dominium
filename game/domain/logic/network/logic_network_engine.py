@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping
 
-from tools.validators.core.graph.network_graph_engine import NetworkGraphError, normalize_network_graph
-from tools.repo.meta.compute import request_compute
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.core.graph.network_graph_engine import NetworkGraphError, normalize_network_graph
+from engine.foundation.meta.compute import request_compute
+from engine.serialization.canonical_json import canonical_sha256
 
 
 PROCESS_LOGIC_NETWORK_CREATE = "process.logic_network_create"

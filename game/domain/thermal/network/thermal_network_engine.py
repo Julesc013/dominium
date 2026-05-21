@@ -5,17 +5,17 @@ from __future__ import annotations
 from typing import Dict, List, Mapping, Tuple
 
 from runtime.capability.effects import get_effective_modifier
-from tools.validators.core.flow import normalize_flow_channel
-from tools.validators.core.graph.network_graph_engine import normalize_network_graph
+from engine.foundation.core.flow import normalize_flow_channel
+from engine.foundation.core.graph.network_graph_engine import normalize_network_graph
 from game.domain.fields.field_engine import build_field_cell
-from tools.repo.models.model_engine import (
+from engine.foundation.models.model_engine import (
     cache_policy_rows_by_id,
     evaluate_model_bindings,
     model_type_rows_by_id,
     normalize_constitutive_model_rows,
 )
-from tools.validators.safety.safety_engine import build_safety_event
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.safety.safety_engine import build_safety_event
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_THERM_NETWORK_INVALID = "refusal.therm.network_invalid"

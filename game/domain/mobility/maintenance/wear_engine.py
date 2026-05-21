@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
-from tools.repo.models.model_engine import compute_wear_ratio_permille
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.models.model_engine import compute_wear_ratio_permille
+from engine.serialization.canonical_json import canonical_sha256
 
 
 def _as_int(value: object, default_value: int = 0) -> int:

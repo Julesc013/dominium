@@ -6,7 +6,7 @@ import json
 import os
 from typing import Dict
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from runtime.platform.platform_gfx import list_available_backends
 from runtime.platform.platform_window import detect_platform_id

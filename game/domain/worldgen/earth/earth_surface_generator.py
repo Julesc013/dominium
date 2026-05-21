@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 EARTH_SURFACE_GENERATOR_VERSION = "EARTH0-3"

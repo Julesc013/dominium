@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from tools.repo.meta.instrumentation import (
+from engine.foundation.meta.instrumentation import (
     generate_measurement_observation,
     resolve_instrumentation_surface,
     route_forensics_request,
     validate_control_access,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 LOGIC_NETWORK_INSTRUMENTATION_OWNER_KIND = "logic_network"

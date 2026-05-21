@@ -2,100 +2,120 @@
 
 ## PHASE
 
-Foundation Lock - FOUNDATION-CLOSEOUT-01
+UNSPECIFIED - FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01
 
 ## GOAL
 
-Verify the Foundation Lock governance spine and decide whether Dominium can proceed to `WORKBENCH-VALIDATION-SLICE-01`.
+FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01
 
 ## WHY
 
-Dominium must not start product work until the Foundation contracts, validators, fast strict proof, repo layout checks, diagnostics, artifacts, capability/refusal, provider, module, replacement, versioning, trust, and portability layers are present and validated.
+Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
 
 ## CONTEXT_REFS
 
-- `AGENTS.md`
-- `docs/repo/FOUNDATION_LOCK.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-foundation-matrix.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-validation.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-fast-strict.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-blockers.md`
-- `.aide/context/latest-context-packet.md`
+- `.aide/memory/project-state.md`
+- `.aide/memory/decisions.md`
+- `.aide/memory/open-risks.md`
+- `.aide/context/repo-snapshot.json` (present)
+- `.aide/context/repo-map.json` (present)
+- `.aide/context/repo-map.md` (present)
+- `.aide/context/test-map.json` (present)
+- `.aide/context/context-index.json` (present)
+- `.aide/context/latest-context-packet.md` (present)
+- `.aide/repo/latest-repo-intelligence.md` (present)
+- `.aide/repo/file-inventory.json` (present)
+- `.aide/reports/file-quality-summary.md` (present)
+- `.aide/reports/file-quality-ledger.json` (present)
+- `.aide/refactors/latest-refactor-readiness.md` (present)
+- `.aide/refactors/latest-refactor-plan.example.json` (present)
+- `.aide/routing/latest-route-decision.json` (present)
+- `.aide/routing/latest-route-decision.md` (present)
+- `.aide/cache/latest-cache-keys.json` (present)
+- `.aide/cache/latest-cache-keys.md` (present)
+- `.aide/prompts/compact-task.md`
+- `.aide/policies/token-budget.yaml`
+- `.aide/policies/cache.yaml`
+- `.aide/policies/local-state.yaml`
 
 ## ALLOWED_PATHS
 
-- `.aide/reports/**`
+- `<fill from the next reviewed queue packet>`
 - `.aide/context/**`
-- `.aide/ledgers/**`
-- `docs/repo/FOUNDATION_LOCK.md`
-- `docs/repo/audits/**`
-- `docs/repo/POST_CONVERGE_NEXT_STEPS.md`
-- `docs/repo/POST_RESTRUCTURE_PROOF.md`
-- `docs/repo/RESTRUCTURE_REPAIR_STATUS.md`
-- narrow validator/doc repairs required to make closeout evidence truthful
+- `.aide/queue/unspecified-*` if this task becomes a queue item
+- root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
 
 - `.git/**`
+- `.env`
+- `secrets/**`
 - `.aide.local/**`
-- `.dominium.local/**`
-- generated build/projection/release outputs
-- Workbench UI, runtime module loading, provider runtime, package runtime, gameplay, renderer, native GUI, release publication, broad rewrites, or new governance subsystems.
+- raw provider credentials, API keys, local caches, raw prompt logs
+- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
 
 ## IMPLEMENTATION
 
-- Verified local `main` was clean and aligned with `origin/main`.
-- Read the AGENTS/canon/planning doctrine packet before substantive work.
-- Ran required Foundation validators and fixtures.
-- Repaired the prior portability audit header so RepoX can parse it lawfully.
-- Recorded Foundation Lock as blocked by active dependency-direction violations.
+- Read the queue packet and relevant repo refs first.
+- Keep changes inside the allowed paths.
+- Make the smallest coherent diff that satisfies acceptance.
+- Preserve generated/manual boundaries.
+- Do not inline whole source files unless exact contents are required.
+- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
 
 ## VALIDATION
 
-- PASS: AIDE doctor/validate preflight.
-- PASS: required Foundation files are present.
-- PASS: most Foundation validators and fixture modes.
-- FAIL: dependency-direction strict validator reports 358 violations and 38 warnings.
-- PASS: fast strict passes 32 commands in 308.406 seconds.
-- NOT RUN: full CTest; remains T4/full-gate debt.
+- `py -3 .aide/scripts/aide_lite.py doctor`
+- `py -3 .aide/scripts/aide_lite.py validate`
+- `py -3 .aide/scripts/aide_lite.py index`
+- `py -3 .aide/scripts/aide_lite.py context`
+- `py -3 .aide/scripts/aide_lite.py repo inventory`
+- `py -3 .aide/scripts/aide_lite.py repo validate`
+- `py -3 .aide/scripts/aide_lite.py verify`
+- `py -3 .aide/scripts/aide_lite.py review-pack`
+- `py -3 .aide/scripts/aide_lite.py route explain`
+- `py -3 .aide/scripts/aide_lite.py test`
+- `py -3 .aide/scripts/aide_lite.py selftest`
+- `py -3 scripts/aide validate`
+- `git diff --check`
 
-## DECISION
+## COMMITS
 
-Foundation Lock is not closed. `WORKBENCH-VALIDATION-SLICE-01` is not authorized.
-
-Next task: `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
+- Commit coherent subdeliverables with verbose bodies.
+- Stop at review gates.
 
 ## EVIDENCE
 
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-validation.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-foundation-matrix.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-blockers.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-next-readiness.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-fast-strict.md`
+- changed files
+- validation commands and results
+- verifier result
+- review packet path and result when review-pack is available
+- advisory route decision path and result when Q17 routing is available
+- compact packet size and budget status
+- unresolved risks and deferrals
 
 ## NON_GOALS
 
-- No Workbench UI.
-- No product feature implementation.
-- No runtime module loader.
-- No provider runtime.
-- No package runtime.
-- No broad directory moves.
-- No new major governance subsystem.
+- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
 
 ## ACCEPTANCE
 
-- Foundation files and validators are inventoried.
-- Required validators are run and reported honestly.
-- Blockers are classified without false green status.
-- Next authorized or repair task is explicit.
+- Task-specific acceptance criteria are met.
+- Validation is run and recorded.
+- Evidence is written.
+- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
 
 ## OUTPUT_SCHEMA
 
-Return branch, starting HEAD, ending HEAD, origin/main, push status, Foundation Lock decision, layer statuses, fast strict status, RepoX status, smoke/build/full CTest status, generated-output status, warnings, blockers, and next task.
+Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
+Include the verifier result when Q12 verifier behavior is available.
 
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- approx_tokens: 760
+- chars: 4144
+- approx_tokens: 1036
 - budget_status: PASS
+- warnings:
+  - none
+- formal ledger: `.aide/reports/token-ledger.jsonl`

@@ -6,7 +6,7 @@ import os
 import subprocess
 from typing import Mapping
 
-from tools.validators.compatibility import build_compat_status_payload, build_degrade_runtime_state
+from runtime.compatibility import build_compat_status_payload, build_degrade_runtime_state
 from runtime.network.client import read_loopback_handshake_response, send_loopback_client_ack
 from runtime.process_spawn import build_server_process_spec, collect_process_output, poll_process, spawn_process
 from apps.server import boot_server_runtime, load_server_config, materialize_server_session
@@ -18,9 +18,9 @@ from runtime.network.server.loopback_transport import (
     service_loopback_control_channel,
 )
 from runtime.shell.server.tick_loop import advance_server_tick
-from tools.xstack.compatx.canonical_json import canonical_sha256
-from tools.xstack.sessionx.common import norm, read_json_object, refusal, write_canonical_json
-from tools.xstack.sessionx.net_protocol import decode_proto_message
+from runtime.serialization.canonical_json import canonical_sha256
+from runtime.session.common import norm, read_json_object, refusal, write_canonical_json
+from runtime.session.net_protocol import decode_proto_message
 
 
 REFUSAL_LOCAL_AUTHORITY_FORBIDDEN = "refusal.client.local_authority_forbidden"

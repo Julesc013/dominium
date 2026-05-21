@@ -9,7 +9,7 @@ import sys
 from typing import Mapping
 
 from runtime.shell.paths import VROOT_LOGS, get_current_virtual_paths, vpath_resolve
-from tools.repo.meta.observability import redact_observability_mapping, validate_observability_event
+from engine.foundation.meta.observability import redact_observability_mapping, validate_observability_event
 
 
 LOG_SCHEMA_VERSION = "1.0.0"

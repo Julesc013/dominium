@@ -1,31 +1,26 @@
-"""Deterministic JSON serialization and hashing helpers for schema artifacts."""
+"""Compatibility wrapper for engine-owned deterministic JSON helpers."""
 
 from __future__ import annotations
 
-import hashlib
-import json
 from typing import Any
 
+from engine.serialization.canonical_json import (
+    canonical_json_bytes as _engine_canonical_json_bytes,
+    canonical_json_text as _engine_canonical_json_text,
+    canonical_sha256 as _engine_canonical_sha256,
+)
 from meta_extensions_engine import normalize_extensions_tree
 
 
 def canonical_json_text(value: Any) -> str:
-    """Return canonical JSON text with stable key ordering and compact separators."""
-    normalized = normalize_extensions_tree(value)
-    return json.dumps(
-        normalized,
-        ensure_ascii=False,
-        separators=(",", ":"),
-        sort_keys=True,
-    )
+    return _engine_canonical_json_text(normalize_extensions_tree(value))
 
 
 def canonical_json_bytes(value: Any) -> bytes:
-    """Return UTF-8 bytes for canonical JSON text."""
     return canonical_json_text(value).encode("utf-8")
 
 
 def canonical_sha256(value: Any) -> str:
-    """Return SHA-256 digest for canonical JSON bytes."""
-    return hashlib.sha256(canonical_json_bytes(value)).hexdigest()
+    return _engine_canonical_sha256(normalize_extensions_tree(value))
 
+__all__ = ["canonical_json_bytes", "canonical_json_text", "canonical_sha256"]

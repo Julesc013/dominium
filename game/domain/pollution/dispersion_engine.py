@@ -6,7 +6,7 @@ import re
 from typing import Dict, Iterable, List, Mapping, Tuple
 
 from game.domain.geology import geo_neighbors
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_POLLUTION_DISPERSION_INVALID = "REFUSAL_POLLUTION_DISPERSION_INVALID"

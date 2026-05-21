@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.validators.core.spatial.spatial_engine import SpatialError, compose_transforms, resolve_world_transform
+from engine.foundation.core.spatial.spatial_engine import SpatialError, compose_transforms, resolve_world_transform
 from engine.state.state.state_machine_engine import StateMachineError, apply_transition, normalize_state_machine
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_INTERIOR_INVALID = "refusal.interior.invalid"

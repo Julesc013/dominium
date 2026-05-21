@@ -21,7 +21,7 @@ from game.domain.astronomy.ephemeris.kepler_proxy_engine import (
     sample_orbit_path_points,
 )
 from game.domain.geology.index.geo_index_engine import _coerce_cell_key, geo_cell_key_from_position
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 ORBIT_VIEW_ENGINE_VERSION = "SOL2-4"

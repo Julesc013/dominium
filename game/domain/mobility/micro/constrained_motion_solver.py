@@ -6,8 +6,8 @@ import math
 from typing import Dict, List, Mapping
 
 from game.domain.geology import geo_distance
-from tools.repo.models.model_engine import compute_derailment_threshold_units, compute_lateral_accel_units
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.models.model_engine import compute_derailment_threshold_units, compute_lateral_accel_units
+from engine.serialization.canonical_json import canonical_sha256
 
 
 _VALID_DIRECTIONS = {"forward", "back"}

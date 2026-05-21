@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
-from tools.validators.safety.safety_engine import build_safety_event, build_safety_instance
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.safety.safety_engine import build_safety_event, build_safety_instance
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_ELEC_PROTECTION_INVALID = "refusal.elec.protection_invalid"

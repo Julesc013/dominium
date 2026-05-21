@@ -18,7 +18,7 @@ from game.domain.geology import (
     project_view_cells,
     render_projected_view_ascii,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 COMPUTE_BUDGET_PROFILE_REGISTRY_REL = os.path.join("contracts", "registry", "compute_budget_profile_registry.json")

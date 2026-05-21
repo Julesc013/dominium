@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from .common import as_int, as_list, as_map, canon, slot_key, token
 from game.domain.logic.protocol import (

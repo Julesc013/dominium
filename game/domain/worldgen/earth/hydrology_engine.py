@@ -7,7 +7,7 @@ import os
 from functools import lru_cache
 from typing import Callable, Dict, List, Mapping, Sequence, Tuple
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.geology.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key, geo_cell_key_neighbors
 

@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Sequence
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
-from tools.repo.meta.compile import evaluate_compile_request as run_compile_request
-from tools.repo.meta.compute import request_compute
+from engine.foundation.meta.compile import evaluate_compile_request as run_compile_request
+from engine.foundation.meta.compute import request_compute
 from game.domain.processes.process_run_engine import (
     build_process_quality_record_row,
     build_process_run_record_row,

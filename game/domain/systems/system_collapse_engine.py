@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
-from tools.repo.meta.profile import apply_override
+from engine.serialization.canonical_json import canonical_sha256
+from engine.foundation.meta.profile import apply_override
 from game.domain.systems.system_validation_engine import (
     REFUSAL_SYSTEM_INVALID_INTERFACE,
     REFUSAL_SYSTEM_INVARIANT_VIOLATION,

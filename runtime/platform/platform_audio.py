@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 def create_audio_device(*, device_id: str = "audio.null", sample_rate_hz: int = 48000, channels: int = 2) -> dict:

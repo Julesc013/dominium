@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.validators.core.graph.network_graph_engine import normalize_network_graph
-from tools.repo.models.model_engine import (
+from engine.foundation.core.graph.network_graph_engine import normalize_network_graph
+from engine.foundation.models.model_engine import (
     compute_congestion_multiplier_permille as model_compute_congestion_multiplier_permille,
 )
-from tools.repo.models.model_engine import (
+from engine.foundation.models.model_engine import (
     compute_congestion_ratio_permille as model_compute_congestion_ratio_permille,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_MOBILITY_RESERVATION_CONFLICT = "refusal.mob.reservation_conflict"

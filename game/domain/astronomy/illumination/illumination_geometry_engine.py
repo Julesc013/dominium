@@ -10,7 +10,7 @@ from typing import Dict, Mapping, Sequence
 
 from game.domain.geology import build_position_ref
 from numeric_discipline import debug_assert_no_float_payload
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 EMITTER_KIND_REGISTRY_REL = os.path.join("data", "registries", "emitter_kind_registry.json")

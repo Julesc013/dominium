@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
-from tools.repo.meta.compile import (
+from engine.foundation.meta.compile import (
     REFUSAL_COMPILE_MISSING_PROOF,
     build_compile_request_row,
     build_compile_result_row,
@@ -14,15 +14,15 @@ from tools.repo.meta.compile import (
     equivalence_proof_rows_by_id,
     validity_domain_rows_by_id,
 )
-from tools.repo.meta.compute import request_compute
-from tools.repo.meta.explain import build_explain_artifact
+from engine.foundation.meta.compute import request_compute
+from engine.foundation.meta.explain import build_explain_artifact
 from game.domain.systems import (
     build_interface_signature_row,
     build_system_macro_capsule_row,
     normalize_system_rows,
 )
 from game.domain.systems.macro import build_forced_expand_event_row
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.logic.eval.common import (
     as_int,

@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Iterable, Mapping, Sequence
 
-from tools.validators.compatibility import build_compat_status_payload, emit_product_descriptor, negotiate_product_endpoints
-from tools.validators.compatibility.shims import legacy_flag_rows
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from runtime.compatibility import build_compat_status_payload, emit_product_descriptor, negotiate_product_endpoints
+from runtime.compatibility.shims import legacy_flag_rows
+from engine.serialization.canonical_json import canonical_sha256
 
 from .args_parser import AppShellArgs
 from .mode_dispatcher import legacy_mode_args, supported_modes_for_product

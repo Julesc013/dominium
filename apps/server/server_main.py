@@ -15,7 +15,7 @@ while THIS_DIR in sys.path:
     sys.path.remove(THIS_DIR)
 
 from runtime.shell import appshell_main
-from tools.validators.compatibility import descriptor_json_text, emit_product_descriptor
+from runtime.compatibility import descriptor_json_text, emit_product_descriptor
 from runtime.network.server.loopback_transport import accept_loopback_connection, create_loopback_listener
 from runtime.shell.server.tick_loop import run_server_ticks
 from apps.server.server_boot import boot_server_runtime

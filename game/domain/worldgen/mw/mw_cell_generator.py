@@ -8,7 +8,7 @@ from functools import lru_cache
 from math import isqrt
 from typing import Dict, List, Mapping, Tuple
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.geology.frame.frame_engine import build_position_ref
 from game.domain.geology.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key

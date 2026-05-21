@@ -5,7 +5,7 @@ from __future__ import annotations
 from math import isqrt
 from typing import Dict, List, Mapping, Sequence
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 GALAXY_OBJECT_STUB_GENERATOR_VERSION = "GAL1-3"
 MAX_GALAXY_OBJECT_STUBS_PER_CELL = 1

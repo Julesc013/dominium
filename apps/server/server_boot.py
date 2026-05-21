@@ -13,8 +13,8 @@ from tools.validators.network.policies.policy_server_authoritative import (
     prepare_server_authoritative_baseline,
     submit_client_intent,
 )
-from tools.validators.compatibility import COMPAT_MODE_READ_ONLY, REFUSAL_CONNECTION_NO_NEGOTIATION
-from tools.validators.compatibility.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
+from runtime.compatibility import COMPAT_MODE_READ_ONLY, REFUSAL_CONNECTION_NO_NEGOTIATION
+from runtime.compatibility.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
 from game.domain.universe import (
     DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF,
     build_universe_contract_bundle_payload,
@@ -25,9 +25,9 @@ from tools.release.mvp.runtime_bundle import (
     build_default_universe_identity,
     validate_pack_lock_payload as validate_runtime_pack_lock_payload,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
-from tools.xstack.compatx.validator import validate_instance
-from tools.xstack.sessionx.common import norm, read_json_object, refusal, write_canonical_json
+from runtime.serialization.canonical_json import canonical_sha256
+from runtime.compatx.validator import validate_instance
+from runtime.session.common import norm, read_json_object, refusal, write_canonical_json
 from tools.xstack.sessionx.creator import (
     _default_net_schema_versions,
     _initial_universe_state,

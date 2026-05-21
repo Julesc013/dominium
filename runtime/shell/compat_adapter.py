@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from tools.validators.compatibility import emit_product_descriptor
+from runtime.compatibility import emit_product_descriptor
 from tools.release import build_product_build_metadata
 
 

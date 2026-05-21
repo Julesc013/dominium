@@ -4,12 +4,12 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
-from tools.repo.meta.compute import (
+from engine.serialization.canonical_json import canonical_sha256
+from engine.foundation.meta.compute import (
     normalize_compute_consumption_record_rows,
     request_compute,
 )
-from tools.repo.models import (
+from engine.foundation.models import (
     cache_policy_rows_by_id,
     constitutive_model_rows_by_id,
     evaluate_model_bindings,

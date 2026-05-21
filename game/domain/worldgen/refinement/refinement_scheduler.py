@@ -6,7 +6,7 @@ from typing import Dict, List, Mapping
 
 from game.domain.geology.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from game.domain.geology.worldgen.worldgen_engine import build_worldgen_request_for_cell, normalize_worldgen_result_rows
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 EXPLAIN_REFINEMENT_DEFERRED = "explain.refinement_deferred"

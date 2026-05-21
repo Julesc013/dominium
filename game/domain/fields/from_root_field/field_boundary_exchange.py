@@ -6,7 +6,7 @@ from typing import Dict, Mapping, Sequence
 
 from game.domain.fields import get_field_value, normalize_field_sample_rows
 from game.domain.interior.compartment_flow_builder import normalize_portal_flow_params
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 def _as_int(value: object, default_value: int = 0) -> int:

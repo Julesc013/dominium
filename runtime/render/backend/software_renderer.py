@@ -9,7 +9,7 @@ import os
 from typing import Dict, List, Tuple
 
 from game.domain.geology import geo_project
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from .null_renderer import build_frame_summary
 

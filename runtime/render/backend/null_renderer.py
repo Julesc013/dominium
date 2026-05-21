@@ -6,7 +6,7 @@ import json
 import os
 from typing import Dict, Iterable, List, Tuple
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 def _to_int(value: object, default: int = 0) -> int:

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Sequence, Set, Tuple
 
-from tools.validators.core.graph.network_graph_engine import NetworkGraphError, normalize_network_graph
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.core.graph.network_graph_engine import NetworkGraphError, normalize_network_graph
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_LOGIC_LOOP_DETECTED = "refusal.logic.loop_detected"

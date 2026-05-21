@@ -6,7 +6,7 @@ from typing import Mapping
 
 from game.domain.worldgen.refinement.refinement_scheduler import build_refinement_request_record
 from runtime.ui.client.teleport_controller import build_teleport_plan
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from .toolbelt_engine import evaluate_tool_access
 

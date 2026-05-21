@@ -7,7 +7,7 @@ import os
 from functools import lru_cache
 from typing import Dict, Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 DEFAULT_SHADOW_MODEL_ID = "shadow.horizon_stub_default"

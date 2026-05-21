@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 from typing import Dict, List, Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 _VALID_TARGET_KINDS = {"track", "road", "path", "canal", "tunnel", "custom"}

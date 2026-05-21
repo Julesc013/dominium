@@ -4,17 +4,17 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Sequence
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
-from tools.repo.meta.compile import (
+from engine.foundation.meta.compile import (
     evaluate_compile_request,
 )
-from tools.repo.meta.compile.compile_engine import (
+from engine.foundation.meta.compile.compile_engine import (
     build_validity_domain_row,
 )
 from game.domain.processes.maturity import normalize_process_maturity_record_rows
 from game.domain.processes.maturity.metrics_engine import normalize_process_metrics_state_rows
-from tools.repo.specs import tolerance_policy_rows_by_id
+from engine.foundation.specs import tolerance_policy_rows_by_id
 from game.domain.systems.statevec import (
     state_vector_definition_for_owner,
 )

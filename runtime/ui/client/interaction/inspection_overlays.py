@@ -12,13 +12,13 @@ from game.domain.materials.blueprint_engine import (
     build_blueprint_ghost_overlay,
     compile_blueprint_artifacts,
 )
-from tools.performance.cost_engine import normalize_budget_envelope, reserve_inspection_budget
-from tools.performance.inspection_cache import (
+from engine.foundation.performance.cost_engine import normalize_budget_envelope, reserve_inspection_budget
+from engine.foundation.performance.inspection_cache import (
     build_cache_key as inspection_build_cache_key,
     build_inspection_snapshot,
     cache_lookup_or_store as inspection_cache_lookup_or_store,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 def _to_int(value: object, default_value: int = 0) -> int:

@@ -4,8 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from game.domain.geology.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 DEFAULT_REFINEMENT_CACHE_LIMITS = {
@@ -25,6 +24,60 @@ def _as_int(value: object, default_value: int = 0) -> int:
 
 def _as_map(value: object) -> dict:
     return dict(value or {}) if isinstance(value, Mapping) else {}
+
+
+def _canonical_cell_key_seed(
+    *,
+    partition_profile_id: str,
+    topology_profile_id: str,
+    chart_id: str,
+    index_tuple: object,
+    refinement_level: int,
+) -> dict:
+    return {
+        "schema_version": "1.0.0",
+        "partition_profile_id": str(partition_profile_id),
+        "topology_profile_id": str(topology_profile_id),
+        "chart_id": str(chart_id),
+        "index_tuple": [int(value) for value in list(index_tuple or [])],
+        "refinement_level": int(max(0, int(refinement_level))),
+    }
+
+
+def _semantic_cell_key(cell_key: Mapping[str, object]) -> dict:
+    row = _as_map(cell_key)
+    return _canonical_cell_key_seed(
+        partition_profile_id=str(row.get("partition_profile_id", "")),
+        topology_profile_id=str(row.get("topology_profile_id", "")),
+        chart_id=str(row.get("chart_id", "")),
+        index_tuple=list(row.get("index_tuple") or []),
+        refinement_level=_as_int(row.get("refinement_level", 0), 0),
+    )
+
+
+def _coerce_cell_key(cell_key: Mapping[str, object] | None) -> dict | None:
+    payload = _as_map(cell_key)
+    if not payload:
+        return None
+    partition_profile_id = str(payload.get("partition_profile_id", "")).strip()
+    topology_profile_id = str(payload.get("topology_profile_id", "")).strip()
+    chart_id = str(payload.get("chart_id", "")).strip()
+    index_tuple = payload.get("index_tuple")
+    if not partition_profile_id or not topology_profile_id or not chart_id or not isinstance(index_tuple, list) or not index_tuple:
+        return None
+    row = {
+        "schema_version": "1.0.0",
+        "partition_profile_id": partition_profile_id,
+        "topology_profile_id": topology_profile_id,
+        "chart_id": chart_id,
+        "index_tuple": [int(value) for value in index_tuple],
+        "refinement_level": int(max(0, _as_int(payload.get("refinement_level", 0), 0))),
+        "deterministic_fingerprint": str(payload.get("deterministic_fingerprint", "")).strip(),
+        "extensions": _as_map(payload.get("extensions")),
+    }
+    if not row["deterministic_fingerprint"]:
+        row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
+    return row
 
 
 def _geo_sort_tuple(cell_key: Mapping[str, object] | None) -> tuple:

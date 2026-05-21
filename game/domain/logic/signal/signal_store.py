@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 from typing import Dict, List, Mapping
 
-from tools.repo.meta.compute import request_compute
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.meta.compute import request_compute
+from engine.serialization.canonical_json import canonical_sha256
 
 
 PROCESS_SIGNAL_SET = "process.signal_set"

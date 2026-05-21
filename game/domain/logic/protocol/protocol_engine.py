@@ -13,7 +13,7 @@ from game.domain.logic.protocol.rows import (
     normalize_protocol_frame_rows,
 )
 from game.domain.logic.signal import sig_receipt_to_signal_request
-from tools.repo.meta.explain import build_explain_artifact
+from engine.foundation.meta.explain import build_explain_artifact
 from game.domain.signals import (
     build_signal_channel,
     normalize_knowledge_receipt_rows,
@@ -24,7 +24,7 @@ from game.domain.signals import (
     process_signal_send,
     process_signal_transport_tick,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 def _i(value: object, default: int = 0) -> int:

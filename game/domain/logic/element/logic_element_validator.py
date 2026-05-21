@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict, Iterable, List, Mapping, Sequence
 
 from game.domain.systems import state_vector_definition_rows_by_owner, validate_interface_signature
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_LOGIC_INVALID_ELEMENT_DEFINITION = "refusal.logic.invalid_element_definition"

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from tools.repo.meta.compute import request_compute
+from engine.foundation.meta.compute import request_compute
 
 
 LOGIC_DEBUG_COMPUTE_OWNER_KIND = "process"

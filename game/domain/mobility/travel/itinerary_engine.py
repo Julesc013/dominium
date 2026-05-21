@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
-from tools.validators.core.graph.routing_engine import RoutingError, query_route_result
+from engine.foundation.core.graph.routing_engine import RoutingError, query_route_result
 from game.domain.mobility.network.mobility_network_engine import (
     REFUSAL_MOBILITY_NETWORK_INVALID,
     REFUSAL_MOBILITY_NO_ROUTE,
@@ -14,7 +14,7 @@ from game.domain.mobility.vehicle.vehicle_engine import (
     REFUSAL_MOBILITY_SPEC_NONCOMPLIANT,
     evaluate_vehicle_edge_compatibility,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 _VALID_SPEED_POLICIES = {

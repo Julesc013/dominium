@@ -7,7 +7,7 @@ import os
 from typing import Mapping
 
 from runtime.shell.compat_adapter import emit_descriptor_payload
-from tools.validators.compatibility import (
+from runtime.compatibility import (
     REFUSAL_CONNECTION_NEGOTIATION_MISMATCH,
     build_compat_refusal,
     build_handshake_message,

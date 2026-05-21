@@ -7,7 +7,7 @@ import os
 from functools import lru_cache
 from typing import Dict, Iterable, List, Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 CAMERA_SMOOTHING_REGISTRY_REL = os.path.join("data", "registries", "camera_smoothing_registry.json")

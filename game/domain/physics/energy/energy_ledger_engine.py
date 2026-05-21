@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.repo.meta.numeric import tolerance_abs_for_quantity
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.meta.numeric import tolerance_abs_for_quantity
+from engine.serialization.canonical_json import canonical_sha256
 
 
 def _as_int(value: object, default_value: int = 0) -> int:

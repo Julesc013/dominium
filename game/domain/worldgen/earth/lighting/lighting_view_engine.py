@@ -5,7 +5,7 @@ from __future__ import annotations
 import copy
 from typing import Dict, Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from ..material import evaluate_earth_tile_material_proxy
 from .horizon_shadow_engine import (

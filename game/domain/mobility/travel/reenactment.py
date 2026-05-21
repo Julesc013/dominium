@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from ..traffic.traffic_engine import normalize_edge_occupancy_rows
 from .travel_engine import normalize_travel_event_rows

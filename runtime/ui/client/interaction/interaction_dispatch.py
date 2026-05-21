@@ -13,7 +13,7 @@ from tools.validators.network.anti_cheat.anti_cheat_engine import (
 from tools.validators.network.policies.policy_lockstep import POLICY_ID_LOCKSTEP
 from tools.validators.network.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE
 from tools.validators.network.policies.policy_srz_hybrid import POLICY_ID_SRZ_HYBRID
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 from tools.xstack.sessionx.boundary_debug import debug_assert_after_execute
 from runtime.capability.control_plane_engine import build_control_intent, build_control_resolution
 from game.domain.interaction.task import resolve_task_type_for_completion_process

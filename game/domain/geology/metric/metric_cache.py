@@ -5,7 +5,7 @@ from __future__ import annotations
 import copy
 from typing import Dict, Mapping
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 _DEFAULT_CACHE_MAX_ENTRIES = 512

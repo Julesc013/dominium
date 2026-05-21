@@ -8,7 +8,7 @@ import importlib
 from functools import lru_cache
 from typing import Dict, List, Mapping, Sequence, Tuple
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 from game.domain.fields import build_field_cell, build_field_layer
 from game.domain.geology.edit import build_geometry_cell_state

@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from typing import Mapping
 
-from tools.validators.compatibility import (
+from runtime.compatibility import (
     READ_ONLY_LAW_PROFILE_ID,
     REFUSAL_CONNECTION_NEGOTIATION_MISMATCH,
     build_compat_refusal,
@@ -16,12 +16,12 @@ from tools.validators.compatibility import (
 )
 from runtime.shell.logging import build_log_event, get_current_log_engine
 from tools.validators.network.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE, join_client_midstream
-from tools.validators.network.transport.loopback import LoopbackTransport
-from apps.server.server_boot import REFUSAL_CLIENT_UNAUTHORIZED, build_connection_authority_context
-from apps.server.server_console import dispatch_server_console_command
-from tools.xstack.compatx.canonical_json import canonical_sha256
-from tools.xstack.sessionx.common import norm, refusal, write_canonical_json
-from tools.xstack.sessionx.net_protocol import build_proto_message, decode_proto_message, encode_proto_message
+from runtime.network.transport import LoopbackTransport
+from runtime.network.server.authority import REFUSAL_CLIENT_UNAUTHORIZED, build_connection_authority_context
+from runtime.shell.server.console import dispatch_server_console_command
+from engine.serialization.canonical_json import canonical_sha256
+from engine.session.common import norm, refusal, write_canonical_json
+from runtime.session.net_protocol import build_proto_message, decode_proto_message, encode_proto_message
 
 
 def _runtime(server_boot_payload: Mapping[str, object] | None) -> dict:

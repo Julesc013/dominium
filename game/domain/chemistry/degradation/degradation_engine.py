@@ -5,14 +5,14 @@ from __future__ import annotations
 from typing import Dict, List, Mapping, Tuple
 
 from runtime.capability.effects import build_effect, normalize_effect_rows
-from tools.repo.models.model_engine import (
+from engine.foundation.models.model_engine import (
     cache_policy_rows_by_id,
     constitutive_model_rows_by_id,
     evaluate_model_bindings,
     model_type_rows_by_id,
     normalize_constitutive_model_rows,
 )
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 _VALID_KINDS = {"corrosion", "fouling", "scaling"}

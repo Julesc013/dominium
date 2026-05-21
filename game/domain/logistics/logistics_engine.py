@@ -4,19 +4,19 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from tools.validators.core.flow.flow_engine import (
+from engine.foundation.core.flow.flow_engine import (
     flow_solver_policy_rows_by_id,
     tick_flow_channels,
 )
-from tools.validators.core.graph.network_graph_engine import (
+from engine.foundation.core.graph.network_graph_engine import (
     NetworkGraphError,
     normalize_network_graph as core_normalize_network_graph,
     route_delay_ticks as core_route_delay_ticks,
     route_loss_fraction as core_route_loss_fraction,
 )
-from tools.validators.core.graph.routing_engine import RoutingError, route_query_edges
+from engine.foundation.core.graph.routing_engine import RoutingError, route_query_edges
 from game.domain.materials.dimension_engine import fixed_point_config_from_policy
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.serialization.canonical_json import canonical_sha256
 
 
 REFUSAL_LOGISTICS_INSUFFICIENT_STOCK = "refusal.logistics.insufficient_stock"

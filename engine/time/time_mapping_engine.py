@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Callable, Dict, List, Mapping
 
-from tools.repo.meta.numeric import deterministic_mul_div
-from tools.repo.models import constitutive_model_rows_by_id, evaluate_time_mapping_model, model_type_rows_by_id
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.meta.numeric import deterministic_mul_div
+from engine.foundation.models import constitutive_model_rows_by_id, evaluate_time_mapping_model, model_type_rows_by_id
+from engine.serialization.canonical_json import canonical_sha256
 
 from .tick_t import TickT, normalize_tick_t
 

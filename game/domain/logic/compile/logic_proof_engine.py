@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, Mapping
 
-from tools.repo.meta.compile import build_equivalence_proof_row, verification_procedure_rows_by_id
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from engine.foundation.meta.compile import build_equivalence_proof_row, verification_procedure_rows_by_id
+from engine.serialization.canonical_json import canonical_sha256
 
 
 def _as_map(value: object) -> dict:
