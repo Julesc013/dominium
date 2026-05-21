@@ -179,6 +179,7 @@ status = "available"
 tier = "T0"
 phase = "base"
 purpose = "CI/server/headless renderer."
+first_wave_role = "mandatory_headless_test"
 evidence = "DOM_BACKEND_NULL defaults ON and registers dom_render_backend_null; renderer docs call null a required correctness path."
 
 [render_backends.software]
@@ -186,6 +187,7 @@ status = "available"
 tier = "T0"
 phase = "base"
 purpose = "Software renderer baseline."
+first_wave_role = "mandatory_cpu_fallback"
 aliases = ["soft"]
 evidence = "DOM_BACKEND_SOFT defaults ON and registers dom_render_backend_soft; renderer docs call software a required correctness path."
 
@@ -194,8 +196,9 @@ status = "planned"
 tier = "T1"
 phase = "desktop"
 minimum_version = "3.3"
-profile = "core-style shader pipeline"
+profile = "core"
 purpose = "First shader-based hardware renderer family."
+first_wave_role = "planned_hardware_renderer"
 transitional_aliases = ["gl4"]
 backport_lanes = ["opengl_2_1", "opengl_1_1"]
 evidence = "DOM_BACKEND_GL4 exists as a transitional switch; the first-wave target is OpenGL 3.3-style shader architecture, with no support claim until native proof exists."
@@ -206,6 +209,7 @@ tier = "T1"
 phase = "desktop"
 primary_version = "11"
 purpose = "Windows hardware renderer family."
+first_wave_role = "planned_windows_hardware_renderer"
 transitional_aliases = ["dx11"]
 advanced_lanes = ["direct3d_12"]
 backport_lanes = ["direct3d_9"]
@@ -216,6 +220,7 @@ status = "planned"
 tier = "T4"
 phase = "advanced"
 purpose = "Later Apple-native GPU renderer."
+first_wave_role = "later_advanced_renderer"
 evidence = "DOM_BACKEND_METAL exists but defaults OFF; no implemented support is claimed."
 
 [render_backends.vulkan]
@@ -223,6 +228,7 @@ status = "planned"
 tier = "T4"
 phase = "advanced"
 purpose = "Later advanced explicit GPU renderer."
+first_wave_role = "later_advanced_renderer"
 transitional_aliases = ["vk1"]
 evidence = "DOM_BACKEND_VK1 exists but defaults OFF; Vulkan remains a later advanced lane."
 

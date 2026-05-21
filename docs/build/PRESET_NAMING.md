@@ -9,7 +9,7 @@ Phase: POST-CONVERGE-10
 Tuple IDs should expose their actual build dimensions:
 
 ```text
-verify.winnt10.x64.msvc143.mt.debug
+verify.winnt7.x86_64.msvc143.mt.debug
 verify.host.host.host_default.host.debug
 research.xp.x86.msvc141_xp.mt.release
 ```
@@ -24,12 +24,16 @@ Avoid vague names in tuple/component IDs:
 - `compat`
 - `broad_compatibility`
 - `early_modern_desktop`
+- `retro_research`
+- `advanced_modern`
 
 Those words hide important dimensions and tend to become support claims without evidence.
 
 ## Field Discipline
 
-Do not encode renderer or API nicknames such as `gl2`, `dx11`, or `vk1` into primary component IDs when they should be fields. Use explicit tuple fields for:
+Do not encode renderer or API nicknames such as `gl1`, `gl2`, `gl4`, `dx9`, `dx11`, `dx12`, or `vk1` into primary component IDs when they should be fields. Use renderer family fields such as `opengl`, `direct3d`, `software`, and `null`, with version/profile fields when a specific API target is needed.
+
+Use explicit tuple fields for:
 
 - floor
 - architecture

@@ -3,6 +3,8 @@ Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
 
+MATRIX-CLEANUP-00 note: this derived package dev-spec is historical input. Current package and platform posture is governed by the release/component/platform matrices; Win16/DOS/classic/retro package shapes below remain research/archive-runner context unless a later reviewed task promotes them with evidence.
+
 Below is the full dev-spec for /package/ — the directory responsible for creating installers, distributable archives, physical media images, retro formats, and launcher metadata for every supported platform.
 /package never contains engine/game logic.
 It contains instructions and layouts used by build scripts to assemble redistributables.

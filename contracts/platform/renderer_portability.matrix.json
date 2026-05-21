@@ -7,6 +7,8 @@
       "target_id": "dominium.renderer.null",
       "target_kind": "renderer_provider",
       "owner": "runtime.render",
+      "renderer_family": "null",
+      "first_wave_role": "mandatory_headless_test",
       "support_status": "smoke_proven",
       "platform_floor": "headless_host",
       "architecture": "host",
@@ -47,6 +49,8 @@
       "target_id": "dominium.renderer.software",
       "target_kind": "renderer_provider",
       "owner": "runtime.render",
+      "renderer_family": "software",
+      "first_wave_role": "mandatory_cpu_fallback",
       "support_status": "provisional",
       "platform_floor": "winnt10_x64",
       "architecture": "x64",
@@ -79,7 +83,11 @@
       "target_id": "dominium.renderer.opengl",
       "target_kind": "renderer_provider",
       "owner": "runtime.render",
-      "support_status": "research",
+      "renderer_family": "opengl",
+      "minimum_version": "3.3",
+      "profile": "core",
+      "first_wave_role": "planned_hardware_renderer",
+      "support_status": "planned",
       "platform_floor": "linux_x64",
       "architecture": "x64",
       "toolchain": "gcc",
@@ -100,7 +108,7 @@
       "known_limitations": [
         "No registered OpenGL provider capability or conformance proof."
       ],
-      "notes": "Research row only.",
+      "notes": "Planned first OpenGL hardware row only; no support claim until provider/conformance proof exists.",
       "architecture_tier": "source_native_64",
       "word_size": 64,
       "endianness": "little"
@@ -109,8 +117,11 @@
       "target_id": "dominium.renderer.direct3d",
       "target_kind": "renderer_provider",
       "owner": "runtime.render",
-      "support_status": "research",
-      "platform_floor": "winnt10_x64",
+      "renderer_family": "direct3d",
+      "primary_version": "11",
+      "first_wave_role": "planned_windows_hardware_renderer",
+      "support_status": "planned",
+      "platform_floor": "winnt7_x64",
       "architecture": "x64",
       "toolchain": "msvc143",
       "language_floor": "c17_cpp17",
@@ -130,7 +141,7 @@
       "known_limitations": [
         "No registered Direct3D provider capability or conformance proof."
       ],
-      "notes": "Research row only.",
+      "notes": "Planned first Windows hardware row only; no support claim until provider/conformance proof exists.",
       "architecture_tier": "source_native_64",
       "word_size": 64,
       "endianness": "little"
@@ -139,7 +150,9 @@
       "target_id": "dominium.renderer.metal",
       "target_kind": "renderer_provider",
       "owner": "runtime.render",
-      "support_status": "research",
+      "renderer_family": "metal",
+      "first_wave_role": "later_advanced_renderer",
+      "support_status": "planned",
       "platform_floor": "macos_arm64",
       "architecture": "arm64",
       "toolchain": "xcode",
@@ -158,7 +171,7 @@
       "known_limitations": [
         "No registered Metal provider capability or conformance proof."
       ],
-      "notes": "Research row only.",
+      "notes": "Later Apple-native advanced row only; not part of the Mac OS X 10.9.5 baseline and not a support claim.",
       "architecture_tier": "source_native_64",
       "word_size": 64,
       "endianness": "little"
@@ -167,7 +180,9 @@
       "target_id": "dominium.renderer.vulkan",
       "target_kind": "renderer_provider",
       "owner": "runtime.render",
-      "support_status": "research",
+      "renderer_family": "vulkan",
+      "first_wave_role": "later_advanced_renderer",
+      "support_status": "planned",
       "platform_floor": "linux_x64",
       "architecture": "x64",
       "toolchain": "clang",
@@ -188,7 +203,7 @@
       "known_limitations": [
         "No registered Vulkan provider capability or conformance proof."
       ],
-      "notes": "Research row only.",
+      "notes": "Later advanced explicit-GPU row only; no support claim until provider/conformance proof exists.",
       "architecture_tier": "source_native_64",
       "word_size": 64,
       "endianness": "little"

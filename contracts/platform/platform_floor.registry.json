@@ -29,7 +29,7 @@
       "known_limitations": [
         "No release support claim is made by this row."
       ],
-      "notes": "Current host floor scaffold only.",
+      "notes": "Current Windows 10+ host proof row only; the release-facing Windows desktop floor remains Windows 7 SP1+ until stronger policy changes it.",
       "architecture_tier": "source_native_64",
       "toolchain": "msvc143",
       "language_floor": "c17_cpp17",
@@ -55,14 +55,14 @@
       "filesystem_policy": "ntfs_legacy_policy_required",
       "path_encoding": "utf16_os_api_utf8_internal",
       "case_sensitivity": "case_preserving_case_insensitive_default",
-      "dynamic_loading": "research_only",
-      "threading": "research_only",
-      "support_status": "research",
+      "dynamic_loading": "declared_provider_only",
+      "threading": "win32_threads_planned",
+      "support_status": "planned",
       "evidence": [],
       "known_limitations": [
         "No current build, smoke, package, or release proof."
       ],
-      "notes": "Legacy Windows floor is recorded as research only.",
+      "notes": "Windows 7 SP1+ is the planned release-facing Win32 desktop floor; this row is not a support claim.",
       "architecture_tier": "source_native_64"
     },
     {
@@ -90,7 +90,7 @@
       "platform_floor": "linux_x64",
       "target_kind": "platform_floor",
       "os_family": "linux",
-      "os_version_min": "unspecified",
+      "os_version_min": "10.9.5",
       "architecture": "x64",
       "endianness": "little",
       "word_size": 64,
@@ -118,14 +118,14 @@
       "filesystem_policy": "posix_paths_with_macos_case_policy",
       "path_encoding": "utf8_normalization_declared",
       "case_sensitivity": "volume_defined",
-      "dynamic_loading": "research_only",
-      "threading": "darwin_threads_research",
-      "support_status": "research",
+      "dynamic_loading": "declared_provider_only",
+      "threading": "darwin_threads_planned",
+      "support_status": "planned",
       "evidence": [],
       "known_limitations": [
         "No current task evidence proves macOS x64 support."
       ],
-      "notes": "macOS x64 remains research until build and smoke proof exists.",
+      "notes": "Mac OS X 10.9.5+ is the planned Cocoa/AppKit desktop floor for x86_64; this row is not a support claim.",
       "architecture_tier": "source_native_64"
     },
     {
@@ -146,7 +146,7 @@
       "known_limitations": [
         "No current task evidence proves macOS arm64 support."
       ],
-      "notes": "macOS arm64 remains research.",
+      "notes": "Apple Silicon remains a source_native_64 architecture lane, but it is not the Mac OS X 10.9.5 baseline and has no current support proof.",
       "architecture_tier": "source_native_64"
     },
     {

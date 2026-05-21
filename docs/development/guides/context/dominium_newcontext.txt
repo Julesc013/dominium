@@ -3,6 +3,8 @@ Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
 
+MATRIX-CLEANUP-00 note: this derived context dump is historical input. Current renderer/platform/product/toolchain posture is governed by `contracts/release/component_matrix.contract.toml`, `contracts/platform/**`, and the matching `docs/release/**` matrix docs. Old GL1/GL2/DX9/vector2d-as-renderer, Win16/DOS/XP/Carbon, and WinUI/SwiftUI/Qt-first wording below must be read as archived/research context, not first-wave architecture.
+
 ﻿Thought for 5s
 
 GPT-5.1 Thinking • build 2025-12-03

@@ -3,6 +3,8 @@ Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
 
+MATRIX-CLEANUP-00 note: this derived data-pack dev-spec is historical input. Shader or asset layout examples named `gl2`, `dx9`, or other API-specific folders are retained as archived context only; current renderer law uses family IDs plus version/profile fields, and old fixed-function/back-port lanes are not first-wave requirements.
+
 This message is the dev-spec for /data/packs/.
 /data/packs provides first-party graphics, sound, and music packs, loaded like OpenTTD-style asset packs.
 They change how the game looks and sounds, but never how it simulates.

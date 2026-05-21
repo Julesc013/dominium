@@ -3,6 +3,8 @@ Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
 
+MATRIX-CLEANUP-00 note: this derived dev-spec is historical input. Current renderer planning is governed by `contracts/release/component_matrix.contract.toml` and `docs/release/RENDER_BACKEND_MATRIX.md`: first wave is null, software, OpenGL 3.3, and Direct3D 11; GL1/GL2/DX9 and vector2d-as-backend wording below is retained only as legacy/research context. `vector2d` is now renderer-independent drawing/canvas capability terminology, not a renderer family.
+
 This message is the deterministic dev-spec for runtime/render/.
 This directory is the lowest-level, platform-agnostic rendering layer.
 It defines one abstract rendering API used by the engine and game, and multiple backend implementations:

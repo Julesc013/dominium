@@ -1,0 +1,36 @@
+{
+  "fixture_id": "component_matrix.invalid_gl2_first_wave_renderer",
+  "description": "Version-coded OpenGL lanes must not be top-level renderer backend identities.",
+  "contract": {
+    "render_backends": {
+      "null": {"first_wave_role": "mandatory_headless_test"},
+      "software": {"first_wave_role": "mandatory_cpu_fallback"},
+      "opengl": {
+        "first_wave_role": "planned_hardware_renderer",
+        "minimum_version": "3.3",
+        "profile": "core"
+      },
+      "direct3d": {
+        "first_wave_role": "planned_windows_hardware_renderer",
+        "primary_version": "11"
+      },
+      "metal": {"first_wave_role": "later_advanced_renderer"},
+      "vulkan": {"first_wave_role": "later_advanced_renderer"},
+      "gl2": {"first_wave_role": "planned_hardware_renderer"}
+    },
+    "renderer_backport_lanes": {
+      "opengl_2_1": {"status": "research"},
+      "opengl_1_1": {"status": "research"},
+      "direct3d_9": {"status": "research"}
+    },
+    "renderer_advanced_lanes": {
+      "direct3d_12": {"status": "planned", "phase": "advanced"}
+    },
+    "drawing": {
+      "canvas": {
+        "implemented_by": ["software", "opengl", "direct3d", "metal", "vulkan"],
+        "transitional_aliases": ["vector2d"]
+      }
+    }
+  }
+}

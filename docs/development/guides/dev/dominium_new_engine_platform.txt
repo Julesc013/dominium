@@ -3,6 +3,8 @@ Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
 
+MATRIX-CLEANUP-00 note: this derived platform dev-spec is historical input. Current platform posture is governed by `contracts/platform/**` and `docs/release/PLATFORM_MATRIX.md`: null/headless, posix, win32, cocoa/appkit, x11, wayland, and optional SDL adapter. Old device factory examples for DX9/DX11 and legacy OS lanes below are not first-wave platform or renderer requirements.
+
 This message is the deterministic dev-spec for runtime/platform/.
 This is the only directory allowed to depend on OS APIs (Win32, POSIX, macOS, X11, Cocoa, ALSA, PulseAudio, CoreAudio, etc.).
 Everything here exists behind stable cross-platform interfaces.

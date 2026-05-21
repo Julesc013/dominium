@@ -21,7 +21,7 @@ The render backend matrix records renderer status without implementing renderer 
 | --- | --- | --- | --- | --- | --- |
 | null | available | T0 | base | headless | CI/server/headless correctness path. |
 | software | available | T0 | base | CPU raster | Software renderer correctness baseline; runtime/CMake alias: `soft`. |
-| opengl | planned | T1 | desktop | 3.3 core-style shader pipeline | First cross-platform hardware renderer family; current transitional alias is `gl4`. |
+| opengl | planned | T1 | desktop | 3.3 core shader pipeline | First cross-platform hardware renderer family; current transitional alias is `gl4`. |
 | direct3d | planned | T1 | desktop | Direct3D 11 | Windows hardware renderer family; current transitional alias: `dx11`. |
 | metal | planned | T4 | advanced | later Apple-native renderer | Not required for the Mac OS X 10.9.5 baseline. |
 | vulkan | planned | T4 | advanced | later explicit-GPU renderer | Advanced lane after base renderer contracts stabilize; current transitional alias: `vk1`. |

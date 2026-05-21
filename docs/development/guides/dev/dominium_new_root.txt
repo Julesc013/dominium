@@ -3,6 +3,8 @@ Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
 
+MATRIX-CLEANUP-00 note: this derived root/context document is historical input. Current renderer, platform, product-mode, shell, package, and toolchain posture is governed by the component/platform matrices under `contracts/release/`, `contracts/platform/`, and `docs/release/`. Old GL1/GL2/DX9/vector2d-as-renderer and Win16/DOS/Carbon-style layouts below are not first-wave requirements.
+
 GPT-5.1 Thinking • build 2025-12-03
 
 

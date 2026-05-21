@@ -3,6 +3,8 @@ Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
 
+MATRIX-CLEANUP-00 note: this derived V3 addendum is historical input and no longer wins over current matrix law. Current baseline is C17/C++17, source_native_64 on x86_64/arm64, Windows 7 SP1+/Mac OS X 10.9.5+/Linux, null/software first, OpenGL 3.3 and Direct3D 11 as the first hardware targets, with DX9/GL1/GL2 and older OS targets retained only as research/back-port/archive lanes.
+
 # Dominium V3 — Codegen Addendum (Renderer/Platform/Engine Split)
 
 This addendum **modifies and extends** previous V3 specs and directory contracts.

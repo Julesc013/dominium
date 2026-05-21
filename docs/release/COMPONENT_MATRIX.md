@@ -118,7 +118,7 @@ This evidence does not promote products, toolchains, or packaging rows in the ma
 | --- | --- | --- | --- | --- |
 | null | available | T0 | base | Correctness/headless path. |
 | software | available | T0 | base | Software renderer baseline; current runtime/CMake alias is `soft`. |
-| opengl | planned | T1 | desktop | First hardware renderer family, targeting an OpenGL 3.3 core-style shader pipeline; current transitional alias is `gl4`. |
+| opengl | planned | T1 | desktop | First hardware renderer family, targeting an OpenGL 3.3 core shader pipeline; current transitional alias is `gl4`. |
 | direct3d | planned | T1 | desktop | Windows hardware renderer family, primary version Direct3D 11. |
 | metal | planned | T4 | advanced | Later Apple-native renderer, not required for the Mac OS X 10.9.5 baseline. |
 | vulkan | planned | T4 | advanced | Later advanced explicit-GPU renderer; current transitional alias is `vk1`. |
@@ -130,7 +130,7 @@ This evidence does not promote products, toolchains, or packaging rows in the ma
 | opengl_2_1 | research | T3 | older | Deferred compatibility/back-port lane; current CMake alias is `gl2`. |
 | opengl_1_1 | research | T3 | older | Fixed-function back-port/research lane; current CMake alias is `gl1`. |
 | direct3d_9 | research | T3 | older | Legacy Windows back-port/research lane; current CMake alias is `dx9`. |
-| direct3d_12 | planned | T4 | advanced | Advanced Windows renderer after D3D11 and render-device contracts stabilize; current CMake alias is `dx12`. |
+| direct3d_12 | planned | T4 | advanced | Advanced Windows renderer after Direct3D 11 and render-device contracts stabilize; current CMake alias is `dx12`. |
 
 ### Drawing Features
 

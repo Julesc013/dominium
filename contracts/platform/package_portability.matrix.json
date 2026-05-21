@@ -46,7 +46,7 @@
       "target_kind": "package_mode",
       "owner": "contracts.package",
       "support_status": "planned",
-      "platform_floor": "winnt10_x64",
+      "platform_floor": "winnt7_x64",
       "architecture": "x64",
       "toolchain": "msvc143",
       "language_floor": "n/a",

@@ -21,7 +21,7 @@ All tests are CLI-only via `ctest` (no GUI/TUI dependencies).
 
 Extended coverage intended to catch drift:
 
-- Windows DX9 canary (`win32` + `DOM_BACKEND_DX9=ON`).
+- Windows renderer back-port research canary, if explicitly enabled by a scoped task. Direct3D 9 remains research/back-port only and is not first-wave renderer architecture.
 - Linux Clang build (`posix_headless` + software renderer).
 
 Optional canaries exist via presets for additional toolchains:

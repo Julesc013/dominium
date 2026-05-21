@@ -3,6 +3,8 @@ Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
 
+MATRIX-CLEANUP-00 note: this derived launcher dev-spec is historical input. Current platform/renderer posture is governed by `contracts/release/component_matrix.contract.toml`, `docs/release/PLATFORM_MATRIX.md`, and `docs/release/RENDER_BACKEND_MATRIX.md`: first wave is null/headless, software, OpenGL 3.3, and Direct3D 11 on the declared platform families. GL1/GL2/DX9 guidance below is retained only as legacy/research context, not first-wave architecture.
+
 This message is the dev-spec for game/launcher/.
 This directory contains the only OS-facing executable entrypoints for Dominium.
 A launcher’s job is extremely small:

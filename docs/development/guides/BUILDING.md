@@ -63,13 +63,18 @@ ctest --preset vs2026-x64-debug
 - `DOM_PLATFORM` selects the system backend:
   `sdl2`, `win32`, `win32_headless`, `null`, `posix_headless`, `posix_x11`,
   `posix_wayland`, `cocoa`.
-- `DOM_BACKEND_*` toggles select renderer backends:
-  `SOFT`, `NULL`, `DX9`, `DX11`, `GL1`, `GL2`, `VK1`, `METAL`.
+- `DOM_BACKEND_*` toggles are transitional build switches. Current matrix
+  vocabulary uses renderer families: `null`, `software`, `opengl`,
+  `direct3d`, `metal`, and `vulkan`.
+- OpenGL 3.3 core is the planned first OpenGL hardware target; Direct3D 11 is
+  the planned first Windows hardware target. DX9, GL1, and GL2 toggles are
+  research/back-port lanes only.
 - `DOM_BACKEND_SDL2` controls the SDL2 platform backend; `DOM_PLATFORM=sdl2`
   forces it ON.
 - `DOM_FETCH_SDL2` controls optional SDL2 fetch when downloads are allowed.
   `DOM_SDL2_ROOT` (or `SDL2_DIR`/`SDL2_PATH`) provides a local SDL2 install.
-- `DOM_BACKEND_VECTOR2D` enables the optional vector acceleration layer.
+- `DOM_BACKEND_VECTOR2D` enables a drawing/canvas capability layer. It is not a
+  renderer backend identity.
 
 ## Packaging and dist controls
 - `DOMINIUM_ENABLE_PACKAGING` enables packaging helper targets.

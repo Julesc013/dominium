@@ -48,14 +48,14 @@ All backends expose identical abstract interfaces and identical UI semantics.
 - vector / ASCII / simple raster
 - zero GPU assumptions
 
-Current focus: null and software renderers are the correctness floor. First-wave hardware renderer planning is shader-based: OpenGL targets a 3.3 core-style shader pipeline, and Direct3D targets version 11. Metal, Vulkan, and Direct3D 12 are later advanced lanes. OpenGL 2.1, OpenGL 1.1, and Direct3D 9 remain back-port/research lanes and must not shape first-wave renderer architecture.
+Current focus: null and software renderers are the correctness floor. First-wave hardware renderer planning is shader-based: the OpenGL family targets a 3.3 core shader pipeline, and the Direct3D family targets version 11. Metal, Vulkan, and Direct3D 12 are later advanced lanes. OpenGL 2.1, OpenGL 1.1, and Direct3D 9 remain back-port/research lanes and must not shape first-wave renderer architecture.
 
 ### GPU renderers (capability-gated)
 
-- OpenGL
-- Direct3D 11
-- Metal
-- Vulkan
+- OpenGL family, first planned target 3.3 core
+- Direct3D family, first planned target 11
+- Metal, later Apple-native lane
+- Vulkan, later explicit-GPU lane
 
 Each GPU renderer must:
 

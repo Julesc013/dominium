@@ -58,6 +58,36 @@ REQUIRED_DOCS = [
 ]
 
 NO_SUPPORT_STATUSES = set(["stub", "planned", "research", "unknown", "unsupported", "blocked"])
+PREFERRED_RENDER_FAMILIES = ["null", "software", "opengl", "direct3d", "metal", "vulkan"]
+FORBIDDEN_RENDER_BACKEND_IDS = set(["gl1", "gl2", "gl4", "dx9", "dx11", "dx12", "vk1", "soft", "vector2d"])
+CANVAS_IMPLEMENTERS = set(["software", "opengl", "direct3d", "metal", "vulkan"])
+RENDER_FIRST_WAVE_ROLES = {
+    "null": "mandatory_headless_test",
+    "software": "mandatory_cpu_fallback",
+    "opengl": "planned_hardware_renderer",
+    "direct3d": "planned_windows_hardware_renderer",
+}
+RENDER_LATER_ROLES = {
+    "metal": "later_advanced_renderer",
+    "vulkan": "later_advanced_renderer",
+}
+REQUIRED_RENDER_BACKPORT_LANES = {
+    "opengl_2_1": "research",
+    "opengl_1_1": "research",
+    "direct3d_9": "research",
+}
+REQUIRED_RENDER_ADVANCED_LANES = {
+    "direct3d_12": "planned",
+}
+FIXTURE_DIR = os.path.join("tests", "contract", "component_matrix", "fixtures")
+FIXTURE_EXPECTATIONS = {
+    "valid_renderer_family_contract.json": True,
+    "valid_research_backport_lanes.json": True,
+    "invalid_gl2_first_wave_renderer.json": False,
+    "invalid_vector2d_renderer_backend.json": False,
+    "invalid_opengl_missing_version.json": False,
+    "invalid_direct3d_missing_version.json": False,
+}
 
 
 def strip_comment(line):
@@ -274,6 +304,166 @@ def collect_matrix_issues(contract):
     }
 
 
+def validate_renderer_policy(contract, context="contract"):
+    violations = []
+    render_backends = contract.get("render_backends", {})
+    if not isinstance(render_backends, dict):
+        return ["{0}: render_backends must be a table".format(context)]
+
+    for family_id in PREFERRED_RENDER_FAMILIES:
+        if family_id not in render_backends:
+            violations.append("{0}: missing preferred render_backends.{1}".format(context, family_id))
+
+    for backend_id in sorted(FORBIDDEN_RENDER_BACKEND_IDS):
+        if backend_id in render_backends:
+            violations.append(
+                "{0}: version-coded or capability id must not be top-level render backend: render_backends.{1}".format(
+                    context, backend_id
+                )
+            )
+
+    for family_id, expected_role in sorted(RENDER_FIRST_WAVE_ROLES.items()):
+        row = render_backends.get(family_id, {})
+        if not isinstance(row, dict):
+            violations.append("{0}: render_backends.{1} must be a table".format(context, family_id))
+            continue
+        actual_role = row.get("first_wave_role")
+        if actual_role != expected_role:
+            violations.append(
+                "{0}: render_backends.{1}.first_wave_role must be {2}, found {3}".format(
+                    context, family_id, expected_role, actual_role or "<missing>"
+                )
+            )
+
+    for family_id, expected_role in sorted(RENDER_LATER_ROLES.items()):
+        row = render_backends.get(family_id, {})
+        if isinstance(row, dict) and row.get("first_wave_role") != expected_role:
+            violations.append(
+                "{0}: render_backends.{1}.first_wave_role must be {2}, found {3}".format(
+                    context, family_id, expected_role, row.get("first_wave_role") or "<missing>"
+                )
+            )
+
+    opengl = render_backends.get("opengl", {})
+    if isinstance(opengl, dict):
+        if opengl.get("minimum_version") != "3.3":
+            violations.append(
+                "{0}: render_backends.opengl.minimum_version must be 3.3 for the first OpenGL hardware target".format(
+                    context
+                )
+            )
+        if not opengl.get("profile"):
+            violations.append("{0}: render_backends.opengl.profile is required".format(context))
+
+    direct3d = render_backends.get("direct3d", {})
+    if isinstance(direct3d, dict):
+        version = direct3d.get("primary_version") or direct3d.get("minimum_version")
+        if str(version) != "11":
+            violations.append(
+                "{0}: render_backends.direct3d primary/minimum version must be 11 for the first Windows hardware target".format(
+                    context
+                )
+            )
+
+    backport_lanes = contract.get("renderer_backport_lanes", {})
+    if not isinstance(backport_lanes, dict):
+        violations.append("{0}: renderer_backport_lanes must be a table".format(context))
+        backport_lanes = {}
+    for lane_id, expected_status in sorted(REQUIRED_RENDER_BACKPORT_LANES.items()):
+        row = backport_lanes.get(lane_id, {})
+        if not isinstance(row, dict):
+            violations.append("{0}: renderer_backport_lanes.{1} must be a table".format(context, lane_id))
+            continue
+        if row.get("status") != expected_status:
+            violations.append(
+                "{0}: renderer_backport_lanes.{1}.status must be {2}, found {3}".format(
+                    context, lane_id, expected_status, row.get("status") or "<missing>"
+                )
+            )
+
+    advanced_lanes = contract.get("renderer_advanced_lanes", {})
+    if not isinstance(advanced_lanes, dict):
+        violations.append("{0}: renderer_advanced_lanes must be a table".format(context))
+        advanced_lanes = {}
+    for lane_id, expected_status in sorted(REQUIRED_RENDER_ADVANCED_LANES.items()):
+        row = advanced_lanes.get(lane_id, {})
+        if not isinstance(row, dict):
+            violations.append("{0}: renderer_advanced_lanes.{1} must be a table".format(context, lane_id))
+            continue
+        if row.get("status") != expected_status:
+            violations.append(
+                "{0}: renderer_advanced_lanes.{1}.status must be {2}, found {3}".format(
+                    context, lane_id, expected_status, row.get("status") or "<missing>"
+                )
+            )
+        if row.get("phase") != "advanced":
+            violations.append(
+                "{0}: renderer_advanced_lanes.{1}.phase must be advanced, found {2}".format(
+                    context, lane_id, row.get("phase") or "<missing>"
+                )
+            )
+
+    drawing = contract.get("drawing", {})
+    canvas = drawing.get("canvas") if isinstance(drawing, dict) else None
+    if not isinstance(canvas, dict):
+        violations.append("{0}: missing drawing.canvas renderer-independent capability row".format(context))
+    else:
+        implemented_by = set(str(item) for item in canvas.get("implemented_by", []))
+        missing_implementers = sorted(CANVAS_IMPLEMENTERS - implemented_by)
+        if missing_implementers:
+            violations.append(
+                "{0}: drawing.canvas.implemented_by missing renderer families: {1}".format(
+                    context, ", ".join(missing_implementers)
+                )
+            )
+        aliases = set(str(item) for item in canvas.get("transitional_aliases", []))
+        if "vector2d" not in aliases:
+            violations.append("{0}: drawing.canvas must preserve vector2d as a transitional alias".format(context))
+
+    return violations
+
+
+def validate_component_fixtures(repo_root):
+    fixture_root = os.path.join(repo_root, FIXTURE_DIR)
+    errors = []
+    summary = {"checked": 0, "valid": 0, "invalid": 0}
+    if not os.path.isdir(fixture_root):
+        return ["missing component matrix fixture directory: {0}".format(FIXTURE_DIR.replace(os.sep, "/"))], summary
+
+    for filename in sorted(FIXTURE_EXPECTATIONS):
+        expected_valid = FIXTURE_EXPECTATIONS[filename]
+        rel_path = os.path.join(FIXTURE_DIR, filename)
+        path = os.path.join(repo_root, rel_path)
+        if not os.path.exists(path):
+            errors.append("missing component matrix fixture: {0}".format(rel_path.replace(os.sep, "/")))
+            continue
+        summary["checked"] += 1
+        if expected_valid:
+            summary["valid"] += 1
+        else:
+            summary["invalid"] += 1
+        try:
+            with open(path, "r", encoding="utf-8") as handle:
+                data = json.load(handle)
+        except Exception as exc:
+            errors.append("{0}: fixture is not valid JSON: {1}".format(rel_path.replace(os.sep, "/"), exc))
+            continue
+        fixture_contract = data.get("contract")
+        if not isinstance(fixture_contract, dict):
+            errors.append("{0}: fixture missing contract object".format(rel_path.replace(os.sep, "/")))
+            continue
+        violations = validate_renderer_policy(fixture_contract, rel_path.replace(os.sep, "/"))
+        actual_valid = not violations
+        if actual_valid != expected_valid:
+            errors.append(
+                "{0}: expected_valid={1} actual_valid={2}; violations={3}".format(
+                    rel_path.replace(os.sep, "/"), expected_valid, actual_valid, "; ".join(violations) or "none"
+                )
+            )
+
+    return errors, summary
+
+
 def docs_present(repo_root):
     result = {}
     for rel_path in REQUIRED_DOCS:
@@ -309,6 +499,11 @@ def doc_claim_warnings(repo_root):
 
 def build_report(repo_root, contract, contract_errors, strict):
     issues = collect_matrix_issues(contract)
+    renderer_policy_violations = validate_renderer_policy(contract) if contract else []
+    fixture_errors = []
+    fixture_summary = {"checked": 0, "valid": 0, "invalid": 0}
+    if strict:
+        fixture_errors, fixture_summary = validate_component_fixtures(repo_root)
     present = docs_present(repo_root)
     missing_docs = [path for path, exists in present.items() if not exists]
     warnings = doc_claim_warnings(repo_root)
@@ -322,6 +517,8 @@ def build_report(repo_root, contract, contract_errors, strict):
     strict_violations.extend("non-support status mislabeled as supported: {0}".format(name) for name in issues["no_support_mislabels"])
     strict_violations.extend("missing required matrix doc: {0}".format(path) for path in missing_docs)
     strict_violations.extend("doc support claim violation: {0}".format(item) for item in warnings)
+    strict_violations.extend("renderer policy violation: {0}".format(item) for item in renderer_policy_violations)
+    strict_violations.extend("component fixture violation: {0}".format(item) for item in fixture_errors)
     return {
         "contract_id": contract.get("contract", {}).get("id", ""),
         "phase": contract.get("contract", {}).get("phase", ""),
@@ -338,6 +535,9 @@ def build_report(repo_root, contract, contract_errors, strict):
         "invalid_statuses": issues["invalid_statuses"],
         "invalid_tiers": issues["invalid_tiers"],
         "missing_evidence": issues["missing_evidence"],
+        "renderer_policy_violations": renderer_policy_violations,
+        "fixture_summary": fixture_summary,
+        "fixture_errors": fixture_errors,
         "docs_present": present,
         "warnings": warnings,
         "strict_violations": strict_violations,
@@ -366,6 +566,8 @@ def print_text(report, strict):
         ("Invalid statuses", "invalid_statuses"),
         ("Invalid tiers", "invalid_tiers"),
         ("Missing evidence", "missing_evidence"),
+        ("Renderer policy violations", "renderer_policy_violations"),
+        ("Fixture errors", "fixture_errors"),
         ("Warnings", "warnings"),
     ]:
         print("{0}:".format(title))
@@ -376,6 +578,13 @@ def print_text(report, strict):
         else:
             print("- none")
         print("")
+    fixtures = report.get("fixture_summary", {})
+    print(
+        "Fixtures: checked={0} valid={1} invalid={2}".format(
+            fixtures.get("checked", 0), fixtures.get("valid", 0), fixtures.get("invalid", 0)
+        )
+    )
+    print("")
     print("Strict-mode result: {0}".format(report["result"] if strict else "not run"))
 
 
@@ -385,6 +594,7 @@ def main(argv=None):
     parser.add_argument("--contract", default="contracts/release/component_matrix.contract.toml")
     parser.add_argument("--strict", action="store_true", help="Fail on unhandled matrix violations")
     parser.add_argument("--json", action="store_true", help="Emit JSON report")
+    parser.add_argument("--fixtures", action="store_true", help="Accepted for CLI parity; strict mode validates fixtures")
     parser.add_argument("--no-write", action="store_true", help="Accepted for validator CLI parity; this validator writes no reports")
     args = parser.parse_args(argv)
 
