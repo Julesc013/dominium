@@ -15,7 +15,7 @@ from runtime.compatibility.capability_negotiation import (
 from runtime.platform.platform_probe import probe_platform_descriptor, project_feature_capabilities_for_platform
 from runtime.platform.platform_probe import endpoint_descriptor_platform_snapshot
 from runtime.platform.target_matrix import TARGET_MATRIX_REGISTRY_REL, select_target_matrix_row
-from tools.release.build_id_engine import (
+from runtime.package.build_id_engine import (
     DEFAULT_PRODUCT_SEMVER,
     build_product_build_metadata as release_build_product_build_metadata,
 )

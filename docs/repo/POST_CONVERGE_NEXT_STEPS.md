@@ -9,6 +9,20 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01 Update
+
+FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01 is PASS.
+
+- dependency-direction strict now passes with `0` violations and `68` warnings.
+- the prior closeout blocker was `358` violations and `38` warnings.
+- `12` exact provisional dependency-direction exceptions remain, applying to `28` transitional app/runtime tool-adapter import edges.
+- newly tracked helper violations found during repair were fixed before final proof.
+- fast strict passes `32` commands in `312.147` seconds, including RepoX STRICT, CMake configure/build, and smoke CTest.
+- Foundation Lock is ready for `FOUNDATION-CLOSEOUT-02`.
+- `WORKBENCH-VALIDATION-SLICE-01` remains pending until closeout passes.
+
+Next task: `FOUNDATION-CLOSEOUT-02`.
+
 ## FOUNDATION-CLOSEOUT-01 Update
 
 FOUNDATION-CLOSEOUT-01 is BLOCKED.

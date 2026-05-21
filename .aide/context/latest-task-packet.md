@@ -2,48 +2,36 @@
 
 ## PHASE
 
-UNSPECIFIED - FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01
+foundation-lock-repair - FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01
 
 ## GOAL
 
-FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01
+Repair the dependency-direction strict blocker and make the repo ready for `FOUNDATION-CLOSEOUT-02`.
 
 ## WHY
 
-Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
+Foundation Lock cannot close while dependency-direction strict is red. Workbench and feature work require enforced dependency boundaries between apps, runtime, game, engine, contracts, tools, content, and archive.
 
 ## CONTEXT_REFS
 
-- `.aide/memory/project-state.md`
-- `.aide/memory/decisions.md`
-- `.aide/memory/open-risks.md`
-- `.aide/context/repo-snapshot.json` (present)
-- `.aide/context/repo-map.json` (present)
-- `.aide/context/repo-map.md` (present)
-- `.aide/context/test-map.json` (present)
-- `.aide/context/context-index.json` (present)
-- `.aide/context/latest-context-packet.md` (present)
-- `.aide/repo/latest-repo-intelligence.md` (present)
-- `.aide/repo/file-inventory.json` (present)
-- `.aide/reports/file-quality-summary.md` (present)
-- `.aide/reports/file-quality-ledger.json` (present)
-- `.aide/refactors/latest-refactor-readiness.md` (present)
-- `.aide/refactors/latest-refactor-plan.example.json` (present)
-- `.aide/routing/latest-route-decision.json` (present)
-- `.aide/routing/latest-route-decision.md` (present)
-- `.aide/cache/latest-cache-keys.json` (present)
-- `.aide/cache/latest-cache-keys.md` (present)
-- `.aide/prompts/compact-task.md`
-- `.aide/policies/token-budget.yaml`
-- `.aide/policies/cache.yaml`
-- `.aide/policies/local-state.yaml`
+- `docs/repo/FOUNDATION_LOCK.md`
+- `docs/repo/audits/FOUNDATION_REPAIR_DEPENDENCY_DIRECTION_01.md`
+- `.aide/reports/FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01-validation.md`
+- `.aide/reports/FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01-repair-summary.json`
+- `.aide/reports/FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01-next-readiness.md`
+- `.aide/context/latest-context-packet.md`
 
 ## ALLOWED_PATHS
 
-- `<fill from the next reviewed queue packet>`
+- `engine/foundation/**`
+- `runtime/compatibility/**`
+- `runtime/package/**`
+- `contracts/repo/dependency_direction_exceptions.toml`
+- `docs/repo/**`
 - `.aide/context/**`
-- `.aide/queue/unspecified-*` if this task becomes a queue item
-- root docs only when behavior or documentation links change
+- `.aide/reports/**`
+- `.aide/queue/current.toml`
+- `.aide/ledgers/migration_ledger.jsonl`
 
 ## FORBIDDEN_PATHS
 
@@ -51,71 +39,58 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 - `.env`
 - `secrets/**`
 - `.aide.local/**`
-- raw provider credentials, API keys, local caches, raw prompt logs
-- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
+- `.dominium.local/**`
+- build output roots
+- Workbench/product feature implementation outside dependency-direction repair scope
 
 ## IMPLEMENTATION
 
-- Read the queue packet and relevant repo refs first.
-- Keep changes inside the allowed paths.
-- Make the smallest coherent diff that satisfies acceptance.
-- Preserve generated/manual boundaries.
-- Do not inline whole source files unless exact contents are required.
-- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
+- Keep changes scoped to dependency-direction boundary repair and evidence.
+- Do not authorize Workbench or broad feature work.
+- Preserve exact transitional exceptions with owners and retirement task.
+- Keep generated local outputs out of staging.
 
 ## VALIDATION
 
-- `py -3 .aide/scripts/aide_lite.py doctor`
-- `py -3 .aide/scripts/aide_lite.py validate`
-- `py -3 .aide/scripts/aide_lite.py index`
-- `py -3 .aide/scripts/aide_lite.py context`
-- `py -3 .aide/scripts/aide_lite.py repo inventory`
-- `py -3 .aide/scripts/aide_lite.py repo validate`
-- `py -3 .aide/scripts/aide_lite.py verify`
-- `py -3 .aide/scripts/aide_lite.py review-pack`
-- `py -3 .aide/scripts/aide_lite.py route explain`
-- `py -3 .aide/scripts/aide_lite.py test`
-- `py -3 .aide/scripts/aide_lite.py selftest`
-- `py -3 scripts/aide validate`
-- `git diff --check`
+- dependency-direction strict: PASS, `0` violations, `68` warnings.
+- FAST strict: PASS, `32` commands, `312.147` seconds.
+- AIDE doctor/validate/test/selftest/tools/roots/repo: PASS after packet shape is valid.
+- RepoX STRICT: PASS with stale AuditX warning.
+- CMake configure/build and smoke CTest: PASS through FAST strict.
 
 ## COMMITS
 
-- Commit coherent subdeliverables with verbose bodies.
-- Stop at review gates.
+Create an audit-grade repair/evidence commit after validation remains green.
 
 ## EVIDENCE
 
-- changed files
-- validation commands and results
-- verifier result
-- review packet path and result when review-pack is available
-- advisory route decision path and result when Q17 routing is available
-- compact packet size and budget status
-- unresolved risks and deferrals
+- `docs/repo/audits/FOUNDATION_REPAIR_DEPENDENCY_DIRECTION_01.md`
+- `.aide/reports/FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01-*`
+- `.aide/reports/latest-dominium-status.md`
+- `.aide/reports/latest-warning-disposition.md`
 
 ## NON_GOALS
 
-- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
+- Do not start `WORKBENCH-VALIDATION-SLICE-01`.
+- Do not implement Workbench UI, gameplay, renderer expansion, native GUI, runtime module loading, package/provider runtime, or release publication.
+- Do not run full CTest unless a targeted blocker requires it.
 
 ## ACCEPTANCE
 
-- Task-specific acceptance criteria are met.
-- Validation is run and recorded.
-- Evidence is written.
-- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
+- Dependency-direction strict passes.
+- FAST strict passes.
+- Worktree is clean after commit.
+- Next task is `FOUNDATION-CLOSEOUT-02`.
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
-Include the verifier result when Q12 verifier behavior is available.
+Return a compact final report with `STATUS`, `COMMITS`, `VALIDATION`, `PUSH`, `RISKS`, and `NEXT`.
 
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4144
-- approx_tokens: 1036
+- chars: 3144
+- approx_tokens: 786
 - budget_status: PASS
 - warnings:
   - none
-- formal ledger: `.aide/reports/token-ledger.jsonl`

@@ -18,10 +18,6 @@ _EXPORTS = {
     "TOOL_WARNING_KEY": ("runtime.compatibility.shims.tool_shims", "TOOL_WARNING_KEY"),
     "emit_legacy_tool_warning": ("runtime.compatibility.shims.tool_shims", "emit_legacy_tool_warning"),
     "tool_shim_rows": ("runtime.compatibility.shims.tool_shims", "tool_shim_rows"),
-    "VALIDATION_SHIM_ROWS": ("runtime.compatibility.shims.validation_shims", "VALIDATION_SHIM_ROWS"),
-    "VALIDATION_WARNING_KEY": ("runtime.compatibility.shims.validation_shims", "VALIDATION_WARNING_KEY"),
-    "run_legacy_validate_all": ("runtime.compatibility.shims.validation_shims", "run_legacy_validate_all"),
-    "validation_shim_rows": ("runtime.compatibility.shims.validation_shims", "validation_shim_rows"),
 }
 
 

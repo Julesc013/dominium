@@ -7,7 +7,6 @@ import sys
 from typing import Iterable, Mapping
 
 from runtime.shell.logging import get_current_log_engine, log_emit
-from tools.validators.stability import build_stability_marker
 from engine.serialization.canonical_json import canonical_sha256
 
 
@@ -22,6 +21,54 @@ def _token(value: object) -> str:
 
 def _as_map(value: object) -> dict:
     return dict(value or {}) if isinstance(value, Mapping) else {}
+
+
+def _marker_seed(row: Mapping[str, object] | None) -> dict:
+    payload = _as_map(row)
+    seed = {
+        "schema_version": _token(payload.get("schema_version")),
+        "stability_class_id": _token(payload.get("stability_class_id")),
+        "rationale": _token(payload.get("rationale")),
+        "future_series": _token(payload.get("future_series")),
+        "replacement_target": _token(payload.get("replacement_target")),
+        "contract_id": _token(payload.get("contract_id")),
+        "deterministic_fingerprint": "",
+        "extensions": dict(sorted(_as_map(payload.get("extensions")).items(), key=lambda item: str(item[0]))),
+    }
+    deprecated = payload.get("deprecated")
+    if isinstance(deprecated, bool):
+        seed["deprecated"] = bool(deprecated)
+    return seed
+
+
+def stability_marker_fingerprint(row: Mapping[str, object] | None) -> str:
+    return canonical_sha256(_marker_seed(row))
+
+
+def build_stability_marker(
+    *,
+    stability_class_id: str,
+    rationale: str,
+    future_series: str = "",
+    replacement_target: str = "",
+    contract_id: str = "",
+    deprecated: bool | None = None,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "stability_class_id": _token(stability_class_id),
+        "rationale": _token(rationale),
+        "future_series": _token(future_series),
+        "replacement_target": _token(replacement_target),
+        "contract_id": _token(contract_id),
+        "deterministic_fingerprint": "",
+        "extensions": dict(_as_map(extensions)),
+    }
+    if deprecated is not None:
+        payload["deprecated"] = bool(deprecated)
+    payload["deterministic_fingerprint"] = stability_marker_fingerprint(payload)
+    return payload
 
 
 def _normalize_tree(value: object) -> object:
@@ -138,4 +185,5 @@ __all__ = [
     "emit_deprecation_warning",
     "reset_emitted_warnings",
     "stable_rows",
+    "stability_marker_fingerprint",
 ]

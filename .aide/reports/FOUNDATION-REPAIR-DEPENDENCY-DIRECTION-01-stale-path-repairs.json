@@ -1,0 +1,6 @@
+{
+  "schema_version": "dominium.aide.foundation_repair_dependency_direction.stale_path_repairs.v1",
+  "task": "FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01",
+  "stale_path_repairs": [],
+  "notes": "No current-authority stale path finding remained as a strict dependency-direction blocker in this continuation."
+}

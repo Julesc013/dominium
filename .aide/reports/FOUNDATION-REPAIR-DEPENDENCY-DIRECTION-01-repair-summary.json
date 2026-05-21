@@ -1,0 +1,30 @@
+{
+  "schema_version": "dominium.aide.foundation_repair_dependency_direction.summary.v1",
+  "task": "FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01",
+  "result": "PASS",
+  "dependency_direction": {
+    "baseline_closeout_violations": 358,
+    "baseline_closeout_warnings": 38,
+    "final_violations": 0,
+    "final_warnings": 68,
+    "files_scanned": 16579
+  },
+  "exceptions": {
+    "entries_active": 12,
+    "edges_applied": 28,
+    "retire_by_task": "FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-02"
+  },
+  "validation": {
+    "aide": "PASS",
+    "repox_strict": "PASS_WITH_WARNINGS",
+    "fast_strict": "PASS",
+    "fast_strict_commands": 32,
+    "fast_strict_elapsed_seconds": 312.147,
+    "cmake_configure_build": "PASS_THROUGH_FAST_STRICT",
+    "smoke_ctest": "PASS_THROUGH_FAST_STRICT",
+    "full_ctest": "NOT_RUN_T4_DEBT"
+  },
+  "next_task": "FOUNDATION-CLOSEOUT-02",
+  "workbench_authorized": false,
+  "feature_work_authorized": false
+}

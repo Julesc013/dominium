@@ -1,32 +1,27 @@
 # Latest Dominium Status
 
-Current task: `FOUNDATION-CLOSEOUT-01`.
+Current task: `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
 
-Result: BLOCKED.
+Result: PASS.
 
 ## Current State
 
-- All required Foundation Lock files for tasks 01 through 15 are present.
-- Public surface, API/ABI, command, diagnostics, artifact, schema/protocol, capability/refusal, provider, module/workbench/app, replacement, version/deprecation, mod/pack trust, and portability validators are present.
-- Most Foundation validators and fixtures pass.
-- Fast strict passes 32 commands in 308.406 seconds, including RepoX STRICT,
-  CMake configure/build, and smoke CTest.
-- Dependency-direction strict validation fails with 358 violations and 38 warnings.
-- Foundation Lock is not closed.
-- `WORKBENCH-VALIDATION-SLICE-01` is not authorized.
-
-## Blocker
-
-`python tools/validators/repo/check_dependency_directions.py --repo-root . --strict`
-
-Next repair task: `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
+- Dependency-direction strict validation now passes: `0` violations, `68` warnings.
+- Fast strict passes `32` commands in `312.147` seconds.
+- RepoX STRICT passes with the known stale AuditX warning.
+- CMake configure/build and smoke CTest pass through fast strict.
+- Foundation Lock is ready for `FOUNDATION-CLOSEOUT-02`.
+- `WORKBENCH-VALIDATION-SLICE-01` is not authorized by this repair task.
 
 ## Remaining Debt
 
-- API/ABI validator passes with 2851 stable-promotion warnings.
+- `12` exact provisional dependency-direction exceptions remain and retire by `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-02`.
+- `40` unlisted active dependency warnings remain as review/promotion debt.
+- API/ABI validator passes with stable-promotion warnings.
 - Full CTest remains T4/full-gate debt and is not claimed green.
-- Queue B hardening remains future work.
 
 Feature implementation authorized: no.
 
 Broad feature work authorized: no.
+
+Next task: `FOUNDATION-CLOSEOUT-02`.

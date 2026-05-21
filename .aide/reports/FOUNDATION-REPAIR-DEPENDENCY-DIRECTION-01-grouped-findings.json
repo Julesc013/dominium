@@ -1,0 +1,65 @@
+{
+  "schema_version": "dominium.aide.foundation_repair_dependency_direction.grouped.v1",
+  "task": "FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01",
+  "status": "pass",
+  "baseline_from_closeout": {
+    "violations": 358,
+    "warnings": 38
+  },
+  "tracked_helper_rescan_before_second_repair": {
+    "violations": 9,
+    "warnings": 68
+  },
+  "final": {
+    "violations": 0,
+    "warnings": 68,
+    "files_scanned": 16579,
+    "exceptions_active": 12,
+    "exceptions_used_edges": 28
+  },
+  "groups": [
+    {
+      "id": "original_active_product_runtime_to_tools_imports",
+      "source_roots": ["apps", "engine", "game", "runtime"],
+      "target_root": "tools",
+      "edge_type": "import",
+      "baseline_count": 358,
+      "final_violations": 0,
+      "classification": "fixed_import_include_direction"
+    },
+    {
+      "id": "tracked_engine_helper_game_imports",
+      "source_roots": ["engine"],
+      "target_root": "game",
+      "edge_type": "import",
+      "baseline_count": 6,
+      "final_violations": 0,
+      "classification": "fixed_real_violation"
+    },
+    {
+      "id": "tracked_runtime_compatibility_tool_imports",
+      "source_roots": ["runtime"],
+      "target_root": "tools",
+      "edge_type": "import",
+      "baseline_count": 3,
+      "final_violations": 0,
+      "classification": "fixed_real_violation"
+    },
+    {
+      "id": "transitional_runtime_app_tool_adapter_edges",
+      "source_roots": ["apps", "runtime"],
+      "target_root": "tools",
+      "edge_type": "import",
+      "final_warning_edges": 28,
+      "classification": "accepted_transitional_exception"
+    },
+    {
+      "id": "remaining_unlisted_active_dependency_warnings",
+      "source_roots": ["apps", "game", "runtime"],
+      "target_roots": ["content", "engine", "game", "runtime"],
+      "edge_types": ["include", "import"],
+      "final_warning_edges": 40,
+      "classification": "followup_required_explicit"
+    }
+  ]
+}

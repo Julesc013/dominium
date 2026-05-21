@@ -1,0 +1,55 @@
+{
+  "schema_version": "dominium.aide.foundation_repair_dependency_direction.classification.v1",
+  "task": "FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01",
+  "normalization_states": {
+    "fixed_real_violation": 367,
+    "fixed_stale_path": 0,
+    "fixed_import_include_direction": 358,
+    "fixed_build_metadata": 0,
+    "fixed_contract_metadata": 0,
+    "fixed_validator_false_positive": 0,
+    "accepted_fixture_exception": 0,
+    "accepted_generated_exception": 0,
+    "accepted_archive_exception": 0,
+    "accepted_transitional_exception": 28,
+    "policy_refined": 12,
+    "followup_required_explicit": 40
+  },
+  "families": [
+    {
+      "id": "closeout_358_high_confidence_edges",
+      "classification": "fixed_import_include_direction",
+      "repair": "Moved reusable deterministic helpers into engine/runtime ownership, rewrote imports away from tools, and introduced runtime-owned network/transport/session/package helpers where safe."
+    },
+    {
+      "id": "engine_foundation_meta_reference_game_edges",
+      "classification": "fixed_real_violation",
+      "repair": "Removed game-domain reference evaluators from engine foundation namespace."
+    },
+    {
+      "id": "engine_foundation_meta_compile_statevec_edge",
+      "classification": "fixed_real_violation",
+      "repair": "Added substrate-local deterministic state-vector helpers inside engine compile support instead of importing game statevec."
+    },
+    {
+      "id": "runtime_compatibility_descriptor_build_id_edge",
+      "classification": "fixed_real_violation",
+      "repair": "Added runtime-owned product build identity helper and routed runtime descriptor generation through it."
+    },
+    {
+      "id": "runtime_compatibility_shim_tool_edges",
+      "classification": "fixed_real_violation",
+      "repair": "Inlined runtime stability marker construction and removed the runtime copy of the tool validation shim."
+    },
+    {
+      "id": "remaining_transitional_tool_edges",
+      "classification": "accepted_transitional_exception",
+      "repair": "Added exact path/from/to/edge exceptions with owners and retirement task."
+    },
+    {
+      "id": "remaining_unlisted_warning_edges",
+      "classification": "followup_required_explicit",
+      "repair": "Left as warning-only promotion/extraction debt; not a strict violation."
+    }
+  ]
+}

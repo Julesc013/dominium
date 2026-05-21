@@ -1,0 +1,9 @@
+{
+  "schema_version": "dominium.aide.foundation_repair_dependency_direction.next_readiness.v1",
+  "task": "FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01",
+  "ready_for_foundation_closeout_02": true,
+  "next_task": "FOUNDATION-CLOSEOUT-02",
+  "workbench_validation_slice_authorized": false,
+  "broad_feature_work_authorized": false,
+  "required_closeout_reason": "Foundation Lock must be rerun by closeout before product slice authorization."
+}

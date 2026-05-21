@@ -1,0 +1,17 @@
+schema_version = "dominium.aide.queue.current.v1"
+status = "ready_for_next"
+last_reviewed = "2026-05-21"
+
+[current]
+task = "FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01"
+result = "PASS"
+next_task = "FOUNDATION-CLOSEOUT-02"
+workbench_validation_slice_authorized = false
+broad_feature_work_authorized = false
+
+[validation]
+dependency_direction_strict = "PASS"
+fast_strict = "PASS"
+aide = "PASS"
+repox_strict = "PASS_WITH_WARNINGS"
+full_ctest = "NOT_RUN_T4_DEBT"

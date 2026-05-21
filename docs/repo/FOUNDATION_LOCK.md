@@ -7,9 +7,9 @@ Superseded By: none
 
 Foundation Lock is the repository decision gate that determines whether Dominium can leave the Foundation Lock queue and begin a first narrow governed product slice.
 
-Current closeout result: BLOCKED.
+Current repair result: READY_FOR_FOUNDATION-CLOSEOUT-02.
 
-Foundation Lock is not passed as of FOUNDATION-CLOSEOUT-01 because `python tools/validators/repo/check_dependency_directions.py --repo-root . --strict` reports active dependency-direction violations in required closeout scope.
+Foundation Lock is not yet declared closed by this document. `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01` repaired the dependency-direction strict blocker and the lock must now be rerun by `FOUNDATION-CLOSEOUT-02`.
 
 ## What It Means
 
@@ -37,19 +37,24 @@ Foundation Lock does not mean full CTest is green, every compatibility corpus ex
 
 ## Closeout Decision
 
-All required files for the 15 Foundation Lock layers are present. Most validators pass in strict and fixture scope. The dependency-direction validator fails with 358 violations and 38 warnings, so the lock cannot be declared closed.
+All required files for the 15 Foundation Lock layers are present. Most validators pass in strict and fixture scope.
 
-Fast strict passes, including RepoX STRICT, CMake configure/build, and smoke CTest. It is not sufficient by itself to authorize the product slice while dependency-direction strict validation remains red.
+`FOUNDATION-CLOSEOUT-01` was blocked because dependency-direction strict reported `358` violations and `38` warnings.
+
+`FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01` now reports dependency-direction strict PASS with `0` violations and `68` warnings. Fast strict also passes, including RepoX STRICT, CMake configure/build, and smoke CTest.
+
+This repair is not a closeout decision by itself. `FOUNDATION-CLOSEOUT-02` must rerun the closeout gate before any product slice is authorized.
 
 ## Allowed Work
 
-- Repair the dependency-direction blocker under a focused repair task.
-- Continue documentation and evidence updates that do not hide the blocker.
+- Run `FOUNDATION-CLOSEOUT-02`.
+- Continue documentation and evidence updates that do not bypass closeout.
+- Continue documentation and evidence updates that keep remaining warnings and full-gate debt visible.
 - Keep Queue B hardening planned but not a substitute for the blocker repair.
 
 ## Blocked Work
 
-- `WORKBENCH-VALIDATION-SLICE-01` is not authorized yet.
+- `WORKBENCH-VALIDATION-SLICE-01` is not authorized by this repair task.
 - Broad feature work remains blocked.
 - Workbench UI, runtime module loading, provider runtime, package runtime, gameplay, renderer, native GUI, release publication, and broad rewrites remain blocked.
 
@@ -57,4 +62,4 @@ Fast strict passes, including RepoX STRICT, CMake configure/build, and smoke CTe
 
 When the lock eventually passes, future narrow slices must register public surfaces, expose typed commands, use diagnostic and refusal codes, preserve artifact identity, declare capabilities and providers, use module descriptors where applicable, and use the replacement protocol for rewrites.
 
-Next repair task: `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
+Next task: `FOUNDATION-CLOSEOUT-02`.

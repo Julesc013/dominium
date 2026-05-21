@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review `FOUNDATION-CLOSEOUT-01`: Foundation Lock coverage, validator results, fast strict evidence, generated-output policy, blocker classification, and readiness decision.
+Review `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`: dependency-direction blocker repair, exception scope, validation proof, and readiness for `FOUNDATION-CLOSEOUT-02`.
 
 ## Decision Requested
 
@@ -18,38 +18,37 @@ Review `FOUNDATION-CLOSEOUT-01`: Foundation Lock coverage, validator results, fa
 
 ## Verification Report Reference
 
-`.aide/reports/FOUNDATION-CLOSEOUT-01-validation.md`
+`.aide/reports/FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01-validation.md`
 
 ## Evidence Packet References
 
 - `docs/repo/FOUNDATION_LOCK.md`
-- `docs/repo/audits/FOUNDATION_CLOSEOUT_01.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-foundation-matrix.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-foundation-matrix.json`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-fast-strict.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-blockers.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-next-readiness.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-01-results.json`
+- `docs/repo/audits/FOUNDATION_REPAIR_DEPENDENCY_DIRECTION_01.md`
+- `.aide/reports/FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01-classification.md`
+- `.aide/reports/FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01-final-dependency-result.md`
+- `.aide/reports/FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01-fast-strict.md`
+- `.aide/reports/FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01-validation.md`
+- `.aide/reports/FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01-next-readiness.md`
 
 ## Changed Files Summary
 
-Adds closeout evidence and status documents. Performs one narrow documentation header repair in `docs/repo/audits/PORTABILITY_MATRIX_01.md` so RepoX can parse the prior audit correctly.
+Repairs tracked dependency-direction violations, adds exact transitional exceptions, records repair evidence, and updates Foundation readiness status.
 
 ## Validation Summary
 
-All required Foundation files are present. Fast strict passes 32 commands. Most standalone Foundation validators pass. Dependency-direction strict validation fails with 358 violations and 38 warnings, so Foundation Lock is blocked and the Workbench validation slice is not authorized.
+Dependency-direction strict passes with `0` violations and `68` warnings. FAST strict passes `32` commands in `312.147` seconds. AIDE, RepoX STRICT, standalone validators, CMake configure/build, and smoke CTest pass in the required scope.
 
 ## Risk Summary
 
-The closeout does not implement product work. It does not hide dependency-direction debt. Full CTest remains T4/full-gate debt.
+Full CTest remains T4/full-gate debt. `12` exact provisional dependency-direction exceptions remain for follow-up retirement. This repair does not authorize Workbench or broad feature work.
 
 ## Token Summary
 
-This review packet is compact. Full evidence lives in `.aide/reports/FOUNDATION-CLOSEOUT-01-validation.md`.
+This review packet is compact. Full evidence lives under `.aide/reports/FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01-*`.
 
 ## Reviewer Instructions
 
-Check that the blocked decision matches the dependency-direction validator result and that no product work is authorized while the blocker remains.
+Check that strict dependency-direction is green, exceptions are exact and retired by follow-up, and the next task is closeout rather than product work.
 
 ## Non-Goals / Scope Guard
 

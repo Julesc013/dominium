@@ -5,7 +5,22 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: BLOCKED at `FOUNDATION-CLOSEOUT-01` after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, NAME-00 naming-law follow-up, Foundation Lock proof tiers, public surface registry, API/ABI canon, LANGUAGE-BASELINE-01, DEPENDENCY-DIRECTION-01, COMMAND-SURFACE-01, DIAGNOSTIC-CODE-REGISTRY-01, ARTIFACT-IDENTITY-LAW-01, SCHEMA-PROTOCOL-LAW-01, CAPABILITY-REFUSAL-LAW-01, PROVIDER-MODEL-01, MODULE-COMPOSITION-LAW-01, REPLACEMENT-PROTOCOL-01, VERSION-DEPRECATION-LAW-01, MOD-PACK-TRUST-MODEL-01, and PORTABILITY-MATRIX-01.
+Latest proof state: READY_FOR_FOUNDATION-CLOSEOUT-02 after `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01`.
+
+## FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01 Proof Note
+
+FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01 repairs the dependency-direction strict blocker from FOUNDATION-CLOSEOUT-01.
+
+- dependency-direction strict: PASS with `0` violations and `68` warnings.
+- prior closeout blocker: `358` violations and `38` warnings.
+- exact provisional dependency-direction exceptions active: `12`.
+- applied transitional exception edges: `28`.
+- fast strict: PASS, `32` commands, `312.147` seconds.
+- RepoX STRICT: PASS with stale AuditX warning.
+- CMake configure/build and smoke CTest: PASS through fast strict.
+- full CTest remains T4/full-gate debt and was not run.
+
+This proof note does not close Foundation Lock. Next task: `FOUNDATION-CLOSEOUT-02`.
 
 ## FOUNDATION-CLOSEOUT-01 Proof Note
 

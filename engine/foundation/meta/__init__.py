@@ -30,8 +30,6 @@ _EXPORTS = {
     "REFUSAL_COMPUTE_MEMORY_EXCEEDED": ("engine.foundation.meta.compute", "REFUSAL_COMPUTE_MEMORY_EXCEEDED"),
     "evaluate_compute_budget_tick": ("engine.foundation.meta.compute", "evaluate_compute_budget_tick"),
     "request_compute": ("engine.foundation.meta.compute", "request_compute"),
-    "evaluate_reference_evaluator": ("engine.foundation.meta.reference", "evaluate_reference_evaluator"),
-    "evaluate_reference_suite": ("engine.foundation.meta.reference", "evaluate_reference_suite"),
 }
 
 
