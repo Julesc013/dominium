@@ -1,27 +1,38 @@
 # Latest Warning Disposition
 
-Current task: `QUEUE-RECONCILE-00`.
+Current task: `PHASE-REVIEW-02`.
 
 ## Accepted Known Warnings
 
-- RepoX STRICT passes with `INV-AUDITX-OUTPUT-STALE`.
-- API/ABI public-header validator passes with stable-promotion warnings unrelated to the completed Wave 1 and matrix cleanup work.
-- Dependency-direction strict previously passed with `68` warnings from existing exact exceptions and review debt.
-- Pointer-width inventory is descriptive only and found native-width terms for future review.
-- Full CTest remains T4/full-gate debt and is not claimed green.
+| Warning | Classification | Disposition |
+| --- | --- | --- |
+| Full CTest not run | full-gate debt | Retained as T4 debt; not required for this coordinator review. |
+| Dependency-direction strict warnings | dependency-direction warning | Accepted because strict reports `0` violations and `68` existing warnings. |
+| AIDE review-packet reference warnings | AIDE review-ref warning | Accepted existing packet reference warning; AIDE validate status is PASS. |
+| Service conformance fixture/planned-support warnings | runtime-not-implemented gap | Accepted; fixture/planned conformance does not imply runtime support. |
+| Runtime project graph/generator/viewer absent | runtime-not-implemented gap | Accepted; project graph remains derived/index-only law. |
+| Runtime composition/package/provider/module loading absent | runtime-not-implemented gap | Accepted; composition and package work remain fixture/proof-driven. |
+| Workbench shell/rendered/native/TUI runtime absent | runtime-not-implemented gap | Accepted; Workbench remains projection host, not authority. |
+| Pointer-width serialization audit not run | follow-up candidate | Retained as `POINTER-WIDTH-SERIALIZATION-AUDIT-01`. |
+
+## New Warnings
+
+None promoted to blocker.
 
 ## Authorization
 
 - Foundation Lock is `PASS_WITH_WARNINGS`.
-- `MATRIX-CLEANUP-00` is complete and did not authorize renderer implementation.
-- `WORKBENCH-VALIDATION-SLICE-01` is complete and did not authorize broad Workbench UI.
 - Narrow governed product-spine slices may continue.
+- `PACKAGE-MOUNT-SLICE-01` is the next recommended task.
 - Broad feature work remains blocked.
 
-## Next
+## Blocked Work
 
-Recommended next task: `COMMAND-RESULT-VIEW-SLICE-01`.
-
-Alternate next task: `PACKAGE-MOUNT-SLICE-01`.
-
-Secondary governance follow-up: `POINTER-WIDTH-SERIALIZATION-AUDIT-01` if the descriptive pointer-width inventory should be promoted into a focused audit.
+- `broad_workbench_ui = BLOCKED`
+- `runtime_module_loader = BLOCKED`
+- `provider_runtime = BLOCKED`
+- `package_runtime = BLOCKED`
+- `gameplay = BLOCKED`
+- `renderer_implementation = BLOCKED`
+- `native_gui = BLOCKED`
+- `release_publication = BLOCKED`

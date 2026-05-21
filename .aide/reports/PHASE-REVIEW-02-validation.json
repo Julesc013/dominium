@@ -1,0 +1,55 @@
+{
+  "aide_phase": "post-foundation-product-spine-review",
+  "aide_task": "PHASE-REVIEW-02",
+  "branch": "main",
+  "broad_feature_work_authorized": false,
+  "decision": "PASS_WITH_WARNINGS",
+  "dependency_direction": {
+    "status": "PASS",
+    "violations": 0,
+    "warnings": 68
+  },
+  "fast_strict": {
+    "commands": 33,
+    "elapsed_seconds": 277.663,
+    "evidence_json": ".aide/reports/PHASE-REVIEW-02-fast-strict.json",
+    "evidence_markdown": ".aide/reports/PHASE-REVIEW-02-fast-strict.md",
+    "selected_tiers": [
+      "T0",
+      "T1",
+      "T2"
+    ],
+    "status": "PASS"
+  },
+  "input_head": "5c1db4c6d103f35ccebe2ee80d1341d2bd52ee2b",
+  "next_task": "PACKAGE-MOUNT-SLICE-01",
+  "non_goals_preserved": [
+    "package_runtime",
+    "workbench_shell",
+    "runtime_projection_engine",
+    "provider_runtime",
+    "runtime_module_loader",
+    "renderer",
+    "native_gui",
+    "gameplay",
+    "release_publication"
+  ],
+  "origin_main_head": "b9557b851ccdd1c04b7c8860ff681571676523f7",
+  "reviewed_tasks": {
+    "command_result_view_slice_01": "PASS_WITH_WARNINGS",
+    "composition_resolver_law_01": "PASS_WITH_WARNINGS",
+    "document_patch_transaction_runtime_01": "PASS_WITH_WARNINGS",
+    "dominium_doctrine_recovery_matrix_01": "PASS",
+    "matrix_cleanup_00": "PASS_WITH_WARNINGS",
+    "project_graph_service_01": "PASS_WITH_WARNINGS",
+    "service_conformance_law_01": "PASS_WITH_WARNINGS",
+    "workbench_validation_slice_01": "PASS_WITH_WARNINGS"
+  },
+  "warnings": [
+    "full_ctest_not_run_t4_debt",
+    "dependency_direction_68_warnings_zero_violations",
+    "aide_validate_review_packet_reference_warnings",
+    "service_conformance_fixture_planned_support_warnings",
+    "runtime_not_implemented_gaps_preserved"
+  ]
+}

@@ -1,19 +1,22 @@
 schema_version = "dominium.aide.queue.current.v1"
-status = "post_wave_1_pass_with_warnings"
+status = "post_phase_review_02_pass_with_warnings"
 last_reviewed = "2026-05-22"
 
 [current]
-task = "QUEUE-RECONCILE-00"
+task = "PHASE-REVIEW-02"
 result = "PASS_WITH_WARNINGS"
 foundation_lock = "PASS_WITH_WARNINGS"
 matrix_cleanup_00 = "PASS_WITH_WARNINGS"
 workbench_validation_slice_01 = "PASS_WITH_WARNINGS"
 wave_1_substrates = "PASS_WITH_WARNINGS"
-next_task = "COMMAND-RESULT-VIEW-SLICE-01"
-alternate_next_task = "PACKAGE-MOUNT-SLICE-01"
-secondary_follow_up = "POINTER-WIDTH-SERIALIZATION-AUDIT-01"
+command_result_view_slice_01 = "PASS_WITH_WARNINGS"
+next_task = "PACKAGE-MOUNT-SLICE-01"
+alternate_next_task = "REPLAY-PROOF-SLICE-01"
+secondary_follow_up = "PRESENTATION-CONTRACT-01"
+tertiary_follow_up = "POINTER-WIDTH-SERIALIZATION-AUDIT-01"
 workbench_validation_slice_authorized = true
 workbench_validation_slice_completed = true
+command_result_view_slice_completed = true
 matrix_cleanup_completed = true
 broad_feature_work_authorized = false
 
@@ -21,12 +24,14 @@ broad_feature_work_authorized = false
 foundation_closeout_02 = "PASS_WITH_WARNINGS"
 portability_arch_policy_02 = "PASS_WITH_WARNINGS"
 matrix_cleanup_00 = "PASS_WITH_WARNINGS"
-service_conformance_law_01 = "PASS"
+service_conformance_law_01 = "PASS_WITH_WARNINGS"
 document_patch_transaction_runtime_01 = "PASS_WITH_WARNINGS"
-project_graph_service_01 = "PASS"
-composition_resolver_law_01 = "PASS"
+project_graph_service_01 = "PASS_WITH_WARNINGS"
+composition_resolver_law_01 = "PASS_WITH_WARNINGS"
 dominium_doctrine_recovery_matrix_01 = "PASS"
 workbench_validation_slice_01 = "PASS_WITH_WARNINGS"
+command_result_view_slice_01 = "PASS_WITH_WARNINGS"
+phase_review_02 = "PASS_WITH_WARNINGS"
 
 [validation]
 architecture_policy = "PASS"

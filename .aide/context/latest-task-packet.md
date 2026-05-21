@@ -2,118 +2,120 @@
 
 ## PHASE
 
-Post-Foundation Lock / post-MATRIX-CLEANUP-00 / post-WORKBENCH-VALIDATION-SLICE-01
+Post-Foundation product spine after `PHASE-REVIEW-02`.
 
 ## GOAL
 
-COMMAND-RESULT-VIEW-SLICE-01 - define the next narrow Workbench/app projection for command result display without building a broad Workbench shell.
+`PACKAGE-MOUNT-SLICE-01` - prove one narrow, fixture-driven package/profile/content mount decision without implementing broad package runtime.
 
 ## WHY
 
-Foundation Lock is closed as `PASS_WITH_WARNINGS`. `MATRIX-CLEANUP-00` and `WORKBENCH-VALIDATION-SLICE-01` have both landed. The next useful product-spine step is a narrow command/result/evidence view that consumes existing command surfaces without adding renderer, native GUI, workspace runtime, provider runtime, package runtime, gameplay, or release behavior.
+Foundation Lock remains `PASS_WITH_WARNINGS`. The post-Foundation wave now has
+command/result/refusal, service conformance, document/patch/transaction,
+project graph, composition resolver, doctrine recovery, Workbench validation,
+and command-result-view projection proofs. The next product-spine gap is a
+small package mount proof that consumes existing composition, artifact,
+capability/refusal, diagnostics, evidence, and trust law.
 
 ## CONTEXT_REFS
 
 - `AGENTS.md`
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
-- `docs/planning/AUTHORITY_ORDER.md`
-- `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`
 - `docs/repo/FOUNDATION_LOCK.md`
-- `docs/repo/audits/MATRIX_CLEANUP_00.md`
-- `docs/repo/audits/WORKBENCH_VALIDATION_SLICE_01.md`
-- `docs/development/workbench_validation_slice.md`
-- `contracts/module/module_surface.contract.toml`
-- `contracts/command/validation_run_input.schema.json`
-- `contracts/diagnostics/diagnostic_code.registry.json`
+- `docs/repo/audits/PHASE_REVIEW_02.md`
+- `docs/repo/audits/COMPOSITION_RESOLVER_LAW_01.md`
+- `docs/repo/audits/COMMAND_RESULT_VIEW_SLICE_01.md`
+- `contracts/composition/**`
+- `contracts/artifact/**`
+- `contracts/capability/**`
+- `contracts/refusal/**`
+- `contracts/diagnostics/**`
+- `contracts/lock/**`
+- `contracts/trust/**`
 - `.aide/queue/current.toml`
 - `.aide/context/latest-context-packet.md`
 
+## EXPECTED_OUTPUT
+
+- pack mount plan fixture
+- lock/report fixture
+- capability/refusal report
+- diagnostics/evidence packet
+- CLI/headless validation command or fixture proof if command runtime remains out of scope
+
 ## ALLOWED_PATHS
 
-- `apps/workbench/module/**` only for a narrow command/result projection module or existing validation module integration points
-- `contracts/module/module_surface.contract.toml` only for registering the narrow module surface
-- `contracts/command/**` only for command/view contract additions directly required by the slice
-- `contracts/diagnostics/diagnostic_code.registry.json` only for distinct diagnostic codes required by the slice
-- `docs/development/**` for slice documentation
-- `docs/repo/audits/**` for task audit evidence
-- `tests/app/**` and `tests/contract/**` for targeted tests
+- contract and fixture additions needed for a narrow mount proof
+- documentation and AIDE evidence for `PACKAGE-MOUNT-SLICE-01`
+- targeted validators and tests for composition/package/trust/capability surfaces
 
 ## FORBIDDEN_PATHS
 
-- `.git/**`
-- `.env`
-- `secrets/**`
-- `.aide.local/**`
-- raw provider credentials, API keys, local caches, raw prompt logs
-- `.aide/context/latest-task-packet.md` unless the task is a coordinator queue task
-- `.aide/context/latest-review-packet.md` unless the task is a coordinator queue task
-- `.aide/reports/latest-dominium-status.md` unless the task is a coordinator queue task
-- `.aide/reports/latest-warning-disposition.md` unless the task is a coordinator queue task
-- `.aide/queue/current.toml` unless the task is a coordinator queue task
-- `docs/repo/FOUNDATION_LOCK.md`
-- broad Workbench shell, renderer, native GUI, gameplay, provider runtime, package runtime, runtime module loader, release publication, or product-wide implementation paths
+- broad package runtime
+- mod loader
+- arbitrary pack execution
+- provider runtime
+- runtime module loader
+- Workbench shell/UI
+- renderer or native GUI
+- gameplay/domain implementation
+- release publication
+- CMake target additions
 
 ## IMPLEMENTATION
 
-- Keep the slice command-driven and projection-only.
-- Consume public command/result/refusal/diagnostic/evidence surfaces; do not call private validators directly from Workbench.
-- Do not set `workspace_runtime_implemented=true`.
-- Do not implement renderer, native GUI, package runtime, provider runtime, runtime module loading, gameplay, or broad app behavior.
-- Preserve `MATRIX-CLEANUP-00` renderer/platform terminology: `software`, `opengl`, `direct3d`, `metal`, `vulkan`, and canvas as drawing layer.
+- Treat composition lockfiles as derived evidence, not source truth.
+- Keep missing capabilities as explicit refusals or degradations.
+- Use existing composition, artifact, capability/refusal, diagnostics, and trust laws.
+- Do not make packs executable.
+- Do not promote package runtime implementation claims.
 
 ## VALIDATION
 
-- `py -3 .aide/scripts/aide_lite.py doctor`
-- `py -3 .aide/scripts/aide_lite.py validate`
-- targeted app tests for the new projection
-- touched JSON/TOML parse checks
-- `py -3 tools/validators/contracts/check_command_surface.py --repo-root . --strict`
-- `py -3 tools/validators/contracts/check_module_descriptors.py --repo-root . --strict`
-- `py -3 tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict`
-- `py -3 tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict`
+- targeted package/composition/trust/capability validators
+- public surface and dependency-direction strict validators
+- docs/build/UI/ABI sanity checks where touched
+- AIDE doctor/validate
 - `git diff --check`
-
-## COMMITS
-
-- Commit coherent subdeliverables with verbose bodies.
-- Do not commit ignored transient validation reports unless the task explicitly promotes them as evidence.
+- fast strict if touched inputs affect fast-strict scope
 
 ## EVIDENCE
 
 - changed files
-- validation commands and results
-- result/refusal/diagnostic/evidence parity proof
-- unresolved risks and deferrals
+- package/profile/content artifact IDs used
+- mount decision, lock/report, refusal, diagnostic, and evidence fixture refs
+- validators and tests run
+- warnings and deferred runtime gaps
 
 ## NON_GOALS
 
-- No full Workbench shell.
-- No rendered GUI.
-- No workspace runtime.
-- No runtime module loader.
+- No broad package runtime.
 - No provider runtime.
-- No package runtime.
-- No renderer backend implementation.
+- No runtime module loader.
+- No Workbench shell.
+- No rendered GUI.
 - No native GUI.
-- No gameplay, worldgen, release publication, or broad app behavior.
+- No gameplay.
+- No release publication.
 
 ## ACCEPTANCE
 
-- Command/result projection is narrow and service/command mediated.
-- CLI/headless semantics remain the source of behavior; Workbench projection is not authority.
-- Same result/refusal/diagnostic/evidence packet can be displayed without private tool binding.
-- Broad blockers remain explicit.
+- One pack/profile/content artifact can be resolved into a fixture-level mount
+  decision, lock/report, refusals/degradations, diagnostics, and evidence.
+- Broad feature blockers remain explicit.
+
+## NEXT_AFTER
+
+Expected alternate/follow-up: `REPLAY-PROOF-SLICE-01`.
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, `RISKS`, and `NEXT`.
+Return compact closeout with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`,
+`VALIDATION`, `WARNINGS`, `RISKS`, and `NEXT`.
 
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4990
-- approx_tokens: 1248
+- approx_tokens: 1000
 - budget_status: PASS
-- warnings:
-  - next task is a narrow product-spine candidate and must remain inside the allowed paths
