@@ -25,33 +25,145 @@
     "trust_level"
   ],
   "properties": {
-    "provider_id": {"type": "string", "pattern": "^(domino|dominium)\\.provider\\.[a-z0-9][a-z0-9_.-]*$"},
-    "provider_kind": {"type": "string"},
-    "owner": {"type": "string"},
-    "version": {"type": "string"},
-    "stability": {"type": "string"},
-    "surface_id": {"type": ["string", "null"]},
-    "capabilities_provided": {"type": "array", "items": {"type": "string"}, "minItems": 1},
-    "capabilities_required": {"type": "array", "items": {"type": "string"}},
-    "entry_surface": {"type": "string"},
-    "implementation_path": {"type": ["string", "null"]},
-    "implementation_path_is_identity": {"type": "boolean"},
-    "language": {"type": "string"},
-    "abi": {"type": "string"},
-    "platform_constraints": {"type": "array", "items": {"type": "string"}},
-    "determinism_impact": {"type": "string"},
-    "security_impact": {"type": "string"},
-    "threading_model": {"type": "string"},
-    "lifetime_model": {"type": "string"},
-    "configuration_schema": {"type": ["string", "null"]},
-    "diagnostic_codes": {"type": "array", "items": {"type": "string"}},
-    "refusal_codes": {"type": "array", "items": {"type": "string"}},
-    "conformance_tests": {"type": "array", "items": {"type": "string"}},
-    "replacement_policy": {"type": "string"},
-    "trust_level": {"type": "string"},
-    "planned": {"type": "boolean"},
-    "proof": {"type": "array", "items": {"type": "string"}},
-    "notes": {"type": "string"}
+    "provider_id": {
+      "type": "string",
+      "pattern": "^(domino|dominium)\\.provider\\.[a-z0-9][a-z0-9_.-]*$"
+    },
+    "provider_kind": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "stability": {
+      "type": "string"
+    },
+    "surface_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "capabilities_provided": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "capabilities_required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "entry_surface": {
+      "type": "string"
+    },
+    "implementation_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "implementation_path_is_identity": {
+      "type": "boolean"
+    },
+    "language": {
+      "type": "string"
+    },
+    "abi": {
+      "type": "string"
+    },
+    "platform_constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "determinism_impact": {
+      "type": "string"
+    },
+    "security_impact": {
+      "type": "string"
+    },
+    "threading_model": {
+      "type": "string"
+    },
+    "lifetime_model": {
+      "type": "string"
+    },
+    "configuration_schema": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "diagnostic_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "refusal_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conformance_tests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "replacement_policy": {
+      "type": "string"
+    },
+    "trust_level": {
+      "type": "string"
+    },
+    "planned": {
+      "type": "boolean"
+    },
+    "proof": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "implemented_service_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "conformance_suite_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "fallback_behavior": {
+      "type": "string"
+    },
+    "refusal_behavior": {
+      "type": "string"
+    },
+    "evidence_policy": {
+      "type": "string"
+    },
+    "support_claim": {
+      "type": "boolean"
+    }
   },
   "additionalProperties": true
 }

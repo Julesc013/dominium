@@ -211,6 +211,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/SEMANTIC_STABILITY_POLICY.md`
 - `docs/architecture/SERVICES_AND_PRODUCTS.md`
 - `docs/architecture/service_conformance_law.md`
+- `docs/architecture/provider_conformance_law.md`
 - `docs/architecture/SETUP_TRANSACTION_MODEL.md`
 - `docs/architecture/SHARD_LIFECYCLE.md`
 - `docs/architecture/SIGNAL_MODEL.md`

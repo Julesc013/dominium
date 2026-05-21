@@ -1,0 +1,26 @@
+{
+  "conformance_id": "dominium.conformance.service.diagnostics.planned",
+  "subject_kind": "service",
+  "subject_id": "dominium.service.diagnostics",
+  "contract_refs": [
+    "contracts/service/service.contract.toml",
+    "contracts/conformance/conformance.contract.toml"
+  ],
+  "required_capabilities": [],
+  "required_fixtures": [],
+  "positive_cases": [],
+  "negative_cases": [],
+  "refusal_cases": [
+    "planned support requests refuse"
+  ],
+  "determinism_cases": [],
+  "replay_cases": [],
+  "artifact_cases": [],
+  "performance_budget_ref": null,
+  "evidence_required": [
+    "planned_status_entry"
+  ],
+  "status": "planned",
+  "support_claim": false,
+  "notes": "Planned conformance is valid as a non-support claim."
+}

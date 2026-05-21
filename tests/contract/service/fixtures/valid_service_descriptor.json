@@ -1,0 +1,52 @@
+{
+  "service_id": "dominium.service.validation",
+  "service_kind": "validation",
+  "owner": "tools.validators",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "public_surface_ref": "dominium.service.registry.v1",
+  "commands_consumed": [],
+  "commands_exposed": [
+    "dominium.validation.run"
+  ],
+  "result_schema_refs": [
+    "contracts/command/validation_run_result.schema.json"
+  ],
+  "refusal_code_refs": [
+    "dominium.refusal.service.unknown",
+    "dominium.refusal.service.conformance_missing"
+  ],
+  "diagnostic_code_refs": [
+    "DOM-SERVICE-UNKNOWN",
+    "DOM-SERVICE-CONFORMANCE-MISSING"
+  ],
+  "capability_refs": [
+    "dominium.service.conformance.validate"
+  ],
+  "provider_kinds_allowed": [
+    "command_handler",
+    "workbench_module"
+  ],
+  "determinism_class": "deterministic",
+  "authority_class": "tooling_projection",
+  "artifact_inputs": [
+    "service_descriptor",
+    "conformance_suite"
+  ],
+  "artifact_outputs": [
+    "evidence_packet"
+  ],
+  "replay_impact": "evidence_only",
+  "execution_model": "fixture_only",
+  "thread_model": "host_defined",
+  "conformance_suite_refs": [
+    "dominium.conformance.service.validation.fixture"
+  ],
+  "replacement_policy_ref": "contracts/replacement/conformance_policy.contract.toml",
+  "deprecation_policy_ref": "contracts/versioning/deprecation_policy.contract.toml",
+  "support_claim": false,
+  "fallback_behavior": "explicit_degrade_or_refuse",
+  "refusal_behavior": "typed_refusal_required",
+  "evidence_policy": "fixture_only_no_runtime_support_claim",
+  "notes": "Valid fixture-only service descriptor."
+}

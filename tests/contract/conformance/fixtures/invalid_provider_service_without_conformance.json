@@ -1,0 +1,25 @@
+{
+  "provider_id": "dominium.provider.workbench.validation",
+  "provider_kind": "workbench_module",
+  "owner": "apps.workbench",
+  "version": "0.1.0",
+  "stability": "experimental",
+  "implemented_service_ids": [
+    "dominium.service.validation"
+  ],
+  "conformance_suite_refs": [],
+  "capabilities_provided": [
+    "dominium.workbench.validation"
+  ],
+  "capabilities_required": [
+    "dominium.command.fast_strict"
+  ],
+  "diagnostic_codes": [
+    "DOM-PROVIDER-CONFORMANCE-MISSING"
+  ],
+  "refusal_codes": [
+    "dominium.refusal.provider.conformance_missing"
+  ],
+  "replacement_policy": "requires_provider_model_update",
+  "support_claim": false
+}

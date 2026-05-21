@@ -2141,3 +2141,146 @@ compatibility = "retired_no_active_dependency"
 replacement_policy = "contracts/schema"
 retirement_reason = "Root-level schemas was retired; active validator-facing schema projections belong under contracts/schema unless later law says otherwise."
 notes = "Registered retired root so future work does not recreate it as a public surface."
+
+[[surface]]
+id = "dominium.service.contract.v1"
+kind = "registry"
+path = "contracts/service/service.contract.toml"
+owner = "contracts.service"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SERVICE-CONFORMANCE-LAW-01"
+proof = ["python -m py_compile tools/validators/contracts/check_service_conformance.py", "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_service_conformance_law_update"
+notes = "Service descriptor and service selection law; no runtime service dispatch is implemented."
+
+[[surface]]
+id = "dominium.service.descriptor.schema.v1"
+kind = "schema"
+path = "contracts/service/service_descriptor.schema.json"
+owner = "contracts.service"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SERVICE-CONFORMANCE-LAW-01"
+proof = ["python -m json.tool contracts/service/service_descriptor.schema.json", "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_service_conformance_law_update"
+notes = "Service descriptor schema for callable semantic service contracts."
+
+[[surface]]
+id = "dominium.service.kind.registry.v1"
+kind = "registry"
+path = "contracts/service/service_kind.registry.json"
+owner = "contracts.service"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SERVICE-CONFORMANCE-LAW-01"
+proof = ["python -m json.tool contracts/service/service_kind.registry.json", "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_service_conformance_law_update"
+notes = "Service-kind vocabulary only; kind registration is not an implementation claim."
+
+[[surface]]
+id = "dominium.service.registry.v1"
+kind = "registry"
+path = "contracts/service/service.registry.json"
+owner = "contracts.service"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SERVICE-CONFORMANCE-LAW-01"
+proof = ["python -m json.tool contracts/service/service.registry.json", "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_service_conformance_law_update"
+notes = "Initial service descriptor registry. Planned and fixture-only entries are not runtime support."
+
+[[surface]]
+id = "dominium.conformance.contract.v1"
+kind = "registry"
+path = "contracts/conformance/conformance.contract.toml"
+owner = "contracts.conformance"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SERVICE-CONFORMANCE-LAW-01"
+proof = ["python -m py_compile tools/validators/contracts/check_service_conformance.py", "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_service_conformance_law_update"
+notes = "Service/provider conformance law; no runtime conformance runner is implemented."
+
+[[surface]]
+id = "dominium.conformance.suite.schema.v1"
+kind = "schema"
+path = "contracts/conformance/conformance_suite.schema.json"
+owner = "contracts.conformance"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SERVICE-CONFORMANCE-LAW-01"
+proof = ["python -m json.tool contracts/conformance/conformance_suite.schema.json", "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_service_conformance_law_update"
+notes = "Conformance suite schema for service/provider fixture and evidence declarations."
+
+[[surface]]
+id = "dominium.conformance.status.registry.v1"
+kind = "registry"
+path = "contracts/conformance/conformance_status.registry.json"
+owner = "contracts.conformance"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SERVICE-CONFORMANCE-LAW-01"
+proof = ["python -m json.tool contracts/conformance/conformance_status.registry.json", "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_service_conformance_law_update"
+notes = "Conformance status registry; only passing can carry support claims."
+
+[[surface]]
+id = "dominium.conformance.registry.v1"
+kind = "registry"
+path = "contracts/conformance/conformance.registry.json"
+owner = "contracts.conformance"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SERVICE-CONFORMANCE-LAW-01"
+proof = ["python -m json.tool contracts/conformance/conformance.registry.json", "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_service_conformance_law_update"
+notes = "Initial service/provider conformance suite registry. Planned and fixture-only suites are not support."
+
+[[surface]]
+id = "dominium.service.conformance.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_service_conformance.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "SERVICE-CONFORMANCE-LAW-01"
+proof = ["python -m py_compile tools/validators/contracts/check_service_conformance.py", "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_service_conformance_law_update"
+notes = "Validator for service descriptors, conformance suites, provider conformance references, fixtures, and inventory."
+
+[[surface]]
+id = "dominium.service.conformance.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/service"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "SERVICE-CONFORMANCE-LAW-01"
+proof = ["python tools/validators/contracts/check_service_conformance.py --repo-root . --fixtures", "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_service_conformance_law_update"
+notes = "Service descriptor fixture suite. Fixture-only evidence is not runtime support."
+
+[[surface]]
+id = "dominium.conformance.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/conformance"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "SERVICE-CONFORMANCE-LAW-01"
+proof = ["python tools/validators/contracts/check_service_conformance.py --repo-root . --fixtures", "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_service_conformance_law_update"
+notes = "Conformance suite and provider-conformance fixture suite. Fixture-only evidence is not runtime support."

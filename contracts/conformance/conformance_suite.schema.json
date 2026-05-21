@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.conformance.suite.schema.v1",
+  "title": "Dominium Service/Provider Conformance Suite",
+  "type": "object",
+  "required": ["conformance_id", "subject_kind", "subject_id", "contract_refs", "required_capabilities", "required_fixtures", "positive_cases", "negative_cases", "refusal_cases", "determinism_cases", "evidence_required", "status"],
+  "properties": {
+    "conformance_id": {"type": "string", "pattern": "^dominium\\.conformance\\.(service|provider)\\.[a-z0-9][a-z0-9_.-]*$"},
+    "subject_kind": {"type": "string", "enum": ["service", "provider"]},
+    "subject_id": {"type": "string"},
+    "contract_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "required_capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "required_fixtures": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "positive_cases": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "negative_cases": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "refusal_cases": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "determinism_cases": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "replay_cases": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "artifact_cases": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "performance_budget_ref": {"type": ["string", "null"]},
+    "evidence_required": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "status": {"type": "string", "enum": ["planned", "fixture_only", "passing", "failing", "retired"]},
+    "support_claim": {"type": "boolean"},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}

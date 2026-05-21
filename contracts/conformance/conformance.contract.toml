@@ -1,0 +1,52 @@
+schema_version = "dominium.conformance.contract.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.conformance"
+
+[contract]
+id = "dominium.conformance.contract.v1"
+status = "provisional"
+owner = "contracts.conformance"
+purpose = "Defines service/provider conformance suite declarations, evidence obligations, and support-claim boundaries."
+suite_schema = "contracts/conformance/conformance_suite.schema.json"
+status_registry = "contracts/conformance/conformance_status.registry.json"
+suite_registry = "contracts/conformance/conformance.registry.json"
+
+[subject]
+kinds = ["service", "provider"]
+service_registry = "contracts/service/service.registry.json"
+provider_registry = "contracts/provider/provider.registry.json"
+subject_identity_is_path = false
+
+[status_policy]
+planned_support_claim_allowed = false
+fixture_only_support_claim_allowed = false
+passing_support_claim_allowed = true
+failing_support_claim_allowed = false
+retired_support_claim_allowed = false
+stable_service_requires_passing = true
+stable_provider_requires_passing = true
+planned_or_fixture_only_is_support = false
+
+[evidence]
+evidence_required_for_passing = true
+fixtures_required_before_stable = true
+positive_negative_refusal_cases_required_before_stable = true
+determinism_cases_required_for_deterministic_subjects = true
+replay_cases_required_when_replay_impact_is_authoritative = true
+artifact_cases_required_when_artifacts_are_inputs_or_outputs = true
+runtime_runner_required_now = false
+
+[replacement]
+replacement_requires_subject_match = true
+replacement_requires_capability_compatibility = true
+replacement_requires_refusal_compatibility = true
+replacement_requires_diagnostic_compatibility = true
+replacement_requires_passing_conformance_before_support_claim = true
+
+[validation]
+validator = "tools/validators/contracts/check_service_conformance.py"
+fixtures = ["tests/contract/service/fixtures", "tests/contract/conformance/fixtures"]
+strict_proof = "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"
+fixture_proof = "python tools/validators/contracts/check_service_conformance.py --repo-root . --fixtures"
+notes = "Conformance suite declarations are contract evidence only. This contract does not implement runtime test runners, provider loading, or service dispatch."

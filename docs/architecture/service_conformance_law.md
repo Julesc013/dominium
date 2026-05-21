@@ -1,142 +1,58 @@
 Status: CANONICAL
 Last Reviewed: 2026-05-21
-Supersedes: none
+Supersedes: `contracts/service/service_conformance.contract.toml` as the primary service/provider conformance law narrative
 Superseded By: none
 Stability: provisional
-Future Series: Σ, Φ, Υ, Ζ
-Replacement Target: later service instance registries, lifecycle contracts, provider mappings, and product/app/workbench service bindings must instantiate this law rather than replace it
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/architecture/SERVICES_AND_PRODUCTS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`
+Replacement Target: later runtime service dispatch, provider resolver, renderer/platform/package service work, and Workbench modules must instantiate this law rather than bypass it
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/architecture/SERVICES_AND_PRODUCTS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `contracts/service/service.contract.toml`, `contracts/conformance/conformance.contract.toml`
 
 # Service Conformance Law
 
-## 1. Purpose And Scope
+## 1. Purpose
 
-This document defines the narrow service conformance substrate for future
-product, app, Workbench, runtime, and tool-facing service declarations.
+This law defines how Dominium service descriptors and conformance suites are declared before a service can be relied on by commands, apps, modules, Workbench, packages, runtime slices, renderers, platforms, or future game systems.
 
-It exists to answer one question:
+A service is a callable semantic runtime capability. A provider is a replaceable implementation of a service or backend. A descriptor proves only identity, references, limits, and evidence obligations. It is not a runtime dispatcher, provider loader, renderer backend, platform backend, package runtime, Workbench UI, or gameplay implementation.
 
-- what must a service declaration prove before it can claim conformance to
-  Dominium service law?
+## 2. Vocabulary
 
-It does not implement or authorize:
+- `service`: callable semantic runtime capability governed by a service descriptor.
+- `provider`: replaceable implementation of a service or backend, selected only after declared capability and conformance checks.
+- `command`: user, test, app, or tool-facing invocation surface. A command may invoke a service, but service identity is not command identity.
+- `module`: declared functional extension unit that may consume or provide commands, services, and views.
+- `app`: product composition of commands, services, providers, modules, and packs.
+- `conformance suite`: test, fixture, and evidence set proving a service or provider obeys a contract.
 
-- runtime service dispatch
-- service lifecycle, restart, hotswap, snapshot, replay, or state
-  externalization behavior
-- provider calls, network calls, filesystem expansion, or Gateway use
-- product UX, Workbench UI, app behavior, or feature delivery
-- semantic doctrine changes or domain ownership changes
+Workbench is a consumer and presenter of service-backed commands. It is not authority. Repo tools may inspect and validate service descriptors, but runtime must not depend on repo-only validators.
 
-## 2. Governing Model
+## 3. Identity
 
-A conforming service declaration describes a bounded service boundary. It is
-evidence for future coordination work, not an implementation.
+Service identity is a governed dotted ID such as `dominium.service.validation`. It is not a command ID, provider ID, file path, implementation path, or Workbench module path.
 
-The declaration must stay subordinate to:
+Provider identity is a governed provider ID. Implementation path may be useful metadata, but it is not authority and cannot substitute for provider identity.
 
-- canon and glossary
-- `AGENTS.md`
-- runtime service doctrine in `docs/runtime/RUNTIME_SERVICES.md`
-- access-only service/product doctrine in
-  `docs/architecture/SERVICES_AND_PRODUCTS.md`
-- ownership and projection cautions from
-  `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`
+The descriptor schema at `contracts/service/service_descriptor.schema.json` requires service identity, kind, owner, version, stability, public surface, command, result, refusal, diagnostic, capability, provider-kind, determinism, authority, artifact, replay, conformance, replacement, and deprecation fields.
 
-## 3. Required Conformance Constraints
+## 4. Selection And Refusal
 
-Every conforming service declaration must declare these constraints:
+Capability selection must emit one of the governed decisions: `selected`, `degraded`, `refused`, or `evidence`.
 
-- `service_not_semantic_owner`
-- `no_runtime_implementation_authorized`
-- `no_provider_calls_authorized`
-- `no_product_feature_authorized`
-- `process_only_truth_mutation`
-- `truth_perceived_render_separated`
-- `capability_gated_access`
-- `deterministic_refusal_or_degradation`
-- `ownership_projection_respected`
-- `contract_schema_discipline`
-- `diagnostics_evidence_declared`
+Degraded behavior requires explicit evidence. Refusal requires a typed refusal code and diagnostic evidence. Missing services, missing providers, missing capabilities, service not implemented, provider refusal, and provider degradation are governed surfaces, not silent fallback.
 
-These constraints are machine-checked by
-`tools/validators/contracts/check_service_conformance.py` against
-`contracts/service/service_conformance.contract.toml`,
-`contracts/service/service_conformance.schema.json`, and
-`contracts/service/service_class.registry.json`.
+## 5. Conformance
 
-## 4. Boundary Law
+Conformance suites live under `contracts/conformance/**` and declare subject kind, subject ID, contract references, required capabilities, required fixtures, positive cases, negative cases, refusal cases, determinism cases, replay cases where relevant, artifact cases where relevant, evidence requirements, and status.
 
-A conforming service may declare a boundary for future coordination,
-inspection, product support, or integration work.
+Allowed suite statuses are `planned`, `fixture_only`, `passing`, `failing`, and `retired`.
 
-A conforming service must not:
+Only `passing` may carry `support_claim=true`. `planned` and `fixture_only` are valid planning and fixture states, but they do not imply runtime support, provider support, product support, or replacement compatibility.
 
-- own Truth, semantic doctrine, product-shell meaning, or domain ownership
-- mutate Truth directly
-- bypass lawful Process execution
-- collapse Truth, Perceived, and Rendered layers
-- silently reinterpret capability surfaces
-- silently degrade or fallback without typed refusal or deterministic
-  degradation
-- treat validator projections, generated outputs, or compatibility wrappers as
-  semantic owners
-- claim runtime implementation, provider execution, or product features from
-  conformance alone
+## 6. Replacement Compatibility
 
-## 5. Contract And Validation Surfaces
+Replacement compatibility is not proven by matching names. A replacement service or provider must preserve service/provider identity rules, command/result/refusal/diagnostic surfaces, capability declarations, provider-kind and limit declarations, artifact and replay implications, and replacement/deprecation policy references. Stable or support-claimed replacement requires passing conformance.
 
-The service conformance substrate is:
+## 7. Non-Implementation Rule
 
-- `contracts/service/service_conformance.contract.toml`
-- `contracts/service/service_conformance.schema.json`
-- `contracts/service/service_class.registry.json`
-- `tools/validators/contracts/check_service_conformance.py`
-- `tests/contract/service_conformance/**`
+This task adds law, descriptors, registries, fixtures, and validation only. It does not implement runtime service dispatch, provider resolver or provider runtime loading, renderer/platform/storage/network/audio/input/package/profile services, Workbench module runtime or UI, gameplay/domain behavior, or CMake targets.
 
-The validator is deterministic for a fixed checkout:
-
-- fixture paths are sorted
-- service classes are sorted in output
-- valid and invalid fixtures have explicit expected outcomes
-- unknown references to registered capabilities, commands, modules, refusals,
-  or diagnostics are reported as contract failures when the corresponding
-  registry is available
-
-## 6. Service Classes
-
-The initial class vocabulary mirrors `docs/runtime/RUNTIME_SERVICES.md`:
-
-- `execution_coordination`
-- `observation_inspection`
-- `presentation_support`
-- `control_integration`
-- `persistence_replay_support`
-- `compatibility_policy_support`
-- `domain_support`
-- `product_support`
-
-These are conformance classes, not service instances. Later work may define
-instance registries or lifecycle behavior only through explicit scoped prompts.
-
-## 7. Contract And Schema Impact
-
-This task adds a new provisional service conformance contract and schema under
-`contracts/service/**`.
-
-It does not change existing command, module, diagnostic, capability, provider,
-runtime, app, Workbench, canon, planning, release, or schema-law artifacts.
-
-No migration is authorized. No compatibility reinterpretation is authorized.
-Future changes to stable service declarations must update this contract or
-provide explicit refusal/migration policy.
-
-## 8. Non-Implementation Rule
-
-Passing service conformance validation means only that a declaration obeys this
-contract surface.
-
-It is not proof that a service exists at runtime, that a provider can be called,
-that a product exposes a feature, or that lifecycle/live-ops behavior is safe.
-Those claims require later runtime, provider, product, and release-control work
-with their own review gates and evidence.
+Future renderer, platform, package, Workbench, and game work can consume this law by declaring service descriptors, provider descriptors, conformance suites, and evidence before support claims.

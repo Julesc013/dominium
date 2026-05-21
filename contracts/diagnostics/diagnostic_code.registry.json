@@ -2800,6 +2800,176 @@
         "python tools/validators/contracts/check_composition_plan.py --repo-root . --fixtures"
       ],
       "notes": "Locks and reports are evidence only."
+    },
+    {
+        "id": "dominium.diagnostic.provider.unknown",
+        "code": "DOM-PROVIDER-UNKNOWN",
+        "owner": "contracts.provider",
+        "severity": "error",
+        "category": "provider",
+        "stability": "provisional",
+        "summary": "A provider reference is unknown.",
+        "cause": "A provider ID was absent from the provider registry.",
+        "recovery": "Use a registered provider ID or add a reviewed provider descriptor.",
+        "evidence_expectation": "Service/provider conformance validator output naming the missing provider.",
+        "related_refusal_codes": [
+            "dominium.refusal.provider.unknown"
+        ],
+        "related_command_ids": [],
+        "related_public_surface_ids": [
+            "dominium.provider.registry.v1",
+            "dominium.conformance.registry.v1"
+        ],
+        "related_artifact_types": [
+            "provider_registry",
+            "conformance_suite",
+            "validation_report"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"
+        ],
+        "notes": "Provider identity is not an implementation path."
+    },
+    {
+        "id": "dominium.diagnostic.service.unknown",
+        "code": "DOM-SERVICE-UNKNOWN",
+        "owner": "contracts.service",
+        "severity": "error",
+        "category": "runtime",
+        "stability": "provisional",
+        "summary": "A service reference is unknown.",
+        "cause": "A service ID was absent from contracts/service/service.registry.json.",
+        "recovery": "Use a registered service ID or add a reviewed service descriptor.",
+        "evidence_expectation": "Service conformance validator output naming the unknown service reference.",
+        "related_refusal_codes": [
+            "dominium.refusal.service.unknown"
+        ],
+        "related_command_ids": [],
+        "related_public_surface_ids": [
+            "dominium.service.registry.v1"
+        ],
+        "related_artifact_types": [
+            "service_descriptor",
+            "validation_report"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"
+        ],
+        "notes": "Service identity is not command ID, provider ID, or implementation path."
+    },
+    {
+        "id": "dominium.diagnostic.service.not_implemented",
+        "code": "DOM-SERVICE-NOT-IMPLEMENTED",
+        "owner": "contracts.service",
+        "severity": "error",
+        "category": "runtime",
+        "stability": "provisional",
+        "summary": "A requested service is not implemented.",
+        "cause": "The service is planned, fixture-only, absent, or lacks passing conformance.",
+        "recovery": "Keep the request planned/fixture-only or provide passing conformance before claiming support.",
+        "evidence_expectation": "Service descriptor and conformance suite status evidence.",
+        "related_refusal_codes": [
+            "dominium.refusal.service.not_implemented"
+        ],
+        "related_command_ids": [],
+        "related_public_surface_ids": [
+            "dominium.service.registry.v1",
+            "dominium.conformance.registry.v1"
+        ],
+        "related_artifact_types": [
+            "service_descriptor",
+            "conformance_suite",
+            "evidence_packet"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"
+        ],
+        "notes": "Planned and fixture-only statuses are not support."
+    },
+    {
+        "id": "dominium.diagnostic.service.conformance_missing",
+        "code": "DOM-SERVICE-CONFORMANCE-MISSING",
+        "owner": "contracts.service",
+        "severity": "error",
+        "category": "validation",
+        "stability": "provisional",
+        "summary": "Service conformance proof is missing.",
+        "cause": "A service or provider claims support without a passing conformance suite.",
+        "recovery": "Add passing conformance evidence or lower the stability/support claim.",
+        "evidence_expectation": "Service conformance validator output with suite refs, statuses, and support_claim.",
+        "related_refusal_codes": [
+            "dominium.refusal.service.conformance_missing",
+            "dominium.refusal.provider.conformance_missing"
+        ],
+        "related_command_ids": [],
+        "related_public_surface_ids": [
+            "dominium.service.registry.v1",
+            "dominium.conformance.registry.v1"
+        ],
+        "related_artifact_types": [
+            "conformance_suite",
+            "evidence_packet"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"
+        ],
+        "notes": "Stable claims require passing conformance."
+    },
+    {
+        "id": "dominium.diagnostic.conformance.fixture_failed",
+        "code": "DOM-CONFORMANCE-FIXTURE-FAILED",
+        "owner": "contracts.conformance",
+        "severity": "error",
+        "category": "validation",
+        "stability": "provisional",
+        "summary": "A service/provider conformance fixture failed.",
+        "cause": "A fixture expectation failed or required fixture was missing.",
+        "recovery": "Repair the fixture or validator expectation.",
+        "evidence_expectation": "Fixture-mode validator output naming the failing fixture.",
+        "related_refusal_codes": [
+            "dominium.refusal.service.conformance_missing"
+        ],
+        "related_command_ids": [],
+        "related_public_surface_ids": [
+            "dominium.conformance.fixture_suite.v1"
+        ],
+        "related_artifact_types": [
+            "test_fixture",
+            "conformance_suite"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --fixtures"
+        ],
+        "notes": "Fixture failure blocks using the fixture as evidence."
+    },
+    {
+        "id": "dominium.diagnostic.service.capability_mismatch",
+        "code": "DOM-SERVICE-CAPABILITY-MISMATCH",
+        "owner": "contracts.service",
+        "severity": "error",
+        "category": "capability",
+        "stability": "provisional",
+        "summary": "A service/provider capability set does not satisfy the request.",
+        "cause": "A required capability is absent from the selected service/provider declaration.",
+        "recovery": "Select a matching service/provider, explicitly degrade with evidence, or refuse.",
+        "evidence_expectation": "Capability selection or service conformance evidence.",
+        "related_refusal_codes": [
+            "dominium.refusal.service.capability_mismatch",
+            "dominium.refusal.provider.capability_missing"
+        ],
+        "related_command_ids": [],
+        "related_public_surface_ids": [
+            "dominium.capability.registry.v1",
+            "dominium.service.registry.v1"
+        ],
+        "related_artifact_types": [
+            "evidence_packet",
+            "validation_report"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"
+        ],
+        "notes": "Capability selection must emit selected/degraded/refused/evidence decisions."
     }
   ]
 }

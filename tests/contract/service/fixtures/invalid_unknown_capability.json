@@ -1,0 +1,43 @@
+{
+  "service_id": "dominium.service.validation",
+  "service_kind": "validation",
+  "owner": "tools.validators",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "public_surface_ref": "dominium.service.registry.v1",
+  "commands_consumed": [],
+  "commands_exposed": [
+    "dominium.validation.run"
+  ],
+  "result_schema_refs": [
+    "contracts/command/validation_run_result.schema.json"
+  ],
+  "refusal_code_refs": [
+    "dominium.refusal.service.unknown"
+  ],
+  "diagnostic_code_refs": [
+    "DOM-SERVICE-UNKNOWN"
+  ],
+  "capability_refs": [
+    "dominium.service.capability.does_not_exist"
+  ],
+  "provider_kinds_allowed": [
+    "command_handler"
+  ],
+  "determinism_class": "deterministic",
+  "authority_class": "tooling_projection",
+  "artifact_inputs": [
+    "service_descriptor"
+  ],
+  "artifact_outputs": [
+    "evidence_packet"
+  ],
+  "replay_impact": "evidence_only",
+  "execution_model": "fixture_only",
+  "conformance_suite_refs": [
+    "dominium.conformance.service.validation.fixture"
+  ],
+  "replacement_policy_ref": "contracts/replacement/conformance_policy.contract.toml",
+  "deprecation_policy_ref": "contracts/versioning/deprecation_policy.contract.toml",
+  "support_claim": false
+}

@@ -10,7 +10,9 @@
       "version": "0.1.0",
       "stability": "provisional",
       "surface_id": null,
-      "capabilities_provided": ["domino.render.null"],
+      "capabilities_provided": [
+        "domino.render.null"
+      ],
       "capabilities_required": [],
       "entry_surface": "contracts/provider/provider_descriptor.schema.json",
       "implementation_path": "runtime/render/null",
@@ -23,8 +25,13 @@
       "threading_model": "host_defined",
       "lifetime_model": "owned_by_runtime_host",
       "configuration_schema": null,
-      "diagnostic_codes": ["DOM-PROVIDER-UNAVAILABLE", "DOM-PROVIDER-SELECTION-DEGRADED"],
-      "refusal_codes": ["dominium.refusal.provider.unavailable"],
+      "diagnostic_codes": [
+        "DOM-PROVIDER-UNAVAILABLE",
+        "DOM-PROVIDER-SELECTION-DEGRADED"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.provider.unavailable"
+      ],
       "conformance_tests": [],
       "replacement_policy": "requires_provider_model_update",
       "trust_level": "repo_canonical",
@@ -38,7 +45,9 @@
       "version": "0.1.0",
       "stability": "provisional",
       "surface_id": null,
-      "capabilities_provided": ["domino.render.software"],
+      "capabilities_provided": [
+        "domino.render.software"
+      ],
       "capabilities_required": [],
       "entry_surface": "contracts/provider/provider_descriptor.schema.json",
       "implementation_path": "runtime/render/software",
@@ -51,8 +60,12 @@
       "threading_model": "host_defined",
       "lifetime_model": "owned_by_runtime_host",
       "configuration_schema": null,
-      "diagnostic_codes": ["DOM-PROVIDER-SELECTION-DEGRADED"],
-      "refusal_codes": ["dominium.refusal.provider.capability_missing"],
+      "diagnostic_codes": [
+        "DOM-PROVIDER-SELECTION-DEGRADED"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.provider.capability_missing"
+      ],
       "conformance_tests": [],
       "replacement_policy": "requires_provider_model_update",
       "trust_level": "repo_canonical",
@@ -66,7 +79,9 @@
       "version": "0.1.0",
       "stability": "provisional",
       "surface_id": null,
-      "capabilities_provided": ["domino.storage.local"],
+      "capabilities_provided": [
+        "domino.storage.local"
+      ],
       "capabilities_required": [],
       "entry_surface": "contracts/provider/provider_descriptor.schema.json",
       "implementation_path": "runtime/storage",
@@ -79,8 +94,12 @@
       "threading_model": "host_defined",
       "lifetime_model": "owned_by_runtime_host",
       "configuration_schema": null,
-      "diagnostic_codes": ["DOM-PROVIDER-CAPABILITY-MISSING"],
-      "refusal_codes": ["dominium.refusal.provider.capability_missing"],
+      "diagnostic_codes": [
+        "DOM-PROVIDER-CAPABILITY-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.provider.capability_missing"
+      ],
       "conformance_tests": [],
       "replacement_policy": "requires_provider_model_update",
       "trust_level": "repo_canonical",
@@ -94,8 +113,12 @@
       "version": "0.1.0",
       "stability": "provisional",
       "surface_id": null,
-      "capabilities_provided": ["domino.package.validate"],
-      "capabilities_required": ["dominium.schema.validate"],
+      "capabilities_provided": [
+        "domino.package.validate"
+      ],
+      "capabilities_required": [
+        "dominium.schema.validate"
+      ],
       "entry_surface": "contracts/provider/provider_descriptor.schema.json",
       "implementation_path": "runtime/package",
       "implementation_path_is_identity": false,
@@ -107,8 +130,12 @@
       "threading_model": "host_defined",
       "lifetime_model": "owned_by_runtime_host",
       "configuration_schema": null,
-      "diagnostic_codes": ["DOM-PROVIDER-CAPABILITY-MISSING"],
-      "refusal_codes": ["dominium.refusal.provider.capability_missing"],
+      "diagnostic_codes": [
+        "DOM-PROVIDER-CAPABILITY-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.provider.capability_missing"
+      ],
       "conformance_tests": [],
       "replacement_policy": "requires_provider_model_update",
       "trust_level": "repo_canonical",
@@ -122,8 +149,12 @@
       "version": "0.1.0",
       "stability": "experimental",
       "surface_id": null,
-      "capabilities_provided": ["dominium.workbench.validation"],
-      "capabilities_required": ["dominium.command.fast_strict"],
+      "capabilities_provided": [
+        "dominium.workbench.validation"
+      ],
+      "capabilities_required": [
+        "dominium.command.fast_strict"
+      ],
       "entry_surface": "contracts/provider/provider_descriptor.schema.json",
       "implementation_path": "apps/workbench",
       "implementation_path_is_identity": false,
@@ -135,14 +166,28 @@
       "threading_model": "host_defined",
       "lifetime_model": "owned_by_workbench_shell",
       "configuration_schema": null,
-      "diagnostic_codes": ["DOM-PROVIDER-CONFORMANCE-MISSING"],
-      "refusal_codes": ["dominium.refusal.provider.conformance_missing"],
+      "diagnostic_codes": [
+        "DOM-PROVIDER-CONFORMANCE-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.provider.conformance_missing"
+      ],
       "conformance_tests": [],
       "replacement_policy": "requires_provider_model_update",
       "trust_level": "repo_canonical",
       "planned": true,
       "proof": [],
-      "notes": "Planned descriptor; Workbench UI implementation is not part of this task."
+      "notes": "Planned descriptor; Workbench UI implementation is not part of this task.",
+      "implemented_service_ids": [
+        "dominium.service.validation"
+      ],
+      "conformance_suite_refs": [
+        "dominium.conformance.provider.workbench_validation.fixture"
+      ],
+      "fallback_behavior": "explicit_degrade_or_refuse",
+      "refusal_behavior": "typed_refusal_required",
+      "evidence_policy": "fixture_only_no_support_claim",
+      "support_claim": false
     }
   ]
 }

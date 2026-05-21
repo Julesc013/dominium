@@ -1,0 +1,31 @@
+{
+  "provider_id": "dominium.provider.workbench.validation",
+  "provider_kind": "workbench_module",
+  "owner": "apps.workbench",
+  "version": "0.1.0",
+  "stability": "experimental",
+  "implemented_service_ids": [
+    "dominium.service.validation"
+  ],
+  "conformance_suite_refs": [
+    "dominium.conformance.provider.workbench_validation.fixture"
+  ],
+  "capabilities_provided": [
+    "dominium.workbench.validation"
+  ],
+  "capabilities_required": [
+    "dominium.command.fast_strict"
+  ],
+  "diagnostic_codes": [
+    "DOM-PROVIDER-CONFORMANCE-MISSING"
+  ],
+  "refusal_codes": [
+    "dominium.refusal.provider.conformance_missing"
+  ],
+  "fallback_behavior": "explicit_degrade_or_refuse",
+  "refusal_behavior": "typed_refusal_required",
+  "evidence_policy": "fixture_only_no_support_claim",
+  "replacement_policy": "requires_provider_model_update",
+  "support_claim": false,
+  "notes": "Provider descriptor may reference a service conformance suite without claiming runtime support."
+}

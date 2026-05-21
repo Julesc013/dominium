@@ -27,7 +27,19 @@
     {"id": "generated_report", "description": "Generated report or proof output artifact.", "expected_owner": "owning generator", "manifest_required_for_stable": false},
     {"id": "archive_record", "description": "Historical, retained, or archived artifact record.", "expected_owner": "archive", "manifest_required_for_stable": false},
     {"id": "composition_lock", "description": "Derived composition lockfile for app, pack, module, provider, capability, compatibility, or trust resolution evidence.", "expected_owner": "contracts.composition or contracts.lock", "manifest_required_for_stable": true},
-    {"id": "composition_report", "description": "Derived composition capability, refusal, compatibility, trust, conflict, or evidence report.", "expected_owner": "contracts.composition or tools.validation", "manifest_required_for_stable": true}
+    {"id": "composition_report", "description": "Derived composition capability, refusal, compatibility, trust, conflict, or evidence report.", "expected_owner": "contracts.composition or tools.validation", "manifest_required_for_stable": true},
+    {
+        "id": "service_descriptor",
+        "description": "Service descriptor, service registry, or service contract artifact.",
+        "expected_owner": "contracts.service",
+        "manifest_required_for_stable": true
+    },
+    {
+        "id": "conformance_suite",
+        "description": "Service or provider conformance suite, fixture declaration, or conformance registry artifact.",
+        "expected_owner": "contracts.conformance",
+        "manifest_required_for_stable": true
+    }
   ],
   "trust_levels": [
     "local_untrusted",

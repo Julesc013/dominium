@@ -1,0 +1,33 @@
+{
+  "schema_version": "dominium.service.kind_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.service",
+  "kinds": [
+    {"id": "command", "status": "planned", "description": "Service kind for command invocation mediation."},
+    {"id": "validation", "status": "fixture_only", "description": "Service kind for validation command/evidence behavior."},
+    {"id": "diagnostics", "status": "planned", "description": "Service kind for diagnostic collection, formatting, and evidence references."},
+    {"id": "evidence", "status": "planned", "description": "Service kind for evidence packet production and lookup."},
+    {"id": "package", "status": "planned", "description": "Service kind for package, pack, or content declaration workflows."},
+    {"id": "profile", "status": "planned", "description": "Service kind for profile declaration and selection workflows."},
+    {"id": "composition", "status": "planned", "description": "Service kind for app, module, pack, provider, and capability composition."},
+    {"id": "document", "status": "planned", "description": "Service kind for governed document identity and document inspection."},
+    {"id": "patch", "status": "planned", "description": "Service kind for governed patch envelope validation."},
+    {"id": "project_graph", "status": "planned", "description": "Service kind for project graph queries and projections."},
+    {"id": "render", "status": "planned", "description": "Service kind for render-facing capability selection; no renderer backend is claimed."},
+    {"id": "platform", "status": "planned", "description": "Service kind for platform-facing capability selection; no platform backend is claimed."},
+    {"id": "storage", "status": "planned", "description": "Service kind for storage-facing capability selection; no storage backend is claimed."},
+    {"id": "network", "status": "planned", "description": "Service kind for network-facing capability selection; no network backend is claimed."},
+    {"id": "audio", "status": "planned", "description": "Service kind for audio-facing capability selection; no audio backend is claimed."},
+    {"id": "input", "status": "planned", "description": "Service kind for input-facing capability selection; no input backend is claimed."},
+    {"id": "module", "status": "planned", "description": "Service kind for module descriptor and module command/view relationships."},
+    {"id": "workbench", "status": "planned", "description": "Service kind for Workbench-presented service-backed command surfaces."},
+    {"id": "replay", "status": "planned", "description": "Service kind for replay-facing evidence or compatibility behavior."}
+  ],
+  "stability_values": ["planned", "fixture", "provisional", "experimental", "stable", "deprecated", "retired"],
+  "determinism_classes": ["deterministic", "host_deterministic", "nondeterministic_refused", "presentation_only", "not_applicable"],
+  "authority_classes": ["contract_authority", "process_only", "presentation_consumer", "tooling_projection", "external_adapter"],
+  "execution_models": ["sync", "async", "queued", "host_defined", "fixture_only", "not_implemented"],
+  "replay_impact_values": ["none", "evidence_only", "replay_observed", "replay_authoritative", "replay_refused"],
+  "decision_values": ["selected", "degraded", "refused", "evidence"],
+  "notes": "Service kinds are vocabulary only. They are not implementation claims, runtime loaders, provider bindings, or product support."
+}

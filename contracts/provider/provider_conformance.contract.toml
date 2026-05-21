@@ -12,6 +12,10 @@ deterministic_providers_require_replay_or_fixture_proof = true
 degradation_refusal_behavior_requires_fixtures = true
 diagnostic_evidence_required = true
 fake_runtime_conformance_allowed = false
+implemented_service_requires_conformance_suite = true
+planned_conformance_is_support = false
+fixture_only_conformance_is_support = false
+provider_service_support_requires_passing_suite = true
 
 [required_proof]
 public_surface = "registered or explicitly internal"
@@ -21,6 +25,12 @@ diagnostics = "provider diagnostics or refusal evidence"
 abi = "C-compatible ABI canon when native/public"
 dependency_direction = "no forbidden root dependency"
 compatibility = "compatibility corpus relationship before stable promotion"
+implemented_service_ids = "declared service IDs from contracts/service/service.registry.json when a provider claims service implementation"
+conformance_suite_refs = "declared conformance suite IDs from contracts/conformance/conformance.registry.json when service implementation is claimed"
+fallback_behavior = "explicit fallback/degradation behavior before selection can use the provider"
+refusal_behavior = "typed refusal behavior for unsupported service/capability/provider requests"
+evidence_policy = "evidence expectations for provider selection, degradation, refusal, and conformance"
+replacement_policy = "replacement compatibility obligations for provider substitution"
 
 [future_work]
 runtime_conformance_runner = "provider conformance implementation is later work"

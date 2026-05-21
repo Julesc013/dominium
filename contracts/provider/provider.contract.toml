@@ -36,10 +36,18 @@ diagnostic_registry = "contracts/diagnostics/diagnostic_code.registry.json"
 artifact_identity = "contracts/artifact/artifact_identity.contract.toml"
 schema_evolution = "contracts/schema/schema_evolution.contract.toml"
 replacement_protocol = "REPLACEMENT-PROTOCOL-01"
+service_contract = "contracts/service/service.contract.toml"
+service_registry = "contracts/service/service.registry.json"
+conformance_contract = "contracts/conformance/conformance.contract.toml"
+conformance_registry = "contracts/conformance/conformance.registry.json"
 
 [descriptor]
 required_fields = ["provider_id", "provider_kind", "owner", "version", "stability", "capabilities_provided", "entry_surface", "language", "abi", "determinism_impact", "security_impact", "threading_model", "lifetime_model", "trust_level"]
 implementation_path_non_authoritative = true
+implemented_service_ids_allowed = true
+conformance_suite_refs_allowed = true
+implemented_service_requires_conformance_ref = true
+planned_or_fixture_only_conformance_is_support = false
 
 [selection]
 decisions = ["selected", "degraded", "refused", "unavailable"]

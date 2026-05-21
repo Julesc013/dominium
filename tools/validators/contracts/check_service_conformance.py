@@ -1,687 +1,227 @@
 #!/usr/bin/env python3
-"""Validate Dominium service conformance law contracts and fixtures."""
-
+"""Validate Dominium service/provider conformance contracts, registries, and fixtures."""
 from __future__ import annotations
-
-import argparse
-import json
-import re
-import sys
+import argparse,json,re,subprocess,sys
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Set, Tuple
-
-try:  # Python 3.11+
-    import tomllib  # type: ignore
-except ImportError:  # pragma: no cover - exercised on older Python
-    tomllib = None
-
-
-SERVICE_CONTRACT_REL = Path("contracts/service/service_conformance.contract.toml")
-SERVICE_SCHEMA_REL = Path("contracts/service/service_conformance.schema.json")
-SERVICE_CLASS_REGISTRY_REL = Path("contracts/service/service_class.registry.json")
-FIXTURE_DIR_REL = Path("tests/contract/service_conformance/fixtures")
-REFUSAL_REGISTRY_REL = Path("contracts/refusal/refusal_code.registry.json")
-DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostics/diagnostic_code.registry.json")
-CAPABILITY_REGISTRY_REL = Path("contracts/capability/capability.registry.json")
-COMMAND_CONTRACT_REL = Path("contracts/command/command_surface.contract.toml")
-MODULE_CONTRACT_REL = Path("contracts/module/module_surface.contract.toml")
-
-EXPECTED_CONTRACT_ID = "dominium.service.conformance.v1"
-EXPECTED_SCHEMA_ID = "dominium.service.conformance.v1"
-EXPECTED_SCHEMA_VERSION = "1.0.0"
-EXPECTED_SERVICE_CLASSES = {
-    "execution_coordination",
-    "observation_inspection",
-    "presentation_support",
-    "control_integration",
-    "persistence_replay_support",
-    "compatibility_policy_support",
-    "domain_support",
-    "product_support",
-}
-
-SERVICE_ID_RE = re.compile(r"^service\.[a-z0-9][a-z0-9_.-]*$")
-PATHLIKE_RE = re.compile(r"[/\\]|^[A-Za-z]:|\.{2}|\.json$|\.toml$|\.py$|\.exe$", re.IGNORECASE)
-DOM_REFUSAL_RE = re.compile(r"^dominium\.refusal\.[a-z0-9][a-z0-9_.-]+$")
-DOM_DIAGNOSTIC_RE = re.compile(r"^DOM-[A-Z0-9]+(?:-[A-Z0-9]+)*$")
-
-
-def _strip_comment(line: str) -> str:
-    in_quote = False
-    escaped = False
-    out: List[str] = []
-    for ch in line:
-        if escaped:
-            out.append(ch)
-            escaped = False
+try:
+    import tomllib
+except ImportError:
+    tomllib=None
+SVC=Path('contracts/service/service.registry.json'); SK=Path('contracts/service/service_kind.registry.json')
+SCON=Path('contracts/service/service.contract.toml'); SSCH=Path('contracts/service/service_descriptor.schema.json')
+CREG=Path('contracts/conformance/conformance.registry.json'); CSTAT=Path('contracts/conformance/conformance_status.registry.json')
+CCON=Path('contracts/conformance/conformance.contract.toml'); CSCH=Path('contracts/conformance/conformance_suite.schema.json')
+PREG=Path('contracts/provider/provider.registry.json'); PK=Path('contracts/provider/provider_kind.registry.json')
+CAP=Path('contracts/capability/capability.registry.json'); REF=Path('contracts/refusal/refusal_code.registry.json')
+DIA=Path('contracts/diagnostics/diagnostic_code.registry.json'); CMD=Path('contracts/command/command_surface.contract.toml')
+PUB=Path('contracts/public_surface/public_surface.contract.toml'); ART=Path('contracts/artifact/artifact_kind.registry.json')
+SFIX=Path('tests/contract/service/fixtures'); CFIX=Path('tests/contract/conformance/fixtures')
+J=[SSCH,SK,SVC,CSCH,CSTAT,CREG]; T={SCON:'dominium.service.contract.v1',CCON:'dominium.conformance.contract.v1'}
+SRE=re.compile(r'^(domino|dominium)\.service(\.[a-z0-9][a-z0-9_.-]*)+$'); PRE=re.compile(r'^(domino|dominium)\.provider(\.[a-z0-9][a-z0-9_.-]*)+$'); CRE=re.compile(r'^dominium\.conformance\.(service|provider)(\.[a-z0-9][a-z0-9_.-]*)+$')
+def j(p): return json.loads(p.read_text(encoding='utf-8-sig'))
+def _tv(v):
+    v=v.strip()
+    if v.startswith('\"') and v.endswith('\"'): return v[1:-1]
+    if v in {'true','false'}: return v=='true'
+    if v.startswith('[') and v.endswith(']'):
+        inner=v[1:-1].strip()
+        return [] if not inner else [_tv(x.strip()) for x in inner.split(',')]
+    return v
+def tl(p):
+    text=p.read_text(encoding='utf-8-sig')
+    if tomllib: return tomllib.loads(text)
+    root={}; cur=root
+    for raw in text.splitlines():
+        line=raw.split('#',1)[0].strip()
+        if not line: continue
+        if line.startswith('[[') and line.endswith(']]'):
+            key=line[2:-2].strip(); cur={}; root.setdefault(key,[]).append(cur); continue
+        if line.startswith('[') and line.endswith(']'):
+            cur=root
+            for part in line[1:-1].split('.'):
+                cur=cur.setdefault(part.strip(),{})
             continue
-        if ch == "\\" and in_quote:
-            out.append(ch)
-            escaped = True
-            continue
-        if ch == '"':
-            in_quote = not in_quote
-            out.append(ch)
-            continue
-        if ch == "#" and not in_quote:
-            break
-        out.append(ch)
-    return "".join(out).strip()
-
-
-def _split_array_items(raw: str) -> List[str]:
-    items: List[str] = []
-    current: List[str] = []
-    in_quote = False
-    escaped = False
-    for ch in raw:
-        if escaped:
-            current.append(ch)
-            escaped = False
-            continue
-        if ch == "\\" and in_quote:
-            current.append(ch)
-            escaped = True
-            continue
-        if ch == '"':
-            in_quote = not in_quote
-            current.append(ch)
-            continue
-        if ch == "," and not in_quote:
-            item = "".join(current).strip()
-            if item:
-                items.append(item)
-            current = []
-            continue
-        current.append(ch)
-    item = "".join(current).strip()
-    if item:
-        items.append(item)
-    return items
-
-
-def _parse_value(raw: str) -> Any:
-    raw = raw.strip()
-    if raw.startswith('"') and raw.endswith('"'):
-        return raw[1:-1].replace('\\"', '"')
-    if raw == "true":
-        return True
-    if raw == "false":
-        return False
-    if raw.startswith("[") and raw.endswith("]"):
-        inner = raw[1:-1].strip()
-        if not inner:
-            return []
-        return [_parse_value(item) for item in _split_array_items(inner)]
-    try:
-        return int(raw)
-    except ValueError:
-        return raw
-
-
-def _logical_toml_lines(text: str) -> List[Tuple[int, str]]:
-    logical: List[Tuple[int, str]] = []
-    pending: List[str] = []
-    start_lineno = 0
-    depth = 0
-    in_quote = False
-    escaped = False
-    for lineno, original in enumerate(text.splitlines(), 1):
-        line = _strip_comment(original)
-        if not line and not pending:
-            continue
-        if pending:
-            pending.append(line)
-        else:
-            pending = [line]
-            start_lineno = lineno
-        for ch in line:
-            if escaped:
-                escaped = False
-                continue
-            if ch == "\\" and in_quote:
-                escaped = True
-                continue
-            if ch == '"':
-                in_quote = not in_quote
-                continue
-            if not in_quote:
-                if ch == "[":
-                    depth += 1
-                elif ch == "]" and depth:
-                    depth -= 1
-        if depth == 0 and not in_quote:
-            merged = " ".join(part for part in pending if part).strip()
-            if merged:
-                logical.append((start_lineno, merged))
-            pending = []
-    if pending:
-        logical.append((start_lineno, " ".join(pending).strip()))
-    return logical
-
-
-def _minimal_toml_load(text: str) -> Dict[str, Any]:
-    root: Dict[str, Any] = {}
-    current: Dict[str, Any] = root
-    for lineno, line in _logical_toml_lines(text):
-        if not line:
-            continue
-        if line.startswith("[[") and line.endswith("]]"):
-            section = line[2:-2].strip()
-            current = {}
-            root.setdefault(section, []).append(current)
-            continue
-        if line.startswith("[") and line.endswith("]"):
-            current = root
-            for part in line[1:-1].strip().split("."):
-                current = current.setdefault(part, {})
-            continue
-        if "=" not in line:
-            raise ValueError(f"invalid TOML line {lineno}: {line}")
-        key, raw_value = line.split("=", 1)
-        current[key.strip()] = _parse_value(raw_value)
+        if '=' in line:
+            k,v=line.split('=',1); cur[k.strip()]=_tv(v)
     return root
-
-
-def load_toml(path: Path) -> Dict[str, Any]:
-    text = path.read_text(encoding="utf-8-sig")
-    if tomllib is not None:
-        return tomllib.loads(text)
-    return _minimal_toml_load(text)
-
-
-def load_json(path: Path) -> Dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8-sig"))
-
-
-def as_list(value: Any) -> List[Any]:
-    if isinstance(value, list):
-        return value
-    if value is None:
-        return []
-    return [value]
-
-
-def string_set(values: Iterable[Any]) -> Set[str]:
-    return {str(value) for value in values if isinstance(value, str) and value}
-
-
-def finding(level: str, code: str, message: str, path: Optional[str] = None, service_id: Optional[str] = None) -> Dict[str, Any]:
-    item: Dict[str, Any] = {"level": level, "code": code, "message": message}
-    if path:
-        item["path"] = path
-    if service_id:
-        item["service_id"] = service_id
-    return item
-
-
-def path_exists(repo_root: Path, raw_path: str) -> bool:
-    path = Path(raw_path)
-    if path.is_absolute():
-        return path.exists()
-    return (repo_root / path).exists()
-
-
-def registry_service_classes(registry: Dict[str, Any]) -> Set[str]:
-    return {
-        str(item.get("id"))
-        for item in as_list(registry.get("classes"))
-        if isinstance(item, dict) and item.get("id")
-    }
-
-
-def registry_refusals(registry: Dict[str, Any]) -> Set[str]:
-    return {
-        str(item.get("code") or item.get("refusal_id"))
-        for item in as_list(registry.get("codes"))
-        if isinstance(item, dict) and (item.get("code") or item.get("refusal_id"))
-    }
-
-
-def registry_diagnostic_codes(registry: Dict[str, Any]) -> Set[str]:
-    return {
-        str(item.get("code"))
-        for item in as_list(registry.get("codes"))
-        if isinstance(item, dict) and item.get("code")
-    }
-
-
-def registry_capabilities(registry: Dict[str, Any]) -> Set[str]:
-    return {
-        str(item.get("capability_id"))
-        for item in as_list(registry.get("capabilities"))
-        if isinstance(item, dict) and item.get("capability_id")
-    }
-
-
-def contract_commands(contract: Dict[str, Any]) -> Set[str]:
-    return {
-        str(item.get("id"))
-        for item in as_list(contract.get("command"))
-        if isinstance(item, dict) and item.get("id")
-    }
-
-
-def contract_modules(contract: Dict[str, Any]) -> Set[str]:
-    return {
-        str(item.get("module_id"))
-        for item in as_list(contract.get("module"))
-        if isinstance(item, dict) and item.get("module_id")
-    }
-
-
-def validate_contract_surfaces(repo_root: Path) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    findings: List[Dict[str, Any]] = []
-    loaded: Dict[str, Any] = {}
-
-    for rel in [SERVICE_CONTRACT_REL, SERVICE_SCHEMA_REL, SERVICE_CLASS_REGISTRY_REL]:
-        if not (repo_root / rel).exists():
-            findings.append(finding("error", "service_surface_missing", f"required service conformance surface is missing: {rel.as_posix()}", rel.as_posix()))
-
-    try:
-        contract = load_toml(repo_root / SERVICE_CONTRACT_REL)
-        loaded["contract"] = contract
-    except Exception as exc:
-        findings.append(finding("error", "service_contract_invalid_toml", f"{SERVICE_CONTRACT_REL.as_posix()} does not parse as TOML: {exc}", SERVICE_CONTRACT_REL.as_posix()))
-        contract = {}
-
-    try:
-        schema = load_json(repo_root / SERVICE_SCHEMA_REL)
-        loaded["schema"] = schema
-    except Exception as exc:
-        findings.append(finding("error", "service_schema_invalid_json", f"{SERVICE_SCHEMA_REL.as_posix()} does not parse as JSON: {exc}", SERVICE_SCHEMA_REL.as_posix()))
-        schema = {}
-
-    try:
-        class_registry = load_json(repo_root / SERVICE_CLASS_REGISTRY_REL)
-        loaded["class_registry"] = class_registry
-    except Exception as exc:
-        findings.append(finding("error", "service_class_registry_invalid_json", f"{SERVICE_CLASS_REGISTRY_REL.as_posix()} does not parse as JSON: {exc}", SERVICE_CLASS_REGISTRY_REL.as_posix()))
-        class_registry = {}
-
-    if contract:
-        if contract.get("contract", {}).get("id") != EXPECTED_CONTRACT_ID:
-            findings.append(finding("error", "service_contract_bad_id", "service conformance contract id is unexpected", SERVICE_CONTRACT_REL.as_posix()))
-        policy = contract.get("policy", {})
-        expected_false = [
-            "runtime_implementation_authorized",
-            "provider_calls_authorized",
-            "product_feature_authorized",
-            "services_are_semantic_owners",
-            "services_are_product_owners",
-            "services_may_mutate_truth_directly",
-            "silent_migration_allowed",
-            "projection_may_redefine_schema_law",
-        ]
-        for key in expected_false:
-            if policy.get(key) is not False:
-                findings.append(finding("error", "service_contract_policy_drift", f"policy.{key} must be false", SERVICE_CONTRACT_REL.as_posix()))
-        expected_true = [
-            "truth_mutation_requires_process",
-            "truth_perceived_render_separation_required",
-            "capability_gating_required",
-            "deterministic_refusal_or_degradation_required",
-        ]
-        for key in expected_true:
-            if policy.get(key) is not True:
-                findings.append(finding("error", "service_contract_policy_drift", f"policy.{key} must be true", SERVICE_CONTRACT_REL.as_posix()))
-        for key in ["schema", "service_class_registry"]:
-            raw_path = str(contract.get("contract", {}).get(key, ""))
-            if raw_path and not path_exists(repo_root, raw_path):
-                findings.append(finding("error", "service_contract_missing_reference", f"contract reference does not exist: {raw_path}", SERVICE_CONTRACT_REL.as_posix()))
-        for raw_path in string_set(contract.get("required", {}).get("doctrine", [])):
-            if not path_exists(repo_root, raw_path):
-                findings.append(finding("error", "service_required_doctrine_missing", f"required doctrine path does not exist: {raw_path}", SERVICE_CONTRACT_REL.as_posix()))
-
-    if schema:
-        if schema.get("$id") != EXPECTED_SCHEMA_ID:
-            findings.append(finding("error", "service_schema_bad_id", "service conformance schema $id is unexpected", SERVICE_SCHEMA_REL.as_posix()))
-        required = string_set(schema.get("required", []))
-        for key in ["schema_id", "schema_version", "service_id", "service_law", "required_constraints", "upstream_doctrine", "interfaces", "diagnostics", "proof"]:
-            if key not in required:
-                findings.append(finding("error", "service_schema_missing_required_key", f"schema required list must include {key}", SERVICE_SCHEMA_REL.as_posix()))
-
-    if class_registry:
-        if class_registry.get("schema_id") != "dominium.service.class.registry.v1":
-            findings.append(finding("error", "service_class_registry_bad_id", "service class registry schema_id is unexpected", SERVICE_CLASS_REGISTRY_REL.as_posix()))
-        actual_classes = registry_service_classes(class_registry)
-        missing_classes = sorted(EXPECTED_SERVICE_CLASSES - actual_classes)
-        extra_classes = sorted(actual_classes - EXPECTED_SERVICE_CLASSES)
-        if missing_classes:
-            findings.append(finding("error", "service_class_registry_missing_class", f"missing service classes: {', '.join(missing_classes)}", SERVICE_CLASS_REGISTRY_REL.as_posix()))
-        if extra_classes:
-            findings.append(finding("warning", "service_class_registry_extra_class", f"extra service classes require doctrine review: {', '.join(extra_classes)}", SERVICE_CLASS_REGISTRY_REL.as_posix()))
-
-    return findings, loaded
-
-
-def load_optional_surfaces(repo_root: Path) -> Dict[str, Set[str]]:
-    surfaces: Dict[str, Set[str]] = {
-        "refusals": set(),
-        "diagnostics": set(),
-        "capabilities": set(),
-        "commands": set(),
-        "modules": set(),
-    }
-    try:
-        surfaces["refusals"] = registry_refusals(load_json(repo_root / REFUSAL_REGISTRY_REL))
-    except Exception:
-        pass
-    try:
-        surfaces["diagnostics"] = registry_diagnostic_codes(load_json(repo_root / DIAGNOSTIC_REGISTRY_REL))
-    except Exception:
-        pass
-    try:
-        surfaces["capabilities"] = registry_capabilities(load_json(repo_root / CAPABILITY_REGISTRY_REL))
-    except Exception:
-        pass
-    try:
-        surfaces["commands"] = contract_commands(load_toml(repo_root / COMMAND_CONTRACT_REL))
-    except Exception:
-        pass
-    try:
-        surfaces["modules"] = contract_modules(load_toml(repo_root / MODULE_CONTRACT_REL))
-    except Exception:
-        pass
-    return surfaces
-
-
-def validate_service_descriptor(
-    data: Dict[str, Any],
-    *,
-    path: str,
-    contract: Dict[str, Any],
-    service_classes: Set[str],
-    known_surfaces: Dict[str, Set[str]],
-) -> List[Dict[str, Any]]:
-    findings: List[Dict[str, Any]] = []
-    service_id = str(data.get("service_id") or "")
-
-    required_top = [
-        "schema_id",
-        "schema_version",
-        "service_id",
-        "owner",
-        "version",
-        "stability",
-        "service_class",
-        "required_constraints",
-        "upstream_doctrine",
-        "service_law",
-        "determinism",
-        "compatibility",
-        "interfaces",
-        "diagnostics",
-        "proof",
-    ]
-    for key in required_top:
-        if key not in data:
-            findings.append(finding("error", "service_missing_field", f"service declaration is missing required field {key}", path, service_id))
-
-    if data.get("schema_id") != EXPECTED_SCHEMA_ID:
-        findings.append(finding("error", "service_bad_schema_id", "schema_id must be dominium.service.conformance.v1", path, service_id))
-    if data.get("schema_version") != EXPECTED_SCHEMA_VERSION:
-        findings.append(finding("error", "service_bad_schema_version", "schema_version must be 1.0.0", path, service_id))
-
-    if not service_id or not SERVICE_ID_RE.match(service_id) or PATHLIKE_RE.search(service_id):
-        findings.append(finding("error", "service_bad_id", f"service_id is not governed service.* identity: {service_id}", path, service_id))
-
-    for key in ["owner", "version", "stability", "service_class"]:
-        if not isinstance(data.get(key), str) or not data.get(key):
-            findings.append(finding("error", "service_bad_field", f"{key} must be a non-empty string", path, service_id))
-
-    allowed = contract.get("allowed", {})
-    stability = str(data.get("stability") or "")
-    if stability and stability not in string_set(allowed.get("stability", [])):
-        findings.append(finding("error", "service_bad_stability", f"unsupported service stability: {stability}", path, service_id))
-
-    service_class = str(data.get("service_class") or "")
-    if service_class and service_class not in service_classes:
-        findings.append(finding("error", "service_bad_class", f"unknown service_class: {service_class}", path, service_id))
-
-    declared_constraints = string_set(data.get("required_constraints", []))
-    required_constraints = string_set(contract.get("required", {}).get("constraints", []))
-    missing_constraints = sorted(required_constraints - declared_constraints)
-    unknown_constraints = sorted(declared_constraints - required_constraints)
-    if missing_constraints:
-        findings.append(finding("error", "service_missing_required_constraint", f"missing required constraints: {', '.join(missing_constraints)}", path, service_id))
-    if unknown_constraints:
-        findings.append(finding("error", "service_unknown_constraint", f"unknown service constraints: {', '.join(unknown_constraints)}", path, service_id))
-
-    declared_doctrine = string_set(data.get("upstream_doctrine", []))
-    required_doctrine = string_set(contract.get("required", {}).get("doctrine", []))
-    missing_doctrine = sorted(required_doctrine - declared_doctrine)
-    if missing_doctrine:
-        findings.append(finding("error", "service_missing_required_doctrine", f"missing required doctrine refs: {', '.join(missing_doctrine)}", path, service_id))
-
-    service_law = data.get("service_law")
-    if not isinstance(service_law, dict):
-        findings.append(finding("error", "service_law_shape", "service_law must be an object", path, service_id))
-        service_law = {}
-
-    false_law = [
-        "runtime_implementation_authorized",
-        "provider_calls_authorized",
-        "product_feature_authorized",
-        "owns_truth",
-        "owns_semantic_doctrine",
-        "owns_product_shell",
-        "silent_migration_allowed",
-        "projection_redefines_schema_law",
-    ]
-    for key in false_law:
-        if service_law.get(key) is not False:
-            findings.append(finding("error", "service_law_forbidden_true", f"service_law.{key} must be false", path, service_id))
-
-    true_law = [
-        "truth_perceived_render_separation",
-        "capability_gated",
-        "deterministic_refusal_or_degradation",
-    ]
-    for key in true_law:
-        if service_law.get(key) is not True:
-            findings.append(finding("error", "service_law_required_true", f"service_law.{key} must be true", path, service_id))
-
-    truth_mutation = str(service_law.get("truth_mutation") or "")
-    if truth_mutation not in string_set(allowed.get("truth_mutation", [])):
-        findings.append(finding("error", "service_bad_truth_mutation", f"unsupported truth_mutation: {truth_mutation}", path, service_id))
-    missing_capability_behavior = str(service_law.get("missing_capability_behavior") or "")
-    if missing_capability_behavior not in string_set(allowed.get("missing_capability_behavior", [])):
-        findings.append(finding("error", "service_bad_missing_capability_behavior", f"unsupported missing_capability_behavior: {missing_capability_behavior}", path, service_id))
-
-    determinism = data.get("determinism")
-    if not isinstance(determinism, dict):
-        findings.append(finding("error", "service_determinism_shape", "determinism must be an object", path, service_id))
-        determinism = {}
-    if determinism.get("ordering") not in string_set(allowed.get("ordering", [])):
-        findings.append(finding("error", "service_bad_ordering", "determinism.ordering must be deterministic_declared", path, service_id))
-    if determinism.get("thread_count_invariant") is not True:
-        findings.append(finding("error", "service_thread_count_not_invariant", "determinism.thread_count_invariant must be true", path, service_id))
-    if determinism.get("named_rng_streams") not in string_set(allowed.get("named_rng_streams", [])):
-        findings.append(finding("error", "service_bad_rng_policy", "determinism.named_rng_streams must be none or declared", path, service_id))
-
-    compatibility = data.get("compatibility")
-    if not isinstance(compatibility, dict):
-        findings.append(finding("error", "service_compatibility_shape", "compatibility must be an object", path, service_id))
-        compatibility = {}
-    if compatibility.get("schema_impact") not in string_set(allowed.get("schema_impact", [])):
-        findings.append(finding("error", "service_bad_schema_impact", "compatibility.schema_impact must be declared", path, service_id))
-    if not compatibility.get("migration_policy"):
-        findings.append(finding("error", "service_missing_migration_policy", "compatibility.migration_policy is required", path, service_id))
-    if not compatibility.get("replacement_policy"):
-        findings.append(finding("error", "service_missing_replacement_policy", "compatibility.replacement_policy is required", path, service_id))
-
-    interfaces = data.get("interfaces")
-    if not isinstance(interfaces, dict):
-        findings.append(finding("error", "service_interfaces_shape", "interfaces must be an object", path, service_id))
-        interfaces = {}
-    capabilities = string_set(interfaces.get("capabilities", []))
-    refusals = string_set(interfaces.get("refusals", []))
-    commands = string_set(interfaces.get("commands", []))
-    modules = string_set(interfaces.get("modules", []))
-
-    if capabilities and not refusals:
-        findings.append(finding("error", "service_capability_without_refusal", "services with capabilities must declare refusal codes", path, service_id))
-    if missing_capability_behavior == "typed_refusal" and not refusals:
-        findings.append(finding("error", "service_typed_refusal_missing_codes", "typed_refusal behavior requires refusal codes", path, service_id))
-
-    for refusal in sorted(refusals):
-        if not DOM_REFUSAL_RE.match(refusal):
-            findings.append(finding("error", "service_bad_refusal_id", f"refusal id must be dominium.refusal.*: {refusal}", path, service_id))
-    unknown_refusals = sorted(refusals - known_surfaces["refusals"])
-    if known_surfaces["refusals"] and unknown_refusals:
-        findings.append(finding("error", "service_unknown_refusal", f"unknown refusal codes: {', '.join(unknown_refusals)}", path, service_id))
-
-    unknown_capabilities = sorted(capabilities - known_surfaces["capabilities"])
-    if known_surfaces["capabilities"] and unknown_capabilities:
-        findings.append(finding("error", "service_unknown_capability", f"unknown capabilities: {', '.join(unknown_capabilities)}", path, service_id))
-
-    unknown_commands = sorted(commands - known_surfaces["commands"])
-    if known_surfaces["commands"] and unknown_commands:
-        findings.append(finding("error", "service_unknown_command", f"unknown commands: {', '.join(unknown_commands)}", path, service_id))
-
-    unknown_modules = sorted(modules - known_surfaces["modules"])
-    if known_surfaces["modules"] and unknown_modules:
-        findings.append(finding("error", "service_unknown_module", f"unknown modules: {', '.join(unknown_modules)}", path, service_id))
-
-    diagnostics = string_set(data.get("diagnostics", []))
-    if not diagnostics:
-        findings.append(finding("error", "service_missing_diagnostics", "diagnostics must declare at least one DOM-* code", path, service_id))
-    for diagnostic in sorted(diagnostics):
-        if not DOM_DIAGNOSTIC_RE.match(diagnostic):
-            findings.append(finding("error", "service_bad_diagnostic_code", f"diagnostic must be DOM-* uppercase code: {diagnostic}", path, service_id))
-    unknown_diagnostics = sorted(diagnostics - known_surfaces["diagnostics"])
-    if known_surfaces["diagnostics"] and unknown_diagnostics:
-        findings.append(finding("error", "service_unknown_diagnostic", f"unknown diagnostics: {', '.join(unknown_diagnostics)}", path, service_id))
-
-    if not string_set(data.get("proof", [])):
-        findings.append(finding("error", "service_missing_proof", "service conformance declarations must carry proof commands or evidence refs", path, service_id))
-
-    return findings
-
-
-def fixture_paths(repo_root: Path) -> List[Path]:
-    return sorted((repo_root / FIXTURE_DIR_REL).glob("*.json"))
-
-
-def validate_fixture_files(repo_root: Path, contract: Dict[str, Any], service_classes: Set[str], known_surfaces: Dict[str, Set[str]]) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    findings: List[Dict[str, Any]] = []
-    results: List[Dict[str, Any]] = []
-    paths = fixture_paths(repo_root)
-    if not paths:
-        return [finding("error", "service_fixture_dir_empty", f"no service conformance fixtures found under {FIXTURE_DIR_REL.as_posix()}")], {"status": "fail", "fixture_count": 0, "valid": 0, "invalid": 0, "fixtures": []}
-
-    valid_count = 0
-    invalid_count = 0
-    for path in paths:
-        rel = path.relative_to(repo_root).as_posix()
-        expect_invalid = path.name.startswith("invalid_")
-        if expect_invalid:
-            invalid_count += 1
-        else:
-            valid_count += 1
+def al(v): return v if isinstance(v,list) else ([] if v is None else [v])
+def ss(v): return {x for x in al(v) if isinstance(x,str) and x}
+def f(l,c,m,p=None):
+    d={'level':l,'code':c,'message':m}
+    if p: d['path']=p
+    return d
+def ids(data,key,idk='id'):
+    return {str(x.get(idk)) for x in al(data.get(key)) if isinstance(x,dict) and x.get(idk)}
+def vocab(root):
+    d=j(root/SK); return {'k':ids(d,'kinds'),'st':ss(d.get('stability_values')),'det':ss(d.get('determinism_classes')),'auth':ss(d.get('authority_classes')),'exe':ss(d.get('execution_models')),'rep':ss(d.get('replay_impact_values'))}
+def allids(root):
+    return {'svc':ids(j(root/SVC),'services','service_id'),'conf':ids(j(root/CREG),'suites','conformance_id'),'prov':ids(j(root/PREG),'providers','provider_id'),'pk':ids(j(root/PK),'kinds'),'cap':ids(j(root/CAP),'capabilities','capability_id'),'ref':ids(j(root/REF),'codes','code'),'dia':ids(j(root/DIA),'codes','code'),'art':ids(j(root/ART),'kinds'),'cmd':ids(tl(root/CMD),'command'),'pub':ids(tl(root/PUB),'surface')}
+def suites(root): return {str(x.get('conformance_id')):x for x in al(j(root/CREG).get('suites')) if isinstance(x,dict) and x.get('conformance_id')}
+def stats(root): return {str(x.get('id')):bool(x.get('support_claim_allowed')) for x in al(j(root/CSTAT).get('statuses')) if isinstance(x,dict) and x.get('id')}
+def exists(root,s):
+    p=Path(s); return p.exists() if p.is_absolute() else (root/p).exists()
+def pathy(s): return '/' in s or '\\' in s or ':' in s or s.lower().endswith(('.json','.toml','.py','.c','.cpp','.h','.hpp'))
+def lookp(s): return '/' in s or '\\' in s or s.startswith(('contracts/','tests/'))
+def contracts(root):
+    out=[]
+    for r in J:
+        p=root/r
+        if not p.exists(): out.append(f('error','missing_json_contract',f'missing JSON contract: {r}',str(r))); continue
         try:
-            data = load_json(path)
-            if not isinstance(data, dict):
-                item_findings = [finding("error", "service_fixture_root", "fixture root must be a JSON object", rel)]
-            else:
-                item_findings = validate_service_descriptor(data, path=rel, contract=contract, service_classes=service_classes, known_surfaces=known_surfaces)
-        except Exception as exc:
-            item_findings = [finding("error", "service_fixture_invalid_json", f"fixture does not parse as JSON: {exc}", rel)]
-        error_count = sum(1 for item in item_findings if item.get("level") == "error")
-        passed_expectation = bool(error_count) == expect_invalid
-        status = "pass" if passed_expectation else "fail"
-        if not passed_expectation:
-            if expect_invalid:
-                findings.append(finding("error", "service_invalid_fixture_passed", f"invalid fixture unexpectedly passed: {rel}", rel))
-            else:
-                findings.append(finding("error", "service_valid_fixture_failed", f"valid fixture failed validation: {rel}", rel))
-        results.append({
-            "fixture": rel,
-            "expected": "invalid" if expect_invalid else "valid",
-            "status": status,
-            "errors": error_count,
-            "findings": item_findings,
-        })
-
-    if not valid_count or not invalid_count:
-        findings.append(finding("error", "service_fixture_set_incomplete", "service conformance fixtures must include valid and invalid cases"))
-
-    return findings, {
-        "status": "pass" if not findings else "fail",
-        "fixture_count": len(results),
-        "valid": valid_count,
-        "invalid": invalid_count,
-        "fixtures": results,
-    }
-
-
-def summarize(findings: Sequence[Dict[str, Any]]) -> Dict[str, int]:
-    return {
-        "errors": sum(1 for item in findings if item.get("level") == "error"),
-        "warnings": sum(1 for item in findings if item.get("level") == "warning"),
-    }
-
-
-def validate_all(repo_root: Path, include_fixtures: bool) -> Dict[str, Any]:
-    findings, loaded = validate_contract_surfaces(repo_root)
-    contract = loaded.get("contract", {})
-    class_registry = loaded.get("class_registry", {})
-    service_classes = registry_service_classes(class_registry) if isinstance(class_registry, dict) else set()
-    known_surfaces = load_optional_surfaces(repo_root)
-    fixtures: Dict[str, Any] = {"status": "not_run", "fixture_count": 0, "valid": 0, "invalid": 0, "fixtures": []}
-    if include_fixtures:
-        fixture_findings, fixtures = validate_fixture_files(repo_root, contract, service_classes, known_surfaces)
-        findings.extend(fixture_findings)
-    counts = summarize(findings)
-    return {
-        "validator": "check_service_conformance",
-        "status": "fail" if counts["errors"] else "pass",
-        "contract": SERVICE_CONTRACT_REL.as_posix(),
-        "schema": SERVICE_SCHEMA_REL.as_posix(),
-        "service_class_registry": SERVICE_CLASS_REGISTRY_REL.as_posix(),
-        "service_classes": sorted(service_classes),
-        "summary": counts,
-        "findings": findings,
-        "fixtures": fixtures,
-    }
-
-
-def print_list(service_classes: Sequence[str]) -> None:
-    for service_class in service_classes:
-        print(service_class)
-
-
-def main(argv: Optional[Sequence[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--repo-root", default=".", help="Repository root")
-    parser.add_argument("--strict", action="store_true", help="Return nonzero on validation errors")
-    parser.add_argument("--json", action="store_true", help="Emit JSON summary")
-    parser.add_argument("--fixtures", action="store_true", help="Validate service conformance fixtures")
-    parser.add_argument("--list-classes", action="store_true", help="List registered service classes")
-    args = parser.parse_args(argv)
-
-    repo_root = Path(args.repo_root).resolve()
-    result = validate_all(repo_root, include_fixtures=args.fixtures)
-    if args.list_classes:
-        print_list(result["service_classes"])
-    elif args.json:
-        print(json.dumps(result, indent=2, sort_keys=True))
+            if not isinstance(j(p),dict): out.append(f('error','json_root_not_object',f'{r} must be a JSON object',str(r)))
+        except Exception as e: out.append(f('error','invalid_json',f'{r} does not parse as JSON: {e}',str(r)))
+    for r,cid in T.items():
+        p=root/r
+        if not p.exists(): out.append(f('error','missing_toml_contract',f'missing TOML contract: {r}',str(r))); continue
+        try:
+            if tl(p).get('contract',{}).get('id')!=cid: out.append(f('error','unexpected_contract_id',f'{r} has unexpected or missing contract id',str(r)))
+        except Exception as e: out.append(f('error','invalid_toml',f'{r} does not parse as TOML: {e}',str(r)))
+    return out
+def val_service(x,path,root,I,V,S):
+    out=[]; req=['service_id','service_kind','owner','version','stability','public_surface_ref','commands_exposed','result_schema_refs','refusal_code_refs','diagnostic_code_refs','capability_refs','provider_kinds_allowed','determinism_class','authority_class','artifact_inputs','artifact_outputs','replay_impact','execution_model','conformance_suite_refs','replacement_policy_ref','deprecation_policy_ref']
+    for k in req:
+        if k not in x or x.get(k) in (None,''): out.append(f('error','service_missing_required_field',f'service missing {k}',path))
+    sid=str(x.get('service_id') or '')
+    if sid and (not SRE.match(sid) or pathy(sid)): out.append(f('error','service_bad_id',f'invalid service_id: {sid}',path))
+    for fld,b,c in [('service_kind','k','service_unknown_kind'),('stability','st','service_unknown_stability'),('determinism_class','det','service_unknown_determinism'),('authority_class','auth','service_unknown_authority'),('execution_model','exe','service_unknown_execution_model'),('replay_impact','rep','service_unknown_replay_impact')]:
+        v=str(x.get(fld) or '')
+        if v and v not in V[b]: out.append(f('error',c,f'unknown {fld}: {v}',path))
+    surf=str(x.get('public_surface_ref') or '')
+    if surf and I['pub'] and surf not in I['pub']: out.append(f('error','service_unknown_public_surface',f'unknown public_surface_ref: {surf}',path))
+    for c in ss(al(x.get('commands_consumed'))+al(x.get('commands_exposed'))):
+        if I['cmd'] and c not in I['cmd']: out.append(f('error','service_unknown_command',f'unknown command: {c}',path))
+    for r in [str(i) for i in al(x.get('result_schema_refs')) if i]:
+        if not exists(root,r): out.append(f('error','service_missing_result_schema',f'result schema ref does not exist: {r}',path))
+    for code,b,c in [(z,'ref','service_unknown_refusal') for z in ss(x.get('refusal_code_refs'))]+[(z,'dia','service_unknown_diagnostic') for z in ss(x.get('diagnostic_code_refs'))]+[(z,'cap','service_unknown_capability') for z in ss(x.get('capability_refs'))]:
+        if I[b] and code not in I[b]: out.append(f('error',c,f'unknown reference: {code}',path))
+    for pk in ss(x.get('provider_kinds_allowed')):
+        if I['pk'] and pk not in I['pk']: out.append(f('error','service_unknown_provider_kind',f'unknown provider kind: {pk}',path))
+    for a in ss(al(x.get('artifact_inputs'))+al(x.get('artifact_outputs'))):
+        if I['art'] and a not in I['art']: out.append(f('error','service_unknown_artifact_kind',f'unknown artifact kind: {a}',path))
+    for k in ('replacement_policy_ref','deprecation_policy_ref'):
+        r=str(x.get(k) or '')
+        if r and lookp(r) and not exists(root,r): out.append(f('error','service_missing_policy_ref',f'{k} does not exist: {r}',path))
+    passing=False
+    for sr in [str(i) for i in al(x.get('conformance_suite_refs')) if i]:
+        s=S.get(sr)
+        if not s: out.append(f('error','service_unknown_conformance_suite',f'unknown conformance suite: {sr}',path)); continue
+        if s.get('subject_kind')!='service' or s.get('subject_id')!=sid: out.append(f('error','service_conformance_subject_mismatch',f'conformance suite {sr} does not target {sid}',path))
+        if s.get('status')=='passing' and s.get('support_claim') is True: passing=True
+        elif s.get('status') in {'planned','fixture_only'}: out.append(f('warning','service_conformance_not_support',f'{sr} is {s.get("status")} and carries no support claim',path))
+    if (x.get('stability')=='stable' or x.get('support_claim') is True) and not passing: out.append(f('error','service_missing_passing_conformance','stable/support service requires a passing conformance suite',path))
+    return out
+def val_suite(x,path,root,I,ST):
+    out=[]; req=['conformance_id','subject_kind','subject_id','contract_refs','required_capabilities','required_fixtures','positive_cases','negative_cases','refusal_cases','determinism_cases','evidence_required','status']
+    for k in req:
+        if k not in x or x.get(k) in (None,''): out.append(f('error','conformance_missing_required_field',f'conformance suite missing {k}',path))
+    cid=str(x.get('conformance_id') or ''); sk=str(x.get('subject_kind') or ''); sid=str(x.get('subject_id') or '')
+    if cid and not CRE.match(cid): out.append(f('error','conformance_bad_id',f'conformance_id is invalid: {cid}',path))
+    if sk not in {'service','provider'}: out.append(f('error','conformance_unknown_subject_kind',f'unknown subject_kind: {sk}',path))
+    elif sk=='service' and I['svc'] and sid not in I['svc']: out.append(f('error','conformance_unknown_service_subject',f'unknown service subject: {sid}',path))
+    elif sk=='provider' and I['prov'] and sid not in I['prov']: out.append(f('error','conformance_unknown_provider_subject',f'unknown provider subject: {sid}',path))
+    for r in [str(i) for i in al(x.get('contract_refs')) if i]:
+        if lookp(r) and not exists(root,r): out.append(f('error','conformance_missing_contract_ref',f'contract ref does not exist: {r}',path))
+    for cap in ss(x.get('required_capabilities')):
+        if I['cap'] and cap not in I['cap']: out.append(f('error','conformance_unknown_capability',f'unknown capability: {cap}',path))
+    st=str(x.get('status') or '')
+    if st not in ST: out.append(f('error','conformance_unknown_status',f'unknown conformance status: {st}',path))
+    if x.get('support_claim') is True and not ST.get(st,False): out.append(f('error','conformance_support_claim_forbidden',f'{st} suites cannot carry support_claim=true',path))
+    if st=='passing' and (not al(x.get('evidence_required')) or not al(x.get('positive_cases'))): out.append(f('error','passing_conformance_incomplete','passing suite requires evidence and positive cases',path))
+    if st in {'planned','fixture_only'}: out.append(f('warning','conformance_not_support',f'{st} conformance does not imply runtime support',path))
+    if st!='planned':
+        for r in [str(i) for i in al(x.get('required_fixtures')) if i]:
+            if lookp(r) and not exists(root,r): out.append(f('error','conformance_missing_fixture',f'required fixture does not exist: {r}',path))
+    return out
+def val_provider(x,path,I,S):
+    out=[]; pid=str(x.get('provider_id') or '')
+    if pid and (not PRE.match(pid) or pathy(pid)): out.append(f('error','provider_bad_id',f'provider_id is invalid: {pid}',path))
+    for sid in ss(x.get('implemented_service_ids')):
+        if I['svc'] and sid not in I['svc']: out.append(f('error','provider_unknown_service',f'unknown implemented service: {sid}',path))
+    refs=[str(i) for i in al(x.get('conformance_suite_refs')) if i]
+    if al(x.get('implemented_service_ids')) and not refs: out.append(f('error','provider_service_missing_conformance','provider implementing services requires conformance_suite_refs',path))
+    passing=False
+    for sr in refs:
+        s=S.get(sr)
+        if not s: out.append(f('error','provider_unknown_conformance_suite',f'unknown conformance suite: {sr}',path)); continue
+        if s.get('subject_kind')!='provider' or s.get('subject_id')!=pid: out.append(f('error','provider_conformance_subject_mismatch',f'conformance suite {sr} does not target {pid}',path))
+        if s.get('status')=='passing' and s.get('support_claim') is True: passing=True
+        elif s.get('status') in {'planned','fixture_only'}: out.append(f('warning','provider_conformance_not_support',f'{sr} is {s.get("status")} and carries no support claim',path))
+    for cap in ss(al(x.get('capabilities_provided'))+al(x.get('capabilities_required'))):
+        if I['cap'] and cap not in I['cap']: out.append(f('error','provider_unknown_capability',f'unknown capability: {cap}',path))
+    for code,b,c in [(z,'ref','provider_unknown_refusal') for z in ss(x.get('refusal_codes'))]+[(z,'dia','provider_unknown_diagnostic') for z in ss(x.get('diagnostic_codes'))]:
+        if I[b] and code not in I[b]: out.append(f('error',c,f'unknown reference: {code}',path))
+    if (x.get('support_claim') is True or str(x.get('stability') or '') in {'stable','available'}) and al(x.get('implemented_service_ids')) and not passing: out.append(f('error','provider_missing_passing_conformance','provider support claim requires passing conformance suite',path))
+    return out
+def fixture_file(root,p,I,S):
+    rel=p.relative_to(root).as_posix(); x=j(p)
+    if 'conformance_id' in x: return val_suite(x,rel,root,I,stats(root))
+    if 'provider_id' in x: return val_provider(x,rel,I,S)
+    if 'service_id' in x: return val_service(x,rel,root,I,vocab(root),S)
+    return [f('error','unknown_fixture_shape','fixture is not a service, provider, or conformance suite',rel)]
+def fixtures(root,I,S):
+    out=[]; res=[]; paths=sorted((root/SFIX).glob('*.json'))+sorted((root/CFIX).glob('*.json')); valid=invalid=0
+    if not paths: return [f('error','fixture_set_missing','service/conformance fixture set is missing')], {'status':'fail','fixture_count':0,'valid':0,'invalid':0,'fixtures':[]}
+    for p in paths:
+        rel=p.relative_to(root).as_posix(); bad=p.name.startswith('invalid_'); invalid+=1 if bad else 0; valid+=0 if bad else 1
+        try: ff=fixture_file(root,p,I,S)
+        except Exception as e: ff=[f('error','fixture_parse_or_validation_failed',f'fixture failed: {e}',rel)]
+        errs=[x for x in ff if x['level']=='error']; ok=bool(errs) if bad else not errs
+        if not ok: out.append(f('error','fixture_expectation_failed',f'fixture expectation failed for {rel}',rel))
+        res.append({'path':rel,'fixture':rel,'expected':'invalid' if bad else 'valid','status':'pass' if ok else 'fail','errors':len(errs),'warnings':sum(1 for x in ff if x['level']=='warning'),'findings':ff})
+    if not valid or not invalid: out.append(f('error','fixture_set_incomplete','service/conformance fixtures must include valid and invalid cases'))
+    return out, {'status':'pass' if not out else 'fail','fixture_count':len(res),'valid':valid,'invalid':invalid,'fixtures':res}
+def git_files(root):
+    out=[]
+    for a in (['git','ls-files'],['git','ls-files','--others','--exclude-standard']):
+        try: out += [x.strip().replace('\\','/') for x in subprocess.run(a,cwd=str(root),check=True,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout.splitlines() if x.strip()]
+        except Exception: pass
+    return sorted(set(out))
+def inv(root):
+    counts={}; examples={}
+    for p in git_files(root):
+        l=p.lower(); cat=None
+        for pre,c in [('contracts/service/','service_contract_surface'),('contracts/conformance/','conformance_contract_surface'),('contracts/provider/','provider_relationship_surface'),('contracts/capability/','capability_relationship_surface'),('tests/contract/service/','service_fixture'),('tests/contract/conformance/','conformance_fixture'),('runtime/','runtime_read_only_candidate'),('apps/workbench/','workbench_consumer_candidate')]:
+            if l.startswith(pre): cat=c; break
+        if cat is None and any(w in l for w in ('service','provider','conformance')): cat='deferred_service_provider_candidate'
+        if cat: counts[cat]=counts.get(cat,0)+1; examples.setdefault(cat,[]); examples[cat]=examples[cat][:8]+([p] if len(examples[cat])<8 else [])
+    return {'status':'warning','files_scanned':len(git_files(root)),'categories':counts,'examples':examples,'note':'Inventory is descriptive only; SERVICE-CONFORMANCE-LAW-01 does not implement runtime services or providers.'}
+def validate_all(root,include_fixtures=False,include_inventory=False):
+    fs=contracts(root); sc=cc=0; fx={'status':'not_run','fixture_count':0,'valid':0,'invalid':0,'fixtures':[]}
+    if not any(x['level']=='error' for x in fs):
+        try:
+            I=allids(root); S=suites(root); V=vocab(root); ST=stats(root)
+            sv=[x for x in al(j(root/SVC).get('services')) if isinstance(x,dict)]; co=[x for x in al(j(root/CREG).get('suites')) if isinstance(x,dict)]; sc=len(sv); cc=len(co)
+            seen=set()
+            for n,x in enumerate(sv):
+                sid=str(x.get('service_id') or '')
+                if sid in seen: fs.append(f('error','service_duplicate_id',f'duplicate service_id: {sid}',str(SVC)))
+                seen.add(sid); fs += val_service(x,f'{SVC.as_posix()}#{n}',root,I,V,S)
+            seen=set()
+            for n,x in enumerate(co):
+                cid=str(x.get('conformance_id') or '')
+                if cid in seen: fs.append(f('error','conformance_duplicate_id',f'duplicate conformance_id: {cid}',str(CREG)))
+                seen.add(cid); fs += val_suite(x,f'{CREG.as_posix()}#{n}',root,I,ST)
+            for n,x in enumerate(al(j(root/PREG).get('providers'))):
+                if isinstance(x,dict): fs += val_provider(x,f'{PREG.as_posix()}#{n}',I,S)
+            if include_fixtures:
+                ffs,fx=fixtures(root,I,S); fs += ffs
+        except Exception as e: fs.append(f('error','validator_exception',f'service conformance validation failed: {e}'))
+    errs=[x for x in fs if x['level']=='error']; warns=[x for x in fs if x['level']=='warning']
+    return {'validator':'check_service_conformance','status':'pass' if not errs else 'fail','services_registered':sc,'conformance_suites_registered':cc,'summary':{'errors':len(errs),'warnings':len(warns)},'findings':fs,'fixtures':fx,'inventory':inv(root) if include_inventory else {'status':'not_run'},'runtime_implemented':False,'provider_runtime_loading_implemented':False}
+def main(argv=None):
+    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument('--repo-root',default='.'); ap.add_argument('--strict',action='store_true'); ap.add_argument('--json',action='store_true'); ap.add_argument('--fixtures',action='store_true'); ap.add_argument('--inventory',action='store_true'); ap.add_argument('--list-classes',action='store_true'); a=ap.parse_args(argv); root=Path(a.repo_root).resolve()
+    if a.list_classes:
+        for k in sorted(ids(j(root/SK),'kinds')): print(k)
+        return 0
+    r=validate_all(root,include_fixtures=a.fixtures or a.strict,include_inventory=a.inventory)
+    if a.json: print(json.dumps(r,indent=2,sort_keys=True))
     else:
-        print(f"service_conformance: {result['status']}")
-        print(f"service_classes: {len(result['service_classes'])}")
-        print(f"errors: {result['summary']['errors']}")
-        print(f"warnings: {result['summary']['warnings']}")
-        if args.fixtures:
-            fixtures = result["fixtures"]
-            print(f"fixtures: {fixtures['status']} count={fixtures['fixture_count']} valid={fixtures['valid']} invalid={fixtures['invalid']}")
-        for item in result["findings"]:
-            print(f"{item['level'].upper()}: {item['code']}: {item['message']}")
-
-    if args.strict and result["status"] != "pass":
-        return 1
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+        print(f"service conformance: {r['status']}"); print(f"services: {r['services_registered']}"); print(f"conformance_suites: {r['conformance_suites_registered']}"); print(f"errors: {r['summary']['errors']}"); print(f"warnings: {r['summary']['warnings']}")
+        if r['fixtures']['status']!='not_run': print(f"fixtures: {r['fixtures']['status']} count={r['fixtures']['fixture_count']} valid={r['fixtures']['valid']} invalid={r['fixtures']['invalid']}")
+        if r['inventory']['status']!='not_run':
+            print(f"inventory: {r['inventory']['status']} files_scanned={r['inventory']['files_scanned']}")
+            [print(f"- {k}: {v}") for k,v in sorted(r['inventory']['categories'].items())]
+        for item in r['findings']:
+            p=f"{item.get('path')}: " if item.get('path') else ''; print(f"{item['level']}: {p}{item['code']}: {item['message']}")
+    return 1 if a.strict and r['status']!='pass' else 0
+if __name__=='__main__': sys.exit(main())

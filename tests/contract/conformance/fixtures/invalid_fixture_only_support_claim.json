@@ -1,0 +1,29 @@
+{
+  "conformance_id": "dominium.conformance.service.validation.fixture",
+  "subject_kind": "service",
+  "subject_id": "dominium.service.validation",
+  "contract_refs": [
+    "contracts/service/service.contract.toml",
+    "contracts/conformance/conformance.contract.toml"
+  ],
+  "required_capabilities": [
+    "dominium.service.conformance.validate"
+  ],
+  "required_fixtures": [
+    "tests/contract/service/fixtures/valid_service_descriptor.json"
+  ],
+  "positive_cases": [
+    "fixture only cannot claim support"
+  ],
+  "negative_cases": [],
+  "refusal_cases": [],
+  "determinism_cases": [],
+  "replay_cases": [],
+  "artifact_cases": [],
+  "performance_budget_ref": null,
+  "evidence_required": [
+    "validator_json"
+  ],
+  "status": "fixture_only",
+  "support_claim": true
+}

@@ -1587,6 +1587,180 @@
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Evidence is required before any composition result can be used as proof."
+    },
+    {
+        "refusal_id": "dominium.refusal.provider.unknown",
+        "code": "dominium.refusal.provider.unknown",
+        "owner": "contracts.provider",
+        "category": "provider",
+        "stability": "provisional",
+        "summary": "Requested provider is unknown.",
+        "reason": "A provider ID was absent from the provider registry.",
+        "recovery": {
+            "action": "select_alternative",
+            "summary": "Use a registered provider ID or add a reviewed provider descriptor."
+        },
+        "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+        "diagnostic_codes": [
+            "DOM-PROVIDER-UNKNOWN"
+        ],
+        "related_diagnostic_codes": [
+            "DOM-PROVIDER-UNKNOWN"
+        ],
+        "related_capabilities": [
+            "dominium.service.conformance.validate"
+        ],
+        "related_commands": [],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict",
+            "python tools/validators/contracts/check_provider_model.py --repo-root . --strict",
+            "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+        ],
+        "notes": "Provider IDs are governed identifiers, not paths."
+    },
+    {
+        "refusal_id": "dominium.refusal.service.unknown",
+        "code": "dominium.refusal.service.unknown",
+        "owner": "contracts.service",
+        "category": "runtime",
+        "stability": "provisional",
+        "summary": "Requested service is unknown.",
+        "reason": "A service ID was absent from the governed service registry.",
+        "recovery": {
+            "action": "select_alternative",
+            "summary": "Use a registered service ID or add a reviewed service descriptor."
+        },
+        "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+        "diagnostic_codes": [
+            "DOM-SERVICE-UNKNOWN"
+        ],
+        "related_diagnostic_codes": [
+            "DOM-SERVICE-UNKNOWN"
+        ],
+        "related_capabilities": [
+            "dominium.service.conformance.validate"
+        ],
+        "related_commands": [],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict",
+            "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+        ],
+        "notes": "Paths, command IDs, and provider IDs are not service identity."
+    },
+    {
+        "refusal_id": "dominium.refusal.service.not_implemented",
+        "code": "dominium.refusal.service.not_implemented",
+        "owner": "contracts.service",
+        "category": "runtime",
+        "stability": "provisional",
+        "summary": "Service is not implemented.",
+        "reason": "The service descriptor or conformance status is planned or fixture-only.",
+        "recovery": {
+            "action": "select_alternative",
+            "summary": "Select an implemented service with passing conformance or keep the request planned/fixture-only."
+        },
+        "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+        "diagnostic_codes": [
+            "DOM-SERVICE-NOT-IMPLEMENTED"
+        ],
+        "related_diagnostic_codes": [
+            "DOM-SERVICE-NOT-IMPLEMENTED"
+        ],
+        "related_capabilities": [
+            "dominium.service.conformance.validate"
+        ],
+        "related_commands": [],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict",
+            "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+        ],
+        "notes": "Planned and fixture-only conformance does not imply support."
+    },
+    {
+        "refusal_id": "dominium.refusal.service.conformance_missing",
+        "code": "dominium.refusal.service.conformance_missing",
+        "owner": "contracts.service",
+        "category": "validation",
+        "stability": "provisional",
+        "summary": "Service conformance proof is missing.",
+        "reason": "The service lacks a passing conformance suite required for the requested stability or support claim.",
+        "recovery": {
+            "action": "inspect_evidence",
+            "summary": "Add passing conformance evidence or lower the service/support claim."
+        },
+        "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+        "diagnostic_codes": [
+            "DOM-SERVICE-CONFORMANCE-MISSING"
+        ],
+        "related_diagnostic_codes": [
+            "DOM-SERVICE-CONFORMANCE-MISSING"
+        ],
+        "related_capabilities": [
+            "dominium.service.conformance.validate"
+        ],
+        "related_commands": [],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict",
+            "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+        ],
+        "notes": "Stable service claims require passing conformance."
+    },
+    {
+        "refusal_id": "dominium.refusal.service.capability_mismatch",
+        "code": "dominium.refusal.service.capability_mismatch",
+        "owner": "contracts.service",
+        "category": "capability",
+        "stability": "provisional",
+        "summary": "Service capability mismatch.",
+        "reason": "The selected service or provider does not declare required capabilities.",
+        "recovery": {
+            "action": "select_alternative",
+            "summary": "Select a matching service/provider, explicitly degrade, or refuse."
+        },
+        "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+        "diagnostic_codes": [
+            "DOM-SERVICE-CAPABILITY-MISMATCH"
+        ],
+        "related_diagnostic_codes": [
+            "DOM-SERVICE-CAPABILITY-MISMATCH"
+        ],
+        "related_capabilities": [
+            "dominium.service.conformance.validate"
+        ],
+        "related_commands": [],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict",
+            "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+        ],
+        "notes": "Capability selection must emit selected, degraded, refused, or evidence decisions."
+    },
+    {
+        "refusal_id": "dominium.refusal.provider.refused",
+        "code": "dominium.refusal.provider.refused",
+        "owner": "contracts.provider",
+        "category": "provider",
+        "stability": "provisional",
+        "summary": "Provider refused the service request.",
+        "reason": "A provider declined a service-backed request under declared limits.",
+        "recovery": {
+            "action": "select_alternative",
+            "summary": "Select another provider, use explicit degraded behavior, or keep the service request refused."
+        },
+        "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+        "diagnostic_codes": [
+            "DOM-PROVIDER-SELECTION-REFUSED"
+        ],
+        "related_diagnostic_codes": [
+            "DOM-PROVIDER-SELECTION-REFUSED"
+        ],
+        "related_capabilities": [],
+        "related_commands": [],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict",
+            "python tools/validators/contracts/check_provider_model.py --repo-root . --strict",
+            "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+        ],
+        "notes": "Provider refusal is typed lawful result."
     }
   ],
   "full_registry_owner": "CAPABILITY-REFUSAL-LAW-01",

@@ -717,6 +717,29 @@
         "python tools/validators/contracts/check_composition_plan.py --repo-root . --strict"
       ],
       "notes": "Contract and fixture capability only; runtime resolver is not implemented."
+    },
+    {
+        "capability_id": "dominium.service.conformance.validate",
+        "kind": "test",
+        "owner": "contracts.service",
+        "version": "0.1.0",
+        "stability": "provisional",
+        "description": "Validate service descriptors, conformance suites, provider conformance references, and service/provider fixture expectations.",
+        "provided_by": [
+            "tools/validators/contracts/check_service_conformance.py"
+        ],
+        "requires": [
+            "dominium.repo.validate"
+        ],
+        "conflicts": [],
+        "scope": "service/provider conformance contract validation",
+        "determinism_impact": "validator output must be deterministic for the same checkout and fixture set",
+        "security_impact": "local contract inspection only; no provider runtime loading",
+        "platform_constraints": [],
+        "proof": [
+            "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"
+        ],
+        "notes": "Contract and fixture capability only; runtime service dispatch and provider loading are not implemented."
     }
   ]
 }

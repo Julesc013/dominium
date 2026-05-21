@@ -1,0 +1,82 @@
+schema_version = "dominium.service.contract.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.service"
+
+[contract]
+id = "dominium.service.contract.v1"
+status = "provisional"
+owner = "contracts.service"
+purpose = "Defines descriptor, identity, capability, evidence, and replacement obligations for callable semantic services."
+descriptor_schema = "contracts/service/service_descriptor.schema.json"
+kind_registry = "contracts/service/service_kind.registry.json"
+service_registry = "contracts/service/service.registry.json"
+conformance_contract = "contracts/conformance/conformance.contract.toml"
+
+[vocabulary]
+service = "callable semantic runtime capability"
+provider = "replaceable implementation of a service or backend"
+command = "user, test, app, or tool-facing invocation surface"
+module = "declared functional extension unit that may consume or provide commands, services, and views"
+app = "product composition of commands, services, providers, modules, and packs"
+conformance_suite = "test, fixture, and evidence set proving a provider or service obeys a contract"
+
+[identity]
+service_identity_is_command_id = false
+provider_identity_is_implementation_path = false
+service_ids_are_path_like = false
+provider_ids_are_path_like = false
+paths_may_be_entry_surfaces = true
+
+[authority]
+workbench_is_authority = false
+tools_are_runtime_dependencies = false
+runtime_depends_on_repo_only_tools = false
+service_dispatch_implemented_here = false
+provider_loading_implemented_here = false
+truth_mutation_requires_process = true
+truth_perceived_render_separation_required = true
+
+[selection]
+capability_selection_must_emit_decision = true
+decisions = ["selected", "degraded", "refused", "evidence"]
+degraded_requires_evidence = true
+refused_requires_typed_refusal = true
+missing_service_refuses = true
+missing_provider_refuses = true
+missing_capability_refuses = true
+
+[stability]
+stable_service_requires_passing_conformance = true
+support_claim_requires_passing_conformance = true
+planned_status_is_support = false
+fixture_only_status_is_support = false
+stable_service_requires_public_surface = true
+deprecation_policy_required = true
+replacement_policy_required = true
+
+[descriptor]
+schema = "contracts/service/service_descriptor.schema.json"
+required_fields = ["service_id", "service_kind", "owner", "version", "stability", "public_surface_ref", "commands_exposed", "result_schema_refs", "refusal_code_refs", "diagnostic_code_refs", "capability_refs", "provider_kinds_allowed", "determinism_class", "authority_class", "artifact_inputs", "artifact_outputs", "replay_impact", "execution_model", "conformance_suite_refs", "replacement_policy_ref", "deprecation_policy_ref"]
+
+[relationships]
+command_surface = "contracts/command/command_surface.contract.toml"
+provider_model = "contracts/provider/provider.contract.toml"
+capability_registry = "contracts/capability/capability.registry.json"
+refusal_registry = "contracts/refusal/refusal_code.registry.json"
+diagnostic_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+artifact_kind_registry = "contracts/artifact/artifact_kind.registry.json"
+replacement_policy = "contracts/replacement/conformance_policy.contract.toml"
+versioning_policy = "contracts/versioning/deprecation_policy.contract.toml"
+public_surface_registry = "contracts/public_surface/public_surface.contract.toml"
+module_surface = "contracts/module/module_surface.contract.toml"
+workbench_surface = "contracts/workbench/workbench_surface.contract.toml"
+app_surface = "contracts/app/app_surface.contract.toml"
+
+[validation]
+validator = "tools/validators/contracts/check_service_conformance.py"
+fixtures = ["tests/contract/service/fixtures", "tests/contract/conformance/fixtures"]
+strict_proof = "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"
+fixture_proof = "python tools/validators/contracts/check_service_conformance.py --repo-root . --fixtures"
+inventory_proof = "python tools/validators/contracts/check_service_conformance.py --repo-root . --inventory"
+notes = "This contract defines descriptors, conformance references, and proof expectations only. It does not implement service dispatch, provider loading, renderer/platform backends, package runtime, Workbench UI, or gameplay."

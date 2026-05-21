@@ -1,0 +1,13 @@
+{
+  "schema_version": "dominium.conformance.status_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.conformance",
+  "statuses": [
+    {"id": "planned", "support_claim_allowed": false, "description": "Suite is declared as future work and cannot prove support."},
+    {"id": "fixture_only", "support_claim_allowed": false, "description": "Suite proves descriptor/fixture behavior only and cannot prove runtime support."},
+    {"id": "passing", "support_claim_allowed": true, "description": "Suite has required evidence for its declared scope and may support a support claim when subject policy also allows it."},
+    {"id": "failing", "support_claim_allowed": false, "description": "Suite exists and fails its required cases."},
+    {"id": "retired", "support_claim_allowed": false, "description": "Suite has been retired and cannot prove current support."}
+  ],
+  "notes": "Only passing suites may carry support_claim=true. Planned and fixture_only never imply runtime service/provider support."
+}
