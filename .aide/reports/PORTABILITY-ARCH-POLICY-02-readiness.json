@@ -1,0 +1,27 @@
+{
+  "task": "PORTABILITY-ARCH-POLICY-02",
+  "result": "PASS_WITH_WARNINGS",
+  "foundation_lock": "PASS_WITH_WARNINGS",
+  "architecture_policy_validator": "PASS",
+  "portability_matrix_validator": "PASS",
+  "dependency_direction_strict": {
+    "status": "PASS",
+    "violations": 0,
+    "warnings": 68
+  },
+  "fast_strict": {
+    "status": "PASS",
+    "commands_total": 33,
+    "commands_passed": 33,
+    "elapsed_seconds": 296.553
+  },
+  "aide": "PASS",
+  "repox_strict": "PASS_WITH_STALE_AUDITX_WARNING",
+  "cmake_configure_build": "PASS_THROUGH_FAST_STRICT",
+  "smoke_ctest": "PASS_THROUGH_FAST_STRICT",
+  "full_ctest": "NOT_RUN_T4_DEBT",
+  "workbench_validation_slice_authorized": true,
+  "broad_feature_work_authorized": false,
+  "next_task": "WORKBENCH-VALIDATION-SLICE-01",
+  "secondary_follow_up": "POINTER-WIDTH-SERIALIZATION-AUDIT-01"
+}

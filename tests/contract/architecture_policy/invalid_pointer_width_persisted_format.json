@@ -1,0 +1,21 @@
+{
+  "schema_version": "dominium.platform.architecture_claim.instance.v1",
+  "target_id": "dominium.architecture.fixture.invalid_pointer_width_persisted_format",
+  "architecture": "x86_64",
+  "architecture_tier": "source_native_64",
+  "word_size": 64,
+  "endianness": "little",
+  "abi": "c_compatible_pod_abi",
+  "toolchain": "msvc143",
+  "language_floor": "c17_cpp17",
+  "support_status": "build_proven",
+  "provider_capabilities": [],
+  "evidence": [{"kind": "build", "path": "tests/contract/architecture_policy/invalid_pointer_width_persisted_format.json"}],
+  "known_limitations": ["Negative fixture."],
+  "diagnostic_codes": ["DOM-ARCH-POINTER-WIDTH-PERSISTED-FORMAT"],
+  "refusal_codes": ["dominium.refusal.architecture.pointer_width_persisted"],
+  "stable_persisted_fields": [
+    {"name": "native_size", "type": "size_t"},
+    {"name": "address", "type": "uintptr_t"}
+  ]
+}

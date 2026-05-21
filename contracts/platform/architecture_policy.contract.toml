@@ -1,0 +1,94 @@
+schema_version = "dominium.platform.architecture_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.platform"
+
+[contract]
+id = "dominium.platform.architecture_policy.v1"
+status = "provisional"
+owner = "contracts.platform"
+purpose = "Defines native architecture tiers, pointer-width independence, endian law, and evidence rules for product architecture claims."
+
+[policy]
+mainline_tier = "source_native_64"
+mainline_architectures = ["x86_64", "arm64"]
+mainline_word_size = 64
+mainline_endianness = "little"
+full_native_support_requires_evidence = true
+legacy_32_bit_is_not_mainline = true
+paths_are_not_architecture_identity = true
+installed_toolchains_are_not_support_claims = true
+provider_rows_must_not_silent_fallback = true
+full_ctest_required_for_architecture_policy_change = false
+normal_gate = "fast_strict"
+
+[architecture_aliases]
+x64 = "x86_64"
+
+[tiers.source_native_64]
+description = "Full source-native product architecture tier."
+mainline = true
+allowed_architectures = ["x86_64", "arm64"]
+required_word_size = 64
+required_endianness = "little"
+support_claim_requires = ["architecture", "word_size", "endianness", "abi", "toolchain", "language_floor", "provider_capabilities", "evidence", "limitations", "diagnostics", "refusals"]
+notes = "Support may be claimed only with build, smoke, product, package, and release evidence."
+
+[tiers.constrained_native_32]
+description = "Optional reduced native lane for 32-bit targets."
+mainline = false
+allowed_architectures = ["x86", "armv7"]
+required_word_size = 32
+allowed_endianness = ["little"]
+support_claim_requires = ["architecture", "word_size", "endianness", "limitations", "diagnostics", "refusals"]
+notes = "Not a full product support obligation."
+
+[tiers.contract_projection]
+description = "Compatibility projection lane for replay viewers, snapshot clients, thin clients, generated subsets, and data viewers."
+mainline = false
+allowed_architectures = ["host", "wasm32", "x86", "armv7", "ppc"]
+support_claim_requires = ["architecture", "limitations", "diagnostics", "refusals"]
+notes = "Projection rows do not prove native product support."
+
+[tiers.archive_runner]
+description = "VM, emulator, museum, or research lane."
+mainline = false
+allowed_architectures = ["x86", "armv7", "ppc", "wasm32", "host"]
+support_claim_requires = ["architecture", "limitations", "diagnostics", "refusals"]
+notes = "Archive-runner rows are historical/research, not normal support."
+
+[pointer_width_policy]
+pointer_width_independent_persistence = true
+allowed_in_process_only = ["size_t", "ptrdiff_t"]
+allowed_diagnostic_only = ["uintptr_t", "intptr_t"]
+allowed_stable_data_types = ["u8", "u16", "u32", "u64", "i8", "i16", "i32", "i64", "fixed32", "fixed64", "le_u16", "le_u32", "le_u64", "le_i32", "le_i64"]
+forbidden_in_persisted_formats = ["size_t", "ptrdiff_t", "long", "unsigned long", "intptr_t", "uintptr_t", "raw_pointer", "native_object_layout", "native_padding", "pointer_order", "address_hash"]
+file_offsets = "u64"
+replay_ticks = "u64"
+canonical_hashes = "u64"
+global_ids = "u64"
+local_dense_indices = "u32"
+
+[endian_policy]
+mainline_endianness = "little"
+persisted_encoding = "explicit_little_endian"
+protocol_encoding = "explicit_little_endian"
+big_endian_status = "unsupported_without_projection_or_research_lane"
+
+[relationships]
+portability_matrix = "contracts/platform/portability_matrix.contract.toml"
+architecture_tier_registry = "contracts/platform/architecture_tier.registry.json"
+architecture_registry = "contracts/platform/architecture.registry.json"
+pointer_width_schema = "contracts/platform/pointer_width_policy.schema.json"
+architecture_claim_schema = "contracts/platform/architecture_claim.schema.json"
+endian_policy = "contracts/platform/endian_policy.contract.toml"
+language_baseline = "contracts/build/language_baseline.contract.toml"
+abi_contract = "contracts/abi/c_api.contract.toml"
+language_boundary = "contracts/abi/language_boundary.contract.toml"
+artifact_identity = "contracts/artifact/artifact_identity.contract.toml"
+schema_evolution = "contracts/schema/schema_evolution.contract.toml"
+provider_model = "contracts/provider/provider.contract.toml"
+capability_law = "contracts/capability/capability.contract.toml"
+diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+refusal_registry = "contracts/refusal/refusal_code.registry.json"
+primary_validator = "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"

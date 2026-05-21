@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review `FOUNDATION-CLOSEOUT-02`: Foundation Lock closeout, validation proof, warning disposition, and narrow product-slice readiness.
+Review `PORTABILITY-ARCH-POLICY-02`: native architecture policy, pointer-width/endian law, portability registry updates, validator, fixtures, docs, and fast-strict integration.
 
 ## Decision Requested
 
@@ -18,38 +18,38 @@ Review `FOUNDATION-CLOSEOUT-02`: Foundation Lock closeout, validation proof, war
 
 ## Verification Report Reference
 
-`.aide/reports/FOUNDATION-CLOSEOUT-02-validation.md`
+`.aide/reports/PORTABILITY-ARCH-POLICY-02-validation.md`
 
 ## Evidence Packet References
 
-- `docs/repo/FOUNDATION_LOCK.md`
-- `docs/repo/audits/FOUNDATION_CLOSEOUT_02.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-02-layer-presence.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-02-foundation-validator-matrix.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-02-aide-validation.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-02-fast-strict.md`
-- `.aide/reports/FOUNDATION-CLOSEOUT-02-readiness.md`
+- `docs/repo/audits/PORTABILITY_ARCH_POLICY_02.md`
+- `.aide/reports/PORTABILITY-ARCH-POLICY-02-status.md`
+- `.aide/reports/PORTABILITY-ARCH-POLICY-02-validation.md`
+- `.aide/reports/PORTABILITY-ARCH-POLICY-02-fast-strict.md`
+- `.aide/reports/PORTABILITY-ARCH-POLICY-02-readiness.md`
+- `.aide/reports/PORTABILITY-ARCH-POLICY-02-architecture-inventory.md`
+- `.aide/reports/PORTABILITY-ARCH-POLICY-02-pointer-width-inventory.md`
 
 ## Changed Files Summary
 
-Closeout adds Foundation Lock audit/evidence, updates status/readiness packets, authorizes `WORKBENCH-VALIDATION-SLICE-01` as a narrow governed product slice, and keeps broad feature work blocked.
+Architecture policy contracts, tier registry, pointer-width schema, endian law, architecture claim schema, validator, fixtures, docs, portability rows, public surfaces, diagnostics/refusals/capabilities, and fast-strict test tiers were updated. No product behavior or platform support claim was added.
 
 ## Validation Summary
 
-Dependency-direction strict passes with `0` violations and `68` warnings. The Foundation validator matrix, AIDE checks, RepoX STRICT, and fast strict pass. Fast strict passed `32` commands in `272.607` seconds, including CMake configure/build and smoke CTest.
+Architecture policy, portability matrix, public surface, diagnostics, capability/refusal, provider, artifact, schema/protocol, language, ABI, dependency-direction, AIDE, RepoX, docs, build-boundary, UI-purity, ABI-boundary, and fast strict checks pass. Fast strict passes `33` commands including CMake configure/build and smoke CTest.
 
 ## Risk Summary
 
-Full CTest remains T4/full-gate debt. `12` exact provisional dependency-direction exceptions remain for follow-up retirement. API/ABI stable-promotion warnings and stale AuditX output are non-blocking closeout warnings.
+Full CTest remains T4/full-gate debt. RepoX keeps the known stale AuditX warning. ABI stable-promotion warnings remain unrelated. Pointer-width inventory is descriptive and may justify `POINTER-WIDTH-SERIALIZATION-AUDIT-01`.
 
 ## Token Summary
 
-This review packet is compact. Full evidence lives under `.aide/reports/FOUNDATION-CLOSEOUT-02-*`.
+This review packet is compact. Full evidence lives under `.aide/reports/PORTABILITY-ARCH-POLICY-02-*`.
 
 ## Reviewer Instructions
 
-Check that the closeout proof is green enough for PASS_WITH_WARNINGS, that Workbench authorization is narrow, and that broad feature work remains blocked.
+Check that no unsupported platform claim was promoted, that 32-bit/vintage targets are not source-native full product obligations, and that pointer-width inventory remains advisory unless a follow-up audit is opened.
 
 ## Non-Goals / Scope Guard
 
-No Workbench UI, runtime module loading, provider runtime, package runtime, gameplay, renderer, native GUI, release publication, broad rewrite, or new governance subsystem is implemented.
+No Workbench UI, runtime module loading, provider runtime, package runtime, gameplay, renderer, native GUI, release publication, broad rewrite, or new product feature is implemented.

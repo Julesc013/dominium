@@ -1933,6 +1933,97 @@ replacement_policy = "requires_portability_matrix_update"
 notes = "Validator for portability contracts, registries, matrices, fixtures, and inventory."
 
 [[surface]]
+id = "dominium.platform.architecture_policy.v1"
+kind = "registry"
+path = "contracts/platform/architecture_policy.contract.toml"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-ARCH-POLICY-02"
+proof = ["python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_architecture_policy_update"
+notes = "Native architecture tier, pointer-width, endian, and support-claim policy."
+
+[[surface]]
+id = "dominium.platform.architecture_tier.registry.v1"
+kind = "registry"
+path = "contracts/platform/architecture_tier.registry.json"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-ARCH-POLICY-02"
+proof = ["python -m json.tool contracts/platform/architecture_tier.registry.json", "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_architecture_policy_update"
+notes = "Architecture tier registry for source_native_64, constrained_native_32, contract_projection, and archive_runner."
+
+[[surface]]
+id = "dominium.platform.pointer_width_policy.schema.v1"
+kind = "schema"
+path = "contracts/platform/pointer_width_policy.schema.json"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-ARCH-POLICY-02"
+proof = ["python -m json.tool contracts/platform/pointer_width_policy.schema.json", "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_architecture_policy_update"
+notes = "Schema adjunct for fixed-width persisted format policy."
+
+[[surface]]
+id = "dominium.platform.endian_policy.v1"
+kind = "registry"
+path = "contracts/platform/endian_policy.contract.toml"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-ARCH-POLICY-02"
+proof = ["python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_architecture_policy_update"
+notes = "Mainline little-endian and explicit persisted/protocol encoding policy."
+
+[[surface]]
+id = "dominium.platform.architecture_claim.schema.v1"
+kind = "schema"
+path = "contracts/platform/architecture_claim.schema.json"
+owner = "contracts.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-ARCH-POLICY-02"
+proof = ["python -m json.tool contracts/platform/architecture_claim.schema.json", "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_architecture_policy_update"
+notes = "Schema for architecture claim fixtures and future evidence packets."
+
+[[surface]]
+id = "dominium.platform.architecture_policy.validator.v1"
+kind = "documentation"
+path = "tools/validators/platform/check_architecture_policy.py"
+owner = "tools.validators.platform"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PORTABILITY-ARCH-POLICY-02"
+proof = ["python -m py_compile tools/validators/platform/check_architecture_policy.py", "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_architecture_policy_update"
+notes = "Validator for architecture policy contracts, registries, fixtures, and pointer-width inventory."
+
+[[surface]]
+id = "dominium.platform.architecture_policy.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/architecture_policy"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "PORTABILITY-ARCH-POLICY-02"
+proof = ["python tools/validators/platform/check_architecture_policy.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_architecture_policy_validator_tests"
+notes = "Fixture suite for valid and invalid architecture policy claims."
+
+[[surface]]
 id = "dominium.retired.root_schema.v1"
 kind = "archive_record"
 path = "schema"

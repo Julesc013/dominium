@@ -15,15 +15,31 @@
       "abi": "n/a",
       "filesystem_policy": "portable_relative_paths",
       "path_encoding": "utf8_manifest_paths",
-      "provider_capabilities": ["domino.package.portable", "domino.package.validate"],
-      "runtime_capabilities": ["domino.package.portable"],
-      "package_support": ["portable"],
+      "provider_capabilities": [
+        "domino.package.portable",
+        "domino.package.validate"
+      ],
+      "runtime_capabilities": [
+        "domino.package.portable"
+      ],
+      "package_support": [
+        "portable"
+      ],
       "test_evidence": [],
       "release_status": "not_released",
-      "diagnostic_codes": ["DOM-PORTABILITY-RELEASE-PROOF-MISSING"],
-      "refusal_codes": ["dominium.refusal.portability.release_not_proven"],
-      "known_limitations": ["Package/release proof is required before support is claimed."],
-      "notes": "Portable package mode is declared, not supported."
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-RELEASE-PROOF-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.portability.release_not_proven"
+      ],
+      "known_limitations": [
+        "Package/release proof is required before support is claimed."
+      ],
+      "notes": "Portable package mode is declared, not supported.",
+      "architecture_tier": "contract_projection",
+      "word_size": "host_or_artifact_declared",
+      "endianness": "host_or_artifact_declared"
     },
     {
       "target_id": "dominium.package.installer",
@@ -39,13 +55,24 @@
       "path_encoding": "platform_declared",
       "provider_capabilities": [],
       "runtime_capabilities": [],
-      "package_support": ["installer"],
+      "package_support": [
+        "installer"
+      ],
       "test_evidence": [],
       "release_status": "not_released",
-      "diagnostic_codes": ["DOM-PORTABILITY-RELEASE-PROOF-MISSING"],
-      "refusal_codes": ["dominium.refusal.portability.release_not_proven"],
-      "known_limitations": ["No installer support claim."],
-      "notes": "Planned row only."
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-RELEASE-PROOF-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.portability.release_not_proven"
+      ],
+      "known_limitations": [
+        "No installer support claim."
+      ],
+      "notes": "Planned row only.",
+      "architecture_tier": "source_native_64",
+      "word_size": 64,
+      "endianness": "little"
     },
     {
       "target_id": "dominium.package.signed_release",
@@ -61,13 +88,24 @@
       "path_encoding": "utf8_manifest_paths",
       "provider_capabilities": [],
       "runtime_capabilities": [],
-      "package_support": ["signed_release"],
+      "package_support": [
+        "signed_release"
+      ],
       "test_evidence": [],
       "release_status": "not_released",
-      "diagnostic_codes": ["DOM-PORTABILITY-RELEASE-PROOF-MISSING"],
-      "refusal_codes": ["dominium.refusal.portability.release_not_proven"],
-      "known_limitations": ["Signing and release promotion are outside this task."],
-      "notes": "Research row only."
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-RELEASE-PROOF-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.portability.release_not_proven"
+      ],
+      "known_limitations": [
+        "Signing and release promotion are outside this task."
+      ],
+      "notes": "Research row only.",
+      "architecture_tier": "contract_projection",
+      "word_size": "host_or_artifact_declared",
+      "endianness": "host_or_artifact_declared"
     }
   ]
 }

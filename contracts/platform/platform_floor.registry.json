@@ -26,8 +26,23 @@
           "notes": "Host Windows fast strict proof for this task; not a broad support promise."
         }
       ],
-      "known_limitations": ["No release support claim is made by this row."],
-      "notes": "Current host floor scaffold only."
+      "known_limitations": [
+        "No release support claim is made by this row."
+      ],
+      "notes": "Current host floor scaffold only.",
+      "architecture_tier": "source_native_64",
+      "toolchain": "msvc143",
+      "language_floor": "c17_cpp17",
+      "abi": "msvc_x64_c_abi_internal_cpp_not_public",
+      "provider_capabilities": [
+        "domino.platform.win32"
+      ],
+      "diagnostic_codes": [
+        "DOM-ARCH-CLAIM-EVIDENCE-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.architecture.support_evidence_missing"
+      ]
     },
     {
       "platform_floor": "winnt7_x64",
@@ -44,8 +59,11 @@
       "threading": "research_only",
       "support_status": "research",
       "evidence": [],
-      "known_limitations": ["No current build, smoke, package, or release proof."],
-      "notes": "Legacy Windows floor is recorded as research only."
+      "known_limitations": [
+        "No current build, smoke, package, or release proof."
+      ],
+      "notes": "Legacy Windows floor is recorded as research only.",
+      "architecture_tier": "source_native_64"
     },
     {
       "platform_floor": "winxp_x86",
@@ -62,8 +80,11 @@
       "threading": "research_only",
       "support_status": "research",
       "evidence": [],
-      "known_limitations": ["No current proof; old toolchain lane is not supported."],
-      "notes": "XP is a compatibility research lane, not a support claim."
+      "known_limitations": [
+        "No current proof; old toolchain lane is not supported."
+      ],
+      "notes": "XP is a compatibility research lane, not a support claim.",
+      "architecture_tier": "constrained_native_32"
     },
     {
       "platform_floor": "linux_x64",
@@ -80,8 +101,11 @@
       "threading": "posix_threads_planned",
       "support_status": "planned",
       "evidence": [],
-      "known_limitations": ["No current task evidence proves Linux support."],
-      "notes": "Existing docs and presets indicate intent only."
+      "known_limitations": [
+        "No current task evidence proves Linux support."
+      ],
+      "notes": "Existing docs and presets indicate intent only.",
+      "architecture_tier": "source_native_64"
     },
     {
       "platform_floor": "macos_x64",
@@ -98,8 +122,11 @@
       "threading": "darwin_threads_research",
       "support_status": "research",
       "evidence": [],
-      "known_limitations": ["No current task evidence proves macOS x64 support."],
-      "notes": "macOS x64 remains research until build and smoke proof exists."
+      "known_limitations": [
+        "No current task evidence proves macOS x64 support."
+      ],
+      "notes": "macOS x64 remains research until build and smoke proof exists.",
+      "architecture_tier": "source_native_64"
     },
     {
       "platform_floor": "macos_arm64",
@@ -116,8 +143,11 @@
       "threading": "darwin_threads_research",
       "support_status": "research",
       "evidence": [],
-      "known_limitations": ["No current task evidence proves macOS arm64 support."],
-      "notes": "macOS arm64 remains research."
+      "known_limitations": [
+        "No current task evidence proves macOS arm64 support."
+      ],
+      "notes": "macOS arm64 remains research.",
+      "architecture_tier": "source_native_64"
     },
     {
       "platform_floor": "headless_host",
@@ -142,8 +172,23 @@
           "notes": "Fast strict validation lane; not a release support claim."
         }
       ],
-      "known_limitations": ["Host-default validation does not prove other OS floors."],
-      "notes": "Headless validation floor for local proof."
+      "known_limitations": [
+        "Host-default validation does not prove other OS floors."
+      ],
+      "notes": "Headless validation floor for local proof.",
+      "architecture_tier": "contract_projection",
+      "toolchain": "host_default",
+      "language_floor": "host_declared_by_validation",
+      "abi": "host_internal",
+      "provider_capabilities": [
+        "domino.platform.headless"
+      ],
+      "diagnostic_codes": [
+        "DOM-ARCH-CLAIM-EVIDENCE-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.architecture.support_evidence_missing"
+      ]
     },
     {
       "platform_floor": "portable_package",
@@ -160,8 +205,11 @@
       "threading": "runtime_declared",
       "support_status": "provisional",
       "evidence": [],
-      "known_limitations": ["Portable package release support requires package and release proof."],
-      "notes": "Recorded here as a package portability floor, not an OS floor."
+      "known_limitations": [
+        "Portable package release support requires package and release proof."
+      ],
+      "notes": "Recorded here as a package portability floor, not an OS floor.",
+      "architecture_tier": "contract_projection"
     }
   ]
 }

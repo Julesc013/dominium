@@ -1,0 +1,51 @@
+{
+  "schema_version": "dominium.platform.architecture_tier.registry.v1",
+  "status": "provisional",
+  "owner": "contracts.platform",
+  "tiers": [
+    {
+      "tier_id": "source_native_64",
+      "product_class": "full_native_product",
+      "mainline": true,
+      "allowed_architectures": ["x86_64", "arm64"],
+      "required_word_size": 64,
+      "required_endianness": "little",
+      "support_claim": "requires_build_smoke_product_package_release_evidence",
+      "limitations_required": true,
+      "notes": "The only mainline full-native product tier."
+    },
+    {
+      "tier_id": "constrained_native_32",
+      "product_class": "reduced_native_lane",
+      "mainline": false,
+      "allowed_architectures": ["x86", "armv7"],
+      "required_word_size": 32,
+      "allowed_endianness": ["little"],
+      "support_claim": "not_full_product_support_without_explicit_limitations",
+      "limitations_required": true,
+      "notes": "32-bit native targets are optional constrained/research lanes."
+    },
+    {
+      "tier_id": "contract_projection",
+      "product_class": "projection_or_viewer_lane",
+      "mainline": false,
+      "allowed_architectures": ["host", "wasm32", "x86", "armv7", "ppc"],
+      "required_word_size": "declared_by_projection",
+      "allowed_endianness": ["little", "declared_by_projection", "host_declared", "host_or_artifact_declared"],
+      "support_claim": "not_native_product_support",
+      "limitations_required": true,
+      "notes": "Used for replay viewers, snapshot clients, generated subsets, thin clients, and data viewers."
+    },
+    {
+      "tier_id": "archive_runner",
+      "product_class": "emulator_vm_or_research_lane",
+      "mainline": false,
+      "allowed_architectures": ["x86", "armv7", "ppc", "wasm32", "host"],
+      "required_word_size": "declared_by_runner",
+      "allowed_endianness": ["little", "big", "big_or_little_declared_by_target", "host_declared"],
+      "support_claim": "historical_or_research_only",
+      "limitations_required": true,
+      "notes": "Used for museum, archive, emulator, or research lanes."
+    }
+  ]
+}

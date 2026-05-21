@@ -11,13 +11,30 @@
       "stability": "provisional",
       "summary": "Requested validation target is invalid or out of scope.",
       "reason": "The requested validation target is absent, malformed, out of scope, or not registered.",
-      "recovery": {"action": "select_alternative", "summary": "Choose a registered command target, schema, tier, or repository path and rerun."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Choose a registered command target, schema, tier, or repository path and rerun."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-REPO-LAYOUT-VIOLATION", "DOM-REPO-FORBIDDEN-ROOT", "DOM-PUBLIC-SURFACE-INVALID"],
-      "related_diagnostic_codes": ["DOM-REPO-LAYOUT-VIOLATION", "DOM-REPO-FORBIDDEN-ROOT", "DOM-PUBLIC-SURFACE-INVALID"],
-      "related_capabilities": ["dominium.repo.validate"],
-      "related_commands": ["dominium.validation.run"],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "diagnostic_codes": [
+        "DOM-REPO-LAYOUT-VIOLATION",
+        "DOM-REPO-FORBIDDEN-ROOT",
+        "DOM-PUBLIC-SURFACE-INVALID"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-REPO-LAYOUT-VIOLATION",
+        "DOM-REPO-FORBIDDEN-ROOT",
+        "DOM-PUBLIC-SURFACE-INVALID"
+      ],
+      "related_capabilities": [
+        "dominium.repo.validate"
+      ],
+      "related_commands": [
+        "dominium.validation.run"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Preserved from command-surface scaffold and extended with capability/refusal metadata."
     },
     {
@@ -28,13 +45,26 @@
       "stability": "provisional",
       "summary": "Requested validation tool is unavailable.",
       "reason": "The requested validator or proof command is not available in this repository checkout.",
-      "recovery": {"action": "install_provider", "summary": "Install or restore the owning tool, or choose a command whose implementation is registered."},
+      "recovery": {
+        "action": "install_provider",
+        "summary": "Install or restore the owning tool, or choose a command whose implementation is registered."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-EVIDENCE-MISSING"],
-      "related_diagnostic_codes": ["DOM-EVIDENCE-MISSING"],
-      "related_capabilities": ["dominium.repo.validate"],
-      "related_commands": ["dominium.validation.run"],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "diagnostic_codes": [
+        "DOM-EVIDENCE-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-EVIDENCE-MISSING"
+      ],
+      "related_capabilities": [
+        "dominium.repo.validate"
+      ],
+      "related_commands": [
+        "dominium.validation.run"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Preserved from command-surface scaffold and extended with capability/refusal metadata."
     },
     {
@@ -45,13 +75,22 @@
       "stability": "provisional",
       "summary": "Required capability is missing.",
       "reason": "A required capability was requested but no available capability or provider satisfies it.",
-      "recovery": {"action": "install_provider", "summary": "Install, enable, or select a provider/capability that satisfies the request."},
+      "recovery": {
+        "action": "install_provider",
+        "summary": "Install, enable, or select a provider/capability that satisfies the request."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-CAPABILITY-MISSING"],
-      "related_diagnostic_codes": ["DOM-CAPABILITY-MISSING"],
+      "diagnostic_codes": [
+        "DOM-CAPABILITY-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CAPABILITY-MISSING"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Required capability missing must refuse; optional capability missing may degrade explicitly."
     },
     {
@@ -62,13 +101,22 @@
       "stability": "provisional",
       "summary": "Capability version is unsupported.",
       "reason": "A capability is present but does not satisfy the requested version or compatibility range.",
-      "recovery": {"action": "select_alternative", "summary": "Select a compatible capability/provider or update the requested capability version."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select a compatible capability/provider or update the requested capability version."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-CAPABILITY-VERSION-UNSUPPORTED"],
-      "related_diagnostic_codes": ["DOM-CAPABILITY-VERSION-UNSUPPORTED"],
+      "diagnostic_codes": [
+        "DOM-CAPABILITY-VERSION-UNSUPPORTED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CAPABILITY-VERSION-UNSUPPORTED"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Version negotiation is policy-only in this task."
     },
     {
@@ -79,13 +127,22 @@
       "stability": "provisional",
       "summary": "Requested capabilities conflict.",
       "reason": "Two or more requested or selected capabilities are mutually incompatible by declared policy.",
-      "recovery": {"action": "select_alternative", "summary": "Select a non-conflicting capability set or disable the conflicting feature."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select a non-conflicting capability set or disable the conflicting feature."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-CAPABILITY-CONFLICT"],
-      "related_diagnostic_codes": ["DOM-CAPABILITY-CONFLICT"],
+      "diagnostic_codes": [
+        "DOM-CAPABILITY-CONFLICT"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CAPABILITY-CONFLICT"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Conflict detection remains future runtime/provider work."
     },
     {
@@ -96,13 +153,23 @@
       "stability": "provisional",
       "summary": "Command-required capability is missing.",
       "reason": "The caller lacks a required declared capability for the command.",
-      "recovery": {"action": "enable_pack", "summary": "Acquire the required capability through an approved profile, pack, authority, or provider path."},
+      "recovery": {
+        "action": "enable_pack",
+        "summary": "Acquire the required capability through an approved profile, pack, authority, or provider path."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-CAPABILITY-MISSING"],
-      "related_diagnostic_codes": ["DOM-CAPABILITY-MISSING"],
+      "diagnostic_codes": [
+        "DOM-CAPABILITY-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CAPABILITY-MISSING"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_command_surface.py --repo-root . --strict", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_command_surface.py --repo-root . --strict",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Preserved from command-surface scaffold and made explicit for capability law."
     },
     {
@@ -113,13 +180,25 @@
       "stability": "provisional",
       "summary": "Command surface is unsupported.",
       "reason": "The command is not declared for the requested CLI, TUI, headless, Workbench, server, rendered, test, or AIDE surface.",
-      "recovery": {"action": "select_alternative", "summary": "Use an allowed surface or update the command registry with proof and compatibility notes."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Use an allowed surface or update the command registry with proof and compatibility notes."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-CMD-UNSUPPORTED-SURFACE"],
-      "related_diagnostic_codes": ["DOM-CMD-UNSUPPORTED-SURFACE"],
+      "diagnostic_codes": [
+        "DOM-CMD-UNSUPPORTED-SURFACE"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CMD-UNSUPPORTED-SURFACE"
+      ],
       "related_capabilities": [],
-      "related_commands": ["dominium.validation.run"],
-      "proof": ["python tools/validators/contracts/check_command_surface.py --repo-root . --strict", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "related_commands": [
+        "dominium.validation.run"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_command_surface.py --repo-root . --strict",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Preserved from command-surface scaffold."
     },
     {
@@ -130,13 +209,25 @@
       "stability": "provisional",
       "summary": "Command input is invalid.",
       "reason": "The command input does not satisfy the declared input schema.",
-      "recovery": {"action": "inspect_evidence", "summary": "Validate the input against the command input schema and rerun."},
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Validate the input against the command input schema and rerun."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-CMD-INVALID-INPUT"],
-      "related_diagnostic_codes": ["DOM-CMD-INVALID-INPUT"],
+      "diagnostic_codes": [
+        "DOM-CMD-INVALID-INPUT"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CMD-INVALID-INPUT"
+      ],
       "related_capabilities": [],
-      "related_commands": ["dominium.validation.run"],
-      "proof": ["python tools/validators/contracts/check_command_surface.py --repo-root . --strict", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "related_commands": [
+        "dominium.validation.run"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_command_surface.py --repo-root . --strict",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Preserved from command-surface scaffold."
     },
     {
@@ -147,13 +238,23 @@
       "stability": "provisional",
       "summary": "Artifact trust is insufficient.",
       "reason": "The artifact trust level, provenance, signature, or source review state does not satisfy the requested capability or gate.",
-      "recovery": {"action": "inspect_evidence", "summary": "Use a trusted artifact, review and promote provenance, or refuse the operation."},
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Use a trusted artifact, review and promote provenance, or refuse the operation."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-ARTIFACT-TRUST-INSUFFICIENT"],
-      "related_diagnostic_codes": ["DOM-ARTIFACT-TRUST-INSUFFICIENT"],
+      "diagnostic_codes": [
+        "DOM-ARTIFACT-TRUST-INSUFFICIENT"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-ARTIFACT-TRUST-INSUFFICIENT"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Detailed mod-pack trust remains MOD-PACK-TRUST-MODEL-01."
     },
     {
@@ -164,13 +265,25 @@
       "stability": "provisional",
       "summary": "Schema version is unsupported.",
       "reason": "The schema version is unknown, retired, incompatible, or lacks migration/refusal policy.",
-      "recovery": {"action": "upgrade_schema", "summary": "Use a supported schema version or provide an explicit migration/refusal path."},
+      "recovery": {
+        "action": "upgrade_schema",
+        "summary": "Use a supported schema version or provide an explicit migration/refusal path."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-SCHEMA-UNSUPPORTED-VERSION"],
-      "related_diagnostic_codes": ["DOM-SCHEMA-UNSUPPORTED-VERSION"],
-      "related_capabilities": ["dominium.schema.validate"],
+      "diagnostic_codes": [
+        "DOM-SCHEMA-UNSUPPORTED-VERSION"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-SCHEMA-UNSUPPORTED-VERSION"
+      ],
+      "related_capabilities": [
+        "dominium.schema.validate"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict", "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Schema/protocol law owns migration behavior."
     },
     {
@@ -181,13 +294,22 @@
       "stability": "provisional",
       "summary": "Requested provider is unavailable.",
       "reason": "No provider is installed, enabled, compatible, or permitted for the requested capability.",
-      "recovery": {"action": "install_provider", "summary": "Install, enable, or select a provider that declares the requested capability."},
+      "recovery": {
+        "action": "install_provider",
+        "summary": "Install, enable, or select a provider that declares the requested capability."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PROVIDER-UNAVAILABLE"],
-      "related_diagnostic_codes": ["DOM-PROVIDER-UNAVAILABLE"],
+      "diagnostic_codes": [
+        "DOM-PROVIDER-UNAVAILABLE"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PROVIDER-UNAVAILABLE"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Provider conformance remains PROVIDER-MODEL-01."
     },
     {
@@ -198,13 +320,22 @@
       "stability": "provisional",
       "summary": "Provider ABI is incompatible.",
       "reason": "The provider ABI does not satisfy the requested public surface, native boundary, or adapter contract.",
-      "recovery": {"action": "select_alternative", "summary": "Select a provider with a compatible ABI or add an approved adapter."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select a provider with a compatible ABI or add an approved adapter."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PROVIDER-ABI-MISMATCH"],
-      "related_diagnostic_codes": ["DOM-PROVIDER-ABI-MISMATCH"],
+      "diagnostic_codes": [
+        "DOM-PROVIDER-ABI-MISMATCH"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PROVIDER-ABI-MISMATCH"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"
+      ],
       "notes": "Native provider ABI remains provisional."
     },
     {
@@ -215,13 +346,22 @@
       "stability": "provisional",
       "summary": "Provider lacks required capability.",
       "reason": "The provider does not declare one or more capabilities required by the selection request.",
-      "recovery": {"action": "select_alternative", "summary": "Select a provider that declares the required capability or update the descriptor with proof."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select a provider that declares the required capability or update the descriptor with proof."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PROVIDER-CAPABILITY-MISSING"],
-      "related_diagnostic_codes": ["DOM-PROVIDER-CAPABILITY-MISSING"],
+      "diagnostic_codes": [
+        "DOM-PROVIDER-CAPABILITY-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PROVIDER-CAPABILITY-MISSING"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"
+      ],
       "notes": "Capabilities must reference the governed capability registry."
     },
     {
@@ -232,13 +372,22 @@
       "stability": "provisional",
       "summary": "Provider trust is insufficient.",
       "reason": "The provider trust level or provenance does not satisfy the requested operation.",
-      "recovery": {"action": "inspect_evidence", "summary": "Select a trusted provider or review/promote provider provenance through governed trust policy."},
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Select a trusted provider or review/promote provider provenance through governed trust policy."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PROVIDER-TRUST-INSUFFICIENT"],
-      "related_diagnostic_codes": ["DOM-PROVIDER-TRUST-INSUFFICIENT"],
+      "diagnostic_codes": [
+        "DOM-PROVIDER-TRUST-INSUFFICIENT"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PROVIDER-TRUST-INSUFFICIENT"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"
+      ],
       "notes": "Detailed trust policy remains later Foundation Lock work."
     },
     {
@@ -249,13 +398,22 @@
       "stability": "provisional",
       "summary": "Provider conformance proof is missing.",
       "reason": "The provider lacks required conformance tests or fixtures for the requested stability or use.",
-      "recovery": {"action": "inspect_evidence", "summary": "Add conformance proof or keep the provider provisional/experimental."},
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Add conformance proof or keep the provider provisional/experimental."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PROVIDER-CONFORMANCE-MISSING"],
-      "related_diagnostic_codes": ["DOM-PROVIDER-CONFORMANCE-MISSING"],
+      "diagnostic_codes": [
+        "DOM-PROVIDER-CONFORMANCE-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PROVIDER-CONFORMANCE-MISSING"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_provider_model.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --fixtures"
+      ],
       "notes": "Conformance runner implementation is out of scope for PROVIDER-MODEL-01."
     },
     {
@@ -266,13 +424,22 @@
       "stability": "provisional",
       "summary": "Provider platform is unsupported.",
       "reason": "The provider cannot run under the requested OS, deployment target, shell, driver, or platform constraint.",
-      "recovery": {"action": "select_alternative", "summary": "Select a provider compatible with the current platform or use an explicit degraded mode."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select a provider compatible with the current platform or use an explicit degraded mode."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PLATFORM-UNSUPPORTED"],
-      "related_diagnostic_codes": ["DOM-PLATFORM-UNSUPPORTED"],
+      "diagnostic_codes": [
+        "DOM-PLATFORM-UNSUPPORTED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PLATFORM-UNSUPPORTED"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"
+      ],
       "notes": "Portability matrix remains later Foundation Lock work."
     },
     {
@@ -283,13 +450,22 @@
       "stability": "provisional",
       "summary": "Requested platform is unsupported.",
       "reason": "The current OS, deployment target, driver, shell, or host capability does not satisfy the requested platform requirement.",
-      "recovery": {"action": "select_alternative", "summary": "Select a supported platform/provider, use degraded mode, or refuse the operation."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select a supported platform/provider, use degraded mode, or refuse the operation."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PLATFORM-UNSUPPORTED"],
-      "related_diagnostic_codes": ["DOM-PLATFORM-UNSUPPORTED"],
+      "diagnostic_codes": [
+        "DOM-PLATFORM-UNSUPPORTED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PLATFORM-UNSUPPORTED"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Portability matrix remains PORTABILITY-MATRIX-01."
     },
     {
@@ -300,13 +476,22 @@
       "stability": "provisional",
       "summary": "Policy denies the requested operation.",
       "reason": "A governing profile, trust policy, security rule, release gate, authority, or capability policy denies the request.",
-      "recovery": {"action": "inspect_evidence", "summary": "Inspect the governing policy and evidence; change policy only through reviewed governance."},
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Inspect the governing policy and evidence; change policy only through reviewed governance."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-REFUSAL-ISSUED"],
-      "related_diagnostic_codes": ["DOM-REFUSAL-ISSUED"],
+      "diagnostic_codes": [
+        "DOM-REFUSAL-ISSUED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-REFUSAL-ISSUED"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Security/live-ops policy remains review-gated."
     },
     {
@@ -317,13 +502,24 @@
       "stability": "provisional",
       "summary": "Replacement proof is missing.",
       "reason": "A replacement would affect public, stable, or compatibility-bearing surfaces without conformance, compatibility, or evidence proof.",
-      "recovery": {"action": "inspect_evidence", "summary": "Add replacement proof or keep the replacement draft/deferred."},
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Add replacement proof or keep the replacement draft/deferred."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-REPLACEMENT-MISSING-PROOF", "DOM-REPLACEMENT-CONFORMANCE-MISSING"],
-      "related_diagnostic_codes": ["DOM-REPLACEMENT-MISSING-PROOF", "DOM-REPLACEMENT-CONFORMANCE-MISSING"],
+      "diagnostic_codes": [
+        "DOM-REPLACEMENT-MISSING-PROOF",
+        "DOM-REPLACEMENT-CONFORMANCE-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-REPLACEMENT-MISSING-PROOF",
+        "DOM-REPLACEMENT-CONFORMANCE-MISSING"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "Replacement protocol allows rewrites only with declared proof or explicit deferral."
     },
     {
@@ -334,13 +530,22 @@
       "stability": "provisional",
       "summary": "Replacement rollback plan is missing.",
       "reason": "An active replacement packet lacks rollback action, steps, and verification.",
-      "recovery": {"action": "inspect_evidence", "summary": "Add rollback_plan or mark the packet historical/deferred when appropriate."},
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Add rollback_plan or mark the packet historical/deferred when appropriate."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-REPLACEMENT-MISSING-ROLLBACK"],
-      "related_diagnostic_codes": ["DOM-REPLACEMENT-MISSING-ROLLBACK"],
+      "diagnostic_codes": [
+        "DOM-REPLACEMENT-MISSING-ROLLBACK"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-REPLACEMENT-MISSING-ROLLBACK"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "Rollback is evidence, not runtime implementation in this task."
     },
     {
@@ -351,13 +556,22 @@
       "stability": "provisional",
       "summary": "Replacement would break compatibility.",
       "reason": "The replacement affects stable artifacts, schemas, protocols, commands, providers, modules, or public surfaces without a compatible path.",
-      "recovery": {"action": "run_migration", "summary": "Provide migration, compatibility proof, or structured refusal before applying the replacement."},
+      "recovery": {
+        "action": "run_migration",
+        "summary": "Provide migration, compatibility proof, or structured refusal before applying the replacement."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-REPLACEMENT-COMPATIBILITY-BREAK"],
-      "related_diagnostic_codes": ["DOM-REPLACEMENT-COMPATIBILITY-BREAK"],
+      "diagnostic_codes": [
+        "DOM-REPLACEMENT-COMPATIBILITY-BREAK"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-REPLACEMENT-COMPATIBILITY-BREAK"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "Silent compatibility breakage is forbidden."
     },
     {
@@ -368,13 +582,22 @@
       "stability": "provisional",
       "summary": "Replacement requires migration but none is declared.",
       "reason": "A replacement would affect a stable or durable data contract without explicit migration or refusal behavior.",
-      "recovery": {"action": "run_migration", "summary": "Declare an explicit migration policy or refuse incompatible artifacts deterministically."},
+      "recovery": {
+        "action": "run_migration",
+        "summary": "Declare an explicit migration policy or refuse incompatible artifacts deterministically."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-REPLACEMENT-MIGRATION-MISSING"],
-      "related_diagnostic_codes": ["DOM-REPLACEMENT-MIGRATION-MISSING"],
+      "diagnostic_codes": [
+        "DOM-REPLACEMENT-MIGRATION-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-REPLACEMENT-MIGRATION-MISSING"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "No silent or best-effort migration is allowed."
     },
     {
@@ -385,13 +608,23 @@
       "stability": "provisional",
       "summary": "Replacement would break API or ABI obligations.",
       "reason": "A replacement affects a public API, ABI, header, symbol, or native boundary without required proof or transition policy.",
-      "recovery": {"action": "select_alternative", "summary": "Keep the old ABI, add an adapter, or provide reviewed ABI migration/deprecation evidence."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Keep the old ABI, add an adapter, or provide reviewed ABI migration/deprecation evidence."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-REPLACEMENT-ABI-BREAK"],
-      "related_diagnostic_codes": ["DOM-REPLACEMENT-ABI-BREAK"],
+      "diagnostic_codes": [
+        "DOM-REPLACEMENT-ABI-BREAK"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-REPLACEMENT-ABI-BREAK"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/abi/check_public_headers.py --repo-root . --strict", "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/abi/check_public_headers.py --repo-root . --strict",
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "ABI replacement remains provisional until API-ABI-CANON proof exists."
     },
     {
@@ -402,13 +635,22 @@
       "stability": "provisional",
       "summary": "Requested version is unsupported.",
       "reason": "The version is unknown, retired, removed, or outside supported policy.",
-      "recovery": {"action": "upgrade_schema", "summary": "Use a supported version, run a declared migration, or select a supported replacement surface."},
+      "recovery": {
+        "action": "upgrade_schema",
+        "summary": "Use a supported version, run a declared migration, or select a supported replacement surface."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-VERSION-UNSUPPORTED"],
-      "related_diagnostic_codes": ["DOM-VERSION-UNSUPPORTED"],
+      "diagnostic_codes": [
+        "DOM-VERSION-UNSUPPORTED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-VERSION-UNSUPPORTED"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+      ],
       "notes": "Unsupported versions must refuse with structured evidence."
     },
     {
@@ -419,13 +661,24 @@
       "stability": "provisional",
       "summary": "Requested version is incompatible.",
       "reason": "The version does not satisfy the declared compatibility range.",
-      "recovery": {"action": "select_alternative", "summary": "Select a compatible version or replacement, or use a declared migration path."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select a compatible version or replacement, or use a declared migration path."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-VERSION-INCOMPATIBLE", "DOM-STABLE-SURFACE-MISSING-COMPATIBILITY"],
-      "related_diagnostic_codes": ["DOM-VERSION-INCOMPATIBLE", "DOM-STABLE-SURFACE-MISSING-COMPATIBILITY"],
+      "diagnostic_codes": [
+        "DOM-VERSION-INCOMPATIBLE",
+        "DOM-STABLE-SURFACE-MISSING-COMPATIBILITY"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-VERSION-INCOMPATIBLE",
+        "DOM-STABLE-SURFACE-MISSING-COMPATIBILITY"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"
+      ],
       "notes": "Compatibility is declared policy, not semver inference."
     },
     {
@@ -436,13 +689,22 @@
       "stability": "provisional",
       "summary": "Requested surface is retired.",
       "reason": "The surface is no longer active for new use and must use replacement, migration, compatibility bridge, or refusal policy.",
-      "recovery": {"action": "select_alternative", "summary": "Use the replacement surface, migrate through the declared path, or inspect retirement evidence."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Use the replacement surface, migrate through the declared path, or inspect retirement evidence."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-RETIREMENT-MISSING-POLICY"],
-      "related_diagnostic_codes": ["DOM-RETIREMENT-MISSING-POLICY"],
+      "diagnostic_codes": [
+        "DOM-RETIREMENT-MISSING-POLICY"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-RETIREMENT-MISSING-POLICY"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"
+      ],
       "notes": "Retirement is not deletion; old references need policy."
     },
     {
@@ -453,13 +715,22 @@
       "stability": "provisional",
       "summary": "Requested surface is removed.",
       "reason": "The surface is no longer available and no active compatibility bridge is selected.",
-      "recovery": {"action": "inspect_evidence", "summary": "Inspect removal evidence and use the declared replacement or migration path when available."},
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Inspect removal evidence and use the declared replacement or migration path when available."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-REMOVAL-WITHOUT-RETIREMENT"],
-      "related_diagnostic_codes": ["DOM-REMOVAL-WITHOUT-RETIREMENT"],
+      "diagnostic_codes": [
+        "DOM-REMOVAL-WITHOUT-RETIREMENT"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-REMOVAL-WITHOUT-RETIREMENT"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+      ],
       "notes": "Removed old references must refuse deterministically or bridge through declared compatibility."
     },
     {
@@ -470,13 +741,22 @@
       "stability": "provisional",
       "summary": "Migration is required.",
       "reason": "The requested version or surface cannot proceed without an explicit migration policy.",
-      "recovery": {"action": "run_migration", "summary": "Run the declared migration or refuse until a reviewed migration policy exists."},
+      "recovery": {
+        "action": "run_migration",
+        "summary": "Run the declared migration or refuse until a reviewed migration policy exists."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-BREAKING-CHANGE-MISSING-MIGRATION"],
-      "related_diagnostic_codes": ["DOM-BREAKING-CHANGE-MISSING-MIGRATION"],
+      "diagnostic_codes": [
+        "DOM-BREAKING-CHANGE-MISSING-MIGRATION"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-BREAKING-CHANGE-MISSING-MIGRATION"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+      ],
       "notes": "No best-effort migration is permitted."
     },
     {
@@ -487,13 +767,24 @@
       "stability": "provisional",
       "summary": "Replacement is required.",
       "reason": "A deprecated, retired, removed, or breaking surface needs a declared replacement or reason no replacement exists.",
-      "recovery": {"action": "select_alternative", "summary": "Declare or select the replacement surface, or record why no replacement exists with refusal policy."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Declare or select the replacement surface, or record why no replacement exists with refusal policy."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-DEPRECATION-MISSING-REPLACEMENT", "DOM-LIFECYCLE-INVALID-TRANSITION"],
-      "related_diagnostic_codes": ["DOM-DEPRECATION-MISSING-REPLACEMENT", "DOM-LIFECYCLE-INVALID-TRANSITION"],
+      "diagnostic_codes": [
+        "DOM-DEPRECATION-MISSING-REPLACEMENT",
+        "DOM-LIFECYCLE-INVALID-TRANSITION"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-DEPRECATION-MISSING-REPLACEMENT",
+        "DOM-LIFECYCLE-INVALID-TRANSITION"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+      ],
       "notes": "Nothing deprecated disappears without replacement, migration, or explicit refusal policy."
     },
     {
@@ -504,13 +795,27 @@
       "stability": "provisional",
       "summary": "Mod or pack trust is insufficient.",
       "reason": "The requested mod, pack, module, adapter, or provider authority exceeds its declared trust level or review status.",
-      "recovery": {"action": "inspect_evidence", "summary": "Inspect trust evidence, lower requested authority, or complete review before enabling."},
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Inspect trust evidence, lower requested authority, or complete review before enabling."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-MOD-TRUST-INSUFFICIENT", "DOM-PACK-TRUST-LEVEL-UNKNOWN"],
-      "related_diagnostic_codes": ["DOM-MOD-TRUST-INSUFFICIENT", "DOM-PACK-TRUST-LEVEL-UNKNOWN"],
-      "related_capabilities": ["dominium.mod.data_only", "dominium.mod.schema_validated"],
+      "diagnostic_codes": [
+        "DOM-MOD-TRUST-INSUFFICIENT",
+        "DOM-PACK-TRUST-LEVEL-UNKNOWN"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-MOD-TRUST-INSUFFICIENT",
+        "DOM-PACK-TRUST-LEVEL-UNKNOWN"
+      ],
+      "related_capabilities": [
+        "dominium.mod.data_only",
+        "dominium.mod.schema_validated"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "Trust cannot be inferred from pack existence."
     },
     {
@@ -521,13 +826,22 @@
       "stability": "provisional",
       "summary": "Requested permission is undeclared.",
       "reason": "A mod or pack requested a permission without a declared scope, reason, and trust policy.",
-      "recovery": {"action": "disable_feature", "summary": "Remove the permission request or declare and review it before enabling the feature."},
+      "recovery": {
+        "action": "disable_feature",
+        "summary": "Remove the permission request or declare and review it before enabling the feature."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-MOD-PERMISSION-UNDECLARED"],
-      "related_diagnostic_codes": ["DOM-MOD-PERMISSION-UNDECLARED"],
+      "diagnostic_codes": [
+        "DOM-MOD-PERMISSION-UNDECLARED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-MOD-PERMISSION-UNDECLARED"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "A capability is not a permission."
     },
     {
@@ -538,13 +852,25 @@
       "stability": "provisional",
       "summary": "Native provider is blocked.",
       "reason": "Native code was requested outside trusted/signed native provider policy and conformance evidence.",
-      "recovery": {"action": "select_alternative", "summary": "Use a non-native provider or keep the provider inside a trusted build boundary with conformance evidence."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Use a non-native provider or keep the provider inside a trusted build boundary with conformance evidence."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-MOD-NATIVE-PROVIDER-BLOCKED"],
-      "related_diagnostic_codes": ["DOM-MOD-NATIVE-PROVIDER-BLOCKED"],
-      "related_capabilities": ["dominium.mod.trusted_native_provider", "dominium.mod.signed_native_provider"],
+      "diagnostic_codes": [
+        "DOM-MOD-NATIVE-PROVIDER-BLOCKED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-MOD-NATIVE-PROVIDER-BLOCKED"
+      ],
+      "related_capabilities": [
+        "dominium.mod.trusted_native_provider",
+        "dominium.mod.signed_native_provider"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "Dynamic native loading remains forbidden by default."
     },
     {
@@ -555,13 +881,24 @@
       "stability": "provisional",
       "summary": "External adapter is blocked.",
       "reason": "An external process adapter lacks declared protocol, permissions, review, sandbox, security, or determinism evidence.",
-      "recovery": {"action": "disable_feature", "summary": "Disable the adapter or declare IPC/protocol, permissions, determinism impact, and review evidence."},
+      "recovery": {
+        "action": "disable_feature",
+        "summary": "Disable the adapter or declare IPC/protocol, permissions, determinism impact, and review evidence."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-MOD-EXTERNAL-ADAPTER-BLOCKED"],
-      "related_diagnostic_codes": ["DOM-MOD-EXTERNAL-ADAPTER-BLOCKED"],
-      "related_capabilities": ["dominium.mod.external_process_adapter"],
+      "diagnostic_codes": [
+        "DOM-MOD-EXTERNAL-ADAPTER-BLOCKED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-MOD-EXTERNAL-ADAPTER-BLOCKED"
+      ],
+      "related_capabilities": [
+        "dominium.mod.external_process_adapter"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "External adapters are not invisible fallback."
     },
     {
@@ -572,13 +909,24 @@
       "stability": "provisional",
       "summary": "Determinism impact is missing.",
       "reason": "A mod, pack, adapter, or provider omits determinism impact or replay policy.",
-      "recovery": {"action": "inspect_evidence", "summary": "Declare determinism classification, replay policy, and authoritative-state impact."},
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Declare determinism classification, replay policy, and authoritative-state impact."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-MOD-DETERMINISM-IMPACT-MISSING"],
-      "related_diagnostic_codes": ["DOM-MOD-DETERMINISM-IMPACT-MISSING"],
-      "related_capabilities": ["dominium.mod.scriptless_rule_data"],
+      "diagnostic_codes": [
+        "DOM-MOD-DETERMINISM-IMPACT-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-MOD-DETERMINISM-IMPACT-MISSING"
+      ],
+      "related_capabilities": [
+        "dominium.mod.scriptless_rule_data"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "Unknown determinism impact refuses by default."
     },
     {
@@ -589,13 +937,24 @@
       "stability": "provisional",
       "summary": "Pack overlay conflict is unresolved.",
       "reason": "A pack overlay conflicts with another pack or target without an allowed explicit conflict policy.",
-      "recovery": {"action": "select_alternative", "summary": "Declare explicit overlay conflict policy or remove one of the conflicting overlays."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Declare explicit overlay conflict policy or remove one of the conflicting overlays."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PACK-OVERLAY-CONFLICT"],
-      "related_diagnostic_codes": ["DOM-PACK-OVERLAY-CONFLICT"],
-      "related_capabilities": ["dominium.pack.overlay"],
+      "diagnostic_codes": [
+        "DOM-PACK-OVERLAY-CONFLICT"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PACK-OVERLAY-CONFLICT"
+      ],
+      "related_capabilities": [
+        "dominium.pack.overlay"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "Runtime mount plans are future work; policy is declared here."
     },
     {
@@ -606,13 +965,24 @@
       "stability": "provisional",
       "summary": "Silent pack overlay overwrite is forbidden.",
       "reason": "A pack overlay attempts implicit or silent overwrite behavior.",
-      "recovery": {"action": "select_alternative", "summary": "Use an explicit conflict policy with evidence or refuse the pack composition."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Use an explicit conflict policy with evidence or refuse the pack composition."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PACK-SILENT-OVERWRITE-FORBIDDEN"],
-      "related_diagnostic_codes": ["DOM-PACK-SILENT-OVERWRITE-FORBIDDEN"],
-      "related_capabilities": ["dominium.pack.overlay"],
+      "diagnostic_codes": [
+        "DOM-PACK-SILENT-OVERWRITE-FORBIDDEN"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PACK-SILENT-OVERWRITE-FORBIDDEN"
+      ],
+      "related_capabilities": [
+        "dominium.pack.overlay"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "No silent overwrite."
     },
     {
@@ -623,13 +993,24 @@
       "stability": "provisional",
       "summary": "Network permission is denied.",
       "reason": "A mod or pack requests network authority without an allowed trust level and declaration.",
-      "recovery": {"action": "disable_feature", "summary": "Remove the network permission request or isolate it behind reviewed external adapter policy."},
+      "recovery": {
+        "action": "disable_feature",
+        "summary": "Remove the network permission request or isolate it behind reviewed external adapter policy."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-MOD-NETWORK-PERMISSION-DENIED"],
-      "related_diagnostic_codes": ["DOM-MOD-NETWORK-PERMISSION-DENIED"],
-      "related_capabilities": ["dominium.mod.external_process_adapter"],
+      "diagnostic_codes": [
+        "DOM-MOD-NETWORK-PERMISSION-DENIED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-MOD-NETWORK-PERMISSION-DENIED"
+      ],
+      "related_capabilities": [
+        "dominium.mod.external_process_adapter"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "Data-only packs get no network authority."
     },
     {
@@ -640,13 +1021,24 @@
       "stability": "provisional",
       "summary": "Filesystem permission is denied.",
       "reason": "A mod or pack requests filesystem authority without an allowed trust level and declaration.",
-      "recovery": {"action": "disable_feature", "summary": "Remove the filesystem permission request or bind it to governed storage/profile/save policy."},
+      "recovery": {
+        "action": "disable_feature",
+        "summary": "Remove the filesystem permission request or bind it to governed storage/profile/save policy."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-MOD-FILESYSTEM-PERMISSION-DENIED"],
-      "related_diagnostic_codes": ["DOM-MOD-FILESYSTEM-PERMISSION-DENIED"],
-      "related_capabilities": ["dominium.mod.external_process_adapter"],
+      "diagnostic_codes": [
+        "DOM-MOD-FILESYSTEM-PERMISSION-DENIED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-MOD-FILESYSTEM-PERMISSION-DENIED"
+      ],
+      "related_capabilities": [
+        "dominium.mod.external_process_adapter"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "Data-only packs get no filesystem authority beyond own declared pack payload."
     },
     {
@@ -657,13 +1049,26 @@
       "stability": "provisional",
       "summary": "Requested platform floor is unsupported.",
       "reason": "The requested OS/platform floor is unregistered, unsupported, or lacks the required proof level.",
-      "recovery": {"action": "select_alternative", "summary": "Select a registered platform floor with evidence, or keep the target planned/research."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select a registered platform floor with evidence, or keep the target planned/research."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PORTABILITY-UNSUPPORTED-PLATFORM"],
-      "related_diagnostic_codes": ["DOM-PORTABILITY-UNSUPPORTED-PLATFORM"],
-      "related_capabilities": ["domino.platform.headless", "domino.platform.win32", "domino.platform.posix"],
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-UNSUPPORTED-PLATFORM"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PORTABILITY-UNSUPPORTED-PLATFORM"
+      ],
+      "related_capabilities": [
+        "domino.platform.headless",
+        "domino.platform.win32",
+        "domino.platform.posix"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Support is a matrix row plus evidence, not a folder or preset."
     },
     {
@@ -674,13 +1079,22 @@
       "stability": "provisional",
       "summary": "Requested architecture is unsupported.",
       "reason": "The requested CPU architecture is not registered or lacks portability evidence.",
-      "recovery": {"action": "select_alternative", "summary": "Select a registered architecture with proof or record the target as research."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select a registered architecture with proof or record the target as research."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PORTABILITY-UNSUPPORTED-ARCH"],
-      "related_diagnostic_codes": ["DOM-PORTABILITY-UNSUPPORTED-ARCH"],
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-UNSUPPORTED-ARCH"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PORTABILITY-UNSUPPORTED-ARCH"
+      ],
       "related_capabilities": [],
       "related_commands": [],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Endianness and word size assumptions must be declared."
     },
     {
@@ -691,13 +1105,26 @@
       "stability": "provisional",
       "summary": "Requested toolchain is unsupported.",
       "reason": "The requested compiler/toolchain is unknown, unsupported, or lacks build proof.",
-      "recovery": {"action": "select_alternative", "summary": "Select a registered proven toolchain, add evidence, or lower the claim to planned/research."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select a registered proven toolchain, add evidence, or lower the claim to planned/research."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PORTABILITY-UNSUPPORTED-TOOLCHAIN", "DOM-PORTABILITY-BUILD-PROOF-MISSING"],
-      "related_diagnostic_codes": ["DOM-PORTABILITY-UNSUPPORTED-TOOLCHAIN", "DOM-PORTABILITY-BUILD-PROOF-MISSING"],
-      "related_capabilities": ["domino.toolchain.msvc143"],
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-UNSUPPORTED-TOOLCHAIN",
+        "DOM-PORTABILITY-BUILD-PROOF-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PORTABILITY-UNSUPPORTED-TOOLCHAIN",
+        "DOM-PORTABILITY-BUILD-PROOF-MISSING"
+      ],
+      "related_capabilities": [
+        "domino.toolchain.msvc143"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Installed compiler presence is not support proof."
     },
     {
@@ -708,13 +1135,27 @@
       "stability": "provisional",
       "summary": "Required provider is unavailable on the target.",
       "reason": "A runtime, renderer, storage, network, audio, input, or package provider is not available or not proven for the requested target.",
-      "recovery": {"action": "select_alternative", "summary": "Select an available provider, use explicit degraded mode, or refuse the capability."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Select an available provider, use explicit degraded mode, or refuse the capability."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PORTABILITY-PROVIDER-UNAVAILABLE"],
-      "related_diagnostic_codes": ["DOM-PORTABILITY-PROVIDER-UNAVAILABLE"],
-      "related_capabilities": ["domino.render.null", "domino.render.software", "domino.storage.local"],
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-PROVIDER-UNAVAILABLE"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PORTABILITY-PROVIDER-UNAVAILABLE"
+      ],
+      "related_capabilities": [
+        "domino.render.null",
+        "domino.render.software",
+        "domino.storage.local"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict", "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict",
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"
+      ],
       "notes": "Provider fallback must be explicit typed degradation."
     },
     {
@@ -725,13 +1166,28 @@
       "stability": "provisional",
       "summary": "Requested product mode is unsupported.",
       "reason": "The requested CLI, headless, rendered, native, or package product mode lacks runtime/provider capability or proof on the target.",
-      "recovery": {"action": "select_alternative", "summary": "Choose a product mode with runtime capability evidence, or add proof before claiming support."},
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Choose a product mode with runtime capability evidence, or add proof before claiming support."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PORTABILITY-MODE-UNSUPPORTED", "DOM-PORTABILITY-PRODUCT-PROOF-MISSING"],
-      "related_diagnostic_codes": ["DOM-PORTABILITY-MODE-UNSUPPORTED", "DOM-PORTABILITY-PRODUCT-PROOF-MISSING"],
-      "related_capabilities": ["dominium.product.mode.cli", "dominium.product.mode.headless", "dominium.product.mode.rendered"],
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-MODE-UNSUPPORTED",
+        "DOM-PORTABILITY-PRODUCT-PROOF-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PORTABILITY-MODE-UNSUPPORTED",
+        "DOM-PORTABILITY-PRODUCT-PROOF-MISSING"
+      ],
+      "related_capabilities": [
+        "dominium.product.mode.cli",
+        "dominium.product.mode.headless",
+        "dominium.product.mode.rendered"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "App folders do not prove product mode support."
     },
     {
@@ -742,14 +1198,185 @@
       "stability": "provisional",
       "summary": "Release portability is not proven.",
       "reason": "The requested release or package support claim lacks build, smoke, product, package, or release evidence.",
-      "recovery": {"action": "inspect_evidence", "summary": "Run the required gate or lower the support_status/release_status before publishing the claim."},
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Run the required gate or lower the support_status/release_status before publishing the claim."
+      },
       "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
-      "diagnostic_codes": ["DOM-PORTABILITY-RELEASE-PROOF-MISSING"],
-      "related_diagnostic_codes": ["DOM-PORTABILITY-RELEASE-PROOF-MISSING"],
-      "related_capabilities": ["domino.package.portable"],
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-RELEASE-PROOF-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-PORTABILITY-RELEASE-PROOF-MISSING"
+      ],
+      "related_capabilities": [
+        "domino.package.portable"
+      ],
       "related_commands": [],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Release support requires release gate evidence."
+    },
+    {
+      "refusal_id": "dominium.refusal.architecture.full_native_32bit",
+      "code": "dominium.refusal.architecture.full_native_32bit",
+      "owner": "contracts.platform",
+      "category": "platform",
+      "stability": "provisional",
+      "summary": "32-bit full native architecture claim refused.",
+      "reason": "The target requested source_native_64 while using a 32-bit architecture.",
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Use source_native_64 on x86_64/arm64 or reclassify the target as constrained_native_32, contract_projection, or archive_runner."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-ARCH-32BIT-FULL-NATIVE-REFUSED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-ARCH-32BIT-FULL-NATIVE-REFUSED"
+      ],
+      "related_capabilities": [
+        "dominium.platform.source_native_64",
+        "dominium.platform.constrained_native_32",
+        "dominium.platform.contract_projection",
+        "dominium.platform.archive_runner"
+      ],
+      "related_commands": [],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Added by PORTABILITY-ARCH-POLICY-02."
+    },
+    {
+      "refusal_id": "dominium.refusal.architecture.pointer_width_persisted",
+      "code": "dominium.refusal.architecture.pointer_width_persisted",
+      "owner": "contracts.platform",
+      "category": "artifact",
+      "stability": "provisional",
+      "summary": "Pointer-width persisted format refused.",
+      "reason": "A stable format attempted to use native pointer-width, raw pointer, native padding, or compiler object layout data.",
+      "recovery": {
+        "action": "run_migration",
+        "summary": "Replace native-width fields with fixed-width explicit encodings and provide migration/refusal behavior."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-ARCH-POINTER-WIDTH-PERSISTED-FORMAT"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-ARCH-POINTER-WIDTH-PERSISTED-FORMAT"
+      ],
+      "related_capabilities": [
+        "dominium.platform.source_native_64",
+        "dominium.platform.constrained_native_32",
+        "dominium.platform.contract_projection",
+        "dominium.platform.archive_runner"
+      ],
+      "related_commands": [],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Added by PORTABILITY-ARCH-POLICY-02."
+    },
+    {
+      "refusal_id": "dominium.refusal.architecture.endian_unsupported",
+      "code": "dominium.refusal.architecture.endian_unsupported",
+      "owner": "contracts.platform",
+      "category": "platform",
+      "stability": "provisional",
+      "summary": "Unsupported endian architecture claim refused.",
+      "reason": "The target requested unsupported endian behavior or omitted explicit little-endian persisted/protocol encoding.",
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Use little-endian mainline encoding or a reviewed projection/research lane."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-ARCH-ENDIAN-UNSUPPORTED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-ARCH-ENDIAN-UNSUPPORTED"
+      ],
+      "related_capabilities": [
+        "dominium.platform.source_native_64",
+        "dominium.platform.constrained_native_32",
+        "dominium.platform.contract_projection",
+        "dominium.platform.archive_runner"
+      ],
+      "related_commands": [],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Added by PORTABILITY-ARCH-POLICY-02."
+    },
+    {
+      "refusal_id": "dominium.refusal.architecture.support_evidence_missing",
+      "code": "dominium.refusal.architecture.support_evidence_missing",
+      "owner": "contracts.platform",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Architecture support evidence is missing.",
+      "reason": "The architecture claim lacks required build, smoke, product, package, release, or capability evidence.",
+      "recovery": {
+        "action": "inspect_evidence",
+        "summary": "Add the required proof or lower the support status before claiming support."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-ARCH-CLAIM-EVIDENCE-MISSING"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-ARCH-CLAIM-EVIDENCE-MISSING"
+      ],
+      "related_capabilities": [
+        "dominium.platform.source_native_64",
+        "dominium.platform.constrained_native_32",
+        "dominium.platform.contract_projection",
+        "dominium.platform.archive_runner"
+      ],
+      "related_commands": [],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Added by PORTABILITY-ARCH-POLICY-02."
+    },
+    {
+      "refusal_id": "dominium.refusal.architecture.legacy_requires_projection",
+      "code": "dominium.refusal.architecture.legacy_requires_projection",
+      "owner": "contracts.platform",
+      "category": "platform",
+      "stability": "provisional",
+      "summary": "Legacy target requires projection or constrained mode.",
+      "reason": "The requested vintage or 32-bit target is outside source_native_64 mainline product policy.",
+      "recovery": {
+        "action": "use_degraded_mode",
+        "summary": "Use constrained-native, contract projection, replay/snapshot client, or archive-runner behavior."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-ARCH-LEGACY-REQUIRES-PROJECTION"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-ARCH-LEGACY-REQUIRES-PROJECTION"
+      ],
+      "related_capabilities": [
+        "dominium.platform.source_native_64",
+        "dominium.platform.constrained_native_32",
+        "dominium.platform.contract_projection",
+        "dominium.platform.archive_runner"
+      ],
+      "related_commands": [],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Added by PORTABILITY-ARCH-POLICY-02."
     }
   ],
   "full_registry_owner": "CAPABILITY-REFUSAL-LAW-01",

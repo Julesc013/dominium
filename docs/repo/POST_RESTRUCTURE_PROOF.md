@@ -5,7 +5,26 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: FOUNDATION_LOCK_PASS_WITH_WARNINGS after `FOUNDATION-CLOSEOUT-02`.
+Latest proof state: FOUNDATION_LOCK_PASS_WITH_WARNINGS after `PORTABILITY-ARCH-POLICY-02`.
+
+## PORTABILITY-ARCH-POLICY-02 Proof Note
+
+PORTABILITY-ARCH-POLICY-02 completes the first post-closeout hardening follow-up.
+
+- architecture policy validator: PASS.
+- portability matrix validator: PASS.
+- mainline full-native architectures: `x86_64` and `arm64`.
+- architecture tiers: `source_native_64`, `constrained_native_32`, `contract_projection`, `archive_runner`.
+- pointer-width and endian policy: declared and validated.
+- AIDE doctor/validate/test/selftest/tools/roots/repo: PASS.
+- RepoX STRICT: PASS with stale AuditX warning.
+- fast strict: PASS, `33` commands, `296.553` seconds.
+- CMake configure/build and smoke CTest: PASS through fast strict.
+- full CTest remains T4/full-gate debt and was not run.
+- `WORKBENCH-VALIDATION-SLICE-01` remains authorized as the next narrow governed product slice.
+- broad feature work remains blocked.
+
+Recommended next task: `WORKBENCH-VALIDATION-SLICE-01`.
 
 ## FOUNDATION-CLOSEOUT-02 Proof Note
 

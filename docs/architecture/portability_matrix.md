@@ -10,11 +10,15 @@ Portability is a matrix plus proof. A platform, compiler, renderer, package mode
 
 The normative contract is `contracts/platform/portability_matrix.contract.toml`. Machine-readable rows live under `contracts/platform/*.registry.json` and `contracts/platform/*_portability.matrix.json`.
 
+Architecture tier law is defined by `contracts/platform/architecture_policy.contract.toml` and documented in `docs/architecture/native_architecture_policy.md`. Full native product rows use `source_native_64`; 32-bit, projection, and archive lanes are classified separately and are not mainline support obligations.
+
 ## Claim Shape
 
-Every portability row declares target ID, target kind, platform floor, OS family/version floor, architecture, endianness, word size, toolchain, language floor, ABI, filesystem/path policy, dynamic loading, threading, networking, provider capabilities, product modes, support status, evidence, diagnostics, refusals, and limitations.
+Every portability row declares target ID, target kind, platform floor, OS family/version floor, architecture, architecture tier, endianness, word size, toolchain, language floor, ABI, filesystem/path policy, dynamic loading, threading, networking, provider capabilities, product modes, support status, evidence, diagnostics, refusals, and limitations.
 
 Target IDs are identity. Paths, folders, presets, installed compilers, and implementation names are evidence at most.
+
+Existing `x64` rows are compatibility aliases for canonical `x86_64`; new source-native 64-bit policy should use `x86_64` or `arm64`.
 
 ## Statuses
 

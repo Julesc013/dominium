@@ -10,7 +10,9 @@
       "version": "0.1.0",
       "stability": "provisional",
       "description": "Software rendering fallback capability.",
-      "provided_by": ["domino.provider.render.software"],
+      "provided_by": [
+        "domino.provider.render.software"
+      ],
       "requires": [],
       "conflicts": [],
       "scope": "runtime render provider selection",
@@ -27,7 +29,9 @@
       "version": "0.1.0",
       "stability": "provisional",
       "description": "Null renderer capability for headless or test contexts.",
-      "provided_by": ["domino.provider.render.null"],
+      "provided_by": [
+        "domino.provider.render.null"
+      ],
       "requires": [],
       "conflicts": [],
       "scope": "headless/test render suppression",
@@ -50,7 +54,9 @@
       "scope": "Windows desktop platform provider",
       "determinism_impact": "presentation and input hosting only",
       "security_impact": "platform APIs require provider isolation and review",
-      "platform_constraints": ["windows"],
+      "platform_constraints": [
+        "windows"
+      ],
       "proof": [],
       "notes": "Provider conformance remains PROVIDER-MODEL-01."
     },
@@ -61,7 +67,9 @@
       "version": "0.1.0",
       "stability": "provisional",
       "description": "Local filesystem-backed storage capability.",
-      "provided_by": ["domino.provider.storage.local"],
+      "provided_by": [
+        "domino.provider.storage.local"
+      ],
       "requires": [],
       "conflicts": [],
       "scope": "local persistence and artifact cache",
@@ -78,8 +86,12 @@
       "version": "0.1.0",
       "stability": "provisional",
       "description": "Package or pack validation capability.",
-      "provided_by": ["domino.provider.package.validator"],
-      "requires": ["dominium.schema.validate"],
+      "provided_by": [
+        "domino.provider.package.validator"
+      ],
+      "requires": [
+        "dominium.schema.validate"
+      ],
       "conflicts": [],
       "scope": "pack/package validation",
       "determinism_impact": "validation output must be deterministic for the same input",
@@ -95,8 +107,12 @@
       "version": "0.1.0",
       "stability": "experimental",
       "description": "Workbench-facing validation projection capability.",
-      "provided_by": ["dominium.provider.workbench.validation"],
-      "requires": ["dominium.command.fast_strict"],
+      "provided_by": [
+        "dominium.provider.workbench.validation"
+      ],
+      "requires": [
+        "dominium.command.fast_strict"
+      ],
       "conflicts": [],
       "scope": "future Workbench validation presentation",
       "determinism_impact": "presentation only; validation authority remains command/evidence surface",
@@ -112,14 +128,18 @@
       "version": "0.1.0",
       "stability": "provisional",
       "description": "Fast strict proof gate command capability.",
-      "provided_by": ["tools/test/run_fast_strict.py"],
+      "provided_by": [
+        "tools/test/run_fast_strict.py"
+      ],
       "requires": [],
       "conflicts": [],
       "scope": "foundation normal proof gate",
       "determinism_impact": "proof output must be reproducible enough for audit",
       "security_impact": "tool execution stays local and governed by task scope",
       "platform_constraints": [],
-      "proof": ["python tools/test/run_fast_strict.py --repo-root ."],
+      "proof": [
+        "python tools/test/run_fast_strict.py --repo-root ."
+      ],
       "notes": "Registered because the fast strict runner exists."
     },
     {
@@ -129,14 +149,18 @@
       "version": "0.1.0",
       "stability": "provisional",
       "description": "Repository validation capability for layout, roots, public surfaces, and governance checks.",
-      "provided_by": ["tools/validators"],
+      "provided_by": [
+        "tools/validators"
+      ],
       "requires": [],
       "conflicts": [],
       "scope": "repository validation",
       "determinism_impact": "validator output should be stable for the same checkout",
       "security_impact": "local repository inspection only",
       "platform_constraints": [],
-      "proof": ["python tools/validators/repo/check_public_surface.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/repo/check_public_surface.py --repo-root . --strict"
+      ],
       "notes": "Umbrella capability; individual validators remain command-surface entries."
     },
     {
@@ -146,14 +170,18 @@
       "version": "0.1.0",
       "stability": "provisional",
       "description": "Schema/protocol policy validation capability.",
-      "provided_by": ["tools/validators/contracts/check_schema_protocol_evolution.py"],
+      "provided_by": [
+        "tools/validators/contracts/check_schema_protocol_evolution.py"
+      ],
       "requires": [],
       "conflicts": [],
       "scope": "schema and protocol governance validation",
       "determinism_impact": "validation output must be stable for identical inputs",
       "security_impact": "none declared",
       "platform_constraints": [],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"
+      ],
       "notes": "Registered to support package and artifact validation policy references."
     },
     {
@@ -163,8 +191,12 @@
       "version": "0.1.0",
       "stability": "provisional",
       "description": "Workbench module validation composition capability.",
-      "provided_by": ["dominium.workbench.validation"],
-      "requires": ["dominium.command.fast_strict"],
+      "provided_by": [
+        "dominium.workbench.validation"
+      ],
+      "requires": [
+        "dominium.command.fast_strict"
+      ],
       "conflicts": [],
       "scope": "planned Workbench validation module composition",
       "determinism_impact": "presentation only; command/evidence surfaces remain authority",
@@ -181,7 +213,9 @@
       "stability": "provisional",
       "description": "Project graph Workbench workspace composition capability.",
       "provided_by": [],
-      "requires": ["dominium.workbench.module.validation"],
+      "requires": [
+        "dominium.workbench.module.validation"
+      ],
       "conflicts": [],
       "scope": "planned Workbench workspace composition",
       "determinism_impact": "presentation only",
@@ -204,7 +238,9 @@
       "determinism_impact": "composition metadata only",
       "security_impact": "apps must not bind private implementation paths",
       "platform_constraints": [],
-      "proof": ["python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict"
+      ],
       "notes": "Registered by MODULE-COMPOSITION-LAW-01."
     },
     {
@@ -221,7 +257,9 @@
       "determinism_impact": "module activation must be explicit and evidenced",
       "security_impact": "pack module trust is governed by pack/module trust law",
       "platform_constraints": [],
-      "proof": ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict"
+      ],
       "notes": "MOD-PACK-TRUST-MODEL-01 deepens this later."
     },
     {
@@ -238,7 +276,9 @@
       "determinism_impact": "deterministic when schema and data rules pass",
       "security_impact": "minimal; no external authority",
       "platform_constraints": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "Registered by MOD-PACK-TRUST-MODEL-01."
     },
     {
@@ -249,13 +289,17 @@
       "stability": "provisional",
       "description": "Schema-validated mod or pack data capability.",
       "provided_by": [],
-      "requires": ["dominium.schema.validate"],
+      "requires": [
+        "dominium.schema.validate"
+      ],
       "conflicts": [],
       "scope": "schema-validated pack trust classification",
       "determinism_impact": "deterministic after schema validation",
       "security_impact": "no executable authority",
       "platform_constraints": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "Validation proof is required before active composition."
     },
     {
@@ -266,13 +310,17 @@
       "stability": "provisional",
       "description": "Scriptless declarative rule/data pack capability.",
       "provided_by": [],
-      "requires": ["dominium.mod.schema_validated"],
+      "requires": [
+        "dominium.mod.schema_validated"
+      ],
       "conflicts": [],
       "scope": "scriptless rule and data contribution",
       "determinism_impact": "determinism impact must be declared",
       "security_impact": "registry or world-state contributions require process/data law",
       "platform_constraints": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "Arbitrary scripting is not enabled."
     },
     {
@@ -283,13 +331,17 @@
       "stability": "provisional",
       "description": "Workbench-authored module pack capability.",
       "provided_by": [],
-      "requires": ["dominium.workbench.module.validation"],
+      "requires": [
+        "dominium.workbench.module.validation"
+      ],
       "conflicts": [],
       "scope": "Workbench-authored module governance",
       "determinism_impact": "tooling/presentation only unless commands produce artifacts",
       "security_impact": "must invoke registered commands instead of private tools",
       "platform_constraints": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "Workbench UI and module runtime are not implemented by this law."
     },
     {
@@ -306,7 +358,9 @@
       "determinism_impact": "not replay-safe unless explicitly isolated or refused",
       "security_impact": "process, filesystem, and network authority must be declared",
       "platform_constraints": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "No process launcher or IPC runtime is implemented."
     },
     {
@@ -323,7 +377,9 @@
       "determinism_impact": "provider conformance required",
       "security_impact": "native code requires trusted boundary, ABI policy, and conformance evidence",
       "platform_constraints": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "Native loading is not implemented."
     },
     {
@@ -334,13 +390,17 @@
       "stability": "provisional",
       "description": "Future signed native provider capability.",
       "provided_by": [],
-      "requires": ["dominium.mod.trusted_native_provider"],
+      "requires": [
+        "dominium.mod.trusted_native_provider"
+      ],
       "conflicts": [],
       "scope": "future signed native provider policy scaffold",
       "determinism_impact": "future assurance proof required",
       "security_impact": "signing, release, and assurance policy required before enablement",
       "platform_constraints": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "Defined as future policy only."
     },
     {
@@ -357,7 +417,9 @@
       "determinism_impact": "overlay order and conflicts must be declared",
       "security_impact": "silent overwrite is forbidden",
       "platform_constraints": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "Runtime mount planning is future work."
     },
     {
@@ -368,13 +430,17 @@
       "stability": "provisional",
       "description": "Pack bundle trust composition capability.",
       "provided_by": [],
-      "requires": ["dominium.pack.overlay"],
+      "requires": [
+        "dominium.pack.overlay"
+      ],
       "conflicts": [],
       "scope": "future bundle composition trust report",
       "determinism_impact": "bundle composition must produce ordered evidence later",
       "security_impact": "bundle cannot silently escalate member pack authority",
       "platform_constraints": [],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "Bundle trust decision runtime is future work."
     },
     {
@@ -390,8 +456,12 @@
       "scope": "headless portability matrix rows",
       "determinism_impact": "headless mode avoids presentation nondeterminism",
       "security_impact": "no additional authority beyond host validation context",
-      "platform_constraints": ["host"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "platform_constraints": [
+        "host"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Registered by PORTABILITY-MATRIX-01; not a release support claim."
     },
     {
@@ -407,8 +477,12 @@
       "scope": "Windows portability matrix rows",
       "determinism_impact": "platform APIs must stay outside authoritative simulation truth",
       "security_impact": "platform authority requires provider and trust policy",
-      "platform_constraints": ["windows_nt"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "platform_constraints": [
+        "windows_nt"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Broad Windows support still requires evidence-backed matrix rows."
     },
     {
@@ -424,8 +498,12 @@
       "scope": "Linux/macOS portability matrix rows",
       "determinism_impact": "filesystem, threading, and process behavior must be declared per target",
       "security_impact": "platform authority requires provider and trust policy",
-      "platform_constraints": ["posix"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "platform_constraints": [
+        "posix"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "POSIX rows are planned/research unless evidence proves them."
     },
     {
@@ -441,8 +519,12 @@
       "scope": "toolchain matrix validation",
       "determinism_impact": "build outputs must use reproducible build identity rules when promoted",
       "security_impact": "machine-local paths are forbidden in support claims",
-      "platform_constraints": ["windows_nt"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "platform_constraints": [
+        "windows_nt"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Toolchain entry is not a support claim by itself."
     },
     {
@@ -453,13 +535,17 @@
       "stability": "provisional",
       "description": "Portable package portability capability.",
       "provided_by": [],
-      "requires": ["domino.package.validate"],
+      "requires": [
+        "domino.package.validate"
+      ],
       "conflicts": [],
       "scope": "package portability matrix",
       "determinism_impact": "portable package paths and manifests must be deterministic",
       "security_impact": "portable packages must not silently expand filesystem authority",
       "platform_constraints": [],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Portable package support still requires release/package proof."
     },
     {
@@ -470,13 +556,17 @@
       "stability": "provisional",
       "description": "CLI product mode portability capability.",
       "provided_by": [],
-      "requires": ["domino.platform.headless"],
+      "requires": [
+        "domino.platform.headless"
+      ],
       "conflicts": [],
       "scope": "product mode portability matrix",
       "determinism_impact": "CLI command output must be evidence-backed when used as proof",
       "security_impact": "command authority remains governed by command/capability law",
       "platform_constraints": [],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "CLI proof does not imply release support."
     },
     {
@@ -487,13 +577,18 @@
       "stability": "provisional",
       "description": "Headless product mode portability capability.",
       "provided_by": [],
-      "requires": ["domino.platform.headless", "domino.render.null"],
+      "requires": [
+        "domino.platform.headless",
+        "domino.render.null"
+      ],
       "conflicts": [],
       "scope": "product mode portability matrix",
       "determinism_impact": "headless paths are the default proof baseline",
       "security_impact": "runtime authority remains governed by command/capability law",
       "platform_constraints": [],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Headless mode remains provisional until release proof exists."
     },
     {
@@ -504,14 +599,100 @@
       "stability": "provisional",
       "description": "Rendered product mode portability capability.",
       "provided_by": [],
-      "requires": ["domino.render.software"],
+      "requires": [
+        "domino.render.software"
+      ],
       "conflicts": [],
       "scope": "rendered product mode portability matrix",
       "determinism_impact": "presentation only unless render artifacts are used as proof",
       "security_impact": "renderer/provider selection must be explicit",
       "platform_constraints": [],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Rendered mode is not supported without product and renderer proof."
+    },
+    {
+      "capability_id": "dominium.platform.source_native_64",
+      "kind": "platform",
+      "owner": "contracts.platform",
+      "version": "0.1.0",
+      "stability": "provisional",
+      "description": "Full native 64-bit source architecture tier capability.",
+      "provided_by": [],
+      "requires": [],
+      "conflicts": [],
+      "scope": "x86_64 and arm64 full native product architecture tier.",
+      "determinism_impact": "architecture selection must not affect authoritative simulation truth or stable artifact identity",
+      "security_impact": "native execution support claims require evidence and refusal behavior",
+      "platform_constraints": [
+        "x86_64",
+        "arm64"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"
+      ],
+      "notes": "Architecture capability policy only; no provider or product support is implemented."
+    },
+    {
+      "capability_id": "dominium.platform.constrained_native_32",
+      "kind": "platform",
+      "owner": "contracts.platform",
+      "version": "0.1.0",
+      "stability": "provisional",
+      "description": "Constrained native 32-bit architecture tier capability.",
+      "provided_by": [],
+      "requires": [],
+      "conflicts": [],
+      "scope": "Optional reduced native lane for x86/armv7 with limitations.",
+      "determinism_impact": "architecture selection must not affect authoritative simulation truth or stable artifact identity",
+      "security_impact": "native execution support claims require evidence and refusal behavior",
+      "platform_constraints": [
+        "x86",
+        "armv7"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"
+      ],
+      "notes": "Architecture capability policy only; no provider or product support is implemented."
+    },
+    {
+      "capability_id": "dominium.platform.contract_projection",
+      "kind": "platform",
+      "owner": "contracts.platform",
+      "version": "0.1.0",
+      "stability": "provisional",
+      "description": "Contract projection architecture tier capability.",
+      "provided_by": [],
+      "requires": [],
+      "conflicts": [],
+      "scope": "Projection lane for viewers, snapshots, thin clients, and generated subsets.",
+      "determinism_impact": "architecture selection must not affect authoritative simulation truth or stable artifact identity",
+      "security_impact": "native execution support claims require evidence and refusal behavior",
+      "platform_constraints": [],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"
+      ],
+      "notes": "Architecture capability policy only; no provider or product support is implemented."
+    },
+    {
+      "capability_id": "dominium.platform.archive_runner",
+      "kind": "platform",
+      "owner": "contracts.platform",
+      "version": "0.1.0",
+      "stability": "provisional",
+      "description": "Archive runner architecture tier capability.",
+      "provided_by": [],
+      "requires": [],
+      "conflicts": [],
+      "scope": "VM, emulator, museum, archive replay, and research execution lane.",
+      "determinism_impact": "architecture selection must not affect authoritative simulation truth or stable artifact identity",
+      "security_impact": "native execution support claims require evidence and refusal behavior",
+      "platform_constraints": [],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"
+      ],
+      "notes": "Architecture capability policy only; no provider or product support is implemented."
     }
   ]
 }

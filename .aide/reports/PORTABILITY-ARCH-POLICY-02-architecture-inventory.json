@@ -1,0 +1,719 @@
+{
+  "status": "PASS",
+  "findings": [],
+  "info": {
+    "pointer_width_inventory": {
+      "size_t": {
+        "count": 2006,
+        "examples": [
+          {
+            "path": "apps/client/adapters/client_fs_adapter.c",
+            "line": 7,
+            "text": "int client_fs_resolve_root(char* out_path, size_t out_cap)"
+          },
+          {
+            "path": "apps/client/adapters/client_fs_adapter.c",
+            "line": 25,
+            "text": "int client_fs_resolve_world_dir(char* out_path, size_t out_cap)"
+          },
+          {
+            "path": "apps/client/adapters/client_fs_adapter.h",
+            "line": 10,
+            "text": "int client_fs_resolve_root(char* out_path, size_t out_cap);"
+          },
+          {
+            "path": "apps/client/adapters/client_fs_adapter.h",
+            "line": 11,
+            "text": "int client_fs_resolve_world_dir(char* out_path, size_t out_cap);"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 54,
+            "text": "static void client_ui_copy_string(char* out, size_t cap, const char* value);"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 212,
+            "text": "size_t len;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 337,
+            "text": "size_t storage_cap,"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 532,
+            "text": "size_t len = 0u;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 750,
+            "text": "size_t line_cap,"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 751,
+            "text": "size_t line_stride,"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 763,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 767,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 772,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 778,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 783,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 788,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 793,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 798,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 803,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 807,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 813,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 818,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 823,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 828,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 832,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 838,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 843,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 848,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 853,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 858,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 862,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 867,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 872,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 878,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 883,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 889,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 894,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 899,
+            "text": "if ((size_t)count < line_cap) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1285,
+            "text": "size_t console_len;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1295,
+            "text": "size_t status_cap,"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1480,
+            "text": "static void client_ui_format_pack_list(const client_ui_state* state, char* out, size_t cap)"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1483,
+            "text": "size_t len;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1496,
+            "text": "size_t name_len = strlen(name);"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1619,
+            "text": "size_t len;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1644,
+            "text": "static void client_ui_copy_string(char* out, size_t cap, const char* value)"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1657,
+            "text": "static void client_ui_join_path(char* out, size_t cap, const char* base, const char* leaf)"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1659,
+            "text": "size_t len;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1684,
+            "text": "size_t text_len;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1685,
+            "text": "size_t suffix_len;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1697,
+            "text": "static void client_ui_extract_stem(const char* path, char* out, size_t cap)"
+          }
+        ]
+      },
+      "uintptr_t": {
+        "count": 1,
+        "examples": [
+          {
+            "path": "contracts/diagnostics/diagnostic_code.registry.json",
+            "line": 2353,
+            "text": "\"cause\": \"A save, replay, packet, package, renderer IR, or artifact field used size_t, long, uintptr_t, raw pointer values, native padding, or compiler object layout.\","
+          }
+        ]
+      },
+      "intptr_t": {
+        "count": 13,
+        "examples": [
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1760,
+            "text": "intptr_t handle;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1897,
+            "text": "intptr_t handle;"
+          },
+          {
+            "path": "apps/launcher/cli/launcher_ui_shell.c",
+            "line": 720,
+            "text": "intptr_t handle;"
+          },
+          {
+            "path": "apps/launcher/cli/launcher_ui_shell.c",
+            "line": 787,
+            "text": "intptr_t handle;"
+          },
+          {
+            "path": "apps/launcher/cli/launcher_ui_shell.c",
+            "line": 833,
+            "text": "intptr_t handle;"
+          },
+          {
+            "path": "runtime/platform/system/dsys_dir_sorted.c",
+            "line": 111,
+            "text": "intptr_t handle;"
+          },
+          {
+            "path": "runtime/platform/system/dsys_internal.h",
+            "line": 66,
+            "text": "intptr_t           handle;"
+          },
+          {
+            "path": "tests/game/tests/setup/conformance/setup_conformance_repeat_tests.cpp",
+            "line": 63,
+            "text": "intptr_t handle = _findfirst(pattern.c_str(), &data);"
+          },
+          {
+            "path": "tests/game/tests/setup/conformance/setup_conformance_runner.cpp",
+            "line": 90,
+            "text": "intptr_t handle = _findfirst(pattern.c_str(), &data);"
+          },
+          {
+            "path": "tests/game/tests/setup/gold_master/setup_gold_master_tests.cpp",
+            "line": 91,
+            "text": "intptr_t handle = _findfirst(pattern.c_str(), &data);"
+          },
+          {
+            "path": "tests/game/tests/setup/parity_lock/setup_parity_lock_tests.cpp",
+            "line": 88,
+            "text": "intptr_t handle = _findfirst(pattern.c_str(), &data);"
+          },
+          {
+            "path": "tests/game/tests/setup/test_apply.cpp",
+            "line": 100,
+            "text": "intptr_t handle = _findfirst(pattern.c_str(), &data);"
+          },
+          {
+            "path": "tests/game/tests/setup/test_cli_golden.cpp",
+            "line": 63,
+            "text": "intptr_t handle = _findfirst(pattern.c_str(), &data);"
+          }
+        ]
+      },
+      "sizeof_void_pointer": {
+        "count": 0,
+        "examples": []
+      },
+      "int_cast": {
+        "count": 621,
+        "examples": [
+          {
+            "path": "apps/client/main_client.c",
+            "line": 267,
+            "text": "*out_value = (int)value;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 386,
+            "text": "*out_value = (int)value;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 560,
+            "text": "settings->ui_scale_percent = (int)n;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 570,
+            "text": "settings->font_size_points = (int)n;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 599,
+            "text": "settings->audio_volume_percent = (int)n;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 678,
+            "text": "settings->network_timeout_ms = (int)n;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1029,
+            "text": "fprintf(stderr, \"client: window mode=%d\\n\", (int)current_mode);"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1340,
+            "text": "#define CLIENT_UI_PROFILE_COUNT ((int)(sizeof(g_client_profiles) / sizeof(g_client_profiles[0])))"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1341,
+            "text": "#define CLIENT_UI_POLICY_PRESET_COUNT ((int)(sizeof(g_client_policy_presets) / sizeof(g_client_policy_presets[0])))"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1343,
+            "text": "((int)(sizeof(g_client_accessibility_presets) / sizeof(g_client_accessibility_presets[0])))"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 1345,
+            "text": "((int)(sizeof(g_client_keybind_profiles) / sizeof(g_client_keybind_profiles[0])))"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 2214,
+            "text": "state->world_count = (int)count;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 2245,
+            "text": "state->replay_count = (int)count;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 2499,
+            "text": "(int)(count - CLIENT_UI_REPLAY_EVENTS_MAX));"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 4400,
+            "text": "int max_frames = run_cfg && run_cfg->max_frames_set ? (int)run_cfg->max_frames : 0;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 4705,
+            "text": "int max_frames = run_cfg && run_cfg->max_frames_set ? (int)run_cfg->max_frames : 0;"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 5418,
+            "text": "if (locale_pack_count >= (int)(sizeof(locale_packs) / sizeof(locale_packs[0]))) {"
+          },
+          {
+            "path": "apps/client/main_client.c",
+            "line": 5426,
+            "text": "if (locale_pack_count >= (int)(sizeof(locale_packs) / sizeof(locale_packs[0]))) {"
+          },
+          {
+            "path": "apps/launcher/cli/launcher_cli_main.c",
+            "line": 181,
+            "text": "return (_getcwd(buf, (int)cap) != NULL);"
+          },
+          {
+            "path": "apps/launcher/cli/launcher_cli_main.c",
+            "line": 312,
+            "text": "*out_value = (int)value;"
+          },
+          {
+            "path": "apps/launcher/cli/launcher_cli_main.c",
+            "line": 881,
+            "text": "if (locale_pack_count >= (int)(sizeof(locale_packs) / sizeof(locale_packs[0]))) {"
+          },
+          {
+            "path": "apps/launcher/cli/launcher_cli_main.c",
+            "line": 889,
+            "text": "if (locale_pack_count >= (int)(sizeof(locale_packs) / sizeof(locale_packs[0]))) {"
+          },
+          {
+            "path": "apps/launcher/cli/launcher_ui_shell.c",
+            "line": 229,
+            "text": "settings->ui_scale_percent = (int)n;"
+          },
+          {
+            "path": "apps/launcher/cli/launcher_ui_shell.c",
+            "line": 1320,
+            "text": "int max_frames = run_cfg && run_cfg->max_frames_set ? (int)run_cfg->max_frames : 0;"
+          },
+          {
+            "path": "apps/launcher/cli/launcher_ui_shell.c",
+            "line": 1562,
+            "text": "int max_frames = run_cfg && run_cfg->max_frames_set ? (int)run_cfg->max_frames : 0;"
+          },
+          {
+            "path": "apps/server/main_server.c",
+            "line": 411,
+            "text": "fputc((int)c, out);"
+          },
+          {
+            "path": "apps/server/main_server.c",
+            "line": 419,
+            "text": "fputc((int)c, out);"
+          },
+          {
+            "path": "apps/server/main_server.c",
+            "line": 862,
+            "text": "*out_value = (int)value;"
+          },
+          {
+            "path": "apps/setup/cli/setup_cli_main.c",
+            "line": 691,
+            "text": "return (_getcwd(buf, (int)cap) != NULL);"
+          },
+          {
+            "path": "apps/workbench/module/game/editor/game_edit_core.c",
+            "line": 89,
+            "text": "return (int)written;"
+          },
+          {
+            "path": "apps/workbench/module/launcher/editor/launcher_edit_core.c",
+            "line": 129,
+            "text": "return (int)written;"
+          },
+          {
+            "path": "apps/workbench/module/save/editor/save_edit_core.c",
+            "line": 150,
+            "text": "return (int)written;"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 103,
+            "text": "*out = (int)v;"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 174,
+            "text": "return (int)v.v_uint;"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 306,
+            "text": "count = (int)out_results.size();"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 601,
+            "text": "if (m_active_doc < 0 || m_active_doc >= (int)m_docs.size()) {"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 609,
+            "text": "if (m_active_doc < 0 || m_active_doc >= (int)m_docs.size()) {"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 705,
+            "text": "m_hierarchy_hwnd = (m_ui_hierarchy_id != 0u) ? ui_find_child_by_id(m_ui_hwnd, (int)m_ui_hierarchy_id) : 0;"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 706,
+            "text": "m_prop_name_hwnd = (m_ui_prop_name_id != 0u) ? ui_find_child_by_id(m_ui_hwnd, (int)m_ui_prop_name_id) : 0;"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 707,
+            "text": "m_prop_x_hwnd = (m_ui_prop_x_id != 0u) ? ui_find_child_by_id(m_ui_hwnd, (int)m_ui_prop_x_id) : 0;"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 708,
+            "text": "m_prop_y_hwnd = (m_ui_prop_y_id != 0u) ? ui_find_child_by_id(m_ui_hwnd, (int)m_ui_prop_y_id) : 0;"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 709,
+            "text": "m_prop_w_hwnd = (m_ui_prop_w_id != 0u) ? ui_find_child_by_id(m_ui_hwnd, (int)m_ui_prop_w_id) : 0;"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 710,
+            "text": "m_prop_h_hwnd = (m_ui_prop_h_id != 0u) ? ui_find_child_by_id(m_ui_hwnd, (int)m_ui_prop_h_id) : 0;"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 711,
+            "text": "m_log_hwnd = (m_ui_log_id != 0u) ? ui_find_child_by_id(m_ui_hwnd, (int)m_ui_log_id) : 0;"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 712,
+            "text": "m_tabs_hwnd = (m_ui_tabs_id != 0u) ? ui_find_child_by_id(m_ui_hwnd, (int)m_ui_tabs_id) : 0;"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 866,
+            "text": "int idx = (int)SendMessageA(m_hierarchy_hwnd, LB_ADDSTRING, 0, (LPARAM)line.c_str());"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 980,
+            "text": "if ((int)m_docs.size() >= kMaxDocs) {"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 992,
+            "text": "set_active_doc((int)m_docs.size() - 1);"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 1016,
+            "text": "set_active_doc((int)i);"
+          },
+          {
+            "path": "apps/workbench/module/tooling/editor/tool_editor_main_win32.cpp",
+            "line": 1020,
+            "text": "if ((int)m_docs.size() >= kMaxDocs) {"
+          }
+        ]
+      },
+      "long_cast": {
+        "count": 9,
+        "examples": [
+          {
+            "path": "game/domain/simulation/sim.c",
+            "line": 550,
+            "text": "if (fseek(f, (long)tlv_len, SEEK_CUR) != 0) { if (w) d_world_destroy((d_world*)w); return (d_world*)0; }"
+          },
+          {
+            "path": "runtime/platform/system/dsys_platform_stub.c",
+            "line": 63,
+            "text": "tv.tv_sec = (long)(ms / 1000u);"
+          },
+          {
+            "path": "runtime/platform/system/dsys_platform_stub.c",
+            "line": 64,
+            "text": "tv.tv_usec = (long)((ms % 1000u) * 1000u);"
+          },
+          {
+            "path": "runtime/platform/system/dsys_posix.c",
+            "line": 58,
+            "text": "tv.tv_sec = (long)(ms / 1000u);"
+          },
+          {
+            "path": "runtime/platform/system/dsys_posix.c",
+            "line": 59,
+            "text": "tv.tv_usec = (long)((ms % 1000u) * 1000u);"
+          },
+          {
+            "path": "runtime/platform/system/dsys_sdl2_stub.c",
+            "line": 76,
+            "text": "tv.tv_sec = (long)(ms / 1000u);"
+          },
+          {
+            "path": "runtime/platform/system/dsys_sdl2_stub.c",
+            "line": 77,
+            "text": "tv.tv_usec = (long)((ms % 1000u) * 1000u);"
+          },
+          {
+            "path": "runtime/storage/io/dtlv.c",
+            "line": 160,
+            "text": "return (dsys_file_seek(fh, (long)offset, 0 /* SEEK_SET */) == 0) ? 0 : -3;"
+          },
+          {
+            "path": "runtime/ui/ir/ui_ops.cpp",
+            "line": 461,
+            "text": "if (value < (long)INT_MIN || value > (long)INT_MAX) {"
+          }
+        ]
+      },
+      "pointer_hash": {
+        "count": 0,
+        "examples": []
+      },
+      "address_hash": {
+        "count": 1,
+        "examples": [
+          {
+            "path": "docs/reference/specs/SPEC_ARTIFACT_STORE.md",
+            "line": 38,
+            "text": "This spec defines the launcher artifact store: a read-only, hash-addressed"
+          }
+        ]
+      },
+      "pointer_sort": {
+        "count": 0,
+        "examples": []
+      }
+    },
+    "summary": {
+      "errors": 0,
+      "warnings": 0,
+      "findings": 0,
+      "required_tiers": [
+        "archive_runner",
+        "constrained_native_32",
+        "contract_projection",
+        "source_native_64"
+      ],
+      "mainline_architectures": [
+        "arm64",
+        "x86_64"
+      ]
+    }
+  },
+  "architecture_summary": {
+    "task": "PORTABILITY-ARCH-POLICY-02",
+    "status": "PASS",
+    "architecture_tiers": [
+      "source_native_64",
+      "constrained_native_32",
+      "contract_projection",
+      "archive_runner"
+    ],
+    "mainline_architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "architecture_registry_count": 8,
+    "portability_rows": {
+      "platform_floors": 8,
+      "runtime_rows": 3,
+      "renderer_rows": 6,
+      "product_mode_rows": 4,
+      "package_rows": 3
+    },
+    "pointer_width_inventory_counts": {
+      "size_t": 2006,
+      "uintptr_t": 1,
+      "intptr_t": 13,
+      "sizeof_void_pointer": 0,
+      "int_cast": 621,
+      "long_cast": 9,
+      "pointer_hash": 0,
+      "address_hash": 1,
+      "pointer_sort": 0
+    },
+    "validator_findings": []
+  }
+}

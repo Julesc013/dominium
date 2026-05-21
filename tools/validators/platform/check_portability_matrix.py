@@ -65,7 +65,7 @@ REQUIRED_PLATFORM_FLOORS = {
     "headless_host",
     "portable_package",
 }
-REQUIRED_ARCHITECTURES = {"x86", "x64", "arm64", "ppc", "wasm32", "host"}
+REQUIRED_ARCHITECTURES = {"x86", "x64", "x86_64", "arm64", "armv7", "ppc", "wasm32", "host"}
 REQUIRED_TOOLCHAINS = {
     "msvc143",
     "msvc141",

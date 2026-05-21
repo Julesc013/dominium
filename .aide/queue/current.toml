@@ -1,18 +1,19 @@
 schema_version = "dominium.aide.queue.current.v1"
-status = "foundation_lock_closed_with_warnings"
+status = "architecture_policy_pass_with_warnings"
 last_reviewed = "2026-05-21"
 
 [current]
-task = "FOUNDATION-CLOSEOUT-02"
+task = "PORTABILITY-ARCH-POLICY-02"
 result = "PASS_WITH_WARNINGS"
-next_task = "PORTABILITY-ARCH-POLICY-02"
-next_after_arch_policy = "WORKBENCH-VALIDATION-SLICE-01"
+next_task = "WORKBENCH-VALIDATION-SLICE-01"
+secondary_follow_up = "POINTER-WIDTH-SERIALIZATION-AUDIT-01"
 workbench_validation_slice_authorized = true
 broad_feature_work_authorized = false
 
 [validation]
+architecture_policy = "PASS"
+portability_matrix = "PASS"
 dependency_direction_strict = "PASS"
-foundation_validator_matrix = "PASS"
 fast_strict = "PASS"
 aide = "PASS"
 repox_strict = "PASS_WITH_WARNINGS"

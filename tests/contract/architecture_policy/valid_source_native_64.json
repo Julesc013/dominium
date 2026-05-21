@@ -1,0 +1,21 @@
+{
+  "schema_version": "dominium.platform.architecture_claim.instance.v1",
+  "target_id": "dominium.architecture.fixture.source_native_64",
+  "architecture": "x86_64",
+  "architecture_tier": "source_native_64",
+  "word_size": 64,
+  "endianness": "little",
+  "abi": "c_compatible_pod_abi",
+  "toolchain": "msvc143",
+  "language_floor": "c17_cpp17",
+  "support_status": "build_proven",
+  "provider_capabilities": ["dominium.platform.source_native_64"],
+  "evidence": [{"kind": "build", "path": "tests/contract/architecture_policy/valid_source_native_64.json"}],
+  "known_limitations": ["Fixture only; not a product support claim."],
+  "diagnostic_codes": ["DOM-ARCH-CLAIM-EVIDENCE-MISSING"],
+  "refusal_codes": ["dominium.refusal.architecture.support_evidence_missing"],
+  "stable_persisted_fields": [
+    {"name": "tick", "type": "u64"},
+    {"name": "local_index", "type": "u32"}
+  ]
+}

@@ -13,9 +13,15 @@
       "toolchain": "host_default",
       "language_floor": "host_declared_by_validation",
       "abi": "host_internal",
-      "provider_capabilities": ["dominium.product.mode.cli"],
-      "runtime_capabilities": ["domino.platform.headless"],
-      "product_modes": ["cli"],
+      "provider_capabilities": [
+        "dominium.product.mode.cli"
+      ],
+      "runtime_capabilities": [
+        "domino.platform.headless"
+      ],
+      "product_modes": [
+        "cli"
+      ],
       "test_evidence": [
         {
           "evidence_id": "portability.product_mode.cli.fast_strict",
@@ -25,10 +31,19 @@
           "notes": "Validator/CLI proof lane."
         }
       ],
-      "diagnostic_codes": ["DOM-PORTABILITY-MODE-UNSUPPORTED"],
-      "refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
-      "known_limitations": ["CLI smoke proof is not release support."],
-      "notes": "Command-line validation mode."
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-MODE-UNSUPPORTED"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.portability.product_mode_unsupported"
+      ],
+      "known_limitations": [
+        "CLI smoke proof is not release support."
+      ],
+      "notes": "Command-line validation mode.",
+      "architecture_tier": "contract_projection",
+      "word_size": "host_declared",
+      "endianness": "host_declared"
     },
     {
       "target_id": "dominium.product.mode.headless",
@@ -40,9 +55,16 @@
       "toolchain": "host_default",
       "language_floor": "host_declared_by_validation",
       "abi": "host_internal",
-      "provider_capabilities": ["dominium.product.mode.headless"],
-      "runtime_capabilities": ["domino.platform.headless", "domino.render.null"],
-      "product_modes": ["headless"],
+      "provider_capabilities": [
+        "dominium.product.mode.headless"
+      ],
+      "runtime_capabilities": [
+        "domino.platform.headless",
+        "domino.render.null"
+      ],
+      "product_modes": [
+        "headless"
+      ],
       "test_evidence": [
         {
           "evidence_id": "portability.product_mode.headless.fast_strict",
@@ -52,10 +74,19 @@
           "notes": "Headless validation proof lane."
         }
       ],
-      "diagnostic_codes": ["DOM-PORTABILITY-MODE-UNSUPPORTED"],
-      "refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
-      "known_limitations": ["No release support claim."],
-      "notes": "Headless mode remains the proof baseline."
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-MODE-UNSUPPORTED"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.portability.product_mode_unsupported"
+      ],
+      "known_limitations": [
+        "No release support claim."
+      ],
+      "notes": "Headless mode remains the proof baseline.",
+      "architecture_tier": "contract_projection",
+      "word_size": "host_declared",
+      "endianness": "host_declared"
     },
     {
       "target_id": "dominium.product.mode.rendered",
@@ -67,14 +98,31 @@
       "toolchain": "msvc143",
       "language_floor": "c17_cpp17",
       "abi": "internal",
-      "provider_capabilities": ["dominium.product.mode.rendered", "domino.render.software"],
-      "runtime_capabilities": ["domino.platform.win32", "domino.render.software"],
-      "product_modes": ["rendered"],
+      "provider_capabilities": [
+        "dominium.product.mode.rendered",
+        "domino.render.software"
+      ],
+      "runtime_capabilities": [
+        "domino.platform.win32",
+        "domino.render.software"
+      ],
+      "product_modes": [
+        "rendered"
+      ],
       "test_evidence": [],
-      "diagnostic_codes": ["DOM-PORTABILITY-PRODUCT-PROOF-MISSING"],
-      "refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
-      "known_limitations": ["Rendered product mode is not supported until product boot and renderer evidence exist."],
-      "notes": "Provisional row only."
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-PRODUCT-PROOF-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.portability.product_mode_unsupported"
+      ],
+      "known_limitations": [
+        "Rendered product mode is not supported until product boot and renderer evidence exist."
+      ],
+      "notes": "Provisional row only.",
+      "architecture_tier": "source_native_64",
+      "word_size": 64,
+      "endianness": "little"
     },
     {
       "target_id": "dominium.product.mode.native",
@@ -88,12 +136,23 @@
       "abi": "internal",
       "provider_capabilities": [],
       "runtime_capabilities": [],
-      "product_modes": ["native"],
+      "product_modes": [
+        "native"
+      ],
       "test_evidence": [],
-      "diagnostic_codes": ["DOM-PORTABILITY-PRODUCT-PROOF-MISSING"],
-      "refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
-      "known_limitations": ["Native product shell support is not claimed."],
-      "notes": "Research row only."
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-PRODUCT-PROOF-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.portability.product_mode_unsupported"
+      ],
+      "known_limitations": [
+        "Native product shell support is not claimed."
+      ],
+      "notes": "Research row only.",
+      "architecture_tier": "source_native_64",
+      "word_size": 64,
+      "endianness": "little"
     }
   ]
 }

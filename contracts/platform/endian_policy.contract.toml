@@ -1,0 +1,32 @@
+schema_version = "dominium.platform.endian_policy.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.platform"
+
+[contract]
+id = "dominium.platform.endian_policy.v1"
+status = "provisional"
+owner = "contracts.platform"
+purpose = "Declares mainline little-endian architecture law and explicit little-endian persisted/protocol encodings."
+
+[policy]
+mainline_endianness = "little"
+persisted_formats_use_explicit_little_endian = true
+protocol_formats_use_explicit_little_endian = true
+renderer_ir_uses_explicit_little_endian_when_persisted = true
+big_endian_mainline_supported = false
+big_endian_requires_projection_or_research_lane = true
+silent_host_endian_serialization_forbidden = true
+
+[forbidden]
+persisted_native_endian = true
+raw_object_layout = true
+native_padding = true
+pointer_order_sorting = true
+address_hashing = true
+
+[relationships]
+architecture_policy = "contracts/platform/architecture_policy.contract.toml"
+pointer_width_schema = "contracts/platform/pointer_width_policy.schema.json"
+schema_evolution = "contracts/schema/schema_evolution.contract.toml"
+artifact_identity = "contracts/artifact/artifact_identity.contract.toml"

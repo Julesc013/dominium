@@ -1,0 +1,20 @@
+{
+  "schema_version": "dominium.platform.architecture_claim.instance.v1",
+  "target_id": "dominium.architecture.fixture.contract_projection",
+  "architecture": "host",
+  "architecture_tier": "contract_projection",
+  "word_size": "host_declared",
+  "endianness": "host_declared",
+  "abi": "n/a",
+  "toolchain": "host_default",
+  "language_floor": "projection_declared_by_generator",
+  "support_status": "provisional",
+  "provider_capabilities": ["dominium.platform.contract_projection"],
+  "evidence": [],
+  "known_limitations": ["Projection fixture only; not native product support."],
+  "diagnostic_codes": ["DOM-ARCH-LEGACY-REQUIRES-PROJECTION"],
+  "refusal_codes": ["dominium.refusal.architecture.legacy_requires_projection"],
+  "stable_persisted_fields": [
+    {"name": "snapshot_id", "type": "u64"}
+  ]
+}

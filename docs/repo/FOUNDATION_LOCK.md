@@ -9,7 +9,7 @@ Foundation Lock is the repository decision gate that determines whether Dominium
 
 Current closeout result: PASS_WITH_WARNINGS.
 
-`FOUNDATION-CLOSEOUT-02` reran the Foundation Lock gate after `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01` and closed the lock with warnings.
+`FOUNDATION-CLOSEOUT-02` reran the Foundation Lock gate after `FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01` and closed the lock with warnings. `PORTABILITY-ARCH-POLICY-02` has since completed the first post-closeout hardening follow-up.
 
 ## What It Means
 
@@ -55,10 +55,18 @@ All required files for the 15 Foundation Lock layers are present.
 
 Foundation Lock is PASS_WITH_WARNINGS.
 
+`PORTABILITY-ARCH-POLICY-02` reports:
+
+- architecture policy validator: PASS.
+- portability matrix validator: PASS.
+- fast strict: PASS, `33` commands, `296.553` seconds.
+- CMake configure/build and smoke CTest: PASS through fast strict.
+- full CTest: T4/full-gate debt, not run.
+
 ## Allowed Work
 
-- Run `PORTABILITY-ARCH-POLICY-02`.
-- Run `WORKBENCH-VALIDATION-SLICE-01` after the architecture-policy follow-up unless the operator explicitly chooses the product slice first.
+- Run `WORKBENCH-VALIDATION-SLICE-01`.
+- Run `POINTER-WIDTH-SERIALIZATION-AUDIT-01` only if the descriptive pointer-width inventory should be promoted into a focused audit.
 - Continue documentation and evidence updates that do not bypass Foundation laws.
 - Continue documentation and evidence updates that keep remaining warnings and full-gate debt visible.
 - Keep Queue B hardening planned but not a substitute for the blocker repair.
@@ -80,5 +88,5 @@ This authorization is narrow. It does not authorize broad Workbench UI, gameplay
 
 Next recommended tasks:
 
-1. `PORTABILITY-ARCH-POLICY-02`
-2. `WORKBENCH-VALIDATION-SLICE-01`
+1. `WORKBENCH-VALIDATION-SLICE-01`
+2. `POINTER-WIDTH-SERIALIZATION-AUDIT-01` if the pointer-width inventory should be audited.

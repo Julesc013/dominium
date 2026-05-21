@@ -387,8 +387,12 @@
       "related_refusal_codes": [],
       "related_command_ids": [],
       "related_public_surface_ids": [],
-      "related_artifact_types": ["artifact_manifest"],
-      "proof": ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"],
+      "related_artifact_types": [
+        "artifact_manifest"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"
+      ],
       "notes": "Initial artifact identity diagnostic."
     },
     {
@@ -405,8 +409,12 @@
       "related_refusal_codes": [],
       "related_command_ids": [],
       "related_public_surface_ids": [],
-      "related_artifact_types": ["artifact_manifest"],
-      "proof": ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"],
+      "related_artifact_types": [
+        "artifact_manifest"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"
+      ],
       "notes": "Initial artifact identity diagnostic."
     },
     {
@@ -423,8 +431,12 @@
       "related_refusal_codes": [],
       "related_command_ids": [],
       "related_public_surface_ids": [],
-      "related_artifact_types": ["artifact_manifest"],
-      "proof": ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"],
+      "related_artifact_types": [
+        "artifact_manifest"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"
+      ],
       "notes": "Initial artifact identity diagnostic."
     },
     {
@@ -441,8 +453,12 @@
       "related_refusal_codes": [],
       "related_command_ids": [],
       "related_public_surface_ids": [],
-      "related_artifact_types": ["artifact_manifest"],
-      "proof": ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"],
+      "related_artifact_types": [
+        "artifact_manifest"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"
+      ],
       "notes": "Initial artifact identity diagnostic."
     },
     {
@@ -459,8 +475,13 @@
       "related_refusal_codes": [],
       "related_command_ids": [],
       "related_public_surface_ids": [],
-      "related_artifact_types": ["artifact_manifest", "evidence_packet"],
-      "proof": ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"],
+      "related_artifact_types": [
+        "artifact_manifest",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"
+      ],
       "notes": "Hash checking is policy scaffold in this task; runtime loading is future work."
     },
     {
@@ -477,8 +498,12 @@
       "related_refusal_codes": [],
       "related_command_ids": [],
       "related_public_surface_ids": [],
-      "related_artifact_types": ["artifact_manifest"],
-      "proof": ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"],
+      "related_artifact_types": [
+        "artifact_manifest"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"
+      ],
       "notes": "Detailed schema/protocol law remains SCHEMA-PROTOCOL-LAW-01."
     },
     {
@@ -495,8 +520,13 @@
       "related_refusal_codes": [],
       "related_command_ids": [],
       "related_public_surface_ids": [],
-      "related_artifact_types": ["artifact_manifest", "migration_record"],
-      "proof": ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"],
+      "related_artifact_types": [
+        "artifact_manifest",
+        "migration_record"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"
+      ],
       "notes": "Silent migration is forbidden."
     },
     {
@@ -513,8 +543,13 @@
       "related_refusal_codes": [],
       "related_command_ids": [],
       "related_public_surface_ids": [],
-      "related_artifact_types": ["artifact_manifest", "evidence_packet"],
-      "proof": ["python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"],
+      "related_artifact_types": [
+        "artifact_manifest",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict"
+      ],
       "notes": "Detailed mod-pack trust remains MOD-PACK-TRUST-MODEL-01."
     },
     {
@@ -530,9 +565,15 @@
       "evidence_expectation": "Schema/protocol validator output naming the file or policy.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.schema.evolution.v1"],
-      "related_artifact_types": ["schema_policy"],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.schema.evolution.v1"
+      ],
+      "related_artifact_types": [
+        "schema_policy"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"
+      ],
       "notes": "Initial schema/protocol evolution diagnostic."
     },
     {
@@ -548,9 +589,16 @@
       "evidence_expectation": "Schema validation evidence naming schema ID, field, and unknown-field policy.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.schema.evolution.v1"],
-      "related_artifact_types": ["schema_policy", "validation_report"],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.schema.evolution.v1"
+      ],
+      "related_artifact_types": [
+        "schema_policy",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"
+      ],
       "notes": "Unknown fields must not be silently discarded."
     },
     {
@@ -566,9 +614,16 @@
       "evidence_expectation": "Schema validation evidence naming schema ID and missing field.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.schema.evolution.v1"],
-      "related_artifact_types": ["schema_policy", "validation_report"],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.schema.evolution.v1"
+      ],
+      "related_artifact_types": [
+        "schema_policy",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"
+      ],
       "notes": "Required-field evolution requires migration/refusal policy for stable schemas."
     },
     {
@@ -584,9 +639,15 @@
       "evidence_expectation": "Schema/protocol validator output naming the policy and default behavior.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.schema.evolution.v1"],
-      "related_artifact_types": ["schema_policy"],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.schema.evolution.v1"
+      ],
+      "related_artifact_types": [
+        "schema_policy"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --fixtures"
+      ],
       "notes": "No silent defaults are permitted for governed schemas."
     },
     {
@@ -602,9 +663,15 @@
       "evidence_expectation": "Protocol validation evidence naming protocol ID and version.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.protocol.evolution.v1"],
-      "related_artifact_types": ["protocol_policy"],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.protocol.evolution.v1"
+      ],
+      "related_artifact_types": [
+        "protocol_policy"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"
+      ],
       "notes": "Initial protocol evolution diagnostic."
     },
     {
@@ -620,9 +687,16 @@
       "evidence_expectation": "Protocol validation evidence naming protocol ID and message kind.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.protocol.evolution.v1"],
-      "related_artifact_types": ["protocol_policy", "validation_report"],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.protocol.evolution.v1"
+      ],
+      "related_artifact_types": [
+        "protocol_policy",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"
+      ],
       "notes": "Unknown messages must not become implicit behavior."
     },
     {
@@ -638,9 +712,15 @@
       "evidence_expectation": "Compatibility validation evidence naming protocol ID, version, and refusal policy.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.protocol.evolution.v1"],
-      "related_artifact_types": ["protocol_policy"],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.protocol.evolution.v1"
+      ],
+      "related_artifact_types": [
+        "protocol_policy"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"
+      ],
       "notes": "Initial protocol compatibility diagnostic."
     },
     {
@@ -656,9 +736,16 @@
       "evidence_expectation": "Migration policy and evidence naming source and target schema/protocol versions.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.migration.policy.v1"],
-      "related_artifact_types": ["migration_record", "evidence_packet"],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.migration.policy.v1"
+      ],
+      "related_artifact_types": [
+        "migration_record",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --fixtures"
+      ],
       "notes": "Silent migration remains forbidden."
     },
     {
@@ -674,9 +761,15 @@
       "evidence_expectation": "Validator output naming the missing migration/refusal policy.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.migration.policy.v1"],
-      "related_artifact_types": ["migration_record"],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.migration.policy.v1"
+      ],
+      "related_artifact_types": [
+        "migration_record"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --fixtures"
+      ],
       "notes": "Initial migration law diagnostic."
     },
     {
@@ -692,9 +785,15 @@
       "evidence_expectation": "Registry validator evidence naming duplicate IDs.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.registry.evolution.v1"],
-      "related_artifact_types": ["registry"],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.registry.evolution.v1"
+      ],
+      "related_artifact_types": [
+        "registry"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"
+      ],
       "notes": "Detailed registry entry validation can deepen after the foundation lock."
     },
     {
@@ -710,9 +809,15 @@
       "evidence_expectation": "Registry validation evidence naming registry and missing entry.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.registry.evolution.v1"],
-      "related_artifact_types": ["registry"],
-      "proof": ["python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.registry.evolution.v1"
+      ],
+      "related_artifact_types": [
+        "registry"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_schema_protocol_evolution.py --repo-root . --strict"
+      ],
       "notes": "Initial registry evolution diagnostic."
     },
     {
@@ -728,9 +833,16 @@
       "evidence_expectation": "Capability decision evidence naming requested capability, selected capability, and compatibility impact.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.capability.contract.v1"],
-      "related_artifact_types": ["capability_decision", "evidence_packet"],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.capability.contract.v1"
+      ],
+      "related_artifact_types": [
+        "capability_decision",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Degradation is allowed only when explicit and evidenced."
     },
     {
@@ -744,11 +856,19 @@
       "cause": "A capability request or provider set contains mutually incompatible capability declarations.",
       "recovery": "Select a non-conflicting capability set or disable the conflicting feature.",
       "evidence_expectation": "Capability validation evidence naming conflicting capability IDs.",
-      "related_refusal_codes": ["dominium.refusal.capability.conflict"],
+      "related_refusal_codes": [
+        "dominium.refusal.capability.conflict"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.capability.contract.v1"],
-      "related_artifact_types": ["capability_decision"],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.capability.contract.v1"
+      ],
+      "related_artifact_types": [
+        "capability_decision"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Conflict detection remains future runtime/provider work."
     },
     {
@@ -762,11 +882,19 @@
       "cause": "A capability exists but does not satisfy the requested minimum version or compatibility range.",
       "recovery": "Select a compatible capability/provider or update the requested capability version.",
       "evidence_expectation": "Capability decision evidence naming requested and available versions.",
-      "related_refusal_codes": ["dominium.refusal.capability.version_unsupported"],
+      "related_refusal_codes": [
+        "dominium.refusal.capability.version_unsupported"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.capability.contract.v1"],
-      "related_artifact_types": ["capability_decision"],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.capability.contract.v1"
+      ],
+      "related_artifact_types": [
+        "capability_decision"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Version negotiation is policy-only in this task."
     },
     {
@@ -780,11 +908,20 @@
       "cause": "A command, capability, artifact, provider, platform, or policy request cannot proceed under declared law.",
       "recovery": "Follow the refusal recovery action and inspect the evidence packet.",
       "evidence_expectation": "Refusal payload or capability decision citing a stable refusal code.",
-      "related_refusal_codes": ["dominium.refusal.policy.denied"],
+      "related_refusal_codes": [
+        "dominium.refusal.policy.denied"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.refusal.registry.v1"],
-      "related_artifact_types": ["refusal_payload", "evidence_packet"],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.refusal.registry.v1"
+      ],
+      "related_artifact_types": [
+        "refusal_payload",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "A refusal is a typed outcome, not just exception text."
     },
     {
@@ -798,11 +935,19 @@
       "cause": "No installed, enabled, compatible, or permitted provider satisfies the requested capability.",
       "recovery": "Install, enable, or select a provider that declares the requested capability.",
       "evidence_expectation": "Capability decision evidence naming requested provider/capability and available providers.",
-      "related_refusal_codes": ["dominium.refusal.provider.unavailable"],
+      "related_refusal_codes": [
+        "dominium.refusal.provider.unavailable"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.capability.contract.v1"],
-      "related_artifact_types": ["capability_decision"],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.capability.contract.v1"
+      ],
+      "related_artifact_types": [
+        "capability_decision"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Provider model remains PROVIDER-MODEL-01."
     },
     {
@@ -816,11 +961,19 @@
       "cause": "The current OS, deployment target, driver, shell, or host capability does not satisfy the request.",
       "recovery": "Select a supported platform/provider, use an explicit degraded mode, or refuse.",
       "evidence_expectation": "Capability decision evidence naming platform constraints and selected alternative if any.",
-      "related_refusal_codes": ["dominium.refusal.platform.unsupported"],
+      "related_refusal_codes": [
+        "dominium.refusal.platform.unsupported"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.capability.contract.v1"],
-      "related_artifact_types": ["capability_decision"],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.capability.contract.v1"
+      ],
+      "related_artifact_types": [
+        "capability_decision"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
       "notes": "Portability matrix remains PORTABILITY-MATRIX-01."
     },
     {
@@ -834,11 +987,19 @@
       "cause": "The selected capability differs from the requested capability, but the decision lacks degraded/refusal evidence.",
       "recovery": "Emit an explicit degraded or refused capability decision with diagnostic, recovery, and evidence.",
       "evidence_expectation": "Capability/refusal validator output naming the silent fallback.",
-      "related_refusal_codes": ["dominium.refusal.capability.missing"],
+      "related_refusal_codes": [
+        "dominium.refusal.capability.missing"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.capability.contract.v1"],
-      "related_artifact_types": ["capability_decision"],
-      "proof": ["python tools/validators/contracts/check_capability_refusal.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.capability.contract.v1"
+      ],
+      "related_artifact_types": [
+        "capability_decision"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --fixtures"
+      ],
       "notes": "No optional provider, renderer, platform, package, mod, or Workbench module may silently degrade."
     },
     {
@@ -852,11 +1013,20 @@
       "cause": "A native or adapter provider declares an ABI that does not match the requested ABI/public-surface contract.",
       "recovery": "Select a compatible provider, use an adapter with an approved ABI, or refuse the provider selection.",
       "evidence_expectation": "Provider validator or conformance evidence naming provider_id and ABI.",
-      "related_refusal_codes": ["dominium.refusal.provider.abi_mismatch"],
+      "related_refusal_codes": [
+        "dominium.refusal.provider.abi_mismatch"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.provider.model.v1"],
-      "related_artifact_types": ["provider_descriptor", "provider_selection_decision"],
-      "proof": ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.provider.model.v1"
+      ],
+      "related_artifact_types": [
+        "provider_descriptor",
+        "provider_selection_decision"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"
+      ],
       "notes": "Native provider ABI remains provisional until conformance and replacement law mature."
     },
     {
@@ -870,11 +1040,21 @@
       "cause": "A provider descriptor omits the capability required by a provider selection request.",
       "recovery": "Select a provider that declares the capability or update the provider descriptor with proof.",
       "evidence_expectation": "Provider selection evidence naming required and available capabilities.",
-      "related_refusal_codes": ["dominium.refusal.provider.capability_missing"],
+      "related_refusal_codes": [
+        "dominium.refusal.provider.capability_missing"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.provider.model.v1", "dominium.capability.registry.v1"],
-      "related_artifact_types": ["provider_descriptor", "capability_decision"],
-      "proof": ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.provider.model.v1",
+        "dominium.capability.registry.v1"
+      ],
+      "related_artifact_types": [
+        "provider_descriptor",
+        "capability_decision"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"
+      ],
       "notes": "Provider capabilities must reference capability registry IDs."
     },
     {
@@ -888,11 +1068,20 @@
       "cause": "A provider is promoted or selected for a governed use without declared conformance tests or fixtures.",
       "recovery": "Add provider conformance tests or keep the provider provisional/experimental.",
       "evidence_expectation": "Provider validator evidence naming missing conformance tests.",
-      "related_refusal_codes": ["dominium.refusal.provider.conformance_missing"],
+      "related_refusal_codes": [
+        "dominium.refusal.provider.conformance_missing"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.provider.conformance.v1"],
-      "related_artifact_types": ["provider_descriptor", "conformance_report"],
-      "proof": ["python tools/validators/contracts/check_provider_model.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.provider.conformance.v1"
+      ],
+      "related_artifact_types": [
+        "provider_descriptor",
+        "conformance_report"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --fixtures"
+      ],
       "notes": "This task defines proof expectations only; runtime conformance runner remains later work."
     },
     {
@@ -906,11 +1095,20 @@
       "cause": "The provider trust level, provenance, review state, or native trust posture does not satisfy the requested use.",
       "recovery": "Select a trusted provider, review/promote the provider, or refuse the selection.",
       "evidence_expectation": "Provider descriptor or trust evidence naming trust level and required trust posture.",
-      "related_refusal_codes": ["dominium.refusal.provider.trust_insufficient"],
+      "related_refusal_codes": [
+        "dominium.refusal.provider.trust_insufficient"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.provider.trust_policy.v1"],
-      "related_artifact_types": ["provider_descriptor", "evidence_packet"],
-      "proof": ["python tools/validators/contracts/check_provider_model.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.provider.trust_policy.v1"
+      ],
+      "related_artifact_types": [
+        "provider_descriptor",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --strict"
+      ],
       "notes": "Detailed mod/native trust remains later work."
     },
     {
@@ -926,9 +1124,15 @@
       "evidence_expectation": "Provider selection decision naming degraded_from, degraded_to, diagnostics, and evidence.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.provider.selection.v1"],
-      "related_artifact_types": ["provider_selection_decision"],
-      "proof": ["python tools/validators/contracts/check_provider_model.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.provider.selection.v1"
+      ],
+      "related_artifact_types": [
+        "provider_selection_decision"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --fixtures"
+      ],
       "notes": "Provider fallback is allowed only as typed degradation."
     },
     {
@@ -942,11 +1146,20 @@
       "cause": "No provider could satisfy the request under capability, trust, ABI, platform, or conformance policy.",
       "recovery": "Follow the typed refusal recovery action and inspect provider selection evidence.",
       "evidence_expectation": "Provider selection decision with refusal_code, diagnostic_codes, recovery, and evidence_ref.",
-      "related_refusal_codes": ["dominium.refusal.provider.unavailable"],
+      "related_refusal_codes": [
+        "dominium.refusal.provider.unavailable"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.provider.selection.v1"],
-      "related_artifact_types": ["provider_selection_decision", "refusal_payload"],
-      "proof": ["python tools/validators/contracts/check_provider_model.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.provider.selection.v1"
+      ],
+      "related_artifact_types": [
+        "provider_selection_decision",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_provider_model.py --repo-root . --fixtures"
+      ],
       "notes": "Provider refusal is a typed outcome, not exception text."
     },
     {
@@ -962,9 +1175,15 @@
       "evidence_expectation": "Module validator finding naming the descriptor.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.module.descriptor.v1"],
-      "related_artifact_types": ["module_descriptor"],
-      "proof": ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.module.descriptor.v1"
+      ],
+      "related_artifact_types": [
+        "module_descriptor"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures"
+      ],
       "notes": "Module identity is not path."
     },
     {
@@ -980,9 +1199,15 @@
       "evidence_expectation": "Module validator finding naming module_kind.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.module.kind.registry.v1"],
-      "related_artifact_types": ["module_descriptor"],
-      "proof": ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.module.kind.registry.v1"
+      ],
+      "related_artifact_types": [
+        "module_descriptor"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures"
+      ],
       "notes": "Prevents module from becoming a junk drawer label."
     },
     {
@@ -996,11 +1221,20 @@
       "cause": "A Workbench or command module omits required_commands even though command surface law exists.",
       "recovery": "Reference a registered command ID instead of private tooling or implementation paths.",
       "evidence_expectation": "Module validator finding naming module_id.",
-      "related_refusal_codes": ["dominium.refusal.command.invalid_input"],
+      "related_refusal_codes": [
+        "dominium.refusal.command.invalid_input"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.module.descriptor.v1", "dominium.command.surface.v1"],
-      "related_artifact_types": ["module_descriptor"],
-      "proof": ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.module.descriptor.v1",
+        "dominium.command.surface.v1"
+      ],
+      "related_artifact_types": [
+        "module_descriptor"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures"
+      ],
       "notes": "Workbench modules must call commands/services, not private validators."
     },
     {
@@ -1014,11 +1248,22 @@
       "cause": "A module/workspace binds directly to tools or implementation paths instead of command/service surfaces.",
       "recovery": "Replace the private path dependency with a registered command, service, provider, or capability ID.",
       "evidence_expectation": "Module or Workbench validator finding naming the private call.",
-      "related_refusal_codes": ["dominium.refusal.command.unsupported_surface"],
+      "related_refusal_codes": [
+        "dominium.refusal.command.unsupported_surface"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.module.dependency_policy.v1", "dominium.workbench.workspace.v1"],
-      "related_artifact_types": ["module_descriptor", "workspace_descriptor"],
-      "proof": ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures", "python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.module.dependency_policy.v1",
+        "dominium.workbench.workspace.v1"
+      ],
+      "related_artifact_types": [
+        "module_descriptor",
+        "workspace_descriptor"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures",
+        "python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --fixtures"
+      ],
       "notes": "Workbench is not authority."
     },
     {
@@ -1034,9 +1279,15 @@
       "evidence_expectation": "Workbench workspace validator finding naming workspace_id.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.workbench.workspace.v1"],
-      "related_artifact_types": ["workspace_descriptor"],
-      "proof": ["python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.workbench.workspace.v1"
+      ],
+      "related_artifact_types": [
+        "workspace_descriptor"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --fixtures"
+      ],
       "notes": "Workspace identity is not a layout file."
     },
     {
@@ -1052,9 +1303,15 @@
       "evidence_expectation": "App descriptor validator finding naming app_id.",
       "related_refusal_codes": [],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.app.descriptor.v1"],
-      "related_artifact_types": ["app_descriptor"],
-      "proof": ["python tools/validators/contracts/check_app_descriptors.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.app.descriptor.v1"
+      ],
+      "related_artifact_types": [
+        "app_descriptor"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_app_descriptors.py --repo-root . --fixtures"
+      ],
       "notes": "App identity is not executable filename."
     },
     {
@@ -1068,11 +1325,20 @@
       "cause": "An app descriptor or composition references a private implementation path instead of module, pack, provider, service, or capability IDs.",
       "recovery": "Replace the private dependency with governed IDs.",
       "evidence_expectation": "App validator finding naming the descriptor or composition.",
-      "related_refusal_codes": ["dominium.refusal.command.unsupported_surface"],
+      "related_refusal_codes": [
+        "dominium.refusal.command.unsupported_surface"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.app.composition.v1"],
-      "related_artifact_types": ["app_descriptor", "app_composition"],
-      "proof": ["python tools/validators/contracts/check_app_descriptors.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.app.composition.v1"
+      ],
+      "related_artifact_types": [
+        "app_descriptor",
+        "app_composition"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_app_descriptors.py --repo-root . --fixtures"
+      ],
       "notes": "Apps are product compositions, not private path aggregators."
     },
     {
@@ -1086,11 +1352,20 @@
       "cause": "A pack-provided module requires trust policy that is missing or insufficient for its module kind.",
       "recovery": "Declare pack module trust or refuse activation until MOD-PACK-TRUST-MODEL-01 deepens the policy.",
       "evidence_expectation": "Module validator or future pack trust evidence naming module_id and pack ID.",
-      "related_refusal_codes": ["dominium.refusal.artifact.trust_insufficient"],
+      "related_refusal_codes": [
+        "dominium.refusal.artifact.trust_insufficient"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.module.pack_provided_policy.v1"],
-      "related_artifact_types": ["module_descriptor", "pack"],
-      "proof": ["python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.module.pack_provided_policy.v1"
+      ],
+      "related_artifact_types": [
+        "module_descriptor",
+        "pack"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_module_descriptors.py --repo-root . --fixtures"
+      ],
       "notes": "Data-only packs cannot silently provide native providers."
     },
     {
@@ -1104,11 +1379,19 @@
       "cause": "A replacement plan does not identify the public, artifact, provider, module, schema, protocol, or implementation surface being replaced.",
       "recovery": "Add old_surface with a stable ID and keep any path reference non-authoritative.",
       "evidence_expectation": "Replacement packet validator output naming the packet.",
-      "related_refusal_codes": ["dominium.refusal.replacement.proof_missing"],
+      "related_refusal_codes": [
+        "dominium.refusal.replacement.proof_missing"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.replacement.packet.v1"],
-      "related_artifact_types": ["replacement_packet"],
-      "proof": ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.replacement.packet.v1"
+      ],
+      "related_artifact_types": [
+        "replacement_packet"
+      ],
+      "proof": [
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "Replacement cannot be evaluated without knowing what is being replaced."
     },
     {
@@ -1122,11 +1405,19 @@
       "cause": "A replacement plan does not identify the replacement target surface.",
       "recovery": "Add new_surface with a stable ID and compatibility notes.",
       "evidence_expectation": "Replacement packet validator output naming the packet.",
-      "related_refusal_codes": ["dominium.refusal.replacement.proof_missing"],
+      "related_refusal_codes": [
+        "dominium.refusal.replacement.proof_missing"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.replacement.packet.v1"],
-      "related_artifact_types": ["replacement_packet"],
-      "proof": ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.replacement.packet.v1"
+      ],
+      "related_artifact_types": [
+        "replacement_packet"
+      ],
+      "proof": [
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "New implementation path is not enough; the replacement surface must be declared."
     },
     {
@@ -1140,11 +1431,20 @@
       "cause": "A public, stable, or compatibility-affecting replacement has no conformance, compatibility, fixture, or evidence proof.",
       "recovery": "Add conformance_tests, compatibility_tests, replay/determinism proof, or explicit deferred proof with owner and status.",
       "evidence_expectation": "Replacement packet proof section and validator output.",
-      "related_refusal_codes": ["dominium.refusal.replacement.proof_missing"],
+      "related_refusal_codes": [
+        "dominium.refusal.replacement.proof_missing"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.replacement.proof.v1"],
-      "related_artifact_types": ["replacement_packet", "validation_report"],
-      "proof": ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.replacement.proof.v1"
+      ],
+      "related_artifact_types": [
+        "replacement_packet",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "Fixture proof is allowed for this scaffold but does not claim runtime conformance."
     },
     {
@@ -1158,11 +1458,19 @@
       "cause": "An active replacement lacks a rollback plan with action, steps, and verification.",
       "recovery": "Add rollback_plan or mark a genuinely historical/deferred packet appropriately.",
       "evidence_expectation": "Replacement packet rollback_plan and validator output.",
-      "related_refusal_codes": ["dominium.refusal.replacement.rollback_missing"],
+      "related_refusal_codes": [
+        "dominium.refusal.replacement.rollback_missing"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.replacement.protocol.v1"],
-      "related_artifact_types": ["replacement_packet"],
-      "proof": ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.replacement.protocol.v1"
+      ],
+      "related_artifact_types": [
+        "replacement_packet"
+      ],
+      "proof": [
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "Rollback is required for active replacement plans."
     },
     {
@@ -1176,11 +1484,20 @@
       "cause": "A replacement changes durable artifact, public surface, schema, protocol, or command behavior without a compatible path.",
       "recovery": "Declare compatibility impact and add migration, refusal, or deprecation behavior before applying the replacement.",
       "evidence_expectation": "Replacement impact record and compatibility proof.",
-      "related_refusal_codes": ["dominium.refusal.replacement.compatibility_break"],
+      "related_refusal_codes": [
+        "dominium.refusal.replacement.compatibility_break"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.replacement.impact.v1"],
-      "related_artifact_types": ["replacement_packet", "artifact_manifest"],
-      "proof": ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.replacement.impact.v1"
+      ],
+      "related_artifact_types": [
+        "replacement_packet",
+        "artifact_manifest"
+      ],
+      "proof": [
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "Silent compatibility breakage is forbidden."
     },
     {
@@ -1194,11 +1511,20 @@
       "cause": "A replacement affects a stable artifact, schema, protocol, or command format but lacks explicit migration or refusal behavior.",
       "recovery": "Add migration_policy or refusal_policy with diagnostic/refusal codes.",
       "evidence_expectation": "Replacement migration/refusal policy and validator output.",
-      "related_refusal_codes": ["dominium.refusal.replacement.migration_missing"],
+      "related_refusal_codes": [
+        "dominium.refusal.replacement.migration_missing"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.replacement.packet.v1"],
-      "related_artifact_types": ["replacement_packet", "migration_policy"],
-      "proof": ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.replacement.packet.v1"
+      ],
+      "related_artifact_types": [
+        "replacement_packet",
+        "migration_policy"
+      ],
+      "proof": [
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "No best-effort migration is permitted."
     },
     {
@@ -1212,11 +1538,22 @@
       "cause": "A replacement affects a header, symbol, native boundary, or ABI contract without required ABI proof or transition path.",
       "recovery": "Run ABI/public-header validators and declare migration, deprecation, or refusal behavior.",
       "evidence_expectation": "ABI validator output and replacement proof.",
-      "related_refusal_codes": ["dominium.refusal.replacement.abi_break"],
+      "related_refusal_codes": [
+        "dominium.refusal.replacement.abi_break"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.abi.c_api.v1", "dominium.replacement.proof.v1"],
-      "related_artifact_types": ["replacement_packet", "validation_report"],
-      "proof": ["python tools/validators/abi/check_public_headers.py --repo-root . --strict", "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.abi.c_api.v1",
+        "dominium.replacement.proof.v1"
+      ],
+      "related_artifact_types": [
+        "replacement_packet",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/abi/check_public_headers.py --repo-root . --strict",
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "ABI remains provisional unless proven through API-ABI-CANON."
     },
     {
@@ -1230,11 +1567,20 @@
       "cause": "A provider, module, public API, ABI, schema, protocol, or artifact replacement lacks the proof required for its stability.",
       "recovery": "Add conformance_tests or keep the replacement draft/provisional until proof exists.",
       "evidence_expectation": "Replacement proof record and validator output.",
-      "related_refusal_codes": ["dominium.refusal.replacement.proof_missing"],
+      "related_refusal_codes": [
+        "dominium.refusal.replacement.proof_missing"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.replacement.proof.v1"],
-      "related_artifact_types": ["replacement_packet", "validation_report"],
-      "proof": ["python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.replacement.proof.v1"
+      ],
+      "related_artifact_types": [
+        "replacement_packet",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/repo/check_replacement_packet.py --repo-root . --fixtures"
+      ],
       "notes": "Do not fake conformance proof."
     },
     {
@@ -1248,11 +1594,20 @@
       "cause": "A requested surface or artifact version falls outside declared compatibility range.",
       "recovery": "Select a compatible version, run a declared migration, or issue a structured refusal.",
       "evidence_expectation": "Version/deprecation validator output or compatibility decision naming the surface ID and version.",
-      "related_refusal_codes": ["dominium.refusal.version.incompatible"],
+      "related_refusal_codes": [
+        "dominium.refusal.version.incompatible"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.version.compatibility.v1"],
-      "related_artifact_types": ["version_compatibility", "evidence_packet"],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.version.compatibility.v1"
+      ],
+      "related_artifact_types": [
+        "version_compatibility",
+        "evidence_packet"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"
+      ],
       "notes": "Compatibility must be declared; it is not inferred from path or filename."
     },
     {
@@ -1266,11 +1621,20 @@
       "cause": "The declared version is unknown, retired, removed, or unsupported by policy.",
       "recovery": "Use a supported version, migrate through declared policy, or refuse with structured evidence.",
       "evidence_expectation": "Version/deprecation validator output or runtime decision evidence naming the unsupported version.",
-      "related_refusal_codes": ["dominium.refusal.version.unsupported"],
+      "related_refusal_codes": [
+        "dominium.refusal.version.unsupported"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.versioning.law.v1"],
-      "related_artifact_types": ["version_compatibility", "refusal_payload"],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.versioning.law.v1"
+      ],
+      "related_artifact_types": [
+        "version_compatibility",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+      ],
       "notes": "Unsupported version handling is policy-only in this task."
     },
     {
@@ -1284,11 +1648,20 @@
       "cause": "A surface attempts a forbidden lifecycle transition, such as stable to removed directly.",
       "recovery": "Use an allowed transition and provide required deprecation, retirement, removal, migration, refusal, and proof records.",
       "evidence_expectation": "Version transition validator output naming from/to lifecycle states.",
-      "related_refusal_codes": ["dominium.refusal.replacement.required"],
+      "related_refusal_codes": [
+        "dominium.refusal.replacement.required"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.lifecycle.state.registry.v1", "dominium.versioning.transition.v1"],
-      "related_artifact_types": ["version_transition"],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.lifecycle.state.registry.v1",
+        "dominium.versioning.transition.v1"
+      ],
+      "related_artifact_types": [
+        "version_transition"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+      ],
       "notes": "Retirement is a governed state, not deletion."
     },
     {
@@ -1302,11 +1675,19 @@
       "cause": "A deprecated surface does not declare replacement or explain why no replacement exists.",
       "recovery": "Add replacement ID or no_replacement_reason plus migration and retirement/refusal behavior.",
       "evidence_expectation": "Deprecation notice validator output naming the surface.",
-      "related_refusal_codes": ["dominium.refusal.replacement.required"],
+      "related_refusal_codes": [
+        "dominium.refusal.replacement.required"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.deprecation.notice.v1"],
-      "related_artifact_types": ["deprecation_notice"],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.deprecation.notice.v1"
+      ],
+      "related_artifact_types": [
+        "deprecation_notice"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+      ],
       "notes": "Nothing deprecated disappears without replacement, migration, or explicit refusal policy."
     },
     {
@@ -1320,11 +1701,20 @@
       "cause": "A surface is being retired without policy for existing references, migration, refusal, or evidence.",
       "recovery": "Add retirement policy and old-reference handling before retiring the surface.",
       "evidence_expectation": "Retirement policy and version transition evidence.",
-      "related_refusal_codes": ["dominium.refusal.surface.retired"],
+      "related_refusal_codes": [
+        "dominium.refusal.surface.retired"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.versioning.retirement_policy.v1"],
-      "related_artifact_types": ["version_transition", "deprecation_notice"],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.versioning.retirement_policy.v1"
+      ],
+      "related_artifact_types": [
+        "version_transition",
+        "deprecation_notice"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --strict"
+      ],
       "notes": "Retired surfaces are not active for new use."
     },
     {
@@ -1338,11 +1728,19 @@
       "cause": "A stable or public surface is moving to removed without prior retirement or explicit reviewed policy.",
       "recovery": "Move through deprecation and retirement, or provide reviewed removal policy with deterministic refusal/bridge behavior.",
       "evidence_expectation": "Version transition validator output and removal policy evidence.",
-      "related_refusal_codes": ["dominium.refusal.surface.removed"],
+      "related_refusal_codes": [
+        "dominium.refusal.surface.removed"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.versioning.removal_policy.v1"],
-      "related_artifact_types": ["version_transition"],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.versioning.removal_policy.v1"
+      ],
+      "related_artifact_types": [
+        "version_transition"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+      ],
       "notes": "Stable to removed directly is forbidden."
     },
     {
@@ -1356,11 +1754,19 @@
       "cause": "A stable surface or artifact omits compatibility_range.",
       "recovery": "Add compatibility range and proof, or lower lifecycle/stability until the compatibility promise is justified.",
       "evidence_expectation": "Version compatibility validator output naming the stable surface.",
-      "related_refusal_codes": ["dominium.refusal.version.incompatible"],
+      "related_refusal_codes": [
+        "dominium.refusal.version.incompatible"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.version.compatibility.v1"],
-      "related_artifact_types": ["version_compatibility"],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.version.compatibility.v1"
+      ],
+      "related_artifact_types": [
+        "version_compatibility"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+      ],
       "notes": "Nothing becomes stable by existing."
     },
     {
@@ -1374,11 +1780,21 @@
       "cause": "A stable breaking change is declared without major version transition, migration policy, compatibility bridge, or refusal behavior.",
       "recovery": "Add major version/replacement, explicit migration, or structured refusal before changing the surface.",
       "evidence_expectation": "Version transition validator output and migration/refusal evidence.",
-      "related_refusal_codes": ["dominium.refusal.migration.required"],
+      "related_refusal_codes": [
+        "dominium.refusal.migration.required"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.versioning.transition.v1", "dominium.versioning.law.v1"],
-      "related_artifact_types": ["version_transition", "migration_policy"],
-      "proof": ["python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.versioning.transition.v1",
+        "dominium.versioning.law.v1"
+      ],
+      "related_artifact_types": [
+        "version_transition",
+        "migration_policy"
+      ],
+      "proof": [
+        "python tools/validators/contracts/check_version_deprecation.py --repo-root . --fixtures"
+      ],
       "notes": "No silent breakage."
     },
     {
@@ -1392,11 +1808,20 @@
       "cause": "A mod, pack, module pack, adapter, or provider requests authority beyond its declared trust level.",
       "recovery": "Lower requested authority, raise trust through review, or refuse with structured evidence.",
       "evidence_expectation": "Mod/pack trust validator output naming trust_level, permissions, and subject ID.",
-      "related_refusal_codes": ["dominium.refusal.mod.trust_insufficient"],
+      "related_refusal_codes": [
+        "dominium.refusal.mod.trust_insufficient"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.mod_pack.trust_model.v1"],
-      "related_artifact_types": ["trust_decision", "refusal_payload"],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.mod_pack.trust_model.v1"
+      ],
+      "related_artifact_types": [
+        "trust_decision",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "Trust is declared, not inferred from existence."
     },
     {
@@ -1410,11 +1835,20 @@
       "cause": "A descriptor requests or uses a permission without a matching declaration and scope.",
       "recovery": "Declare the permission with scope and reason, or remove the authority request.",
       "evidence_expectation": "Mod/pack trust validator output naming missing permission declarations.",
-      "related_refusal_codes": ["dominium.refusal.mod.permission_undeclared"],
+      "related_refusal_codes": [
+        "dominium.refusal.mod.permission_undeclared"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.mod_pack.permission.registry.v1"],
-      "related_artifact_types": ["trust_decision", "mod_descriptor"],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.mod_pack.permission.registry.v1"
+      ],
+      "related_artifact_types": [
+        "trust_decision",
+        "mod_descriptor"
+      ],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "No permission may be implied by module, provider, or pack identity."
     },
     {
@@ -1428,11 +1862,20 @@
       "cause": "Native authority was requested without trusted/signed native provider policy and evidence.",
       "recovery": "Use a non-native provider, keep the provider inside the trusted build boundary, or provide conformance and trust evidence.",
       "evidence_expectation": "Trust validator output and provider conformance evidence.",
-      "related_refusal_codes": ["dominium.refusal.mod.native_provider_blocked"],
+      "related_refusal_codes": [
+        "dominium.refusal.mod.native_provider_blocked"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.mod_pack.trust_model.v1"],
-      "related_artifact_types": ["provider_descriptor", "trust_decision"],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.mod_pack.trust_model.v1"
+      ],
+      "related_artifact_types": [
+        "provider_descriptor",
+        "trust_decision"
+      ],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "Native provider runtime loading is not implemented by this task."
     },
     {
@@ -1446,11 +1889,20 @@
       "cause": "An external process adapter lacks required protocol, permission, review, sandbox, or determinism declarations.",
       "recovery": "Declare IPC/protocol, permissions, determinism impact, and review evidence, or disable the adapter.",
       "evidence_expectation": "Trust validator output naming external adapter fields.",
-      "related_refusal_codes": ["dominium.refusal.mod.external_adapter_blocked"],
+      "related_refusal_codes": [
+        "dominium.refusal.mod.external_adapter_blocked"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.mod_pack.trust_model.v1"],
-      "related_artifact_types": ["trust_decision", "protocol_descriptor"],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.mod_pack.trust_model.v1"
+      ],
+      "related_artifact_types": [
+        "trust_decision",
+        "protocol_descriptor"
+      ],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "External adapters are visible governance surfaces."
     },
     {
@@ -1464,11 +1916,20 @@
       "cause": "A mod, pack, adapter, or provider omits determinism impact or replay policy.",
       "recovery": "Declare classification, replay policy, and authoritative-state impact before validation can pass.",
       "evidence_expectation": "Trust validator output naming the missing determinism fields.",
-      "related_refusal_codes": ["dominium.refusal.mod.determinism_impact_missing"],
+      "related_refusal_codes": [
+        "dominium.refusal.mod.determinism_impact_missing"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.mod_pack.trust_model.v1"],
-      "related_artifact_types": ["mod_descriptor", "trust_decision"],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.mod_pack.trust_model.v1"
+      ],
+      "related_artifact_types": [
+        "mod_descriptor",
+        "trust_decision"
+      ],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "Unknown determinism impact refuses by default."
     },
     {
@@ -1482,11 +1943,20 @@
       "cause": "Two or more pack overlays affect the same target without an allowed explicit conflict policy.",
       "recovery": "Declare explicit replace, merge, first-wins, last-wins-with-evidence, or refuse the composition.",
       "evidence_expectation": "Trust validator or future mount-plan output naming conflicting overlays.",
-      "related_refusal_codes": ["dominium.refusal.pack.overlay_conflict"],
+      "related_refusal_codes": [
+        "dominium.refusal.pack.overlay_conflict"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.mod_pack.overlay_policy.v1"],
-      "related_artifact_types": ["pack_overlay_report", "trust_decision"],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.mod_pack.overlay_policy.v1"
+      ],
+      "related_artifact_types": [
+        "pack_overlay_report",
+        "trust_decision"
+      ],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "Runtime mount planning is future work."
     },
     {
@@ -1500,11 +1970,20 @@
       "cause": "A pack overlay uses implicit or silent overwrite behavior.",
       "recovery": "Replace silent overwrite with an explicit conflict policy and evidence, or refuse the overlay.",
       "evidence_expectation": "Trust validator output naming the forbidden overlay policy.",
-      "related_refusal_codes": ["dominium.refusal.pack.silent_overwrite_forbidden"],
+      "related_refusal_codes": [
+        "dominium.refusal.pack.silent_overwrite_forbidden"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.mod_pack.overlay_policy.v1"],
-      "related_artifact_types": ["pack_overlay_report", "refusal_payload"],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.mod_pack.overlay_policy.v1"
+      ],
+      "related_artifact_types": [
+        "pack_overlay_report",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "No pack may silently overwrite another pack."
     },
     {
@@ -1518,11 +1997,20 @@
       "cause": "A descriptor names a trust level absent from the trust level registry.",
       "recovery": "Select a registered trust level or add a reviewed trust-level registry entry.",
       "evidence_expectation": "Trust validator output naming the unknown trust level.",
-      "related_refusal_codes": ["dominium.refusal.mod.trust_insufficient"],
+      "related_refusal_codes": [
+        "dominium.refusal.mod.trust_insufficient"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.mod_pack.trust_level.registry.v1"],
-      "related_artifact_types": ["mod_descriptor", "trust_decision"],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.mod_pack.trust_level.registry.v1"
+      ],
+      "related_artifact_types": [
+        "mod_descriptor",
+        "trust_decision"
+      ],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --strict"
+      ],
       "notes": "Trust is a registry-backed value."
     },
     {
@@ -1536,11 +2024,20 @@
       "cause": "A mod or pack requests network authority without a trust level and declaration that allow it.",
       "recovery": "Remove network authority, declare an external adapter policy, or refuse the mod/pack.",
       "evidence_expectation": "Trust validator output naming requested network permissions.",
-      "related_refusal_codes": ["dominium.refusal.mod.network_denied"],
+      "related_refusal_codes": [
+        "dominium.refusal.mod.network_denied"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.mod_pack.permission.registry.v1"],
-      "related_artifact_types": ["trust_decision", "refusal_payload"],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.mod_pack.permission.registry.v1"
+      ],
+      "related_artifact_types": [
+        "trust_decision",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "Data-only packs get no network authority."
     },
     {
@@ -1554,11 +2051,20 @@
       "cause": "A mod or pack requests filesystem authority without a trust level and declaration that allow it.",
       "recovery": "Remove filesystem authority, restrict it to governed storage/profile/save paths, or refuse the mod/pack.",
       "evidence_expectation": "Trust validator output naming requested filesystem permissions.",
-      "related_refusal_codes": ["dominium.refusal.mod.filesystem_denied"],
+      "related_refusal_codes": [
+        "dominium.refusal.mod.filesystem_denied"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.mod_pack.permission.registry.v1"],
-      "related_artifact_types": ["trust_decision", "refusal_payload"],
-      "proof": ["python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.mod_pack.permission.registry.v1"
+      ],
+      "related_artifact_types": [
+        "trust_decision",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/package/check_mod_pack_trust.py --repo-root . --fixtures"
+      ],
       "notes": "Data-only packs get no filesystem authority beyond their own declared payload."
     },
     {
@@ -1572,11 +2078,21 @@
       "cause": "A caller requested an OS/platform floor that is unsupported, unregistered, or lacks required proof.",
       "recovery": "Select a registered proven platform floor, add evidence, or refuse the request.",
       "evidence_expectation": "Portability matrix validator output naming platform_floor and support_status.",
-      "related_refusal_codes": ["dominium.refusal.portability.platform_unsupported"],
+      "related_refusal_codes": [
+        "dominium.refusal.portability.platform_unsupported"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.portability.matrix.v1", "dominium.platform.floor.registry.v1"],
-      "related_artifact_types": ["portability_matrix", "validation_report"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.portability.matrix.v1",
+        "dominium.platform.floor.registry.v1"
+      ],
+      "related_artifact_types": [
+        "portability_matrix",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Platform support must be evidence-backed."
     },
     {
@@ -1590,11 +2106,20 @@
       "cause": "A target names an architecture absent from the portability registry or without proof.",
       "recovery": "Select a registered architecture with suitable proof or keep the target planned/research.",
       "evidence_expectation": "Portability validator output naming architecture.",
-      "related_refusal_codes": ["dominium.refusal.portability.arch_unsupported"],
+      "related_refusal_codes": [
+        "dominium.refusal.portability.arch_unsupported"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.portability.matrix.v1"],
-      "related_artifact_types": ["portability_matrix", "validation_report"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.portability.matrix.v1"
+      ],
+      "related_artifact_types": [
+        "portability_matrix",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Architecture rows declare endianness and word size."
     },
     {
@@ -1608,11 +2133,20 @@
       "cause": "A target names an unknown or unproven compiler/toolchain lane.",
       "recovery": "Select a registered toolchain with evidence, or add a planned/research entry without claiming support.",
       "evidence_expectation": "Portability validator output naming toolchain.",
-      "related_refusal_codes": ["dominium.refusal.portability.toolchain_unsupported"],
+      "related_refusal_codes": [
+        "dominium.refusal.portability.toolchain_unsupported"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.platform.toolchain.registry.v1"],
-      "related_artifact_types": ["portability_matrix", "validation_report"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.platform.toolchain.registry.v1"
+      ],
+      "related_artifact_types": [
+        "portability_matrix",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Installed toolchain discovery is not support proof."
     },
     {
@@ -1626,11 +2160,20 @@
       "cause": "A build_proven, supported, or release candidate claim lacks build/configure evidence.",
       "recovery": "Run the required build proof or lower the support_status.",
       "evidence_expectation": "Build log, fast strict report, or validator evidence path.",
-      "related_refusal_codes": ["dominium.refusal.portability.release_not_proven"],
+      "related_refusal_codes": [
+        "dominium.refusal.portability.release_not_proven"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.portability.matrix.v1"],
-      "related_artifact_types": ["build_report", "validation_report"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.portability.matrix.v1"
+      ],
+      "related_artifact_types": [
+        "build_report",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --fixtures"
+      ],
       "notes": "No support claim may rely on prose alone."
     },
     {
@@ -1644,11 +2187,20 @@
       "cause": "A smoke_proven or stronger claim lacks smoke validation evidence.",
       "recovery": "Run the smoke proof or lower the support_status.",
       "evidence_expectation": "Smoke test or fast strict evidence path.",
-      "related_refusal_codes": ["dominium.refusal.portability.release_not_proven"],
+      "related_refusal_codes": [
+        "dominium.refusal.portability.release_not_proven"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.portability.matrix.v1"],
-      "related_artifact_types": ["test_report", "validation_report"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.portability.matrix.v1"
+      ],
+      "related_artifact_types": [
+        "test_report",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --fixtures"
+      ],
       "notes": "Smoke proof is narrower than product or release support."
     },
     {
@@ -1662,11 +2214,20 @@
       "cause": "A product_proven, release candidate, or supported product mode lacks boot/projection evidence.",
       "recovery": "Run product boot/projection proof or lower the support_status.",
       "evidence_expectation": "Product boot matrix, projection proof, or validation report.",
-      "related_refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
+      "related_refusal_codes": [
+        "dominium.refusal.portability.product_mode_unsupported"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.product_mode.portability.matrix.v1"],
-      "related_artifact_types": ["product_boot_report", "validation_report"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.product_mode.portability.matrix.v1"
+      ],
+      "related_artifact_types": [
+        "product_boot_report",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --fixtures"
+      ],
       "notes": "Product mode support must cite runtime/provider capabilities."
     },
     {
@@ -1680,11 +2241,21 @@
       "cause": "A release candidate or supported release artifact lacks package/release evidence.",
       "recovery": "Run the release gate or lower the release_status/support_status.",
       "evidence_expectation": "Release gate, package proof, manifest proof, or validator output.",
-      "related_refusal_codes": ["dominium.refusal.portability.release_not_proven"],
+      "related_refusal_codes": [
+        "dominium.refusal.portability.release_not_proven"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.package.portability.matrix.v1"],
-      "related_artifact_types": ["release_report", "package_report", "validation_report"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --fixtures"],
+      "related_public_surface_ids": [
+        "dominium.package.portability.matrix.v1"
+      ],
+      "related_artifact_types": [
+        "release_report",
+        "package_report",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --fixtures"
+      ],
       "notes": "Release support requires release evidence."
     },
     {
@@ -1698,11 +2269,22 @@
       "cause": "A portability row references provider capability that is absent, unproven, or unavailable on the target.",
       "recovery": "Select an available provider, add conformance evidence, or explicitly refuse/degrade.",
       "evidence_expectation": "Portability and provider validator outputs naming provider/capability.",
-      "related_refusal_codes": ["dominium.refusal.portability.provider_unavailable", "dominium.refusal.provider.unavailable"],
+      "related_refusal_codes": [
+        "dominium.refusal.portability.provider_unavailable",
+        "dominium.refusal.provider.unavailable"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.runtime.portability.matrix.v1", "dominium.renderer.portability.matrix.v1"],
-      "related_artifact_types": ["provider_descriptor", "validation_report"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.runtime.portability.matrix.v1",
+        "dominium.renderer.portability.matrix.v1"
+      ],
+      "related_artifact_types": [
+        "provider_descriptor",
+        "validation_report"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "No renderer/provider fallback is silent."
     },
     {
@@ -1716,12 +2298,161 @@
       "cause": "A product mode lacks required runtime/provider capability or evidence for the target platform/toolchain.",
       "recovery": "Select a supported mode, add required capability/evidence, or refuse with recovery guidance.",
       "evidence_expectation": "Product mode portability matrix row and validator output.",
-      "related_refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
+      "related_refusal_codes": [
+        "dominium.refusal.portability.product_mode_unsupported"
+      ],
       "related_command_ids": [],
-      "related_public_surface_ids": ["dominium.product_mode.portability.matrix.v1"],
-      "related_artifact_types": ["portability_matrix", "refusal_payload"],
-      "proof": ["python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"],
+      "related_public_surface_ids": [
+        "dominium.product_mode.portability.matrix.v1"
+      ],
+      "related_artifact_types": [
+        "portability_matrix",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict"
+      ],
       "notes": "Product mode availability is not inferred from app folders."
+    },
+    {
+      "id": "dominium.diagnostic.architecture.full_native_32bit_refused",
+      "code": "DOM-ARCH-32BIT-FULL-NATIVE-REFUSED",
+      "owner": "contracts.platform",
+      "severity": "error",
+      "category": "portability",
+      "stability": "provisional",
+      "summary": "A 32-bit target attempted to claim full native architecture support.",
+      "cause": "A row classified x86, armv7, or another 32-bit architecture as source_native_64.",
+      "recovery": "Classify the target as constrained_native_32, contract_projection, or archive_runner; do not claim full native product support.",
+      "evidence_expectation": "Architecture policy validator output naming the target, architecture tier, field, expected value, and actual value.",
+      "related_refusal_codes": [
+        "dominium.refusal.architecture.full_native_32bit"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.platform.architecture_policy.v1"
+      ],
+      "related_artifact_types": [
+        "portability_matrix",
+        "validation_report",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"
+      ],
+      "notes": "Added by PORTABILITY-ARCH-POLICY-02."
+    },
+    {
+      "id": "dominium.diagnostic.architecture.pointer_width_persisted_format",
+      "code": "DOM-ARCH-POINTER-WIDTH-PERSISTED-FORMAT",
+      "owner": "contracts.platform",
+      "severity": "error",
+      "category": "portability",
+      "stability": "provisional",
+      "summary": "A stable format uses a native pointer-width or object-layout type.",
+      "cause": "A save, replay, packet, package, renderer IR, or artifact field used size_t, long, uintptr_t, raw pointer values, native padding, or compiler object layout.",
+      "recovery": "Replace the field with fixed-width explicit little-endian data or keep the native value in process-local diagnostics only.",
+      "evidence_expectation": "Architecture policy validator output naming the target, architecture tier, field, expected value, and actual value.",
+      "related_refusal_codes": [
+        "dominium.refusal.architecture.pointer_width_persisted"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.platform.architecture_policy.v1"
+      ],
+      "related_artifact_types": [
+        "portability_matrix",
+        "validation_report",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"
+      ],
+      "notes": "Added by PORTABILITY-ARCH-POLICY-02."
+    },
+    {
+      "id": "dominium.diagnostic.architecture.endian_unsupported",
+      "code": "DOM-ARCH-ENDIAN-UNSUPPORTED",
+      "owner": "contracts.platform",
+      "severity": "error",
+      "category": "portability",
+      "stability": "provisional",
+      "summary": "The requested endian mode is unsupported for the architecture tier.",
+      "cause": "A mainline or persisted/protocol claim omitted little-endian policy or requested unsupported big-endian behavior.",
+      "recovery": "Use explicit little-endian encoding or place the target in a reviewed projection/research lane with limitations.",
+      "evidence_expectation": "Architecture policy validator output naming the target, architecture tier, field, expected value, and actual value.",
+      "related_refusal_codes": [
+        "dominium.refusal.architecture.endian_unsupported"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.platform.architecture_policy.v1"
+      ],
+      "related_artifact_types": [
+        "portability_matrix",
+        "validation_report",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"
+      ],
+      "notes": "Added by PORTABILITY-ARCH-POLICY-02."
+    },
+    {
+      "id": "dominium.diagnostic.architecture.claim_evidence_missing",
+      "code": "DOM-ARCH-CLAIM-EVIDENCE-MISSING",
+      "owner": "contracts.platform",
+      "severity": "error",
+      "category": "portability",
+      "stability": "provisional",
+      "summary": "Architecture support claim is missing required evidence.",
+      "cause": "A portability or architecture row claims a support level without the evidence required by its architecture tier.",
+      "recovery": "Add build, smoke, product, package, and release evidence as required, or lower the support status.",
+      "evidence_expectation": "Architecture policy validator output naming the target, architecture tier, field, expected value, and actual value.",
+      "related_refusal_codes": [
+        "dominium.refusal.architecture.support_evidence_missing"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.platform.architecture_policy.v1"
+      ],
+      "related_artifact_types": [
+        "portability_matrix",
+        "validation_report",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"
+      ],
+      "notes": "Added by PORTABILITY-ARCH-POLICY-02."
+    },
+    {
+      "id": "dominium.diagnostic.architecture.legacy_requires_projection",
+      "code": "DOM-ARCH-LEGACY-REQUIRES-PROJECTION",
+      "owner": "contracts.platform",
+      "severity": "error",
+      "category": "portability",
+      "stability": "provisional",
+      "summary": "Legacy architecture target requires constrained, projection, or archive-runner handling.",
+      "cause": "A vintage or constrained target cannot satisfy source_native_64 full native product policy.",
+      "recovery": "Use constrained_native_32, contract_projection, or archive_runner with explicit limitations and refusal behavior.",
+      "evidence_expectation": "Architecture policy validator output naming the target, architecture tier, field, expected value, and actual value.",
+      "related_refusal_codes": [
+        "dominium.refusal.architecture.legacy_requires_projection"
+      ],
+      "related_command_ids": [],
+      "related_public_surface_ids": [
+        "dominium.platform.architecture_policy.v1"
+      ],
+      "related_artifact_types": [
+        "portability_matrix",
+        "validation_report",
+        "refusal_payload"
+      ],
+      "proof": [
+        "python tools/validators/platform/check_architecture_policy.py --repo-root . --strict"
+      ],
+      "notes": "Added by PORTABILITY-ARCH-POLICY-02."
     }
   ]
 }

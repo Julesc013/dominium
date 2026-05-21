@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.platform.architecture_claim.schema.v1",
+  "title": "Dominium Architecture Claim",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["target_id", "architecture", "architecture_tier", "word_size", "endianness", "support_status", "known_limitations"],
+  "properties": {
+    "target_id": {
+      "type": "string",
+      "pattern": "^(domino|dominium)(\\.[a-z0-9_]+)+$"
+    },
+    "architecture": {
+      "type": "string"
+    },
+    "architecture_tier": {
+      "enum": ["source_native_64", "constrained_native_32", "contract_projection", "archive_runner"]
+    },
+    "word_size": {
+      "oneOf": [
+        {"type": "integer", "enum": [32, 64]},
+        {"type": "string"}
+      ]
+    },
+    "endianness": {
+      "type": "string"
+    },
+    "abi": {
+      "type": "string"
+    },
+    "toolchain": {
+      "type": "string"
+    },
+    "language_floor": {
+      "type": "string"
+    },
+    "support_status": {
+      "type": "string"
+    },
+    "provider_capabilities": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "evidence": {
+      "type": "array"
+    },
+    "known_limitations": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "diagnostic_codes": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "refusal_codes": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "stable_persisted_fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": {"type": "string"},
+          "type": {"type": "string"}
+        }
+      }
+    }
+  }
+}

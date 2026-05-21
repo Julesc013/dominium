@@ -8,42 +8,81 @@
       "word_size": 32,
       "endianness": "little",
       "support_status": "research",
-      "notes": "Legacy 32-bit lane; no current support claim."
+      "notes": "Legacy 32-bit lane; constrained/research only, no full native product support claim.",
+      "canonical_architecture": "x86",
+      "architecture_tier": "constrained_native_32",
+      "source_native_64_eligible": false
+    },
+    {
+      "architecture": "x86_64",
+      "canonical_architecture": "x86_64",
+      "word_size": 64,
+      "endianness": "little",
+      "architecture_tier": "source_native_64",
+      "source_native_64_eligible": true,
+      "support_status": "smoke_proven",
+      "notes": "Canonical 64-bit x86 architecture lane; support remains matrix-scoped and evidence-backed."
     },
     {
       "architecture": "x64",
       "word_size": 64,
       "endianness": "little",
       "support_status": "smoke_proven",
-      "notes": "Current host architecture lane; support remains matrix-scoped."
+      "notes": "Compatibility alias for x86_64; support remains matrix-scoped.",
+      "alias_for": "x86_64",
+      "canonical_architecture": "x86_64",
+      "architecture_tier": "source_native_64",
+      "source_native_64_eligible": true
     },
     {
       "architecture": "arm64",
       "word_size": 64,
       "endianness": "little",
       "support_status": "research",
-      "notes": "Planned/research architecture until toolchain and platform proof exists."
+      "notes": "Planned/research architecture until toolchain and platform proof exists.",
+      "canonical_architecture": "arm64",
+      "architecture_tier": "source_native_64",
+      "source_native_64_eligible": true
+    },
+    {
+      "architecture": "armv7",
+      "canonical_architecture": "armv7",
+      "word_size": 32,
+      "endianness": "little",
+      "architecture_tier": "constrained_native_32",
+      "source_native_64_eligible": false,
+      "support_status": "research",
+      "notes": "Legacy 32-bit ARM lane; not mainline product support."
     },
     {
       "architecture": "ppc",
       "word_size": "32_or_64_declared_by_target",
       "endianness": "big_or_little_declared_by_target",
       "support_status": "research",
-      "notes": "Historical/exotic architecture lane only."
+      "notes": "Historical/exotic architecture lane only.",
+      "canonical_architecture": "ppc",
+      "architecture_tier": "archive_runner",
+      "source_native_64_eligible": false
     },
     {
       "architecture": "wasm32",
       "word_size": 32,
       "endianness": "little",
       "support_status": "research",
-      "notes": "WebAssembly is not an active build or release support target."
+      "notes": "WebAssembly is not an active build or release support target.",
+      "canonical_architecture": "wasm32",
+      "architecture_tier": "contract_projection",
+      "source_native_64_eligible": false
     },
     {
       "architecture": "host",
       "word_size": "host_declared",
       "endianness": "host_declared",
       "support_status": "smoke_proven",
-      "notes": "Host-default validation lane; not portable support by itself."
+      "notes": "Host-default validation lane; not portable support by itself.",
+      "canonical_architecture": "host",
+      "architecture_tier": "contract_projection",
+      "source_native_64_eligible": false
     }
   ]
 }

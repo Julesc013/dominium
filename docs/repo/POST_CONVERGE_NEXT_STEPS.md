@@ -9,6 +9,24 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## PORTABILITY-ARCH-POLICY-02 Update
+
+PORTABILITY-ARCH-POLICY-02 is PASS_WITH_WARNINGS.
+
+- native architecture policy is explicit in `contracts/platform/architecture_policy.contract.toml`.
+- architecture tiers are registered: `source_native_64`, `constrained_native_32`, `contract_projection`, and `archive_runner`.
+- mainline full-native architectures are `x86_64` and `arm64`; `x64` remains a compatibility alias for existing rows.
+- 32-bit targets remain constrained/research/projection/archive lanes, not mainline product obligations.
+- pointer-width and endian policy are declared and validated.
+- architecture policy validator strict/json/fixtures/inventory passes.
+- portability matrix, public surface, diagnostics, capability/refusal, provider, artifact, schema/protocol, language, ABI, dependency-direction, AIDE, RepoX, docs, build, UI, and ABI checks pass.
+- fast strict passes `33` commands in `296.553` seconds, including CMake configure/build and smoke CTest.
+- full CTest remains T4/full-gate debt and was not run.
+
+Next task: `WORKBENCH-VALIDATION-SLICE-01`.
+
+Secondary follow-up if desired: `POINTER-WIDTH-SERIALIZATION-AUDIT-01`.
+
 ## FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01 Update
 
 FOUNDATION-REPAIR-DEPENDENCY-DIRECTION-01 is PASS.

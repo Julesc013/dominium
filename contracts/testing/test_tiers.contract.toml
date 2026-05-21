@@ -572,6 +572,21 @@ warning_policy = "optional/variant review warnings must remain visible"
 evidence_outputs = ["runner_json", "runner_markdown"]
 
 [[commands]]
+id = "t1.architecture_policy"
+tier = "T1"
+name = "Architecture policy validator"
+type = "argv"
+argv = ["{python}", "tools/validators/platform/check_architecture_policy.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "contracts.platform"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "pointer-width inventory remains descriptive unless strict rules fail"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
 id = "t1.repox_strict"
 tier = "T1"
 name = "RepoX STRICT"

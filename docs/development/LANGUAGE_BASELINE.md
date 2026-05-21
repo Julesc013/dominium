@@ -12,6 +12,8 @@ Dominium mainline now builds as C17 and C++17.
 The active floor is Windows 7 SP1, macOS 10.9.5, and Linux. C89/C++98 remains a
 historical or future research lane, not the active mainline build law.
 
+Native product architecture is governed separately by `contracts/platform/architecture_policy.contract.toml`: full native products are 64-bit source-native (`x86_64` and `arm64`) and little-endian. Persisted formats must stay pointer-width independent and use fixed-width explicit encodings.
+
 ## Build Contract
 
 - C translation units compile as C17 with extensions off.

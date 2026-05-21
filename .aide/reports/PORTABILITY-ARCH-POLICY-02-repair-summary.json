@@ -1,0 +1,34 @@
+{
+  "task": "PORTABILITY-ARCH-POLICY-02",
+  "result": "PASS_WITH_WARNINGS",
+  "architecture_tiers_added": 4,
+  "architectures_registered": 8,
+  "validator_added": "tools/validators/platform/check_architecture_policy.py",
+  "fixtures_added": 7,
+  "diagnostic_codes_total": 94,
+  "architecture_diagnostic_codes_added": 5,
+  "refusal_codes_total": 49,
+  "architecture_refusal_codes_added": 5,
+  "capabilities_total": 34,
+  "architecture_capabilities_added": 4,
+  "public_surface_count": 155,
+  "fast_strict": {
+    "status": "PASS",
+    "commands_total": 33,
+    "commands_passed": 33,
+    "elapsed_seconds": 296.553
+  },
+  "pointer_width_inventory_counts": {
+    "size_t": 2006,
+    "uintptr_t": 1,
+    "intptr_t": 13,
+    "sizeof_void_pointer": 0,
+    "int_cast": 621,
+    "long_cast": 9,
+    "pointer_hash": 0,
+    "address_hash": 1,
+    "pointer_sort": 0
+  },
+  "next_task": "WORKBENCH-VALIDATION-SLICE-01",
+  "secondary_follow_up": "POINTER-WIDTH-SERIALIZATION-AUDIT-01"
+}

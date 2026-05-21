@@ -1,0 +1,31 @@
+{
+  "task": "PORTABILITY-ARCH-POLICY-02",
+  "foundation_lock": "PASS_WITH_WARNINGS",
+  "authorized": true,
+  "existing_surfaces": {
+    "portability_matrix_contract": "contracts/platform/portability_matrix.contract.toml",
+    "architecture_registry": "contracts/platform/architecture.registry.json",
+    "runtime_portability_matrix": "contracts/platform/runtime_portability.matrix.json",
+    "renderer_portability_matrix": "contracts/platform/renderer_portability.matrix.json",
+    "product_mode_portability_matrix": "contracts/platform/product_mode_portability.matrix.json",
+    "package_portability_matrix": "contracts/platform/package_portability.matrix.json",
+    "language_baseline": "contracts/build/language_baseline.contract.toml",
+    "abi_contract": "contracts/abi/c_api.contract.toml",
+    "portability_validator": "tools/validators/platform/check_portability_matrix.py"
+  },
+  "created_or_completed_surfaces": {
+    "architecture_policy_contract": "contracts/platform/architecture_policy.contract.toml",
+    "architecture_tier_registry": "contracts/platform/architecture_tier.registry.json",
+    "pointer_width_policy_schema": "contracts/platform/pointer_width_policy.schema.json",
+    "endian_policy_contract": "contracts/platform/endian_policy.contract.toml",
+    "architecture_claim_schema": "contracts/platform/architecture_claim.schema.json",
+    "architecture_policy_validator": "tools/validators/platform/check_architecture_policy.py",
+    "fixture_suite": "tests/contract/architecture_policy",
+    "docs": [
+      "docs/architecture/native_architecture_policy.md",
+      "docs/development/pointer_width_and_serialization.md",
+      "docs/build/architecture_targets.md",
+      "docs/release/architecture_support_policy.md"
+    ]
+  }
+}

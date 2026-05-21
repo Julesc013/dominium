@@ -1,0 +1,17 @@
+{
+  "schema_version": "dominium.platform.architecture_claim.instance.v1",
+  "target_id": "dominium.architecture.fixture.invalid_missing_endian",
+  "architecture": "x86_64",
+  "architecture_tier": "source_native_64",
+  "word_size": 64,
+  "abi": "c_compatible_pod_abi",
+  "toolchain": "msvc143",
+  "language_floor": "c17_cpp17",
+  "support_status": "build_proven",
+  "provider_capabilities": [],
+  "evidence": [{"kind": "build", "path": "tests/contract/architecture_policy/invalid_missing_endian.json"}],
+  "known_limitations": ["Negative fixture."],
+  "diagnostic_codes": ["DOM-ARCH-ENDIAN-UNSUPPORTED"],
+  "refusal_codes": ["dominium.refusal.architecture.endian_unsupported"],
+  "stable_persisted_fields": [{"name": "tick", "type": "u64"}]
+}

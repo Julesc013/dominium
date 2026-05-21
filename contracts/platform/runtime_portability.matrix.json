@@ -24,14 +24,29 @@
       "dynamic_loading": "not_required",
       "threading": "host_default",
       "networking": "loopback_or_disabled",
-      "renderer_support": ["domino.render.null"],
+      "renderer_support": [
+        "domino.render.null"
+      ],
       "audio_support": [],
       "input_support": [],
-      "storage_support": ["domino.storage.local"],
-      "package_support": ["domino.package.validate"],
-      "product_modes": ["headless", "cli"],
-      "provider_capabilities": ["domino.platform.headless", "domino.render.null", "domino.storage.local"],
-      "runtime_capabilities": ["domino.platform.headless"],
+      "storage_support": [
+        "domino.storage.local"
+      ],
+      "package_support": [
+        "domino.package.validate"
+      ],
+      "product_modes": [
+        "headless",
+        "cli"
+      ],
+      "provider_capabilities": [
+        "domino.platform.headless",
+        "domino.render.null",
+        "domino.storage.local"
+      ],
+      "runtime_capabilities": [
+        "domino.platform.headless"
+      ],
       "build_tuple": "host_default_headless",
       "test_evidence": [
         {
@@ -43,10 +58,17 @@
         }
       ],
       "release_status": "not_released",
-      "known_limitations": ["Not a release support claim."],
-      "diagnostic_codes": ["DOM-PORTABILITY-SMOKE-PROOF-MISSING"],
-      "refusal_codes": ["dominium.refusal.portability.product_mode_unsupported"],
-      "notes": "Local headless proof lane."
+      "known_limitations": [
+        "Not a release support claim."
+      ],
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-SMOKE-PROOF-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.portability.product_mode_unsupported"
+      ],
+      "notes": "Local headless proof lane.",
+      "architecture_tier": "contract_projection"
     },
     {
       "target_id": "dominium.runtime.win32.headless",
@@ -69,14 +91,29 @@
       "dynamic_loading": "declared_provider_only",
       "threading": "win32_threads_provisional",
       "networking": "loopback_or_declared_provider",
-      "renderer_support": ["domino.render.null", "domino.render.software"],
+      "renderer_support": [
+        "domino.render.null",
+        "domino.render.software"
+      ],
       "audio_support": [],
       "input_support": [],
-      "storage_support": ["domino.storage.local"],
-      "package_support": ["domino.package.validate"],
-      "product_modes": ["headless", "cli"],
-      "provider_capabilities": ["domino.platform.win32", "domino.storage.local"],
-      "runtime_capabilities": ["domino.platform.win32"],
+      "storage_support": [
+        "domino.storage.local"
+      ],
+      "package_support": [
+        "domino.package.validate"
+      ],
+      "product_modes": [
+        "headless",
+        "cli"
+      ],
+      "provider_capabilities": [
+        "domino.platform.win32",
+        "domino.storage.local"
+      ],
+      "runtime_capabilities": [
+        "domino.platform.win32"
+      ],
       "build_tuple": "winnt10_x64_msvc143_headless",
       "test_evidence": [
         {
@@ -88,10 +125,18 @@
         }
       ],
       "release_status": "not_released",
-      "known_limitations": ["No installer, release, or broad product support claim."],
-      "diagnostic_codes": ["DOM-PORTABILITY-PRODUCT-PROOF-MISSING", "DOM-PORTABILITY-RELEASE-PROOF-MISSING"],
-      "refusal_codes": ["dominium.refusal.portability.release_not_proven"],
-      "notes": "Windows host row remains build/smoke-scoped."
+      "known_limitations": [
+        "No installer, release, or broad product support claim."
+      ],
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-PRODUCT-PROOF-MISSING",
+        "DOM-PORTABILITY-RELEASE-PROOF-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.portability.release_not_proven"
+      ],
+      "notes": "Windows host row remains build/smoke-scoped.",
+      "architecture_tier": "source_native_64"
     },
     {
       "target_id": "dominium.runtime.linux.headless",
@@ -114,21 +159,42 @@
       "dynamic_loading": "declared_provider_only",
       "threading": "posix_threads_planned",
       "networking": "planned",
-      "renderer_support": ["domino.render.null"],
+      "renderer_support": [
+        "domino.render.null"
+      ],
       "audio_support": [],
       "input_support": [],
-      "storage_support": ["domino.storage.local"],
-      "package_support": ["domino.package.validate"],
-      "product_modes": ["headless", "cli"],
-      "provider_capabilities": ["domino.platform.posix", "domino.render.null"],
-      "runtime_capabilities": ["domino.platform.posix"],
+      "storage_support": [
+        "domino.storage.local"
+      ],
+      "package_support": [
+        "domino.package.validate"
+      ],
+      "product_modes": [
+        "headless",
+        "cli"
+      ],
+      "provider_capabilities": [
+        "domino.platform.posix",
+        "domino.render.null"
+      ],
+      "runtime_capabilities": [
+        "domino.platform.posix"
+      ],
       "build_tuple": "linux_x64_gcc_headless",
       "test_evidence": [],
       "release_status": "not_released",
-      "known_limitations": ["No current task build or smoke proof."],
-      "diagnostic_codes": ["DOM-PORTABILITY-BUILD-PROOF-MISSING"],
-      "refusal_codes": ["dominium.refusal.portability.platform_unsupported"],
-      "notes": "Planned row only."
+      "known_limitations": [
+        "No current task build or smoke proof."
+      ],
+      "diagnostic_codes": [
+        "DOM-PORTABILITY-BUILD-PROOF-MISSING"
+      ],
+      "refusal_codes": [
+        "dominium.refusal.portability.platform_unsupported"
+      ],
+      "notes": "Planned row only.",
+      "architecture_tier": "source_native_64"
     }
   ]
 }

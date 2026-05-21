@@ -26,12 +26,16 @@ build_proven_requires_configure_or_build_evidence = true
 unsupported_requests_require_refusal = true
 no_silent_renderer_or_provider_fallback = true
 no_machine_local_paths_in_support_claims = true
+architecture_policy_must_pass = true
+full_native_product_tier = "source_native_64"
+full_native_mainline_architectures = ["x86_64", "arm64"]
+legacy_32_bit_targets_are_not_mainline = true
 
 [target_kinds]
 allowed = ["platform_floor", "architecture", "toolchain", "build_tuple", "runtime_provider", "renderer_provider", "product_mode", "package_mode", "release_artifact", "test_fixture", "historical"]
 
 [matrix_fields]
-required = ["target_id", "target_kind", "support_status", "owner", "platform_floor", "architecture", "toolchain", "language_floor", "abi", "endianness", "word_size", "filesystem_policy", "path_encoding", "dynamic_loading", "threading", "provider_capabilities", "test_evidence", "diagnostic_codes", "refusal_codes"]
+required = ["target_id", "target_kind", "support_status", "owner", "platform_floor", "architecture", "architecture_tier", "toolchain", "language_floor", "abi", "endianness", "word_size", "filesystem_policy", "path_encoding", "dynamic_loading", "threading", "provider_capabilities", "test_evidence", "diagnostic_codes", "refusal_codes"]
 identity_is_not_path = true
 target_ids_are_dotted_lowercase = true
 provider_support_references_provider_or_capability_ids = true
@@ -41,7 +45,9 @@ release_support_references_artifact_identity = true
 [abi_and_language]
 c_public_abi = "C-compatible surfaces obey API-ABI-CANON-01."
 language_floor = "C17/C++17 mainline source rules remain governed by contracts/build/language_baseline.contract.toml."
-endianness_word_size = "Rows must state assumptions; cross-endian support is not claimed without proof."
+architecture_policy = "Full native products are source_native_64: x86_64 or arm64, 64-bit, little-endian."
+endianness_word_size = "Rows must state assumptions; persisted and protocol formats use explicit little-endian fixed-width encodings."
+pointer_width = "Native pointer width is never artifact identity, replay truth, save truth, network truth, package truth, renderer-IR truth, or simulation truth."
 
 [filesystem_and_runtime]
 path_behavior_declared = true
@@ -53,6 +59,10 @@ provider_availability_declared = true
 
 [relationships]
 build_contract = "contracts/build/build_contract.schema.json"
+architecture_policy = "contracts/platform/architecture_policy.contract.toml"
+architecture_tier_registry = "contracts/platform/architecture_tier.registry.json"
+pointer_width_policy = "contracts/platform/pointer_width_policy.schema.json"
+endian_policy = "contracts/platform/endian_policy.contract.toml"
 language_baseline = "contracts/build/language_baseline.contract.toml"
 abi_contract = "contracts/abi/c_api.contract.toml"
 provider_model = "contracts/provider/provider.contract.toml"

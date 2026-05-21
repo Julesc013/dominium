@@ -1,0 +1,21 @@
+{
+  "schema_version": "dominium.platform.architecture_claim.instance.v1",
+  "target_id": "dominium.architecture.fixture.constrained_native_32",
+  "architecture": "x86",
+  "architecture_tier": "constrained_native_32",
+  "word_size": 32,
+  "endianness": "little",
+  "abi": "legacy_c_abi_declared_by_tuple",
+  "toolchain": "msvc141_xp",
+  "language_floor": "constrained_native_declared_by_lane",
+  "support_status": "research",
+  "provider_capabilities": ["dominium.platform.constrained_native_32"],
+  "evidence": [],
+  "known_limitations": ["Fixture only; 32-bit is not full native product support."],
+  "diagnostic_codes": ["DOM-ARCH-LEGACY-REQUIRES-PROJECTION"],
+  "refusal_codes": ["dominium.refusal.architecture.legacy_requires_projection"],
+  "stable_persisted_fields": [
+    {"name": "file_offset", "type": "u64"},
+    {"name": "dense_handle", "type": "u32"}
+  ]
+}
