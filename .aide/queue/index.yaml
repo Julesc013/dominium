@@ -12,3 +12,9 @@ items:
     purpose: Import portable Q31 AIDE Lite commit, WorkUnit, changelog, and Git workflow governance while preserving Dominium doctrine and target state.
     task: .aide/queue/DOMINIUM-AIDE-SYNC-01/task.yaml
     evidence: .aide/queue/DOMINIUM-AIDE-SYNC-01/evidence
+  - id: DOMINIUM-AIDE-BLOCKER-AUTONOMY-01
+    title: Make mechanical blockers autonomous AIDE work items
+    status: passed_with_notes
+    purpose: Ensure routine git/worktree drift, stale generated state, missing bounded dependencies, and validation failures create or resume AIDE resolution tasks instead of ending work.
+    task: .aide/queue/DOMINIUM-AIDE-BLOCKER-AUTONOMY-01/task.yaml
+    evidence: .aide/queue/DOMINIUM-AIDE-BLOCKER-AUTONOMY-01/evidence

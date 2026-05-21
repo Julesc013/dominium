@@ -26,8 +26,12 @@ Escalation to humans is allowed only for semantic ambiguity, never for mechanica
 - Missing derived artifacts
 - Build output wiring
 - Deterministic regeneration tasks
+- Routine git/worktree drift such as dirty files, untracked files, branch
+  ahead/behind state, or stale generated context
+- Bounded validation failures with deterministic local fixes
 
-These must be remediated autonomously.
+These must be remediated autonomously, converted into bounded AIDE
+resolution tasks, or bypassed by continuing path-disjoint work with evidence.
 
 ## Semantic Blockers (Escalation Allowed)
 

@@ -7,7 +7,8 @@ purpose: >
   the user or replaying long chat history.
 stable_task_id_required: true
 resume_from_repo_state_first: true
-ask_user_only_when_blocked_after_repo_reconciliation: true
+ask_user_only_for_semantic_or_destructive_blockers: true
+mechanical_blockers_are_work_items: true
 required_task_surfaces:
   - ".aide/queue/index.yaml"
   - ".aide/queue/<TASK-ID>/task.yaml"
@@ -43,12 +44,25 @@ validation_gates:
   - validate
   - eval run
   - task-specific tests
+validation_gate_failure_policy:
+  default_action: create_or_resume_blocker_resolution_task
+  continue_when_path_disjoint: true
+  stop_only_for:
+    - missing_credentials
+    - destructive_ambiguity
+    - semantic_authority_conflict
+    - required_human_review_gate
 blocker_policy:
   missing_credentials: stop
   destructive_ambiguity: stop
   conflicting_manual_content: preserve_or_quarantine
   bounded_missing_files: recreate_with_evidence
   stale_status: reconcile_from_evidence
+  dirty_worktree: classify_preserve_continue_or_task
+  branch_ahead_or_behind: fetch_sync_when_safe_or_task
+  stale_generated_context: regenerate_or_task
+  failed_validation: fix_within_scope_or_task
+  missing_dependency: complete_safe_dependency_or_task
 non_goals:
   - no autonomous product implementation without queued task
   - no hiding blockers

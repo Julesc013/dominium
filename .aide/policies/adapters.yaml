@@ -28,6 +28,7 @@ source_inputs:
   - golden_tasks_policy
   - router_profile
   - cache_local_state_policy
+  - blocker_autonomy_policy
   - export_import_policy
 output_policy:
   preserve_manual_content: true

@@ -28,8 +28,8 @@ branch_aware_recovery:
   duplicate_work: no-op if accepted work is already contained in current branch
   q28_behavior: report_only_no_branch_mutation
 dependency_handling:
-  missing_dependency: report_blocked
-  partial_dependency: prefer_safe_completion_or_stop
+  missing_dependency: create_blocker_resolution_workunit
+  partial_dependency: prefer_safe_completion_or_create_resolution_workunit
   passed_with_notes_dependency: proceed_with_recorded_warnings
 completion_predicates:
   - status_is_needs_review_or_passed
@@ -48,7 +48,9 @@ out_of_order_behavior:
 dirty_tree_behavior:
   preserve_unrelated_changes: true
   classify_changes_against_allowed_paths: true
-  stop_on_forbidden_or_destructive_ambiguity: true
+  continue_path_disjoint_work: true
+  create_resolution_workunit_for_conflicting_dirty_paths: true
+  stop_on_destructive_ambiguity_only: true
 evidence_requirements:
   - changed-files.md
   - validation.md
@@ -59,15 +61,18 @@ no_op_behavior:
   required_output: no-op reason, evidence refs, validation summary
   mutation_allowed: false
 recovery_behavior:
-  default_mode: report_first
+  default_mode: task_first
   autonomous_recovery_allowed_for:
     - missing_bounded_metadata
     - stale_status_reconciliation
     - generated_artifact_refresh
+    - routine_git_drift
+    - dirty_worktree_classification
+    - path_disjoint_continuation
   stop_required_for:
     - missing_external_secret
     - destructive_ambiguity
-    - manual_content_conflict_without_clear_merge
+    - semantic_authority_conflict
 states:
   - planned
   - ready

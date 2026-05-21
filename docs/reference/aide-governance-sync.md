@@ -10,6 +10,7 @@ commit discipline, WorkUnit recovery, and report-only Git workflow guidance.
 
 Q33 refreshed portable governance from the canonical AIDE Lite Pack:
 
+- `.aide/policies/blocker-autonomy.yaml`
 - `.aide/policies/commit-messages.yaml`
 - `.aide/policies/task-resumption.yaml`
 - `.aide/policies/work-units.yaml`
@@ -38,6 +39,13 @@ py -3 .aide/scripts/aide_lite.py git plan
 
 Git helper commands are dry-run by default. Do not run branch helper `--apply`
 or `--push` without a reviewed queue item and explicit operator approval.
+
+Mechanical blockers are not terminal stops. Routine dirty worktrees, untracked
+files, branch ahead/behind state, stale generated context, missing bounded
+dependencies, and validator failures must first be classified, safely repaired
+when in scope, or converted into a bounded AIDE resolution task. Continue
+path-disjoint work when safe. Stop only for missing external secrets,
+destructive ambiguity, semantic authority conflicts, or required review gates.
 
 Dominium doctrine remains authoritative in repo-local doctrine files. AIDE
 memory and packets should reference doctrine paths such as

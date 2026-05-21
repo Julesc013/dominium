@@ -40,6 +40,10 @@ Define mandatory autonomous remediation behavior for gate failures.
 - No simulation semantic changes.
 - No governance weakening.
 - Idempotent and reversible operations only.
+- For routine git/worktree drift, preserve unrelated work, safely sync when
+  possible, and continue path-disjoint work rather than stopping.
+- When the fix is out of scope, create or resume a bounded AIDE resolution
+  task before reporting blocked.
 
 ### R4 Verify and Prevent
 

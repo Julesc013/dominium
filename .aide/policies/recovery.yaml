@@ -4,8 +4,43 @@ status: active
 purpose: >
   Define deterministic recovery profiles for duplicate, out-of-order, partial,
   dirty, stale, failed, and blocked AIDE task states.
-default_rule: inspect_repo_local_evidence_before_user_escalation
+default_rule: inspect_repo_local_evidence_and_create_resolution_tasks_before_user_escalation
+mechanical_blocker_rule:
+  routine_git_or_worktree_drift_is_not_terminal: true
+  create_resolution_task_before_stop: true
+  continue_path_disjoint_work_when_safe: true
+  preserve_unrelated_changes: true
+  allowed_resolution_task_roots:
+    - .aide/queue/**
+    - .aide/reports/**
+    - .aide/repair/**
+  hard_stop_exceptions:
+    - missing_external_secret
+    - destructive_ambiguity
+    - semantic_authority_conflict
+    - required_human_review_gate
 profiles:
+  routine_git_preflight:
+    inspect_steps:
+      - git_status_short
+      - git_branch_tracking_state
+      - fetch_result
+      - pull_or_rebase_feasibility
+      - changed_paths_by_owner
+    allowed_autonomous_recovery:
+      - fetch_and_fast_forward_when_clean_or_path_disjoint
+      - preserve_unrelated_changes
+      - classify_dirty_paths
+      - continue_path_disjoint_task_work
+      - create_blocker_resolution_task_for_remaining_drift
+    when_to_stop:
+      - destructive_ambiguity
+      - semantic_authority_conflict
+      - required_human_review_gate
+    required_evidence:
+      - git_preflight_classification
+      - sync_or_no_sync_reason
+      - created_resolution_task_or_continuation_reason
   duplicate_task:
     inspect_steps:
       - queue_index
@@ -53,9 +88,11 @@ profiles:
     allowed_autonomous_recovery:
       - preserve_unrelated_changes
       - continue_if_dirty_paths_are_own_scope
+      - continue_if_dirty_paths_are_path_disjoint
+      - create_blocker_resolution_task_for_dirty_paths
     when_to_stop:
-      - forbidden_path_modified
       - destructive_ambiguity
+      - semantic_authority_conflict
     required_evidence:
       - dirty_tree_classification
   stale_status:
@@ -101,8 +138,9 @@ profiles:
       - dependency_evidence
     allowed_autonomous_recovery:
       - report_missing_dependency
+      - create_blocker_resolution_task_for_missing_dependency
     when_to_stop:
-      - dependency_not_accepted_for_current_task
+      - dependency_requires_human_review
     required_evidence:
       - dependency_status_report
   missing_external_secret:

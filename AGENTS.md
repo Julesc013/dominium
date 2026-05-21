@@ -287,7 +287,7 @@ Expected Artifacts:
 Non-Goals:
 ```
 
-<!-- AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=codex_agents_md generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/AGENTS.md.template mode=managed_section manual=outside-only fingerprint=sha256:8f573bef168a6f16af88c7aef03c771d113a5971324cafb15f8b8bed4374c597 -->
+<!-- AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=codex_agents_md generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/AGENTS.md.template mode=managed_section manual=outside-only fingerprint=sha256:634e820ddcf7d8251a9f42ddb51f7eab306ce2f0daf36bedbdae2df568663698 -->
 ## AIDE Existing-Tool Adapter: Codex
 
 - Use `.aide/context/latest-task-packet.md` as the default task brief.
@@ -306,6 +306,14 @@ Non-Goals:
   out-of-order queue work.
 - Run `git plan` before branch-sensitive work; do not mutate branches without
   an explicit helper plan, validation evidence, and operator approval.
+- Treat routine git/worktree drift as a mechanical blocker, not a terminal
+  stop: fetch or fast-forward when safe, preserve unrelated changes, continue
+  path-disjoint work, and create or resume an AIDE blocker-resolution task for
+  remaining drift.
+- For validation, dependency, stale-generated-output, and dirty-tree blockers,
+  create or resume a bounded AIDE task before reporting blocked; ask the user
+  only for semantic authority conflicts, destructive ambiguity, missing
+  external secrets, or required review gates.
 - Treat Gateway and provider surfaces as no-call/report-only unless a future
   reviewed queue phase explicitly enables live execution.
 - Write evidence, preserve manual content, stop at review gates, and report

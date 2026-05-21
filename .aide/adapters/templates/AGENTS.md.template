@@ -17,6 +17,14 @@
   out-of-order queue work.
 - Run `git plan` before branch-sensitive work; do not mutate branches without
   an explicit helper plan, validation evidence, and operator approval.
+- Treat routine git/worktree drift as a mechanical blocker, not a terminal
+  stop: fetch or fast-forward when safe, preserve unrelated changes, continue
+  path-disjoint work, and create or resume an AIDE blocker-resolution task for
+  remaining drift.
+- For validation, dependency, stale-generated-output, and dirty-tree blockers,
+  create or resume a bounded AIDE task before reporting blocked; ask the user
+  only for semantic authority conflicts, destructive ambiguity, missing
+  external secrets, or required review gates.
 - Treat Gateway and provider surfaces as no-call/report-only unless a future
   reviewed queue phase explicitly enables live execution.
 - Write evidence, preserve manual content, stop at review gates, and report

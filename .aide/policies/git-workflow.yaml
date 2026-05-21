@@ -32,6 +32,19 @@ workflow_principles:
   - pruning_requires_ancestor_containment
   - no_force_push_to_protected_roles
   - no_remote_mutation_without_explicit_command
+preflight_drift_policy:
+  dirty_worktree_is_not_terminal: true
+  branch_ahead_or_behind_is_not_terminal: true
+  fetch_is_allowed_for_orientation: true
+  fast_forward_pull_allowed_when_it_does_not_overwrite_local_work: true
+  preserve_unrelated_local_changes: true
+  continue_path_disjoint_task_work: true
+  create_aide_resolution_task_for_remaining_drift: true
+  stop_only_for:
+    - destructive_ambiguity
+    - missing_external_secret
+    - semantic_authority_conflict
+    - required_human_review_gate
 detection_policy:
   - inspect_local_branches
   - inspect_remote_branches

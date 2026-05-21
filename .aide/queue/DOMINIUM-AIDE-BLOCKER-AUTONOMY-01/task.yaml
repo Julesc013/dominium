@@ -1,0 +1,51 @@
+schema_version: aide.queue-task.v0
+task_id: DOMINIUM-AIDE-BLOCKER-AUTONOMY-01
+title: Make mechanical blockers autonomous AIDE work items
+status: passed_with_notes
+target_repo: julesc013/dominium
+phase: post-foundation-hardening
+created_at: 2026-05-22
+owner: Codex
+objective: >
+  Update AIDE and Codex guidance so routine git/worktree drift, stale generated
+  context, bounded missing dependencies, and validation failures become
+  autonomous resolution tasks rather than terminal stops.
+scope:
+  allowed_paths:
+    - .aide/**
+    - AGENTS.md
+    - docs/reference/aide-governance-sync.md
+    - docs/governance/SEMANTIC_ESCALATION_POLICY.md
+    - docs/governance/REMEDIATION_STATE_MACHINE.md
+  forbidden_paths:
+    - .git/**
+    - .aide.local/**
+    - .env
+    - secrets/**
+    - runtime/**
+    - engine/**
+    - apps/**
+    - content/**
+    - contracts/**
+    - specs/**
+    - data/**
+validation:
+  required:
+    - py -3 .aide/scripts/aide_lite.py doctor
+    - py -3 .aide/scripts/aide_lite.py validate
+    - py -3 .aide/scripts/aide_lite.py adapter validate
+    - git diff --check
+review_gate:
+  required: false
+non_goals:
+  - destructive git repair
+  - force push or remote mutation
+  - bypassing semantic authority conflicts
+  - bypassing required review gates
+  - product/runtime implementation
+acceptance:
+  - AIDE recovery policy treats routine git/worktree drift as non-terminal
+  - AIDE task resumption creates or resumes resolution tasks for mechanical blockers
+  - WorkUnit policy continues path-disjoint work and creates blocker work units
+  - Codex AGENTS managed section includes the non-terminal blocker rule
+  - Evidence records validation and remaining hard-stop exceptions

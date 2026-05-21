@@ -1,0 +1,63 @@
+schema_version: aide.blocker-autonomy-policy.v0
+policy_id: aide-blocker-autonomy-v0
+status: active
+purpose: >
+  Ensure routine blockers become bounded AIDE work items instead of terminal
+  stops, while preserving hard semantic, secret, destructive, and review gates.
+default_rule: create_or_resume_resolution_task_before_reporting_blocked
+mechanical_blockers:
+  git_or_worktree_drift:
+    examples:
+      - dirty_worktree
+      - untracked_files
+      - branch_ahead_of_remote
+      - branch_behind_remote
+      - missing_fast_forward_pull
+      - stale_generated_context
+    required_response:
+      - classify_changed_paths
+      - preserve_unrelated_work
+      - fetch_and_fast_forward_when_safe
+      - continue_path_disjoint_work_when_safe
+      - create_resolution_task_when_remaining_drift_conflicts
+  missing_or_partial_dependency:
+    required_response:
+      - inspect_dependency_evidence
+      - complete_safe_bounded_dependency_when_in_scope
+      - create_resolution_task_when_dependency_is_out_of_scope
+  validation_failure:
+    required_response:
+      - capture_exact_command_and_failure
+      - fix_within_current_allowed_paths_when_safe
+      - create_resolution_task_when_fix_is_out_of_scope
+      - rerun_targeted_validation_after_fix
+resolution_task_requirements:
+  stable_task_id: true
+  allowed_roots:
+    - .aide/queue/**
+    - .aide/reports/**
+    - .aide/repair/**
+  required_fields:
+    - blocker_class
+    - failed_gate
+    - source_task
+    - affected_paths
+    - allowed_paths
+    - forbidden_paths
+    - proposed_resolution
+    - validation
+    - continuation_rule
+  continuation_rule: >
+    Continue the original task when remaining blocker paths are disjoint from
+    the active write scope or when a safe deterministic repair completed.
+hard_stop_exceptions:
+  missing_external_secret: do_not_fabricate_or_request_secret_value
+  destructive_ambiguity: require_explicit_reviewed_authorization
+  semantic_authority_conflict: require_human_or_canonical_doctrine_decision
+  required_human_review_gate: stop_at_review_gate_after_evidence
+non_goals:
+  - no hiding blockers
+  - no fabricating evidence
+  - no destructive git operations
+  - no force push or remote mutation without explicit command
+  - no bypassing semantic or review gates
