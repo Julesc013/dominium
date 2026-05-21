@@ -589,6 +589,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/BUDGET_POLICY.md`
 - `docs/architecture/C_COMPATIBLE_ABI_BOUNDARY.md`
 - `docs/architecture/capability_refusal_law.md`
+- `docs/architecture/command_result_view_slice.md`
 - `docs/architecture/command_view_event_refusal.md`
 - `docs/architecture/COLLAPSE_EXPAND_SOLVERS.md`
 - `docs/architecture/composition_resolver_law.md`
@@ -607,6 +608,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/provider_selection_model.md`
 - `docs/architecture/replacement_protocol.md`
 - `docs/architecture/schema_protocol_evolution.md`
+- `docs/architecture/view_action_projection_model.md`
 - `docs/architecture/workbench_workspace_model.md`
 - `docs/architecture/app_composition_model.md`
 - `docs/architecture/DEPRECATION_AND_QUARANTINE.md`

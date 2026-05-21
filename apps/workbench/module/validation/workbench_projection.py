@@ -9,6 +9,13 @@ from apps.workbench.module.validation.command import COMMAND_ID, run_validation_
 
 MODULE_ID = "dominium.workbench.validation"
 VIEW_BINDING_ID = "dominium.workbench.binding.validation_result_table"
+SUMMARY_VIEW_ID = "dominium.validation.summary.v1"
+SUMMARY_VIEW_BINDING_ID = "dominium.workbench.binding.validation_summary"
+VALIDATION_ACTIONS = [
+    "dominium.validation.open_report.v1",
+    "dominium.validation.export_evidence.v1",
+    "dominium.validation.rerun.v1",
+]
 
 
 def validation_module_descriptor() -> dict[str, object]:
@@ -21,13 +28,70 @@ def validation_module_descriptor() -> dict[str, object]:
         "commands": [COMMAND_ID],
         "services": ["service.command", "service.validation", "service.diagnostics"],
         "views": ["view.table", "view.inspector"],
-        "view_bindings": [VIEW_BINDING_ID],
+        "semantic_views": [SUMMARY_VIEW_ID],
+        "view_bindings": [VIEW_BINDING_ID, SUMMARY_VIEW_BINDING_ID],
+        "actions": list(VALIDATION_ACTIONS),
+        "projection_fixtures": [
+            "tests/contract/presentation/fixtures/valid_validation_summary_workbench_projection.json",
+        ],
         "result_schema": "contracts/command/validation_run_result.schema.json",
         "validation_result_schema": "contracts/schema/validation_result.schema.json",
         "evidence_schema": "contracts/evidence/evidence_packet.schema.json",
         "default_target_kind": "contract_schema",
         "default_target_path": "contracts/command/validation_run_input.schema.json",
         "default_suite_id": "validate.contract_schema_artifact",
+        "workspace_runtime_implemented": False,
+    }
+
+
+def project_validation_summary(command_result: Mapping[str, object]) -> dict[str, object]:
+    payload = dict(command_result.get("payload") or {})
+    request = dict(payload.get("request") or {})
+    counts = dict(payload.get("summary_counts") or {})
+    refusal = payload.get("refusal")
+    target = payload.get("validated_artifact_ref")
+
+    return {
+        "schema_version": "dominium.workbench.validation_summary_projection.v1",
+        "view_id": SUMMARY_VIEW_ID,
+        "binding_id": SUMMARY_VIEW_BINDING_ID,
+        "projection_kind": "headless",
+        "shell_host": "workbench",
+        "command_id": COMMAND_ID,
+        "source_result_schema": "contracts/command/validation_run_result.schema.json",
+        "source_status": str(command_result.get("status") or ""),
+        "summary": str(command_result.get("summary") or ""),
+        "sections": {
+            "summary": {
+                "text": str(command_result.get("summary") or ""),
+            },
+            "status": {
+                "command_status": str(command_result.get("status") or ""),
+                "validation_status": str(payload.get("validation_status") or ""),
+            },
+            "counts": {
+                "errors": int(counts.get("errors") or 0),
+                "warnings": int(counts.get("warnings") or 0),
+                "diagnostics": int(counts.get("diagnostics") or 0),
+            },
+            "diagnostics": list(command_result.get("diagnostics") or []),
+            "evidence": {
+                "refs": list(command_result.get("evidence") or []),
+                "packet": dict(payload.get("evidence_packet") or {}),
+            },
+            "target": dict(target) if isinstance(target, Mapping) else None,
+            "refusal": dict(refusal) if isinstance(refusal, Mapping) else None,
+        },
+        "actions": [
+            {
+                "action_id": action_id,
+                "enabled": bool(request) if action_id.endswith(".rerun.v1") else bool(command_result.get("evidence")),
+                "implementation_status": "command_backed" if action_id.endswith(".rerun.v1") else "contract_only",
+            }
+            for action_id in VALIDATION_ACTIONS
+        ],
+        "private_tool_calls": False,
+        "runtime_projection_engine": False,
         "workspace_runtime_implemented": False,
     }
 

@@ -373,6 +373,45 @@ replacement_policy = "requires_command_surface_law_update"
 notes = "View surface law; views present results and are not authority."
 
 [[surface]]
+id = "dominium.validation.summary.view.v1"
+kind = "view"
+path = "contracts/view/validation_summary.view.json"
+owner = "contracts.view"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-RESULT-VIEW-SLICE-01"
+proof = ["python tools/validators/contracts/check_command_result_view.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_command_result_view_law_update"
+notes = "Semantic validation summary view over dominium.validation.run result/evidence; no runtime projection engine, rendered GUI, native GUI, or broad Workbench shell is implemented."
+
+[[surface]]
+id = "dominium.action.surface.v1"
+kind = "registry"
+path = "contracts/action"
+owner = "contracts.action"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-RESULT-VIEW-SLICE-01"
+proof = ["python tools/validators/contracts/check_command_result_view.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_action_surface_law_update"
+notes = "Semantic view action descriptors. Actions are projection-visible operations and do not implement handlers in this slice."
+
+[[surface]]
+id = "dominium.presentation.projection_kind.v1"
+kind = "view"
+path = "contracts/presentation"
+owner = "contracts.presentation"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-RESULT-VIEW-SLICE-01"
+proof = ["python tools/validators/contracts/check_command_result_view.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_presentation_projection_law_update"
+notes = "Projection kind and validation summary projection fixture law for CLI, text, rendered, native, and headless descriptors. Rendered/native are descriptor-only placeholders."
+
+[[surface]]
 id = "dominium.event.surface.v1"
 kind = "event"
 path = "contracts/event/event_surface.contract.toml"
@@ -956,6 +995,32 @@ proof = ["python tools/validators/contracts/check_command_surface.py --repo-root
 compatibility = "test_fixture_only"
 replacement_policy = "fixture_changes_follow_command_surface_validator_tests"
 notes = "Fixture suite for command-surface validator behavior."
+
+[[surface]]
+id = "dominium.command_result_view.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_command_result_view.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "COMMAND-RESULT-VIEW-SLICE-01"
+proof = ["python -m py_compile tools/validators/contracts/check_command_result_view.py", "python tools/validators/contracts/check_command_result_view.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_command_result_view_law_update"
+notes = "Validator for semantic validation summary view, actions, projection kinds, projection fixtures, and Workbench projection boundaries."
+
+[[surface]]
+id = "dominium.command_result_view.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/presentation"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "COMMAND-RESULT-VIEW-SLICE-01"
+proof = ["python tools/validators/contracts/check_command_result_view.py --repo-root . --fixtures"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_command_result_view_validator_tests"
+notes = "Fixture suite for valid CLI/headless/text/Workbench projections and invalid unknown-view, unknown-result, private-path, and unsupported runtime claims."
 
 [[surface]]
 id = "dominium.release.update_channels.v1"

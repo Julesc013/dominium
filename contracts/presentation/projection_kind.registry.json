@@ -1,0 +1,39 @@
+{
+  "schema_version": "dominium.presentation.projection_kind_registry.v1",
+  "status": "provisional",
+  "owner": "contracts.presentation",
+  "policy": {
+    "projection_kinds_are_authority": false,
+    "workbench_is_shell_host_not_projection_kind": true,
+    "rendered_runtime_implemented": false,
+    "native_runtime_implemented": false,
+    "text_runtime_implemented": false
+  },
+  "kinds": [
+    {
+      "id": "cli",
+      "description": "Command-line projection using tables, structured output, exit-code discipline, and stdout/stderr conventions.",
+      "runtime_implemented_by_this_task": false
+    },
+    {
+      "id": "text",
+      "description": "Terminal, cell, panel, or TUI-like projection fixture. This task permits deterministic descriptor fixtures only.",
+      "runtime_implemented_by_this_task": false
+    },
+    {
+      "id": "rendered",
+      "description": "Software/GPU-rendered GUI projection descriptor. Runtime implementation is outside this task.",
+      "runtime_implemented_by_this_task": false
+    },
+    {
+      "id": "native",
+      "description": "OS-widget projection descriptor. Runtime implementation is outside this task.",
+      "runtime_implemented_by_this_task": false
+    },
+    {
+      "id": "headless",
+      "description": "Automation, report, or JSON projection for CI, AIDE, and machine consumption.",
+      "runtime_implemented_by_this_task": false
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "actions_added": [
+    "dominium.validation.open_report.v1",
+    "dominium.validation.export_evidence.v1",
+    "dominium.validation.rerun.v1"
+  ],
+  "aide_phase": "post-foundation-product-spine",
+  "aide_task": "COMMAND-RESULT-VIEW-SLICE-01",
+  "command_ids_used": [
+    "dominium.validation.run"
+  ],
+  "fast_strict": {
+    "commands": 33,
+    "elapsed_seconds": 282.676,
+    "evidence_json": ".aide/reports/COMMAND-RESULT-VIEW-SLICE-01-fast-strict.json",
+    "evidence_markdown": ".aide/reports/COMMAND-RESULT-VIEW-SLICE-01-fast-strict.md",
+    "selected_tiers": [
+      "T0",
+      "T1",
+      "T2"
+    ],
+    "status": "PASS"
+  },
+  "non_goals_preserved": [
+    "broad_workbench_shell",
+    "rendered_gui",
+    "native_gui",
+    "tui_runtime",
+    "runtime_view_projection_engine",
+    "package_runtime",
+    "provider_runtime",
+    "runtime_module_loader",
+    "gameplay",
+    "release_publication",
+    "cmake_targets"
+  ],
+  "projection_fixtures_added": [
+    "tests/contract/presentation/fixtures/valid_validation_summary_headless_projection.json",
+    "tests/contract/presentation/fixtures/valid_validation_summary_cli_projection.json",
+    "tests/contract/presentation/fixtures/valid_validation_summary_text_projection.json",
+    "tests/contract/presentation/fixtures/valid_validation_summary_workbench_projection.json",
+    "tests/contract/presentation/fixtures/valid_validation_summary_rendered_placeholder.json",
+    "tests/contract/presentation/fixtures/valid_validation_summary_native_placeholder.json"
+  ],
+  "projection_kinds_added": [
+    "cli",
+    "text",
+    "rendered",
+    "native",
+    "headless"
+  ],
+  "result": "PASS_WITH_WARNINGS",
+  "result_schemas_used": [
+    "contracts/command/validation_run_result.schema.json"
+  ],
+  "validator": "tools/validators/contracts/check_command_result_view.py",
+  "view_ids_added": [
+    "dominium.validation.summary.v1"
+  ],
+  "warnings": [
+    "full_ctest_not_run_t4_debt",
+    "aide_validate_review_packet_reference_warnings",
+    "dependency_direction_68_warnings_zero_violations",
+    "service_conformance_fixture_planned_support_warnings",
+    "rendered_native_descriptor_only",
+    "runtime_projection_engine_not_implemented"
+  ]
+}

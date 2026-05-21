@@ -1,0 +1,33 @@
+{
+  "schema_version": "dominium.presentation.projection_fixture.v1",
+  "projection_id": "dominium.validation.summary.text.fixture.v1",
+  "projection_kind": "text",
+  "view_id": "dominium.validation.summary.v1",
+  "source_result_schema": "contracts/command/validation_run_result.schema.json",
+  "command_id": "dominium.validation.run",
+  "implementation_status": "fixture_stub",
+  "runtime_implemented": false,
+  "private_tool_calls": false,
+  "shell_host": "text",
+  "action_ids": [
+    "dominium.validation.open_report.v1",
+    "dominium.validation.export_evidence.v1",
+    "dominium.validation.rerun.v1"
+  ],
+  "diagnostic_bindings": [
+    "DOM-VALIDATION-RUN-WARNING",
+    "DOM-VALIDATION-RUN-REFUSED"
+  ],
+  "evidence_bindings": [
+    "contracts/evidence/evidence_packet.schema.json"
+  ],
+  "output_shape": {
+    "format": "cell_panel_stub",
+    "panels": [
+      "summary",
+      "diagnostics",
+      "evidence"
+    ],
+    "interactive_runtime": false
+  }
+}

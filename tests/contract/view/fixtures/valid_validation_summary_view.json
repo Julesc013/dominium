@@ -1,0 +1,5 @@
+{
+  "fixture_kind": "semantic_view",
+  "expected_result": "pass",
+  "view_ref": "contracts/view/validation_summary.view.json"
+}

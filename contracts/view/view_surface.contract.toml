@@ -20,6 +20,14 @@ tui_view_is_projection = true
 rendered_view_is_projection = true
 headless_view_is_projection = true
 view_stability_requires_source_result_stability = true
+views_are_semantic_surfaces = true
+projection_kinds_are_not_authority = true
+results_are_not_automatically_documents = true
+documents_are_persistent_editable_objects = true
+snapshots_are_read_only_state_projections = true
+patches_are_lawful_mutation_proposals = true
+actions_are_declared_by_view_contracts = true
+rendered_and_native_runtime_implementation_declared_here = false
 
 [[view]]
 id = "dominium.view.validation.summary"

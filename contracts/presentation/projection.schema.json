@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.presentation.projection_schema.v1",
+  "title": "Dominium Semantic View Projection Descriptor",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "projection_id",
+    "projection_kind",
+    "view_id",
+    "source_result_schema",
+    "command_id",
+    "implementation_status",
+    "runtime_implemented",
+    "private_tool_calls"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "projection_id": {
+      "type": "string",
+      "pattern": "^(domino|dominium)(\\.[a-z0-9][a-z0-9_-]*)+\\.v[0-9]+$"
+    },
+    "projection_kind": {
+      "type": "string",
+      "enum": [
+        "cli",
+        "text",
+        "rendered",
+        "native",
+        "headless"
+      ]
+    },
+    "view_id": {
+      "type": "string"
+    },
+    "source_result_schema": {
+      "type": "string"
+    },
+    "command_id": {
+      "type": "string"
+    },
+    "implementation_status": {
+      "type": "string"
+    },
+    "runtime_implemented": {
+      "type": "boolean"
+    },
+    "private_tool_calls": {
+      "type": "boolean"
+    }
+  }
+}

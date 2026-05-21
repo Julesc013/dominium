@@ -12,7 +12,13 @@
   ],
   "views": [
     "view.table",
-    "view.inspector"
+    "view.inspector",
+    "dominium.validation.summary.v1"
+  ],
+  "actions": [
+    "dominium.validation.open_report.v1",
+    "dominium.validation.export_evidence.v1",
+    "dominium.validation.rerun.v1"
   ],
   "commands": [
     "dominium.validation.run"
@@ -26,6 +32,8 @@
     "surface": "workbench"
   },
   "result_schema": "contracts/command/validation_run_result.schema.json",
+  "semantic_view": "contracts/view/validation_summary.view.json",
+  "projection_fixture": "tests/contract/presentation/fixtures/valid_validation_summary_workbench_projection.json",
   "evidence_schema": "contracts/evidence/evidence_packet.schema.json",
   "private_tool_calls": false,
   "notes": "Static Workbench validation projection only; no workspace runtime, shell, renderer, or module loader is implemented."

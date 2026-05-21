@@ -1,0 +1,22 @@
+schema_version = "dominium.action.surface.v1"
+status = "provisional"
+last_reviewed = "2026-05-22"
+owner = "contracts.action"
+
+[contract]
+id = "dominium.action.surface.v1"
+status = "provisional"
+owner = "contracts.action"
+purpose = "Defines semantic actions exposed by views without making projections or shells authoritative."
+
+[policy]
+actions_are_authority = false
+actions_mutate_truth_directly = false
+actions_are_command_backed_when_runtime_behavior_exists = true
+contract_only_actions_allowed = true
+unknown_command_refs_fail_validation = true
+actions_require_refusal_behavior = true
+actions_require_evidence_behavior = true
+actions_do_not_implement_handlers = true
+workbench_actions_are_projection_only = true
+rendered_native_actions_implemented_here = false

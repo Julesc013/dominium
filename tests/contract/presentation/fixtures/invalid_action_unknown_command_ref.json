@@ -1,0 +1,26 @@
+{
+  "fixture_kind": "action_registry",
+  "expected_result": "fail",
+  "actions": [
+    {
+      "action_id": "dominium.validation.bad_command_ref.v1",
+      "version": "1.0.0",
+      "stability": "provisional",
+      "owner": "tests.contract",
+      "view_ids": [
+        "dominium.validation.summary.v1"
+      ],
+      "command_ref": "dominium.validation.missing_command",
+      "input_schema": "contracts/command/validation_run_input.schema.json",
+      "required_capabilities": [],
+      "enabled_when": "always",
+      "disabled_reason": "fixture",
+      "danger_level": "low",
+      "confirmation_required": false,
+      "transaction_policy": "fixture",
+      "refusal_behavior": "fixture",
+      "evidence_behavior": "fixture",
+      "implementation_status": "fixture"
+    }
+  ]
+}

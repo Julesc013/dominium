@@ -1,0 +1,73 @@
+{
+  "schema_version": "dominium.action.registry.v1",
+  "status": "provisional",
+  "owner": "contracts.action",
+  "actions": [
+    {
+      "action_id": "dominium.validation.open_report.v1",
+      "version": "1.0.0",
+      "stability": "provisional",
+      "owner": "contracts.action",
+      "view_ids": [
+        "dominium.validation.summary.v1"
+      ],
+      "command_ref": null,
+      "input_schema": null,
+      "required_capabilities": [
+        "dominium.repo.validate"
+      ],
+      "enabled_when": "payload.validation_report is present and payload.refusal is null",
+      "disabled_reason": "No validation report is present in the command result.",
+      "danger_level": "none",
+      "confirmation_required": false,
+      "transaction_policy": "read_only_projection",
+      "refusal_behavior": "Disabled when the source command result has no report; future runtime action must return a typed command refusal.",
+      "evidence_behavior": "Reads evidence references from the existing validation result; does not create new evidence.",
+      "implementation_status": "contract_only"
+    },
+    {
+      "action_id": "dominium.validation.export_evidence.v1",
+      "version": "1.0.0",
+      "stability": "provisional",
+      "owner": "contracts.action",
+      "view_ids": [
+        "dominium.validation.summary.v1"
+      ],
+      "command_ref": null,
+      "input_schema": null,
+      "required_capabilities": [
+        "dominium.repo.validate"
+      ],
+      "enabled_when": "evidence array is non-empty or payload.evidence_packet is present",
+      "disabled_reason": "No evidence references are present in the command result.",
+      "danger_level": "low",
+      "confirmation_required": false,
+      "transaction_policy": "read_only_export_descriptor",
+      "refusal_behavior": "Disabled when evidence is absent; future export command must emit typed refusal for unsupported destinations.",
+      "evidence_behavior": "Exports or references the existing evidence packet; this slice does not implement export handlers.",
+      "implementation_status": "contract_only"
+    },
+    {
+      "action_id": "dominium.validation.rerun.v1",
+      "version": "1.0.0",
+      "stability": "provisional",
+      "owner": "contracts.action",
+      "view_ids": [
+        "dominium.validation.summary.v1"
+      ],
+      "command_ref": "dominium.validation.run",
+      "input_schema": "contracts/command/validation_run_input.schema.json",
+      "required_capabilities": [
+        "dominium.repo.validate"
+      ],
+      "enabled_when": "payload.request is present",
+      "disabled_reason": "The original command request is not available.",
+      "danger_level": "low",
+      "confirmation_required": false,
+      "transaction_policy": "command_invocation_only",
+      "refusal_behavior": "Rerun uses the existing dominium.validation.run refusal policy.",
+      "evidence_behavior": "Rerun produces a new command result and evidence packet through dominium.validation.run.",
+      "implementation_status": "command_backed"
+    }
+  ]
+}

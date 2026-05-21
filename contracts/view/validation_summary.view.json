@@ -1,0 +1,134 @@
+{
+  "schema_version": "dominium.view.semantic_view.v1",
+  "view_id": "dominium.validation.summary.v1",
+  "version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.view",
+  "presentation_only": true,
+  "authority": false,
+  "accepts_result_schema": "contracts/command/validation_run_result.schema.json",
+  "accepts_document_schema": null,
+  "accepts_snapshot_schema": null,
+  "command_id": "dominium.validation.run",
+  "sections": [
+    "summary",
+    "status",
+    "counts",
+    "diagnostics",
+    "evidence",
+    "target",
+    "refusal"
+  ],
+  "fields": [
+    {
+      "field_id": "command_id",
+      "source_pointer": "/command_id",
+      "required": true
+    },
+    {
+      "field_id": "status",
+      "source_pointer": "/status",
+      "required": true
+    },
+    {
+      "field_id": "summary",
+      "source_pointer": "/summary",
+      "required": true
+    },
+    {
+      "field_id": "summary_counts",
+      "source_pointer": "/payload/summary_counts",
+      "required": true
+    },
+    {
+      "field_id": "diagnostics",
+      "source_pointer": "/diagnostics",
+      "required": true
+    },
+    {
+      "field_id": "evidence",
+      "source_pointer": "/evidence",
+      "required": true
+    },
+    {
+      "field_id": "target",
+      "source_pointer": "/payload/validated_artifact_ref",
+      "required": false
+    },
+    {
+      "field_id": "refusal",
+      "source_pointer": "/payload/refusal",
+      "required": false
+    }
+  ],
+  "actions": [
+    "dominium.validation.open_report.v1",
+    "dominium.validation.export_evidence.v1",
+    "dominium.validation.rerun.v1"
+  ],
+  "diagnostic_bindings": [
+    {
+      "binding_id": "dominium.validation.summary.diagnostics.validation_warning.v1",
+      "diagnostic_code": "DOM-VALIDATION-RUN-WARNING",
+      "section": "diagnostics"
+    },
+    {
+      "binding_id": "dominium.validation.summary.diagnostics.validation_refused.v1",
+      "diagnostic_code": "DOM-VALIDATION-RUN-REFUSED",
+      "section": "diagnostics"
+    },
+    {
+      "binding_id": "dominium.validation.summary.diagnostics.target_unknown.v1",
+      "diagnostic_code": "DOM-VALIDATION-TARGET-UNKNOWN",
+      "section": "refusal"
+    },
+    {
+      "binding_id": "dominium.validation.summary.diagnostics.target_kind_unsupported.v1",
+      "diagnostic_code": "DOM-VALIDATION-TARGET-KIND-UNSUPPORTED",
+      "section": "refusal"
+    },
+    {
+      "binding_id": "dominium.validation.summary.diagnostics.target_outside_root.v1",
+      "diagnostic_code": "DOM-VALIDATION-TARGET-OUTSIDE-ROOT",
+      "section": "refusal"
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "binding_id": "dominium.validation.summary.evidence.packet.v1",
+      "evidence_schema": "contracts/evidence/evidence_packet.schema.json",
+      "source_pointer": "/payload/evidence_packet",
+      "section": "evidence"
+    },
+    {
+      "binding_id": "dominium.validation.summary.evidence.refs.v1",
+      "evidence_schema": "contracts/evidence/evidence_ref.schema.json",
+      "source_pointer": "/evidence",
+      "section": "evidence"
+    }
+  ],
+  "capability_requirements": [
+    "dominium.repo.validate"
+  ],
+  "fallback_projection": "headless",
+  "accessibility_requirements": {
+    "status": "placeholder",
+    "labels_required": true,
+    "keyboard_navigation_required": true,
+    "color_independent_status_required": true
+  },
+  "source_refs": [
+    "contracts/command/command_surface.contract.toml",
+    "contracts/command/validation_run_result.schema.json",
+    "contracts/diagnostics/diagnostic_code.registry.json",
+    "contracts/evidence/evidence_packet.schema.json",
+    "apps/workbench/module/validation/workbench_projection.py"
+  ],
+  "non_goals": [
+    "runtime_projection_engine",
+    "rendered_gui",
+    "native_gui",
+    "tui_runtime",
+    "workbench_shell"
+  ]
+}

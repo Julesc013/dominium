@@ -1,0 +1,29 @@
+{
+  "schema_version": "dominium.presentation.projection_set.v1",
+  "status": "provisional",
+  "owner": "contracts.presentation",
+  "view_id": "dominium.validation.summary.v1",
+  "source_result_schema": "contracts/command/validation_run_result.schema.json",
+  "command_id": "dominium.validation.run",
+  "projection_fixtures": [
+    "tests/contract/presentation/fixtures/valid_validation_summary_headless_projection.json",
+    "tests/contract/presentation/fixtures/valid_validation_summary_cli_projection.json",
+    "tests/contract/presentation/fixtures/valid_validation_summary_text_projection.json",
+    "tests/contract/presentation/fixtures/valid_validation_summary_workbench_projection.json",
+    "tests/contract/presentation/fixtures/valid_validation_summary_rendered_placeholder.json",
+    "tests/contract/presentation/fixtures/valid_validation_summary_native_placeholder.json"
+  ],
+  "required_projection_kinds": [
+    "headless",
+    "cli",
+    "text"
+  ],
+  "descriptor_only_projection_kinds": [
+    "rendered",
+    "native"
+  ],
+  "shell_hosts": [
+    "workbench"
+  ],
+  "notes": "Projection fixtures prove shared command/result/view/action/evidence bindings. They do not implement a runtime projection engine, rendered GUI, native GUI, TUI runtime, or broad Workbench shell."
+}

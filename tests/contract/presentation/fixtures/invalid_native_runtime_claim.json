@@ -1,0 +1,11 @@
+{
+  "schema_version": "dominium.presentation.projection_fixture.v1",
+  "projection_id": "dominium.validation.summary.native.invalid_runtime.v1",
+  "projection_kind": "native",
+  "view_id": "dominium.validation.summary.v1",
+  "source_result_schema": "contracts/command/validation_run_result.schema.json",
+  "command_id": "dominium.validation.run",
+  "implementation_status": "runtime_implemented",
+  "runtime_implemented": true,
+  "private_tool_calls": false
+}

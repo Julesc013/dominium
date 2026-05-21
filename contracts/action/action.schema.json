@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.action.action_schema.v1",
+  "title": "Dominium Semantic View Action",
+  "type": "object",
+  "required": [
+    "action_id",
+    "version",
+    "stability",
+    "owner",
+    "view_ids",
+    "required_capabilities",
+    "enabled_when",
+    "danger_level",
+    "confirmation_required",
+    "transaction_policy",
+    "refusal_behavior",
+    "evidence_behavior"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "action_id": {
+      "type": "string",
+      "pattern": "^(domino|dominium)(\\.[a-z0-9][a-z0-9_-]*)+\\.v[0-9]+$"
+    },
+    "version": {
+      "type": "string"
+    },
+    "stability": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "command_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "input_schema": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "view_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "danger_level": {
+      "type": "string",
+      "enum": [
+        "none",
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "confirmation_required": {
+      "type": "boolean"
+    }
+  }
+}

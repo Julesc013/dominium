@@ -1,0 +1,36 @@
+{
+  "schema_version": "dominium.presentation.projection_fixture.v1",
+  "projection_id": "dominium.validation.summary.headless.fixture.v1",
+  "projection_kind": "headless",
+  "view_id": "dominium.validation.summary.v1",
+  "source_result_schema": "contracts/command/validation_run_result.schema.json",
+  "command_id": "dominium.validation.run",
+  "implementation_status": "fixture_only",
+  "runtime_implemented": false,
+  "private_tool_calls": false,
+  "shell_host": "headless",
+  "action_ids": [
+    "dominium.validation.open_report.v1",
+    "dominium.validation.export_evidence.v1",
+    "dominium.validation.rerun.v1"
+  ],
+  "diagnostic_bindings": [
+    "DOM-VALIDATION-RUN-WARNING",
+    "DOM-VALIDATION-RUN-REFUSED"
+  ],
+  "evidence_bindings": [
+    "contracts/evidence/evidence_packet.schema.json"
+  ],
+  "output_shape": {
+    "format": "json_report",
+    "fields": [
+      "command_id",
+      "status",
+      "summary",
+      "payload.summary_counts",
+      "diagnostics",
+      "evidence",
+      "payload.evidence_packet"
+    ]
+  }
+}
