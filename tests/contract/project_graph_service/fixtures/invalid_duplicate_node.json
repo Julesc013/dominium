@@ -1,0 +1,24 @@
+{
+  "schema_id": "dominium.project_graph.payload.v1",
+  "schema_version": "1.0.0",
+  "graph_id": "dominium.project_graph.invalid-duplicate-node",
+  "owner": "tests.contract.project_graph_service",
+  "stability": "provisional",
+  "nodes": [
+    {
+      "node_id": "task.alpha",
+      "node_kind": "task",
+      "title": "Alpha task",
+      "status": "active"
+    },
+    {
+      "node_id": "task.alpha",
+      "node_kind": "task",
+      "title": "Duplicate alpha task",
+      "status": "active"
+    }
+  ],
+  "edges": [],
+  "dependencies": [],
+  "proofs": []
+}

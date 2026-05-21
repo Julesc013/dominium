@@ -13,6 +13,31 @@
       "type": "boolean",
       "default": true
     },
+    "profile": {
+      "type": "string",
+      "enum": [
+        "FAST",
+        "STRICT",
+        "FULL"
+      ],
+      "description": "Validation profile requested by the command caller."
+    },
+    "surface": {
+      "type": "string",
+      "enum": [
+        "cli",
+        "headless",
+        "workbench",
+        "aide",
+        "test"
+      ],
+      "description": "Declared invocation surface for command/result parity checks."
+    },
+    "emit_reports": {
+      "type": "boolean",
+      "default": false,
+      "description": "When true, the service adapter may write normal validation report artifacts."
+    },
     "json_out": {
       "type": "string"
     },

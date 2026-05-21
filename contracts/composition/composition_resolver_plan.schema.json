@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.composition.resolver_plan.v1",
+  "title": "Dominium Composition Resolver Plan",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "stability",
+    "plan_id",
+    "owner",
+    "resolver_law",
+    "ordering",
+    "inputs",
+    "steps",
+    "conflicts",
+    "proof",
+    "non_goals"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.composition.resolver_plan"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "stability": {
+      "type": "string",
+      "enum": ["experimental", "provisional", "stable"]
+    },
+    "plan_id": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "resolver_law": {
+      "type": "string",
+      "const": "dominium.composition.resolver_law.v1"
+    },
+    "ordering": {
+      "type": "object",
+      "required": ["algorithm", "source_kind_order", "tie_breakers"],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "const": "canonical_layered_stable_sort"
+        },
+        "source_kind_order": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "tie_breakers": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "inputs": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/source"},
+      "minItems": 1
+    },
+    "external_refs": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/ref"}
+    },
+    "steps": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/step"},
+      "minItems": 1
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/conflict"}
+    },
+    "proof": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "non_goals": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": [
+        "descriptor_kind",
+        "descriptor_id",
+        "source_ref",
+        "source_ref_is_authority",
+        "stability",
+        "provides",
+        "requires"
+      ],
+      "properties": {
+        "descriptor_kind": {
+          "type": "string",
+          "enum": [
+            "package_descriptor",
+            "module_composition",
+            "workbench_workspace",
+            "app_composition"
+          ]
+        },
+        "descriptor_id": {"type": "string"},
+        "source_ref": {"type": "string"},
+        "source_ref_is_authority": {"type": "boolean", "const": false},
+        "stability": {"type": "string"},
+        "provides": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/ref"}
+        },
+        "requires": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/ref"}
+        },
+        "proof": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "ref": {
+      "type": "object",
+      "required": ["ref_kind", "ref_id"],
+      "properties": {
+        "ref_kind": {"type": "string"},
+        "ref_id": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "step": {
+      "type": "object",
+      "required": [
+        "order_index",
+        "step_id",
+        "descriptor_kind",
+        "descriptor_id",
+        "action",
+        "source_ref"
+      ],
+      "properties": {
+        "order_index": {"type": "integer", "minimum": 0},
+        "step_id": {"type": "string"},
+        "descriptor_kind": {
+          "type": "string",
+          "enum": [
+            "package_descriptor",
+            "module_composition",
+            "workbench_workspace",
+            "app_composition"
+          ]
+        },
+        "descriptor_id": {"type": "string"},
+        "action": {
+          "type": "string",
+          "enum": ["include", "require", "select", "refuse", "degrade", "defer"]
+        },
+        "source_ref": {"type": "string"},
+        "requires_conflict": {"type": "string"},
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "conflict": {
+      "type": "object",
+      "required": [
+        "conflict_type",
+        "subject",
+        "participants",
+        "decision",
+        "evidence"
+      ],
+      "properties": {
+        "conflict_type": {
+          "type": "string",
+          "enum": [
+            "duplicate_descriptor",
+            "duplicate_provide",
+            "missing_dependency",
+            "version_conflict",
+            "capability_conflict",
+            "ordering_ambiguity",
+            "private_path_binding"
+          ]
+        },
+        "subject": {"type": "string"},
+        "participants": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "refused",
+            "degraded",
+            "selected_by_policy",
+            "deferred_for_review"
+          ]
+        },
+        "selected_descriptor": {"type": "string"},
+        "refusal_code": {"type": "string"},
+        "diagnostic_code": {"type": "string"},
+        "evidence": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": true
+    }
+  }
+}

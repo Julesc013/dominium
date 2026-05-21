@@ -1,0 +1,77 @@
+{
+  "schema_id": "dominium.composition.resolver_plan",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "plan_id": "dominium.composition.plan.unsorted",
+  "owner": "contracts.composition",
+  "resolver_law": "dominium.composition.resolver_law.v1",
+  "ordering": {
+    "algorithm": "canonical_layered_stable_sort",
+    "source_kind_order": [
+      "package_descriptor",
+      "module_composition",
+      "workbench_workspace",
+      "app_composition"
+    ],
+    "tie_breakers": [
+      "source_kind_rank",
+      "descriptor_id_casefold",
+      "step_id_casefold",
+      "source_ref_casefold"
+    ]
+  },
+  "inputs": [
+    {
+      "descriptor_kind": "package_descriptor",
+      "descriptor_id": "pack.core.validation",
+      "source_ref": "contracts/package/packs/README.md",
+      "source_ref_is_authority": false,
+      "stability": "provisional",
+      "provides": [
+        {"ref_kind": "pack", "ref_id": "pack.core.validation"}
+      ],
+      "requires": [],
+      "proof": []
+    },
+    {
+      "descriptor_kind": "module_composition",
+      "descriptor_id": "dominium.module.validation",
+      "source_ref": "contracts/module/module_composition.schema.json",
+      "source_ref_is_authority": false,
+      "stability": "provisional",
+      "provides": [
+        {"ref_kind": "module", "ref_id": "dominium.workbench.validation"}
+      ],
+      "requires": [
+        {"ref_kind": "pack", "ref_id": "pack.core.validation"}
+      ],
+      "proof": []
+    }
+  ],
+  "external_refs": [],
+  "steps": [
+    {
+      "order_index": 0,
+      "step_id": "include.dominium.module.validation",
+      "descriptor_kind": "module_composition",
+      "descriptor_id": "dominium.module.validation",
+      "action": "include",
+      "source_ref": "contracts/module/module_composition.schema.json"
+    },
+    {
+      "order_index": 1,
+      "step_id": "include.pack.core.validation",
+      "descriptor_kind": "package_descriptor",
+      "descriptor_id": "pack.core.validation",
+      "action": "include",
+      "source_ref": "contracts/package/packs/README.md"
+    }
+  ],
+  "conflicts": [],
+  "proof": [],
+  "non_goals": [
+    "runtime_loader is not implemented",
+    "package_mounting is not implemented",
+    "schema_migration is not implemented"
+  ]
+}

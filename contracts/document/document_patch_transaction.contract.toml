@@ -1,0 +1,29 @@
+[contract]
+id = "dominium.document.patch_transaction.contract.v1"
+schema_id = "dominium.document.patch_transaction.v1"
+schema_version = "1.0.0"
+stability = "provisional"
+schema_path = "contracts/document/document_patch_transaction.schema.json"
+owner = "runtime/document"
+work_class = "runtime_platform"
+
+[boundary]
+mutation_target = "document.content"
+transaction_scope = "single_document_patch"
+operation_order = "operations_list_order"
+content_hash_precondition = "required"
+allowed_operations = ["test", "add", "replace", "remove"]
+forbidden_semantics = [
+  "broad_save_system",
+  "product_editor",
+  "implicit_parent_creation",
+  "silent_schema_migration",
+  "metadata_rewrite",
+  "storage_commit",
+  "ui_authority_mutation"
+]
+
+[validation]
+validator = "tools/validators/contracts/check_document_patch_transactions.py"
+fixture_root = "tests/contract/document_patch_transactions/fixtures"
+runtime_module = "runtime/document/patch_transaction.py"

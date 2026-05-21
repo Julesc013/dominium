@@ -1,0 +1,22 @@
+{
+  "surface_id": "fixture_valid_surface",
+  "surface_label": "Fixture valid surface",
+  "authority_domain": "governance_execution",
+  "authority_tier": "derived",
+  "source_paths": [
+    "docs/governance/DOMINIUM_DOCTRINE_RECOVERY_MATRIX.md"
+  ],
+  "protected_roots": [
+    "AGENTS.md"
+  ],
+  "owned_meaning": "A focused fixture proving explicit drift cases and review gates.",
+  "drift_cases": [
+    {
+      "drift_kind": "doc_drift",
+      "when": "A derived fixture document conflicts with stronger governance.",
+      "disposition": "Preserve higher authority and repair only the lower fixture surface.",
+      "recovery_action": "preserve_higher_authority",
+      "review_gate": "none_if_lower_artifact_only"
+    }
+  ]
+}

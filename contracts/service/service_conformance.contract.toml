@@ -1,0 +1,69 @@
+schema_version = "dominium.service.conformance.contract.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.service"
+
+[contract]
+id = "dominium.service.conformance.v1"
+status = "provisional"
+owner = "contracts.service"
+purpose = "Defines the narrow law a future product, app, workbench, runtime, or tool-facing service declaration must satisfy before it can claim service conformance."
+schema = "contracts/service/service_conformance.schema.json"
+service_class_registry = "contracts/service/service_class.registry.json"
+
+[policy]
+runtime_implementation_authorized = false
+provider_calls_authorized = false
+product_feature_authorized = false
+services_are_semantic_owners = false
+services_are_product_owners = false
+services_may_mutate_truth_directly = false
+truth_mutation_requires_process = true
+truth_perceived_render_separation_required = true
+capability_gating_required = true
+deterministic_refusal_or_degradation_required = true
+silent_migration_allowed = false
+projection_may_redefine_schema_law = false
+normal_gate = "fast_strict"
+
+[naming]
+id_format = "service.lowercase_dotted_semantic_id"
+paths_are_identity = false
+file_paths_in_service_ids = false
+
+[allowed]
+stability = ["provisional", "stable", "internal", "experimental", "fixture", "retired"]
+truth_mutation = ["none", "process_only"]
+missing_capability_behavior = ["typed_refusal", "deterministic_degradation", "not_applicable"]
+named_rng_streams = ["none", "declared"]
+ordering = ["deterministic_declared"]
+schema_impact = ["declared_none", "declared_contract_only", "declared_schema"]
+
+[required]
+constraints = [
+  "service_not_semantic_owner",
+  "no_runtime_implementation_authorized",
+  "no_provider_calls_authorized",
+  "no_product_feature_authorized",
+  "process_only_truth_mutation",
+  "truth_perceived_render_separated",
+  "capability_gated_access",
+  "deterministic_refusal_or_degradation",
+  "ownership_projection_respected",
+  "contract_schema_discipline",
+  "diagnostics_evidence_declared",
+]
+doctrine = [
+  "docs/canon/constitution_v1.md",
+  "docs/canon/glossary_v1.md",
+  "AGENTS.md",
+  "docs/runtime/RUNTIME_SERVICES.md",
+  "docs/architecture/SERVICES_AND_PRODUCTS.md",
+  "docs/architecture/service_conformance_law.md",
+]
+
+[validation]
+validator = "tools/validators/contracts/check_service_conformance.py"
+fixture_dir = "tests/contract/service_conformance/fixtures"
+proof = ["python tools/validators/contracts/check_service_conformance.py --repo-root . --strict --fixtures"]
+notes = "This contract defines conformance declarations and fixture validation only. It does not implement service dispatch, provider calls, lifecycle, state externalization, product UX, or runtime behavior."

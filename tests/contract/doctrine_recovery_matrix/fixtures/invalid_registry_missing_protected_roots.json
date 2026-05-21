@@ -1,0 +1,91 @@
+{
+  "schema_id": "dominium.governance.doctrine_recovery_matrix.v1",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "status": "derived_non_canonical",
+  "non_canonical_notice": "This derived registry does not change canon.",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md"
+  ],
+  "authority_order": [
+    {
+      "rank": 1,
+      "path": "docs/canon/constitution_v1.md",
+      "authority_class": "canonical_constitution",
+      "disposition": "Wins over lower claims."
+    },
+    {
+      "rank": 2,
+      "path": "docs/canon/glossary_v1.md",
+      "authority_class": "canonical_glossary",
+      "disposition": "Wins for vocabulary."
+    },
+    {
+      "rank": 3,
+      "path": "AGENTS.md",
+      "authority_class": "root_governance",
+      "disposition": "Wins for execution governance."
+    }
+  ],
+  "drift_kinds": [
+    {
+      "id": "doc_drift",
+      "description": "Fixture drift kind.",
+      "default_recovery_action": "preserve_higher_authority"
+    }
+  ],
+  "recovery_actions": [
+    {
+      "id": "preserve_higher_authority",
+      "description": "Fixture action.",
+      "allowed_mutation_targets": [
+        "lower_docs"
+      ],
+      "forbidden_mutation_targets": [
+        "docs/canon/**"
+      ],
+      "default_review_gate": "none_if_lower_artifact_only"
+    }
+  ],
+  "review_gates": [
+    {
+      "id": "none_if_lower_artifact_only",
+      "trigger": "Fixture gate.",
+      "required_output": "Fixture output."
+    }
+  ],
+  "protected_roots": [
+    {
+      "path": "docs/canon/**",
+      "protection_reason": "Fixture protected root.",
+      "default_recovery_action": "preserve_higher_authority",
+      "review_gate": "none_if_lower_artifact_only"
+    }
+  ],
+  "matrix": [
+    {
+      "surface_id": "fixture_missing_roots",
+      "surface_label": "Fixture missing roots",
+      "authority_domain": "governance_execution",
+      "authority_tier": "derived",
+      "source_paths": [
+        "docs/canon/constitution_v1.md"
+      ],
+      "protected_roots": [
+        "docs/canon/**"
+      ],
+      "owned_meaning": "Fixture entry.",
+      "drift_cases": [
+        {
+          "drift_kind": "doc_drift",
+          "when": "Fixture when.",
+          "disposition": "Fixture disposition.",
+          "recovery_action": "preserve_higher_authority",
+          "review_gate": "none_if_lower_artifact_only"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+schema_version = "dominium.project_graph.service_contract.v1"
+status = "provisional"
+last_reviewed = "2026-05-21"
+owner = "contracts.project_graph"
+
+[contract]
+id = "dominium.project_graph.service.v1"
+status = "provisional"
+owner = "contracts.project_graph"
+purpose = "Defines a narrow deterministic service contract for project graph nodes, edges, dependencies, and proofs."
+
+[boundary]
+service_is_truth_owner = false
+mutates_authoritative_truth = false
+process_only_truth_mutation_required_for_future_writes = true
+workbench_ui_scope = false
+release_projection_scope = false
+broad_project_explorer_scope = false
+generated_outputs_are_evidence_only = true
+
+[inputs]
+payload_schema = "contracts/project_graph/project_graph.schema.json"
+evidence_ref_schema = "contracts/evidence/evidence_ref.schema.json"
+result_schema = "contracts/result/result.schema.json"
+
+[determinism]
+dependency_graph_must_be_acyclic = true
+sort_nodes_by = ["node_id"]
+sort_edges_by = ["source_node_id", "target_node_id", "edge_kind", "edge_id"]
+sort_dependencies_by = ["node_id", "depends_on_node_id", "dependency_kind", "dependency_id"]
+sort_proofs_by = ["proof_id"]
+fingerprint_algorithm = "sha256(canonical_json(sorted_project_graph_payload))"
+rng_streams_used = false
+
+[validation]
+primary_validator = "python tools/validators/contracts/check_project_graph_service.py --repo-root . --strict --fixtures"
+fixture_dir = "tests/contract/project_graph_service/fixtures"
+runtime_helper = "runtime/project_graph/service.py"

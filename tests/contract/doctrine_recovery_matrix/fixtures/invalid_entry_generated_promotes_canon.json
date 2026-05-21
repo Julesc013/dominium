@@ -1,0 +1,22 @@
+{
+  "surface_id": "fixture_generated_promotion",
+  "surface_label": "Fixture generated promotion",
+  "authority_domain": "evidence",
+  "authority_tier": "derived",
+  "source_paths": [
+    "build/**"
+  ],
+  "protected_roots": [
+    "build/**"
+  ],
+  "owned_meaning": "A focused fixture that must fail because generated evidence is promoted.",
+  "drift_cases": [
+    {
+      "drift_kind": "generated_mirror_drift",
+      "when": "A generated mirror disagrees with canon.",
+      "disposition": "Promote to canon because the generated file is easier to parse.",
+      "recovery_action": "refresh_derived_projection",
+      "review_gate": "none_if_lower_artifact_only"
+    }
+  ]
+}

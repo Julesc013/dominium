@@ -1,0 +1,21 @@
+{
+  "surface_id": "fixture_missing_review_gate",
+  "surface_label": "Fixture missing review gate",
+  "authority_domain": "governance_execution",
+  "authority_tier": "derived",
+  "source_paths": [
+    "docs/governance/DOMINIUM_DOCTRINE_RECOVERY_MATRIX.md"
+  ],
+  "protected_roots": [
+    "AGENTS.md"
+  ],
+  "owned_meaning": "A focused fixture that must fail because the drift case omits review_gate.",
+  "drift_cases": [
+    {
+      "drift_kind": "doc_drift",
+      "when": "A derived fixture document conflicts with stronger governance.",
+      "disposition": "Preserve higher authority and repair only the lower fixture surface.",
+      "recovery_action": "preserve_higher_authority"
+    }
+  ]
+}

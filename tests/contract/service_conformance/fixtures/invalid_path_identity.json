@@ -1,0 +1,64 @@
+{
+  "schema_id": "dominium.service.conformance.v1",
+  "schema_version": "1.0.0",
+  "service_id": "tools/validators/service.py",
+  "title": "Path-Bound Service",
+  "owner": "tools.validators",
+  "version": "0.1.0",
+  "stability": "fixture",
+  "service_class": "observation_inspection",
+  "required_constraints": [
+    "service_not_semantic_owner",
+    "no_runtime_implementation_authorized",
+    "no_provider_calls_authorized",
+    "no_product_feature_authorized",
+    "process_only_truth_mutation",
+    "truth_perceived_render_separated",
+    "capability_gated_access",
+    "deterministic_refusal_or_degradation",
+    "ownership_projection_respected",
+    "contract_schema_discipline",
+    "diagnostics_evidence_declared"
+  ],
+  "upstream_doctrine": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "docs/runtime/RUNTIME_SERVICES.md",
+    "docs/architecture/SERVICES_AND_PRODUCTS.md",
+    "docs/architecture/service_conformance_law.md"
+  ],
+  "service_law": {
+    "runtime_implementation_authorized": false,
+    "provider_calls_authorized": false,
+    "product_feature_authorized": false,
+    "owns_truth": false,
+    "owns_semantic_doctrine": false,
+    "owns_product_shell": false,
+    "truth_mutation": "process_only",
+    "truth_perceived_render_separation": true,
+    "capability_gated": true,
+    "missing_capability_behavior": "typed_refusal",
+    "deterministic_refusal_or_degradation": true,
+    "silent_migration_allowed": false,
+    "projection_redefines_schema_law": false
+  },
+  "determinism": {
+    "ordering": "deterministic_declared",
+    "thread_count_invariant": true,
+    "named_rng_streams": "none"
+  },
+  "compatibility": {
+    "schema_impact": "declared_contract_only",
+    "migration_policy": "explicit_refusal",
+    "replacement_policy": "requires_service_conformance_update"
+  },
+  "interfaces": {
+    "commands": ["dominium.validation.run"],
+    "capabilities": ["dominium.repo.validate"],
+    "refusals": ["dominium.refusal.validation.invalid_target"],
+    "modules": []
+  },
+  "diagnostics": ["DOM-PUBLIC-SURFACE-INVALID"],
+  "proof": ["fixture should fail path identity"]
+}

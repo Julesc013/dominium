@@ -1,0 +1,281 @@
+{
+  "schema_id": "dominium.project_graph.payload.v1",
+  "schema_version": "1.0.0",
+  "graph_id": "dominium.project_graph.project-graph-service-01",
+  "owner": "contracts.project_graph",
+  "stability": "provisional",
+  "description": "Narrow project graph service proof graph for PROJECT-GRAPH-SERVICE-01.",
+  "nodes": [
+    {
+      "node_id": "contract.project-graph-service",
+      "node_kind": "contract",
+      "title": "Project graph service contract",
+      "status": "active",
+      "owner": "contracts.project_graph",
+      "paths": [
+        "contracts/project_graph/project_graph.schema.json",
+        "contracts/project_graph/project_graph_service.contract.toml"
+      ],
+      "tags": [
+        "contract",
+        "schema"
+      ]
+    },
+    {
+      "node_id": "proof.project-graph-validation",
+      "node_kind": "proof",
+      "title": "Project graph validation proof",
+      "status": "pass",
+      "owner": "tests.contract.project_graph_service",
+      "paths": [
+        "tests/contract/project_graph_service/project_graph_service_contract_tests.py",
+        "tools/validators/contracts/check_project_graph_service.py"
+      ],
+      "tags": [
+        "fixture",
+        "validator"
+      ]
+    },
+    {
+      "node_id": "runtime.project-graph-helper",
+      "node_kind": "runtime_helper",
+      "title": "Deterministic project graph runtime helper",
+      "status": "active",
+      "owner": "runtime.project_graph",
+      "paths": [
+        "runtime/project_graph/__init__.py",
+        "runtime/project_graph/service.py"
+      ],
+      "tags": [
+        "determinism",
+        "runtime"
+      ]
+    },
+    {
+      "node_id": "task.foundation-lock",
+      "node_kind": "gate",
+      "title": "Foundation Lock pass with warnings",
+      "status": "pass_with_warnings",
+      "owner": "docs.repo",
+      "paths": [
+        "docs/repo/FOUNDATION_LOCK.md"
+      ],
+      "tags": [
+        "gate"
+      ]
+    },
+    {
+      "node_id": "task.portability-arch-policy",
+      "node_kind": "task",
+      "title": "PORTABILITY-ARCH-POLICY-02 complete",
+      "status": "complete",
+      "owner": "docs.repo.audits",
+      "paths": [
+        "docs/repo/audits/PORTABILITY_ARCH_POLICY_02.md"
+      ],
+      "tags": [
+        "portability"
+      ]
+    },
+    {
+      "node_id": "task.project-graph-service",
+      "node_kind": "task",
+      "title": "PROJECT-GRAPH-SERVICE-01",
+      "status": "active",
+      "owner": "contracts.project_graph",
+      "paths": [
+        "docs/repo/audits/PROJECT_GRAPH_SERVICE_01.md"
+      ],
+      "tags": [
+        "project_graph"
+      ]
+    },
+    {
+      "node_id": "validator.project-graph-service",
+      "node_kind": "validator",
+      "title": "Project graph service validator",
+      "status": "active",
+      "owner": "tools.validators.contracts",
+      "paths": [
+        "tools/validators/contracts/check_project_graph_service.py"
+      ],
+      "tags": [
+        "validator"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "edge.contract-documents-task",
+      "source_node_id": "contract.project-graph-service",
+      "target_node_id": "task.project-graph-service",
+      "edge_kind": "documents",
+      "description": "The contract documents the narrow project graph task boundary."
+    },
+    {
+      "edge_id": "edge.runtime-materializes-contract",
+      "source_node_id": "runtime.project-graph-helper",
+      "target_node_id": "contract.project-graph-service",
+      "edge_kind": "materializes",
+      "description": "The helper materializes deterministic loading, validation, sorting, and hashing."
+    },
+    {
+      "edge_id": "edge.validator-validates-contract",
+      "source_node_id": "validator.project-graph-service",
+      "target_node_id": "contract.project-graph-service",
+      "edge_kind": "validates",
+      "description": "The validator checks schema, contract, helper, fixtures, and deterministic ordering."
+    },
+    {
+      "edge_id": "edge.proof-proves-validator",
+      "source_node_id": "proof.project-graph-validation",
+      "target_node_id": "validator.project-graph-service",
+      "edge_kind": "proves",
+      "description": "Contract tests prove validator and helper behavior."
+    }
+  ],
+  "dependencies": [
+    {
+      "dependency_id": "dep.contract-after-task",
+      "node_id": "contract.project-graph-service",
+      "depends_on_node_id": "task.project-graph-service",
+      "dependency_kind": "requires",
+      "required": true,
+      "proof_refs": [
+        "proof.project-graph.schema-parse"
+      ]
+    },
+    {
+      "dependency_id": "dep.project-after-foundation",
+      "node_id": "task.project-graph-service",
+      "depends_on_node_id": "task.foundation-lock",
+      "dependency_kind": "orders_after",
+      "required": true,
+      "proof_refs": [
+        "proof.project-graph.audit"
+      ]
+    },
+    {
+      "dependency_id": "dep.project-after-portability",
+      "node_id": "task.project-graph-service",
+      "depends_on_node_id": "task.portability-arch-policy",
+      "dependency_kind": "orders_after",
+      "required": true,
+      "proof_refs": [
+        "proof.project-graph.audit"
+      ]
+    },
+    {
+      "dependency_id": "dep.runtime-after-contract",
+      "node_id": "runtime.project-graph-helper",
+      "depends_on_node_id": "contract.project-graph-service",
+      "dependency_kind": "requires",
+      "required": true,
+      "proof_refs": [
+        "proof.project-graph.runtime-helper"
+      ]
+    },
+    {
+      "dependency_id": "dep.validator-after-contract",
+      "node_id": "validator.project-graph-service",
+      "depends_on_node_id": "contract.project-graph-service",
+      "dependency_kind": "validates_against",
+      "required": true,
+      "proof_refs": [
+        "proof.project-graph.validator"
+      ]
+    },
+    {
+      "dependency_id": "dep.validator-after-runtime",
+      "node_id": "validator.project-graph-service",
+      "depends_on_node_id": "runtime.project-graph-helper",
+      "dependency_kind": "requires",
+      "required": true,
+      "proof_refs": [
+        "proof.project-graph.validator"
+      ]
+    },
+    {
+      "dependency_id": "dep.proof-after-validator",
+      "node_id": "proof.project-graph-validation",
+      "depends_on_node_id": "validator.project-graph-service",
+      "dependency_kind": "is_proven_by",
+      "required": true,
+      "proof_refs": [
+        "proof.project-graph.validator"
+      ]
+    }
+  ],
+  "proofs": [
+    {
+      "proof_id": "proof.project-graph.audit",
+      "subject_node_id": "task.project-graph-service",
+      "proof_kind": "audit",
+      "status": "pass",
+      "summary": "Audit file records the narrow service boundary and non-goals.",
+      "evidence_refs": [
+        {
+          "evidence_id": "evidence.project-graph.audit-doc",
+          "path": "docs/repo/audits/PROJECT_GRAPH_SERVICE_01.md",
+          "subject_id": "task.project-graph-service",
+          "subject_kind": "audit",
+          "status": "pass",
+          "summary": "Project graph service audit exists."
+        }
+      ]
+    },
+    {
+      "proof_id": "proof.project-graph.runtime-helper",
+      "subject_node_id": "runtime.project-graph-helper",
+      "proof_kind": "unit_test",
+      "status": "pass",
+      "summary": "Runtime helper returns deterministic graph ordering and fingerprints.",
+      "result_refs": [
+        {
+          "command_id": "dominium.project_graph.contract_test",
+          "status": "ok",
+          "summary": "Runtime helper deterministic ordering and fingerprint test passed.",
+          "payload": {
+            "expected_order": [
+              "task.foundation-lock",
+              "task.portability-arch-policy",
+              "task.project-graph-service",
+              "contract.project-graph-service",
+              "runtime.project-graph-helper",
+              "validator.project-graph-service",
+              "proof.project-graph-validation"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "proof_id": "proof.project-graph.schema-parse",
+      "subject_node_id": "contract.project-graph-service",
+      "proof_kind": "schema_parse",
+      "status": "pass",
+      "summary": "Project graph schema and contract parse.",
+      "result_refs": [
+        {
+          "command_id": "dominium.project_graph.validate",
+          "status": "ok",
+          "summary": "Project graph schema and contract parsed by validator."
+        }
+      ]
+    },
+    {
+      "proof_id": "proof.project-graph.validator",
+      "subject_node_id": "validator.project-graph-service",
+      "proof_kind": "validator",
+      "status": "pass",
+      "summary": "Project graph validator accepts valid fixtures and rejects invalid fixtures.",
+      "result_refs": [
+        {
+          "command_id": "dominium.project_graph.validate",
+          "status": "ok",
+          "summary": "Validator fixture suite passed."
+        }
+      ]
+    }
+  ]
+}

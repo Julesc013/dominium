@@ -1,0 +1,86 @@
+{
+  "document": {
+    "document_id": "doc.setup.transaction-model",
+    "owner": "docs",
+    "schema_id": "dominium.document.document_schema.v1",
+    "content": {
+      "title": "Draft",
+      "tags": [
+        "setup"
+      ],
+      "meta": {
+        "status": "new",
+        "count": 1
+      }
+    },
+    "preserved_unknown": {
+      "kept": true
+    }
+  },
+  "transaction": {
+    "schema_id": "dominium.document.patch_transaction.v1",
+    "schema_version": "1.0.0",
+    "stability": "provisional",
+    "transaction_id": "dominium.document.patch_txn.valid_setup_transaction_model",
+    "document_id": "doc.setup.transaction-model",
+    "document_schema_id": "dominium.document.document_schema.v1",
+    "expected_content_hash": "f8be9d42ddeea067b2e0d65bef7b6319b9f63edf76f9233f3822f6053d6f290f",
+    "authority": {
+      "authority_origin": "tool",
+      "law_profile_id": "dominium.law.document_patch_transaction",
+      "actor_id": "worker-2"
+    },
+    "operations": [
+      {
+        "op": "test",
+        "path": [
+          "meta",
+          "status"
+        ],
+        "value": "new"
+      },
+      {
+        "op": "replace",
+        "path": [
+          "title"
+        ],
+        "value": "Published"
+      },
+      {
+        "op": "add",
+        "path": [
+          "tags",
+          1
+        ],
+        "value": "runtime"
+      },
+      {
+        "op": "replace",
+        "path": [
+          "meta",
+          "count"
+        ],
+        "value": 2
+      },
+      {
+        "op": "remove",
+        "path": [
+          "meta",
+          "status"
+        ]
+      }
+    ]
+  },
+  "expected_status": "ok",
+  "expected_after_hash": "ee04de675b1235da3c1378cc09ac8e9c00fbcf9b077ebf526ff4943dbef0cef4",
+  "expected_content": {
+    "title": "Published",
+    "tags": [
+      "setup",
+      "runtime"
+    ],
+    "meta": {
+      "count": 2
+    }
+  }
+}

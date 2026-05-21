@@ -1,0 +1,42 @@
+{
+  "document": {
+    "document_id": "doc.setup.transaction-model",
+    "owner": "docs",
+    "schema_id": "dominium.document.document_schema.v1",
+    "content": {
+      "title": "Draft",
+      "tags": [
+        "setup"
+      ],
+      "meta": {
+        "status": "new",
+        "count": 1
+      }
+    }
+  },
+  "transaction": {
+    "schema_id": "dominium.document.patch_transaction.v1",
+    "schema_version": "2.0.0",
+    "stability": "provisional",
+    "transaction_id": "dominium.document.patch_txn.invalid_schema_version",
+    "document_id": "doc.setup.transaction-model",
+    "document_schema_id": "dominium.document.document_schema.v1",
+    "expected_content_hash": "f8be9d42ddeea067b2e0d65bef7b6319b9f63edf76f9233f3822f6053d6f290f",
+    "authority": {
+      "authority_origin": "tool",
+      "law_profile_id": "dominium.law.document_patch_transaction",
+      "actor_id": "worker-2"
+    },
+    "operations": [
+      {
+        "op": "replace",
+        "path": [
+          "title"
+        ],
+        "value": "Published"
+      }
+    ]
+  },
+  "expected_status": "refused",
+  "expected_code": "schema_version_mismatch"
+}

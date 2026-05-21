@@ -1,0 +1,26 @@
+{
+  "schema_id": "dominium.project_graph.payload.v1",
+  "schema_version": "1.0.0",
+  "graph_id": "dominium.project_graph.invalid-missing-target",
+  "owner": "tests.contract.project_graph_service",
+  "stability": "provisional",
+  "nodes": [
+    {
+      "node_id": "task.alpha",
+      "node_kind": "task",
+      "title": "Alpha task",
+      "status": "active"
+    }
+  ],
+  "edges": [],
+  "dependencies": [
+    {
+      "dependency_id": "dep.alpha-after-missing",
+      "node_id": "task.alpha",
+      "depends_on_node_id": "task.missing",
+      "dependency_kind": "requires",
+      "required": true
+    }
+  ],
+  "proofs": []
+}

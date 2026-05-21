@@ -300,6 +300,67 @@
       "notes": "Severity may become error for release or stable promotion gates."
     },
     {
+      "id": "dominium.diagnostic.validation.run_refused",
+      "code": "DOM-VALIDATION-RUN-REFUSED",
+      "owner": "apps.workbench.module.validation",
+      "severity": "error",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Validation command refused before service execution.",
+      "cause": "The validation command input targets an unsupported validation scope, surface, profile, or input shape.",
+      "recovery": "Inspect the typed refusal payload, correct the validation command input, and rerun through the command boundary.",
+      "evidence_expectation": "Command result payload with refusal code, diagnostic code, input schema evidence, and refusal registry evidence.",
+      "related_refusal_codes": [
+        "dominium.refusal.validation.invalid_target",
+        "dominium.refusal.command.invalid_input",
+        "dominium.refusal.command.unsupported_surface"
+      ],
+      "related_command_ids": [
+        "dominium.validation.run"
+      ],
+      "related_public_surface_ids": [
+        "dominium.command.surface.v1",
+        "dominium.workbench.surface.v1"
+      ],
+      "related_artifact_types": [
+        "command_result",
+        "evidence_packet"
+      ],
+      "proof": [
+        "py -3 tests/app/workbench_validation_slice_tests.py"
+      ],
+      "notes": "Registered by WORKBENCH-VALIDATION-SLICE-01 for the headless Workbench validation module."
+    },
+    {
+      "id": "dominium.diagnostic.validation.run_warning",
+      "code": "DOM-VALIDATION-RUN-WARNING",
+      "owner": "apps.workbench.module.validation",
+      "severity": "warning",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Validation command completed with warnings.",
+      "cause": "The validation service returned warning findings while preserving command/result/evidence parity.",
+      "recovery": "Inspect the validation result and evidence packet, then address warning findings in their owning task lane.",
+      "evidence_expectation": "Command result payload with validation report evidence and warning diagnostics.",
+      "related_refusal_codes": [],
+      "related_command_ids": [
+        "dominium.validation.run"
+      ],
+      "related_public_surface_ids": [
+        "dominium.command.surface.v1",
+        "dominium.workbench.surface.v1"
+      ],
+      "related_artifact_types": [
+        "command_result",
+        "validation_report",
+        "evidence_packet"
+      ],
+      "proof": [
+        "py -3 tests/app/workbench_validation_slice_tests.py"
+      ],
+      "notes": "Registered by WORKBENCH-VALIDATION-SLICE-01 for CLI and Workbench projection parity."
+    },
+    {
       "id": "dominium.diagnostic.test.full_gate_debt",
       "code": "DOM-FULL-GATE-DEBT",
       "owner": "tools.test",

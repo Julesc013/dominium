@@ -210,6 +210,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/SCHEMA_STABILITY.md`
 - `docs/architecture/SEMANTIC_STABILITY_POLICY.md`
 - `docs/architecture/SERVICES_AND_PRODUCTS.md`
+- `docs/architecture/service_conformance_law.md`
 - `docs/architecture/SETUP_TRANSACTION_MODEL.md`
 - `docs/architecture/SHARD_LIFECYCLE.md`
 - `docs/architecture/SIGNAL_MODEL.md`
@@ -589,11 +590,14 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/capability_refusal_law.md`
 - `docs/architecture/command_view_event_refusal.md`
 - `docs/architecture/COLLAPSE_EXPAND_SOLVERS.md`
+- `docs/architecture/composition_resolver_law.md`
 - `docs/architecture/COMPLEXITY_AND_SCALE.md`
 - `docs/architecture/CORE_ABSTRACTIONS.md`
 - `docs/architecture/dependency_direction_law.md`
 - `docs/architecture/diagnostics_and_evidence.md`
+- `docs/architecture/document_patch_transaction_runtime.md`
 - `docs/architecture/module_composition_law.md`
+- `docs/architecture/project_graph_service.md`
 - `docs/architecture/provider_model.md`
 - `docs/architecture/replacement_protocol.md`
 - `docs/architecture/schema_protocol_evolution.md`

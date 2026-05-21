@@ -1,0 +1,302 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.project_graph.payload.v1",
+  "title": "Dominium Project Graph Payload",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "graph_id",
+    "owner",
+    "stability",
+    "nodes",
+    "edges",
+    "dependencies",
+    "proofs"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_id": {
+      "const": "dominium.project_graph.payload.v1"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "graph_id": {
+      "type": "string",
+      "pattern": "^dominium\\.project_graph\\.[a-z0-9][a-z0-9_.-]+$"
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stability": {
+      "type": "string",
+      "enum": [
+        "provisional",
+        "stable",
+        "experimental",
+        "derived"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/edge"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/dependency"
+      }
+    },
+    "proofs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/proof"
+      }
+    },
+    "extensions": {
+      "$ref": "#/$defs/extensions"
+    }
+  },
+  "$defs": {
+    "stable_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9][a-z0-9_-]*)+$"
+    },
+    "string_list": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "node": {
+      "type": "object",
+      "required": [
+        "node_id",
+        "node_kind",
+        "title",
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "node_kind": {
+          "type": "string",
+          "enum": [
+            "task",
+            "contract",
+            "schema",
+            "runtime_helper",
+            "validator",
+            "fixture",
+            "test",
+            "document",
+            "audit",
+            "proof",
+            "gate"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "planned",
+            "active",
+            "blocked",
+            "complete",
+            "pass",
+            "pass_with_warnings",
+            "fail",
+            "not_run",
+            "refused"
+          ]
+        },
+        "owner": {
+          "type": "string"
+        },
+        "paths": {
+          "$ref": "#/$defs/string_list"
+        },
+        "tags": {
+          "$ref": "#/$defs/string_list"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../evidence/evidence_ref.schema.json"
+          }
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "required": [
+        "edge_id",
+        "source_node_id",
+        "target_node_id",
+        "edge_kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "edge_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "source_node_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "target_node_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "edge_kind": {
+          "type": "string",
+          "enum": [
+            "depends_on",
+            "proves",
+            "validates",
+            "documents",
+            "materializes",
+            "blocks",
+            "references"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "required": [
+        "dependency_id",
+        "node_id",
+        "depends_on_node_id",
+        "dependency_kind",
+        "required"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "dependency_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "node_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "depends_on_node_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "dependency_kind": {
+          "type": "string",
+          "enum": [
+            "requires",
+            "orders_after",
+            "validates_against",
+            "is_proven_by"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "proof_refs": {
+          "$ref": "#/$defs/string_list"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "required": [
+        "proof_id",
+        "subject_node_id",
+        "proof_kind",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "proof_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "subject_node_id": {
+          "$ref": "#/$defs/stable_id"
+        },
+        "proof_kind": {
+          "type": "string",
+          "enum": [
+            "schema_parse",
+            "validator",
+            "fixture",
+            "unit_test",
+            "compile",
+            "audit",
+            "document"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "pass_with_warnings",
+            "fail",
+            "blocked",
+            "not_run",
+            "partial",
+            "ok",
+            "warning",
+            "refused",
+            "error"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../evidence/evidence_ref.schema.json"
+          }
+        },
+        "result_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../result/result.schema.json"
+          }
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    }
+  }
+}

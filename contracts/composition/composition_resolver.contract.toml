@@ -1,0 +1,63 @@
+[contract]
+id = "dominium.composition.resolver_law.v1"
+status = "provisional"
+owner = "contracts.composition"
+purpose = "Defines deterministic composition resolver plan law across app, module, workbench, and package descriptors."
+
+[policy]
+runtime_loader_implemented = false
+app_composer_implemented = false
+package_mounting_implemented = false
+resolver_mutates_truth = false
+descriptor_identity_is_path = false
+source_ref_is_semantic_authority = false
+private_dependencies_allowed = false
+deterministic_order_required = true
+duplicate_provides_require_conflict = true
+missing_dependencies_require_conflict = true
+silent_fallback_allowed = false
+stable_plans_require_proof = true
+schema_projection_promotes_schema_law = false
+pack_root_convergence_resolved = false
+
+[ordering]
+algorithm = "canonical_layered_stable_sort"
+source_kind_order = [
+  "package_descriptor",
+  "module_composition",
+  "workbench_workspace",
+  "app_composition",
+]
+tie_breakers = [
+  "source_kind_rank",
+  "descriptor_id_casefold",
+  "step_id_casefold",
+  "source_ref_casefold",
+]
+
+[conflicts]
+required_for = [
+  "duplicate_descriptor",
+  "duplicate_provide",
+  "missing_dependency",
+  "version_conflict",
+  "capability_conflict",
+  "ordering_ambiguity",
+  "private_path_binding",
+]
+allowed_decisions = [
+  "refused",
+  "degraded",
+  "selected_by_policy",
+  "deferred_for_review",
+]
+forbidden_decisions = [
+  "silent_fallback",
+  "ignored",
+  "best_effort",
+]
+
+[non_goals]
+runtime_loader = "Not implemented by this contract."
+package_mounting = "Not implemented by this contract."
+existing_schema_migration = "Existing app, module, workbench, and package schemas are not changed by this contract."

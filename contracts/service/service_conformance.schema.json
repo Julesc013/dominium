@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.service.conformance.v1",
+  "title": "Dominium Service Conformance Declaration",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "service_id",
+    "owner",
+    "version",
+    "stability",
+    "service_class",
+    "required_constraints",
+    "upstream_doctrine",
+    "service_law",
+    "determinism",
+    "compatibility",
+    "interfaces",
+    "diagnostics",
+    "proof"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "dominium.service.conformance.v1"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "service_id": {
+      "type": "string",
+      "pattern": "^service\\.[a-z0-9][a-z0-9_.-]*$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "stability": {
+      "type": "string"
+    },
+    "service_class": {
+      "type": "string"
+    },
+    "required_constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "upstream_doctrine": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "service_law": {
+      "type": "object",
+      "required": [
+        "runtime_implementation_authorized",
+        "provider_calls_authorized",
+        "product_feature_authorized",
+        "owns_truth",
+        "owns_semantic_doctrine",
+        "owns_product_shell",
+        "truth_mutation",
+        "truth_perceived_render_separation",
+        "capability_gated",
+        "missing_capability_behavior",
+        "deterministic_refusal_or_degradation",
+        "silent_migration_allowed",
+        "projection_redefines_schema_law"
+      ],
+      "properties": {
+        "runtime_implementation_authorized": {
+          "type": "boolean"
+        },
+        "provider_calls_authorized": {
+          "type": "boolean"
+        },
+        "product_feature_authorized": {
+          "type": "boolean"
+        },
+        "owns_truth": {
+          "type": "boolean"
+        },
+        "owns_semantic_doctrine": {
+          "type": "boolean"
+        },
+        "owns_product_shell": {
+          "type": "boolean"
+        },
+        "truth_mutation": {
+          "type": "string",
+          "enum": ["none", "process_only"]
+        },
+        "truth_perceived_render_separation": {
+          "type": "boolean"
+        },
+        "capability_gated": {
+          "type": "boolean"
+        },
+        "missing_capability_behavior": {
+          "type": "string",
+          "enum": ["typed_refusal", "deterministic_degradation", "not_applicable"]
+        },
+        "deterministic_refusal_or_degradation": {
+          "type": "boolean"
+        },
+        "silent_migration_allowed": {
+          "type": "boolean"
+        },
+        "projection_redefines_schema_law": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "determinism": {
+      "type": "object",
+      "properties": {
+        "ordering": {
+          "type": "string"
+        },
+        "thread_count_invariant": {
+          "type": "boolean"
+        },
+        "named_rng_streams": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "compatibility": {
+      "type": "object",
+      "properties": {
+        "schema_impact": {
+          "type": "string"
+        },
+        "migration_policy": {
+          "type": "string"
+        },
+        "replacement_policy": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "interfaces": {
+      "type": "object",
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "refusals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proof": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

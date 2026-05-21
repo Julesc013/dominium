@@ -1,0 +1,682 @@
+{
+  "schema_id": "dominium.governance.doctrine_recovery_matrix.v1",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "status": "derived_non_canonical",
+  "non_canonical_notice": "This registry is a derived recovery projection. It records dispositions for drift and does not change canon, glossary meaning, AGENTS.md, planning authority, schema law, ownership review, release policy, or protected doctrine.",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+    "docs/governance/DATA_FIRST_DOCTRINE.md"
+  ],
+  "authority_order": [
+    {
+      "rank": 1,
+      "path": "docs/canon/constitution_v1.md",
+      "authority_class": "canonical_constitution",
+      "disposition": "Wins over every lower semantic, execution, schema, validator, status, generated, and chat claim."
+    },
+    {
+      "rank": 2,
+      "path": "docs/canon/glossary_v1.md",
+      "authority_class": "canonical_glossary",
+      "disposition": "Wins for terminology and vocabulary meaning after the constitution."
+    },
+    {
+      "rank": 3,
+      "path": "AGENTS.md",
+      "authority_class": "root_governance",
+      "disposition": "Wins for repository execution discipline, validation expectations, work classes, protected areas, and agent governance below canon."
+    },
+    {
+      "rank": 4,
+      "path": "docs/planning/AUTHORITY_ORDER.md",
+      "authority_class": "planning_authority_order",
+      "disposition": "Classifies domain-specific authority and conflict resolution below root governance."
+    },
+    {
+      "rank": 5,
+      "path": "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+      "authority_class": "planning_intake_law",
+      "disposition": "Defines intake, evidence, status, provenance, quarantine, and review handling below stronger sources."
+    },
+    {
+      "rank": 6,
+      "path": "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+      "authority_class": "ownership_review",
+      "disposition": "Defines scoped semantic ownership for reviewed split roots below stronger canon and governance sources."
+    },
+    {
+      "rank": 7,
+      "path": "contracts/registry/governance/doctrine_recovery_matrix.json",
+      "authority_class": "derived_operational_projection",
+      "disposition": "May guide recovery only when it agrees with all stronger sources and stays inside its declared scope."
+    }
+  ],
+  "drift_kinds": [
+    {
+      "id": "doc_drift",
+      "description": "Lower prose, mirror docs, README text, audit notes, or status prose conflict with stronger doctrine.",
+      "default_recovery_action": "preserve_higher_authority"
+    },
+    {
+      "id": "generated_mirror_drift",
+      "description": "A generated mirror, build echo, cache, run artifact, or projection no longer matches its source or lacks provenance.",
+      "default_recovery_action": "refresh_derived_projection"
+    },
+    {
+      "id": "validator_drift",
+      "description": "Validator or fixture behavior conflicts with stronger doctrine, schema law, or registry projection boundaries.",
+      "default_recovery_action": "repair_validator_contract"
+    },
+    {
+      "id": "status_file_drift",
+      "description": "Status, queue, latest-context, report, or audit state disagrees with current repo truth or allowed gate state.",
+      "default_recovery_action": "record_status_staleness"
+    },
+    {
+      "id": "registry_projection_drift",
+      "description": "Machine registry or projection diverges from the stronger document, schema law, or source it mirrors.",
+      "default_recovery_action": "refresh_derived_projection"
+    },
+    {
+      "id": "same_tier_conflict",
+      "description": "Multiple same-tier authoritative sources make materially incompatible claims in the same authority domain.",
+      "default_recovery_action": "quarantine_same_tier_conflict"
+    },
+    {
+      "id": "ownership_split_drift",
+      "description": "A projection, wrapper, transitional root, or scoped split is treated as the semantic owner by convenience.",
+      "default_recovery_action": "route_human_review"
+    }
+  ],
+  "recovery_actions": [
+    {
+      "id": "preserve_higher_authority",
+      "description": "Use the higher authority source, record lower drift, and avoid mutation of protected canon or planning law.",
+      "allowed_mutation_targets": [
+        "lower_derived_docs",
+        "lower_registries",
+        "lower_status_notes",
+        "validator_fixtures_when_in_scope"
+      ],
+      "forbidden_mutation_targets": [
+        "docs/canon/**",
+        "AGENTS.md",
+        "docs/planning/**"
+      ],
+      "default_review_gate": "none_if_lower_artifact_only"
+    },
+    {
+      "id": "refresh_derived_projection",
+      "description": "Regenerate or edit a derived projection so it restates the stronger source without new meaning.",
+      "allowed_mutation_targets": [
+        "generated_mirrors",
+        "projection_registries",
+        "derived_docs",
+        "fixtures"
+      ],
+      "forbidden_mutation_targets": [
+        "docs/canon/**",
+        "AGENTS.md",
+        "docs/planning/**",
+        "schema/**"
+      ],
+      "default_review_gate": "none_if_lower_artifact_only"
+    },
+    {
+      "id": "repair_validator_contract",
+      "description": "Align validator and fixture behavior to authority order, protected-root handling, recovery actions, and review gates.",
+      "allowed_mutation_targets": [
+        "tools/validators/**",
+        "tests/contract/**",
+        "validator_fixtures"
+      ],
+      "forbidden_mutation_targets": [
+        "docs/canon/**",
+        "AGENTS.md",
+        "docs/planning/**"
+      ],
+      "default_review_gate": "contract_schema_review"
+    },
+    {
+      "id": "record_status_staleness",
+      "description": "Mark lower status, queue, report, or audit evidence stale or partial without claiming doctrine change.",
+      "allowed_mutation_targets": [
+        "audit_notes",
+        "status_reports",
+        "derived_evidence"
+      ],
+      "forbidden_mutation_targets": [
+        ".aide/context/latest-*",
+        ".aide/reports/latest-*",
+        ".aide/queue/current.toml",
+        "docs/repo/FOUNDATION_LOCK.md"
+      ],
+      "default_review_gate": "none_if_lower_artifact_only"
+    },
+    {
+      "id": "quarantine_same_tier_conflict",
+      "description": "Stop autonomous resolution, preserve conflicting candidates, and emit a bounded conflict packet for review.",
+      "allowed_mutation_targets": [
+        "audit_notes",
+        "quarantine_reports",
+        "derived_registries"
+      ],
+      "forbidden_mutation_targets": [
+        "docs/canon/**",
+        "AGENTS.md",
+        "docs/planning/**",
+        "schema/**",
+        "docs/release/**"
+      ],
+      "default_review_gate": "quarantine_required"
+    },
+    {
+      "id": "route_human_review",
+      "description": "Create a review packet when recovery would alter protected meaning, ownership, policy, release, trust, or public governance.",
+      "allowed_mutation_targets": [
+        "review_packets",
+        "audit_notes"
+      ],
+      "forbidden_mutation_targets": [
+        "docs/canon/**",
+        "AGENTS.md",
+        "docs/planning/**",
+        "schema/**",
+        "docs/release/**",
+        "release/**",
+        "repo/**",
+        "updates/**",
+        "security/**"
+      ],
+      "default_review_gate": "human_review_required"
+    },
+    {
+      "id": "refuse_silent_promotion",
+      "description": "Reject attempts to treat generated, projected, transitional, status, chat, or validator evidence as canonical authority.",
+      "allowed_mutation_targets": [
+        "audit_notes",
+        "derived_registry_notes",
+        "validator_findings"
+      ],
+      "forbidden_mutation_targets": [
+        "build/**",
+        "archive/generated/artifacts/**",
+        ".xstack_cache/**",
+        "run_meta/**"
+      ],
+      "default_review_gate": "human_review_required"
+    }
+  ],
+  "review_gates": [
+    {
+      "id": "none_if_lower_artifact_only",
+      "trigger": "The recovery edits only a lower derived artifact, stays inside explicit task scope, and does not change meaning.",
+      "required_output": "Validation evidence plus an audit statement that no protected doctrine meaning changed."
+    },
+    {
+      "id": "protected_root_review",
+      "trigger": "The recovery would touch or reinterpret a protected root or protected planning/source document.",
+      "required_output": "Human review scope, touched protected paths, winning source, losing source, and reason autonomous recovery is insufficient."
+    },
+    {
+      "id": "contract_schema_review",
+      "trigger": "The recovery changes schema, contract, registry, validator-facing compatibility, migration, or refusal meaning.",
+      "required_output": "Contract impact statement, migration/refusal impact, schema parse evidence, and review decision if meaning changes."
+    },
+    {
+      "id": "ownership_review_required",
+      "trigger": "The recovery enters a split, transitional, projected, wrapper, or quarantined ownership family.",
+      "required_output": "Ownership packet naming canonical, projection, transitional, and quarantined surfaces with source paths."
+    },
+    {
+      "id": "quarantine_required",
+      "trigger": "Same-tier conflict, insufficient evidence, material projection drift, or missing provenance prevents safe recovery.",
+      "required_output": "Conflict packet with authority domain, candidate paths, conflict reason, and minimal next review question."
+    },
+    {
+      "id": "human_review_required",
+      "trigger": "The recovery would change canon/glossary meaning, authority order, release/trust policy, public policy, or promote generated/status evidence.",
+      "required_output": "Explicit go/no-go review decision before mutation or promotion."
+    }
+  ],
+  "protected_roots": [
+    {
+      "path": "docs/canon/**",
+      "protection_reason": "Canonical constitution and glossary meaning.",
+      "default_recovery_action": "route_human_review",
+      "review_gate": "human_review_required"
+    },
+    {
+      "path": "AGENTS.md",
+      "protection_reason": "Root governance and agent execution contract.",
+      "default_recovery_action": "route_human_review",
+      "review_gate": "human_review_required"
+    },
+    {
+      "path": "docs/planning/AUTHORITY_ORDER.md",
+      "protection_reason": "Planning authority and conflict resolution procedure.",
+      "default_recovery_action": "quarantine_same_tier_conflict",
+      "review_gate": "protected_root_review"
+    },
+    {
+      "path": "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+      "protection_reason": "Snapshot intake, evidence, and quarantine law.",
+      "default_recovery_action": "quarantine_same_tier_conflict",
+      "review_gate": "protected_root_review"
+    },
+    {
+      "path": "docs/planning/MERGED_PROGRAM_STATE.md",
+      "protection_reason": "Merged execution-state and program continuity lock.",
+      "default_recovery_action": "record_status_staleness",
+      "review_gate": "protected_root_review"
+    },
+    {
+      "path": "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "protection_reason": "Extend-over-replace control surface.",
+      "default_recovery_action": "route_human_review",
+      "review_gate": "protected_root_review"
+    },
+    {
+      "path": "docs/planning/GATES_AND_PROOFS.md",
+      "protection_reason": "Entry gates, exit proofs, and review checkpoints.",
+      "default_recovery_action": "quarantine_same_tier_conflict",
+      "review_gate": "protected_root_review"
+    },
+    {
+      "path": "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+      "protection_reason": "Reviewed ownership decisions for split and projection roots.",
+      "default_recovery_action": "route_human_review",
+      "review_gate": "ownership_review_required"
+    },
+    {
+      "path": "specs/reality/**",
+      "protection_reason": "Reality semantic constitution specs.",
+      "default_recovery_action": "route_human_review",
+      "review_gate": "ownership_review_required"
+    },
+    {
+      "path": "schema/**",
+      "protection_reason": "Canonical schema law and migration/refusal obligations.",
+      "default_recovery_action": "route_human_review",
+      "review_gate": "contract_schema_review"
+    },
+    {
+      "path": "docs/release/**",
+      "protection_reason": "Release and publication doctrine.",
+      "default_recovery_action": "route_human_review",
+      "review_gate": "human_review_required"
+    },
+    {
+      "path": "release/**",
+      "protection_reason": "Release artifacts, packaging, and update control-plane surfaces.",
+      "default_recovery_action": "route_human_review",
+      "review_gate": "human_review_required"
+    },
+    {
+      "path": "repo/**",
+      "protection_reason": "Repository control-plane and policy metadata.",
+      "default_recovery_action": "route_human_review",
+      "review_gate": "human_review_required"
+    },
+    {
+      "path": "updates/**",
+      "protection_reason": "Update channel and publication surfaces.",
+      "default_recovery_action": "route_human_review",
+      "review_gate": "human_review_required"
+    },
+    {
+      "path": "security/**",
+      "protection_reason": "Trust and security policy surfaces.",
+      "default_recovery_action": "route_human_review",
+      "review_gate": "human_review_required"
+    },
+    {
+      "path": "build/**",
+      "protection_reason": "Generated evidence only unless a stronger emission contract says otherwise.",
+      "default_recovery_action": "refuse_silent_promotion",
+      "review_gate": "quarantine_required"
+    },
+    {
+      "path": "archive/generated/artifacts/**",
+      "protection_reason": "Generated evidence and archived outputs with provenance requirements.",
+      "default_recovery_action": "refuse_silent_promotion",
+      "review_gate": "quarantine_required"
+    },
+    {
+      "path": ".xstack_cache/**",
+      "protection_reason": "Cache output and generated evidence surface.",
+      "default_recovery_action": "refuse_silent_promotion",
+      "review_gate": "quarantine_required"
+    },
+    {
+      "path": "run_meta/**",
+      "protection_reason": "Run metadata and evidence output.",
+      "default_recovery_action": "refuse_silent_promotion",
+      "review_gate": "quarantine_required"
+    },
+    {
+      "path": "docs/repo/FOUNDATION_LOCK.md",
+      "protection_reason": "Foundation lock status surface explicitly forbidden for this recovery task.",
+      "default_recovery_action": "record_status_staleness",
+      "review_gate": "protected_root_review"
+    },
+    {
+      "path": ".aide/context/latest-*",
+      "protection_reason": "Latest generated context surface explicitly forbidden for this recovery task.",
+      "default_recovery_action": "record_status_staleness",
+      "review_gate": "none_if_lower_artifact_only"
+    },
+    {
+      "path": ".aide/reports/latest-*",
+      "protection_reason": "Latest generated report surface explicitly forbidden for this recovery task.",
+      "default_recovery_action": "record_status_staleness",
+      "review_gate": "none_if_lower_artifact_only"
+    },
+    {
+      "path": ".aide/queue/current.toml",
+      "protection_reason": "Current queue status surface explicitly forbidden for this recovery task.",
+      "default_recovery_action": "record_status_staleness",
+      "review_gate": "none_if_lower_artifact_only"
+    }
+  ],
+  "matrix": [
+    {
+      "surface_id": "canon_root_governance",
+      "surface_label": "Constitution, glossary, and root governance",
+      "authority_domain": "semantic",
+      "authority_tier": "SEM-1/SEM-2",
+      "source_paths": [
+        "docs/canon/constitution_v1.md",
+        "docs/canon/glossary_v1.md",
+        "AGENTS.md"
+      ],
+      "protected_roots": [
+        "docs/canon/**",
+        "AGENTS.md"
+      ],
+      "owned_meaning": "Frozen semantic doctrine, vocabulary floor, root execution governance, validation expectations, and protected-area discipline.",
+      "drift_cases": [
+        {
+          "drift_kind": "doc_drift",
+          "when": "A lower governance document or audit note contradicts canon, glossary, or AGENTS.md.",
+          "disposition": "Use the higher source and repair only the lower artifact if the task scope allows it.",
+          "recovery_action": "preserve_higher_authority",
+          "review_gate": "none_if_lower_artifact_only"
+        },
+        {
+          "drift_kind": "validator_drift",
+          "when": "A validator accepts behavior forbidden by canon or AGENTS.md, such as silent semantic drift.",
+          "disposition": "Repair the validator or fixture; escalate if contract meaning would change.",
+          "recovery_action": "repair_validator_contract",
+          "review_gate": "contract_schema_review"
+        },
+        {
+          "drift_kind": "status_file_drift",
+          "when": "A status file claims a gate state or doctrine meaning not supported by repo sources.",
+          "disposition": "Preserve repo truth and mark the lower status stale or partial where edits are allowed.",
+          "recovery_action": "record_status_staleness",
+          "review_gate": "none_if_lower_artifact_only"
+        }
+      ]
+    },
+    {
+      "surface_id": "planning_intake_authority",
+      "surface_label": "Planning authority, intake, gates, and program state",
+      "authority_domain": "planning",
+      "authority_tier": "PLN-1",
+      "source_paths": [
+        "docs/planning/AUTHORITY_ORDER.md",
+        "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+        "docs/planning/MERGED_PROGRAM_STATE.md",
+        "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+        "docs/planning/GATES_AND_PROOFS.md"
+      ],
+      "protected_roots": [
+        "docs/planning/AUTHORITY_ORDER.md",
+        "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+        "docs/planning/MERGED_PROGRAM_STATE.md",
+        "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+        "docs/planning/GATES_AND_PROOFS.md"
+      ],
+      "owned_meaning": "Planning intake law, authority ranking, gates, exit proofs, sequence locks, and extend-over-replace discipline.",
+      "drift_cases": [
+        {
+          "drift_kind": "generated_mirror_drift",
+          "when": "A machine planning mirror or generated task projection disagrees with planning intake or gate law.",
+          "disposition": "Refresh the lower projection if its source is clear; quarantine missing-provenance mirrors.",
+          "recovery_action": "refresh_derived_projection",
+          "review_gate": "none_if_lower_artifact_only"
+        },
+        {
+          "drift_kind": "same_tier_conflict",
+          "when": "Two protected planning surfaces make incompatible current-state or gate claims.",
+          "disposition": "Stop autonomous resolution and emit the conflict packet required by intake law.",
+          "recovery_action": "quarantine_same_tier_conflict",
+          "review_gate": "quarantine_required"
+        },
+        {
+          "drift_kind": "status_file_drift",
+          "when": "A queue, report, or latest-context state conflicts with the committed planning state.",
+          "disposition": "Do not rewrite forbidden latest files; cite repo truth and record staleness in an allowed audit surface.",
+          "recovery_action": "record_status_staleness",
+          "review_gate": "none_if_lower_artifact_only"
+        }
+      ]
+    },
+    {
+      "surface_id": "schema_contract_law",
+      "surface_label": "Schema and contract law",
+      "authority_domain": "compatibility",
+      "authority_tier": "COM-1",
+      "source_paths": [
+        "schema/**",
+        "docs/reference/contracts/**",
+        "contracts/schema/**",
+        "contracts/registry/**"
+      ],
+      "protected_roots": [
+        "schema/**"
+      ],
+      "owned_meaning": "Schema identity, versioning, compatibility, migration, refusal, defaulting, and contract-facing meaning.",
+      "drift_cases": [
+        {
+          "drift_kind": "registry_projection_drift",
+          "when": "A registry or projection differs from stronger schema law or contract documentation.",
+          "disposition": "Restore projection lineage or quarantine the material disagreement.",
+          "recovery_action": "refresh_derived_projection",
+          "review_gate": "contract_schema_review"
+        },
+        {
+          "drift_kind": "validator_drift",
+          "when": "A validator normalizes schema drift, silent defaults, or implicit migrations.",
+          "disposition": "Repair the validator to require explicit version, migration, refusal, and proof semantics.",
+          "recovery_action": "repair_validator_contract",
+          "review_gate": "contract_schema_review"
+        }
+      ]
+    },
+    {
+      "surface_id": "governance_projection_surfaces",
+      "surface_label": "Governance projections and mirrors",
+      "authority_domain": "governance_execution",
+      "authority_tier": "SEM-6/derived",
+      "source_paths": [
+        "docs/governance/**",
+        "contracts/registry/governance/**",
+        "contracts/governance/**"
+      ],
+      "protected_roots": [
+        "AGENTS.md"
+      ],
+      "owned_meaning": "Derived governance recovery, policy, and adapter projection surfaces that must remain subordinate to canon and AGENTS.md.",
+      "drift_cases": [
+        {
+          "drift_kind": "doc_drift",
+          "when": "A governance projection claims canonical status or conflicts with AGENTS.md.",
+          "disposition": "Refresh the projection and keep the non-canonical notice explicit.",
+          "recovery_action": "refresh_derived_projection",
+          "review_gate": "none_if_lower_artifact_only"
+        },
+        {
+          "drift_kind": "generated_mirror_drift",
+          "when": "A generated governance mirror becomes stale or loses source provenance.",
+          "disposition": "Refresh from the canonical source or quarantine if source lineage is unknown.",
+          "recovery_action": "refuse_silent_promotion",
+          "review_gate": "quarantine_required"
+        }
+      ]
+    },
+    {
+      "surface_id": "ownership_sensitive_roots",
+      "surface_label": "Split ownership and projection-sensitive roots",
+      "authority_domain": "semantic",
+      "authority_tier": "SEM-2/SEM-4 scoped",
+      "source_paths": [
+        "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+        "fields/**",
+        "field/**",
+        "schema/**",
+        "schemas/**",
+        "packs/**",
+        "data/packs/**",
+        "specs/reality/**",
+        "data/reality/**",
+        "docs/planning/**",
+        "data/planning/**"
+      ],
+      "protected_roots": [
+        "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+        "schema/**",
+        "specs/reality/**"
+      ],
+      "owned_meaning": "Scoped semantic ownership, projection, wrapper, transitional, and residual quarantine boundaries for split roots.",
+      "drift_cases": [
+        {
+          "drift_kind": "ownership_split_drift",
+          "when": "A task binds to a projection, wrapper, or transitional root as semantic owner by convenience.",
+          "disposition": "Apply reviewed scoped ownership and route unresolved substitution or convergence to review.",
+          "recovery_action": "route_human_review",
+          "review_gate": "ownership_review_required"
+        },
+        {
+          "drift_kind": "same_tier_conflict",
+          "when": "Scoped owners make incompatible claims and no stronger source chooses a winner.",
+          "disposition": "Quarantine the subject and preserve both candidates for review.",
+          "recovery_action": "quarantine_same_tier_conflict",
+          "review_gate": "quarantine_required"
+        }
+      ]
+    },
+    {
+      "surface_id": "generated_evidence_surfaces",
+      "surface_label": "Generated evidence and run output surfaces",
+      "authority_domain": "evidence",
+      "authority_tier": "SEM-7/STR-5",
+      "source_paths": [
+        "build/**",
+        "archive/generated/artifacts/**",
+        ".xstack_cache/**",
+        "run_meta/**"
+      ],
+      "protected_roots": [
+        "build/**",
+        "archive/generated/artifacts/**",
+        ".xstack_cache/**",
+        "run_meta/**"
+      ],
+      "owned_meaning": "Evidence of generated or run-produced state, never semantic doctrine without explicit stronger promotion.",
+      "drift_cases": [
+        {
+          "drift_kind": "generated_mirror_drift",
+          "when": "Generated output is stale, unprovenanced, or contradicted by source documents.",
+          "disposition": "Treat as evidence only, refresh through the emitter if in scope, or quarantine the evidence.",
+          "recovery_action": "refuse_silent_promotion",
+          "review_gate": "quarantine_required"
+        },
+        {
+          "drift_kind": "status_file_drift",
+          "when": "Run metadata claims pass/fail or gate status that stronger current evidence does not support.",
+          "disposition": "Record staleness and avoid promoting run metadata into authority.",
+          "recovery_action": "record_status_staleness",
+          "review_gate": "none_if_lower_artifact_only"
+        }
+      ]
+    },
+    {
+      "surface_id": "validators_and_contract_tests",
+      "surface_label": "Validators, fixtures, and contract tests",
+      "authority_domain": "structural",
+      "authority_tier": "COM-3/validation",
+      "source_paths": [
+        "tools/validators/**",
+        "tests/contract/**",
+        "contracts/**"
+      ],
+      "protected_roots": [
+        "schema/**"
+      ],
+      "owned_meaning": "Validation mechanics and fixtures that enforce, but do not create, doctrine and contract meaning.",
+      "drift_cases": [
+        {
+          "drift_kind": "validator_drift",
+          "when": "A validator omits authority order, protected roots, recovery actions, or review gates.",
+          "disposition": "Repair validator logic and fixtures to make those recovery requirements explicit.",
+          "recovery_action": "repair_validator_contract",
+          "review_gate": "contract_schema_review"
+        },
+        {
+          "drift_kind": "registry_projection_drift",
+          "when": "A test fixture or registry shape stops matching its schema or documented disposition matrix.",
+          "disposition": "Refresh the lower fixture or registry without changing stronger doctrine meaning.",
+          "recovery_action": "refresh_derived_projection",
+          "review_gate": "none_if_lower_artifact_only"
+        }
+      ]
+    },
+    {
+      "surface_id": "status_and_audit_surfaces",
+      "surface_label": "Status, audit, and latest-context surfaces",
+      "authority_domain": "planning",
+      "authority_tier": "evidence/status",
+      "source_paths": [
+        "docs/repo/audits/**",
+        "docs/repo/FOUNDATION_LOCK.md",
+        ".aide/context/latest-*",
+        ".aide/reports/latest-*",
+        ".aide/queue/current.toml"
+      ],
+      "protected_roots": [
+        "docs/repo/FOUNDATION_LOCK.md",
+        ".aide/context/latest-*",
+        ".aide/reports/latest-*",
+        ".aide/queue/current.toml"
+      ],
+      "owned_meaning": "Status, audit, report, and queue evidence that records state but does not outrank repo authority.",
+      "drift_cases": [
+        {
+          "drift_kind": "status_file_drift",
+          "when": "A status or audit surface claims current progress, gate closure, or validation not supported by repo evidence.",
+          "disposition": "Preserve repo truth, record staleness in an allowed audit note, and avoid forbidden latest-file edits.",
+          "recovery_action": "record_status_staleness",
+          "review_gate": "none_if_lower_artifact_only"
+        },
+        {
+          "drift_kind": "doc_drift",
+          "when": "An audit or status document is mistaken for a canonical doctrine source.",
+          "disposition": "Cite the stronger source and keep the audit/status document derived.",
+          "recovery_action": "preserve_higher_authority",
+          "review_gate": "none_if_lower_artifact_only"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.composition.source_kind.registry.v1",
+  "schema_id": "dominium.composition.source_kind.registry",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "owner": "contracts.composition",
+  "canonical_order": [
+    "package_descriptor",
+    "module_composition",
+    "workbench_workspace",
+    "app_composition"
+  ],
+  "kinds": [
+    {
+      "id": "package_descriptor",
+      "rank": 10,
+      "summary": "Pack, package, bundle, or package-adjacent descriptor contribution. Rank is a canonical resolver comparison key, not a load order."
+    },
+    {
+      "id": "module_composition",
+      "rank": 20,
+      "summary": "Module composition descriptor contribution over governed module IDs."
+    },
+    {
+      "id": "workbench_workspace",
+      "rank": 30,
+      "summary": "Workbench workspace descriptor contribution over registered modules, views, panels, commands, and evidence surfaces."
+    },
+    {
+      "id": "app_composition",
+      "rank": 40,
+      "summary": "App/product composition descriptor contribution over apps, modules, packs, providers, capabilities, and release profiles."
+    }
+  ]
+}

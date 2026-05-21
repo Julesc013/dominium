@@ -1,0 +1,52 @@
+{
+  "schema_id": "dominium.service.class.registry.v1",
+  "schema_version": "1.0.0",
+  "status": "provisional",
+  "owner": "contracts.service",
+  "source_doctrine": [
+    "docs/runtime/RUNTIME_SERVICES.md"
+  ],
+  "classes": [
+    {
+      "id": "execution_coordination",
+      "title": "Execution Coordination Service",
+      "summary": "Coordinates bounded execution-facing runtime behavior such as scheduling, work routing, deterministic progression, or host mediation."
+    },
+    {
+      "id": "observation_inspection",
+      "title": "Observation and Inspection Service",
+      "summary": "Supports lawful observation, inspection, proof, or audit mediation over runtime behavior without becoming a truth owner."
+    },
+    {
+      "id": "presentation_support",
+      "title": "Presentation-Support Service",
+      "summary": "Coordinates presentation-adjacent runtime support while preserving truth/perceived/render separation."
+    },
+    {
+      "id": "control_integration",
+      "title": "Control and Integration Service",
+      "summary": "Coordinates negotiation, transport, handoff, descriptor exchange, compatibility routing, or explicit runtime integration behavior."
+    },
+    {
+      "id": "persistence_replay_support",
+      "title": "Persistence and Replay-Support Service",
+      "summary": "Supports persistence-facing, replay-facing, or checkpoint-facing runtime mediation without defining state externalization or snapshot implementation."
+    },
+    {
+      "id": "compatibility_policy_support",
+      "title": "Compatibility and Policy-Support Service",
+      "summary": "Coordinates runtime compatibility, refusal, degradation, handshake, negotiation, or runtime policy mediation."
+    },
+    {
+      "id": "domain_support",
+      "title": "Domain-Support Service",
+      "summary": "Supports lawful execution, observation, or coordination over domain families without erasing domain ownership or bridge law."
+    },
+    {
+      "id": "product_support",
+      "title": "Product-Support Service",
+      "summary": "Supports lawful runtime mediation required by products while remaining distinct from products and product-shell semantics."
+    }
+  ],
+  "notes": "The registry is a conformance vocabulary only. It is not a service instance catalog and does not authorize runtime implementation."
+}

@@ -1,0 +1,146 @@
+{
+  "schema_id": "dominium.composition.resolver_plan",
+  "schema_version": "1.0.0",
+  "stability": "provisional",
+  "plan_id": "dominium.composition.plan.workbench.validation",
+  "owner": "contracts.composition",
+  "resolver_law": "dominium.composition.resolver_law.v1",
+  "ordering": {
+    "algorithm": "canonical_layered_stable_sort",
+    "source_kind_order": [
+      "package_descriptor",
+      "module_composition",
+      "workbench_workspace",
+      "app_composition"
+    ],
+    "tie_breakers": [
+      "source_kind_rank",
+      "descriptor_id_casefold",
+      "step_id_casefold",
+      "source_ref_casefold"
+    ]
+  },
+  "inputs": [
+    {
+      "descriptor_kind": "package_descriptor",
+      "descriptor_id": "pack.core.workbench.validation",
+      "source_ref": "contracts/package/packs/README.md",
+      "source_ref_is_authority": false,
+      "stability": "provisional",
+      "provides": [
+        {"ref_kind": "pack", "ref_id": "pack.core.workbench.validation"},
+        {"ref_kind": "capability", "ref_id": "dominium.workbench.module.validation"}
+      ],
+      "requires": [],
+      "proof": []
+    },
+    {
+      "descriptor_kind": "module_composition",
+      "descriptor_id": "dominium.module.composition.validation",
+      "source_ref": "contracts/module/module_composition.schema.json",
+      "source_ref_is_authority": false,
+      "stability": "provisional",
+      "provides": [
+        {"ref_kind": "module", "ref_id": "dominium.workbench.validation"},
+        {"ref_kind": "capability", "ref_id": "dominium.workbench.module.validation"}
+      ],
+      "requires": [
+        {"ref_kind": "command", "ref_id": "dominium.validation.run"}
+      ],
+      "proof": []
+    },
+    {
+      "descriptor_kind": "workbench_workspace",
+      "descriptor_id": "dominium.workbench.workspace.validation_panel",
+      "source_ref": "contracts/workbench/workspace.schema.json",
+      "source_ref_is_authority": false,
+      "stability": "provisional",
+      "provides": [
+        {"ref_kind": "workspace", "ref_id": "dominium.workbench.workspace.validation_panel"}
+      ],
+      "requires": [
+        {"ref_kind": "module", "ref_id": "dominium.workbench.validation"},
+        {"ref_kind": "command", "ref_id": "dominium.validation.run"}
+      ],
+      "proof": []
+    },
+    {
+      "descriptor_kind": "app_composition",
+      "descriptor_id": "dominium.app.composition.workbench_validation",
+      "source_ref": "contracts/app/app_composition.schema.json",
+      "source_ref_is_authority": false,
+      "stability": "provisional",
+      "provides": [
+        {"ref_kind": "app", "ref_id": "dominium.workbench.validation"}
+      ],
+      "requires": [
+        {"ref_kind": "module", "ref_id": "dominium.workbench.validation"},
+        {"ref_kind": "workspace", "ref_id": "dominium.workbench.workspace.validation_panel"},
+        {"ref_kind": "pack", "ref_id": "pack.core.workbench.validation"},
+        {"ref_kind": "capability", "ref_id": "dominium.workbench.module.validation"}
+      ],
+      "proof": []
+    }
+  ],
+  "external_refs": [
+    {"ref_kind": "command", "ref_id": "dominium.validation.run"}
+  ],
+  "steps": [
+    {
+      "order_index": 0,
+      "step_id": "include.pack.core.workbench.validation",
+      "descriptor_kind": "package_descriptor",
+      "descriptor_id": "pack.core.workbench.validation",
+      "action": "include",
+      "source_ref": "contracts/package/packs/README.md"
+    },
+    {
+      "order_index": 1,
+      "step_id": "include.dominium.module.composition.validation",
+      "descriptor_kind": "module_composition",
+      "descriptor_id": "dominium.module.composition.validation",
+      "action": "include",
+      "source_ref": "contracts/module/module_composition.schema.json"
+    },
+    {
+      "order_index": 2,
+      "step_id": "include.dominium.workbench.workspace.validation_panel",
+      "descriptor_kind": "workbench_workspace",
+      "descriptor_id": "dominium.workbench.workspace.validation_panel",
+      "action": "include",
+      "source_ref": "contracts/workbench/workspace.schema.json"
+    },
+    {
+      "order_index": 3,
+      "step_id": "include.dominium.app.composition.workbench_validation",
+      "descriptor_kind": "app_composition",
+      "descriptor_id": "dominium.app.composition.workbench_validation",
+      "action": "include",
+      "source_ref": "contracts/app/app_composition.schema.json"
+    }
+  ],
+  "conflicts": [
+    {
+      "conflict_type": "duplicate_provide",
+      "subject": "capability:dominium.workbench.module.validation",
+      "participants": [
+        "dominium.module.composition.validation",
+        "pack.core.workbench.validation"
+      ],
+      "decision": "selected_by_policy",
+      "selected_descriptor": "dominium.module.composition.validation",
+      "evidence": [
+        "docs/architecture/module_composition_law.md",
+        "docs/architecture/composition_resolver_law.md"
+      ],
+      "notes": "The package advertises availability; the module descriptor owns the module capability contribution inside the resolver plan."
+    }
+  ],
+  "proof": [],
+  "non_goals": [
+    "runtime_loader is not implemented",
+    "package_mounting is not implemented",
+    "schema_migration is not implemented"
+  ],
+  "notes": "Fixture only; no runtime loader or Workbench implementation is implied."
+}

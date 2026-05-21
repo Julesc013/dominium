@@ -55,3 +55,4 @@ Replacement Target: legacy reference surface retained without current binding au
   - 2026-03-11: refreshed for APPSHELL-3 TUI doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX TUI discipline additions, and APPSHELL-3 TestX additions
   - 2026-03-11: refreshed for DIAG-0 repro bundle doctrine registration in `docs/architecture/CANON_INDEX.md`/`docs/architecture/CONTRACTS_INDEX.md`, RepoX/AuditX repro-bundle discipline additions, and DIAG-0 TestX additions
   - 2026-05-18: refreshed for TEST-PERF-01 AuditX CTest sharding, AuditX TestX suite split registration, and updated validation-tier routing.
+  - 2026-05-21: refreshed for Wave 1 service substrate, doctrine recovery, and headless Workbench validation slice registrations in `docs/architecture/CANON_INDEX.md`.
