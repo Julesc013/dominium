@@ -28,9 +28,11 @@ The adapter boundary is:
 
 1. CLI, headless tests, or Workbench projection submit a typed command request.
 2. `run_validation_command` normalizes profile, surface, and aggregate target.
-3. `ValidationServiceAdapter` calls the public unified validation suite export.
-4. The command boundary returns `contracts/result/result.schema.json` shape with
-   validation payload, typed diagnostics, typed refusals, and evidence refs.
+3. `ValidationServiceAdapter` runs the bounded contract-schema artifact adapter
+   for the registered slice target.
+4. The command boundary returns `contracts/command/validation_run_result.schema.json`
+   shape with validation payload, typed diagnostics, typed refusals, and
+   evidence refs.
 5. Workbench projection turns the command result into table rows without
    inventing new meanings.
 
@@ -57,7 +59,13 @@ governed validation report outputs.
 
 ## Refusal Semantics
 
-The skeletal slice supports the aggregate validation target only:
+The command still recognizes the aggregate validation target names for identity
+compatibility, but the Workbench validation module does not bind the aggregate
+suite service in this product slice. Aggregate execution refuses with typed
+`dominium.refusal.validation.tool_unavailable` until a later service-conformance
+slice owns that boundary.
+
+Recognized aggregate target names:
 
 - `all`
 - `validate.all`
@@ -65,8 +73,24 @@ The skeletal slice supports the aggregate validation target only:
 - `dominium.validation`
 - `dominium.validation.run`
 
-Unsupported targets refuse with
-`dominium.refusal.validation.invalid_target` and `DOM-CMD-INVALID-INPUT`.
+The executable product proof supports one contract-schema artifact target:
+
+- `target_kind=contract_schema`
+- `target_path=contracts/command/validation_run_input.schema.json`
+- `suite_id=validate.contract_schema_artifact`
+
+Unknown targets refuse with
+`dominium.refusal.validation.target_unknown` and
+`DOM-VALIDATION-TARGET-UNKNOWN`.
+Unsupported target kinds refuse with
+`dominium.refusal.validation.target_kind_unsupported` and
+`DOM-VALIDATION-TARGET-KIND-UNSUPPORTED`.
+Targets outside the allowed contract-schema roots refuse with
+`dominium.refusal.validation.target_outside_allowed_root` and
+`DOM-VALIDATION-TARGET-OUTSIDE-ROOT`.
+Missing invocation capabilities refuse with
+`dominium.refusal.command.capability_missing` and
+`DOM-CAPABILITY-MISSING`.
 Unsupported caller surfaces refuse with
 `dominium.refusal.command.unsupported_surface` and
 `DOM-CMD-UNSUPPORTED-SURFACE`.
@@ -80,11 +104,15 @@ Validation-suite blocking findings are projected as
 Changed contract surfaces:
 
 - `contracts/command/validation_run_input.schema.json` now declares `profile`,
-  `surface`, and `emit_reports`.
+  `surface`, `emit_reports`, `target_kind`, `target_path`, `artifact_ref`,
+  `suite_id`, `mode`, `capabilities`, and `required_capabilities`.
+- `contracts/command/validation_run_result.schema.json` declares the typed
+  validation command result payload.
 - `contracts/module/module_surface.contract.toml` now records the skeletal
   headless implementation path.
-- `contracts/diagnostics/diagnostic_code.registry.json` now includes the two
-  generic validation-run diagnostic display codes used by the command boundary.
+- `contracts/diagnostics/diagnostic_code.registry.json` now includes the
+  validation-run and target-refusal diagnostic display codes used by the command
+  boundary.
 
 Unchanged contract posture:
 

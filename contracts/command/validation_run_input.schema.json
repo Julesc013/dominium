@@ -9,6 +9,34 @@
       "type": "string",
       "description": "Optional target path, command ID, gate, tier, or validator scope."
     },
+    "target_kind": {
+      "type": "string",
+      "enum": [
+        "validation_suite",
+        "contract_schema"
+      ],
+      "description": "Kind of validation target routed through the command boundary."
+    },
+    "target_path": {
+      "type": "string",
+      "description": "Repo-relative or absolute path to a governed target artifact. Absolute paths must resolve inside the allowed repository roots."
+    },
+    "artifact_ref": {
+      "type": "string",
+      "description": "Optional semantic artifact reference for evidence and Workbench projection."
+    },
+    "suite_id": {
+      "type": "string",
+      "description": "Validation suite ID used to preserve CLI/headless/Workbench result parity."
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "dry_run",
+        "strict"
+      ],
+      "default": "dry_run"
+    },
     "strict": {
       "type": "boolean",
       "default": true
@@ -47,6 +75,22 @@
     "continue_on_fail": {
       "type": "boolean",
       "default": false
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "Capabilities declared by the caller or proof harness for this invocation."
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "Additional capabilities required by this invocation; missing required values produce typed refusal."
     }
   }
 }

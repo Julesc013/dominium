@@ -1,0 +1,169 @@
+{
+  "schema_version": "dominium.aide.validation_closeout.v1",
+  "task": "WORKBENCH-VALIDATION-SLICE-01",
+  "phase": "post-foundation-product-slice",
+  "result": "PASS_WITH_WARNINGS",
+  "command_ids": [
+    "dominium.validation.run"
+  ],
+  "module_ids": [
+    "dominium.workbench.validation"
+  ],
+  "workspace_ids": [
+    "dominium.workbench.workspace.validation"
+  ],
+  "target": {
+    "target_kind": "contract_schema",
+    "target_path": "contracts/command/validation_run_input.schema.json",
+    "suite_id": "validate.contract_schema_artifact",
+    "mode": "strict"
+  },
+  "schemas": {
+    "input_schema": "contracts/command/validation_run_input.schema.json",
+    "result_schema": "contracts/command/validation_run_result.schema.json",
+    "validation_result_schema": "contracts/schema/validation_result.schema.json",
+    "evidence_schema": "contracts/evidence/evidence_packet.schema.json"
+  },
+  "refusal_ids": [
+    "dominium.refusal.validation.target_unknown",
+    "dominium.refusal.validation.target_kind_unsupported",
+    "dominium.refusal.validation.target_outside_allowed_root",
+    "dominium.refusal.command.capability_missing",
+    "dominium.refusal.command.invalid_input"
+  ],
+  "diagnostic_codes": [
+    "DOM-VALIDATION-TARGET-UNKNOWN",
+    "DOM-VALIDATION-TARGET-KIND-UNSUPPORTED",
+    "DOM-VALIDATION-TARGET-OUTSIDE-ROOT",
+    "DOM-CAPABILITY-MISSING",
+    "DOM-CMD-INVALID-INPUT",
+    "DOM-VALIDATION-RUN-REFUSED",
+    "DOM-VALIDATION-RUN-WARNING"
+  ],
+  "validators_run": [
+    {
+      "command": "py -3 tests/app/workbench_validation_slice_tests.py",
+      "status": "PASS"
+    },
+    {
+      "command": "py -3 -m compileall -q apps/workbench/module/validation tests/app/workbench_validation_slice_tests.py",
+      "status": "PASS"
+    },
+    {
+      "command": "py -3 -m apps.workbench.module.validation --repo-root . --target-kind contract_schema --target-path contracts/command/validation_run_input.schema.json --suite-id validate.contract_schema_artifact --profile FAST",
+      "status": "PASS"
+    },
+    {
+      "command": "py -3 -m apps.workbench.module.validation --repo-root . --target unknown.scope --profile FAST",
+      "status": "PASS_EXPECTED_REFUSAL_EXIT_1"
+    },
+    {
+      "command": "python tools/validators/contracts/check_command_surface.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_artifact_identity.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_provider_model.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_module_descriptors.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_workbench_workspaces.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/repo/check_public_surface.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/repo/check_dependency_directions.py --repo-root . --strict",
+      "status": "PASS_WITH_WARNINGS",
+      "warnings": 68,
+      "violations": 0
+    },
+    {
+      "command": "python tools/validators/check_component_matrices.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/verify_docs_sanity.py --repo-root .",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/verify_build_target_boundaries.py --repo-root .",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/verify_ui_shell_purity.py --repo-root .",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/verify_abi_boundaries.py --repo-root .",
+      "status": "PASS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py doctor",
+      "status": "PASS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py validate",
+      "status": "PASS_WITH_WARNINGS"
+    },
+    {
+      "command": "py -3 -c \"<parse touched JSON/TOML artifacts>\"",
+      "status": "PASS",
+      "artifacts_parsed": 9
+    },
+    {
+      "command": "python tools/test/run_fast_strict.py --repo-root . --json-out .aide/reports/WORKBENCH-VALIDATION-SLICE-01-fast-strict.json --md-out .aide/reports/WORKBENCH-VALIDATION-SLICE-01-fast-strict.md",
+      "status": "PASS",
+      "commands": 33,
+      "selected_tiers": [
+        "T0",
+        "T1",
+        "T2"
+      ],
+      "smoke_ctest": "57/57 passed"
+    }
+  ],
+  "warnings": [
+    "AIDE validate reports existing missing review-packet reference warnings.",
+    "Dependency-direction strict reports 68 existing warnings and 0 violations.",
+    "RepoX fast-strict reports the known stale AuditX warning.",
+    "Full T4 CTest and release-promotion gates were not run.",
+    "Workbench shell, rendered UI, workspace runtime, module runtime loading, provider runtime, and package/mod runtime remain unimplemented."
+  ],
+  "non_goals": [
+    "full Workbench UI",
+    "rendered Workbench shell",
+    "runtime module loader",
+    "provider runtime",
+    "package runtime",
+    "gameplay/domain features",
+    "renderer/native/platform work",
+    "release publication",
+    "private validator bypass"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "workspace_id": "dominium.workbench.workspace.validation",
+  "owner": "apps.workbench",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "workspace_runtime_implemented": false,
+  "modules": [
+    "dominium.workbench.validation"
+  ],
+  "panels": [
+    "dominium.workbench.panel.validation_table"
+  ],
+  "views": [
+    "view.table",
+    "view.inspector"
+  ],
+  "commands": [
+    "dominium.validation.run"
+  ],
+  "default_command_input": {
+    "target_kind": "contract_schema",
+    "target_path": "contracts/command/validation_run_input.schema.json",
+    "suite_id": "validate.contract_schema_artifact",
+    "mode": "strict",
+    "profile": "FAST",
+    "surface": "workbench"
+  },
+  "result_schema": "contracts/command/validation_run_result.schema.json",
+  "evidence_schema": "contracts/evidence/evidence_packet.schema.json",
+  "private_tool_calls": false,
+  "notes": "Static Workbench validation projection only; no workspace runtime, shell, renderer, or module loader is implemented."
+}

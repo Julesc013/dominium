@@ -63,16 +63,16 @@ owner = "tools.validators"
 stability = "provisional"
 surfaces = ["cli", "headless", "workbench", "aide", "test"]
 input_schema = "contracts/command/validation_run_input.schema.json"
-result_schema = "contracts/result/result.schema.json"
-refusals = ["dominium.refusal.validation.invalid_target", "dominium.refusal.validation.tool_unavailable", "dominium.refusal.command.invalid_input", "dominium.refusal.command.unsupported_surface"]
+result_schema = "contracts/command/validation_run_result.schema.json"
+refusals = ["dominium.refusal.validation.invalid_target", "dominium.refusal.validation.target_unknown", "dominium.refusal.validation.target_kind_unsupported", "dominium.refusal.validation.target_outside_allowed_root", "dominium.refusal.validation.tool_unavailable", "dominium.refusal.command.capability_missing", "dominium.refusal.command.invalid_input", "dominium.refusal.command.unsupported_surface"]
 events = ["dominium.event.command.started", "dominium.event.command.finished", "dominium.event.command.evidence"]
 evidence_schema = "contracts/evidence/evidence_packet.schema.json"
-required_capabilities = []
+required_capabilities = ["dominium.repo.validate"]
 service_owner = "tools.validators"
 proof = ["python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_command_surface_update"
-notes = "Umbrella validation command for registered validators; it does not implement runtime dispatch in this task."
+notes = "Validation command for registered validators and the first contract-schema artifact proof; it does not implement broad runtime dispatch in this task."
 
 [[command]]
 id = "dominium.repo.fast_strict.run"

@@ -22,9 +22,12 @@ def validation_module_descriptor() -> dict[str, object]:
         "services": ["service.command", "service.validation", "service.diagnostics"],
         "views": ["view.table", "view.inspector"],
         "view_bindings": [VIEW_BINDING_ID],
-        "result_schema": "contracts/result/result.schema.json",
+        "result_schema": "contracts/command/validation_run_result.schema.json",
         "validation_result_schema": "contracts/schema/validation_result.schema.json",
         "evidence_schema": "contracts/evidence/evidence_packet.schema.json",
+        "default_target_kind": "contract_schema",
+        "default_target_path": "contracts/command/validation_run_input.schema.json",
+        "default_suite_id": "validate.contract_schema_artifact",
         "workspace_runtime_implemented": False,
     }
 
@@ -54,6 +57,17 @@ def project_result_table(command_result: Mapping[str, object]) -> dict[str, obje
                 "error_count": _count(suite.get("errors")),
                 "warning_count": _count(suite.get("warnings")),
                 "fingerprint": str(suite.get("deterministic_fingerprint") or ""),
+            }
+        )
+    if not rows and report:
+        rows.append(
+            {
+                "suite_id": str(report.get("suite_id") or ""),
+                "result": str(report.get("result") or ""),
+                "adapter_id": str(report.get("adapter_id") or ""),
+                "error_count": _count(report.get("errors")),
+                "warning_count": _count(report.get("warnings")),
+                "fingerprint": str(report.get("deterministic_fingerprint") or ""),
             }
         )
     if not rows and payload.get("refusal"):

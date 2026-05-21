@@ -17,7 +17,12 @@
   "views": ["view.table", "view.inspector"],
   "events": ["event.validation.progress"],
   "refusals": ["dominium.refusal.command.capability_missing"],
-  "diagnostics": ["DOM-MODULE-MISSING-REQUIRED-COMMAND"],
+  "diagnostics": [
+    "DOM-MODULE-MISSING-REQUIRED-COMMAND",
+    "DOM-VALIDATION-TARGET-UNKNOWN",
+    "DOM-VALIDATION-TARGET-KIND-UNSUPPORTED",
+    "DOM-VALIDATION-TARGET-OUTSIDE-ROOT"
+  ],
   "artifacts": ["evidence_packet"],
   "packs": [],
   "tests": [],

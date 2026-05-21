@@ -12,9 +12,17 @@ if str(REPO_ROOT) not in sys.path:
 
 from apps.workbench.module.validation.command import (  # noqa: E402
     COMMAND_ID,
-    DIAG_INVALID_INPUT,
+    CONTRACT_SCHEMA_SUITE_ID,
+    DEFAULT_CONTRACT_SCHEMA_TARGET,
+    DIAG_CAPABILITY_MISSING,
+    DIAG_TARGET_KIND_UNSUPPORTED,
+    DIAG_TARGET_OUTSIDE_ROOT,
+    DIAG_TARGET_UNKNOWN,
     DIAG_VALIDATION_WARNING,
-    REFUSAL_INVALID_TARGET,
+    REFUSAL_CAPABILITY_MISSING,
+    REFUSAL_TARGET_KIND_UNSUPPORTED,
+    REFUSAL_TARGET_OUTSIDE_ROOT,
+    REFUSAL_TARGET_UNKNOWN,
     run_validation_command,
 )
 from apps.workbench.module.validation.workbench_projection import (  # noqa: E402
@@ -136,12 +144,118 @@ def test_invalid_target_refuses_without_service_call(violations):
 
     _assert(result["status"] == "refused", "invalid target did not refuse", violations)
     _assert(not service.calls, "service was called for invalid target", violations)
-    _assert(result["payload"]["refusal"]["code"] == REFUSAL_INVALID_TARGET, "invalid target refusal code mismatch", violations)
-    _assert(result["diagnostics"][0]["code"] == DIAG_INVALID_INPUT, "invalid target diagnostic code mismatch", violations)
+    _assert(result["payload"]["refusal"]["code"] == REFUSAL_TARGET_UNKNOWN, "invalid target refusal code mismatch", violations)
+    _assert(result["diagnostics"][0]["code"] == DIAG_TARGET_UNKNOWN, "invalid target diagnostic code mismatch", violations)
     _assert("contracts/command/validation_run_input.schema.json" in result["evidence"], "input schema evidence missing", violations)
 
     table = project_result_table(result)
     _assert(table["rows"][0]["result"] == "refused", "refusal table row missing", violations)
+
+
+def test_contract_schema_target_validates_one_artifact(violations):
+    result = run_validation_command(
+        {
+            "target_kind": "contract_schema",
+            "target_path": DEFAULT_CONTRACT_SCHEMA_TARGET,
+            "suite_id": CONTRACT_SCHEMA_SUITE_ID,
+            "profile": "FAST",
+            "surface": "headless",
+            "mode": "strict",
+        },
+        repo_root=str(REPO_ROOT),
+        invocation_surface="headless",
+    )
+
+    _assert(result["status"] == "ok", "contract schema target did not pass", violations)
+    _assert(result["payload"]["validation_status"] == "pass", "validation_status did not map to pass", violations)
+    _assert(result["payload"]["request"]["target_kind"] == "contract_schema", "target_kind not preserved", violations)
+    _assert(result["payload"]["request"]["suite_id"] == CONTRACT_SCHEMA_SUITE_ID, "suite_id not preserved", violations)
+    _assert(
+        result["payload"]["validated_artifact_ref"]["target_path"] == DEFAULT_CONTRACT_SCHEMA_TARGET,
+        "validated artifact ref path mismatch",
+        violations,
+    )
+    _assert(
+        result["payload"]["validation_report"]["suite_id"] == CONTRACT_SCHEMA_SUITE_ID,
+        "validation report suite mismatch",
+        violations,
+    )
+    _assert(DEFAULT_CONTRACT_SCHEMA_TARGET in result["evidence"], "target artifact evidence missing", violations)
+
+    projected = project_validation_run(
+        {
+            "target_kind": "contract_schema",
+            "target_path": DEFAULT_CONTRACT_SCHEMA_TARGET,
+            "suite_id": CONTRACT_SCHEMA_SUITE_ID,
+            "profile": "FAST",
+        }
+    )
+    _assert(projected["command_id"] == result["command_id"], "Workbench command id differs for contract target", violations)
+    _assert(projected["payload"]["request"]["surface"] == "workbench", "Workbench projection surface not preserved", violations)
+    _assert(projected["payload"]["validation_report"]["suite_id"] == CONTRACT_SCHEMA_SUITE_ID, "Workbench suite mismatch", violations)
+    table = project_result_table(projected)
+    _assert(table["rows"][0]["suite_id"] == CONTRACT_SCHEMA_SUITE_ID, "Workbench table missing contract target row", violations)
+
+
+def test_required_refusal_cases_are_typed(violations):
+    unsupported_kind = run_validation_command({"target_kind": "unknown_kind", "profile": "FAST"}, repo_root=str(REPO_ROOT))
+    _assert(unsupported_kind["status"] == "refused", "unsupported target kind did not refuse", violations)
+    _assert(
+        unsupported_kind["payload"]["refusal"]["code"] == REFUSAL_TARGET_KIND_UNSUPPORTED,
+        "unsupported target kind refusal mismatch",
+        violations,
+    )
+    _assert(
+        unsupported_kind["diagnostics"][0]["code"] == DIAG_TARGET_KIND_UNSUPPORTED,
+        "unsupported target kind diagnostic mismatch",
+        violations,
+    )
+
+    missing_capability = run_validation_command(
+        {
+            "target_kind": "contract_schema",
+            "target_path": DEFAULT_CONTRACT_SCHEMA_TARGET,
+            "required_capabilities": ["dominium.schema.validate"],
+            "capabilities": [],
+            "profile": "FAST",
+        },
+        repo_root=str(REPO_ROOT),
+    )
+    _assert(missing_capability["status"] == "refused", "missing capability did not refuse", violations)
+    _assert(
+        missing_capability["payload"]["refusal"]["code"] == REFUSAL_CAPABILITY_MISSING,
+        "missing capability refusal mismatch",
+        violations,
+    )
+    _assert(missing_capability["diagnostics"][0]["code"] == DIAG_CAPABILITY_MISSING, "missing capability diagnostic mismatch", violations)
+
+    outside_root = run_validation_command(
+        {
+            "target_kind": "contract_schema",
+            "target_path": "docs/repo/FOUNDATION_LOCK.md",
+            "profile": "FAST",
+        },
+        repo_root=str(REPO_ROOT),
+    )
+    _assert(outside_root["status"] == "refused", "outside allowed root did not refuse", violations)
+    _assert(
+        outside_root["payload"]["refusal"]["code"] == REFUSAL_TARGET_OUTSIDE_ROOT,
+        "outside allowed root refusal mismatch",
+        violations,
+    )
+    _assert(outside_root["diagnostics"][0]["code"] == DIAG_TARGET_OUTSIDE_ROOT, "outside allowed root diagnostic mismatch", violations)
+
+    unknown_target = run_validation_command(
+        {
+            "target_kind": "contract_schema",
+            "target_path": "contracts/command/missing_schema.json",
+            "profile": "FAST",
+        },
+        repo_root=str(REPO_ROOT),
+    )
+    _assert(unknown_target["status"] == "refused", "unknown target did not refuse", violations)
+    _assert(unknown_target["payload"]["refusal"]["code"] == REFUSAL_TARGET_UNKNOWN, "unknown target refusal mismatch", violations)
+    _assert(unknown_target["diagnostics"][0]["code"] == DIAG_TARGET_UNKNOWN, "unknown target diagnostic mismatch", violations)
 
 
 def test_workbench_projection_has_no_private_validator_binding(violations):
@@ -184,7 +298,7 @@ def test_cli_path_emits_typed_refusal_json(violations):
         return
     _assert(payload["command_id"] == COMMAND_ID, "CLI JSON command id mismatch", violations)
     _assert(payload["status"] == "refused", "CLI JSON refusal status mismatch", violations)
-    _assert(payload["payload"]["refusal"]["code"] == REFUSAL_INVALID_TARGET, "CLI JSON refusal code mismatch", violations)
+    _assert(payload["payload"]["refusal"]["code"] == REFUSAL_TARGET_UNKNOWN, "CLI JSON refusal code mismatch", violations)
 
 
 def test_touched_contracts_parse_and_expose_slice_fields(violations):
@@ -197,10 +311,27 @@ def test_touched_contracts_parse_and_expose_slice_fields(violations):
     _assert("profile" in properties, "validation input schema missing profile", violations)
     _assert("surface" in properties, "validation input schema missing surface", violations)
     _assert("emit_reports" in properties, "validation input schema missing emit_reports", violations)
+    _assert("target_kind" in properties, "validation input schema missing target_kind", violations)
+    _assert("target_path" in properties, "validation input schema missing target_path", violations)
+    _assert("suite_id" in properties, "validation input schema missing suite_id", violations)
+
+    result_schema = json.loads((REPO_ROOT / "contracts" / "command" / "validation_run_result.schema.json").read_text(encoding="utf-8"))
+    _assert(result_schema.get("$id") == "dominium.command.validation_run_result.v1", "validation run result schema id mismatch", violations)
 
     codes = {entry.get("code") for entry in diagnostic_registry.get("codes", []) if isinstance(entry, dict)}
+    refusal_codes = {
+        entry.get("code")
+        for entry in json.loads((REPO_ROOT / "contracts" / "refusal" / "refusal_code.registry.json").read_text(encoding="utf-8")).get("codes", [])
+        if isinstance(entry, dict)
+    }
     _assert("DOM-VALIDATION-RUN-REFUSED" in codes, "run refusal diagnostic not registered", violations)
     _assert("DOM-VALIDATION-RUN-WARNING" in codes, "run warning diagnostic not registered", violations)
+    _assert("DOM-VALIDATION-TARGET-UNKNOWN" in codes, "target unknown diagnostic not registered", violations)
+    _assert("DOM-VALIDATION-TARGET-KIND-UNSUPPORTED" in codes, "target kind diagnostic not registered", violations)
+    _assert("DOM-VALIDATION-TARGET-OUTSIDE-ROOT" in codes, "target root diagnostic not registered", violations)
+    _assert("dominium.refusal.validation.target_unknown" in refusal_codes, "target unknown refusal not registered", violations)
+    _assert("dominium.refusal.validation.target_kind_unsupported" in refusal_codes, "target kind refusal not registered", violations)
+    _assert("dominium.refusal.validation.target_outside_allowed_root" in refusal_codes, "target outside root refusal not registered", violations)
     _assert("workspace_runtime_implemented = false" in workbench_surface, "workspace runtime flag changed", violations)
     _assert('implementation_path = "apps/workbench/module/validation"' in module_surface, "module surface path not narrowed", violations)
 
@@ -209,6 +340,8 @@ def main():
     violations = []
     test_command_and_workbench_projection_share_semantics(violations)
     test_invalid_target_refuses_without_service_call(violations)
+    test_contract_schema_target_validates_one_artifact(violations)
+    test_required_refusal_cases_are_typed(violations)
     test_workbench_projection_has_no_private_validator_binding(violations)
     test_cli_path_emits_typed_refusal_json(violations)
     test_touched_contracts_parse_and_expose_slice_fields(violations)

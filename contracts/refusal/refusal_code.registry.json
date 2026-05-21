@@ -38,6 +38,99 @@
       "notes": "Preserved from command-surface scaffold and extended with capability/refusal metadata."
     },
     {
+      "refusal_id": "dominium.refusal.validation.target_unknown",
+      "code": "dominium.refusal.validation.target_unknown",
+      "owner": "apps.workbench.module.validation",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Validation target is unknown.",
+      "reason": "The requested validation suite, target path, or artifact reference is not registered or does not exist.",
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Choose target all, dominium.validation.run, or the registered contract schema artifact target."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-VALIDATION-TARGET-UNKNOWN"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-VALIDATION-TARGET-UNKNOWN"
+      ],
+      "related_capabilities": [
+        "dominium.repo.validate"
+      ],
+      "related_commands": [
+        "dominium.validation.run"
+      ],
+      "proof": [
+        "py -3 tests/app/workbench_validation_slice_tests.py",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Specific target-not-found refusal for the Workbench validation command slice."
+    },
+    {
+      "refusal_id": "dominium.refusal.validation.target_kind_unsupported",
+      "code": "dominium.refusal.validation.target_kind_unsupported",
+      "owner": "apps.workbench.module.validation",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Validation target kind is unsupported.",
+      "reason": "The command input requested a validation target kind that has no registered command adapter.",
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Use target_kind validation_suite or contract_schema, or add a reviewed adapter before using another kind."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-VALIDATION-TARGET-KIND-UNSUPPORTED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-VALIDATION-TARGET-KIND-UNSUPPORTED"
+      ],
+      "related_capabilities": [
+        "dominium.repo.validate"
+      ],
+      "related_commands": [
+        "dominium.validation.run"
+      ],
+      "proof": [
+        "py -3 tests/app/workbench_validation_slice_tests.py",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Prevents broad validation-domain expansion by unregistered target kind."
+    },
+    {
+      "refusal_id": "dominium.refusal.validation.target_outside_allowed_root",
+      "code": "dominium.refusal.validation.target_outside_allowed_root",
+      "owner": "apps.workbench.module.validation",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Validation target is outside the allowed root.",
+      "reason": "The requested target resolves outside the repository root or outside the allowed roots for the contract_schema slice.",
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Choose a target under contracts/command or contracts/schema."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-VALIDATION-TARGET-OUTSIDE-ROOT"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-VALIDATION-TARGET-OUTSIDE-ROOT"
+      ],
+      "related_capabilities": [
+        "dominium.repo.validate"
+      ],
+      "related_commands": [
+        "dominium.validation.run"
+      ],
+      "proof": [
+        "py -3 tests/app/workbench_validation_slice_tests.py",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Prevents the Workbench validation projection from becoming an arbitrary filesystem validation surface."
+    },
+    {
       "refusal_id": "dominium.refusal.validation.tool_unavailable",
       "code": "dominium.refusal.validation.tool_unavailable",
       "owner": "tools.validators",

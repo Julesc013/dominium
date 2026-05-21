@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.command.validation_run_result.v1",
+  "title": "Validation Command Result",
+  "type": "object",
+  "required": [
+    "command_id",
+    "status",
+    "summary",
+    "diagnostics",
+    "evidence",
+    "payload"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "command_id": {
+      "const": "dominium.validation.run"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "warning",
+        "refused",
+        "error"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "payload": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "command_version",
+        "request",
+        "validation_status",
+        "summary_counts",
+        "evidence_packet"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "schema_version": {
+          "const": "dominium.workbench.validation_slice.result.v1"
+        },
+        "command_version": {
+          "type": "string"
+        },
+        "request": {
+          "type": "object"
+        },
+        "validation_status": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "pass_with_warnings",
+            "fail",
+            "refused"
+          ]
+        },
+        "summary_counts": {
+          "type": "object",
+          "required": [
+            "errors",
+            "warnings",
+            "diagnostics"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "errors": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "warnings": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "diagnostics": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "validated_artifact_ref": {
+          "type": "object"
+        },
+        "refusal": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "validation_report": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "written_outputs": {
+          "type": "object"
+        },
+        "evidence_packet": {
+          "type": "object",
+          "required": [
+            "status",
+            "proof"
+          ],
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

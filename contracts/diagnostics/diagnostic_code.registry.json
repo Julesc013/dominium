@@ -312,6 +312,10 @@
       "evidence_expectation": "Command result payload with refusal code, diagnostic code, input schema evidence, and refusal registry evidence.",
       "related_refusal_codes": [
         "dominium.refusal.validation.invalid_target",
+        "dominium.refusal.validation.target_unknown",
+        "dominium.refusal.validation.target_kind_unsupported",
+        "dominium.refusal.validation.target_outside_allowed_root",
+        "dominium.refusal.command.capability_missing",
         "dominium.refusal.command.invalid_input",
         "dominium.refusal.command.unsupported_surface"
       ],
@@ -359,6 +363,97 @@
         "py -3 tests/app/workbench_validation_slice_tests.py"
       ],
       "notes": "Registered by WORKBENCH-VALIDATION-SLICE-01 for CLI and Workbench projection parity."
+    },
+    {
+      "id": "dominium.diagnostic.validation.target_unknown",
+      "code": "DOM-VALIDATION-TARGET-UNKNOWN",
+      "owner": "apps.workbench.module.validation",
+      "severity": "error",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Validation target is not registered or does not exist.",
+      "cause": "The command input names a validation suite, target path, or artifact reference that the validation command cannot resolve.",
+      "recovery": "Choose a registered suite or an existing governed target artifact and rerun through dominium.validation.run.",
+      "evidence_expectation": "Command result payload with target path or suite ID, refusal code, and input schema evidence.",
+      "related_refusal_codes": [
+        "dominium.refusal.validation.target_unknown",
+        "dominium.refusal.validation.invalid_target"
+      ],
+      "related_command_ids": [
+        "dominium.validation.run"
+      ],
+      "related_public_surface_ids": [
+        "dominium.command.surface.v1",
+        "dominium.workbench.surface.v1"
+      ],
+      "related_artifact_types": [
+        "command_result",
+        "evidence_packet"
+      ],
+      "proof": [
+        "py -3 tests/app/workbench_validation_slice_tests.py"
+      ],
+      "notes": "Added by WORKBENCH-VALIDATION-SLICE-01 follow-up to make target-not-found refusal distinct from generic invalid input."
+    },
+    {
+      "id": "dominium.diagnostic.validation.target_kind_unsupported",
+      "code": "DOM-VALIDATION-TARGET-KIND-UNSUPPORTED",
+      "owner": "apps.workbench.module.validation",
+      "severity": "error",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Validation target kind is unsupported.",
+      "cause": "The command input requested a target kind that is not declared by the validation command input schema or adapter.",
+      "recovery": "Use target_kind validation_suite or contract_schema, or add a reviewed command adapter before using a new kind.",
+      "evidence_expectation": "Command result payload with the rejected target_kind and refusal code.",
+      "related_refusal_codes": [
+        "dominium.refusal.validation.target_kind_unsupported"
+      ],
+      "related_command_ids": [
+        "dominium.validation.run"
+      ],
+      "related_public_surface_ids": [
+        "dominium.command.surface.v1",
+        "dominium.workbench.surface.v1"
+      ],
+      "related_artifact_types": [
+        "command_result",
+        "evidence_packet"
+      ],
+      "proof": [
+        "py -3 tests/app/workbench_validation_slice_tests.py"
+      ],
+      "notes": "Workbench validation stays narrow and refuses new target kinds until registered."
+    },
+    {
+      "id": "dominium.diagnostic.validation.target_outside_root",
+      "code": "DOM-VALIDATION-TARGET-OUTSIDE-ROOT",
+      "owner": "apps.workbench.module.validation",
+      "severity": "error",
+      "category": "validation",
+      "stability": "provisional",
+      "summary": "Validation target is outside the allowed root.",
+      "cause": "The command input resolved to a path outside the repository root or outside the allowed contract schema roots for this slice.",
+      "recovery": "Choose a target under contracts/command or contracts/schema for the contract_schema target kind.",
+      "evidence_expectation": "Command result payload with normalized target path, allowed roots, refusal code, and input schema evidence.",
+      "related_refusal_codes": [
+        "dominium.refusal.validation.target_outside_allowed_root"
+      ],
+      "related_command_ids": [
+        "dominium.validation.run"
+      ],
+      "related_public_surface_ids": [
+        "dominium.command.surface.v1",
+        "dominium.workbench.surface.v1"
+      ],
+      "related_artifact_types": [
+        "command_result",
+        "evidence_packet"
+      ],
+      "proof": [
+        "py -3 tests/app/workbench_validation_slice_tests.py"
+      ],
+      "notes": "Prevents Workbench validation from becoming an arbitrary filesystem validator."
     },
     {
       "id": "dominium.diagnostic.test.full_gate_debt",
