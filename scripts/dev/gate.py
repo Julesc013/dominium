@@ -830,7 +830,7 @@ def _write_remediation_bundle(
                 "docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md",
             ],
             "tests": [
-                "tests/app/tool_discoverability_tests.py",
+                "tests/apps/tool_discoverability_tests.py",
                 "tests/invariant/repox_rules_tests.py",
             ],
         },

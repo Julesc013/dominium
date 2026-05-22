@@ -7,7 +7,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "A3_CAPABILITY_DRIFT"
-WATCH_PREFIXES = ("libs/appcore/command/", "tests/testx/capability_sets/", "contracts/registry/")
+WATCH_PREFIXES = ("libs/appcore/command/", "tests/tools/testx/capability_sets/", "contracts/registry/")
 
 CAP_RE = re.compile(r'"([a-z0-9]+(?:\.[a-z0-9_]+){1,})"')
 
@@ -33,8 +33,8 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
 
     command_registry = os.path.join(repo_root, "libs", "appcore", "command", "command_registry.c")
-    matrix_root = os.path.join(repo_root, "tests", "testx", "capability_sets")
-    matrix_yaml = os.path.join(repo_root, "tests", "testx", "CAPABILITY_MATRIX.yaml")
+    matrix_root = os.path.join(repo_root, "tests", "tools", "testx", "capability_sets")
+    matrix_yaml = os.path.join(repo_root, "tests", "tools", "testx", "CAPABILITY_MATRIX.yaml")
 
     command_caps = _cap_tokens(_read(command_registry))
     matrix_caps = set()
@@ -67,7 +67,7 @@ def run(graph, repo_root, changed_files=None):
                 related_invariants=["INV-CAPABILITY-SCOPE"],
                 related_paths=[
                     "runtime/shell/command/command_registry.c",
-                    "tests/testx/CAPABILITY_MATRIX.yaml",
+                    "tests/tools/testx/CAPABILITY_MATRIX.yaml",
                 ],
             )
         )

@@ -11,7 +11,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 This document summarizes the CLI-focused TESTX checks added for APR0.
 
 ## Tests added
-- `app_cli_contracts` (`tests/app/app_cli_contracts.py`):
+- `app_cli_contracts` (`tests/apps/app_cli_contracts.py`):
   - Verifies `--help` and `--version` output for client/server/launcher/setup/tools.
   - Verifies `--build-info` output includes required key/value lines.
   - Runs `--smoke` for each product to ensure deterministic CLI-only exit.

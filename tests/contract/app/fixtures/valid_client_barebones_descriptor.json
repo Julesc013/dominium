@@ -39,7 +39,7 @@
     "dominium.client.module_loader"
   ],
   "proof": [
-    "py -3 tests/app/client_barebones_shell_tests.py"
+    "py -3 tests/apps/client_barebones_shell_tests.py"
   ],
   "notes": "Barebones descriptor proof only; playable gameplay, rendered shell, package runtime, provider runtime, and module loader remain unavailable."
 }

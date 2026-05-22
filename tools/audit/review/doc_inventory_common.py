@@ -184,7 +184,7 @@ TOPIC_RULES = {
 SUPERSESSION_OVERRIDES = {
     "docs/reference/GLOSSARY.md": {"alignment_status": "superseded", "replacement_doc": "docs/canon/glossary_v1.md", "reason": "duplicate glossary surface is no longer binding; canon glossary v1 wins"},
     "docs/game/CAPABILITY_STAGES.md": {"alignment_status": "superseded", "replacement_doc": "docs/architecture/CAPABILITY_ONLY_CANON.md", "reason": "legacy capability staging summary already points to the current canonical document"},
-    "docs/testing/TESTX_STAGE_MATRIX.md": {"alignment_status": "superseded", "replacement_doc": "tests/testx/CAPABILITY_MATRIX.yaml", "reason": "matrix ownership moved into the generated TestX capability matrix artifact"},
+    "docs/testing/TESTX_STAGE_MATRIX.md": {"alignment_status": "superseded", "replacement_doc": "tests/tools/testx/CAPABILITY_MATRIX.yaml", "reason": "matrix ownership moved into the generated TestX capability matrix artifact"},
     "docs/apps/UI_MODES.md": {"alignment_status": "contradictory", "replacement_doc": "docs/runtime/shell/APPSHELL_CONSTITUTION.md", "reason": "mode-selection order conflicts with the frozen v0.0.0 AppShell contract"},
     "docs/architecture/DIRECTORY_STRUCTURE.md": {"alignment_status": "contradictory", "replacement_doc": "docs/archive/audit/REPO_TREE_INDEX.md", "reason": "top-level layout no longer matches the real repository inventory"},
 }

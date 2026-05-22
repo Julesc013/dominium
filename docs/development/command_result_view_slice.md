@@ -22,7 +22,7 @@ one command result view.
 - `tools/validators/contracts/check_command_result_view.py`
 - `tests/contract/presentation/**`
 - `tests/contract/view/**`
-- `tests/app/workbench_validation_view_tests.py`
+- `tests/apps/workbench_validation_view_tests.py`
 
 ## Validator
 

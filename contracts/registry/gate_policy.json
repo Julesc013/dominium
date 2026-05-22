@@ -146,7 +146,7 @@
               "schema/ui/*",
               "docs/runtime/ui/*",
               "client/ui/*",
-              "tests/ui_parity/*"
+              "tests/runtime/ui/parity/*"
             ]
           },
           {

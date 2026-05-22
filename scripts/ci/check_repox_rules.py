@@ -513,10 +513,10 @@ SOLVER_COST_CLASS_SET = ("low", "medium", "high", "critical")
 SOLVER_RESOLUTION_SET = ("macro", "micro", "hybrid")
 COMMAND_REGISTRY_REL = os.path.join("runtime", "shell", "appcore", "command", "command_registry.c")
 UI_BIND_TABLE_REL = os.path.join("runtime", "shell", "appcore", "ui_bind", "ui_command_binding_table.c")
-CAPABILITY_MATRIX_REL = os.path.join("tests", "testx", "CAPABILITY_MATRIX.yaml")
+CAPABILITY_MATRIX_REL = os.path.join("tests", "tools", "testx", "CAPABILITY_MATRIX.yaml")
 CAPABILITY_FIXTURE_ROOT = os.path.join("tests", "fixtures", "worlds")
-CAPABILITY_TESTX_ROOT = os.path.join("tests", "testx", "capability_sets")
-CAPABILITY_REGRESSION_ROOT = os.path.join("tests", "testx", "capability_regression")
+CAPABILITY_TESTX_ROOT = os.path.join("tests", "tools", "testx", "capability_sets")
+CAPABILITY_REGRESSION_ROOT = os.path.join("tests", "tools", "testx", "capability_regression")
 CAPABILITY_MATRIX_SUITE_NAMES = (
     "test_load_and_validate",
     "test_command_surface",
@@ -12003,7 +12003,7 @@ def check_capability_matrix_integrity(repo_root):
             continue
 
         expected_tests = [
-            "tests/testx/capability_sets/{}/{}.py".format(capability_dir, suite_name)
+            "tests/tools/testx/capability_sets/{}/{}.py".format(capability_dir, suite_name)
             for suite_name in CAPABILITY_MATRIX_SUITE_NAMES
         ]
         if tests != expected_tests:
@@ -12052,7 +12052,7 @@ def check_capability_matrix_integrity(repo_root):
         regression_root = os.path.join(repo_root, CAPABILITY_REGRESSION_ROOT)
         if os.path.isdir(regression_root):
             for name in os.listdir(regression_root):
-                rel = normalize_path(os.path.join("tests", "testx", "capability_regression", name))
+                rel = normalize_path(os.path.join("tests", "tools", "testx", "capability_regression", name))
                 if name.endswith(".py") and rel not in [item.replace("\\", "/") for item in regression]:
                     violations.append("{}: regression test missing matrix entry: {}".format(invariant_id, rel))
 

@@ -735,7 +735,7 @@
         "security_impact": "rendered shell support claims require reviewed runtime/render evidence",
         "platform_constraints": [],
         "proof": [
-            "py -3 tests/app/client_barebones_shell_tests.py"
+            "py -3 tests/apps/client_barebones_shell_tests.py"
         ],
         "notes": "Registered as unavailable for BAREBONES-CLIENT-SHELL-01; renderer and rendered UI are not implemented."
     },
@@ -754,7 +754,7 @@
         "security_impact": "gameplay support claims require reviewed product/runtime evidence",
         "platform_constraints": [],
         "proof": [
-            "py -3 tests/app/client_barebones_shell_tests.py"
+            "py -3 tests/apps/client_barebones_shell_tests.py"
         ],
         "notes": "Barebones status, diag, and verify do not claim playable gameplay."
     },
@@ -773,7 +773,7 @@
         "security_impact": "world/save runtime support requires reviewed persistence and trust boundaries",
         "platform_constraints": [],
         "proof": [
-            "py -3 tests/app/client_barebones_shell_tests.py"
+            "py -3 tests/apps/client_barebones_shell_tests.py"
         ],
         "notes": "World and save runtimes are not implemented by BAREBONES-CLIENT-SHELL-01."
     },
@@ -794,7 +794,7 @@
         "security_impact": "package runtime support requires trust and capability enforcement",
         "platform_constraints": [],
         "proof": [
-            "py -3 tests/app/client_barebones_shell_tests.py"
+            "py -3 tests/apps/client_barebones_shell_tests.py"
         ],
         "notes": "Package mount is fixture/proof-level only; client package runtime remains unavailable."
     },
@@ -813,7 +813,7 @@
         "security_impact": "provider runtime support requires provider trust and conformance evidence",
         "platform_constraints": [],
         "proof": [
-            "py -3 tests/app/client_barebones_shell_tests.py"
+            "py -3 tests/apps/client_barebones_shell_tests.py"
         ],
         "notes": "Provider runtime remains blocked; this capability is registered for explicit refusal only."
     },
@@ -832,7 +832,7 @@
         "security_impact": "module loading requires explicit trust, sandbox, and capability policy",
         "platform_constraints": [],
         "proof": [
-            "py -3 tests/app/client_barebones_shell_tests.py"
+            "py -3 tests/apps/client_barebones_shell_tests.py"
         ],
         "notes": "Runtime module loading remains blocked and is not implemented by this slice."
     },

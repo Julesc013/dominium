@@ -11,7 +11,7 @@ def main() -> int:
     repo_root = os.path.abspath(args.repo_root)
 
     invariant_id = "INV-SCHEMA-UNKNOWN-PRESERVE"
-    script = os.path.join(repo_root, "tests", "schema", "schema_unknown_field_tests.py")
+    script = os.path.join(repo_root, "tests", "contract", "schema", "schema_unknown_field_tests.py")
     result = subprocess.run([sys.executable, script, "--repo-root", repo_root],
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     if result.returncode != 0:

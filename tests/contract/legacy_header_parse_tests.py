@@ -10,7 +10,7 @@ def main() -> int:
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    script_path = os.path.join(repo_root, "tests", "app", "legacy_header_tests.py")
+    script_path = os.path.join(repo_root, "tests", "apps", "legacy_header_tests.py")
     if not os.path.isfile(script_path):
         print("missing legacy header test script: {}".format(script_path))
         return 1

@@ -365,4 +365,4 @@ Contract enforcement lives under:
  - `tests/invariant/`
 
 
-- `tests/app/` (legacy and adjacent contract checks)
+- `tests/apps/` (legacy and adjacent contract checks)

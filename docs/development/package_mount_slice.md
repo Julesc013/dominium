@@ -17,7 +17,7 @@ python tools/validators/package/check_package_mount_slice.py --repo-root . --str
 python tools/validators/package/check_package_mount_slice.py --repo-root . --json
 python tools/validators/package/check_package_mount_slice.py --repo-root . --fixtures
 python tools/validators/package/check_package_mount_slice.py --repo-root . --inventory
-python tests/app/package_mount_slice_tests.py
+python tests/apps/package_mount_slice_tests.py
 ```
 
 Strict mode validates the package mount command, input/result schemas, public

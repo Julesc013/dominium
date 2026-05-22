@@ -60,10 +60,10 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | CODEHYGIENE-CAT-D | Derived data is deterministic and non-authoritative. | docs/architecture/CODE_DATA_BOUNDARY.md | scripts/ci/check_hygiene_scan.py |
 
 
-| CTRL-NONINTERFERENCE | Control layers never alter authoritative outcomes. | docs/architecture/NON_INTERFERENCE.md | tests/control/interference |
+| CTRL-NONINTERFERENCE | Control layers never alter authoritative outcomes. | docs/architecture/NON_INTERFERENCE.md | tests/runtime/control/interference |
 
 
-| CTRL-NO-SECRETS | No secrets in engine or game. | docs/architecture/CONTROL_LAYERS.md | tests/control/audit |
+| CTRL-NO-SECRETS | No secrets in engine or game. | docs/architecture/CONTROL_LAYERS.md | tests/runtime/control/audit |
 
 
 | AUTH3-AUTH-001 | Authority gates actions only, never visibility. | docs/architecture/AUTHORITY_AND_ENTITLEMENTS.md | tests/authority |
@@ -75,7 +75,7 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | AUTH3-DEMO-003 | Demo is an authority profile, not a build. | docs/architecture/DEMO_AND_TOURIST_MODEL.md | tests/demo |
 
 
-| AUTH3-TOURIST-004 | Tourists never mutate authoritative state. | docs/architecture/DEMO_AND_TOURIST_MODEL.md | tests/tourist |
+| AUTH3-TOURIST-004 | Tourists never mutate authoritative state. | docs/architecture/DEMO_AND_TOURIST_MODEL.md | tests/integration/tourist |
 
 
 | AUTH3-SERVICE-005 | Services affect access only. | docs/architecture/SERVICES_AND_PRODUCTS.md | tests/services |
@@ -90,53 +90,53 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | AUTH3-SAVE-008 | Saves are tagged by authority scope. | docs/architecture/UPGRADE_AND_CONVERSION.md | tests/authority |
 
 
-| SCALE0-PROJECTION-001 | Scaling is a semantics-preserving projection. | docs/architecture/SCALING_MODEL.md | tests/app/scale0_contract_tests.py |
+| SCALE0-PROJECTION-001 | Scaling is a semantics-preserving projection. | docs/architecture/SCALING_MODEL.md | tests/apps/scale0_contract_tests.py |
 
 
-| SCALE0-CONSERVE-002 | Conservation across collapse/expand is exact. | docs/architecture/INVARIANTS_AND_TOLERANCES.md | tests/app/scale0_contract_tests.py |
+| SCALE0-CONSERVE-002 | Conservation across collapse/expand is exact. | docs/architecture/INVARIANTS_AND_TOLERANCES.md | tests/apps/scale0_contract_tests.py |
 
 
-| SCALE0-COMMIT-003 | Collapse/expand only at commit boundaries. | docs/architecture/COLLAPSE_EXPAND_CONTRACT.md | tests/app/scale0_contract_tests.py |
+| SCALE0-COMMIT-003 | Collapse/expand only at commit boundaries. | docs/architecture/COLLAPSE_EXPAND_CONTRACT.md | tests/apps/scale0_contract_tests.py |
 
 
-| SCALE0-DETERMINISM-004 | Macro time ordering and scaling are deterministic. | docs/architecture/MACRO_TIME_MODEL.md | tests/app/scale0_contract_tests.py |
+| SCALE0-DETERMINISM-004 | Macro time ordering and scaling are deterministic. | docs/architecture/MACRO_TIME_MODEL.md | tests/apps/scale0_contract_tests.py |
 
 
-| SCALE0-TOLERANCE-005 | Sufficient statistics within declared tolerances. | docs/architecture/INVARIANTS_AND_TOLERANCES.md | tests/app/scale0_contract_tests.py |
+| SCALE0-TOLERANCE-005 | Sufficient statistics within declared tolerances. | docs/architecture/INVARIANTS_AND_TOLERANCES.md | tests/apps/scale0_contract_tests.py |
 
 
-| SCALE0-INTEREST-006 | Interest drives activation; no view-based scaling. | docs/architecture/INTEREST_MODEL.md | tests/app/scale0_contract_tests.py |
+| SCALE0-INTEREST-006 | Interest drives activation; no view-based scaling. | docs/architecture/INTEREST_MODEL.md | tests/apps/scale0_contract_tests.py |
 
 
-| SCALE0-NO-EXNIHILO-007 | Expansion cannot create ex nihilo state. | docs/architecture/COLLAPSE_EXPAND_CONTRACT.md | tests/app/scale0_contract_tests.py |
+| SCALE0-NO-EXNIHILO-007 | Expansion cannot create ex nihilo state. | docs/architecture/COLLAPSE_EXPAND_CONTRACT.md | tests/apps/scale0_contract_tests.py |
 
 
-| SCALE0-REPLAY-008 | Replay equivalence across collapse/expand. | docs/architecture/MACRO_TIME_MODEL.md | tests/app/scale0_contract_tests.py |
-| SCALE3-BUDGET-009 | Scaling work is budget-gated and policy-controlled. | docs/architecture/BUDGET_POLICY.md | tests/app/scale3_budget_tests.py |
-| SCALE3-ADMISSION-010 | Budget refusal/defer is explicit and non-mutating. | docs/architecture/BUDGET_POLICY.md | tests/app/scale3_budget_tests.py |
-| SCALE3-CONSTCOST-011 | Per-commit cost is bounded by active fidelity only. | docs/architecture/CONSTANT_COST_GUARANTEE.md | tests/app/scale3_budget_tests.py |
+| SCALE0-REPLAY-008 | Replay equivalence across collapse/expand. | docs/architecture/MACRO_TIME_MODEL.md | tests/apps/scale0_contract_tests.py |
+| SCALE3-BUDGET-009 | Scaling work is budget-gated and policy-controlled. | docs/architecture/BUDGET_POLICY.md | tests/apps/scale3_budget_tests.py |
+| SCALE3-ADMISSION-010 | Budget refusal/defer is explicit and non-mutating. | docs/architecture/BUDGET_POLICY.md | tests/apps/scale3_budget_tests.py |
+| SCALE3-CONSTCOST-011 | Per-commit cost is bounded by active fidelity only. | docs/architecture/CONSTANT_COST_GUARANTEE.md | tests/apps/scale3_budget_tests.py |
 | TERRAIN0-TRUTH-001 | Terrain truth is SDF fields; meshes are non-authoritative. | docs/architecture/TERRAIN_TRUTH_MODEL.md | tests/contract/terrain_contract_tests.py |
 | TERRAIN0-PROC-002 | Terrain overlays are process-only and provenance-tagged. | docs/architecture/TERRAIN_OVERLAYS.md | tests/contract/terrain_contract_tests.py |
 | TERRAIN0-NOSPECIAL-003 | Terrain bodies are generic; no planet/station special casing. | docs/architecture/TERRAIN_TRUTH_MODEL.md | tests/contract/terrain_contract_tests.py |
 | TERRAIN0-DECAY-004 | No per-tick global erosion; decay is event-driven. | docs/architecture/DECAY_EROSION_REGEN.md | tests/contract/terrain_contract_tests.py |
 | TERRAIN0-PHI-005 | Terrain collision/truth queries reference phi/SDF. | docs/architecture/TERRAIN_TRUTH_MODEL.md | tests/invariant/terrain_authority_invariant.py |
-| MMO0-UNIVERSE-012 | The universe is logically single under distribution. | docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
-| MMO0-OWNERSHIP-013 | Domain ownership is exclusive and commit-boundary only. | docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-UNIVERSE-012 | The universe is logically single under distribution. | docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md | tests/apps/mmo0_distributed_contract_tests.py |
+| MMO0-OWNERSHIP-013 | Domain ownership is exclusive and commit-boundary only. | docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md | tests/apps/mmo0_distributed_contract_tests.py |
 
 
-| MMO0-ID-014 | Global identifiers are deterministic and collision-free. | docs/architecture/GLOBAL_ID_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-ID-014 | Global identifiers are deterministic and collision-free. | docs/architecture/GLOBAL_ID_MODEL.md | tests/apps/mmo0_distributed_contract_tests.py |
 
 
-| MMO0-LOG-015 | Cross-shard interaction uses ordered, append-only logs. | docs/architecture/CROSS_SHARD_LOG.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-LOG-015 | Cross-shard interaction uses ordered, append-only logs. | docs/architecture/CROSS_SHARD_LOG.md | tests/apps/mmo0_distributed_contract_tests.py |
 
 
-| MMO0-TIME-016 | Distributed time and ordering preserve outcomes. | docs/architecture/DISTRIBUTED_TIME_MODEL.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-TIME-016 | Distributed time and ordering preserve outcomes. | docs/architecture/DISTRIBUTED_TIME_MODEL.md | tests/apps/mmo0_distributed_contract_tests.py |
 
 
-| MMO0-RESYNC-017 | Join/resync is deterministic and capability-safe. | docs/architecture/JOIN_RESYNC_CONTRACT.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-RESYNC-017 | Join/resync is deterministic and capability-safe. | docs/architecture/JOIN_RESYNC_CONTRACT.md | tests/apps/mmo0_distributed_contract_tests.py |
 
 
-| MMO0-COMPAT-018 | Singleplayer and multiplayer semantics are unified. | docs/architecture/MMO_COMPATIBILITY.md | tests/app/mmo0_distributed_contract_tests.py |
+| MMO0-COMPAT-018 | Singleplayer and multiplayer semantics are unified. | docs/architecture/MMO_COMPATIBILITY.md | tests/apps/mmo0_distributed_contract_tests.py |
 
 
 
@@ -157,11 +157,11 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | INV-BINARY-HASH-MATCHES-MANIFEST | Installed binaries and endpoint descriptors must match the manifest-declared hashes. | docs/architecture/INSTALL_MODEL.md | tests/setup/install_manifest_tests.py |
 | INV-INSTANCE-USES-PACK-LOCK | Runnable instances must bind a canonical `pack_lock_hash`. | docs/architecture/INSTANCE_MODEL.md | tests/launcher/launcher_cli_tests.py |
 | INV-INSTANCE-USES-PROFILE-BUNDLE | Runnable instances must bind a canonical `profile_bundle_hash`. | docs/architecture/INSTANCE_MODEL.md | tests/launcher/launcher_cli_tests.py |
-| INV-SAVES-NOT-EMBEDDED-IN-INSTANCE | Instances may reference saves, but must not embed save payloads as instance-owned state. | docs/architecture/INSTANCE_MODEL.md | tests/share/share_bundle_tests.py |
+| INV-SAVES-NOT-EMBEDDED-IN-INSTANCE | Instances may reference saves, but must not embed save payloads as instance-owned state. | docs/architecture/INSTANCE_MODEL.md | tests/packaging/share/share_bundle_tests.py |
 | INV-SAVE-MANIFEST-REQUIRED | Selected saves must carry a canonical save manifest before launcher/runtime open. | docs/architecture/SAVE_MODEL.md | tests/ops/save_manifest_tests.py |
 | INV-SAVE-PINS-CONTRACTS | Saves must pin their universe contract bundle and pack lock identity. | docs/architecture/SAVE_MODEL.md | tests/launcher/launcher_cli_tests.py |
 | INV-NO-SILENT-MIGRATION | Save migration and read-only fallback must remain explicit and auditable. | docs/architecture/SAVE_MODEL.md | tests/ops/save_manifest_tests.py |
-| INV-SHAREABLE-ARTIFACTS-MUST-HAVE-MANIFEST | Shareable non-pack artifacts must publish a canonical artifact manifest or validated sidecar. | docs/architecture/ARTIFACT_MODEL.md | tests/share/share_bundle_tests.py |
+| INV-SHAREABLE-ARTIFACTS-MUST-HAVE-MANIFEST | Shareable non-pack artifacts must publish a canonical artifact manifest or validated sidecar. | docs/architecture/ARTIFACT_MODEL.md | tests/packaging/share/share_bundle_tests.py |
 | INV-ARTIFACT-LOAD-VALIDATED | Shareable artifact load must verify content hash, contract ranges, capabilities, and degrade policy before use. | docs/architecture/ARTIFACT_MODEL.md | tests/ops/artifact_manifest_tests.py |
 | INV-FORKS-MUST-NAMESPACE | Forked packs must use explicit fork namespaces and must not reuse the origin `pack_id`. | docs/architecture/FORKING_AND_PROVIDES_MODEL.md | tools/xstack/pack_loader/loader.py |
 | INV-PROVIDES-RESOLUTION-DETERMINISTIC | Required provides surfaces must resolve through logged deterministic policies and canonical resolution records. | docs/architecture/FORKING_AND_PROVIDES_MODEL.md | tests/ops/provides_resolution_tests.py |

@@ -21,6 +21,8 @@ check_workbench_module_names.py
 check_tools_taxonomy.py
 check_directory_naming.py
 check_file_naming.py
+check_canonical_structure.py
+check_structure_report_integrity.py
 ```
 
 Default mode is audit mode. It exits zero and classifies current debt so the repo can record existing conflicts without weakening any existing validator.
@@ -32,6 +34,16 @@ strict mode when active tracked files recreate broad first-level `tools/` roots
 such as `tools/validator`, `tools/gui`, `tools/render`, `tools/world_editor`, or
 other source/product/runtime/domain mirrors. It inspects tracked paths and ignores
 untracked, generated, and archive material by default.
+
+`check_canonical_structure.py` is the CANON-STRUCTURE-FINALIZE-NOW-01 hard
+blocker surface. It fails strict mode for retired active roots and clear old
+paths such as `game/rules`, retired runtime names, old test buckets, and tracked
+generated/local roots. Remaining taxonomy debt is reported as warnings unless
+`--strict-final` is used.
+
+`check_structure_report_integrity.py` verifies task-local tracked-only structure
+bundle manifests, and reports active tracked dirfiles artifacts that lack an
+explicit integrity manifest.
 
 ## Example
 

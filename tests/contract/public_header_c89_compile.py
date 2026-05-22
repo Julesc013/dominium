@@ -96,7 +96,7 @@ def main() -> int:
     msvc = None if compiler else find_compiler(["cl"])
 
     if not compiler and not msvc:
-        legacy = os.path.join(repo_root, "tests", "app", "legacy_header_tests.py")
+        legacy = os.path.join(repo_root, "tests", "apps", "legacy_header_tests.py")
         if not os.path.isfile(legacy):
             print("{}: no compiler and missing legacy header test".format(invariant_id))
             return 1

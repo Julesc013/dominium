@@ -23,7 +23,7 @@ Task: BAREBONES-CLIENT-SHELL-01
 Run the focused proof with:
 
 ```text
-py -3 tests/app/client_barebones_shell_tests.py
+py -3 tests/apps/client_barebones_shell_tests.py
 ```
 
 Then run the related contract validators:

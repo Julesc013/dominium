@@ -63,7 +63,7 @@
         "dominium.validation.run"
       ],
       "proof": [
-        "py -3 tests/app/workbench_validation_slice_tests.py",
+        "py -3 tests/apps/workbench_validation_slice_tests.py",
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Specific target-not-found refusal for the Workbench validation command slice."
@@ -94,7 +94,7 @@
         "dominium.validation.run"
       ],
       "proof": [
-        "py -3 tests/app/workbench_validation_slice_tests.py",
+        "py -3 tests/apps/workbench_validation_slice_tests.py",
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Prevents broad validation-domain expansion by unregistered target kind."
@@ -125,7 +125,7 @@
         "dominium.validation.run"
       ],
       "proof": [
-        "py -3 tests/app/workbench_validation_slice_tests.py",
+        "py -3 tests/apps/workbench_validation_slice_tests.py",
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Prevents the Workbench validation projection from becoming an arbitrary filesystem validation surface."
@@ -2022,7 +2022,7 @@
         "dominium.client.verify.v1"
       ],
       "proof": [
-        "py -3 tests/app/client_barebones_shell_tests.py",
+        "py -3 tests/apps/client_barebones_shell_tests.py",
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Rendered/native UI remains blocked outside this task."
@@ -2055,7 +2055,7 @@
         "dominium.client.verify.v1"
       ],
       "proof": [
-        "py -3 tests/app/client_barebones_shell_tests.py",
+        "py -3 tests/apps/client_barebones_shell_tests.py",
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Barebones proof must not claim playable gameplay."
@@ -2088,7 +2088,7 @@
         "dominium.client.verify.v1"
       ],
       "proof": [
-        "py -3 tests/app/client_barebones_shell_tests.py",
+        "py -3 tests/apps/client_barebones_shell_tests.py",
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "World/save runtime support is not implemented."
@@ -2121,7 +2121,7 @@
         "dominium.client.verify.v1"
       ],
       "proof": [
-        "py -3 tests/app/client_barebones_shell_tests.py",
+        "py -3 tests/apps/client_barebones_shell_tests.py",
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Package runtime and mod loading remain blocked."
@@ -2154,7 +2154,7 @@
         "dominium.client.verify.v1"
       ],
       "proof": [
-        "py -3 tests/app/client_barebones_shell_tests.py",
+        "py -3 tests/apps/client_barebones_shell_tests.py",
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Provider runtime remains blocked."
@@ -2187,7 +2187,7 @@
         "dominium.client.verify.v1"
       ],
       "proof": [
-        "py -3 tests/app/client_barebones_shell_tests.py",
+        "py -3 tests/apps/client_barebones_shell_tests.py",
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Runtime module loading remains blocked."
@@ -2221,7 +2221,7 @@
         "dominium.client.verify.v1"
       ],
       "proof": [
-        "py -3 tests/app/client_barebones_shell_tests.py",
+        "py -3 tests/apps/client_barebones_shell_tests.py",
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Unsupported client modes refuse explicitly instead of silently falling back or claiming runtime support."

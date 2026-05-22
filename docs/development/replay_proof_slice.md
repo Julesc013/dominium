@@ -13,7 +13,7 @@ Use this slice to validate the narrow command-level replay/proof surface:
 python -m py_compile tools/validators/contracts/check_replay_proof.py
 python tools/validators/contracts/check_replay_proof.py --repo-root . --strict
 python tools/validators/contracts/check_replay_proof.py --repo-root . --fixtures
-py -3 tests/app/replay_proof_slice_tests.py
+py -3 tests/apps/replay_proof_slice_tests.py
 ```
 
 The validator checks replay/proof schemas, fixture refs, command refs, diagnostic/refusal bindings, evidence refs, canonical hashes, and unsupported runtime claims.

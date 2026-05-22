@@ -135,7 +135,7 @@ dom_add_testx(NAME capability_gating_contracts
 )
 
 dom_add_testx(NAME capability_matrix_contracts
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/capability_matrix_contracts.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/tools/testx/capability_matrix_contracts.py
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
@@ -162,7 +162,7 @@ set(DOM_CAPABILITY_MATRIX_SUITES
 foreach(capability_dir IN LISTS DOM_CAPABILITY_MATRIX_SET_DIRS)
     foreach(suite_name IN LISTS DOM_CAPABILITY_MATRIX_SUITES)
         dom_add_testx(NAME capability_matrix_${capability_dir}_${suite_name}
-            COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/capability_sets/${capability_dir}/${suite_name}.py
+            COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/tools/testx/capability_sets/${capability_dir}/${suite_name}.py
             LABELS ${DOM_TESTX_LABEL_PORTABILITY}
         )
     endforeach()
@@ -177,7 +177,7 @@ set(DOM_CAPABILITY_MATRIX_REGRESSION
 
 foreach(regression_name IN LISTS DOM_CAPABILITY_MATRIX_REGRESSION)
     dom_add_testx(NAME capability_regression_${regression_name}
-        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/testx/capability_regression/${regression_name}.py
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/tools/testx/capability_regression/${regression_name}.py
         LABELS ${DOM_TESTX_LABEL_PORTABILITY}
     )
 endforeach()

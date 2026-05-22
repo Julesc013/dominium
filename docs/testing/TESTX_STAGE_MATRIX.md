@@ -1,7 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-02-08
 Supersedes: none
-Superseded By: tests/testx/CAPABILITY_MATRIX.yaml
+Superseded By: tests/tools/testx/CAPABILITY_MATRIX.yaml
 Reason: matrix ownership moved into the generated TestX capability matrix artifact
 Stability: provisional
 Future Series: DOC-CONVERGENCE
@@ -15,9 +15,9 @@ The canonical TestX gating matrix is capability-based.
 
 ## Canonical TestX Sources
 
-- `tests/testx/CAPABILITY_MATRIX.yaml`
-- `tests/testx/capability_suite_runner.py`
-- `tests/testx/capability_regression/`
+- `tests/tools/testx/CAPABILITY_MATRIX.yaml`
+- `tests/tools/testx/capability_suite_runner.py`
+- `tests/tools/testx/capability_regression/`
 
 ## Canonical Governance
 

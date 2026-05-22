@@ -2,7 +2,7 @@
 Demo vs paid read-path determinism tests (TESTX3).
 */
 #include "dom_contracts/authority_token.h"
-#include "tests/control/control_test_common.h"
+#include "tests/runtime/control/control_test_common.h"
 
 #include <stdio.h>
 

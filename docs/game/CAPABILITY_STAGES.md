@@ -22,9 +22,9 @@ All runtime gating authority is defined in `docs/architecture/CAPABILITY_ONLY_CA
 ## Test Authority
 
 - Capability gating validation is defined by:
-  - `tests/testx/CAPABILITY_MATRIX.yaml`
-  - `tests/testx/capability_suite_runner.py`
-  - `tests/testx/capability_regression/`
+  - `tests/tools/testx/CAPABILITY_MATRIX.yaml`
+  - `tests/tools/testx/capability_suite_runner.py`
+  - `tests/tools/testx/capability_regression/`
 
 ## Planning Note
 

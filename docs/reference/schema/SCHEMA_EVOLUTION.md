@@ -53,9 +53,9 @@ If any conflict exists, the authoritative sources are:
 ## Enforcement (implemented)
 
 TestX contracts:
-- `tests/schema/schema_version_immutability_tests.py`
-- `tests/schema/schema_unknown_field_tests.py`
-- `tests/schema/schema_migration_tests.py`
+- `tests/contract/schema/schema_version_immutability_tests.py`
+- `tests/contract/schema/schema_unknown_field_tests.py`
+- `tests/contract/schema/schema_migration_tests.py`
 - `tests/contract/schema_change_notes_required.py`
 
 Tooling checks:

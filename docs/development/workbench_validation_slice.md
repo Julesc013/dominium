@@ -126,7 +126,7 @@ Unchanged contract posture:
 Targeted proof:
 
 ```text
-py -3 tests/app/workbench_validation_slice_tests.py
+py -3 tests/apps/workbench_validation_slice_tests.py
 ```
 
 The test uses a fake validation service for command/projection parity so it does

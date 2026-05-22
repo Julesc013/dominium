@@ -81,7 +81,7 @@ Control layers may gate access, connectivity, or execution. They must never:
 ## Enforcement
 
 
-- Tests in `tests/control/interference/`
+- Tests in `tests/runtime/control/interference/`
 
 
 - Invariant definitions in `docs/architecture/INVARIANTS.md`

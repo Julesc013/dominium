@@ -47,7 +47,7 @@ REQUIRED_SCHEMA_TOKENS = {
 
 REQUIRED_GUARD_TESTS = [
     os.path.join("tests", "integration", "freecam_epistemics_tests.py"),
-    os.path.join("tests", "app", "scale1_collapse_expand_tests.py"),
+    os.path.join("tests", "apps", "scale1_collapse_expand_tests.py"),
 ]
 
 SOLVER_REGISTRY = os.path.join("contracts", "registry", "solver_registry.json")

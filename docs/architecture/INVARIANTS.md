@@ -312,7 +312,7 @@ Enforced by:
 - `docs/architecture/DEMO_AND_TOURIST_MODEL.md`
 
 
-- Tests: `tests/authority/`, `tests/tourist/`
+- Tests: `tests/authority/`, `tests/integration/tourist/`
 
 
 
@@ -396,7 +396,7 @@ Enforced by:
 - `docs/architecture/DEMO_AND_TOURIST_MODEL.md`
 
 
-- Tests: `tests/tourist/`
+- Tests: `tests/integration/tourist/`
 
 
 
@@ -537,7 +537,7 @@ Enforced by:
 - `docs/architecture/CONTROL_LAYERS.md`
 
 
-- Tests: `tests/control/interference/`
+- Tests: `tests/runtime/control/interference/`
 
 
 
@@ -567,7 +567,7 @@ Enforced by:
 - `docs/architecture/THREAT_MODEL.md`
 
 
-- Tests: `tests/control/audit/`
+- Tests: `tests/runtime/control/audit/`
 
 
 
@@ -777,7 +777,7 @@ Enforced by:
 - `docs/architecture/COLLAPSE_EXPAND_CONTRACT.md`
 
 
-- Tests: `tests/app/scale0_contract_tests.py`
+- Tests: `tests/apps/scale0_contract_tests.py`
 
 
 
@@ -807,7 +807,7 @@ Enforced by:
 - `docs/architecture/COLLAPSE_EXPAND_CONTRACT.md`
 
 
-- Tests: `tests/app/scale0_contract_tests.py`
+- Tests: `tests/apps/scale0_contract_tests.py`
 
 
 
@@ -837,7 +837,7 @@ Enforced by:
 - `docs/architecture/EXECUTION_MODEL.md`
 
 
-- Tests: `tests/app/scale0_contract_tests.py`
+- Tests: `tests/apps/scale0_contract_tests.py`
 
 
 
@@ -867,7 +867,7 @@ Enforced by:
 - `docs/architecture/EXECUTION_REORDERING_POLICY.md`
 
 
-- Tests: `tests/app/scale0_contract_tests.py`
+- Tests: `tests/apps/scale0_contract_tests.py`
 
 
 
@@ -894,7 +894,7 @@ Enforced by:
 - `docs/architecture/INVARIANTS_AND_TOLERANCES.md`
 
 
-- Tests: `tests/app/scale0_contract_tests.py`
+- Tests: `tests/apps/scale0_contract_tests.py`
 
 
 
@@ -921,7 +921,7 @@ Enforced by:
 - `docs/architecture/INTEREST_MODEL.md`
 
 
-- Tests: `tests/app/scale0_contract_tests.py`
+- Tests: `tests/apps/scale0_contract_tests.py`
 
 
 
@@ -948,7 +948,7 @@ Enforced by:
 - `docs/architecture/COLLAPSE_EXPAND_CONTRACT.md`
 
 
-- Tests: `tests/app/scale0_contract_tests.py`
+- Tests: `tests/apps/scale0_contract_tests.py`
 
 
 
@@ -978,7 +978,7 @@ Enforced by:
 - `docs/architecture/REPLAY_FORMAT.md`
 
 
-- Tests: `tests/app/scale0_contract_tests.py`
+- Tests: `tests/apps/scale0_contract_tests.py`
 
 
 
@@ -1008,7 +1008,7 @@ Enforced by:
 - `docs/architecture/CONSTANT_COST_GUARANTEE.md`
 
 
-- Tests: `tests/app/scale3_budget_tests.py`
+- Tests: `tests/apps/scale3_budget_tests.py`
 
 
 
@@ -1038,7 +1038,7 @@ Enforced by:
 - `docs/architecture/REFUSAL_SEMANTICS.md`
 
 
-- Tests: `tests/app/scale3_budget_tests.py`
+- Tests: `tests/apps/scale3_budget_tests.py`
 
 
 
@@ -1068,7 +1068,7 @@ Enforced by:
 - `docs/architecture/MACRO_TIME_MODEL.md`
 
 
-- Tests: `tests/app/scale3_budget_tests.py`
+- Tests: `tests/apps/scale3_budget_tests.py`
 
 
 
@@ -1098,7 +1098,7 @@ Enforced by:
 - `docs/architecture/MMO_COMPATIBILITY.md`
 
 
-- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+- Tests: `tests/apps/mmo0_distributed_contract_tests.py`
 
 
 
@@ -1128,7 +1128,7 @@ Enforced by:
 - `docs/architecture/CROSS_SHARD_LOG.md`
 
 
-- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+- Tests: `tests/apps/mmo0_distributed_contract_tests.py`
 
 
 
@@ -1155,7 +1155,7 @@ Enforced by:
 - `docs/architecture/GLOBAL_ID_MODEL.md`
 
 
-- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+- Tests: `tests/apps/mmo0_distributed_contract_tests.py`
 
 
 
@@ -1185,7 +1185,7 @@ Enforced by:
 - `schema/cross_shard_message.schema`
 
 
-- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+- Tests: `tests/apps/mmo0_distributed_contract_tests.py`
 
 
 
@@ -1215,7 +1215,7 @@ Enforced by:
 - `docs/architecture/CROSS_SHARD_LOG.md`
 
 
-- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+- Tests: `tests/apps/mmo0_distributed_contract_tests.py`
 
 
 
@@ -1245,7 +1245,7 @@ Enforced by:
 - `docs/architecture/REFUSAL_SEMANTICS.md`
 
 
-- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+- Tests: `tests/apps/mmo0_distributed_contract_tests.py`
 
 
 
@@ -1275,7 +1275,7 @@ Enforced by:
 - `docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md`
 
 
-- Tests: `tests/app/mmo0_distributed_contract_tests.py`
+- Tests: `tests/apps/mmo0_distributed_contract_tests.py`
 
 
 

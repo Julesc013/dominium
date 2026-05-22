@@ -41,9 +41,9 @@ Authoritative references:
 - No silent coercion; migrate or refuse.
 
 Enforcement and implementation surfaces:
-- `tests/schema/schema_version_immutability_tests.py`
+- `tests/contract/schema/schema_version_immutability_tests.py`
 - `tests/contract/schema_change_notes_required.py`
-- `tests/schema/schema_unknown_field_tests.py`
+- `tests/contract/schema/schema_unknown_field_tests.py`
 - `tools/validators/ci/validate_world_definition.py`
 - `tools/domain/worldgen/offline/world_definition_lib.py`
 
