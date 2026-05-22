@@ -8,7 +8,7 @@ import os
 from typing import Dict, Tuple
 
 from engine.serialization.canonical_json import canonical_json_text, canonical_sha256
-from meta_extensions_engine import normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_tree
 
 
 DEFAULT_COMPATIBILITY_VERSION = "1.0.0"

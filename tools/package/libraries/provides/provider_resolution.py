@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Dict, List, Mapping, Sequence
 
-from meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

@@ -10,7 +10,7 @@ import shutil
 from typing import Mapping, Sequence
 
 from runtime.shell.paths import VROOT_EXPORTS, get_current_virtual_paths, vpath_resolve
-from meta_extensions_engine import normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_tree
 from engine.serialization.canonical_json import canonical_sha256
 from engine.compatx.validator import validate_instance
 from engine.session.common import norm, write_canonical_json

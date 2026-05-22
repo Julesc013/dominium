@@ -12,7 +12,7 @@ import sys
 from typing import Iterable, Mapping, Sequence
 
 from runtime.shell.command_registry import COMMAND_REGISTRY_REL, load_command_registry
-from meta_extensions_engine import normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_tree
 
 
 DOM_PRODUCT_ID = "tool.attach_console_stub"

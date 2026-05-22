@@ -7,7 +7,7 @@ import json
 import os
 from typing import Iterable, List, Mapping, Sequence, Tuple
 
-from meta_extensions_engine import normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_tree
 
 
 COMMAND_REGISTRY_REL = os.path.join("contracts", "registry", "command_registry.json")

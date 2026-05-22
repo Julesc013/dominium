@@ -12,7 +12,7 @@ def run(repo_root: str):
 
     ensure_repo_on_path(repo_root)
 
-    from meta_extensions_engine import extensions_get
+    from engine.foundation.meta.extensions.core import extensions_get
 
     registry_payload = load_extension_registry(repo_root)
     allowed = extensions_get(

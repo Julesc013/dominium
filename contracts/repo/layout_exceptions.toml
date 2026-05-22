@@ -109,29 +109,33 @@ retired_phase = "MOVE-ROUTER-01"
 retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-02 did not move mixed semantic authority. Do not bind new authority here without updating the contract."
 
-[exceptions.meta_extensions_engine_file]
+[retired_exceptions.meta_extensions_engine_file]
 path = "meta_extensions_engine.py"
 kind = "file"
 classification = "partial_review"
 reason = "Root-level meta extension engine remains actively imported by governance, compatibility, domain, distribution, and audit tooling."
-retirement_phase = "POST-CONVERGE"
-target = "protected ownership review before relocation; update compatibility wrapper and imports only under explicit semantic review"
+retirement_phase = "STRUCTURE-CANON-SWEEP-01"
+target = "engine/foundation/meta/extensions/core.py"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
-notes = "POST-CONVERGE-02 left this file active because relocation would cross governance, compatibility, and domain semantics."
+active = false
+retired_phase = "STRUCTURE-CANON-SWEEP-01"
+retired_reason = "Moved into the engine foundation meta extension package and rewired active imports to the canonical package path."
+notes = "Root-level extension engine source is retired. The implementation now lives under engine/foundation/meta/extensions/core.py."
 
-[exceptions.numeric_discipline_file]
+[retired_exceptions.numeric_discipline_file]
 path = "numeric_discipline.py"
 kind = "file"
 classification = "partial_review"
 reason = "Root-level numeric discipline helper remains actively imported by domain truth/geometry/ephemeris code."
-retirement_phase = "POST-CONVERGE"
-target = "numeric ownership review before relocation; no numeric semantic change in exception cleanup"
+retirement_phase = "STRUCTURE-CANON-SWEEP-01"
+target = "engine/foundation/meta/numeric.py"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
-notes = "POST-CONVERGE-02 left this file active to avoid changing numeric semantics. Do not add new root-level discipline modules without contract update."
+active = false
+retired_phase = "STRUCTURE-CANON-SWEEP-01"
+retired_reason = "Active imports now use the existing canonical engine.foundation.meta.numeric module; the duplicate root helper was removed."
+notes = "Root-level numeric discipline source is retired. Do not add new root-level discipline modules."
 
 [retired_exceptions.performance_root]
 path = "performance"
@@ -147,41 +151,47 @@ retired_phase = "MOVE-ROUTER-01"
 retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-02 left this active because moving it would require product/domain import changes. Performance evidence must not become source authority by path."
 
-[exceptions.tool_ui_bind_cmd]
+[retired_exceptions.tool_ui_bind_cmd]
 path = "tool_ui_bind.cmd"
 kind = "file"
 classification = "compatibility_shim"
 reason = "Root-level command wrapper remains for documented zero-setup developer workflow compatibility."
-retirement_phase = "POST-CONVERGE"
-target = "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools"
+retirement_phase = "STRUCTURE-CANON-SWEEP-01"
+target = "scripts/dev/shims/tool_ui_bind.cmd"
 risk = "low"
 created_phase = "CONVERGE-10"
-active = true
-notes = "POST-CONVERGE-02 found .github, CMake, RepoX, and developer docs references to the tool name and root shim policy. Prefer scripts/ or tools/ for new command wrappers."
+active = false
+retired_phase = "STRUCTURE-CANON-SWEEP-01"
+retired_reason = "Moved the Windows command wrapper under scripts/dev/shims while preserving scripts/dev/tool_shim.py dispatch."
+notes = "Root-level wrapper retired. Use scripts/dev/shims/tool_ui_bind.cmd when a batch shim is required."
 
-[exceptions.tool_ui_doc_annotate_cmd]
+[retired_exceptions.tool_ui_doc_annotate_cmd]
 path = "tool_ui_doc_annotate.cmd"
 kind = "file"
 classification = "compatibility_shim"
 reason = "Root-level command wrapper remains for documented zero-setup developer workflow compatibility."
-retirement_phase = "POST-CONVERGE"
-target = "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools"
+retirement_phase = "STRUCTURE-CANON-SWEEP-01"
+target = "scripts/dev/shims/tool_ui_doc_annotate.cmd"
 risk = "low"
 created_phase = "CONVERGE-10"
-active = true
-notes = "POST-CONVERGE-02 found .github, CMake, RepoX, and developer docs references to the tool name and root shim policy. Prefer scripts/ or tools/ for new command wrappers."
+active = false
+retired_phase = "STRUCTURE-CANON-SWEEP-01"
+retired_reason = "Moved the Windows command wrapper under scripts/dev/shims while preserving scripts/dev/tool_shim.py dispatch."
+notes = "Root-level wrapper retired. Use scripts/dev/shims/tool_ui_doc_annotate.cmd when a batch shim is required."
 
-[exceptions.tool_ui_validate_cmd]
+[retired_exceptions.tool_ui_validate_cmd]
 path = "tool_ui_validate.cmd"
 kind = "file"
 classification = "compatibility_shim"
 reason = "Root-level command wrapper remains for documented zero-setup developer workflow compatibility."
-retirement_phase = "POST-CONVERGE"
-target = "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools"
+retirement_phase = "STRUCTURE-CANON-SWEEP-01"
+target = "scripts/dev/shims/tool_ui_validate.cmd"
 risk = "low"
 created_phase = "CONVERGE-10"
-active = true
-notes = "POST-CONVERGE-02 found .github, CMake, RepoX, and developer docs references to the tool name and root shim policy. Prefer scripts/ or tools/ for new command wrappers."
+active = false
+retired_phase = "STRUCTURE-CANON-SWEEP-01"
+retired_reason = "Moved the Windows command wrapper under scripts/dev/shims while preserving scripts/dev/tool_shim.py dispatch."
+notes = "Root-level wrapper retired. Use scripts/dev/shims/tool_ui_validate.cmd when a batch shim is required."
 
 [retired_exceptions.validation_root]
 path = "validation"

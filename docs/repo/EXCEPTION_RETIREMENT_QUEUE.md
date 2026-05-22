@@ -58,8 +58,8 @@ Scope:
 - root command wrappers
 - `__init__.py`
 - `governance/`, `ide/`, `labs/`, `meta/`, `performance/`, and `validation/`
-- `meta_extensions_engine.py`
-- `numeric_discipline.py`
+- `engine/foundation/meta/extensions/core.py`
+- `engine/foundation/meta/numeric.py`
 
 Goal:
 
@@ -71,15 +71,15 @@ Result:
 
 - Retired: `__init__.py`, `labs`.
 - Moved: `labs/README.md` to `archive/historical/labs/README.md`.
-- Compatibility shims kept: `tool_ui_bind.cmd`, `tool_ui_doc_annotate.cmd`, `tool_ui_validate.cmd`.
-- Left active for protected review: `governance`, `ide`, `meta`, `meta_extensions_engine.py`, `numeric_discipline.py`, `performance`, `validation`.
+- Compatibility shims kept: `scripts/dev/shims/tool_ui_bind.cmd`, `scripts/dev/shims/tool_ui_doc_annotate.cmd`, `scripts/dev/shims/tool_ui_validate.cmd`.
+- Left active for protected review: `governance`, `ide`, `meta`, `engine/foundation/meta/extensions/core.py`, `engine/foundation/meta/numeric.py`, `performance`, `validation`.
 - Active exception count after cleanup: 32.
 - Cleanup audit: `docs/repo/audits/POST_CONVERGE_02_WRAPPER_TOOLING_CLEANUP.md`.
 
 Notes:
 
 - Root command wrappers remain documented zero-setup developer shims that resolve through `scripts/dev/tool_shim.py`.
-- `governance/`, `meta/`, `meta_extensions_engine.py`, `numeric_discipline.py`, `performance/`, and `validation/` have active imports and were not moved by this cleanup task.
+- `governance/`, `meta/`, `engine/foundation/meta/extensions/core.py`, `engine/foundation/meta/numeric.py`, `performance/`, and `validation/` have active imports and were not moved by this cleanup task.
 - `ide/` remains an intentional generated projection boundary with tracked manifest documentation.
 - Next task: POST-CONVERGE-03.
 

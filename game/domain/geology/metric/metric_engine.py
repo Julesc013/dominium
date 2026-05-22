@@ -32,7 +32,7 @@ from game.domain.geology.kernel.geo_kernel import (
     _topology_row,
     _wrapped_delta,
 )
-from numeric_discipline import allowed_error_bound_for_tolerance, tolerance_rows_by_id
+from engine.foundation.meta.numeric import allowed_error_bound_for_tolerance, tolerance_rows_by_id
 
 
 REFUSAL_GEO_METRIC_INVALID = "refusal.geo.metric_invalid"

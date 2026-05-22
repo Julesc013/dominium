@@ -25,7 +25,7 @@ if REPO_ROOT_HINT not in os.sys.path:
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
-from meta_extensions_engine import normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_tree
 
 
 SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("contracts", "registry", "semantic_contract_registry.json")

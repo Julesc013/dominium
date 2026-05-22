@@ -8,7 +8,7 @@ import os
 import re
 from typing import Mapping
 
-from meta_extensions_engine import normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_tree
 
 
 DEFAULT_GOVERNANCE_PROFILE_REL = os.path.join("contracts", "governance", "governance_profile.json")

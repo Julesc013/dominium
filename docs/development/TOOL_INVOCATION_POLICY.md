@@ -44,9 +44,9 @@ Adapter responsibilities:
 
 Repo-root command shims are provided for zero-setup interactive use:
 
-- `tool_ui_bind.cmd`
-- `tool_ui_validate.cmd`
-- `tool_ui_doc_annotate.cmd`
+- `scripts/dev/shims/tool_ui_bind.cmd`
+- `scripts/dev/shims/tool_ui_validate.cmd`
+- `scripts/dev/shims/tool_ui_doc_annotate.cmd`
 
 These shims resolve and execute the canonical binary from
 `archive/generated/dist/sys/<platform>/<arch>/bin/tools/` and do not change policy.

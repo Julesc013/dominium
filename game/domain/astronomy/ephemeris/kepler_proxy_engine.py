@@ -14,7 +14,7 @@ from game.domain.astronomy.illumination.illumination_geometry_engine import (
 )
 from game.domain.geology import build_position_ref
 from engine.foundation.package.libraries.provides import resolve_providers
-from numeric_discipline import debug_assert_no_float_payload
+from engine.foundation.meta.numeric import debug_assert_no_float_payload
 from game.domain.worldgen.mw import (
     normalize_planet_basic_artifact_rows,
     normalize_planet_orbit_artifact_rows,

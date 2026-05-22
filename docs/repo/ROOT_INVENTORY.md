@@ -71,12 +71,12 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 | `LICENSE.md` | `allowed_file` | `metadata` | `retain_file` | `none` | `low` | Allowed root file. |
 | `locks` | `transitional_contract_or_schema_root` | `contracts` | `review` | `CONVERGE-06` | `review` | Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas. |
 | `meta` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | Meta surfaces require ownership review. |
-| `meta_extensions_engine.py` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
+| `engine/foundation/meta/extensions/core.py` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `modding` | `transitional_content_or_data_root` | `content` | `split` | `CONVERGE-09` | `high` | Modding may include content, contracts, and docs. |
 | `MODDING.md` | `allowed_file` | `metadata` | `retain_file` | `none` | `low` | Allowed root file. |
 | `models` | `transitional_content_or_data_root` | `content` | `move` | `CONVERGE-09` | `medium` | Model data should be distinguished from generated or runtime state. |
 | `net` | `transitional_runtime_root` | `runtime` | `split` | `CONVERGE-07` | `high` | Root-level net/ remains mixed after CONVERGE-07 because it contains transport, anti-cheat, SRZ, and server-authoritative policy code; do not move wholesale. |
-| `numeric_discipline.py` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
+| `engine/foundation/meta/numeric.py` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `packs` | `transitional_content_or_data_root` | `content` | `split` | `CONVERGE-09` | `high` | Current runtime pack substrate; pack ownership split remains review-sensitive. |
 | `performance` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | Performance tooling and evidence should stay tool/evidence scoped. |
 | `profiles` | `transitional_content_or_data_root` | `content` | `move` | `CONVERGE-09` | `medium` | Profile data belongs under content unless runtime-store evidence proves otherwise. |
@@ -92,9 +92,9 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 | `specs` | `transitional_contract_or_schema_root` | `contracts` | `split` | `CONVERGE-06` | `high` | Normative specs must retain authority; reality specs remain canonical over data projections. |
 | `templates` | `transitional_content_or_data_root` | `content` | `split` | `CONVERGE-09` | `high` | Templates may be authored content, contracts, or generated inputs. |
 | `tests` | `canonical` | `tests` | `keep` | `none` | `low` | Test suites, determinism checks, fixtures, and verification evidence inputs. |
-| `tool_ui_bind.cmd` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
-| `tool_ui_doc_annotate.cmd` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
-| `tool_ui_validate.cmd` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
+| `scripts/dev/shims/tool_ui_bind.cmd` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
+| `scripts/dev/shims/tool_ui_doc_annotate.cmd` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
+| `scripts/dev/shims/tool_ui_validate.cmd` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `tools` | `canonical` | `tools` | `keep` | `none` | `low` | Developer, validation, migration, CI, code generation, review, and audit tools. |
 | `updates` | `transitional_release_or_dist_root` | `release` | `split` | `review` | `high` | Update metadata belongs to release/control-plane ownership after review. |
 | `validation` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | Validation tooling belongs under tools unless it is contract law. |
@@ -118,12 +118,12 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 - `libs`: `transitional_contract_or_schema_root`, target `review`, risk `review`. Do not classify by name alone; inspect ownership first.
 - `locks`: `transitional_contract_or_schema_root`, target `contracts/locks_or_store_locks_review`, risk `review`. Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas.
 - `meta`: `unknown_needs_review`, target `review`, risk `review`. Meta surfaces require ownership review.
-- `meta_extensions_engine.py`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
-- `numeric_discipline.py`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
+- `engine/foundation/meta/extensions/core.py`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
+- `engine/foundation/meta/numeric.py`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
 - `performance`: `unknown_needs_review`, target `tools/performance`, risk `review`. Performance tooling and evidence should stay tool/evidence scoped.
-- `tool_ui_bind.cmd`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
-- `tool_ui_doc_annotate.cmd`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
-- `tool_ui_validate.cmd`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
+- `scripts/dev/shims/tool_ui_bind.cmd`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
+- `scripts/dev/shims/tool_ui_doc_annotate.cmd`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
+- `scripts/dev/shims/tool_ui_validate.cmd`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
 - `validation`: `unknown_needs_review`, target `tools/validators`, risk `review`. Validation tooling belongs under tools unless it is contract law.
 
 ## Split-Required Domain Roots
@@ -210,7 +210,7 @@ Current enforcement summary after CONVERGE-10:
 
 Strict mode now passes only because every remaining generated, transitional, missing, unknown, or review root has an active entry in `contracts/repo/layout_exceptions.toml`.
 
-Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `updates/`, and root-level compatibility or review files such as `meta_extensions_engine.py`, `numeric_discipline.py`, and `tool_ui_*.cmd`.
+Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `updates/`, and root-level compatibility or review files such as `engine/foundation/meta/extensions/core.py`, `engine/foundation/meta/numeric.py`, and `tool_ui_*.cmd`.
 
 New root-level entries must either match the contracts and allowlist or add a specific, bounded exception. No broad wildcard exception exists.
 
@@ -250,8 +250,8 @@ Current wrapper/tooling/governance inventory state:
 - Active layout exception count: 32.
 - Unknown/review root count: 10.
 - Retired root/file exceptions: `__init__.py` and `labs`.
-- Remaining root compatibility shims: `tool_ui_bind.cmd`, `tool_ui_doc_annotate.cmd`, and `tool_ui_validate.cmd`.
-- Remaining protected review roots/files: `governance`, `ide`, `meta`, `meta_extensions_engine.py`, `numeric_discipline.py`, `performance`, and `validation`.
+- Remaining root compatibility shims: `scripts/dev/shims/tool_ui_bind.cmd`, `scripts/dev/shims/tool_ui_doc_annotate.cmd`, and `scripts/dev/shims/tool_ui_validate.cmd`.
+- Remaining protected review roots/files: `governance`, `ide`, `meta`, `engine/foundation/meta/extensions/core.py`, `engine/foundation/meta/numeric.py`, `performance`, and `validation`.
 - Unexcepted strict violations: 0.
 
 ## POST-CONVERGE-03 Content / Pack / Profile / Bundle Cleanup

@@ -12,7 +12,7 @@ def run(repo_root: str):
 
     ensure_repo_on_path(repo_root)
 
-    from meta_extensions_engine import STRICT_EXTENSION_POLICY_ID, validate_extensions_map
+    from engine.foundation.meta.extensions.core import STRICT_EXTENSION_POLICY_ID, validate_extensions_map
 
     report = validate_extensions_map(
         owner_schema_id="test.owner",

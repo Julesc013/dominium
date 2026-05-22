@@ -8,7 +8,7 @@ import os
 from typing import Dict, List, Mapping, Sequence, Tuple
 
 from tools.package.libraries.install import compare_required_contract_ranges, normalize_contract_range
-from meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

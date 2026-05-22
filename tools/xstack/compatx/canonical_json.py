@@ -9,7 +9,7 @@ from engine.serialization.canonical_json import (
     canonical_json_text as _engine_canonical_json_text,
     canonical_sha256 as _engine_canonical_sha256,
 )
-from meta_extensions_engine import normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_tree
 
 
 def canonical_json_text(value: Any) -> str:

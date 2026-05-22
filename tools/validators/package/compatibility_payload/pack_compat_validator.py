@@ -13,7 +13,7 @@ from tools.package.libraries.provides import (
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.compatx.core.semantic_contract_validator import load_semantic_contract_registry, semantic_contract_ids
-from meta_extensions_engine import normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_tree
 
 
 PACK_COMPAT_MANIFEST_NAME = "pack.compat.json"

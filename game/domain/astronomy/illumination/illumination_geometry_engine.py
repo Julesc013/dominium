@@ -9,7 +9,7 @@ from math import isqrt
 from typing import Dict, Mapping, Sequence
 
 from game.domain.geology import build_position_ref
-from numeric_discipline import debug_assert_no_float_payload
+from engine.foundation.meta.numeric import debug_assert_no_float_payload
 from engine.serialization.canonical_json import canonical_sha256
 
 

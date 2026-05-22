@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Tuple
 from engine.serialization.canonical_json import canonical_sha256
 from engine.compatx.schema_registry import load_schema, load_version_registry, normalize_schema_name
 from engine.compatx.versioning import resolve_payload_version
-from meta_extensions_engine import DEFAULT_EXTENSION_POLICY_ID, validate_extensions_tree
+from engine.foundation.meta.extensions.core import DEFAULT_EXTENSION_POLICY_ID, validate_extensions_tree
 
 
 def _norm(path: str) -> str:

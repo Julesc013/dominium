@@ -18,7 +18,7 @@ from runtime.shell.logging import get_current_log_engine, log_emit
 from runtime.shell.supervisor import SUPERVISOR_AGGREGATED_LOG_REL, load_supervisor_runtime_state
 from runtime.ui.client.inspect_panels import build_inspection_panel_set
 from runtime.ui.client.map_views import build_map_view_set
-from meta_extensions_engine import normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_tree
 from runtime.ui import MENU_STATE_MAIN, build_ui_model
 
 

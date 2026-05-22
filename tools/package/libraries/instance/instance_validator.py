@@ -18,7 +18,7 @@ from tools.package.libraries.provides import (
     validate_provides_resolution,
 )
 from tools.validators.identity import UNIVERSAL_IDENTITY_FIELD
-from meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

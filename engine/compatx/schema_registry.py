@@ -6,7 +6,7 @@ import json
 import os
 from typing import Dict, Tuple
 
-from meta_extensions_engine import normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_tree
 
 
 SCHEMA_DIR_REL = os.path.join("contracts", "schema")

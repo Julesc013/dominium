@@ -8,7 +8,7 @@ import os
 import shutil
 from typing import Dict, Iterable, List, Mapping, Sequence
 
-from meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_map, normalize_extensions_tree
 
 
 BUNDLE_MANIFEST_NAME = "bundle.manifest.json"

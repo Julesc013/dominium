@@ -24,7 +24,7 @@
       "engine/CMakeLists.txt",
       "game/CMakeLists.txt",
       "launcher/CMakeLists.txt",
-      "cmake/legacy_libs/CMakeLists.txt",
+      "cmake/libs/CMakeLists.txt",
       "tools/build/identity/CMakeLists.txt",
       "server/CMakeLists.txt",
       "setup/CMakeLists.txt",

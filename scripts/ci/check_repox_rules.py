@@ -79,7 +79,7 @@ _ORIGINAL_READ_TEXT = read_text
 _CANONICAL_EXACT_ALIASES = (
     ("repo/canon_state.json", "contracts/repo/canon_state.json"),
     ("tools/distribution/distribution_lib.py", "tools/package/distribution/distribution_lib.py"),
-    ("meta/extensions/extensions_engine.py", "meta_extensions_engine.py"),
+    ("meta/extensions/extensions_engine.py", "engine/foundation/meta/extensions/core.py"),
     ("runtime/shell/appcore/command/command_registry.c", "runtime/shell/command/command_registry.c"),
     ("runtime/shell/appcore/ui_bind/ui_command_binding_table.c", "tools/codegen/ui/bind/ui_command_binding_table.c"),
     ("tools/validators/shell/tool_generate_command_docs.py", "tools/codegen/shell/tool_generate_command_docs.py"),
@@ -430,7 +430,7 @@ REQUIRED_SEMANTIC_CONTRACT_IDS = (
 EXTENSION_DISCIPLINE_DOC_REL = os.path.join("docs", "meta", "EXTENSION_DISCIPLINE.md")
 EXTENSION_MIGRATION_NOTES_REL = os.path.join("docs", "meta", "EXTENSION_MIGRATION_NOTES.md")
 EXTENSION_INTERPRETATION_REGISTRY_REL = os.path.join("contracts", "registry", "extension_interpretation_registry.json")
-EXTENSION_ENGINE_REL = os.path.join("meta_extensions_engine.py")
+EXTENSION_ENGINE_REL = os.path.join("engine/foundation/meta/extensions/core.py")
 EXTENSION_ENGINE_WRAPPER_REL = os.path.join("meta", "extensions", "extensions_engine.py")
 MOD_POLICY_DOC_REL = os.path.join("docs", "modding", "MOD_TRUST_AND_CAPABILITIES.md")
 MOD_POLICY_BASELINE_REL = os.path.join("docs", "archive", "audit", "MOD_POLICY_BASELINE.md")
@@ -4740,7 +4740,7 @@ def check_extensions_namespaced(repo_root):
     wrapper_path = os.path.join(repo_root, EXTENSION_ENGINE_WRAPPER_REL.replace("/", os.sep))
     if _ORIGINAL_ISFILE(wrapper_path):
         wrapper_text = read_text(wrapper_path) or ""
-        for token in ("from meta_extensions_engine import (", "extensions_get", "normalize_extensions_tree"):
+        for token in ("from engine.foundation.meta.extensions.core import (", "extensions_get", "normalize_extensions_tree"):
             if token not in wrapper_text:
                 violations.append("{}: {} missing token {}".format(invariant_id, EXTENSION_ENGINE_WRAPPER_REL, token))
 

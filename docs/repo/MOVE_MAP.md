@@ -102,14 +102,14 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `materials` | `game/domain/materials` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level materials/ implementation moved under game/domain/materials/. No schemas, registries, content data, or docs were found in that root during... |
 | `mechanics` | `game/domain/mechanics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level mechanics/ implementation moved under game/domain/mechanics/. No schemas, registries, content data, or docs were found in that root during... |
 | `meta` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | Meta surfaces require ownership review. |
-| `meta_extensions_engine.py` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
+| `engine/foundation/meta/extensions/core.py` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `mobility` | `game/domain/mobility` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level mobility/ implementation moved under game/domain/mobility/. No schemas, registries, content data, or docs were found in that root during th... |
 | `modding` | `content/modding` | `split` | `true` | `false` | `not_started` | `CONVERGE-09` | `high` | Modding may include content, contracts, and docs. |
 | `MODDING.md` | `MODDING.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `models` | `content/models` | `move` | `false` | `false` | `not_started` | `CONVERGE-09` | `medium` | Model data should be distinguished from generated or runtime state. |
 | `net` | `runtime/network` | `split` | `true` | `true` | `not_started` | `CONVERGE-07` | `high` | Root-level net/ remains mixed after CONVERGE-07 because it contains transport, anti-cheat, SRZ, and server-authoritative policy code; do not move wholesale. |
 | `network` | `runtime/network` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-07` | `low` | Confirmed absent in CONVERGE-07; future source material belongs under runtime/network/. |
-| `numeric_discipline.py` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
+| `engine/foundation/meta/numeric.py` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `packs` | `content/packs` | `split` | `true` | `false` | `not_started` | `CONVERGE-09` | `high` | Current runtime pack substrate; pack ownership split remains review-sensitive. |
 | `performance` | `tools/performance` | `review` | `false` | `false` | `review` | `review` | `review` | Performance tooling and evidence should stay tool/evidence scoped. |
 | `physics` | `game/domain/physics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level physics/ implementation moved under game/domain/physics/. No schemas, registries, content data, or docs were found in that root during the... |
@@ -142,9 +142,9 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `templates` | `content/templates` | `split` | `true` | `false` | `not_started` | `CONVERGE-09` | `high` | Templates may be authored content, contracts, or generated inputs. |
 | `tests` | `tests` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Test suites, determinism checks, fixtures, and verification evidence inputs. |
 | `thermal` | `game/domain/thermal` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level thermal/ implementation moved under game/domain/thermal/. No schemas, registries, content data, or docs were found in that root during the... |
-| `tool_ui_bind.cmd` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
-| `tool_ui_doc_annotate.cmd` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
-| `tool_ui_validate.cmd` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
+| `scripts/dev/shims/tool_ui_bind.cmd` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
+| `scripts/dev/shims/tool_ui_doc_annotate.cmd` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
+| `scripts/dev/shims/tool_ui_validate.cmd` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `tools` | `tools` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Developer, validation, migration, CI, code generation, review, and audit tools. |
 | `ui` | `runtime/ui` | `move` | `false` | `false` | `completed` | `CONVERGE-07` | `medium` | Completed in CONVERGE-07; root-level ui/ moved under runtime/ui/. |
 | `universe` | `game/domain/universe` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level universe/ implementation moved under game/domain/universe/. No schemas, registries, content data, or docs were found in that root during th... |
@@ -214,8 +214,8 @@ POST-CONVERGE-02 retired the root package marker and moved quarantined labs docu
 
 - `__init__.py`: removed after reference review found no in-repo import dependency.
 - `labs/README.md`: moved to `archive/historical/labs/README.md`.
-- `tool_ui_bind.cmd`, `tool_ui_doc_annotate.cmd`, and `tool_ui_validate.cmd`: retained as documented root compatibility shims.
-- `governance`, `ide`, `meta`, `meta_extensions_engine.py`, `numeric_discipline.py`, `performance`, and `validation`: retained as active review exceptions because references remain live or protected.
+- `scripts/dev/shims/tool_ui_bind.cmd`, `scripts/dev/shims/tool_ui_doc_annotate.cmd`, and `scripts/dev/shims/tool_ui_validate.cmd`: retained as documented root compatibility shims.
+- `governance`, `ide`, `meta`, `engine/foundation/meta/extensions/core.py`, `engine/foundation/meta/numeric.py`, `performance`, and `validation`: retained as active review exceptions because references remain live or protected.
 
 No product, runtime, domain, contract, build-preset, or support-matrix semantics changed.
 

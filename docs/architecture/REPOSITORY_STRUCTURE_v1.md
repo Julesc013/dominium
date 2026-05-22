@@ -116,7 +116,7 @@ Source-like roots that remain are allowed only through explicit Xi-5x2/Xi-8 poli
 
 Top-level files kept in the lock:
 
-- `.gitattributes`, `.gitignore`, `AGENTS.md`, `CHANGELOG.md`, `CMakeLists.txt`, `CMakePresets.json`, `CODE_CHANGE_JUSTIFICATION.md`, `CONTRIBUTING.md`, `DOMINIUM.md`, `GOVERNANCE.md`, `LICENSE.md`, `MODDING.md`, `README.md`, `SECURITY.md`, `VERSION_CLIENT`, `VERSION_ENGINE`, `VERSION_GAME`, `VERSION_LAUNCHER`, `VERSION_SERVER`, `VERSION_SETUP`, `VERSION_SUITE`, `VERSION_TOOLS`, `__init__.py`, `meta_extensions_engine.py`, `numeric_discipline.py`, `sitecustomize.py`, `tool_ui_bind.cmd`, `tool_ui_doc_annotate.cmd`, `tool_ui_validate.cmd`
+- `.gitattributes`, `.gitignore`, `AGENTS.md`, `CHANGELOG.md`, `CMakeLists.txt`, `CMakePresets.json`, `CODE_CHANGE_JUSTIFICATION.md`, `CONTRIBUTING.md`, `DOMINIUM.md`, `GOVERNANCE.md`, `LICENSE.md`, `MODDING.md`, `README.md`, `SECURITY.md`, `VERSION_CLIENT`, `VERSION_ENGINE`, `VERSION_GAME`, `VERSION_LAUNCHER`, `VERSION_SERVER`, `VERSION_SETUP`, `VERSION_SUITE`, `VERSION_TOOLS`, `__init__.py`, `engine/foundation/meta/extensions/core.py`, `engine/foundation/meta/numeric.py`, `sitecustomize.py`, `scripts/dev/shims/tool_ui_bind.cmd`, `scripts/dev/shims/tool_ui_doc_annotate.cmd`, `scripts/dev/shims/tool_ui_validate.cmd`
 
 ## Allowed Source-Like Exceptions
 

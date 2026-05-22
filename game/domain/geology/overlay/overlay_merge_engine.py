@@ -9,7 +9,7 @@ from functools import lru_cache
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
 from engine.serialization.canonical_json import canonical_sha256
-from meta_extensions_engine import normalize_extensions_tree
+from engine.foundation.meta.extensions.core import normalize_extensions_tree
 
 from game.domain.geology.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from game.domain.geology.worldgen.worldgen_engine import normalize_worldgen_result

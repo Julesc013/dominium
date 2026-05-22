@@ -1106,7 +1106,7 @@ file(MAKE_DIRECTORY
     "${CMAKE_SOURCE_DIR}/build/msys2-release"
 )
 
-add_subdirectory(cmake/legacy_libs)
+add_subdirectory(cmake/libs)
 add_subdirectory(engine)
 add_subdirectory(runtime/shell/lifecycle)
 add_subdirectory(runtime/platform/win32/shell)

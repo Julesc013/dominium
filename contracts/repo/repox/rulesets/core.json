@@ -288,7 +288,7 @@
         "docs/governance/meta/EXTENSION_DISCIPLINE.md",
         "docs/governance/meta/EXTENSION_MIGRATION_NOTES.md",
         "contracts/registry/extension_interpretation_registry.json",
-        "meta_extensions_engine.py",
+        "engine/foundation/meta/extensions/core.py",
         "tools/repo/meta/extensions/extensions_engine.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-extensions-namespaced",
@@ -301,7 +301,7 @@
         "src",
         "tools",
         "contracts/registry/extension_interpretation_registry.json",
-        "meta_extensions_engine.py",
+        "engine/foundation/meta/extensions/core.py",
         "tools/repo/meta/extensions/extensions_engine.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-extension-interpretation-without-registry",

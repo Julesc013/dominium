@@ -1,6 +1,6 @@
 """Compatibility wrapper for the extension discipline engine."""
 
-from meta_extensions_engine import (
+from engine.foundation.meta.extensions.core import (
     DEFAULT_EXTENSION_POLICY_ID,
     EXTENSION_INTERPRETATION_REGISTRY_REL,
     STRICT_EXTENSION_POLICY_ID,
