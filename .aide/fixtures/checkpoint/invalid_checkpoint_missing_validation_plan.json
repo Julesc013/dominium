@@ -1,0 +1,20 @@
+{
+  "checkpoint_id": "chk-aide-invalid-001",
+  "wave_id": "wave-aide-001",
+  "source_branches": [
+    "origin/dev"
+  ],
+  "included_work_units": [
+    "AIDE-DEV-MAIN-POLICY-01"
+  ],
+  "excluded_work_units": [],
+  "base_commit": "971c58894",
+  "merge_commit": null,
+  "validation_results": [
+    "validator was not planned"
+  ],
+  "warning_disposition_refs": [],
+  "blockers": [],
+  "promotion_recommendation": "promote",
+  "status": "CHECKPOINT_CANDIDATE"
+}

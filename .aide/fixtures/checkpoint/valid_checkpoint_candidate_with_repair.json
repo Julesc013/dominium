@@ -1,0 +1,35 @@
+{
+  "checkpoint_id": "chk-aide-repair-001",
+  "wave_id": "wave-aide-001",
+  "source_branches": [
+    "origin/dev",
+    "repair/blocker-checkpoint-fixture"
+  ],
+  "included_work_units": [
+    "AIDE-WORKUNIT-SCHEMA-01",
+    "repair-blocker-checkpoint-fixture"
+  ],
+  "excluded_work_units": [
+    "PRESENTATION-CONTRACT-01"
+  ],
+  "base_commit": "971c58894",
+  "merge_commit": "abc1234",
+  "validation_plan": [
+    "T0_COORDINATOR_CONSISTENCY",
+    "T1_POLICY_SCHEMA_CONSISTENCY",
+    "targeted repair validator",
+    "git diff --check"
+  ],
+  "validation_results": [
+    "initial checkpoint validator: FAIL",
+    "repair validator rerun: PASS"
+  ],
+  "warning_disposition_refs": [
+    "warning-full-ctest-t4-debt"
+  ],
+  "blockers": [
+    "blocker-checkpoint-fixture"
+  ],
+  "promotion_recommendation": "repair_required",
+  "status": "CHECKPOINT_REPAIR"
+}

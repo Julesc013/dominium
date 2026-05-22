@@ -1,0 +1,19 @@
+{
+  "promotion_id": "promote-aide-001",
+  "checkpoint_id": "chk-aide-minimal-001",
+  "source_branch": "checkpoint/wave-aide-001",
+  "target_branch": "origin/main",
+  "decision": "promote",
+  "required_evidence_refs": [
+    "docs/repo/audits/AIDE_CHECKPOINT_LOOP_01.md",
+    ".aide/fixtures/checkpoint/valid_checkpoint_candidate_minimal.json"
+  ],
+  "validation_summary": "T0 and T1 checkpoint policy validation passed; no unsafe blockers.",
+  "warnings_accepted": [
+    "warning-full-ctest-t4-debt"
+  ],
+  "warnings_rejected": [],
+  "human_approver": "review-required-before-real-promotion",
+  "rationale": "Fixture promotion decision includes checkpoint evidence and classified warning acceptance.",
+  "resulting_commit": "def5678"
+}

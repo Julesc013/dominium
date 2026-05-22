@@ -1,0 +1,16 @@
+{
+  "promotion_id": "promote-aide-invalid-warning",
+  "checkpoint_id": "chk-aide-minimal-001",
+  "source_branch": "checkpoint/wave-aide-001",
+  "target_branch": "origin/main",
+  "decision": "promote",
+  "required_evidence_refs": [
+    "docs/repo/audits/AIDE_CHECKPOINT_LOOP_01.md"
+  ],
+  "validation_summary": "Promotion requested with UNCLASSIFIED_WARNING warning-full-ctest-t4-debt.",
+  "warnings_accepted": [],
+  "warnings_rejected": [],
+  "human_approver": "review-required-before-real-promotion",
+  "rationale": "Invalid fixture: warning is neither accepted nor rejected.",
+  "resulting_commit": "bad1111"
+}

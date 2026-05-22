@@ -1,0 +1,16 @@
+{
+  "promotion_id": "defer-aide-001",
+  "checkpoint_id": "chk-aide-minimal-001",
+  "source_branch": "checkpoint/wave-aide-001",
+  "target_branch": "origin/main",
+  "decision": "defer",
+  "required_evidence_refs": [
+    "docs/repo/audits/AIDE_CHECKPOINT_LOOP_01.md"
+  ],
+  "validation_summary": "Checkpoint evidence exists but coordinator promotion approval is deferred.",
+  "warnings_accepted": [],
+  "warnings_rejected": [],
+  "human_approver": null,
+  "rationale": "Promotion is deferred until coordinator review applies status updates.",
+  "resulting_commit": null
+}
