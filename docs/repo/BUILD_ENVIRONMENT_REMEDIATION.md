@@ -118,7 +118,7 @@ POST-CONVERGE-10B probe result:
 
 Generated local presets expose the canonical VS2022 tuple. POST-CONVERGE-10C remediated stale CMake/test references:
 
-- `client/presentation/frame_graph_builder.cpp` should now be represented from `runtime/render/client/presentation/frame_graph_builder.cpp`.
+- `client/presentation/frame_graph_builder.cpp` should now be represented from `runtime/projection/rendered/presentation/frame_graph_builder.cpp`.
 - `server/authority/dom_server_authority.cpp` should now be represented from `game/law/authority/dom_server_authority.cpp`.
 
 Resolved UI bind blocker:

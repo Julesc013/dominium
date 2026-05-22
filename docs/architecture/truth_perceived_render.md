@@ -21,7 +21,7 @@ Define hard architectural boundaries that prevent renderer epistemic leakage and
   - `runtime/ui/client/observability/perceived_model_v1.h`
   - derived immutable snapshot only.
 - RenderModel owner:
-  - `runtime/render/client/presentation/render_model_v1.h`
+  - `runtime/projection/rendered/presentation/render_model_v1.h`
   - presentation projection only.
 
 ## Allowed Dependencies
@@ -32,7 +32,7 @@ Define hard architectural boundaries that prevent renderer epistemic leakage and
 - UI host may emit Intents only through process-intent pipeline.
 
 ## Forbidden Dependencies
-- `runtime/render/client/presentation/*` importing `domino/truth_model_v1.h`
+- `runtime/projection/rendered/presentation/*` importing `domino/truth_model_v1.h`
 - renderer logic directly reading authoritative simulation payloads
 - renderer-owned law/authority decisions
 - UI host direct mutation of TruthModel / UniverseState

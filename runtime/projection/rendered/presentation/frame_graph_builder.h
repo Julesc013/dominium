@@ -1,14 +1,14 @@
 /*
-FILE: runtime/render/client/presentation/frame_graph_builder.h
+FILE: runtime/projection/rendered/presentation/frame_graph_builder.h
 MODULE: Dominium
-LAYER / SUBSYSTEM: Client / presentation
+LAYER / SUBSYSTEM: Runtime / rendered projection
 RESPONSIBILITY: Deterministic frame graph descriptor builder for render prep.
 ALLOWED DEPENDENCIES: engine/include/**, game/include/** public headers, and C++98 headers only.
 FORBIDDEN DEPENDENCIES: engine internal headers; OS/platform headers.
 DETERMINISM: Frame graph IDs and pass counts are stable for identical inputs.
 */
-#ifndef DOMINIUM_CLIENT_PRESENTATION_FRAME_GRAPH_BUILDER_H
-#define DOMINIUM_CLIENT_PRESENTATION_FRAME_GRAPH_BUILDER_H
+#ifndef DOMINIUM_RENDERED_PROJECTION_FRAME_GRAPH_BUILDER_H
+#define DOMINIUM_RENDERED_PROJECTION_FRAME_GRAPH_BUILDER_H
 
 #include "domino/core/types.h"
 #include "dominium/fidelity.h"
@@ -42,4 +42,4 @@ void dom_frame_graph_builder_build(dom_frame_graph_builder* builder,
                                    dom_fidelity_tier tier,
                                    dom_frame_graph_desc* out_desc);
 
-#endif /* DOMINIUM_CLIENT_PRESENTATION_FRAME_GRAPH_BUILDER_H */
+#endif /* DOMINIUM_RENDERED_PROJECTION_FRAME_GRAPH_BUILDER_H */

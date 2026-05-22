@@ -429,13 +429,13 @@ add_executable(render_prep_work_ir_tests
     render_prep_work_ir_tests.cpp
 )
 target_sources(render_prep_work_ir_tests PRIVATE
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation/frame_graph_builder.cpp
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation/render_prep_system.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation/frame_graph_builder.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation/render_prep_system.cpp
 )
 target_link_libraries(render_prep_work_ir_tests PRIVATE engine::domino game::dominium)
 target_include_directories(render_prep_work_ir_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../modules
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation
 )
 set_target_properties(render_prep_work_ir_tests PROPERTIES
     CXX_STANDARD 17

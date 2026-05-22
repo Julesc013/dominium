@@ -1,7 +1,7 @@
 /*
-FILE: runtime/render/client/presentation/render_model_adapter_v1.c
+FILE: runtime/projection/rendered/presentation/render_model_adapter_v1.c
 MODULE: Dominium
-LAYER / SUBSYSTEM: Client / presentation
+LAYER / SUBSYSTEM: Runtime / rendered projection
 RESPONSIBILITY: Minimal RenderModel adapter that consumes PerceivedModel only.
 ALLOWED DEPENDENCIES: render_model_v1.h.
 FORBIDDEN DEPENDENCIES: TruthModel headers and direct authoritative state access.

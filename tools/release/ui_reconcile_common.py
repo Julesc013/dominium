@@ -88,9 +88,9 @@ _GOVERNED_SURFACES = (
 _LEGACY_SURFACE_GLOBS = (
     "tools/codegen/ui/launcher/**/*.py",
     "tools/codegen/ui/setup/**/*.py",
-    "runtime/ui/dui/**/*",
-    "runtime/ui/include/**/*",
-    "runtime/ui/ir/**/*",
+    "runtime/ui/control/dui/**/*",
+    "runtime/include/**/*",
+    "runtime/view/ir/**/*",
     "apps/workbench/module/ui/preview/**/*",
     "apps/workbench/module/ui/editor/**/*",
     "apps/workbench/module/ui/preview/native/**/*",
@@ -199,7 +199,7 @@ def _platform_dependency(rel_path: str) -> str:
 
 def _legacy_status(rel_path: str) -> str:
     token = _norm(rel_path)
-    if token.startswith(("runtime/ui/dui/", "runtime/ui/include/", "runtime/ui/ir/")) or token.startswith("apps/workbench/module/ui/preview/"):
+    if token.startswith(("runtime/ui/control/dui/", "runtime/include/", "runtime/view/ir/")) or token.startswith("apps/workbench/module/ui/preview/"):
         return "legacy_reference_only"
     if token.startswith("tools/xstack/sessionx/"):
         return "contradictory_legacy_host"
@@ -208,7 +208,7 @@ def _legacy_status(rel_path: str) -> str:
 
 def _legacy_purpose(rel_path: str) -> str:
     token = _norm(rel_path)
-    if token.startswith(("runtime/ui/dui/", "runtime/ui/include/", "runtime/ui/ir/")):
+    if token.startswith(("runtime/ui/control/dui/", "runtime/include/", "runtime/view/ir/")):
         return "Legacy cross-platform UI support library and adapter scaffolding under runtime UI ownership."
     if token.startswith("apps/workbench/module/ui/preview/"):
         return "Preview host scaffolding for platform UI experiments."

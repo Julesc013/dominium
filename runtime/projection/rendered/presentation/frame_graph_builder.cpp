@@ -1,7 +1,7 @@
 /*
-FILE: runtime/render/client/presentation/frame_graph_builder.cpp
+FILE: runtime/projection/rendered/presentation/frame_graph_builder.cpp
 MODULE: Dominium
-LAYER / SUBSYSTEM: Client / presentation
+LAYER / SUBSYSTEM: Runtime / rendered projection
 RESPONSIBILITY: Deterministic frame graph descriptor builder.
 ALLOWED DEPENDENCIES: engine/include/**, game/include/** public headers, and C++98 headers only.
 FORBIDDEN DEPENDENCIES: engine internal headers; OS/platform headers.

@@ -7,8 +7,8 @@ add_executable(tool_ui_bind
 )
 
 target_include_directories(tool_ui_bind PRIVATE
-    ${CMAKE_SOURCE_DIR}/runtime/ui/include
-    ${CMAKE_SOURCE_DIR}/runtime/ui/ir
+    ${CMAKE_SOURCE_DIR}/runtime/include
+    ${CMAKE_SOURCE_DIR}/runtime/view/ir
     ${CMAKE_SOURCE_DIR}/runtime/shell
 )
 
@@ -32,8 +32,8 @@ add_executable(tool_ui_doc_annotate
 )
 
 target_include_directories(tool_ui_doc_annotate PRIVATE
-    ${CMAKE_SOURCE_DIR}/runtime/ui/include
-    ${CMAKE_SOURCE_DIR}/runtime/ui/ir
+    ${CMAKE_SOURCE_DIR}/runtime/include
+    ${CMAKE_SOURCE_DIR}/runtime/view/ir
     ${CMAKE_SOURCE_DIR}/runtime/shell
 )
 

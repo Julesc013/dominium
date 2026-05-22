@@ -18,8 +18,8 @@ add_library(domino_ui_ir STATIC
 
 target_include_directories(domino_ui_ir PUBLIC
     ${DOMINIUM_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/runtime/ui/dui
-    ${CMAKE_SOURCE_DIR}/runtime/ui/include
+    ${CMAKE_SOURCE_DIR}/runtime/ui/control/dui
+    ${CMAKE_SOURCE_DIR}/runtime/include
     ${CMAKE_SOURCE_DIR}/runtime/platform/win32/ui/include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )

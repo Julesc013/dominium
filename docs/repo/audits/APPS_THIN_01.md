@@ -47,7 +47,7 @@ Canonical destinations inspected included `runtime/shell/`, `runtime/network/`, 
 
 - Client command registration and mode/session state are shared shell-facing systems: moved to `runtime/shell/client/`.
 - Client interaction, view model, and observability state are reusable UI-facing systems: moved to `runtime/ui/client/`.
-- Client render presentation and render-prep code are render-facing presentation substrate: moved to `runtime/render/client/presentation/`.
+- Client render presentation and render-prep code are render-facing presentation substrate: moved to `runtime/projection/rendered/presentation/`.
 - Server authority enforcement is game law/authority code, not product entrypoint glue: moved to `game/law/authority/`.
 - Server shard machinery is reusable server networking/runtime partitioning code: moved to `runtime/network/server/shard/`.
 - Server checkpoint/dispute/integrity persistence is storage runtime code: moved to `runtime/storage/server/persistence/`.
@@ -65,7 +65,7 @@ Canonical destinations inspected included `runtime/shell/`, `runtime/network/`, 
 - `apps/client/interaction/` -> `runtime/ui/client/interaction/`
 - `apps/client/model/` -> `runtime/ui/client/model/`
 - `apps/client/observability/` -> `runtime/ui/client/observability/`
-- `apps/client/presentation/` -> `runtime/render/client/presentation/`
+- `apps/client/presentation/` -> `runtime/projection/rendered/presentation/`
 - `apps/server/authority/` -> `game/law/authority/`
 - `apps/server/shard/` -> `runtime/network/server/shard/`
 - `apps/server/persistence/` -> `runtime/storage/server/persistence/`
@@ -80,7 +80,7 @@ All tracked moves used `git mv`.
 - RepoX rule maps and active proof scripts that referenced moved app paths.
 - AuditX/TestX path expectations that refer to active moved sources.
 - Current architecture docs for Truth/Perceived/Render ownership.
-- `scripts/verify_ui_shell_purity.py` moved the forbidden presentation boundary from `apps/client/presentation/` to `runtime/render/client/presentation/`.
+- `scripts/verify_ui_shell_purity.py` moved the forbidden presentation boundary from `apps/client/presentation/` to `runtime/projection/rendered/presentation/`.
 
 ## Retained Under Apps
 

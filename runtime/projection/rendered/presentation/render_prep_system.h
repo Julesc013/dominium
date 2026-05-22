@@ -1,14 +1,14 @@
 /*
-FILE: runtime/render/client/presentation/render_prep_system.h
+FILE: runtime/projection/rendered/presentation/render_prep_system.h
 MODULE: Dominium
-LAYER / SUBSYSTEM: Client / presentation
+LAYER / SUBSYSTEM: Runtime / rendered projection
 RESPONSIBILITY: Render prep Work IR emitter (derived, IR-only).
 ALLOWED DEPENDENCIES: engine/include/**, game/include/** public headers, and C++98 headers only.
 FORBIDDEN DEPENDENCIES: engine internal headers; OS/platform headers.
 DETERMINISM: Emission order and degradation are deterministic.
 */
-#ifndef DOMINIUM_CLIENT_PRESENTATION_RENDER_PREP_SYSTEM_H
-#define DOMINIUM_CLIENT_PRESENTATION_RENDER_PREP_SYSTEM_H
+#ifndef DOMINIUM_RENDERED_PROJECTION_RENDER_PREP_SYSTEM_H
+#define DOMINIUM_RENDERED_PROJECTION_RENDER_PREP_SYSTEM_H
 
 #include "dominium/execution/system_iface.h"
 #include "frame_graph_builder.h"
@@ -81,4 +81,4 @@ private:
     const dom_render_prep_buffers* buffers_;
 };
 
-#endif /* DOMINIUM_CLIENT_PRESENTATION_RENDER_PREP_SYSTEM_H */
+#endif /* DOMINIUM_RENDERED_PROJECTION_RENDER_PREP_SYSTEM_H */

@@ -407,7 +407,7 @@ POST-CONVERGE-10 added the tuple-driven build contract and machine probe. POST-C
 - `CMakeUserPresets.json` can be generated as ignored local data so CMake can consume the tuple preset; POST-CONVERGE-10B removed it before final strict layout validation
 - CMake selects Windows SDK `10.0.26100.0` and MSVC tools `14.44.35207`
 - configure now fails during CMake generation because tests still reference stale pre-convergence root paths:
-  - `runtime/render/client/presentation/frame_graph_builder.cpp`
+  - `runtime/projection/rendered/presentation/frame_graph_builder.cpp`
   - `game/law/authority/dom_server_authority.cpp`
 - no native product binaries were produced
 

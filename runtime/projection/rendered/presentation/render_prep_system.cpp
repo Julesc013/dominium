@@ -1,7 +1,7 @@
 /*
-FILE: runtime/render/client/presentation/render_prep_system.cpp
+FILE: runtime/projection/rendered/presentation/render_prep_system.cpp
 MODULE: Dominium
-LAYER / SUBSYSTEM: Client / presentation
+LAYER / SUBSYSTEM: Runtime / rendered projection
 RESPONSIBILITY: Render prep Work IR emission (derived tasks only).
 ALLOWED DEPENDENCIES: engine/include/**, game/include/** public headers, and C++98 headers only.
 FORBIDDEN DEPENDENCIES: engine internal headers; OS/platform headers.

@@ -109,7 +109,7 @@ RESERVED_WORDS = (
 
 SCAN_ROOTS = (
     "runtime/ui/client/observability",
-    "runtime/render/client/presentation",
+    "runtime/projection/rendered/presentation",
     "worldgen",
     "tools/xstack/compatx",
     "tools/xstack/pack_loader",
@@ -11239,7 +11239,7 @@ def _append_renderer_truth_boundary_findings(
     if profile not in ("STRICT", "FULL"):
         return
     rel_norm = _norm(rel_path).lower()
-    if not rel_norm.startswith("runtime/render/client/presentation/"):
+    if not rel_norm.startswith("runtime/projection/rendered/presentation/"):
         return
     match = INCLUDE_RE.match(line)
     if match:
@@ -11308,7 +11308,7 @@ def _append_negative_invariant_findings(
                         )
                     )
 
-            if rel_norm.startswith(("runtime/render/client/presentation/", "runtime/ui/client/")):
+            if rel_norm.startswith(("runtime/projection/rendered/presentation/", "runtime/ui/client/")):
                 ui_bypass_tokens = (
                     "boot_session_spec(",
                     "create_session_spec(",

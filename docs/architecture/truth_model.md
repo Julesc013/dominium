@@ -16,7 +16,7 @@ Define the minimal authoritative state envelope consumed by Observation Kernel d
 ## Contract Surfaces
 - `TruthModel` (authoritative): `engine/include/domino/truth_model_v1.h`
 - `PerceivedModel` (derived): `runtime/ui/client/observability/perceived_model_v1.h`
-- `RenderModel` (presentation): `runtime/render/client/presentation/render_model_v1.h`
+- `RenderModel` (presentation): `runtime/projection/rendered/presentation/render_model_v1.h`
 
 ## Invariants
 - Truth mutation is Process-only.

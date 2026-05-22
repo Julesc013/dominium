@@ -42,7 +42,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-00089e08 | OPEN | C | runtime/network/d_net_schema.c:334 | Magic number literal '16'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-000ce0da | OPEN | C | runtime/ui/tui/tui.c:312 | Magic number literal '80'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-000ce0da | OPEN | C | runtime/projection/text/tui.c:312 | Magic number literal '80'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-000d9b43 | OPEN | C | runtime/package/content/d_content.h:136 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -126,7 +126,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-008cb0d1 | OPEN | C | tests/game/civ4/dom_civ4_scale_tests.cpp:159 | Magic number literal '4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-0090732e | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:123 | Magic number literal '22'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-0090732e | OPEN | C | runtime/include/dui/dui_schema_tlv.h:123 | Magic number literal '22'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-0096cb55 | OPEN | D | engine/include/domino/canvas.h:46 | Missing function doc block in public header. | Add Purpose/DOC/INVARIANT doc block. | S | INVARIANT_REGISTRY | comment density scan |
@@ -420,7 +420,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-0253e1f9 | OPEN | C | tests/game/fidelity/dom_fidelity_tests.c:155 | Magic number literal '4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-02548594 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:144 | Magic number literal '3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-02548594 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:144 | Magic number literal '3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-025aebf8 | OPEN | C | engine/execution/kernels/gpu/gpu_kernels.cpp:191 | Magic number literal '8'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -2376,7 +2376,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-0e70690f | OPEN | C | engine/kernel/d_subsystem.h:32 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-0e799ce6 | OPEN | C | runtime/ui/include/dui/dui_api_v1.h:94 | Magic number literal '256'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-0e799ce6 | OPEN | C | runtime/include/dui/dui_api_v1.h:94 | Magic number literal '256'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-0e8e5680 | OPEN | C | game/rules/survival/needs_model.cpp:91 | Magic number literal '5'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -3321,7 +3321,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-13a82781 | OPEN | C | tests/game/civ1/dom_civ1_city_infra_tests.cpp:128 | Magic number literal '5'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-13aaa4af | OPEN | C | runtime/ui/include/dui/dui_api_v1.h:125 | Magic number literal '-2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-13aaa4af | OPEN | C | runtime/include/dui/dui_api_v1.h:125 | Magic number literal '-2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-13b1939f | OPEN | C | tests/game/civ0a/dom_civ0a_survival_tests.cpp:136 | Magic number literal '100'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -3765,7 +3765,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-166b2fc8 | OPEN | C | tests/engine/budget_model_tests.cpp:27 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-1671c157 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:145 | Magic number literal '4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-1671c157 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:145 | Magic number literal '4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-167436a0 | OPEN | C | tests/game/interest_work_ir_tests.cpp:423 | Magic number literal '3201'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -4158,7 +4158,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-18984138 | OPEN | C | game/rules/economy/economy_system.cpp:27 | Magic number literal '5305'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-18989794 | OPEN | C | runtime/ui/include/dui/dui_api_v1.h:127 | Magic number literal '-4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-18989794 | OPEN | C | runtime/include/dui/dui_api_v1.h:127 | Magic number literal '-4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-189caef7 | OPEN | C | tests/game/civ5_war4_scale_tests.cpp:369 | Magic number literal '3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -5880,7 +5880,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-22b41f3f | OPEN | C | runtime/network/d_net_proto.c:277 | Magic number literal '4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-22b4a22d | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:135 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-22b4a22d | OPEN | C | runtime/include/dui/dui_schema_tlv.h:135 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-22b9090e | OPEN | C | tests/game/civ5_war2_engagement_tests.cpp:485 | Magic number literal '99'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -6180,7 +6180,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-24a1658c | OPEN | C | tests/game/civ3/dom_civ3_knowledge_tests.cpp:65 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-24a4eda8 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:136 | Magic number literal '3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-24a4eda8 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:136 | Magic number literal '3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-24a577f6 | OPEN | C | tests/game/interest_work_ir_tests.cpp:346 | Magic number literal '16'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -6213,7 +6213,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-24d126cc | OPEN | D | engine/include/domino/system/dsys_perf.h:101 | Missing function doc block in public header. | Add Purpose/DOC/INVARIANT doc block. | S | INVARIANT_REGISTRY | comment density scan |
 
 
-| HYG-24d19c6f | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:117 | Magic number literal '14'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-24d19c6f | OPEN | C | runtime/include/dui/dui_schema_tlv.h:117 | Magic number literal '14'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-24e7eba0 | OPEN | C | server/persistence/integrity_checkpoints.cpp:20 | Magic number literal '8'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -9174,7 +9174,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-37fcfbcc | OPEN | C | game/domain/transport/d_trans.c:1293 | Magic number literal '4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-3801915b | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:121 | Magic number literal '20'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-3801915b | OPEN | C | runtime/include/dui/dui_schema_tlv.h:121 | Magic number literal '20'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-3805de3d | OPEN | C | apps/workbench/module/tool/editor/tool_editor_main_win32.cpp:1134 | Magic number literal '260'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -10836,7 +10836,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-42bb9183 | OPEN | C | game/rules/war/war_tasks_engagement.cpp:137 | Magic number literal '-2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-42c2f3a8 | OPEN | C | runtime/ui/include/dui/dui_api_v1.h:78 | Magic number literal '3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-42c2f3a8 | OPEN | C | runtime/include/dui/dui_api_v1.h:78 | Magic number literal '3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-42c88161 | OPEN | C | server/tests/shard_api_tests.cpp:86 | Magic number literal '4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -10986,7 +10986,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-43a9ead6 | OPEN | C | tests/game/civ3/dom_civ3_knowledge_tests.cpp:187 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-43aaac5d | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:122 | Magic number literal '21'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-43aaac5d | OPEN | C | runtime/include/dui/dui_schema_tlv.h:122 | Magic number literal '21'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-43accf5e | OPEN | C | tests/engine/kernel_simd_equivalence_tests.cpp:160 | Magic number literal '9'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -12003,7 +12003,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-4a1fb675 | OPEN | C | tests/tests/game/domino_sim/test_dg_domains_frames_prop.c:325 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-4a317ffb | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:124 | Magic number literal '23'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-4a317ffb | OPEN | C | runtime/include/dui/dui_schema_tlv.h:124 | Magic number literal '23'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-4a320976 | OPEN | C | tests/game/civ2/civ2_governance_tests.cpp:157 | Magic number literal '5'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -12537,7 +12537,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-4d8fc4c4 | OPEN | C | game/include/dominium/econ_schema.h:16 | Magic number literal '0x00100003'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-4d976e9c | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:114 | Magic number literal '11'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-4d976e9c | OPEN | C | runtime/include/dui/dui_schema_tlv.h:114 | Magic number literal '11'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-4d98e758 | OPEN | C | tests/game/economy_work_ir_tests.cpp:394 | Magic number literal '16'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -14355,7 +14355,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-57ee0981 | OPEN | C | tests/game/economy_work_ir_tests.cpp:336 | Magic number literal '32'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-57f835a4 | OPEN | A | runtime/ui/include/dui/domui_event.h:53 | Enum value uses forbidden token 'DOMUI_EVENT_CUSTOM'. | Replace with registry id or remove CUSTOM/OTHER/UNKNOWN. | S | REGISTRY_PATTERN | contract enum hygiene |
+| HYG-57f835a4 | OPEN | A | runtime/include/dui/domui_event.h:53 | Enum value uses forbidden token 'DOMUI_EVENT_CUSTOM'. | Replace with registry id or remove CUSTOM/OTHER/UNKNOWN. | S | REGISTRY_PATTERN | contract enum hygiene |
 
 
 | HYG-57fbf00f | OPEN | D | engine/include/domino/io/container.h:100 | Missing function doc block in public header. | Add Purpose/DOC/INVARIANT doc block. | S | INVARIANT_REGISTRY | comment density scan |
@@ -14838,7 +14838,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-5ae7df0f | OPEN | C | game/rules/war/readiness_state.cpp:303 | Magic number literal '-3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-5af20d45 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:146 | Magic number literal '5'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-5af20d45 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:146 | Magic number literal '5'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-5af79aac | OPEN | C | tests/game/governance_work_ir_tests.cpp:195 | Magic number literal '7202'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -16440,7 +16440,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-64926f8f | OPEN | B | tools/demo_gen/main_tools_demo_gen.cpp:27 | String comparison in runtime path. | Resolve string -> id at load time; compare ids. | M | REGISTRY_PATTERN | determinism + unit tests |
 
 
-| HYG-6495c007 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:147 | Magic number literal '6'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-6495c007 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:147 | Magic number literal '6'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-649d6c0c | OPEN | C | tests/tests/game/domino_sim/test_dg_lod_framework.c:225 | Magic number literal '5'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -16737,7 +16737,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-6674a9ff | OPEN | C | tests/tests/game/determinism/det_domains.c:351 | Magic number literal '0x5555'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-667f97cc | OPEN | C | runtime/ui/tui/tui.c:315 | Magic number literal '24'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-667f97cc | OPEN | C | runtime/projection/text/tui.c:315 | Magic number literal '24'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-668909ce | OPEN | C | tools/ui_shared/src/ui_codegen/ui_codegen.cpp:329 | Magic number literal '8'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -21963,7 +21963,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-86bd5919 | OPEN | D | engine/include/domino/cli/cli.h:175 | Missing function doc block in public header. | Add Purpose/DOC/INVARIANT doc block. | S | INVARIANT_REGISTRY | comment density scan |
 
 
-| HYG-86c13cd8 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:143 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-86c13cd8 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:143 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-86c17f8d | OPEN | C | tests/game/agent2_doctrine_tests.cpp:106 | Magic number literal '11'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -22506,7 +22506,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-8a197bd9 | OPEN | C | tests/game/governance_work_ir_tests.cpp:433 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-8a1bb548 | OPEN | C | runtime/ui/tui/tui.c:274 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-8a1bb548 | OPEN | C | runtime/projection/text/tui.c:274 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-8a1fe5ed | OPEN | C | tests/game/governance_work_ir_tests.cpp:356 | Magic number literal '-10'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -25986,7 +25986,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-9fc7410b | OPEN | C | game/rules/scale/world_streaming_system.cpp:422 | Magic number literal '-2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-9fcc7b77 | OPEN | C | runtime/ui/include/dui/dui_api_v1.h:126 | Magic number literal '-3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-9fcc7b77 | OPEN | C | runtime/include/dui/dui_api_v1.h:126 | Magic number literal '-3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-9fcf5567 | OPEN | D | engine/include/domino/mod.h:143 | Missing function doc block in public header. | Add Purpose/DOC/INVARIANT doc block. | S | INVARIANT_REGISTRY | comment density scan |
@@ -26052,7 +26052,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-a02653a6 | OPEN | C | tests/game/jurisdiction_domain_tests.cpp:146 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-a033450b | OPEN | C | runtime/ui/include/dui/dui_api_v1.h:75 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-a033450b | OPEN | C | runtime/include/dui/dui_api_v1.h:75 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-a03d8ae5 | OPEN | C | tests/engine/engine_det_order_test.c:240 | Magic number literal '5'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -26103,7 +26103,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-a08d2f4f | OPEN | C | tests/game/economy_work_ir_tests.cpp:215 | Magic number literal '8'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-a098a483 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:113 | Magic number literal '10'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-a098a483 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:113 | Magic number literal '10'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-a09cf8ce | OPEN | C | tools/tests/tool0_inspection_tests.cpp:129 | Magic number literal '3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -27219,7 +27219,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-a7b3c81f | OPEN | C | tests/game/war_work_ir_tests.cpp:484 | Magic number literal '8'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-a7b68f78 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:109 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-a7b68f78 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:109 | Magic number literal '2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-a7ba8dbd | OPEN | C | engine/include/domino/execution/access_set.h:28 | Magic number literal '3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -29556,7 +29556,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-b645a99b | OPEN | C | game/include/dominium/econ_schema.h:17 | Magic number literal '0x00100004'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-b65c0d96 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:110 | Magic number literal '3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-b65c0d96 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:110 | Magic number literal '3'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-b66039c4 | OPEN | C | tests/game/civ5_war2_engagement_tests.cpp:395 | Magic number literal '8'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -29592,7 +29592,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-b6875ea5 | OPEN | C | game/rules/war/territory_control.cpp:92 | Magic number literal '-2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-b687659c | OPEN | C | runtime/ui/tui/tui.c:311 | Magic number literal '24'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-b687659c | OPEN | C | runtime/projection/text/tui.c:311 | Magic number literal '24'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-b68a599b | OPEN | C | tests/tests/game/domino_decor/test_dg_decor_compile_determinism.c:459 | Magic number literal '100'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -31929,7 +31929,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-c475a844 | OPEN | C | game/rules/war/readiness_state.cpp:354 | Magic number literal '-2'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-c48613f7 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:116 | Magic number literal '13'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-c48613f7 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:116 | Magic number literal '13'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-c48bbe05 | OPEN | C | apps/workbench/module/save/editor/tool_save_edit_cli.c:101 | Magic number literal '512'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -33240,7 +33240,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-cc6b726c | OPEN | D | engine/include/domino/sys.h:495 | Missing function doc block in public header. | Add Purpose/DOC/INVARIANT doc block. | S | INVARIANT_REGISTRY | comment density scan |
 
 
-| HYG-cc6e43d0 | OPEN | C | runtime/ui/tui/tui.c:316 | Magic number literal '80'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-cc6e43d0 | OPEN | C | runtime/projection/text/tui.c:316 | Magic number literal '80'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-cc71c669 | OPEN | C | tests/game/civ5_war1_security_force_tests.cpp:357 | Magic number literal '5'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -34071,7 +34071,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-d15810d2 | OPEN | C | engine/kernel/d_container_state.c:21 | Magic number literal '2147483647'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-d1605947 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:118 | Magic number literal '15'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-d1605947 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:118 | Magic number literal '15'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-d16d0aca | OPEN | C | game/domain/environment/d_env.c:836 | Magic number literal '4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -34653,7 +34653,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-d52b138e | OPEN | D | libs/contracts/include/dom_contracts/app/product_entry.hpp:67 | Missing function doc block in public header. | Add Purpose/DOC/INVARIANT doc block. | S | INVARIANT_REGISTRY | comment density scan |
 
 
-| HYG-d52ebec3 | OPEN | C | runtime/ui/tui/tui.c:248 | Magic number literal '4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-d52ebec3 | OPEN | C | runtime/projection/text/tui.c:248 | Magic number literal '4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-d531a27d | OPEN | C | tests/game/governance_work_ir_tests.cpp:231 | Magic number literal '200'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -36411,7 +36411,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-dfac1907 | OPEN | C | tests/game/civ3/dom_civ3_knowledge_tests.cpp:189 | Magic number literal '100'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-dfb01377 | OPEN | C | runtime/ui/include/dui/dui_api_v1.h:128 | Magic number literal '-5'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-dfb01377 | OPEN | C | runtime/include/dui/dui_api_v1.h:128 | Magic number literal '-5'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-dfb0ef6f | OPEN | C | server/tests/shard_api_tests.cpp:169 | Magic number literal '15'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -38556,7 +38556,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-eddee836 | OPEN | C | tests/tests/game/contract/dominium_macro_tests.cpp:269 | Magic number literal '42'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-ede2be27 | OPEN | B | runtime/ui/tui/tui.c:292 | Switch on taxonomy id/type. | Replace with registry dispatch table. | M | REGISTRY_PATTERN | contract switch hygiene |
+| HYG-ede2be27 | OPEN | B | runtime/projection/text/tui.c:292 | Switch on taxonomy id/type. | Replace with registry dispatch table. | M | REGISTRY_PATTERN | contract switch hygiene |
 
 
 | HYG-ede84ca5 | OPEN | C | tests/game/civ5_war2_engagement_tests.cpp:200 | Magic number literal '4'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -38949,7 +38949,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-f05bc294 | OPEN | C | engine/kernel/det_invariants.h:68 | Magic number literal '8'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-f05dcea3 | OPEN | C | runtime/ui/include/dui/dui_schema_tlv.h:115 | Magic number literal '12'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
+| HYG-f05dcea3 | OPEN | C | runtime/include/dui/dui_schema_tlv.h:115 | Magic number literal '12'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
 | HYG-f05f457e | OPEN | C | runtime/network/d_net_transport.c:280 | Magic number literal '1024'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |

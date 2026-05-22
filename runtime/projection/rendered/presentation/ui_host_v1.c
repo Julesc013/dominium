@@ -1,7 +1,7 @@
 /*
-FILE: runtime/render/client/presentation/ui_host_v1.c
+FILE: runtime/projection/rendered/presentation/ui_host_v1.c
 MODULE: Dominium
-LAYER / SUBSYSTEM: Client / presentation
+LAYER / SUBSYSTEM: Runtime / rendered projection
 RESPONSIBILITY: Minimal descriptor-driven tool UI host implementation.
 ALLOWED DEPENDENCIES: ui_host_v1.h only.
 FORBIDDEN DEPENDENCIES: TruthModel headers and direct authoritative mutation APIs.

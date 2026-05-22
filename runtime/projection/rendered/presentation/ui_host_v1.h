@@ -1,14 +1,14 @@
 /*
-FILE: runtime/render/client/presentation/ui_host_v1.h
+FILE: runtime/projection/rendered/presentation/ui_host_v1.h
 MODULE: Dominium
-LAYER / SUBSYSTEM: Client / presentation
+LAYER / SUBSYSTEM: Runtime / rendered projection
 RESPONSIBILITY: Descriptor-driven tool UI host contract bound to PerceivedModel-only data.
 ALLOWED DEPENDENCIES: perceived_model_v1.h and render_model_v1.h.
 FORBIDDEN DEPENDENCIES: domino/truth_model_v1.h.
 DETERMINISM: Intent mapping from descriptor+selection+widget-state is deterministic.
 */
-#ifndef DOMINIUM_CLIENT_PRESENTATION_UI_HOST_V1_H
-#define DOMINIUM_CLIENT_PRESENTATION_UI_HOST_V1_H
+#ifndef DOMINIUM_RENDERED_PROJECTION_UI_HOST_V1_H
+#define DOMINIUM_RENDERED_PROJECTION_UI_HOST_V1_H
 
 #include "perceived_model_v1.h"
 #include "render_model_v1.h"
@@ -46,4 +46,4 @@ int dom_ui_host_build_snapshot_v1(const dom_perceived_model_v1* perceived,
 int dom_ui_host_emit_intent_v1(const dom_ui_action_request_v1* request,
                                dom_ui_intent_v1* out_intent);
 
-#endif /* DOMINIUM_CLIENT_PRESENTATION_UI_HOST_V1_H */
+#endif /* DOMINIUM_RENDERED_PROJECTION_UI_HOST_V1_H */

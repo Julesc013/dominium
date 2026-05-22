@@ -41,7 +41,7 @@ CANON-SPINE-NEW subsequently collapsed the remaining `runtime/app`, `runtime/app
 ## References Updated
 
 - Python imports now use `runtime.shell`, `runtime.ui`, and `runtime.diagnostics`.
-- The root CMake build now adds `runtime/shell/lifecycle`, `runtime/shell`, `runtime/ui/ir`, and `tools/codegen/ui/bind`.
+- The root CMake build now adds `runtime/shell/lifecycle`, `runtime/shell`, `runtime/view/ir`, and `tools/codegen/ui/bind`.
 - Active tooling and tests that referenced moved runtime source paths now point at the runtime subroots.
 
 Historical docs may still mention old root paths as history. Broader stale-doc cleanup remains CONVERGE-12.

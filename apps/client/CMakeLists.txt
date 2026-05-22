@@ -22,10 +22,10 @@ add_executable(dominium_client
     ${CMAKE_SOURCE_DIR}/runtime/ui/client/observability/perceived_model_v1.c
     ${CMAKE_SOURCE_DIR}/runtime/shell/client/client_shell.c
     ${CMAKE_SOURCE_DIR}/runtime/ui/client/client_ui_compositor.c
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation/frame_graph_builder.cpp
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation/render_prep_system.cpp
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation/render_model_adapter_v1.c
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation/ui_host_v1.c
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation/frame_graph_builder.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation/render_prep_system.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation/render_model_adapter_v1.c
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation/ui_host_v1.c
 )
 target_link_libraries(dominium_client PRIVATE
     app::runtime
@@ -44,13 +44,13 @@ target_include_directories(dominium_client PRIVATE
     ${CMAKE_SOURCE_DIR}/runtime/ui/client
     ${CMAKE_SOURCE_DIR}/runtime/ui/client/model
     ${CMAKE_SOURCE_DIR}/runtime/ui/client/observability
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation
 )
 set_source_files_properties(
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation/frame_graph_builder.cpp
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation/render_prep_system.cpp
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation/render_model_adapter_v1.c
-    ${CMAKE_SOURCE_DIR}/runtime/render/client/presentation/ui_host_v1.c
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation/frame_graph_builder.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation/render_prep_system.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation/render_model_adapter_v1.c
+    ${CMAKE_SOURCE_DIR}/runtime/projection/rendered/presentation/ui_host_v1.c
     PROPERTIES COMPILE_DEFINITIONS "DOMINIUM_RENDERER_BOUNDARY=1"
 )
 set_target_properties(dominium_client PROPERTIES

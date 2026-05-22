@@ -141,7 +141,7 @@ set(ENGINE_CORE_SOURCES
     ${CMAKE_SOURCE_DIR}/runtime/storage/io/schema_registry.c
     ${CMAKE_SOURCE_DIR}/runtime/ui/service/d_ui.c
     ${CMAKE_SOURCE_DIR}/runtime/ui/service/ui.c
-    ${CMAKE_SOURCE_DIR}/runtime/ui/tui/tui.c
+    ${CMAKE_SOURCE_DIR}/runtime/projection/text/tui.c
     ${CMAKE_SOURCE_DIR}/runtime/ui/view/d_view.c
     execution/budget_model.cpp
     execution/budgets/dg_budget.c
@@ -359,7 +359,7 @@ target_include_directories(domino_engine
         ${CMAKE_SOURCE_DIR}/runtime/render/software
         ${CMAKE_SOURCE_DIR}/runtime/storage/io
         ${CMAKE_SOURCE_DIR}/runtime/ui/service
-        ${CMAKE_SOURCE_DIR}/runtime/ui/tui
+        ${CMAKE_SOURCE_DIR}/runtime/projection/text
         ${CMAKE_SOURCE_DIR}/runtime/ui/view
 )
 

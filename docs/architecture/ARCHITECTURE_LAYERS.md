@@ -90,7 +90,7 @@ keep the engine isolated and prevent cross-layer leakage.
 - `setup/include/dsk/**` and `setup/include/dsu/**` ⇒ setup public API.
 
 
-- `runtime/ui/include/**` ⇒ tool/UI shared public API (where used).
+- `runtime/include/**` ⇒ tool/UI shared public API (where used).
 
 
 
