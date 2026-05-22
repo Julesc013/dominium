@@ -1,0 +1,116 @@
+{
+  "schema_id": "dominium.client.barebones_result",
+  "schema_version": "1.0.0",
+  "command_id": "dominium.client.status.v1",
+  "product_id": "dominium.client",
+  "app_id": "dominium.client",
+  "status": "pass",
+  "mode": "status",
+  "version_ref": {
+    "source": "DOMINIUM_GAME_VERSION",
+    "source_ref": "apps/client/main_client.c",
+    "source_ref_is_authority": false
+  },
+  "available_capabilities": [
+    "dominium.product.mode.cli",
+    "dominium.product.mode.headless"
+  ],
+  "unavailable_capabilities": [
+    {
+      "capability_id": "dominium.client.rendered_shell",
+      "status": "unavailable",
+      "diagnostic_ref": "DOM-CLIENT-RENDERED-UNAVAILABLE",
+      "refusal_ref": "dominium.refusal.client.rendered_unavailable",
+      "expected": true
+    },
+    {
+      "capability_id": "dominium.client.gameplay",
+      "status": "unavailable",
+      "diagnostic_ref": "DOM-CLIENT-GAMEPLAY-UNAVAILABLE",
+      "refusal_ref": "dominium.refusal.client.gameplay_unavailable",
+      "expected": true
+    },
+    {
+      "capability_id": "dominium.client.world_runtime",
+      "status": "unavailable",
+      "diagnostic_ref": "DOM-CLIENT-WORLD-RUNTIME-UNAVAILABLE",
+      "refusal_ref": "dominium.refusal.client.world_runtime_unavailable",
+      "expected": true
+    },
+    {
+      "capability_id": "dominium.client.package_runtime",
+      "status": "unavailable",
+      "diagnostic_ref": "DOM-CLIENT-PACKAGE-RUNTIME-UNAVAILABLE",
+      "refusal_ref": "dominium.refusal.client.package_runtime_unavailable",
+      "expected": true
+    },
+    {
+      "capability_id": "dominium.client.provider_runtime",
+      "status": "unavailable",
+      "diagnostic_ref": "DOM-CLIENT-PROVIDER-RUNTIME-UNAVAILABLE",
+      "refusal_ref": "dominium.refusal.client.provider_runtime_unavailable",
+      "expected": true
+    },
+    {
+      "capability_id": "dominium.client.module_loader",
+      "status": "unavailable",
+      "diagnostic_ref": "DOM-CLIENT-MODULE-LOADER-UNAVAILABLE",
+      "refusal_ref": "dominium.refusal.client.module_loader_unavailable",
+      "expected": true
+    }
+  ],
+  "missing_optional_content": [
+    {"kind": "packs", "required": false},
+    {"kind": "modules", "required": false},
+    {"kind": "themes", "required": false},
+    {"kind": "textures", "required": false},
+    {"kind": "sounds", "required": false},
+    {"kind": "external_fonts", "required": false}
+  ],
+  "diagnostics": [
+    {
+      "code": "DOM-CLIENT-BAREBONES-OK",
+      "severity": "info",
+      "message": "Client barebones status floor is available without optional content."
+    }
+  ],
+  "refusal_refs": [
+    "dominium.refusal.client.rendered_unavailable",
+    "dominium.refusal.client.gameplay_unavailable",
+    "dominium.refusal.client.world_runtime_unavailable",
+    "dominium.refusal.client.package_runtime_unavailable",
+    "dominium.refusal.client.provider_runtime_unavailable",
+    "dominium.refusal.client.module_loader_unavailable"
+  ],
+  "evidence_ref": {
+    "id": "dominium.client.barebones.fixture",
+    "packet_schema": "contracts/evidence/evidence_packet.schema.json",
+    "report_paths": [
+      "docs/repo/audits/BAREBONES_CLIENT_SHELL_01.md"
+    ]
+  },
+  "limitations": [
+    "status/diag/verify floor only",
+    "playable gameplay is not implemented",
+    "rendered shell is not implemented",
+    "package/provider/module runtimes are not implemented"
+  ],
+  "support_claims": {
+    "playable_gameplay": false,
+    "rendered_shell": false,
+    "package_runtime": false,
+    "provider_runtime": false,
+    "module_loader": false,
+    "world_runtime": false,
+    "release_supported": false
+  },
+  "runtime_support": {
+    "runtime_appshell_broad": false,
+    "rendered_shell_implemented": false,
+    "gameplay_implemented": false,
+    "world_runtime_implemented": false,
+    "package_runtime_implemented": false,
+    "provider_runtime_implemented": false,
+    "module_loader_implemented": false
+  }
+}

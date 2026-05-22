@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.client.barebones_input.v1",
+  "title": "Dominium Client Barebones Command Input",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "command_id",
+    "mode",
+    "product_id"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.client.barebones_input"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "command_id": {
+      "type": "string",
+      "enum": [
+        "dominium.client.status.v1",
+        "dominium.client.diag.v1",
+        "dominium.client.verify.v1"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "status",
+        "diag",
+        "verify"
+      ]
+    },
+    "product_id": {
+      "type": "string",
+      "const": "dominium.client"
+    },
+    "requested_surface": {
+      "type": "string",
+      "enum": [
+        "cli",
+        "headless",
+        "test"
+      ]
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": "dominium.aide.task_validation.v1",
+  "task": "BAREBONES-CLIENT-SHELL-01",
+  "status": "PASS_WITH_WARNINGS",
+  "date": "2026-05-22",
+  "command_ids": [
+    "dominium.client.status.v1",
+    "dominium.client.diag.v1",
+    "dominium.client.verify.v1"
+  ],
+  "result_schemas": [
+    "contracts/result/client_barebones_result.schema.json"
+  ],
+  "input_schemas": [
+    "contracts/command/client_barebones_input.schema.json"
+  ],
+  "tests": [
+    {
+      "command": "py -3 tests/app/client_barebones_shell_tests.py",
+      "status": "pass"
+    },
+    {
+      "command": "python tools/test/run_fast_strict.py --repo-root . --json-out .aide/reports/BAREBONES-CLIENT-SHELL-01-fast-strict.json --md-out .aide/reports/BAREBONES-CLIENT-SHELL-01-fast-strict.md",
+      "status": "pass"
+    }
+  ],
+  "validators": {
+    "check_app_descriptors": "pass",
+    "check_command_surface": "pass",
+    "check_diagnostics_registry": "pass",
+    "check_artifact_identity": "pass",
+    "check_capability_refusal": "pass",
+    "check_provider_model": "pass",
+    "check_module_descriptors": "pass",
+    "check_workbench_workspaces": "pass",
+    "check_composition_plan": "pass",
+    "check_replay_proof": "pass",
+    "check_package_mount_slice": "pass",
+    "check_mod_pack_trust": "pass",
+    "check_public_surface": "pass",
+    "check_dependency_directions": "pass_with_known_warnings",
+    "check_component_matrices": "pass",
+    "check_portability_matrix": "pass",
+    "verify_docs_sanity": "pass",
+    "verify_build_target_boundaries": "pass",
+    "verify_ui_shell_purity": "pass",
+    "verify_abi_boundaries": "pass",
+    "aide_doctor": "pass",
+    "aide_validate": "pass_with_known_review_ref_warnings"
+  },
+  "known_warnings": [
+    "full CTest remains NOT_RUN_T4_DEBT",
+    "dependency-direction strict remains PASS with 0 violations and 68 known warnings",
+    "AIDE validate review-reference warnings remain",
+    "RepoX stale AuditX output warning remains",
+    "client gameplay, rendered UI, package runtime, provider runtime, module loader, world/save runtime, and release support remain unavailable"
+  ],
+  "non_goals_preserved": [
+    "playable client",
+    "renderer or rendered GUI",
+    "native GUI",
+    "package runtime",
+    "provider runtime",
+    "runtime module loader",
+    "world/save runtime",
+    "release publication",
+    "broad AppShell"
+  ],
+  "next": "PRODUCT-SPINE-REVIEW-01"
+}

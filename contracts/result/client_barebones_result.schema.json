@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.client.barebones_result.v1",
+  "title": "Dominium Client Barebones Result",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "command_id",
+    "product_id",
+    "app_id",
+    "status",
+    "mode",
+    "available_capabilities",
+    "unavailable_capabilities",
+    "missing_optional_content",
+    "diagnostics",
+    "refusal_refs",
+    "limitations",
+    "support_claims",
+    "runtime_support"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.client.barebones_result"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "command_id": {
+      "type": "string",
+      "enum": [
+        "dominium.client.status.v1",
+        "dominium.client.diag.v1",
+        "dominium.client.verify.v1"
+      ]
+    },
+    "product_id": {
+      "type": "string",
+      "const": "dominium.client"
+    },
+    "app_id": {
+      "type": "string",
+      "const": "dominium.client"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "pass_with_warnings",
+        "fail",
+        "refused"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "status",
+        "diag",
+        "verify",
+        "rendered",
+        "gameplay"
+      ]
+    },
+    "version_ref": {
+      "type": "object"
+    },
+    "available_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unavailable_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "capability_id",
+          "status",
+          "diagnostic_ref",
+          "refusal_ref",
+          "expected"
+        ],
+        "properties": {
+          "capability_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "const": "unavailable"
+          },
+          "diagnostic_ref": {
+            "type": "string"
+          },
+          "refusal_ref": {
+            "type": "string"
+          },
+          "expected": {
+            "type": "boolean",
+            "const": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "missing_optional_content": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "required"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean",
+            "const": false
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "refusal_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_ref": {
+      "type": "object"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "support_claims": {
+      "type": "object",
+      "required": [
+        "playable_gameplay",
+        "rendered_shell",
+        "package_runtime",
+        "provider_runtime",
+        "module_loader",
+        "world_runtime",
+        "release_supported"
+      ],
+      "properties": {
+        "playable_gameplay": {
+          "type": "boolean",
+          "const": false
+        },
+        "rendered_shell": {
+          "type": "boolean",
+          "const": false
+        },
+        "package_runtime": {
+          "type": "boolean",
+          "const": false
+        },
+        "provider_runtime": {
+          "type": "boolean",
+          "const": false
+        },
+        "module_loader": {
+          "type": "boolean",
+          "const": false
+        },
+        "world_runtime": {
+          "type": "boolean",
+          "const": false
+        },
+        "release_supported": {
+          "type": "boolean",
+          "const": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "runtime_support": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

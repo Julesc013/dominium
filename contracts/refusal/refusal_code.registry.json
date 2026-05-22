@@ -1993,6 +1993,238 @@
         "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
       ],
       "notes": "Fixture proof is evidence for a narrow command path only."
+    },
+    {
+      "refusal_id": "dominium.refusal.client.rendered_unavailable",
+      "code": "dominium.refusal.client.rendered_unavailable",
+      "owner": "apps.client",
+      "category": "capability",
+      "stability": "provisional",
+      "summary": "Client rendered shell is unavailable.",
+      "reason": "The barebones client slice provides CLI/headless status only and does not implement renderer or rendered UI support.",
+      "recovery": {
+        "action": "use_degraded_mode",
+        "summary": "Use CLI/headless status, diag, or verify surfaces until a reviewed rendered client shell task lands."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-CLIENT-RENDERED-UNAVAILABLE"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CLIENT-RENDERED-UNAVAILABLE"
+      ],
+      "related_capabilities": [
+        "dominium.client.rendered_shell"
+      ],
+      "related_commands": [
+        "dominium.client.status.v1",
+        "dominium.client.diag.v1",
+        "dominium.client.verify.v1"
+      ],
+      "proof": [
+        "py -3 tests/app/client_barebones_shell_tests.py",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Rendered/native UI remains blocked outside this task."
+    },
+    {
+      "refusal_id": "dominium.refusal.client.gameplay_unavailable",
+      "code": "dominium.refusal.client.gameplay_unavailable",
+      "owner": "apps.client",
+      "category": "capability",
+      "stability": "provisional",
+      "summary": "Client gameplay is unavailable.",
+      "reason": "The barebones client slice does not implement playable gameplay or domain runtime behavior.",
+      "recovery": {
+        "action": "use_degraded_mode",
+        "summary": "Use status, diag, or verify surfaces and defer gameplay to a reviewed product/runtime task."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-CLIENT-GAMEPLAY-UNAVAILABLE"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CLIENT-GAMEPLAY-UNAVAILABLE"
+      ],
+      "related_capabilities": [
+        "dominium.client.gameplay"
+      ],
+      "related_commands": [
+        "dominium.client.status.v1",
+        "dominium.client.diag.v1",
+        "dominium.client.verify.v1"
+      ],
+      "proof": [
+        "py -3 tests/app/client_barebones_shell_tests.py",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Barebones proof must not claim playable gameplay."
+    },
+    {
+      "refusal_id": "dominium.refusal.client.world_runtime_unavailable",
+      "code": "dominium.refusal.client.world_runtime_unavailable",
+      "owner": "apps.client",
+      "category": "capability",
+      "stability": "provisional",
+      "summary": "Client world runtime is unavailable.",
+      "reason": "World and save runtime support is outside the barebones client proof.",
+      "recovery": {
+        "action": "use_degraded_mode",
+        "summary": "Use barebones status, diag, or verify; defer world/save runtime to reviewed runtime work."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-CLIENT-WORLD-RUNTIME-UNAVAILABLE"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CLIENT-WORLD-RUNTIME-UNAVAILABLE"
+      ],
+      "related_capabilities": [
+        "dominium.client.world_runtime"
+      ],
+      "related_commands": [
+        "dominium.client.status.v1",
+        "dominium.client.diag.v1",
+        "dominium.client.verify.v1"
+      ],
+      "proof": [
+        "py -3 tests/app/client_barebones_shell_tests.py",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "World/save runtime support is not implemented."
+    },
+    {
+      "refusal_id": "dominium.refusal.client.package_runtime_unavailable",
+      "code": "dominium.refusal.client.package_runtime_unavailable",
+      "owner": "apps.client",
+      "category": "capability",
+      "stability": "provisional",
+      "summary": "Client package runtime is unavailable.",
+      "reason": "Package mount is fixture/proof-level only and the client does not implement runtime package mounting.",
+      "recovery": {
+        "action": "use_degraded_mode",
+        "summary": "Use barebones status, diag, or verify; defer package runtime to reviewed package runtime work."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-CLIENT-PACKAGE-RUNTIME-UNAVAILABLE"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CLIENT-PACKAGE-RUNTIME-UNAVAILABLE"
+      ],
+      "related_capabilities": [
+        "dominium.client.package_runtime"
+      ],
+      "related_commands": [
+        "dominium.client.status.v1",
+        "dominium.client.diag.v1",
+        "dominium.client.verify.v1"
+      ],
+      "proof": [
+        "py -3 tests/app/client_barebones_shell_tests.py",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Package runtime and mod loading remain blocked."
+    },
+    {
+      "refusal_id": "dominium.refusal.client.provider_runtime_unavailable",
+      "code": "dominium.refusal.client.provider_runtime_unavailable",
+      "owner": "apps.client",
+      "category": "capability",
+      "stability": "provisional",
+      "summary": "Client provider runtime is unavailable.",
+      "reason": "Provider runtime selection/loading is outside the barebones client proof.",
+      "recovery": {
+        "action": "use_degraded_mode",
+        "summary": "Use barebones status, diag, or verify; defer provider runtime to reviewed provider work."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-CLIENT-PROVIDER-RUNTIME-UNAVAILABLE"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CLIENT-PROVIDER-RUNTIME-UNAVAILABLE"
+      ],
+      "related_capabilities": [
+        "dominium.client.provider_runtime"
+      ],
+      "related_commands": [
+        "dominium.client.status.v1",
+        "dominium.client.diag.v1",
+        "dominium.client.verify.v1"
+      ],
+      "proof": [
+        "py -3 tests/app/client_barebones_shell_tests.py",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Provider runtime remains blocked."
+    },
+    {
+      "refusal_id": "dominium.refusal.client.module_loader_unavailable",
+      "code": "dominium.refusal.client.module_loader_unavailable",
+      "owner": "apps.client",
+      "category": "capability",
+      "stability": "provisional",
+      "summary": "Client runtime module loader is unavailable.",
+      "reason": "Runtime module loading is outside the barebones client proof.",
+      "recovery": {
+        "action": "use_degraded_mode",
+        "summary": "Use barebones status, diag, or verify; defer runtime module loading to reviewed module/runtime work."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-CLIENT-MODULE-LOADER-UNAVAILABLE"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CLIENT-MODULE-LOADER-UNAVAILABLE"
+      ],
+      "related_capabilities": [
+        "dominium.client.module_loader"
+      ],
+      "related_commands": [
+        "dominium.client.status.v1",
+        "dominium.client.diag.v1",
+        "dominium.client.verify.v1"
+      ],
+      "proof": [
+        "py -3 tests/app/client_barebones_shell_tests.py",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Runtime module loading remains blocked."
+    },
+    {
+      "refusal_id": "dominium.refusal.client.mode_unsupported",
+      "code": "dominium.refusal.client.mode_unsupported",
+      "owner": "apps.client",
+      "category": "capability",
+      "stability": "provisional",
+      "summary": "Requested client mode is unsupported.",
+      "reason": "The requested client mode is outside the barebones CLI/headless status proof surface.",
+      "recovery": {
+        "action": "select_alternative",
+        "summary": "Choose status, diag, verify, CLI, or headless mode until a reviewed task adds broader support."
+      },
+      "evidence_reference": "contracts/evidence/evidence_packet.schema.json",
+      "diagnostic_codes": [
+        "DOM-CLIENT-MODE-UNSUPPORTED"
+      ],
+      "related_diagnostic_codes": [
+        "DOM-CLIENT-MODE-UNSUPPORTED"
+      ],
+      "related_capabilities": [
+        "dominium.product.mode.cli",
+        "dominium.product.mode.headless"
+      ],
+      "related_commands": [
+        "dominium.client.status.v1",
+        "dominium.client.diag.v1",
+        "dominium.client.verify.v1"
+      ],
+      "proof": [
+        "py -3 tests/app/client_barebones_shell_tests.py",
+        "python tools/validators/contracts/check_capability_refusal.py --repo-root . --strict"
+      ],
+      "notes": "Unsupported client modes refuse explicitly instead of silently falling back or claiming runtime support."
     }
   ],
   "full_registry_owner": "CAPABILITY-REFUSAL-LAW-01",

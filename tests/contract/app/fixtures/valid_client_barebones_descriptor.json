@@ -1,0 +1,45 @@
+{
+  "app_id": "dominium.client",
+  "product_id": "dominium.client",
+  "owner": "apps.client",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "modes": [
+    "cli",
+    "headless"
+  ],
+  "required_services": [],
+  "enabled_modules": [],
+  "default_packs": [],
+  "default_profiles": [],
+  "provider_preferences": [],
+  "required_capabilities": [
+    "dominium.product.mode.cli",
+    "dominium.product.mode.headless"
+  ],
+  "barebones_floor": {
+    "status": "fixture_and_cli_backed",
+    "optional_packs_required": false,
+    "optional_modules_required": false,
+    "themes_required": false,
+    "textures_required": false,
+    "sounds_required": false,
+    "external_fonts_required": false,
+    "gpu_required": false,
+    "network_required": false,
+    "package_runtime_required": false,
+    "gameplay_runtime_required": false
+  },
+  "unavailable_capabilities": [
+    "dominium.client.rendered_shell",
+    "dominium.client.gameplay",
+    "dominium.client.world_runtime",
+    "dominium.client.package_runtime",
+    "dominium.client.provider_runtime",
+    "dominium.client.module_loader"
+  ],
+  "proof": [
+    "py -3 tests/app/client_barebones_shell_tests.py"
+  ],
+  "notes": "Barebones descriptor proof only; playable gameplay, rendered shell, package runtime, provider runtime, and module loader remain unavailable."
+}

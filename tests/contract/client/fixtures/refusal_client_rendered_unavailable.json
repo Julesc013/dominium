@@ -1,0 +1,44 @@
+{
+  "schema_id": "dominium.client.barebones_result",
+  "schema_version": "1.0.0",
+  "command_id": "dominium.client.status.v1",
+  "product_id": "dominium.client",
+  "app_id": "dominium.client",
+  "status": "refused",
+  "mode": "rendered",
+  "available_capabilities": [
+    "dominium.product.mode.cli",
+    "dominium.product.mode.headless"
+  ],
+  "unavailable_capabilities": [
+    {
+      "capability_id": "dominium.client.rendered_shell",
+      "status": "unavailable",
+      "diagnostic_ref": "DOM-CLIENT-RENDERED-UNAVAILABLE",
+      "refusal_ref": "dominium.refusal.client.rendered_unavailable",
+      "expected": true
+    }
+  ],
+  "missing_optional_content": [],
+  "diagnostics": [
+    {"code": "DOM-CLIENT-RENDERED-UNAVAILABLE", "severity": "error"}
+  ],
+  "refusal_refs": [
+    "dominium.refusal.client.rendered_unavailable"
+  ],
+  "limitations": [
+    "rendered shell is not implemented by this slice"
+  ],
+  "support_claims": {
+    "playable_gameplay": false,
+    "rendered_shell": false,
+    "package_runtime": false,
+    "provider_runtime": false,
+    "module_loader": false,
+    "world_runtime": false,
+    "release_supported": false
+  },
+  "runtime_support": {
+    "rendered_shell_implemented": false
+  }
+}

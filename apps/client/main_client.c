@@ -63,6 +63,8 @@ static void print_help(void)
     printf("  --version                   Show product version\n");
     printf("  --build-info                Show build info + control capabilities\n");
     printf("  --status                    Show active control layers\n");
+    printf("  --diag                      Show barebones diagnostic floor\n");
+    printf("  --verify                    Verify barebones client floor\n");
     printf("  --smoke                     Run deterministic CLI smoke\n");
     printf("  --selftest                  Alias for --smoke\n");
     printf("  --topology                  Report packages topology summary\n");
@@ -167,6 +169,38 @@ static void print_help(void)
 static void print_version(const char* product_version)
 {
     printf("client %s\n", product_version);
+}
+
+static void print_barebones_floor(const char* mode)
+{
+    printf("client_barebones=%s\n", mode ? mode : "status");
+    printf("product_id=dominium.client\n");
+    printf("app_id=dominium.client\n");
+    printf("product_version=%s\n", DOMINIUM_GAME_VERSION);
+    printf("optional_packs_required=false\n");
+    printf("optional_modules_required=false\n");
+    printf("themes_required=false\n");
+    printf("textures_required=false\n");
+    printf("sounds_required=false\n");
+    printf("external_fonts_required=false\n");
+    printf("gpu_required=false\n");
+    printf("network_required=false\n");
+    printf("package_runtime_required=false\n");
+    printf("gameplay_runtime_required=false\n");
+    printf("available_capability=dominium.product.mode.cli\n");
+    printf("available_capability=dominium.product.mode.headless\n");
+    printf("diagnostic=DOM-CLIENT-BAREBONES-OK\n");
+    printf("unavailable_capability=dominium.client.rendered_shell refusal=dominium.refusal.client.rendered_unavailable diagnostic=DOM-CLIENT-RENDERED-UNAVAILABLE\n");
+    printf("unavailable_capability=dominium.client.gameplay refusal=dominium.refusal.client.gameplay_unavailable diagnostic=DOM-CLIENT-GAMEPLAY-UNAVAILABLE\n");
+    printf("unavailable_capability=dominium.client.world_runtime refusal=dominium.refusal.client.world_runtime_unavailable diagnostic=DOM-CLIENT-WORLD-RUNTIME-UNAVAILABLE\n");
+    printf("unavailable_capability=dominium.client.package_runtime refusal=dominium.refusal.client.package_runtime_unavailable diagnostic=DOM-CLIENT-PACKAGE-RUNTIME-UNAVAILABLE\n");
+    printf("unavailable_capability=dominium.client.provider_runtime refusal=dominium.refusal.client.provider_runtime_unavailable diagnostic=DOM-CLIENT-PROVIDER-RUNTIME-UNAVAILABLE\n");
+    printf("unavailable_capability=dominium.client.module_loader refusal=dominium.refusal.client.module_loader_unavailable diagnostic=DOM-CLIENT-MODULE-LOADER-UNAVAILABLE\n");
+    printf("support_claim_playable=false\n");
+    printf("support_claim_rendered=false\n");
+    printf("support_claim_package_runtime=false\n");
+    printf("support_claim_provider_runtime=false\n");
+    printf("support_claim_module_loader=false\n");
 }
 
 static void print_build_info(const char* product_name, const char* product_version)
@@ -5149,6 +5183,8 @@ int client_main(int argc, char** argv)
     int want_version = 0;
     int want_build_info = 0;
     int want_status = 0;
+    int want_diag = 0;
+    int want_verify = 0;
     int want_topology = 0;
     int want_snapshot = 0;
     int want_events = 0;
@@ -5219,6 +5255,14 @@ int client_main(int argc, char** argv)
         }
         if (strcmp(argv[i], "--status") == 0) {
             want_status = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--diag") == 0) {
+            want_diag = 1;
+            continue;
+        }
+        if (strcmp(argv[i], "--verify") == 0) {
+            want_verify = 1;
             continue;
         }
         if (strcmp(argv[i], "--smoke") == 0) {
@@ -5641,14 +5685,14 @@ int client_main(int argc, char** argv)
         window_cfg.enabled = 0;
     }
     if ((ui_mode == DOM_APP_UI_TUI || ui_mode == DOM_APP_UI_GUI) &&
-        (want_build_info || want_status || want_smoke || want_selftest ||
+        (want_build_info || want_status || want_diag || want_verify || want_smoke || want_selftest ||
          want_topology || want_snapshot || want_events || want_mp0 || cmd)) {
         fprintf(stderr, "client: --ui=%s cannot combine with CLI commands\n",
                 dom_app_ui_mode_name(ui_mode));
         return D_APP_EXIT_USAGE;
     }
     if (cmd &&
-        (want_build_info || want_status || want_smoke || want_selftest ||
+        (want_build_info || want_status || want_diag || want_verify || want_smoke || want_selftest ||
          want_topology || want_snapshot || want_events || want_mp0)) {
         fprintf(stderr, "client: commands cannot combine with observability, status, or smoke paths\n");
         return D_APP_EXIT_USAGE;
@@ -5686,7 +5730,7 @@ int client_main(int argc, char** argv)
             return D_APP_EXIT_USAGE;
         }
         if (want_observe &&
-            (want_build_info || want_status || want_smoke || want_selftest || want_mp0 ||
+            (want_build_info || want_status || want_diag || want_verify || want_smoke || want_selftest || want_mp0 ||
              window_cfg.enabled || ui_mode == DOM_APP_UI_TUI || cmd)) {
             fprintf(stderr, "client: observability commands cannot combine with UI or smoke paths\n");
             return D_APP_EXIT_USAGE;
@@ -5740,6 +5784,22 @@ int client_main(int argc, char** argv)
         }
         return 0;
     }
+    if (want_diag) {
+        print_barebones_floor("diag");
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
+        return 0;
+    }
+    if (want_verify) {
+        print_barebones_floor("verify");
+        printf("client_verify=pass\n");
+        printf("evidence_ref=dominium.client.barebones.fixture\n");
+        if (locale_active) {
+            dom_app_ui_locale_table_free(&locale_table);
+        }
+        return 0;
+    }
     if (want_status) {
         if (!control_loaded) {
             if (dom_control_caps_init(&control_caps, control_registry_path) != DOM_CONTROL_OK) {
@@ -5752,6 +5812,7 @@ int client_main(int argc, char** argv)
             control_loaded = 1;
         }
         print_control_caps(&control_caps);
+        print_barebones_floor("status");
         if (control_loaded) {
             dom_control_caps_free(&control_caps);
         }

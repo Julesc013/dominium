@@ -719,6 +719,124 @@
       "notes": "Contract and fixture capability only; runtime resolver is not implemented."
     },
     {
+        "capability_id": "dominium.client.rendered_shell",
+        "kind": "render",
+        "owner": "apps.client",
+        "version": "0.1.0",
+        "stability": "provisional",
+        "description": "Rendered client shell capability, explicitly unavailable in the barebones client proof.",
+        "provided_by": [],
+        "requires": [
+            "dominium.product.mode.rendered"
+        ],
+        "conflicts": [],
+        "scope": "future client rendered presentation capability",
+        "determinism_impact": "presentation only; no authoritative gameplay truth is owned here",
+        "security_impact": "rendered shell support claims require reviewed runtime/render evidence",
+        "platform_constraints": [],
+        "proof": [
+            "py -3 tests/app/client_barebones_shell_tests.py"
+        ],
+        "notes": "Registered as unavailable for BAREBONES-CLIENT-SHELL-01; renderer and rendered UI are not implemented."
+    },
+    {
+        "capability_id": "dominium.client.gameplay",
+        "kind": "module",
+        "owner": "apps.client",
+        "version": "0.1.0",
+        "stability": "provisional",
+        "description": "Playable client gameplay capability, explicitly unavailable in the barebones client proof.",
+        "provided_by": [],
+        "requires": [],
+        "conflicts": [],
+        "scope": "future playable client behavior",
+        "determinism_impact": "authoritative gameplay support requires deterministic simulation proof",
+        "security_impact": "gameplay support claims require reviewed product/runtime evidence",
+        "platform_constraints": [],
+        "proof": [
+            "py -3 tests/app/client_barebones_shell_tests.py"
+        ],
+        "notes": "Barebones status, diag, and verify do not claim playable gameplay."
+    },
+    {
+        "capability_id": "dominium.client.world_runtime",
+        "kind": "module",
+        "owner": "apps.client",
+        "version": "0.1.0",
+        "stability": "provisional",
+        "description": "Client world/save runtime capability, explicitly unavailable in the barebones client proof.",
+        "provided_by": [],
+        "requires": [],
+        "conflicts": [],
+        "scope": "future client world and save runtime support",
+        "determinism_impact": "world/save support requires replay and migration evidence beyond this slice",
+        "security_impact": "world/save runtime support requires reviewed persistence and trust boundaries",
+        "platform_constraints": [],
+        "proof": [
+            "py -3 tests/app/client_barebones_shell_tests.py"
+        ],
+        "notes": "World and save runtimes are not implemented by BAREBONES-CLIENT-SHELL-01."
+    },
+    {
+        "capability_id": "dominium.client.package_runtime",
+        "kind": "package",
+        "owner": "apps.client",
+        "version": "0.1.0",
+        "stability": "provisional",
+        "description": "Client package runtime capability, explicitly unavailable in the barebones client proof.",
+        "provided_by": [],
+        "requires": [
+            "domino.package.validate"
+        ],
+        "conflicts": [],
+        "scope": "future client package mounting/runtime consumption",
+        "determinism_impact": "runtime package mounting must preserve deterministic composition evidence",
+        "security_impact": "package runtime support requires trust and capability enforcement",
+        "platform_constraints": [],
+        "proof": [
+            "py -3 tests/app/client_barebones_shell_tests.py"
+        ],
+        "notes": "Package mount is fixture/proof-level only; client package runtime remains unavailable."
+    },
+    {
+        "capability_id": "dominium.client.provider_runtime",
+        "kind": "provider",
+        "owner": "apps.client",
+        "version": "0.1.0",
+        "stability": "provisional",
+        "description": "Client provider runtime capability, explicitly unavailable in the barebones client proof.",
+        "provided_by": [],
+        "requires": [],
+        "conflicts": [],
+        "scope": "future client provider selection and runtime binding",
+        "determinism_impact": "provider selection must not silently alter authoritative truth",
+        "security_impact": "provider runtime support requires provider trust and conformance evidence",
+        "platform_constraints": [],
+        "proof": [
+            "py -3 tests/app/client_barebones_shell_tests.py"
+        ],
+        "notes": "Provider runtime remains blocked; this capability is registered for explicit refusal only."
+    },
+    {
+        "capability_id": "dominium.client.module_loader",
+        "kind": "module",
+        "owner": "apps.client",
+        "version": "0.1.0",
+        "stability": "provisional",
+        "description": "Client runtime module loader capability, explicitly unavailable in the barebones client proof.",
+        "provided_by": [],
+        "requires": [],
+        "conflicts": [],
+        "scope": "future runtime module loading for client composition",
+        "determinism_impact": "module loading must be registry and evidence governed before product use",
+        "security_impact": "module loading requires explicit trust, sandbox, and capability policy",
+        "platform_constraints": [],
+        "proof": [
+            "py -3 tests/app/client_barebones_shell_tests.py"
+        ],
+        "notes": "Runtime module loading remains blocked and is not implemented by this slice."
+    },
+    {
         "capability_id": "dominium.service.conformance.validate",
         "kind": "test",
         "owner": "contracts.service",

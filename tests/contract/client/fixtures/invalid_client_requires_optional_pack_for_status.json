@@ -1,0 +1,34 @@
+{
+  "schema_id": "dominium.client.barebones_result",
+  "schema_version": "1.0.0",
+  "command_id": "dominium.client.status.v1",
+  "product_id": "dominium.client",
+  "app_id": "dominium.client",
+  "status": "pass",
+  "mode": "status",
+  "available_capabilities": [
+    "dominium.product.mode.cli"
+  ],
+  "unavailable_capabilities": [],
+  "missing_optional_content": [
+    {"kind": "packs", "required": true}
+  ],
+  "diagnostics": [],
+  "refusal_refs": [],
+  "limitations": [],
+  "support_claims": {
+    "playable_gameplay": false,
+    "rendered_shell": false,
+    "package_runtime": false,
+    "provider_runtime": false,
+    "module_loader": false,
+    "world_runtime": false,
+    "release_supported": false
+  },
+  "runtime_support": {
+    "package_runtime_implemented": false
+  },
+  "expected_failures": [
+    "requires_optional_pack_for_status"
+  ]
+}

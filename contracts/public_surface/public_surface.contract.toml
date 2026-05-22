@@ -2453,3 +2453,81 @@ proof = ["python scripts/verify_docs_sanity.py --repo-root .", "python tools/val
 compatibility = "not_yet_stable"
 replacement_policy = "requires_replay_proof_law_update"
 notes = "Architecture law for command-level replay/proof evidence. It explicitly does not claim full runtime replay, world replay, save replay, gameplay replay, or release support."
+
+[[surface]]
+id = "dominium.client.barebones.command.v1"
+kind = "command"
+path = "contracts/command/command_surface.contract.toml"
+owner = "apps.client"
+stability = "provisional"
+version = "0.1.0"
+introduced = "BAREBONES-CLIENT-SHELL-01"
+proof = ["py -3 tests/app/client_barebones_shell_tests.py", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_barebones_client_shell_update"
+notes = "Client status/diag/verify command surfaces for no-content recovery-floor proof. This does not claim playable gameplay, rendered UI, package runtime, provider runtime, module loading, or release support."
+
+[[surface]]
+id = "dominium.client.barebones.input.schema.v1"
+kind = "schema"
+path = "contracts/command/client_barebones_input.schema.json"
+owner = "apps.client"
+stability = "provisional"
+version = "1.0.0"
+introduced = "BAREBONES-CLIENT-SHELL-01"
+proof = ["python -m json.tool contracts/command/client_barebones_input.schema.json", "py -3 tests/app/client_barebones_shell_tests.py"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_barebones_client_shell_schema_update"
+notes = "Input schema for fixture-backed client status, diagnostic, and verify command proof."
+
+[[surface]]
+id = "dominium.client.barebones.result.schema.v1"
+kind = "schema"
+path = "contracts/result/client_barebones_result.schema.json"
+owner = "apps.client"
+stability = "provisional"
+version = "1.0.0"
+introduced = "BAREBONES-CLIENT-SHELL-01"
+proof = ["python -m json.tool contracts/result/client_barebones_result.schema.json", "py -3 tests/app/client_barebones_shell_tests.py"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_barebones_client_shell_schema_update"
+notes = "Result schema for client barebones status/diag/verify results and explicit unsupported capability refusals."
+
+[[surface]]
+id = "dominium.client.barebones.app_descriptor.v1"
+kind = "app_descriptor"
+path = "tests/contract/app/fixtures/valid_client_barebones_descriptor.json"
+owner = "apps.client"
+stability = "provisional"
+version = "0.1.0"
+introduced = "BAREBONES-CLIENT-SHELL-01"
+proof = ["python tools/validators/contracts/check_app_descriptors.py --repo-root . --strict", "py -3 tests/app/client_barebones_shell_tests.py"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_client_app_descriptor_update"
+notes = "Fixture-backed app descriptor for the no-content client floor. It records CLI/headless support only and no default packs/modules/providers."
+
+[[surface]]
+id = "dominium.client.barebones.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/client"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "BAREBONES-CLIENT-SHELL-01"
+proof = ["py -3 tests/app/client_barebones_shell_tests.py"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_barebones_client_shell_tests"
+notes = "Fixture suite for valid barebones status/diag results, rendered/gameplay refusals, and negative unsupported support-claim cases."
+
+[[surface]]
+id = "dominium.client.barebones.docs.v1"
+kind = "documentation"
+path = "docs/architecture/barebones_client_shell.md"
+owner = "docs.architecture"
+stability = "provisional"
+version = "0.1.0"
+introduced = "BAREBONES-CLIENT-SHELL-01"
+proof = ["python scripts/verify_docs_sanity.py --repo-root .", "py -3 tests/app/client_barebones_shell_tests.py"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_barebones_client_shell_doc_update"
+notes = "Architecture doc for the client survival floor and explicit non-implementation boundaries."

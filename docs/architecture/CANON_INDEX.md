@@ -614,6 +614,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/view_action_projection_model.md`
 - `docs/architecture/workbench_workspace_model.md`
 - `docs/architecture/app_composition_model.md`
+- `docs/architecture/barebones_client_shell.md`
 - `docs/architecture/DEPRECATION_AND_QUARANTINE.md`
 - `docs/architecture/DEPRECATION_LIFECYCLE.md`
 - `docs/architecture/DIRECTORY_CONTEXT.md`
