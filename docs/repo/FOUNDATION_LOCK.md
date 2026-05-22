@@ -66,8 +66,8 @@ Foundation Lock is PASS_WITH_WARNINGS.
 ## Allowed Work
 
 - Continue narrow governed product-spine slices recorded by `.aide/queue/current.toml`.
-- Run `REPLAY-PROOF-SLICE-01` next if the queue remains reconciled after
-  `PACKAGE-MOUNT-SLICE-01`.
+- Run `AIDE-WORKFLOW-LAW-01` next if the queue remains reconciled after
+  `PRODUCT-SPINE-REVIEW-01`.
 - Run `POINTER-WIDTH-SERIALIZATION-AUDIT-01` only if the descriptive pointer-width inventory should be promoted into a focused audit.
 - Continue documentation and evidence updates that do not bypass Foundation laws.
 - Continue documentation and evidence updates that keep remaining warnings and full-gate debt visible.
@@ -86,7 +86,8 @@ When the lock eventually passes, future narrow slices must register public surfa
 
 `FOUNDATION-CLOSEOUT-02` authorized narrow product-spine work. Completed
 narrow slices include `WORKBENCH-VALIDATION-SLICE-01`,
-`COMMAND-RESULT-VIEW-SLICE-01`, and `PACKAGE-MOUNT-SLICE-01`.
+`COMMAND-RESULT-VIEW-SLICE-01`, `PACKAGE-MOUNT-SLICE-01`,
+`REPLAY-PROOF-SLICE-01`, and `BAREBONES-CLIENT-SHELL-01`.
 
 This authorization remains narrow. It does not authorize broad Workbench UI,
 gameplay, renderer, native GUI, runtime provider expansion, package runtime,
@@ -94,6 +95,6 @@ release publication, or domain feature work.
 
 Next recommended tasks:
 
-1. `REPLAY-PROOF-SLICE-01`
-2. `BAREBONES-CLIENT-SHELL-01`
-3. `AIDE-WORKFLOW-LAW-01`
+1. `AIDE-WORKFLOW-LAW-01`
+2. `PRESENTATION-CONTRACT-01`
+3. `POINTER-WIDTH-SERIALIZATION-AUDIT-01`

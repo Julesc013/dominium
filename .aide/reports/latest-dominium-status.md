@@ -1,22 +1,29 @@
 # Latest Dominium Status
 
-Current task: `QUEUE-RECONCILE-01`.
+Current task: `PRODUCT-SPINE-REVIEW-01`.
 
 Result: PASS_WITH_WARNINGS.
 
 ## Current State
 
 - Foundation Lock remains `PASS_WITH_WARNINGS`.
-- `PORTABILITY-ARCH-POLICY-02` is complete.
-- `MATRIX-CLEANUP-00` is complete.
-- `WORKBENCH-VALIDATION-SLICE-01` is complete and narrow.
-- Wave 1 service, document/patch/transaction, project graph, composition, and
-  doctrine recovery surfaces are complete with warnings where noted.
 - `COMMAND-RESULT-VIEW-SLICE-01` is complete.
-- `PHASE-REVIEW-02` is complete.
-- `PACKAGE-MOUNT-SLICE-01` is complete as commit `8ba553590` with
-  `PASS_WITH_WARNINGS`.
+- `PACKAGE-MOUNT-SLICE-01` is complete with `PASS_WITH_WARNINGS`.
+- `REPLAY-PROOF-SLICE-01` is complete with `PASS_WITH_WARNINGS`.
+- `BAREBONES-CLIENT-SHELL-01` is complete with `PASS_WITH_WARNINGS`.
+- Product-spine review finds the narrow spine coherent and not overclaiming runtime support.
 - Broad feature work remains blocked.
+
+## Product Spine Proven
+
+```text
+command/result/view proof
+-> package/profile mount planning proof
+-> command-level replay/proof verification
+-> barebones client no-content survival floor
+```
+
+This is a narrow governed spine only. Package runtime, replay runtime, gameplay, renderer, native GUI, provider runtime, module loader, Workbench shell, and release publication are not implemented.
 
 ## Completed Since Foundation Closeout
 
@@ -32,25 +39,22 @@ Result: PASS_WITH_WARNINGS.
 - `PHASE-REVIEW-02`
 - `PACKAGE-MOUNT-SLICE-01`
 - `QUEUE-RECONCILE-01`
+- `REPLAY-PROOF-SLICE-01`
+- `BAREBONES-CLIENT-SHELL-01`
+- `PRODUCT-SPINE-REVIEW-01`
 
 ## Remaining Debt
 
 - Full CTest remains T4/full-gate debt and is not claimed green.
 - Dependency-direction strict passes with `0` violations and `68` warnings.
 - AIDE validate may retain existing review-packet reference warnings.
+- Stale AuditX output warning remains known.
 - Service conformance retains fixture/planned-support warnings.
-- Runtime graph/generator/viewer, runtime composition resolver, package
-  runtime, provider runtime, runtime module loader, Workbench shell, renderer,
-  native GUI, gameplay, and release publication remain unimplemented or
-  blocked.
-- Package mount is fixture/proof-level only; package runtime is not
-  implemented.
-- Pointer-width serialization remains a descriptive follow-up candidate.
+- Runtime graph/generator/viewer, runtime composition resolver, package runtime, provider runtime, runtime module loader, Workbench shell, renderer, native GUI, gameplay, replay runtime, save/world runtime, and release publication remain unimplemented or blocked.
+- Pointer-width serialization remains a focused follow-up candidate.
 
-Next recommended task: `REPLAY-PROOF-SLICE-01`.
+Next recommended task: `AIDE-WORKFLOW-LAW-01`.
 
-Alternate next task: `BAREBONES-CLIENT-SHELL-01`.
+Alternate next task: `PRESENTATION-CONTRACT-01`.
 
-Secondary governance follow-up: `AIDE-WORKFLOW-LAW-01`.
-
-Tertiary follow-up: `POINTER-WIDTH-SERIALIZATION-AUDIT-01`.
+Secondary follow-up: `POINTER-WIDTH-SERIALIZATION-AUDIT-01`.

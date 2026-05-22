@@ -1,9 +1,9 @@
 schema_version = "dominium.aide.queue.current.v1"
-status = "post_package_mount_slice_pass_with_warnings"
+status = "post_product_spine_pass_with_warnings"
 last_reviewed = "2026-05-22"
 
 [current]
-task = "QUEUE-RECONCILE-01"
+task = "PRODUCT-SPINE-REVIEW-01"
 result = "PASS_WITH_WARNINGS"
 foundation_lock = "PASS_WITH_WARNINGS"
 matrix_cleanup_00 = "PASS_WITH_WARNINGS"
@@ -11,14 +11,19 @@ workbench_validation_slice_01 = "PASS_WITH_WARNINGS"
 wave_1_substrates = "PASS_WITH_WARNINGS"
 command_result_view_slice_01 = "PASS_WITH_WARNINGS"
 package_mount_slice_01 = "PASS_WITH_WARNINGS"
-next_task = "REPLAY-PROOF-SLICE-01"
-alternate_next_task = "BAREBONES-CLIENT-SHELL-01"
-secondary_follow_up = "AIDE-WORKFLOW-LAW-01"
-tertiary_follow_up = "POINTER-WIDTH-SERIALIZATION-AUDIT-01"
+replay_proof_slice_01 = "PASS_WITH_WARNINGS"
+barebones_client_shell_01 = "PASS_WITH_WARNINGS"
+product_spine_review_01 = "PASS_WITH_WARNINGS"
+next_task = "AIDE-WORKFLOW-LAW-01"
+alternate_next_task = "PRESENTATION-CONTRACT-01"
+secondary_follow_up = "POINTER-WIDTH-SERIALIZATION-AUDIT-01"
+tertiary_follow_up = "none"
 workbench_validation_slice_authorized = true
 workbench_validation_slice_completed = true
 command_result_view_slice_completed = true
 package_mount_slice_completed = true
+replay_proof_slice_completed = true
+barebones_client_shell_completed = true
 matrix_cleanup_completed = true
 broad_feature_work_authorized = false
 
@@ -35,6 +40,10 @@ workbench_validation_slice_01 = "PASS_WITH_WARNINGS"
 command_result_view_slice_01 = "PASS_WITH_WARNINGS"
 phase_review_02 = "PASS_WITH_WARNINGS"
 package_mount_slice_01 = "PASS_WITH_WARNINGS"
+queue_reconcile_01 = "PASS_WITH_WARNINGS"
+replay_proof_slice_01 = "PASS_WITH_WARNINGS"
+barebones_client_shell_01 = "PASS_WITH_WARNINGS"
+product_spine_review_01 = "PASS_WITH_WARNINGS"
 
 [validation]
 architecture_policy = "PASS"
