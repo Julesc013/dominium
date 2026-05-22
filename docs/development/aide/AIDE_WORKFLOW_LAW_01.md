@@ -31,8 +31,22 @@ The machine-readable law is:
 contracts/aide/aide_workflow_law.v1.json
 ```
 
+The operator policy packet is:
+
+```text
+.aide/policy/
+```
+
 It derives from existing AIDE fragments:
 
+- `.aide/policy/workflow_law.md`
+- `.aide/policy/branch_roles.md`
+- `.aide/policy/task_lifecycle.md`
+- `.aide/policy/blocker_taxonomy.md`
+- `.aide/policy/dirty_worktree_policy.md`
+- `.aide/policy/parallel_execution_law.md`
+- `.aide/policy/evidence_requirements.md`
+- `.aide/policy/warning_acceptance_policy.md`
 - `.aide/policies/branch-roles.yaml`
 - `.aide/policies/git-workflow.yaml`
 - `.aide/policies/work-units.yaml`
@@ -102,13 +116,12 @@ Repairable blockers:
 
 Terminal blockers:
 
-- queue conflict that would overwrite another worker
-- forbidden path required for success
-- semantic authority conflict
-- destructive ambiguity
-- secret exposure
-- missing external secret
-- untrusted evidence
+- missing secret
+- unsafe operation
+- destructive git required
+- architecture decision required
+- human review required
+- source authority conflict
 
 Terminal means stop and record evidence. It does not mean invent success.
 
@@ -231,4 +244,12 @@ packet schemas:
 
 ```text
 AIDE-WORKUNIT-SCHEMA-01
+```
+
+Immediate policy follow-ups remain:
+
+```text
+AIDE-DEV-MAIN-POLICY-01
+AIDE-CHECKPOINT-LOOP-01
+AIDE-CAPABILITY-REALITY-LEDGER-01
 ```

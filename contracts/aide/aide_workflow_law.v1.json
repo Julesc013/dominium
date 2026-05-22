@@ -6,262 +6,273 @@
   "owner": "aide.control_plane",
   "stability": "provisional",
   "principle": "development_non_blocking_promotion_evidence_blocked",
-  "summary": "AIDE work may accumulate on bounded task and integration branches, but promotion to main requires reviewed evidence, classified warnings, and checkpoint proof.",
+  "summary": "AIDE work may make bounded progress on task, repair, dev, and checkpoint branches, but promotion to main requires checkpointed evidence, classified warnings, and review.",
   "source_refs": [
     "AGENTS.md",
+    ".aide/policy/workflow_law.md",
+    ".aide/policy/branch_roles.md",
+    ".aide/policy/task_lifecycle.md",
+    ".aide/policy/blocker_taxonomy.md",
+    ".aide/policy/dirty_worktree_policy.md",
+    ".aide/policy/parallel_execution_law.md",
+    ".aide/policy/evidence_requirements.md",
+    ".aide/policy/warning_acceptance_policy.md",
     ".aide/policies/branch-roles.yaml",
     ".aide/policies/git-workflow.yaml",
     ".aide/policies/work-units.yaml",
     ".aide/policies/recovery.yaml",
     ".aide/policies/promotion-rules.yaml",
     ".aide/policies/workunit-sizing.yaml",
-    ".aide/context/latest-task-packet.md",
     "docs/repo/audits/PRODUCT_SPINE_REVIEW_01.md"
   ],
   "branch_roles": [
     {
-      "role": "main",
-      "branch_pattern": "main",
-      "authority": "canonical_truth",
-      "default_mutation": "discouraged_except_reviewed_checkpoint_or_emergency_repair",
-      "promotion_policy": "requires_checkpoint_or_reviewed_hotfix_evidence"
+      "role": "origin/main",
+      "purpose": "remote canonical baseline",
+      "promotion_eligibility": "canonical_target_only_after_checkpoint_or_reviewed_hotfix"
     },
     {
-      "role": "dev",
-      "branch_pattern": "dev",
-      "authority": "integration_not_canonical_truth",
-      "default_mutation": "allowed_for_reviewed_integration_or_integration_repair",
-      "promotion_policy": "may_promote_to_main_only_through_checkpoint_gate"
+      "role": "origin/dev",
+      "purpose": "remote integration baseline when present",
+      "promotion_eligibility": "checkpoint_source_after_integration_evidence"
     },
     {
-      "role": "task",
-      "branch_pattern": "task/*|codex/*|aide/*|fix/*",
-      "authority": "bounded_workunit",
-      "default_mutation": "preferred_for_normal_bounded_work",
-      "promotion_policy": "merge_candidate_after_task_evidence_and_targeted_validation"
+      "role": "local/dev",
+      "purpose": "local integration branch, not canonical truth",
+      "promotion_eligibility": "checkpoint_candidate_only"
     },
     {
-      "role": "repair",
-      "branch_pattern": "repair/*",
-      "authority": "bounded_blocker_resolution",
-      "default_mutation": "allowed_for_repair_scope_only",
-      "promotion_policy": "merge_candidate_after_original_blocker_evidence_is_resolved"
+      "role": "task/<task-id>",
+      "purpose": "bounded WorkUnit execution lane",
+      "promotion_eligibility": "merge_candidate_to_dev_after_task_evidence"
     },
     {
-      "role": "checkpoint",
-      "branch_pattern": "checkpoint/*",
-      "authority": "temporary_integration_proof",
-      "default_mutation": "allowed_for_merge_and_gate_repair_only",
-      "promotion_policy": "promote_to_main_only_after_checkpoint_gate_pass_or_accepted_warnings"
+      "role": "repair/<task-id>",
+      "purpose": "bounded blocker repair lane",
+      "promotion_eligibility": "merge_candidate_to_task_or_dev_after_blocker_resolution"
     },
     {
-      "role": "quarantine",
-      "branch_pattern": "quarantine/*",
-      "authority": "isolated_risk",
-      "default_mutation": "conservative_inspection_first",
-      "promotion_policy": "cannot_promote_without_risk_disposition_and_revalidation"
+      "role": "checkpoint/<wave-id>",
+      "purpose": "temporary integration proof branch",
+      "promotion_eligibility": "reviewed_main_candidate_after_checkpoint_gate"
     },
     {
-      "role": "unknown",
-      "branch_pattern": "*",
-      "authority": "unclassified",
-      "default_mutation": "inspect_before_editing",
-      "promotion_policy": "not_promotable_until_role_is_classified"
+      "role": "quarantine/<reason>",
+      "purpose": "risk isolation branch",
+      "promotion_eligibility": "not_promotable_until_risk_disposition_and_revalidation"
+    },
+    {
+      "role": "experiment/<name>",
+      "purpose": "optional exploratory non-promotional branch",
+      "promotion_eligibility": "not_promotable"
     }
   ],
   "lifecycle_states": [
-    {
-      "state": "PROPOSED",
-      "meaning": "Task exists as intent but lacks ready evidence or dependencies."
-    },
-    {
-      "state": "READY",
-      "meaning": "Task has bounded scope, dependencies, allowed paths, validation, and evidence expectations."
-    },
-    {
-      "state": "RUNNING",
-      "meaning": "A human or agent is actively executing the task."
-    },
-    {
-      "state": "DONE_LOCAL",
-      "meaning": "Work is locally complete with evidence, but not yet integrated."
-    },
-    {
-      "state": "PARTIAL",
-      "meaning": "Useful scoped work exists, but acceptance is not complete."
-    },
-    {
-      "state": "BLOCKED_REPAIRABLE",
-      "meaning": "A bounded repair or prerequisite task can unblock progress."
-    },
-    {
-      "state": "BLOCKED_MISSING_PREREQ",
-      "meaning": "A prerequisite task or contract must land first."
-    },
-    {
-      "state": "BLOCKED_NEEDS_DECISION",
-      "meaning": "Human or governance decision is required before continuation."
-    },
-    {
-      "state": "BLOCKED_UNSAFE",
-      "meaning": "Secret exposure, destructive ambiguity, or untrusted evidence prevents safe continuation."
-    },
-    {
-      "state": "REPAIR_QUEUED",
-      "meaning": "A repair task has been created or selected."
-    },
-    {
-      "state": "RESUME_READY",
-      "meaning": "Partial work can resume from recorded evidence."
-    },
-    {
-      "state": "MERGE_CANDIDATE",
-      "meaning": "Task branch has evidence and may be integrated."
-    },
-    {
-      "state": "MERGED_TO_DEV",
-      "meaning": "Task work is integrated into dev, not main truth."
-    },
-    {
-      "state": "CHECKPOINT_CANDIDATE",
-      "meaning": "Integrated work is ready for checkpoint proof."
-    },
-    {
-      "state": "PROMOTION_CANDIDATE",
-      "meaning": "Checkpoint passed required gates and may be reviewed for main promotion."
-    },
-    {
-      "state": "PROMOTED_TO_MAIN",
-      "meaning": "Work landed on main through an evidence-bearing path."
-    },
-    {
-      "state": "QUARANTINED",
-      "meaning": "Work is isolated and cannot promote until risk is resolved."
-    },
-    {
-      "state": "SUPERSEDED",
-      "meaning": "Later work replaces this task; provenance remains evidence."
-    },
-    {
-      "state": "NOOP_ALREADY_COMPLETE",
-      "meaning": "Requested work already exists and validation/evidence proves acceptance."
-    }
+    "PROPOSED",
+    "READY",
+    "RUNNING",
+    "DONE_LOCAL",
+    "PARTIAL",
+    "BLOCKED_REPAIRABLE",
+    "BLOCKED_MISSING_PREREQ",
+    "BLOCKED_NEEDS_DECISION",
+    "BLOCKED_UNSAFE",
+    "REPAIR_QUEUED",
+    "RESUME_READY",
+    "MERGE_CANDIDATE",
+    "MERGED_TO_DEV",
+    "CHECKPOINT_CANDIDATE",
+    "CHECKPOINT_REPAIR",
+    "PROMOTED_TO_MAIN",
+    "QUARANTINED",
+    "SUPERSEDED"
+  ],
+  "main_promotable_states": [
+    "PROMOTED_TO_MAIN"
+  ],
+  "dev_allowed_states": [
+    "PARTIAL",
+    "BLOCKED_REPAIRABLE",
+    "BLOCKED_MISSING_PREREQ",
+    "BLOCKED_NEEDS_DECISION",
+    "REPAIR_QUEUED",
+    "RESUME_READY",
+    "MERGE_CANDIDATE",
+    "MERGED_TO_DEV",
+    "CHECKPOINT_CANDIDATE",
+    "CHECKPOINT_REPAIR",
+    "SUPERSEDED"
   ],
   "blocker_classes": [
     {
-      "id": "dirty_worktree_path_disjoint",
-      "default_action": "continue_without_staging_unrelated_changes",
-      "terminal": false
+      "id": "dirty_worktree_unrelated",
+      "severity": "warning",
+      "default_action": "continue_without_staging_unrelated_files",
+      "behavior": "continue"
     },
     {
-      "id": "dirty_worktree_overlap",
-      "default_action": "classify_owner_then_continue_or_create_repair_task",
-      "terminal": false
-    },
-    {
-      "id": "generated_or_transient_residue",
-      "default_action": "remove_if_safe_or_leave_ignored_and_continue",
-      "terminal": false
-    },
-    {
-      "id": "missing_dependency",
-      "default_action": "create_prerequisite_or_resume_task",
-      "terminal": false
-    },
-    {
-      "id": "validation_failure",
-      "default_action": "repair_within_scope_and_rerun_targeted_validation",
-      "terminal": false
+      "id": "dirty_worktree_same_task",
+      "severity": "info",
+      "default_action": "continue_as_same_task_evidence",
+      "behavior": "continue"
     },
     {
       "id": "merge_conflict",
-      "default_action": "create_conflict_resolution_task_or_resolve_if_owned_scope",
-      "terminal": false
+      "severity": "error",
+      "default_action": "resolve_if_owned_else_create_repair_task",
+      "behavior": "repair"
     },
     {
-      "id": "stale_status",
-      "default_action": "reconcile_from_current_evidence",
-      "terminal": false
+      "id": "validator_failure_repairable",
+      "severity": "error",
+      "default_action": "repair_in_scope_and_rerun_targeted_validation",
+      "behavior": "repair"
     },
     {
-      "id": "queue_conflict",
-      "default_action": "stop_before_overwriting_conflicting_global_status",
-      "terminal": true
+      "id": "validator_failure_policy",
+      "severity": "error",
+      "default_action": "create_policy_or_prerequisite_task",
+      "behavior": "create_prerequisite"
     },
     {
-      "id": "forbidden_path_required",
-      "default_action": "stop_and_report_required_out_of_scope_path",
-      "terminal": true
+      "id": "missing_prerequisite",
+      "severity": "error",
+      "default_action": "create_prerequisite_task",
+      "behavior": "create_prerequisite"
     },
     {
-      "id": "semantic_authority_conflict",
-      "default_action": "stop_for_human_or_coordinator_decision",
-      "terminal": true
+      "id": "missing_tool",
+      "severity": "warning",
+      "default_action": "use_equivalent_existing_tool_or_create_prerequisite",
+      "behavior": "create_prerequisite"
     },
     {
-      "id": "destructive_ambiguity",
-      "default_action": "stop_without_destructive_action",
-      "terminal": true
+      "id": "missing_connector",
+      "severity": "warning",
+      "default_action": "record_missing_connector_and_use_allowed_fallback_or_ask_human",
+      "behavior": "ask_human"
     },
     {
-      "id": "secret_exposure",
-      "default_action": "stop_and_preserve_evidence_without_disclosure",
-      "terminal": true
+      "id": "missing_capability",
+      "severity": "error",
+      "default_action": "create_capability_prerequisite_task",
+      "behavior": "create_prerequisite"
     },
     {
-      "id": "missing_external_secret",
-      "default_action": "stop_without_guessing_or_requesting_secret_values_in_artifacts",
-      "terminal": true
+      "id": "missing_secret",
+      "severity": "error",
+      "default_action": "stop_without_recording_secret_value",
+      "behavior": "stop"
     },
     {
-      "id": "evidence_untrusted",
-      "default_action": "stop_or_quarantine_until_evidence_can_be_rebuilt",
-      "terminal": true
+      "id": "unsafe_operation",
+      "severity": "error",
+      "default_action": "stop_and_report_exact_risk",
+      "behavior": "stop"
+    },
+    {
+      "id": "destructive_git_required",
+      "severity": "error",
+      "default_action": "ask_human_before_destructive_git",
+      "behavior": "ask_human"
+    },
+    {
+      "id": "architecture_decision_required",
+      "severity": "error",
+      "default_action": "ask_human_or_create_decision_task",
+      "behavior": "ask_human"
+    },
+    {
+      "id": "human_review_required",
+      "severity": "error",
+      "default_action": "stop_at_review_gate",
+      "behavior": "ask_human"
+    },
+    {
+      "id": "test_timeout",
+      "severity": "warning",
+      "default_action": "bounded_retry_then_classify",
+      "behavior": "repair"
+    },
+    {
+      "id": "flaky_test_suspected",
+      "severity": "warning",
+      "default_action": "rerun_bounded_sample_and_record_disposition",
+      "behavior": "repair"
+    },
+    {
+      "id": "generated_artifact_drift",
+      "severity": "warning",
+      "default_action": "refresh_in_scope_or_create_repair_task",
+      "behavior": "repair"
+    },
+    {
+      "id": "stale_queue_state",
+      "severity": "error",
+      "default_action": "reconcile_if_assigned_else_stop_for_coordination",
+      "behavior": "repair"
+    },
+    {
+      "id": "stale_context_packet",
+      "severity": "warning",
+      "default_action": "refresh_if_assigned_else_record_stale_packet",
+      "behavior": "repair"
+    },
+    {
+      "id": "source_authority_conflict",
+      "severity": "error",
+      "default_action": "stop_and_escalate_without_inventing_winner",
+      "behavior": "stop"
     }
   ],
-  "warning_policy": {
-    "known_warnings_may_pass": true,
-    "new_warnings_require_classification": true,
-    "full_ctest": "full_gate_debt_until_release_or_trust_promotion_requires_it",
-    "dependency_direction": "must_remain_zero_violations_for_required_strict_gate",
-    "runtime_not_implemented": "acceptable_only_when_docs_and_contracts_do_not_claim_implementation"
-  },
-  "workunit_requirements": {
-    "required_fields": [
-      "task_id",
-      "goal",
-      "allowed_paths",
-      "forbidden_paths",
-      "dependencies",
-      "validation",
-      "evidence",
-      "non_goals",
-      "acceptance"
+  "dirty_worktree_policy": {
+    "do_not_stop_merely_because_dirty": true,
+    "classifications": [
+      "ignored/generated/transient",
+      "prior task evidence",
+      "unstaged unrelated changes",
+      "same-task continuation",
+      "overlapping another-task changes",
+      "merge conflict markers",
+      "global AIDE/status file conflict"
     ],
-    "default_branch": "task/<task-id>",
-    "idempotency": "task_id plus allowed_paths hash plus acceptance hash",
-    "duplicate_behavior": "noop_if_acceptance_surfaces_already_complete_else_resume_from_evidence"
+    "forbidden_actions": [
+      "stage unrelated files",
+      "overwrite unrelated user changes",
+      "run destructive git commands",
+      "fabricate clean state"
+    ]
+  },
+  "warning_policy": {
+    "known_warnings_may_pass_on_dev": true,
+    "new_warnings_require_classification": true,
+    "warnings_must_not_be_hidden": true,
+    "main_acceptance_requires_checkpoint_policy": true,
+    "full_ctest": "full_gate_debt_until_resolved",
+    "fixture_only_warning": "must_not_be_called_implemented"
   },
   "evidence_requirements": {
-    "task_branch": [
-      "changed files",
-      "validation run",
+    "required_for_every_task": [
+      "changed_files",
+      "commands_run",
+      "validation_output",
       "warnings",
-      "non-goals preserved",
-      "remaining risks"
+      "blockers",
+      "evidence_refs",
+      "commit_hash_when_committed",
+      "next_action"
     ],
-    "dev_integration": [
-      "task evidence refs",
-      "integration validation",
-      "conflict disposition",
-      "warning classification"
-    ],
-    "main_promotion": [
-      "checkpoint report",
-      "required gate results",
-      "accepted warning disposition",
-      "review or operator authorization",
-      "rollback or repair path"
+    "task_types": [
+      "coordinator/status task",
+      "contract/schema task",
+      "validator task",
+      "product slice",
+      "runtime implementation slice",
+      "Workbench/presentation slice",
+      "structure/move task",
+      "repair task",
+      "checkpoint task",
+      "promotion task"
     ]
   },
   "promotion_gates": {
@@ -272,40 +283,52 @@
       "unrelated dirty work is preserved"
     ],
     "dev_to_checkpoint": [
-      "dev and main ancestry inspected",
-      "approved task branches selected",
+      "selected task branches or dev integration identified",
       "merge conflicts resolved with evidence",
       "checkpoint validation plan recorded"
     ],
     "checkpoint_to_main": [
-      "checkpoint gate passes or accepted warnings are explicit",
+      "checkpoint gate passes or accepted warning disposition is explicit",
       "public surface and dependency direction strict pass when relevant",
       "full CTest disposition is recorded",
       "broad feature blockers remain visible",
       "promotion is reviewed and non-automatic"
     ]
   },
-  "parallel_wave_limits": {
+  "parallel_execution": {
+    "large_parallel_execution_authorized": false,
+    "limited_parallel_prompt_generation_authorized": true,
+    "limited_parallel_task_execution_authorized": false,
+    "recommended_parallel_candidate": "PRESENTATION-CONTRACT-01",
     "before_workunit_schema": {
       "recommended_concurrent_tasks": 2,
       "maximum_concurrent_tasks": 4
     },
-    "after_workunit_schema_and_dev_main_policy": {
-      "recommended_concurrent_tasks": 4,
-      "maximum_concurrent_tasks": 8
-    },
-    "after_checkpoint_automation": {
-      "recommended_concurrent_tasks": 8,
-      "maximum_concurrent_tasks": 12
-    }
+    "large_parallelism_requires": [
+      "AIDE-WORKFLOW-LAW-01",
+      "AIDE-WORKUNIT-SCHEMA-01",
+      "AIDE-DEV-MAIN-POLICY-01",
+      "checkpoint/review policy",
+      "repair/resume policy"
+    ]
+  },
+  "closeout_queue": {
+    "current_task": "AIDE-WORKFLOW-LAW-01",
+    "status": "PASS_WITH_WARNINGS",
+    "next_task": "AIDE-WORKUNIT-SCHEMA-01",
+    "alternate_next_task": "AIDE-DEV-MAIN-POLICY-01",
+    "secondary_follow_up": "AIDE-CHECKPOINT-LOOP-01",
+    "recommended_parallel_candidate": "PRESENTATION-CONTRACT-01"
   },
   "non_goals": [
-    "no branch mutation automation",
-    "no remote push automation",
-    "no direct main promotion automation",
+    "no full scheduler",
+    "no automatic branch/worktree manager",
+    "no automatic merge or promotion engine",
+    "no repair engine",
+    "no Workbench Agent Board",
     "no product runtime implementation",
-    "no Workbench shell",
     "no package runtime",
+    "no replay runtime",
     "no provider runtime",
     "no runtime module loader",
     "no gameplay",

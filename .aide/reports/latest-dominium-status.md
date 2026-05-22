@@ -1,56 +1,55 @@
 # Latest Dominium Status
 
-Current task: `AIDE-WORKFLOW-LAW-01`.
+Current coordinator task: `STATUS-RECONCILE-02`.
 
-Result: PASS_WITH_WARNINGS.
+Result: `PASS_WITH_WARNINGS`.
 
-## Current State
+## Current Truth
 
 - Foundation Lock remains `PASS_WITH_WARNINGS`.
-- Product spine through package mount, replay proof, and barebones client shell
-  remains complete with warnings.
-- `PRODUCT-SPINE-REVIEW-01` is complete with `PASS_WITH_WARNINGS`.
-- `AIDE-WORKFLOW-LAW-01` is complete with `PASS_WITH_WARNINGS`.
-- AIDE workflow law now records branch roles, lifecycle states, blocker
-  taxonomy, warning policy, repair/resume behavior, evidence requirements, and
-  promotion gates.
+- Product spine through `PRODUCT-SPINE-REVIEW-01` is complete with
+  `PASS_WITH_WARNINGS` or better.
+- `PACKAGE-MOUNT-SLICE-01`, `REPLAY-PROOF-SLICE-01`, and
+  `BAREBONES-CLIENT-SHELL-01` are complete with `PASS_WITH_WARNINGS`.
+- Live local history shows `AIDE-WORKFLOW-LAW-01` is already complete with
+  `PASS_WITH_WARNINGS`.
+- `STATUS-RECONCILE-02` reconciled stale/generic status packet content and did
+  not move the queue backward to the completed workflow-law task.
 - Broad feature work remains blocked.
 
-## AIDE Law Added
+## Prompt Queue
 
-```text
-development non-blocking
-promotion evidence-blocked
-```
+1. `AIDE-WORKUNIT-SCHEMA-01`
+2. `AIDE-DEV-MAIN-POLICY-01`
+3. `PRESENTATION-CONTRACT-01` or `POINTER-WIDTH-SERIALIZATION-AUDIT-01`
 
-The machine-readable law is:
+`AIDE-WORKFLOW-LAW-01` remains completed context for the next tasks.
 
-```text
-contracts/aide/aide_workflow_law.v1.json
-```
+## Parallel Readiness
 
-The derived prose law is:
+- limited parallel prompt generation: allowed
+- limited parallel planning: allowed
+- limited parallel task execution: not yet authorized
+- large parallel development execution: not authorized
 
-```text
-docs/development/aide/AIDE_WORKFLOW_LAW_01.md
-```
+Large parallel execution still requires WorkUnit schema, dev/main policy,
+checkpoint policy, repair/resume policy, and explicit path separation in future
+prompts.
 
 ## Remaining Debt
 
 - Full CTest remains T4/full-gate debt and is not claimed green.
-- Dependency-direction strict passes with `0` violations and known warnings.
-- AIDE validate may retain existing review-packet reference warnings.
+- Dependency-direction strict retains known warnings with prior zero-violation
+  evidence.
+- AIDE validate may retain known review-packet reference warnings.
 - Stale AuditX output warning remains known.
-- WorkUnit/attempt/blocker/evidence/checkpoint/promotion schemas are next.
-- Runtime graph/generator/viewer, runtime composition resolver, package runtime,
-  provider runtime, runtime module loader, Workbench shell, renderer, native
-  GUI, gameplay, replay runtime, save/world runtime, and release publication
-  remain unimplemented or blocked.
+- Runtime graph/generator/viewer, runtime composition resolver, package
+  runtime, provider runtime, runtime module loader, Workbench shell, renderer,
+  native GUI, gameplay, replay runtime, save/world runtime, and release
+  publication remain unimplemented or blocked.
 
-Next recommended task: `AIDE-WORKUNIT-SCHEMA-01`.
+## Next Recommended Task
 
-Alternate next task: `PRESENTATION-CONTRACT-01`.
+`AIDE-WORKUNIT-SCHEMA-01`
 
-Secondary follow-up: `AIDE-DEV-MAIN-POLICY-01`.
-
-Tertiary follow-up: `POINTER-WIDTH-SERIALIZATION-AUDIT-01`.
+Alternate next task: `AIDE-DEV-MAIN-POLICY-01`.

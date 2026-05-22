@@ -3,6 +3,7 @@ status = "post_aide_workflow_law_pass_with_warnings"
 last_reviewed = "2026-05-22"
 
 [current]
+current_task = "AIDE-WORKFLOW-LAW-01"
 task = "AIDE-WORKFLOW-LAW-01"
 result = "PASS_WITH_WARNINGS"
 foundation_lock = "PASS_WITH_WARNINGS"
@@ -16,9 +17,13 @@ barebones_client_shell_01 = "PASS_WITH_WARNINGS"
 product_spine_review_01 = "PASS_WITH_WARNINGS"
 aide_workflow_law_01 = "PASS_WITH_WARNINGS"
 next_task = "AIDE-WORKUNIT-SCHEMA-01"
-alternate_next_task = "PRESENTATION-CONTRACT-01"
-secondary_follow_up = "AIDE-DEV-MAIN-POLICY-01"
-tertiary_follow_up = "POINTER-WIDTH-SERIALIZATION-AUDIT-01"
+alternate_next_task = "AIDE-DEV-MAIN-POLICY-01"
+secondary_follow_up = "AIDE-CHECKPOINT-LOOP-01"
+tertiary_follow_up = "AIDE-CAPABILITY-REALITY-LEDGER-01"
+recommended_parallel_candidate = "PRESENTATION-CONTRACT-01"
+large_parallel_execution_authorized = false
+limited_parallel_prompt_generation_authorized = true
+limited_parallel_task_execution_authorized = false
 workbench_validation_slice_authorized = true
 workbench_validation_slice_completed = true
 command_result_view_slice_completed = true
@@ -46,6 +51,7 @@ replay_proof_slice_01 = "PASS_WITH_WARNINGS"
 barebones_client_shell_01 = "PASS_WITH_WARNINGS"
 product_spine_review_01 = "PASS_WITH_WARNINGS"
 aide_workflow_law_01 = "PASS_WITH_WARNINGS"
+status_reconcile_02 = "PASS_WITH_WARNINGS"
 
 [validation]
 architecture_policy = "PASS"

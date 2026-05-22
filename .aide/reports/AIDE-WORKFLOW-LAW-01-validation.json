@@ -5,42 +5,53 @@
   "surfaces": {
     "workflow_law_contract": "contracts/aide/aide_workflow_law.v1.json",
     "workflow_law_docs": "docs/development/aide/AIDE_WORKFLOW_LAW_01.md",
-    "audit": "docs/repo/audits/AIDE_WORKFLOW_LAW_01.md"
+    "policy_packet": ".aide/policy/",
+    "audit": "docs/repo/audits/AIDE_WORKFLOW_LAW_01.md",
+    "validator": "tools/aide/check_workflow_law.py"
   },
   "coverage": {
     "branch_roles": true,
     "task_lifecycle_states": true,
     "blocker_taxonomy": true,
+    "dirty_worktree_policy": true,
     "warning_policy": true,
-    "workunit_minimum_fields": true,
+    "evidence_requirements": true,
     "repair_resume_behavior": true,
     "promotion_gates": true,
-    "parallel_wave_limits": true,
+    "parallel_execution_law": true,
     "broad_feature_blockers_preserved": true
   },
   "validation": {
+    "workflow_law_validator": "PASS",
     "json_parse": "PASS",
-    "toml_parse": "PASS_WITH_PY3",
-    "aide_doctor": "PASS",
-    "aide_validate": "PASS_WITH_KNOWN_REVIEW_REF_WARNINGS",
-    "docs_sanity": "PASS",
-    "public_surface_strict": "PASS",
-    "dependency_direction_strict": "PASS_WITH_KNOWN_WARNINGS_ZERO_VIOLATIONS",
-    "component_matrix_strict": "PASS",
-    "portability_matrix_strict": "PASS",
-    "git_diff_check": "PASS",
-    "git_diff_cached_check": "PASS",
-    "fast_strict": "PASS",
-    "fast_strict_json": ".aide/reports/AIDE-WORKFLOW-LAW-01-fast-strict.json",
-    "fast_strict_markdown": ".aide/reports/AIDE-WORKFLOW-LAW-01-fast-strict.md",
-    "fast_strict_elapsed_seconds": 402.188
+    "toml_parse": "PASS",
+    "aide_lite_doctor": "PASS",
+    "aide_lite_validate": "PASS_WITH_KNOWN_REVIEW_REF_WARNINGS",
+    "python_module_tools_aide_validate": "UNAVAILABLE_NO_MODULE",
+    "python_module_tools_aide_doctor": "UNAVAILABLE_NO_MODULE",
+    "git_diff_check": "PASS_AFTER_EOF_REPAIR",
+    "fast_strict": "NOT_RERUN_FOR_POLICY_PACKET_CORRECTION",
+    "previous_fast_strict_json": ".aide/reports/AIDE-WORKFLOW-LAW-01-fast-strict.json",
+    "previous_fast_strict_markdown": ".aide/reports/AIDE-WORKFLOW-LAW-01-fast-strict.md",
+    "previous_fast_strict_elapsed_seconds": 402.188
   },
+  "commands_run": [
+    "py -3 tools/aide/check_workflow_law.py",
+    "py -3 -c \"import json, pathlib; ...\"",
+    "py -3 -c \"import tomllib, pathlib; ...\"",
+    "py -3 .aide/scripts/aide_lite.py doctor",
+    "py -3 .aide/scripts/aide_lite.py validate",
+    "py -3 -m tools.aide.validate",
+    "py -3 -m tools.aide.doctor",
+    "git diff --check"
+  ],
   "known_warnings": [
     "full CTest remains NOT_RUN_T4_DEBT",
-    "dependency-direction warnings remain known with 0 violations",
-    "AIDE review-ref warnings may remain",
+    "dependency-direction warnings remain known with 0 violations in prior strict evidence",
+    "AIDE review-ref warnings remain known",
     "stale AuditX output warning remains",
-    "contract-only/runtime-not-implemented gaps remain visible"
+    "contract-only/runtime-not-implemented gaps remain visible",
+    "tools.aide.validate and tools.aide.doctor Python modules are unavailable; AIDE Lite doctor/validate were used"
   ],
   "non_goals_preserved": [
     "no product runtime implementation",
@@ -56,5 +67,11 @@
     "no branch mutation automation",
     "no direct main promotion automation"
   ],
-  "next": "AIDE-WORKUNIT-SCHEMA-01"
+  "next": "AIDE-WORKUNIT-SCHEMA-01",
+  "alternate_next": "AIDE-DEV-MAIN-POLICY-01",
+  "secondary_follow_up": "AIDE-CHECKPOINT-LOOP-01",
+  "recommended_parallel_candidate": "PRESENTATION-CONTRACT-01",
+  "large_parallel_execution_authorized": false,
+  "limited_parallel_prompt_generation_authorized": true,
+  "limited_parallel_task_execution_authorized": false
 }
