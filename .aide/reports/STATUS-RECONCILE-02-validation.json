@@ -1,0 +1,44 @@
+{
+  "task": "STATUS-RECONCILE-02",
+  "date": "2026-05-22",
+  "status": "PASS_WITH_WARNINGS",
+  "base_commit": "2c29ea663",
+  "live_state": {
+    "product_spine_review_01": "PASS_WITH_WARNINGS",
+    "package_mount_slice_01": "PASS_WITH_WARNINGS",
+    "replay_proof_slice_01": "PASS_WITH_WARNINGS",
+    "barebones_client_shell_01": "PASS_WITH_WARNINGS",
+    "aide_workflow_law_01": "PASS_WITH_WARNINGS_ALREADY_COMPLETE"
+  },
+  "reconciliation": {
+    "requested_next_task": "AIDE-WORKFLOW-LAW-01",
+    "effective_next_task": "AIDE-WORKUNIT-SCHEMA-01",
+    "reason": "AIDE-WORKFLOW-LAW-01 is already complete in live local history.",
+    "limited_parallel_prompt_generation_ready": true,
+    "large_parallel_execution_authorized": false,
+    "broad_feature_work_authorized": false
+  },
+  "validation": {
+    "python_m_tools_aide_validate": "UNAVAILABLE_NO_MODULE",
+    "python_m_tools_aide_doctor": "UNAVAILABLE_NO_MODULE",
+    "aide_doctor": "PASS",
+    "aide_validate": "PASS_WITH_KNOWN_REVIEW_REF_WARNINGS",
+    "docs_sanity": "PASS",
+    "git_diff_check_global": "PASS",
+    "git_diff_check_allowed_status_files": "PASS",
+    "json_parse": "PASS",
+    "toml_parse": "PASS_WITH_PY3_TOMLLIB"
+  },
+  "warnings": [
+    "full CTest remains NOT_RUN_T4_DEBT",
+    "dependency-direction warnings remain known with zero violations",
+    "AIDE review-ref warnings may remain",
+    "stale AuditX warning remains",
+    "runtime-not-implemented blockers remain"
+  ],
+  "next": [
+    "AIDE-WORKUNIT-SCHEMA-01",
+    "AIDE-DEV-MAIN-POLICY-01",
+    "PRESENTATION-CONTRACT-01"
+  ]
+}
