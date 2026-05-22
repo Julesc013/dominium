@@ -2,20 +2,34 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "dominium.aide.capability_reality_record.v1",
   "title": "AIDE CapabilityRealityRecord",
-  "description": "Small capability reality record shape. Ledger population is deferred to AIDE-CAPABILITY-REALITY-LEDGER-01.",
+  "description": "Capability implementation-status record used to prevent planned, specified, fixture-only, stubbed, implemented, tested, exposed, release-supported, and retired surfaces from being confused.",
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "schema_version",
     "capability_id",
     "surface_id",
+    "title",
+    "owner",
+    "category",
     "status",
+    "status_rationale",
     "evidence_refs",
     "blocking_gaps",
+    "known_warnings",
+    "related_tasks",
+    "related_files",
     "last_verified_commit",
-    "owner",
-    "notes"
+    "verification_method",
+    "support_claim",
+    "exposed_surfaces",
+    "non_goals",
+    "next_actions"
   ],
   "properties": {
+    "schema_version": {
+      "const": "dominium.aide.capability_reality_record.v1"
+    },
     "capability_id": {
       "type": "string",
       "minLength": 1
@@ -23,6 +37,38 @@
     "surface_id": {
       "type": "string",
       "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "command",
+        "service",
+        "provider",
+        "module",
+        "app",
+        "product_mode",
+        "package",
+        "pack",
+        "document",
+        "patch",
+        "view",
+        "projection",
+        "replay",
+        "renderer",
+        "platform",
+        "Workbench",
+        "AIDE",
+        "release",
+        "domain"
+      ]
     },
     "status": {
       "type": "string",
@@ -34,36 +80,105 @@
         "implemented",
         "tested",
         "exposed",
-        "release_supported"
+        "release_supported",
+        "retired"
       ]
+    },
+    "previous_status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "planned",
+        "specified",
+        "fixture_only",
+        "stubbed",
+        "implemented",
+        "tested",
+        "exposed",
+        "release_supported",
+        "retired",
+        null
+      ]
+    },
+    "status_rationale": {
+      "type": "string",
+      "minLength": 1
     },
     "evidence_refs": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       }
     },
     "blocking_gaps": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "known_warnings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "related_tasks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "related_files": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
       }
     },
     "last_verified_commit": {
       "type": "string",
       "minLength": 1
     },
-    "owner": {
+    "verification_method": {
+      "type": "string",
+      "minLength": 1
+    },
+    "support_claim": {
       "type": "string",
       "enum": [
-        "human",
-        "codex",
-        "aide",
-        "mixed"
+        "none",
+        "internal",
+        "dev",
+        "experimental",
+        "release"
       ]
     },
-    "notes": {
-      "type": "string"
+    "exposed_surfaces": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "non_goals": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     }
   }
 }

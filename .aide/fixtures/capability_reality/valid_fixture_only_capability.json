@@ -1,0 +1,36 @@
+{
+  "schema_version": "dominium.aide.capability_reality_record.v1",
+  "capability_id": "capability.fixture.fixture_only",
+  "surface_id": "fixture.fixture_only",
+  "title": "Fixture-Only Capability",
+  "owner": "aide",
+  "category": "package",
+  "status": "fixture_only",
+  "previous_status": "specified",
+  "status_rationale": "Fixture proof exists without runtime support.",
+  "evidence_refs": [
+    ".aide/fixtures/capability_reality/valid_fixture_only_capability.json"
+  ],
+  "blocking_gaps": [
+    "Runtime implementation is absent."
+  ],
+  "known_warnings": [
+    "Fixture-only support must not be promoted to release."
+  ],
+  "related_tasks": [
+    "AIDE-CAPABILITY-REALITY-LEDGER-01"
+  ],
+  "related_files": [
+    ".aide/fixtures/capability_reality/valid_fixture_only_capability.json"
+  ],
+  "last_verified_commit": "acebb0f4f",
+  "verification_method": "fixture validation",
+  "support_claim": "internal",
+  "exposed_surfaces": [],
+  "non_goals": [
+    "No package runtime."
+  ],
+  "next_actions": [
+    "Create runtime WorkUnit before claiming implementation."
+  ]
+}

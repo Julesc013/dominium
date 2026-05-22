@@ -1,0 +1,32 @@
+{
+  "schema_version": "dominium.aide.capability_reality_record.v1",
+  "capability_id": "capability.fixture.planned",
+  "surface_id": "fixture.planned",
+  "title": "Fixture Planned Capability",
+  "owner": "aide",
+  "category": "AIDE",
+  "status": "planned",
+  "previous_status": null,
+  "status_rationale": "Planned fixture with no implementation claim.",
+  "evidence_refs": [
+    "docs/repo/audits/AIDE_CAPABILITY_REALITY_LEDGER_01.md"
+  ],
+  "blocking_gaps": [
+    "No specification or implementation evidence."
+  ],
+  "known_warnings": [],
+  "related_tasks": [
+    "AIDE-CAPABILITY-REALITY-LEDGER-01"
+  ],
+  "related_files": [],
+  "last_verified_commit": "acebb0f4f",
+  "verification_method": "fixture validation",
+  "support_claim": "none",
+  "exposed_surfaces": [],
+  "non_goals": [
+    "No runtime support claim."
+  ],
+  "next_actions": [
+    "Specify capability before implementation."
+  ]
+}

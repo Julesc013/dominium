@@ -1,0 +1,30 @@
+{
+  "schema_version": "dominium.aide.capability_reality_record.v1",
+  "capability_id": "capability.fixture.tested",
+  "surface_id": "fixture.tested",
+  "title": "Tested Capability Fixture",
+  "owner": "aide",
+  "category": "AIDE",
+  "status": "tested",
+  "previous_status": "specified",
+  "status_rationale": "Targeted validator evidence exists for this fixture.",
+  "evidence_refs": [
+    "tools/aide/validate_capability_reality.py"
+  ],
+  "blocking_gaps": [],
+  "known_warnings": [],
+  "related_tasks": [
+    "AIDE-CAPABILITY-REALITY-LEDGER-01"
+  ],
+  "related_files": [
+    "tools/aide/validate_capability_reality.py"
+  ],
+  "last_verified_commit": "acebb0f4f",
+  "verification_method": "targeted validator",
+  "support_claim": "internal",
+  "exposed_surfaces": [],
+  "non_goals": [
+    "No release support claim."
+  ],
+  "next_actions": []
+}
