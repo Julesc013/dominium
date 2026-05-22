@@ -12,3 +12,7 @@ silent_module_activation_allowed = false
 trust_policy_required = true
 package_mount_records_modules = true
 mod_pack_trust_model_deepens_later = true
+pack_modules_live_under_content_packs = true
+content_modules_root_allowed = false
+pack_module_may_declare_payloads_not_native_behavior = true
+reusable_behavior_requires_service_provider_or_domain_owner = true

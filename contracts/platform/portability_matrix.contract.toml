@@ -70,7 +70,7 @@ capability_law = "contracts/capability/capability.contract.toml"
 artifact_identity = "contracts/artifact/artifact_identity.contract.toml"
 versioning_law = "contracts/versioning/versioning.contract.toml"
 release_policy = "contracts/repo/release_policy.toml"
-diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+diagnostics_registry = "contracts/diagnostic/diagnostic_code.registry.json"
 refusal_registry = "contracts/refusal/refusal_code.registry.json"
 test_tiers = "contracts/testing/test_tiers.contract.toml"
 

@@ -68,6 +68,6 @@ fixture_schema_surfaces_are_not_product_contracts = true
 [integration]
 artifact_identity = "contracts/artifact/artifact_identity.contract.toml"
 command_surface = "contracts/command/command_surface.contract.toml"
-diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+diagnostics_registry = "contracts/diagnostic/diagnostic_code.registry.json"
 public_surface_registry = "contracts/public_surface/public_surface.contract.toml"
 compatibility_corpus_future_task = "COMPATIBILITY-CORPUS-01"

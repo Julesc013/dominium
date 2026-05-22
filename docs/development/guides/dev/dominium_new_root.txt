@@ -746,7 +746,7 @@ o All determinism-sensitive code lives in /engine/core, /engine/sim, /engine/ecs
 o Platform and rendering are segregated under /engine/platform and /engine/render and can be swapped without touching the simulation kernel.
 
 
-o /tests/replay and /tests/perf are explicit hooks to continuously verify determinism and performance under load.
+o /tests/replay and /tests/performance are explicit hooks to continuously verify determinism and performance under load.
 
 
 • Extensibility without rot
@@ -2567,7 +2567,7 @@ o Networks.
 • Prebuilt replay logs to confirm deterministic replay end state.
 
 
-/tests/perf/
+/tests/performance/
 
 
 • Stress tests:

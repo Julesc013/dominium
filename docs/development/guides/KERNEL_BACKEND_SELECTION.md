@@ -279,4 +279,4 @@ If no candidate is selected, the selector returns a deterministic refusal code.
 ## See also
 
 
-- `schema/syscaps/README.md`
+- `contracts/schema/capability/syscaps/README.md`

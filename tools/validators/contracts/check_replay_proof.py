@@ -22,7 +22,7 @@ CANONICALIZATION_POLICY = "dominium.canonical_json.sorted_utf8.v1"
 HASH_ALGORITHM = "sha256"
 
 COMMAND_SURFACE_REL = Path("contracts/command/command_surface.contract.toml")
-DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostics/diagnostic_code.registry.json")
+DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostic/diagnostic_code.registry.json")
 REFUSAL_REGISTRY_REL = Path("contracts/refusal/refusal_code.registry.json")
 PUBLIC_SURFACE_REL = Path("contracts/public_surface/public_surface.contract.toml")
 

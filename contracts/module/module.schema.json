@@ -13,6 +13,28 @@
     "implementation_status": {"type": "string"},
     "implementation_path": {"type": ["string", "null"]},
     "implementation_path_is_identity": {"type": "boolean"},
+    "ownership_layer": {
+      "type": "string",
+      "enum": [
+        "contract",
+        "runtime_service",
+        "runtime_provider",
+        "game_domain",
+        "tooling",
+        "workbench_presentation",
+        "app_composition",
+        "pack_payload",
+        "external_adapter",
+        "test_fixture"
+      ]
+    },
+    "implementation_roots": {"type": "array", "items": {"type": "string"}},
+    "payload_roots": {"type": "array", "items": {"type": "string"}},
+    "composition_roots": {"type": "array", "items": {"type": "string"}},
+    "forbidden_roots": {"type": "array", "items": {"type": "string"}},
+    "presentation_only": {"type": "boolean"},
+    "reusable_behavior": {"type": "boolean"},
+    "native_code": {"type": "boolean"},
     "provided_surfaces": {"type": "array", "items": {"type": "string"}},
     "required_surfaces": {"type": "array", "items": {"type": "string"}},
     "required_services": {"type": "array", "items": {"type": "string"}},

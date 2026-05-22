@@ -17,6 +17,10 @@ FORBIDDEN_EXACT_PREFIXES = {
     "apps/workbench/module/ui/editor/gen": "tools/codegen/ui/<area>/gen",
     "apps/workbench/module/ui/editor/generated": "tools/codegen/ui/<area>/gen",
     "apps/workbench/module/ui/native": "apps/workbench/module/ui/preview/native or runtime/ui/backend",
+    "apps/workbench/module/worldgen": "game/domain/worldgen for reusable behavior or apps/workbench/module/world_creation for presentation",
+    "apps/workbench/module/world_creation/engine": "game/domain/worldgen or runtime/provider",
+    "apps/workbench/module/world_creation/provider": "runtime/provider",
+    "apps/workbench/module/world_creation/runtime": "runtime/<owning-service>",
 }
 
 FORBIDDEN_SEGMENTS = {

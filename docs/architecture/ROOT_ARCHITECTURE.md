@@ -101,8 +101,8 @@ No runtime mode branching is required when profile bindings are complete.
 
 Client lifecycle is pipeline-based and command-driven:
 
-- `schema/client/session_pipeline.schema`
-- `schema/client/session_artifacts.schema`
+- `contracts/schema/runtime/client/session_pipeline.schema`
+- `contracts/schema/runtime/client/session_artifacts.schema`
 - `apps/client/session/session_pipeline.c`
 - `apps/client/session/session_stage_registry.c`
 - `apps/client/session/session_refusal_codes.c`

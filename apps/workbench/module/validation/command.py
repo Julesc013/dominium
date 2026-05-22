@@ -15,7 +15,7 @@ VALIDATION_RESULT_SCHEMA = "contracts/schema/validation_result.schema.json"
 VALIDATION_RUN_RESULT_SCHEMA = "contracts/command/validation_run_result.schema.json"
 EVIDENCE_SCHEMA = "contracts/evidence/evidence_packet.schema.json"
 REFUSAL_REGISTRY = "contracts/refusal/refusal_code.registry.json"
-DIAGNOSTIC_REGISTRY = "contracts/diagnostics/diagnostic_code.registry.json"
+DIAGNOSTIC_REGISTRY = "contracts/diagnostic/diagnostic_code.registry.json"
 
 SUPPORTED_PROFILES = ("FAST", "STRICT", "FULL")
 SUPPORTED_SURFACES = ("cli", "headless", "workbench", "aide", "test")

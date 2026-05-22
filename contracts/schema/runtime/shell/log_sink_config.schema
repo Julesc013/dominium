@@ -1,0 +1,23 @@
+SCHEMA: appshell/log_sink_config.schema
+schema_id: dominium.schema.appshell.log_sink_config
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic AppShell log sink configuration surfaces.
+
+REQUIRED SHAPE:
+record log_sink_config
+  required:
+    - schema_version: tag
+    - sink_id: id
+    - sink_kind: enum(console|file|memory_ring)
+    - enabled: bool
+    - output_ref: text
+    - ring_capacity: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- memory_ring capacities must be bounded
+- sink configuration must not require network services

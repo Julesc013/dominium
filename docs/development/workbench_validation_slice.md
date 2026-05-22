@@ -110,7 +110,7 @@ Changed contract surfaces:
   validation command result payload.
 - `contracts/module/module_surface.contract.toml` now records the skeletal
   headless implementation path.
-- `contracts/diagnostics/diagnostic_code.registry.json` now includes the
+- `contracts/diagnostic/diagnostic_code.registry.json` now includes the
   validation-run and target-refusal diagnostic display codes used by the command
   boundary.
 

@@ -1,0 +1,25 @@
+SCHEMA: astro/ephemeris_provider.schema
+schema_id: dominium.schema.astro.ephemeris_provider
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define a deterministic SOL-2 ephemeris provider descriptor.
+
+NON-SEMANTICS:
+- Providers select derived orbit visualization logic only.
+- Providers do not authorize N-body simulation in MVP.
+
+REQUIRED SHAPE:
+record ephemeris_provider
+  required:
+    - schema_version: semver
+    - provider_id: id
+    - kind: enum(kepler_proxy|future)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- provider ids are canonical and deterministic
+- MVP runtime must resolve to ephemeris.kepler_proxy unless an explicit future provider is pack-resolved
+- deterministic_fingerprint is computed with the fingerprint field blanked

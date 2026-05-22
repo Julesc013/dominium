@@ -21,11 +21,16 @@ WORKSPACE_SCHEMA_REL = Path("contracts/workbench/workspace.schema.json")
 PANEL_SCHEMA_REL = Path("contracts/workbench/panel.schema.json")
 VIEW_BINDING_SCHEMA_REL = Path("contracts/workbench/view_binding.schema.json")
 WORKBENCH_SURFACE_REL = Path("contracts/workbench/workbench_surface.contract.toml")
+GENERIC_WORKSPACE_SCHEMA_REL = Path("contracts/workspace/workspace_descriptor.schema.json")
+GENERIC_WORKSPACE_SURFACE_REL = Path("contracts/workspace/workspace_surface.contract.toml")
 MODULE_SURFACE_REL = Path("contracts/module/module_surface.contract.toml")
 COMMAND_CONTRACT_REL = Path("contracts/command/command_surface.contract.toml")
 FIXTURE_DIR_REL = Path("tests/contract/workbench/fixtures")
-JSON_RELS = [WORKSPACE_SCHEMA_REL, PANEL_SCHEMA_REL, VIEW_BINDING_SCHEMA_REL]
-EXPECTED_CONTRACT_ID = "dominium.workbench.surface.v1"
+JSON_RELS = [WORKSPACE_SCHEMA_REL, PANEL_SCHEMA_REL, VIEW_BINDING_SCHEMA_REL, GENERIC_WORKSPACE_SCHEMA_REL]
+TOML_CONTRACT_IDS = {
+    WORKBENCH_SURFACE_REL: "dominium.workbench.surface.v1",
+    GENERIC_WORKSPACE_SURFACE_REL: "dominium.workspace.surface.v1",
+}
 ID_RE = re.compile(r"^dominium\.workbench\.[a-z0-9][a-z0-9_.-]+$")
 PATHLIKE_RE = re.compile(r"[/\\]|\.\.(?:/|\\)|\.(json|toml)$")
 
@@ -177,12 +182,13 @@ def validate_contracts(repo_root: Path) -> List[Dict[str, Any]]:
             load_json(path)
         except Exception as exc:
             findings.append(finding("error", "invalid_json", f"{rel}: {exc}", str(rel)))
-    try:
-        data = load_toml(repo_root / WORKBENCH_SURFACE_REL)
-        if data.get("contract", {}).get("id") != EXPECTED_CONTRACT_ID:
-            findings.append(finding("error", "unexpected_contract_id", "unexpected workbench contract id", str(WORKBENCH_SURFACE_REL)))
-    except Exception as exc:
-        findings.append(finding("error", "invalid_toml", f"{WORKBENCH_SURFACE_REL}: {exc}", str(WORKBENCH_SURFACE_REL)))
+    for rel, expected_id in TOML_CONTRACT_IDS.items():
+        try:
+            data = load_toml(repo_root / rel)
+            if data.get("contract", {}).get("id") != expected_id:
+                findings.append(finding("error", "unexpected_contract_id", f"unexpected contract id for {rel}", str(rel)))
+        except Exception as exc:
+            findings.append(finding("error", "invalid_toml", f"{rel}: {exc}", str(rel)))
     return findings
 
 

@@ -95,6 +95,13 @@ FORBIDDEN_ACTIVE_ROOTS = {
     "sdk",
 }
 
+FORBIDDEN_ACTIVE_ROOT_TARGETS = {
+    "modules": "contracts/module for declarations, content/packs for payloads, and the owning runtime/game/tools/apps root for implementation",
+    "plugins": "content/packs for distributable payloads, or a precise runtime/tools adapter owner for behavior",
+    "services": "contracts/service for law, runtime/<service-area> for implementation",
+    "workspaces": "apps/workbench/workspace for Workbench compositions, data/workspaces for dev overlays, or contracts/workspace for law",
+}
+
 GENERATED_LOCAL_ROOTS = {
     ".aide.local",
     ".dominium.local",
@@ -177,11 +184,14 @@ PRESENTATION_CONTRACT_ROOTS = {
     "contracts/result",
     "contracts/refusal",
     "contracts/diagnostic",
-    "contracts/diagnostics",
     "contracts/document",
     "contracts/patch",
     "contracts/view",
     "contracts/presentation",
+}
+
+CONTRACT_RETIRED_PREFIXES = {
+    "contracts/diagnostics": "contracts/diagnostic",
 }
 
 RUNTIME_PROJECTION_ROOTS = {
@@ -194,18 +204,11 @@ RUNTIME_PROJECTION_ROOTS = {
 
 FINITE_EXCEPTION_PREFIXES = {
     "runtime/ui/client": "documented reusable client UI-facing systems; route remains pending a focused runtime/ui versus apps/client decision",
-    "contracts/schema/tool": "explicitly retained schema tool bucket in current taxonomy",
 }
 
 SCHEMA_LEGACY_BUCKETS = {
-    "astro": "contracts/schema/domain/astronomy",
-    "client": "contracts/schema/runtime/client or contracts/app",
     "engine": "contracts/schema/engine or contracts/abi",
     "meta": "contracts/schema/repo or contracts/schema/governance",
-    "server": "contracts/schema/runtime/server or contracts/app",
-    "shell": "contracts/schema/runtime/shell",
-    "syscaps": "contracts/schema/capability",
-    "system": "contracts/schema/runtime or contracts/schema/domain",
 }
 
 
@@ -309,7 +312,14 @@ def build_report(repo_root, max_findings):
             add(findings, "blocker", path, "unexpected_root_file", "unexpected tracked root file")
             continue
         if root in FORBIDDEN_ACTIVE_ROOTS:
-            add(findings, "blocker", root, "forbidden_active_root", "forbidden active top-level root", "archive or canonical root")
+            add(
+                findings,
+                "blocker",
+                root,
+                "forbidden_active_root",
+                "forbidden active top-level root",
+                FORBIDDEN_ACTIVE_ROOT_TARGETS.get(root, "archive or canonical root"),
+            )
         elif root in GENERATED_LOCAL_ROOTS:
             add(findings, "blocker", root, "tracked_generated_local_root", "generated or local root is tracked", "archive/generated or untracked local state")
         elif root not in ALLOWED_ACTIVE_ROOTS:
@@ -318,6 +328,7 @@ def build_report(repo_root, max_findings):
     check_prefixes(paths_and_dirs, RUNTIME_RETIRED_PREFIXES, findings, "retired_runtime_path")
     check_prefixes(paths_and_dirs, ENGINE_INCLUDE_RETIRED_PREFIXES, findings, "retired_engine_include_path")
     check_prefixes(paths_and_dirs, CONTENT_RETIRED_PREFIXES, findings, "retired_content_path")
+    check_prefixes(paths_and_dirs, CONTRACT_RETIRED_PREFIXES, findings, "retired_contract_path")
 
     for path in sorted(paths_and_dirs):
         if has_prefix(path, "game/rules") or has_prefix(path, "game/include/dominium/rules"):

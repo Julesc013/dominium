@@ -42,7 +42,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     macro_registry_rel = "contracts/registry/macro_model_set_registry.json"
-    macro_schema_rel = "contracts/schema/system/macro_capsule.schema"
+    macro_schema_rel = "contracts/schema/runtime/system/macro_capsule.schema"
     collapse_rel = "game/domain/systems/system_collapse_engine.py"
     validation_rel = "game/domain/systems/system_validation_engine.py"
 

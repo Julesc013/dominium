@@ -106,7 +106,7 @@ def count_text_token(text, token):
 
 
 def load_fixture_config(repo_root):
-    cfg_path = os.path.join(repo_root, "tests", "perf", "exploration_fixtures", "fixtures.json")
+    cfg_path = os.path.join(repo_root, "tests", "performance", "exploration_fixtures", "fixtures.json")
     with open(cfg_path, "r", encoding="utf-8") as handle:
         return json.load(handle)
 
@@ -175,7 +175,7 @@ def main():
             ok = ok and require(False, "fixture entry missing id/root")
             continue
 
-        fixture_dir = os.path.join(repo_root, "tests", "perf", "exploration_fixtures", root)
+        fixture_dir = os.path.join(repo_root, "tests", "performance", "exploration_fixtures", root)
         data_root = os.path.join(temp_root, root, "data")
         saves_dir = os.path.join(data_root, "saves")
         replays_dir = os.path.join(data_root, "replays")

@@ -28,7 +28,7 @@ REGISTRY_POLICY_SCHEMA_REL = Path("contracts/registry/registry_policy.schema.jso
 SCHEMA_STABILITY_REL = Path("contracts/schema/schema_stability.registry.json")
 FIELD_POLICY_REL = Path("contracts/schema/field_policy.registry.json")
 PROTOCOL_STABILITY_REL = Path("contracts/protocol/protocol_stability.registry.json")
-DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostics/diagnostic_code.registry.json")
+DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostic/diagnostic_code.registry.json")
 FIXTURE_DIR_REL = Path("tests/contract/schema_protocol/fixtures")
 
 JSON_RELS = [
@@ -448,7 +448,7 @@ def inventory(repo_root: Path) -> Dict[str, Any]:
             or norm.startswith("contracts/result/")
             or norm.startswith("contracts/event/")
             or norm.startswith("contracts/refusal/")
-            or norm.startswith("contracts/diagnostics/")
+            or norm.startswith("contracts/diagnostic/")
             or norm.startswith("contracts/evidence/")
             or norm.startswith("contracts/artifact/")
             or norm.startswith("tests/contract/")

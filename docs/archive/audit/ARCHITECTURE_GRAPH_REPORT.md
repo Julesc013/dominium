@@ -8,7 +8,7 @@ Replacement Target: XI-1 architectural convergence plan
 
 # Architecture Graph Report
 
-- concept_count: `127`
+- concept_count: `126`
 - module_count: `2356`
 - duplicate_symbol_signal_count: `7980`
 - unknown_domain_module_count: `1`

@@ -942,7 +942,7 @@
       "scope_paths": [
         "server/server_boot.py",
         "server/server_main.py",
-        "schema/server/server_config.schema",
+        "contracts/schema/runtime/server/server_config.schema",
         "contracts/registry/server_config_registry.json",
         "docs/apps/server/SERVER_MVP_BASELINE.md"
       ],

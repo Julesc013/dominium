@@ -1,0 +1,59 @@
+{
+  "guards": [
+    {
+      "id": "guard.active_tier2_domains_budget",
+      "metric": "active_tier2_domains",
+      "max": 64
+    },
+    {
+      "id": "guard.active_tier1_domains_budget",
+      "metric": "active_tier1_domains",
+      "max": 256
+    },
+    {
+      "id": "guard.processes_per_tick_budget",
+      "metric": "processes_per_tick",
+      "max": 5000
+    },
+    {
+      "id": "guard.macro_events_per_tick_budget",
+      "metric": "macro_events_per_tick",
+      "max": 2000
+    },
+    {
+      "id": "guard.collapse_expand_ops_budget",
+      "metric": "collapse_expand_ops_per_tick",
+      "max": 128
+    },
+    {
+      "id": "guard.agent_planning_steps_budget",
+      "metric": "agent_planning_steps_per_tick",
+      "max": 10000
+    },
+    {
+      "id": "guard.snapshot_ops_budget",
+      "metric": "snapshot_ops_per_tick",
+      "max": 8
+    },
+    {
+      "id": "guard.serialization_ops_budget",
+      "metric": "serialization_ops_per_tick",
+      "max": 4
+    },
+    {
+      "id": "guard.cross_shard_msgs_budget",
+      "metric": "cross_shard_msgs_per_tick",
+      "max": 8192
+    },
+    {
+      "id": "guard.cross_shard_bytes_budget",
+      "metric": "cross_shard_bytes_per_tick",
+      "max": 1048576
+    },
+    {
+      "id": "guard.memory_peak_budget_kb",
+      "metric": "memory_peak_kb",
+      "max": 8388608
+    }
+  ]
+}

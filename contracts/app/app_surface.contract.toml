@@ -12,3 +12,5 @@ private_implementation_dependencies_allowed = false
 stable_apps_require_proof = true
 app_composer_implemented = false
 release_publication_implemented = false
+apps_consume_modules_do_not_own_reusable_behavior = true
+app_module_composition_declared_by_contracts = true

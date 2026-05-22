@@ -319,7 +319,7 @@ Contract:
 
 • /tests/replay
 
-• /tests/perf
+• /tests/performance
 
 My tree:
 
@@ -343,7 +343,7 @@ o /tests/sim → /tests/integration.
 
 o /tests/regression/replays → /tests/replay.
 
-o Add /tests/perf explicitly for performance/load tests.
+o Add /tests/performance explicitly for performance/load tests.
 
 o Keep regression saves either in /tests/replay or /tests/integration depending on usage.
 
@@ -961,7 +961,7 @@ o All determinism-sensitive code lives in /engine/core, /engine/sim, /engine/ecs
 
 o Platform and rendering are segregated under /engine/platform and /engine/render and can be swapped without touching the simulation kernel.
 
-o /tests/replay and /tests/perf are explicit hooks to continuously verify determinism and performance under load.
+o /tests/replay and /tests/performance are explicit hooks to continuously verify determinism and performance under load.
 
 • Extensibility without rot
 
@@ -2175,7 +2175,7 @@ o Networks.
 
 • Prebuilt replay logs to confirm deterministic replay end state.
 
-/tests/perf/
+/tests/performance/
 
 • Stress tests:
 
@@ -19711,13 +19711,13 @@ The engine must never crash or desync; state must remain consistent.
 
 
 
-5. /tests/perf/ — performance, scalability, and soak tests
+5. /tests/performance/ — performance, scalability, and soak tests
 
 Performance tests measure execution time of stable APIs.
 
 Subdirs:
 
-/tests/perf/
+/tests/performance/
 
 ├─ microbench/
 

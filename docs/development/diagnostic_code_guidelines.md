@@ -3,7 +3,7 @@ Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
-Binding Sources: `contracts/diagnostics/diagnostic_policy.contract.toml`, `contracts/diagnostics/diagnostic_code.schema.json`
+Binding Sources: `contracts/diagnostic/diagnostic_policy.contract.toml`, `contracts/diagnostic/diagnostic_code.schema.json`
 
 # Diagnostic Code Guidelines
 
@@ -58,7 +58,7 @@ affect the current gate.
 ## Category
 
 Categories route diagnostics to owners. Use the registry in
-`contracts/diagnostics/diagnostic_category.registry.json`. If no category fits,
+`contracts/diagnostic/diagnostic_category.registry.json`. If no category fits,
 use `unknown` only as a short-term provisional classification and add a follow-up
 to replace it.
 

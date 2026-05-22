@@ -12,3 +12,7 @@ panels_bind_views_not_private_paths = true
 views_present_results = true
 reusable_ui_primitives_live_in_runtime_ui = true
 workspace_runtime_implemented = false
+workbench_modules_are_presentation_only = true
+workbench_workspaces_compose_modules = true
+workbench_does_not_own_reusable_module_behavior = true
+world_creation_reusable_behavior_owner = "game/domain/worldgen or runtime/provider"

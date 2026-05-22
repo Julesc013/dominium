@@ -19,5 +19,5 @@ recovery_action_must_be_machine_readable = true
 allowed = ["install_provider", "enable_pack", "upgrade_schema", "select_alternative", "run_migration", "use_degraded_mode", "disable_feature", "inspect_evidence", "contact_support", "not_recoverable"]
 
 [integration]
-diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+diagnostics_registry = "contracts/diagnostic/diagnostic_code.registry.json"
 evidence_schema = "contracts/evidence/evidence_packet.schema.json"

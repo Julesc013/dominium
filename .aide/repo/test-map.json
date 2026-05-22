@@ -5350,7 +5350,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/CMakeLists.txt"
+      "test_path": "tests/performance/CMakeLists.txt"
     },
     {
       "confidence": "low",
@@ -5358,7 +5358,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/animal_perf_tests.py"
+      "test_path": "tests/performance/animal_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5366,7 +5366,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/autonomy_perf_tests.py"
+      "test_path": "tests/performance/autonomy_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5374,7 +5374,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/climate_perf_tests.py"
+      "test_path": "tests/performance/climate_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5382,7 +5382,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/conflict_perf_tests.py"
+      "test_path": "tests/performance/conflict_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5390,7 +5390,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/crafting_perf_tests.py"
+      "test_path": "tests/performance/crafting_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5398,7 +5398,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/economy_perf_tests.py"
+      "test_path": "tests/performance/economy_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5406,7 +5406,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/energy_perf_tests.py"
+      "test_path": "tests/performance/energy_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5414,7 +5414,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/exploration_fixture_contracts.py"
+      "test_path": "tests/performance/exploration_fixture_contracts.py"
     },
     {
       "confidence": "low",
@@ -5422,7 +5422,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/exploration_fixtures/deep_hierarchy/data/world/templates/exploration_baseline.worlddef.json"
+      "test_path": "tests/performance/exploration_fixtures/deep_hierarchy/data/world/templates/exploration_baseline.worlddef.json"
     },
     {
       "confidence": "low",
@@ -5430,7 +5430,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/exploration_fixtures/fixtures.json"
+      "test_path": "tests/performance/exploration_fixtures/fixtures.json"
     },
     {
       "confidence": "low",
@@ -5438,7 +5438,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/exploration_fixtures/galaxy_scale/data/world/templates/exploration_baseline.worlddef.json"
+      "test_path": "tests/performance/exploration_fixtures/galaxy_scale/data/world/templates/exploration_baseline.worlddef.json"
     },
     {
       "confidence": "low",
@@ -5446,7 +5446,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/exploration_fixtures/local_only/data/world/templates/exploration_baseline.worlddef.json"
+      "test_path": "tests/performance/exploration_fixtures/local_only/data/world/templates/exploration_baseline.worlddef.json"
     },
     {
       "confidence": "low",
@@ -5454,7 +5454,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/exploration_fixtures/system_scale/data/world/templates/exploration_baseline.worlddef.json"
+      "test_path": "tests/performance/exploration_fixtures/system_scale/data/world/templates/exploration_baseline.worlddef.json"
     },
     {
       "confidence": "low",
@@ -5462,7 +5462,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/fluid_perf_tests.py"
+      "test_path": "tests/performance/fluid_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5470,7 +5470,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/geology_perf_tests.py"
+      "test_path": "tests/performance/geology_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5478,7 +5478,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/hazard_perf_tests.py"
+      "test_path": "tests/performance/hazard_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5486,7 +5486,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/heat_perf_tests.py"
+      "test_path": "tests/performance/heat_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5494,7 +5494,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/history_perf_tests.py"
+      "test_path": "tests/performance/history_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5502,7 +5502,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/institution_perf_tests.py"
+      "test_path": "tests/performance/institution_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5510,7 +5510,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/knowledge_perf_tests.py"
+      "test_path": "tests/performance/knowledge_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5518,7 +5518,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/mining_perf_tests.py"
+      "test_path": "tests/performance/mining_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5526,7 +5526,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/network_perf_tests.py"
+      "test_path": "tests/performance/network_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5534,7 +5534,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/perf_budget_gate_tests.py"
+      "test_path": "tests/performance/perf_budget_gate_tests.py"
     },
     {
       "confidence": "low",
@@ -5542,7 +5542,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/perf_fixture_contracts.py"
+      "test_path": "tests/performance/perf_fixture_contracts.py"
     },
     {
       "confidence": "low",
@@ -5550,7 +5550,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/perf_guards.json"
+      "test_path": "tests/performance/perf_guards.json"
     },
     {
       "confidence": "low",
@@ -5558,7 +5558,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/risk_perf_tests.py"
+      "test_path": "tests/performance/risk_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5566,7 +5566,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/srz_perf_tests.py"
+      "test_path": "tests/performance/srz_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5574,7 +5574,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/standard_perf_tests.py"
+      "test_path": "tests/performance/standard_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5582,7 +5582,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/structure_perf_tests.py"
+      "test_path": "tests/performance/structure_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5590,7 +5590,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/terrain_perf_tests.py"
+      "test_path": "tests/performance/terrain_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5598,7 +5598,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/travel_perf_tests.py"
+      "test_path": "tests/performance/travel_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5606,7 +5606,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/trust_perf_tests.py"
+      "test_path": "tests/performance/trust_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5614,7 +5614,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/vegetation_perf_tests.py"
+      "test_path": "tests/performance/vegetation_perf_tests.py"
     },
     {
       "confidence": "low",
@@ -5622,7 +5622,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/perf/weather_perf_tests.py"
+      "test_path": "tests/performance/weather_perf_tests.py"
     },
     {
       "confidence": "low",

@@ -12,10 +12,15 @@ not authority over product semantics.
 
 ## Structure
 
-- `apps/workbench/shell/` may later own shell and workspace manager code.
-- `apps/workbench/module/` may later own user-facing Workbench modules.
-- `apps/workbench/workspace/` may later own large user-facing compositions.
+- `apps/workbench/shell/` owns Workbench shell and workspace-manager code when
+  that runtime exists.
+- `apps/workbench/module/` owns Workbench presentation modules only: editors,
+  inspectors, panels, previews, dashboards, validation projections, and UI glue.
+- `apps/workbench/workspace/` owns large user-facing Workbench compositions.
 - Reusable UI primitives belong under `runtime/ui/`, not Workbench app code.
+- Reusable domain, generation, validation, service, provider, package, and
+  command behavior stays under its owning `game/`, `runtime/`, `engine/`,
+  `tools/`, or contract root.
 
 This task defines only contracts and validators. It does not create or migrate
 those runtime directories.
@@ -43,3 +48,8 @@ not to a Python validator file path.
 Workbench modules and workspaces consume typed results, diagnostics, refusals,
 and evidence. They do not invent meanings for diagnostics and do not mutate
 truth directly.
+
+Workbench modules may present and edit module descriptors, pack payloads, world
+blueprints, seeds, previews, and evidence. They must not own reusable
+world-creation law, worldgen engines, provider backends, pack/profile
+resolution, or server/client runtime behavior.

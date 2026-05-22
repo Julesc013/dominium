@@ -256,8 +256,8 @@ artifacts are inventoried but not migrated by this task.
 
 DIAGNOSTIC-CODE-REGISTRY-01 adds the provisional diagnostic/evidence registry.
 
-- registry: `contracts/diagnostics/diagnostic_code.registry.json`
-- policy: `contracts/diagnostics/diagnostic_policy.contract.toml`
+- registry: `contracts/diagnostic/diagnostic_code.registry.json`
+- policy: `contracts/diagnostic/diagnostic_policy.contract.toml`
 - validator: `python tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict`
 - diagnostic codes registered: 14 provisional foundational codes
 - severities registered: 7

@@ -30,7 +30,7 @@ PROVIDER_CAPABILITY_POLICY_REL = Path("contracts/provider/provider_capability_po
 PROVIDER_TRUST_POLICY_REL = Path("contracts/provider/provider_trust_policy.contract.toml")
 CAPABILITY_REGISTRY_REL = Path("contracts/capability/capability.registry.json")
 REFUSAL_REGISTRY_REL = Path("contracts/refusal/refusal_code.registry.json")
-DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostics/diagnostic_code.registry.json")
+DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostic/diagnostic_code.registry.json")
 PUBLIC_SURFACE_REGISTRY_REL = Path("contracts/public_surface/public_surface.contract.toml")
 FIXTURE_DIR_REL = Path("tests/contract/provider/fixtures")
 

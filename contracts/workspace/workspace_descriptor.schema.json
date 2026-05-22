@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.workspace.descriptor.v1",
+  "title": "Dominium Workspace Descriptor",
+  "type": "object",
+  "required": ["workspace_id", "workspace_class", "owner", "version", "stability"],
+  "properties": {
+    "workspace_id": {"type": "string"},
+    "workspace_class": {
+      "type": "string",
+      "enum": ["workbench_composition", "dev_overlay", "app_composition_fixture"]
+    },
+    "owner": {"type": "string"},
+    "version": {"type": "string"},
+    "stability": {"type": "string"},
+    "implementation_path": {"type": ["string", "null"]},
+    "implementation_path_is_identity": {"type": "boolean"},
+    "modules": {"type": "array", "items": {"type": "string"}},
+    "panels": {"type": "array", "items": {"type": "string"}},
+    "views": {"type": "array", "items": {"type": "string"}},
+    "commands": {"type": "array", "items": {"type": "string"}},
+    "pack_refs": {"type": "array", "items": {"type": "string"}},
+    "provider_refs": {"type": "array", "items": {"type": "string"}},
+    "capability_refs": {"type": "array", "items": {"type": "string"}},
+    "artifact_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_surfaces": {"type": "array", "items": {"type": "string"}},
+    "private_tool_calls": {"type": "boolean"},
+    "reusable_behavior": {"type": "boolean"},
+    "proof": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}

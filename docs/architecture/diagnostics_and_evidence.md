@@ -3,7 +3,7 @@ Last Reviewed: 2026-05-21
 Supersedes: none
 Superseded By: none
 Stability: provisional
-Binding Sources: `contracts/diagnostics/diagnostic_policy.contract.toml`, `contracts/diagnostics/diagnostic_code.registry.json`, `contracts/evidence/evidence_packet.schema.json`, `contracts/refusal/refusal_code.registry.json`, `contracts/command/command_surface.contract.toml`
+Binding Sources: `contracts/diagnostic/diagnostic_policy.contract.toml`, `contracts/diagnostic/diagnostic_code.registry.json`, `contracts/evidence/evidence_packet.schema.json`, `contracts/refusal/refusal_code.registry.json`, `contracts/command/command_surface.contract.toml`
 
 # Diagnostics And Evidence
 
@@ -34,15 +34,15 @@ corpus.
 ## Registries
 
 The diagnostic registry is
-`contracts/diagnostics/diagnostic_code.registry.json`.
+`contracts/diagnostic/diagnostic_code.registry.json`.
 
 Severity values are owned by
-`contracts/diagnostics/diagnostic_severity.registry.json`.
+`contracts/diagnostic/diagnostic_severity.registry.json`.
 
 Category values are owned by
-`contracts/diagnostics/diagnostic_category.registry.json`.
+`contracts/diagnostic/diagnostic_category.registry.json`.
 
-Policy is owned by `contracts/diagnostics/diagnostic_policy.contract.toml`.
+Policy is owned by `contracts/diagnostic/diagnostic_policy.contract.toml`.
 
 The initial registry is conservative and provisional. It names foundational
 conditions for repo layout, root allowlist, dependency direction, ABI header

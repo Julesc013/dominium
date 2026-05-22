@@ -13,7 +13,7 @@ CREG=Path('contracts/conformance/conformance.registry.json'); CSTAT=Path('contra
 CCON=Path('contracts/conformance/conformance.contract.toml'); CSCH=Path('contracts/conformance/conformance_suite.schema.json')
 PREG=Path('contracts/provider/provider.registry.json'); PK=Path('contracts/provider/provider_kind.registry.json')
 CAP=Path('contracts/capability/capability.registry.json'); REF=Path('contracts/refusal/refusal_code.registry.json')
-DIA=Path('contracts/diagnostics/diagnostic_code.registry.json'); CMD=Path('contracts/command/command_surface.contract.toml')
+DIA=Path('contracts/diagnostic/diagnostic_code.registry.json'); CMD=Path('contracts/command/command_surface.contract.toml')
 PUB=Path('contracts/public_surface/public_surface.contract.toml'); ART=Path('contracts/artifact/artifact_kind.registry.json')
 SFIX=Path('tests/contract/service/fixtures'); CFIX=Path('tests/contract/conformance/fixtures')
 J=[SSCH,SK,SVC,CSCH,CSTAT,CREG]; T={SCON:'dominium.service.contract.v1',CCON:'dominium.conformance.contract.v1'}

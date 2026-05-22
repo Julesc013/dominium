@@ -28,7 +28,7 @@ COMPATIBILITY_RANGE_SCHEMA_REL = Path("contracts/versioning/compatibility_range.
 VERSION_TRANSITION_SCHEMA_REL = Path("contracts/versioning/version_transition.schema.json")
 SURFACE_LIFECYCLE_REL = Path("contracts/versioning/surface_lifecycle.contract.toml")
 PUBLIC_SURFACE_REGISTRY_REL = Path("contracts/public_surface/public_surface.contract.toml")
-DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostics/diagnostic_code.registry.json")
+DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostic/diagnostic_code.registry.json")
 REFUSAL_REGISTRY_REL = Path("contracts/refusal/refusal_code.registry.json")
 FIXTURE_DIR_REL = Path("tests/contract/versioning/fixtures")
 

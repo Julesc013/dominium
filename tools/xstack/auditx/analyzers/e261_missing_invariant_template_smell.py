@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    schema_rel = "contracts/schema/system/boundary_invariant.schema"
+    schema_rel = "contracts/schema/runtime/system/boundary_invariant.schema"
     registry_rel = "contracts/registry/boundary_invariant_template_registry.json"
     validation_rel = "game/domain/systems/system_validation_engine.py"
 

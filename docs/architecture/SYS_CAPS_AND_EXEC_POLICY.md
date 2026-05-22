@@ -63,10 +63,10 @@ SysCaps define conservative hardware/platform signals:
 Field semantics and allowed values are defined in:
 
 
-- `schema/syscaps/SPEC_SYS_CAPS.md`
+- `contracts/schema/capability/syscaps/SPEC_SYS_CAPS.md`
 
 
-- `schema/syscaps/SPEC_SYS_CAPS_FIELDS.md`
+- `contracts/schema/capability/syscaps/SPEC_SYS_CAPS_FIELDS.md`
 
 
 
@@ -183,7 +183,7 @@ Audits prevent silent fallbacks and allow tooling to explain degradations.
 ## Dependencies
 
 
-- SysCaps schema: `schema/syscaps/README.md`
+- SysCaps schema: `contracts/schema/capability/syscaps/README.md`
 
 
 - Execution model: `docs/architecture/EXECUTION_MODEL.md`

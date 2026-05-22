@@ -18,7 +18,7 @@ Expected behavior:
 - `valid_diagnostic_code.json` passes fixture validation.
 - `invalid_missing_owner.json` fails because every diagnostic needs an owner.
 - `invalid_unknown_severity.json` fails because severity must come from
-  `contracts/diagnostics/diagnostic_severity.registry.json`.
+  `contracts/diagnostic/diagnostic_severity.registry.json`.
 - `valid_evidence_packet.json` passes evidence fixture validation.
 - `invalid_evidence_missing_subject.json` fails because evidence must identify
   its subject.

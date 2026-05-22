@@ -231,8 +231,8 @@ Feature implementation remains blocked until Foundation Lock closes.
 
 DIAGNOSTIC-CODE-REGISTRY-01 is PASS_WITH_WARNINGS.
 
-- diagnostic registry: `contracts/diagnostics/diagnostic_code.registry.json`.
-- diagnostic policy: `contracts/diagnostics/diagnostic_policy.contract.toml`.
+- diagnostic registry: `contracts/diagnostic/diagnostic_code.registry.json`.
+- diagnostic policy: `contracts/diagnostic/diagnostic_policy.contract.toml`.
 - validator: `tools/validators/contracts/check_diagnostics_registry.py`.
 - diagnostic codes registered: 14 provisional foundational codes.
 - severities registered: 7.

@@ -19,7 +19,7 @@ World size may change only in inactive/collapsed content.
 ## Evidence
 The following guards establish the constant-cost guarantee:
 
-- **Fixture contracts**: `tests/perf/exploration_fixture_contracts.py`
+- **Fixture contracts**: `tests/performance/exploration_fixture_contracts.py`
   - Validates data-only fixtures and asserts identical navigation scripts.
   - Ensures fixtures differ only in topology size, not active content.
 

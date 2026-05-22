@@ -21,7 +21,7 @@ refusal_code_required = true
 diagnostic_code_required = true
 
 [relationships]
-diagnostic_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+diagnostic_registry = "contracts/diagnostic/diagnostic_code.registry.json"
 refusal_registry = "contracts/refusal/refusal_code.registry.json"
 schema_migration_policy = "contracts/migration/migration_policy.contract.toml"
 artifact_identity_law = "contracts/artifact/artifact_identity.contract.toml"

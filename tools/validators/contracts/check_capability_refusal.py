@@ -28,7 +28,7 @@ RECOVERY_POLICY_REL = Path("contracts/capability/recovery_policy.contract.toml")
 REFUSAL_CONTRACT_REL = Path("contracts/refusal/refusal.contract.toml")
 REFUSAL_SCHEMA_REL = Path("contracts/refusal/refusal.schema.json")
 REFUSAL_REGISTRY_REL = Path("contracts/refusal/refusal_code.registry.json")
-DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostics/diagnostic_code.registry.json")
+DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostic/diagnostic_code.registry.json")
 COMMAND_CONTRACT_REL = Path("contracts/command/command_surface.contract.toml")
 FIXTURE_DIR_REL = Path("tests/contract/capability_refusal/fixtures")
 

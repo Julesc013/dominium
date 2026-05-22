@@ -37,6 +37,53 @@ EXPECTED_CONTRACT_IDS = {
 }
 MODULE_ID_RE = re.compile(r"^(domino|dominium)\.(module|workbench)(\.[a-z0-9][a-z0-9_-]*)+$")
 PATHLIKE_RE = re.compile(r"[/\\]|\.\.(?:/|\\)|\.(json|toml)$")
+FORBIDDEN_IMPLEMENTATION_PREFIXES = {
+    "modules": "contracts/module for declarations, owner root for implementation, content/packs for payloads",
+    "plugins": "content/packs for payloads or tools/runtime adapter owners for behavior",
+    "services": "runtime/service owner, contracts/service, or the precise owning runtime root",
+    "workspaces": "apps/workbench/workspace, data/workspaces for dev overlays, or contracts/workspace",
+    "content/modules": "content/packs/<category>/<pack_id>",
+}
+KIND_IMPLEMENTATION_PREFIXES = {
+    "workbench_module": ("apps/workbench/module",),
+    "workbench_workspace": ("apps/workbench/workspace",),
+    "content_pack_module": ("content/packs",),
+    "app_composition": ("apps", "contracts/app"),
+    "runtime_service": ("runtime",),
+    "runtime_provider": ("runtime/provider", "runtime"),
+}
+KIND_OWNER_EXPECTATIONS = {
+    "workbench_module": "apps.workbench",
+    "workbench_workspace": "apps.workbench",
+    "content_pack_module": "content.packs",
+}
+MODULE_POLICY_EXPECTATIONS = {
+    "module_identity_is_path": False,
+    "workbench_is_authority": False,
+    "modules_depend_on_private_paths": False,
+    "pack_modules_require_declared_descriptor": True,
+    "module_declarations_live_in_contracts_or_pack_manifests": True,
+    "workbench_modules_are_presentation_only": True,
+    "reusable_behavior_lives_under_ownership_root": True,
+    "module_payloads_are_pack_delivered": True,
+    "top_level_modules_root_allowed": False,
+    "top_level_plugins_root_allowed": False,
+    "top_level_services_root_allowed": False,
+    "top_level_workspaces_root_allowed": False,
+    "runtime_module_root_is_service_only": True,
+    "content_modules_root_allowed": False,
+    "apps_compose_modules_do_not_own_reusable_behavior": True,
+}
+PACK_POLICY_EXPECTATIONS = {
+    "pack_module_descriptor_required": True,
+    "pack_module_id_is_path": False,
+    "data_only_packs_may_provide_native_code": False,
+    "silent_module_activation_allowed": False,
+    "pack_modules_live_under_content_packs": True,
+    "content_modules_root_allowed": False,
+    "pack_module_may_declare_payloads_not_native_behavior": True,
+    "reusable_behavior_requires_service_provider_or_domain_owner": True,
+}
 
 
 def _strip_comment(line: str) -> str:
@@ -162,6 +209,14 @@ def finding(level: str, code: str, message: str, path: Optional[str] = None) -> 
     return item
 
 
+def normalize_repo_path(value: Any) -> str:
+    return str(value or "").replace("\\", "/").strip("/")
+
+
+def has_path_prefix(path: str, prefix: str) -> bool:
+    return path == prefix or path.startswith(prefix + "/")
+
+
 def registry_ids(data: Dict[str, Any], key: str, id_key: str = "id") -> Set[str]:
     return {
         str(item.get(id_key))
@@ -230,6 +285,11 @@ def validate_contracts(repo_root: Path) -> List[Dict[str, Any]]:
         contract = data.get("contract", {})
         if contract.get("id") != EXPECTED_CONTRACT_IDS[rel]:
             findings.append(finding("error", "unexpected_contract_id", f"{rel}: unexpected contract id", str(rel)))
+        policy = data.get("policy", {})
+        expectations = MODULE_POLICY_EXPECTATIONS if rel == MODULE_SURFACE_REL else PACK_POLICY_EXPECTATIONS if rel == PACK_MODULE_POLICY_REL else {}
+        for key, expected in expectations.items():
+            if policy.get(key) != expected:
+                findings.append(finding("error", "module_policy_mismatch", f"{rel}: policy {key} must be {expected}", str(rel)))
     return findings
 
 
@@ -237,23 +297,58 @@ def validate_module(item: Dict[str, Any], path: str, kinds: Set[str], command_id
     findings: List[Dict[str, Any]] = []
     module_id = str(item.get("module_id") or "")
     module_kind = str(item.get("module_kind") or "")
+    implementation_path = normalize_repo_path(item.get("implementation_path"))
     if not module_id:
         findings.append(finding("error", "module_missing_id", "module_id is required", path))
     elif PATHLIKE_RE.search(module_id) or not MODULE_ID_RE.match(module_id):
         findings.append(finding("error", "module_bad_id", f"module_id is not a governed dotted ID: {module_id}", path))
     if module_kind not in kinds:
         findings.append(finding("error", "module_unknown_kind", f"unknown module_kind: {module_kind}", path))
-    if not item.get("owner"):
+    owner = str(item.get("owner") or "")
+    if not owner:
         findings.append(finding("error", "module_missing_owner", "owner is required", path))
+    expected_owner = KIND_OWNER_EXPECTATIONS.get(module_kind)
+    if expected_owner and owner and owner != expected_owner:
+        findings.append(finding("error", "module_owner_mismatch", f"{module_kind} owner must be {expected_owner}", path))
     if not item.get("stability"):
         findings.append(finding("error", "module_missing_stability", "stability is required", path))
     if item.get("implementation_path_is_identity") is True:
         findings.append(finding("error", "module_path_identity", "implementation_path_is_identity must not be true", path))
+    if implementation_path:
+        for prefix, target in sorted(FORBIDDEN_IMPLEMENTATION_PREFIXES.items()):
+            if has_path_prefix(implementation_path, prefix):
+                findings.append(finding("error", "module_forbidden_implementation_root", f"implementation_path uses forbidden root {prefix}; use {target}", path))
+        allowed_prefixes = KIND_IMPLEMENTATION_PREFIXES.get(module_kind)
+        if allowed_prefixes and not any(has_path_prefix(implementation_path, prefix) for prefix in allowed_prefixes):
+            findings.append(
+                finding(
+                    "error",
+                    "module_wrong_implementation_root",
+                    f"{module_kind} implementation_path must live under one of: {', '.join(allowed_prefixes)}",
+                    path,
+                )
+            )
     if item.get("private_tool_calls") or item.get("private_dependencies"):
         findings.append(finding("error", "module_private_dependency", "modules must not declare private tool/path dependencies", path))
     commands = [str(v) for v in as_list(item.get("required_commands")) if v]
     if module_kind in {"workbench_module", "command_module"} and not commands:
         findings.append(finding("error", "module_missing_required_command", "workbench/command modules require command bindings", path))
+    if module_kind == "workbench_module":
+        if item.get("reusable_behavior") is True:
+            findings.append(finding("error", "workbench_module_reusable_behavior", "Workbench modules must be presentation only; reusable behavior belongs under the owning runtime/game/tool/app root", path))
+        if item.get("presentation_only") is False:
+            findings.append(finding("error", "workbench_module_not_presentation_only", "Workbench module descriptors must not deny presentation-only ownership", path))
+        ownership_layer = item.get("ownership_layer")
+        if ownership_layer and ownership_layer != "workbench_presentation":
+            findings.append(finding("error", "workbench_module_bad_ownership_layer", "Workbench module ownership_layer must be workbench_presentation", path))
+    if module_kind == "content_pack_module":
+        if item.get("native_code") is True:
+            findings.append(finding("error", "pack_module_native_code", "Pack-provided modules may declare payloads, not native behavior", path))
+        ownership_layer = item.get("ownership_layer")
+        if ownership_layer and ownership_layer != "pack_payload":
+            findings.append(finding("error", "pack_module_bad_ownership_layer", "Pack-provided module ownership_layer must be pack_payload", path))
+        if not as_list(item.get("packs")):
+            findings.append(finding("error", "pack_module_missing_pack_ref", "Pack-provided modules must name at least one pack", path))
     for command_id in commands:
         if command_ids and command_id not in command_ids:
             findings.append(finding("error", "module_unknown_command", f"unknown command ID: {command_id}", path))

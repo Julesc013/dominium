@@ -31,7 +31,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    schema_rel = "contracts/schema/system/interface_signature.schema"
+    schema_rel = "contracts/schema/runtime/system/interface_signature.schema"
     validation_rel = "game/domain/systems/system_validation_engine.py"
     collapse_rel = "game/domain/systems/system_collapse_engine.py"
     expand_rel = "game/domain/systems/system_expand_engine.py"

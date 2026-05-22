@@ -75,7 +75,7 @@ lockfile_mount_plan_future = true
 [relationships]
 capability_registry = "contracts/capability/capability.registry.json"
 refusal_registry = "contracts/refusal/refusal_code.registry.json"
-diagnostic_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+diagnostic_registry = "contracts/diagnostic/diagnostic_code.registry.json"
 artifact_identity_law = "contracts/artifact/artifact_identity.contract.toml"
 provider_model = "contracts/provider/provider.contract.toml"
 module_composition = "contracts/module/module_surface.contract.toml"

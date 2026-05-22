@@ -9,7 +9,7 @@ Replacement Target: XI-1 module-boundary convergence planning
 # Module Discovery Report
 
 - directory_count: `2635`
-- file_count: `18688`
+- file_count: `18692`
 - module_count: `2356`
 
 ## Modules
@@ -1034,7 +1034,7 @@ Replacement Target: XI-1 module-boundary convergence planning
 - `contracts.compatibility` :: root=`contracts/compatibility` domain=`contracts` files=`1` confidence=`0.92`
 - `contracts.composition` :: root=`contracts/composition` domain=`contracts` files=`10` confidence=`0.92`
 - `contracts.conformance` :: root=`contracts/conformance` domain=`contracts` files=`4` confidence=`0.92`
-- `contracts.diagnostics` :: root=`contracts/diagnostics` domain=`contracts` files=`5` confidence=`0.92`
+- `contracts.diagnostic` :: root=`contracts/diagnostic` domain=`contracts` files=`5` confidence=`0.92`
 - `contracts.distribution` :: root=`contracts/distribution` domain=`contracts` files=`2` confidence=`0.92`
 - `contracts.document` :: root=`contracts/document` domain=`contracts` files=`7` confidence=`0.92`
 - `contracts.event` :: root=`contracts/event` domain=`contracts` files=`2` confidence=`0.92`
@@ -1088,15 +1088,15 @@ Replacement Target: XI-1 module-boundary convergence planning
 - `contracts.save` :: root=`contracts/save` domain=`contracts` files=`1` confidence=`0.92`
 - `contracts.schema` :: root=`contracts/schema` domain=`contracts` files=`742` confidence=`0.92`
 - `contracts.schema.agents` :: root=`contracts/schema/agents` domain=`contracts` files=`10` confidence=`0.92`
-- `contracts.schema.astro` :: root=`contracts/schema/astro` domain=`contracts` files=`6` confidence=`0.92`
 - `contracts.schema.authority` :: root=`contracts/schema/authority` domain=`contracts` files=`6` confidence=`0.92`
 - `contracts.schema.blueprint` :: root=`contracts/schema/blueprint` domain=`contracts` files=`1` confidence=`0.92`
 - `contracts.schema.capability` :: root=`contracts/schema/capability` domain=`contracts` files=`3` confidence=`0.92`
-- `contracts.schema.client` :: root=`contracts/schema/client` domain=`contracts` files=`2` confidence=`0.92`
+- `contracts.schema.capability.syscaps` :: root=`contracts/schema/capability/syscaps` domain=`contracts` files=`4` confidence=`0.92`
 - `contracts.schema.compatibility` :: root=`contracts/schema/compatibility` domain=`contracts` files=`13` confidence=`0.92`
 - `contracts.schema.deprecation` :: root=`contracts/schema/deprecation` domain=`contracts` files=`1` confidence=`0.92`
 - `contracts.schema.distribution` :: root=`contracts/schema/distribution` domain=`contracts` files=`12` confidence=`0.92`
 - `contracts.schema.domain` :: root=`contracts/schema/domain` domain=`contracts` files=`7` confidence=`0.92`
+- `contracts.schema.domain.astronomy` :: root=`contracts/schema/domain/astronomy` domain=`contracts` files=`6` confidence=`0.92`
 - `contracts.schema.domain.chemistry` :: root=`contracts/schema/domain/chemistry` domain=`contracts` files=`4` confidence=`0.92`
 - `contracts.schema.domain.civilization` :: root=`contracts/schema/domain/civilization` domain=`contracts` files=`31` confidence=`0.92`
 - `contracts.schema.domain.electricity` :: root=`contracts/schema/domain/electricity` domain=`contracts` files=`8` confidence=`0.92`
@@ -1159,24 +1159,24 @@ Replacement Target: XI-1 module-boundary convergence planning
 - `contracts.schema.registry` :: root=`contracts/schema/registry` domain=`contracts` files=`1` confidence=`0.92`
 - `contracts.schema.release` :: root=`contracts/schema/release` domain=`contracts` files=`17` confidence=`0.92`
 - `contracts.schema.repo.migration` :: root=`contracts/schema/repo/migration` domain=`contracts` files=`1` confidence=`0.92`
+- `contracts.schema.runtime.client` :: root=`contracts/schema/runtime/client` domain=`contracts` files=`2` confidence=`0.92`
 - `contracts.schema.runtime.control` :: root=`contracts/schema/runtime/control` domain=`contracts` files=`27` confidence=`0.92`
 - `contracts.schema.runtime.diagnostics` :: root=`contracts/schema/runtime/diagnostics` domain=`contracts` files=`4` confidence=`0.92`
 - `contracts.schema.runtime.network` :: root=`contracts/schema/runtime/network` domain=`contracts` files=`10` confidence=`0.92`
 - `contracts.schema.runtime.render` :: root=`contracts/schema/runtime/render` domain=`contracts` files=`8` confidence=`0.92`
+- `contracts.schema.runtime.server` :: root=`contracts/schema/runtime/server` domain=`contracts` files=`1` confidence=`0.92`
+- `contracts.schema.runtime.shell` :: root=`contracts/schema/runtime/shell` domain=`contracts` files=`14` confidence=`0.92`
 - `contracts.schema.runtime.storage` :: root=`contracts/schema/runtime/storage` domain=`contracts` files=`2` confidence=`0.92`
+- `contracts.schema.runtime.system` :: root=`contracts/schema/runtime/system` domain=`contracts` files=`22` confidence=`0.92`
 - `contracts.schema.safety` :: root=`contracts/schema/safety` domain=`contracts` files=`2` confidence=`0.92`
 - `contracts.schema.save` :: root=`contracts/schema/save` domain=`contracts` files=`2` confidence=`0.92`
 - `contracts.schema.scale` :: root=`contracts/schema/scale` domain=`contracts` files=`7` confidence=`0.92`
 - `contracts.schema.scenario` :: root=`contracts/schema/scenario` domain=`contracts` files=`3` confidence=`0.92`
 - `contracts.schema.security` :: root=`contracts/schema/security` domain=`contracts` files=`4` confidence=`0.92`
-- `contracts.schema.server` :: root=`contracts/schema/server` domain=`contracts` files=`1` confidence=`0.92`
 - `contracts.schema.session` :: root=`contracts/schema/session` domain=`contracts` files=`5` confidence=`0.92`
 - `contracts.schema.settings` :: root=`contracts/schema/settings` domain=`contracts` files=`5` confidence=`0.92`
-- `contracts.schema.shell` :: root=`contracts/schema/shell` domain=`contracts` files=`14` confidence=`0.92`
 - `contracts.schema.signals` :: root=`contracts/schema/signals` domain=`contracts` files=`20` confidence=`0.92`
 - `contracts.schema.survival` :: root=`contracts/schema/survival` domain=`contracts` files=`1` confidence=`0.92`
-- `contracts.schema.syscaps` :: root=`contracts/schema/syscaps` domain=`contracts` files=`4` confidence=`0.92`
-- `contracts.schema.system` :: root=`contracts/schema/system` domain=`contracts` files=`22` confidence=`0.92`
 - `contracts.schema.thermal` :: root=`contracts/schema/thermal` domain=`contracts` files=`10` confidence=`0.92`
 - `contracts.schema.time` :: root=`contracts/schema/time` domain=`contracts` files=`23` confidence=`0.92`
 - `contracts.schema.tool` :: root=`contracts/schema/tool` domain=`contracts` files=`5` confidence=`0.92`
@@ -1362,8 +1362,8 @@ Replacement Target: XI-1 module-boundary convergence planning
 - `docs.release.mvp` :: root=`docs/release/mvp` domain=`docs` files=`11` confidence=`0.92`
 - `docs.release.roadmap` :: root=`docs/release/roadmap` domain=`docs` files=`12` confidence=`0.92`
 - `docs.release.updates` :: root=`docs/release/updates` domain=`docs` files=`1` confidence=`0.92`
-- `docs.repo` :: root=`docs/repo` domain=`docs` files=`43` confidence=`0.92`
-- `docs.repo.audits` :: root=`docs/repo/audits` domain=`docs` files=`105` confidence=`0.92`
+- `docs.repo` :: root=`docs/repo` domain=`docs` files=`44` confidence=`0.92`
+- `docs.repo.audits` :: root=`docs/repo/audits` domain=`docs` files=`106` confidence=`0.92`
 - `docs.repo.data` :: root=`docs/repo/data` domain=`docs` files=`5` confidence=`0.92`
 - `docs.repo.repox` :: root=`docs/repo/repox` domain=`docs` files=`1` confidence=`0.92`
 - `docs.repo.root_recycling` :: root=`docs/repo/root-recycling` domain=`docs` files=`27` confidence=`0.92`
@@ -2076,12 +2076,12 @@ Replacement Target: XI-1 module-boundary convergence planning
 - `tests.launcher` :: root=`tests/launcher` domain=`tests` files=`2` confidence=`0.92`
 - `tests.ops` :: root=`tests/ops` domain=`tests` files=`17` confidence=`0.92`
 - `tests.packaging.share` :: root=`tests/packaging/share` domain=`tests` files=`2` confidence=`0.92`
-- `tests.perf` :: root=`tests/perf` domain=`tests` files=`30` confidence=`0.92`
-- `tests.perf.exploration_fixtures` :: root=`tests/perf/exploration_fixtures` domain=`tests` files=`1` confidence=`0.92`
-- `tests.perf.exploration_fixtures.deep_hierarchy.data.world.templates` :: root=`tests/perf/exploration_fixtures/deep_hierarchy/data/world/templates` domain=`tests` files=`1` confidence=`0.92`
-- `tests.perf.exploration_fixtures.galaxy_scale.data.world.templates` :: root=`tests/perf/exploration_fixtures/galaxy_scale/data/world/templates` domain=`tests` files=`1` confidence=`0.92`
-- `tests.perf.exploration_fixtures.local_only.data.world.templates` :: root=`tests/perf/exploration_fixtures/local_only/data/world/templates` domain=`tests` files=`1` confidence=`0.92`
-- `tests.perf.exploration_fixtures.system_scale.data.world.templates` :: root=`tests/perf/exploration_fixtures/system_scale/data/world/templates` domain=`tests` files=`1` confidence=`0.92`
+- `tests.performance` :: root=`tests/performance` domain=`tests` files=`30` confidence=`0.92`
+- `tests.performance.exploration_fixtures` :: root=`tests/performance/exploration_fixtures` domain=`tests` files=`1` confidence=`0.92`
+- `tests.performance.exploration_fixtures.deep_hierarchy.data.world.templates` :: root=`tests/performance/exploration_fixtures/deep_hierarchy/data/world/templates` domain=`tests` files=`1` confidence=`0.92`
+- `tests.performance.exploration_fixtures.galaxy_scale.data.world.templates` :: root=`tests/performance/exploration_fixtures/galaxy_scale/data/world/templates` domain=`tests` files=`1` confidence=`0.92`
+- `tests.performance.exploration_fixtures.local_only.data.world.templates` :: root=`tests/performance/exploration_fixtures/local_only/data/world/templates` domain=`tests` files=`1` confidence=`0.92`
+- `tests.performance.exploration_fixtures.system_scale.data.world.templates` :: root=`tests/performance/exploration_fixtures/system_scale/data/world/templates` domain=`tests` files=`1` confidence=`0.92`
 - `tests.piracy_containment` :: root=`tests/piracy_containment` domain=`tests` files=`2` confidence=`0.92`
 - `tests.platform` :: root=`tests/platform` domain=`tests` files=`2` confidence=`0.92`
 - `tests.playtest` :: root=`tests/playtest` domain=`tests` files=`5` confidence=`0.92`
@@ -2306,7 +2306,7 @@ Replacement Target: XI-1 module-boundary convergence planning
 - `tools.validators.package.compatibility_payload` :: root=`tools/validators/package/compatibility_payload` domain=`tools` files=`3` confidence=`0.92`
 - `tools.validators.platform` :: root=`tools/validators/platform` domain=`tools` files=`2` confidence=`0.92`
 - `tools.validators.render` :: root=`tools/validators/render` domain=`tools` files=`4` confidence=`0.92`
-- `tools.validators.repo` :: root=`tools/validators/repo` domain=`tools` files=`15` confidence=`0.92`
+- `tools.validators.repo` :: root=`tools/validators/repo` domain=`tools` files=`17` confidence=`0.92`
 - `tools.validators.safety` :: root=`tools/validators/safety` domain=`tools` files=`2` confidence=`0.92`
 - `tools.validators.security` :: root=`tools/validators/security` domain=`tools` files=`1` confidence=`0.92`
 - `tools.validators.security.model` :: root=`tools/validators/security/model` domain=`tools` files=`7` confidence=`0.92`

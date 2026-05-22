@@ -62,7 +62,7 @@ trust_level_required_for_release_or_external = true
 mod_pack_trust_future_task = "MOD-PACK-TRUST-MODEL-01"
 
 [diagnostics]
-registry = "contracts/diagnostics/diagnostic_code.registry.json"
+registry = "contracts/diagnostic/diagnostic_code.registry.json"
 artifact_diagnostics_are_provisional = true
 
 [evidence]
@@ -92,5 +92,5 @@ stable_promotion_requires_replacement_or_migration_policy = true
 [integration]
 public_surface_registry = "contracts/public_surface/public_surface.contract.toml"
 command_surface = "contracts/command/command_surface.contract.toml"
-diagnostics_registry = "contracts/diagnostics/diagnostic_code.registry.json"
+diagnostics_registry = "contracts/diagnostic/diagnostic_code.registry.json"
 replacement_protocol_future_task = "REPLACEMENT-PROTOCOL-01"

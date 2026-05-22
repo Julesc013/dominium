@@ -120,7 +120,7 @@
   "source_refs": [
     "contracts/command/command_surface.contract.toml",
     "contracts/command/validation_run_result.schema.json",
-    "contracts/diagnostics/diagnostic_code.registry.json",
+    "contracts/diagnostic/diagnostic_code.registry.json",
     "contracts/evidence/evidence_packet.schema.json",
     "apps/workbench/module/validation/workbench_projection.py"
   ],

@@ -1,0 +1,21 @@
+SCHEMA: system/system_health_state.schema
+schema_id: dominium.schema.system.system_health_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Persist deterministic aggregated system health signals for SYS-6 reliability evaluation.
+
+NON-SEMANTICS:
+- No direct hazard mutation semantics.
+- No hidden health state outside process/runtime pathways.
+
+REQUIRED SHAPE:
+record system_health_state
+  required:
+    - system_id: id
+    - aggregated_hazard_levels: map
+    - entropy_value: int?
+    - last_update_tick: int
+    - deterministic_fingerprint: text
+    - extensions: map

@@ -4,19 +4,25 @@
   "owner": "contracts.module",
   "kinds": [
     {"id": "source_component", "description": "Source/build ownership unit exposed as module metadata only when declared."},
-    {"id": "runtime_service", "description": "Declared module backed by a runtime service surface."},
-    {"id": "runtime_provider", "description": "Declared module backed by a governed provider descriptor."},
-    {"id": "workbench_module", "description": "User-facing Workbench module projection over commands, services, documents, and views."},
-    {"id": "workbench_workspace", "description": "Large Workbench composition made from modules, panels, views, and commands."},
+    {"id": "runtime_service", "description": "Declared module backed by a runtime service surface; not a general implementation root."},
+    {"id": "runtime_provider", "description": "Declared module backed by a governed provider descriptor or backend selection surface."},
+    {"id": "workbench_module", "description": "User-facing Workbench presentation projection over commands, services, documents, artifacts, evidence, and views; not reusable behavior ownership."},
+    {"id": "workbench_workspace", "description": "Large Workbench composition made from modules, panels, views, commands, and evidence surfaces."},
     {"id": "command_module", "description": "Module exposing or composing command-surface behavior."},
     {"id": "document_module", "description": "Module centered on governed document/result schemas."},
     {"id": "view_module", "description": "Module centered on view bindings and presentation projections."},
-    {"id": "content_pack_module", "description": "Pack-provided module declared through pack/module manifests."},
+    {"id": "content_pack_module", "description": "Pack-provided module payload declared through pack/module manifests and delivered by content/packs."},
     {"id": "app_composition", "description": "Product composition declared as a module-like app assembly."},
     {"id": "external_adapter", "description": "Module representing an external process or adapter boundary."},
     {"id": "test_fixture_module", "description": "Fixture-only module used to prove validator behavior."}
   ],
   "stability_values": ["experimental", "provisional", "stable", "deprecated", "retired", "generated", "fixture", "historical"],
   "implementation_status_values": ["planned", "declared", "implemented", "generated", "fixture", "historical"],
-  "service_prefixes": ["service.", "runtime.", "command.", "view.", "document.", "provider.", "capability."]
+  "service_prefixes": ["service.", "runtime.", "command.", "view.", "document.", "provider.", "capability."],
+  "root_policy": {
+    "top_level_roots_forbidden": ["modules", "plugins", "services", "workspaces"],
+    "content_modules_root_allowed": false,
+    "runtime_module_root_meaning": "module runtime service only",
+    "workbench_module_root_meaning": "Workbench presentation only"
+  }
 }

@@ -32,7 +32,7 @@ PACK_OVERLAY_POLICY_REL = Path("contracts/modding/pack_overlay_policy.contract.t
 MOD_LIFECYCLE_REGISTRY_REL = Path("contracts/modding/mod_lifecycle.registry.json")
 CAPABILITY_REGISTRY_REL = Path("contracts/capability/capability.registry.json")
 REFUSAL_REGISTRY_REL = Path("contracts/refusal/refusal_code.registry.json")
-DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostics/diagnostic_code.registry.json")
+DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostic/diagnostic_code.registry.json")
 PUBLIC_SURFACE_REGISTRY_REL = Path("contracts/public_surface/public_surface.contract.toml")
 FIXTURE_DIR_REL = Path("tests/contract/mod_pack_trust/fixtures")
 
@@ -668,7 +668,7 @@ def inventory(repo_root: Path) -> Dict[str, Any]:
             categories["native_provider_candidate"].append(path)
         elif lowered.startswith("docs/modding/") or lowered.startswith("docs/content/") or lowered.startswith("docs/release/"):
             categories["deferred"].append(path)
-        elif lowered.startswith("contracts/package/") or lowered.startswith("contracts/artifact/") or lowered.startswith("contracts/refusal/") or lowered.startswith("contracts/diagnostics/"):
+        elif lowered.startswith("contracts/package/") or lowered.startswith("contracts/artifact/") or lowered.startswith("contracts/refusal/") or lowered.startswith("contracts/diagnostic/"):
             categories["trust_unknown"].append(path)
     return {
         "files_scanned": len(files),

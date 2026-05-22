@@ -92,7 +92,7 @@ packets may include `artifact_refs` so proof can name artifacts without making
 paths authoritative.
 
 Artifact diagnostics are registered provisionally under
-`contracts/diagnostics/diagnostic_code.registry.json`. They cover missing IDs,
+`contracts/diagnostic/diagnostic_code.registry.json`. They cover missing IDs,
 unknown kinds, missing schemas, path-as-ID, hash mismatch, unsupported schema,
 required migration, and insufficient trust.
 

@@ -26,7 +26,7 @@ COMPAT_POLICY_REL = ARTIFACT_DIR_REL / "artifact_compatibility.contract.toml"
 TRUST_POLICY_REL = ARTIFACT_DIR_REL / "artifact_trust_policy.contract.toml"
 REF_SCHEMA_REL = ARTIFACT_DIR_REL / "artifact_ref.schema.json"
 LIFECYCLE_REGISTRY_REL = ARTIFACT_DIR_REL / "artifact_lifecycle.registry.json"
-DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostics/diagnostic_code.registry.json")
+DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostic/diagnostic_code.registry.json")
 EVIDENCE_SCHEMA_REL = Path("contracts/evidence/evidence_packet.schema.json")
 FIXTURE_DIR_REL = Path("tests/contract/artifact_identity/fixtures")
 

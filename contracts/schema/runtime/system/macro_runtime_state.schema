@@ -1,0 +1,21 @@
+SCHEMA: system/macro_runtime_state.schema
+schema_id: dominium.schema.system.macro_runtime_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Track deterministic runtime state for active macro capsules.
+- Persist minimal sufficient capsule internal state between canonical ticks.
+
+NON-SEMANTICS:
+- No direct boundary mutation authority.
+- No solver implementation details.
+
+REQUIRED SHAPE:
+record macro_runtime_state
+  required:
+    - capsule_id: id
+    - internal_state_vector: map
+    - last_tick: int
+    - deterministic_fingerprint: text
+    - extensions: map

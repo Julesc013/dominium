@@ -1,0 +1,25 @@
+SCHEMA: appshell/tui_layout.schema
+schema_id: dominium.schema.appshell.tui_layout
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic AppShell TUI layouts and panel placements.
+
+NON-SEMANTICS:
+- TUILayout does not determine simulation semantics.
+- TUILayout does not authorize hidden panels.
+
+REQUIRED SHAPE:
+record tui_layout
+  required:
+    - schema_version: tag
+    - layout_id: id
+    - panels: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- layout panel ordering must be deterministic
+- slot assignment must not depend on platform-native widget systems
+- layout fallback must remain explicit and explainable

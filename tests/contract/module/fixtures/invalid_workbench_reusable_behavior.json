@@ -1,0 +1,15 @@
+{
+  "module_id": "dominium.workbench.world_creation",
+  "module_kind": "workbench_module",
+  "owner": "apps.workbench",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "implementation_status": "declared",
+  "implementation_path": "apps/workbench/module/world_creation",
+  "implementation_path_is_identity": false,
+  "ownership_layer": "workbench_presentation",
+  "presentation_only": true,
+  "reusable_behavior": true,
+  "required_commands": ["dominium.validation.run"],
+  "proof": []
+}

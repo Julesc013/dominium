@@ -1230,9 +1230,9 @@ EARTH10_BASELINE_PATH = "docs/archive/audit/EARTH_MATERIAL_PROXY_BASELINE.md"
 
 SOL1_RETRO_AUDIT_PATH = "docs/archive/audit/SOL1_RETRO_AUDIT.md"
 SOL1_DOCTRINE_PATH = "docs/domains/astronomy/sol/ILLUMINATION_GEOMETRY_MODEL.md"
-SOL1_EMITTER_SCHEMA_DOC_PATH = "contracts/schema/astro/emitter.schema"
-SOL1_RECEIVER_SCHEMA_DOC_PATH = "contracts/schema/astro/receiver.schema"
-SOL1_VIEW_SCHEMA_DOC_PATH = "contracts/schema/astro/illumination_view_artifact.schema"
+SOL1_EMITTER_SCHEMA_DOC_PATH = "contracts/schema/domain/astronomy/emitter.schema"
+SOL1_RECEIVER_SCHEMA_DOC_PATH = "contracts/schema/domain/astronomy/receiver.schema"
+SOL1_VIEW_SCHEMA_DOC_PATH = "contracts/schema/domain/astronomy/illumination_view_artifact.schema"
 SOL1_EMITTER_SCHEMA_JSON_PATH = "contracts/schema/emitter.schema.json"
 SOL1_RECEIVER_SCHEMA_JSON_PATH = "contracts/schema/receiver.schema.json"
 SOL1_VIEW_SCHEMA_JSON_PATH = "contracts/schema/illumination_view_artifact.schema.json"
@@ -1245,9 +1245,9 @@ SOL1_AUDIT_COMMON_PATH = "tools/domain/astronomy/sol1_audit_common.py"
 
 SOL2_RETRO_AUDIT_PATH = "docs/archive/audit/SOL2_RETRO_AUDIT.md"
 SOL2_DOCTRINE_PATH = "docs/domains/astronomy/sol/ORBIT_VISUALIZATION_MODEL.md"
-SOL2_PROVIDER_SCHEMA_DOC_PATH = "contracts/schema/astro/ephemeris_provider.schema"
-SOL2_POLICY_SCHEMA_DOC_PATH = "contracts/schema/astro/orbit_path_policy.schema"
-SOL2_VIEW_SCHEMA_DOC_PATH = "contracts/schema/astro/orbit_view_artifact.schema"
+SOL2_PROVIDER_SCHEMA_DOC_PATH = "contracts/schema/domain/astronomy/ephemeris_provider.schema"
+SOL2_POLICY_SCHEMA_DOC_PATH = "contracts/schema/domain/astronomy/orbit_path_policy.schema"
+SOL2_VIEW_SCHEMA_DOC_PATH = "contracts/schema/domain/astronomy/orbit_view_artifact.schema"
 SOL2_PROVIDER_SCHEMA_JSON_PATH = "contracts/schema/ephemeris_provider.schema.json"
 SOL2_POLICY_SCHEMA_JSON_PATH = "contracts/schema/orbit_path_policy.schema.json"
 SOL2_VIEW_SCHEMA_JSON_PATH = "contracts/schema/orbit_view_artifact.schema.json"
@@ -26443,10 +26443,10 @@ def _append_system_composition_invariant_findings(
     process_registry_rel = "contracts/registry/process_registry.json"
     boundary_registry_rel = "contracts/registry/system_boundary_invariant_registry.json"
     required_schema_rels = (
-        "contracts/schema/system/interface_signature.schema",
-        "contracts/schema/system/boundary_invariant.schema",
-        "contracts/schema/system/macro_capsule.schema",
-        "contracts/schema/system/system_state_vector.schema",
+        "contracts/schema/runtime/system/interface_signature.schema",
+        "contracts/schema/runtime/system/boundary_invariant.schema",
+        "contracts/schema/runtime/system/macro_capsule.schema",
+        "contracts/schema/runtime/system/system_state_vector.schema",
     )
     required_registry_rels = (
         "contracts/registry/system_template_registry.json",
@@ -26671,10 +26671,10 @@ def _append_system_validation_invariant_findings(
     invariant_rule_id = "INV-SYSTEM-INVARIANTS-REQUIRED"
     macro_rule_id = "INV-MACRO-MODEL-SET-REQUIRED-FOR-CAPSULE"
 
-    interface_schema_rel = "contracts/schema/system/interface_signature.schema"
-    invariant_schema_rel = "contracts/schema/system/boundary_invariant.schema"
-    macro_capsule_schema_rel = "contracts/schema/system/macro_capsule.schema"
-    macro_model_set_schema_rel = "contracts/schema/system/macro_model_set.schema"
+    interface_schema_rel = "contracts/schema/runtime/system/interface_signature.schema"
+    invariant_schema_rel = "contracts/schema/runtime/system/boundary_invariant.schema"
+    macro_capsule_schema_rel = "contracts/schema/runtime/system/macro_capsule.schema"
+    macro_model_set_schema_rel = "contracts/schema/runtime/system/macro_model_set.schema"
     validation_engine_rel = "game/domain/systems/system_validation_engine.py"
     collapse_engine_rel = "game/domain/systems/system_collapse_engine.py"
     expand_engine_rel = "game/domain/systems/system_expand_engine.py"
@@ -26972,9 +26972,9 @@ def _append_system_macro_invariant_findings(
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     process_registry_rel = "contracts/registry/process_registry.json"
     replay_tool_rel = "tools/domain/systems/tool_replay_capsule_window.py"
-    runtime_schema_rel = "contracts/schema/system/macro_runtime_state.schema"
-    forced_schema_rel = "contracts/schema/system/forced_expand_event.schema"
-    output_schema_rel = "contracts/schema/system/macro_output_record.schema"
+    runtime_schema_rel = "contracts/schema/runtime/system/macro_runtime_state.schema"
+    forced_schema_rel = "contracts/schema/runtime/system/forced_expand_event.schema"
+    output_schema_rel = "contracts/schema/runtime/system/macro_output_record.schema"
 
     required_paths = (
         macro_engine_rel,
@@ -27162,7 +27162,7 @@ def _append_system_tier_invariant_findings(
 
     scheduler_rel = "game/domain/systems/roi/system_roi_scheduler.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    schema_rel = "contracts/schema/system/system_tier_change_event.schema"
+    schema_rel = "contracts/schema/runtime/system/system_tier_change_event.schema"
     process_registry_rel = "contracts/registry/process_registry.json"
     tier_registry_rel = "contracts/registry/tier_contract_registry.json"
     replay_tool_rel = "tools/domain/systems/tool_replay_tier_transitions.py"
@@ -27425,8 +27425,8 @@ def _append_system_template_invariant_findings(
 
     required_paths = (
         "docs/architecture/system/SYSTEM_TEMPLATES.md",
-        "contracts/schema/system/system_template.schema",
-        "contracts/schema/system/template_instance_record.schema",
+        "contracts/schema/runtime/system/system_template.schema",
+        "contracts/schema/runtime/system/template_instance_record.schema",
         "game/domain/systems/templates/template_compiler.py",
         "tools/xstack/sessionx/process_runtime.py",
         "contracts/registry/system_template_registry.json",
@@ -27474,7 +27474,7 @@ def _append_system_template_invariant_findings(
             )
         )
 
-    schema_text = _file_text(repo_root, "contracts/schema/system/system_template.schema")
+    schema_text = _file_text(repo_root, "contracts/schema/runtime/system/system_template.schema")
     for token in (
         "template_id",
         "interface_signature_template_id",
@@ -27490,7 +27490,7 @@ def _append_system_template_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="contracts/schema/system/system_template.schema",
+                file_path="contracts/schema/runtime/system/system_template.schema",
                 line_number=1,
                 snippet=token,
                 message="system_template schema is missing required SYS-4 declaration field",
@@ -27587,9 +27587,9 @@ def _append_system_certification_invariant_findings(
 
     required_paths = (
         "docs/architecture/system/SYSTEM_CERTIFICATION_MODEL.md",
-        "contracts/schema/system/certification_profile.schema",
-        "contracts/schema/system/certification_result.schema",
-        "contracts/schema/system/certificate_artifact.schema",
+        "contracts/schema/runtime/system/certification_profile.schema",
+        "contracts/schema/runtime/system/certification_result.schema",
+        "contracts/schema/runtime/system/certificate_artifact.schema",
         "contracts/registry/certification_profile_registry.json",
         "game/domain/systems/certification/system_cert_engine.py",
         "tools/domain/systems/tool_replay_certification_window.py",
@@ -27772,9 +27772,9 @@ def _append_system_reliability_invariant_findings(
     reliability_registry_rel = "contracts/registry/reliability_profile_registry.json"
     required_paths = (
         "docs/architecture/system/SYSTEM_RELIABILITY_MODEL.md",
-        "contracts/schema/system/reliability_profile.schema",
-        "contracts/schema/system/system_health_state.schema",
-        "contracts/schema/system/failure_event.schema",
+        "contracts/schema/runtime/system/reliability_profile.schema",
+        "contracts/schema/runtime/system/system_health_state.schema",
+        "contracts/schema/runtime/system/failure_event.schema",
         reliability_registry_rel,
         "game/domain/systems/reliability/system_health_engine.py",
         "game/domain/systems/reliability/reliability_engine.py",
@@ -27976,9 +27976,9 @@ def _append_system_forensics_invariant_findings(
     replay_tool_rel = "tools/domain/systems/tool_verify_explain_determinism.py"
     required_paths = (
         "docs/architecture/system/SYSTEM_FORENSICS_MODEL.md",
-        "contracts/schema/system/system_explain_request.schema",
-        "contracts/schema/system/system_explain_artifact.schema",
-        "contracts/schema/system/cause_entry.schema",
+        "contracts/schema/runtime/system/system_explain_request.schema",
+        "contracts/schema/runtime/system/system_explain_artifact.schema",
+        "contracts/schema/runtime/system/cause_entry.schema",
         forensics_engine_rel,
         runtime_rel,
         replay_tool_rel,
@@ -28537,8 +28537,8 @@ def _append_state_vector_invariant_findings(
     verify_tool_rel = "tools/domain/systems/tool_verify_statevec_roundtrip.py"
     required_paths = (
         "docs/architecture/system/EXPLICIT_STATE_VECTOR_RULE.md",
-        "contracts/schema/system/state_vector_definition.schema",
-        "contracts/schema/system/state_vector_snapshot.schema",
+        "contracts/schema/runtime/system/state_vector_definition.schema",
+        "contracts/schema/runtime/system/state_vector_snapshot.schema",
         statevec_registry_rel,
         statevec_engine_rel,
         collapse_engine_rel,

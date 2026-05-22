@@ -42,7 +42,7 @@ Scope: selecting execution profiles and safe budget overrides.
 - `docs/architecture/SYS_CAPS_AND_EXEC_POLICY.md`
 
 
-- `schema/syscaps/README.md`
+- `contracts/schema/capability/syscaps/README.md`
 
 
 ## Selecting a Profile

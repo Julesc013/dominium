@@ -29,6 +29,11 @@ Default mode is audit mode. It exits zero and classifies current debt so the rep
 
 `--strict` is available. In NAME-00 it fails only for blocker-class findings in validators that define blockers. Directory and file naming are warning-only until a later reviewed enforcement task decides which existing debts become hard failures.
 
+`check_workbench_module_names.py` protects `apps/workbench/module/` as a
+presentation-module namespace. Reusable behavior belongs under the owning
+runtime, game, tool, app, or contract root rather than inside Workbench UI
+folders.
+
 `check_tools_taxonomy.py` is the TOOLS-FOLD-01 enforcement surface. It fails in
 strict mode when active tracked files recreate broad first-level `tools/` roots
 such as `tools/validator`, `tools/gui`, `tools/render`, `tools/world_editor`, or
@@ -40,6 +45,11 @@ blocker surface. It fails strict mode for retired active roots and clear old
 paths such as `game/rules`, retired runtime names, old test buckets, and tracked
 generated/local roots. Remaining taxonomy debt is reported as warnings unless
 `--strict-final` is used.
+
+It also blocks top-level `modules/`, `plugins/`, `services/`, and `workspaces/`
+roots. Module declarations belong in `contracts/module/` or pack manifests;
+module payloads belong in `content/packs/`; module implementations belong under
+their actual ownership root.
 
 `check_structure_report_integrity.py` verifies task-local tracked-only structure
 bundle manifests, and reports active tracked dirfiles artifacts that lack an

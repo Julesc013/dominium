@@ -1,0 +1,16 @@
+[contract]
+id = "dominium.workspace.surface.v1"
+status = "provisional"
+owner = "contracts.workspace"
+purpose = "Defines generic workspace identity and ownership boundaries without replacing Workbench-specific panel/view law."
+
+[policy]
+workspace_identity_is_path = false
+top_level_workspaces_root_allowed = false
+workspace_composition_is_not_reusable_behavior_owner = true
+workbench_workspace_root = "apps/workbench/workspace"
+workbench_workspace_contracts = ["contracts/workbench/workspace.schema.json", "contracts/workbench/workbench_surface.contract.toml"]
+dev_overlay_workspace_root = "content/workspaces"
+dev_overlay_workspace_doctrine = "docs/architecture/WORKSPACES.md"
+apps_compose_workspaces_do_not_own_domain_law = true
+workspace_payloads_use_packs = true

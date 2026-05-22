@@ -1,0 +1,26 @@
+SCHEMA: system/certificate_artifact.schema
+schema_id: dominium.schema.system.certificate_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical CREDENTIAL artifact shape for issued SYS-5 certificates.
+
+INFO FAMILY:
+- CREDENTIAL
+
+NON-SEMANTICS:
+- No trust/receipt transport semantics.
+- No institution policy enforcement semantics.
+
+REQUIRED SHAPE:
+record certificate_artifact
+  required:
+    - cert_id: id
+    - system_id: id
+    - cert_type_id: id
+    - issuer_subject_id: id
+    - issued_tick: int
+    - valid_until_tick: int?
+    - deterministic_fingerprint: text
+    - extensions: map

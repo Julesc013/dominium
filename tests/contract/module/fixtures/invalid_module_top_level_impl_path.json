@@ -1,0 +1,12 @@
+{
+  "module_id": "dominium.module.world_creation",
+  "module_kind": "runtime_service",
+  "owner": "runtime.module",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "implementation_status": "declared",
+  "implementation_path": "modules/world_creation",
+  "implementation_path_is_identity": false,
+  "required_commands": [],
+  "proof": []
+}

@@ -35,7 +35,7 @@ Template:
   Migration: legacy reverse-DNS pack ids remain loadable; normalize provider declarations and instance/lock resolution records through `tools/package/libraries/provides/provider_resolution.py`
 
 - Date: 2026-03-11
-  Schema(s): schema/package/artifact/artifact_manifest.schema; schema/package/artifact/artifact_reference.schema; schema/profile/profile_bundle.schema; schema/domain/materials/blueprint.schema; schema/system/system_template.schema; schema/process/process_definition.schema
+  Schema(s): schema/package/artifact/artifact_manifest.schema; schema/package/artifact/artifact_reference.schema; schema/profile/profile_bundle.schema; schema/domain/materials/blueprint.schema; contracts/schema/runtime/system/system_template.schema; schema/process/process_definition.schema
   Change: add LIB-4 shareable artifact manifest/reference contracts plus compatible payload envelope fields for profile bundles, blueprints, system templates, and process definitions
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-SHAREABLE-ARTIFACTS-MUST-HAVE-MANIFEST; INV-ARTIFACTS-CONTENT-ADDRESSED; INV-ARTIFACT-LOAD-VALIDATED
   Migration: existing payload schemas remain loadable; LIB-4 export/store flows canonicalize the artifact envelope or sidecar through `tools/package/libraries/artifact/artifact_validator.py`

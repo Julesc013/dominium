@@ -105,7 +105,7 @@ public_lifecycle_change_requires_registry_update = true
 provisional_surfaces_must_not_be_called_stable = true
 
 [diagnostics]
-registry = "contracts/diagnostics/diagnostic_code.registry.json"
+registry = "contracts/diagnostic/diagnostic_code.registry.json"
 codes = ["DOM-VERSION-INCOMPATIBLE", "DOM-VERSION-UNSUPPORTED", "DOM-LIFECYCLE-INVALID-TRANSITION", "DOM-DEPRECATION-MISSING-REPLACEMENT", "DOM-RETIREMENT-MISSING-POLICY", "DOM-REMOVAL-WITHOUT-RETIREMENT", "DOM-STABLE-SURFACE-MISSING-COMPATIBILITY", "DOM-BREAKING-CHANGE-MISSING-MIGRATION"]
 
 [refusals]

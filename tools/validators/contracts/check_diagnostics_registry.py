@@ -16,11 +16,11 @@ except ImportError:  # pragma: no cover - exercised on Python 3.8
     tomllib = None
 
 
-DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostics/diagnostic_code.registry.json")
-DIAGNOSTIC_SCHEMA_REL = Path("contracts/diagnostics/diagnostic_code.schema.json")
-SEVERITY_REGISTRY_REL = Path("contracts/diagnostics/diagnostic_severity.registry.json")
-CATEGORY_REGISTRY_REL = Path("contracts/diagnostics/diagnostic_category.registry.json")
-POLICY_REL = Path("contracts/diagnostics/diagnostic_policy.contract.toml")
+DIAGNOSTIC_REGISTRY_REL = Path("contracts/diagnostic/diagnostic_code.registry.json")
+DIAGNOSTIC_SCHEMA_REL = Path("contracts/diagnostic/diagnostic_code.schema.json")
+SEVERITY_REGISTRY_REL = Path("contracts/diagnostic/diagnostic_severity.registry.json")
+CATEGORY_REGISTRY_REL = Path("contracts/diagnostic/diagnostic_category.registry.json")
+POLICY_REL = Path("contracts/diagnostic/diagnostic_policy.contract.toml")
 EVIDENCE_PACKET_SCHEMA_REL = Path("contracts/evidence/evidence_packet.schema.json")
 EVIDENCE_REF_SCHEMA_REL = Path("contracts/evidence/evidence_ref.schema.json")
 EVENT_SCHEMA_REL = Path("contracts/event/event.schema.json")

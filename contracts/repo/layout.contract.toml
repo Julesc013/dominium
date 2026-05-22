@@ -569,7 +569,7 @@ status_after_phase = "violation"
 completed_phase = "CONVERGE-09"
 normalized_domain = "astronomy"
 implementation_target = "game/domain/astronomy"
-targets = ["contracts/schema/astronomy", "contracts/registry/astronomy", "contracts/capability/astronomy", "contracts/protocol/astronomy", "game/domain/astronomy", "content/domains/astronomy", "docs/domains/astronomy", "tests/determinism/astronomy", "tests/fixtures/astronomy", "tests/regression/astronomy", "tests/golden/astronomy"]
+targets = ["contracts/schema/domain/astronomy", "contracts/registry/astronomy", "contracts/capability/astronomy", "contracts/protocol/astronomy", "game/domain/astronomy", "content/domains/astronomy", "docs/domains/astronomy", "tests/determinism/astronomy", "tests/fixtures/astronomy", "tests/regression/astronomy", "tests/golden/astronomy"]
 notes = "Root-level astro/ was retired in CONVERGE-09; implementation moved to game/domain/astronomy/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.chem]

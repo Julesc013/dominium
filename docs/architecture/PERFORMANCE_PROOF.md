@@ -31,8 +31,8 @@ worst-case patterns without altering simulation semantics:
 Evidence is recorded in:
 
 - `tests/fixtures/perf/*/metrics/` for fixture metrics.
-- `tests/perf/perf_fixture_contracts.py` for deterministic invariance.
-- `tests/perf/perf_budget_gate_tests.py` and `tools/validators/ci/perf_budget_check.py`
+- `tests/performance/perf_fixture_contracts.py` for deterministic invariance.
+- `tests/performance/perf_budget_gate_tests.py` and `tools/validators/ci/perf_budget_check.py`
   for budget regression gates.
 
 ## What is not guaranteed

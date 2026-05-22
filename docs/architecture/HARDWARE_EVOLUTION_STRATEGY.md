@@ -123,7 +123,7 @@ identical across hardware profiles and backend selections.
 - SysCaps policy: `docs/architecture/SYS_CAPS_AND_EXEC_POLICY.md`
 
 
-- SysCaps schema: `schema/syscaps/README.md`
+- SysCaps schema: `contracts/schema/capability/syscaps/README.md`
 
 
 

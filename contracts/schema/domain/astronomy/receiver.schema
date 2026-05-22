@@ -1,0 +1,28 @@
+SCHEMA: astro/receiver.schema
+schema_id: dominium.schema.astro.receiver
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define a deterministic illumination receiver descriptor for SOL-1 geometry evaluation.
+
+NON-SEMANTICS:
+- Receivers do not store phase.
+- Receivers are descriptor rows used by derived illumination views only.
+
+REQUIRED SHAPE:
+record receiver
+  required:
+    - schema_version: semver
+    - receiver_id: id
+    - kind: enum(receiver.planet, receiver.moon)
+    - object_id: id
+    - radius: quantity
+    - albedo_proxy: quantity
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- receiver shape is spherical in MVP
+- albedo_proxy is a deterministic stub scalar
+- deterministic_fingerprint is computed with the fingerprint field blanked

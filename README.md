@@ -219,7 +219,7 @@ Core contract entrypoints:
 - Public surfaces: `contracts/public_surface/public_surface.contract.toml`
 - Commands: `contracts/command/command_surface.contract.toml`
 - Views: `contracts/view/view_surface.contract.toml`
-- Diagnostics: `contracts/diagnostics/diagnostic_code.registry.json`
+- Diagnostics: `contracts/diagnostic/diagnostic_code.registry.json`
 - Refusals: `contracts/refusal/refusal_code.registry.json`
 - Capabilities: `contracts/capability/capability.registry.json`
 - Modules: `contracts/module/module_surface.contract.toml`
