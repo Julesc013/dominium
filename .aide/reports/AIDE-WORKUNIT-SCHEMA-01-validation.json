@@ -1,0 +1,85 @@
+{
+  "errors": [],
+  "fixture_count": 11,
+  "fixtures": [
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "fixture": ".aide/fixtures/work_unit/valid_work_unit_minimal.json",
+      "message": "valid",
+      "schema": "work_unit"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "fixture": ".aide/fixtures/work_unit/valid_task_attempt_minimal.json",
+      "message": "valid",
+      "schema": "task_attempt"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "fixture": ".aide/fixtures/work_unit/valid_blocker_repairable.json",
+      "message": "valid",
+      "schema": "blocker"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "fixture": ".aide/fixtures/work_unit/valid_evidence_packet_validation.json",
+      "message": "valid",
+      "schema": "evidence_packet"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "fixture": ".aide/fixtures/work_unit/valid_repair_task.json",
+      "message": "valid",
+      "schema": "repair_task"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "fixture": ".aide/fixtures/work_unit/valid_resume_task.json",
+      "message": "valid",
+      "schema": "resume_task"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "fixture": ".aide/fixtures/work_unit/valid_checkpoint_candidate.json",
+      "message": "valid",
+      "schema": "checkpoint_candidate"
+    },
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "fixture": ".aide/fixtures/work_unit/valid_promotion_decision.json",
+      "message": "valid",
+      "schema": "promotion_decision"
+    },
+    {
+      "actual": "fail",
+      "expected": "fail",
+      "fixture": ".aide/fixtures/work_unit/invalid_work_unit_missing_task_id.json",
+      "message": "$: missing required property 'task_id'",
+      "schema": "work_unit"
+    },
+    {
+      "actual": "fail",
+      "expected": "fail",
+      "fixture": ".aide/fixtures/work_unit/invalid_blocker_unknown_class.json",
+      "message": "$.blocker_class: value 'unknown_blocker_class' not in enum",
+      "schema": "blocker"
+    },
+    {
+      "actual": "fail",
+      "expected": "fail",
+      "fixture": ".aide/fixtures/work_unit/invalid_promotion_missing_evidence.json",
+      "message": "$: missing required property 'required_evidence_refs'",
+      "schema": "promotion_decision"
+    }
+  ],
+  "schema_count": 10,
+  "status": "PASS"
+}

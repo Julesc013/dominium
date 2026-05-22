@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.resume_task.v1",
+  "title": "AIDE ResumeTask",
+  "description": "Task object for continuing partial work from preserved evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resume_task_id",
+    "source_work_unit_id",
+    "source_attempt_id",
+    "resume_from_commit",
+    "preserved_context_refs",
+    "partial_outputs",
+    "remaining_deliverables",
+    "allowed_paths",
+    "forbidden_paths",
+    "validation_required",
+    "status"
+  ],
+  "properties": {
+    "resume_task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_work_unit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_attempt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resume_from_commit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "preserved_context_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "partial_outputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "remaining_deliverables": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbidden_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PROPOSED",
+        "READY",
+        "RUNNING",
+        "DONE_LOCAL",
+        "PARTIAL",
+        "BLOCKED_REPAIRABLE",
+        "BLOCKED_MISSING_PREREQ",
+        "BLOCKED_NEEDS_DECISION",
+        "BLOCKED_UNSAFE",
+        "REPAIR_QUEUED",
+        "RESUME_READY",
+        "MERGE_CANDIDATE",
+        "MERGED_TO_DEV",
+        "CHECKPOINT_CANDIDATE",
+        "CHECKPOINT_REPAIR",
+        "PROMOTED_TO_MAIN",
+        "QUARANTINED",
+        "SUPERSEDED"
+      ]
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "resume_task_id": "resume-AIDE-WORKUNIT-SCHEMA-01",
+  "source_work_unit_id": "wu-AIDE-WORKUNIT-SCHEMA-01",
+  "source_attempt_id": "attempt-AIDE-WORKUNIT-SCHEMA-01-1",
+  "resume_from_commit": "971c58894",
+  "preserved_context_refs": [
+    ".aide/context/latest-task-packet.md"
+  ],
+  "partial_outputs": [
+    ".aide/schema/work_unit.schema.json"
+  ],
+  "remaining_deliverables": [
+    ".aide/policy/workunit_schema_law.md"
+  ],
+  "allowed_paths": [
+    ".aide/schema/",
+    ".aide/policy/"
+  ],
+  "forbidden_paths": [
+    "apps/",
+    "runtime/"
+  ],
+  "validation_required": [
+    "python -m tools.aide.validate_workunits"
+  ],
+  "status": "RESUME_READY"
+}

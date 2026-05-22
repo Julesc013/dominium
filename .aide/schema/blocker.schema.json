@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.blocker.v1",
+  "title": "AIDE Blocker",
+  "description": "Classified blocker linked to workflow-law policy, evidence, and repair or prerequisite tasks.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "blocker_id",
+    "work_unit_id",
+    "blocker_class",
+    "severity",
+    "detected_at_stage",
+    "description",
+    "evidence_refs",
+    "affected_paths",
+    "default_policy",
+    "repair_task_id",
+    "prerequisite_task_id",
+    "human_decision_required",
+    "unsafe_to_continue"
+  ],
+  "properties": {
+    "blocker_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "work_unit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "blocker_class": {
+      "type": "string",
+      "enum": [
+        "dirty_worktree_unrelated",
+        "dirty_worktree_same_task",
+        "merge_conflict",
+        "validator_failure_repairable",
+        "validator_failure_policy",
+        "missing_prerequisite",
+        "missing_tool",
+        "missing_connector",
+        "missing_capability",
+        "missing_secret",
+        "unsafe_operation",
+        "destructive_git_required",
+        "architecture_decision_required",
+        "human_review_required",
+        "test_timeout",
+        "flaky_test_suspected",
+        "generated_artifact_drift",
+        "stale_queue_state",
+        "stale_context_packet",
+        "source_authority_conflict"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "error"
+      ]
+    },
+    "detected_at_stage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "affected_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "default_policy": {
+      "type": "string",
+      "enum": [
+        "continue",
+        "repair",
+        "create_prerequisite",
+        "ask_human",
+        "stop",
+        "quarantine"
+      ]
+    },
+    "repair_task_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "prerequisite_task_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "human_decision_required": {
+      "type": "boolean"
+    },
+    "unsafe_to_continue": {
+      "type": "boolean"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.capability_reality_record.v1",
+  "title": "AIDE CapabilityRealityRecord",
+  "description": "Small capability reality record shape. Ledger population is deferred to AIDE-CAPABILITY-REALITY-LEDGER-01.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "capability_id",
+    "surface_id",
+    "status",
+    "evidence_refs",
+    "blocking_gaps",
+    "last_verified_commit",
+    "owner",
+    "notes"
+  ],
+  "properties": {
+    "capability_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "surface_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "specified",
+        "fixture_only",
+        "stubbed",
+        "implemented",
+        "tested",
+        "exposed",
+        "release_supported"
+      ]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blocking_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "last_verified_commit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "string",
+      "enum": [
+        "human",
+        "codex",
+        "aide",
+        "mixed"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

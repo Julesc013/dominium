@@ -1,0 +1,18 @@
+{
+  "promotion_id": "promotion-aide-schema-defer",
+  "checkpoint_id": "checkpoint-aide-schema-wave-1",
+  "source_branch": "checkpoint/aide-schema-wave-1",
+  "target_branch": "main",
+  "decision": "defer",
+  "required_evidence_refs": [
+    "evidence-workunit-validator"
+  ],
+  "validation_summary": "Targeted schema validation passed; main promotion remains gated.",
+  "warnings_accepted": [
+    "warn-full-ctest-not-run"
+  ],
+  "warnings_rejected": [],
+  "human_approver": null,
+  "rationale": "AIDE schema task is not a main promotion task.",
+  "resulting_commit": null
+}

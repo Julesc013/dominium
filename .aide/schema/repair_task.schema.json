@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.repair_task.v1",
+  "title": "AIDE RepairTask",
+  "description": "Bounded repair task produced from a classified blocker.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "repair_task_id",
+    "source_work_unit_id",
+    "source_blocker_id",
+    "repair_class",
+    "target_branch",
+    "allowed_paths",
+    "forbidden_paths",
+    "expected_fix",
+    "validation_required",
+    "merge_back_policy",
+    "status"
+  ],
+  "properties": {
+    "repair_task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_work_unit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_blocker_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repair_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_branch": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbidden_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expected_fix": {
+      "type": "string",
+      "minLength": 1
+    },
+    "validation_required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "merge_back_policy": {
+      "type": "string",
+      "enum": [
+        "merge_to_source_work_unit",
+        "merge_to_dev",
+        "checkpoint_only",
+        "manual_review_required",
+        "quarantine"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PROPOSED",
+        "READY",
+        "RUNNING",
+        "DONE_LOCAL",
+        "PARTIAL",
+        "BLOCKED_REPAIRABLE",
+        "BLOCKED_MISSING_PREREQ",
+        "BLOCKED_NEEDS_DECISION",
+        "BLOCKED_UNSAFE",
+        "REPAIR_QUEUED",
+        "RESUME_READY",
+        "MERGE_CANDIDATE",
+        "MERGED_TO_DEV",
+        "CHECKPOINT_CANDIDATE",
+        "CHECKPOINT_REPAIR",
+        "PROMOTED_TO_MAIN",
+        "QUARANTINED",
+        "SUPERSEDED"
+      ]
+    }
+  }
+}

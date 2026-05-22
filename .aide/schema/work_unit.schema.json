@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.work_unit.v1",
+  "title": "AIDE WorkUnit",
+  "description": "Bounded AIDE task object. Development may continue with classified partials and blockers; promotion is evidence-blocked.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "work_unit_id",
+    "task_id",
+    "title",
+    "status",
+    "mode",
+    "wave_id",
+    "parent_work_unit_id",
+    "base_commit",
+    "target_branch",
+    "branch_role",
+    "origin_remote",
+    "created_from",
+    "owner",
+    "allowed_paths",
+    "forbidden_paths",
+    "required_reads",
+    "non_goals",
+    "expected_outputs",
+    "validation_plan",
+    "evidence_required",
+    "blockers",
+    "attempts",
+    "warnings",
+    "evidence_refs",
+    "next_actions",
+    "promotion_eligibility",
+    "broad_feature_work_authorized",
+    "destructive_actions_allowed",
+    "created_at_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "dominium.aide.work_unit.v1"
+    },
+    "work_unit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PROPOSED",
+        "READY",
+        "RUNNING",
+        "DONE_LOCAL",
+        "PARTIAL",
+        "BLOCKED_REPAIRABLE",
+        "BLOCKED_MISSING_PREREQ",
+        "BLOCKED_NEEDS_DECISION",
+        "BLOCKED_UNSAFE",
+        "REPAIR_QUEUED",
+        "RESUME_READY",
+        "MERGE_CANDIDATE",
+        "MERGED_TO_DEV",
+        "CHECKPOINT_CANDIDATE",
+        "CHECKPOINT_REPAIR",
+        "PROMOTED_TO_MAIN",
+        "QUARANTINED",
+        "SUPERSEDED"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "no_apply",
+        "apply",
+        "repair",
+        "review",
+        "checkpoint",
+        "promotion"
+      ]
+    },
+    "wave_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parent_work_unit_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "base_commit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_branch": {
+      "type": "string",
+      "minLength": 1
+    },
+    "branch_role": {
+      "type": "string",
+      "enum": [
+        "origin/main",
+        "origin/dev",
+        "local/dev",
+        "task/<task-id>",
+        "repair/<task-id>",
+        "checkpoint/<wave-id>",
+        "quarantine/<reason>",
+        "experiment/<name>"
+      ]
+    },
+    "origin_remote": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_from": {
+      "type": "string",
+      "enum": [
+        "user_prompt",
+        "aide_queue",
+        "repair_task",
+        "resume_task",
+        "checkpoint_review",
+        "human_decision"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "enum": [
+        "human",
+        "codex",
+        "aide",
+        "mixed"
+      ]
+    },
+    "allowed_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbidden_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_reads": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "non_goals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expected_outputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_plan": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockers": {
+      "description": "Blocker IDs or blocker object refs.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "attempts": {
+      "description": "TaskAttempt IDs or attempt object refs.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "warnings": {
+      "description": "WarningDisposition IDs or warning object refs.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "promotion_eligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eligible_for_dev",
+        "eligible_for_checkpoint",
+        "eligible_for_main",
+        "required_evidence_refs",
+        "blocking_reasons",
+        "human_review_required"
+      ],
+      "properties": {
+        "eligible_for_dev": {
+          "type": "boolean"
+        },
+        "eligible_for_checkpoint": {
+          "type": "boolean"
+        },
+        "eligible_for_main": {
+          "type": "boolean"
+        },
+        "required_evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocking_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "human_review_required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "broad_feature_work_authorized": {
+      "type": "boolean"
+    },
+    "destructive_actions_allowed": {
+      "type": "boolean"
+    },
+    "created_at_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timestamp_required",
+        "timestamp_is_identity",
+        "notes"
+      ],
+      "properties": {
+        "timestamp_required": {
+          "type": "boolean"
+        },
+        "timestamp_is_identity": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

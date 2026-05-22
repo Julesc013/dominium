@@ -1,0 +1,25 @@
+{
+  "checkpoint_id": "checkpoint-aide-schema-wave-1",
+  "wave_id": "aide-schema-wave-1",
+  "source_branches": [
+    "task/AIDE-WORKUNIT-SCHEMA-01"
+  ],
+  "included_work_units": [
+    "wu-AIDE-WORKUNIT-SCHEMA-01"
+  ],
+  "excluded_work_units": [],
+  "base_commit": "971c58894",
+  "merge_commit": null,
+  "validation_plan": [
+    "python -m tools.aide.validate_workunits"
+  ],
+  "validation_results": [
+    "evidence-workunit-validator"
+  ],
+  "warning_disposition_refs": [
+    "warn-full-ctest-not-run"
+  ],
+  "blockers": [],
+  "promotion_recommendation": "defer",
+  "status": "CHECKPOINT_CANDIDATE"
+}

@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.evidence_packet.v1",
+  "title": "AIDE EvidencePacket",
+  "description": "Stable reference to validation, test, build, audit, report, artifact, or human-review evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evidence_id",
+    "work_unit_id",
+    "task_id",
+    "evidence_kind",
+    "path",
+    "related_artifacts",
+    "status",
+    "warnings",
+    "notes"
+  ],
+  "properties": {
+    "evidence_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "work_unit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_kind": {
+      "type": "string",
+      "enum": [
+        "validation",
+        "test",
+        "build",
+        "diff",
+        "audit",
+        "log",
+        "artifact",
+        "report",
+        "screenshot",
+        "replay",
+        "proof",
+        "human_review"
+      ]
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "producing_command": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "related_commit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "related_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "PASS_WITH_WARNINGS",
+        "FAIL",
+        "BLOCKED",
+        "NOT_RUN",
+        "PARTIAL"
+      ]
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

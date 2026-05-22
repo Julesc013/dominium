@@ -1,6 +1,6 @@
 # Latest Dominium Status
 
-Current coordinator task: `STATUS-RECONCILE-02`.
+Current coordinator task: `AIDE-WORKUNIT-SCHEMA-01`.
 
 Result: `PASS_WITH_WARNINGS`.
 
@@ -11,38 +11,63 @@ Result: `PASS_WITH_WARNINGS`.
   `PASS_WITH_WARNINGS` or better.
 - `PACKAGE-MOUNT-SLICE-01`, `REPLAY-PROOF-SLICE-01`, and
   `BAREBONES-CLIENT-SHELL-01` are complete with `PASS_WITH_WARNINGS`.
-- Live local history shows `AIDE-WORKFLOW-LAW-01` is already complete with
-  `PASS_WITH_WARNINGS`.
-- `STATUS-RECONCILE-02` reconciled stale/generic status packet content and did
-  not move the queue backward to the completed workflow-law task.
+- `AIDE-WORKFLOW-LAW-01` is complete with `PASS_WITH_WARNINGS` and remains the
+  governing law for AIDE branch roles, lifecycle states, blocker taxonomy,
+  dirty-worktree handling, evidence requirements, warnings, and promotion gates.
+- `AIDE-WORKUNIT-SCHEMA-01` added the minimum WorkUnit object schema layer,
+  fixtures, schema law, audit, and targeted validation.
 - Broad feature work remains blocked.
+
+## AIDE Schema Layer
+
+The following AIDE object schemas now exist under `.aide/schema/`:
+
+- WorkUnit
+- TaskAttempt
+- Blocker
+- EvidencePacket
+- RepairTask
+- ResumeTask
+- CheckpointCandidate
+- PromotionDecision
+- WarningDisposition
+- CapabilityRealityRecord
+
+Tiny valid and invalid fixtures exist under `.aide/fixtures/work_unit/`.
+`tools/aide/validate_workunits.py` validates the schema slice and confirms valid
+fixtures pass while invalid fixtures fail.
+
+CapabilityRealityRecord is only a record shape. Capability reality ledger
+population remains deferred to `AIDE-CAPABILITY-REALITY-LEDGER-01`.
 
 ## Prompt Queue
 
-1. `AIDE-WORKUNIT-SCHEMA-01`
-2. `AIDE-DEV-MAIN-POLICY-01`
-3. `PRESENTATION-CONTRACT-01` or `POINTER-WIDTH-SERIALIZATION-AUDIT-01`
+1. `AIDE-DEV-MAIN-POLICY-01`
+2. `AIDE-CHECKPOINT-LOOP-01`
+3. `AIDE-CAPABILITY-REALITY-LEDGER-01`
 
-`AIDE-WORKFLOW-LAW-01` remains completed context for the next tasks.
+Recommended parallel candidate: `PRESENTATION-CONTRACT-01`.
 
 ## Parallel Readiness
 
 - limited parallel prompt generation: allowed
 - limited parallel planning: allowed
-- limited parallel task execution: not yet authorized
+- limited parallel task execution: not authorized by this closeout
 - large parallel development execution: not authorized
 
-Large parallel execution still requires WorkUnit schema, dev/main policy,
-checkpoint policy, repair/resume policy, and explicit path separation in future
-prompts.
+WorkUnit schemas improve representation but do not by themselves authorize
+large parallel execution. Future limited task execution still requires
+path-isolated task sets and explicit coordinator ownership.
 
 ## Remaining Debt
 
 - Full CTest remains T4/full-gate debt and is not claimed green.
-- Dependency-direction strict retains known warnings with prior zero-violation
+- Dependency-direction strict retains known prior warnings with zero-violation
   evidence.
-- AIDE validate may retain known review-packet reference warnings.
+- AIDE validate retains known review-packet reference warnings.
 - Stale AuditX output warning remains known.
+- Dev/main policy, checkpoint loop policy, and capability reality ledger remain
+  follow-up tasks.
 - Runtime graph/generator/viewer, runtime composition resolver, package
   runtime, provider runtime, runtime module loader, Workbench shell, renderer,
   native GUI, gameplay, replay runtime, save/world runtime, and release
@@ -50,6 +75,8 @@ prompts.
 
 ## Next Recommended Task
 
-`AIDE-WORKUNIT-SCHEMA-01`
+`AIDE-DEV-MAIN-POLICY-01`
 
-Alternate next task: `AIDE-DEV-MAIN-POLICY-01`.
+Alternate next task: `AIDE-CHECKPOINT-LOOP-01`.
+
+Secondary follow-up: `AIDE-CAPABILITY-REALITY-LEDGER-01`.

@@ -1,0 +1,21 @@
+{
+  "repair_task_id": "repair-validator-failure-repairable",
+  "source_work_unit_id": "wu-AIDE-WORKUNIT-SCHEMA-01",
+  "source_blocker_id": "blocker-validator-failure-repairable",
+  "repair_class": "validator_failure_repairable",
+  "target_branch": "repair/AIDE-WORKUNIT-SCHEMA-01-validator",
+  "allowed_paths": [
+    ".aide/schema/",
+    ".aide/fixtures/work_unit/"
+  ],
+  "forbidden_paths": [
+    "apps/",
+    "runtime/"
+  ],
+  "expected_fix": "Correct the schema or fixture and rerun targeted validation.",
+  "validation_required": [
+    "python -m tools.aide.validate_workunits"
+  ],
+  "merge_back_policy": "merge_to_source_work_unit",
+  "status": "READY"
+}

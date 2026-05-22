@@ -1,0 +1,19 @@
+{
+  "blocker_id": "blocker-validator-failure-repairable",
+  "work_unit_id": "wu-AIDE-WORKUNIT-SCHEMA-01",
+  "blocker_class": "validator_failure_repairable",
+  "severity": "error",
+  "detected_at_stage": "targeted_validation",
+  "description": "A targeted schema fixture validator failed in an in-scope way.",
+  "evidence_refs": [
+    "evidence-workunit-validator"
+  ],
+  "affected_paths": [
+    ".aide/schema/"
+  ],
+  "default_policy": "repair",
+  "repair_task_id": "repair-validator-failure-repairable",
+  "prerequisite_task_id": null,
+  "human_decision_required": false,
+  "unsafe_to_continue": false
+}

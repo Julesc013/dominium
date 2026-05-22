@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.warning_disposition.v1",
+  "title": "AIDE WarningDisposition",
+  "description": "Classified warning acceptance or repair decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "warning_id",
+    "warning_class",
+    "owner",
+    "severity",
+    "status",
+    "evidence_refs",
+    "expiry_policy",
+    "next_review_task",
+    "notes"
+  ],
+  "properties": {
+    "warning_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "warning_class": {
+      "type": "string",
+      "enum": [
+        "full_gate_debt",
+        "dependency_direction_warning",
+        "review_ref_warning",
+        "stale_evidence_warning",
+        "runtime_not_implemented_gap",
+        "planned_schema_gap",
+        "new_warning"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "enum": [
+        "human",
+        "codex",
+        "aide",
+        "mixed"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "error"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "known",
+        "accepted_dev_only",
+        "accepted_main",
+        "repair_required",
+        "retired"
+      ]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expiry_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "next_review_task": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

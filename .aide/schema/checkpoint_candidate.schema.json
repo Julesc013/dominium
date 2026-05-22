@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.checkpoint_candidate.v1",
+  "title": "AIDE CheckpointCandidate",
+  "description": "Candidate checkpoint assembled from selected WorkUnits and validation evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "checkpoint_id",
+    "wave_id",
+    "source_branches",
+    "included_work_units",
+    "excluded_work_units",
+    "base_commit",
+    "merge_commit",
+    "validation_plan",
+    "validation_results",
+    "warning_disposition_refs",
+    "blockers",
+    "promotion_recommendation",
+    "status"
+  ],
+  "properties": {
+    "checkpoint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "wave_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_branches": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "included_work_units": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "excluded_work_units": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "base_commit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "merge_commit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "validation_plan": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_results": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "warning_disposition_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "promotion_recommendation": {
+      "type": "string",
+      "enum": [
+        "promote",
+        "reject",
+        "repair_required",
+        "quarantine",
+        "defer"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PROPOSED",
+        "READY",
+        "RUNNING",
+        "DONE_LOCAL",
+        "PARTIAL",
+        "BLOCKED_REPAIRABLE",
+        "BLOCKED_MISSING_PREREQ",
+        "BLOCKED_NEEDS_DECISION",
+        "BLOCKED_UNSAFE",
+        "REPAIR_QUEUED",
+        "RESUME_READY",
+        "MERGE_CANDIDATE",
+        "MERGED_TO_DEV",
+        "CHECKPOINT_CANDIDATE",
+        "CHECKPOINT_REPAIR",
+        "PROMOTED_TO_MAIN",
+        "QUARANTINED",
+        "SUPERSEDED"
+      ]
+    }
+  }
+}

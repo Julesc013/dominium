@@ -1,0 +1,46 @@
+{
+  "attempt_id": "attempt-AIDE-WORKUNIT-SCHEMA-01-1",
+  "work_unit_id": "wu-AIDE-WORKUNIT-SCHEMA-01",
+  "task_id": "AIDE-WORKUNIT-SCHEMA-01",
+  "attempt_number": 1,
+  "agent": "codex",
+  "model": null,
+  "branch": "main",
+  "start_commit": "971c58894",
+  "end_commit": null,
+  "status": "RUNNING",
+  "commands_run": [
+    {
+      "command": "git status --short --branch",
+      "result": "PASS",
+      "evidence_ref": "evidence-git-status"
+    }
+  ],
+  "changed_files": [
+    ".aide/schema/work_unit.schema.json"
+  ],
+  "validation_results": [
+    {
+      "validation_id": "workunit-schema-fixtures",
+      "status": "PASS",
+      "evidence_ref": "evidence-workunit-validator"
+    }
+  ],
+  "warnings": [
+    "warn-full-ctest-not-run"
+  ],
+  "blockers": [],
+  "evidence_refs": [
+    "evidence-workunit-validator"
+  ],
+  "commit_refs": [],
+  "retry_recommendation": {
+    "recommended": false,
+    "reason": "No retry required."
+  },
+  "resume_recommendation": {
+    "recommended": false,
+    "resume_task_id": null,
+    "reason": "Attempt is still active."
+  }
+}

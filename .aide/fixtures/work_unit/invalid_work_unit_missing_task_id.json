@@ -1,0 +1,42 @@
+{
+  "schema_version": "dominium.aide.work_unit.v1",
+  "work_unit_id": "wu-invalid",
+  "title": "Invalid WorkUnit missing task id",
+  "status": "READY",
+  "mode": "apply",
+  "wave_id": null,
+  "parent_work_unit_id": null,
+  "base_commit": "971c58894",
+  "target_branch": "task/invalid",
+  "branch_role": "task/<task-id>",
+  "origin_remote": "origin",
+  "created_from": "user_prompt",
+  "owner": "codex",
+  "allowed_paths": [],
+  "forbidden_paths": [],
+  "required_reads": [],
+  "non_goals": [],
+  "expected_outputs": [],
+  "validation_plan": [],
+  "evidence_required": [],
+  "blockers": [],
+  "attempts": [],
+  "warnings": [],
+  "evidence_refs": [],
+  "next_actions": [],
+  "promotion_eligibility": {
+    "eligible_for_dev": false,
+    "eligible_for_checkpoint": false,
+    "eligible_for_main": false,
+    "required_evidence_refs": [],
+    "blocking_reasons": [],
+    "human_review_required": false
+  },
+  "broad_feature_work_authorized": false,
+  "destructive_actions_allowed": false,
+  "created_at_policy": {
+    "timestamp_required": false,
+    "timestamp_is_identity": false,
+    "notes": "invalid fixture"
+  }
+}

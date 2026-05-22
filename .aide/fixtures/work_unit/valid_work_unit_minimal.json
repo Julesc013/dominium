@@ -1,0 +1,68 @@
+{
+  "schema_version": "dominium.aide.work_unit.v1",
+  "work_unit_id": "wu-AIDE-WORKUNIT-SCHEMA-01",
+  "task_id": "AIDE-WORKUNIT-SCHEMA-01",
+  "title": "Add AIDE WorkUnit schema contracts",
+  "status": "READY",
+  "mode": "apply",
+  "wave_id": null,
+  "parent_work_unit_id": null,
+  "base_commit": "971c58894",
+  "target_branch": "task/AIDE-WORKUNIT-SCHEMA-01",
+  "branch_role": "task/<task-id>",
+  "origin_remote": "origin",
+  "created_from": "user_prompt",
+  "owner": "codex",
+  "allowed_paths": [
+    ".aide/schema/",
+    ".aide/fixtures/work_unit/"
+  ],
+  "forbidden_paths": [
+    "apps/",
+    "runtime/"
+  ],
+  "required_reads": [
+    ".aide/policy/workflow_law.md",
+    ".aide/policy/task_lifecycle.md"
+  ],
+  "non_goals": [
+    "no scheduler"
+  ],
+  "expected_outputs": [
+    ".aide/schema/work_unit.schema.json"
+  ],
+  "validation_plan": [
+    "python -m tools.aide.validate_workunits"
+  ],
+  "evidence_required": [
+    "validator output"
+  ],
+  "blockers": [],
+  "attempts": [],
+  "warnings": [
+    "warn-full-ctest-not-run"
+  ],
+  "evidence_refs": [],
+  "next_actions": [
+    "AIDE-DEV-MAIN-POLICY-01"
+  ],
+  "promotion_eligibility": {
+    "eligible_for_dev": true,
+    "eligible_for_checkpoint": false,
+    "eligible_for_main": false,
+    "required_evidence_refs": [
+      "evidence-workunit-validator"
+    ],
+    "blocking_reasons": [
+      "main promotion requires checkpoint policy"
+    ],
+    "human_review_required": false
+  },
+  "broad_feature_work_authorized": false,
+  "destructive_actions_allowed": false,
+  "created_at_policy": {
+    "timestamp_required": false,
+    "timestamp_is_identity": false,
+    "notes": "Timestamps are metadata only and do not define WorkUnit identity."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "promotion_id": "promotion-invalid-missing-evidence",
+  "checkpoint_id": "checkpoint-aide-schema-wave-1",
+  "source_branch": "checkpoint/aide-schema-wave-1",
+  "target_branch": "main",
+  "decision": "promote",
+  "validation_summary": "Invalid because required evidence refs are missing.",
+  "warnings_accepted": [],
+  "warnings_rejected": [],
+  "human_approver": null,
+  "rationale": "Promotion decisions require evidence.",
+  "resulting_commit": null
+}

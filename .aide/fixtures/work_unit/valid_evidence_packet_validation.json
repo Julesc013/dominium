@@ -1,0 +1,16 @@
+{
+  "evidence_id": "evidence-workunit-validator",
+  "work_unit_id": "wu-AIDE-WORKUNIT-SCHEMA-01",
+  "task_id": "AIDE-WORKUNIT-SCHEMA-01",
+  "evidence_kind": "validation",
+  "path": ".aide/reports/AIDE-WORKUNIT-SCHEMA-01-validation.json",
+  "digest": null,
+  "producing_command": "python -m tools.aide.validate_workunits",
+  "related_commit": null,
+  "related_artifacts": [
+    ".aide/schema/work_unit.schema.json"
+  ],
+  "status": "PASS",
+  "warnings": [],
+  "notes": "Targeted schema fixture validation."
+}

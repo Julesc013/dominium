@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.promotion_decision.v1",
+  "title": "AIDE PromotionDecision",
+  "description": "Evidence-backed promotion decision. Promotion to main is not automatic.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "promotion_id",
+    "checkpoint_id",
+    "source_branch",
+    "target_branch",
+    "decision",
+    "required_evidence_refs",
+    "validation_summary",
+    "warnings_accepted",
+    "warnings_rejected",
+    "human_approver",
+    "rationale",
+    "resulting_commit"
+  ],
+  "properties": {
+    "promotion_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "checkpoint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_branch": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_branch": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "promote",
+        "reject",
+        "repair_required",
+        "quarantine",
+        "defer"
+      ]
+    },
+    "required_evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "warnings_accepted": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "warnings_rejected": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "human_approver": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resulting_commit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

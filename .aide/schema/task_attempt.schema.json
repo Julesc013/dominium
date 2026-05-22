@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.task_attempt.v1",
+  "title": "AIDE TaskAttempt",
+  "description": "One execution attempt for a WorkUnit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "attempt_id",
+    "work_unit_id",
+    "task_id",
+    "attempt_number",
+    "agent",
+    "branch",
+    "start_commit",
+    "end_commit",
+    "status",
+    "commands_run",
+    "changed_files",
+    "validation_results",
+    "warnings",
+    "blockers",
+    "evidence_refs",
+    "commit_refs",
+    "retry_recommendation",
+    "resume_recommendation"
+  ],
+  "properties": {
+    "attempt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "work_unit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attempt_number": {
+      "type": "integer"
+    },
+    "agent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "branch": {
+      "type": "string",
+      "minLength": 1
+    },
+    "start_commit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "end_commit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PROPOSED",
+        "READY",
+        "RUNNING",
+        "DONE_LOCAL",
+        "PARTIAL",
+        "BLOCKED_REPAIRABLE",
+        "BLOCKED_MISSING_PREREQ",
+        "BLOCKED_NEEDS_DECISION",
+        "BLOCKED_UNSAFE",
+        "REPAIR_QUEUED",
+        "RESUME_READY",
+        "MERGE_CANDIDATE",
+        "MERGED_TO_DEV",
+        "CHECKPOINT_CANDIDATE",
+        "CHECKPOINT_REPAIR",
+        "PROMOTED_TO_MAIN",
+        "QUARANTINED",
+        "SUPERSEDED"
+      ]
+    },
+    "commands_run": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "command",
+          "result",
+          "evidence_ref"
+        ],
+        "properties": {
+          "command": {
+            "type": "string"
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "PASS_WITH_WARNINGS",
+              "FAIL",
+              "BLOCKED",
+              "NOT_RUN"
+            ]
+          },
+          "evidence_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "changed_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "validation_id",
+          "status",
+          "evidence_ref"
+        ],
+        "properties": {
+          "validation_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "PASS_WITH_WARNINGS",
+              "FAIL",
+              "BLOCKED",
+              "NOT_RUN"
+            ]
+          },
+          "evidence_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "commit_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "retry_recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recommended",
+        "reason"
+      ],
+      "properties": {
+        "recommended": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "resume_recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recommended",
+        "resume_task_id",
+        "reason"
+      ],
+      "properties": {
+        "recommended": {
+          "type": "boolean"
+        },
+        "resume_task_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
