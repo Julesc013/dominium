@@ -1,0 +1,24 @@
+{
+  "schema_id": "dominium.report.refusal",
+  "schema_version": "1.0.0",
+  "report_id": "dominium.report.refusal.package_mount.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.package_mount.fixture",
+  "decision_ref": "dominium.composition.decision.package_mount.fixture",
+  "source_commit": null,
+  "source_artifact_refs": [
+    "pack.base.procedural"
+  ],
+  "generated_by": "tools/validators/package/check_package_mount_slice.py",
+  "generated_at": null,
+  "entries": [],
+  "diagnostics": [],
+  "evidence_ref": "evidence.package_mount.refusal.fixture",
+  "content_hash": null,
+  "canonical_hash": null,
+  "limitations": [
+    "fixture-only empty refusal report for accepted mount plan"
+  ],
+  "status": "fixture_only"
+}

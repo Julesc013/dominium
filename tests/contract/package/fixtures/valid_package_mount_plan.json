@@ -1,0 +1,57 @@
+{
+  "schema_id": "dominium.composition.plan",
+  "schema_version": "1.0.0",
+  "stability": "fixture",
+  "composition_plan_id": "dominium.composition.plan.package_mount.fixture",
+  "plan_kind": "package_mount",
+  "app_ref": null,
+  "profile_refs": [
+    "dominium.profile.fixture.default"
+  ],
+  "pack_refs": [
+    "pack.base.procedural"
+  ],
+  "module_refs": [],
+  "provider_requests": [],
+  "capability_requests": [
+    {
+      "request_id": "capability.request.package_mount.validate.fixture",
+      "capability_ref": "domino.package.validate",
+      "required": true,
+      "requested_by": "dominium.package.mount.plan.v1"
+    },
+    {
+      "request_id": "capability.request.package_mount.compose.fixture",
+      "capability_ref": "dominium.composition.resolve",
+      "required": true,
+      "requested_by": "dominium.package.mount.plan.v1"
+    }
+  ],
+  "platform_target_ref": "domino.platform.headless",
+  "renderer_request": null,
+  "trust_policy_ref": "contracts/trust/mod_pack_trust.contract.toml",
+  "compatibility_policy_ref": "contracts/schema/schema_evolution.contract.toml",
+  "overlay_policy_ref": "dominium.composition.overlay.default.v1",
+  "artifact_inputs": [
+    "pack.base.procedural"
+  ],
+  "requested_outputs": [
+    "pack_mount.lock.json",
+    "capability_report.json",
+    "trust_report.json",
+    "compatibility_report.json",
+    "refusal_report.json"
+  ],
+  "evidence_policy_ref": "contracts/evidence/evidence_packet.schema.json",
+  "deterministic_order_policy_ref": "dominium.composition.order.default.v1",
+  "source_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_input.json",
+    "tests/contract/package/fixtures/valid_package_manifest.json"
+  ],
+  "status": "fixture_only",
+  "support_claim": false,
+  "limitations": [
+    "fixture-only package mount proof; no runtime package mounting implemented"
+  ],
+  "notes": "Package mount plan fixture for a single declared data-only pack."
+}

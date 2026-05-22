@@ -1,0 +1,48 @@
+{
+  "schema_id": "dominium.composition.decision",
+  "schema_version": "1.0.0",
+  "composition_decision_id": "dominium.composition.decision.package_mount.fixture",
+  "plan_ref": "dominium.composition.plan.package_mount.fixture",
+  "status": "fixture_only",
+  "selected_app_ref": null,
+  "selected_profile_refs": [
+    "dominium.profile.fixture.default"
+  ],
+  "selected_pack_refs": [
+    "pack.base.procedural"
+  ],
+  "selected_module_refs": [],
+  "selected_provider_refs": [],
+  "capability_decisions": [
+    {
+      "capability_ref": "domino.package.validate",
+      "decision": "selected"
+    },
+    {
+      "capability_ref": "dominium.composition.resolve",
+      "decision": "selected"
+    }
+  ],
+  "refusal_refs": [],
+  "diagnostic_refs": [],
+  "conflict_reports": [],
+  "lockfile_refs": [
+    "dominium.lock.pack_mount.package_mount.fixture",
+    "dominium.report.capability.package_mount.fixture",
+    "dominium.report.trust.package_mount.fixture",
+    "dominium.report.compatibility.package_mount.fixture",
+    "dominium.report.refusal.package_mount.fixture"
+  ],
+  "evidence_ref": "evidence.package_mount.fixture",
+  "fallback_trace": [],
+  "limitations": [
+    "fixture-only package mount proof"
+  ],
+  "source_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_decision.json"
+  ],
+  "generated_by": "tools/validators/package/check_package_mount_slice.py",
+  "deterministic_order_key": "000010:pack.base.procedural",
+  "support_claim": false,
+  "notes": "Valid package mount decision fixture."
+}

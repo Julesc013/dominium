@@ -2349,3 +2349,55 @@ proof = ["python tools/validators/contracts/check_service_conformance.py --repo-
 compatibility = "not_yet_stable"
 replacement_policy = "requires_service_conformance_law_update"
 notes = "Conformance suite and provider-conformance fixture suite. Fixture-only evidence is not runtime support."
+
+[[surface]]
+id = "dominium.package.mount.command.v1"
+kind = "command"
+path = "contracts/command/command_surface.contract.toml"
+owner = "tools.validators.package"
+stability = "provisional"
+version = "0.1.0"
+introduced = "PACKAGE-MOUNT-SLICE-01"
+proof = ["python tools/validators/package/check_package_mount_slice.py --repo-root . --strict", "python tools/validators/contracts/check_command_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_package_mount_slice_update_and_command_surface_update"
+notes = "Provisional repo-only package mount planning command. It produces fixture-level plan/result/lock/report evidence and does not implement runtime package mounting or a mod loader."
+
+[[surface]]
+id = "dominium.package.mount.schemas.v1"
+kind = "package_format"
+path = "contracts/package"
+owner = "contracts.package"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PACKAGE-MOUNT-SLICE-01"
+proof = ["python -m json.tool contracts/package/package_mount_input.schema.json", "python -m json.tool contracts/package/package_mount_result.schema.json", "python tools/validators/package/check_package_mount_slice.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_package_mount_slice_update"
+notes = "Package mount input/result schema surface for fixture-level mount planning proof. Paths are source references, not package identity."
+
+[[surface]]
+id = "dominium.package.mount.validator.v1"
+kind = "documentation"
+path = "tools/validators/package/check_package_mount_slice.py"
+owner = "tools.validators.package"
+stability = "provisional"
+version = "0.1.0"
+introduced = "PACKAGE-MOUNT-SLICE-01"
+proof = ["python -m py_compile tools/validators/package/check_package_mount_slice.py", "python tools/validators/package/check_package_mount_slice.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_package_mount_slice_validator_update"
+notes = "Repo-only validator/proof adapter for package mount contracts, fixtures, lock/report references, refusal/trust/capability behavior, and non-runtime support boundaries."
+
+[[surface]]
+id = "dominium.package_mount.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/package"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "PACKAGE-MOUNT-SLICE-01"
+proof = ["python tools/validators/package/check_package_mount_slice.py --repo-root . --fixtures", "python tests/app/package_mount_slice_tests.py"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_package_mount_slice_validator_tests"
+notes = "Fixture suite for one valid package/profile mount chain and negative package identity, capability, trust, overlay, fallback, and lockfile source-truth cases."

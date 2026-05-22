@@ -1,0 +1,26 @@
+{
+  "schema_id": "dominium.package.fixture.manifest",
+  "schema_version": "1.0.0",
+  "package_id": "pack.base.procedural",
+  "version": "0.0.0",
+  "kind": "data_only_pack",
+  "trust_level": "data_only",
+  "capabilities_provided": [
+    "domino.package.validate"
+  ],
+  "capabilities_required": [],
+  "payload_refs": [],
+  "provenance": {
+    "source": "test_fixture",
+    "license": "fixture-only"
+  },
+  "compatibility_range": {
+    "dominium": ">=0.0.0"
+  },
+  "validation_target_refs": [
+    "tests/contract/package/fixtures/valid_package_manifest.json"
+  ],
+  "source_truth": true,
+  "support_claim": false,
+  "notes": "Minimal package fixture for PACKAGE-MOUNT-SLICE-01; it is not runtime content."
+}

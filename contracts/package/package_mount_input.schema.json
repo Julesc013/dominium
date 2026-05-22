@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.package.mount_plan_input.v1",
+  "title": "Dominium Package Mount Plan Input",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "command_id",
+    "target_package_ref",
+    "requested_profile_refs",
+    "requested_capability_refs",
+    "mode",
+    "emit_reports",
+    "source_refs",
+    "support_claim"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.package.mount_plan_input"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "command_id": {
+      "type": "string",
+      "const": "dominium.package.mount.plan.v1"
+    },
+    "target_package_ref": {
+      "$ref": "#/$defs/package_ref"
+    },
+    "requested_profile_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requested_capability_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "trust_policy_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "compatibility_policy_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "overlay_policy_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "dry_run",
+        "strict"
+      ]
+    },
+    "emit_reports": {
+      "type": "boolean"
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "support_claim": {
+      "type": "boolean",
+      "const": false
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "package_ref": {
+      "type": "object",
+      "required": [
+        "id",
+        "version",
+        "source_ref",
+        "source_ref_is_authority"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "source_ref_is_authority": {
+          "type": "boolean",
+          "const": false
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema_id": "dominium.report.compatibility",
+  "schema_version": "1.0.0",
+  "report_id": "dominium.report.compatibility.package_mount.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.package_mount.fixture",
+  "decision_ref": "dominium.composition.decision.package_mount.fixture",
+  "source_commit": null,
+  "source_artifact_refs": [
+    "pack.base.procedural"
+  ],
+  "generated_by": "tools/validators/package/check_package_mount_slice.py",
+  "generated_at": null,
+  "entries": [
+    {
+      "pack_ref": "pack.base.procedural",
+      "version": "0.0.0",
+      "range": ">=0.0.0",
+      "decision": "accepted"
+    }
+  ],
+  "diagnostics": [],
+  "evidence_ref": "evidence.package_mount.compatibility.fixture",
+  "content_hash": null,
+  "canonical_hash": null,
+  "limitations": [
+    "fixture-only compatibility report"
+  ],
+  "status": "fixture_only"
+}

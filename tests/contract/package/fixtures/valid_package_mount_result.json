@@ -1,0 +1,92 @@
+{
+  "schema_id": "dominium.package.mount_plan_result",
+  "schema_version": "1.0.0",
+  "command_id": "dominium.package.mount.plan.v1",
+  "status": "pass",
+  "package_ref": {
+    "id": "pack.base.procedural",
+    "version": "0.0.0",
+    "kind": "data_only_pack",
+    "source_ref": "tests/contract/package/fixtures/valid_package_manifest.json",
+    "source_ref_is_authority": false
+  },
+  "profile_refs": [
+    "dominium.profile.fixture.default"
+  ],
+  "composition_plan_ref": {
+    "id": "dominium.composition.plan.package_mount.fixture",
+    "schema_id": "dominium.composition.plan",
+    "path": "tests/contract/package/fixtures/valid_package_mount_plan.json",
+    "artifact_class": "derived_evidence",
+    "source_truth": false
+  },
+  "composition_decision_ref": {
+    "id": "dominium.composition.decision.package_mount.fixture",
+    "schema_id": "dominium.composition.decision",
+    "path": "tests/contract/package/fixtures/valid_package_mount_decision.json",
+    "artifact_class": "derived_evidence",
+    "source_truth": false
+  },
+  "pack_mount_lock_ref": {
+    "id": "dominium.lock.pack_mount.package_mount.fixture",
+    "schema_id": "dominium.lock.pack_mount",
+    "path": "tests/contract/package/fixtures/valid_package_mount_lock.json",
+    "artifact_class": "derived_evidence",
+    "source_truth": false
+  },
+  "capability_report_ref": {
+    "id": "dominium.report.capability.package_mount.fixture",
+    "schema_id": "dominium.report.capability",
+    "path": "tests/contract/package/fixtures/valid_package_mount_capability_report.json",
+    "artifact_class": "derived_evidence",
+    "source_truth": false
+  },
+  "refusal_report_ref": {
+    "id": "dominium.report.refusal.package_mount.fixture",
+    "schema_id": "dominium.report.refusal",
+    "path": "tests/contract/package/fixtures/valid_package_mount_refusal_report.json",
+    "artifact_class": "derived_evidence",
+    "source_truth": false
+  },
+  "compatibility_report_ref": {
+    "id": "dominium.report.compatibility.package_mount.fixture",
+    "schema_id": "dominium.report.compatibility",
+    "path": "tests/contract/package/fixtures/valid_package_mount_compatibility_report.json",
+    "artifact_class": "derived_evidence",
+    "source_truth": false
+  },
+  "trust_report_ref": {
+    "id": "dominium.report.trust.package_mount.fixture",
+    "schema_id": "dominium.report.trust",
+    "path": "tests/contract/package/fixtures/valid_package_mount_trust_report.json",
+    "artifact_class": "derived_evidence",
+    "source_truth": false
+  },
+  "diagnostics": [],
+  "refusal": null,
+  "evidence_ref": {
+    "id": "evidence.package_mount.fixture",
+    "packet_schema": "contracts/evidence/evidence_packet.schema.json",
+    "report_paths": [
+      "tests/contract/package/fixtures/valid_package_mount_lock.json",
+      "tests/contract/package/fixtures/valid_package_mount_capability_report.json",
+      "tests/contract/package/fixtures/valid_package_mount_refusal_report.json",
+      "tests/contract/package/fixtures/valid_package_mount_compatibility_report.json",
+      "tests/contract/package/fixtures/valid_package_mount_trust_report.json"
+    ]
+  },
+  "limitations": [
+    "fixture-only package/profile mount proof",
+    "no runtime package mounting, mod loader, provider runtime, module loader, product launch, or broad package runtime"
+  ],
+  "source_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_input.json",
+    "tests/contract/package/fixtures/valid_package_manifest.json"
+  ],
+  "support_claim": false,
+  "runtime_mounting_implemented": false,
+  "package_runtime_implemented": false,
+  "mod_loader_implemented": false,
+  "provider_runtime_implemented": false,
+  "notes": "Canonical positive fixture for PACKAGE-MOUNT-SLICE-01."
+}

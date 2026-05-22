@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.package.mount_plan_result.v1",
+  "title": "Dominium Package Mount Plan Result",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "command_id",
+    "status",
+    "package_ref",
+    "profile_refs",
+    "composition_plan_ref",
+    "composition_decision_ref",
+    "pack_mount_lock_ref",
+    "capability_report_ref",
+    "refusal_report_ref",
+    "compatibility_report_ref",
+    "trust_report_ref",
+    "diagnostics",
+    "evidence_ref",
+    "limitations",
+    "support_claim",
+    "runtime_mounting_implemented",
+    "package_runtime_implemented",
+    "mod_loader_implemented",
+    "provider_runtime_implemented"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.package.mount_plan_result"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "command_id": {
+      "type": "string",
+      "const": "dominium.package.mount.plan.v1"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "pass_with_warnings",
+        "fail",
+        "refused"
+      ]
+    },
+    "package_ref": {
+      "$ref": "#/$defs/package_ref"
+    },
+    "profile_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "composition_plan_ref": {
+      "$ref": "#/$defs/artifact_ref"
+    },
+    "composition_decision_ref": {
+      "$ref": "#/$defs/artifact_ref"
+    },
+    "pack_mount_lock_ref": {
+      "$ref": "#/$defs/artifact_ref"
+    },
+    "capability_report_ref": {
+      "$ref": "#/$defs/artifact_ref"
+    },
+    "refusal_report_ref": {
+      "$ref": "#/$defs/artifact_ref"
+    },
+    "compatibility_report_ref": {
+      "$ref": "#/$defs/artifact_ref"
+    },
+    "trust_report_ref": {
+      "$ref": "#/$defs/artifact_ref"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "refusal": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "evidence_ref": {
+      "$ref": "#/$defs/evidence_ref"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "support_claim": {
+      "type": "boolean",
+      "const": false
+    },
+    "runtime_mounting_implemented": {
+      "type": "boolean",
+      "const": false
+    },
+    "package_runtime_implemented": {
+      "type": "boolean",
+      "const": false
+    },
+    "mod_loader_implemented": {
+      "type": "boolean",
+      "const": false
+    },
+    "provider_runtime_implemented": {
+      "type": "boolean",
+      "const": false
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "package_ref": {
+      "type": "object",
+      "required": [
+        "id",
+        "version",
+        "kind",
+        "source_ref",
+        "source_ref_is_authority"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "source_ref_is_authority": {
+          "type": "boolean",
+          "const": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "artifact_ref": {
+      "type": "object",
+      "required": [
+        "id",
+        "schema_id",
+        "path",
+        "artifact_class",
+        "source_truth"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "schema_id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "artifact_class": {
+          "type": "string",
+          "const": "derived_evidence"
+        },
+        "source_truth": {
+          "type": "boolean",
+          "const": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "evidence_ref": {
+      "type": "object",
+      "required": [
+        "id",
+        "packet_schema",
+        "report_paths"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "packet_schema": {
+          "type": "string",
+          "const": "contracts/evidence/evidence_packet.schema.json"
+        },
+        "report_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

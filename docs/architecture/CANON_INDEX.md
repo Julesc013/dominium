@@ -601,6 +601,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/document_patch_transaction.md`
 - `docs/architecture/lockfile_law.md`
 - `docs/architecture/module_composition_law.md`
+- `docs/architecture/package_mount_slice.md`
 - `docs/architecture/pack_mount_model.md`
 - `docs/architecture/project_graph_service.md`
 - `docs/architecture/project_graph_impact_model.md`

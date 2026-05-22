@@ -1,0 +1,39 @@
+{
+  "fixture_kind": "package_mount_invalid_case",
+  "expected_failures": [
+    "missing_required_capability"
+  ],
+  "schema_id": "dominium.report.capability",
+  "schema_version": "1.0.0",
+  "report_id": "dominium.report.capability.invalid_missing_capability.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.package_mount.fixture",
+  "decision_ref": "dominium.composition.decision.package_mount.fixture",
+  "source_artifact_refs": [
+    "pack.base.procedural"
+  ],
+  "generated_by": "tools/validators/package/check_package_mount_slice.py",
+  "entries": [
+    {
+      "requested": "domino.package.validate",
+      "selected": null,
+      "available": [],
+      "missing": [
+        "domino.package.validate"
+      ],
+      "degraded": [],
+      "refused": [
+        "domino.package.validate"
+      ]
+    }
+  ],
+  "diagnostics": [
+    "DOM-CAPABILITY-MISSING"
+  ],
+  "evidence_ref": "evidence.package_mount.invalid_missing_capability.fixture",
+  "limitations": [
+    "negative fixture"
+  ],
+  "status": "refused"
+}

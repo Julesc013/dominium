@@ -94,6 +94,25 @@ replacement_policy = "requires_test_tier_contract_update_and_command_surface_upd
 notes = "Registered command identity for the fast strict development proof gate."
 
 [[command]]
+id = "dominium.package.mount.plan.v1"
+version = "0.1.0"
+kind = "package"
+owner = "tools.validators.package"
+stability = "provisional"
+surfaces = ["cli", "headless", "aide", "test"]
+input_schema = "contracts/package/package_mount_input.schema.json"
+result_schema = "contracts/package/package_mount_result.schema.json"
+refusals = ["dominium.refusal.command.capability_missing", "dominium.refusal.command.invalid_input", "dominium.refusal.command.unsupported_surface", "dominium.refusal.composition.plan_invalid", "dominium.refusal.composition.reference_unknown", "dominium.refusal.composition.silent_overwrite_forbidden", "dominium.refusal.composition.evidence_missing", "dominium.refusal.mod.trust_insufficient", "dominium.refusal.pack.overlay_conflict", "dominium.refusal.pack.silent_overwrite_forbidden"]
+events = ["dominium.event.command.started", "dominium.event.command.finished", "dominium.event.command.evidence"]
+evidence_schema = "contracts/evidence/evidence_packet.schema.json"
+required_capabilities = ["domino.package.validate", "dominium.composition.resolve"]
+service_owner = "tools.validators.package"
+proof = ["python tools/validators/package/check_package_mount_slice.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_package_mount_slice_update_and_command_surface_update"
+notes = "Repo-only package/profile mount planning proof for fixture-level lock/report evidence. It does not implement runtime package mounting, a mod loader, provider runtime, module loader, or product launch behavior."
+
+[[command]]
 id = "dominium.public_surface.validate"
 version = "0.1.0"
 kind = "validation"

@@ -1,0 +1,25 @@
+{
+  "fixture_kind": "package_mount_invalid_case",
+  "expected_failures": [
+    "unsupported_trust_level"
+  ],
+  "schema_id": "dominium.package.fixture.manifest",
+  "schema_version": "1.0.0",
+  "package_id": "pack.base.procedural",
+  "version": "0.0.0",
+  "kind": "data_only_pack",
+  "trust_level": "trust.unreviewed.magic",
+  "capabilities_provided": [
+    "domino.package.validate"
+  ],
+  "capabilities_required": [],
+  "payload_refs": [],
+  "diagnostic_codes": [
+    "DOM-PACK-TRUST-LEVEL-UNKNOWN"
+  ],
+  "refusal_codes": [
+    "dominium.refusal.mod.trust_insufficient"
+  ],
+  "source_truth": true,
+  "support_claim": false
+}

@@ -1,0 +1,30 @@
+{
+  "schema_id": "dominium.package.mount_plan_input",
+  "schema_version": "1.0.0",
+  "command_id": "dominium.package.mount.plan.v1",
+  "target_package_ref": {
+    "id": "pack.base.procedural",
+    "version": "0.0.0",
+    "kind": "data_only_pack",
+    "source_ref": "tests/contract/package/fixtures/valid_package_manifest.json",
+    "source_ref_is_authority": false
+  },
+  "requested_profile_refs": [
+    "dominium.profile.fixture.default"
+  ],
+  "requested_capability_refs": [
+    "domino.package.validate",
+    "dominium.composition.resolve"
+  ],
+  "trust_policy_ref": "contracts/trust/mod_pack_trust.contract.toml",
+  "compatibility_policy_ref": "contracts/schema/schema_evolution.contract.toml",
+  "overlay_policy_ref": "dominium.composition.overlay.default.v1",
+  "mode": "strict",
+  "emit_reports": true,
+  "source_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_input.json",
+    "tests/contract/package/fixtures/valid_package_manifest.json"
+  ],
+  "support_claim": false,
+  "notes": "Fixture-only package mount plan input. The source_ref is evidence, not package identity."
+}

@@ -1,0 +1,33 @@
+{
+  "schema_id": "dominium.report.trust",
+  "schema_version": "1.0.0",
+  "report_id": "dominium.report.trust.package_mount.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.package_mount.fixture",
+  "decision_ref": "dominium.composition.decision.package_mount.fixture",
+  "source_commit": null,
+  "source_artifact_refs": [
+    "pack.base.procedural"
+  ],
+  "generated_by": "tools/validators/package/check_package_mount_slice.py",
+  "generated_at": null,
+  "entries": [
+    {
+      "pack_ref": "pack.base.procedural",
+      "trust_level": "data_only",
+      "decision": "accepted",
+      "requires_review": false,
+      "allows_native_code": false,
+      "allows_external_process": false
+    }
+  ],
+  "diagnostics": [],
+  "evidence_ref": "evidence.package_mount.trust.fixture",
+  "content_hash": null,
+  "canonical_hash": null,
+  "limitations": [
+    "fixture-only trust report"
+  ],
+  "status": "fixture_only"
+}

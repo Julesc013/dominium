@@ -1,0 +1,96 @@
+{
+  "command_id": "dominium.package.mount.plan.v1",
+  "findings": [],
+  "fixtures": {
+    "fixtures": [
+      {
+        "expected_failures": [
+          "degraded_fallback_without_trace"
+        ],
+        "observed_failures": [
+          "degraded_fallback_without_trace"
+        ],
+        "path": "tests/contract/package/fixtures/invalid_degraded_fallback_without_trace.json",
+        "status": "pass"
+      },
+      {
+        "expected_failures": [
+          "lockfile_source_truth"
+        ],
+        "observed_failures": [
+          "lockfile_source_truth"
+        ],
+        "path": "tests/contract/package/fixtures/invalid_lockfile_source_truth.json",
+        "status": "pass"
+      },
+      {
+        "expected_failures": [
+          "missing_required_capability"
+        ],
+        "observed_failures": [
+          "missing_required_capability"
+        ],
+        "path": "tests/contract/package/fixtures/invalid_missing_required_capability.json",
+        "status": "pass"
+      },
+      {
+        "expected_failures": [
+          "path_as_identity"
+        ],
+        "observed_failures": [
+          "path_as_identity"
+        ],
+        "path": "tests/contract/package/fixtures/invalid_path_as_identity.json",
+        "status": "pass"
+      },
+      {
+        "expected_failures": [
+          "silent_overlay_overwrite"
+        ],
+        "observed_failures": [
+          "silent_overlay_overwrite"
+        ],
+        "path": "tests/contract/package/fixtures/invalid_silent_overlay_overwrite.json",
+        "status": "pass"
+      },
+      {
+        "expected_failures": [
+          "unknown_package_ref"
+        ],
+        "observed_failures": [
+          "artifact_ref_shape",
+          "missing_evidence_ref",
+          "runtime_claim",
+          "unknown_package_ref"
+        ],
+        "path": "tests/contract/package/fixtures/invalid_unknown_package_ref.json",
+        "status": "pass"
+      },
+      {
+        "expected_failures": [
+          "unsupported_trust_level"
+        ],
+        "observed_failures": [
+          "unsupported_trust_level"
+        ],
+        "path": "tests/contract/package/fixtures/invalid_unsupported_trust_level.json",
+        "status": "pass"
+      }
+    ],
+    "invalid_fixtures": 7,
+    "status": "pass",
+    "valid_fixtures": 1
+  },
+  "input_schema": "contracts/package/package_mount_input.schema.json",
+  "inventory": {
+    "status": "not_run"
+  },
+  "result_schema": "contracts/package/package_mount_result.schema.json",
+  "status": "pass",
+  "summary": {
+    "errors": 0,
+    "warnings": 0
+  },
+  "valid_result": "tests/contract/package/fixtures/valid_package_mount_result.json",
+  "validator": "check_package_mount_slice"
+}

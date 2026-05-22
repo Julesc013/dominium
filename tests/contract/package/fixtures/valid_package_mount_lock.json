@@ -1,0 +1,43 @@
+{
+  "schema_id": "dominium.lock.pack_mount",
+  "schema_version": "1.0.0",
+  "lock_id": "dominium.lock.pack_mount.package_mount.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.package_mount.fixture",
+  "decision_ref": "dominium.composition.decision.package_mount.fixture",
+  "source_commit": null,
+  "source_artifact_refs": [
+    "pack.base.procedural"
+  ],
+  "generated_by": "tools/validators/package/check_package_mount_slice.py",
+  "generated_at": null,
+  "entries": [
+    {
+      "mount_order": 0,
+      "pack_ref": "pack.base.procedural",
+      "pack_role": "base_pack",
+      "version": "0.0.0",
+      "canonical_hash": "fixture-pack-base-procedural"
+    }
+  ],
+  "overlays": [
+    {
+      "target": "dominium.fixture.empty_payload",
+      "contributors": [
+        "pack.base.procedural"
+      ],
+      "conflict_behavior": "refuse",
+      "evidence_ref": "evidence.package_mount.overlay.fixture"
+    }
+  ],
+  "conflict_reports": [],
+  "diagnostics": [],
+  "evidence_ref": "evidence.package_mount.fixture",
+  "content_hash": null,
+  "canonical_hash": null,
+  "limitations": [
+    "fixture-only lock; no runtime package mounting implemented"
+  ],
+  "status": "fixture_only"
+}

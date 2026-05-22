@@ -1,0 +1,42 @@
+{
+  "fixture_kind": "package_mount_invalid_case",
+  "expected_failures": [
+    "silent_overlay_overwrite"
+  ],
+  "schema_id": "dominium.lock.pack_mount",
+  "schema_version": "1.0.0",
+  "lock_id": "dominium.lock.pack_mount.invalid_silent_overlay.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.package_mount.fixture",
+  "decision_ref": "dominium.composition.decision.package_mount.fixture",
+  "source_artifact_refs": [
+    "pack.base.procedural"
+  ],
+  "generated_by": "tools/validators/package/check_package_mount_slice.py",
+  "entries": [
+    {
+      "mount_order": 0,
+      "pack_ref": "pack.base.procedural"
+    }
+  ],
+  "overlays": [
+    {
+      "target": "dominium.fixture.overlap",
+      "contributors": [
+        "pack.base.procedural",
+        "pack.sol.pin_minimal"
+      ],
+      "conflict_behavior": "silent_overwrite"
+    }
+  ],
+  "conflict_reports": [],
+  "diagnostics": [
+    "DOM-PACK-SILENT-OVERWRITE-FORBIDDEN"
+  ],
+  "evidence_ref": "evidence.package_mount.invalid_silent_overlay.fixture",
+  "limitations": [
+    "negative fixture"
+  ],
+  "status": "refused"
+}

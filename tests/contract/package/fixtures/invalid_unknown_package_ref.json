@@ -1,0 +1,30 @@
+{
+  "fixture_kind": "package_mount_invalid_case",
+  "expected_failures": [
+    "unknown_package_ref"
+  ],
+  "schema_id": "dominium.package.mount_plan_result",
+  "schema_version": "1.0.0",
+  "command_id": "dominium.package.mount.plan.v1",
+  "status": "refused",
+  "package_ref": {
+    "id": "pack.unknown.fixture",
+    "version": "0.0.0",
+    "kind": "data_only_pack",
+    "source_ref": "tests/contract/package/fixtures/missing_package_manifest.json",
+    "source_ref_is_authority": false
+  },
+  "profile_refs": [
+    "dominium.profile.fixture.default"
+  ],
+  "diagnostics": [
+    {
+      "code": "DOM-COMPOSITION-REFERENCE-UNKNOWN",
+      "severity": "error"
+    }
+  ],
+  "refusal": {
+    "code": "dominium.refusal.composition.reference_unknown"
+  },
+  "support_claim": false
+}

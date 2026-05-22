@@ -1,0 +1,31 @@
+{
+  "fixture_kind": "package_mount_invalid_case",
+  "expected_failures": [
+    "lockfile_source_truth"
+  ],
+  "schema_id": "dominium.lock.pack_mount",
+  "schema_version": "1.0.0",
+  "lock_id": "dominium.lock.pack_mount.invalid_source_truth.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": true,
+  "source_plan_ref": "dominium.composition.plan.package_mount.fixture",
+  "decision_ref": "dominium.composition.decision.package_mount.fixture",
+  "source_artifact_refs": [
+    "pack.base.procedural"
+  ],
+  "generated_by": "tools/validators/package/check_package_mount_slice.py",
+  "entries": [
+    {
+      "mount_order": 0,
+      "pack_ref": "pack.base.procedural"
+    }
+  ],
+  "diagnostics": [
+    "DOM-COMPOSITION-EVIDENCE-MISSING"
+  ],
+  "evidence_ref": "evidence.package_mount.invalid_source_truth.fixture",
+  "limitations": [
+    "negative fixture"
+  ],
+  "status": "fixture_only"
+}

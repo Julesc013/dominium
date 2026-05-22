@@ -1,0 +1,28 @@
+{
+  "fixture_kind": "package_mount_invalid_case",
+  "expected_failures": [
+    "path_as_identity"
+  ],
+  "schema_id": "dominium.package.mount_plan_input",
+  "schema_version": "1.0.0",
+  "command_id": "dominium.package.mount.plan.v1",
+  "target_package_ref": {
+    "id": "tests/contract/package/fixtures/valid_package_manifest.json",
+    "version": "0.0.0",
+    "kind": "data_only_pack",
+    "source_ref": "tests/contract/package/fixtures/valid_package_manifest.json",
+    "source_ref_is_authority": false
+  },
+  "requested_profile_refs": [
+    "dominium.profile.fixture.default"
+  ],
+  "requested_capability_refs": [
+    "domino.package.validate"
+  ],
+  "mode": "strict",
+  "emit_reports": true,
+  "source_refs": [
+    "tests/contract/package/fixtures/invalid_path_as_identity.json"
+  ],
+  "support_claim": false
+}

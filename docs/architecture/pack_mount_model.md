@@ -64,3 +64,21 @@ not a source manifest.
 
 Fixture locks are acceptable for contract proof. They do not prove package
 runtime mounting, package loader behavior, or product launch behavior.
+
+## PACKAGE-MOUNT-SLICE-01
+
+`PACKAGE-MOUNT-SLICE-01` adds the first narrow command/result proof around this
+model:
+
+```text
+dominium.package.mount.plan.v1
+-> package_mount_result
+-> composition plan/decision fixture
+-> pack mount lock and reports
+-> evidence reference
+```
+
+The proof remains fixture-only and repo-tool-only. It rejects unknown package
+IDs, path-as-identity, silent overlay overwrite, missing required capability,
+unsupported trust level, source-truth lockfiles, and degraded fallback without
+trace. It does not implement package runtime mounting.

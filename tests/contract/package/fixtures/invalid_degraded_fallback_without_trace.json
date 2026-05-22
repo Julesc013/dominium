@@ -1,0 +1,38 @@
+{
+  "fixture_kind": "package_mount_invalid_case",
+  "expected_failures": [
+    "degraded_fallback_without_trace"
+  ],
+  "schema_id": "dominium.composition.decision",
+  "schema_version": "1.0.0",
+  "composition_decision_id": "dominium.composition.decision.invalid_degraded_no_trace.fixture",
+  "plan_ref": "dominium.composition.plan.package_mount.fixture",
+  "status": "degraded",
+  "selected_app_ref": null,
+  "selected_profile_refs": [
+    "dominium.profile.fixture.default"
+  ],
+  "selected_pack_refs": [
+    "pack.base.procedural"
+  ],
+  "selected_module_refs": [],
+  "selected_provider_refs": [],
+  "capability_decisions": [],
+  "refusal_refs": [],
+  "diagnostic_refs": [
+    "DOM-COMPOSITION-DEGRADED"
+  ],
+  "conflict_reports": [],
+  "lockfile_refs": [],
+  "evidence_ref": "evidence.package_mount.invalid_degraded_no_trace.fixture",
+  "fallback_trace": [],
+  "limitations": [
+    "negative fixture"
+  ],
+  "source_refs": [
+    "tests/contract/package/fixtures/invalid_degraded_fallback_without_trace.json"
+  ],
+  "generated_by": "tools/validators/package/check_package_mount_slice.py",
+  "deterministic_order_key": "000010:pack.base.procedural",
+  "support_claim": false
+}

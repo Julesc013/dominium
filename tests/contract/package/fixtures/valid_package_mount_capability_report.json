@@ -1,0 +1,45 @@
+{
+  "schema_id": "dominium.report.capability",
+  "schema_version": "1.0.0",
+  "report_id": "dominium.report.capability.package_mount.fixture",
+  "artifact_class": "derived_evidence",
+  "source_truth": false,
+  "source_plan_ref": "dominium.composition.plan.package_mount.fixture",
+  "decision_ref": "dominium.composition.decision.package_mount.fixture",
+  "source_commit": null,
+  "source_artifact_refs": [
+    "pack.base.procedural"
+  ],
+  "generated_by": "tools/validators/package/check_package_mount_slice.py",
+  "generated_at": null,
+  "entries": [
+    {
+      "requested": "domino.package.validate",
+      "selected": "domino.package.validate",
+      "available": [
+        "domino.package.validate"
+      ],
+      "missing": [],
+      "degraded": [],
+      "refused": []
+    },
+    {
+      "requested": "dominium.composition.resolve",
+      "selected": "dominium.composition.resolve",
+      "available": [
+        "dominium.composition.resolve"
+      ],
+      "missing": [],
+      "degraded": [],
+      "refused": []
+    }
+  ],
+  "diagnostics": [],
+  "evidence_ref": "evidence.package_mount.capability.fixture",
+  "content_hash": null,
+  "canonical_hash": null,
+  "limitations": [
+    "fixture-only capability report"
+  ],
+  "status": "fixture_only"
+}
