@@ -607,6 +607,8 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/project_graph_impact_model.md`
 - `docs/architecture/provider_model.md`
 - `docs/architecture/provider_selection_model.md`
+- `docs/architecture/replay_proof_law.md`
+- `docs/architecture/replay_proof_slice.md`
 - `docs/architecture/replacement_protocol.md`
 - `docs/architecture/schema_protocol_evolution.md`
 - `docs/architecture/view_action_projection_model.md`

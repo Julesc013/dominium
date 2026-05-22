@@ -2970,6 +2970,240 @@
             "python tools/validators/contracts/check_service_conformance.py --repo-root . --strict"
         ],
         "notes": "Capability selection must emit selected/degraded/refused/evidence decisions."
+    },
+    {
+        "id": "dominium.diagnostic.replay.input_invalid",
+        "code": "DOM-REPLAY-INPUT-INVALID",
+        "owner": "contracts.replay",
+        "severity": "error",
+        "category": "validation",
+        "stability": "provisional",
+        "summary": "Replay input is invalid.",
+        "cause": "A replay/proof input fixture is malformed, references missing material, or fails the command input schema binding.",
+        "recovery": "Repair the replay input fixture and rerun the replay proof validator.",
+        "evidence_expectation": "Replay proof validator output naming the invalid input field or reference.",
+        "related_refusal_codes": [
+            "dominium.refusal.replay.input_invalid"
+        ],
+        "related_command_ids": [
+            "dominium.package.mount.plan.v1"
+        ],
+        "related_public_surface_ids": [
+            "dominium.replay.proof.schemas.v1"
+        ],
+        "related_artifact_types": [
+            "replay",
+            "proof",
+            "evidence_packet"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_replay_proof.py --repo-root . --strict"
+        ],
+        "notes": "Command-level replay/proof only; no runtime replay engine is implemented."
+    },
+    {
+        "id": "dominium.diagnostic.replay.expected_hash_missing",
+        "code": "DOM-REPLAY-EXPECTED-HASH-MISSING",
+        "owner": "contracts.replay",
+        "severity": "error",
+        "category": "validation",
+        "stability": "provisional",
+        "summary": "Replay proof expected hash is missing.",
+        "cause": "A replay manifest, proof manifest, proof hash, or verification result lacks a canonical sha256 expected hash.",
+        "recovery": "Generate the expected hash from canonical sorted UTF-8 JSON material and update the fixture.",
+        "evidence_expectation": "Replay proof validator output naming the missing hash field.",
+        "related_refusal_codes": [
+            "dominium.refusal.replay.expected_hash_missing"
+        ],
+        "related_command_ids": [
+            "dominium.package.mount.plan.v1"
+        ],
+        "related_public_surface_ids": [
+            "dominium.replay.proof.schemas.v1"
+        ],
+        "related_artifact_types": [
+            "replay",
+            "proof"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_replay_proof.py --repo-root . --strict"
+        ],
+        "notes": "Hashes are over canonical serialization, not native object layout."
+    },
+    {
+        "id": "dominium.diagnostic.replay.hash_mismatch",
+        "code": "DOM-REPLAY-HASH-MISMATCH",
+        "owner": "contracts.replay",
+        "severity": "error",
+        "category": "validation",
+        "stability": "provisional",
+        "summary": "Replay proof hash mismatch.",
+        "cause": "Observed canonical replay/proof material does not match the expected hash.",
+        "recovery": "Inspect the proof material refs and either repair the changed fixture or record a typed mismatch refusal.",
+        "evidence_expectation": "Replay verification result with expected_hash, observed_hash, diagnostics, and refusal.",
+        "related_refusal_codes": [
+            "dominium.refusal.replay.hash_mismatch"
+        ],
+        "related_command_ids": [
+            "dominium.package.mount.plan.v1"
+        ],
+        "related_public_surface_ids": [
+            "dominium.replay.proof.schemas.v1"
+        ],
+        "related_artifact_types": [
+            "replay",
+            "proof",
+            "evidence_packet"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_replay_proof.py --repo-root . --fixtures"
+        ],
+        "notes": "Mismatch refusal is the required behavior; silent acceptance is forbidden."
+    },
+    {
+        "id": "dominium.diagnostic.replay.command_unknown",
+        "code": "DOM-REPLAY-COMMAND-UNKNOWN",
+        "owner": "contracts.replay",
+        "severity": "error",
+        "category": "command",
+        "stability": "provisional",
+        "summary": "Replay proof references an unknown command.",
+        "cause": "The replay manifest or proof material references a command absent from the command surface registry.",
+        "recovery": "Use a registered command ID or add a reviewed command surface entry before creating replay proof.",
+        "evidence_expectation": "Replay proof validator output naming the unknown command_ref.",
+        "related_refusal_codes": [
+            "dominium.refusal.replay.command_unknown"
+        ],
+        "related_command_ids": [],
+        "related_public_surface_ids": [
+            "dominium.command.surface.v1",
+            "dominium.replay.proof.schemas.v1"
+        ],
+        "related_artifact_types": [
+            "command_registry",
+            "replay"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_replay_proof.py --repo-root . --fixtures"
+        ],
+        "notes": "Command identity is semantic and registry-backed, not a path."
+    },
+    {
+        "id": "dominium.diagnostic.replay.unsupported_target",
+        "code": "DOM-REPLAY-UNSUPPORTED-TARGET",
+        "owner": "contracts.replay",
+        "severity": "error",
+        "category": "validation",
+        "stability": "provisional",
+        "summary": "Replay proof target is unsupported.",
+        "cause": "A fixture claims world, save, gameplay, or runtime replay support outside the narrow command-level proof scope.",
+        "recovery": "Keep target_scope as command_result_fixture or defer broader replay work to a reviewed runtime task.",
+        "evidence_expectation": "Replay proof validator output naming the unsupported target or implementation claim.",
+        "related_refusal_codes": [
+            "dominium.refusal.replay.unsupported_target"
+        ],
+        "related_command_ids": [
+            "dominium.package.mount.plan.v1"
+        ],
+        "related_public_surface_ids": [
+            "dominium.replay.proof.schemas.v1"
+        ],
+        "related_artifact_types": [
+            "replay",
+            "proof"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_replay_proof.py --repo-root . --fixtures"
+        ],
+        "notes": "This slice does not implement full game/world/save replay."
+    },
+    {
+        "id": "dominium.diagnostic.replay.evidence_missing",
+        "code": "DOM-REPLAY-EVIDENCE-MISSING",
+        "owner": "contracts.replay",
+        "severity": "error",
+        "category": "validation",
+        "stability": "provisional",
+        "summary": "Replay proof evidence is missing.",
+        "cause": "A replay/proof manifest references missing evidence or omits required evidence refs.",
+        "recovery": "Add the missing evidence reference or keep the proof refused.",
+        "evidence_expectation": "Replay proof validator output naming the missing evidence ref.",
+        "related_refusal_codes": [
+            "dominium.refusal.replay.evidence_missing"
+        ],
+        "related_command_ids": [
+            "dominium.package.mount.plan.v1"
+        ],
+        "related_public_surface_ids": [
+            "dominium.replay.proof.schemas.v1"
+        ],
+        "related_artifact_types": [
+            "evidence_packet",
+            "proof"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_replay_proof.py --repo-root . --fixtures"
+        ],
+        "notes": "Replay/proof material is derived evidence, not source truth."
+    },
+    {
+        "id": "dominium.diagnostic.replay.noncanonical_input",
+        "code": "DOM-REPLAY-NONCANONICAL-INPUT",
+        "owner": "contracts.replay",
+        "severity": "error",
+        "category": "validation",
+        "stability": "provisional",
+        "summary": "Replay input is not canonicalized.",
+        "cause": "Replay/proof material uses native object layout, path identity, or a noncanonical serialization policy.",
+        "recovery": "Use sorted UTF-8 canonical JSON for this fixture-level proof.",
+        "evidence_expectation": "Replay proof validator output naming the noncanonical policy.",
+        "related_refusal_codes": [
+            "dominium.refusal.replay.noncanonical_input"
+        ],
+        "related_command_ids": [
+            "dominium.package.mount.plan.v1"
+        ],
+        "related_public_surface_ids": [
+            "dominium.replay.proof.schemas.v1"
+        ],
+        "related_artifact_types": [
+            "replay",
+            "proof"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_replay_proof.py --repo-root . --fixtures"
+        ],
+        "notes": "Native object layout and paths are not replay/proof identity."
+    },
+    {
+        "id": "dominium.diagnostic.replay.fixture_only_no_runtime_support",
+        "code": "DOM-REPLAY-FIXTURE-ONLY-NO-RUNTIME-SUPPORT",
+        "owner": "contracts.replay",
+        "severity": "error",
+        "category": "validation",
+        "stability": "provisional",
+        "summary": "Fixture-only replay proof cannot claim runtime support.",
+        "cause": "A replay/proof fixture claims runtime replay, package runtime, world replay, save replay, gameplay replay, or product support.",
+        "recovery": "Set runtime support flags and support_claim to false, or defer implementation to a reviewed runtime task.",
+        "evidence_expectation": "Replay proof validator output naming the unsupported support claim.",
+        "related_refusal_codes": [
+            "dominium.refusal.replay.fixture_only_no_runtime_support"
+        ],
+        "related_command_ids": [
+            "dominium.package.mount.plan.v1"
+        ],
+        "related_public_surface_ids": [
+            "dominium.replay.proof.schemas.v1"
+        ],
+        "related_artifact_types": [
+            "test_fixture",
+            "replay",
+            "proof"
+        ],
+        "proof": [
+            "python tools/validators/contracts/check_replay_proof.py --repo-root . --fixtures"
+        ],
+        "notes": "Fixture proof is evidence for a narrow command path only."
     }
   ]
 }

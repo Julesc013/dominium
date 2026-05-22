@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.replay.manifest.v1",
+  "title": "Dominium Command Replay Manifest",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "replay_id",
+    "command_ref",
+    "input_ref",
+    "expected_result_ref",
+    "event_log_ref",
+    "proof_manifest_ref",
+    "canonicalization_policy_ref",
+    "hash_algorithm",
+    "expected_hash",
+    "status",
+    "source_refs",
+    "generated_by",
+    "deterministic_order_key",
+    "limitations",
+    "support_claim",
+    "world_replay_implemented",
+    "save_replay_implemented",
+    "gameplay_replay_implemented"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.replay.manifest"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "replay_id": {
+      "type": "string"
+    },
+    "command_ref": {
+      "type": "string"
+    },
+    "input_ref": {
+      "type": "string"
+    },
+    "expected_result_ref": {
+      "type": "string"
+    },
+    "event_log_ref": {
+      "type": "string"
+    },
+    "proof_manifest_ref": {
+      "type": "string"
+    },
+    "canonicalization_policy_ref": {
+      "type": "string"
+    },
+    "hash_algorithm": {
+      "type": "string",
+      "const": "sha256"
+    },
+    "expected_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail",
+        "refused",
+        "fixture_only",
+        "planned"
+      ]
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "generated_by": {
+      "type": "string"
+    },
+    "deterministic_order_key": {
+      "type": "string"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "support_claim": {
+      "type": "boolean",
+      "const": false
+    },
+    "world_replay_implemented": {
+      "type": "boolean",
+      "const": false
+    },
+    "save_replay_implemented": {
+      "type": "boolean",
+      "const": false
+    },
+    "gameplay_replay_implemented": {
+      "type": "boolean",
+      "const": false
+    }
+  },
+  "additionalProperties": true
+}

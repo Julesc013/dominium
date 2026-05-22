@@ -1,0 +1,28 @@
+{
+  "schema_id": "dominium.replay.expected_result",
+  "schema_version": "1.0.0",
+  "expected_result_id": "dominium.replay.expected_result.package_mount.fixture",
+  "command_ref": "dominium.package.mount.plan.v1",
+  "result_ref": "tests/contract/package/fixtures/valid_package_mount_result.json",
+  "result_schema_ref": "contracts/package/package_mount_result.schema.json",
+  "canonicalization_policy_ref": "dominium.canonical_json.sorted_utf8.v1",
+  "hash_algorithm": "sha256",
+  "result_hash": "6098c4138e67e3bc5414115226e7311934f6e2afb263e1d332fb96e5c9f77603",
+  "expected_diagnostic_refs": [],
+  "expected_refusal_refs": [],
+  "evidence_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_lock.json",
+    "tests/contract/package/fixtures/valid_package_mount_capability_report.json",
+    "tests/contract/package/fixtures/valid_package_mount_refusal_report.json",
+    "tests/contract/package/fixtures/valid_package_mount_compatibility_report.json",
+    "tests/contract/package/fixtures/valid_package_mount_trust_report.json"
+  ],
+  "source_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_result.json"
+  ],
+  "support_claim": false,
+  "limitations": [
+    "fixture-only command-level expected result",
+    "package runtime not implemented"
+  ]
+}

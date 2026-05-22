@@ -1,0 +1,26 @@
+{
+  "schema_id": "dominium.replay.verification_result",
+  "schema_version": "1.0.0",
+  "verification_id": "dominium.replay.verification.package_mount.fixture",
+  "replay_id": "dominium.replay.package_mount.fixture",
+  "proof_id": "dominium.proof.package_mount.fixture",
+  "command_ref": "dominium.package.mount.plan.v1",
+  "status": "pass",
+  "expected_hash": "b75b62579dc03461c59672100f1e8e504472fd3969ca4da400fd016e839480f2",
+  "observed_hash": "b75b62579dc03461c59672100f1e8e504472fd3969ca4da400fd016e839480f2",
+  "hash_algorithm": "sha256",
+  "diagnostics": [],
+  "refusal": null,
+  "evidence_refs": [
+    "tests/contract/replay/fixtures/valid_proof_manifest_package_mount.json",
+    "tests/contract/replay/fixtures/valid_proof_hash_package_mount.json"
+  ],
+  "source_refs": [
+    "tests/contract/replay/fixtures/valid_replay_manifest_package_mount.json"
+  ],
+  "support_claim": false,
+  "runtime_replay_implemented": false,
+  "limitations": [
+    "verification recomputes the fixture proof hash only"
+  ]
+}

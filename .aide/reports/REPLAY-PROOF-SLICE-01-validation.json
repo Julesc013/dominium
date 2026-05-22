@@ -1,0 +1,32 @@
+{
+  "task": "REPLAY-PROOF-SLICE-01",
+  "status": "PASS_WITH_WARNINGS",
+  "target_command": "dominium.package.mount.plan.v1",
+  "canonicalization_policy": "dominium.canonical_json.sorted_utf8.v1",
+  "hash_algorithm": "sha256",
+  "validator": "tools/validators/contracts/check_replay_proof.py",
+  "app_test": "tests/app/replay_proof_slice_tests.py",
+  "fast_strict": "PASS",
+  "known_warnings": [
+    "full CTest remains NOT_RUN_T4_DEBT",
+    "dependency-direction strict remains PASS with 0 violations and known warnings",
+    "AIDE validate has known review-ref warnings",
+    "stale AuditX output warning remains",
+    "replay/proof is fixture-level command proof only",
+    "full runtime replay is not implemented",
+    "package runtime is not implemented"
+  ],
+  "non_goals_preserved": [
+    "full replay runtime",
+    "save/load runtime",
+    "world/gameplay replay",
+    "package runtime",
+    "provider runtime",
+    "runtime module loader",
+    "Workbench shell",
+    "renderer/native GUI",
+    "release publication",
+    "CMake targets",
+    "engine/game/runtime implementation"
+  ]
+}

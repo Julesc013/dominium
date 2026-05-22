@@ -1,0 +1,23 @@
+{
+  "schema_id": "dominium.replay.expected_result",
+  "schema_version": "1.0.0",
+  "expected_result_id": "dominium.replay.expected_result.package_mount.schema_mismatch",
+  "command_ref": "dominium.package.mount.plan.v1",
+  "result_ref": "tests/contract/package/fixtures/valid_package_mount_result.json",
+  "result_schema_ref": "contracts/command/validation_run_result.schema.json",
+  "canonicalization_policy_ref": "dominium.canonical_json.sorted_utf8.v1",
+  "hash_algorithm": "sha256",
+  "result_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "expected_diagnostic_refs": [],
+  "expected_refusal_refs": [],
+  "evidence_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_lock.json"
+  ],
+  "source_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_result.json"
+  ],
+  "support_claim": false,
+  "expected_failures": [
+    "result_schema_mismatch"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema_id": "dominium.replay.manifest",
+  "schema_version": "1.0.0",
+  "replay_id": "dominium.replay.package_mount.unknown_command",
+  "command_ref": "dominium.unknown.command.v1",
+  "input_ref": "tests/contract/replay/fixtures/valid_replay_input_package_mount.json",
+  "expected_result_ref": "tests/contract/replay/fixtures/valid_replay_expected_result_package_mount.json",
+  "event_log_ref": "tests/contract/replay/fixtures/valid_replay_event_log_package_mount.json",
+  "proof_manifest_ref": "tests/contract/replay/fixtures/valid_proof_manifest_package_mount.json",
+  "canonicalization_policy_ref": "dominium.canonical_json.sorted_utf8.v1",
+  "hash_algorithm": "sha256",
+  "expected_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "status": "fixture_only",
+  "source_refs": [
+    "tests/contract/replay/fixtures/valid_replay_input_package_mount.json"
+  ],
+  "generated_by": "tools/validators/contracts/check_replay_proof.py",
+  "deterministic_order_key": "event.sequence",
+  "limitations": [
+    "invalid fixture"
+  ],
+  "support_claim": false,
+  "world_replay_implemented": false,
+  "save_replay_implemented": false,
+  "gameplay_replay_implemented": false,
+  "expected_failures": [
+    "replay_command_unknown"
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.replay.event_log.v1",
+  "title": "Dominium Command Replay Event Log",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "event_log_id",
+    "replay_id",
+    "events",
+    "deterministic_order_key",
+    "source_refs",
+    "support_claim"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.replay.event_log"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "event_log_id": {
+      "type": "string"
+    },
+    "replay_id": {
+      "type": "string"
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "sequence",
+          "event_kind",
+          "command_ref"
+        ],
+        "properties": {
+          "sequence": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "event_kind": {
+            "type": "string"
+          },
+          "command_ref": {
+            "type": "string"
+          },
+          "diagnostic_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "refusal_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "deterministic_order_key": {
+      "type": "string"
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "support_claim": {
+      "type": "boolean",
+      "const": false
+    }
+  },
+  "additionalProperties": true
+}

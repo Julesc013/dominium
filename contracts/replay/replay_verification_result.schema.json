@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.replay.verification_result.v1",
+  "title": "Dominium Command Replay Verification Result",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "verification_id",
+    "replay_id",
+    "proof_id",
+    "command_ref",
+    "status",
+    "expected_hash",
+    "observed_hash",
+    "hash_algorithm",
+    "diagnostics",
+    "refusal",
+    "evidence_refs",
+    "source_refs",
+    "support_claim",
+    "runtime_replay_implemented"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.replay.verification_result"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "verification_id": {
+      "type": "string"
+    },
+    "replay_id": {
+      "type": "string"
+    },
+    "proof_id": {
+      "type": "string"
+    },
+    "command_ref": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail",
+        "refused",
+        "fixture_only",
+        "planned"
+      ]
+    },
+    "expected_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "observed_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "hash_algorithm": {
+      "type": "string",
+      "const": "sha256"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "refusal": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "support_claim": {
+      "type": "boolean",
+      "const": false
+    },
+    "runtime_replay_implemented": {
+      "type": "boolean",
+      "const": false
+    }
+  },
+  "additionalProperties": true
+}

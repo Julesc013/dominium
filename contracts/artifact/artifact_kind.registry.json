@@ -9,6 +9,7 @@
     {"id": "save", "description": "Persisted game or simulation state.", "expected_owner": "runtime.persistence", "manifest_required_for_stable": true},
     {"id": "instance", "description": "Instance descriptor or launched-session artifact.", "expected_owner": "runtime.instance", "manifest_required_for_stable": true},
     {"id": "replay", "description": "Replay log, replay manifest, or deterministic replay artifact.", "expected_owner": "runtime.replay", "manifest_required_for_stable": true},
+    {"id": "proof", "description": "Proof manifest, proof hash, or deterministic evidence proof artifact.", "expected_owner": "contracts.proof or tools.validation", "manifest_required_for_stable": true},
     {"id": "diagnostic", "description": "Diagnostic bundle or condition artifact.", "expected_owner": "runtime.diagnostics or tools.diagnostics", "manifest_required_for_stable": true},
     {"id": "evidence_packet", "description": "Machine-readable proof output packet.", "expected_owner": "contracts.evidence or tools.validation", "manifest_required_for_stable": true},
     {"id": "release_artifact", "description": "Release package, installer, update, or promotion artifact.", "expected_owner": "release", "manifest_required_for_stable": true},

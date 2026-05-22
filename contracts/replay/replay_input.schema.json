@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.replay.input.v1",
+  "title": "Dominium Command Replay Input",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "replay_id",
+    "command_ref",
+    "input_ref",
+    "input_schema_ref",
+    "canonicalization_policy_ref",
+    "hash_algorithm",
+    "input_hash",
+    "source_refs",
+    "support_claim"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.replay.input"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "replay_id": {
+      "type": "string"
+    },
+    "command_ref": {
+      "type": "string"
+    },
+    "input_ref": {
+      "type": "string"
+    },
+    "input_schema_ref": {
+      "type": "string"
+    },
+    "canonicalization_policy_ref": {
+      "type": "string"
+    },
+    "hash_algorithm": {
+      "type": "string",
+      "const": "sha256"
+    },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "support_claim": {
+      "type": "boolean",
+      "const": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

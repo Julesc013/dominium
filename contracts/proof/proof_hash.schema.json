@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.proof.hash.v1",
+  "title": "Dominium Proof Hash",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "hash_id",
+    "proof_id",
+    "command_ref",
+    "canonicalization_policy_ref",
+    "hash_algorithm",
+    "material_refs",
+    "value",
+    "source_refs",
+    "support_claim"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.proof.hash"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "hash_id": {
+      "type": "string"
+    },
+    "proof_id": {
+      "type": "string"
+    },
+    "command_ref": {
+      "type": "string"
+    },
+    "canonicalization_policy_ref": {
+      "type": "string"
+    },
+    "hash_algorithm": {
+      "type": "string",
+      "const": "sha256"
+    },
+    "material_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "role",
+          "path"
+        ],
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "value": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "support_claim": {
+      "type": "boolean",
+      "const": false
+    }
+  },
+  "additionalProperties": true
+}

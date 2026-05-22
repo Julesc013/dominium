@@ -1,0 +1,19 @@
+{
+  "schema_id": "dominium.replay.input",
+  "schema_version": "1.0.0",
+  "replay_id": "dominium.replay.package_mount.fixture",
+  "command_ref": "dominium.package.mount.plan.v1",
+  "input_ref": "tests/contract/package/fixtures/valid_package_mount_input.json",
+  "input_schema_ref": "contracts/package/package_mount_input.schema.json",
+  "canonicalization_policy_ref": "dominium.canonical_json.sorted_utf8.v1",
+  "hash_algorithm": "sha256",
+  "input_hash": "a12534971752be111201b10458f5c51f9954ca89de7f6febb2e22f518bca2a81",
+  "source_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_input.json"
+  ],
+  "support_claim": false,
+  "limitations": [
+    "fixture-only command-level replay input",
+    "path is evidence, not identity"
+  ]
+}

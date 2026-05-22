@@ -1,0 +1,42 @@
+{
+  "schema_id": "dominium.replay.event_log",
+  "schema_version": "1.0.0",
+  "event_log_id": "dominium.replay.event_log.package_mount.fixture",
+  "replay_id": "dominium.replay.package_mount.fixture",
+  "deterministic_order_key": "sequence",
+  "events": [
+    {
+      "sequence": 0,
+      "event_kind": "command.requested",
+      "command_ref": "dominium.package.mount.plan.v1",
+      "input_ref": "tests/contract/replay/fixtures/valid_replay_input_package_mount.json",
+      "diagnostic_refs": [],
+      "refusal_refs": [],
+      "evidence_refs": []
+    },
+    {
+      "sequence": 1,
+      "event_kind": "command.finished",
+      "command_ref": "dominium.package.mount.plan.v1",
+      "result_ref": "tests/contract/replay/fixtures/valid_replay_expected_result_package_mount.json",
+      "diagnostic_refs": [],
+      "refusal_refs": [],
+      "evidence_refs": [
+        "tests/contract/package/fixtures/valid_package_mount_lock.json",
+        "tests/contract/package/fixtures/valid_package_mount_capability_report.json",
+        "tests/contract/package/fixtures/valid_package_mount_refusal_report.json",
+        "tests/contract/package/fixtures/valid_package_mount_compatibility_report.json",
+        "tests/contract/package/fixtures/valid_package_mount_trust_report.json"
+      ]
+    }
+  ],
+  "source_refs": [
+    "tests/contract/replay/fixtures/valid_replay_input_package_mount.json",
+    "tests/contract/replay/fixtures/valid_replay_expected_result_package_mount.json"
+  ],
+  "support_claim": false,
+  "limitations": [
+    "event log records command-level proof facts only",
+    "world/gameplay/save replay is not implemented"
+  ]
+}

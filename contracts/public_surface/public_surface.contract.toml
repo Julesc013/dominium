@@ -2401,3 +2401,55 @@ proof = ["python tools/validators/package/check_package_mount_slice.py --repo-ro
 compatibility = "test_fixture_only"
 replacement_policy = "fixture_changes_follow_package_mount_slice_validator_tests"
 notes = "Fixture suite for one valid package/profile mount chain and negative package identity, capability, trust, overlay, fallback, and lockfile source-truth cases."
+
+[[surface]]
+id = "dominium.replay.proof.schemas.v1"
+kind = "replay_format"
+path = "contracts/replay"
+owner = "contracts.replay"
+stability = "provisional"
+version = "1.0.0"
+introduced = "REPLAY-PROOF-SLICE-01"
+proof = ["python -m json.tool contracts/replay/replay_manifest.schema.json", "python -m json.tool contracts/replay/replay_verification_result.schema.json", "python -m json.tool contracts/proof/proof_manifest.schema.json", "python tools/validators/contracts/check_replay_proof.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replay_proof_slice_update"
+notes = "Command-level replay/proof schemas for fixture-only deterministic command/result/evidence proof. This does not implement world, save, gameplay, or runtime replay."
+
+[[surface]]
+id = "dominium.replay.proof.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_replay_proof.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "0.1.0"
+introduced = "REPLAY-PROOF-SLICE-01"
+proof = ["python -m py_compile tools/validators/contracts/check_replay_proof.py", "python tools/validators/contracts/check_replay_proof.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replay_proof_validator_update"
+notes = "Repo-only validator/proof adapter for command-level replay/proof fixtures, canonical hashes, mismatch refusals, and non-runtime support boundaries."
+
+[[surface]]
+id = "dominium.replay_proof.fixture_suite.v1"
+kind = "test_fixture"
+path = "tests/contract/replay"
+owner = "tests.contract"
+stability = "fixture"
+version = "1.0.0"
+introduced = "REPLAY-PROOF-SLICE-01"
+proof = ["python tools/validators/contracts/check_replay_proof.py --repo-root . --fixtures", "py -3 tests/app/replay_proof_slice_tests.py"]
+compatibility = "test_fixture_only"
+replacement_policy = "fixture_changes_follow_replay_proof_validator_tests"
+notes = "Fixture suite for one package-mount command replay/proof chain and negative hash mismatch, missing evidence, unknown command, noncanonical input, path-as-identity, unsupported target, runtime-claim, and result-schema mismatch cases."
+
+[[surface]]
+id = "dominium.replay.proof.law.v1"
+kind = "documentation"
+path = "docs/architecture/replay_proof_law.md"
+owner = "docs.architecture"
+stability = "provisional"
+version = "0.1.0"
+introduced = "REPLAY-PROOF-SLICE-01"
+proof = ["python scripts/verify_docs_sanity.py --repo-root .", "python tools/validators/contracts/check_replay_proof.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_replay_proof_law_update"
+notes = "Architecture law for command-level replay/proof evidence. It explicitly does not claim full runtime replay, world replay, save replay, gameplay replay, or release support."

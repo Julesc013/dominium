@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.proof.manifest",
+  "schema_version": "1.0.0",
+  "proof_id": "dominium.proof.package_mount.runtime_claim",
+  "proof_kind": "command_result_replay",
+  "target_scope": "command_result_fixture",
+  "command_ref": "dominium.package.mount.plan.v1",
+  "input_ref": "tests/contract/replay/fixtures/valid_replay_input_package_mount.json",
+  "expected_result_ref": "tests/contract/replay/fixtures/valid_replay_expected_result_package_mount.json",
+  "event_log_ref": "tests/contract/replay/fixtures/valid_replay_event_log_package_mount.json",
+  "proof_hash_ref": "tests/contract/replay/fixtures/valid_proof_hash_package_mount.json",
+  "evidence_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_lock.json"
+  ],
+  "artifact_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_result.json"
+  ],
+  "canonicalization_policy_ref": "dominium.canonical_json.sorted_utf8.v1",
+  "hash_algorithm": "sha256",
+  "expected_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "status": "pass",
+  "source_refs": [
+    "tests/contract/replay/fixtures/valid_replay_input_package_mount.json"
+  ],
+  "generated_by": "tools/validators/contracts/check_replay_proof.py",
+  "deterministic_order_key": "material_refs.role",
+  "limitations": [
+    "invalid fixture"
+  ],
+  "support_claim": true,
+  "replay_runtime_implemented": true,
+  "world_replay_implemented": false,
+  "save_replay_implemented": false,
+  "gameplay_replay_implemented": false,
+  "expected_failures": [
+    "fixture_only_runtime_claim"
+  ]
+}

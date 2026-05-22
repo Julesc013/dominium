@@ -1,0 +1,47 @@
+{
+  "schema_id": "dominium.proof.manifest",
+  "schema_version": "1.0.0",
+  "proof_id": "dominium.proof.package_mount.fixture",
+  "proof_kind": "command_result_replay",
+  "target_scope": "command_result_fixture",
+  "command_ref": "dominium.package.mount.plan.v1",
+  "input_ref": "tests/contract/replay/fixtures/valid_replay_input_package_mount.json",
+  "expected_result_ref": "tests/contract/replay/fixtures/valid_replay_expected_result_package_mount.json",
+  "event_log_ref": "tests/contract/replay/fixtures/valid_replay_event_log_package_mount.json",
+  "proof_hash_ref": "tests/contract/replay/fixtures/valid_proof_hash_package_mount.json",
+  "evidence_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_lock.json",
+    "tests/contract/package/fixtures/valid_package_mount_capability_report.json",
+    "tests/contract/package/fixtures/valid_package_mount_refusal_report.json",
+    "tests/contract/package/fixtures/valid_package_mount_compatibility_report.json",
+    "tests/contract/package/fixtures/valid_package_mount_trust_report.json"
+  ],
+  "artifact_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_input.json",
+    "tests/contract/package/fixtures/valid_package_mount_result.json",
+    "tests/contract/replay/fixtures/valid_replay_event_log_package_mount.json"
+  ],
+  "canonicalization_policy_ref": "dominium.canonical_json.sorted_utf8.v1",
+  "hash_algorithm": "sha256",
+  "expected_hash": "b75b62579dc03461c59672100f1e8e504472fd3969ca4da400fd016e839480f2",
+  "status": "fixture_only",
+  "source_refs": [
+    "tests/contract/replay/fixtures/valid_replay_input_package_mount.json",
+    "tests/contract/replay/fixtures/valid_replay_expected_result_package_mount.json",
+    "tests/contract/replay/fixtures/valid_replay_event_log_package_mount.json",
+    "tests/contract/replay/fixtures/valid_proof_hash_package_mount.json"
+  ],
+  "generated_by": "tools/validators/contracts/check_replay_proof.py",
+  "deterministic_order_key": "material_refs.role",
+  "limitations": [
+    "fixture-level command proof only",
+    "no runtime replay engine",
+    "no package runtime",
+    "no world/gameplay/save replay"
+  ],
+  "support_claim": false,
+  "replay_runtime_implemented": false,
+  "world_replay_implemented": false,
+  "save_replay_implemented": false,
+  "gameplay_replay_implemented": false
+}

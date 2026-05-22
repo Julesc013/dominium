@@ -1,0 +1,31 @@
+{
+  "schema_id": "dominium.replay.verification_result",
+  "schema_version": "1.0.0",
+  "verification_id": "dominium.replay.verification.package_mount.hash_mismatch",
+  "replay_id": "dominium.replay.package_mount.fixture",
+  "proof_id": "dominium.proof.package_mount.fixture",
+  "command_ref": "dominium.package.mount.plan.v1",
+  "status": "refused",
+  "expected_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "observed_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "hash_algorithm": "sha256",
+  "diagnostics": [
+    {
+      "code": "DOM-REPLAY-HASH-MISMATCH"
+    }
+  ],
+  "refusal": {
+    "code": "dominium.refusal.replay.hash_mismatch"
+  },
+  "evidence_refs": [
+    "tests/contract/replay/fixtures/valid_proof_manifest_package_mount.json"
+  ],
+  "source_refs": [
+    "tests/contract/replay/fixtures/valid_replay_manifest_package_mount.json"
+  ],
+  "support_claim": false,
+  "runtime_replay_implemented": false,
+  "expected_failures": [
+    "replay_hash_mismatch"
+  ]
+}

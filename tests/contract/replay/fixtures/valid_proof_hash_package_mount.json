@@ -1,0 +1,34 @@
+{
+  "schema_id": "dominium.proof.hash",
+  "schema_version": "1.0.0",
+  "hash_id": "dominium.proof.hash.package_mount.fixture",
+  "proof_id": "dominium.proof.package_mount.fixture",
+  "command_ref": "dominium.package.mount.plan.v1",
+  "canonicalization_policy_ref": "dominium.canonical_json.sorted_utf8.v1",
+  "hash_algorithm": "sha256",
+  "material_refs": [
+    {
+      "role": "replay_input",
+      "path": "tests/contract/replay/fixtures/valid_replay_input_package_mount.json"
+    },
+    {
+      "role": "expected_result",
+      "path": "tests/contract/replay/fixtures/valid_replay_expected_result_package_mount.json"
+    },
+    {
+      "role": "event_log",
+      "path": "tests/contract/replay/fixtures/valid_replay_event_log_package_mount.json"
+    }
+  ],
+  "value": "b75b62579dc03461c59672100f1e8e504472fd3969ca4da400fd016e839480f2",
+  "source_refs": [
+    "tests/contract/replay/fixtures/valid_replay_input_package_mount.json",
+    "tests/contract/replay/fixtures/valid_replay_expected_result_package_mount.json",
+    "tests/contract/replay/fixtures/valid_replay_event_log_package_mount.json"
+  ],
+  "support_claim": false,
+  "limitations": [
+    "canonical hash over fixture command replay material",
+    "not a runtime replay hash"
+  ]
+}

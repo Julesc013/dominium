@@ -1,0 +1,18 @@
+{
+  "schema_id": "dominium.replay.input",
+  "schema_version": "1.0.0",
+  "replay_id": "dominium.replay.package_mount.noncanonical_input",
+  "command_ref": "dominium.package.mount.plan.v1",
+  "input_ref": "tests/contract/package/fixtures/valid_package_mount_input.json",
+  "input_schema_ref": "contracts/package/package_mount_input.schema.json",
+  "canonicalization_policy_ref": "native_object_layout",
+  "hash_algorithm": "sha256",
+  "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "source_refs": [
+    "tests/contract/package/fixtures/valid_package_mount_input.json"
+  ],
+  "support_claim": false,
+  "expected_failures": [
+    "replay_noncanonical_input"
+  ]
+}
