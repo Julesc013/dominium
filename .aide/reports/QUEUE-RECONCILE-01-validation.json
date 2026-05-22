@@ -1,0 +1,69 @@
+{
+  "schema_version": "dominium.aide.validation_summary.v1",
+  "task": "QUEUE-RECONCILE-01",
+  "date": "2026-05-22",
+  "result": "PASS_WITH_WARNINGS",
+  "head": "8ba553590deb40038e75c5da72d6c91bb45db749",
+  "origin_main": "8ba553590deb40038e75c5da72d6c91bb45db749",
+  "checks": [
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py doctor",
+      "status": "PASS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py validate",
+      "status": "PASS_WITH_WARNINGS",
+      "warnings": [
+        "review packet review ref missing: .aide/verification/latest-verification-report.md",
+        "review packet review ref missing: .aide/verification/review-decision-policy.yaml"
+      ]
+    },
+    {
+      "command": "python tools/validators/repo/check_public_surface.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/repo/check_dependency_directions.py --repo-root . --strict",
+      "status": "PASS_WITH_WARNINGS",
+      "warnings": [
+        "0 violations",
+        "68 known dependency-direction warnings"
+      ]
+    },
+    {
+      "command": "python tools/validators/check_component_matrices.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python tools/validators/platform/check_portability_matrix.py --repo-root . --strict",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/verify_docs_sanity.py --repo-root .",
+      "status": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "status": "PASS"
+    },
+    {
+      "command": "git diff --cached --check",
+      "status": "PASS"
+    }
+  ],
+  "fast_strict": {
+    "status": "NOT_RUN",
+    "reason": "Status-only coordinator reconciliation; PACKAGE-MOUNT-SLICE-01 already recorded fast strict PASS."
+  },
+  "full_ctest": {
+    "status": "NOT_RUN_T4_DEBT"
+  },
+  "known_warnings": [
+    "full CTest remains T4/full-gate debt",
+    "dependency-direction strict has known warnings with zero violations",
+    "AIDE review-reference warnings may remain known",
+    "service-conformance fixture/planned-support warnings remain known",
+    "package runtime remains not implemented",
+    "broad Workbench UI, package/provider/module runtimes, renderer/native GUI, gameplay, and release publication remain blocked"
+  ]
+}

@@ -2,8 +2,8 @@
 
 ## Review Objective
 
-Review `PHASE-REVIEW-02`: post-Foundation product-spine closeouts, validator
-health, warning disposition, queue reconciliation, and next-task decision.
+Review `QUEUE-RECONCILE-01`: queue/status reconciliation after
+`PACKAGE-MOUNT-SLICE-01` and before `REPLAY-PROOF-SLICE-01`.
 
 ## Decision Requested
 
@@ -22,50 +22,50 @@ packet vocabulary.
 
 ## Verification Report Reference
 
-`.aide/reports/PHASE-REVIEW-02-summary.md`
+`.aide/reports/QUEUE-RECONCILE-01-summary.md`
 
 ## Evidence Packet References
 
-- `docs/repo/audits/PHASE_REVIEW_02.md`
-- `.aide/reports/PHASE-REVIEW-02-summary.md`
-- `.aide/reports/PHASE-REVIEW-02-validation.json`
-- `.aide/reports/PHASE-REVIEW-02-fast-strict.md`
-- `.aide/reports/COMMAND-RESULT-VIEW-SLICE-01-summary.md`
-- `.aide/reports/COMMAND-RESULT-VIEW-SLICE-01-validation.json`
+- `docs/repo/audits/QUEUE_RECONCILE_01.md`
+- `.aide/reports/QUEUE-RECONCILE-01-summary.md`
+- `.aide/reports/QUEUE-RECONCILE-01-validation.json`
+- `docs/repo/audits/PACKAGE_MOUNT_SLICE_01.md`
+- `.aide/reports/PACKAGE-MOUNT-SLICE-01-summary.md`
 
 ## Changed Files Summary
 
-Coordinator-only status and evidence files are updated. No product behavior,
-runtime implementation, Workbench shell, renderer, native GUI, package runtime,
+Coordinator-only AIDE queue, task/review/status/warning packets, audit, and
+evidence files are updated. No contracts, validators, product behavior, runtime
+implementation, Workbench shell, renderer, native GUI, package runtime,
 provider runtime, module loader, gameplay, release artifact, or CMake target is
 implemented.
 
 ## Validation Summary
 
-Targeted contract, repo, platform, docs, AIDE, and hygiene validators pass.
-Fast strict is the quality gate for the reconciled status packet.
+Coordinator validators pass. Fast strict is not rerun by this status-only
+reconciliation; `PACKAGE-MOUNT-SLICE-01` already recorded fast strict PASS.
 
 ## Token Summary
 
-This packet is compact. Full validation and warning detail is in
-`.aide/reports/PHASE-REVIEW-02-summary.md` and
-`.aide/reports/PHASE-REVIEW-02-validation.json`.
+This packet is compact. Full queue, validation, and warning detail is in
+`.aide/reports/QUEUE-RECONCILE-01-summary.md` and
+`.aide/reports/QUEUE-RECONCILE-01-validation.json`.
 
 ## Risk Summary
 
 Full CTest remains T4/full-gate debt. Existing dependency-direction warnings,
 AIDE review-ref warnings, service fixture/planned-support warnings, and runtime
-not-implemented gaps remain visible. `PACKAGE-MOUNT-SLICE-01` must stay
-fixture/proof-driven and must not implement broad package runtime.
+not-implemented gaps remain visible. Package mount remains fixture/proof-level
+only and package runtime remains blocked.
 
 ## Reviewer Instructions
 
-Check that the queue advances only to `PACKAGE-MOUNT-SLICE-01`, broad feature
-blockers remain blocked, and `COMMAND-RESULT-VIEW-SLICE-01` did not introduce a
-private Workbench authority or runtime UI implementation claim.
+Check that the queue advances to `REPLAY-PROOF-SLICE-01`, the alternate is
+`BAREBONES-CLIENT-SHELL-01`, `AIDE-WORKFLOW-LAW-01` is preserved as a follow-up,
+and broad feature blockers remain blocked.
 
 ## Non-Goals / Scope Guard
 
-No package runtime, Workbench shell, runtime projection engine, provider
-runtime, runtime module loader, renderer, native GUI, gameplay, release
+No replay runtime, package runtime, Workbench shell, runtime projection engine,
+provider runtime, runtime module loader, renderer, native GUI, gameplay, release
 publication, broad rewrite, or new product feature is implemented.

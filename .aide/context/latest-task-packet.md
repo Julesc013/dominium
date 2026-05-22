@@ -2,20 +2,26 @@
 
 ## PHASE
 
-Post-Foundation product spine after `PHASE-REVIEW-02`.
+Post-package-mount product spine.
 
 ## GOAL
 
-`PACKAGE-MOUNT-SLICE-01` - prove one narrow, fixture-driven package/profile/content mount decision without implementing broad package runtime.
+`REPLAY-PROOF-SLICE-01` - prove one deterministic command/result/evidence
+replay/proof path without implementing full game replay, save runtime, world
+runtime, package runtime, provider runtime, gameplay, renderer, native GUI, or
+release publication.
 
 ## WHY
 
-Foundation Lock remains `PASS_WITH_WARNINGS`. The post-Foundation wave now has
-command/result/refusal, service conformance, document/patch/transaction,
-project graph, composition resolver, doctrine recovery, Workbench validation,
-and command-result-view projection proofs. The next product-spine gap is a
-small package mount proof that consumes existing composition, artifact,
-capability/refusal, diagnostics, evidence, and trust law.
+`PACKAGE-MOUNT-SLICE-01` proved one fixture-level package/profile mount decision
+and derived lock/report/evidence shape. The next gap is replay/proof:
+
+```text
+deterministic operation
+-> evidence/proof record
+-> replay or verification
+-> same hash/result or typed mismatch refusal
+```
 
 ## CONTEXT_REFS
 
@@ -23,58 +29,57 @@ capability/refusal, diagnostics, evidence, and trust law.
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
 - `docs/repo/FOUNDATION_LOCK.md`
-- `docs/repo/audits/PHASE_REVIEW_02.md`
-- `docs/repo/audits/COMPOSITION_RESOLVER_LAW_01.md`
-- `docs/repo/audits/COMMAND_RESULT_VIEW_SLICE_01.md`
-- `contracts/composition/**`
-- `contracts/artifact/**`
-- `contracts/capability/**`
-- `contracts/refusal/**`
-- `contracts/diagnostics/**`
-- `contracts/lock/**`
-- `contracts/trust/**`
+- `docs/repo/audits/PACKAGE_MOUNT_SLICE_01.md`
+- `.aide/reports/PACKAGE-MOUNT-SLICE-01-summary.md`
 - `.aide/queue/current.toml`
-- `.aide/context/latest-context-packet.md`
-
-## EXPECTED_OUTPUT
-
-- pack mount plan fixture
-- lock/report fixture
-- capability/refusal report
-- diagnostics/evidence packet
-- CLI/headless validation command or fixture proof if command runtime remains out of scope
+- `contracts/command/**`
+- `contracts/artifact/**`
+- `contracts/diagnostics/**`
+- `contracts/refusal/**`
+- `contracts/composition/**`
+- `contracts/lock/**`
+- `contracts/replay/**` if present
 
 ## ALLOWED_PATHS
 
-- contract and fixture additions needed for a narrow mount proof
-- documentation and AIDE evidence for `PACKAGE-MOUNT-SLICE-01`
-- targeted validators and tests for composition/package/trust/capability surfaces
+- `contracts/replay/**`
+- `contracts/proof/**`
+- `contracts/artifact/**`
+- `contracts/command/**`
+- `contracts/diagnostics/**`
+- `contracts/refusal/**`
+- `tests/contract/replay/**`
+- `tests/contract/proof/**`
+- `tests/app/**`
+- `tools/validators/contracts/**`
+- `docs/repo/audits/REPLAY_PROOF_SLICE_01.md`
+- `docs/architecture/**`
+- `.aide/reports/REPLAY-PROOF-SLICE-01-*`
 
 ## FORBIDDEN_PATHS
 
-- broad package runtime
-- mod loader
-- arbitrary pack execution
-- provider runtime
-- runtime module loader
-- Workbench shell/UI
-- renderer or native GUI
+- broad game replay runtime
+- save runtime
+- world runtime
 - gameplay/domain implementation
+- renderer/native GUI
+- package runtime
+- provider runtime
 - release publication
-- CMake target additions
+- CMake targets
 
 ## IMPLEMENTATION
 
-- Treat composition lockfiles as derived evidence, not source truth.
-- Keep missing capabilities as explicit refusals or degradations.
-- Use existing composition, artifact, capability/refusal, diagnostics, and trust laws.
-- Do not make packs executable.
-- Do not promote package runtime implementation claims.
+- Keep the proof command-driven and deterministic.
+- Prefer an existing narrow command/result path if available.
+- The replay/proof artifact must be evidence, not source truth.
+- A mismatch must produce typed diagnostics/refusals, not silent fallback.
+- Do not claim full replay runtime, save runtime, or game simulation support.
 
 ## VALIDATION
 
-- targeted package/composition/trust/capability validators
-- public surface and dependency-direction strict validators
+- targeted replay/proof validators and tests added by the slice
+- command, diagnostic, refusal, artifact, public-surface, and dependency checks
 - docs/build/UI/ABI sanity checks where touched
 - AIDE doctor/validate
 - `git diff --check`
@@ -83,31 +88,31 @@ capability/refusal, diagnostics, evidence, and trust law.
 ## EVIDENCE
 
 - changed files
-- package/profile/content artifact IDs used
-- mount decision, lock/report, refusal, diagnostic, and evidence fixture refs
+- command/result/proof IDs used
+- replay/proof fixture refs
 - validators and tests run
 - warnings and deferred runtime gaps
 
 ## NON_GOALS
 
-- No broad package runtime.
+- No broad replay runtime.
+- No save/world/gameplay runtime.
+- No package runtime.
 - No provider runtime.
-- No runtime module loader.
 - No Workbench shell.
-- No rendered GUI.
-- No native GUI.
-- No gameplay.
+- No renderer/native GUI.
 - No release publication.
 
 ## ACCEPTANCE
 
-- One pack/profile/content artifact can be resolved into a fixture-level mount
-  decision, lock/report, refusals/degradations, diagnostics, and evidence.
+- One deterministic command/result/evidence proof path can be verified or
+  replay-checked with a stable result/hash.
+- Mismatch/refusal behavior is typed.
 - Broad feature blockers remain explicit.
 
 ## NEXT_AFTER
 
-Expected alternate/follow-up: `REPLAY-PROOF-SLICE-01`.
+Expected alternate/follow-up: `BAREBONES-CLIENT-SHELL-01`.
 
 ## OUTPUT_SCHEMA
 
@@ -117,5 +122,5 @@ Return compact closeout with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`,
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- approx_tokens: 1000
+- approx_tokens: 900
 - budget_status: PASS
