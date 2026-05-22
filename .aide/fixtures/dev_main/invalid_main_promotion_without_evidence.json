@@ -1,0 +1,17 @@
+{
+  "schema_version": "dominium.aide.dev_main_policy.fixture.v1",
+  "fixture_id": "invalid_main_promotion_without_evidence",
+  "expected_result": "INVALID",
+  "source_branch": "task/raw-output",
+  "target_branch": "origin/main",
+  "checkpoint_branch": null,
+  "included_work_units": [],
+  "validation_plan_run": false,
+  "validation_results_recorded": false,
+  "warning_disposition_reviewed": false,
+  "evidence_packet_exists": false,
+  "promotion_decision_exists": false,
+  "human_or_policy_approval_recorded": false,
+  "unsafe_blockers_present": false,
+  "reason_invalid": "Main promotion requires checkpoint branch, evidence packet, validation results, warning disposition, and approval."
+}

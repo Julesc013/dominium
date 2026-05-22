@@ -1,0 +1,27 @@
+{
+  "schema_version": "dominium.aide.dev_main_policy.fixture.v1",
+  "fixture_id": "valid_checkpoint_decision",
+  "expected_result": "VALID",
+  "checkpoint_branch": "checkpoint/aide-policy-wave-01",
+  "target_branch": "origin/main",
+  "included_work_units": [
+    "AIDE-WORKFLOW-LAW-01",
+    "AIDE-WORKUNIT-SCHEMA-01",
+    "AIDE-DEV-MAIN-POLICY-01"
+  ],
+  "excluded_work_units": [
+    {
+      "work_unit_id": "PRESENTATION-CONTRACT-01",
+      "reason": "follow-up_not_in_wave"
+    }
+  ],
+  "validation_plan_run": true,
+  "validation_results_recorded": true,
+  "warning_disposition_reviewed": true,
+  "blockers": [],
+  "evidence_packet_exists": true,
+  "promotion_decision_exists": true,
+  "human_or_policy_approval_recorded": true,
+  "decision": "promote",
+  "notes": "Example only. Real promotion still requires live checkpoint evidence and approval."
+}

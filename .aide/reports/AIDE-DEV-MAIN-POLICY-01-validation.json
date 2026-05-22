@@ -1,0 +1,106 @@
+{
+  "schema_version": "dominium.aide.validation_report.v1",
+  "task_id": "AIDE-DEV-MAIN-POLICY-01",
+  "status": "PASS_WITH_WARNINGS",
+  "initial_baseline_commit": "2c29ea6633fbf290eab55b5ee618e9b106ea23b1",
+  "closeout_head_before_task_commit": "971c58894bd1cc2af908b718c246a90282b06932",
+  "mode": "parallel_lane",
+  "coordinator_update": "deferred",
+  "commands": [
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py doctor",
+      "result": "PASS",
+      "notes": "Final run passed after sibling coordinator packet updates settled."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py validate",
+      "result": "PASS_WITH_WARNINGS",
+      "notes": "Final run passed with known review-packet reference warnings."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py pack --help",
+      "result": "PASS",
+      "notes": "Pack command exists."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py pack --task \"AIDE-DEV-MAIN-POLICY-01\"",
+      "result": "NOT_RUN",
+      "notes": "Would write .aide/context/latest-task-packet.md; this lane does not own coordinator/latest packet mutation."
+    },
+    {
+      "command": "python -m tools.aide.validate",
+      "result": "UNAVAILABLE",
+      "notes": "No module named tools.aide.validate."
+    },
+    {
+      "command": "python -m tools.aide.doctor",
+      "result": "UNAVAILABLE",
+      "notes": "No module named tools.aide.doctor."
+    },
+    {
+      "command": "python tools/aide/check_dev_main_policy.py .",
+      "result": "PASS",
+      "notes": "Checked required policy files, branch roles, coordinator ownership, checkpoint/evidence gate, warnings, unsafe blocker rules, and fixtures."
+    },
+    {
+      "command": "python tools/aide/check_workflow_law.py .",
+      "result": "FAIL_OUT_OF_SCOPE",
+      "notes": "Existing workflow-law validator hardcodes old queue closeout fields and fails after live queue advanced to AIDE-WORKUNIT-SCHEMA-01; not changed by this task."
+    },
+    {
+      "command": "python -m json.tool .aide/fixtures/dev_main/valid_dev_integration.json",
+      "result": "PASS",
+      "notes": "Fixture parses as JSON."
+    },
+    {
+      "command": "python -m json.tool .aide/fixtures/dev_main/valid_checkpoint_decision.json",
+      "result": "PASS",
+      "notes": "Fixture parses as JSON."
+    },
+    {
+      "command": "python -m json.tool .aide/fixtures/dev_main/invalid_main_promotion_without_evidence.json",
+      "result": "PASS",
+      "notes": "Fixture parses as JSON."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py task status",
+      "result": "PASS",
+      "notes": "Reported existing task status entries."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py task current",
+      "result": "PASS",
+      "notes": "Reported DOMINIUM-AIDE-SYNC-01 as the current AIDE Lite task; informational only."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py git plan",
+      "result": "BLOCKED_DIRTY_TREE",
+      "notes": "Dry-run helper plan reported dirty_tree_requires_classification and wrote helper-plan files; this task reverted only that generated helper-plan output because .aide/git is outside task scope."
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS",
+      "notes": "Full current worktree whitespace check passed."
+    },
+    {
+      "command": "git diff --check -- .aide/policy/dev_main_policy.md .aide/policy/checkpoint_policy.md .aide/policy/parallel_worktree_policy.md .aide/policy/dev_warning_policy.md tools/aide/check_dev_main_policy.py docs/repo/audits/AIDE_DEV_MAIN_POLICY_01.md",
+      "result": "PASS",
+      "notes": "Scoped whitespace check passed."
+    }
+  ],
+  "warnings": [
+    "Full CTest remains T4/full-gate debt and was not run.",
+    "AIDE validate retains known review-packet reference warnings.",
+    "The live queue and latest packets were modified by sibling/coordinator work and were not edited by this task.",
+    "AIDE workflow-law validator is stale for the advanced queue state and was not changed here.",
+    "Large parallel execution remains unauthorized."
+  ],
+  "non_goals_preserved": [
+    "no scheduler",
+    "no branch automation",
+    "no merge bot",
+    "no repair engine",
+    "no runtime or product behavior change",
+    "no release publication"
+  ]
+}

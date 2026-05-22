@@ -1,0 +1,28 @@
+{
+  "schema_version": "dominium.aide.dev_main_policy.fixture.v1",
+  "fixture_id": "valid_dev_integration",
+  "expected_result": "VALID",
+  "branch_role": "task/<task-id>",
+  "source_branch": "task/AIDE-DEV-MAIN-POLICY-01",
+  "target_branch": "origin/dev",
+  "task_status": "PASS_WITH_WARNINGS",
+  "work_unit_ref": "AIDE-DEV-MAIN-POLICY-01",
+  "allowed_paths_declared": true,
+  "forbidden_paths_declared": true,
+  "changed_files_known": true,
+  "validation_recorded": true,
+  "evidence_refs": [
+    "docs/repo/audits/AIDE_DEV_MAIN_POLICY_01.md"
+  ],
+  "warning_disposition": [
+    {
+      "warning_class": "full_gate_debt",
+      "status": "accepted_dev_only",
+      "notes": "Full CTest remains T4/full-gate debt and is not required for docs-only dev integration."
+    }
+  ],
+  "blockers": [],
+  "unsafe_blockers_present": false,
+  "coordinator_files_touched": false,
+  "support_claims": "docs_policy_only_no_runtime_claim"
+}
