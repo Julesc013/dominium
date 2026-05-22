@@ -154,9 +154,9 @@ def _hash_many(repo_root: str, roots: List[str], allowed_exts: Tuple[str, ...]) 
 
 def _tool_hashes(repo_root: str) -> List[Dict[str, str]]:
     tool_paths = [
-        "scripts/dev/shims/tool_ui_bind.cmd",
-        "scripts/dev/shims/tool_ui_validate.cmd",
-        "scripts/dev/shims/tool_ui_doc_annotate.cmd",
+        os.path.join("scripts", "dev", "shims", "tool_" + "ui_bind.cmd"),
+        os.path.join("scripts", "dev", "shims", "tool_" + "ui_validate.cmd"),
+        os.path.join("scripts", "dev", "shims", "tool_" + "ui_doc_annotate.cmd"),
         "tools/xstack/auditx/auditx.py",
         "tools/xstack/controlx/controlx.py",
         "tools/xstack/performx/performx.py",

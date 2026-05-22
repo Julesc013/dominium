@@ -12,6 +12,20 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-TOOL-NAME-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "scripts",
+        "tests",
+        "tools",
+        "cmake",
+        ".github",
+        "CMakeLists.txt"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-tool-name-only",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-LOCKLIST-FROZEN",
       "severity": "FAIL",
       "scope_paths": [

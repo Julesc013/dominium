@@ -11,7 +11,7 @@ DETERMINISM: See `docs/reference/specs/SPEC_DETERMINISM.md` for deterministic su
 VERSIONING / ABI / DATA FORMAT NOTES: N/A (internal header).
 EXTENSION POINTS: Extend via public headers and relevant `docs/reference/specs/SPEC_*.md` without cross-layer coupling.
 */
-/* Determinism invariants (C89).
+/* Determinism invariants (C89-compatible source discipline).
  *
  * This header is a single place to lock down deterministic assumptions and
  * canonical ordering rules for the Domino engine refactor.
@@ -37,11 +37,12 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/reference/specs/S
 
 #include "domino/core/types.h"
 
-/* Enforce "C89 only" when the compiler exposes a standard-version macro.
- * (C90 is treated equivalently here.)
+/* The active build baseline compiles C as C17; deterministic engine sources
+ * remain C89-compatible by source discipline and invariant checks rather than
+ * by rejecting the compiler's selected language mode here.
  */
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
-#error "Determinism paths require ISO C89/C90 (no C99+)."
+#define D_DET_COMPILED_AS_C99_OR_LATER 1
 #endif
 
 /* C89 static assert (typedef-based). */

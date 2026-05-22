@@ -11899,7 +11899,7 @@ def check_renderer_no_truth_access(repo_root):
                     )
                 )
 
-    frame_graph_rel = os.path.join("runtime", "render", "client", "presentation", "frame_graph_builder.h")
+    frame_graph_rel = os.path.join("runtime", "projection", "rendered", "presentation", "frame_graph_builder.h")
     frame_graph_path = os.path.join(repo_root, frame_graph_rel)
     if not os.path.isfile(frame_graph_path):
         violations.append("{}: missing {}".format(invariant_id, frame_graph_rel.replace("\\", "/")))
@@ -11925,7 +11925,7 @@ def check_renderer_no_truth_access(repo_root):
                     )
                 )
 
-    render_prep_rel = os.path.join("runtime", "render", "client", "presentation", "render_prep_system.cpp")
+    render_prep_rel = os.path.join("runtime", "projection", "rendered", "presentation", "render_prep_system.cpp")
     render_prep_path = os.path.join(repo_root, render_prep_rel)
     if not os.path.isfile(render_prep_path):
         violations.append("{}: missing {}".format(invariant_id, render_prep_rel.replace("\\", "/")))

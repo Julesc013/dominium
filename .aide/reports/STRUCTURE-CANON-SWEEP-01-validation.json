@@ -1,0 +1,98 @@
+{
+  "task": "STRUCTURE-CANON-SWEEP-01",
+  "date": "2026-05-22",
+  "status": "PASS_WITH_WARNINGS",
+  "fast_strict": {
+    "status": "PASS",
+    "json": ".aide/reports/STRUCTURE-CANON-SWEEP-01-fast-strict.json",
+    "markdown": ".aide/reports/STRUCTURE-CANON-SWEEP-01-fast-strict.md",
+    "elapsed_seconds": 465.938,
+    "passed_commands": [
+      "t0.git_diff_check",
+      "t0.staged_generated_output_check",
+      "t0.changed_json_parse",
+      "t0.changed_toml_parse",
+      "t0.forbidden_active_roots",
+      "t1.aide_doctor",
+      "t1.aide_validate",
+      "t1.aide_test",
+      "t1.aide_selftest",
+      "t1.aide_tools_validate",
+      "t1.aide_roots_validate",
+      "t1.aide_repo_validate",
+      "t1.repo_layout_strict",
+      "t1.root_allowlist_strict",
+      "t1.distribution_layout_strict",
+      "t1.component_matrices_strict",
+      "t1.no_src_source_dirs",
+      "t1.forbidden_root_names",
+      "t1.bad_root_absence",
+      "t1.directory_naming_advisory",
+      "t1.test_tiers_contract",
+      "t1.docs_sanity",
+      "t1.include_sanity",
+      "t1.build_target_boundaries",
+      "t1.ui_shell_purity",
+      "t1.abi_boundaries",
+      "t1.language_baseline",
+      "t1.cpp17_forbidden_library_use",
+      "t1.architecture_policy",
+      "t1.repox_strict",
+      "t2.cmake_configure_verify",
+      "t2.cmake_build_all_build",
+      "t2.ctest_smoke"
+    ],
+    "not_run_count": 10
+  },
+  "targeted_validation": [
+    {
+      "command": "python scripts/ci/check_repox_rules.py --repo-root . --profile STRICT --profile-out .aide/reports/STRUCTURE-CANON-SWEEP-01-repox-profile.json --proof-manifest-out .aide/reports/STRUCTURE-CANON-SWEEP-01-repox-proof-manifest.json",
+      "status": "PASS_WITH_WARNINGS",
+      "warnings": [
+        "INV-AUDITX-OUTPUT-STALE"
+      ]
+    },
+    {
+      "command": "cmake --build --preset verify --target ALL_BUILD --config Debug",
+      "status": "PASS_WITH_WARNINGS",
+      "warnings": [
+        "existing duplicate-symbol linker warnings"
+      ]
+    },
+    {
+      "command": "python tools/validators/build/check_language_baseline.py --repo-root . --strict",
+      "status": "PASS_WITH_WARNINGS",
+      "warnings": [
+        "known legacy projection warnings in CMakePresets.json"
+      ]
+    },
+    {
+      "command": "python tools/validators/build/check_cpp17_forbidden_library_use.py --repo-root . --strict",
+      "status": "PASS"
+    }
+  ],
+  "warnings": [
+    "full CTest remains NOT_RUN_T4_DEBT",
+    "dependency-direction strict remains PASS with known warnings and 0 violations",
+    "AIDE validate keeps known review-reference warnings",
+    "RepoX keeps stale AuditX warning",
+    "archive/compatibility naming warnings remain advisory",
+    "broad runtime, Workbench, renderer, native GUI, gameplay, package/provider/module runtime, and release work remain blocked"
+  ],
+  "residual_debt": [
+    "contracts/schema taxonomy migration requires a dedicated schema route-map task",
+    "tests taxonomy migration requires a dedicated discovery/build-reference task",
+    "runtime/ui/client route decision remains open",
+    "content pack layout migration should remain package-identity driven"
+  ],
+  "non_goals_preserved": [
+    "no broad Workbench UI",
+    "no renderer or native GUI implementation",
+    "no package runtime",
+    "no provider runtime",
+    "no runtime module loader",
+    "no gameplay/domain expansion",
+    "no release publication",
+    "no new top-level roots"
+  ]
+}

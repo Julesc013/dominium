@@ -1,11 +1,11 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-21T17:28:42Z",
+  "generated_at_utc": "2026-05-22T07:55:04Z",
   "repo_root": ".",
-  "head_sha": "6125630573cdfa6eeb7aa66c0a0080b9c51c2c57",
+  "head_sha": "5f736b3396f7078b65a184155cf23d89513690f6",
   "source_branch": "main",
   "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
-  "active_exception_count": 8,
+  "active_exception_count": 3,
   "map_status": "complete",
   "entries": [
     {
@@ -1238,32 +1238,6 @@
       "remaining_blockers": []
     },
     {
-      "name": "meta_extensions_engine.py",
-      "current_path": "meta_extensions_engine.py",
-      "proposed_target": "review",
-      "action": "review",
-      "classification": "unknown_needs_review",
-      "ownership_surface": "unknown",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "dependencies": [
-        "requires manual root ownership review"
-      ],
-      "preserve_paths": "Preserve current path until manual review proves no compatibility dependency.",
-      "shim_required": false,
-      "semantic_change_allowed": false,
-      "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract.",
-      "status": "exception",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": "",
-      "exception_id": "meta_extensions_engine_file",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "protected ownership review before relocation; update compatibility wrapper and imports only under explicit semantic review"
-    },
-    {
       "name": "mobility",
       "current_path": "mobility",
       "proposed_target": "game/domain/mobility",
@@ -1330,32 +1304,6 @@
       "completed_phase": "CONVERGE-07",
       "completed_target": "runtime/network",
       "completed_notes": "Root-level network/ was not present during CONVERGE-07."
-    },
-    {
-      "name": "numeric_discipline.py",
-      "current_path": "numeric_discipline.py",
-      "proposed_target": "review",
-      "action": "review",
-      "classification": "unknown_needs_review",
-      "ownership_surface": "unknown",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "dependencies": [
-        "requires manual root ownership review"
-      ],
-      "preserve_paths": "Preserve current path until manual review proves no compatibility dependency.",
-      "shim_required": false,
-      "semantic_change_allowed": false,
-      "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract.",
-      "status": "exception",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": "",
-      "exception_id": "numeric_discipline_file",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "numeric ownership review before relocation; no numeric semantic change in exception cleanup"
     },
     {
       "name": "physics",
@@ -1895,84 +1843,6 @@
       "completed_notes": "Root-level thermal/ is retired; domain implementation source lives under game/domain/thermal/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
-    },
-    {
-      "name": "tool_ui_bind.cmd",
-      "current_path": "tool_ui_bind.cmd",
-      "proposed_target": "review",
-      "action": "review",
-      "classification": "unknown_needs_review",
-      "ownership_surface": "unknown",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "dependencies": [
-        "requires manual root ownership review"
-      ],
-      "preserve_paths": "Preserve current path until manual review proves no compatibility dependency.",
-      "shim_required": false,
-      "semantic_change_allowed": false,
-      "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract.",
-      "status": "exception",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": "",
-      "exception_id": "tool_ui_bind_cmd",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools"
-    },
-    {
-      "name": "tool_ui_doc_annotate.cmd",
-      "current_path": "tool_ui_doc_annotate.cmd",
-      "proposed_target": "review",
-      "action": "review",
-      "classification": "unknown_needs_review",
-      "ownership_surface": "unknown",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "dependencies": [
-        "requires manual root ownership review"
-      ],
-      "preserve_paths": "Preserve current path until manual review proves no compatibility dependency.",
-      "shim_required": false,
-      "semantic_change_allowed": false,
-      "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract.",
-      "status": "exception",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": "",
-      "exception_id": "tool_ui_doc_annotate_cmd",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools"
-    },
-    {
-      "name": "tool_ui_validate.cmd",
-      "current_path": "tool_ui_validate.cmd",
-      "proposed_target": "review",
-      "action": "review",
-      "classification": "unknown_needs_review",
-      "ownership_surface": "unknown",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "dependencies": [
-        "requires manual root ownership review"
-      ],
-      "preserve_paths": "Preserve current path until manual review proves no compatibility dependency.",
-      "shim_required": false,
-      "semantic_change_allowed": false,
-      "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract.",
-      "status": "exception",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": "",
-      "exception_id": "tool_ui_validate_cmd",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools"
     },
     {
       "name": "tools",
