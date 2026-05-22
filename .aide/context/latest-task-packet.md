@@ -2,114 +2,120 @@
 
 ## PHASE
 
-Post-product-spine governance hardening.
+UNSPECIFIED - AIDE-WORKFLOW-LAW-01
 
 ## GOAL
 
-`AIDE-WORKFLOW-LAW-01` - define the minimum AIDE task operating system law before the next large parallel wave.
-
-The task should cover branch roles, task lifecycle states, blocker taxonomy, work-unit/evidence expectations, repair/resume behavior, and dev/main/checkpoint promotion policy.
+AIDE-WORKFLOW-LAW-01
 
 ## WHY
 
-The post-Foundation product spine is now coherent:
-
-```text
-command/result/view proof
--> package mount proof
--> replay/proof proof
--> barebones client shell proof
-```
-
-The next risk is coordination, not product capability. AIDE needs explicit law for task branches, shared dev integration, repair work, checkpoint gates, warning policy, and promotion to main before larger parallel work begins.
+Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
 
 ## CONTEXT_REFS
 
-- `AGENTS.md`
-- `.aide/queue/current.toml`
-- `docs/repo/FOUNDATION_LOCK.md`
-- `docs/repo/audits/PHASE_REVIEW_02.md`
-- `docs/repo/audits/PACKAGE_MOUNT_SLICE_01.md`
-- `docs/repo/audits/REPLAY_PROOF_SLICE_01.md`
-- `docs/repo/audits/BAREBONES_CLIENT_SHELL_01.md`
-- `docs/repo/audits/PRODUCT_SPINE_REVIEW_01.md`
-- `.aide/reports/PRODUCT-SPINE-REVIEW-01-summary.md`
-- `.aide/reports/latest-warning-disposition.md`
+- `.aide/memory/project-state.md`
+- `.aide/memory/decisions.md`
+- `.aide/memory/open-risks.md`
+- `.aide/context/repo-snapshot.json` (present)
+- `.aide/context/repo-map.json` (present)
+- `.aide/context/repo-map.md` (present)
+- `.aide/context/test-map.json` (present)
+- `.aide/context/context-index.json` (present)
+- `.aide/context/latest-context-packet.md` (present)
+- `.aide/repo/latest-repo-intelligence.md` (present)
+- `.aide/repo/file-inventory.json` (present)
+- `.aide/reports/file-quality-summary.md` (present)
+- `.aide/reports/file-quality-ledger.json` (present)
+- `.aide/refactors/latest-refactor-readiness.md` (present)
+- `.aide/refactors/latest-refactor-plan.example.json` (present)
+- `.aide/routing/latest-route-decision.json` (present)
+- `.aide/routing/latest-route-decision.md` (present)
+- `.aide/cache/latest-cache-keys.json` (present)
+- `.aide/cache/latest-cache-keys.md` (present)
+- `.aide/prompts/compact-task.md`
+- `.aide/policies/token-budget.yaml`
+- `.aide/policies/cache.yaml`
+- `.aide/policies/local-state.yaml`
 
 ## ALLOWED_PATHS
 
-- `contracts/aide/**` if schemas are introduced
-- `docs/aide/**` if AIDE workflow law docs are introduced
-- `.aide/queue/**`
+- `<fill from the next reviewed queue packet>`
 - `.aide/context/**`
-- `.aide/reports/AIDE-WORKFLOW-LAW-01-*`
-- `docs/repo/audits/AIDE_WORKFLOW_LAW_01.md`
-- repo status docs only if coordinator closeout requires it
+- `.aide/queue/unspecified-*` if this task becomes a queue item
+- root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
 
-- no product runtime implementation
-- no package runtime
-- no replay runtime
-- no provider runtime
-- no runtime module loader
-- no Workbench shell
-- no renderer/native GUI
-- no gameplay/domain implementation
-- no release publication
-- no force-push or direct main-promotion automation
+- `.git/**`
+- `.env`
+- `secrets/**`
+- `.aide.local/**`
+- raw provider credentials, API keys, local caches, raw prompt logs
+- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
 
 ## IMPLEMENTATION
 
-- Keep the task governance/control-plane focused.
-- Define law before automation.
-- Prefer schemas and docs that can be validated without live provider/network calls.
-- Preserve existing broad feature blockers.
-- Do not mutate product/runtime behavior.
+- Read the queue packet and relevant repo refs first.
+- Keep changes inside the allowed paths.
+- Make the smallest coherent diff that satisfies acceptance.
+- Preserve generated/manual boundaries.
+- Do not inline whole source files unless exact contents are required.
+- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
 
 ## VALIDATION
 
-- AIDE doctor/validate
-- docs sanity
-- public surface and dependency-direction checks if public surfaces are added
-- JSON/TOML parse checks for touched machine-readable files
-- fast strict if queue/status or governance surfaces change substantially
+- `py -3 .aide/scripts/aide_lite.py doctor`
+- `py -3 .aide/scripts/aide_lite.py validate`
+- `py -3 .aide/scripts/aide_lite.py index`
+- `py -3 .aide/scripts/aide_lite.py context`
+- `py -3 .aide/scripts/aide_lite.py repo inventory`
+- `py -3 .aide/scripts/aide_lite.py repo validate`
+- `py -3 .aide/scripts/aide_lite.py verify`
+- `py -3 .aide/scripts/aide_lite.py review-pack`
+- `py -3 .aide/scripts/aide_lite.py route explain`
+- `py -3 .aide/scripts/aide_lite.py test`
+- `py -3 .aide/scripts/aide_lite.py selftest`
+- `py -3 scripts/aide validate`
+- `git diff --check`
+
+## COMMITS
+
+- Commit coherent subdeliverables with verbose bodies.
+- Stop at review gates.
 
 ## EVIDENCE
 
 - changed files
-- task lifecycle and blocker taxonomy refs
-- branch/checkpoint/promotion policy refs
-- validators run
-- known warnings and non-goals
+- validation commands and results
+- verifier result
+- review packet path and result when review-pack is available
+- advisory route decision path and result when Q17 routing is available
+- compact packet size and budget status
+- unresolved risks and deferrals
 
 ## NON_GOALS
 
-- No product/runtime feature work.
-- No live provider/model/network calls.
-- No broad Workbench UI.
-- No runtime module loader.
-- No package/provider/replay runtime.
-- No gameplay, renderer, native GUI, or release publication.
+- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
 
 ## ACCEPTANCE
 
-- Branch roles and promotion gates are explicit.
-- Task lifecycle and blocker classes are machine-readable or precisely documented.
-- Partial work, repairs, checkpoints, and evidence packets have clear handling rules.
-- Development remains non-blocking, while promotion remains evidence-blocked.
-- Broad feature blockers remain visible.
-
-## NEXT_AFTER
-
-Expected alternate/follow-up: `PRESENTATION-CONTRACT-01`.
+- Task-specific acceptance criteria are met.
+- Validation is run and recorded.
+- Evidence is written.
+- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
 
 ## OUTPUT_SCHEMA
 
-Return compact closeout with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, `WARNINGS`, `RISKS`, and `NEXT`.
+Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
+Include the verifier result when Q12 verifier behavior is available.
 
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- approx_tokens: 650
+- chars: 4102
+- approx_tokens: 1026
 - budget_status: PASS
+- warnings:
+  - none
+- formal ledger: `.aide/reports/token-ledger.jsonl`

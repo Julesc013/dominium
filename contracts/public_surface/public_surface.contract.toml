@@ -2531,3 +2531,29 @@ proof = ["python scripts/verify_docs_sanity.py --repo-root .", "py -3 tests/app/
 compatibility = "not_yet_stable"
 replacement_policy = "requires_barebones_client_shell_doc_update"
 notes = "Architecture doc for the client survival floor and explicit non-implementation boundaries."
+
+[[surface]]
+id = "dominium.aide.workflow_law.contract.v1"
+kind = "registry"
+path = "contracts/aide/aide_workflow_law.v1.json"
+owner = "aide.control_plane"
+stability = "provisional"
+version = "1.0.0"
+introduced = "AIDE-WORKFLOW-LAW-01"
+proof = ["python -m json.tool contracts/aide/aide_workflow_law.v1.json", "python tools/validators/repo/check_public_surface.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_aide_workflow_law_update"
+notes = "Machine-readable AIDE workflow law for branch roles, lifecycle states, blocker classes, evidence requirements, repair/resume rules, and promotion gates. This does not implement branch automation or remote mutation."
+
+[[surface]]
+id = "dominium.aide.workflow_law.docs.v1"
+kind = "documentation"
+path = "docs/development/aide/AIDE_WORKFLOW_LAW_01.md"
+owner = "docs.development.aide"
+stability = "provisional"
+version = "0.1.0"
+introduced = "AIDE-WORKFLOW-LAW-01"
+proof = ["python scripts/verify_docs_sanity.py --repo-root .", "python -m json.tool contracts/aide/aide_workflow_law.v1.json"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_aide_workflow_law_update"
+notes = "Derived AIDE workflow law documentation for development-non-blocking and promotion-evidence-blocked task operation. Broad product/runtime feature work remains blocked."

@@ -3,51 +3,46 @@
   "schema_version": "1.0.0",
   "generated_by": "scripts/ci/check_repox_rules.py",
   "changed_paths": [
-    ".aide/reports/FAST-STRICT-TEST-TIER-01-repox-profile.json",
-    ".aide/reports/FAST-STRICT-TEST-TIER-01-repox-proof-manifest.json",
-    ".aide/reports/STRUCTURE-CANON-SWEEP-01-fast-strict.json",
-    ".aide/reports/STRUCTURE-CANON-SWEEP-01-fast-strict.md",
-    ".aide/reports/STRUCTURE-CANON-SWEEP-01-repox-profile.json",
-    ".aide/reports/STRUCTURE-CANON-SWEEP-01-repox-proof-manifest.json",
-    "contracts/repo/repox/rulesets/core.json",
-    "docs/repo/audits/STRUCTURE_CANON_SWEEP_01.md",
-    "engine/kernel/det_invariants.h",
-    "scripts/ci/check_repox_rules.py",
-    "tools/domain/systems/anb_omega.py",
+    ".aide/context/latest-review-packet.md",
+    ".aide/context/latest-task-packet.md",
+    ".aide/ledgers/migration_ledger.jsonl",
+    ".aide/queue/current.toml",
+    ".aide/reports/AIDE-WORKFLOW-LAW-01-summary.md",
+    ".aide/reports/AIDE-WORKFLOW-LAW-01-validation.json",
+    ".aide/reports/latest-dominium-status.md",
+    ".aide/reports/latest-warning-disposition.md",
+    "contracts/aide",
+    "contracts/public_surface/public_surface.contract.toml",
+    "docs/development/aide/AIDE_WORKFLOW_LAW_01.md",
+    "docs/repo/audits/AIDE_WORKFLOW_LAW_01.md",
     "tools/migration/root_inventory.json",
     "tools/migration/root_move_map.json"
   ],
   "changed_files": [
-    ".aide/reports/FAST-STRICT-TEST-TIER-01-repox-profile.json",
-    ".aide/reports/FAST-STRICT-TEST-TIER-01-repox-proof-manifest.json",
-    ".aide/reports/STRUCTURE-CANON-SWEEP-01-fast-strict.json",
-    ".aide/reports/STRUCTURE-CANON-SWEEP-01-fast-strict.md",
-    ".aide/reports/STRUCTURE-CANON-SWEEP-01-repox-profile.json",
-    ".aide/reports/STRUCTURE-CANON-SWEEP-01-repox-proof-manifest.json",
-    "contracts/repo/repox/rulesets/core.json",
-    "docs/repo/audits/STRUCTURE_CANON_SWEEP_01.md",
-    "engine/kernel/det_invariants.h",
-    "scripts/ci/check_repox_rules.py",
-    "tools/domain/systems/anb_omega.py",
+    ".aide/context/latest-review-packet.md",
+    ".aide/context/latest-task-packet.md",
+    ".aide/ledgers/migration_ledger.jsonl",
+    ".aide/queue/current.toml",
+    ".aide/reports/AIDE-WORKFLOW-LAW-01-summary.md",
+    ".aide/reports/AIDE-WORKFLOW-LAW-01-validation.json",
+    ".aide/reports/latest-dominium-status.md",
+    ".aide/reports/latest-warning-disposition.md",
+    "contracts/aide",
+    "contracts/public_surface/public_surface.contract.toml",
+    "docs/development/aide/AIDE_WORKFLOW_LAW_01.md",
+    "docs/repo/audits/AIDE_WORKFLOW_LAW_01.md",
     "tools/migration/root_inventory.json",
     "tools/migration/root_move_map.json"
   ],
   "impacted_subsystems": [
     "docs",
-    "engine",
     "tools"
   ],
-  "impacted_invariants": [
-    "INV-PROCESS-REGISTRY",
-    "INV-PROCESS-RUNTIME-ID"
-  ],
+  "impacted_invariants": [],
   "required_test_tags": [
-    "determinism",
     "docs",
     "integration",
     "invariant",
-    "regression",
-    "runtime",
     "tools"
   ],
   "required_capability_checks": [
@@ -63,22 +58,11 @@
     "CAMERA_REFUSE_ENTITLEMENT",
     "REFUSE_CAPABILITY_MISSING"
   ],
-  "required_invariants": [
-    "INV-PROCESS-REGISTRY",
-    "INV-PROCESS-RUNTIME-ID"
-  ],
-  "required_tests": [
-    "determinism_replay_hash_invariance",
-    "inv_process_only_mutation",
-    "invariant_process_only_mutation"
-  ],
-  "focused_test_subset": [
-    "determinism_replay_hash_invariance",
-    "inv_process_only_mutation",
-    "invariant_process_only_mutation"
-  ],
+  "required_invariants": [],
+  "required_tests": [],
+  "focused_test_subset": [],
   "warnings": [
-    "INV-AUDITX-OUTPUT-STALE: audit outputs may be stale (59 commits since docs/archive/audit/auditx/FINDINGS.json)"
+    "INV-AUDITX-OUTPUT-STALE: audit outputs may be stale (60 commits since docs/archive/audit/auditx/FINDINGS.json)"
   ],
   "failures": [],
   "available_testx_tests": [

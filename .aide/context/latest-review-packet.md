@@ -2,13 +2,14 @@
 
 ## Review Objective
 
-Review `PRODUCT-SPINE-REVIEW-01`: post-package/replay/barebones product-spine readiness and next-phase queue decision.
+Review `AIDE-WORKFLOW-LAW-01`: minimum AIDE task operating system law before a
+larger parallel wave.
 
 ## Decision Requested
 
 `PASS | PASS_WITH_NOTES | REQUEST_CHANGES | BLOCKED`
 
-For this queue, `PASS_WITH_WARNINGS` maps to `PASS_WITH_NOTES` for AIDE review packet vocabulary.
+For this queue, `PASS_WITH_WARNINGS` maps to `PASS_WITH_NOTES`.
 
 ## Task Packet Reference
 
@@ -20,37 +21,47 @@ For this queue, `PASS_WITH_WARNINGS` maps to `PASS_WITH_NOTES` for AIDE review p
 
 ## Verification Report Reference
 
-`.aide/reports/PRODUCT-SPINE-REVIEW-01-summary.md`
+`.aide/reports/AIDE-WORKFLOW-LAW-01-summary.md`
 
 ## Evidence Packet References
 
-- `docs/repo/audits/PRODUCT_SPINE_REVIEW_01.md`
-- `.aide/reports/PRODUCT-SPINE-REVIEW-01-summary.md`
-- `.aide/reports/PRODUCT-SPINE-REVIEW-01-validation.json`
-- `docs/repo/audits/PACKAGE_MOUNT_SLICE_01.md`
-- `docs/repo/audits/REPLAY_PROOF_SLICE_01.md`
-- `docs/repo/audits/BAREBONES_CLIENT_SHELL_01.md`
+- `contracts/aide/aide_workflow_law.v1.json`
+- `docs/development/aide/AIDE_WORKFLOW_LAW_01.md`
+- `docs/repo/audits/AIDE_WORKFLOW_LAW_01.md`
+- `.aide/reports/AIDE-WORKFLOW-LAW-01-summary.md`
+- `.aide/reports/AIDE-WORKFLOW-LAW-01-validation.json`
 
 ## Changed Files Summary
 
-Coordinator-only queue, task/review/status/warning packets, audit, evidence, and migration-ledger entries were updated. No contracts, validators, product behavior, runtime implementation, Workbench shell, renderer, native GUI, package runtime, provider runtime, module loader, gameplay, release artifact, or CMake target is implemented.
+Workflow law contract, derived AIDE development doc, audit, queue/status
+packets, warning/status packets, public surface registration, and evidence were
+updated. No product runtime, package runtime, replay runtime, provider runtime,
+runtime module loader, Workbench shell, renderer/native GUI, gameplay, release
+artifact, branch automation, or CMake target was implemented.
 
 ## Validation Summary
 
-Targeted product-spine validators pass. Fast strict is rerun for this coordinator review because queue/status files changed substantially.
+Targeted governance validators and parse checks are recorded in
+`.aide/reports/AIDE-WORKFLOW-LAW-01-validation.json`.
 
 ## Token Summary
 
-This packet is compact. Full review, validation, and warning detail is in `.aide/reports/PRODUCT-SPINE-REVIEW-01-summary.md` and `.aide/reports/PRODUCT-SPINE-REVIEW-01-validation.json`.
+This review packet is compact. Full law detail is in
+`contracts/aide/aide_workflow_law.v1.json` and
+`docs/development/aide/AIDE_WORKFLOW_LAW_01.md`.
 
 ## Risk Summary
 
-Full CTest remains T4/full-gate debt. Existing dependency-direction warnings, AIDE review-ref warnings, stale AuditX output warning, and runtime-not-implemented gaps remain visible. Package mount remains fixture-level, replay proof remains command-level, and barebones client remains a no-content survival floor.
+The law is provisional and does not yet provide full WorkUnit/attempt/blocker
+schemas. Full CTest remains T4/full-gate debt. Existing known warnings remain
+classified.
 
 ## Reviewer Instructions
 
-Check that the queue advances to `AIDE-WORKFLOW-LAW-01`, `PRESENTATION-CONTRACT-01` remains alternate, `POINTER-WIDTH-SERIALIZATION-AUDIT-01` remains a follow-up, and broad feature blockers remain blocked.
+Check that branch roles, lifecycle states, blocker taxonomy, evidence
+requirements, repair/resume behavior, warning policy, and promotion gates are
+explicit, and that next task advances to `AIDE-WORKUNIT-SCHEMA-01`.
 
 ## Non-Goals / Scope Guard
 
-No AIDE workflow law, presentation contract, package runtime, replay runtime, Workbench shell, runtime projection engine, provider runtime, runtime module loader, renderer, native GUI, gameplay, release publication, broad rewrite, or product feature is implemented.
+No automation or product/runtime behavior was implemented.

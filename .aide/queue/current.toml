@@ -1,9 +1,9 @@
 schema_version = "dominium.aide.queue.current.v1"
-status = "post_product_spine_pass_with_warnings"
+status = "post_aide_workflow_law_pass_with_warnings"
 last_reviewed = "2026-05-22"
 
 [current]
-task = "PRODUCT-SPINE-REVIEW-01"
+task = "AIDE-WORKFLOW-LAW-01"
 result = "PASS_WITH_WARNINGS"
 foundation_lock = "PASS_WITH_WARNINGS"
 matrix_cleanup_00 = "PASS_WITH_WARNINGS"
@@ -14,10 +14,11 @@ package_mount_slice_01 = "PASS_WITH_WARNINGS"
 replay_proof_slice_01 = "PASS_WITH_WARNINGS"
 barebones_client_shell_01 = "PASS_WITH_WARNINGS"
 product_spine_review_01 = "PASS_WITH_WARNINGS"
-next_task = "AIDE-WORKFLOW-LAW-01"
+aide_workflow_law_01 = "PASS_WITH_WARNINGS"
+next_task = "AIDE-WORKUNIT-SCHEMA-01"
 alternate_next_task = "PRESENTATION-CONTRACT-01"
-secondary_follow_up = "POINTER-WIDTH-SERIALIZATION-AUDIT-01"
-tertiary_follow_up = "none"
+secondary_follow_up = "AIDE-DEV-MAIN-POLICY-01"
+tertiary_follow_up = "POINTER-WIDTH-SERIALIZATION-AUDIT-01"
 workbench_validation_slice_authorized = true
 workbench_validation_slice_completed = true
 command_result_view_slice_completed = true
@@ -44,6 +45,7 @@ queue_reconcile_01 = "PASS_WITH_WARNINGS"
 replay_proof_slice_01 = "PASS_WITH_WARNINGS"
 barebones_client_shell_01 = "PASS_WITH_WARNINGS"
 product_spine_review_01 = "PASS_WITH_WARNINGS"
+aide_workflow_law_01 = "PASS_WITH_WARNINGS"
 
 [validation]
 architecture_policy = "PASS"
