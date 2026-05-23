@@ -412,6 +412,58 @@ replacement_policy = "requires_presentation_projection_law_update"
 notes = "Projection kind and validation summary projection fixture law for CLI, text, rendered, native, and headless descriptors. Rendered/native are descriptor-only placeholders."
 
 [[surface]]
+id = "dominium.presentation.surface.v1"
+kind = "view"
+path = "contracts/presentation/presentation_surface.contract.toml"
+owner = "contracts.presentation"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PRESENTATION-CONTRACT-01"
+proof = ["python tools/validators/contracts/check_presentation_contract.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_presentation_surface_law_update"
+notes = "General presentation law for view models, read-only inspection, diagnostics, refusals, evidence, degradation, and zero-authority presentation boundaries. It does not implement Workbench shell, renderer, native GUI, or gameplay."
+
+[[surface]]
+id = "dominium.presentation.view_model.schema.v1"
+kind = "schema"
+path = "contracts/presentation/presentation_view_model.schema.json"
+owner = "contracts.presentation"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PRESENTATION-CONTRACT-01"
+proof = ["python -m json.tool contracts/presentation/presentation_view_model.schema.json", "python tools/validators/contracts/check_presentation_contract.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_presentation_surface_law_update"
+notes = "Schema for presentation view-model descriptors. View-model identity is semantic, not path identity."
+
+[[surface]]
+id = "dominium.presentation.read_only_inspection.v1"
+kind = "view"
+path = "contracts/presentation/read_only_inspection.view_model.json"
+owner = "contracts.presentation"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PRESENTATION-CONTRACT-01"
+proof = ["python tools/validators/contracts/check_presentation_contract.py --repo-root . --strict"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_presentation_surface_law_update"
+notes = "Read-only inspection view-model target for later Workbench/Client Universe Explorer contracts. It requires diagnostics, refusals, evidence, provenance, degradation, and projection state without authorizing runtime UI or renderer work."
+
+[[surface]]
+id = "dominium.presentation.contract.validator.v1"
+kind = "documentation"
+path = "tools/validators/contracts/check_presentation_contract.py"
+owner = "tools.validators.contracts"
+stability = "provisional"
+version = "1.0.0"
+introduced = "PRESENTATION-CONTRACT-01"
+proof = ["python -m py_compile tools/validators/contracts/check_presentation_contract.py", "python tools/validators/contracts/check_presentation_contract.py --repo-root . --strict", "python tools/validators/contracts/check_presentation_contract.py --repo-root . --fixtures"]
+compatibility = "not_yet_stable"
+replacement_policy = "requires_presentation_surface_law_update"
+notes = "Validator for presentation law and read-only view-model fixtures."
+
+[[surface]]
 id = "dominium.event.surface.v1"
 kind = "event"
 path = "contracts/event/event_surface.contract.toml"

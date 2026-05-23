@@ -1,0 +1,63 @@
+{
+  "schema_version": "dominium.presentation.view_model.v1",
+  "view_model_id": "dominium.presentation.fixture.missing_diagnostic.v1",
+  "owner": "tests.contract.presentation",
+  "stability": "fixture",
+  "source_kind": "command_result",
+  "source_refs": [
+    "contracts/result/result.schema.json"
+  ],
+  "presentation_only": true,
+  "authority": false,
+  "mutates_truth": false,
+  "private_tool_calls": false,
+  "sections": [
+    "summary",
+    "status",
+    "diagnostics",
+    "refusals",
+    "evidence",
+    "provenance",
+    "degradation",
+    "projection_state"
+  ],
+  "fields": [
+    {
+      "field_id": "subject_ref",
+      "source_pointer": "/subject/ref",
+      "required": true
+    }
+  ],
+  "diagnostic_bindings": [],
+  "refusal_bindings": [
+    {
+      "binding_id": "dominium.presentation.fixture.refusal.capability_missing.v1",
+      "refusal_code": "dominium.refusal.command.capability_missing",
+      "section": "refusals"
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "binding_id": "dominium.presentation.fixture.evidence.packet.v1",
+      "evidence_schema": "contracts/evidence/evidence_packet.schema.json",
+      "source_pointer": "/evidence_packet",
+      "section": "evidence"
+    }
+  ],
+  "projection_requirements": {
+    "required_projection_kinds": [
+      "headless"
+    ],
+    "fallback_projection": "headless",
+    "modal_loading_allowed": false,
+    "pending_state_required": true,
+    "degradation_required": true,
+    "renderer_mutation_allowed": false,
+    "private_tool_calls_allowed": false
+  },
+  "action_bindings": [],
+  "implementation_status": "contract_only",
+  "non_goals": [
+    "renderer_implementation"
+  ]
+}

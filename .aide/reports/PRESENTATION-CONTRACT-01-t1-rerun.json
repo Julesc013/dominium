@@ -2,95 +2,11 @@
   "commands": [
     {
       "argv": [
-        "git",
-        "diff",
-        "--check"
-      ],
-      "elapsed_seconds": 0.172,
-      "failure_policy": "nonzero_fails_gate",
-      "id": "t0.git_diff_check",
-      "name": "Git diff whitespace check",
-      "output_summary": "",
-      "owner": "repo_hygiene",
-      "required": true,
-      "returncode": 0,
-      "status": "pass",
-      "tier": "T0",
-      "timeout_seconds": 60,
-      "type": "argv",
-      "warning_policy": "no_warnings_allowed"
-    },
-    {
-      "builtin": "staged_generated_output_check",
-      "elapsed_seconds": 0.093,
-      "failure_policy": "forbidden_staged_path_fails_gate",
-      "id": "t0.staged_generated_output_check",
-      "name": "Generated/local output staging check",
-      "output_summary": "no forbidden generated/local output paths are staged",
-      "owner": "repo_hygiene",
-      "required": true,
-      "returncode": 0,
-      "status": "pass",
-      "tier": "T0",
-      "timeout_seconds": 30,
-      "type": "builtin",
-      "warning_policy": "no_warnings_allowed"
-    },
-    {
-      "builtin": "changed_json_parse",
-      "elapsed_seconds": 0.75,
-      "failure_policy": "parse_error_fails_gate",
-      "id": "t0.changed_json_parse",
-      "name": "Changed JSON and JSONL parse check",
-      "output_summary": "parsed 15 changed JSON/JSONL file(s)",
-      "owner": "repo_hygiene",
-      "required": true,
-      "returncode": 0,
-      "status": "pass",
-      "tier": "T0",
-      "timeout_seconds": 60,
-      "type": "builtin",
-      "warning_policy": "no_warnings_allowed"
-    },
-    {
-      "builtin": "changed_toml_parse",
-      "elapsed_seconds": 0.75,
-      "failure_policy": "parse_error_fails_gate",
-      "id": "t0.changed_toml_parse",
-      "name": "Changed TOML parse check",
-      "output_summary": "parsed 4 changed TOML file(s)",
-      "owner": "repo_hygiene",
-      "required": true,
-      "returncode": 0,
-      "status": "pass",
-      "tier": "T0",
-      "timeout_seconds": 60,
-      "type": "builtin",
-      "warning_policy": "no_warnings_allowed"
-    },
-    {
-      "builtin": "forbidden_active_roots",
-      "elapsed_seconds": 0.141,
-      "failure_policy": "forbidden_root_fails_gate",
-      "id": "t0.forbidden_active_roots",
-      "name": "Forbidden active top-level root check",
-      "output_summary": "no forbidden active top-level src/source/sources roots found",
-      "owner": "repo_hygiene",
-      "required": true,
-      "returncode": 0,
-      "status": "pass",
-      "tier": "T0",
-      "timeout_seconds": 30,
-      "type": "builtin",
-      "warning_policy": "no_warnings_allowed"
-    },
-    {
-      "argv": [
         "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
         ".aide/scripts/aide_lite.py",
         "doctor"
       ],
-      "elapsed_seconds": 13.313,
+      "elapsed_seconds": 13.703,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.aide_doctor",
       "name": "AIDE doctor",
@@ -110,7 +26,7 @@
         ".aide/scripts/aide_lite.py",
         "validate"
       ],
-      "elapsed_seconds": 12.906,
+      "elapsed_seconds": 13.875,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.aide_validate",
       "name": "AIDE validate",
@@ -130,7 +46,7 @@
         ".aide/scripts/aide_lite.py",
         "test"
       ],
-      "elapsed_seconds": 19.203,
+      "elapsed_seconds": 21.39,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.aide_test",
       "name": "AIDE test",
@@ -150,7 +66,7 @@
         ".aide/scripts/aide_lite.py",
         "selftest"
       ],
-      "elapsed_seconds": 18.953,
+      "elapsed_seconds": 19.157,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.aide_selftest",
       "name": "AIDE selftest",
@@ -171,7 +87,7 @@
         "tools",
         "validate"
       ],
-      "elapsed_seconds": 2.344,
+      "elapsed_seconds": 2.25,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.aide_tools_validate",
       "name": "AIDE tools validate",
@@ -192,7 +108,7 @@
         "roots",
         "validate"
       ],
-      "elapsed_seconds": 2.282,
+      "elapsed_seconds": 2.328,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.aide_roots_validate",
       "name": "AIDE roots validate",
@@ -213,7 +129,7 @@
         "repo",
         "validate"
       ],
-      "elapsed_seconds": 2.187,
+      "elapsed_seconds": 2.625,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.aide_repo_validate",
       "name": "AIDE repo validate",
@@ -235,7 +151,7 @@
         "C:\\Inbox\\Git Repos\\dominium",
         "--strict"
       ],
-      "elapsed_seconds": 5.328,
+      "elapsed_seconds": 5.0,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.repo_layout_strict",
       "name": "Strict repository layout validator",
@@ -257,7 +173,7 @@
         "C:\\Inbox\\Git Repos\\dominium",
         "--strict"
       ],
-      "elapsed_seconds": 5.344,
+      "elapsed_seconds": 5.328,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.root_allowlist_strict",
       "name": "Strict root allowlist validator",
@@ -323,11 +239,11 @@
         "C:\\Inbox\\Git Repos\\dominium",
         "--strict"
       ],
-      "elapsed_seconds": 0.297,
+      "elapsed_seconds": 0.312,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.no_src_source_dirs",
       "name": "No active src/source/sources directory validator",
-      "output_summary": "{\n  \"blocker_count\": 0,\n  \"counts_by_segment\": {\n    \"source\": 92,\n    \"src\": 1\n  },\n  \"finding_count\": 93,\n  \"findings\": [\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/CMakeLists.txt\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/CMakeLists.txt\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_local_fs.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_null.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_keychain_null.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_net_null.c\",\n      \"rule\": \"no_src_source_dirs\",\n...[truncated]...\n  \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/numeric_test.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/pkt_determinism_test.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/pose_anchor_quant_test.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/sched_determinism_test.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/stimulus_determinism_test.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/ui_cli_determinism_test.cpp\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    }\n  ],\n  \"generated_utc\": \"2026-05-23T14:03:34Z\",\n  \"info_count\": 93,\n  \"repo_root\": \"C:/Inbox/Git Repos/dominium\",\n  \"schema_version\": \"dominium.repo.naming.no_src_source_dirs.v1\",\n  \"status\": \"PASS_WITH_WARNINGS\",\n  \"truncated\": false,\n  \"warning_count\": 0\n}\n",
+      "output_summary": "{\n  \"blocker_count\": 0,\n  \"counts_by_segment\": {\n    \"source\": 92,\n    \"src\": 1\n  },\n  \"finding_count\": 93,\n  \"findings\": [\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/CMakeLists.txt\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/CMakeLists.txt\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_local_fs.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_null.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_keychain_null.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_net_null.c\",\n      \"rule\": \"no_src_source_dirs\",\n...[truncated]...\n  \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/numeric_test.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/pkt_determinism_test.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/pose_anchor_quant_test.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/sched_determinism_test.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/stimulus_determinism_test.c\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"historical_archive\",\n      \"message\": \"tracked path contains forbidden directory segment 'source'\",\n      \"path\": \"archive/legacy/source/tests/ui_cli_determinism_test.cpp\",\n      \"rule\": \"no_src_source_dirs\",\n      \"segment\": \"source\",\n      \"severity\": \"info\"\n    }\n  ],\n  \"generated_utc\": \"2026-05-23T13:52:36Z\",\n  \"info_count\": 93,\n  \"repo_root\": \"C:/Inbox/Git Repos/dominium\",\n  \"schema_version\": \"dominium.repo.naming.no_src_source_dirs.v1\",\n  \"status\": \"PASS_WITH_WARNINGS\",\n  \"truncated\": false,\n  \"warning_count\": 0\n}\n",
       "owner": "repo_contract_hygiene",
       "required": true,
       "returncode": 0,
@@ -345,11 +261,11 @@
         "C:\\Inbox\\Git Repos\\dominium",
         "--strict"
       ],
-      "elapsed_seconds": 0.312,
+      "elapsed_seconds": 0.281,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.forbidden_root_names",
       "name": "Forbidden root names validator",
-      "output_summary": "{\n  \"blocker_count\": 0,\n  \"counts_by_term\": {\n    \"common\": 46,\n    \"compat\": 3,\n    \"legacy\": 1234,\n    \"research\": 6,\n    \"shared\": 7,\n    \"source\": 92,\n    \"src\": 1,\n    \"v2\": 4\n  },\n  \"finding_count\": 1393,\n  \"findings\": [\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/CMakeLists.txt\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 4,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/CMakeLists.txt\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"source\",\n      \"segment_index\": 5,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/CMakeLists.txt\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 4,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/CMakeLists.txt\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"source\",\n      \"segment_index\": 5,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_local_fs.c\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 4,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_local_fs.c\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"f\n...[truncated]...\nmaterial\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_provider.h\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_provider_impl.h\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_quote_stream.cpp\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_quote_stream.h\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_registry.cpp\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    }\n  ],\n  \"generated_utc\": \"2026-05-23T14:03:34Z\",\n  \"info_count\": 1382,\n  \"repo_root\": \"C:/Inbox/Git Repos/dominium\",\n  \"schema_version\": \"dominium.repo.naming.forbidden_root_names.v1\",\n  \"status\": \"PASS_WITH_WARNINGS\",\n  \"truncated\": true,\n  \"warning_count\": 11\n}\n",
+      "output_summary": "{\n  \"blocker_count\": 0,\n  \"counts_by_term\": {\n    \"common\": 46,\n    \"compat\": 3,\n    \"legacy\": 1234,\n    \"research\": 6,\n    \"shared\": 7,\n    \"source\": 92,\n    \"src\": 1,\n    \"v2\": 4\n  },\n  \"finding_count\": 1393,\n  \"findings\": [\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/CMakeLists.txt\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 4,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/CMakeLists.txt\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"source\",\n      \"segment_index\": 5,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/CMakeLists.txt\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 4,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/CMakeLists.txt\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"source\",\n      \"segment_index\": 5,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_local_fs.c\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 4,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_local_fs.c\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"f\n...[truncated]...\nmaterial\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_provider.h\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_provider_impl.h\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_quote_stream.cpp\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_quote_stream.h\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"allowed_exception\",\n      \"path\": \"archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_registry.cpp\",\n      \"reason\": \"archive_material\",\n      \"rule\": \"forbidden_root_or_directory_name\",\n      \"segment\": \"legacy\",\n      \"segment_index\": 1,\n      \"severity\": \"info\"\n    }\n  ],\n  \"generated_utc\": \"2026-05-23T13:52:36Z\",\n  \"info_count\": 1382,\n  \"repo_root\": \"C:/Inbox/Git Repos/dominium\",\n  \"schema_version\": \"dominium.repo.naming.forbidden_root_names.v1\",\n  \"status\": \"PASS_WITH_WARNINGS\",\n  \"truncated\": true,\n  \"warning_count\": 11\n}\n",
       "owner": "repo_contract_hygiene",
       "required": true,
       "returncode": 0,
@@ -367,11 +283,11 @@
         "C:\\Inbox\\Git Repos\\dominium",
         "--strict"
       ],
-      "elapsed_seconds": 0.266,
+      "elapsed_seconds": 0.25,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.bad_root_absence",
       "name": "Bad root absence validator",
-      "output_summary": "{\n  \"bad_root_count\": 24,\n  \"generated_utc\": \"2026-05-23T14:03:35Z\",\n  \"nonempty_bad_root_count\": 0,\n  \"nonempty_without_exception\": [],\n  \"repo_root\": \"C:/Inbox/Git Repos/dominium\",\n  \"roots\": [\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"core\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"control\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"data\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"packs\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"profiles\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"bundles\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"compat\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"lib\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"libs\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"locks\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"repo\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"safety\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"security\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"specs\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"updates\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"meta\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"governance\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"performance\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"validation\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"modding\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"models\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"templates\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"net\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"ide\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    }\n  ],\n  \"schema_version\": \"dominium.repo.bad_root_absence.v1\",\n  \"status\": \"PASS\",\n  \"tracked_bad_root_file_count\": 0\n}\n",
+      "output_summary": "{\n  \"bad_root_count\": 24,\n  \"generated_utc\": \"2026-05-23T13:52:37Z\",\n  \"nonempty_bad_root_count\": 0,\n  \"nonempty_without_exception\": [],\n  \"repo_root\": \"C:/Inbox/Git Repos/dominium\",\n  \"roots\": [\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"core\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"control\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"data\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"packs\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"profiles\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"bundles\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"compat\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"lib\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"libs\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"locks\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"repo\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"safety\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"security\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"specs\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"updates\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"meta\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"governance\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"performance\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"validation\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"modding\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"models\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"templates\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"net\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    },\n    {\n      \"example_paths\": [],\n      \"exception_active\": false,\n      \"root\": \"ide\",\n      \"status\": \"empty\",\n      \"tracked_file_count\": 0\n    }\n  ],\n  \"schema_version\": \"dominium.repo.bad_root_absence.v1\",\n  \"status\": \"PASS\",\n  \"tracked_bad_root_file_count\": 0\n}\n",
       "owner": "repo_contract_hygiene",
       "required": true,
       "returncode": 0,
@@ -391,11 +307,11 @@
         "--max-findings",
         "50"
       ],
-      "elapsed_seconds": 0.359,
+      "elapsed_seconds": 0.344,
       "failure_policy": "nonzero_records_warning",
       "id": "t1.directory_naming_advisory",
       "name": "Directory naming advisory classifier",
-      "output_summary": "{\n  \"blocker_count\": 0,\n  \"counts_by_disposition\": {\n    \"existing_evidence_or_archive\": 401,\n    \"hyphenated_directory\": 12,\n    \"noncanonical_directory_case\": 6,\n    \"uppercase_directory\": 19\n  },\n  \"finding_count\": 438,\n  \"findings\": [\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/adapter-managed-section-determinism\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/branch_role_detection_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/changelog_json_shape_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/changelog_preview_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/commit_message_standard_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-ta\n...[truncated]...\n_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/intent_compile_git_prompt_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/intent_compile_install_prompt_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/intent_compile_overbroad_prompt_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/intent_compile_vague_prompt_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/intent_packet_schema_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/malformed_commit_reporting_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    }\n  ],\n  \"generated_utc\": \"2026-05-23T14:03:35Z\",\n  \"info_count\": 401,\n  \"repo_root\": \"C:/Inbox/Git Repos/dominium\",\n  \"schema_version\": \"dominium.repo.naming.directory_naming.v1\",\n  \"status\": \"PASS_WITH_WARNINGS\",\n  \"truncated\": true,\n  \"warning_count\": 37\n}\n",
+      "output_summary": "{\n  \"blocker_count\": 0,\n  \"counts_by_disposition\": {\n    \"existing_evidence_or_archive\": 401,\n    \"hyphenated_directory\": 12,\n    \"noncanonical_directory_case\": 6,\n    \"uppercase_directory\": 19\n  },\n  \"finding_count\": 438,\n  \"findings\": [\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/adapter-managed-section-determinism\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/branch_role_detection_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/changelog_json_shape_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/changelog_preview_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/commit_message_standard_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-ta\n...[truncated]...\n_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/intent_compile_git_prompt_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/intent_compile_install_prompt_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/intent_compile_overbroad_prompt_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/intent_compile_vague_prompt_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/intent_packet_schema_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    },\n    {\n      \"disposition\": \"existing_evidence_or_archive\",\n      \"message\": \"directory segment is not lower_snake_or_single_lowerword\",\n      \"path\": \".aide/evals/golden-tasks/malformed_commit_reporting_golden\",\n      \"rule\": \"directory_case\",\n      \"segment\": \"golden-tasks\",\n      \"severity\": \"info\"\n    }\n  ],\n  \"generated_utc\": \"2026-05-23T13:52:37Z\",\n  \"info_count\": 401,\n  \"repo_root\": \"C:/Inbox/Git Repos/dominium\",\n  \"schema_version\": \"dominium.repo.naming.directory_naming.v1\",\n  \"status\": \"PASS_WITH_WARNINGS\",\n  \"truncated\": true,\n  \"warning_count\": 37\n}\n",
       "owner": "repo_contract_hygiene",
       "required": false,
       "returncode": 0,
@@ -413,7 +329,7 @@
         "C:\\Inbox\\Git Repos\\dominium",
         "--strict"
       ],
-      "elapsed_seconds": 0.219,
+      "elapsed_seconds": 0.172,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.test_tiers_contract",
       "name": "Test tier contract validator",
@@ -435,7 +351,7 @@
         "C:\\Inbox\\Git Repos\\dominium",
         "--strict"
       ],
-      "elapsed_seconds": 0.172,
+      "elapsed_seconds": 0.188,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.presentation_contract",
       "name": "Presentation contract validator",
@@ -456,7 +372,7 @@
         "--repo-root",
         "C:\\Inbox\\Git Repos\\dominium"
       ],
-      "elapsed_seconds": 0.125,
+      "elapsed_seconds": 0.156,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.docs_sanity",
       "name": "Docs sanity",
@@ -477,7 +393,7 @@
         "--repo-root",
         "C:\\Inbox\\Git Repos\\dominium"
       ],
-      "elapsed_seconds": 1.672,
+      "elapsed_seconds": 1.719,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.include_sanity",
       "name": "Include sanity",
@@ -498,7 +414,7 @@
         "--repo-root",
         "C:\\Inbox\\Git Repos\\dominium"
       ],
-      "elapsed_seconds": 4.828,
+      "elapsed_seconds": 4.531,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.build_target_boundaries",
       "name": "Build target boundary check",
@@ -562,7 +478,7 @@
         "C:\\Inbox\\Git Repos\\dominium",
         "--strict"
       ],
-      "elapsed_seconds": 4.828,
+      "elapsed_seconds": 4.563,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.language_baseline",
       "name": "C17/C++17 language baseline validator",
@@ -584,7 +500,7 @@
         "C:\\Inbox\\Git Repos\\dominium",
         "--strict"
       ],
-      "elapsed_seconds": 4.532,
+      "elapsed_seconds": 4.328,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.cpp17_forbidden_library_use",
       "name": "C++17 macOS 10.9 restricted library validator",
@@ -606,7 +522,7 @@
         "C:\\Inbox\\Git Repos\\dominium",
         "--strict"
       ],
-      "elapsed_seconds": 0.218,
+      "elapsed_seconds": 0.219,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.architecture_policy",
       "name": "Architecture policy validator",
@@ -633,96 +549,76 @@
         "--profile-out",
         ".aide/reports/FAST-STRICT-TEST-TIER-01-repox-profile.json"
       ],
-      "elapsed_seconds": 123.219,
+      "elapsed_seconds": 131.328,
       "failure_policy": "nonzero_fails_gate",
       "id": "t1.repox_strict",
       "name": "RepoX STRICT",
-      "output_summary": "WARN: INV-AUDITX-OUTPUT-STALE: audit outputs may be stale (74 commits since docs/archive/audit/auditx/FINDINGS.json)\nRepoX governance rules OK.\n",
+      "output_summary": "WARN: INV-AUDITX-OUTPUT-STALE: audit outputs may be stale (74 commits since docs/archive/audit/auditx/FINDINGS.json)\nINV-DOC-STATUS-HEADER: missing status header: docs/repo/audits/CANON_STRUCTURE_ACTUAL_FINAL_CLEANUP_01.md\nINV-DOC-STATUS-HEADER: missing status header: docs/repo/audits/PRESENTATION_CONTRACT_01.md\n",
       "owner": "repo_contract_hygiene",
       "required": true,
-      "returncode": 0,
-      "status": "pass",
+      "returncode": 1,
+      "status": "fail",
       "tier": "T1",
       "timeout_seconds": 420,
       "type": "argv",
       "warning_policy": "RepoX warnings must be reported and may not be converted to pass if failures exist."
-    },
-    {
-      "argv": [
-        "cmake",
-        "--preset",
-        "verify"
-      ],
-      "elapsed_seconds": 45.078,
-      "failure_policy": "nonzero_fails_gate",
-      "id": "t2.cmake_configure_verify",
-      "name": "CMake configure verify preset",
-      "output_summary": "-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.19045.\nCMake global include check OK.\nBOUNDARY-OK: build boundary checks passed\nCMake Deprecation Warning at out/build/vs2026/verify/_deps/dom_sdl2-src/CMakeLists.txt:8 (cmake_minimum_required):\n  Compatibility with CMake < 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax\n  to tell CMake that the project requires at least <min> but has been updated\n  to work with policies introduced by <max> or earlier.\n\n\n-- Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) \n-- \"pkg-config --static --libs sdl2\" will return invalid information\nCMake Deprecation Warning at out/build/vs2026/verify/_deps/dom_sdl2-src/CMakeLists.txt:3253 (cmake_minimum_required):\n  Compatibility with CMake < 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax\n  to tell CMake that the project requires at least <min> but has been updated\n  to work with policies introduced by <max> or earlier.\n\n\n-- \n-- SDL2 was configured with the following options:\n-- \n-- Platform: Windows-10.0.19045\n-- 64-bit:   TRUE\n-- Compiler: C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe\n-- Revision: SDL-release-2.30.5-0-g2eef7ca47\n-- \n-- Subsystems:\n--   Atomic:\tON\n--   Audio:\tON\n--   Video:\tON\n--   Render:\tON\n--   Events:\tON\n--   Joystick:\tON\n--   Haptic:\tON\n--   Hidapi:\tON\n--   Power:\tON\n--   Threads:\tON\n--   Timers:\tON\n--   File:\tON\n--   Loadso:\tON\n--   CPUinfo:\tON\n--   Filesystem:\tON\n--   Sensor:\tON\n--   Locale:\tON\n--   Misc:\tON\n-- \n-- Options:\n--   SDL2_DISABLE_INSTALL        (Wanted: ON): OFF\n--   SDL2_DISABLE_SDL2MAIN       (Wanted: OFF): OFF\n--   SDL2_DISABLE_UNINSTALL      (Wanted: ON): OFF\n--   SDL_3DNOW                   (Wanted: ON): OFF\n--   SDL_ALSA                    (Wanted: OFF): OFF\n--   SDL_ALSA_SHARED             (Wan\n...[truncated]...\n            (Wanted: OFF): OFF\n--   SDL_SNDIO                   (Wanted: OFF): OFF\n--   SDL_SNDIO_SHARED            (Wanted: OFF): OFF\n--   SDL_SSE                     (Wanted: ON): ON\n--   SDL_SSE2                    (Wanted: ON): ON\n--   SDL_SSE3                    (Wanted: ON): ON\n--   SDL_SSEMATH                 (Wanted: ON): OFF\n--   SDL_STATIC_PIC              (Wanted: OFF): OFF\n--   SDL_SYSTEM_ICONV            (Wanted: OFF): OFF\n--   SDL_TESTS                   (Wanted: OFF): OFF\n--   SDL_VENDOR_INFO             (Wanted: ): OFF\n--   SDL_VIRTUAL_JOYSTICK        (Wanted: ON): ON\n--   SDL_VIVANTE                 (Wanted: OFF): OFF\n--   SDL_VULKAN                  (Wanted: ON): ON\n--   SDL_WASAPI                  (Wanted: ON): ON\n--   SDL_WAYLAND                 (Wanted: OFF): OFF\n--   SDL_WAYLAND_LIBDECOR        (Wanted: OFF): OFF\n--   SDL_WAYLAND_LIBDECOR_SHARED (Wanted: OFF): OFF\n--   SDL_WAYLAND_QT_TOUCH        (Wanted: OFF): OFF\n--   SDL_WAYLAND_SHARED          (Wanted: OFF): OFF\n--   SDL_X11                     (Wanted: OFF): OFF\n--   SDL_X11_SHARED              (Wanted: OFF): OFF\n--   SDL_X11_XCURSOR             (Wanted: OFF): OFF\n--   SDL_X11_XDBE                (Wanted: OFF): OFF\n--   SDL_X11_XFIXES              (Wanted: OFF): OFF\n--   SDL_X11_XINPUT              (Wanted: OFF): OFF\n--   SDL_X11_XRANDR              (Wanted: OFF): OFF\n--   SDL_X11_XSCRNSAVER          (Wanted: OFF): OFF\n--   SDL_X11_XSHAPE              (Wanted: OFF): OFF\n--   SDL_XINPUT                  (Wanted: ON): ON\n-- \n--  CFLAGS:        /DWIN32 /D_WINDOWS\n--  EXTRA_CFLAGS:  \n--  EXTRA_LDFLAGS:  -CETCOMPAT\n--  EXTRA_LIBS:    kernel32;user32;gdi32;winmm;imm32;ole32;oleaut32;version;uuid;advapi32;setupapi;shell32;dinput8\n-- \n--  Build Shared Library: ON\n--  Build Static Library: ON\n--  Build Static Library with Position Independent Code: OFF\n-- \n-- Configuring done (27.5s)\n-- Generating done (17.2s)\n-- Build files have been written to: C:/Inbox/Git Repos/dominium/out/build/vs2026/verify\n",
-      "owner": "build_smoke",
-      "required": true,
-      "returncode": 0,
-      "status": "pass",
-      "tier": "T2",
-      "timeout_seconds": 300,
-      "type": "argv",
-      "warning_policy": "configure warnings must be reported"
-    },
-    {
-      "argv": [
-        "cmake",
-        "--build",
-        "--preset",
-        "verify",
-        "--target",
-        "ALL_BUILD"
-      ],
-      "elapsed_seconds": 55.578,
-      "failure_policy": "nonzero_fails_gate",
-      "id": "t2.cmake_build_all_build",
-      "name": "CMake build verify preset without test target",
-      "output_summary": "MSBuild version 17.14.40+3e7442088 for .NET Framework\n\n  Checking documentation ratios (mode=warn)\n  DOC-RATIO SUMMARY\n  Roots: 9\n  Missing roots: 6\n  Scanned files: 942\n  Excluded paths: 28\n  Skipped files (no non-blank lines): 0\n  Skipped word files (no words): 0\n  Skipped char files (no chars): 0\n  Totals: lines 191756 (comments 14520), words 589782 (comments 97689), chars 6969629 (comments 777453)\n  Ratios: line 0.0757 (7.57%), word 0.1656 (16.56%), char 0.1115 (11.15%)\n  Thresholds: line 0.0600-0.4000, word 0.1400-0.3000, char 0.0900-0.2500\n  Refreshing build number header (no bump)\n  SDL2.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\SDL2d.dll\n  SDL2-static.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\SDL2-staticd.lib\n  SDL2_test.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\SDL2_test.lib\n  SDL2main.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\SDL2maind.lib\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  dom_build_info.c\n  backend_detect.c\n  d_gfx.c\n  Generating Code...\nd_gfx.obj : warning LNK4006: d_gfx_get_opcode_mask already defined in d_gfx_caps_stub.obj; second definition ignored [C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\engine\\domino_engine.vcxproj]\nd_gfx.obj : warning LNK4006: d_gfx_get_opcode_mask_for_backend already defined in d_gfx_caps_stub.obj; second definition ignored [C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\engine\\domino_engine.vcxproj]\nd_gfx.obj : warning LNK4006: d_gfx_get_backend_name already defined in d_gfx_caps_stub.obj; second definition ignored [C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\engine\\domino_engine.vcxproj]\ndsys_window_stub.obj : warning LNK4006: dsys_window_create already defined in sys.obj; second definition ignored [C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\engine\\domino_engine.vcxproj]\ndsys_window_stub.obj : warning LNK4006: dsys_window_destroy already defined in sys.obj; se\n...[truncated]...\nxe\n  registry_dump_cli.cpp\n  registry_dump_cli.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\registry_dump_cli.exe\n  render_prep_work_ir_tests.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\render_prep_work_ir_tests.exe\n  server_app_win32.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\server_app_win32.exe\n  services_expiry_tests.cpp\n  services_expiry_tests.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\services_expiry_tests.exe\n  setup_app_win32.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\setup_app_win32.exe\n  setup_core.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\setup_core.lib\n  setup_cli_main.c\n  setup_cli.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\setup.exe\n  setup_gui.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\setup_gui.exe\n  setup_tui.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\setup_tui.exe\n  streaming_work_ir_tests.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\streaming_work_ir_tests.exe\n  sys_caps_tests.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\sys_caps_tests.exe\n  tool_ui_doc_annotate.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\dist\\sys\\winnt\\x64\\bin\\tools\\tool_ui_doc_annotate.exe\n  tools_app_win32.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\tools_app_win32.exe\n  tourist_non_interference_tests.cpp\n  tourist_non_interference_tests.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\tourist_non_interference_tests.exe\n  ui_accessibility_tests.cpp\n  ui_accessibility_tests.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\ui_accessibility_tests.exe\n  validate_all.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\validate_all.exe\n  visitability_contract_tests.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\bin\\visitability_contract_tests.exe\n",
-      "owner": "build_smoke",
-      "required": true,
-      "returncode": 0,
-      "status": "pass",
-      "tier": "T2",
-      "timeout_seconds": 600,
-      "type": "argv",
-      "warning_policy": "build warnings must be reported; test execution remains in explicit CTest commands"
-    },
-    {
-      "argv": [
-        "ctest",
-        "--preset",
-        "verify",
-        "-L",
-        "smoke",
-        "--output-on-failure",
-        "--timeout",
-        "300"
-      ],
-      "elapsed_seconds": 54.953,
-      "failure_policy": "nonzero_fails_gate",
-      "id": "t2.ctest_smoke",
-      "name": "Smoke CTest",
-      "output_summary": "Test project C:/Inbox/Git Repos/dominium/out/build/vs2026/verify\n      Start  81: app_cli_contracts\n 1/57 Test  #81: app_cli_contracts ................................   Passed    2.69 sec\n      Start  82: app_ui_contracts\n 2/57 Test  #82: app_ui_contracts .................................   Passed    1.81 sec\n      Start  90: slice0_flow_contracts\n 3/57 Test  #90: slice0_flow_contracts ............................   Passed    1.03 sec\n      Start  92: slice1_physical_contracts\n 4/57 Test  #92: slice1_physical_contracts ........................   Passed    0.37 sec\n      Start  94: slice2_coordination_contracts\n 5/57 Test  #94: slice2_coordination_contracts ....................   Passed    0.22 sec\n      Start  96: world_definition_contracts\n 6/57 Test  #96: world_definition_contracts .......................   Passed    1.28 sec\n      Start 165: server_tools_operational\n 7/57 Test #165: server_tools_operational .........................   Passed    0.50 sec\n      Start 166: exploration_baseline\n 8/57 Test #166: exploration_baseline .............................   Passed    0.95 sec\n      Start 167: exploration_scale_guard\n 9/57 Test #167: exploration_scale_guard ..........................   Passed    0.15 sec\n      Start 168: exploration_scaling\n10/57 Test #168: exploration_scaling ..............................   Passed    2.18 sec\n      Start 169: freecam_epistemics\n11/57 Test #169: freecam_epistemics ...............................   Passed    0.41 sec\n      Start 170: capability_runtime_enforcement\n12/57 Test #170: capability_runtime_enforcement ...................   Passed    0.43 sec\n      Start 171: client_flow_smoke\n13/57 Test #171: client_flow_smoke ................................   Passed    0.38 sec\n      Start 172: client_parity\n14/57 Test #172: client_parity ....................................   Passed    0.48 sec\n      Start 173: server_discovery\n15/57 Test #173: server_discovery .................................   Passed    0.81 sec\n      Start 174:\n...[truncated]...\n...........   Passed    0.58 sec\n      Start 203: srz_fields\n44/57 Test #203: srz_fields .......................................   Passed    0.71 sec\n      Start 204: vegetation_fields\n45/57 Test #204: vegetation_fields ................................   Passed    0.51 sec\n      Start 205: animal_agents\n46/57 Test #205: animal_agents ....................................   Passed    0.49 sec\n      Start 206: structure_fields\n47/57 Test #206: structure_fields .................................   Passed    0.52 sec\n      Start 207: travel_fields\n48/57 Test #207: travel_fields ....................................   Passed    0.51 sec\n      Start 208: mining_fields\n49/57 Test #208: mining_fields ....................................   Passed    0.53 sec\n      Start 209: crafting_fields\n50/57 Test #209: crafting_fields ..................................   Passed    0.49 sec\n      Start 393: playtest_scenario_parity\n51/57 Test #393: playtest_scenario_parity .........................   Passed    0.50 sec\n      Start 394: playtest_variant_replay\n52/57 Test #394: playtest_variant_replay ..........................   Passed    0.22 sec\n      Start 395: playtest_replay_regression\n53/57 Test #395: playtest_replay_regression .......................   Passed    0.44 sec\n      Start 396: playtest_mode_parity\n54/57 Test #396: playtest_mode_parity .............................   Passed    0.22 sec\n      Start 435: ux_ui_accessibility\n55/57 Test #435: ux_ui_accessibility ..............................   Passed    0.10 sec\n      Start 436: ux_presentation_parity\n56/57 Test #436: ux_presentation_parity ...........................   Passed    0.53 sec\n      Start 437: ui_client_menu_parity\n57/57 Test #437: ui_client_menu_parity ............................   Passed    1.53 sec\n\n100% tests passed, 0 tests failed out of 57\n\nLabel Time Summary:\nfast     =  54.12 sec*proc (57 tests)\nsmoke    =  54.12 sec*proc (57 tests)\ntestx    =  54.12 sec*proc (57 tests)\n\nTotal Test time (real) =  54.83 sec\n",
-      "owner": "build_smoke",
-      "required": true,
-      "returncode": 0,
-      "status": "pass",
-      "tier": "T2",
-      "timeout_seconds": 360,
-      "type": "argv",
-      "warning_policy": "no_warnings_allowed"
     }
   ],
-  "completed_at_utc": "2026-05-23T14:08:31Z",
-  "continue_on_fail": false,
+  "completed_at_utc": "2026-05-23T13:55:05Z",
+  "continue_on_fail": true,
   "dry_run": false,
-  "elapsed_seconds": 381.406,
+  "elapsed_seconds": 235.0,
   "known_full_gate_debt_policy": "Known full-gate debt must remain visible and must not be converted into pass, warning, deletion, or silent skip.",
-  "mode": "fast_strict",
+  "mode": "tier",
   "not_run_commands": [
+    {
+      "id": "t0.git_diff_check",
+      "name": "Git diff whitespace check",
+      "status": "not_run",
+      "tier": "T0"
+    },
+    {
+      "id": "t0.staged_generated_output_check",
+      "name": "Generated/local output staging check",
+      "status": "not_run",
+      "tier": "T0"
+    },
+    {
+      "id": "t0.changed_json_parse",
+      "name": "Changed JSON and JSONL parse check",
+      "status": "not_run",
+      "tier": "T0"
+    },
+    {
+      "id": "t0.changed_toml_parse",
+      "name": "Changed TOML parse check",
+      "status": "not_run",
+      "tier": "T0"
+    },
+    {
+      "id": "t0.forbidden_active_roots",
+      "name": "Forbidden active top-level root check",
+      "status": "not_run",
+      "tier": "T0"
+    },
+    {
+      "id": "t2.cmake_configure_verify",
+      "name": "CMake configure verify preset",
+      "status": "not_run",
+      "tier": "T2"
+    },
+    {
+      "id": "t2.cmake_build_all_build",
+      "name": "CMake build verify preset without test target",
+      "status": "not_run",
+      "tier": "T2"
+    },
+    {
+      "id": "t2.ctest_smoke",
+      "name": "Smoke CTest",
+      "status": "not_run",
+      "tier": "T2"
+    },
     {
       "id": "t4.ctest_schema_pack_content",
       "name": "Focused schema, pack, and content CTest debt lane",
@@ -787,10 +683,8 @@
   "repo_root": "C:\\Inbox\\Git Repos\\dominium",
   "schema_version": "dominium.fast_strict_result.v1",
   "selected_tiers": [
-    "T0",
-    "T1",
-    "T2"
+    "T1"
   ],
-  "started_at_utc": "2026-05-23T14:02:10Z",
-  "status": "PASS"
+  "started_at_utc": "2026-05-23T13:51:10Z",
+  "status": "FAIL"
 }

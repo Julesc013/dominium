@@ -2,18 +2,25 @@
 
 ## PHASE
 
-AIDE-CHECKPOINT-LOOP-01 coordinator closeout
+PRESENTATION-CONTRACT-01 closeout; next task is `PROJECTION-CONFORMANCE-01`.
 
 ## GOAL
 
-Define and verify the minimum AIDE checkpoint loop law, then reconcile
-coordinator state without moving the queue backward from live repo evidence.
+Define the minimum presentation contract law needed for read-only inspection,
+projection conformance, future read-only Workbench shell work, and future
+Universe Explorer contract work.
 
 ## WHY
 
-Bounded parallel development needs an explicit checkpoint loop before task
-branches can be merged into evidence-backed integration checkpoints and before
-any checkpoint can be considered for `main` promotion.
+The repo has moved out of broad structure cleanup. The next governed product
+spine must preserve:
+
+```text
+truth -> perceived/observed -> rendered/presented
+```
+
+Presentation must show command results, diagnostics, refusals, evidence,
+provenance, degradation, and projection state without becoming authority.
 
 ## CONTEXT_REFS
 
@@ -22,90 +29,104 @@ any checkpoint can be considered for `main` promotion.
 - `.aide/context/latest-review-packet.md`
 - `.aide/reports/latest-dominium-status.md`
 - `.aide/reports/latest-warning-disposition.md`
-- `docs/repo/audits/AIDE_WORKFLOW_LAW_01.md`
-- `docs/repo/audits/AIDE_WORKUNIT_SCHEMA_01.md`
-- `docs/repo/audits/AIDE_DEV_MAIN_POLICY_01.md`
-- `docs/repo/audits/AIDE_CHECKPOINT_LOOP_01.md`
-- `docs/repo/audits/AIDE_CAPABILITY_REALITY_LEDGER_01.md`
-- `.aide/policy/checkpoint_loop_law.md`
-- `.aide/policy/checkpoint_validation_tiers.md`
-- `.aide/policy/checkpoint_repair_policy.md`
-- `.aide/policy/checkpoint_promotion_policy.md`
-- `.aide/fixtures/checkpoint/`
-- `tools/aide/check_checkpoint_loop.py`
+- `docs/repo/FOUNDATION_LOCK.md`
+- `contracts/command/command_surface.contract.toml`
+- `contracts/action/action_surface.contract.toml`
+- `contracts/result/result.schema.json`
+- `contracts/refusal/refusal_code.registry.json`
+- `contracts/diagnostic/diagnostic_code.registry.json`
+- `contracts/evidence/evidence_packet.schema.json`
+- `contracts/view/view_surface.contract.toml`
+- `contracts/presentation/presentation_surface.contract.toml`
+- `contracts/presentation/presentation_view_model.schema.json`
+- `contracts/presentation/read_only_inspection.view_model.json`
+- `tools/validators/contracts/check_presentation_contract.py`
+- `docs/repo/audits/PRESENTATION_CONTRACT_01.md`
 
 ## ALLOWED_PATHS
 
-- `.aide/policy/`
-- `.aide/fixtures/checkpoint/`
-- `.aide/reports/AIDE-CHECKPOINT-LOOP-01-*`
+- `contracts/presentation/`
+- `contracts/public_surface/public_surface.contract.toml`
+- `contracts/testing/test_tiers.contract.toml`
+- `tests/contract/presentation/`
+- `tools/validators/contracts/check_presentation_contract.py`
+- `docs/repo/audits/PRESENTATION_CONTRACT_01.md`
 - `.aide/queue/current.toml`
 - `.aide/context/latest-task-packet.md`
 - `.aide/context/latest-review-packet.md`
 - `.aide/reports/latest-dominium-status.md`
 - `.aide/reports/latest-warning-disposition.md`
-- `docs/repo/audits/AIDE_CHECKPOINT_LOOP_01.md`
-- `tools/aide/`
 
 ## FORBIDDEN_PATHS
 
-- product/runtime implementation paths
-- release publication paths
-- broad build or source-layout roots
-- Workbench implementation paths
-- renderer, native GUI, gameplay, provider runtime, package runtime, and
-  runtime module loader implementation paths
+- broad Workbench UI implementation
+- renderer implementation
+- native GUI implementation
+- gameplay/domain feature implementation
+- provider runtime
+- package runtime
+- runtime module loader
+- materialization engine
+- release publication
+- broad structure rewrites
 
 ## IMPLEMENTATION
 
-- Preserve the existing checkpoint-loop policy packet created by
-  `acebb0f4f aide: define checkpoint loop policy`.
-- Do not fake missing prerequisites; `AIDE-WORKFLOW-LAW-01`,
-  `AIDE-WORKUNIT-SCHEMA-01`, and `AIDE-DEV-MAIN-POLICY-01` are present.
-- Treat `AIDE-CAPABILITY-REALITY-LEDGER-01` as already present in live history
-  at `3fdd78a3b`; do not move the queue backward.
-- Update coordinator surfaces as a checkpoint/coordinator closeout only.
+- Add `contracts/presentation/presentation_surface.contract.toml`.
+- Add `contracts/presentation/presentation_view_model.schema.json`.
+- Add `contracts/presentation/read_only_inspection.view_model.json`.
+- Add `tools/validators/contracts/check_presentation_contract.py`.
+- Add valid/invalid read-only presentation fixtures.
+- Register presentation public surfaces.
+- Add the presentation validator to fast strict as `t1.presentation_contract`.
+- Preserve all existing command/result/view/projection contracts.
 
 ## VALIDATION
 
-- `py -3 .aide/scripts/aide_lite.py doctor`
-- `py -3 .aide/scripts/aide_lite.py validate`
-- `py -3 .aide/scripts/aide_lite.py pack --task "AIDE-CHECKPOINT-LOOP-01"`
-- `py -3 -m tools.aide.validate_workunits --repo-root .`
-- `py -3 tools/aide/check_dev_main_policy.py .`
-- `py -3 tools/aide/check_checkpoint_loop.py .`
-- `py -3 tools/aide/validate_capability_reality.py --repo-root . --summary-out .aide/reports/capability-reality-summary.md`
+- `python tools/validators/contracts/check_presentation_contract.py --repo-root . --strict`
+- `python tools/validators/contracts/check_presentation_contract.py --repo-root . --fixtures`
+- `python tests/contract/presentation/presentation_contract_tests.py`
+- `python tools/validators/contracts/check_command_result_view.py --repo-root . --strict`
+- `python tools/validators/contracts/check_command_result_view.py --repo-root . --fixtures`
+- `python tools/validators/repo/check_public_surface.py --repo-root . --strict`
+- `python tools/validators/testing/check_test_tiers.py --repo-root . --strict`
+- `python tools/test/run_fast_strict.py --repo-root .`
 - `git diff --check`
 
 ## EVIDENCE
 
 - changed files
-- validation commands and results
-- existing checkpoint-loop commit hash
-- existing capability-ledger commit hash
-- preserved warning disposition
-- coordinator update decision
+- targeted validator output
+- fast strict output
+- audit report
+- commit hash
 
 ## NON_GOALS
 
-- No scheduler.
-- No automatic branch automation.
-- No automatic merging.
-- No automatic promotion to `main`.
-- No repair engine.
-- No Workbench Agent Board.
-- No product/runtime behavior change.
-- No full CTest or broad build.
+- No Workbench shell implementation.
+- No renderer/native GUI implementation.
+- No gameplay.
+- No embodiment.
+- No provider runtime.
+- No package runtime.
+- No runtime module loader.
+- No materialization engine.
+- No release publication.
 
 ## ACCEPTANCE
 
-- Checkpoint loop law exists.
-- Checkpoint validation tiers, repair policy, and promotion policy exist.
-- Valid checkpoint and promotion fixtures pass targeted validation.
-- Invalid checkpoint and promotion fixtures fail targeted validation.
-- Promotion requires evidence.
-- Unclassified promotion warnings are rejected.
-- Coordinator surfaces reflect live repo evidence without hiding full-gate debt.
+- Presentation contract law exists.
+- Presentation view-model schema exists.
+- Read-only inspection view model exists and validates.
+- Valid presentation fixture passes.
+- Invalid presentation fixtures fail.
+- Public surfaces are registered.
+- Fast strict includes the presentation contract validator.
+- Broad feature blockers remain visible.
+
+## NEXT
+
+`PROJECTION-CONFORMANCE-01`
 
 ## OUTPUT_SCHEMA
 
@@ -115,8 +136,8 @@ Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`,
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4050
-- approx_tokens: 1013
+- chars: 4200
+- approx_tokens: 1050
 - budget_status: PASS
 - warnings:
   - none

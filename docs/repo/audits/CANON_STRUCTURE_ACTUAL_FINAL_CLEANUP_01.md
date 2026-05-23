@@ -1,7 +1,8 @@
-Status: PASS_WITH_WARNINGS
+Status: DERIVED
 Last Reviewed: 2026-05-23
 Supersedes: CANON_STRUCTURE_RESIDUALS_LOOP_02
 Superseded By: none
+Result: PASS_WITH_WARNINGS
 Stability: provisional
 Task: CANON-STRUCTURE-ACTUAL-FINAL-CLEANUP-01
 

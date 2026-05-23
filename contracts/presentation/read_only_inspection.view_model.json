@@ -1,0 +1,211 @@
+{
+  "schema_version": "dominium.presentation.view_model.v1",
+  "view_model_id": "dominium.presentation.read_only_inspection.v1",
+  "version": "0.1.0",
+  "stability": "provisional",
+  "owner": "contracts.presentation",
+  "source_kind": "composite",
+  "source_refs": [
+    "contracts/result/result.schema.json",
+    "contracts/document/document.schema.json",
+    "contracts/evidence/evidence_packet.schema.json",
+    "contracts/diagnostic/diagnostic_code.registry.json",
+    "contracts/refusal/refusal.schema.json"
+  ],
+  "presentation_only": true,
+  "authority": false,
+  "mutates_truth": false,
+  "private_tool_calls": false,
+  "sections": [
+    "summary",
+    "status",
+    "diagnostics",
+    "refusals",
+    "evidence",
+    "provenance",
+    "degradation",
+    "projection_state"
+  ],
+  "fields": [
+    {
+      "field_id": "subject_ref",
+      "source_pointer": "/subject/ref",
+      "required": true,
+      "presentation_role": "identity"
+    },
+    {
+      "field_id": "subject_kind",
+      "source_pointer": "/subject/kind",
+      "required": true,
+      "presentation_role": "classification"
+    },
+    {
+      "field_id": "status",
+      "source_pointer": "/status",
+      "required": true,
+      "presentation_role": "state"
+    },
+    {
+      "field_id": "diagnostics",
+      "source_pointer": "/diagnostics",
+      "required": true,
+      "presentation_role": "diagnostics"
+    },
+    {
+      "field_id": "refusal",
+      "source_pointer": "/refusal",
+      "required": false,
+      "presentation_role": "refusal"
+    },
+    {
+      "field_id": "evidence_refs",
+      "source_pointer": "/evidence",
+      "required": true,
+      "presentation_role": "evidence"
+    },
+    {
+      "field_id": "provenance",
+      "source_pointer": "/provenance",
+      "required": true,
+      "presentation_role": "provenance"
+    },
+    {
+      "field_id": "degradation",
+      "source_pointer": "/degradation",
+      "required": true,
+      "presentation_role": "degradation"
+    },
+    {
+      "field_id": "projection_state",
+      "source_pointer": "/projection",
+      "required": true,
+      "presentation_role": "projection_state"
+    }
+  ],
+  "diagnostic_bindings": [
+    {
+      "binding_id": "dominium.presentation.read_only_inspection.diagnostic.degraded.v1",
+      "diagnostic_code": "DOM-CAPABILITY-DEGRADED",
+      "section": "degradation"
+    },
+    {
+      "binding_id": "dominium.presentation.read_only_inspection.diagnostic.refusal.v1",
+      "diagnostic_code": "DOM-REFUSAL-ISSUED",
+      "section": "refusals"
+    },
+    {
+      "binding_id": "dominium.presentation.read_only_inspection.diagnostic.unsupported_surface.v1",
+      "diagnostic_code": "DOM-CMD-UNSUPPORTED-SURFACE",
+      "section": "diagnostics"
+    }
+  ],
+  "refusal_bindings": [
+    {
+      "binding_id": "dominium.presentation.read_only_inspection.refusal.capability_missing.v1",
+      "refusal_code": "dominium.refusal.command.capability_missing",
+      "section": "refusals"
+    },
+    {
+      "binding_id": "dominium.presentation.read_only_inspection.refusal.unsupported_surface.v1",
+      "refusal_code": "dominium.refusal.command.unsupported_surface",
+      "section": "refusals"
+    },
+    {
+      "binding_id": "dominium.presentation.read_only_inspection.refusal.policy_denied.v1",
+      "refusal_code": "dominium.refusal.policy.denied",
+      "section": "refusals"
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "binding_id": "dominium.presentation.read_only_inspection.evidence.packet.v1",
+      "evidence_schema": "contracts/evidence/evidence_packet.schema.json",
+      "source_pointer": "/evidence_packet",
+      "section": "evidence"
+    },
+    {
+      "binding_id": "dominium.presentation.read_only_inspection.evidence.refs.v1",
+      "evidence_schema": "contracts/evidence/evidence_ref.schema.json",
+      "source_pointer": "/evidence",
+      "section": "evidence"
+    }
+  ],
+  "projection_requirements": {
+    "required_projection_kinds": [
+      "headless",
+      "cli",
+      "text"
+    ],
+    "descriptor_only_projection_kinds": [
+      "rendered",
+      "native"
+    ],
+    "fallback_projection": "headless",
+    "modal_loading_allowed": false,
+    "pending_state_required": true,
+    "degradation_required": true,
+    "renderer_mutation_allowed": false,
+    "private_tool_calls_allowed": false
+  },
+  "action_bindings": [
+    {
+      "action_id": "dominium.presentation.inspect_subject.v1",
+      "label": "inspect_subject",
+      "command_ref": null,
+      "implementation_status": "contract_only",
+      "transaction_policy": "read_only_projection",
+      "mutates_truth": false,
+      "private_tool_call": false,
+      "refusal_behavior": "Unsupported or unauthorized subject inspection must return a typed refusal.",
+      "evidence_behavior": "Inspection displays existing evidence and provenance; it does not fabricate evidence."
+    },
+    {
+      "action_id": "dominium.presentation.select_subject.v1",
+      "label": "select_subject",
+      "command_ref": null,
+      "implementation_status": "contract_only",
+      "transaction_policy": "read_only_projection",
+      "mutates_truth": false,
+      "private_tool_call": false,
+      "refusal_behavior": "Selection is disabled or refused when the subject is absent or out of scope.",
+      "evidence_behavior": "Selection preserves the source subject reference for later evidence display."
+    },
+    {
+      "action_id": "dominium.presentation.copy_evidence_ref.v1",
+      "label": "copy_evidence_ref",
+      "command_ref": null,
+      "implementation_status": "contract_only",
+      "transaction_policy": "read_only_projection",
+      "mutates_truth": false,
+      "private_tool_call": false,
+      "refusal_behavior": "Absent evidence disables the action rather than issuing a private lookup.",
+      "evidence_behavior": "Copies or projects an existing evidence reference only."
+    }
+  ],
+  "universe_explorer_readiness": {
+    "observer_only": true,
+    "embodiment_allowed": false,
+    "gameplay_allowed": false,
+    "materialization_requests_allowed": false,
+    "reference_frame_display_allowed": true,
+    "streaming_state_display_allowed": true,
+    "no_modal_loading_contract_target": true
+  },
+  "implementation_status": "contract_only",
+  "source_refs_notes": [
+    "The view model is a descriptor for future read-only inspection surfaces.",
+    "It does not implement a runtime projection engine, Workbench shell, renderer, native GUI, provider runtime, package runtime, module loader, world runtime, materialization engine, or gameplay."
+  ],
+  "non_goals": [
+    "runtime_projection_engine",
+    "workbench_shell",
+    "renderer_implementation",
+    "native_gui",
+    "gameplay",
+    "embodiment",
+    "provider_runtime",
+    "package_runtime",
+    "runtime_module_loader",
+    "materialization_engine"
+  ]
+}

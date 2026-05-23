@@ -1,0 +1,71 @@
+schema_version = "dominium.presentation.surface.v1"
+status = "provisional"
+last_reviewed = "2026-05-23"
+owner = "contracts.presentation"
+
+[contract]
+id = "dominium.presentation.surface.v1"
+status = "provisional"
+owner = "contracts.presentation"
+purpose = "Defines presentation view-model law for read-only inspection, command/result projection, diagnostics, refusal, evidence, and future Workbench/Client explorer surfaces without giving presentation authority over truth."
+
+[policy]
+presentations_are_authority = false
+presentations_mutate_truth = false
+presentations_create_truth = false
+presentations_hide_refusals = false
+presentations_hide_degradation = false
+presentation_runtime_implemented_here = false
+workbench_shell_is_authority = false
+renderer_is_authority = false
+private_tool_calls_allowed = false
+generated_output_is_source_truth = false
+view_model_identity_is_path = false
+projection_identity_is_runtime_path = false
+actions_require_command_boundary_when_behavior_exists = true
+contract_only_actions_allowed = true
+unknown_action_handlers_forbidden = true
+direct_private_tool_calls_forbidden = true
+read_only_inspection_mutates_truth = false
+read_only_inspection_requires_evidence_binding = true
+read_only_inspection_requires_refusal_binding = true
+read_only_inspection_requires_diagnostic_binding = true
+read_only_inspection_requires_degradation_state = true
+no_modal_loading_claim_requires_explicit_degradation = true
+no_modal_loading_claim_requires_pending_state = true
+late_data_must_degrade_instead_of_blocking = true
+renderer_mutation_forbidden = true
+truth_perceived_render_separation_required = true
+
+[boundaries]
+truth_owner = "engine/game/domain/runtime process surfaces"
+perceived_owner = "view/projection/result/document descriptors"
+render_owner = "runtime/projection and future renderer providers"
+mutation_boundary = "commands and lawful Process execution only"
+data_boundaries = ["result", "document", "snapshot", "patch", "evidence", "diagnostic", "refusal"]
+presentation_inputs = ["command_result", "document", "snapshot", "evidence_packet", "diagnostic_event", "refusal_payload"]
+presentation_outputs = ["view_model", "projection_descriptor", "display_state", "selected_action_descriptor"]
+forbidden_outputs = ["truth_mutation", "private_tool_call", "implicit_materialization", "hidden_provider_load", "runtime_module_load"]
+
+[read_only_inspection]
+id = "dominium.presentation.read_only_inspection.v1"
+view_model = "contracts/presentation/read_only_inspection.view_model.json"
+source_kind = "composite"
+required_sections = ["summary", "status", "diagnostics", "refusals", "evidence", "provenance", "degradation", "projection_state"]
+required_projection_kinds = ["headless", "cli", "text"]
+descriptor_only_projection_kinds = ["rendered", "native"]
+fallback_projection = "headless"
+modal_loading_allowed = false
+runtime_implemented = false
+notes = "This is the contract target for future Workbench/Client Universe Explorer inspection. It does not implement a shell, renderer, provider runtime, package runtime, module loader, or gameplay."
+
+[universe_explorer_prep]
+contract_target = "UNIVERSE-EXPLORER-CONTRACT-01"
+allowed_now = "contract-only read-only inspection model"
+blocked_now = ["broad_workbench_ui", "renderer_implementation", "native_gui", "gameplay", "embodiment", "runtime_module_loader", "provider_runtime", "package_runtime"]
+required_future_proofs = ["projection_conformance", "headless_inspection", "no_modal_loading", "reference_frame", "materialization_request", "fidelity_degradation", "provenance_visibility"]
+
+[validation]
+validator = "tools/validators/contracts/check_presentation_contract.py"
+fixtures = "tests/contract/presentation/view_model_fixtures"
+proof = ["python tools/validators/contracts/check_presentation_contract.py --repo-root . --strict", "python tools/validators/contracts/check_presentation_contract.py --repo-root . --fixtures"]

@@ -467,6 +467,21 @@ warning_policy = "no_warnings_allowed"
 evidence_outputs = ["runner_json", "runner_markdown"]
 
 [[commands]]
+id = "t1.presentation_contract"
+tier = "T1"
+name = "Presentation contract validator"
+type = "argv"
+argv = ["{python}", "tools/validators/contracts/check_presentation_contract.py", "--repo-root", "{repo_root}", "--strict"]
+owner = "contracts.presentation"
+timeout_seconds = 120
+required = true
+gates = ["fast_strict", "extended", "release", "release_candidate", "full"]
+failure_policy = "nonzero_fails_gate"
+missing_policy = "missing_fails_gate"
+warning_policy = "no_warnings_allowed"
+evidence_outputs = ["runner_json", "runner_markdown"]
+
+[[commands]]
 id = "t1.docs_sanity"
 tier = "T1"
 name = "Docs sanity"

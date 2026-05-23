@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.presentation.view_model_schema.v1",
+  "title": "Dominium Presentation View Model Descriptor",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "view_model_id",
+    "owner",
+    "stability",
+    "source_kind",
+    "source_refs",
+    "presentation_only",
+    "authority",
+    "mutates_truth",
+    "private_tool_calls",
+    "sections",
+    "fields",
+    "diagnostic_bindings",
+    "refusal_bindings",
+    "evidence_bindings",
+    "projection_requirements",
+    "action_bindings",
+    "implementation_status",
+    "non_goals"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "dominium.presentation.view_model.v1"
+    },
+    "view_model_id": {
+      "type": "string",
+      "pattern": "^(domino|dominium)(\\.[a-z0-9][a-z0-9_-]*)+\\.v[0-9]+$"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "stability": {
+      "type": "string",
+      "enum": ["provisional", "internal", "experimental", "fixture", "historical", "retired"]
+    },
+    "source_kind": {
+      "type": "string",
+      "enum": ["command_result", "document", "snapshot", "evidence", "diagnostic", "refusal", "composite"]
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "presentation_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "authority": {
+      "type": "boolean",
+      "const": false
+    },
+    "mutates_truth": {
+      "type": "boolean",
+      "const": false
+    },
+    "private_tool_calls": {
+      "type": "boolean",
+      "const": false
+    },
+    "sections": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "fields": {
+      "type": "array",
+      "items": {"type": "object"},
+      "minItems": 1
+    },
+    "diagnostic_bindings": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "refusal_bindings": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "evidence_bindings": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "projection_requirements": {
+      "type": "object"
+    },
+    "action_bindings": {
+      "type": "array",
+      "items": {"type": "object"}
+    },
+    "implementation_status": {
+      "type": "string"
+    },
+    "non_goals": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}
