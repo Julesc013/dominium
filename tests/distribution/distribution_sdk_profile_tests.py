@@ -63,7 +63,7 @@ def main():
             print("sdk node has forbidden setup/launcher dependency")
             return 1
 
-    profiles_root = os.path.join(repo_root, "data", "profiles")
+    profiles_root = os.path.join(repo_root, "content", "profiles")
     sdk_engine_profile = _load_json(os.path.join(profiles_root, "profile.sdk_engine.json"))
     sdk_game_profile = _load_json(os.path.join(profiles_root, "profile.sdk_game.json"))
     if sdk_engine_profile.get("schema_id") != "dominium.schema.distribution.profile":

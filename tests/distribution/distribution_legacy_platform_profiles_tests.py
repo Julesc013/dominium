@@ -75,7 +75,7 @@ def _check_platform_registry(repo_root):
 
 
 def _check_legacy_profiles(repo_root):
-    profile_dir = os.path.join(repo_root, "data", "profiles")
+    profile_dir = os.path.join(repo_root, "content", "profiles")
     empty_root = os.path.join("tests", "distribution", "fixtures", "empty_root")
     for filename in LEGACY_PROFILE_FILES:
         path = os.path.join(profile_dir, filename)
@@ -95,7 +95,7 @@ def _check_legacy_profiles(repo_root):
         cmd_args = ["--repo-root", repo_root, "--root", empty_root, "--format", "json"]
         for cap_id in required_caps:
             cmd_args += ["--require-capability", cap_id]
-        rc, out = _run_json(repo_root, os.path.join("tools", "distribution", "compat_dry_run.py"), cmd_args)
+        rc, out = _run_json(repo_root, os.path.join("tools", "package", "distribution", "compat_dry_run.py"), cmd_args)
         if rc != 2:
             raise AssertionError("legacy profile compatibility refusal must be deterministic for {}".format(filename))
         refusal = out.get("refusal", {})

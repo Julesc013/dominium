@@ -32,8 +32,8 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    modpack_cli = os.path.join(repo_root, "tools", "modpack", "modpack_cli.py")
-    workspace_cli = os.path.join(repo_root, "tools", "workspace", "workspace_cli.py")
+    modpack_cli = os.path.join(repo_root, "tools", "package", "modpack", "modpack_cli.py")
+    workspace_cli = os.path.join(repo_root, "tools", "repo", "workspace", "workspace_cli.py")
 
     if not os.path.isfile(modpack_cli):
         print("missing modpack_cli.py")

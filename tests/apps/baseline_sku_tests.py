@@ -31,7 +31,7 @@ def main():
     repo_root = os.path.abspath(args.repo_root)
     baseline_doc = os.path.join(repo_root, "docs", "architecture", "CAPABILITY_BASELINES.md")
     sku_doc = os.path.join(repo_root, "docs", "architecture", "SKU_MATRIX.md")
-    schema_path = os.path.join(repo_root, "contracts", "schemas", "capability_baseline.schema")
+    schema_path = os.path.join(repo_root, "contracts", "schema", "capability_baseline.schema")
 
     if not os.path.isfile(baseline_doc):
         print("missing CAPABILITY_BASELINES.md")

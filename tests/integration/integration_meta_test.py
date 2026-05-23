@@ -109,10 +109,10 @@ def main():
         errors.append("no registered platform backends")
 
     docs_required = [
-        os.path.join(repo_root, "docs", "app", "README.md"),
-        os.path.join(repo_root, "docs", "platform", "README.md"),
-        os.path.join(repo_root, "docs", "render", "README.md"),
-        os.path.join(repo_root, "docs", "repox", "APRX_INTEGRATION_HOOKS.md"),
+        os.path.join(repo_root, "docs", "apps", "README.md"),
+        os.path.join(repo_root, "docs", "runtime", "platform", "README.md"),
+        os.path.join(repo_root, "docs", "runtime", "render", "README.md"),
+        os.path.join(repo_root, "docs", "repo", "repox", "APRX_INTEGRATION_HOOKS.md"),
     ]
     for doc_path in docs_required:
         if not os.path.isfile(doc_path):
@@ -138,8 +138,8 @@ def main():
             if key not in ext_versions:
                 errors.append("extension '{}' missing version macro".format(key))
 
-        app_runtime = os.path.join(repo_root, "runtime", "app", "app_runtime.c")
-        cli_contracts = os.path.join(repo_root, "docs", "app", "CLI_CONTRACTS.md")
+        app_runtime = os.path.join(repo_root, "runtime", "shell", "lifecycle", "app_runtime.c")
+        cli_contracts = os.path.join(repo_root, "docs", "apps", "CLI_CONTRACTS.md")
         if not os.path.isfile(app_runtime):
             errors.append("missing app runtime file: {}".format(app_runtime))
         if not os.path.isfile(cli_contracts):

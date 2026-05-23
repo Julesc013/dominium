@@ -164,7 +164,7 @@ def main():
 
     violations = []
 
-    registry_path = os.path.join(repo_root, "libs", "appcore", "command", "command_registry.c")
+    registry_path = os.path.join(repo_root, "runtime", "shell", "command", "command_registry.c")
     commands = parse_command_entries(registry_path)
     if not commands:
         violations.append("command registry entries missing")

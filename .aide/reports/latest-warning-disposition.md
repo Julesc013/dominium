@@ -7,7 +7,7 @@ Current coordinator task: `PRESENTATION-CONTRACT-01`.
 | Warning | Classification | Disposition |
 | --- | --- | --- |
 | Full CTest not green | full_gate_debt | Retained as T4/full-gate debt; narrow product-spine work uses fast strict and targeted validators. |
-| Stale full-gate tests expect retired roots/contracts | stale_full_gate_contract | Accepted only as maintenance debt for `FULL-GATE-LEGACY-TEST-ROUTE-01`; old roots must not be recreated to satisfy them. |
+| Stale full-gate tests expect retired roots/contracts | stale_full_gate_contract | Routed by `FULL-GATE-LEGACY-TEST-ROUTE-01` for the known active full-gate tests; old roots must not be recreated to satisfy remaining evidence. |
 | Foundation Lock remains PASS_WITH_WARNINGS | foundation_warning | Accepted; it authorizes only narrow governed product-spine slices. |
 | Stale AuditX output | stale_evidence_warning | Accepted as known RepoX warning; not hidden. |
 | Workbench shell absent | runtime_not_implemented_gap | Accepted; `PRESENTATION-CONTRACT-01` is contract-only and `WORKBENCH-SHELL-READONLY-01` remains a later task. |
@@ -22,6 +22,14 @@ Current coordinator task: `PRESENTATION-CONTRACT-01`.
 | Presentation descriptors are contract-only | planned_runtime_gap | Accepted; validator forbids claiming runtime implementation here. |
 | Read-only inspection is a contract target, not a product UI | product_spine_gap | Accepted; next task is projection conformance before Workbench shell or Universe Explorer implementation. |
 | No-modal-loading is specified but not implemented | future_proof_required | Accepted; future tasks must prove pending/degraded states and non-blocking behavior before visual explorer claims. |
+
+## Maintenance Update: FULL-GATE-LEGACY-TEST-ROUTE-01
+
+| Warning | Classification | Disposition |
+| --- | --- | --- |
+| Active full-gate tests required retired paths | repaired_full_gate_route | Known active expectations for `game/rules`, `contracts/schemas`, `data/profiles`, `libs/appcore`, `docs/app`, `docs/platform`, `docs/render`, `docs/repox`, `runtime/app`, `tools/modpack`, `tools/workspace`, and `tools/distribution` were routed to canonical paths. |
+| Retired-root mentions remain in compatibility and structure guards | guard_or_compat_reference | Preserved; these references are compatibility metadata or negative canonical-structure enforcement, not active source requirements. |
+| Full CTest is not claimed green | full_gate_debt | Accepted; targeted stale-root/full-gate subset passes, but full CTest was not rerun in this maintenance task. |
 
 ## Authorization
 

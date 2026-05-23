@@ -1,0 +1,309 @@
+{
+  "artifact_class": "RUN_META",
+  "cache_hits": 0,
+  "cache_misses": 16,
+  "changed_files": [
+    ".aide/reports/latest-warning-disposition.md",
+    "docs/repo/audits/FULL_GATE_LEGACY_TEST_ROUTE_01.md",
+    "tests/apps/baseline_sku_tests.py",
+    "tests/apps/modpack_workspace_tests.py",
+    "tests/contract/capability_gating_contracts.py",
+    "tests/contract/determinism_hardlock_tests.py",
+    "tests/contract/srz_contract_tests.py",
+    "tests/distribution/distribution_legacy_platform_profiles_tests.py",
+    "tests/distribution/distribution_sdk_profile_tests.py",
+    "tests/integration/integration_meta_test.py",
+    "tools/validators/ci/phase6_audit_checks.py",
+    "tools/validators/repo/check_full_gate_legacy_paths.py"
+  ],
+  "generated_utc": "2026-05-23T16:22:33Z",
+  "groups": [
+    {
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "cache_hit": false,
+      "dep_hash": "4ebb055c9ec5738c6467c34a1d84e59527591825e63c95ccde73352f817f8603",
+      "duration_ms": 8,
+      "group_id": "repox.structure.code",
+      "scope_subtrees": [
+        "client",
+        "engine",
+        "game",
+        "server"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "cache_hit": false,
+      "dep_hash": "beeb2be6e50126c742d385a0016ca360b7a7791b045107514f3de84305991bda",
+      "duration_ms": 2,
+      "group_id": "repox.structure.schema",
+      "scope_subtrees": [
+        "data",
+        "schema",
+        "tests"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "cache_hit": false,
+      "dep_hash": "c154d8f8d6e85830d90ec538fa30fcbad99e179c33d20e66b256ba892235a195",
+      "duration_ms": 4659,
+      "group_id": "repox.structure.ruleset",
+      "scope_subtrees": [
+        "docs",
+        "repo",
+        "scripts"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "bdb9971b440f94e103b607b5e55e3b0671d92ee5ba6ba7b1cfcec1d18279c436",
+      "duration_ms": 6585,
+      "group_id": "repox.docs.canon",
+      "scope_subtrees": [
+        "docs",
+        "repo"
+      ],
+      "violation_count": 1
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "c43dbc1b7679a42ad9b4bef512f03eaa2f567378f506c3712d7421a97ed1e18b",
+      "duration_ms": 1345,
+      "group_id": "repox.schema.compat",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "schema"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "faf3257261f3ec2de8f79e244a176aab8d22d55b27df611f0beae3795b25d3a5",
+      "duration_ms": 1464,
+      "group_id": "repox.dist.platform",
+      "scope_subtrees": [
+        "data",
+        "dist",
+        "schema",
+        "scripts"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL"
+      ],
+      "cache_hit": false,
+      "dep_hash": "efe1bfcadcc010e7a89dd06c3a04ff9671ba207db93e3fb1e72b9f127e561500",
+      "duration_ms": 7403,
+      "group_id": "repox.runtime.policy",
+      "scope_subtrees": [
+        "client",
+        "data",
+        "engine",
+        "game",
+        "schema",
+        "server"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "2af3d1ca4d296d6596ab5f33b214befbaaffc5e3c804ab863b506db8133bfbca",
+      "duration_ms": 417,
+      "group_id": "repox.runtime.modding",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "packs",
+        "schema",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "842a8c7aa1854bae700f415d8099a19c549babb2d32db7c415253963a36790e1",
+      "duration_ms": 12,
+      "group_id": "repox.runtime.server",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "schema",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "6552867aa5fb7af247c2568e809330f953f30c020cbe3e81ff3663d416360726",
+      "duration_ms": 66,
+      "group_id": "repox.runtime.compat",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "schema",
+        "schemas",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "ced05f67b56d2249d819a9b33edafad9975da0f233fed9d7552a44f8cd5a6add",
+      "duration_ms": 6,
+      "group_id": "repox.runtime.diag",
+      "scope_subtrees": [
+        "docs",
+        "schema",
+        "schemas",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "46a023ab32f253696cd3ddfe5b759c33cdb69a6a72ffd22cbbd3580fe41c087b",
+      "duration_ms": 3658,
+      "group_id": "repox.runtime.bundle",
+      "scope_subtrees": [
+        "data",
+        "dist",
+        "locks",
+        "profiles",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "842a8c7aa1854bae700f415d8099a19c549babb2d32db7c415253963a36790e1",
+      "duration_ms": 42138,
+      "group_id": "repox.runtime.worldgen",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "schema",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "842a8c7aa1854bae700f415d8099a19c549babb2d32db7c415253963a36790e1",
+      "duration_ms": 61,
+      "group_id": "repox.runtime.embodiment",
+      "scope_subtrees": [
+        "data",
+        "docs",
+        "schema",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "64f43f800c1008090c29592745023a858e3528a964a1ff3e2e6ab617ab4c755e",
+      "duration_ms": 33831,
+      "group_id": "repox.runtime.viewer",
+      "scope_subtrees": [
+        "docs",
+        "src",
+        "tools"
+      ],
+      "violation_count": 0
+    },
+    {
+      "artifact_classes": [
+        "CANONICAL",
+        "DERIVED_VIEW"
+      ],
+      "cache_hit": false,
+      "dep_hash": "ab6fcfcc22346488719ce4f495653a6729dcac315377d6bba4e797e4ec61b21b",
+      "duration_ms": 21515,
+      "group_id": "repox.runtime.heavy_scans",
+      "scope_subtrees": [
+        "client",
+        "data",
+        "docs",
+        "engine",
+        "game",
+        "schema",
+        "server",
+        "tests",
+        "tools"
+      ],
+      "violation_count": 0
+    }
+  ],
+  "impacted_roots": [
+    "docs",
+    "repo",
+    "tests",
+    "tools"
+  ],
+  "profile": "STRICT",
+  "status": "DERIVED",
+  "total_duration_ms": 132008
+}

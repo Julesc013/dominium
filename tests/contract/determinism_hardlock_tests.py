@@ -5,11 +5,13 @@ import sys
 
 
 AUTHORITATIVE_DIRS = (
-    os.path.join("engine", "modules", "core"),
-    os.path.join("engine", "modules", "sim"),
-    os.path.join("engine", "modules", "world"),
-    os.path.join("game", "core"),
-    os.path.join("game", "rules"),
+    os.path.join("engine", "foundation"),
+    os.path.join("engine", "kernel"),
+    os.path.join("engine", "execution"),
+    os.path.join("engine", "state"),
+    os.path.join("game", "domain"),
+    os.path.join("game", "law"),
+    os.path.join("game", "rule"),
 )
 
 SKIP_DIRS = {
@@ -140,8 +142,8 @@ def main() -> int:
                    ["d_rng_stream_name_valid", "D_DET_GUARD_RNG_STREAM_NAME"],
                    "rng_model.h")
 
-    fab_path = os.path.join(repo_root, "game", "rules", "fab", "fab_interpreters.cpp")
-    scale_path = os.path.join(repo_root, "game", "rules", "scale", "scale_collapse_expand.cpp")
+    fab_path = os.path.join(repo_root, "game", "domain", "fabrication", "fab_interpreters.cpp")
+    scale_path = os.path.join(repo_root, "game", "domain", "scale", "scale_collapse_expand.cpp")
     require_tokens(fab_path, ["noise.stream."], "fab_interpreters.cpp")
     require_tokens(scale_path, ["noise.stream."], "scale_collapse_expand.cpp")
 

@@ -133,7 +133,7 @@ def check_files(repo_root, rel_paths, label, failures):
 
 
 def check_ci_matrix(repo_root, failures):
-    matrix_path = os.path.join(repo_root, "docs", "ci", "CI_ENFORCEMENT_MATRIX.md")
+    matrix_path = os.path.join(repo_root, "docs", "testing", "ci", "CI_ENFORCEMENT_MATRIX.md")
     try:
         with open(matrix_path, "r", errors="ignore") as handle:
             content = handle.read()
