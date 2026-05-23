@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from typing import Mapping
 
-from engine.compatx.core.semantic_contract_validator import (
+from engine.compatibility.core.semantic_contract_validator import (
     build_semantic_contract_proof_bundle,
     bundle_hash,
     load_semantic_contract_registry,

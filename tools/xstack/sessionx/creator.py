@@ -532,7 +532,7 @@ def _load_constraints_payload(
         return {}, refusal(
             "REFUSE_CONSTRAINTS_SCHEMA_INVALID",
             "worldgen constraints payload failed schema validation",
-            "Fix constraints fields to satisfy contracts/schema/worldgen_constraints.schema.json.",
+            "Fix constraints fields to satisfy contracts/schema/game/worldgen/worldgen_constraints.schema.json.",
             {"constraints_file": norm(abs_path)},
             "$.worldgen.constraints",
         )

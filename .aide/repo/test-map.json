@@ -5214,7 +5214,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/CMakeLists.txt"
+      "test_path": "tests/operations/CMakeLists.txt"
     },
     {
       "confidence": "low",
@@ -5222,7 +5222,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/artifact_manifest_tests.py"
+      "test_path": "tests/operations/artifact_manifest_tests.py"
     },
     {
       "confidence": "low",
@@ -5230,7 +5230,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/build_identity_tests.py"
+      "test_path": "tests/operations/build_identity_tests.py"
     },
     {
       "confidence": "low",
@@ -5238,7 +5238,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/build_matrix_tests.py"
+      "test_path": "tests/operations/build_matrix_tests.py"
     },
     {
       "confidence": "low",
@@ -5246,7 +5246,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/compatibility_tests.py"
+      "test_path": "tests/operations/compatibility_tests.py"
     },
     {
       "confidence": "low",
@@ -5254,7 +5254,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/content_store_tests.py"
+      "test_path": "tests/operations/content_store_tests.py"
     },
     {
       "confidence": "low",
@@ -5262,7 +5262,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/export_import_bundle_tests.py"
+      "test_path": "tests/operations/export_import_bundle_tests.py"
     },
     {
       "confidence": "low",
@@ -5270,7 +5270,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/instance_manifest_tests.py"
+      "test_path": "tests/operations/instance_manifest_tests.py"
     },
     {
       "confidence": "low",
@@ -5278,7 +5278,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/lib_stress_envelope_tests.py"
+      "test_path": "tests/operations/lib_stress_envelope_tests.py"
     },
     {
       "confidence": "low",
@@ -5286,7 +5286,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/ops_manifest_tests.py"
+      "test_path": "tests/operations/ops_manifest_tests.py"
     },
     {
       "confidence": "low",
@@ -5294,7 +5294,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/provides_resolution_tests.py"
+      "test_path": "tests/operations/provides_resolution_tests.py"
     },
     {
       "confidence": "low",
@@ -5302,7 +5302,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/repox_changelog_tests.py"
+      "test_path": "tests/operations/repox_changelog_tests.py"
     },
     {
       "confidence": "low",
@@ -5310,7 +5310,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/repox_gbn_allocator_tests.py"
+      "test_path": "tests/operations/repox_gbn_allocator_tests.py"
     },
     {
       "confidence": "low",
@@ -5318,7 +5318,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/repox_release_tests.py"
+      "test_path": "tests/operations/repox_release_tests.py"
     },
     {
       "confidence": "low",
@@ -5326,7 +5326,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/save_manifest_tests.py"
+      "test_path": "tests/operations/save_manifest_tests.py"
     },
     {
       "confidence": "low",
@@ -5334,7 +5334,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/universe_complexity_contract_tests.py"
+      "test_path": "tests/operations/universe_complexity_contract_tests.py"
     },
     {
       "confidence": "low",
@@ -5342,7 +5342,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/ops/update_feeds_tests.py"
+      "test_path": "tests/operations/update_feeds_tests.py"
     },
     {
       "confidence": "low",
@@ -5854,7 +5854,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/services/CMakeLists.txt"
+      "test_path": "tests/contract/service/services_expiry/CMakeLists.txt"
     },
     {
       "confidence": "low",
@@ -5862,7 +5862,7 @@
       "reasons": [
         "test_path_detected"
       ],
-      "test_path": "tests/services/services_expiry_tests.cpp"
+      "test_path": "tests/contract/service/services_expiry/services_expiry_tests.cpp"
     },
     {
       "confidence": "low",

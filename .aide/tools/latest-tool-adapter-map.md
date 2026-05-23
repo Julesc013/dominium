@@ -108,11 +108,11 @@
 - `.aide/tools/tool-wrap-plan.schema.json`
 - `.github/workflows/ci.yml`
 - `archive/legacy/setup_core_setup/setup/core/import/dsk_import_legacy.cpp`
-- `contracts/schema/net_resync_strategy_registry.schema.json`
+- `contracts/schema/runtime/network/net_resync_strategy_registry.schema.json`
 - `contracts/schema/tools/SPEC_TOOL_CAPABILITIES.md`
 - `contracts/schema/tools/SPEC_TOOL_INTENTS.md`
 - `contracts/schema/tools/SPEC_TOOL_SCOPING.md`
-- `contracts/schema/world/SPEC_WORLD_DATA_IMPORT.md`
+- `contracts/schema/game/world/SPEC_WORLD_DATA_IMPORT.md`
 - `data/registries/net_resync_strategy_registry.json`
 - `runtime/capability/d_caps_export.c`
 - `game/domain/embodiment/tools/__init__.py`

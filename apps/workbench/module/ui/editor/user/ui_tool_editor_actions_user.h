@@ -15,7 +15,7 @@ EXTENSION POINTS: Implement handler bodies in the user source file; regenerate s
 #ifndef UI_TOOL_EDITOR_ACTIONS_USER_H_INCLUDED
 #define UI_TOOL_EDITOR_ACTIONS_USER_H_INCLUDED
 
-#include "dui/domui_event.h"
+#include "domino/ui/dui/domui_event.h"
 
 #ifdef __cplusplus
 extern "C" {

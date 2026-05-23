@@ -5573,8 +5573,8 @@
     {
       "hash": "f646b8b7c67904d3e4469241e43fcb9d95bef843",
       "scope": "uncategorized",
-      "summary": "Add optional debug counters and verification notes - include/dui/dui_win32.h - source/domino/dui/dui_win32.c - docs/ui_editor/FLICKER_NOTES.md - docs/ui_editor/README.md",
-      "subject": "Add optional debug counters and verification notes - include/dui/dui_win32.h - source/domino/dui/dui_win32.c - docs/ui_editor/FLICKER_NOTES.md - docs/ui_editor/README.md"
+      "summary": "Add optional debug counters and verification notes - runtime/include/domino/ui/dui/dui_win32.h - source/domino/dui/dui_win32.c - docs/ui_editor/FLICKER_NOTES.md - docs/ui_editor/README.md",
+      "subject": "Add optional debug counters and verification notes - runtime/include/domino/ui/dui/dui_win32.h - source/domino/dui/dui_win32.c - docs/ui_editor/FLICKER_NOTES.md - docs/ui_editor/README.md"
     },
     {
       "hash": "ab6229dbdf52fbda0718fc17051d9910f3d12a49",
@@ -5585,14 +5585,14 @@
     {
       "hash": "137b8d648f73ab57c7dfc67a1c1686ecd5668c06",
       "scope": "uncategorized",
-      "summary": "Add DUI Win32 batch update and coalesced relayout primitives - include/dui/dui_win32.h - source/domino/dui/dui_win32.c",
-      "subject": "Add DUI Win32 batch update and coalesced relayout primitives - include/dui/dui_win32.h - source/domino/dui/dui_win32.c"
+      "summary": "Add DUI Win32 batch update and coalesced relayout primitives - runtime/include/domino/ui/dui/dui_win32.h - source/domino/dui/dui_win32.c",
+      "subject": "Add DUI Win32 batch update and coalesced relayout primitives - runtime/include/domino/ui/dui/dui_win32.h - source/domino/dui/dui_win32.c"
     },
     {
       "hash": "0463a0765af81c31e6e6ca3afb4426d6b64ba786",
       "scope": "uncategorized",
-      "summary": "Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - include/dui/domui_event.h - include/dui/dui_api_v1.h - include/dui/dui_schema_tlv.h - source/domino/dui/dui_win32.c - source/domino/ui_codegen/ui_codegen.cpp - source/domino/ui_codegen/ui_codegen.h - source/domino/ui_codegen/ui_codegen_main.cpp - source/domino/ui_codegen/tests/ui_codegen_tests.cpp - apps/workbench/module/ui/editor/ui_editor_main_win32.cpp - apps/workbench/module/ui/editor/CMakeLists.txt",
-      "subject": "Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - include/dui/domui_event.h - include/dui/dui_api_v1.h - include/dui/dui_schema_tlv.h - source/domino/dui/dui_win32.c - source/domino/ui_codegen/ui_codegen.cpp - source/domino/ui_codegen/ui_codegen.h - source/domino/ui_codegen/ui_codegen_main.cpp - source/domino/ui_codegen/tests/ui_codegen_tests.cpp - apps/workbench/module/ui/editor/ui_editor_main_win32.cpp - apps/workbench/module/ui/editor/CMakeLists.txt"
+      "summary": "Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - runtime/include/domino/ui/dui/domui_event.h - runtime/include/domino/ui/dui/dui_api_v1.h - runtime/include/domino/ui/dui/dui_schema_tlv.h - source/domino/dui/dui_win32.c - source/domino/ui_codegen/ui_codegen.cpp - source/domino/ui_codegen/ui_codegen.h - source/domino/ui_codegen/ui_codegen_main.cpp - source/domino/ui_codegen/tests/ui_codegen_tests.cpp - apps/workbench/module/ui/editor/ui_editor_main_win32.cpp - apps/workbench/module/ui/editor/CMakeLists.txt",
+      "subject": "Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - runtime/include/domino/ui/dui/domui_event.h - runtime/include/domino/ui/dui/dui_api_v1.h - runtime/include/domino/ui/dui/dui_schema_tlv.h - source/domino/dui/dui_win32.c - source/domino/ui_codegen/ui_codegen.cpp - source/domino/ui_codegen/ui_codegen.h - source/domino/ui_codegen/ui_codegen_main.cpp - source/domino/ui_codegen/tests/ui_codegen_tests.cpp - apps/workbench/module/ui/editor/ui_editor_main_win32.cpp - apps/workbench/module/ui/editor/CMakeLists.txt"
     },
     {
       "hash": "0a3a22802216e7e37c4949de05f420702c558c7b",

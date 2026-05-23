@@ -26,7 +26,7 @@ from tools.release.mvp.runtime_bundle import (
     validate_pack_lock_payload as validate_runtime_pack_lock_payload,
 )
 from runtime.serialization.canonical_json import canonical_sha256
-from runtime.compatx.validator import validate_instance
+from engine.compatibility.validator import validate_instance
 from runtime.session.common import norm, read_json_object, refusal, write_canonical_json
 from tools.xstack.sessionx.creator import (
     _default_net_schema_versions,

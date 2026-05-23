@@ -41,8 +41,8 @@ Related:
 - `docs/reference/specs/SPEC_FACADES_BACKENDS.md`
 - `docs/reference/specs/SPEC_CAPABILITY_REGISTRY.md`
 - `docs/reference/specs/SPEC_CONTAINER_TLV.md`
-- `runtime/include/dui/dui_api_v1.h`
-- `runtime/include/dui/dui_schema_tlv.h`
+- `runtime/include/domino/ui/dui/dui_api_v1.h`
+- `runtime/include/domino/ui/dui/dui_schema_tlv.h`
 
 ## 1. Goals and Non-Goals
 
@@ -61,7 +61,7 @@ Non-goals (explicitly deferred):
 ## 2. Facade ABI: `dui_api_v1`
 
 The DUI facade is a **C ABI**, versioned POD vtable:
-- Header: `runtime/include/dui/dui_api_v1.h`
+- Header: `runtime/include/domino/ui/dui/dui_api_v1.h`
 - ABI version constant: `DUI_API_ABI_VERSION`
 - Every ABI-visible struct begins with `{ abi_version, struct_size }` (`DOM_ABI_HEADER`).
 
@@ -110,7 +110,7 @@ DUI uses TLV streams consistent with Domino’s TLV conventions (skip-unknown).
 
 ### 4.1 Schema TLV (`SCH1`)
 
-Header: `include/dui/dui_schema_tlv.h`
+Header: `runtime/include/domino/ui/dui/dui_schema_tlv.h`
 
 Root:
 - `DUI_TLV_SCHEMA_V1` (`'SCH1'`) → payload is nested TLV

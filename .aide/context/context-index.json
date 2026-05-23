@@ -1,8 +1,8 @@
 {
   "contents_inline": false,
   "counts": {
-    "repo_files": 17097,
-    "test_mappings": 5877,
+    "repo_files": 17192,
+    "test_mappings": 5890,
     "test_mappings_with_existing_candidate": 1
   },
   "creation_mode": "deterministic-local",
@@ -21,14 +21,14 @@
     "aide_policy": 118,
     "aide_prompt": 3,
     "aide_queue": 446,
-    "config": 3447,
-    "docs": 5356,
+    "config": 3524,
+    "docs": 5369,
     "generated": 9,
     "script": 52,
     "test": 2068,
-    "unknown": 5317
+    "unknown": 5322
   },
   "schema_version": "aide.context-index.v0",
   "source_snapshot": ".aide/context/repo-snapshot.json",
-  "source_snapshot_hash": "f6d5dfeb990163c4d4222327d2ca94b657aba54278a3b3ff3e7269fdddb51b20"
+  "source_snapshot_hash": "a16a8026353c9626c6eea6ebe39ae7db391d413a9612eb256bb470bdb56f9913"
 }

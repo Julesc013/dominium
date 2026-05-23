@@ -423,7 +423,7 @@ Enforced by:
 - `docs/architecture/SERVICES_AND_PRODUCTS.md`
 
 
-- Tests: `tests/services/`
+- Tests: `tests/contract/service/services_expiry/`
 
 
 
@@ -477,7 +477,7 @@ Enforced by:
 - `docs/architecture/UPGRADE_AND_CONVERSION.md`
 
 
-- Tests: `tests/authority/`, `tests/services/`
+- Tests: `tests/authority/`, `tests/contract/service/services_expiry/`
 
 
 

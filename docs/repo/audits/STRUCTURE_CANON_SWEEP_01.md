@@ -32,7 +32,7 @@ still referenced the retired paths.
   `runtime/projection/text/`.
 - Moved semantic UI IR code from `runtime/ui/ir/` to `runtime/view/ir/`.
 - Moved DUI control code from `runtime/ui/dui/` to
-  `runtime/ui/control/dui/`.
+  `runtime/ui/control/domui/`.
 - Moved DUI public include paths from `runtime/ui/include/` to
   `runtime/include/`.
 - Folded active AIDE docs from `docs/aide/` into `docs/development/aide/`.

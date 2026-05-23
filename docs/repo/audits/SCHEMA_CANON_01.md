@@ -18,25 +18,25 @@ Branch: `main`
 ## Schema Buckets Inspected
 
 - `contracts/schema/chem/`
-- `contracts/schema/civ/`
-- `contracts/schema/civilisation/`
+- `contracts/schema/domain/civilization/`
+- `contracts/schema/domain/civilization/`
 - `contracts/schema/compat/`
 - `contracts/schema/control/`
 - `contracts/schema/core/`
 - `contracts/schema/diag/`
 - `contracts/schema/electric/`
 - `contracts/schema/fab/`
-- `contracts/schema/fluid/`
-- `contracts/schema/geo/`
+- `contracts/schema/domain/fluids/`
+- `contracts/schema/domain/geology/`
 - `contracts/schema/lib/`
 - `contracts/schema/material/`
 - `contracts/schema/materials/`
 - `contracts/schema/models/`
 - `contracts/schema/mods/`
-- `contracts/schema/net/`
+- `contracts/schema/runtime/network/`
 - `contracts/schema/packs/`
 - `contracts/schema/physical/`
-- `contracts/schema/render/`
+- `contracts/schema/runtime/render/`
 - `contracts/schema/specs/`
 - `contracts/schema/tech/`
 - `contracts/schema/technology/`

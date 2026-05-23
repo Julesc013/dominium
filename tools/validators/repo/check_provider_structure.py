@@ -18,6 +18,7 @@ except ImportError:  # pragma: no cover
 
 
 PROVIDER_REGISTRY = Path("contracts/provider/provider.registry.json")
+PLANNED_PROVIDER_REGISTRY = Path("contracts/provider/provider_plans.registry.json")
 PROVIDER_STRUCTURE_CONTRACT = Path("contracts/provider/provider_structure.contract.toml")
 THIRD_PARTY_MANIFEST = Path("external/manifests/third_party.toml")
 RELEASE_PROFILE_ROOT = Path("release/profiles")
@@ -194,6 +195,61 @@ def provider_ids(repo_root: Path) -> Set[str]:
     }
 
 
+def planned_provider_ids(repo_root: Path) -> Set[str]:
+    path = repo_root / PLANNED_PROVIDER_REGISTRY
+    if not path.exists():
+        return set()
+    data = load_json(path)
+    return {
+        str(item.get("provider_id"))
+        for item in data.get("providers", [])
+        if isinstance(item, dict) and item.get("provider_id")
+    }
+
+
+def validate_planned_provider_registry(repo_root: Path) -> List[Dict[str, Any]]:
+    findings: List[Dict[str, Any]] = []
+    path = repo_root / PLANNED_PROVIDER_REGISTRY
+    if not path.exists():
+        findings.append(finding("warning", "planned_provider_registry_absent", "planned provider registry is absent", PLANNED_PROVIDER_REGISTRY.as_posix()))
+        return findings
+    try:
+        data = load_json(path)
+    except Exception as exc:
+        return [finding("error", "planned_provider_registry_unreadable", f"planned provider registry cannot be read: {exc}", PLANNED_PROVIDER_REGISTRY.as_posix())]
+    if data.get("support_claim") is not False:
+        findings.append(finding("error", "planned_registry_support_claim", "planned provider registry must explicitly declare support_claim=false", PLANNED_PROVIDER_REGISTRY.as_posix()))
+    seen: Set[str] = set()
+    for index, provider in enumerate(data.get("providers", [])):
+        record_path = f"{PLANNED_PROVIDER_REGISTRY.as_posix()}#{index}"
+        if not isinstance(provider, dict):
+            findings.append(finding("error", "planned_provider_not_object", "planned provider entry must be an object", record_path))
+            continue
+        provider_id = str(provider.get("provider_id") or "")
+        implementation_path = str(provider.get("implementation_path") or "").replace("\\", "/")
+        service_root = str(provider.get("service_root") or "").replace("\\", "/")
+        if provider_id in seen:
+            findings.append(finding("error", "duplicate_planned_provider", f"duplicate planned provider_id: {provider_id}", record_path))
+        seen.add(provider_id)
+        if not PROVIDER_ID_RE.match(provider_id):
+            findings.append(finding("error", "planned_provider_id_not_versioned", "planned provider_id must be versioned", record_path))
+        if provider.get("planned") is not True or provider.get("support_claim") is not False:
+            findings.append(finding("error", "planned_provider_support_claim", "planned provider entries must declare planned=true and support_claim=false", record_path))
+        parts = implementation_path.split("/")
+        canonical = len(parts) >= 4 and parts[0] == "runtime" and parts[2] == "providers"
+        if not canonical:
+            findings.append(finding("error", "planned_provider_path_not_canonical", "planned provider path must use runtime/<service>/providers/<provider>", record_path))
+            continue
+        if parts[1] not in SERVICE_ROOTS:
+            findings.append(finding("error", "unknown_planned_provider_service", f"unknown planned provider service root: {parts[1]}", record_path))
+        if service_root and service_root != f"runtime/{parts[1]}":
+            findings.append(finding("error", "planned_provider_service_root_mismatch", "planned provider service_root does not match implementation_path", record_path))
+        provider_api = str(provider.get("provider_api") or "")
+        if provider_api and provider_api != parts[3]:
+            findings.append(finding("error", "planned_provider_api_path_mismatch", "planned provider_api must match implementation folder", record_path))
+    return findings
+
+
 def validate_provider_registry(repo_root: Path) -> List[Dict[str, Any]]:
     findings: List[Dict[str, Any]] = []
     try:
@@ -236,7 +292,7 @@ def validate_provider_registry(repo_root: Path) -> List[Dict[str, Any]]:
     return findings
 
 
-def validate_release_profiles(repo_root: Path, known_providers: Set[str]) -> List[Dict[str, Any]]:
+def validate_release_profiles(repo_root: Path, known_providers: Set[str], planned_providers: Set[str]) -> List[Dict[str, Any]]:
     findings: List[Dict[str, Any]] = []
     root = repo_root / RELEASE_PROFILE_ROOT
     if not root.exists():
@@ -252,6 +308,7 @@ def validate_release_profiles(repo_root: Path, known_providers: Set[str]) -> Lis
         profile = data.get("profile", {})
         if not isinstance(profile, dict) or not str(profile.get("id") or "").startswith("dominium.profile."):
             findings.append(finding("error", "release_profile_bad_id", "release provider profile must declare dominium.profile.* id", rel))
+        support_claim = bool(profile.get("support_claim")) if isinstance(profile, dict) else False
         providers = data.get("providers", {})
         if not isinstance(providers, dict) or not providers:
             findings.append(finding("error", "release_profile_missing_providers", "release provider profile must declare [providers]", rel))
@@ -259,7 +316,10 @@ def validate_release_profiles(repo_root: Path, known_providers: Set[str]) -> Lis
         for service, provider_ref in providers.items():
             if str(service) not in SERVICE_ROOTS:
                 findings.append(finding("warning", "release_profile_unknown_service", f"profile provider service is not in the known service root set: {service}", rel))
-            if str(provider_ref) not in known_providers:
+            provider_ref = str(provider_ref)
+            if provider_ref in planned_providers and support_claim:
+                findings.append(finding("error", "release_profile_planned_provider_support_claim", f"profile claims support while referencing planned provider: {provider_ref}", rel))
+            if provider_ref not in known_providers and provider_ref not in planned_providers:
                 findings.append(finding("error", "release_profile_unknown_provider", f"profile references unknown provider: {provider_ref}", rel))
     return findings
 
@@ -285,10 +345,13 @@ def validate_include_leakage(repo_root: Path, paths: List[str]) -> List[Dict[str
 def build_report(repo_root: Path) -> Dict[str, Any]:
     findings: List[Dict[str, Any]] = []
     paths = git_ls_files(repo_root)
+    known_providers = provider_ids(repo_root)
+    planned_providers = planned_provider_ids(repo_root)
     findings.extend(check_required_policy_files(repo_root))
     findings.extend(check_paths(paths))
     findings.extend(validate_provider_registry(repo_root))
-    findings.extend(validate_release_profiles(repo_root, provider_ids(repo_root)))
+    findings.extend(validate_planned_provider_registry(repo_root))
+    findings.extend(validate_release_profiles(repo_root, known_providers, planned_providers))
     findings.extend(validate_include_leakage(repo_root, paths))
     errors = [item for item in findings if item["level"] == "error"]
     warnings = [item for item in findings if item["level"] == "warning"]

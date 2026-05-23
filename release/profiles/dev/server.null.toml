@@ -1,0 +1,17 @@
+[profile]
+id = "dominium.profile.dev.server.null"
+kind = "provider_profile"
+stability = "planned"
+product = "server"
+support_claim = false
+evidence = "docs/repo/audits/CANON_STRUCTURE_RESIDUALS_LOOP_02.md"
+
+[providers]
+platform = "domino.provider.platform.null.v1"
+input = "domino.provider.input.null.v1"
+render = "domino.provider.render.null.v1"
+audio = "domino.provider.audio.null.v1"
+storage = "domino.provider.storage.local.v1"
+
+[notes]
+summary = "Planned headless server-style null provider profile. No server runtime support claim is introduced."

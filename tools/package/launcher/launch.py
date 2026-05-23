@@ -216,7 +216,7 @@ def _validate_session_vs_dist(
         return _refusal(
             "REFUSE_SESSION_SPEC_INVALID",
             "session spec failed schema validation",
-            "Fix SessionSpec fields to satisfy contracts/schema/session_spec.schema.json.",
+            "Fix SessionSpec fields to satisfy contracts/schema/runtime/session/session_spec.schema.json.",
             {"session_spec_path": _norm(os.path.relpath(spec_abs, repo_root))},
             "$.session_spec",
         )

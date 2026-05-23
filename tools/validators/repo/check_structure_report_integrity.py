@@ -31,6 +31,87 @@ KNOWN_BUNDLE_FILES = {
     "dirfiles_run.log",
 }
 
+TASK_EXPORT_FILES = (
+    "tracked-files.txt",
+    "tracked-dirs.txt",
+    "tracked-roots.txt",
+    "first-level-by-root.txt",
+    "suspicious-active-paths.txt",
+    "old-path-sweep.txt",
+    "suspicious-active-paths-final.txt",
+    "old-path-sweep-final.txt",
+    "validation-summary.txt",
+    "task-status-matrix.json",
+    "report-integrity.txt",
+    "report-manifest.json",
+)
+
+ALLOWED_ACTIVE_ROOTS = {
+    ".aide",
+    ".aide.local.example",
+    ".github",
+    ".vscode",
+    "apps",
+    "archive",
+    "cmake",
+    "content",
+    "contracts",
+    "docs",
+    "engine",
+    "external",
+    "game",
+    "release",
+    "runtime",
+    "scripts",
+    "tests",
+    "tools",
+}
+
+GENERATED_LOCAL_ROOTS = {".aide.local", ".dominium.local", "build", "out", "dist", "artifacts", "reports", "tmp", "__pycache__"}
+
+RETIRED_ACTIVE_PREFIXES = (
+    "runtime/render/soft",
+    "runtime/render/stub",
+    "runtime/render/client/renderers",
+    "runtime/shell/commands",
+    "runtime/shell/ui_backends",
+    "runtime/capability/capability",
+    "runtime/ui/core",
+    "runtime/compatx",
+    "runtime/ui/control/dui",
+    "runtime/include/dui",
+    "runtime/platform/win32/ui/dui",
+    "runtime/platform/win32/ui/include/dui",
+    "game/rules",
+    "game/include/dominium/rules",
+    "engine/compatx",
+    "engine/include/domino/app",
+    "engine/include/domino/cli",
+    "engine/include/domino/gui",
+    "engine/include/domino/input",
+    "engine/include/domino/io",
+    "engine/include/domino/pkg",
+    "engine/include/domino/render",
+    "engine/include/domino/tui",
+    "engine/include/domino/world",
+    "engine/include/render",
+    "tests/ops",
+    "tests/services",
+)
+
+RETIRED_SCHEMA_PREFIXES = (
+    "contracts/schema/agents",
+    "contracts/schema/authority",
+    "contracts/schema/economy",
+    "contracts/schema/law",
+    "contracts/schema/life",
+    "contracts/schema/session",
+    "contracts/schema/time",
+    "contracts/schema/ui",
+    "contracts/schema/world",
+    "contracts/schema/worldgen",
+)
+
 REQUIRED_MANIFEST_FIELDS = (
     "schema_version",
     "source_mode",
@@ -127,6 +208,59 @@ def tracked_dirs(paths):
         for index in range(1, len(parts) + 1):
             dirs.add("/".join(parts[:index]))
     return sorted(dirs)
+
+
+def has_prefix(path, prefix):
+    return path == prefix or path.startswith(prefix + "/")
+
+
+def tracked_roots(paths):
+    roots = set()
+    for path in paths:
+        if "/" in path:
+            roots.add(path.split("/", 1)[0])
+        elif path:
+            roots.add(".")
+    return sorted(roots)
+
+
+def first_level_by_root(paths):
+    mapping = {}
+    for path in paths:
+        parts = path.split("/")
+        if len(parts) < 2:
+            continue
+        mapping.setdefault(parts[0], set()).add(parts[1])
+    return {root: sorted(values) for root, values in sorted(mapping.items())}
+
+
+def suspicious_paths(paths):
+    findings = []
+    prefixes = RETIRED_ACTIVE_PREFIXES + RETIRED_SCHEMA_PREFIXES
+    for path in paths:
+        root = path.split("/", 1)[0] if "/" in path else path
+        if root in GENERATED_LOCAL_ROOTS:
+            findings.append("tracked generated/local root: {0}".format(path))
+            continue
+        if "/" in path and root not in ALLOWED_ACTIVE_ROOTS:
+            findings.append("unexpected active root: {0}".format(path))
+            continue
+        for prefix in prefixes:
+            if has_prefix(path, prefix):
+                findings.append("retired active prefix {0}: {1}".format(prefix, path))
+                break
+    return sorted(findings)
+
+
+def old_path_sweep(paths):
+    rows = []
+    for prefix in RETIRED_ACTIVE_PREFIXES + RETIRED_SCHEMA_PREFIXES:
+        matches = [path for path in paths if has_prefix(path, prefix)]
+        if matches:
+            rows.extend("active {0}: {1}".format(prefix, path) for path in matches)
+        else:
+            rows.append("clear {0}".format(prefix))
+    return rows
 
 
 def git_metadata(repo_root):
@@ -386,7 +520,7 @@ def write_bundle(repo_root, output_dir):
     repo_root = os.path.abspath(repo_root)
     output_dir = os.path.abspath(output_dir)
     os.makedirs(output_dir, exist_ok=True)
-    for filename in KNOWN_BUNDLE_FILES:
+    for filename in sorted(KNOWN_BUNDLE_FILES | set(TASK_EXPORT_FILES)):
         candidate = os.path.join(output_dir, filename)
         if os.path.exists(candidate) and os.path.isfile(candidate):
             os.remove(candidate)
@@ -443,15 +577,92 @@ def write_bundle(repo_root, output_dir):
         "",
     ]
     write_text(os.path.join(output_dir, "dirfiles_run.log"), "\n".join(run_log))
+
+    roots = tracked_roots(tracked)
+    first_level = first_level_by_root(tracked)
+    suspicious = suspicious_paths(tracked)
+    sweep = old_path_sweep(tracked)
+    write_text(os.path.join(output_dir, "tracked-files.txt"), "\n".join(tracked) + "\n")
+    write_text(os.path.join(output_dir, "tracked-dirs.txt"), "\n".join(dirs) + "\n")
+    write_text(os.path.join(output_dir, "tracked-roots.txt"), "\n".join(roots) + "\n")
+    first_level_lines = []
+    for root, children in sorted(first_level.items()):
+        first_level_lines.append(root + ":")
+        first_level_lines.extend("  " + child for child in children)
+    write_text(os.path.join(output_dir, "first-level-by-root.txt"), "\n".join(first_level_lines) + "\n")
+    suspicious_text = "\n".join(suspicious) if suspicious else "none"
+    sweep_text = "\n".join(sweep)
+    write_text(os.path.join(output_dir, "suspicious-active-paths.txt"), suspicious_text + "\n")
+    write_text(os.path.join(output_dir, "old-path-sweep.txt"), sweep_text + "\n")
+    write_text(os.path.join(output_dir, "suspicious-active-paths-final.txt"), suspicious_text + "\n")
+    write_text(os.path.join(output_dir, "old-path-sweep-final.txt"), sweep_text + "\n")
+    write_text(
+        os.path.join(output_dir, "validation-summary.txt"),
+        "\n".join(
+            [
+                "schema_version: {0}".format(MANIFEST_SCHEMA_VERSION),
+                "source_mode: {0}".format(common["source_mode"]),
+                "commit: {0}".format(common["commit"]),
+                "branch: {0}".format(common["branch"]),
+                "dirty: {0}".format(normalized_metadata_value(common["dirty"])),
+                "generated_utc: {0}".format(common["generated_utc"]),
+                "run_id: {0}".format(common["run_id"]),
+                "status: generated",
+                "suspicious_active_paths: {0}".format(len(suspicious)),
+                "",
+            ]
+        ),
+    )
+    write_json(
+        os.path.join(output_dir, "task-status-matrix.json"),
+        dict(
+            common,
+            schema_version="dominium.repo.structure_task_status_matrix.v1",
+            task_id="CANON-STRUCTURE-ACTUAL-FINAL-CLEANUP-01",
+            checks={
+                "tracked_files": len(tracked),
+                "tracked_directories": len(dirs),
+                "tracked_roots": roots,
+                "suspicious_active_path_count": len(suspicious),
+            },
+        ),
+    )
+    write_text(
+        os.path.join(output_dir, "report-integrity.txt"),
+        "\n".join(
+            [
+                "schema_version: {0}".format(MANIFEST_SCHEMA_VERSION),
+                "source_mode: {0}".format(common["source_mode"]),
+                "commit: {0}".format(common["commit"]),
+                "branch: {0}".format(common["branch"]),
+                "dirty: {0}".format(normalized_metadata_value(common["dirty"])),
+                "generated_utc: {0}".format(common["generated_utc"]),
+                "run_id: {0}".format(common["run_id"]),
+                "status: generated_pending_manifest_verification",
+                "",
+            ]
+        ),
+    )
+    write_json(
+        os.path.join(output_dir, "report-manifest.json"),
+        dict(
+            common,
+            schema_version="dominium.repo.structure_report_alias.v1",
+            canonical_manifest="dirfiles_manifest.json",
+            core_reports=list(ZIP_REQUIRED_MEMBERS),
+            task_reports=list(TASK_EXPORT_FILES),
+        ),
+    )
     write_zip(output_dir)
 
+    manifest_files = ("dir_tree.json", "dir_tree.txt", "dirfiles_run.log", "dirfiles.zip") + TASK_EXPORT_FILES
     manifest = dict(common)
     manifest.update(
         {
             "schema_version": MANIFEST_SCHEMA_VERSION,
             "files": [
                 file_entry(output_dir, filename)
-                for filename in ("dir_tree.json", "dir_tree.txt", "dirfiles_run.log", "dirfiles.zip")
+                for filename in manifest_files
             ],
         }
     )

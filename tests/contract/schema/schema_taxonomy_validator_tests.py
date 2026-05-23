@@ -60,7 +60,7 @@ def main():
     violations = []
 
     with tempfile.TemporaryDirectory(prefix="schema_taxonomy_bad_") as tmp:
-        _init_repo(tmp, ["contracts/schema/geo/demo.schema"])
+        _init_repo(tmp, ["contracts/schema/domain/geology/demo.schema"])
         result, payload = _path_terms(repo_root, tmp)
         _assert(result.returncode != 0, "retired geo schema bucket did not fail strict validation", violations)
         _assert(payload.get("blocker_count", 0) > 0, "retired geo schema bucket produced no blocker", violations)
@@ -72,7 +72,7 @@ def main():
         _assert(payload.get("blocker_count", 0) == 0, "canonical geology schema path produced blockers", violations)
 
     with tempfile.TemporaryDirectory(prefix="schema_taxonomy_archive_") as tmp:
-        _init_repo(tmp, ["archive/legacy/contracts/schema/geo/demo.schema"])
+        _init_repo(tmp, ["archive/legacy/contracts/schema/domain/geology/demo.schema"])
         result, payload = _path_terms(repo_root, tmp)
         _assert(result.returncode == 0, "legacy archive schema path failed active-source validation", violations)
         _assert(payload.get("blocker_count", 0) == 0, "legacy archive schema path produced blockers", violations)
@@ -81,7 +81,7 @@ def main():
         _init_repo(
             tmp,
             [
-                "contracts/schema/geo/demo.schema",
+                "contracts/schema/domain/geology/demo.schema",
                 "contracts/schema/domain/geology/demo.schema",
             ],
         )

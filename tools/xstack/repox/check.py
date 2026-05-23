@@ -180,9 +180,9 @@ RENDERER_TRUTH_INCLUDE_FORBIDDEN = {
 }
 
 SESSION_PIPELINE_REQUIRED_FILES = (
-    "contracts/schema/session_spec.schema.json",
-    "contracts/schema/session_stage.schema.json",
-    "contracts/schema/session_pipeline.schema.json",
+    "contracts/schema/runtime/session/session_spec.schema.json",
+    "contracts/schema/runtime/session/session_stage.schema.json",
+    "contracts/schema/runtime/session/session_pipeline.schema.json",
     "contracts/registry/session_stage_registry.json",
     "contracts/registry/session_pipeline_registry.json",
 )
@@ -773,8 +773,8 @@ PLAYER_DEBUG_FORBIDDEN_ENTITLEMENTS = (
 )
 
 WORLDGEN_CONSTRAINT_REQUIRED_FILES = (
-    "contracts/schema/worldgen_constraints.schema.json",
-    "contracts/schema/worldgen_search_plan.schema.json",
+    "contracts/schema/game/worldgen/worldgen_constraints.schema.json",
+    "contracts/schema/game/worldgen/worldgen_search_plan.schema.json",
     "contracts/registry/worldgen_constraints_registry.json",
 )
 
@@ -783,11 +783,11 @@ WORLDGEN_CONSTRAINT_LITERAL_ALLOWED_PATH_PREFIXES = (
     "bundles/",
     "contracts/registry/worldgen_constraints_registry.json",
     "docs/domains/worldgen/",
-    "contracts/schema/worldgen/",
+    "contracts/schema/game/worldgen/",
     "contracts/schema/",
-    "contracts/schema/worldgen_constraints.schema.json",
-    "contracts/schema/worldgen_search_plan.schema.json",
-    "contracts/schema/worldgen_constraints_registry.schema.json",
+    "contracts/schema/game/worldgen/worldgen_constraints.schema.json",
+    "contracts/schema/game/worldgen/worldgen_search_plan.schema.json",
+    "contracts/schema/game/worldgen/worldgen_constraints_registry.schema.json",
     "tools/xstack/testx/tests/",
     "tools/domain/worldgen/offline/",
     "game/domain/worldgen/core/constraint_solver.py",
@@ -1101,9 +1101,9 @@ META_STABILITY_FINAL_PATH = "docs/archive/audit/STABILITY_TAGGING_FINAL.md"
 
 TIME_ANCHOR_RETRO_AUDIT_PATH = "docs/archive/audit/TIME_ANCHOR0_RETRO_AUDIT.md"
 TIME_ANCHOR_DOCTRINE_PATH = "docs/engine/time/TIME_ANCHOR_MODEL.md"
-TIME_ANCHOR_TICK_SCHEMA_DOC_PATH = "contracts/schema/time/tick_t.schema"
-TIME_ANCHOR_EPOCH_SCHEMA_DOC_PATH = "contracts/schema/time/epoch_anchor_record.schema"
-TIME_ANCHOR_TICK_SCHEMA_JSON_PATH = "contracts/schema/tick_t.schema.json"
+TIME_ANCHOR_TICK_SCHEMA_DOC_PATH = "contracts/schema/runtime/time/tick_t.schema"
+TIME_ANCHOR_EPOCH_SCHEMA_DOC_PATH = "contracts/schema/runtime/time/epoch_anchor_record.schema"
+TIME_ANCHOR_TICK_SCHEMA_JSON_PATH = "contracts/schema/runtime/time/tick_t.schema.json"
 TIME_ANCHOR_EPOCH_SCHEMA_JSON_PATH = "contracts/schema/epoch_anchor_record.schema.json"
 TIME_ANCHOR_POLICY_REGISTRY_PATH = "contracts/registry/time_anchor_policy_registry.json"
 TIME_ANCHOR_TICK_MODULE_PATH = "engine/time/tick_t.py"
@@ -1268,7 +1268,7 @@ GAL0_REPLAY_TOOL_PATH = "tools/domain/worldgen/tool_replay_galaxy_proxies.py"
 GAL0_BASELINE_PATH = "docs/archive/audit/GALAXY_PROXY_BASELINE.md"
 GAL1_RETRO_AUDIT_PATH = "docs/archive/audit/GAL1_RETRO_AUDIT.md"
 GAL1_DOCTRINE_PATH = "docs/domains/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md"
-GAL1_SCHEMA_DOC_PATH = "contracts/schema/worldgen/galaxy_object_stub.schema"
+GAL1_SCHEMA_DOC_PATH = "contracts/schema/game/worldgen/galaxy_object_stub.schema"
 GAL1_SCHEMA_JSON_PATH = "contracts/schema/galaxy_object_stub.schema.json"
 GAL1_OBJECT_KIND_REGISTRY_PATH = "contracts/registry/object_kind_registry.json"
 GAL1_ENGINE_PATH = "game/domain/worldgen/galaxy/galaxy_object_stub_generator.py"
@@ -5689,7 +5689,7 @@ def _append_provenance_compaction_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
     registry_rel = "contracts/registry/provenance_classification_registry.json"
-    schema_rel = "contracts/schema/control_proof_bundle.schema.json"
+    schema_rel = "contracts/schema/runtime/control/control_proof_bundle.schema.json"
     engine_rel = "tools/repo/meta/provenance/compaction_engine.py"
     tool_rel = "tools/repo/meta/audit/tool_verify_replay_from_anchor.py"
 
@@ -13426,7 +13426,7 @@ def _append_phys_profile_declared_invariant_findings(
     severity = _strict_only_severity(profile)
     rule_id = "INV-PHYS-PROFILE-DECLARED"
 
-    session_schema_rel = "contracts/schema/session_spec.schema.json"
+    session_schema_rel = "contracts/schema/runtime/session/session_spec.schema.json"
     payload, payload_error = _load_json_object(repo_root, session_schema_rel)
     if payload_error:
         findings.append(
@@ -13469,7 +13469,7 @@ def _append_phys_profile_declared_invariant_findings(
             )
 
     required_tokens = {
-        "contracts/schema/session/session_spec.schema": (
+        "contracts/schema/runtime/session/session_spec.schema": (
             "physics_profile_id",
         ),
         "contracts/schema/examples/session_spec.example.json": (
@@ -16990,7 +16990,7 @@ def _append_time_constitution_invariant_findings(
         "tools/domain/time/tool_time_branch_from_checkpoint.py": (
             "branch_from_checkpoint(",
         ),
-        "contracts/schema/time/branch.schema": (
+        "contracts/schema/runtime/time/branch.schema": (
             "parent_save_id",
             "parent_checkpoint_id",
             "divergence_tick",
@@ -34896,7 +34896,7 @@ def _append_lib_envelope_invariant_findings(
                 "slash_mode",
                 "replace(\"\\\\\", \"/\")",
             ),
-            "tests/ops/lib_stress_envelope_tests.py": (
+            "tests/operations/lib_stress_envelope_tests.py": (
                 "test_cross_platform_lib_hash_match",
                 "_report(tmp_root, \"forward\")",
                 "_report(tmp_root, \"backward\")",
@@ -34913,7 +34913,7 @@ def _append_lib_envelope_invariant_findings(
                 "`tool_verify_bundle` returns `result=complete`",
                 "import previews complete for linked instance, portable instance, save, and pack bundles",
             ),
-            "tests/ops/lib_stress_envelope_tests.py": (
+            "tests/operations/lib_stress_envelope_tests.py": (
                 "test_export_import_roundtrip_hash_match",
                 "bundle_verifications",
                 "import_results",

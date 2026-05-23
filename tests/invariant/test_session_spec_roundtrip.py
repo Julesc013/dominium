@@ -7,7 +7,7 @@ import sys
 from invariant_utils import is_override_active
 
 
-SCHEMA_REL = os.path.join("contracts", "schemas", "session", "session_spec.schema")
+SCHEMA_REL = os.path.join("contracts", "schema", "runtime", "session", "session_spec.schema")
 
 
 def _canonical_json(payload) -> str:

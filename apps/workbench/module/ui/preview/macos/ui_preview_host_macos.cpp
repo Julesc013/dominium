@@ -11,7 +11,7 @@ RESPONSIBILITY: macOS UI preview host (native DUI backend + hot reload).
 struct domui_event;
 typedef void (*domui_action_fn)(void* user_ctx, const domui_event* e);
 #define DOMUI_EVENT_H_INCLUDED
-#include "dui/dui_api_v1.h"
+#include "domino/ui/dui/dui_api_v1.h"
 #include "ui_preview_common.h"
 
 #if !defined(__APPLE__)

@@ -10,7 +10,7 @@ from typing import Dict, List, Mapping, Tuple
 GAL1_SCOPE_PATHS: Tuple[str, ...] = (
     "docs/archive/audit/GAL1_RETRO_AUDIT.md",
     "docs/domains/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md",
-    "contracts/schema/worldgen/galaxy_object_stub.schema",
+    "contracts/schema/game/worldgen/galaxy_object_stub.schema",
     "contracts/schema/galaxy_object_stub.schema.json",
     "contracts/registry/object_kind_registry.json",
     "game/domain/worldgen/galaxy",

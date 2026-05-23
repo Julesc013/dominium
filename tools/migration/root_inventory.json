@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-22T08:16:57Z",
+  "generated_at_utc": "2026-05-23T12:00:51Z",
   "repo_root": ".",
-  "head_sha": "8e5180e25e937a348fee51cf6d22ff052d781cec",
+  "head_sha": "52ac5707e8225d3db4300918d205423ac7b02918",
   "source_branch": "main",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-10",
@@ -362,6 +362,27 @@
       "phase_hint": "none",
       "authority_status": "authoritative_current",
       "notes": "Deterministic Domino substrate and public engine contracts."
+    },
+    {
+      "name": "external",
+      "path": "external",
+      "kind": "directory",
+      "present": true,
+      "classification": "canonical",
+      "ownership_surface": "external",
+      "current_role": "Current canonical target root for the source repository layout.",
+      "proposed_target": "external",
+      "migration_action": "keep",
+      "split_required": false,
+      "risk_level": "low",
+      "phase_hint": "none",
+      "authority_status": "exception",
+      "notes": "Pinned third-party source or vendored external dependencies.",
+      "exception_id": "missing_external_root",
+      "exception_retirement_phase": "POST-CONVERGE",
+      "exception_target": "external/ if vendored dependencies are introduced, or contract optionality review if the root remains intentionally absent",
+      "exception_reason": "The canonical external/ root is declared by the source layout contract, but this checkout currently has no vendored external dependency root.",
+      "exception_risk": "low"
     },
     {
       "name": "game",

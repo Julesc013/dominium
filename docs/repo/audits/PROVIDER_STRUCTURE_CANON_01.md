@@ -1,4 +1,8 @@
-Status: PASS_WITH_WARNINGS
+Status: DERIVED
+Last Reviewed: 2026-05-23
+Supersedes: none
+Superseded By: none
+Result: PASS_WITH_WARNINGS
 Task: PROVIDER-STRUCTURE-CANON-01
 Date: 2026-05-23
 Baseline Commit: e9de4787bf1382bd47bd52a45e8bfc90cf83621a

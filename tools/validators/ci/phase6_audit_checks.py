@@ -7,11 +7,11 @@ import sys
 
 
 REQUIRED_DOCS = [
-    "contracts/schema/life/SPEC_LIFE_CONTINUITY.md",
-    "contracts/schema/life/SPEC_DEATH_AND_ESTATE.md",
-    "contracts/schema/life/SPEC_CONTROL_AUTHORITY.md",
-    "contracts/schema/life/SPEC_CONTINUATION_POLICIES.md",
-    "contracts/schema/life/SPEC_BIRTH_LINEAGE_OVERVIEW.md",
+    "contracts/schema/game/life/SPEC_LIFE_CONTINUITY.md",
+    "contracts/schema/game/life/SPEC_DEATH_AND_ESTATE.md",
+    "contracts/schema/game/life/SPEC_CONTROL_AUTHORITY.md",
+    "contracts/schema/game/life/SPEC_CONTINUATION_POLICIES.md",
+    "contracts/schema/game/life/SPEC_BIRTH_LINEAGE_OVERVIEW.md",
     "contracts/schema/domain/civilization/SPEC_COHORTS_MINIMAL.md",
     "contracts/schema/domain/civilization/SPEC_NEEDS_MINIMAL.md",
     "contracts/schema/domain/civilization/SPEC_POPULATION_COHORTS.md",

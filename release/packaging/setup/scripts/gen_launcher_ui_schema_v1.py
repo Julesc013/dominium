@@ -36,7 +36,7 @@ def tlv_text(tag: int, s: str) -> bytes:
     return tlv(tag, s.encode("utf-8"))
 
 
-# Tags (include/dui/dui_schema_tlv.h)
+# Tags (runtime/include/domino/ui/dui/dui_schema_tlv.h)
 SCH1 = 0x53434831  # 'SCH1'
 FORM = 0x464F524D  # 'FORM'
 NODE = 0x4E4F4445  # 'NODE'
@@ -51,7 +51,7 @@ CAPS = 0x43415053  # 'CAPS'
 VISB = 0x56495342  # 'VISB'
 CHIL = 0x4348494C  # 'CHIL'
 
-# Node kinds (include/dui/dui_schema_tlv.h)
+# Node kinds (runtime/include/domino/ui/dui/dui_schema_tlv.h)
 K_ROW = 1
 K_COLUMN = 2
 K_STACK = 3
@@ -62,7 +62,7 @@ K_LIST = 13
 K_TEXT_FIELD = 14
 K_PROGRESS = 15
 
-# Caps (include/dui/dui_api_v1.h)
+# Caps (runtime/include/domino/ui/dui/dui_api_v1.h)
 CAP_LABEL = 1 << 8
 CAP_BUTTON = 1 << 9
 CAP_CHECKBOX = 1 << 10
@@ -73,7 +73,7 @@ CAP_LAYOUT_ROW = 1 << 16
 CAP_LAYOUT_COLUMN = 1 << 17
 CAP_LAYOUT_STACK = 1 << 18
 
-# Flags (include/dui/dui_schema_tlv.h)
+# Flags (runtime/include/domino/ui/dui/dui_schema_tlv.h)
 FLAG_FOCUSABLE = 1 << 0
 FLAG_FLEX = 1 << 1
 

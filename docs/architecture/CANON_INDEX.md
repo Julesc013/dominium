@@ -519,6 +519,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/development/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`
 - `docs/development/xstack/XSTACK_SCOPE_FREEZE.md`
 - `docs/development/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`
+- `docs/repo/provider_structure_canon.md`
 
 ## DERIVED
 - `docs/repo/final_repository_structure.md`

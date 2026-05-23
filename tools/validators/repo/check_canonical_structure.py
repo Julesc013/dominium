@@ -119,8 +119,11 @@ OLD_TEST_ROOTS = {
     "app": "tests/apps",
     "control": "tests/runtime/control",
     "data_1": "tests/contract/data1",
+    "ops": "tests/operations",
+    "perf": "tests/performance",
     "renderer": "tests/runtime/render",
     "schema": "tests/contract/schema",
+    "services": "tests/contract/service or tests/runtime/services",
     "share": "tests/packaging/share",
     "systemic": "tests/integration/systemic",
     "testx": "tests/tools/testx",
@@ -129,20 +132,43 @@ OLD_TEST_ROOTS = {
 }
 
 FINAL_TEST_ROOTS = {
+    "ai",
     "apps",
+    "authority",
+    "bugreport",
     "compat",
+    "contentlib",
     "contract",
+    "coverage",
+    "demo",
+    "determinism",
+    "distribution",
+    "engine",
+    "entitlement",
+    "fab",
     "fixtures",
+    "game",
     "golden",
     "integration",
+    "invariant",
+    "launcher",
     "migration",
+    "operations",
     "packaging",
     "performance",
+    "piracy_containment",
+    "platform",
+    "playtest",
+    "regression",
     "replay",
     "runtime",
+    "server",
+    "setup",
+    "signal",
     "smoke",
     "tools",
     "unit",
+    "ux",
     "validation",
 }
 
@@ -154,6 +180,11 @@ RUNTIME_RETIRED_PREFIXES = {
     "runtime/shell/ui_backends": "runtime/ui/backend",
     "runtime/capability/capability": "runtime/capability/core",
     "runtime/ui/core": "runtime/ui/service or a precise runtime/ui area",
+    "runtime/compatx": "runtime/compatibility or archive/legacy/runtime/compatx",
+    "runtime/ui/control/dui": "runtime/ui/control/domui",
+    "runtime/include/dui": "runtime/include/domino/ui/dui",
+    "runtime/platform/win32/ui/dui": "runtime/platform/win32/ui/domui",
+    "runtime/platform/win32/ui/include/dui": "runtime/platform/win32/ui/include/domui",
     "runtime/ui/tui": "runtime/projection/text",
     "runtime/ui/dui": "runtime/ui or archive after classification",
     "runtime/ui/ir": "contracts/view or runtime/view",
@@ -161,6 +192,7 @@ RUNTIME_RETIRED_PREFIXES = {
 }
 
 ENGINE_INCLUDE_RETIRED_PREFIXES = {
+    "engine/compatx": "engine/compatibility",
     "engine/include/domino/app": "runtime/include/domino/shell or contracts/app",
     "engine/include/domino/cli": "runtime/include/domino/command",
     "engine/include/domino/gui": "runtime/include/domino/ui",
@@ -362,16 +394,6 @@ def build_report(repo_root, max_findings):
                     "test first-level root is outside the final proof taxonomy",
                     "tests/<proof-type>",
                 )
-
-    if "sitecustomize.py" in tracked_set:
-        add(
-            findings,
-            "warning",
-            "sitecustomize.py",
-            "root_file_finite_exception",
-            "root Python bootstrap is documented by docs/repo/ROOT_FILE_POLICY.md",
-            "keep documented or retire in a focused bootstrap pass",
-        )
 
     for root in sorted(PRESENTATION_CONTRACT_ROOTS):
         if root not in dirs and root not in tracked_set:

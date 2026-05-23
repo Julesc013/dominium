@@ -1,4 +1,8 @@
-Status: PASS_WITH_WARNINGS
+Status: DERIVED
+Last Reviewed: 2026-05-23
+Supersedes: none
+Superseded By: none
+Result: PASS_WITH_WARNINGS
 Date: 2026-05-23
 Task: SCHEMA-CANON-RESIDUAL-02
 Scope: focused schema residual routing and structure warning retirement
@@ -45,7 +49,7 @@ binds them to their current owners:
 - `runtime/project_graph/`: contract-backed runtime service surface
 - `runtime/ui/client/`: accepted reusable client UI-facing surface from
   `APPS_THIN_01`
-- `runtime/ui/control/dui/` and `runtime/include/dui/`: Dominium UI facade and
+- `runtime/ui/control/domui/` and `runtime/include/domino/ui/dui/`: Dominium UI facade and
   include surfaces from `SPEC_DUI` and `STRUCTURE_CANON_SWEEP_01`
 
 ## Deferred Moves
@@ -53,8 +57,8 @@ binds them to their current owners:
 The following remain warnings because the current notes and repo evidence do
 not define a safe one-to-one destination:
 
-- `engine/compatx/`
-- `runtime/compatx/`
+- `engine/compatibility/`
+- `archive/legacy/runtime/compatx/`
 - `engine/foundation/`
 - `engine/serialization/`
 - `runtime/serialization/`

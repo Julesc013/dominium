@@ -66,7 +66,7 @@ DOC_TOKENS = {
 }
 
 SCHEMA_TOKENS = {
-    "contracts/schema/terrain.field.schema": [
+    "contracts/schema/domain/geology/terrain.field.schema": [
         "terrain.phi",
         "terrain.material_primary",
         "terrain.support_capacity",
@@ -78,7 +78,7 @@ SCHEMA_TOKENS = {
         "maturity",
         "extensions",
     ],
-    "contracts/schema/terrain.provider.schema": [
+    "contracts/schema/domain/geology/terrain.provider.schema": [
         "terrain_provider_chain",
         "provider_id",
         "provider_type",
@@ -87,7 +87,7 @@ SCHEMA_TOKENS = {
         "maturity",
         "extensions",
     ],
-    "contracts/schema/terrain.overlay.schema": [
+    "contracts/schema/domain/geology/terrain.overlay.schema": [
         "terrain_overlay",
         "overlay_id",
         "overlay_type",
@@ -100,7 +100,7 @@ SCHEMA_TOKENS = {
         "maturity",
         "extensions",
     ],
-    "contracts/schema/terrain.macro_capsule.schema": [
+    "contracts/schema/domain/geology/terrain.macro_capsule.schema": [
         "terrain_macro_capsule",
         "capsule_id",
         "rng_cursor",

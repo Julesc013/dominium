@@ -56,7 +56,7 @@ Those related references were only updated where they were active CMake, CTest, 
 | `client/presentation` | `tests/engine/CMakeLists.txt` | active CMake test include dir | updated | now `apps/client/presentation` |
 | `server/authority/dom_server_authority.cpp` | `tests/authority/CMakeLists.txt` | active CMake test source list | updated | now `apps/server/authority/dom_server_authority.cpp` |
 | `server/authority/dom_server_authority.cpp` | `tests/tourist/CMakeLists.txt` | active CMake test source list | updated | now `apps/server/authority/dom_server_authority.cpp` |
-| `server/authority/dom_server_authority.cpp` | `tests/services/CMakeLists.txt` | active CMake test source list | updated | now `apps/server/authority/dom_server_authority.cpp` |
+| `server/authority/dom_server_authority.cpp` | `tests/contract/service/services_expiry/CMakeLists.txt` | active CMake test source list | updated | now `apps/server/authority/dom_server_authority.cpp` |
 | `server/authority/dom_server_authority.cpp` | `tests/piracy_containment/CMakeLists.txt` | active CMake test source list | updated | now `apps/server/authority/dom_server_authority.cpp` |
 | `server/authority/dom_server_authority.h` | authority/tourist/services/piracy C++ tests | active test include | updated | include now targets `apps/server/authority/dom_server_authority.h` |
 | `server/authority/dom_server_authority.*` | `tests/invariant/*.py` | active TestX path input | updated | now `apps/server/authority/...` |
@@ -72,7 +72,7 @@ Historical audit data and generated evidence references were not rewritten.
 | `tests/engine/CMakeLists.txt` | rewired render prep test source/include paths to `apps/client/presentation` | fix moved client presentation sources | no |
 | `tests/authority/CMakeLists.txt` | rewired authority implementation source to `apps/server/authority` | fix moved server authority source | no |
 | `tests/tourist/CMakeLists.txt` | rewired authority implementation source to `apps/server/authority` | fix moved server authority source | no |
-| `tests/services/CMakeLists.txt` | rewired authority implementation source to `apps/server/authority` | fix moved server authority source | no |
+| `tests/contract/service/services_expiry/CMakeLists.txt` | rewired authority implementation source to `apps/server/authority` | fix moved server authority source | no |
 | `tests/piracy_containment/CMakeLists.txt` | rewired authority implementation source to `apps/server/authority` | fix moved server authority source | no |
 | authority/tourist/services/piracy C++ tests | rewired authority header include to `apps/server/authority` | preserve active test compile path | no |
 | `tests/invariant/*.py` | rewired client/server path constants to `apps/...` | preserve active TestX path checks | no |
@@ -121,7 +121,7 @@ The canonical `verify` build also produced `setup.exe`, `launcher.exe`, `client.
 ## Files Added/Changed
 
 - Added `docs/repo/audits/POST_CONVERGE_10C_CMAKE_PATH_REMEDIATION.md`.
-- Updated active CMake/test references under `tests/engine/`, `tests/authority/`, `tests/tourist/`, `tests/services/`, `tests/piracy_containment/`, `tests/invariant/`, and `repo/repox/rulesets/core.json`.
+- Updated active CMake/test references under `tests/engine/`, `tests/authority/`, `tests/tourist/`, `tests/contract/service/services_expiry/`, `tests/piracy_containment/`, `tests/invariant/`, and `repo/repox/rulesets/core.json`.
 - Updated POST-CONVERGE-10/10B build proof docs, build verification docs, native binary proof, and next steps.
 
 ## Validation

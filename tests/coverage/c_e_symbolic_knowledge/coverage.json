@@ -10,9 +10,9 @@
     "contracts/schema/process_family.schema",
     "contracts/schema/quality.schema",
     "contracts/schema/standard.schema",
-    "contracts/schema/topology.schema",
-    "contracts/schema/world_definition.schema",
-    "contracts/schema/worldgen_model.schema"
+    "contracts/schema/domain/geology/topology.schema",
+    "contracts/schema/game/world/world_definition.schema",
+    "contracts/schema/game/worldgen/worldgen_model.schema"
   ],
   "required_process_families": [
     "org.dominium.coverage.c-e.process.calibrate",

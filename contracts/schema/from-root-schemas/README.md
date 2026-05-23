@@ -19,20 +19,20 @@ Host canonical JSON Schema contracts (`v1.0.0`) used by XStack CompatX validatio
 ## Canonical Files
 - `contracts/schema/universe_identity.schema.json`
 - `contracts/schema/universe_state.schema.json`
-- `contracts/schema/session_spec.schema.json`
-- `contracts/schema/authority_context.schema.json`
-- `contracts/schema/law_profile.schema.json`
+- `contracts/schema/runtime/session/session_spec.schema.json`
+- `contracts/schema/repo/authority/authority_context.schema.json`
+- `contracts/schema/game/law/law_profile.schema.json`
 - `contracts/schema/lens.schema.json`
 - `contracts/schema/bundle_profile.schema.json`
 - `contracts/schema/pack_manifest.schema.json`
 - `contracts/schema/bundle_lockfile.schema.json`
 - `contracts/schema/registry_outputs.schema.json`
 - `contracts/schema/domain_registry.schema.json`
-- `contracts/schema/law_registry.schema.json`
+- `contracts/schema/game/law/law_registry.schema.json`
 - `contracts/schema/experience_registry.schema.json`
 - `contracts/schema/lens_registry.schema.json`
 - `contracts/schema/astronomy_catalog_index.schema.json`
-- `contracts/schema/ui_registry.schema.json`
+- `contracts/schema/runtime/ui/ui_registry.schema.json`
 
 Examples are provided under `contracts/schema/examples/*.example.json`.
 

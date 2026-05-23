@@ -19,7 +19,7 @@ from engine.foundation.performance.inspection_cache import (
     cache_lookup_or_store as inspection_cache_lookup_or_store,
 )
 from engine.serialization.canonical_json import canonical_sha256
-from engine.compatx.validator import validate_instance
+from engine.compatibility.validator import validate_instance
 
 _BLUEPRINT_PREVIEW_PROCESSES = {
     "process.blueprint_inspect",

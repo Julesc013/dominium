@@ -1,4 +1,8 @@
-Status: PASS_WITH_WARNINGS
+Status: DERIVED
+Last Reviewed: 2026-05-23
+Supersedes: none
+Superseded By: none
+Result: PASS_WITH_WARNINGS
 Date: 2026-05-23
 Baseline Commit: af6f9a90f4985fd3061407076956420e4fd3ff3c
 Task: STRUCTURE-RESIDUAL-CLEANUP-01
@@ -65,9 +69,9 @@ tasks.
   `contracts/diagnostics/` remains retired.
 - `content/packs/**/content/` is classified as legacy pack payload layout, not
   contract authority.
-- `runtime/project_graph`, `runtime/ui/client`, `runtime/ui/control/dui`, and
-  `runtime/include/dui` have accepted ownership evidence.
-- `engine/compatx`, `runtime/compatx`, `engine/foundation`,
+- `runtime/project_graph`, `runtime/ui/client`, `runtime/ui/control/domui`, and
+  `runtime/include/domino/ui/dui` have accepted ownership evidence.
+- `engine/compatibility`, `archive/legacy/runtime/compatx`, `engine/foundation`,
   `engine/serialization`, `runtime/serialization`, `engine/session`, and
   `runtime/session` remain classified residuals pending
   `RUNTIME-RESIDUAL-TAXONOMY-01`.

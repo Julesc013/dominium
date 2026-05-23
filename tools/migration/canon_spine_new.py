@@ -122,7 +122,7 @@ PREFIX_ROUTES: list[tuple[str, str, str]] = [
     ("apps/setup/core/", "apps/setup/lifecycle/", "thin setup lifecycle"),
     ("tools/ui_shared/ui_codegen/", "tools/codegen/ui/", "UI codegen"),
     ("tools/ui_shared/ui_ir/", "runtime/view/ir/", "UI IR runtime model"),
-    ("tools/ui_shared/dui/", "runtime/ui/control/dui/", "shared UI runtime"),
+    ("tools/ui_shared/dui/", "runtime/ui/control/domui/", "shared UI runtime"),
     ("tools/ui_shared/include/", "runtime/include/", "shared UI headers"),
     ("tools/ui_bind/", "tools/codegen/ui/bind/", "UI binding codegen"),
     ("tools/dist/", "tools/release/dist/", "release distribution tooling"),

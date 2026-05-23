@@ -19,28 +19,47 @@ import sys
 DOC_REF = "docs/repo/structure_residual_classification.md"
 
 FINAL_TEST_ROOTS = {
+    "ai",
     "apps",
+    "authority",
+    "bugreport",
     "compat",
+    "contentlib",
     "contract",
+    "coverage",
+    "demo",
+    "determinism",
+    "distribution",
+    "engine",
+    "entitlement",
+    "fab",
     "fixtures",
+    "game",
     "golden",
     "integration",
+    "invariant",
+    "launcher",
     "migration",
+    "operations",
     "packaging",
     "performance",
+    "piracy_containment",
+    "platform",
+    "playtest",
+    "regression",
     "replay",
     "runtime",
+    "server",
+    "setup",
+    "signal",
     "smoke",
     "tools",
     "unit",
+    "ux",
     "validation",
 }
 
 RUNTIME_RESIDUALS = {
-    "engine/compatx": (
-        "CompatX core policy/validator implementation; not a generic engine compatibility bucket",
-        "RUNTIME-RESIDUAL-TAXONOMY-01",
-    ),
     "engine/foundation": (
         "deterministic substrate pending a focused boundary review; must not become core/common catch-all",
         "RUNTIME-RESIDUAL-TAXONOMY-01",
@@ -51,10 +70,6 @@ RUNTIME_RESIDUALS = {
     ),
     "engine/session": (
         "engine-side session common code pending runtime/app boundary review",
-        "RUNTIME-RESIDUAL-TAXONOMY-01",
-    ),
-    "runtime/compatx": (
-        "runtime-facing CompatX adapter/validator surface; not a payload or migration bucket",
         "RUNTIME-RESIDUAL-TAXONOMY-01",
     ),
     "runtime/serialization": (

@@ -26,8 +26,8 @@ struct domui_event;
 typedef void (*domui_action_fn)(void* user_ctx, const domui_event* e);
 #define DOMUI_EVENT_H_INCLUDED
 
-#include "dui/dui_api_v1.h"
-#include "dui/dui_schema_tlv.h"
+#include "domino/ui/dui/dui_api_v1.h"
+#include "domino/ui/dui/dui_schema_tlv.h"
 
 #include "ui_tool_editor_actions_gen.h"
 

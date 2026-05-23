@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-05-23
+Supersedes: none
+Superseded By: none
 Task: AIDE-CHECKPOINT-LOOP-01
 Result: PASS_WITH_WARNINGS
 Stability: provisional

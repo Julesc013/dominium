@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-23
+Supersedes: none
+Superseded By: none
+
 # CANON-STRUCTURE-RESIDUALS-LOOP-01
 
 Status: PASS_WITH_WARNINGS

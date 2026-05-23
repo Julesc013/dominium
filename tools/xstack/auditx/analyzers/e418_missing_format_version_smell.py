@@ -33,7 +33,7 @@ REQUIRED_TOKENS = {
         "\"format_version\"",
         "\"engine_version_created\"",
     ),
-    "contracts/schema/session_template.schema.json": (
+    "contracts/schema/runtime/session/session_template.schema.json": (
         "\"format_version\"",
         "\"engine_version_created\"",
     ),

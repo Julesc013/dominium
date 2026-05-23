@@ -1,4 +1,4 @@
-"""FAST test: UI window descriptors validate against contracts/schema/ui_window.schema.json."""
+"""FAST test: UI window descriptors validate against contracts/schema/runtime/ui/ui_window.schema.json."""
 
 from __future__ import annotations
 

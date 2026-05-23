@@ -1,0 +1,17 @@
+[profile]
+id = "dominium.profile.dev.client.sdl2_opengl33"
+kind = "provider_profile"
+stability = "planned"
+product = "client"
+support_claim = false
+evidence = "docs/repo/audits/CANON_STRUCTURE_RESIDUALS_LOOP_02.md"
+
+[providers]
+platform = "domino.provider.platform.sdl2.v1"
+input = "domino.provider.input.sdl2.v1"
+render = "domino.provider.render.opengl33.v1"
+audio = "domino.provider.audio.sdl2.v1"
+asset = "domino.provider.asset.dominium.v1"
+
+[notes]
+summary = "Planned SDL2 plus OpenGL 3.3 provider profile. No SDL2/OpenGL runtime binding or support claim is introduced."

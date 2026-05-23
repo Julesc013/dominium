@@ -104,11 +104,11 @@ Status: APPLIED as deterministic subset, pending build/test proof.
 Moves:
 
 - `contracts/schema/chem/` -> `contracts/schema/domain/chemistry/`
-- `contracts/schema/fluid/` -> `contracts/schema/domain/fluids/`
-- `contracts/schema/geo/` -> `contracts/schema/domain/geology/`
-- `contracts/schema/civ/` and `contracts/schema/civilisation/` ->
+- `contracts/schema/domain/fluids/` -> `contracts/schema/domain/fluids/`
+- `contracts/schema/domain/geology/` -> `contracts/schema/domain/geology/`
+- `contracts/schema/domain/civilization/` and `contracts/schema/domain/civilization/` ->
   `contracts/schema/domain/civilization/`
-- `contracts/schema/net/` -> `contracts/schema/runtime/network/`
+- `contracts/schema/runtime/network/` -> `contracts/schema/runtime/network/`
 - `contracts/schema/packs/` -> `contracts/schema/package/`
 - `contracts/schema/tools/` -> `contracts/schema/tool/`
 - `contracts/schema/validator/` -> `contracts/schema/validation/`

@@ -23,6 +23,7 @@ check_directory_naming.py
 check_file_naming.py
 check_canonical_structure.py
 check_provider_structure.py
+check_schema_taxonomy.py
 check_structure_report_integrity.py
 check_structure_residuals.py
 ```
@@ -58,6 +59,22 @@ enforces service-first provider paths, blocks vendor-shaped roots such as
 `runtime/raylib` or app-specific provider variants, validates release provider
 profiles, and checks for third-party include leakage outside provider/external
 boundaries.
+
+`check_schema_taxonomy.py` blocks the retired `contracts/schema` buckets and
+flat schema filename prefixes that were routed to domain/runtime/game/repo
+taxonomy roots during canonical structure cleanup.
+
+Provider and third-party validators also expose focused entrypoints:
+
+```text
+tools/validators/third_party/check_vendor_manifest.py
+tools/validators/third_party/check_forbidden_includes.py
+tools/validators/provider/check_provider_manifest.py
+tools/validators/provider/check_provider_conformance.py
+```
+
+Those entrypoints are thin policy gates over the same provider, profile,
+third-party manifest, forbidden include, and conformance rules.
 
 `check_structure_report_integrity.py` verifies task-local tracked-only structure
 bundle manifests, can write a fresh local tracked-only structure bundle, and

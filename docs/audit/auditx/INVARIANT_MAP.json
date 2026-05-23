@@ -1,0 +1,2406 @@
+{
+  "artifact_class": "CANONICAL",
+  "invariants": {
+    "INV-ACTION-MUST-HAVE-FAMILY": {
+      "finding_count": 13,
+      "recommended_actions": {
+        "REWRITE": 13
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.substrate_bypass_smell",
+          "finding_id": "E163_SUBSTRATE_BYPASS_SMELL:0001",
+          "location": "contracts/registry/action_template_registry.json"
+        },
+        {
+          "category": "architecture.substrate_bypass_smell",
+          "finding_id": "E163_SUBSTRATE_BYPASS_SMELL:0002",
+          "location": "contracts/registry/action_template_registry.json"
+        },
+        {
+          "category": "architecture.substrate_bypass_smell",
+          "finding_id": "E163_SUBSTRATE_BYPASS_SMELL:0003",
+          "location": "contracts/registry/action_template_registry.json"
+        },
+        {
+          "category": "architecture.substrate_bypass_smell",
+          "finding_id": "E163_SUBSTRATE_BYPASS_SMELL:0004",
+          "location": "contracts/registry/action_template_registry.json"
+        },
+        {
+          "category": "architecture.substrate_bypass_smell",
+          "finding_id": "E163_SUBSTRATE_BYPASS_SMELL:0005",
+          "location": "contracts/registry/action_template_registry.json"
+        }
+      ],
+      "severities": {
+        "RISK": 13
+      }
+    },
+    "INV-AFFORDANCE-DECLARED": {
+      "finding_count": 317,
+      "recommended_actions": {
+        "REWRITE": 317
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.affordance_gap_smell",
+          "finding_id": "E176_AFFORDANCE_GAP_SMELL:0001",
+          "location": "contracts/registry/action_template_registry.json"
+        },
+        {
+          "category": "architecture.affordance_gap_smell",
+          "finding_id": "E176_AFFORDANCE_GAP_SMELL:0002",
+          "location": "contracts/registry/action_template_registry.json"
+        },
+        {
+          "category": "architecture.affordance_gap_smell",
+          "finding_id": "E176_AFFORDANCE_GAP_SMELL:0003",
+          "location": "contracts/registry/action_template_registry.json"
+        },
+        {
+          "category": "architecture.affordance_gap_smell",
+          "finding_id": "E176_AFFORDANCE_GAP_SMELL:0004",
+          "location": "contracts/registry/action_template_registry.json"
+        },
+        {
+          "category": "architecture.affordance_gap_smell",
+          "finding_id": "E176_AFFORDANCE_GAP_SMELL:0005",
+          "location": "contracts/registry/action_template_registry.json"
+        }
+      ],
+      "severities": {
+        "RISK": 317
+      }
+    },
+    "INV-ALL-REGISTRIES-TAGGED": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "meta.missing_stability_marker_smell",
+          "finding_id": "E449_MISSING_STABILITY_MARKER_SMELL:0001",
+          "location": "contracts/registry/README.md"
+        },
+        {
+          "category": "meta.missing_stability_marker_smell",
+          "finding_id": "E449_MISSING_STABILITY_MARKER_SMELL:0002",
+          "location": "contracts/registry/registry_evolution.contract.toml"
+        },
+        {
+          "category": "meta.missing_stability_marker_smell",
+          "finding_id": "E449_MISSING_STABILITY_MARKER_SMELL:0003",
+          "location": "contracts/registry/registry_policy.schema.json"
+        }
+      ],
+      "severities": {
+        "RISK": 3
+      }
+    },
+    "INV-ARCH-AUDIT-MUST-PASS-BEFORE-RELEASE": {
+      "finding_count": 8,
+      "recommended_actions": {
+        "REWRITE": 8
+      },
+      "sample_findings": [
+        {
+          "category": "arch.duplicate_semantic_engine_smell",
+          "finding_id": "E455_DUPLICATE_SEMANTIC_ENGINE_SMELL:0001",
+          "location": "astro/illumination/illumination_geometry_engine.py"
+        },
+        {
+          "category": "arch.duplicate_semantic_engine_smell",
+          "finding_id": "E455_DUPLICATE_SEMANTIC_ENGINE_SMELL:0002",
+          "location": "geo/index/object_id_engine.py"
+        },
+        {
+          "category": "arch.duplicate_semantic_engine_smell",
+          "finding_id": "E455_DUPLICATE_SEMANTIC_ENGINE_SMELL:0003",
+          "location": "geo/overlay/overlay_merge_engine.py"
+        },
+        {
+          "category": "arch.duplicate_semantic_engine_smell",
+          "finding_id": "E455_DUPLICATE_SEMANTIC_ENGINE_SMELL:0004",
+          "location": "geo/overlay/overlay_merge_engine.py"
+        },
+        {
+          "category": "arch.duplicate_semantic_engine_smell",
+          "finding_id": "E455_DUPLICATE_SEMANTIC_ENGINE_SMELL:0005",
+          "location": "tools/validators/compatibility/capability_negotiation.py"
+        }
+      ],
+      "severities": {
+        "RISK": 8
+      }
+    },
+    "INV-ARCH-GRAPH-MATCHES-REPO": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0009",
+          "location": "archive/generated/architecture/architecture_graph.v1.json"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0032",
+          "location": "external"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-ARCH-GRAPH-V1-PRESENT": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.architecture_drift_smell",
+          "finding_id": "E560_ARCHITECTURE_DRIFT_SMELL:0001",
+          "location": "archive/generated/architecture/architecture_graph.v1.json"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-AUTHORITY-REQUIRED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "server.intent_without_authority_smell",
+          "finding_id": "E403_INTENT_WITHOUT_AUTHORITY_SMELL:0001",
+          "location": "apps/server/server_boot.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-BUNDLES-DETERMINISTIC": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "bundle.nondeterministic_bundle_smell",
+          "finding_id": "E444_NONDETERMINISTIC_BUNDLE_SMELL:0001",
+          "location": "tools/package/libraries/stress/lib_stress_common.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-CANON-INDEX": {
+      "finding_count": 1052,
+      "recommended_actions": {
+        "DOC_FIX": 1052
+      },
+      "sample_findings": [
+        {
+          "category": "canon_drift",
+          "finding_id": "A3_CANON_DRIFT:0001",
+          "location": "docs/apps/ARTIFACT_IDENTITY.md"
+        },
+        {
+          "category": "canon_drift",
+          "finding_id": "A3_CANON_DRIFT:0002",
+          "location": "docs/apps/CLIENT_RENDERER_UI.md"
+        },
+        {
+          "category": "canon_drift",
+          "finding_id": "A3_CANON_DRIFT:0003",
+          "location": "docs/apps/CLIENT_UI_LAYER.md"
+        },
+        {
+          "category": "canon_drift",
+          "finding_id": "A3_CANON_DRIFT:0004",
+          "location": "docs/apps/COMMAND_GRAPH_CAMERA_AND_BLUEPRINT.md"
+        },
+        {
+          "category": "canon_drift",
+          "finding_id": "A3_CANON_DRIFT:0005",
+          "location": "docs/apps/GUI_MODE.md"
+        }
+      ],
+      "severities": {
+        "WARN": 1052
+      }
+    },
+    "INV-CAPABILITY-GATED-RUNTIME": {
+      "finding_count": 78,
+      "recommended_actions": {
+        "ADD_RULE": 60,
+        "ADD_TEST": 18
+      },
+      "sample_findings": [
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0001",
+          "location": "apps/client/main_client.c"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0002",
+          "location": "apps/launcher/cli/launcher_cli_main.c"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0003",
+          "location": "apps/launcher/cli/launcher_ui_shell.c"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0004",
+          "location": "apps/launcher/include/launcher/_internal/launcher_internal/launcher_plugin_api.h"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0005",
+          "location": "apps/server/main_server.c"
+        }
+      ],
+      "severities": {
+        "INFO": 18,
+        "WARN": 60
+      }
+    },
+    "INV-CHEM-BUDGETED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "performance.unbudgeted_reaction_loop_smell",
+          "finding_id": "E249_UNBUDGETED_REACTION_LOOP_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-CHEM-DEGRADE-LOGGED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "performance.unbudgeted_reaction_loop_smell",
+          "finding_id": "E249_UNBUDGETED_REACTION_LOOP_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-CLI-CANONICAL-UI": {
+      "finding_count": 234,
+      "recommended_actions": {
+        "ADD_RULE": 129,
+        "ADD_TEST": 105
+      },
+      "sample_findings": [
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0001",
+          "location": "apps/workbench/module/ui/editor/ui_editor_main_win32.cpp"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0002",
+          "location": "apps/workbench/module/ui/editor/ui_editor_main_win32.cpp"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0003",
+          "location": "apps/workbench/module/ui/editor/ui_editor_main_win32.cpp"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0004",
+          "location": "apps/workbench/module/ui/editor/ui_editor_main_win32.cpp"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0005",
+          "location": "apps/workbench/module/ui/editor/ui_editor_main_win32.cpp"
+        }
+      ],
+      "severities": {
+        "INFO": 42,
+        "RISK": 159,
+        "WARN": 33
+      }
+    },
+    "INV-COMBUSTION-THROUGH-REACTION-ENGINE": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "REGISTER": 6
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.unregistered_combustion_smell",
+          "finding_id": "E243_UNREGISTERED_COMBUSTION_SMELL:0001",
+          "location": "contracts/registry/energy_transformation_registry.json"
+        },
+        {
+          "category": "architecture.unregistered_combustion_smell",
+          "finding_id": "E243_UNREGISTERED_COMBUSTION_SMELL:0002",
+          "location": "contracts/registry/energy_transformation_registry.json"
+        },
+        {
+          "category": "architecture.unregistered_combustion_smell",
+          "finding_id": "E243_UNREGISTERED_COMBUSTION_SMELL:0003",
+          "location": "contracts/registry/reaction_profile_registry.json"
+        },
+        {
+          "category": "architecture.unregistered_combustion_smell",
+          "finding_id": "E243_UNREGISTERED_COMBUSTION_SMELL:0004",
+          "location": "contracts/registry/reaction_profile_registry.json"
+        },
+        {
+          "category": "architecture.unregistered_combustion_smell",
+          "finding_id": "E243_UNREGISTERED_COMBUSTION_SMELL:0005",
+          "location": "contracts/registry/reaction_profile_registry.json"
+        }
+      ],
+      "severities": {
+        "RISK": 6
+      }
+    },
+    "INV-COMMAND-CAPABILITY-DECLARED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_TEST": 1
+      },
+      "sample_findings": [
+        {
+          "category": "capability_bypass_smell",
+          "finding_id": "C3_CAPABILITY_BYPASS_SMELL:0001",
+          "location": "runtime/shell/client/command/client_command_bridge.c"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-CONTRACT-PINNED-IN-UNIVERSE": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "compat.behavior_without_contract_smell",
+          "finding_id": "E386_BEHAVIOR_WITHOUT_CONTRACT_SMELL:0001",
+          "location": "tools/xstack/sessionx/creator.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-DECISION-LOG-MANDATORY": {
+      "finding_count": 12,
+      "recommended_actions": {
+        "REWRITE": 12
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0003",
+          "location": "tools/repo/governance/control_plane_engine.py"
+        },
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0004",
+          "location": "tools/repo/governance/control_plane_engine.py"
+        },
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0005",
+          "location": "tools/repo/governance/control_plane_engine.py"
+        },
+        {
+          "category": "architecture.unlogged_refusal_smell",
+          "finding_id": "E119_UNLOGGED_REFUSAL_SMELL:0001",
+          "location": "tools/repo/governance/control_plane_engine.py"
+        },
+        {
+          "category": "architecture.unlogged_refusal_smell",
+          "finding_id": "E119_UNLOGGED_REFUSAL_SMELL:0002",
+          "location": "tools/repo/governance/control_plane_engine.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 12
+      }
+    },
+    "INV-DERIVED-ARTIFACT-FRESHNESS": {
+      "finding_count": 131,
+      "recommended_actions": {
+        "ADD_RULE": 131
+      },
+      "sample_findings": [
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0001",
+          "location": ".xstack_cache/auditx/RUN_META.json"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0002",
+          "location": ".xstack_cache/performx/RUN_META.json"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0003",
+          "location": ".xstack_cache/repox/REPOX_PROFILE.json"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0004",
+          "location": ".xstack_cache/repox/proof_manifest.json"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0005",
+          "location": ".xstack_cache/securex/RUN_META.json"
+        }
+      ],
+      "severities": {
+        "INFO": 120,
+        "RISK": 11
+      }
+    },
+    "INV-DIEGETIC-DEFAULT-PROFILE-PRESENT": {
+      "finding_count": 5,
+      "recommended_actions": {
+        "DOC_FIX": 5
+      },
+      "sample_findings": [
+        {
+          "category": "ui.hidden_nondiegetic_window_smell",
+          "finding_id": "E27_HIDDEN_NONDIEGETIC_WINDOW_SMELL:0001",
+          "location": "packs/tool/workspace.player.diegetic_default/ui/window.player.instrument.clock.json"
+        },
+        {
+          "category": "ui.hidden_nondiegetic_window_smell",
+          "finding_id": "E27_HIDDEN_NONDIEGETIC_WINDOW_SMELL:0002",
+          "location": "packs/tool/workspace.player.diegetic_default/ui/window.player.instrument.compass.json"
+        },
+        {
+          "category": "ui.hidden_nondiegetic_window_smell",
+          "finding_id": "E27_HIDDEN_NONDIEGETIC_WINDOW_SMELL:0003",
+          "location": "packs/tool/workspace.player.diegetic_default/ui/window.player.instrument.map_local.json"
+        },
+        {
+          "category": "ui.hidden_nondiegetic_window_smell",
+          "finding_id": "E27_HIDDEN_NONDIEGETIC_WINDOW_SMELL:0004",
+          "location": "packs/tool/workspace.player.diegetic_default/ui/window.player.instrument.notebook.json"
+        },
+        {
+          "category": "ui.hidden_nondiegetic_window_smell",
+          "finding_id": "E27_HIDDEN_NONDIEGETIC_WINDOW_SMELL:0005",
+          "location": "packs/tool/workspace.player.diegetic_default/ui/window.player.instrument.radio_text.json"
+        }
+      ],
+      "severities": {
+        "WARN": 5
+      }
+    },
+    "INV-DIST-FINAL-PLAN-PRESENT": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "RESTORE_THE_FINAL_DIST_PLAN_SURFACES": 3
+      },
+      "sample_findings": [
+        {
+          "category": "dist_final_plan.missing_final_plan_smell",
+          "finding_id": "E559_MISSING_FINAL_DIST_PLAN_SMELL:0001",
+          "location": "data/release/dist_final_expected_artifacts.json"
+        },
+        {
+          "category": "dist_final_plan.missing_final_plan_smell",
+          "finding_id": "E559_MISSING_FINAL_DIST_PLAN_SMELL:0002",
+          "location": "docs/audit/DIST_FINAL_DRYRUN.md"
+        },
+        {
+          "category": "dist_final_plan.missing_final_plan_smell",
+          "finding_id": "E559_MISSING_FINAL_DIST_PLAN_SMELL:0003",
+          "location": "docs/audit/OMEGA10_RETRO_AUDIT.md"
+        }
+      ],
+      "severities": {
+        "RISK": 3
+      }
+    },
+    "INV-EFFECT-USES-ENGINE": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "REWRITE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.temp_modifier_smell",
+          "finding_id": "E127_TEMP_MODIFIER_SMELL:0001",
+          "location": "tools/repo/governance/effects/effect_engine.py"
+        },
+        {
+          "category": "architecture.effect_bypass_smell",
+          "finding_id": "E128_EFFECT_BYPASS_SMELL:0001",
+          "location": "tools/repo/governance/control_plane_engine.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 2
+      }
+    },
+    "INV-ENERGY-TRANSFORM-REGISTERED": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "REGISTER": 2,
+        "REWRITE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.missing_ledger_entry_smell",
+          "finding_id": "E213_MISSING_LEDGER_ENTRY_SMELL:0001",
+          "location": "contracts/registry/energy_transformation_registry.json"
+        },
+        {
+          "category": "architecture.missing_ledger_entry_smell",
+          "finding_id": "E213_MISSING_LEDGER_ENTRY_SMELL:0002",
+          "location": "contracts/registry/energy_transformation_registry.json"
+        },
+        {
+          "category": "architecture.missing_ledger_entry_smell",
+          "finding_id": "E213_MISSING_LEDGER_ENTRY_SMELL:0003",
+          "location": "contracts/registry/energy_transformation_registry.json"
+        },
+        {
+          "category": "architecture.missing_ledger_entry_smell",
+          "finding_id": "E213_MISSING_LEDGER_ENTRY_SMELL:0004",
+          "location": "contracts/registry/energy_transformation_registry.json"
+        },
+        {
+          "category": "architecture.unregistered_combustion_smell",
+          "finding_id": "E243_UNREGISTERED_COMBUSTION_SMELL:0001",
+          "location": "contracts/registry/energy_transformation_registry.json"
+        }
+      ],
+      "severities": {
+        "RISK": 6
+      }
+    },
+    "INV-EPISTEMIC-POLICY-REQUIRED": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "net.precision_leak_smell",
+          "finding_id": "E8_PRECISION_LEAK_SMELL:0001",
+          "location": "contracts/registry/epistemic_policy_registry.json"
+        },
+        {
+          "category": "net.precision_leak_smell",
+          "finding_id": "E8_PRECISION_LEAK_SMELL:0002",
+          "location": "contracts/registry/epistemic_policy_registry.json"
+        }
+      ],
+      "severities": {
+        "WARN": 2
+      }
+    },
+    "INV-EXPORT-IMPORT-VERIFIED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "bundle.nondeterministic_bundle_smell",
+          "finding_id": "E444_NONDETERMINISTIC_BUNDLE_SMELL:0001",
+          "location": "tools/package/libraries/stress/lib_stress_common.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-FIDELITY-USES-ENGINE": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "REWRITE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.silent_fidelity_downgrade_smell",
+          "finding_id": "E122_SILENT_FIDELITY_DOWNGRADE_SMELL:0001",
+          "location": "tools/repo/governance/fidelity/fidelity_engine.py"
+        },
+        {
+          "category": "architecture.unbounded_cost_smell",
+          "finding_id": "E123_UNBOUNDED_COST_SMELL:0001",
+          "location": "tools/repo/governance/fidelity/fidelity_engine.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 2
+      }
+    },
+    "INV-FIELD-QUERIES-ONLY": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.weather_hack_smell",
+          "finding_id": "E141_WEATHER_HACK_SMELL:0001",
+          "location": "tools/xstack/sessionx/ui_host.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-FLUID-SAFETY-THROUGH-PATTERNS": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.adhoc_valve_smell",
+          "finding_id": "E220_ADHOC_VALVE_SMELL:0001",
+          "location": "tools/xstack/sessionx/observation.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-GUARANTEED-CATEGORIES-LOGGED": {
+      "finding_count": 5,
+      "recommended_actions": {
+        "DECLARE_AND_EMIT_THE_GUARANTEED_CATEGORY_THROUGH_THE_STRUCTURED_LOG_ENGINE": 5
+      },
+      "sample_findings": [
+        {
+          "category": "observability.missing_guaranteed_log_smell",
+          "finding_id": "E530_MISSING_GUARANTEED_LOG_SMELL:0001",
+          "location": "contracts/schemas/meta/observability_guarantee.schema"
+        },
+        {
+          "category": "observability.missing_guaranteed_log_smell",
+          "finding_id": "E530_MISSING_GUARANTEED_LOG_SMELL:0002",
+          "location": "contracts/schemas/observability_guarantee.schema.json"
+        },
+        {
+          "category": "observability.missing_guaranteed_log_smell",
+          "finding_id": "E530_MISSING_GUARANTEED_LOG_SMELL:0003",
+          "location": "data/registries/observability_guarantee_registry.json"
+        },
+        {
+          "category": "observability.missing_guaranteed_log_smell",
+          "finding_id": "E530_MISSING_GUARANTEED_LOG_SMELL:0004",
+          "location": "docs/audit/OBSERVABILITY0_RETRO_AUDIT.md"
+        },
+        {
+          "category": "observability.missing_guaranteed_log_smell",
+          "finding_id": "E530_MISSING_GUARANTEED_LOG_SMELL:0005",
+          "location": "docs/meta/OBSERVABILITY_CONTRACT.md"
+        }
+      ],
+      "severities": {
+        "RISK": 5
+      }
+    },
+    "INV-INSPECTION-BUDGETED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "materials.unbounded_inspection_smell",
+          "finding_id": "E73_UNBOUNDED_INSPECTION_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-INSTALL-NO-ABSOLUTE-PATH-DEPENDENCY": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "install.path_dependent_install_smell",
+          "finding_id": "E434_PATH_DEPENDENT_INSTALL_SMELL:0001",
+          "location": "docs/architecture/INSTALL_MODEL.md"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-INSTITUTIONAL-SCHEDULES-THROUGH-CTRL": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.direct_schedule_mutation_smell",
+          "finding_id": "E174_DIRECT_SCHEDULE_MUTATION_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-INTERACTION-INTENTS-ONLY": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "interaction.interaction_bypass_smell",
+          "finding_id": "E52_INTERACTION_BYPASS_SMELL:0001",
+          "location": "runtime/ui/client/interaction/interaction_dispatch.py"
+        },
+        {
+          "category": "interaction.interaction_bypass_smell",
+          "finding_id": "E52_INTERACTION_BYPASS_SMELL:0002",
+          "location": "runtime/ui/client/interaction/interaction_dispatch.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-INTERIORS-USE-INT-SUBSTRATE": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.vehicle_interior_special_case_smell",
+          "finding_id": "E160_VEHICLE_INTERIOR_SPECIAL_CASE_SMELL:0001",
+          "location": "tools/xstack/sessionx/observation.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-LEGACY-CODE-QUARANTINED": {
+      "finding_count": 23,
+      "recommended_actions": {
+        "ADD_TEST": 23
+      },
+      "sample_findings": [
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0001",
+          "location": "tools/audit/review/xi4b_src_domain_mapping_common.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0002",
+          "location": "tools/audit/review/xi4z_fix3_common.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0003",
+          "location": "tools/audit/review/xi4z_structure_approval_common.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0004",
+          "location": "tools/audit/review/xi5x1_common.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0005",
+          "location": "tools/audit/review/xi5x2_common.py"
+        }
+      ],
+      "severities": {
+        "RISK": 23
+      }
+    },
+    "INV-LIB-DETERMINISTIC": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "bundle.nondeterministic_bundle_smell",
+          "finding_id": "E444_NONDETERMINISTIC_BUNDLE_SMELL:0001",
+          "location": "tools/package/libraries/stress/lib_stress_common.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-MOB-THROUGH-CONTROL": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.adhoc_speed_limit_smell",
+          "finding_id": "E144_ADHOC_SPEED_LIMIT_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-MOB-USES-GUIDEGEOMETRY": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.mobility_special_case_smell",
+          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-MOB-USES-NETWORKGRAPH": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.mobility_special_case_smell",
+          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-MODE-AS-PROFILES": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "ADD_RULE": 3,
+        "ADD_TEST": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "contracts/registry/glossary.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0002",
+          "location": "tests/integration/systemic/test_future_case_stress_suite.py"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0003",
+          "location": "tests/invariant/profile_override_architecture_tests.py"
+        },
+        {
+          "category": "experience_profile_drift",
+          "finding_id": "C5_EXPERIENCE_PROFILE_DRIFT:0001",
+          "location": "data/registries/experience_profiles.json"
+        }
+      ],
+      "severities": {
+        "RISK": 1,
+        "VIOLATION": 3
+      }
+    },
+    "INV-MODULE-BOUNDARIES-RESPECTED": {
+      "finding_count": 647,
+      "recommended_actions": {
+        "REWRITE": 647
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.forbidden_dependency_smell",
+          "finding_id": "E561_FORBIDDEN_DEPENDENCY_SMELL:0001",
+          "location": ".aide/fixtures/capability_reality"
+        },
+        {
+          "category": "architecture.forbidden_dependency_smell",
+          "finding_id": "E561_FORBIDDEN_DEPENDENCY_SMELL:0002",
+          "location": ".aide/fixtures/checkpoint"
+        },
+        {
+          "category": "architecture.forbidden_dependency_smell",
+          "finding_id": "E561_FORBIDDEN_DEPENDENCY_SMELL:0003",
+          "location": ".aide/fixtures/dev_main"
+        },
+        {
+          "category": "architecture.forbidden_dependency_smell",
+          "finding_id": "E561_FORBIDDEN_DEPENDENCY_SMELL:0004",
+          "location": ".aide/fixtures/work_unit"
+        },
+        {
+          "category": "architecture.forbidden_dependency_smell",
+          "finding_id": "E561_FORBIDDEN_DEPENDENCY_SMELL:0005",
+          "location": ".aide/policy"
+        }
+      ],
+      "severities": {
+        "RISK": 647
+      }
+    },
+    "INV-MVP-CROSS-PLATFORM-MUST-PASS": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "ADD_RULE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "release.platform_dependent_behavior_smell",
+          "finding_id": "E447_PLATFORM_DEPENDENT_BEHAVIOR_SMELL:0001",
+          "location": "build/mvp/mvp_cross_platform_matrix.json"
+        },
+        {
+          "category": "release.platform_dependent_behavior_smell",
+          "finding_id": "E447_PLATFORM_DEPENDENT_BEHAVIOR_SMELL:0002",
+          "location": "build/mvp/mvp_cross_platform_matrix.json"
+        },
+        {
+          "category": "release.non_canonical_serialization_smell",
+          "finding_id": "E448_NON_CANONICAL_SERIALIZATION_SMELL:0001",
+          "location": "build/mvp/mvp_cross_platform_hashes.json"
+        },
+        {
+          "category": "release.non_canonical_serialization_smell",
+          "finding_id": "E448_NON_CANONICAL_SERIALIZATION_SMELL:0002",
+          "location": "build/mvp/mvp_cross_platform_matrix.json"
+        }
+      ],
+      "severities": {
+        "RISK": 4
+      }
+    },
+    "INV-MVP-GAMEPLAY-HARNESS-REQUIRED": {
+      "finding_count": 11,
+      "recommended_actions": {
+        "REWRITE": 11
+      },
+      "sample_findings": [
+        {
+          "category": "gameplay_loop.missing_baseline_smell",
+          "finding_id": "E546_MISSING_GAMEPLAY_BASELINE_SMELL:0001",
+          "location": "data/audit/gameplay_verify.json"
+        },
+        {
+          "category": "gameplay_loop.missing_baseline_smell",
+          "finding_id": "E546_MISSING_GAMEPLAY_BASELINE_SMELL:0002",
+          "location": "data/baselines/gameplay/gameplay_loop_snapshot.json"
+        },
+        {
+          "category": "gameplay_loop.missing_baseline_smell",
+          "finding_id": "E546_MISSING_GAMEPLAY_BASELINE_SMELL:0003",
+          "location": "docs/audit/MVP_GAMEPLAY0_RETRO_AUDIT.md"
+        },
+        {
+          "category": "gameplay_loop.missing_baseline_smell",
+          "finding_id": "E546_MISSING_GAMEPLAY_BASELINE_SMELL:0004",
+          "location": "docs/audit/MVP_GAMEPLAY_BASELINE.md"
+        },
+        {
+          "category": "gameplay_loop.missing_baseline_smell",
+          "finding_id": "E546_MISSING_GAMEPLAY_BASELINE_SMELL:0005",
+          "location": "docs/audit/MVP_GAMEPLAY_LOOP_RUN.md"
+        }
+      ],
+      "severities": {
+        "RISK": 11
+      }
+    },
+    "INV-MVP-PACKS-MINIMAL": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "REWRITE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0001",
+          "location": "tools/xstack/auditx/analyzers/e353_hardcoded_pack_path_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0002",
+          "location": "tools/xstack/auditx/analyzers/e363_large_data_in_pin_pack_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0003",
+          "location": "tools/xstack/auditx/analyzers/e364_identity_override_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0004",
+          "location": "tools/xstack/auditx/analyzers/e414_missing_pack_compat_smell.py"
+        }
+      ],
+      "severities": {
+        "RISK": 4
+      }
+    },
+    "INV-MVP-SMOKE-MUST-PASS-BEFORE-RELEASE": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "release.smoke_suite_missing_smell",
+          "finding_id": "E445_SMOKE_SUITE_MISSING_SMELL:0001",
+          "location": "build/mvp/mvp_smoke_hashes.json"
+        },
+        {
+          "category": "release.smoke_suite_missing_smell",
+          "finding_id": "E445_SMOKE_SUITE_MISSING_SMELL:0002",
+          "location": "build/mvp/mvp_smoke_report.json"
+        },
+        {
+          "category": "release.smoke_suite_missing_smell",
+          "finding_id": "E445_SMOKE_SUITE_MISSING_SMELL:0003",
+          "location": "build/mvp/mvp_smoke_report.json"
+        }
+      ],
+      "severities": {
+        "RISK": 3
+      }
+    },
+    "INV-NO-ADHOC-BURN-LOGIC": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.unbounded_spread_smell",
+          "finding_id": "E202_UNBOUNDED_SPREAD_SMELL:0001",
+          "location": "tools/xstack/sessionx/time_lineage.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO-ADHOC-LOAD-CHECK": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.inline_strength_check_smell",
+          "finding_id": "E138_INLINE_STRENGTH_CHECK_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO-ADHOC-MAIN": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "REWRITE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "appshell.ad_hoc_entry_point_smell",
+          "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0001",
+          "location": "archive/generated/dist/bin/dominium_client"
+        },
+        {
+          "category": "appshell.ad_hoc_entry_point_smell",
+          "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0002",
+          "location": "archive/generated/dist/bin/dominium_server"
+        },
+        {
+          "category": "appshell.ad_hoc_entry_point_smell",
+          "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0003",
+          "location": "archive/generated/dist/bin/launcher"
+        },
+        {
+          "category": "appshell.ad_hoc_entry_point_smell",
+          "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0004",
+          "location": "archive/generated/dist/bin/setup"
+        }
+      ],
+      "severities": {
+        "RISK": 4
+      }
+    },
+    "INV-NO-ADHOC-PRESSURE-LOGIC": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.adhoc_valve_smell",
+          "finding_id": "E220_ADHOC_VALVE_SMELL:0001",
+          "location": "tools/xstack/sessionx/observation.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO-ADHOC-SAFETY-LOGIC": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 1,
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.inline_protection_smell",
+          "finding_id": "E177_INLINE_PROTECTION_SMELL:0001",
+          "location": "tools/xstack/sessionx/observation.py"
+        },
+        {
+          "category": "architecture.missing_failsafe_smell",
+          "finding_id": "E178_MISSING_FAILSAFE_SMELL:0001",
+          "location": "docs/safety/SAFETY_PATTERN_LIBRARY.md"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-NO-ADHOC-SPATIAL-KEYS": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "REWRITE": 6
+      },
+      "sample_findings": [
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0001",
+          "location": "game/domain/worldgen/earth/climate_field_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0002",
+          "location": "game/domain/worldgen/earth/material/material_proxy_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0003",
+          "location": "game/domain/worldgen/earth/tide_field_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0004",
+          "location": "game/domain/worldgen/earth/water/water_view_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0005",
+          "location": "game/domain/worldgen/earth/wind/wind_field_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 6
+      }
+    },
+    "INV-NO-ADHOC-TOOL-ENTRYPOINTS": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "REWRITE": 6
+      },
+      "sample_findings": [
+        {
+          "category": "tools.orphan_tool_smell",
+          "finding_id": "E474_ORPHAN_TOOL_SMELL:0001",
+          "location": "dom lib generate-lib-stress"
+        },
+        {
+          "category": "tools.orphan_tool_smell",
+          "finding_id": "E474_ORPHAN_TOOL_SMELL:0002",
+          "location": "dom lib replay-save-open"
+        },
+        {
+          "category": "tools.orphan_tool_smell",
+          "finding_id": "E474_ORPHAN_TOOL_SMELL:0003",
+          "location": "dom lib run-lib-stress"
+        },
+        {
+          "category": "tools.orphan_tool_smell",
+          "finding_id": "E474_ORPHAN_TOOL_SMELL:0004",
+          "location": "dom lib run-store-gc"
+        },
+        {
+          "category": "tools.orphan_tool_smell",
+          "finding_id": "E474_ORPHAN_TOOL_SMELL:0005",
+          "location": "dom lib store-verify"
+        }
+      ],
+      "severities": {
+        "RISK": 6
+      }
+    },
+    "INV-NO-ADHOC-VALIDATION-ENTRYPOINTS": {
+      "finding_count": 23,
+      "recommended_actions": {
+        "REWRITE": 23
+      },
+      "sample_findings": [
+        {
+          "category": "validation.duplicate_validation_surface_smell",
+          "finding_id": "E473_DUPLICATE_VALIDATION_SURFACE_SMELL:0001",
+          "location": "tools/audit/tool_run_arch_audit.py"
+        },
+        {
+          "category": "validation.duplicate_validation_surface_smell",
+          "finding_id": "E473_DUPLICATE_VALIDATION_SURFACE_SMELL:0002",
+          "location": "tools/domain/fabrication/fab_validate.py"
+        },
+        {
+          "category": "validation.duplicate_validation_surface_smell",
+          "finding_id": "E473_DUPLICATE_VALIDATION_SURFACE_SMELL:0003",
+          "location": "tools/domain/time/tool_compaction_anchor_check.py"
+        },
+        {
+          "category": "validation.duplicate_validation_surface_smell",
+          "finding_id": "E473_DUPLICATE_VALIDATION_SURFACE_SMELL:0004",
+          "location": "tools/domain/time/tool_verify_longrun_ticks.py"
+        },
+        {
+          "category": "validation.duplicate_validation_surface_smell",
+          "finding_id": "E473_DUPLICATE_VALIDATION_SURFACE_SMELL:0005",
+          "location": "tools/domain/tool_domain_validate.py"
+        }
+      ],
+      "severities": {
+        "RISK": 23
+      }
+    },
+    "INV-NO-ADHOC-VEHICLE-CABIN-LOGIC": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.vehicle_interior_special_case_smell",
+          "finding_id": "E160_VEHICLE_INTERIOR_SPECIAL_CASE_SMELL:0001",
+          "location": "tools/xstack/sessionx/observation.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO-ADHOC-WEATHER-FLAGS": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.weather_hack_smell",
+          "finding_id": "E141_WEATHER_HACK_SMELL:0001",
+          "location": "tools/xstack/sessionx/ui_host.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO-DIRECT-MICRO-TO-PERCEIVED": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "ADD_RULE": 6
+      },
+      "sample_findings": [
+        {
+          "category": "epistemics.hidden_state_leak_smell",
+          "finding_id": "E29_HIDDEN_STATE_LEAK_SMELL:0001",
+          "location": "tools/xstack/sessionx/observation.py"
+        },
+        {
+          "category": "epistemics.hidden_state_leak_smell",
+          "finding_id": "E29_HIDDEN_STATE_LEAK_SMELL:0002",
+          "location": "tools/xstack/sessionx/observation.py"
+        },
+        {
+          "category": "epistemics.hidden_state_leak_smell",
+          "finding_id": "E29_HIDDEN_STATE_LEAK_SMELL:0003",
+          "location": "tools/xstack/sessionx/observation.py"
+        },
+        {
+          "category": "epistemics.hidden_state_leak_smell",
+          "finding_id": "E29_HIDDEN_STATE_LEAK_SMELL:0004",
+          "location": "tools/xstack/sessionx/observation.py"
+        },
+        {
+          "category": "epistemics.hidden_state_leak_smell",
+          "finding_id": "E29_HIDDEN_STATE_LEAK_SMELL:0005",
+          "location": "tools/xstack/sessionx/observation.py"
+        }
+      ],
+      "severities": {
+        "RISK": 6
+      }
+    },
+    "INV-NO-DOMAIN-DOWNGRADE-LOGIC": {
+      "finding_count": 8,
+      "recommended_actions": {
+        "REWRITE": 8
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0001",
+          "location": "game/domain/inspection/inspection_engine.py"
+        },
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0002",
+          "location": "game/domain/materials/materialization/materialization_engine.py"
+        },
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0003",
+          "location": "tools/repo/governance/control_plane_engine.py"
+        },
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0004",
+          "location": "tools/repo/governance/control_plane_engine.py"
+        },
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0005",
+          "location": "tools/repo/governance/control_plane_engine.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 8
+      }
+    },
+    "INV-NO-HARDCODED-GAUGE-WIDTH-SPECS": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.spec_hardcode_smell",
+          "finding_id": "E133_SPEC_HARDCODE_SMELL:0001",
+          "location": "specs/spec_engine.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
+    "INV-NO-HARDCODED-MODE-BRANCH": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "contracts/registry/glossary.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0002",
+          "location": "tests/integration/systemic/test_future_case_stress_suite.py"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0003",
+          "location": "tests/invariant/profile_override_architecture_tests.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 3
+      }
+    },
+    "INV-NO-HARDCODED-PLAYER": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "control.player_special_case_smell",
+          "finding_id": "E13_PLAYER_SPECIAL_CASE_SMELL:0001",
+          "location": "game/domain/materials/performance/mat_scale_engine.py"
+        },
+        {
+          "category": "control.player_special_case_smell",
+          "finding_id": "E13_PLAYER_SPECIAL_CASE_SMELL:0002",
+          "location": "game/domain/materials/performance/mat_scale_engine.py"
+        },
+        {
+          "category": "control.player_special_case_smell",
+          "finding_id": "E13_PLAYER_SPECIAL_CASE_SMELL:0003",
+          "location": "tools/validators/repo/check_docs_taxonomy.py"
+        }
+      ],
+      "severities": {
+        "WARN": 3
+      }
+    },
+    "INV-NO-HARDCODED-STRUCTURES": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "REWRITE": 6
+      },
+      "sample_findings": [
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0001",
+          "location": "tools/domain/materials/tool_blueprint_compile.py"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0002",
+          "location": "tools/domain/materials/tool_blueprint_compile.py"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0003",
+          "location": "tools/domain/materials/tool_blueprint_compile.py"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0004",
+          "location": "tools/domain/materials/tool_blueprint_compile.py"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0005",
+          "location": "tools/domain/materials/tool_blueprint_compile.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 6
+      }
+    },
+    "INV-NO-MACRO-BEHAVIOR-WITHOUT-IR": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.ir_nondeterminism_smell",
+          "finding_id": "E117_IR_NONDETERMINISM_SMELL:0001",
+          "location": "tools/repo/governance/ir/control_ir_multiplayer.py"
+        },
+        {
+          "category": "architecture.ir_nondeterminism_smell",
+          "finding_id": "E117_IR_NONDETERMINISM_SMELL:0002",
+          "location": "tools/repo/governance/ir/control_ir_multiplayer.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-NO-NEW-USE-OF-DEPRECATED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.deprecated_usage_smell",
+          "finding_id": "E113_DEPRECATED_USAGE_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO-OMNISCIENT-DEBUG": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "DOC_FIX": 1
+      },
+      "sample_findings": [
+        {
+          "category": "logic.truth_leak_via_debug_smell",
+          "finding_id": "E321_TRUTH_LEAK_VIA_DEBUG_SMELL:0001",
+          "location": "docs/domains/logic/DEBUG_AND_INSTRUMENTATION.md"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO-TRAIN-SPECIALCASE": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "REWRITE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.mobility_special_case_smell",
+          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        },
+        {
+          "category": "architecture.adhoc_speed_limit_smell",
+          "finding_id": "E144_ADHOC_SPEED_LIMIT_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-NO-TRUTH-LEAK-VIA-INSPECTION": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "materials.inspection_leak_smell",
+          "finding_id": "E72_INSPECTION_LEAK_SMELL:0001",
+          "location": "runtime/ui/client/interaction/inspection_overlays.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO-TRUTH-OVER-NET": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "ADD_RULE": 6
+      },
+      "sample_findings": [
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0002",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0003",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0004",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0005",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "RISK": 6
+      }
+    },
+    "INV-NO-UNDECLARED-NOISE": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "logic.random_failure_smell",
+          "finding_id": "E323_RANDOM_FAILURE_SMELL:0001",
+          "location": "game/domain/logic/noise/noise_engine.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
+    "INV-NO-UNDECLARED-SCHEMA": {
+      "finding_count": 1404,
+      "recommended_actions": {
+        "ADD_RULE": 1404
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
+          "location": "contracts/schema/accessibility_preset.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
+          "location": "contracts/schema/action_family.schema.json"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
+          "location": "contracts/schema/action_surface.schema.json"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0004",
+          "location": "contracts/schema/action_template.schema.json"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0005",
+          "location": "contracts/schema/activation_policy.schema.json"
+        }
+      ],
+      "severities": {
+        "RISK": 1404
+      }
+    },
+    "INV-NO-WALLCLOCK-IN-PERFORMANCE": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "performance.performance_nondeterminism_smell",
+          "finding_id": "E48_PERFORMANCE_NONDETERMINISM_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO_SILENT_MACRO_CHANGE": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "materials.reenactment_leak_smell",
+          "finding_id": "E71_REENACTMENT_LEAK_SMELL:0001",
+          "location": "runtime/ui/client/interaction/inspection_overlays.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-PACK-LOCK-REQUIRED": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "REWRITE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0001",
+          "location": "tools/xstack/auditx/analyzers/e353_hardcoded_pack_path_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0002",
+          "location": "tools/xstack/auditx/analyzers/e363_large_data_in_pin_pack_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0003",
+          "location": "tools/xstack/auditx/analyzers/e364_identity_override_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0004",
+          "location": "tools/xstack/auditx/analyzers/e414_missing_pack_compat_smell.py"
+        }
+      ],
+      "severities": {
+        "RISK": 4
+      }
+    },
+    "INV-PHASE-CHANGE-MODEL-ONLY": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.inline_phase_change_smell",
+          "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0001",
+          "location": "tools/xstack/sessionx/scheduler.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-PRODUCTS-MUST-USE-APPSHELL": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "REWRITE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "appshell.ad_hoc_entry_point_smell",
+          "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0001",
+          "location": "archive/generated/dist/bin/dominium_client"
+        },
+        {
+          "category": "appshell.ad_hoc_entry_point_smell",
+          "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0002",
+          "location": "archive/generated/dist/bin/dominium_server"
+        },
+        {
+          "category": "appshell.ad_hoc_entry_point_smell",
+          "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0003",
+          "location": "archive/generated/dist/bin/launcher"
+        },
+        {
+          "category": "appshell.ad_hoc_entry_point_smell",
+          "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0004",
+          "location": "archive/generated/dist/bin/setup"
+        }
+      ],
+      "severities": {
+        "RISK": 4
+      }
+    },
+    "INV-PROTOCOL-SECURITY-ENFORCED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "DOC_FIX": 1
+      },
+      "sample_findings": [
+        {
+          "category": "logic.protocol_security_bypass_smell",
+          "finding_id": "E327_PROTOCOL_SECURITY_BYPASS_SMELL:0001",
+          "location": "docs/domains/logic/PROTOCOL_LAYER_MODEL.md"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-RANKED-REQUIRES-SECUREX-STRICT": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "net.ranked_policy_drift",
+          "finding_id": "E11_RANKED_POLICY_DRIFT:0001",
+          "location": "contracts/registry/server_profile_registry.json"
+        },
+        {
+          "category": "net.signature_bypass_smell",
+          "finding_id": "E12_SIGNATURE_BYPASS_SMELL:0001",
+          "location": "contracts/registry/securex_policy_registry.json"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-RELEASE-INDEX-POLICY-DECLARED": {
+      "finding_count": 5,
+      "recommended_actions": {
+        "ROUTE_INSTALL_AND_UPDATE_SELECTION_THROUGH_THE_DECLARED_RELEASE_RESOLUTION_POLICY_WITH_EXPLICIT_EXPLANATIONS": 5
+      },
+      "sample_findings": [
+        {
+          "category": "release.silent_upgrade_smell",
+          "finding_id": "E538_SILENT_UPGRADE_SMELL:0001",
+          "location": "contracts/schemas/release/release_resolution_policy.schema"
+        },
+        {
+          "category": "release.silent_upgrade_smell",
+          "finding_id": "E538_SILENT_UPGRADE_SMELL:0002",
+          "location": "contracts/schemas/release_resolution_policy.schema.json"
+        },
+        {
+          "category": "release.silent_upgrade_smell",
+          "finding_id": "E538_SILENT_UPGRADE_SMELL:0003",
+          "location": "data/audit/release_index_policy_report.json"
+        },
+        {
+          "category": "release.silent_upgrade_smell",
+          "finding_id": "E538_SILENT_UPGRADE_SMELL:0004",
+          "location": "docs/audit/RELEASE_INDEX_POLICY0_RETRO_AUDIT.md"
+        },
+        {
+          "category": "release.silent_upgrade_smell",
+          "finding_id": "E538_SILENT_UPGRADE_SMELL:0005",
+          "location": "docs/audit/RELEASE_INDEX_POLICY_BASELINE.md"
+        }
+      ],
+      "severities": {
+        "RISK": 5
+      }
+    },
+    "INV-RELEASES-MUST-GENERATE-ARCHIVE-RECORD": {
+      "finding_count": 5,
+      "recommended_actions": {
+        "ADD_RULE": 5
+      },
+      "sample_findings": [
+        {
+          "category": "release.missing_archive_record_smell",
+          "finding_id": "E536_MISSING_ARCHIVE_RECORD_SMELL:0001",
+          "location": "contracts/schemas/archive_record.schema.json"
+        },
+        {
+          "category": "release.missing_archive_record_smell",
+          "finding_id": "E536_MISSING_ARCHIVE_RECORD_SMELL:0002",
+          "location": "contracts/schemas/release/archive_record.schema"
+        },
+        {
+          "category": "release.missing_archive_record_smell",
+          "finding_id": "E536_MISSING_ARCHIVE_RECORD_SMELL:0003",
+          "location": "data/audit/archive_policy_report.json"
+        },
+        {
+          "category": "release.missing_archive_record_smell",
+          "finding_id": "E536_MISSING_ARCHIVE_RECORD_SMELL:0004",
+          "location": "docs/audit/ARCHIVE_POLICY0_RETRO_AUDIT.md"
+        },
+        {
+          "category": "release.missing_archive_record_smell",
+          "finding_id": "E536_MISSING_ARCHIVE_RECORD_SMELL:0005",
+          "location": "docs/audit/ARCHIVE_POLICY_BASELINE.md"
+        }
+      ],
+      "severities": {
+        "RISK": 5
+      }
+    },
+    "INV-REPO-STRUCTURE-LOCKED": {
+      "finding_count": 86,
+      "recommended_actions": {
+        "ADD_RULE": 86
+      },
+      "sample_findings": [
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0001",
+          "location": ".agentignore"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0002",
+          "location": ".aide"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0003",
+          "location": ".aide.local.example"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0004",
+          "location": "CLAUDE.md"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0005",
+          "location": "__init__.py"
+        }
+      ],
+      "severities": {
+        "RISK": 86
+      }
+    },
+    "INV-SCHEMA-SHADOWING-CONTROL": {
+      "finding_count": 120,
+      "recommended_actions": {
+        "ADD_TEST": 120
+      },
+      "sample_findings": [
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0001",
+          "location": "content/packs/core/org.dominium.base.body.earth_macro/content/domains.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0002",
+          "location": "content/packs/core/org.dominium.base.body.earth_macro/content/fields.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0003",
+          "location": "content/packs/core/org.dominium.base.body.earth_macro/content/topology_nodes.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0004",
+          "location": "content/packs/core/org.dominium.base.body.earth_macro/pack_manifest.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0005",
+          "location": "content/packs/core/org.dominium.base.rules/content/capabilities.json"
+        }
+      ],
+      "severities": {
+        "WARN": 120
+      }
+    },
+    "INV-SECUREX-PRIVILEGE-MODEL": {
+      "finding_count": 9,
+      "recommended_actions": {
+        "ADD_TEST": 9
+      },
+      "sample_findings": [
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0001",
+          "location": "tools/xstack/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0002",
+          "location": "tools/xstack/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0003",
+          "location": "tools/xstack/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0004",
+          "location": "tools/xstack/securex/core/boundary_validator.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0005",
+          "location": "tools/xstack/securex/core/boundary_validator.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 9
+      }
+    },
+    "INV-SETTINGS-OWNERSHIP": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0001",
+          "location": "apps/client/main_client.c"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-SHADOW-BOUNDED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "worldgen.unbounded_shadow_sampling_smell",
+          "finding_id": "E379_UNBOUNDED_SHADOW_SAMPLING_SMELL:0001",
+          "location": "tools/domain/worldgen/tool_replay_illumination_view.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-SIGNAL-TRANSPORT-ONLY": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.direct_message_smell",
+          "finding_id": "E164_DIRECT_MESSAGE_SMELL:0001",
+          "location": "tools/xstack/sessionx/net_handshake.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-SINGLE-CANONICAL-ENGINES": {
+      "finding_count": 11,
+      "recommended_actions": {
+        "REWRITE": 11
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.duplicate_semantic_engine_registry_smell",
+          "finding_id": "E562_DUPLICATE_SEMANTIC_ENGINE_REGISTRY_SMELL:0001",
+          "location": "game/domain/geology/index/object_id_engine.py"
+        },
+        {
+          "category": "architecture.duplicate_semantic_engine_registry_smell",
+          "finding_id": "E562_DUPLICATE_SEMANTIC_ENGINE_REGISTRY_SMELL:0002",
+          "location": "game/domain/geology/overlay/overlay_merge_engine.py"
+        },
+        {
+          "category": "architecture.duplicate_semantic_engine_registry_smell",
+          "finding_id": "E562_DUPLICATE_SEMANTIC_ENGINE_REGISTRY_SMELL:0003",
+          "location": "game/domain/geology/overlay/overlay_merge_engine.py"
+        },
+        {
+          "category": "architecture.duplicate_semantic_engine_registry_smell",
+          "finding_id": "E562_DUPLICATE_SEMANTIC_ENGINE_REGISTRY_SMELL:0004",
+          "location": "game/domain/worldgen/refinement/refinement_scheduler.py"
+        },
+        {
+          "category": "architecture.duplicate_semantic_engine_registry_smell",
+          "finding_id": "E562_DUPLICATE_SEMANTIC_ENGINE_REGISTRY_SMELL:0005",
+          "location": "runtime/shell/paths/virtual_paths.py"
+        }
+      ],
+      "severities": {
+        "RISK": 11
+      }
+    },
+    "INV-SPECSHEET-OPTIONAL": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.spec_bypass_smell",
+          "finding_id": "E134_SPEC_BYPASS_SMELL:0001",
+          "location": "specs/spec_engine.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
+    "INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "worldgen.direct_system_spawn_smell",
+          "finding_id": "E357_DIRECT_SYSTEM_SPAWN_SMELL:0001",
+          "location": "game/domain/worldgen/mw/sol_anchor.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-THERM-DEGRADE-LOGGED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.silent_therm_degrade_smell",
+          "finding_id": "E204_SILENT_THERM_DEGRADE_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-TICK-TYPE-64BIT-ENFORCED": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "time.mixed_tick_width_smell",
+          "finding_id": "E452_MIXED_TICK_WIDTH_SMELL:0001",
+          "location": "server/runtime/tick_loop.py"
+        },
+        {
+          "category": "time.mixed_tick_width_smell",
+          "finding_id": "E452_MIXED_TICK_WIDTH_SMELL:0002",
+          "location": "server/server_boot.py"
+        },
+        {
+          "category": "time.mixed_tick_width_smell",
+          "finding_id": "E452_MIXED_TICK_WIDTH_SMELL:0003",
+          "location": "server/server_console.py"
+        }
+      ],
+      "severities": {
+        "RISK": 3
+      }
+    },
+    "INV-TOOLCHAIN-MATRIX-REGISTRY-PRESENT": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "RESTORE_THE_TOOLCHAIN_MATRIX_REPORT_OR_REQUIRED_SUPPORT_SURFACE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "toolchain_matrix.report_missing_smell",
+          "finding_id": "E558_TOOLCHAIN_REPORT_MISSING_SMELL:0001",
+          "location": "tools/release/mvp/toolchain_matrix_common.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-TOPOLOGY-MAP-PRESENT": {
+      "finding_count": 11,
+      "recommended_actions": {
+        "ADD_RULE": 11
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_subsystem_smell",
+          "finding_id": "E106_UNDECLARED_SUBSYSTEM_SMELL:0001",
+          "location": "tools/aide"
+        },
+        {
+          "category": "architecture.undeclared_subsystem_smell",
+          "finding_id": "E106_UNDECLARED_SUBSYSTEM_SMELL:0002",
+          "location": "tools/build"
+        },
+        {
+          "category": "architecture.undeclared_subsystem_smell",
+          "finding_id": "E106_UNDECLARED_SUBSYSTEM_SMELL:0003",
+          "location": "tools/codegen"
+        },
+        {
+          "category": "architecture.undeclared_subsystem_smell",
+          "finding_id": "E106_UNDECLARED_SUBSYSTEM_SMELL:0004",
+          "location": "tools/diagnostics"
+        },
+        {
+          "category": "architecture.undeclared_subsystem_smell",
+          "finding_id": "E106_UNDECLARED_SUBSYSTEM_SMELL:0005",
+          "location": "tools/export"
+        }
+      ],
+      "severities": {
+        "RISK": 11
+      }
+    },
+    "INV-TRACE-BOUNDED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "DOC_FIX": 1
+      },
+      "sample_findings": [
+        {
+          "category": "logic.unbounded_trace_smell",
+          "finding_id": "E322_UNBOUNDED_TRACE_SMELL:0001",
+          "location": "docs/domains/logic/DEBUG_AND_INSTRUMENTATION.md"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-UI-ENTITLEMENT-GATING": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_TEST": 1
+      },
+      "sample_findings": [
+        {
+          "category": "capability_bypass_smell",
+          "finding_id": "C3_CAPABILITY_BYPASS_SMELL:0001",
+          "location": "runtime/shell/client/command/client_command_bridge.c"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "RESTORE_YANKED_EXCLUSION_FOR_LATEST_COMPATIBLE_SELECTION_AND_RECORD_THE_SKIP_DETERMINISTICALLY": 1
+      },
+      "sample_findings": [
+        {
+          "category": "update_sim.yanked_selectable_smell",
+          "finding_id": "E551_YANKED_SELECTABLE_SMELL:0001",
+          "location": "data/audit/update_sim_run.json"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-VERIFICATION-PROCESS-ONLY": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.unlogged_trust_change_smell",
+          "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-WORLDGEN-CONSTRAINTS-REGISTERED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "worldgen.constraint_drift",
+          "finding_id": "D1_CONSTRAINT_DRIFT:0001",
+          "location": "contracts/registry/worldgen_constraints_registry.json"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "NO_SINGLE_USE_CODE_PATHS": {
+      "finding_count": 80,
+      "recommended_actions": {
+        "RETIRE": 80
+      },
+      "sample_findings": [
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
+          "location": "../../source/tests/agent_behavior_determinism_test.c"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
+          "location": "../../source/tests/graph_toolkit_determinism_test.c"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+          "location": "../../source/tests/lod_framework_test.c"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
+          "location": "../../source/tests/pkt_determinism_test.c"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
+          "location": "../../source/tests/sched_determinism_test.c"
+        }
+      ],
+      "severities": {
+        "WARN": 80
+      }
+    },
+    "SCHEMA_ANCHOR_REQUIRED": {
+      "finding_count": 160,
+      "recommended_actions": {
+        "ADD_RULE": 80,
+        "ADD_TEST": 80
+      },
+      "sample_findings": [
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0001",
+          "location": ".aide/scripts/aide_lite.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0002",
+          "location": ".aide/scripts/aide_lite.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0003",
+          "location": ".aide/scripts/aide_lite.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0004",
+          "location": ".aide/scripts/aide_lite.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0005",
+          "location": ".aide/scripts/aide_lite.py"
+        }
+      ],
+      "severities": {
+        "RISK": 80,
+        "WARN": 80
+      }
+    }
+  },
+  "schema_id": "dominium.auditx.invariant_map",
+  "schema_version": "1.0.0"
+}

@@ -78,7 +78,7 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | AUTH3-TOURIST-004 | Tourists never mutate authoritative state. | docs/architecture/DEMO_AND_TOURIST_MODEL.md | tests/integration/tourist |
 
 
-| AUTH3-SERVICE-005 | Services affect access only. | docs/architecture/SERVICES_AND_PRODUCTS.md | tests/services |
+| AUTH3-SERVICE-005 | Services affect access only. | docs/architecture/SERVICES_AND_PRODUCTS.md | tests/contract/service/services_expiry |
 
 
 | AUTH3-PIRACY-006 | Piracy contained by authority, not DRM. | docs/architecture/PIRACY_CONTAINMENT.md | tests/piracy_containment |
@@ -149,23 +149,23 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | INV-CANON-NO-SUPERSEDED | Canonical docs must not be superseded. | docs/architecture/CANON_INDEX.md | scripts/ci/check_repox_rules.py |
 | INV-SCHEMA-VERSION-BUMP | Schema changes require schema_version update. | docs/architecture/SCHEMA_VERSIONING.md | scripts/ci/check_repox_rules.py |
 | INV-REPORT-CANON | Canon compliance report emitted. | docs/architecture/CANON_INDEX.md | scripts/ci/compliance_report.py |
-| INV-ARTIFACTS-CONTENT-ADDRESSED | Reusable artifacts are stored and resolved by canonical hash. | docs/architecture/CONTENT_AND_STORAGE_MODEL.md | tests/ops/content_store_tests.py |
+| INV-ARTIFACTS-CONTENT-ADDRESSED | Reusable artifacts are stored and resolved by canonical hash. | docs/architecture/CONTENT_AND_STORAGE_MODEL.md | tests/operations/content_store_tests.py |
 | INV-NO-PATH-BASED-SEMANTICS | Paths may locate artifacts but never define identity or authority semantics. | docs/architecture/CONTENT_AND_STORAGE_MODEL.md | tools/xstack/repox/check.py |
-| INV-PORTABLE-MODE-SELF-CONTAINED | Portable instances and instance bundles must embed all required reusable artifacts. | docs/architecture/INSTANCE_MODEL.md | tests/ops/content_store_tests.py |
+| INV-PORTABLE-MODE-SELF-CONTAINED | Portable instances and instance bundles must embed all required reusable artifacts. | docs/architecture/INSTANCE_MODEL.md | tests/operations/content_store_tests.py |
 | INV-INSTALL-MANIFEST-REQUIRED | Registered installs must carry a canonical install manifest with build, contract, and store metadata. | docs/architecture/INSTALL_MODEL.md | tests/setup/install_manifest_tests.py |
 | INV-INSTALL-NO-ABSOLUTE-PATH-DEPENDENCY | Install identity and validation must not depend on absolute host paths. | docs/architecture/INSTALL_MODEL.md | tools/package/libraries/install/install_validator.py |
 | INV-BINARY-HASH-MATCHES-MANIFEST | Installed binaries and endpoint descriptors must match the manifest-declared hashes. | docs/architecture/INSTALL_MODEL.md | tests/setup/install_manifest_tests.py |
 | INV-INSTANCE-USES-PACK-LOCK | Runnable instances must bind a canonical `pack_lock_hash`. | docs/architecture/INSTANCE_MODEL.md | tests/launcher/launcher_cli_tests.py |
 | INV-INSTANCE-USES-PROFILE-BUNDLE | Runnable instances must bind a canonical `profile_bundle_hash`. | docs/architecture/INSTANCE_MODEL.md | tests/launcher/launcher_cli_tests.py |
 | INV-SAVES-NOT-EMBEDDED-IN-INSTANCE | Instances may reference saves, but must not embed save payloads as instance-owned state. | docs/architecture/INSTANCE_MODEL.md | tests/packaging/share/share_bundle_tests.py |
-| INV-SAVE-MANIFEST-REQUIRED | Selected saves must carry a canonical save manifest before launcher/runtime open. | docs/architecture/SAVE_MODEL.md | tests/ops/save_manifest_tests.py |
+| INV-SAVE-MANIFEST-REQUIRED | Selected saves must carry a canonical save manifest before launcher/runtime open. | docs/architecture/SAVE_MODEL.md | tests/operations/save_manifest_tests.py |
 | INV-SAVE-PINS-CONTRACTS | Saves must pin their universe contract bundle and pack lock identity. | docs/architecture/SAVE_MODEL.md | tests/launcher/launcher_cli_tests.py |
-| INV-NO-SILENT-MIGRATION | Save migration and read-only fallback must remain explicit and auditable. | docs/architecture/SAVE_MODEL.md | tests/ops/save_manifest_tests.py |
+| INV-NO-SILENT-MIGRATION | Save migration and read-only fallback must remain explicit and auditable. | docs/architecture/SAVE_MODEL.md | tests/operations/save_manifest_tests.py |
 | INV-SHAREABLE-ARTIFACTS-MUST-HAVE-MANIFEST | Shareable non-pack artifacts must publish a canonical artifact manifest or validated sidecar. | docs/architecture/ARTIFACT_MODEL.md | tests/packaging/share/share_bundle_tests.py |
-| INV-ARTIFACT-LOAD-VALIDATED | Shareable artifact load must verify content hash, contract ranges, capabilities, and degrade policy before use. | docs/architecture/ARTIFACT_MODEL.md | tests/ops/artifact_manifest_tests.py |
+| INV-ARTIFACT-LOAD-VALIDATED | Shareable artifact load must verify content hash, contract ranges, capabilities, and degrade policy before use. | docs/architecture/ARTIFACT_MODEL.md | tests/operations/artifact_manifest_tests.py |
 | INV-FORKS-MUST-NAMESPACE | Forked packs must use explicit fork namespaces and must not reuse the origin `pack_id`. | docs/architecture/FORKING_AND_PROVIDES_MODEL.md | tools/xstack/pack_loader/loader.py |
-| INV-PROVIDES-RESOLUTION-DETERMINISTIC | Required provides surfaces must resolve through logged deterministic policies and canonical resolution records. | docs/architecture/FORKING_AND_PROVIDES_MODEL.md | tests/ops/provides_resolution_tests.py |
-| INV-STRICT-REFUSES-AMBIGUITY | Strict provider policies must refuse ambiguous providers instead of auto-selecting one. | docs/architecture/FORKING_AND_PROVIDES_MODEL.md | tests/ops/provides_resolution_tests.py |
+| INV-PROVIDES-RESOLUTION-DETERMINISTIC | Required provides surfaces must resolve through logged deterministic policies and canonical resolution records. | docs/architecture/FORKING_AND_PROVIDES_MODEL.md | tests/operations/provides_resolution_tests.py |
+| INV-STRICT-REFUSES-AMBIGUITY | Strict provider policies must refuse ambiguous providers instead of auto-selecting one. | docs/architecture/FORKING_AND_PROVIDES_MODEL.md | tests/operations/provides_resolution_tests.py |
 
 ## Notes
 

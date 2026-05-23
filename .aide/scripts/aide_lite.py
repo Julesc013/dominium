@@ -5372,6 +5372,8 @@ def repo_path_exists(repo_root: Path, tracked: set[str], rel: str) -> bool:
     cleaned = normalize_repo_reference(rel)
     if not cleaned:
         return False
+    if any(char in cleaned for char in "*?[]<>|"):
+        return False
     if cleaned in tracked:
         return True
     path = repo_root / cleaned
@@ -9605,9 +9607,11 @@ def build_repair_diagnosis(repo_root: Path, observation: dict[str, object] | Non
             continue
         repair_class = str(issue.get("repair_class", "unknown"))
         defaults = REPAIR_CLASS_DEFAULTS.get(repair_class, REPAIR_CLASS_DEFAULTS["unknown"])
+        issue_id = str(issue.get("issue_id", repair_issue_id(str(issue.get("path", "unknown")), repair_class)))
+        diagnosis_suffix = issue_id[len("repair-"):] if issue_id.startswith("repair-") else issue_id
         diagnoses.append(
             {
-                "diagnosis_id": f"diagnosis-{issue.get('issue_id', repair_issue_id(str(issue.get('path', 'unknown')), repair_class)).removeprefix('repair-')}",
+                "diagnosis_id": f"diagnosis-{diagnosis_suffix}",
                 "issue_id": issue.get("issue_id", ""),
                 "repair_class": repair_class,
                 "risk_class": issue.get("risk_class", defaults.get("risk_class", "unknown")),

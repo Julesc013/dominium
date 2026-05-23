@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Mapping, Tuple
 
-from engine.compatx.core.semantic_contract_validator import (
+from engine.compatibility.core.semantic_contract_validator import (
     build_default_universe_contract_bundle,
     build_semantic_contract_proof_bundle,
     bundle_hash,

@@ -27,7 +27,7 @@ _DOC_ONLY_PREFIXES = (
 )
 
 _UI_ONLY_PREFIXES = (
-    "contracts/schema/ui/",
+    "contracts/schema/runtime/ui/",
     "docs/runtime/ui/",
     "runtime/ui/client/",
     "libs/ui_",

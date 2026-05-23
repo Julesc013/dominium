@@ -1,0 +1,159 @@
+{
+  "schema_version": "dominium.provider.plans.registry.v1",
+  "status": "provisional",
+  "owner": "contracts.provider",
+  "support_claim": false,
+  "notes": "Planned provider descriptors define service-first names and paths only. They do not create implementation directories or product support claims.",
+  "providers": [
+    {
+      "provider_id": "domino.provider.platform.raylib.v1",
+      "provider_kind": "platform_backend",
+      "service_root": "runtime/platform",
+      "provider_family": "raylib",
+      "provider_api": "raylib",
+      "implementation_path": "runtime/platform/providers/raylib",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.input.raylib.v1",
+      "provider_kind": "input_backend",
+      "service_root": "runtime/input",
+      "provider_family": "raylib",
+      "provider_api": "raylib",
+      "implementation_path": "runtime/input/providers/raylib",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.render.raylib.v1",
+      "provider_kind": "render_backend",
+      "service_root": "runtime/render",
+      "provider_family": "raylib",
+      "provider_api": "raylib",
+      "implementation_path": "runtime/render/providers/raylib",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.audio.raylib.v1",
+      "provider_kind": "audio_backend",
+      "service_root": "runtime/audio",
+      "provider_family": "raylib",
+      "provider_api": "raylib",
+      "implementation_path": "runtime/audio/providers/raylib",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.asset.raylib.v1",
+      "provider_kind": "asset_backend",
+      "service_root": "runtime/asset",
+      "provider_family": "raylib",
+      "provider_api": "raylib",
+      "implementation_path": "runtime/asset/providers/raylib",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.ui.raygui.v1",
+      "provider_kind": "ui_backend",
+      "service_root": "runtime/ui",
+      "provider_family": "raylib",
+      "provider_api": "raygui",
+      "implementation_path": "runtime/ui/providers/raygui",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.platform.sdl2.v1",
+      "provider_kind": "platform_backend",
+      "service_root": "runtime/platform",
+      "provider_family": "sdl",
+      "provider_api": "sdl2",
+      "implementation_path": "runtime/platform/providers/sdl2",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.input.sdl2.v1",
+      "provider_kind": "input_backend",
+      "service_root": "runtime/input",
+      "provider_family": "sdl",
+      "provider_api": "sdl2",
+      "implementation_path": "runtime/input/providers/sdl2",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.audio.sdl2.v1",
+      "provider_kind": "audio_backend",
+      "service_root": "runtime/audio",
+      "provider_family": "sdl",
+      "provider_api": "sdl2",
+      "implementation_path": "runtime/audio/providers/sdl2",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.render.opengl33.v1",
+      "provider_kind": "render_backend",
+      "service_root": "runtime/render",
+      "provider_family": "opengl",
+      "provider_api": "opengl33",
+      "implementation_path": "runtime/render/providers/opengl33",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.asset.dominium.v1",
+      "provider_kind": "asset_backend",
+      "service_root": "runtime/asset",
+      "provider_family": "dominium",
+      "provider_api": "dominium",
+      "implementation_path": "runtime/asset/providers/dominium",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.platform.null.v1",
+      "provider_kind": "platform_backend",
+      "service_root": "runtime/platform",
+      "provider_family": "null",
+      "provider_api": "null",
+      "implementation_path": "runtime/platform/providers/null",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.input.null.v1",
+      "provider_kind": "input_backend",
+      "service_root": "runtime/input",
+      "provider_family": "null",
+      "provider_api": "null",
+      "implementation_path": "runtime/input/providers/null",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.audio.null.v1",
+      "provider_kind": "audio_backend",
+      "service_root": "runtime/audio",
+      "provider_family": "null",
+      "provider_api": "null",
+      "implementation_path": "runtime/audio/providers/null",
+      "planned": true,
+      "support_claim": false
+    },
+    {
+      "provider_id": "domino.provider.script.lua54.v1",
+      "provider_kind": "script_backend",
+      "service_root": "runtime/script",
+      "provider_family": "lua",
+      "provider_api": "lua54",
+      "implementation_path": "runtime/script/providers/lua54",
+      "planned": true,
+      "support_claim": false
+    }
+  ]
+}

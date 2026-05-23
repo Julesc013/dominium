@@ -19,9 +19,9 @@ from runtime.compatibility.migration_lifecycle import (
     DECISION_READ_ONLY,
     determine_migration_decision,
 )
-from engine.compatx.core.migration_runner import apply_migration, load_and_validate
+from engine.compatibility.core.migration_runner import apply_migration, load_and_validate
 from engine.serialization.canonical_json import canonical_sha256
-from runtime.compatx.validator import validate_instance
+from engine.compatibility.validator import validate_instance
 
 
 CURRENT_ARTIFACT_FORMAT_VERSION = "2.0.0"

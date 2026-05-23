@@ -14,8 +14,8 @@ Replacement Target: legacy reference surface retained without current binding au
 - source/dominium/launcher/dom_launcher_app.cpp — Launcher app and UI wiring (schema discovery/loading). Target: dominium-launcher.
 - source/dominium/launcher/dom_launcher_actions.cpp — Launcher UI actions/state transitions. Target: dominium-launcher.
 - source/dominium/launcher/dom_launcher_catalog.cpp — Launcher catalog/model data for UI. Target: dominium-launcher.
-- include/dui/dui_api_v1.h — DUI backend API v1 ABI. Target: domino_core (header used by DUI).
-- include/dui/dui_schema_tlv.h — TLV tags/enums for DUI schema/state. Target: domino_core (header used by DUI).
+- runtime/include/domino/ui/dui/dui_api_v1.h — DUI backend API v1 ABI. Target: domino_core (header used by DUI).
+- runtime/include/domino/ui/dui/dui_schema_tlv.h — TLV tags/enums for DUI schema/state. Target: domino_core (header used by DUI).
 - source/domino/dui/dui_schema_parse.h — DUI TLV schema/state parser interface. Target: domino_core.
 - source/domino/dui/dui_schema_parse.c — DUI TLV schema/state parser/layout helpers. Target: domino_core.
 - source/domino/dui/dui_event_queue.h — DUI event queue interface. Target: domino_core.

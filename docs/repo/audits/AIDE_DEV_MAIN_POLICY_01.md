@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-05-22
+Supersedes: none
+Superseded By: none
 Task: AIDE-DEV-MAIN-POLICY-01
 Result: PASS_WITH_WARNINGS
 Stability: provisional

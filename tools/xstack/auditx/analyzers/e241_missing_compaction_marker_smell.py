@@ -18,12 +18,12 @@ class MissingCompactionMarkerSmell:
 
 WATCH_PREFIXES = (
     "tools/repo/meta/provenance/compaction_engine.py",
-    "contracts/schema/control_proof_bundle.schema.json",
+    "contracts/schema/runtime/control/control_proof_bundle.schema.json",
     "tools/repo/meta/audit/tool_verify_replay_from_anchor.py",
 )
 
 _ENGINE_REL = "tools/repo/meta/provenance/compaction_engine.py"
-_PROOF_SCHEMA_REL = "contracts/schema/control_proof_bundle.schema.json"
+_PROOF_SCHEMA_REL = "contracts/schema/runtime/control/control_proof_bundle.schema.json"
 _REPLAY_TOOL_REL = "tools/repo/meta/audit/tool_verify_replay_from_anchor.py"
 
 

@@ -51,9 +51,9 @@ Examples:
 
 CONVERGE-09 examples after contract convergence:
 
-- `geo/` schema material -> `contracts/schema/geology/` or `contracts/registry/geology/`; implementation remains under a game/domain owner.
+- `geo/` schema material -> `contracts/schema/domain/geology/` or `contracts/registry/geology/`; implementation remains under a game/domain owner.
 - `materials/` registry definitions -> `contracts/registry/materials/`; authored material datasets remain content.
-- `worldgen/` schemas -> `contracts/schema/worldgen/`; deterministic generation logic remains game/domain implementation.
+- `worldgen/` schemas -> `contracts/schema/game/worldgen/`; deterministic generation logic remains game/domain implementation.
 - `field/` and `fields/` schema contracts -> `contracts/schema/fields/` or `contracts/registry/fields/` depending on file role.
 
 ## CONVERGE-09 Execution Status

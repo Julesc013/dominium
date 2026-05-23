@@ -92,7 +92,7 @@ Failure classification: `path_stale_after_convergence`.
 Primary CMake errors:
 
 - `tests/engine/CMakeLists.txt` references `client/presentation/frame_graph_builder.cpp`; the tracked source now exists at `apps/client/presentation/frame_graph_builder.cpp`.
-- `tests/authority`, `tests/tourist`, `tests/services`, and `tests/piracy_containment` reference `server/authority/dom_server_authority.cpp`; the tracked source now exists at `apps/server/authority/dom_server_authority.cpp`.
+- `tests/authority`, `tests/tourist`, `tests/contract/service/services_expiry`, and `tests/piracy_containment` reference `server/authority/dom_server_authority.cpp`; the tracked source now exists at `apps/server/authority/dom_server_authority.cpp`.
 
 ## Native Binary Result
 

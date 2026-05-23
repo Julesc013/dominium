@@ -6,7 +6,7 @@ import hashlib
 from typing import Dict, List, Tuple
 
 from engine.serialization.canonical_json import canonical_sha256
-from engine.compatx.validator import validate_instance
+from engine.compatibility.validator import validate_instance
 
 from .module_resolver import resolve_worldgen_module_order
 

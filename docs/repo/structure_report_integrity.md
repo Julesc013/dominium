@@ -59,6 +59,17 @@ To produce a fresh local tracked-only bundle:
 py -3 tools/validators/repo/check_structure_report_integrity.py --repo-root . --write-bundle .dominium.local/<task-id> --strict
 ```
 
+The generated local bundle includes:
+
+- `dir_tree.json`, `dir_tree.txt`, `dirfiles_manifest.json`,
+  `dirfiles_run.log`, and `dirfiles.zip`
+- `tracked-files.txt`, `tracked-dirs.txt`, `tracked-roots.txt`, and
+  `first-level-by-root.txt`
+- `suspicious-active-paths.txt`, `old-path-sweep.txt`,
+  `suspicious-active-paths-final.txt`, and `old-path-sweep-final.txt`
+- `validation-summary.txt`, `task-status-matrix.json`,
+  `report-manifest.json`, and `report-integrity.txt`
+
 Without `--manifest`, the validator checks for known active tracked dirfiles
 artifacts and reports whether they need an integrity manifest.
 

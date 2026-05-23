@@ -7,7 +7,7 @@ import os
 from typing import Dict, List, Tuple
 
 from engine.serialization.canonical_json import canonical_json_text, canonical_sha256
-from engine.compatx.validator import validate_instance
+from engine.compatibility.validator import validate_instance
 
 from .pipeline import run_worldgen_pipeline
 

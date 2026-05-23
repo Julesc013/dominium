@@ -8,7 +8,7 @@ RESPONSIBILITY: Import legacy launcher UI schema TLV into UI IR.
 
 #include <stdio.h>
 
-#include "dui/dui_schema_tlv.h"
+#include "domino/ui/dui/dui_schema_tlv.h"
 #include "domino/io/container.h"
 
 #include "ui_ir_fileio.h"

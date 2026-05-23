@@ -134,6 +134,28 @@ remain explicit pending splits unless a later task proves a clean provider
 boundary. Do not move broad service implementations into `providers/` just to
 satisfy naming.
 
+## Planned Provider Profiles
+
+Planned provider descriptors are recorded in:
+
+```text
+contracts/provider/provider_plans.registry.json
+```
+
+That registry may name future raylib, SDL2, OpenGL, Lua, raygui, and null
+provider paths without creating empty directories or support claims. Planned
+provider profiles live under `release/profiles/dev/` and must declare
+`support_claim = false` until implementation and conformance evidence exist.
+
+Current planned profile files:
+
+```text
+release/profiles/dev/client.raylib.toml
+release/profiles/dev/client.sdl2_opengl33.toml
+release/profiles/dev/workbench.raylib.toml
+release/profiles/dev/server.null.toml
+```
+
 ## Non-Goals
 
 This policy does not implement provider loading, automatic selection, dynamic

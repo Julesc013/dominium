@@ -407,13 +407,13 @@ SEMANTIC_CONTRACT_MODEL_REL = os.path.join("docs", "reference", "contracts", "SE
 UNIVERSE_CONTRACT_BUNDLE_DOC_REL = os.path.join("docs", "meta", "UNIVERSE_CONTRACT_BUNDLE.md")
 UNIVERSE_IDENTITY_SCHEMA_REL = os.path.join("contracts", "schemas", "universe", "universe_identity.schema")
 UNIVERSE_IDENTITY_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "universe_identity.schema.json")
-SESSION_SPEC_SCHEMA_REL = os.path.join("contracts", "schemas", "session", "session_spec.schema")
-SESSION_SPEC_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "session_spec.schema.json")
+SESSION_SPEC_SCHEMA_REL = os.path.join("contracts", "schema", "runtime", "session", "session_spec.schema")
+SESSION_SPEC_JSON_SCHEMA_REL = os.path.join("contracts", "schema", "runtime", "session", "session_spec.schema.json")
 UNIVERSE_IDENTITY_BUILDER_REL = os.path.join("game", "domains", "universe", "universe_identity_builder.py")
 UNIVERSE_CONTRACT_ENFORCER_REL = os.path.join("game", "domains", "universe", "universe_contract_enforcer.py")
 SESSION_RUNNER_REL = os.path.join("tools", "xstack", "sessionx", "runner.py")
 SESSION_SCRIPT_RUNNER_REL = os.path.join("tools", "xstack", "sessionx", "script_runner.py")
-SEMANTIC_CONTRACT_VALIDATOR_REL = os.path.join("tools", "compatx", "core", "semantic_contract_validator.py")
+SEMANTIC_CONTRACT_VALIDATOR_REL = os.path.join("tools", "xstack", "compatx", "core", "semantic_contract_validator.py")
 SEMANTIC_CONTRACT_CREATOR_REL = os.path.join("tools", "xstack", "sessionx", "creator.py")
 SEMANTIC_CONTRACT_TOKEN_RE = re.compile(r"\b(contract\.[a-z0-9_.]+\.v[0-9]+)\b")
 REQUIRED_SEMANTIC_CONTRACT_IDS = (
@@ -883,8 +883,8 @@ UX_VIEWER_SHELL_REL = os.path.join("apps", "client", "ui", "viewer_shell.py")
 UX_MAP_VIEWS_REL = os.path.join("apps", "client", "ui", "map_views.py")
 UX_INSPECT_PANELS_REL = os.path.join("apps", "client", "ui", "inspect_panels.py")
 RENDER_MODEL_ADAPTER_REL = os.path.join("runtime", "render", "backend", "render_model_adapter.py")
-SOFTWARE_RENDERER_REL = os.path.join("runtime", "render", "backend", "software_renderer.py")
-NULL_RENDERER_REL = os.path.join("runtime", "render", "backend", "null_renderer.py")
+SOFTWARE_RENDERER_REL = os.path.join("runtime", "render", "providers", "software", "software_renderer.py")
+NULL_RENDERER_REL = os.path.join("runtime", "render", "providers", "null", "null_renderer.py")
 UX_VIEWER_DOC_REL = os.path.join("docs", "ux", "MVP_VIEWER_SHELL.md")
 EMB_ASSET_FORBIDDEN_TOKENS = (
     ".png",
@@ -4006,8 +4006,8 @@ def check_authority_context_required(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    session_rel = "contracts/schema/session/session_spec.schema"
-    authority_rel = "contracts/schema/authority/authority_context.schema"
+    session_rel = "contracts/schema/runtime/session/session_spec.schema"
+    authority_rel = "contracts/schema/repo/authority/authority_context.schema"
     required_session_fields = (
         "universe_id",
         "save_id",
@@ -4322,7 +4322,7 @@ def check_authority_context_required_for_intents(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    schema_rel = "contracts/schema/authority/authority_context.schema"
+    schema_rel = "contracts/schema/repo/authority/authority_context.schema"
     client_rel = "runtime/shell/client/command/client_command_bridge.c"
     server_h_rel = "game/law/authority/dom_server_authority.h"
     server_cpp_rel = "game/law/authority/dom_server_authority.cpp"
@@ -4369,7 +4369,7 @@ def check_session_spec_required_for_run(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    schema_rel = "contracts/schema/session/session_spec.schema"
+    schema_rel = "contracts/schema/runtime/session/session_spec.schema"
     registry_rel = "contracts/registry/session_defaults.json"
     bridge_rel = "runtime/shell/client/command/client_command_bridge.c"
     commands_rel = "runtime/shell/client/command/client_commands_registry.c"
@@ -6597,7 +6597,7 @@ def check_mod_policy_enforced(repo_root):
         MOD_POLICY_SESSION_CREATE_REL: (
             "--mod-policy-id",
         ),
-        "contracts/schema/session_spec.schema.json": (
+        "contracts/schema/runtime/session/session_spec.schema.json": (
             '"mod_policy_id"',
             '"mod_policy_registry_hash"',
         ),
@@ -7037,7 +7037,7 @@ def check_artifacts_must_have_format_version(repo_root):
             "\"format_version\"",
             "\"engine_version_created\"",
         ),
-        "contracts/schema/session_template.schema.json": (
+        "contracts/schema/runtime/session/session_template.schema.json": (
             "\"format_version\"",
             "\"engine_version_created\"",
         ),
@@ -10433,7 +10433,7 @@ def check_contracts_validated_on_boot(repo_root):
     server_boot_rel = os.path.join("apps", "server", "server_boot.py")
     server_main_rel = os.path.join("apps", "server", "server_main.py")
     doc_rel = os.path.join("docs", "server", "SERVER_MVP_BASELINE.md")
-    config_schema_rel = os.path.join("contracts", "schemas", "server", "server_config.schema")
+    config_schema_rel = os.path.join("contracts", "schema", "runtime", "server", "server_config.schema")
     config_registry_rel = os.path.join("contracts", "registry", "server_config_registry.json")
 
     violations = []

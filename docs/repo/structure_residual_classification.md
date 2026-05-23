@@ -51,8 +51,6 @@ payload root or should normalize to `data/assets/docs/ui/scenarios`.
 The following paths are classified residuals, not permission to create broad
 bucket directories:
 
-- `engine/compatx`: CompatX core policy and validator implementation.
-- `runtime/compatx`: runtime-facing CompatX adapter/validator surface.
 - `engine/foundation`: deterministic substrate pending boundary review; not a
   generic `core/common` replacement.
 - `engine/serialization`: deterministic engine serialization only.
@@ -64,21 +62,28 @@ bucket directories:
   project graph model.
 - `runtime/ui/client`: accepted reusable client UI-facing systems per
   `APPS_THIN_01`.
-- `runtime/ui/control/dui` and `runtime/include/dui`: accepted Dominium UI
+- `runtime/ui/control/domui` and `runtime/include/domino/ui/dui`: accepted Dominium UI
   facade/control surfaces per `SPEC_DUI` and `STRUCTURE_CANON_SWEEP_01`.
+
+CompatX cleanup status:
+
+- `engine/compatx` was renamed to `engine/compatibility`.
+- `runtime/compatx` was retired to `archive/legacy/runtime/compatx`.
+- New active runtime code must use `runtime/compatibility` or a more precise
+  runtime service root.
 
 Focused follow-up: `RUNTIME-RESIDUAL-TAXONOMY-01`.
 
-Missing `runtime/projection/cli`, `runtime/projection/headless`, and
-`runtime/projection/native` roots are classified as deferred projection-surface
-work. Do not create empty placeholders for them without
+`runtime/projection/cli`, `runtime/projection/headless`, and
+`runtime/projection/native` are present as README-guarded projection mode
+boundaries. Real implementation remains deferred to
 `PROJECTION-CONFORMANCE-01` or equivalent scope.
 
 ## Workbench Residual
 
-`apps/workbench/module/` and `apps/workbench/workspace/` are present.
-`apps/workbench/shell/` is deferred until actual Workbench shell ownership
-exists. Do not create an empty shell root just to silence a structural warning.
+`apps/workbench/shell/`, `apps/workbench/module/`, and
+`apps/workbench/workspace/` are present. The shell root is README-guarded until
+actual Workbench shell ownership exists.
 
 Focused follow-up: `WORKBENCH-SHELL-STRUCTURE-01`.
 

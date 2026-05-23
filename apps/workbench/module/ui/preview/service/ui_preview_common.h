@@ -11,7 +11,7 @@ RESPONSIBILITY: Shared helpers for UI preview hosts (doc loading, contracts/sche
 #include <string>
 #include <vector>
 
-#include "dui/dui_schema_tlv.h"
+#include "domino/ui/dui/dui_schema_tlv.h"
 
 #include "ui_caps.h"
 #include "ui_ir_diag.h"

@@ -3,17 +3,17 @@
   "level_name": "Proto-culture",
   "status": "UNSUPPORTED",
   "required_schemas": [
-    "contracts/schema/authority.schema",
+    "contracts/schema/repo/authority/authority.schema",
     "contracts/schema/domain.schema",
     "contracts/schema/field.schema",
     "contracts/schema/institution.schema",
     "contracts/schema/knowledge.schema",
     "contracts/schema/material.schema",
-    "contracts/schema/network.schema",
+    "contracts/schema/domain/network/network.schema",
     "contracts/schema/process_family.schema",
-    "contracts/schema/topology.schema",
-    "contracts/schema/world_definition.schema",
-    "contracts/schema/worldgen_model.schema"
+    "contracts/schema/domain/geology/topology.schema",
+    "contracts/schema/game/world/world_definition.schema",
+    "contracts/schema/game/worldgen/worldgen_model.schema"
   ],
   "required_process_families": [
     "org.dominium.coverage.c-d.process.communicate",

@@ -372,7 +372,7 @@ CONTRACT_PIN_TARGETS = {
         "universe_contract_bundle_ref",
         "universe_contract_bundle_hash",
     ),
-    os.path.join("contracts", "schemas", "session_spec.schema.json"): (
+    os.path.join("contracts", "schema", "runtime", "session", "session_spec.schema.json"): (
         "contract_bundle_hash",
     ),
     os.path.join("universe", "universe_contract_enforcer.py"): (

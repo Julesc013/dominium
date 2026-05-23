@@ -1,7 +1,8 @@
-Status: PASS_WITH_WARNINGS
+Status: DERIVED
 Last Reviewed: 2026-05-22
 Supersedes: queued structure cleanup prompts for this bounded pass
 Superseded By: none
+Result: PASS_WITH_WARNINGS
 Stability: provisional
 Task: CANON-STRUCTURE-FINALIZE-NOW-01
 
@@ -208,9 +209,9 @@ Deferred rather than moved in this pass:
   `tests/bugreport`, `tests/contentlib`, `tests/coverage`, `tests/demo`,
   `tests/determinism`, `tests/distribution`, `tests/engine`,
   `tests/entitlement`, `tests/fab`, `tests/game`, `tests/invariant`,
-  `tests/launcher`, `tests/ops`, `tests/perf`, `tests/piracy_containment`,
+  `tests/launcher`, `tests/operations`, `tests/perf`, `tests/piracy_containment`,
   `tests/platform`, `tests/playtest`, `tests/regression`, `tests/server`,
-  `tests/services`, `tests/setup`, `tests/signal`, and `tests/ux`.
+  `tests/contract/service/services_expiry`, `tests/setup`, `tests/signal`, and `tests/ux`.
 
 ## Non-Goals Preserved
 

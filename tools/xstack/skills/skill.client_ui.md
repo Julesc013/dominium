@@ -1,7 +1,7 @@
 Status: TEMPLATE
 Version: 1.0.0
 Last Reviewed: 2026-02-15
-Compatibility: Use with observer/renderer/truth separation, `contracts/schema/ui_window.schema.json` v1.0.0, and profile-driven governance rules.
+Compatibility: Use with observer/renderer/truth separation, `contracts/schema/runtime/ui/ui_window.schema.json` v1.0.0, and profile-driven governance rules.
 
 # Skill Template: client_ui
 

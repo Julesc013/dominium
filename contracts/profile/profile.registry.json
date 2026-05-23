@@ -22,6 +22,42 @@
       "support_claim": false,
       "path": "release/profiles/dev/render.null.toml",
       "notes": "Development validation profile for explicit null render selection; no product support claim."
+    },
+    {
+      "profile_id": "dominium.profile.dev.client.raylib",
+      "profile_kind": "provider_profile",
+      "owner": "release.profiles",
+      "stability": "planned",
+      "support_claim": false,
+      "path": "release/profiles/dev/client.raylib.toml",
+      "notes": "Planned raylib seed-provider profile; no provider implementation or support claim."
+    },
+    {
+      "profile_id": "dominium.profile.dev.client.sdl2_opengl33",
+      "profile_kind": "provider_profile",
+      "owner": "release.profiles",
+      "stability": "planned",
+      "support_claim": false,
+      "path": "release/profiles/dev/client.sdl2_opengl33.toml",
+      "notes": "Planned SDL2 plus OpenGL 3.3 provider profile; no provider implementation or support claim."
+    },
+    {
+      "profile_id": "dominium.profile.dev.workbench.raylib",
+      "profile_kind": "provider_profile",
+      "owner": "release.profiles",
+      "stability": "planned",
+      "support_claim": false,
+      "path": "release/profiles/dev/workbench.raylib.toml",
+      "notes": "Planned Workbench raylib/raygui provider profile; no Workbench shell or UI support claim."
+    },
+    {
+      "profile_id": "dominium.profile.dev.server.null",
+      "profile_kind": "provider_profile",
+      "owner": "release.profiles",
+      "stability": "planned",
+      "support_claim": false,
+      "path": "release/profiles/dev/server.null.toml",
+      "notes": "Planned null/headless server-style provider profile; no server runtime support claim."
     }
   ]
 }

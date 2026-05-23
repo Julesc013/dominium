@@ -9544,7 +9544,7 @@
         "medium",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "contracts/schema/civ/SPEC_BUILDINGS_MACHINES.md",
+      "source_tool": "contracts/schema/domain/civilization/SPEC_BUILDINGS_MACHINES.md",
       "target_aide_command_hint": "aide build",
       "validation_plan": [
         "tools validate",
@@ -9568,7 +9568,7 @@
         "medium",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "contracts/schema/civilisation/order_build_plan.schema",
+      "source_tool": "contracts/schema/domain/civilization/order_build_plan.schema",
       "target_aide_command_hint": "aide build",
       "validation_plan": [
         "tools validate",
@@ -9904,7 +9904,7 @@
         "unknown",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "contracts/schema/net_resync_strategy_registry.schema.json",
+      "source_tool": "contracts/schema/runtime/network/net_resync_strategy_registry.schema.json",
       "target_aide_command_hint": "review before wrapper mapping",
       "validation_plan": [
         "tools validate",
@@ -10384,7 +10384,7 @@
         "medium",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "contracts/schema/sync_policy.schema.json",
+      "source_tool": "contracts/schema/runtime/time/sync_policy.schema.json",
       "target_aide_command_hint": "aide repo_policy",
       "validation_plan": [
         "tools validate",
@@ -10408,7 +10408,7 @@
         "medium",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "contracts/schema/time/checkpoint.schema",
+      "source_tool": "contracts/schema/runtime/time/checkpoint.schema",
       "target_aide_command_hint": "aide validate",
       "validation_plan": [
         "tools validate",
@@ -10432,7 +10432,7 @@
         "medium",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "contracts/schema/time/sync_policy.schema",
+      "source_tool": "contracts/schema/runtime/time/sync_policy.schema",
       "target_aide_command_hint": "aide repo_policy",
       "validation_plan": [
         "tools validate",
@@ -10456,7 +10456,7 @@
         "medium",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "contracts/schema/time_checkpoint.schema.json",
+      "source_tool": "contracts/schema/runtime/time/time_checkpoint.schema.json",
       "target_aide_command_hint": "aide validate",
       "validation_plan": [
         "tools validate",
@@ -10576,7 +10576,7 @@
         "unknown",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "contracts/schema/world/SPEC_WORLD_DATA_IMPORT.md",
+      "source_tool": "contracts/schema/game/world/SPEC_WORLD_DATA_IMPORT.md",
       "target_aide_command_hint": "review before wrapper mapping",
       "validation_plan": [
         "tools validate",
@@ -64312,7 +64312,7 @@
         "unknown",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "runtime/ui/include/dui/domui_event.h",
+      "source_tool": "runtime/ui/runtime/include/domino/ui/dui/domui_event.h",
       "target_aide_command_hint": "review before wrapper mapping",
       "validation_plan": [
         "tools validate",
@@ -64336,7 +64336,7 @@
         "unknown",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "runtime/ui/include/dui/dui_api_v1.h",
+      "source_tool": "runtime/ui/runtime/include/domino/ui/dui/dui_api_v1.h",
       "target_aide_command_hint": "review before wrapper mapping",
       "validation_plan": [
         "tools validate",
@@ -64360,7 +64360,7 @@
         "unknown",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "runtime/ui/include/dui/dui_schema_tlv.h",
+      "source_tool": "runtime/ui/runtime/include/domino/ui/dui/dui_schema_tlv.h",
       "target_aide_command_hint": "review before wrapper mapping",
       "validation_plan": [
         "tools validate",
@@ -64384,7 +64384,7 @@
         "unknown",
         "unknown_tool_execution_disabled"
       ],
-      "source_tool": "runtime/ui/include/dui/dui_win32.h",
+      "source_tool": "runtime/ui/runtime/include/domino/ui/dui/dui_win32.h",
       "target_aide_command_hint": "review before wrapper mapping",
       "validation_plan": [
         "tools validate",

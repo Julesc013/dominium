@@ -79,7 +79,7 @@ User stubs:
 
 ## DUI runtime dispatch (win32/dgfx/null)
 - Backends may emit legacy `dui_event_v1` (queue) and also call action dispatch.
-- Dispatch uses `domui_event` (see `include/dui/domui_event.h`).
+- Dispatch uses `domui_event` (see `runtime/include/domino/ui/dui/domui_event.h`).
 - Optional ABI: `dui_action_api_v1` via `query_interface` (`DUI_IID_ACTION_API_V1`).
 - Backends map events to `domui_event_type`:
   - `CLICK` for button activation.

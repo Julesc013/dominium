@@ -1,0 +1,17 @@
+[profile]
+id = "dominium.profile.dev.client.raylib"
+kind = "provider_profile"
+stability = "planned"
+product = "client"
+support_claim = false
+evidence = "docs/repo/audits/CANON_STRUCTURE_RESIDUALS_LOOP_02.md"
+
+[providers]
+platform = "domino.provider.platform.raylib.v1"
+input = "domino.provider.input.raylib.v1"
+render = "domino.provider.render.raylib.v1"
+audio = "domino.provider.audio.raylib.v1"
+asset = "domino.provider.asset.raylib.v1"
+
+[notes]
+summary = "Planned raylib seed-provider profile. No raylib source, runtime binding, or support claim is introduced."

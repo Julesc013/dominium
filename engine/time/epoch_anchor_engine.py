@@ -7,7 +7,7 @@ import os
 from typing import Iterable, Mapping
 
 from engine.serialization.canonical_json import canonical_json_text, canonical_sha256
-from engine.compatx.validator import validate_instance
+from engine.compatibility.validator import validate_instance
 
 from .tick_t import (
     REFUSAL_TICK_OVERFLOW_IMMINENT,
