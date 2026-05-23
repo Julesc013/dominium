@@ -8,7 +8,7 @@ from typing import Dict, List
 from runtime.platform.platform_gfx import create_graphics_context, destroy_graphics_context, present_frame
 from runtime.platform.platform_window import create_window, detect_platform_id
 
-from .software_renderer import render_software_snapshot
+from runtime.render.providers.software.software_renderer import render_software_snapshot
 
 
 def _to_int(value: object, default: int = 0) -> int:

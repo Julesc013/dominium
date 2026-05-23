@@ -20,7 +20,7 @@
       "view_contributions": ["view.table"],
       "command_contributions": ["dominium.validation.run"],
       "required_services": ["service.validation"],
-      "required_providers": ["dominium.provider.workbench.validation"],
+      "required_providers": ["dominium.provider.workbench.validation.v1"],
       "diagnostics": [],
       "evidence_ref": "evidence.module_plan.fixture"
     }

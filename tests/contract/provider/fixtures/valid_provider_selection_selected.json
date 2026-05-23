@@ -2,7 +2,7 @@
   "fixture_kind": "selection_decision",
   "request_id": "provider.request.render.software.fixture",
   "decision": "selected",
-  "selected_provider": "domino.provider.render.software",
+  "selected_provider": "domino.provider.render.software.v1",
   "selected_capabilities": ["domino.render.software"],
   "degraded_from": null,
   "degraded_to": null,

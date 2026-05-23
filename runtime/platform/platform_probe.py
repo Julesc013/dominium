@@ -103,10 +103,10 @@ _LINUX_NATIVE_MARKERS = {
 }
 _RENDERED_MARKERS = (
     "runtime/render/backend/render_model_adapter.py",
-    "runtime/render/backend/software_renderer.py",
+    "runtime/render/providers/software/software_renderer.py",
 )
 _SOFTWARE_RENDERER_MARKERS = (
-    "runtime/render/backend/software_renderer.py",
+    "runtime/render/providers/software/software_renderer.py",
     "runtime/render/backend/render_model_adapter.py",
 )
 _OPENGL_RENDERER_MARKERS = (

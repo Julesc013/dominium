@@ -1,0 +1,14 @@
+[profile]
+id = "dominium.profile.dev.render_null"
+kind = "provider_profile"
+stability = "provisional"
+product = "headless"
+support_claim = false
+evidence = "docs/repo/audits/PROVIDER_STRUCTURE_CANON_01.md"
+
+[providers]
+render = "domino.provider.render.null.v1"
+storage = "domino.provider.storage.local.v1"
+
+[notes]
+summary = "Minimal dev validation profile for explicit null render selection. It does not claim product runtime support."

@@ -1,7 +1,7 @@
 /*
-FILE: runtime/render/null/d_gfx_stub.h
+FILE: runtime/render/providers/null/d_gfx_stub.h
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / render/null/d_gfx_stub
+LAYER / SUBSYSTEM: Domino impl / render/providers/null/d_gfx_stub
 RESPONSIBILITY: Declares soft-backed renderer stubs for GPU/back-compat backends.
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).

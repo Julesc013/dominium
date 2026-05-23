@@ -591,8 +591,8 @@ def _summary_maps(entries: list[dict]) -> dict:
 def _renderer_surface(repo_root: str, entries: list[dict], product_rows: Mapping[str, object]) -> dict:
     del product_rows
     backend_map = {
-        "null": "runtime/render/backend/null_renderer.py",
-        "software": "runtime/render/backend/software_renderer.py",
+        "null": "runtime/render/providers/null/null_renderer.py",
+        "software": "runtime/render/providers/software/software_renderer.py",
         "hardware_gl": "runtime/render/backend/hw_renderer_gl.py",
     }
     python_files = [row for row in entries if str(row.get("path", "")).endswith(".py")]

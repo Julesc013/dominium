@@ -5,7 +5,7 @@
   "apps": ["dominium.workbench"],
   "modules": ["dominium.workbench.validation"],
   "packs": [],
-  "providers": ["dominium.provider.workbench.validation"],
+  "providers": ["dominium.provider.workbench.validation.v1"],
   "capabilities": ["dominium.app.composition", "dominium.workbench.module.validation"],
   "release_profiles": [],
   "proof": [],

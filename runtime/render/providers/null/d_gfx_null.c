@@ -1,7 +1,7 @@
 /*
-FILE: source/domino/render/null/d_gfx_null.c
+FILE: runtime/render/providers/null/d_gfx_null.c
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / render/null/d_gfx_null
+LAYER / SUBSYSTEM: Domino impl / render/providers/null/d_gfx_null
 RESPONSIBILITY: Implements `d_gfx_null`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/domino/**`, `include/render/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).

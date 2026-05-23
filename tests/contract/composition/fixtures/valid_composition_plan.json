@@ -12,7 +12,7 @@
     {
       "request_id": "provider.request.workbench.validation.fixture",
       "provider_kind": "workbench_module",
-      "preferred_provider_ref": "dominium.provider.workbench.validation",
+      "preferred_provider_ref": "dominium.provider.workbench.validation.v1",
       "required_capabilities": ["dominium.workbench.validation"],
       "optional_capabilities": [],
       "acceptable_degradation": []

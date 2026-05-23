@@ -10,7 +10,7 @@
   "default_packs": [],
   "default_profiles": [],
   "default_theme": "dominium.theme.default",
-  "provider_preferences": ["dominium.provider.workbench.validation"],
+  "provider_preferences": ["dominium.provider.workbench.validation.v1"],
   "required_capabilities": ["dominium.app.composition"],
   "release_profiles": [],
   "proof": [],

@@ -27,7 +27,7 @@
   "properties": {
     "provider_id": {
       "type": "string",
-      "pattern": "^(domino|dominium)\\.provider\\.[a-z0-9][a-z0-9_.-]*$"
+      "pattern": "^(domino|dominium)\\.provider(\\.[a-z0-9][a-z0-9_]*)+\\.v[0-9]+$"
     },
     "provider_kind": {
       "type": "string"
@@ -46,6 +46,19 @@
         "string",
         "null"
       ]
+    },
+    "service_root": {
+      "type": "string",
+      "pattern": "^(runtime|apps)/[a-z0-9_/.-]+$"
+    },
+    "provider_family": {
+      "type": "string"
+    },
+    "provider_api": {
+      "type": "string"
+    },
+    "provider_structure_status": {
+      "type": "string"
     },
     "capabilities_provided": {
       "type": "array",
@@ -68,6 +81,9 @@
         "string",
         "null"
       ]
+    },
+    "implementation_path_convention": {
+      "type": "string"
     },
     "implementation_path_is_identity": {
       "type": "boolean"

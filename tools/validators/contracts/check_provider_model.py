@@ -18,6 +18,7 @@ except ImportError:  # pragma: no cover - Python 3.8 fallback
 
 
 PROVIDER_CONTRACT_REL = Path("contracts/provider/provider.contract.toml")
+PROVIDER_STRUCTURE_CONTRACT_REL = Path("contracts/provider/provider_structure.contract.toml")
 PROVIDER_SCHEMA_REL = Path("contracts/provider/provider.schema.json")
 PROVIDER_REGISTRY_REL = Path("contracts/provider/provider.registry.json")
 PROVIDER_KIND_REGISTRY_REL = Path("contracts/provider/provider_kind.registry.json")
@@ -48,14 +49,16 @@ TOML_RELS = [
     PROVIDER_CONFORMANCE_REL,
     PROVIDER_CAPABILITY_POLICY_REL,
     PROVIDER_TRUST_POLICY_REL,
+    PROVIDER_STRUCTURE_CONTRACT_REL,
 ]
 EXPECTED_CONTRACT_IDS = {
     PROVIDER_CONTRACT_REL: "dominium.provider.model.v1",
     PROVIDER_CONFORMANCE_REL: "dominium.provider.conformance.v1",
     PROVIDER_CAPABILITY_POLICY_REL: "dominium.provider.capability_policy.v1",
     PROVIDER_TRUST_POLICY_REL: "dominium.provider.trust_policy.v1",
+    PROVIDER_STRUCTURE_CONTRACT_REL: "dominium.provider.structure.v1",
 }
-PROVIDER_ID_RE = re.compile(r"^(domino|dominium)\.provider(\.[a-z0-9][a-z0-9_-]*)+$")
+PROVIDER_ID_RE = re.compile(r"^(domino|dominium)\.provider(\.[a-z0-9][a-z0-9_]*)+\.v[0-9]+$")
 
 
 def _strip_comment(line: str) -> str:

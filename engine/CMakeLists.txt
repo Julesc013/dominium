@@ -246,9 +246,9 @@ set(ENGINE_RENDER_SOURCES
     ${CMAKE_SOURCE_DIR}/runtime/render/d_gfx.c
     ${CMAKE_SOURCE_DIR}/runtime/render/d_gfx_caps_stub.c
     ${CMAKE_SOURCE_DIR}/runtime/render/dgfx_trace.c
-    ${CMAKE_SOURCE_DIR}/runtime/render/null/d_gfx_null.c
-    ${CMAKE_SOURCE_DIR}/runtime/render/software/d_gfx_soft.c
-    ${CMAKE_SOURCE_DIR}/runtime/render/null/d_gfx_stub.c
+    ${CMAKE_SOURCE_DIR}/runtime/render/providers/null/d_gfx_null.c
+    ${CMAKE_SOURCE_DIR}/runtime/render/providers/software/d_gfx_soft.c
+    ${CMAKE_SOURCE_DIR}/runtime/render/providers/null/d_gfx_stub.c
 )
 
 set(ENGINE_SYSTEM_SOURCES
@@ -355,8 +355,8 @@ target_include_directories(domino_engine
         ${CMAKE_SOURCE_DIR}/runtime/platform/system/plat/wayland
         ${CMAKE_SOURCE_DIR}/runtime/platform/system/plat/x11
         ${CMAKE_SOURCE_DIR}/runtime/render
-        ${CMAKE_SOURCE_DIR}/runtime/render/null
-        ${CMAKE_SOURCE_DIR}/runtime/render/software
+        ${CMAKE_SOURCE_DIR}/runtime/render/providers/null
+        ${CMAKE_SOURCE_DIR}/runtime/render/providers/software
         ${CMAKE_SOURCE_DIR}/runtime/storage/io
         ${CMAKE_SOURCE_DIR}/runtime/ui/service
         ${CMAKE_SOURCE_DIR}/runtime/projection/text

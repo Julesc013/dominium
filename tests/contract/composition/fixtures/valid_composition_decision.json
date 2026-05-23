@@ -8,9 +8,9 @@
   "selected_profile_refs": ["dominium.profile.fixture.default"],
   "selected_pack_refs": ["pack.base.procedural"],
   "selected_module_refs": ["dominium.workbench.validation"],
-  "selected_provider_refs": ["dominium.provider.workbench.validation"],
+  "selected_provider_refs": ["dominium.provider.workbench.validation.v1"],
   "capability_decisions": [
-    {"capability_ref": "dominium.workbench.validation", "decision": "selected", "selected_provider_ref": "dominium.provider.workbench.validation"}
+    {"capability_ref": "dominium.workbench.validation", "decision": "selected", "selected_provider_ref": "dominium.provider.workbench.validation.v1"}
   ],
   "refusal_refs": [],
   "diagnostic_refs": [],

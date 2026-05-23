@@ -13,6 +13,15 @@
       "stability": "fixture",
       "support_claim": false,
       "notes": "Fixture profile for composition contract validation only."
+    },
+    {
+      "profile_id": "dominium.profile.dev.render_null",
+      "profile_kind": "provider_profile",
+      "owner": "release.profiles",
+      "stability": "provisional",
+      "support_claim": false,
+      "path": "release/profiles/dev/render.null.toml",
+      "notes": "Development validation profile for explicit null render selection; no product support claim."
     }
   ]
 }

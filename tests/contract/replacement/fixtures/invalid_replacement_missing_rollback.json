@@ -7,7 +7,7 @@
   "old_surface": {"id": "dominium.provider.descriptor.v1", "kind": "schema", "stability": "provisional", "version": "1.0.0"},
   "new_surface": {"id": "dominium.provider.descriptor.v1", "kind": "schema", "stability": "provisional", "version": "1.0.0"},
   "public_surfaces_affected": ["dominium.provider.descriptor.v1"],
-  "providers_affected": ["domino.provider.render.null"],
+  "providers_affected": ["domino.provider.render.null.v1"],
   "compatibility_impact": "compatible",
   "migration_policy": {"mode": "none"},
   "refusal_policy": {"required": true, "codes": ["dominium.refusal.provider.unavailable"]},

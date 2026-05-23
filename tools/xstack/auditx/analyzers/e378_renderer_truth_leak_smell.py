@@ -11,8 +11,8 @@ ANALYZER_ID = "E378_RENDERER_TRUTH_LEAK_SMELL"
 LIGHTING_VIEW_REL = "game/domain/worldgen/earth/lighting/lighting_view_engine.py"
 VIEWER_SHELL_REL = "runtime/ui/client/viewer_shell.py"
 RENDER_MODEL_ADAPTER_REL = "runtime/render/backend/render_model_adapter.py"
-SOFTWARE_RENDERER_REL = "runtime/render/backend/software_renderer.py"
-NULL_RENDERER_REL = "runtime/render/backend/null_renderer.py"
+SOFTWARE_RENDERER_REL = "runtime/render/providers/software/software_renderer.py"
+NULL_RENDERER_REL = "runtime/render/providers/null/null_renderer.py"
 DOC_REL = "docs/domains/worldgen/EARTH_ILLUMINATION_SHADOW_MODEL.md"
 REQUIRED_TOKENS = {
     LIGHTING_VIEW_REL: (

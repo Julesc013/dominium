@@ -1,5 +1,5 @@
 {
-  "provider_id": "dominium.provider.workbench.validation",
+  "provider_id": "dominium.provider.workbench.validation.v1",
   "provider_kind": "workbench_module",
   "owner": "apps.workbench",
   "version": "0.1.0",

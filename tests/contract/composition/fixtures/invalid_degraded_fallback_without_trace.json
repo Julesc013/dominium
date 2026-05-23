@@ -7,7 +7,7 @@
   "selected_profile_refs": [],
   "selected_pack_refs": [],
   "selected_module_refs": ["dominium.workbench.validation"],
-  "selected_provider_refs": ["dominium.provider.workbench.validation"],
+  "selected_provider_refs": ["dominium.provider.workbench.validation.v1"],
   "capability_decisions": [],
   "refusal_refs": [],
   "diagnostic_refs": ["DOM-COMPOSITION-DEGRADED"],

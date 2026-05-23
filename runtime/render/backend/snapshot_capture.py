@@ -12,8 +12,8 @@ from runtime.platform.platform_gfx import list_available_backends
 from runtime.platform.platform_window import detect_platform_id
 
 from .hw_renderer_gl import render_hardware_gl_snapshot
-from .null_renderer import render_null_snapshot
-from .software_renderer import render_software_snapshot
+from runtime.render.providers.null.null_renderer import render_null_snapshot
+from runtime.render.providers.software.software_renderer import render_software_snapshot
 
 
 def _to_int(value: object, default: int = 0) -> int:

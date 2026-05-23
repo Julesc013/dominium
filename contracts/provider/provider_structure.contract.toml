@@ -1,0 +1,49 @@
+[contract]
+id = "dominium.provider.structure.v1"
+status = "provisional"
+owner = "contracts.provider"
+purpose = "Defines service-first provider path, ID, profile, and third-party fencing rules."
+
+[law]
+service_identity_first_party = true
+provider_implementation_replaceable = true
+profiles_select_providers = true
+third_party_types_fenced = true
+apps_do_not_hardwire_providers = true
+contracts_define_provider_law = true
+implementation_path_is_identity = false
+
+[paths]
+provider_implementation_pattern = "runtime/<service>/providers/<provider>"
+external_source_pattern = "external/upstream/<dependency>"
+release_profile_pattern = "release/profiles/<class>/<profile>.toml"
+content_profile_root = "content/profiles"
+top_level_profiles_allowed = false
+top_level_labs_allowed = false
+top_level_modules_allowed = false
+top_level_plugins_allowed = false
+top_level_services_allowed = false
+
+[naming]
+provider_id_pattern = "domino.provider.<service>.<provider>.v<N>"
+dominium_provider_id_pattern = "dominium.provider.<service>.<provider>.v<N>"
+provider_folder_exact_api = true
+family_field_allowed = true
+user_label_non_authoritative = true
+
+[third_party]
+allowed_source_root = "external/upstream"
+license_inventory_root = "external/licenses"
+manifest_root = "external/manifests"
+patch_root = "external/patches"
+third_party_types_allowed_in_contracts = false
+third_party_types_allowed_in_public_abi = false
+third_party_types_allowed_in_engine_state = false
+third_party_types_allowed_in_game_law = false
+
+[validation]
+validator = "tools/validators/repo/check_provider_structure.py"
+normal_gate = "strict"
+blocks_vendor_shaped_roots = true
+blocks_third_party_include_leakage = true
+warns_pending_provider_splits = true

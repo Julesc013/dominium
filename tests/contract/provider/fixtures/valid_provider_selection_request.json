@@ -4,11 +4,11 @@
   "requested_by": "tests.contract.provider",
   "provider_kind": "render_backend",
   "required_capabilities": ["domino.render.software"],
-  "preferred_provider": "domino.provider.render.software",
+  "preferred_provider": "domino.provider.render.software.v1",
   "acceptable_degradation": [
     {
-      "from": "domino.provider.render.software",
-      "to": "domino.provider.render.null",
+      "from": "domino.provider.render.software.v1",
+      "to": "domino.provider.render.null.v1",
       "condition": "headless test profile"
     }
   ],

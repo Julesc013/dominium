@@ -15,7 +15,7 @@
   },
   "dependencies": ["domino.render.software"],
   "conflicts": [],
-  "payloads": [{"kind": "provider_descriptor", "provider_id": "domino.provider.render.software"}],
+  "payloads": [{"kind": "provider_descriptor", "provider_id": "domino.provider.render.software.v1"}],
   "schemas_used": ["contracts/provider/provider_descriptor.schema.json", "contracts/modding/mod_descriptor.schema.json"],
   "determinism_impact": {
     "classification": "presentation_only",

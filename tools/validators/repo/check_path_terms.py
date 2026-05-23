@@ -31,8 +31,8 @@ TRANSITIONAL_ROOTS = set([
 
 FORBIDDEN_ACTIVE_PATH_PREFIXES = {
     "runtime/render/client": "runtime render client bucket retired; use runtime/render/backend",
-    "runtime/render/soft": "soft is an abbreviation; use runtime/render/software",
-    "runtime/render/stub": "stub is status wording; use runtime/render/null",
+    "runtime/render/soft": "soft is an abbreviation; use runtime/render/providers/software",
+    "runtime/render/stub": "stub is status wording; use runtime/render/providers/null",
     "runtime/shell/commands": "shell command subsystem is singular runtime/shell/command",
     "runtime/shell/ui_backends": "UI backend implementation belongs under runtime/ui/backend",
     "runtime/capability/capability": "capability/capability is tautological; use runtime/capability/core or a precise leaf",

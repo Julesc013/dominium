@@ -19,15 +19,18 @@ audio/input systems, package/profile loaders, command handlers, Workbench
 modules, external adapters, and native providers all use the same descriptor
 model.
 
-Provider IDs are lowercase dotted names:
+Provider IDs are lowercase dotted names with an explicit version suffix:
 
-- `domino.provider.render.null`
-- `domino.provider.render.software`
-- `domino.provider.storage.local`
-- `dominium.provider.workbench.validation`
+- `domino.provider.render.null.v1`
+- `domino.provider.render.software.v1`
+- `domino.provider.storage.local.v1`
+- `dominium.provider.workbench.validation.v1`
 
 IDs must not contain paths, filenames, temporary labels, or build locations.
 `implementation_path` is allowed only as a non-authoritative hint.
+Runtime provider implementation paths use
+`runtime/<service>/providers/<provider>` unless the descriptor explicitly marks
+a pending provider split.
 
 ## Descriptor
 
@@ -94,4 +97,5 @@ implement a conformance runner.
 
 This law does not implement provider runtime loading, dynamic libraries,
 renderer fallback, platform bindings, package/profile loader behavior,
-Workbench UI, gameplay, networking, native provider ABI, or release behavior.
+Workbench UI, gameplay, networking, native provider ABI, third-party library
+integrations, or release behavior.

@@ -11,7 +11,7 @@
   "generated_by": "tools/validators/contracts/check_composition_plan.py",
   "generated_at": null,
   "entries": [
-    {"app_ref": "dominium.workbench", "profiles": ["dominium.profile.fixture.default"], "packs": ["pack.base.procedural"], "modules": ["dominium.workbench.validation"], "providers": ["dominium.provider.workbench.validation"]}
+    {"app_ref": "dominium.workbench", "profiles": ["dominium.profile.fixture.default"], "packs": ["pack.base.procedural"], "modules": ["dominium.workbench.validation"], "providers": ["dominium.provider.workbench.validation.v1"]}
   ],
   "diagnostics": [],
   "evidence_ref": "evidence.composition.fixture",

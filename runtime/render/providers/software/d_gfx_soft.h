@@ -1,7 +1,7 @@
 /*
-FILE: runtime/render/software/d_gfx_soft.h
+FILE: runtime/render/providers/software/d_gfx_soft.h
 MODULE: Domino
-LAYER / SUBSYSTEM: Domino impl / render/software/d_gfx_soft
+LAYER / SUBSYSTEM: Domino impl / render/providers/software/d_gfx_soft
 RESPONSIBILITY: Defines the internal contract for `d_gfx_soft`; not part of public API.
 ALLOWED DEPENDENCIES: `include/domino/**`, `source/domino/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**` (engine must not depend on product layer).

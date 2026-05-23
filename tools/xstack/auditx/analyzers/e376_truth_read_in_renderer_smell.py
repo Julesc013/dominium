@@ -11,7 +11,7 @@ ANALYZER_ID = "E376_TRUTH_READ_IN_RENDERER_SMELL"
 SKY_VIEW_ENGINE_REL = "game/domain/worldgen/earth/sky/sky_view_engine.py"
 VIEWER_SHELL_REL = "runtime/ui/client/viewer_shell.py"
 RENDER_MODEL_ADAPTER_REL = "runtime/render/backend/render_model_adapter.py"
-SOFTWARE_RENDERER_REL = "runtime/render/backend/software_renderer.py"
+SOFTWARE_RENDERER_REL = "runtime/render/providers/software/software_renderer.py"
 DOC_REL = "docs/domains/worldgen/EARTH_SKY_STARFIELD_MODEL.md"
 REQUIRED_TOKENS = {
     SKY_VIEW_ENGINE_REL: (

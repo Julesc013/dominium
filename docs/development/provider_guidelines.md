@@ -34,15 +34,21 @@ it is never provider identity.
 
 ## Choose IDs
 
-Use semantic IDs such as:
+Use versioned semantic IDs such as:
 
-- `domino.provider.render.software`
-- `domino.provider.platform.win32`
-- `domino.provider.storage.local`
-- `dominium.provider.workbench.validation`
+- `domino.provider.render.software.v1`
+- `domino.provider.platform.win32.v1`
+- `domino.provider.storage.local.v1`
+- `dominium.provider.workbench.validation.v1`
 
-Do not use `runtime/render/software`, filenames, branch names, temporary status,
-or local paths as IDs.
+Implementation code belongs under `runtime/<service>/providers/<provider>` when
+the provider boundary is known. Do not use paths, filenames, branch names,
+temporary status, or local paths as IDs.
+
+Provider family names such as `raylib`, `sdl`, and `lua` may appear in provider
+metadata. Exact implementation names such as `sdl2`, `lua54`, `opengl33`, and
+`direct3d11` belong in provider folders and IDs when those APIs are what the
+adapter targets.
 
 ## Declare Capabilities
 

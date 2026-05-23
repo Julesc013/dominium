@@ -7,8 +7,8 @@ from .model_api import (
     load_render_model_from_artifact,
     resolve_representation,
 )
-from .null_renderer import render_null_snapshot
-from .software_renderer import render_software_snapshot
+from runtime.render.providers.null.null_renderer import render_null_snapshot
+from runtime.render.providers.software.software_renderer import render_software_snapshot
 
 __all__ = [
     "build_render_model",

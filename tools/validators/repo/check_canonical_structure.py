@@ -72,6 +72,7 @@ FORBIDDEN_ACTIVE_ROOTS = {
     "bundles",
     "compat",
     "lib",
+    "labs",
     "libs",
     "locks",
     "repo",
@@ -146,8 +147,8 @@ FINAL_TEST_ROOTS = {
 }
 
 RUNTIME_RETIRED_PREFIXES = {
-    "runtime/render/soft": "runtime/render/software",
-    "runtime/render/stub": "runtime/render/null",
+    "runtime/render/soft": "runtime/render/providers/software",
+    "runtime/render/stub": "runtime/render/providers/null",
     "runtime/render/client/renderers": "runtime/render/backend",
     "runtime/shell/commands": "runtime/shell/command",
     "runtime/shell/ui_backends": "runtime/ui/backend",

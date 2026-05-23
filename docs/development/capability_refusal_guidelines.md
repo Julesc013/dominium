@@ -24,7 +24,7 @@ Good IDs:
 
 Bad IDs:
 
-- `runtime/render/software.cpp`
+- `runtime/render/providers/software/d_gfx_soft.c`
 - `new-renderer-temp`
 - `C:\\providers\\win32`
 

@@ -22,8 +22,11 @@ normal_gate = "fast_strict"
 [naming]
 provider_id_case = "lowercase_dotted"
 provider_id_prefixes = ["domino.provider", "dominium.provider"]
+provider_id_version_suffix_required = true
 path_like_ids_allowed = false
 temporary_status_in_id_allowed = false
+provider_implementation_path_pattern = "runtime/<service>/providers/<provider>"
+provider_structure_contract = "contracts/provider/provider_structure.contract.toml"
 
 [relationships]
 public_surface_registry = "contracts/public_surface/public_surface.contract.toml"

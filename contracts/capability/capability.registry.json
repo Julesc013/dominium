@@ -11,7 +11,7 @@
       "stability": "provisional",
       "description": "Software rendering fallback capability.",
       "provided_by": [
-        "domino.provider.render.software"
+        "domino.provider.render.software.v1"
       ],
       "requires": [],
       "conflicts": [],
@@ -30,7 +30,7 @@
       "stability": "provisional",
       "description": "Null renderer capability for headless or test contexts.",
       "provided_by": [
-        "domino.provider.render.null"
+        "domino.provider.render.null.v1"
       ],
       "requires": [],
       "conflicts": [],
@@ -68,7 +68,7 @@
       "stability": "provisional",
       "description": "Local filesystem-backed storage capability.",
       "provided_by": [
-        "domino.provider.storage.local"
+        "domino.provider.storage.local.v1"
       ],
       "requires": [],
       "conflicts": [],
@@ -87,7 +87,7 @@
       "stability": "provisional",
       "description": "Package or pack validation capability.",
       "provided_by": [
-        "domino.provider.package.validator"
+        "domino.provider.package.validator.v1"
       ],
       "requires": [
         "dominium.schema.validate"
@@ -108,7 +108,7 @@
       "stability": "experimental",
       "description": "Workbench-facing validation projection capability.",
       "provided_by": [
-        "dominium.provider.workbench.validation"
+        "dominium.provider.workbench.validation.v1"
       ],
       "requires": [
         "dominium.command.fast_strict"

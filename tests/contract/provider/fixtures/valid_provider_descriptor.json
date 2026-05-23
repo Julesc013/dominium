@@ -1,6 +1,6 @@
 {
   "fixture_kind": "provider_descriptor",
-  "provider_id": "domino.provider.render.software",
+  "provider_id": "domino.provider.render.software.v1",
   "provider_kind": "render_backend",
   "owner": "runtime.render",
   "version": "0.1.0",
@@ -9,7 +9,7 @@
   "capabilities_provided": ["domino.render.software"],
   "capabilities_required": [],
   "entry_surface": "contracts/provider/provider_descriptor.schema.json",
-  "implementation_path": "runtime/render/software",
+  "implementation_path": "runtime/render/providers/software",
   "implementation_path_is_identity": false,
   "language": "c",
   "abi": "c_compatible_internal",

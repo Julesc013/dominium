@@ -1,0 +1,19 @@
+[manifest]
+id = "dominium.third_party.manifest.v1"
+status = "provisional"
+owner = "external"
+source_root = "external/upstream"
+license_root = "external/licenses"
+patch_root = "external/patches"
+generated = false
+
+[policy]
+service_first = true
+third_party_is_provider_input = true
+third_party_types_fenced = true
+vendor_shaped_runtime_roots_allowed = false
+vendor_shaped_contract_roots_allowed = false
+app_provider_variants_allowed = false
+
+# Add [[dependency]] entries only when source or binary dependency material is
+# actually introduced.

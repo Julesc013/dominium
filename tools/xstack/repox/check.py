@@ -304,8 +304,8 @@ RENDERER_RENDERMODEL_ONLY_FILES = (
     "runtime/render/backend/render_model_adapter.py",
     "runtime/render/backend/representation_resolver.py",
     "runtime/render/backend/snapshot_capture.py",
-    "runtime/render/backend/null_renderer.py",
-    "runtime/render/backend/software_renderer.py",
+    "runtime/render/providers/null/null_renderer.py",
+    "runtime/render/providers/software/software_renderer.py",
     "tools/xstack/sessionx/render_model.py",
     "tools/validators/render/tool_render_capture.py",
     "tools/validators/render/render_cli.py",
@@ -313,8 +313,8 @@ RENDERER_RENDERMODEL_ONLY_FILES = (
 
 RENDER_SNAPSHOT_DERIVED_FILES = (
     "runtime/render/backend/snapshot_capture.py",
-    "runtime/render/backend/null_renderer.py",
-    "runtime/render/backend/software_renderer.py",
+    "runtime/render/providers/null/null_renderer.py",
+    "runtime/render/providers/software/software_renderer.py",
     "tools/validators/render/tool_render_capture.py",
 )
 
@@ -21500,7 +21500,7 @@ def _append_geo_portability_invariant_findings(
     field_engine_rel = "game/domain/fields/field_engine.py"
     pollution_rel = "game/domain/pollution/dispersion_engine.py"
     representation_rel = "runtime/render/backend/representation_resolver.py"
-    renderer_rel = "runtime/render/backend/software_renderer.py"
+    renderer_rel = "runtime/render/providers/software/software_renderer.py"
 
     field_text = _file_text(repo_root, field_engine_rel)
     if "geo_partition_cell_key(" not in field_text:

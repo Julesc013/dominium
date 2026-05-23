@@ -19,7 +19,7 @@
   "required_services": ["service.command", "service.validation", "service.diagnostics"],
   "required_commands": ["dominium.validation.run"],
   "required_capabilities": ["dominium.workbench.module.validation"],
-  "required_providers": ["dominium.provider.workbench.validation"],
+  "required_providers": ["dominium.provider.workbench.validation.v1"],
   "documents": ["document.validation_result"],
   "views": ["view.table", "view.inspector"],
   "events": ["event.validation.progress"],

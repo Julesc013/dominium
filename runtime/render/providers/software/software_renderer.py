@@ -11,7 +11,7 @@ from typing import Dict, List, Tuple
 from game.domain.geology import geo_project
 from engine.serialization.canonical_json import canonical_sha256
 
-from .null_renderer import build_frame_summary
+from runtime.render.providers.null.null_renderer import build_frame_summary
 
 
 def _to_int(value: object, default: int = 0) -> int:
