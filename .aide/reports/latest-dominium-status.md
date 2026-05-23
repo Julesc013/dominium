@@ -1,6 +1,6 @@
 # Latest Dominium Status
 
-Current coordinator task: `AIDE-WORKUNIT-SCHEMA-01`.
+Current coordinator task: `AIDE-CHECKPOINT-LOOP-01`.
 
 Result: `PASS_WITH_WARNINGS`.
 
@@ -11,63 +11,64 @@ Result: `PASS_WITH_WARNINGS`.
   `PASS_WITH_WARNINGS` or better.
 - `PACKAGE-MOUNT-SLICE-01`, `REPLAY-PROOF-SLICE-01`, and
   `BAREBONES-CLIENT-SHELL-01` are complete with `PASS_WITH_WARNINGS`.
-- `AIDE-WORKFLOW-LAW-01` is complete with `PASS_WITH_WARNINGS` and remains the
-  governing law for AIDE branch roles, lifecycle states, blocker taxonomy,
-  dirty-worktree handling, evidence requirements, warnings, and promotion gates.
-- `AIDE-WORKUNIT-SCHEMA-01` added the minimum WorkUnit object schema layer,
-  fixtures, schema law, audit, and targeted validation.
+- `AIDE-WORKFLOW-LAW-01` is complete with `PASS_WITH_WARNINGS`.
+- `AIDE-WORKUNIT-SCHEMA-01` is complete with `PASS_WITH_WARNINGS`.
+- `AIDE-DEV-MAIN-POLICY-01` is complete with `PASS_WITH_WARNINGS`.
+- `AIDE-CHECKPOINT-LOOP-01` is complete with `PASS_WITH_WARNINGS` and defines
+  checkpoint candidates, validation tiers, repair policy, warning disposition,
+  promotion decisions, defer/quarantine outcomes, coordinator updates, and
+  evidence bundles.
+- Live repo evidence also shows `AIDE-CAPABILITY-REALITY-LEDGER-01` complete
+  with `PASS_WITH_WARNINGS`; the queue was not moved backward.
 - Broad feature work remains blocked.
 
-## AIDE Schema Layer
+## Checkpoint Loop Layer
 
-The following AIDE object schemas now exist under `.aide/schema/`:
+The checkpoint-loop packet exists under `.aide/policy/`,
+`.aide/fixtures/checkpoint/`, `tools/aide/check_checkpoint_loop.py`, and
+`docs/repo/audits/AIDE_CHECKPOINT_LOOP_01.md`.
 
-- WorkUnit
-- TaskAttempt
-- Blocker
-- EvidencePacket
-- RepairTask
-- ResumeTask
-- CheckpointCandidate
-- PromotionDecision
-- WarningDisposition
-- CapabilityRealityRecord
+It preserves the controlling doctrine:
 
-Tiny valid and invalid fixtures exist under `.aide/fixtures/work_unit/`.
-`tools/aide/validate_workunits.py` validates the schema slice and confirms valid
-fixtures pass while invalid fixtures fail.
+```text
+development is non-blocking
+promotion is evidence-blocked
+```
 
-CapabilityRealityRecord is only a record shape. Capability reality ledger
-population remains deferred to `AIDE-CAPABILITY-REALITY-LEDGER-01`.
+Promotion to `origin/main` requires a checkpoint candidate, validation evidence,
+classified warning disposition, blocker disposition, approval, and a promotion
+decision. Automatic main promotion remains a non-goal.
 
 ## Prompt Queue
 
-1. `AIDE-DEV-MAIN-POLICY-01`
-2. `AIDE-CHECKPOINT-LOOP-01`
-3. `AIDE-CAPABILITY-REALITY-LEDGER-01`
+1. `PRESENTATION-CONTRACT-01`
+2. `PROJECTION-CONFORMANCE-01`
+3. `POINTER-WIDTH-SERIALIZATION-AUDIT-01`
+4. `WORKBENCH-SHELL-READONLY-01` later
 
-Recommended parallel candidate: `PRESENTATION-CONTRACT-01`.
+`AIDE-CAPABILITY-REALITY-LEDGER-01` is retained as completed live evidence,
+not as the next open coordinator task.
 
 ## Parallel Readiness
 
 - limited parallel prompt generation: allowed
 - limited parallel planning: allowed
-- limited parallel task execution: not authorized by this closeout
+- limited parallel task execution: authorized only for path-isolated work with
+  explicit coordinator ownership and no shared coordinator-file conflict
 - large parallel development execution: not authorized
 
-WorkUnit schemas improve representation but do not by themselves authorize
-large parallel execution. Future limited task execution still requires
-path-isolated task sets and explicit coordinator ownership.
+The checkpoint loop makes limited parallel execution better defined, but it
+does not authorize broad product work or automatic branch/merge/promotion
+automation.
 
 ## Remaining Debt
 
 - Full CTest remains T4/full-gate debt and is not claimed green.
 - Dependency-direction strict retains known prior warnings with zero-violation
   evidence.
-- AIDE validate retains known review-packet reference warnings.
+- Earlier AIDE review-packet reference warnings are retired for this closeout;
+  current AIDE validate is PASS.
 - Stale AuditX output warning remains known.
-- Dev/main policy, checkpoint loop policy, and capability reality ledger remain
-  follow-up tasks.
 - Runtime graph/generator/viewer, runtime composition resolver, package
   runtime, provider runtime, runtime module loader, Workbench shell, renderer,
   native GUI, gameplay, replay runtime, save/world runtime, and release
@@ -75,8 +76,8 @@ path-isolated task sets and explicit coordinator ownership.
 
 ## Next Recommended Task
 
-`AIDE-DEV-MAIN-POLICY-01`
+`PRESENTATION-CONTRACT-01`
 
-Alternate next task: `AIDE-CHECKPOINT-LOOP-01`.
+Alternate next task: `PROJECTION-CONFORMANCE-01`.
 
-Secondary follow-up: `AIDE-CAPABILITY-REALITY-LEDGER-01`.
+Secondary follow-up: `POINTER-WIDTH-SERIALIZATION-AUDIT-01`.

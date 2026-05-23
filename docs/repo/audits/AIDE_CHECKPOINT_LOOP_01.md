@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-05-22
+Last Reviewed: 2026-05-23
 Task: AIDE-CHECKPOINT-LOOP-01
 Result: PASS_WITH_WARNINGS
 Stability: provisional
@@ -16,8 +16,33 @@ task-branch work into checkpoint candidates, validate the checkpoint, create
 repair/resume/prerequisite work, classify warnings, and decide whether a
 checkpoint may promote to `origin/main`.
 
-It ran in parallel-lane mode. Coordinator update deferred to
-checkpoint/coordinator task.
+The initial policy packet ran in parallel-lane mode and deferred coordinator
+updates. On 2026-05-23, a checkpoint/coordinator closeout revalidated the live
+policy packet and applied coordinator updates without moving the queue backward
+from later committed AIDE evidence.
+
+## Coordinator Closeout Update
+
+2026-05-23 live evidence showed:
+
+- `acebb0f4f aide: define checkpoint loop policy` already created the
+  checkpoint-loop deliverables.
+- `3fdd78a3b aide: add capability reality ledger` already completed the listed
+  follow-up task in live history.
+- the working tree was clean before the AIDE Lite pack step.
+- `.aide/queue/current.toml`, latest task/review/status, and latest warning
+  disposition still pointed at older AIDE work.
+
+Disposition:
+
+- checkpoint-loop policy completion remains `PASS_WITH_WARNINGS`;
+- coordinator files were updated as the active checkpoint/coordinator closeout;
+- the queue was not moved backward to make
+  `AIDE-CAPABILITY-REALITY-LEDGER-01` pending again;
+- the next open task is `PRESENTATION-CONTRACT-01`;
+- limited parallel task execution is authorized only for path-isolated work
+  with explicit coordinator ownership;
+- large parallel execution remains unauthorized.
 
 ## Baseline
 
@@ -153,26 +178,29 @@ Warnings preserved:
 - Full CTest not run; retained as T4/full-gate debt.
 - Dependency-direction strict warnings remain known prior warning debt with
   zero-violation evidence.
-- AIDE Lite coordinator validation currently fails on out-of-scope latest task
-  packet structure; this task did not edit coordinator/latest packet files.
+- AIDE Lite validation passes after the 2026-05-23 coordinator closeout.
 - Stale AuditX output remains known RepoX debt.
 - Runtime package mount, provider runtime, runtime module loader, Workbench
   shell, renderer, native GUI, gameplay/domain implementation, and release
   publication remain blocked.
-- Coordinator update was deferred because this task ran in parallel-lane mode.
+- Initial coordinator update was deferred because the policy packet ran in
+  parallel-lane mode.
+- 2026-05-23 coordinator closeout applied the deferred coordinator update while
+  preserving full CTest and runtime/product blockers.
 
 ## Validation Commands Run
 
 | Command | Result |
 | --- | --- |
-| `py -3 .aide/scripts/aide_lite.py doctor` | FAIL; reports validation should be run because current AIDE Lite validation is failing |
-| `py -3 .aide/scripts/aide_lite.py validate` | FAIL; current latest task packet is missing required `EVIDENCE` section and review refs warn |
-| `py -3 .aide/scripts/aide_lite.py pack --task "AIDE-CHECKPOINT-LOOP-01 prerequisite check"` | PASS but writes latest task packet; generated content was reverted and pack was not rerun |
+| `py -3 .aide/scripts/aide_lite.py doctor` | PASS |
+| `py -3 .aide/scripts/aide_lite.py validate` | PASS |
+| `py -3 .aide/scripts/aide_lite.py pack --task "AIDE-CHECKPOINT-LOOP-01"` | PASS; wrote latest task packet for coordinator closeout |
 | `python -m tools.aide.doctor` | unavailable; module not present |
 | `python -m tools.aide.validate` | unavailable; module not present |
 | `py -3 -m tools.aide.validate_workunits --repo-root .` | PASS |
 | `py -3 tools/aide/check_dev_main_policy.py .` | PASS |
 | `py -3 tools/aide/check_checkpoint_loop.py .` | PASS |
+| `py -3 tools/aide/validate_capability_reality.py --repo-root . --summary-out .aide/reports/capability-reality-summary.md` | PASS |
 | `python -m json.tool .aide/fixtures/checkpoint/valid_checkpoint_candidate_minimal.json` | PASS |
 | `python -m json.tool .aide/fixtures/checkpoint/valid_promotion_decision_promote.json` | PASS |
 | `git diff --check` | PASS |
@@ -188,9 +216,9 @@ Limited parallel development is now better defined at the policy level:
 - checkpoint-loop policy defines validation, repair, warning disposition, and
   promotion decision requirements
 
-Limited parallel task execution still requires explicit coordinator ownership,
-path isolation, and checkpoint/coordinator closeout. This lane task did not
-authorize large parallel execution.
+Limited parallel task execution is now authorized only for path-isolated work
+with explicit coordinator ownership. This does not authorize large parallel
+execution.
 
 ## Non-Goals Preserved
 
@@ -202,9 +230,11 @@ work, source directory move, broad build, or full CTest was implemented.
 
 ## Next Tasks
 
-- `AIDE-CAPABILITY-REALITY-LEDGER-01`
 - `PRESENTATION-CONTRACT-01`
 - `PROJECTION-CONFORMANCE-01`
 - `POINTER-WIDTH-SERIALIZATION-AUDIT-01`
 
-Coordinator update deferred to checkpoint/coordinator task.
+`AIDE-CAPABILITY-REALITY-LEDGER-01` is already present in live history at
+`3fdd78a3b` and was not re-queued as pending.
+
+2026-05-23 coordinator update applied.

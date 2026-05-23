@@ -2,8 +2,9 @@
 
 ## Review Objective
 
-Review `AIDE-WORKUNIT-SCHEMA-01`: structured AIDE task/work/evidence schema
-layer for bounded parallel development.
+Review `AIDE-CHECKPOINT-LOOP-01`: minimum checkpoint loop law for bounded
+parallel development, repair/resume handling, warning disposition, and
+evidence-blocked promotion decisions.
 
 ## Decision Requested
 
@@ -21,32 +22,37 @@ For this queue, `PASS_WITH_WARNINGS` maps to `PASS_WITH_NOTES`.
 
 ## Verification Report Reference
 
-`.aide/reports/AIDE-WORKUNIT-SCHEMA-01-validation.json`
+- `.aide/verification/latest-verification-report.md`
+- `.aide/verification/review-decision-policy.yaml`
+- `.aide/reports/AIDE-CHECKPOINT-LOOP-01-coordinator-reconcile.md`
 
 ## Evidence Packet References
 
-- `.aide/schema/work_unit.schema.json`
-- `.aide/schema/task_attempt.schema.json`
-- `.aide/schema/blocker.schema.json`
-- `.aide/schema/evidence_packet.schema.json`
-- `.aide/schema/repair_task.schema.json`
-- `.aide/schema/resume_task.schema.json`
-- `.aide/schema/checkpoint_candidate.schema.json`
-- `.aide/schema/promotion_decision.schema.json`
-- `.aide/schema/warning_disposition.schema.json`
-- `.aide/schema/capability_reality_record.schema.json`
-- `.aide/fixtures/work_unit/`
-- `.aide/policy/workunit_schema_law.md`
-- `tools/aide/validate_workunits.py`
-- `.aide/reports/AIDE-WORKUNIT-SCHEMA-01-validation.json`
-- `docs/repo/audits/AIDE_WORKUNIT_SCHEMA_01.md`
+- `.aide/policy/checkpoint_loop_law.md`
+- `.aide/policy/checkpoint_validation_tiers.md`
+- `.aide/policy/checkpoint_repair_policy.md`
+- `.aide/policy/checkpoint_promotion_policy.md`
+- `.aide/fixtures/checkpoint/valid_checkpoint_candidate_minimal.json`
+- `.aide/fixtures/checkpoint/valid_checkpoint_candidate_with_repair.json`
+- `.aide/fixtures/checkpoint/valid_promotion_decision_promote.json`
+- `.aide/fixtures/checkpoint/valid_promotion_decision_defer.json`
+- `.aide/fixtures/checkpoint/invalid_checkpoint_missing_validation_plan.json`
+- `.aide/fixtures/checkpoint/invalid_promotion_missing_evidence.json`
+- `.aide/fixtures/checkpoint/invalid_promotion_unclassified_warning.json`
+- `tools/aide/check_checkpoint_loop.py`
+- `docs/repo/audits/AIDE_CHECKPOINT_LOOP_01.md`
+- `docs/repo/audits/AIDE_CAPABILITY_REALITY_LEDGER_01.md`
 
 ## Changed Files Summary
 
-WorkUnit-family schemas, tiny valid/invalid fixtures, a dependency-free targeted
-validator, schema-law documentation, audit, and AIDE queue/status/review packet
-surfaces were added or updated. Pre-existing workflow-law policy surfaces were
-preserved as the governing prerequisite layer.
+The checkpoint-loop law, validation tier policy, repair policy, promotion
+policy, fixtures, validator, and audit already exist in the live repo at
+`acebb0f4f aide: define checkpoint loop policy`. This coordinator closeout
+revalidates those artifacts and updates latest coordinator surfaces.
+
+Live repo evidence also contains `3fdd78a3b aide: add capability reality ledger`.
+The queue was not moved backward; the next open task is presentation or
+projection work.
 
 No product runtime, package runtime, replay runtime, provider runtime, runtime
 module loader, Workbench shell, renderer/native GUI, gameplay, release artifact,
@@ -55,40 +61,62 @@ implemented.
 
 ## Validation Summary
 
-Targeted WorkUnit schema validation passed:
+Targeted checkpoint validation passed:
 
 ```text
-py -3 -m tools.aide.validate_workunits --repo-root . --json-out .aide/reports/AIDE-WORKUNIT-SCHEMA-01-validation.json
+py -3 tools/aide/check_checkpoint_loop.py .
 ```
 
-It checked that required schema files exist, valid fixtures pass, invalid
-fixtures fail, blocker classes match `.aide/policy/blocker_taxonomy.md`, and
-WorkUnit status values match `.aide/policy/task_lifecycle.md`.
+It checked that required checkpoint-loop policy files exist, validation tiers
+are defined, repair and promotion policy snippets are present, valid fixtures
+pass, invalid fixtures fail, main promotion requires evidence, and
+unclassified promotion warnings are rejected.
+
+Supporting AIDE validation also passed:
+
+```text
+py -3 .aide/scripts/aide_lite.py doctor
+py -3 .aide/scripts/aide_lite.py validate
+py -3 -m tools.aide.validate_workunits --repo-root .
+py -3 tools/aide/check_dev_main_policy.py .
+py -3 tools/aide/validate_capability_reality.py --repo-root . --summary-out .aide/reports/capability-reality-summary.md
+```
+
+Full CTest was not run and remains T4/full-gate debt.
 
 ## Token Summary
 
-This review packet is compact. Full schema detail is in `.aide/schema/`, and
-full task evidence is in `docs/repo/audits/AIDE_WORKUNIT_SCHEMA_01.md`.
+This review packet is compact. Full checkpoint-loop policy detail is in
+`.aide/policy/`, fixture detail is in `.aide/fixtures/checkpoint/`, and closeout
+evidence is in `docs/repo/audits/AIDE_CHECKPOINT_LOOP_01.md`.
 
 ## Warning Summary
 
-Full CTest remains T4/full-gate debt. Existing AIDE review-packet reference
-warnings remain known. Large parallel execution remains unauthorized.
+Known warnings remain accepted and visible:
+
+- Full CTest remains T4/full-gate debt.
+- Earlier AIDE review-reference warnings are retired for this closeout; current
+  AIDE validate is PASS.
+- Stale AuditX output remains known RepoX debt.
+- Runtime package mount, provider runtime, runtime module loader, Workbench
+  shell, renderer, native GUI, gameplay/domain implementation, and release
+  publication remain blocked.
 
 ## Risk Summary
 
-The schema layer records task objects but does not provide dev/main policy,
-checkpoint loop policy, repair engine, scheduler, or automation. Capability
-reality ledger population is explicitly deferred.
+Limited parallel task execution is now coordinator-authorized only for
+path-isolated work with explicit coordinator ownership. Large parallel execution
+remains unauthorized.
 
 ## Reviewer Instructions
 
-Check that schemas are strict, fixtures are tiny, invalid fixtures fail, schema
-law preserves workflow-law doctrine, and queue/status points next to
-`AIDE-DEV-MAIN-POLICY-01`.
+Check that checkpoint policy remains policy-only, promotion to `main` requires
+checkpoint evidence and approval, warnings are classified rather than hidden,
+repair/defer/quarantine outcomes are explicit, and no product/runtime behavior
+changed.
 
 ## Non-Goals / Scope Guard
 
-No scheduler, automatic branch/worktree automation, merge automation, promotion
-automation, repair engine, Workbench Agent Board, product/runtime behavior, or
-release publication was implemented.
+No scheduler, automatic task runner, branch/worktree automation, merge
+automation, promotion automation, repair engine, Workbench Agent Board,
+product/runtime behavior, or release publication was implemented.

@@ -2,120 +2,121 @@
 
 ## PHASE
 
-UNSPECIFIED - codify module placement and world creation workspace ownership
+AIDE-CHECKPOINT-LOOP-01 coordinator closeout
 
 ## GOAL
 
-codify module placement and world creation workspace ownership
+Define and verify the minimum AIDE checkpoint loop law, then reconcile
+coordinator state without moving the queue backward from live repo evidence.
 
 ## WHY
 
-Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
+Bounded parallel development needs an explicit checkpoint loop before task
+branches can be merged into evidence-backed integration checkpoints and before
+any checkpoint can be considered for `main` promotion.
 
 ## CONTEXT_REFS
 
-- `.aide/memory/project-state.md`
-- `.aide/memory/decisions.md`
-- `.aide/memory/open-risks.md`
-- `.aide/context/repo-snapshot.json` (present)
-- `.aide/context/repo-map.json` (present)
-- `.aide/context/repo-map.md` (present)
-- `.aide/context/test-map.json` (present)
-- `.aide/context/context-index.json` (present)
-- `.aide/context/latest-context-packet.md` (present)
-- `.aide/repo/latest-repo-intelligence.md` (present)
-- `.aide/repo/file-inventory.json` (present)
-- `.aide/reports/file-quality-summary.md` (present)
-- `.aide/reports/file-quality-ledger.json` (present)
-- `.aide/refactors/latest-refactor-readiness.md` (present)
-- `.aide/refactors/latest-refactor-plan.example.json` (present)
-- `.aide/routing/latest-route-decision.json` (present)
-- `.aide/routing/latest-route-decision.md` (present)
-- `.aide/cache/latest-cache-keys.json` (present)
-- `.aide/cache/latest-cache-keys.md` (present)
-- `.aide/prompts/compact-task.md`
-- `.aide/policies/token-budget.yaml`
-- `.aide/policies/cache.yaml`
-- `.aide/policies/local-state.yaml`
+- `AGENTS.md`
+- `.aide/queue/current.toml`
+- `.aide/context/latest-review-packet.md`
+- `.aide/reports/latest-dominium-status.md`
+- `.aide/reports/latest-warning-disposition.md`
+- `docs/repo/audits/AIDE_WORKFLOW_LAW_01.md`
+- `docs/repo/audits/AIDE_WORKUNIT_SCHEMA_01.md`
+- `docs/repo/audits/AIDE_DEV_MAIN_POLICY_01.md`
+- `docs/repo/audits/AIDE_CHECKPOINT_LOOP_01.md`
+- `docs/repo/audits/AIDE_CAPABILITY_REALITY_LEDGER_01.md`
+- `.aide/policy/checkpoint_loop_law.md`
+- `.aide/policy/checkpoint_validation_tiers.md`
+- `.aide/policy/checkpoint_repair_policy.md`
+- `.aide/policy/checkpoint_promotion_policy.md`
+- `.aide/fixtures/checkpoint/`
+- `tools/aide/check_checkpoint_loop.py`
 
 ## ALLOWED_PATHS
 
-- `<fill from the next reviewed queue packet>`
-- `.aide/context/**`
-- `.aide/queue/unspecified-*` if this task becomes a queue item
-- root docs only when behavior or documentation links change
+- `.aide/policy/`
+- `.aide/fixtures/checkpoint/`
+- `.aide/reports/AIDE-CHECKPOINT-LOOP-01-*`
+- `.aide/queue/current.toml`
+- `.aide/context/latest-task-packet.md`
+- `.aide/context/latest-review-packet.md`
+- `.aide/reports/latest-dominium-status.md`
+- `.aide/reports/latest-warning-disposition.md`
+- `docs/repo/audits/AIDE_CHECKPOINT_LOOP_01.md`
+- `tools/aide/`
 
 ## FORBIDDEN_PATHS
 
-- `.git/**`
-- `.env`
-- `secrets/**`
-- `.aide.local/**`
-- raw provider credentials, API keys, local caches, raw prompt logs
-- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
+- product/runtime implementation paths
+- release publication paths
+- broad build or source-layout roots
+- Workbench implementation paths
+- renderer, native GUI, gameplay, provider runtime, package runtime, and
+  runtime module loader implementation paths
 
 ## IMPLEMENTATION
 
-- Read the queue packet and relevant repo refs first.
-- Keep changes inside the allowed paths.
-- Make the smallest coherent diff that satisfies acceptance.
-- Preserve generated/manual boundaries.
-- Do not inline whole source files unless exact contents are required.
-- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
+- Preserve the existing checkpoint-loop policy packet created by
+  `acebb0f4f aide: define checkpoint loop policy`.
+- Do not fake missing prerequisites; `AIDE-WORKFLOW-LAW-01`,
+  `AIDE-WORKUNIT-SCHEMA-01`, and `AIDE-DEV-MAIN-POLICY-01` are present.
+- Treat `AIDE-CAPABILITY-REALITY-LEDGER-01` as already present in live history
+  at `3fdd78a3b`; do not move the queue backward.
+- Update coordinator surfaces as a checkpoint/coordinator closeout only.
 
 ## VALIDATION
 
 - `py -3 .aide/scripts/aide_lite.py doctor`
 - `py -3 .aide/scripts/aide_lite.py validate`
-- `py -3 .aide/scripts/aide_lite.py index`
-- `py -3 .aide/scripts/aide_lite.py context`
-- `py -3 .aide/scripts/aide_lite.py repo inventory`
-- `py -3 .aide/scripts/aide_lite.py repo validate`
-- `py -3 .aide/scripts/aide_lite.py verify`
-- `py -3 .aide/scripts/aide_lite.py review-pack`
-- `py -3 .aide/scripts/aide_lite.py route explain`
-- `py -3 .aide/scripts/aide_lite.py test`
-- `py -3 .aide/scripts/aide_lite.py selftest`
-- `py -3 scripts/aide validate`
+- `py -3 .aide/scripts/aide_lite.py pack --task "AIDE-CHECKPOINT-LOOP-01"`
+- `py -3 -m tools.aide.validate_workunits --repo-root .`
+- `py -3 tools/aide/check_dev_main_policy.py .`
+- `py -3 tools/aide/check_checkpoint_loop.py .`
+- `py -3 tools/aide/validate_capability_reality.py --repo-root . --summary-out .aide/reports/capability-reality-summary.md`
 - `git diff --check`
-
-## COMMITS
-
-- Commit coherent subdeliverables with verbose bodies.
-- Stop at review gates.
 
 ## EVIDENCE
 
 - changed files
 - validation commands and results
-- verifier result
-- review packet path and result when review-pack is available
-- advisory route decision path and result when Q17 routing is available
-- compact packet size and budget status
-- unresolved risks and deferrals
+- existing checkpoint-loop commit hash
+- existing capability-ledger commit hash
+- preserved warning disposition
+- coordinator update decision
 
 ## NON_GOALS
 
-- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
+- No scheduler.
+- No automatic branch automation.
+- No automatic merging.
+- No automatic promotion to `main`.
+- No repair engine.
+- No Workbench Agent Board.
+- No product/runtime behavior change.
+- No full CTest or broad build.
 
 ## ACCEPTANCE
 
-- Task-specific acceptance criteria are met.
-- Validation is run and recorded.
-- Evidence is written.
-- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
+- Checkpoint loop law exists.
+- Checkpoint validation tiers, repair policy, and promotion policy exist.
+- Valid checkpoint and promotion fixtures pass targeted validation.
+- Invalid checkpoint and promotion fixtures fail targeted validation.
+- Promotion requires evidence.
+- Unclassified promotion warnings are rejected.
+- Coordinator surfaces reflect live repo evidence without hiding full-gate debt.
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
-Include the verifier result when Q12 verifier behavior is available.
+Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`,
+`CHANGED_FILES`, `VALIDATION`, `WARNINGS`, `RISKS`, and `NEXT`.
 
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4186
-- approx_tokens: 1047
+- chars: 4050
+- approx_tokens: 1013
 - budget_status: PASS
 - warnings:
   - none
-- formal ledger: `.aide/reports/token-ledger.jsonl`
