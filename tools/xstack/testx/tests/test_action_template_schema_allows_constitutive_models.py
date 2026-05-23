@@ -18,7 +18,7 @@ def _read_text(path: str) -> str:
 
 
 def run(repo_root: str):
-    textual_rel = "contracts/schema/meta/action_template.schema"
+    textual_rel = "contracts/schema/repo/meta/action_template.schema"
     textual_abs = os.path.join(repo_root, textual_rel.replace("/", os.sep))
     textual = _read_text(textual_abs)
     if "uses_constitutive_model_ids" not in textual:

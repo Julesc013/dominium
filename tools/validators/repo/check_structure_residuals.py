@@ -57,14 +57,6 @@ RUNTIME_RESIDUALS = {
         "runtime-facing CompatX adapter/validator surface; not a payload or migration bucket",
         "RUNTIME-RESIDUAL-TAXONOMY-01",
     ),
-    "runtime/include/dui": (
-        "DUI public C interface pending Dominium UI naming decision",
-        "RUNTIME-RESIDUAL-TAXONOMY-01",
-    ),
-    "runtime/project_graph": (
-        "runtime project graph service pending route review against tools/repo and Workbench modules",
-        "RUNTIME-RESIDUAL-TAXONOMY-01",
-    ),
     "runtime/serialization": (
         "runtime canonical JSON utilities; must not subsume contracts/protocol/save/replay authority",
         "RUNTIME-RESIDUAL-TAXONOMY-01",
@@ -73,20 +65,9 @@ RUNTIME_RESIDUALS = {
         "runtime session protocol/common surface; not promoted truth",
         "RUNTIME-RESIDUAL-TAXONOMY-01",
     ),
-    "runtime/ui/client": (
-        "finite reusable client UI-facing systems pending runtime/ui versus app/client route decision",
-        "RUNTIME-RESIDUAL-TAXONOMY-01",
-    ),
-    "runtime/ui/control/dui": (
-        "DUI control implementation pending Dominium UI naming decision",
-        "RUNTIME-RESIDUAL-TAXONOMY-01",
-    ),
 }
 
-SCHEMA_RESIDUAL_ROOTS = {
-    "contracts/schema/engine": "SCHEMA-CANON-RESIDUAL-02",
-    "contracts/schema/meta": "SCHEMA-CANON-RESIDUAL-02",
-}
+SCHEMA_RESIDUAL_ROOTS = {}
 
 RUNTIME_PROJECTION_ROOTS = {
     "runtime/projection/cli": "PROJECTION-CONFORMANCE-01",

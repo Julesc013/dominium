@@ -65,11 +65,16 @@ tasks.
   `contracts/diagnostics/` remains retired.
 - `content/packs/**/content/` is classified as legacy pack payload layout, not
   contract authority.
+- `runtime/project_graph`, `runtime/ui/client`, `runtime/ui/control/dui`, and
+  `runtime/include/dui` have accepted ownership evidence.
 - `engine/compatx`, `runtime/compatx`, `engine/foundation`,
-  `engine/serialization`, `runtime/serialization`, `engine/session`,
-  `runtime/session`, `runtime/project_graph`, `runtime/ui/client`,
-  `runtime/ui/control/dui`, and `runtime/include/dui` are classified residuals
-  pending `RUNTIME-RESIDUAL-TAXONOMY-01`.
+  `engine/serialization`, `runtime/serialization`, `engine/session`, and
+  `runtime/session` remain classified residuals pending
+  `RUNTIME-RESIDUAL-TAXONOMY-01`.
+- `contracts/schema/runtime/engine/` owns the former `contracts/schema/engine/`
+  schemas.
+- `contracts/schema/repo/meta/` owns the former `contracts/schema/meta/`
+  schemas.
 - `contracts/schema/` remains broad and is deferred to
   `SCHEMA-CANON-RESIDUAL-02`.
 - tracked `.aide/` state-like roots are classified as AIDE control-plane,

@@ -202,14 +202,9 @@ RUNTIME_PROJECTION_ROOTS = {
     "runtime/projection/headless",
 }
 
-FINITE_EXCEPTION_PREFIXES = {
-    "runtime/ui/client": "documented reusable client UI-facing systems; route remains pending a focused runtime/ui versus apps/client decision",
-}
+FINITE_EXCEPTION_PREFIXES = {}
 
-SCHEMA_LEGACY_BUCKETS = {
-    "engine": "contracts/schema/engine or contracts/abi",
-    "meta": "contracts/schema/repo or contracts/schema/governance",
-}
+SCHEMA_LEGACY_BUCKETS = {}
 
 
 def _configure_stdio():

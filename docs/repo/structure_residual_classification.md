@@ -60,12 +60,12 @@ bucket directories:
   `contracts/protocol`, save, replay, or package authority.
 - `engine/session`: engine-side session common code pending boundary review.
 - `runtime/session`: runtime session protocol/common surface.
-- `runtime/project_graph`: runtime project graph service pending route review
-  against tools/repo and Workbench modules.
-- `runtime/ui/client`: finite reusable client UI-facing systems pending route
-  decision.
-- `runtime/ui/control/dui` and `runtime/include/dui`: DUI surfaces pending a
-  Dominium UI naming decision.
+- `runtime/project_graph`: accepted runtime service for the contract-backed
+  project graph model.
+- `runtime/ui/client`: accepted reusable client UI-facing systems per
+  `APPS_THIN_01`.
+- `runtime/ui/control/dui` and `runtime/include/dui`: accepted Dominium UI
+  facade/control surfaces per `SPEC_DUI` and `STRUCTURE_CANON_SWEEP_01`.
 
 Focused follow-up: `RUNTIME-RESIDUAL-TAXONOMY-01`.
 
@@ -84,9 +84,10 @@ Focused follow-up: `WORKBENCH-SHELL-STRUCTURE-01`.
 
 ## Schema Residuals
 
-`contracts/schema/` remains broad. The structure-finalization pass already
-routed the highest-signal stale buckets, but remaining first-level schema
-families still require classification before more moves.
+`contracts/schema/` remains broad. The `engine` and `meta` buckets were routed
+to `contracts/schema/runtime/engine/` and `contracts/schema/repo/meta/`.
+Remaining first-level schema families still require classification before more
+moves.
 
 Focused follow-up: `SCHEMA-CANON-RESIDUAL-02`.
 

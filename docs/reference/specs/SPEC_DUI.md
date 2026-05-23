@@ -41,8 +41,8 @@ Related:
 - `docs/reference/specs/SPEC_FACADES_BACKENDS.md`
 - `docs/reference/specs/SPEC_CAPABILITY_REGISTRY.md`
 - `docs/reference/specs/SPEC_CONTAINER_TLV.md`
-- `include/dui/dui_api_v1.h`
-- `include/dui/dui_schema_tlv.h`
+- `runtime/include/dui/dui_api_v1.h`
+- `runtime/include/dui/dui_schema_tlv.h`
 
 ## 1. Goals and Non-Goals
 
@@ -61,7 +61,7 @@ Non-goals (explicitly deferred):
 ## 2. Facade ABI: `dui_api_v1`
 
 The DUI facade is a **C ABI**, versioned POD vtable:
-- Header: `include/dui/dui_api_v1.h`
+- Header: `runtime/include/dui/dui_api_v1.h`
 - ABI version constant: `DUI_API_ABI_VERSION`
 - Every ABI-visible struct begins with `{ abi_version, struct_size }` (`DOM_ABI_HEADER`).
 

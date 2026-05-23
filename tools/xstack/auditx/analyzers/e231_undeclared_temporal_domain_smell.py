@@ -13,7 +13,7 @@ ANALYZER_ID = "E231_UNDECLARED_TEMPORAL_DOMAIN_SMELL"
 _SCHEDULE_SCHEMA_REL = "contracts/schema/schedule.schema.json"
 
 _REQUIRED_TOKENS = {
-    "contracts/schema/engine/schedule/schedule.schema": (
+    "contracts/schema/runtime/engine/schedule/schedule.schema": (
         "temporal_domain_id",
     ),
     "tools/validators/core/schedule/schedule_engine.py": (

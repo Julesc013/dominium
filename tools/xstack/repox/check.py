@@ -1091,7 +1091,7 @@ META_STABILITY_RETRO_AUDIT_PATH = "docs/archive/audit/META_STABILITY1_RETRO_AUDI
 META_STABILITY_FIX_PLAN_PATH = "docs/archive/audit/META_STABILITY1_FIX_PLAN.md"
 META_STABILITY_DOCTRINE_PATH = "docs/governance/meta/STABILITY_CLASSIFICATION.md"
 META_STABILITY_CONVENTION_PATH = "docs/governance/meta/STABILITY_REGISTRY_CONVENTION.md"
-META_STABILITY_SCHEMA_DOC_PATH = "contracts/schema/meta/stability_marker.schema"
+META_STABILITY_SCHEMA_DOC_PATH = "contracts/schema/repo/meta/stability_marker.schema"
 META_STABILITY_SCHEMA_JSON_PATH = "contracts/schema/stability_marker.schema.json"
 META_STABILITY_CLASS_REGISTRY_PATH = "contracts/registry/stability_class_registry.json"
 META_STABILITY_REQUIREMENTS_REGISTRY_PATH = "contracts/registry/stability_requirements_registry.json"
@@ -3442,9 +3442,9 @@ def _append_profile_override_invariant_findings(
 
     required_paths = (
         "tools/repo/meta/profile/profile_engine.py",
-        "contracts/schema/meta/profile.schema",
-        "contracts/schema/meta/profile_binding.schema",
-        "contracts/schema/meta/exception_event.schema",
+        "contracts/schema/repo/meta/profile.schema",
+        "contracts/schema/repo/meta/profile_binding.schema",
+        "contracts/schema/repo/meta/exception_event.schema",
         "contracts/registry/profile_registry.json",
     )
     for rel_path in required_paths:
@@ -3570,8 +3570,8 @@ def _append_compute_budget_invariant_findings(
     severity = _strict_only_severity(profile)
 
     required_paths = (
-        "contracts/schema/meta/compute_budget_profile.schema",
-        "contracts/schema/meta/compute_consumption_record.schema",
+        "contracts/schema/repo/meta/compute_budget_profile.schema",
+        "contracts/schema/repo/meta/compute_consumption_record.schema",
         "contracts/registry/compute_budget_profile_registry.json",
         "contracts/registry/compute_degrade_policy_registry.json",
         "tools/repo/meta/compute/compute_budget_engine.py",
@@ -3736,7 +3736,7 @@ def _append_logic_constitution_invariant_findings(
     compute_registry_rel = "contracts/registry/compute_budget_profile_registry.json"
     instrument_registry_rel = "contracts/registry/instrument_type_registry.json"
     profile_registry_rel = "contracts/registry/profile_registry.json"
-    exception_schema_rel = "contracts/schema/meta/exception_event.schema"
+    exception_schema_rel = "contracts/schema/repo/meta/exception_event.schema"
 
     constitution_text = _file_text(repo_root, constitution_rel)
     if not constitution_text:
@@ -17103,7 +17103,7 @@ def _append_time_constitution_invariant_findings(
             )
 
     schedule_domain_required_tokens = {
-        "contracts/schema/engine/schedule/schedule.schema": (
+        "contracts/schema/runtime/engine/schedule/schedule.schema": (
             "temporal_domain_id",
         ),
         "tools/validators/core/schedule/schedule_engine.py": (
@@ -28388,11 +28388,11 @@ def _append_compiled_model_invariant_findings(
     process_registry_rel = "contracts/registry/process_registry.json"
     verify_tool_rel = "tools/repo/meta/audit/tool_verify_compiled_model.py"
     required_schema_rels = (
-        "contracts/schema/meta/compiled_model.schema",
-        "contracts/schema/meta/equivalence_proof.schema",
-        "contracts/schema/meta/validity_domain.schema",
-        "contracts/schema/meta/compile_request.schema",
-        "contracts/schema/meta/compile_result.schema",
+        "contracts/schema/repo/meta/compiled_model.schema",
+        "contracts/schema/repo/meta/equivalence_proof.schema",
+        "contracts/schema/repo/meta/validity_domain.schema",
+        "contracts/schema/repo/meta/compile_request.schema",
+        "contracts/schema/repo/meta/compile_result.schema",
     )
     required_registry_rels = (
         "contracts/registry/compiled_type_registry.json",
@@ -34581,7 +34581,7 @@ def _append_universal_identity_findings(
         ("docs/archive/audit/UNIVERSAL_IDENTITY0_RETRO_AUDIT.md", "UNIVERSAL-ID retro audit is required", warn_rule_id),
         ("docs/governance/meta/UNIVERSAL_IDENTITY_MODEL.md", "universal identity doctrine is required", warn_rule_id),
         ("docs/governance/meta/IDENTITY_INTEGRATION_MAP.md", "identity integration map is required", warn_rule_id),
-        ("contracts/schema/meta/universal_identity_block.schema", "universal identity schema is required", canonical_rule_id),
+        ("contracts/schema/repo/meta/universal_identity_block.schema", "universal identity schema is required", canonical_rule_id),
         ("contracts/schema/universal_identity_block.schema.json", "compiled universal identity schema is required", canonical_rule_id),
         ("contracts/registry/identity_kind_registry.json", "identity kind registry is required", namespaced_rule_id),
         ("tools/validators/identity/identity_validator.py", "identity validator is required", canonical_rule_id),
