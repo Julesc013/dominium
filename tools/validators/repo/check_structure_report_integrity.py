@@ -14,9 +14,14 @@ import datetime as _datetime
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
+import zipfile
 
+
+MANIFEST_SCHEMA_VERSION = "dominium.repo.structure_report_bundle.v1"
+DIR_TREE_SCHEMA_VERSION = "dominium.repo.dir_tree.v1"
 
 KNOWN_BUNDLE_FILES = {
     "dirfiles_manifest.json",
@@ -25,6 +30,28 @@ KNOWN_BUNDLE_FILES = {
     "dirfiles.zip",
     "dirfiles_run.log",
 }
+
+REQUIRED_MANIFEST_FIELDS = (
+    "schema_version",
+    "source_mode",
+    "commit",
+    "branch",
+    "dirty",
+    "generated_utc",
+    "run_id",
+    "files",
+)
+
+METADATA_FIELDS = (
+    "source_mode",
+    "commit",
+    "branch",
+    "dirty",
+    "generated_utc",
+    "run_id",
+)
+
+ZIP_REQUIRED_MEMBERS = ("dir_tree.json", "dir_tree.txt", "dirfiles_run.log")
 
 
 def _configure_stdio():
@@ -55,6 +82,27 @@ def sha256_file(path):
     return digest.hexdigest()
 
 
+def sha256_bytes(payload):
+    return hashlib.sha256(payload).hexdigest()
+
+
+def git_command(repo_root, args):
+    result = subprocess.run(
+        ["git"] + list(args),
+        cwd=repo_root,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    if result.returncode != 0:
+        print(result.stderr, file=sys.stderr)
+        raise SystemExit(result.returncode)
+    return result.stdout.strip()
+
+
 def git_files(repo_root):
     result = subprocess.run(
         ["git", "ls-files"],
@@ -72,9 +120,124 @@ def git_files(repo_root):
     return [posix(line.strip()) for line in result.stdout.splitlines() if line.strip()]
 
 
+def tracked_dirs(paths):
+    dirs = set()
+    for path in paths:
+        parts = path.split("/")[:-1]
+        for index in range(1, len(parts) + 1):
+            dirs.add("/".join(parts[:index]))
+    return sorted(dirs)
+
+
+def git_metadata(repo_root):
+    status = git_command(repo_root, ["status", "--porcelain"])
+    return {
+        "source_mode": "git_tracked",
+        "commit": git_command(repo_root, ["rev-parse", "HEAD"]),
+        "branch": git_command(repo_root, ["rev-parse", "--abbrev-ref", "HEAD"]),
+        "dirty": bool(status),
+    }
+
+
 def load_manifest(path):
     with open(path, "r", encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def add(findings, severity, path, message):
+    findings.append({"severity": severity, "path": posix(path), "message": message})
+
+
+def normalized_metadata_value(value):
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    return str(value)
+
+
+def expected_metadata(manifest):
+    return {key: manifest.get(key) for key in METADATA_FIELDS}
+
+
+def compare_metadata(findings, path, expected, actual, require_all):
+    for key, expected_value in sorted(expected.items()):
+        if key not in actual:
+            if require_all:
+                add(findings, "blocker", path, "missing run metadata field {0}".format(key))
+            continue
+        if normalized_metadata_value(actual[key]) != normalized_metadata_value(expected_value):
+            add(
+                findings,
+                "blocker",
+                path,
+                "run metadata mismatch for {0}: expected {1}, found {2}".format(
+                    key,
+                    normalized_metadata_value(expected_value),
+                    normalized_metadata_value(actual[key]),
+                ),
+            )
+
+
+def parse_json_metadata(path):
+    with open(path, "r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        return {}
+    return {key: payload[key] for key in METADATA_FIELDS if key in payload}
+
+
+def parse_text_metadata(path):
+    metadata = {}
+    pattern = re.compile(r"^\s*([A-Za-z0-9_]+)\s*[:=]\s*(.*?)\s*$")
+    with open(path, "r", encoding="utf-8", errors="replace") as handle:
+        for index, line in enumerate(handle):
+            if index > 128:
+                break
+            match = pattern.match(line)
+            if not match:
+                continue
+            key, value = match.group(1), match.group(2)
+            if key in METADATA_FIELDS:
+                metadata[key] = value
+    return metadata
+
+
+def validate_zip(findings, bundle_dir, entry_by_path):
+    zip_entry = entry_by_path.get("dirfiles.zip")
+    zip_path = os.path.join(bundle_dir, "dirfiles.zip")
+    if not os.path.exists(zip_path):
+        return
+    if not zip_entry:
+        add(findings, "blocker", "dirfiles.zip", "zip file exists but is not listed in manifest files[]")
+        return
+
+    try:
+        archive = zipfile.ZipFile(zip_path, "r")
+    except Exception as exc:
+        add(findings, "blocker", "dirfiles.zip", "failed to open zip: {0}".format(exc))
+        return
+
+    with archive:
+        seen = set()
+        for info in archive.infolist():
+            if info.is_dir():
+                continue
+            name = posix(info.filename)
+            if os.path.isabs(name) or ".." in name.split("/"):
+                add(findings, "blocker", name, "zip member path must stay inside bundle")
+                continue
+            seen.add(name)
+            member_entry = entry_by_path.get(name)
+            if not member_entry:
+                add(findings, "blocker", name, "zip member is not listed by manifest files[]")
+                continue
+            payload = archive.read(info.filename)
+            if member_entry.get("size") != len(payload):
+                add(findings, "blocker", name, "zip member size does not match manifest")
+            if member_entry.get("sha256") != sha256_bytes(payload):
+                add(findings, "blocker", name, "zip member sha256 does not match manifest")
+        for required in ZIP_REQUIRED_MEMBERS:
+            if required in entry_by_path and required not in seen:
+                add(findings, "blocker", required, "zip is missing required report member")
 
 
 def verify_manifest(manifest_path):
@@ -92,47 +255,89 @@ def verify_manifest(manifest_path):
             "findings": [{"severity": "blocker", "path": posix(manifest_path), "message": "failed to parse manifest: {0}".format(exc)}],
         }
 
-    if manifest.get("source_mode") != "git_tracked":
-        findings.append(
-            {
-                "severity": "blocker",
-                "path": posix(manifest_path),
-                "message": "manifest source_mode must be git_tracked",
-            }
+    for field in REQUIRED_MANIFEST_FIELDS:
+        if field not in manifest:
+            add(findings, "blocker", manifest_path, "manifest is missing required field {0}".format(field))
+
+    if manifest.get("schema_version") != MANIFEST_SCHEMA_VERSION:
+        add(
+            findings,
+            "blocker",
+            manifest_path,
+            "manifest schema_version must be {0}".format(MANIFEST_SCHEMA_VERSION),
         )
+
+    if manifest.get("source_mode") != "git_tracked":
+        add(findings, "blocker", manifest_path, "manifest source_mode must be git_tracked")
+    if not re.match(r"^[0-9a-fA-F]{40}$", str(manifest.get("commit", ""))):
+        add(findings, "blocker", manifest_path, "manifest commit must be a full git commit hash")
+    if not isinstance(manifest.get("branch"), str) or not manifest.get("branch"):
+        add(findings, "blocker", manifest_path, "manifest branch must be a non-empty string")
+    if not isinstance(manifest.get("dirty"), bool):
+        add(findings, "blocker", manifest_path, "manifest dirty must be a boolean")
+    if not isinstance(manifest.get("generated_utc"), str) or not manifest.get("generated_utc"):
+        add(findings, "blocker", manifest_path, "manifest generated_utc must be a non-empty string")
+    if not isinstance(manifest.get("run_id"), str) or not manifest.get("run_id"):
+        add(findings, "blocker", manifest_path, "manifest run_id must be a non-empty string")
 
     entries = manifest.get("files", [])
     if not isinstance(entries, list) or not entries:
-        findings.append(
-            {
-                "severity": "blocker",
-                "path": posix(manifest_path),
-                "message": "manifest must contain non-empty files[]",
-            }
-        )
+        add(findings, "blocker", manifest_path, "manifest must contain non-empty files[]")
+    seen_paths = set()
     for entry in entries if isinstance(entries, list) else []:
         rel = entry.get("path", "")
         if not rel or os.path.isabs(rel) or ".." in rel.replace("\\", "/").split("/"):
-            findings.append(
-                {
-                    "severity": "blocker",
-                    "path": rel,
-                    "message": "manifest entry path must be relative and stay inside bundle",
-                }
-            )
+            add(findings, "blocker", rel, "manifest entry path must be relative and stay inside bundle")
             continue
+        rel = posix(rel)
+        if rel in seen_paths:
+            add(findings, "blocker", rel, "manifest entry path is duplicated")
+            continue
+        seen_paths.add(rel)
+        if not isinstance(entry.get("size"), int):
+            add(findings, "blocker", rel, "manifest entry size must be an integer")
+        if not re.match(r"^[0-9a-fA-F]{64}$", str(entry.get("sha256", ""))):
+            add(findings, "blocker", rel, "manifest entry sha256 must be a sha256 hex digest")
         candidate = os.path.join(bundle_dir, *rel.replace("\\", "/").split("/"))
         if not os.path.exists(candidate):
-            findings.append({"severity": "blocker", "path": rel, "message": "manifest entry is missing"})
+            add(findings, "blocker", rel, "manifest entry is missing")
             continue
         actual_hash = sha256_file(candidate)
         actual_size = os.path.getsize(candidate)
         if entry.get("sha256") != actual_hash:
-            findings.append({"severity": "blocker", "path": rel, "message": "sha256 mismatch"})
+            add(findings, "blocker", rel, "sha256 mismatch")
         if entry.get("size") != actual_size:
-            findings.append({"severity": "blocker", "path": rel, "message": "size mismatch"})
+            add(findings, "blocker", rel, "size mismatch")
+
+    entry_by_path = {posix(entry.get("path", "")): entry for entry in entries if isinstance(entry, dict)}
+    manifest_abs = os.path.abspath(manifest_path)
+    for filename in sorted(KNOWN_BUNDLE_FILES):
+        candidate = os.path.join(bundle_dir, filename)
+        if not os.path.exists(candidate):
+            continue
+        if os.path.abspath(candidate) == manifest_abs:
+            continue
+        if filename not in entry_by_path:
+            add(findings, "blocker", filename, "known bundle file is present but not listed by manifest files[]")
+
+    expected = expected_metadata(manifest)
+    for filename in ("dir_tree.json", "dir_tree.txt", "dirfiles_run.log"):
+        if filename not in entry_by_path:
+            continue
+        candidate = os.path.join(bundle_dir, filename)
+        if not os.path.exists(candidate):
+            continue
+        try:
+            metadata = parse_json_metadata(candidate) if filename.endswith(".json") else parse_text_metadata(candidate)
+        except Exception as exc:
+            add(findings, "blocker", filename, "failed to parse report metadata: {0}".format(exc))
+            continue
+        compare_metadata(findings, filename, expected, metadata, require_all=True)
+
+    validate_zip(findings, bundle_dir, entry_by_path)
 
     blocker_count = sum(1 for item in findings if item["severity"] == "blocker")
+    warning_count = sum(1 for item in findings if item["severity"] == "warning")
     return {
         "bundle_dir": posix(bundle_dir),
         "manifest": posix(manifest_path),
@@ -140,10 +345,121 @@ def verify_manifest(manifest_path):
         "source_mode": manifest.get("source_mode", ""),
         "commit": manifest.get("commit", ""),
         "branch": manifest.get("branch", ""),
-        "status": "BLOCKED" if blocker_count else "PASS",
+        "run_id": manifest.get("run_id", ""),
+        "status": "BLOCKED" if blocker_count else "PASS_WITH_WARNINGS" if warning_count else "PASS",
+        "blocker_count": blocker_count,
+        "warning_count": warning_count,
         "finding_count": len(findings),
         "findings": findings,
     }
+
+
+def write_text(path, payload):
+    with open(path, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(payload)
+
+
+def write_json(path, payload):
+    with open(path, "w", encoding="utf-8", newline="\n") as handle:
+        json.dump(payload, handle, sort_keys=True, indent=2, ensure_ascii=True)
+        handle.write("\n")
+
+
+def file_entry(bundle_dir, filename):
+    path = os.path.join(bundle_dir, filename)
+    return {"path": filename, "size": os.path.getsize(path), "sha256": sha256_file(path)}
+
+
+def write_zip(bundle_dir):
+    zip_path = os.path.join(bundle_dir, "dirfiles.zip")
+    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        for filename in ZIP_REQUIRED_MEMBERS:
+            path = os.path.join(bundle_dir, filename)
+            info = zipfile.ZipInfo(filename)
+            info.date_time = (1980, 1, 1, 0, 0, 0)
+            info.compress_type = zipfile.ZIP_DEFLATED
+            with open(path, "rb") as handle:
+                archive.writestr(info, handle.read())
+
+
+def write_bundle(repo_root, output_dir):
+    repo_root = os.path.abspath(repo_root)
+    output_dir = os.path.abspath(output_dir)
+    os.makedirs(output_dir, exist_ok=True)
+    for filename in KNOWN_BUNDLE_FILES:
+        candidate = os.path.join(output_dir, filename)
+        if os.path.exists(candidate) and os.path.isfile(candidate):
+            os.remove(candidate)
+
+    tracked = sorted(git_files(repo_root))
+    dirs = tracked_dirs(tracked)
+    generated_utc = utc_now()
+    metadata = git_metadata(repo_root)
+    run_id = "structure-{0}-{1}".format(
+        generated_utc.replace("-", "").replace(":", "").replace("Z", "Z"),
+        metadata["commit"][:12],
+    )
+
+    common = dict(metadata)
+    common["generated_utc"] = generated_utc
+    common["run_id"] = run_id
+
+    tree_payload = dict(common)
+    tree_payload.update(
+        {
+            "schema_version": DIR_TREE_SCHEMA_VERSION,
+            "directory_count": len(dirs),
+            "file_count": len(tracked),
+            "directories": dirs,
+        }
+    )
+    write_json(os.path.join(output_dir, "dir_tree.json"), tree_payload)
+
+    header = [
+        "schema_version: {0}".format(DIR_TREE_SCHEMA_VERSION),
+        "source_mode: {0}".format(common["source_mode"]),
+        "commit: {0}".format(common["commit"]),
+        "branch: {0}".format(common["branch"]),
+        "dirty: {0}".format(normalized_metadata_value(common["dirty"])),
+        "generated_utc: {0}".format(common["generated_utc"]),
+        "run_id: {0}".format(common["run_id"]),
+        "file_count: {0}".format(len(tracked)),
+        "directory_count: {0}".format(len(dirs)),
+        "",
+    ]
+    write_text(os.path.join(output_dir, "dir_tree.txt"), "\n".join(header + dirs) + "\n")
+
+    run_log = [
+        "schema_version: {0}".format(MANIFEST_SCHEMA_VERSION),
+        "source_mode: {0}".format(common["source_mode"]),
+        "commit: {0}".format(common["commit"]),
+        "branch: {0}".format(common["branch"]),
+        "dirty: {0}".format(normalized_metadata_value(common["dirty"])),
+        "generated_utc: {0}".format(common["generated_utc"]),
+        "run_id: {0}".format(common["run_id"]),
+        "status: generated",
+        "tracked_files: {0}".format(len(tracked)),
+        "tracked_directories: {0}".format(len(dirs)),
+        "",
+    ]
+    write_text(os.path.join(output_dir, "dirfiles_run.log"), "\n".join(run_log))
+    write_zip(output_dir)
+
+    manifest = dict(common)
+    manifest.update(
+        {
+            "schema_version": MANIFEST_SCHEMA_VERSION,
+            "files": [
+                file_entry(output_dir, filename)
+                for filename in ("dir_tree.json", "dir_tree.txt", "dirfiles_run.log", "dirfiles.zip")
+            ],
+        }
+    )
+    manifest_path = os.path.join(output_dir, "dirfiles_manifest.json")
+    write_json(manifest_path, manifest)
+    report = verify_manifest(manifest_path)
+    report["written_bundle_dir"] = posix(output_dir)
+    return report
 
 
 def inspect_tracked(repo_root):
@@ -171,11 +487,14 @@ def main():
     parser = argparse.ArgumentParser(description="Verify structure report bundle integrity.")
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--manifest", help="Path to a structure bundle manifest.json.")
+    parser.add_argument("--write-bundle", help="Write a fresh tracked-only structure report bundle to this directory.")
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--strict", action="store_true", help="Fail on blockers.")
     args = parser.parse_args()
 
-    if args.manifest:
+    if args.write_bundle:
+        report = write_bundle(os.path.abspath(args.repo_root), args.write_bundle)
+    elif args.manifest:
         report = verify_manifest(args.manifest)
     else:
         report = inspect_tracked(os.path.abspath(args.repo_root))

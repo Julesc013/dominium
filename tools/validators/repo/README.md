@@ -23,6 +23,7 @@ check_directory_naming.py
 check_file_naming.py
 check_canonical_structure.py
 check_structure_report_integrity.py
+check_structure_residuals.py
 ```
 
 Default mode is audit mode. It exits zero and classifies current debt so the repo can record existing conflicts without weakening any existing validator.
@@ -52,8 +53,13 @@ module payloads belong in `content/packs/`; module implementations belong under
 their actual ownership root.
 
 `check_structure_report_integrity.py` verifies task-local tracked-only structure
-bundle manifests, and reports active tracked dirfiles artifacts that lack an
-explicit integrity manifest.
+bundle manifests, can write a fresh local tracked-only structure bundle, and
+reports active tracked dirfiles artifacts that lack an explicit integrity
+manifest.
+
+`check_structure_residuals.py` classifies remaining schema, pack, runtime, AIDE,
+and tests taxonomy residuals without performing source-tree moves. It fails
+strict mode only for mechanically knowable authority violations.
 
 ## Example
 
