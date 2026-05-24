@@ -61,6 +61,7 @@ ALLOWED_ROOT_FILES = {
 ALLOWED_ROOT_FILE_PATTERNS = ("VERSION_*",)
 
 FORBIDDEN_ACTIVE_ROOTS = {
+    "framework",
     "src",
     "source",
     "sources",
@@ -97,10 +98,12 @@ FORBIDDEN_ACTIVE_ROOTS = {
 }
 
 FORBIDDEN_ACTIVE_ROOT_TARGETS = {
+    "framework": "contracts/public_surface plus runtime/include/domino and engine/include/domino",
     "modules": "contracts/module for declarations, content/packs for payloads, and the owning runtime/game/tools/apps root for implementation",
     "plugins": "content/packs for distributable payloads, or a precise runtime/tools adapter owner for behavior",
     "services": "contracts/service for law, runtime/<service-area> for implementation",
     "workspaces": "apps/workbench/workspace for Workbench compositions, data/workspaces for dev overlays, or contracts/workspace for law",
+    "sdk": "release/sdk only for generated/exported SDK packages after explicit root-contract approval",
 }
 
 GENERATED_LOCAL_ROOTS = {

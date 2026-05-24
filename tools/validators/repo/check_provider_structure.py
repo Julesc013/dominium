@@ -23,7 +23,7 @@ PROVIDER_STRUCTURE_CONTRACT = Path("contracts/provider/provider_structure.contra
 THIRD_PARTY_MANIFEST = Path("external/manifests/third_party.toml")
 RELEASE_PROFILE_ROOT = Path("release/profiles")
 
-FORBIDDEN_TOP_LEVEL_ROOTS = {"profiles", "labs", "modules", "plugins", "services"}
+FORBIDDEN_TOP_LEVEL_ROOTS = {"framework", "profiles", "labs", "modules", "plugins", "services", "sdk"}
 SERVICE_ROOTS = {
     "platform",
     "input",

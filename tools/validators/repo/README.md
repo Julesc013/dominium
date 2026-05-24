@@ -22,6 +22,7 @@ check_tools_taxonomy.py
 check_directory_naming.py
 check_file_naming.py
 check_canonical_structure.py
+check_domino_framework_boundary.py
 check_provider_structure.py
 check_schema_taxonomy.py
 check_structure_report_integrity.py
@@ -59,6 +60,11 @@ enforces service-first provider paths, blocks vendor-shaped roots such as
 `runtime/raylib` or app-specific provider variants, validates release provider
 profiles, and checks for third-party include leakage outside provider/external
 boundaries.
+
+`check_domino_framework_boundary.py` is the DOMINO-FRAMEWORK-BOUNDARY-01
+guardrail. It keeps Domino Framework as registered public surfaces, ABI law,
+service/provider/capability law, public `domino` headers, profiles, and tests
+rather than a top-level `framework/` or `sdk/` source root.
 
 `check_schema_taxonomy.py` blocks the retired `contracts/schema` buckets and
 flat schema filename prefixes that were routed to domain/runtime/game/repo

@@ -97,6 +97,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/DISTRIBUTION_AND_STOREFRONTS.md`
 - `docs/architecture/DISTRIBUTION_LAYOUT.md`
 - `docs/architecture/DISTRIBUTION_PROFILES.md`
+- `docs/architecture/domino_framework_boundary.md`
 - `docs/architecture/DOMAIN_JURISDICTIONS_AND_LAW.md`
 - `docs/architecture/DOMAIN_SHARDING_AND_STREAMING.md`
 - `docs/architecture/DOMAIN_VOLUMES.md`

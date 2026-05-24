@@ -1,11 +1,16 @@
-# FULL-CTEST-AUDIT-NONPATH-01
-
-Status: PARTIAL
+Status: DERIVED
+Last Reviewed: 2026-05-24
+Supersedes: none
+Superseded By: none
+Result: PARTIAL
+Task: FULL-CTEST-AUDIT-NONPATH-01
 Branch: main
 Starting commit: 3243fab7d7e4b9c32dc296a2583d4c5fa5ad8301
 Ending commit: this audit commit; use `git log -1` for the immutable hash.
 Worktree at start: clean
 Feature readiness verdict: LIMITED
+
+# FULL-CTEST-AUDIT-NONPATH-01
 
 ## Scope
 

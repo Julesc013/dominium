@@ -32,7 +32,7 @@ retirement_rule = "Retirement requires replacement_policy and retirement_reason.
 [[surface]]
 id = "domino.engine.public_headers.v1"
 kind = "c_header"
-path = "engine/include"
+path = "engine/include/domino"
 owner = "engine"
 stability = "provisional"
 language = "c17"
@@ -41,12 +41,12 @@ introduced = "PUBLIC-SURFACE-REGISTRY-01"
 proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_registry_update"
-notes = "Umbrella entry for Domino engine public header surface; API-ABI-CANON-01 records this as provisional and warning-bearing, not frozen ABI."
+notes = "Domino deterministic engine public header home; API-ABI-CANON-01 records this as provisional and warning-bearing, not frozen ABI."
 
 [[surface]]
 id = "domino.runtime.public_headers.v1"
 kind = "c_header"
-path = "runtime/include"
+path = "runtime/include/domino"
 owner = "runtime"
 stability = "provisional"
 language = "c17"
@@ -55,12 +55,12 @@ introduced = "PUBLIC-SURFACE-REGISTRY-01"
 proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_registry_update"
-notes = "Runtime headers are visible but not frozen ABI; API-ABI-CANON-01 keeps them provisional pending compatibility proof."
+notes = "Domino runtime public header home; runtime headers are visible but not frozen ABI pending compatibility proof."
 
 [[surface]]
 id = "dominium.game.public_headers.v1"
 kind = "c_header"
-path = "game/include"
+path = "game/include/dominium"
 owner = "game"
 stability = "provisional"
 language = "c17/cpp17"
@@ -69,7 +69,7 @@ introduced = "PUBLIC-SURFACE-REGISTRY-01"
 proof = ["python scripts/verify_includes_sanity.py --repo-root .", "python scripts/verify_abi_boundaries.py --repo-root .", "python tools/validators/abi/check_public_headers.py --repo-root . --strict"]
 compatibility = "not_yet_stable"
 replacement_policy = "requires_registry_update"
-notes = "Game headers expose Dominium domain surfaces but are not stable external API; API-ABI-CANON-01 records current warning debt."
+notes = "Dominium game public header home; game headers expose domain surfaces but are not stable external API."
 
 [[surface]]
 id = "dominium.launcher.headers.v1"
