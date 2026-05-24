@@ -6,7 +6,7 @@ import sys
 
 
 def run_inspect(repo_root, input_path):
-    script = os.path.join(repo_root, "tools", "fab", "fab_inspect.py")
+    script = os.path.join(repo_root, "tools", "domain", "fabrication", "fab_inspect.py")
     cmd = [sys.executable, script, "--input", input_path, "--repo-root", repo_root, "--format", "json"]
     output = subprocess.check_output(cmd, cwd=repo_root)
     return json.loads(output.decode("utf-8"))

@@ -6,7 +6,7 @@ import sys
 
 
 def run_coverage(repo_root, pack_ids):
-    script = os.path.join(repo_root, "tools", "coverage", "coverage_inspect.py")
+    script = os.path.join(repo_root, "tools", "audit", "coverage", "coverage_inspect.py")
     cmd = [sys.executable, script, "--repo-root", repo_root, "--format", "json"]
     for pack_id in pack_ids:
         cmd.extend(["--pack-id", pack_id])

@@ -18,7 +18,7 @@ def _run(cmd, cwd):
 
 
 def _securex(repo_root, args):
-    cmd = [sys.executable, os.path.join(repo_root, "tools", "securex", "securex.py")]
+    cmd = [sys.executable, os.path.join(repo_root, "tools", "xstack", "securex", "securex.py")]
     cmd.extend(args)
     cmd.extend(["--repo-root", repo_root])
     return _run(cmd, repo_root)

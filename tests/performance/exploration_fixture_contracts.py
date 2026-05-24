@@ -49,7 +49,7 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    fixture_root = os.path.join(repo_root, "tests", "perf", "exploration_fixtures")
+    fixture_root = os.path.join(repo_root, "tests", "performance", "exploration_fixtures")
     config_path = os.path.join(fixture_root, "fixtures.json")
 
     ok = True

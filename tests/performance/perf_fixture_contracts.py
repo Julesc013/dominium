@@ -76,7 +76,7 @@ def main():
 
     repo_root = pathlib.Path(args.repo_root)
     fixture_root = repo_root / "tests" / "fixtures" / "perf"
-    guard_path = repo_root / "tests" / "perf" / "perf_guards.json"
+    guard_path = repo_root / "tests" / "performance" / "perf_guards.json"
 
     if not fixture_root.is_dir():
         print("FAIL: missing perf fixtures root {}".format(fixture_root))

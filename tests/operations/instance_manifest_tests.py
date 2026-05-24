@@ -13,7 +13,7 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.package.libraries.instance import deterministic_fingerprint, validate_instance_manifest
 
 
-OPS_CLI = os.path.join("tools", "ops", "ops_cli.py")
+OPS_CLI = os.path.join("tools", "package", "ops", "ops_cli.py")
 
 
 def run_ops(args, env=None):

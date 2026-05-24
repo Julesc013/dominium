@@ -5,7 +5,7 @@ import re
 import sys
 
 
-PLAN_REL = os.path.join("docs", "omega", "OMEGA_PLAN.md")
+PLAN_REL = os.path.join("docs", "archive", "omega", "OMEGA_PLAN.md")
 GATES_REL = os.path.join("docs", "omega", "OMEGA_GATES.md")
 REGISTRY_REL = os.path.join("contracts", "registry", "omega_artifact_registry.json")
 

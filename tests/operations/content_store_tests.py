@@ -23,9 +23,9 @@ from tools.package.libraries.install import (
 )
 
 
-OPS_CLI = os.path.join(REPO_ROOT, "tools", "ops", "ops_cli.py")
-SHARE_CLI = os.path.join(REPO_ROOT, "tools", "share", "share_cli.py")
-LAUNCHER_CLI = os.path.join(REPO_ROOT, "tools", "launcher", "launcher_cli.py")
+OPS_CLI = os.path.join(REPO_ROOT, "tools", "package", "ops", "ops_cli.py")
+SHARE_CLI = os.path.join(REPO_ROOT, "tools", "export", "share", "share_cli.py")
+LAUNCHER_CLI = os.path.join(REPO_ROOT, "tools", "package", "launcher", "launcher_cli.py")
 
 
 def run_json(script: str, args: list, env: dict | None = None):

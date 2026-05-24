@@ -6,7 +6,7 @@ import sys
 
 
 def run_diff(repo_root, left_path, right_path):
-    script = os.path.join(repo_root, "tools", "fab", "fab_diff.py")
+    script = os.path.join(repo_root, "tools", "domain", "fabrication", "fab_diff.py")
     cmd = [sys.executable, script, "--left", left_path, "--right", right_path, "--format", "json"]
     output = subprocess.check_output(cmd, cwd=repo_root)
     return json.loads(output.decode("utf-8"))

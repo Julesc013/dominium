@@ -31,7 +31,7 @@ FAB_KEYS = [
 
 
 def run_validate(repo_root, input_path):
-    script = os.path.join(repo_root, "tools", "fab", "fab_validate.py")
+    script = os.path.join(repo_root, "tools", "domain", "fabrication", "fab_validate.py")
     cmd = [sys.executable, script, "--input", input_path, "--repo-root", repo_root, "--format", "json"]
     result = subprocess.run(cmd, cwd=repo_root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
     return json.loads(result.stdout.decode("utf-8"))

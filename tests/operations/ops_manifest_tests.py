@@ -7,7 +7,7 @@ import sys
 import tempfile
 
 
-OPS_CLI = os.path.join("tools", "ops", "ops_cli.py")
+OPS_CLI = os.path.join("tools", "package", "ops", "ops_cli.py")
 REQUIRED_COMPAT_FIELDS = [
     "context",
     "install_id",

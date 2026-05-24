@@ -17,7 +17,7 @@ def main() -> int:
     args = parser.parse_args()
     repo_root = os.path.abspath(args.repo_root)
 
-    header_path = os.path.join(repo_root, "engine", "include", "domino", "world", "srz_fields.h")
+    header_path = os.path.join(repo_root, "game", "include", "domino", "world", "srz_fields.h")
     if not os.path.isfile(header_path):
         sys.stderr.write("FAIL: missing srz_fields.h\n")
         return 1

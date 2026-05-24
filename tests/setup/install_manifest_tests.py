@@ -43,7 +43,7 @@ def _make_artifact_root(tmp: str) -> str:
 
 
 def _run_setup(repo_root: str, args: list[str], allow_fail: bool = False):
-    script = os.path.join(repo_root, "tools", "setup", "setup_cli.py")
+    script = os.path.join(repo_root, "tools", "package", "setup", "setup_cli.py")
     cmd = [sys.executable, script] + args
     proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if not allow_fail and proc.returncode != 0:

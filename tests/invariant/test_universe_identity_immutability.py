@@ -5,7 +5,7 @@ import sys
 from invariant_utils import is_override_active
 
 
-IDENTITY_REL = os.path.join("contracts", "schemas", "universe", "universe_identity.schema")
+IDENTITY_REL = os.path.join("contracts", "schema", "universe", "universe_identity.schema")
 STATE_REL = os.path.join("contracts", "schemas", "universe", "universe_state.schema")
 
 

@@ -8,8 +8,8 @@ import sys
 import tempfile
 
 
-BUGREPORT_CLI = os.path.join("tools", "bugreport", "bugreport_cli.py")
-SHARE_CLI = os.path.join("tools", "share", "share_cli.py")
+BUGREPORT_CLI = os.path.join("tools", "diagnostics", "bugreport", "bugreport_cli.py")
+SHARE_CLI = os.path.join("tools", "export", "share", "share_cli.py")
 
 
 def run_cli(cli, args, env=None):

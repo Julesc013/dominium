@@ -6,7 +6,7 @@ import sys
 
 
 def run_inspect(repo_root, pack_ids):
-    script = os.path.join(repo_root, "tools", "pack", "capability_inspect.py")
+    script = os.path.join(repo_root, "tools", "package", "pack", "capability_inspect.py")
     cmd = [sys.executable, script, "--repo-root", repo_root, "--format", "json"]
     for pack_id in pack_ids:
         cmd.extend(["--pack-id", pack_id])

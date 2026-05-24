@@ -142,7 +142,7 @@ def _build_contract_bundle_payload(install_manifest: dict, bundle_id: str) -> tu
 
 
 def _run_launcher(repo_root: str, args: list, allow_fail: bool = False):
-    script = os.path.join(repo_root, "tools", "launcher", "launcher_cli.py")
+    script = os.path.join(repo_root, "tools", "package", "launcher", "launcher_cli.py")
     cmd = [sys.executable, script] + args
     proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if not allow_fail and proc.returncode != 0:
@@ -159,7 +159,7 @@ def _run_launcher(repo_root: str, args: list, allow_fail: bool = False):
 
 
 def _run_share(repo_root: str, args: list, allow_fail: bool = False):
-    script = os.path.join(repo_root, "tools", "share", "share_cli.py")
+    script = os.path.join(repo_root, "tools", "export", "share", "share_cli.py")
     cmd = [sys.executable, script] + args
     proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if not allow_fail and proc.returncode != 0:

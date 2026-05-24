@@ -8,8 +8,8 @@ import sys
 import tempfile
 
 
-SHARE_CLI = os.path.join("tools", "share", "share_cli.py")
-OPS_CLI = os.path.join("tools", "ops", "ops_cli.py")
+SHARE_CLI = os.path.join("tools", "export", "share", "share_cli.py")
+OPS_CLI = os.path.join("tools", "package", "ops", "ops_cli.py")
 
 
 def run_share(args, env=None):

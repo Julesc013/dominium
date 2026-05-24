@@ -7,7 +7,7 @@ import sys
 import tempfile
 
 
-INGEST_CLI = os.path.join("tools", "bugreport", "ingest.py")
+INGEST_CLI = os.path.join("tools", "diagnostics", "bugreport", "ingest.py")
 
 
 def run_cli(args):
