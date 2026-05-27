@@ -21,7 +21,17 @@ from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 REVIEW_DATE = "2026-05-28"
 CORPUS_ROOT = Path("docs/archive/conversations")
-MANAGED_DIRS = {"_intake", "_reader", "_wiki", "_audit", "_promotion", "_synthesis", "_reconciliation", "__unsorted"}
+MANAGED_DIRS = {
+    "_intake",
+    "_reader",
+    "_wiki",
+    "_audit",
+    "_promotion",
+    "_synthesis",
+    "_reconciliation",
+    "_decision",
+    "__unsorted",
+}
 HEADER_BINDING = (
     "`docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, "
     "`AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, "
@@ -29,7 +39,16 @@ HEADER_BINDING = (
 )
 
 GENERATED_MARKDOWN_ROOT_FILES = {"README.md", "INDEX.md"}
-GENERATED_MARKDOWN_DIRS = {"_intake", "_reader", "_wiki", "_audit", "_promotion", "_synthesis", "_reconciliation"}
+GENERATED_MARKDOWN_DIRS = {
+    "_intake",
+    "_reader",
+    "_wiki",
+    "_audit",
+    "_promotion",
+    "_synthesis",
+    "_reconciliation",
+    "_decision",
+}
 
 SYNTHESIS_TOPIC_EXPLANATIONS = {
     "architecture": "system boundaries, product shape, engine/game/client/server separation, and repository structure",
@@ -2273,6 +2292,257 @@ def render_needs_user_decision(metrics: dict) -> str:
     return "\n".join(lines)
 
 
+DECISION_GROUPS = {
+    "architecture/boundaries": ["architecture", "boundary", "engine", "game", "client", "server", "truth", "authoritative"],
+    "Workbench/AIDE/Codex/tooling": ["workbench", "aide", "codex", "xstack", "tool", "testx", "repox", "auditx"],
+    "renderer/UI/platform": ["renderer", "ui", "gui", "platform", "native", "window", "presentation", "client"],
+    "provider/content/packs": ["provider", "content", "pack", "mod", "package", "binary", "asset"],
+    "world/time/civilization simulation": ["world", "universe", "time", "chronology", "civilization", "economy", "simulation", "gameplay"],
+    "release/setup/launcher": ["release", "setup", "launcher", "install", "version", "publication", "distribution"],
+    "documentation/canon/spec structure": ["canon", "schema", "contract", "doc", "spec", "readme", "glossary", "authority"],
+}
+
+
+def decision_group_for_text(text: str) -> str:
+    lower = text.lower()
+    for group, words in DECISION_GROUPS.items():
+        if any(word in lower for word in words):
+            return group
+    return "architecture/boundaries"
+
+
+def decision_default_for_candidate(candidate: dict) -> str:
+    if candidate["classification"] == "blocked_by_current_queue":
+        return "defer_until_queue_opens"
+    if candidate["classification"] == "needs_user_decision":
+        return "defer_pending_user_decision"
+    return "docs_only_review"
+
+
+def decision_snippet(value: str, limit: int = 180) -> str:
+    value = re.sub(r"\s+", " ", value).strip()
+    if len(value) <= limit:
+        return value
+    return value[: max(0, limit - 3)].rstrip(" ,.;:?!") + "..."
+
+
+def decision_question_for_candidate(candidate: dict) -> str:
+    claim = candidate["claim"].strip()
+    if candidate["classification"] == "blocked_by_current_queue":
+        scopes = ", ".join(candidate["blocked_scopes"]) if candidate["blocked_scopes"] else "current blocked scope"
+        return f"Should this conversation-derived claim remain archive-only until `{scopes}` is explicitly opened?"
+    if "whether" in claim.lower():
+        return f"What disposition should be chosen for this unresolved claim: {decision_snippet(claim)}?"
+    return f"Should this conversation-derived claim become a future review item, remain historical, or be deferred: {decision_snippet(claim)}?"
+
+
+def build_decision_items(metrics: dict) -> List[dict]:
+    items: List[dict] = []
+    idx = 1
+    for candidate in metrics["decision_candidates_from_queue"]:
+        group = decision_group_for_text(" ".join([candidate["claim"], candidate["source_conversation"], " ".join(candidate["blocked_scopes"])]))
+        default = decision_default_for_candidate(candidate)
+        owner = "future_queue_decision" if candidate["classification"] == "blocked_by_current_queue" else "user_decision"
+        items.append(
+            {
+                "id": f"DECISION-{idx:04d}",
+                "group": group,
+                "source_ids": [candidate["id"]],
+                "source_conversations": [candidate["source_conversation"]],
+                "question": decision_question_for_candidate(candidate),
+                "why": candidate["reason"],
+                "authority_status": "conversation-derived advisory claim; current repo authority not modified",
+                "queue_status": ", ".join(candidate["blocked_scopes"]) if candidate["blocked_scopes"] else "not directly blocked by queue keyword match",
+                "options": [
+                    "promote_later_after_authority_review",
+                    "preserve_as_history",
+                    "defer",
+                ],
+                "recommended_default": default,
+                "consequences": [
+                    "promote_later_after_authority_review: creates a future docs-only or planning review task; still does not authorize implementation.",
+                    "preserve_as_history: keeps the archive readable but removes pressure to patch current docs.",
+                    "defer: leaves the claim unresolved until stronger authority or user decision exists.",
+                ],
+                "risk": "Semantic drift or blocked-scope leakage if treated as current truth too early.",
+                "evidence": "Check canon, glossary, AGENTS.md, current queue, target current docs, and source conversation before any promotion.",
+                "owner": owner,
+            }
+        )
+        idx += 1
+    for scope, state in sorted(metrics["blocked_constraints"].items()):
+        group = decision_group_for_text(scope)
+        signal_count = metrics["blocked_counts"].get(scope, 0)
+        items.append(
+            {
+                "id": f"DECISION-{idx:04d}",
+                "group": group,
+                "source_ids": [f"blocked_scope:{scope}"],
+                "source_conversations": ["current queue plus conversation audit findings"],
+                "question": f"Should `{scope}` remain blocked for all conversation-derived work until a future reviewed queue phase opens it?",
+                "why": f"The current queue marks `{scope}` as `{state}` and the corpus produced `{signal_count}` related candidate/finding signals.",
+                "authority_status": ".aide/queue/current.toml is current repo authority for this scope gate.",
+                "queue_status": f"{scope}: {state}",
+                "options": [
+                    "keep_blocked",
+                    "docs_only_crosswalk",
+                    "defer",
+                ],
+                "recommended_default": "keep_blocked",
+                "consequences": [
+                    "keep_blocked: prevents old conversation claims from opening implementation scope.",
+                    "docs_only_crosswalk: allows explanatory archive/current-doc mapping without implementation or promotion.",
+                    "defer: postpones judgment until the queue is revised.",
+                ],
+                "risk": "Implementation or live-doc scope could be opened by historical momentum rather than current authority.",
+                "evidence": "Review current queue, blocked-scope alignment, and any target prompt before changing disposition.",
+                "owner": "future_queue_decision",
+            }
+        )
+        idx += 1
+    return items
+
+
+def decision_metrics(repo_root: Path) -> dict:
+    metrics = reconciliation_metrics(repo_root)
+    items = build_decision_items(metrics)
+    group_counts: Dict[str, int] = {}
+    owner_counts: Dict[str, int] = {}
+    default_counts: Dict[str, int] = {}
+    for item in items:
+        group_counts[item["group"]] = group_counts.get(item["group"], 0) + 1
+        owner_counts[item["owner"]] = owner_counts.get(item["owner"], 0) + 1
+        default_counts[item["recommended_default"]] = default_counts.get(item["recommended_default"], 0) + 1
+    return {
+        **metrics,
+        "decision_items": items,
+        "decision_group_counts": dict(sorted(group_counts.items())),
+        "decision_owner_counts": dict(sorted(owner_counts.items())),
+        "decision_default_counts": dict(sorted(default_counts.items())),
+    }
+
+
+def write_decision_docket(repo_root: Path) -> List[str]:
+    metrics = decision_metrics(repo_root)
+    root = repo_root / CORPUS_ROOT / "_decision"
+    changed: List[str] = []
+    changed += changed_path(root / "DECISION_DOCKET_v0.md", render_decision_docket(metrics), repo_root)
+    changed += changed_path(root / "DECISION_SUMMARY_v0.md", render_decision_summary(metrics), repo_root)
+    changed += changed_path(root / "DECISION_OPTIONS_MATRIX_v0.md", render_decision_options_matrix(metrics), repo_root)
+    changed += changed_path(root / "DEFERRED_DECISIONS_v0.md", render_deferred_decisions(metrics), repo_root)
+    return changed
+
+
+def render_decision_docket(metrics: dict) -> str:
+    lines = [synthesis_header("decision_docket_generated"), "# Decision Docket v0", ""]
+    lines.append("This docket turns unresolved conversation-derived claims into review questions. It does not decide or promote them.")
+    lines.append("")
+    lines.append(f"Decision items: `{len(metrics['decision_items'])}`")
+    lines.append("")
+    for group in DECISION_GROUPS:
+        group_items = [item for item in metrics["decision_items"] if item["group"] == group]
+        if not group_items:
+            continue
+        lines.append(f"## {group}")
+        lines.append("")
+        for item in group_items:
+            lines.append(f"### `{item['id']}`")
+            lines.append("")
+            lines.append(f"- Source promotion/claim IDs: {', '.join(f'`{x}`' for x in item['source_ids'])}")
+            lines.append(f"- Source conversations: {', '.join(f'`{x}`' for x in item['source_conversations'])}")
+            lines.append(f"- Question: {item['question']}")
+            lines.append(f"- Why it matters: {item['why']}")
+            lines.append(f"- Current repo authority status: {item['authority_status']}")
+            lines.append(f"- Queue status: `{item['queue_status']}`")
+            lines.append(f"- Recommended default: `{item['recommended_default']}`")
+            lines.append(f"- Decision owner: `{item['owner']}`")
+            lines.append(f"- Risk if unresolved: {item['risk']}")
+            lines.append(f"- Evidence needed: {item['evidence']}")
+            lines.append("- Options:")
+            for option in item["options"]:
+                lines.append(f"  - `{option}`")
+            lines.append("- Consequences:")
+            for consequence in item["consequences"]:
+                lines.append(f"  - {consequence}")
+            lines.append("")
+    return "\n".join(lines)
+
+
+def render_decision_summary(metrics: dict) -> str:
+    lines = [synthesis_header("decision_summary_generated"), "# Decision Summary v0", ""]
+    lines.append("Summary of the generated decision docket. No decision is accepted here.")
+    lines.append("")
+    lines.append("## Counts")
+    lines.append("")
+    lines.append(f"- Total decisions: `{len(metrics['decision_items'])}`")
+    for group, count in metrics["decision_group_counts"].items():
+        lines.append(f"- `{group}`: `{count}`")
+    lines.append("")
+    lines.append("## Owner Counts")
+    lines.append("")
+    for owner, count in metrics["decision_owner_counts"].items():
+        lines.append(f"- `{owner}`: `{count}`")
+    lines.append("")
+    lines.append("## Recommended Defaults")
+    lines.append("")
+    for default, count in metrics["decision_default_counts"].items():
+        lines.append(f"- `{default}`: `{count}`")
+    lines.append("")
+    lines.append("## Top 10 Decisions")
+    lines.append("")
+    for item in metrics["decision_items"][:10]:
+        lines.append(f"- `{item['id']}` `{item['group']}`: {item['question']}")
+    lines.append("")
+    lines.append("## Safe Near-Term Docs-Only Clarifications")
+    lines.append("")
+    docs_only = [item for item in metrics["decision_items"] if item["recommended_default"] == "docs_only_review"]
+    if docs_only:
+        for item in docs_only[:10]:
+            lines.append(f"- `{item['id']}`: {item['question']}")
+    else:
+        lines.append("- None in this docket. Current generated decisions are user decisions, queue decisions, or deferrals.")
+    lines.append("- Items touching blocked queue scope must remain explanatory or deferred; no implementation scope is opened.")
+    lines.append("")
+    lines.append("## Recommended Deferrals")
+    lines.append("")
+    for item in [i for i in metrics["decision_items"] if "defer" in i["recommended_default"]][:12]:
+        lines.append(f"- `{item['id']}`: {item['question']}")
+    return "\n".join(lines) + "\n"
+
+
+def render_decision_options_matrix(metrics: dict) -> str:
+    lines = [synthesis_header("decision_options_matrix_generated"), "# Decision Options Matrix v0", ""]
+    lines.append("Matrix view of available decision options. Tables support review but do not replace the docket explanations.")
+    lines.append("")
+    lines.append("| ID | Group | Owner | Queue Status | Recommended Default | Options |")
+    lines.append("| --- | --- | --- | --- | --- | --- |")
+    for item in metrics["decision_items"]:
+        options = ", ".join(f"`{option}`" for option in item["options"])
+        lines.append(
+            f"| `{item['id']}` | {item['group']} | `{item['owner']}` | `{item['queue_status']}` | `{item['recommended_default']}` | {options} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def render_deferred_decisions(metrics: dict) -> str:
+    lines = [synthesis_header("deferred_decisions_generated"), "# Deferred Decisions v0", ""]
+    lines.append("These decisions should stay deferred unless a human or stronger repo authority opens them.")
+    lines.append("")
+    deferred = [item for item in metrics["decision_items"] if "defer" in item["recommended_default"] or item["owner"] == "future_queue_decision"]
+    for item in deferred:
+        lines.append(f"## `{item['id']}`")
+        lines.append("")
+        lines.append(f"- Group: `{item['group']}`")
+        lines.append(f"- Question: {item['question']}")
+        lines.append(f"- Recommended default: `{item['recommended_default']}`")
+        lines.append(f"- Queue status: `{item['queue_status']}`")
+        lines.append(f"- Evidence that would resolve it: {item['evidence']}")
+        lines.append("")
+    if not deferred:
+        lines.append("No deferred decisions were generated.")
+    return "\n".join(lines)
+
+
 def validate_outputs(repo_root: Path) -> List[str]:
     errors: List[str] = []
     root = repo_root / CORPUS_ROOT
@@ -2325,6 +2595,14 @@ def validate_outputs(repo_root: Path) -> List[str]:
     ]
     if any(doc.exists() for doc in reconciliation_docs):
         required_docs.extend(reconciliation_docs)
+    decision_docs = [
+        root / "_decision" / "DECISION_DOCKET_v0.md",
+        root / "_decision" / "DECISION_SUMMARY_v0.md",
+        root / "_decision" / "DECISION_OPTIONS_MATRIX_v0.md",
+        root / "_decision" / "DEFERRED_DECISIONS_v0.md",
+    ]
+    if any(doc.exists() for doc in decision_docs):
+        required_docs.extend(decision_docs)
     if not (root / "_intake" / "SHA256SUMS.txt").exists():
         errors.append("missing generated doc: docs/archive/conversations/_intake/SHA256SUMS.txt")
     for doc in required_docs:
@@ -2367,6 +2645,8 @@ def write_all(repo_root: Path, phases: Sequence[str]) -> List[str]:
         changed.extend(write_synthesis(repo_root))
     if "reconciliation" in phases:
         changed.extend(write_reconciliation_and_triage(repo_root))
+    if "decision" in phases:
+        changed.extend(write_decision_docket(repo_root))
     return sorted(set(changed), key=sort_key)
 
 
@@ -2383,6 +2663,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "acceptance",
             "synthesis",
             "reconciliation",
+            "decision",
             "all",
             "validate",
         ],
@@ -2417,6 +2698,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.command == "reconciliation":
         changed = write_all(repo_root, ["reconciliation"])
         print(json.dumps({"changed": changed, "phase": "reconciliation"}, indent=2, sort_keys=True))
+        return 0
+    if args.command == "decision":
+        changed = write_all(repo_root, ["decision"])
+        print(json.dumps({"changed": changed, "phase": "decision"}, indent=2, sort_keys=True))
         return 0
     if args.command == "all":
         changed = write_all(repo_root, ["phase1", "phase2", "phase3", "phase4"])
