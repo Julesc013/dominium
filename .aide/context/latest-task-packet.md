@@ -2,142 +2,120 @@
 
 ## PHASE
 
-PRESENTATION-CONTRACT-01 closeout; next task is `PROJECTION-CONFORMANCE-01`.
+UNSPECIFIED - CONVERSATION-CORPUS-INTAKE-01 full archival intake pipeline
 
 ## GOAL
 
-Define the minimum presentation contract law needed for read-only inspection,
-projection conformance, future read-only Workbench shell work, and future
-Universe Explorer contract work.
+CONVERSATION-CORPUS-INTAKE-01 full archival intake pipeline
 
 ## WHY
 
-The repo has moved out of broad structure cleanup. The next governed product
-spine must preserve:
-
-```text
-truth -> perceived/observed -> rendered/presented
-```
-
-Presentation must show command results, diagnostics, refusals, evidence,
-provenance, degradation, and projection state without becoming authority.
+Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
 
 ## CONTEXT_REFS
 
-- `AGENTS.md`
-- `.aide/queue/current.toml`
-- `.aide/context/latest-review-packet.md`
-- `.aide/reports/latest-dominium-status.md`
-- `.aide/reports/latest-warning-disposition.md`
-- `docs/repo/FOUNDATION_LOCK.md`
-- `contracts/command/command_surface.contract.toml`
-- `contracts/action/action_surface.contract.toml`
-- `contracts/result/result.schema.json`
-- `contracts/refusal/refusal_code.registry.json`
-- `contracts/diagnostic/diagnostic_code.registry.json`
-- `contracts/evidence/evidence_packet.schema.json`
-- `contracts/view/view_surface.contract.toml`
-- `contracts/presentation/presentation_surface.contract.toml`
-- `contracts/presentation/presentation_view_model.schema.json`
-- `contracts/presentation/read_only_inspection.view_model.json`
-- `tools/validators/contracts/check_presentation_contract.py`
-- `docs/repo/audits/PRESENTATION_CONTRACT_01.md`
+- `.aide/memory/project-state.md`
+- `.aide/memory/decisions.md`
+- `.aide/memory/open-risks.md`
+- `.aide/context/repo-snapshot.json` (present)
+- `.aide/context/repo-map.json` (present)
+- `.aide/context/repo-map.md` (present)
+- `.aide/context/test-map.json` (present)
+- `.aide/context/context-index.json` (present)
+- `.aide/context/latest-context-packet.md` (present)
+- `.aide/repo/latest-repo-intelligence.md` (present)
+- `.aide/repo/file-inventory.json` (present)
+- `.aide/reports/file-quality-summary.md` (present)
+- `.aide/reports/file-quality-ledger.json` (present)
+- `.aide/refactors/latest-refactor-readiness.md` (present)
+- `.aide/refactors/latest-refactor-plan.example.json` (present)
+- `.aide/routing/latest-route-decision.json` (present)
+- `.aide/routing/latest-route-decision.md` (present)
+- `.aide/cache/latest-cache-keys.json` (present)
+- `.aide/cache/latest-cache-keys.md` (present)
+- `.aide/prompts/compact-task.md`
+- `.aide/policies/token-budget.yaml`
+- `.aide/policies/cache.yaml`
+- `.aide/policies/local-state.yaml`
 
 ## ALLOWED_PATHS
 
-- `contracts/presentation/`
-- `contracts/public_surface/public_surface.contract.toml`
-- `contracts/testing/test_tiers.contract.toml`
-- `tests/contract/presentation/`
-- `tools/validators/contracts/check_presentation_contract.py`
-- `docs/repo/audits/PRESENTATION_CONTRACT_01.md`
-- `.aide/queue/current.toml`
-- `.aide/context/latest-task-packet.md`
-- `.aide/context/latest-review-packet.md`
-- `.aide/reports/latest-dominium-status.md`
-- `.aide/reports/latest-warning-disposition.md`
+- `<fill from the next reviewed queue packet>`
+- `.aide/context/**`
+- `.aide/queue/unspecified-*` if this task becomes a queue item
+- root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
 
-- broad Workbench UI implementation
-- renderer implementation
-- native GUI implementation
-- gameplay/domain feature implementation
-- provider runtime
-- package runtime
-- runtime module loader
-- materialization engine
-- release publication
-- broad structure rewrites
+- `.git/**`
+- `.env`
+- `secrets/**`
+- `.aide.local/**`
+- raw provider credentials, API keys, local caches, raw prompt logs
+- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
 
 ## IMPLEMENTATION
 
-- Add `contracts/presentation/presentation_surface.contract.toml`.
-- Add `contracts/presentation/presentation_view_model.schema.json`.
-- Add `contracts/presentation/read_only_inspection.view_model.json`.
-- Add `tools/validators/contracts/check_presentation_contract.py`.
-- Add valid/invalid read-only presentation fixtures.
-- Register presentation public surfaces.
-- Add the presentation validator to fast strict as `t1.presentation_contract`.
-- Preserve all existing command/result/view/projection contracts.
+- Read the queue packet and relevant repo refs first.
+- Keep changes inside the allowed paths.
+- Make the smallest coherent diff that satisfies acceptance.
+- Preserve generated/manual boundaries.
+- Do not inline whole source files unless exact contents are required.
+- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
 
 ## VALIDATION
 
-- `python tools/validators/contracts/check_presentation_contract.py --repo-root . --strict`
-- `python tools/validators/contracts/check_presentation_contract.py --repo-root . --fixtures`
-- `python tests/contract/presentation/presentation_contract_tests.py`
-- `python tools/validators/contracts/check_command_result_view.py --repo-root . --strict`
-- `python tools/validators/contracts/check_command_result_view.py --repo-root . --fixtures`
-- `python tools/validators/repo/check_public_surface.py --repo-root . --strict`
-- `python tools/validators/testing/check_test_tiers.py --repo-root . --strict`
-- `python tools/test/run_fast_strict.py --repo-root .`
+- `py -3 .aide/scripts/aide_lite.py doctor`
+- `py -3 .aide/scripts/aide_lite.py validate`
+- `py -3 .aide/scripts/aide_lite.py index`
+- `py -3 .aide/scripts/aide_lite.py context`
+- `py -3 .aide/scripts/aide_lite.py repo inventory`
+- `py -3 .aide/scripts/aide_lite.py repo validate`
+- `py -3 .aide/scripts/aide_lite.py verify`
+- `py -3 .aide/scripts/aide_lite.py review-pack`
+- `py -3 .aide/scripts/aide_lite.py route explain`
+- `py -3 .aide/scripts/aide_lite.py test`
+- `py -3 .aide/scripts/aide_lite.py selftest`
+- `py -3 scripts/aide validate`
 - `git diff --check`
+
+## COMMITS
+
+- Commit coherent subdeliverables with verbose bodies.
+- Stop at review gates.
 
 ## EVIDENCE
 
 - changed files
-- targeted validator output
-- fast strict output
-- audit report
-- commit hash
+- validation commands and results
+- verifier result
+- review packet path and result when review-pack is available
+- advisory route decision path and result when Q17 routing is available
+- compact packet size and budget status
+- unresolved risks and deferrals
 
 ## NON_GOALS
 
-- No Workbench shell implementation.
-- No renderer/native GUI implementation.
-- No gameplay.
-- No embodiment.
-- No provider runtime.
-- No package runtime.
-- No runtime module loader.
-- No materialization engine.
-- No release publication.
+- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
 
 ## ACCEPTANCE
 
-- Presentation contract law exists.
-- Presentation view-model schema exists.
-- Read-only inspection view model exists and validates.
-- Valid presentation fixture passes.
-- Invalid presentation fixtures fail.
-- Public surfaces are registered.
-- Fast strict includes the presentation contract validator.
-- Broad feature blockers remain visible.
-
-## NEXT
-
-`PROJECTION-CONFORMANCE-01`
+- Task-specific acceptance criteria are met.
+- Validation is run and recorded.
+- Evidence is written.
+- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`,
-`CHANGED_FILES`, `VALIDATION`, `WARNINGS`, `RISKS`, and `NEXT`.
+Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
+Include the verifier result when Q12 verifier behavior is available.
 
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4200
-- approx_tokens: 1050
+- chars: 4180
+- approx_tokens: 1045
 - budget_status: PASS
 - warnings:
   - none
+- formal ledger: `.aide/reports/token-ledger.jsonl`
