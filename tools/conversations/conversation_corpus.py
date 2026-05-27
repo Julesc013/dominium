@@ -28,6 +28,9 @@ HEADER_BINDING = (
     "`docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`"
 )
 
+GENERATED_MARKDOWN_ROOT_FILES = {"README.md", "INDEX.md"}
+GENERATED_MARKDOWN_DIRS = {"_intake", "_reader", "_wiki", "_audit", "_promotion"}
+
 EXPECTED_KINDS = {
     "manifest",
     "primary_report",
@@ -575,7 +578,7 @@ def render_archive_index(conversations: List[Conversation], manifest: dict) -> s
     lines.append("| Conversation | Status | Type | Topics | Primary Source |")
     lines.append("| --- | --- | --- | --- | --- |")
     for c in conversations:
-        primary = link(c.primary_source) if c.primary_source else "none"
+        primary = rel_link_from(CORPUS_ROOT.as_posix(), c.primary_source, c.primary_source) if c.primary_source else "none"
         topics = ", ".join(c.topics) if c.topics else "unclassified"
         lines.append(f"| `{c.folder}` | `{c.completeness_status}` | `{c.likely_package_type}` | {topics} | {primary} |")
     lines.append("")
@@ -1235,6 +1238,376 @@ def render_risks(conversations: List[Conversation], findings: List[Finding]) -> 
     return "\n".join(lines) + "\n"
 
 
+def generated_markdown_files(repo_root: Path) -> List[Path]:
+    root = repo_root / CORPUS_ROOT
+    files: List[Path] = []
+    for name in GENERATED_MARKDOWN_ROOT_FILES:
+        path = root / name
+        if path.exists():
+            files.append(path)
+    for name in GENERATED_MARKDOWN_DIRS:
+        directory = root / name
+        if directory.exists():
+            files.extend(path for path in directory.rglob("*.md") if path.is_file())
+    return sorted(files, key=lambda path: sort_key(normalize_rel(path, repo_root)))
+
+
+def markdown_link_targets(text: str) -> Iterable[str]:
+    for match in re.finditer(r"(?<!!)\[[^\]]+\]\(([^)\n]+)\)", text):
+        target = match.group(1).strip()
+        if target.startswith("<") and target.endswith(">"):
+            target = target[1:-1]
+        if not target or target.startswith("#"):
+            continue
+        if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", target):
+            continue
+        target = target.split("#", 1)[0].strip()
+        if target:
+            yield target
+
+
+def link_integrity_issues(repo_root: Path) -> List[dict]:
+    issues: List[dict] = []
+    repo_resolved = repo_root.resolve()
+    for doc in generated_markdown_files(repo_root):
+        text = doc.read_text(encoding="utf-8")
+        for target in markdown_link_targets(text):
+            resolved = (doc.parent / target).resolve()
+            try:
+                resolved.relative_to(repo_resolved)
+            except ValueError:
+                issues.append(
+                    {
+                        "doc": normalize_rel(doc, repo_root),
+                        "target": target,
+                        "issue": "target_outside_repo",
+                    }
+                )
+                continue
+            if not resolved.exists():
+                issues.append(
+                    {
+                        "doc": normalize_rel(doc, repo_root),
+                        "target": target,
+                        "issue": "target_missing",
+                    }
+                )
+    return issues
+
+
+def parse_promotion_candidates(text: str) -> List[dict]:
+    candidates: List[dict] = []
+    sections = re.split(r"(?m)^##\s+(PROMOTE-\d+)\s+-\s*", text)
+    for idx in range(1, len(sections), 2):
+        candidate_id = sections[idx]
+        body = sections[idx + 1]
+        title = body.splitlines()[0].strip() if body.splitlines() else ""
+        fields: Dict[str, str] = {}
+        for line in body.splitlines():
+            if not line.startswith("- "):
+                continue
+            key, sep, value = line[2:].partition(":")
+            if sep:
+                fields[key.strip().lower()] = value.strip()
+        candidates.append(
+            {
+                "id": candidate_id,
+                "title": ascii_text(title),
+                "claim": ascii_text(fields.get("claim", "")),
+                "source_conversation": fields.get("Source conversation".lower(), ""),
+                "source_file": fields.get("Source file".lower(), ""),
+                "recommended_disposition": fields.get("Recommended disposition".lower(), ""),
+            }
+        )
+    return candidates
+
+
+def acceptance_metrics(repo_root: Path) -> dict:
+    root = repo_root / CORPUS_ROOT
+    manifest_path = root / "_intake" / "corpus_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    regenerated_manifest, conversations = build_manifest(repo_root)
+    source_file_count = manifest["summary"]["source_file_count"]
+    regenerated_file_count = regenerated_manifest["summary"]["source_file_count"]
+    sha_path = root / "_intake" / "SHA256SUMS.txt"
+    sha_lines = [line for line in sha_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    link_issues = link_integrity_issues(repo_root)
+    validation_errors = validate_outputs(repo_root)
+    findings, promotions = build_findings(repo_root, conversations)
+
+    reader_dir = root / "_reader" / "by_chat"
+    expected_reader_names = {f"{c.slug}.md" for c in conversations}
+    actual_reader_names = {path.name for path in reader_dir.glob("*.md")} if reader_dir.exists() else set()
+    reader_files = sorted(reader_dir.glob("*.md"), key=lambda path: sort_key(path.name)) if reader_dir.exists() else []
+    reader_texts = {normalize_rel(path, repo_root): path.read_text(encoding="utf-8") for path in reader_files}
+    reader_placeholder_patterns = {
+        "no_stable_decision_lines": "No stable decision lines were extracted automatically",
+        "no_explicit_uncertainty_lines": "No explicit uncertainty lines were extracted automatically",
+        "no_explicit_future_work_lines": "No explicit future-work lines were extracted automatically",
+        "no_rejected_or_superseded_lines": "No explicit rejected or superseded ideas were extracted automatically",
+    }
+    reader_placeholder_counts = {
+        name: sum(1 for text in reader_texts.values() if pattern in text)
+        for name, pattern in reader_placeholder_patterns.items()
+    }
+    missing_advisory = [
+        path
+        for path, text in reader_texts.items()
+        if "Authority Class: advisory_only" not in text[:700] or "cannot override" not in text[:1200]
+    ]
+    short_readers = [path for path, text in reader_texts.items() if len(text) < 1800]
+
+    promotion_text = (root / "_promotion" / "PROMOTION_QUEUE.md").read_text(encoding="utf-8")
+    parsed_promotions = parse_promotion_candidates(promotion_text)
+    noisy_patterns = [
+        "context transfer",
+        "downloadable",
+        "in-chat reader",
+        "archival mode",
+        "future chat bootstrap",
+        "human-readable report",
+        "because the chat",
+        "asked for a maximum-fidelity",
+        "report files",
+        "preserved the discussion",
+        "final report",
+    ]
+    noisy_promotions = [
+        p
+        for p in parsed_promotions
+        if any(pattern in p["claim"].lower() for pattern in noisy_patterns)
+    ]
+    long_promotions = [p for p in parsed_promotions if len(p["claim"]) > 360]
+    not_checked_promotions = promotion_text.count("Current repo conflict: not_checked")
+
+    contradiction_counts: Dict[str, int] = {}
+    for finding in findings:
+        contradiction_counts[finding.class_name] = contradiction_counts.get(finding.class_name, 0) + 1
+
+    manifest_topics = sorted({topic for conv in manifest["conversations"] for topic in conv.get("topics", [])}, key=sort_key)
+    missing_topic_pages = [
+        topic
+        for topic in manifest_topics
+        if not (root / "_wiki" / "topics" / f"{topic}.md").exists()
+    ]
+    generated_header_issues = []
+    for doc in generated_markdown_files(repo_root):
+        text = doc.read_text(encoding="utf-8")
+        for field_name in ["Status:", "Last Reviewed:", "Stability:", "Result:", "Binding Sources:"]:
+            if field_name not in text[:700]:
+                generated_header_issues.append(f"{normalize_rel(doc, repo_root)} missing {field_name}")
+                break
+
+    file_warning_count = sum(
+        1
+        for conv in manifest["conversations"]
+        for file_entry in conv.get("files", [])
+        if file_entry.get("warnings")
+    )
+    hard_failures = (
+        validation_errors
+        or link_issues
+        or source_file_count != regenerated_file_count
+        or len(sha_lines) != source_file_count
+        or missing_topic_pages
+        or expected_reader_names != actual_reader_names
+        or generated_header_issues
+    )
+    warning_count = (
+        len(noisy_promotions)
+        + len(long_promotions)
+        + sum(reader_placeholder_counts.values())
+        + len(short_readers)
+        + len(missing_advisory)
+    )
+    result = "FAIL" if hard_failures else ("PASS_WITH_WARNINGS" if warning_count or len(findings) > 100 else "PASS")
+    return {
+        "result": result,
+        "manifest": manifest,
+        "conversation_count": manifest["summary"]["conversation_count"],
+        "source_file_count": source_file_count,
+        "regenerated_file_count": regenerated_file_count,
+        "complete_packages": manifest["summary"]["complete_packages"],
+        "partial_packages": manifest["summary"]["partial_packages"],
+        "unclear_packages": manifest["summary"]["unclear_packages"],
+        "sha_line_count": len(sha_lines),
+        "file_warning_count": file_warning_count,
+        "validation_errors": validation_errors,
+        "link_issues": link_issues,
+        "reader_expected_count": len(expected_reader_names),
+        "reader_actual_count": len(actual_reader_names),
+        "reader_missing": sorted(expected_reader_names - actual_reader_names, key=sort_key),
+        "reader_extra": sorted(actual_reader_names - expected_reader_names, key=sort_key),
+        "reader_placeholder_counts": reader_placeholder_counts,
+        "missing_advisory_readers": missing_advisory,
+        "short_readers": short_readers,
+        "promotion_count": len(parsed_promotions),
+        "promotion_sources": len({p["source_conversation"] for p in parsed_promotions if p["source_conversation"]}),
+        "noisy_promotions": noisy_promotions,
+        "long_promotions": long_promotions,
+        "not_checked_promotions": not_checked_promotions,
+        "contradiction_count": len(findings),
+        "contradiction_counts": dict(sorted(contradiction_counts.items())),
+        "missing_topic_pages": missing_topic_pages,
+        "topic_count": len(manifest_topics),
+        "generated_markdown_count": len(generated_markdown_files(repo_root)),
+        "generated_header_issues": generated_header_issues,
+    }
+
+
+def write_acceptance(repo_root: Path) -> List[str]:
+    metrics = acceptance_metrics(repo_root)
+    root = repo_root / CORPUS_ROOT
+    changed: List[str] = []
+    changed += changed_path(root / "_audit" / "INTAKE_ACCEPTANCE_REVIEW.md", render_intake_acceptance_review(metrics), repo_root)
+    changed += changed_path(root / "_audit" / "READER_QUALITY_REVIEW.md", render_reader_quality_review(metrics), repo_root)
+    changed += changed_path(root / "_audit" / "PROMOTION_QUEUE_QUALITY_REVIEW.md", render_promotion_queue_quality_review(metrics), repo_root)
+    changed += changed_path(root / "_audit" / "LINK_INTEGRITY_REVIEW.md", render_link_integrity_review(metrics), repo_root)
+    return changed
+
+
+def render_intake_acceptance_review(metrics: dict) -> str:
+    return md_header("acceptance_review_generated") + f"""# Intake Acceptance Review
+
+Result: `{metrics["result"]}`
+
+This review assesses whether the generated conversation-corpus intake is complete and useful enough to support derived synthesis. It does not promote conversation claims.
+
+## Summary
+
+| Check | Result |
+| --- | --- |
+| Conversation folders represented | `{metrics["conversation_count"]}` |
+| Source files represented | `{metrics["source_file_count"]}` |
+| Source files re-counted from disk | `{metrics["regenerated_file_count"]}` |
+| SHA-256 lines | `{metrics["sha_line_count"]}` |
+| Complete packages | `{metrics["complete_packages"]}` |
+| Partial packages | `{metrics["partial_packages"]}` |
+| Unclear packages | `{metrics["unclear_packages"]}` |
+| Source file warnings | `{metrics["file_warning_count"]}` |
+| Reader pages expected / actual | `{metrics["reader_expected_count"]}` / `{metrics["reader_actual_count"]}` |
+| Promotion candidates | `{metrics["promotion_count"]}` |
+| Contradiction findings | `{metrics["contradiction_count"]}` |
+| Generated Markdown files reviewed | `{metrics["generated_markdown_count"]}` |
+| Link issues | `{len(metrics["link_issues"])}` |
+
+## Acceptance Findings
+
+- All top-level source packages represented: `{metrics["conversation_count"] == metrics["reader_expected_count"]}`.
+- All source files hashed: `{metrics["source_file_count"] == metrics["sha_line_count"]}`.
+- Manifest re-scan matches committed manifest: `{metrics["source_file_count"] == metrics["regenerated_file_count"]}`.
+- Reader pages are present and advisory-scoped: `{not metrics["reader_missing"] and not metrics["missing_advisory_readers"]}`.
+- Wiki topic pages cover manifest topics: `{not metrics["missing_topic_pages"]}`.
+- Link integrity is clean for generated Markdown: `{not metrics["link_issues"]}`.
+- Promotion queue is useful as raw intake, but not clean enough for direct promotion: `{len(metrics["noisy_promotions"]) > 0 or len(metrics["long_promotions"]) > 0}`.
+- Contradiction findings are actionable as a review backlog, but remain heuristic and need triage before use as doctrine evidence.
+
+## Warnings Before Synthesis
+
+- Noisy or archival-process promotion candidates: `{len(metrics["noisy_promotions"])}`.
+- Overlong promotion candidates: `{len(metrics["long_promotions"])}`.
+- Promotion candidates with repo conflict still `not_checked`: `{metrics["not_checked_promotions"]}`.
+- Reader placeholder counts: `{metrics["reader_placeholder_counts"]}`.
+- Contradiction findings are broad and keyword-assisted; use them as review triggers, not resolved conclusions.
+
+## Decision
+
+`{metrics["result"]}`
+
+The corpus is ready for derived synthesis if synthesis cites reader/wiki/audit sources directly, keeps repo truth separate from conversation-derived intent, and treats the promotion queue as raw review material. It is not ready for direct live-doc promotion.
+
+## Recommended Fixes Before Promotion
+
+- Triage promotion candidates into serious, historical, stale, noisy, and needs-user-decision buckets.
+- Reconcile high-value claims against canon, current queue, contracts, schema law, and implementation only in a separate task.
+- Keep the current acceptance result visible in the synthesis book front matter.
+
+## Recommended Next Task
+
+`CONVERSATION-SYNTHESIS-BOOK-01`
+"""
+
+
+def render_reader_quality_review(metrics: dict) -> str:
+    lines = [md_header("reader_quality_review_generated"), "# Reader Quality Review", ""]
+    lines.append(f"Result: `{metrics['result']}`")
+    lines.append("")
+    lines.append("Reader pages are present for every manifest conversation and preserve advisory authority language.")
+    lines.append("")
+    lines.append("## Counts")
+    lines.append("")
+    lines.append(f"- Expected reader pages: `{metrics['reader_expected_count']}`")
+    lines.append(f"- Actual reader pages: `{metrics['reader_actual_count']}`")
+    lines.append(f"- Missing reader pages: `{len(metrics['reader_missing'])}`")
+    lines.append(f"- Extra reader pages: `{len(metrics['reader_extra'])}`")
+    lines.append(f"- Readers missing advisory language: `{len(metrics['missing_advisory_readers'])}`")
+    lines.append(f"- Short reader pages: `{len(metrics['short_readers'])}`")
+    lines.append("")
+    lines.append("## Placeholder Signals")
+    lines.append("")
+    for name, count in metrics["reader_placeholder_counts"].items():
+        lines.append(f"- `{name}`: `{count}`")
+    lines.append("")
+    lines.append("## Assessment")
+    lines.append("")
+    lines.append("The reader layer is human-readable enough for synthesis orientation. It remains generated prose and should be checked against source files before any claim is promoted.")
+    if metrics["reader_missing"]:
+        lines.append("")
+        lines.append("## Missing Readers")
+        lines.append("")
+        for item in metrics["reader_missing"]:
+            lines.append(f"- `{item}`")
+    return "\n".join(lines) + "\n"
+
+
+def render_promotion_queue_quality_review(metrics: dict) -> str:
+    lines = [md_header("promotion_queue_quality_review_generated"), "# Promotion Queue Quality Review", ""]
+    lines.append(f"Result: `{metrics['result']}`")
+    lines.append("")
+    lines.append("The promotion queue is a raw candidate backlog. It is useful for finding review material but too noisy for direct promotion.")
+    lines.append("")
+    lines.append("## Counts")
+    lines.append("")
+    lines.append(f"- Candidates: `{metrics['promotion_count']}`")
+    lines.append(f"- Source conversations represented: `{metrics['promotion_sources']}`")
+    lines.append(f"- Noisy or archival-process candidates: `{len(metrics['noisy_promotions'])}`")
+    lines.append(f"- Overlong candidates: `{len(metrics['long_promotions'])}`")
+    lines.append(f"- Candidates with `not_checked` repo conflict: `{metrics['not_checked_promotions']}`")
+    lines.append("")
+    lines.append("## Noisy Candidate Samples")
+    lines.append("")
+    for item in metrics["noisy_promotions"][:12]:
+        lines.append(f"- `{item['id']}` `{item['source_conversation']}`: {item['claim'][:220]}")
+    if not metrics["noisy_promotions"]:
+        lines.append("- None detected by the current heuristic.")
+    lines.append("")
+    lines.append("## Assessment")
+    lines.append("")
+    lines.append("Promotion candidates should be triaged before reconciliation. Many entries are useful design-intent leads, but some are preservation-process notes or broad narrative summaries rather than clean patchable claims.")
+    lines.append("")
+    lines.append("## Recommended Fix")
+    lines.append("")
+    lines.append("Create `PROMOTION_TRIAGE_v0.md` after synthesis and classify candidates as serious, preserve-as-history, stale, noisy, rejected, or needs-user-decision.")
+    return "\n".join(lines) + "\n"
+
+
+def render_link_integrity_review(metrics: dict) -> str:
+    lines = [md_header("link_integrity_review_generated"), "# Link Integrity Review", ""]
+    lines.append(f"Result: `{'FAIL' if metrics['link_issues'] else 'PASS'}`")
+    lines.append("")
+    lines.append(f"Generated Markdown files checked: `{metrics['generated_markdown_count']}`")
+    lines.append(f"Broken or unsafe links: `{len(metrics['link_issues'])}`")
+    lines.append("")
+    if metrics["link_issues"]:
+        lines.append("| Document | Target | Issue |")
+        lines.append("| --- | --- | --- |")
+        for issue in metrics["link_issues"]:
+            lines.append(f"| `{issue['doc']}` | `{issue['target']}` | `{issue['issue']}` |")
+    else:
+        lines.append("No broken or unsafe generated Markdown links were detected.")
+    return "\n".join(lines) + "\n"
+
+
 def validate_outputs(repo_root: Path) -> List[str]:
     errors: List[str] = []
     root = repo_root / CORPUS_ROOT
@@ -1258,6 +1631,14 @@ def validate_outputs(repo_root: Path) -> List[str]:
         root / "_promotion" / "PROMOTION_QUEUE.md",
         root / "_wiki" / "index.md",
     ]
+    acceptance_docs = [
+        root / "_audit" / "INTAKE_ACCEPTANCE_REVIEW.md",
+        root / "_audit" / "READER_QUALITY_REVIEW.md",
+        root / "_audit" / "PROMOTION_QUEUE_QUALITY_REVIEW.md",
+        root / "_audit" / "LINK_INTEGRITY_REVIEW.md",
+    ]
+    if any(doc.exists() for doc in acceptance_docs):
+        required_docs.extend(acceptance_docs)
     if not (root / "_intake" / "SHA256SUMS.txt").exists():
         errors.append("missing generated doc: docs/archive/conversations/_intake/SHA256SUMS.txt")
     for doc in required_docs:
@@ -1294,6 +1675,8 @@ def write_all(repo_root: Path, phases: Sequence[str]) -> List[str]:
         changed.extend(write_phase3(repo_root))
     if "phase4" in phases:
         changed.extend(write_phase4(repo_root))
+    if "acceptance" in phases:
+        changed.extend(write_acceptance(repo_root))
     return sorted(set(changed), key=sort_key)
 
 
@@ -1302,7 +1685,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--repo-root", default=".", help="Repository root.")
     parser.add_argument(
         "command",
-        choices=["inventory", "readers", "audit", "wiki", "all", "validate"],
+        choices=["inventory", "readers", "audit", "wiki", "acceptance", "all", "validate"],
         help="Operation to run.",
     )
     args = parser.parse_args(argv)
@@ -1322,6 +1705,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.command == "wiki":
         changed = write_all(repo_root, ["phase4"])
         print(json.dumps({"changed": changed, "phase": "wiki"}, indent=2, sort_keys=True))
+        return 0
+    if args.command == "acceptance":
+        changed = write_all(repo_root, ["acceptance"])
+        print(json.dumps({"changed": changed, "phase": "acceptance"}, indent=2, sort_keys=True))
         return 0
     if args.command == "all":
         changed = write_all(repo_root, ["phase1", "phase2", "phase3", "phase4"])

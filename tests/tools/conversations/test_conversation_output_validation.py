@@ -28,6 +28,10 @@ class ConversationOutputValidationTests(unittest.TestCase):
     def test_slugify_is_stable(self):
         self.assertEqual(corpus.slugify("Dominium Architecture IV"), "dominium_architecture_iv")
 
+    def test_markdown_link_targets_ignore_external_links(self):
+        text = "[local](docs/example.md) [web](https://example.invalid) [anchor](#local)"
+        self.assertEqual(list(corpus.markdown_link_targets(text)), ["docs/example.md"])
+
 
 if __name__ == "__main__":
     unittest.main()
