@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - CONVERSATION-CORPUS-INTAKE-01 full archival intake pipeline
+UNSPECIFIED - CONVERSATION-ADJUDICATION-01 decision docket promotion board current atlas
 
 ## GOAL
 
-CONVERSATION-CORPUS-INTAKE-01 full archival intake pipeline
+CONVERSATION-ADJUDICATION-01 decision docket promotion board current atlas
 
 ## WHY
 
@@ -113,8 +113,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4180
-- approx_tokens: 1045
+- chars: 4210
+- approx_tokens: 1053
 - budget_status: PASS
 - warnings:
   - none
