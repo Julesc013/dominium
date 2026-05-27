@@ -1,0 +1,239 @@
+Status: DERIVED
+Last Reviewed: 2026-05-28
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Result: risks_index_generated
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`
+
+# Risks
+
+Risks are review triggers, not resolved findings.
+
+- `CONTRA-0001` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0002` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0003` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0004` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `ISO C89`.
+- `CONTRA-0005` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `runtime_module_loader`.
+- `CONTRA-0006` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0007` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0008` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0009` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0010` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0011` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0012` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0013` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0014` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `DX12`.
+- `CONTRA-0015` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `iOS`.
+- `CONTRA-0016` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0017` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0018` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0019` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0020` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `ISO C89`.
+- `CONTRA-0021` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `broad_workbench_ui`.
+- `CONTRA-0022` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0023` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0024` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0025` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0026` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0027` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0028` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `DX12`.
+- `CONTRA-0029` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0030` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0031` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0032` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0033` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0034` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `package_runtime`.
+- `CONTRA-0035` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0036` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0037` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0038` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0039` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0040` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0041` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0042` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0043` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `iOS`.
+- `CONTRA-0044` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0045` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0046` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `ISO C89`.
+- `CONTRA-0047` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `iOS`.
+- `CONTRA-0048` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0049` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0050` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0051` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0052` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0053` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0054` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0055` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Windows 98`.
+- `CONTRA-0056` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Windows NT 2000`.
+- `CONTRA-0057` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `DX12`.
+- `CONTRA-0058` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Android`.
+- `CONTRA-0059` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0060` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `release_publication`.
+- `CONTRA-0061` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0062` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0063` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Win98`.
+- `CONTRA-0064` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Windows 98`.
+- `CONTRA-0065` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Windows NT 2000`.
+- `CONTRA-0066` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Mac OS 9`.
+- `CONTRA-0067` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Mac OS 8`.
+- `CONTRA-0068` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `DX12`.
+- `CONTRA-0069` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0070` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0071` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0072` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `CP/M`.
+- `CONTRA-0073` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Android`.
+- `CONTRA-0074` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0075` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0076` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0077` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0078` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0079` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0080` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `ISO C89`.
+- `CONTRA-0081` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `CP/M`.
+- `CONTRA-0082` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Android`.
+- `CONTRA-0083` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `runtime_module_loader`.
+- `CONTRA-0084` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0085` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `package_runtime`.
+- `CONTRA-0086` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0087` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0088` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0089` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0090` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `release_publication`.
+- `CONTRA-0091` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0092` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `broad_workbench_ui`.
+- `CONTRA-0093` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0094` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0095` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0096` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0097` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0098` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0099` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0100` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `ISO C89`.
+- `CONTRA-0101` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0102` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0103` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `broad_workbench_ui`.
+- `CONTRA-0104` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `runtime_module_loader`.
+- `CONTRA-0105` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0106` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `package_runtime`.
+- `CONTRA-0107` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0108` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0109` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0110` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `release_publication`.
+- `CONTRA-0111` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0112` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0113` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0114` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `broad_workbench_ui`.
+- `CONTRA-0115` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0116` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0117` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0118` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0119` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0120` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0121` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0122` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `iOS`.
+- `CONTRA-0123` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Android`.
+- `CONTRA-0124` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0125` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `broad_workbench_ui`.
+- `CONTRA-0126` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0127` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0128` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0129` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0130` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0131` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Windows 98`.
+- `CONTRA-0132` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Mac OS 9`.
+- `CONTRA-0133` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `iOS`.
+- `CONTRA-0134` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Android`.
+- `CONTRA-0135` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0136` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0137` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0138` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0139` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0140` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0141` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0142` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `CP/M`.
+- `CONTRA-0143` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0144` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0145` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0146` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0147` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `runtime_module_loader`.
+- `CONTRA-0148` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0149` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0150` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0151` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `release_publication`.
+- `CONTRA-0152` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Mac OS 8`.
+- `CONTRA-0153` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Android`.
+- `CONTRA-0154` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0155` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0156` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0157` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0158` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0159` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0160` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `ISO C89`.
+- `CONTRA-0161` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `CP/M`.
+- `CONTRA-0162` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Android`.
+- `CONTRA-0163` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0164` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0165` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0166` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `release_publication`.
+- `CONTRA-0167` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `CP/M`.
+- `CONTRA-0168` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `iOS`.
+- `CONTRA-0169` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Android`.
+- `CONTRA-0170` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `WebGPU`.
+- `CONTRA-0171` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `console program`.
+- `CONTRA-0172` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0173` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0174` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0175` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0176` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0177` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0178` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `CP/M`.
+- `CONTRA-0179` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `286`.
+- `CONTRA-0180` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0181` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `CP/M`.
+- `CONTRA-0182` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Android`.
+- `CONTRA-0183` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0184` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0185` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0186` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `release_publication`.
+- `CONTRA-0187` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0188` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0189` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0190` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0191` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `release_publication`.
+- `CONTRA-0192` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0193` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0194` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `iOS`.
+- `CONTRA-0195` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0196` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0197` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0198` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `broad_workbench_ui`.
+- `CONTRA-0199` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0200` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0201` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0202` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0203` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0204` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0205` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `Android`.
+- `CONTRA-0206` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `broad_workbench_ui`.
+- `CONTRA-0207` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0208` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0209` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `runtime_module_loader`.
+- `CONTRA-0210` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `provider_runtime`.
+- `CONTRA-0211` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `package_runtime`.
+- `CONTRA-0212` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0213` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `renderer_implementation`.
+- `CONTRA-0214` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `native_gui`.
+- `CONTRA-0215` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `release_publication`.
+- `CONTRA-0216` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0217` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0218` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0219` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C89`.
+- `CONTRA-0220` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `C++98`.
+- `CONTRA-0221` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `ISO C89`.
+- `CONTRA-0222` `low` `stale_external_claim`: Archived conversation contains potentially stale external or baseline claim: `SDK`.
+- `CONTRA-0223` `medium` `conversation_vs_current_queue`: Archived conversation discusses work related to blocked scope `gameplay`.
+- `CONTRA-0224` `medium` `conversation_vs_docs`: Corpus contains both `C89` and `C17` claims.
+- `CONTRA-0225` `medium` `conversation_vs_docs`: Corpus contains both `C++98` and `C++17` claims.
+- `CONTRA-0226` `medium` `conversation_vs_conversation`: Corpus contains both `JSON` and `TLV` claims.
+- `CONTRA-0227` `medium` `conversation_vs_conversation`: Corpus contains both `WinForms` and `WinUI` claims.
