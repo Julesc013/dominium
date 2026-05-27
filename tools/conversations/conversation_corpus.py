@@ -21,7 +21,7 @@ from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 REVIEW_DATE = "2026-05-28"
 CORPUS_ROOT = Path("docs/archive/conversations")
-MANAGED_DIRS = {"_intake", "_reader", "_wiki", "_audit", "_promotion", "_synthesis", "__unsorted"}
+MANAGED_DIRS = {"_intake", "_reader", "_wiki", "_audit", "_promotion", "_synthesis", "_reconciliation", "__unsorted"}
 HEADER_BINDING = (
     "`docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, "
     "`AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, "
@@ -29,7 +29,7 @@ HEADER_BINDING = (
 )
 
 GENERATED_MARKDOWN_ROOT_FILES = {"README.md", "INDEX.md"}
-GENERATED_MARKDOWN_DIRS = {"_intake", "_reader", "_wiki", "_audit", "_promotion", "_synthesis"}
+GENERATED_MARKDOWN_DIRS = {"_intake", "_reader", "_wiki", "_audit", "_promotion", "_synthesis", "_reconciliation"}
 
 SYNTHESIS_TOPIC_EXPLANATIONS = {
     "architecture": "system boundaries, product shape, engine/game/client/server separation, and repository structure",
@@ -1994,6 +1994,285 @@ def render_contradictions_to_reconcile(metrics: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
+def noisy_candidate_patterns() -> List[str]:
+    return [
+        "context transfer",
+        "downloadable",
+        "in-chat reader",
+        "archival mode",
+        "future chat bootstrap",
+        "human-readable report",
+        "because the chat",
+        "asked for a maximum-fidelity",
+        "report files",
+        "preserved the discussion",
+        "final report",
+        "uploaded prompt",
+        "preservation package",
+    ]
+
+
+def blocked_scope_for_claim(claim: str) -> List[str]:
+    lower = claim.lower()
+    scopes = []
+    for scope, words in BLOCKED_SCOPE_KEYWORDS.items():
+        if any(word in lower for word in words):
+            scopes.append(scope)
+    return scopes
+
+
+def classify_candidate(candidate: dict) -> dict:
+    claim = candidate["claim"]
+    lower = claim.lower()
+    blocked = blocked_scope_for_claim(claim)
+    noisy = any(pattern in lower for pattern in noisy_candidate_patterns())
+    stale = any(pattern.lower() in lower for pattern in STALE_EXTERNAL_PATTERNS)
+    decision_terms = ["future work", "must define", "whether", "not decided", "unresolved", "requires verification", "needs"]
+    aligned_terms = [
+        "deterministic",
+        "authoritative",
+        "canon",
+        "authority",
+        "renderer",
+        "truth",
+        "process",
+        "pack",
+        "refusal",
+        "contract",
+        "schema",
+        "workbench",
+    ]
+    if noisy:
+        classification = "rejected_noise"
+        disposition = "preserve_as_history"
+        reason = "The candidate describes preservation or archival-process mechanics rather than a clean project claim."
+    elif blocked:
+        classification = "blocked_by_current_queue"
+        disposition = "needs_review_before_any_action"
+        reason = f"The claim touches currently blocked scope: {', '.join(blocked)}."
+    elif stale:
+        classification = "stale_or_superseded"
+        disposition = "verify_before_use"
+        reason = "The claim contains an external, language, platform, or baseline term that may be stale."
+    elif any(term in lower for term in decision_terms):
+        classification = "needs_user_decision"
+        disposition = "ask_or_reconcile_before_promotion"
+        reason = "The claim frames unresolved future work or a decision boundary."
+    elif any(term in lower for term in aligned_terms):
+        classification = "consistent_with_repo_but_not_formalized"
+        disposition = "candidate_for_reconciliation"
+        reason = "The claim appears compatible with current repo doctrine but has not been checked against target docs."
+    else:
+        classification = "insufficient_evidence"
+        disposition = "preserve_as_history"
+        reason = "The candidate is too broad or underspecified for a patch proposal."
+    score = 0
+    if classification == "consistent_with_repo_but_not_formalized":
+        score += 5
+    if 80 <= len(claim) <= 320:
+        score += 2
+    if any(term in lower for term in ["must", "authority", "deterministic", "boundary", "contract", "schema", "refusal"]):
+        score += 2
+    if classification in {"rejected_noise", "blocked_by_current_queue", "stale_or_superseded"}:
+        score -= 4
+    if len(claim) > 420:
+        score -= 2
+    return {
+        **candidate,
+        "classification": classification,
+        "recommended_disposition": disposition,
+        "reason": reason,
+        "blocked_scopes": blocked,
+        "score": score,
+    }
+
+
+def reconciliation_metrics(repo_root: Path) -> dict:
+    synth = synthesis_metrics(repo_root)
+    root = repo_root / CORPUS_ROOT
+    promotion_text = (root / "_promotion" / "PROMOTION_QUEUE.md").read_text(encoding="utf-8")
+    candidates = [classify_candidate(candidate) for candidate in parse_promotion_candidates(promotion_text)]
+    class_counts: Dict[str, int] = {}
+    for candidate in candidates:
+        class_counts[candidate["classification"]] = class_counts.get(candidate["classification"], 0) + 1
+    blocked_counts: Dict[str, int] = {scope: 0 for scope in synth["blocked_constraints"]}
+    for candidate in candidates:
+        for scope in candidate["blocked_scopes"]:
+            blocked_counts[scope] = blocked_counts.get(scope, 0) + 1
+    for finding in synth["findings"]:
+        match = re.search(r"`([^`]+)`", finding.claim)
+        if finding.class_name == "conversation_vs_current_queue" and match:
+            scope = match.group(1)
+            blocked_counts[scope] = blocked_counts.get(scope, 0) + 1
+    top_candidates = sorted(
+        [candidate for candidate in candidates if candidate["classification"] == "consistent_with_repo_but_not_formalized"],
+        key=lambda item: (-item["score"], item["id"]),
+    )[:25]
+    return {
+        **synth,
+        "candidates": candidates,
+        "candidate_class_counts": dict(sorted(class_counts.items())),
+        "blocked_counts": dict(sorted(blocked_counts.items())),
+        "top_candidates": top_candidates,
+        "noise_candidates": [c for c in candidates if c["classification"] == "rejected_noise"],
+        "decision_candidates_from_queue": [
+            c for c in candidates if c["classification"] in {"needs_user_decision", "blocked_by_current_queue"}
+        ],
+    }
+
+
+def write_reconciliation_and_triage(repo_root: Path) -> List[str]:
+    metrics = reconciliation_metrics(repo_root)
+    root = repo_root / CORPUS_ROOT
+    changed: List[str] = []
+    changed += changed_path(root / "_reconciliation" / "REPO_AUTHORITY_CROSSWALK_v0.md", render_repo_authority_crosswalk(metrics), repo_root)
+    changed += changed_path(root / "_reconciliation" / "CLAIM_REVIEW_MATRIX_v0.md", render_claim_review_matrix(metrics), repo_root)
+    changed += changed_path(root / "_reconciliation" / "CURRENT_CANON_ALIGNMENT_v0.md", render_current_canon_alignment(metrics), repo_root)
+    changed += changed_path(root / "_reconciliation" / "BLOCKED_SCOPE_ALIGNMENT_v0.md", render_blocked_scope_alignment(metrics), repo_root)
+    changed += changed_path(root / "_promotion" / "PROMOTION_TRIAGE_v0.md", render_promotion_triage(metrics), repo_root)
+    changed += changed_path(root / "_promotion" / "TOP_PROMOTION_CANDIDATES_v0.md", render_top_promotion_candidates(metrics), repo_root)
+    changed += changed_path(root / "_promotion" / "REJECTED_NOISE_v0.md", render_rejected_noise(metrics), repo_root)
+    changed += changed_path(root / "_promotion" / "NEEDS_USER_DECISION_v0.md", render_needs_user_decision(metrics), repo_root)
+    return changed
+
+
+def render_repo_authority_crosswalk(metrics: dict) -> str:
+    lines = [synthesis_header("repo_authority_crosswalk_generated"), "# Repo Authority Crosswalk v0", ""]
+    lines.append("This crosswalk compares the derived synthesis to current authority surfaces. It does not promote any conversation claim.")
+    lines.append("")
+    lines.append("| Authority Surface | Current Role | How The Synthesis Uses It | Promotion Effect |")
+    lines.append("| --- | --- | --- | --- |")
+    lines.append("| [constitution_v1.md](../../../canon/constitution_v1.md) | Highest architectural/execution contract | Establishes determinism, process mutation, authority, refusal, render separation, packs | None |")
+    lines.append("| [glossary_v1.md](../../../canon/glossary_v1.md) | Canonical vocabulary | Anchors terms such as Engine, Client, Contract, AuthorityContext, Domain | None |")
+    lines.append("| [AGENTS.md](../../../../AGENTS.md) | Agent governance and authority ordering | Prevents chat claims from overriding repo truth | None |")
+    lines.append("| [AUTHORITY_ORDER.md](../../../planning/AUTHORITY_ORDER.md) | Conflict resolution and precedence | Requires reconciliation before promotion | None |")
+    lines.append("| [SNAPSHOT_INTAKE_PROTOCOL.md](../../../planning/SNAPSHOT_INTAKE_PROTOCOL.md) | Source-role and provenance intake law | Treats conversation exports as materialized evidence only | None |")
+    lines.append("| [.aide/queue/current.toml](../../../../.aide/queue/current.toml) | Current queue and blocked scope | Blocks broad feature work despite old chat intent | None |")
+    lines.append("| [PROJECT_SYNTHESIS_BOOK_v0.md](../_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md) | Derived synthesis | Human-readable historical project picture | None |")
+    lines.append("")
+    lines.append("## Classification Counts")
+    lines.append("")
+    for class_name, count in metrics["candidate_class_counts"].items():
+        lines.append(f"- `{class_name}`: `{count}`")
+    return "\n".join(lines) + "\n"
+
+
+def render_claim_review_matrix(metrics: dict) -> str:
+    lines = [synthesis_header("claim_review_matrix_generated"), "# Claim Review Matrix v0", ""]
+    lines.append("Each row is a raw promotion candidate classified for review. None are promoted.")
+    lines.append("")
+    lines.append("| ID | Source | Classification | Disposition | Claim |")
+    lines.append("| --- | --- | --- | --- | --- |")
+    for candidate in metrics["candidates"]:
+        claim = candidate["claim"].replace("|", "\\|")
+        if len(claim) > 260:
+            claim = claim[:257] + "..."
+        lines.append(
+            f"| `{candidate['id']}` | `{candidate['source_conversation']}` | `{candidate['classification']}` | `{candidate['recommended_disposition']}` | {claim} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def render_current_canon_alignment(metrics: dict) -> str:
+    lines = [synthesis_header("current_canon_alignment_generated"), "# Current Canon Alignment v0", ""]
+    lines.append("This review identifies broad areas where the conversation-derived synthesis appears aligned with current canon, and where caution remains.")
+    lines.append("")
+    lines.append("## Aligned Signals")
+    lines.append("")
+    lines.append("- Determinism, replay, and provenance recur in the corpus and are directly supported by constitution axioms.")
+    lines.append("- Truth/perceived/render separation recurs in UI, renderer, and Workbench conversations and is explicitly canonical.")
+    lines.append("- Process-only mutation and law-gated authority are compatible with the archive's repeated refusal of UI-owned truth.")
+    lines.append("- Pack-driven integration recurs in content/provider/modding conversations and is canonical in high-level doctrine.")
+    lines.append("- AIDE/Codex/XStack as bounded repo-control surfaces aligns with AGENTS.md when they remain non-authoritative.")
+    lines.append("")
+    lines.append("## Caution Areas")
+    lines.append("")
+    lines.append("- Conversation claims about implementation sequencing must obey current queue constraints.")
+    lines.append("- Claims about renderer, native GUI, provider runtime, package runtime, gameplay, and release publication are blocked until stronger current authority opens them.")
+    lines.append("- Old language/platform/baseline claims require current verification before reuse.")
+    lines.append("- Synthesis terms not present in the glossary cannot become canonical without controlled glossary work.")
+    return "\n".join(lines) + "\n"
+
+
+def render_blocked_scope_alignment(metrics: dict) -> str:
+    lines = [synthesis_header("blocked_scope_alignment_generated"), "# Blocked Scope Alignment v0", ""]
+    lines.append("Current queue state blocks broad feature work. Conversation-derived claims that touch these areas remain historical unless a later reviewed task opens scope.")
+    lines.append("")
+    lines.append("| Blocked Scope | Queue State | Candidate/Finding Signals | Required Disposition |")
+    lines.append("| --- | --- | ---: | --- |")
+    for scope, state in sorted(metrics["blocked_constraints"].items()):
+        lines.append(f"| `{scope}` | `{state}` | `{metrics['blocked_counts'].get(scope, 0)}` | `preserve_or_reconcile_only` |")
+    lines.append("")
+    lines.append("No row authorizes implementation. This is a guardrail for later claim review.")
+    return "\n".join(lines) + "\n"
+
+
+def render_promotion_triage(metrics: dict) -> str:
+    lines = [synthesis_header("promotion_triage_generated"), "# Promotion Triage v0", ""]
+    lines.append("This triage reduces the raw promotion queue into review classes. It does not promote claims.")
+    lines.append("")
+    lines.append("## Counts")
+    lines.append("")
+    for class_name, count in metrics["candidate_class_counts"].items():
+        lines.append(f"- `{class_name}`: `{count}`")
+    lines.append("")
+    lines.append("## Recommended Review Order")
+    lines.append("")
+    lines.append("1. Review [TOP_PROMOTION_CANDIDATES_v0.md](TOP_PROMOTION_CANDIDATES_v0.md).")
+    lines.append("2. Review [NEEDS_USER_DECISION_v0.md](NEEDS_USER_DECISION_v0.md).")
+    lines.append("3. Preserve [REJECTED_NOISE_v0.md](REJECTED_NOISE_v0.md) as historical/non-promoted extraction noise.")
+    lines.append("4. Use [CLAIM_REVIEW_MATRIX_v0.md](../_reconciliation/CLAIM_REVIEW_MATRIX_v0.md) before any live-doc patch task.")
+    return "\n".join(lines) + "\n"
+
+
+def render_top_promotion_candidates(metrics: dict) -> str:
+    lines = [synthesis_header("top_promotion_candidates_generated"), "# Top Promotion Candidates v0", ""]
+    lines.append("These are the cleanest automatically triaged candidates. They are still not promoted.")
+    lines.append("")
+    if not metrics["top_candidates"]:
+        lines.append("No candidates met the current serious-candidate heuristic.")
+        return "\n".join(lines) + "\n"
+    for candidate in metrics["top_candidates"]:
+        lines.append(f"## `{candidate['id']}` - `{candidate['source_conversation']}`")
+        lines.append("")
+        lines.append(f"- Classification: `{candidate['classification']}`")
+        lines.append(f"- Recommended disposition: `{candidate['recommended_disposition']}`")
+        lines.append(f"- Reason: {candidate['reason']}")
+        lines.append(f"- Source file: `{candidate['source_file']}`")
+        lines.append(f"- Claim: {candidate['claim']}")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def render_rejected_noise(metrics: dict) -> str:
+    lines = [synthesis_header("rejected_noise_generated"), "# Rejected Noise v0", ""]
+    lines.append("These entries are rejected only as promotion candidates. They remain preserved as archive history.")
+    lines.append("")
+    for candidate in metrics["noise_candidates"]:
+        lines.append(f"- `{candidate['id']}` `{candidate['source_conversation']}`: {candidate['claim'][:260]}")
+    if not metrics["noise_candidates"]:
+        lines.append("- None.")
+    return "\n".join(lines) + "\n"
+
+
+def render_needs_user_decision(metrics: dict) -> str:
+    lines = [synthesis_header("needs_user_decision_generated"), "# Needs User Decision v0", ""]
+    lines.append("These raw candidates either touch blocked scope or frame unresolved future work. They require user or repo-authority review before any promotion.")
+    lines.append("")
+    for candidate in metrics["decision_candidates_from_queue"][:60]:
+        scopes = ", ".join(candidate["blocked_scopes"]) if candidate["blocked_scopes"] else "none"
+        lines.append(f"## `{candidate['id']}` - `{candidate['source_conversation']}`")
+        lines.append("")
+        lines.append(f"- Classification: `{candidate['classification']}`")
+        lines.append(f"- Blocked scopes: `{scopes}`")
+        lines.append(f"- Reason: {candidate['reason']}")
+        lines.append(f"- Claim: {candidate['claim']}")
+        lines.append("")
+    if not metrics["decision_candidates_from_queue"]:
+        lines.append("No user-decision candidates detected by the current heuristic.")
+    return "\n".join(lines)
+
+
 def validate_outputs(repo_root: Path) -> List[str]:
     errors: List[str] = []
     root = repo_root / CORPUS_ROOT
@@ -2034,6 +2313,18 @@ def validate_outputs(repo_root: Path) -> List[str]:
     ]
     if any(doc.exists() for doc in synthesis_docs):
         required_docs.extend(synthesis_docs)
+    reconciliation_docs = [
+        root / "_reconciliation" / "REPO_AUTHORITY_CROSSWALK_v0.md",
+        root / "_reconciliation" / "CLAIM_REVIEW_MATRIX_v0.md",
+        root / "_reconciliation" / "CURRENT_CANON_ALIGNMENT_v0.md",
+        root / "_reconciliation" / "BLOCKED_SCOPE_ALIGNMENT_v0.md",
+        root / "_promotion" / "PROMOTION_TRIAGE_v0.md",
+        root / "_promotion" / "TOP_PROMOTION_CANDIDATES_v0.md",
+        root / "_promotion" / "REJECTED_NOISE_v0.md",
+        root / "_promotion" / "NEEDS_USER_DECISION_v0.md",
+    ]
+    if any(doc.exists() for doc in reconciliation_docs):
+        required_docs.extend(reconciliation_docs)
     if not (root / "_intake" / "SHA256SUMS.txt").exists():
         errors.append("missing generated doc: docs/archive/conversations/_intake/SHA256SUMS.txt")
     for doc in required_docs:
@@ -2074,6 +2365,8 @@ def write_all(repo_root: Path, phases: Sequence[str]) -> List[str]:
         changed.extend(write_acceptance(repo_root))
     if "synthesis" in phases:
         changed.extend(write_synthesis(repo_root))
+    if "reconciliation" in phases:
+        changed.extend(write_reconciliation_and_triage(repo_root))
     return sorted(set(changed), key=sort_key)
 
 
@@ -2082,7 +2375,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--repo-root", default=".", help="Repository root.")
     parser.add_argument(
         "command",
-        choices=["inventory", "readers", "audit", "wiki", "acceptance", "synthesis", "all", "validate"],
+        choices=[
+            "inventory",
+            "readers",
+            "audit",
+            "wiki",
+            "acceptance",
+            "synthesis",
+            "reconciliation",
+            "all",
+            "validate",
+        ],
         help="Operation to run.",
     )
     args = parser.parse_args(argv)
@@ -2110,6 +2413,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.command == "synthesis":
         changed = write_all(repo_root, ["synthesis"])
         print(json.dumps({"changed": changed, "phase": "synthesis"}, indent=2, sort_keys=True))
+        return 0
+    if args.command == "reconciliation":
+        changed = write_all(repo_root, ["reconciliation"])
+        print(json.dumps({"changed": changed, "phase": "reconciliation"}, indent=2, sort_keys=True))
         return 0
     if args.command == "all":
         changed = write_all(repo_root, ["phase1", "phase2", "phase3", "phase4"])

@@ -26,7 +26,7 @@ This review assesses whether the generated conversation-corpus intake is complet
 | Reader pages expected / actual | `45` / `45` |
 | Promotion candidates | `135` |
 | Contradiction findings | `227` |
-| Generated Markdown files reviewed | `94` |
+| Generated Markdown files reviewed | `102` |
 | Link issues | `0` |
 
 ## Acceptance Findings
