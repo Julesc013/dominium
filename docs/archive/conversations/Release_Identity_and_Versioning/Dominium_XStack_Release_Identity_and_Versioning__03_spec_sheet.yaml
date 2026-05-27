@@ -1,0 +1,870 @@
+spec_sheet:
+  metadata:
+    chat_label: "Dominium XStack Release Identity and Versioning"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This chat only unless labelled PROJECT-CONTEXT"
+    apparent_coverage: "Partial visible transcript/context plus uploaded prompt"
+    confidence_1_to_5: 4
+    staleness_risk: "Low for design; medium for external/toolchain/repo claims"
+    safe_for_aggregation: "with caveats"
+    main_limitations:
+      - "No direct repo inspection during preservation task"
+      - "No raw full transcript outside visible/current context"
+      - "Some build-system claims require verification"
+  summary:
+    one_sentence: "This chat designed a layered release identity architecture for Dominium/XStack using strict SemVer only for public APIs, SemVer-shaped release IDs for products/suites, GBN/BII for provenance, manifests for truth, and capabilities for internal compatibility."
+    short_brief: "The chat moved from general versioning theory to a project-specific release identity model. It separated products from suites, true SemVer components from SemVer-shaped release identifiers, build provenance from precedence, prerelease labels from lifecycle channels, filenames from manifests, and versions from internal capability-based compatibility."
+    main_topics:
+      - "SemVer 2.0.0 and alternatives"
+      - "Layered release identity architecture"
+      - "Product vs suite versions"
+      - "GBN and BII integration"
+      - "Channels and lifecycle metadata"
+      - "Artifact naming and manifests"
+      - "Platform target taxonomy"
+      - "Capability-based compatibility"
+    main_outputs:
+      - "Knowledge-base summary"
+      - "Decision/task/risk/open-question registers"
+      - "Context transfer packet"
+      - "Spec sheet"
+      - "Aggregator packet"
+    highest_priority_carry_forward:
+      - "Draft Release Constitution"
+      - "Create SemVer Component Inventory"
+      - "Define suite version semantics"
+      - "Formalize GBN/BII and manifest schema"
+      - "Design capability registry"
+  source_rules:
+    labels_used: ["FACT", "INFERENCE", "UNCERTAIN / UNVERIFIED", "PROJECT-CONTEXT"]
+    conflict_rules:
+      - "Direct user statements override assistant suggestions."
+      - "Accepted decisions override earlier exploratory proposals."
+      - "Tentative ideas remain tentative until confirmed."
+      - "Repo/toolchain claims require verification against current files/docs."
+    staleness_rules:
+      - "Design decisions are low-staleness unless project priorities change."
+      - "External specs, compiler support, OS support, and repo state must be verified before formal adoption."
+  user_preferences:
+    explicit:
+      - "Dislikes versioning policy changes halfway through."
+      - "Likes strict SemVer 2.0.0 for public APIs."
+      - "Likes SemVer visual shape for non-SemVer release identifiers."
+      - "Wants human-readable preservation reports, not machine-only handoffs."
+    inferred:
+      - "Prefers explicit metadata over hidden inference."
+      - "Values long-term maintainability and auditability."
+    uncertain_or_not_established:
+      - "Exact suite X.Y.Z semantics."
+      - "Exact target taxonomy."
+      - "Final capability registry shape."
+  workstreams:
+    - id: "WORKSTREAM-01"
+      name: "Versioning doctrine"
+      label: "FACT/INFERENCE"
+      objective: "Define which entities use strict SemVer, SemVer-shaped release IDs, suite versions, and compatibility metadata."
+      current_state: "Consensus direction formed; not yet formalized in repo."
+      desired_end_state: "A permanent Release Constitution and entity classification table."
+      status: "Active"
+      priority: "P0"
+      background: "Developed through this chat's versioning/release identity discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, March-April 2026 discussion preserved on 2026-05-27."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Formalize in repo-ready spec."
+      verification_needed: []
+      confidence: "4"
+    - id: "WORKSTREAM-02"
+      name: "SemVer component classification"
+      label: "FACT"
+      objective: "Identify which products/components expose public APIs and therefore may claim strict SemVer 2.0.0 compliance."
+      current_state: "Candidate list exists; final inventory not done."
+      desired_end_state: "Complete component-by-component policy."
+      status: "Open"
+      priority: "P0"
+      background: "Developed through this chat's versioning/release identity discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, March-April 2026 discussion preserved on 2026-05-27."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Formalize in repo-ready spec."
+      verification_needed: []
+      confidence: "4"
+    - id: "WORKSTREAM-03"
+      name: "Suite/distribution release identity"
+      label: "FACT/INFERENCE"
+      objective: "Define suite versions for All/Full/Lite/Net/User/Dev distributions."
+      current_state: "Direction: SemVer-shaped but explicitly non-SemVer, human-curated."
+      desired_end_state: "Stable suite version semantics and manifest binding."
+      status: "Active"
+      priority: "P0"
+      background: "Developed through this chat's versioning/release identity discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, March-April 2026 discussion preserved on 2026-05-27."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Formalize in repo-ready spec."
+      verification_needed: []
+      confidence: "4"
+    - id: "WORKSTREAM-04"
+      name: "GBN and BII integration"
+      label: "FACT"
+      objective: "Integrate Global Build Number and Build Identification with version/build metadata without misusing precedence."
+      current_state: "GBN-as-provenance direction decided; BII schema still open."
+      desired_end_state: "Canonical build identity spec and manifest fields."
+      status: "Active"
+      priority: "P1"
+      background: "Developed through this chat's versioning/release identity discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, March-April 2026 discussion preserved on 2026-05-27."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Formalize in repo-ready spec."
+      verification_needed: []
+      confidence: "4"
+    - id: "WORKSTREAM-05"
+      name: "Channel/lifecycle model"
+      label: "FACT"
+      objective: "Separate prerelease ordering labels from lifecycle/support metadata."
+      current_state: "Direction clear; exact labels/order still to freeze."
+      desired_end_state: "Channel/lifecycle spec."
+      status: "Active"
+      priority: "P1"
+      background: "Developed through this chat's versioning/release identity discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, March-April 2026 discussion preserved on 2026-05-27."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Formalize in repo-ready spec."
+      verification_needed: []
+      confidence: "4"
+    - id: "WORKSTREAM-06"
+      name: "Artifact naming and manifest model"
+      label: "FACT/INFERENCE"
+      objective: "Define deterministic artifact filenames while keeping manifests authoritative."
+      current_state: "Strong filename pattern proposed; final grammar/schema open."
+      desired_end_state: "Artifact Naming Spec and Release Manifest Schema."
+      status: "Open"
+      priority: "P1"
+      background: "Developed through this chat's versioning/release identity discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, March-April 2026 discussion preserved on 2026-05-27."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Formalize in repo-ready spec."
+      verification_needed: []
+      confidence: "4"
+    - id: "WORKSTREAM-07"
+      name: "Platform/architecture target taxonomy"
+      label: "FACT/INFERENCE"
+      objective: "Separate coarse support families from exact binary target baselines."
+      current_state: "Need identified; taxonomy unresolved."
+      desired_end_state: "Target triplet/profile registry for OS, arch, runtime/toolchain."
+      status: "Open"
+      priority: "P1"
+      background: "Developed through this chat's versioning/release identity discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, March-April 2026 discussion preserved on 2026-05-27."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Formalize in repo-ready spec."
+      verification_needed: []
+      confidence: "3"
+    - id: "WORKSTREAM-08"
+      name: "Capability-based internal compatibility"
+      label: "INFERENCE"
+      objective: "Use capabilities/contracts internally instead of relying on versions for interoperability."
+      current_state: "User proposed; assistant endorsed; not yet formalized."
+      desired_end_state: "Capability registry, negotiation rules, and requirement/provision schema."
+      status: "Tentative"
+      priority: "P1"
+      background: "Developed through this chat's versioning/release identity discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, March-April 2026 discussion preserved on 2026-05-27."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Formalize in repo-ready spec."
+      verification_needed: []
+      confidence: "3"
+    - id: "WORKSTREAM-09"
+      name: "Setup product role"
+      label: "FACT/INFERENCE"
+      objective: "Represent Setup as standalone product capable of portable install/repair/uninstall/rollback/upgrade/migration using bundled or network sources."
+      current_state: "Discussed and accepted as architectural direction, but details not specified here."
+      desired_end_state: "Setup release/manifest/install workflow spec."
+      status: "Active"
+      priority: "P2"
+      background: "Developed through this chat's versioning/release identity discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, March-April 2026 discussion preserved on 2026-05-27."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Formalize in repo-ready spec."
+      verification_needed: []
+      confidence: "3"
+  decisions:
+    - id: "DECISION-01"
+      decision: "Use a layered release identity architecture rather than one universal version string."
+      status: "Accepted direction"
+      label: "FACT/INFERENCE"
+      evidence_or_basis: "Repeated user agreement with separating versions, suite identity, build identity, and compatibility."
+      rationale: "A single string cannot safely encode release identity, compatibility, provenance, support class, platform, package type, and suite composition."
+      implications: "All release/spec work must keep separate fields for separate meanings."
+      related_workstreams: ["WORKSTREAM-01"]
+      uncertainty: "confidence 4/5"
+    - id: "DECISION-02"
+      decision: "Strict SemVer 2.0.0 applies only where there is a declared public API/contract."
+      status: "Accepted direction"
+      label: "FACT"
+      evidence_or_basis: "User explicitly liked strict SemVer 2 compliance for public APIs."
+      rationale: "SemVer is compatibility-centric and requires a public API; applying it everywhere would create fake semantics."
+      implications: "SDK, engine libraries, protocol/schema/plugin surfaces are candidates; apps/suites need separate policy."
+      related_workstreams: ["WORKSTREAM-02"]
+      uncertainty: "confidence 5/5"
+    - id: "DECISION-03"
+      decision: "End-user products and suites may use SemVer-shaped identifiers without claiming strict SemVer semantics."
+      status: "Accepted direction"
+      label: "FACT"
+      evidence_or_basis: "User liked the look of SemVer for non-SemVer things."
+      rationale: "Preserves readable familiar shape while avoiding false API compatibility claims."
+      implications: "Docs must distinguish true SemVer from SemVer-shaped release IDs."
+      related_workstreams: ["WORKSTREAM-01"]
+      uncertainty: "confidence 5/5"
+    - id: "DECISION-04"
+      decision: "Suites/distributions are separate from products/components."
+      status: "Accepted direction"
+      label: "FACT"
+      evidence_or_basis: "User listed standalone products separately from suites; assistant recommended scope=id metadata."
+      rationale: "Full/Lite/Net/All are curated distributions, not equivalent to Engine/SDK/Client."
+      implications: "Metadata and filenames should include scope=product|suite."
+      related_workstreams: ["WORKSTREAM-03"]
+      uncertainty: "confidence 4/5"
+    - id: "DECISION-05"
+      decision: "Suite versions should be human-curated and not strict SemVer."
+      status: "Accepted direction"
+      label: "FACT/INFERENCE"
+      evidence_or_basis: "User proposed suite number as marketing/consumer-facing while components use stricter SemVer."
+      rationale: "A suite is a tested bundle/release family, not one API."
+      implications: "Suite version should bind to manifest and compatibility/capability metadata."
+      related_workstreams: ["WORKSTREAM-03"]
+      uncertainty: "confidence 4/5"
+    - id: "DECISION-06"
+      decision: "GBN belongs in build metadata/manifests as provenance, not SemVer precedence."
+      status: "Accepted direction"
+      label: "FACT"
+      evidence_or_basis: "Discussed repeatedly; user examples used +gbn/build."
+      rationale: "SemVer build metadata after + does not affect precedence; GBN is exact build identity/order outside SemVer ordering."
+      implications: "Use e.g. +gbn.7137 and store canonical GBN field in manifest."
+      related_workstreams: ["WORKSTREAM-04"]
+      uncertainty: "confidence 5/5"
+    - id: "DECISION-07"
+      decision: "BII should primarily be structured manifest metadata, with optional compact projection."
+      status: "Tentative accepted direction"
+      label: "INFERENCE"
+      evidence_or_basis: "Assistant recommendation not contradicted; user asked how BII should be encoded."
+      rationale: "Full BII may become too structured/long for version strings."
+      implications: "Define BII schema separately; optionally include short token in filename/build metadata."
+      related_workstreams: ["WORKSTREAM-04"]
+      uncertainty: "confidence 4/5"
+    - id: "DECISION-08"
+      decision: "Do not encode stable as -stable and do not encode hotfix as a prerelease suffix."
+      status: "Accepted direction"
+      label: "FACT"
+      evidence_or_basis: "Discussed after SemVer reconstruction."
+      rationale: "Under SemVer, -stable and -hotfix are prerelease identifiers below the plain release; hotfix should normally be a patch release plus release-class metadata."
+      implications: "Use 1.2.3 for stable; 1.2.4 plus release_class=hotfix for hotfix."
+      related_workstreams: ["WORKSTREAM-05"]
+      uncertainty: "confidence 5/5"
+    - id: "DECISION-09"
+      decision: "Split prerelease ordering labels from lifecycle/support metadata."
+      status: "Accepted direction"
+      label: "FACT"
+      evidence_or_basis: "Repeated in summary and subsequent user request."
+      rationale: "dev/alpha/beta/rc affect ordering; stable/lts/nightly/internal/hotfix describe policy/lifecycle."
+      implications: "Channel spec must have separate fields."
+      related_workstreams: ["WORKSTREAM-05"]
+      uncertainty: "confidence 5/5"
+    - id: "DECISION-10"
+      decision: "Filenames are readable projections; manifests are canonical truth."
+      status: "Accepted direction"
+      label: "FACT/INFERENCE"
+      evidence_or_basis: "Discussed in artifact naming sections."
+      rationale: "Filenames cannot safely carry all metadata or evolve as the only authority."
+      implications: "Every artifact should carry or reference a manifest with full identity and compatibility/capability fields."
+      related_workstreams: ["WORKSTREAM-06"]
+      uncertainty: "confidence 4/5"
+    - id: "DECISION-11"
+      decision: "Separate support family from exact binary target baseline."
+      status: "Accepted direction"
+      label: "FACT/INFERENCE"
+      evidence_or_basis: "Discussed around DOS/Windows/Mac/Linux platform buckets."
+      rationale: "A broad family like Linux5 or WinNT5 is not always an exact compatibility contract."
+      implications: "Target taxonomy should include family, baseline, arch, runtime/toolchain profile."
+      related_workstreams: ["WORKSTREAM-07"]
+      uncertainty: "confidence 4/5"
+    - id: "DECISION-12"
+      decision: "Use capabilities/contracts internally for compatibility rather than relying on versions alone."
+      status: "Tentative direction"
+      label: "INFERENCE"
+      evidence_or_basis: "User proposed this; assistant endorsed."
+      rationale: "Capabilities directly express what can interoperate, especially with backports, partial implementations, optional features, and multidimensional compatibility."
+      implications: "Need formal capability registry and negotiation schema."
+      related_workstreams: ["WORKSTREAM-08"]
+      uncertainty: "confidence 3/5"
+  tasks:
+    - id: "TASK-01"
+      task: "Draft the Release Constitution defining permanent field meanings and the no-reinterpretation rule."
+      priority: "P0"
+      urgency: "U1"
+      owner: "User/future assistant"
+      dependencies: ["Decisions 01-10"]
+      inputs_needed: ["This report and current chat"]
+      expected_output: "Repo-ready policy document."
+      next_step: "Write concise normative spec."
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "FACT/INFERENCE"
+      confidence: 4
+    - id: "TASK-02"
+      task: "Inventory all Dominium/XStack entities and classify them as strict SemVer component, product release ID, suite release ID, compatibility/capability contract, or build/provenance field."
+      priority: "P0"
+      urgency: "U1"
+      owner: "User/future assistant"
+      dependencies: ["Product/suite list and repo inventory"]
+      inputs_needed: ["Actual repo module/product list"]
+      expected_output: "Classification table."
+      next_step: "Create entity register."
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "FACT"
+      confidence: 4
+    - id: "TASK-03"
+      task: "Define suite version semantics for All, Full, Lite, Net, User, Dev, etc."
+      priority: "P0"
+      urgency: "U1"
+      owner: "User/future assistant"
+      dependencies: ["Decision 05"]
+      inputs_needed: ["Suite list and desired release trains"]
+      expected_output: "Suite version policy."
+      next_step: "Choose field semantics for X.Y.Z."
+      related_workstreams: ["WORKSTREAM-03"]
+      label: "FACT"
+      confidence: 4
+    - id: "TASK-04"
+      task: "Formalize GBN usage and BII schema."
+      priority: "P1"
+      urgency: "U1"
+      owner: "User/future assistant"
+      dependencies: ["Decision 06-07"]
+      inputs_needed: ["Current XStack build files/specs"]
+      expected_output: "Build Identity Spec."
+      next_step: "Inspect repo/current build scripts."
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "FACT/INFERENCE"
+      confidence: 4
+    - id: "TASK-05"
+      task: "Write Channel and Lifecycle Spec."
+      priority: "P1"
+      urgency: "U1"
+      owner: "User/future assistant"
+      dependencies: ["Decision 08-09"]
+      inputs_needed: ["Desired channel list"]
+      expected_output: "Policy for prerelease labels, lifecycle, release_class."
+      next_step: "Freeze accepted labels and ordering."
+      related_workstreams: ["WORKSTREAM-05"]
+      label: "FACT"
+      confidence: 4
+    - id: "TASK-06"
+      task: "Define artifact filename grammar and package-kind vocabulary."
+      priority: "P1"
+      urgency: "U1"
+      owner: "User/future assistant"
+      dependencies: ["Decision 10"]
+      inputs_needed: ["Packaging needs and target taxonomy"]
+      expected_output: "Artifact Naming Spec."
+      next_step: "Choose canonical grammar and examples."
+      related_workstreams: ["WORKSTREAM-06"]
+      label: "FACT"
+      confidence: 4
+    - id: "TASK-07"
+      task: "Define release manifest schema."
+      priority: "P1"
+      urgency: "U1"
+      owner: "User/future assistant"
+      dependencies: ["Tasks 02-06"]
+      inputs_needed: ["Fields for product/suite/build/target/capabilities"]
+      expected_output: "Machine-readable schema."
+      next_step: "Create YAML/JSON schema draft."
+      related_workstreams: ["WORKSTREAM-06"]
+      label: "FACT/INFERENCE"
+      confidence: 4
+    - id: "TASK-08"
+      task: "Define target family/baseline/arch/runtime taxonomy."
+      priority: "P1"
+      urgency: "U2"
+      owner: "User/future assistant"
+      dependencies: ["Decision 11"]
+      inputs_needed: ["Supported OS/toolchain feasibility data"]
+      expected_output: "Target Taxonomy Spec."
+      next_step: "Validate proposed OS families against real toolchains."
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "FACT/INFERENCE"
+      confidence: 4
+    - id: "TASK-09"
+      task: "Design capability/contract registry and resolver rules."
+      priority: "P1"
+      urgency: "U2"
+      owner: "User/future assistant"
+      dependencies: ["Decision 12"]
+      inputs_needed: ["Compatibility surfaces to model"]
+      expected_output: "Capability Compatibility Spec."
+      next_step: "List contract families and sample provides/requires."
+      related_workstreams: ["WORKSTREAM-08"]
+      label: "INFERENCE"
+      confidence: 4
+    - id: "TASK-10"
+      task: "Decide Setup product versioning and artifact policy."
+      priority: "P2"
+      urgency: "U2"
+      owner: "User/future assistant"
+      dependencies: ["Setup role discussion"]
+      inputs_needed: ["Installer architecture details"]
+      expected_output: "Setup-specific release/install workflow spec."
+      next_step: "Define standalone/portable setup capabilities."
+      related_workstreams: ["WORKSTREAM-09"]
+      label: "INFERENCE"
+      confidence: 4
+  constraints:
+    - id: "CONSTRAINT-01"
+      constraint: "Do not change field meanings after adoption."
+      type: "Governance"
+      hard_or_soft: "Hard"
+      source_or_basis: "Repeated design principle in chat."
+      implication: "Add fields for new meaning instead of reinterpreting old ones."
+      violation_risk: "High if not documented."
+      label: "FACT/INFERENCE"
+      confidence: "5"
+    - id: "CONSTRAINT-02"
+      constraint: "Only claim strict SemVer for entities with declared public API/contract."
+      type: "Versioning"
+      hard_or_soft: "Hard"
+      source_or_basis: "SemVer discussion and user acceptance."
+      implication: "Need API/contract documentation before compliance claims."
+      violation_risk: "High if applied decoratively."
+      label: "FACT"
+      confidence: "5"
+    - id: "CONSTRAINT-03"
+      constraint: "Build metadata after + must not be treated as SemVer precedence."
+      type: "Versioning"
+      hard_or_soft: "Hard"
+      source_or_basis: "SemVer rule discussed."
+      implication: "GBN may identify artifact but not order SemVer releases."
+      violation_risk: "High if update logic sorts build metadata as release order."
+      label: "FACT"
+      confidence: "5"
+    - id: "CONSTRAINT-04"
+      constraint: "Stable and hotfix are not prerelease suffixes."
+      type: "Versioning"
+      hard_or_soft: "Hard"
+      source_or_basis: "SemVer ordering discussion."
+      implication: "Use plain stable versions and patch bump + metadata for hotfixes."
+      violation_risk: "Medium."
+      label: "FACT"
+      confidence: "5"
+    - id: "CONSTRAINT-05"
+      constraint: "Manifest is canonical; filename is projection."
+      type: "Release engineering"
+      hard_or_soft: "Hard"
+      source_or_basis: "Artifact discussion."
+      implication: "Do not derive full truth only from filename parsing."
+      violation_risk: "High if files move/rename."
+      label: "FACT/INFERENCE"
+      confidence: "4"
+    - id: "CONSTRAINT-06"
+      constraint: "Compatibility should not be inferred solely from product/suite version."
+      type: "Compatibility"
+      hard_or_soft: "Hard"
+      source_or_basis: "Compatibility-axis and capability discussion."
+      implication: "Use explicit capabilities/contracts/schemas/protocol fields."
+      violation_risk: "High in plugin/network/save/pack cases."
+      label: "FACT/INFERENCE"
+      confidence: "4"
+    - id: "CONSTRAINT-07"
+      constraint: "Separate support family from exact binary target baseline."
+      type: "Platform"
+      hard_or_soft: "Soft-to-hard"
+      source_or_basis: "Platform discussion."
+      implication: "Need target_baseline/runtime/toolchain fields."
+      violation_risk: "High for Linux/old OS overclaims."
+      label: "FACT/INFERENCE"
+      confidence: "4"
+    - id: "CONSTRAINT-08"
+      constraint: "Human-readable preservation reports must not be replaced by machine-only handoffs."
+      type: "Documentation"
+      hard_or_soft: "Hard"
+      source_or_basis: "Uploaded preservation prompt."
+      implication: "Reports must explain substance and rationale."
+      violation_risk: "Medium."
+      label: "FACT"
+      confidence: "5"
+  open_questions:
+    - id: "QUESTION-01"
+      question: "Which exact products/components are strict SemVer components?"
+      why_it_matters: "Needed before Release Constitution can be enforced."
+      known: "Candidates identified."
+      unknown: "Final repo/component inventory and public API boundaries."
+      resolution_path: "Audit repo and create SemVer Component Inventory."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "FACT"
+    - id: "QUESTION-02"
+      question: "What exactly does suite version X.Y.Z mean?"
+      why_it_matters: "Prevents future drift and marketing reinterpretation."
+      known: "It is human-curated and non-SemVer."
+      unknown: "Field semantics still not final."
+      resolution_path: "Choose and document suite-major/train/update or equivalent."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-03"]
+      label: "FACT"
+    - id: "QUESTION-03"
+      question: "What is the exact BII schema?"
+      why_it_matters: "BII must integrate with manifests, filenames, and support/debugging."
+      known: "It should be structured metadata first."
+      unknown: "Fields, tokenization, allowed values."
+      resolution_path: "Inspect existing XStack/RepoX build identity and formalize."
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "FACT/INFERENCE"
+    - id: "QUESTION-04"
+      question: "What is the canonical artifact filename grammar?"
+      why_it_matters: "Needed for releases/downloads."
+      known: "Strong pattern proposed."
+      unknown: "Final delimiters/case/fields/package kinds."
+      resolution_path: "Draft naming spec and test examples."
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-06"]
+      label: "FACT"
+    - id: "QUESTION-05"
+      question: "What should the manifest schema contain and validate?"
+      why_it_matters: "Manifest is canonical truth."
+      known: "Candidate fields listed."
+      unknown: "Exact schema, required/optional fields, versioning."
+      resolution_path: "Create YAML/JSON schema draft."
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-06"]
+      label: "FACT"
+    - id: "QUESTION-06"
+      question: "What target family/baseline taxonomy should be used for DOS/Windows/Mac/Linux?"
+      why_it_matters: "Avoids overclaiming binary compatibility."
+      known: "Need to separate support family and exact baseline."
+      unknown: "Exact labels and feasibility."
+      resolution_path: "Research/test compiler/runtime support."
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "FACT/UNVERIFIED"
+    - id: "QUESTION-07"
+      question: "Should compatibility profiles remain distinct from capability contracts, or are capabilities the profile mechanism?"
+      why_it_matters: "Affects internal resolver design."
+      known: "Both ideas discussed."
+      unknown: "Final relationship."
+      resolution_path: "Design capability registry and map to suite manifests."
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-08"]
+      label: "INFERENCE"
+  rejected_or_superseded_options:
+    - id: "REJECTED-01"
+      option: "Pure SemVer for everything."
+      status: "Rejected/deprioritised"
+      reason: "Does not fit suites, apps, packs, installers, and multidimensional compatibility."
+      final_or_tentative: "Tentative but strong"
+      reconsider_conditions: "Only reconsider for entities with declared public APIs."
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "FACT"
+    - id: "REJECTED-02"
+      option: "One universal version number for suite, products, builds, compatibility, and packages."
+      status: "Rejected"
+      reason: "Overloads one field and causes future policy drift."
+      final_or_tentative: "Strong"
+      reconsider_conditions: "Only tiny projects could accept this."
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "FACT/INFERENCE"
+    - id: "REJECTED-03"
+      option: "Four-part public version as the main answer."
+      status: "Superseded"
+      reason: "GBN already provides dense chronological/build identity, so public release need not add fourth field for density."
+      final_or_tentative: "Tentative"
+      reconsider_conditions: "May reappear for specific products if required by platform conventions."
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "FACT/INFERENCE"
+    - id: "REJECTED-04"
+      option: "Encoding stable as -stable."
+      status: "Rejected"
+      reason: "Under SemVer, any hyphen suffix is prerelease and sorts below stable."
+      final_or_tentative: "Strong"
+      reconsider_conditions: "Do not reconsider unless abandoning SemVer ordering semantics entirely."
+      related_workstreams: ["WORKSTREAM-05"]
+      label: "FACT"
+    - id: "REJECTED-05"
+      option: "Encoding hotfix as -hotfix."
+      status: "Rejected"
+      reason: "Hotfix is usually a patch release plus release_class metadata, not a prerelease of the old version."
+      final_or_tentative: "Strong"
+      reconsider_conditions: "Only use for unreleased hotfix candidates if explicitly defined."
+      related_workstreams: ["WORKSTREAM-05"]
+      label: "FACT"
+    - id: "REJECTED-06"
+      option: "Using Linux kernel major alone as exact binary target."
+      status: "Rejected as exact target"
+      reason: "Linux compatibility depends heavily on libc/runtime/toolchain/userland."
+      final_or_tentative: "Strong"
+      reconsider_conditions: "Can remain a coarse support family label."
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "FACT/INFERENCE"
+    - id: "REJECTED-07"
+      option: "Generic one-size Windows binary target."
+      status: "Rejected as default"
+      reason: "Windows 9x/NT families and old baselines differ materially."
+      final_or_tentative: "Tentative"
+      reconsider_conditions: "Could exist for very constrained CLI/tools after testing."
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "FACT/INFERENCE"
+    - id: "REJECTED-08"
+      option: "Filenames as canonical release truth."
+      status: "Rejected"
+      reason: "Filenames are too lossy and mutable."
+      final_or_tentative: "Strong"
+      reconsider_conditions: "Filename parsing may be used as convenience only."
+      related_workstreams: ["WORKSTREAM-06"]
+      label: "FACT/INFERENCE"
+  artifacts:
+    - id: "ARTIFACT-01"
+      name_or_description: "Uploaded preservation mega-prompt: Pasted text.txt"
+      type: "Prompt/instruction file"
+      purpose: "Defines this preservation/export task."
+      status: "Provided in current turn."
+      origin: "User upload"
+      carry_forward: "Yes"
+      notes: "1109-line prompt requiring human-readable report, registers, spec sheet, aggregator packet, self-audit, and file exports."
+      label: "FACT"
+    - id: "ARTIFACT-02"
+      name_or_description: "In-chat versioning summary produced before upload"
+      type: "Chat output"
+      purpose: "Summarized decisions and unresolved issues up to that point."
+      status: "Visible transcript"
+      origin: "Assistant output"
+      carry_forward: "Yes"
+      notes: "Served as prior knowledge-base baseline, but must not be treated as user-final decisions where not accepted."
+      label: "FACT"
+    - id: "ARTIFACT-03"
+      name_or_description: "Canonical version examples"
+      type: "Examples/spec fragments"
+      purpose: "Illustrate strict SemVer and SemVer-shaped identifiers."
+      status: "Visible discussion"
+      origin: "Chat content"
+      carry_forward: "Yes"
+      notes: "Examples include 1.2.3, 1.2.3-beta.1, +gbn.7137, +sha.deadbeef."
+      label: "FACT"
+    - id: "ARTIFACT-04"
+      name_or_description: "Proposed artifact filename grammar"
+      type: "Spec fragment"
+      purpose: "Readable artifact naming model."
+      status: "Visible discussion"
+      origin: "Chat content"
+      carry_forward: "Yes"
+      notes: "Pattern: Dominium-<scope>-<id>-<version>-<target>-<arch>-<pkg>.<ext>; not final."
+      label: "FACT/INFERENCE"
+    - id: "ARTIFACT-05"
+      name_or_description: "Proposed capability model examples"
+      type: "Spec fragment"
+      purpose: "Internal compatibility strategy."
+      status: "Visible discussion"
+      origin: "Chat content"
+      carry_forward: "Yes"
+      notes: "Examples: save.schema@5, plugin.host@2, net.protocol@3. Tentative."
+      label: "INFERENCE"
+  risks:
+    - id: "RISK-01"
+      risk: "Future assistant treats SemVer-shaped product/suite IDs as strict SemVer."
+      consequence: "False compatibility claims and wrong bump advice."
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Always classify entity type first."
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "FACT/INFERENCE"
+    - id: "RISK-02"
+      risk: "GBN used as SemVer ordering despite being in +build metadata."
+      consequence: "Incorrect update ordering/resolver behavior."
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Keep separate ordering fields and tests."
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "FACT"
+    - id: "RISK-03"
+      risk: "BII becomes an overloaded version-string dump."
+      consequence: "Fragile filenames and unreadable versions."
+      likelihood: "Medium"
+      severity: "Medium"
+      mitigation: "Keep full BII in manifest; expose compact token only."
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "INFERENCE"
+    - id: "RISK-04"
+      risk: "OS/platform labels overclaim compatibility."
+      consequence: "Artifacts fail on older claimed systems."
+      likelihood: "High"
+      severity: "High"
+      mitigation: "Separate support_family and target_baseline; test baselines."
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "FACT/UNVERIFIED"
+    - id: "RISK-05"
+      risk: "Capabilities become undocumented string soup."
+      consequence: "Compatibility resolver becomes arbitrary and hard to audit."
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Create namespace, ownership, lifecycle, and validation rules."
+      related_workstreams: ["WORKSTREAM-08"]
+      label: "INFERENCE"
+    - id: "RISK-06"
+      risk: "Tentative ideas are merged as final requirements."
+      consequence: "Spec book contains unstable or wrong commitments."
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Preserve status labels and require user confirmation."
+      related_workstreams: ["ALL"]
+      label: "FACT/INFERENCE"
+    - id: "RISK-07"
+      risk: "Human narrative is replaced by registers only."
+      consequence: "User cannot understand old chat without rereading transcript."
+      likelihood: "Medium"
+      severity: "Medium"
+      mitigation: "Keep prose report as primary artifact."
+      related_workstreams: ["Documentation"]
+      label: "FACT"
+  verification_queue:
+    - id: "VERIFY-01"
+      item: "Exact current SemVer 2.0.0 text before writing final normative repo spec."
+      why_verification_needed: "Formal docs should cite the primary spec."
+      suggested_source_type: "semver.org primary spec"
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "UNVERIFIED"
+    - id: "VERIFY-02"
+      item: "Actual existing XStack/RepoX build files, GBN behavior, and BII fields."
+      why_verification_needed: "Earlier discussion referenced repo/build system, but this preservation task did not inspect repo files."
+      suggested_source_type: "Repo inspection"
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "UNCERTAIN"
+    - id: "VERIFY-03"
+      item: "Feasibility of proposed OS target families and one-binary-per-family claims."
+      why_verification_needed: "Compiler/runtime support is external and time/toolchain dependent."
+      suggested_source_type: "Toolchain docs and build tests"
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "UNVERIFIED"
+    - id: "VERIFY-04"
+      item: "Exact product/suite list in repository."
+      why_verification_needed: "User listed examples with “etc.”, not final inventory."
+      suggested_source_type: "Repo inventory and user confirmation"
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "UNCERTAIN"
+    - id: "VERIFY-05"
+      item: "Whether capability profiles should be separate entities or derived from capability sets."
+      why_verification_needed: "Design still tentative."
+      suggested_source_type: "Architecture decision record/user decision"
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-08"]
+      label: "UNCERTAIN"
+  spec_book_notes:
+    likely_sections:
+      - "Release Engineering"
+      - "Versioning and Compatibility"
+      - "Build Identity"
+      - "Artifact Packaging"
+      - "Platform Targets"
+      - "Installer/Setup"
+      - "Capability Contracts"
+    unique_contributions:
+      - "Layered release identity doctrine"
+      - "Strict SemVer vs SemVer-shaped release ID distinction"
+      - "GBN/BII provenance model"
+      - "Capability-based internal compatibility direction"
+    possible_duplicates_with_other_chats:
+      - "Dominium architecture/build/distribution chats"
+      - "XStack build identity discussions"
+      - "Platform/renderer/installer chats"
+    conflicts_to_watch_for:
+      - "Any prior plan that used SemVer for all products/suites"
+      - "Any prior naming scheme that treated filenames as canonical truth"
+      - "Any target taxonomy that used Linux kernel major as exact binary baseline"
+    formal_requirements_candidates:
+      - "Only declared public API components may claim strict SemVer."
+      - "GBN and BII are provenance, not SemVer precedence."
+      - "Manifests are canonical artifact truth."
+      - "Compatibility is capability/contract-based internally."
+    background_context_candidates:
+      - "Examples from Windows, Minecraft, macOS, .NET, Linux, TeX."
+    needs_user_confirmation:
+      - "Exact suite version semantics"
+      - "Exact SemVer component inventory"
+      - "Exact capability registry"
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Draft the Release Constitution and SemVer Component Inventory."
+    next_action_for_aggregator: "Merge this as the release identity/versioning source chat, preserving uncertainty labels."
+    user_checks_required:
+      - "Confirm suite X.Y.Z semantics."
+      - "Confirm product/component list."
+      - "Confirm capability-contract model."

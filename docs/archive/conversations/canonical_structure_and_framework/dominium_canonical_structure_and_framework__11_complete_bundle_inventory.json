@@ -1,0 +1,77 @@
+{
+  "created": "2026-05-27 21:03:35 AEST",
+  "file_count": 15,
+  "files": [
+    {
+      "bytes": 2177,
+      "file": "dominium_canonical_structure_and_framework__00_manifest.md",
+      "sha256": "ef374d2940fb146439ed213993e5f6fd4374f2cc1f75e890e471783848b52306"
+    },
+    {
+      "bytes": 84019,
+      "file": "dominium_canonical_structure_and_framework__01_human_readable_report.md",
+      "sha256": "5832e9ade27da205b61f6c0c0a1e6bc378387520c73078e342e1adb81aa68d88"
+    },
+    {
+      "bytes": 5212,
+      "file": "dominium_canonical_structure_and_framework__02_context_transfer_packet.md",
+      "sha256": "b25ea2eb09f91233c5e47df2eb2edf6e79d0a3858531a6bcac8daea049d12464"
+    },
+    {
+      "bytes": 10350,
+      "file": "dominium_canonical_structure_and_framework__03_spec_sheet.yaml",
+      "sha256": "687f2729f8edad0c195ba243adc347d2321451e9987fb33416e774f1ae61b925"
+    },
+    {
+      "bytes": 17073,
+      "file": "dominium_canonical_structure_and_framework__04_registers.md",
+      "sha256": "e0530dab3a7a9b8fe462cfed18a28c4864d38a96b1a380cdefad89f25f7edd27"
+    },
+    {
+      "bytes": 6290,
+      "file": "dominium_canonical_structure_and_framework__05_aggregator_packet.md",
+      "sha256": "1cc7042fd67a1e56cce61151312c2b5accf5f57eb0706060bb5fc6efb3f7b3c8"
+    },
+    {
+      "bytes": 2184,
+      "file": "dominium_canonical_structure_and_framework__06_reader_brief.md",
+      "sha256": "a85a459115c09464d3dc8ec3eab372799a726a76d040937e390fc8a79749d483"
+    },
+    {
+      "bytes": 1854,
+      "file": "dominium_canonical_structure_and_framework__07_verification_and_audit.md",
+      "sha256": "6ae1922c246880bd3430d385ec45a4a84f6f75c51d89e649d474637ba024265f"
+    },
+    {
+      "bytes": 713,
+      "file": "dominium_canonical_structure_and_framework__08_future_chat_bootstrap_prompt.md",
+      "sha256": "ab6f49450469ec4213c19ddcb60e6915c8c2767f7ac90ba575f33831c466b597"
+    },
+    {
+      "bytes": 1120,
+      "file": "dominium_canonical_structure_and_framework__09_in_chat_reader.md",
+      "sha256": "1a612924be605ea948c3866b248bcfcfffd0b96a814299b8acb5efe48249c432"
+    },
+    {
+      "bytes": 19554,
+      "file": "dominium_canonical_structure_and_framework__10_accompanying_detailed_summary.md",
+      "sha256": "aa710d5304055f9d729f31dfba874a2085804508009362a8016ac39474e22b37"
+    },
+    {
+      "bytes": 19554,
+      "file": "dominium_canonical_structure_and_framework__10_accompanying_detailed_summary.txt",
+      "sha256": "aa710d5304055f9d729f31dfba874a2085804508009362a8016ac39474e22b37"
+    },
+    {
+      "bytes": 38366,
+      "file": "dominium_canonical_handoff.md",
+      "sha256": "a12aa98eeee4588231484984342f4fcd452edca26ff14f5bc6e7c4bd51b438a0"
+    },
+    {
+      "bytes": 38366,
+      "file": "dominium_canonical_handoff.txt",
+      "sha256": "a12aa98eeee4588231484984342f4fcd452edca26ff14f5bc6e7c4bd51b438a0"
+    }
+  ],
+  "package": "dominium_canonical_structure_and_framework__complete_handoff_with_companion.zip"
+}

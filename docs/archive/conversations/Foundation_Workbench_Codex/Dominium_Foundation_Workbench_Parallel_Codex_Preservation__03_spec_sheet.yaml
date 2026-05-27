@@ -1,0 +1,1491 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only unless labelled PROJECT-CONTEXT
+    apparent_coverage: Partial but high-context; visible transcript plus current uploaded
+      preservation instructions.
+    confidence_1_to_5: 4
+    staleness_risk: Medium
+    safe_for_aggregation: Yes, with caveats
+    main_limitations:
+    - Some earlier turns were elided as skipped.
+    - Some older uploaded files expired.
+    - Latest repo state after final pasted transcript not independently verified in
+      this preservation step.
+  summary:
+    one_sentence: This chat preserved Dominium’s transition from root cleanup into
+      a contract-governed, parallel-Codex, Workbench/product-slice development phase.
+    short_brief: Dominium’s final architecture uses Domino as reusable substrate,
+      Dominium as product family, Workbench as production environment, AIDE as control
+      harness, contracts as law, and tests/replay/evidence as proof.
+    main_topics:
+    - Dominium architecture
+    - Repo cleanup
+    - Foundation Lock
+    - C17/C++17 and 64-bit policy
+    - Workbench
+    - Parallel Codex
+    - Command/result/view slice
+    - Doctrine recovery
+    main_outputs:
+    - Large handoff
+    - Parallel prompts
+    - Task queue
+    - Registers
+    - Spec prep
+    highest_priority_carry_forward:
+    - Verify live repo state
+    - Generate COMMAND-RESULT-VIEW-SLICE-01
+    - Preserve parallel worker rules
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Do not smooth contradictions; verify live repo before action.
+    staleness_rules:
+    - Repo state and current task queue require verification.
+  user_preferences:
+    explicit:
+    - Direct, source-grounded, audit-ready answers
+    - Start responses with model label and timestamp
+    - Distinguish FACT / INFERENCE / UNCERTAIN
+    - Generate one large continuous txt/code block for Codex prompts
+    - Prompts must do implementation/docs/targeted testing, not just reports
+    - Rarely run full test suites
+    - Do not stop at blockers without classification/repair attempts
+    - Prioritize getting to Workbench/code soon
+    - Do not lose old doctrine/context
+    inferred: []
+    uncertain_or_not_established: []
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Dominium / Domino / Workbench / AIDE master architecture
+    label: FACT
+    objective: 'Preserve the final system model: Domino substrate, Dominium product
+      family, Workbench environment, AIDE harness, contracts law, proof by tests/replay/evidence.'
+    current_state: Foundation/governance spine mostly established; broad feature work
+      blocked; narrow slices authorized after Foundation Lock.
+    desired_end_state: A deterministic, contract-governed simulation platform with
+      replaceable implementations and evidence-backed product slices.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: High
+  - id: WORKSTREAM-02
+    name: Canonical repository skeleton and root cleanup
+    label: FACT/UNCERTAIN
+    objective: Keep the repo in the closed ownership-root model and avoid junk-root
+      recurrence.
+    current_state: Root cleanup reportedly no longer the main issue; earlier router/move
+      work replaced bad roots or quarantined unknowns.
+    desired_end_state: No active old root junk drawers; canonical roots remain stable;
+      generated/local roots stay out of source authority.
+    status: mostly-complete
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium
+  - id: WORKSTREAM-03
+    name: Foundation Lock and governance spine
+    label: FACT
+    objective: Ensure public surfaces, ABI, dependency direction, commands, diagnostics,
+      artifacts, schema/protocol, capability/refusal, providers, modules/apps, replacement,
+      versioning, trust, and portability are validated.
+    current_state: Foundation Lock reportedly PASS_WITH_WARNINGS after dependency
+      repair; fast strict passes; full CTest remains T4 debt.
+    desired_end_state: Foundation Lock remains the baseline gate for narrow product
+      work; full gate reserved for release/trust.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium-High
+  - id: WORKSTREAM-04
+    name: Fast strict proof loop
+    label: FACT
+    objective: Use a fast, meaningful normal gate instead of full CTest for every
+      task.
+    current_state: Fast strict reportedly passes 32 commands in ~272–315 seconds depending
+      audit; full CTest remains T4 debt.
+    desired_end_state: Normal changes use targeted validators + fast strict; release/trust
+      changes use full gate.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: High
+  - id: WORKSTREAM-05
+    name: Language and native architecture baseline
+    label: FACT/UNCERTAIN
+    objective: Use C17/C++17, 64-bit source-native, little-endian, C-compatible ABI,
+      fixed-width persisted formats.
+    current_state: C17/C++17 reportedly live; 64-bit architecture policy prompted/in-flight
+      or pending verification.
+    desired_end_state: Mainline full native products are x86_64/arm64; 32-bit/vintage
+      targets are constrained/projection/archive-runner.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium
+  - id: WORKSTREAM-06
+    name: Parallel Codex/AIDE workflow
+    label: FACT/UNCERTAIN
+    objective: Run isolated Codex workers in parallel with strict path allowlists
+      and coordinator merges.
+    current_state: Wave 1 prompts generated; later pasted state says Wave 1 effectively
+      complete.
+    desired_end_state: Multiple safe branches produce task-local evidence; coordinator
+      serially merges and runs fast strict.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium
+  - id: WORKSTREAM-07
+    name: Workbench validation and command/view spine
+    label: FACT/UNCERTAIN
+    objective: Build a narrow Workbench/product spine through registered commands,
+      typed results, semantic views, projections, diagnostics, and evidence.
+    current_state: WORKBENCH-VALIDATION-SLICE-01 reportedly complete; next task is
+      COMMAND-RESULT-VIEW-SLICE-01.
+    desired_end_state: One command/result/view/projection path works across CLI/headless/text/Workbench
+      without private bypass.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium
+  - id: WORKSTREAM-08
+    name: Service conformance, document/patch, project graph, composition law
+    label: FACT/UNCERTAIN
+    objective: Define supporting laws needed before bigger Workbench/product work.
+    current_state: Prompts generated; pasted state says complete or pass-with-warnings.
+    desired_end_state: Conformance, document/patch/transaction, graph, and composition
+      models inform later runtime/product slices.
+    status: active
+    priority: P1
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium
+  - id: WORKSTREAM-09
+    name: Runtime/product spine slices
+    label: FACT
+    objective: Build package mount, replay proof, and barebones client shell after
+      command/result/view proof.
+    current_state: Planned; not yet executed in visible chat.
+    desired_end_state: Package/profile/content mount proof; deterministic replay proof;
+      minimal client status/refusal shell.
+    status: planned
+    priority: P1
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: High
+  - id: WORKSTREAM-10
+    name: Presentation/accessibility/localization spine
+    label: FACT
+    objective: Define semantic presentation, projection conformance, accessibility,
+      and text/localization before rich UI.
+    current_state: Planned after runtime/product checkpoint.
+    desired_end_state: CLI/TUI/headless/rendered/native projections share semantics;
+      accessibility and localization not late afterthoughts.
+    status: planned
+    priority: P2
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: High
+  - id: WORKSTREAM-11
+    name: Doctrine recovery and domain constitution
+    label: FACT
+    objective: Preserve long-running design doctrine and instantiate it into domain
+      constitutions.
+    current_state: Prompt generated; uploaded transcript says most doctrine preserved
+      but deep primitives/failure/domain constitutions remain partial.
+    desired_end_state: Doctrine recovery matrix guides deep primitives, failure ontology,
+      representation proof, domain constitutions, playable baseline.
+    status: active/planned
+    priority: P2
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium
+  - id: WORKSTREAM-12
+    name: Future game/product/domain expansion
+    label: INFERENCE/FACT
+    objective: 'Eventually build playable baseline and domain/game slices: survival,
+      fabrication, maintenance, settlements, logistics/economy, institutions, knowledge,
+      civilization, conflict, offworld.'
+    current_state: Broad feature work currently blocked; future order planned.
+    desired_end_state: Gameplay/features enter as domain constitutions, bridges, capabilities,
+      representations, failure models, proofs, not ad hoc features.
+    status: future
+    priority: P3
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium
+  decisions:
+  - id: DECISION-01
+    decision: Dominium should be a deterministic contract-governed simulation platform,
+      not merely a game repo.
+    status: final
+    label: FACT
+    evidence_or_basis: Repeated synthesis accepted by user across conversation.
+    rationale: Enables modularity, replacement, proof-driven development.
+    implications: Enables modularity, replacement, proof-driven development.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: High
+  - id: DECISION-02
+    decision: Domino is the reusable substrate; Dominium is the product family; Workbench
+      is production environment; AIDE is control-plane harness.
+    status: final
+    label: FACT
+    evidence_or_basis: Repeated summaries and user acceptance.
+    rationale: Prevents Workbench/Dominium from becoming vague everything-platform.
+    implications: Prevents Workbench/Dominium from becoming vague everything-platform.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: High
+  - id: DECISION-03
+    decision: Contracts are law; tests/replay/evidence are proof.
+    status: final
+    label: FACT
+    evidence_or_basis: Core architectural mantra from conversation.
+    rationale: Docs explain, generated output is evidence unless promoted.
+    implications: Docs explain, generated output is evidence unless promoted.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: High
+  - id: DECISION-04
+    decision: Path is not identity; implementation is not contract; UI is not authority;
+      generated output is not source truth.
+    status: final
+    label: FACT
+    evidence_or_basis: Explicitly repeated and used in prompts.
+    rationale: Stable IDs/contracts/registries/manifests own identity; paths are replaceable.
+    implications: Stable IDs/contracts/registries/manifests own identity; paths are
+      replaceable.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: High
+  - id: DECISION-05
+    decision: Keep the closed canonical source-root set.
+    status: final-with-caveats
+    label: FACT
+    evidence_or_basis: Root cleanup discussions and repo convergence.
+    rationale: No new top-level modules/plugins/services/sdk roots unless future contract
+      introduces them.
+    implications: No new top-level modules/plugins/services/sdk roots unless future
+      contract introduces them.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: High
+  - id: DECISION-06
+    decision: Unknown files should not remain in bad roots; route to archive/quarantine
+      rather than guess active ownership.
+    status: final for cleanup phase
+    label: FACT
+    evidence_or_basis: MOVE-ROUTER discussion.
+    rationale: Prevents unknown files blocking cleanup or being wrongly active.
+    implications: Prevents unknown files blocking cleanup or being wrongly active.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: Medium
+  - id: DECISION-07
+    decision: Mainline language baseline is C17 + C++17, not C89/C++98.
+    status: final/live per checks
+    label: FACT/VERIFY
+    evidence_or_basis: Language baseline discussion and later repo state checks.
+    rationale: C-compatible public ABI remains; C89/C++98 becomes research/historical.
+    implications: C-compatible public ABI remains; C89/C++98 becomes research/historical.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: Medium
+  - id: DECISION-08
+    decision: 'Full native products should be 64-bit source-native: x86_64 + arm64;
+      32-bit is constrained/projection/archive-runner.'
+    status: decided, policy encoding pending/in-flight
+    label: FACT/UNCERTAIN
+    evidence_or_basis: 64-bit policy discussion.
+    rationale: Avoid old-toolchain/memory/matrix drag; keep pointer-width out of persisted
+      law.
+    implications: Avoid old-toolchain/memory/matrix drag; keep pointer-width out of
+      persisted law.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: Medium
+  - id: DECISION-09
+    decision: Little-endian mainline with explicit little-endian persisted/protocol
+      encodings.
+    status: decided
+    label: FACT
+    evidence_or_basis: 64-bit/platform discussion.
+    rationale: Avoid expensive big-endian support; formats are explicit.
+    implications: Avoid expensive big-endian support; formats are explicit.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: Medium
+  - id: DECISION-10
+    decision: Fast strict is normal dev gate; full CTest is T4/full-gate debt.
+    status: final
+    label: FACT
+    evidence_or_basis: Test-time frustration and Foundation Lock model.
+    rationale: Prompts use targeted validators; full CTest only release/trust or specific
+      need.
+    implications: Prompts use targeted validators; full CTest only release/trust or
+      specific need.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: High
+  - id: DECISION-11
+    decision: Foundation Lock gates narrow product work; broad feature work remains
+      blocked.
+    status: final for current phase
+    label: FACT
+    evidence_or_basis: Foundation closeout state.
+    rationale: Narrow slices allowed; not gameplay/renderer/native GUI/release.
+    implications: Narrow slices allowed; not gameplay/renderer/native GUI/release.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: High
+  - id: DECISION-12
+    decision: Workbench must use registered commands/services/evidence, not private
+      validators/tools.
+    status: final
+    label: FACT
+    evidence_or_basis: Workbench role discussions.
+    rationale: Prevents Workbench from becoming authority or bypass.
+    implications: Prevents Workbench from becoming authority or bypass.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: High
+  - id: DECISION-13
+    decision: Use parallel Codex worktrees with strict worker rules.
+    status: active decision
+    label: FACT
+    evidence_or_basis: User explicitly requested concurrent Codex chats.
+    rationale: Speed up setup while limiting merge conflicts.
+    implications: Speed up setup while limiting merge conflicts.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: High
+  - id: DECISION-14
+    decision: 'Wave 1 prompt set: service conformance, document/patch/transaction,
+      project graph, composition resolver, doctrine recovery.'
+    status: executed in chat; completion user-reported
+    label: FACT
+    evidence_or_basis: Prompts generated one by one.
+    rationale: Foundation hardening runs in parallel.
+    implications: Foundation hardening runs in parallel.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: High
+  - id: DECISION-15
+    decision: Next task after Wave 1 is COMMAND-RESULT-VIEW-SLICE-01.
+    status: current plan
+    label: FACT/UNCERTAIN
+    evidence_or_basis: Latest pasted transcript.
+    rationale: Bridge command result to semantic view/projection before package mount.
+    implications: Bridge command result to semantic view/projection before package
+      mount.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: Medium
+  - id: DECISION-16
+    decision: Do not start broad Workbench UI before command/result/view/projection
+      law.
+    status: final for sequencing
+    label: FACT
+    evidence_or_basis: Avoid duplicate CLI/Workbench/TUI/rendered logic.
+    rationale: Presentation spine first.
+    implications: Presentation spine first.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: High
+  - id: DECISION-17
+    decision: Composition is the product.
+    status: architectural decision
+    label: FACT
+    evidence_or_basis: Composition resolver discussion.
+    rationale: Apps compose profiles/packs/modules/providers/capabilities into lockfiles/evidence.
+    implications: Apps compose profiles/packs/modules/providers/capabilities into
+      lockfiles/evidence.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: High
+  - id: DECISION-18
+    decision: Doctrine recovery should map old doctrine to current canon rather than
+      create a competing master doctrine.
+    status: final for doctrine phase
+    label: FACT
+    evidence_or_basis: Uploaded transcript and doctrine prompt.
+    rationale: Preserve old requirements without overriding contracts.
+    implications: Preserve old requirements without overriding contracts.
+    related_workstreams:
+    - WORKSTREAM-11
+    uncertainty: High
+  - id: DECISION-19
+    decision: Major game features must enter as domain constitutions/bridges/capabilities/representation/failure/proof,
+      not ad hoc features.
+    status: future design law
+    label: FACT/INFERENCE
+    evidence_or_basis: Domain and doctrine discussions.
+    rationale: Prevents shallow feature scripts and semantic drift.
+    implications: Prevents shallow feature scripts and semantic drift.
+    related_workstreams:
+    - WORKSTREAM-12
+    uncertainty: Medium
+  - id: DECISION-20
+    decision: Do not put domino/dominium in every path; use project prefixes for public
+      C symbols and fully qualified stable IDs.
+    status: final naming law
+    label: FACT
+    evidence_or_basis: Naming discussion.
+    rationale: Short readable paths; collision-proof public symbols/IDs.
+    implications: Short readable paths; collision-proof public symbols/IDs.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: High
+  tasks:
+  - id: TASK-01
+    task: Verify live repo state before issuing next prompt
+    priority: P0
+    urgency: U0
+    owner: assistant/new chat
+    dependencies: []
+    inputs_needed:
+    - GitHub connector or local git status
+    expected_output: Confirm current main, queue, in-flight tasks.
+    next_step: Check latest commits and queue docs.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: medium
+  - id: TASK-02
+    task: Generate COMMAND-RESULT-VIEW-SLICE-01 prompt
+    priority: P0
+    urgency: U0
+    owner: assistant
+    dependencies:
+    - Wave 1 complete or verified
+    - Workbench validation slice complete
+    inputs_needed:
+    - Current command/result/view contracts
+    expected_output: Large continuous Codex prompt.
+    next_step: Use dominium.validation.run if possible.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: medium
+  - id: TASK-03
+    task: Run PHASE-REVIEW-02 after command/result/view slice
+    priority: P0
+    urgency: U1
+    owner: Codex/coordinator
+    dependencies:
+    - COMMAND-RESULT-VIEW-SLICE-01 complete
+    inputs_needed:
+    - Wave 1 audits and command-result-view audit
+    expected_output: Review conflicts/regressions/readiness.
+    next_step: Compare tasks and validators.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: medium
+  - id: TASK-04
+    task: PACKAGE-MOUNT-SLICE-01
+    priority: P1
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - PHASE-REVIEW-02 green
+    - composition law
+    - artifact identity
+    - pack trust
+    inputs_needed:
+    - One pack/profile/content artifact
+    expected_output: Fixture-driven mount decision and lock/report.
+    next_step: Define narrow prompt after phase review.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+    confidence: medium
+  - id: TASK-05
+    task: REPLAY-PROOF-SLICE-01
+    priority: P1
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - command/evidence model
+    inputs_needed:
+    - Simple deterministic command or validation command
+    expected_output: One replay/proof/hash artifact.
+    next_step: Choose minimal deterministic path.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+    confidence: medium
+  - id: TASK-06
+    task: BAREBONES-CLIENT-SHELL-01
+    priority: P1
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - package/replay slices
+    inputs_needed:
+    - Client app status surfaces
+    expected_output: Minimal client shell status/refusal with no optional content.
+    next_step: Keep no gameplay/non-rendered.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+    confidence: medium
+  - id: TASK-07
+    task: RUNTIME-SPINE-REVIEW-01
+    priority: P1
+    urgency: U1
+    owner: coordinator
+    dependencies:
+    - Package/replay/client slices
+    inputs_needed:
+    - Slice audits
+    expected_output: Runtime/product spine readiness decision.
+    next_step: Run fast strict and review docs.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+    confidence: medium
+  - id: TASK-08
+    task: PRESENTATION-CONTRACT-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - runtime spine review green
+    inputs_needed:
+    - View/action/projection needs
+    expected_output: Presentation contract and projection law.
+    next_step: Generate scoped prompt.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: medium
+  - id: TASK-09
+    task: PROJECTION-CONFORMANCE-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - presentation contract
+    inputs_needed:
+    - Projection fixtures
+    expected_output: Projection conformance fixtures for CLI/TUI/headless/rendered/native
+      placeholders.
+    next_step: Generate scoped prompt.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: medium
+  - id: TASK-10
+    task: ACCESSIBILITY-CONTRACT-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - presentation contract
+    inputs_needed:
+    - Accessibility requirements
+    expected_output: Accessibility contract for labels/focus/keyboard/contrast/reduced
+      motion.
+    next_step: Generate scoped prompt.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: medium
+  - id: TASK-11
+    task: TEXT-LOCALIZATION-CONTRACT-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - presentation contract
+    inputs_needed:
+    - Text/message catalogs
+    expected_output: Localization/text ID policy.
+    next_step: Generate scoped prompt.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: medium
+  - id: TASK-12
+    task: WORKBENCH-SHELL-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - presentation spine review
+    inputs_needed:
+    - Workbench shell law and modules
+    expected_output: Minimal non-rendered/text-first shell.
+    next_step: Do not build full rendered GUI.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: medium
+  - id: TASK-13
+    task: PROJECT-GRAPH-EXPLORER-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - project graph law
+    - Workbench shell
+    inputs_needed:
+    - Graph query fixtures
+    expected_output: Workbench graph summary/impact view.
+    next_step: Keep derived, not authority.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: medium
+  - id: TASK-14
+    task: PACK-BROWSER-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - package mount proof
+    - Workbench shell
+    inputs_needed:
+    - Pack list/detail commands
+    expected_output: Pack browser view over pack capabilities/trust/deps.
+    next_step: Scoped prompt later.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: medium
+  - id: TASK-15
+    task: AGENT-WORK-BOARD-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - AIDE task docs
+    - Workbench shell
+    inputs_needed:
+    - AIDE work unit/evidence docs
+    expected_output: Agent task/evidence board; no autonomous execution.
+    next_step: Scoped prompt later.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: medium
+  - id: TASK-16
+    task: COMPATIBILITY-CORPUS-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - runtime/product spine
+    inputs_needed:
+    - old artifacts/fixtures
+    expected_output: Seed compatibility corpus.
+    next_step: Not complete corpus initially.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: medium
+  - id: TASK-17
+    task: PERFORMANCE-BUDGETS-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - fast strict
+    inputs_needed:
+    - budget categories
+    expected_output: Performance budget contracts/validator.
+    next_step: Later hardening.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: medium
+  - id: TASK-18
+    task: ASSURANCE-PROFILE-00
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - governance spine
+    inputs_needed:
+    - DIL levels
+    expected_output: Assurance levels and validator.
+    next_step: Before high-trust release/plugin work.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: medium
+  - id: TASK-19
+    task: RELEASE-PROMOTION-GATE-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - release law
+    inputs_needed:
+    - promotion states
+    expected_output: Release promotion gate.
+    next_step: Before public release.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: medium
+  - id: TASK-20
+    task: FULL-GATE-DEBT-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - full gate/hardening
+    inputs_needed:
+    - Full CTest failures
+    expected_output: Classify/fix full CTest debt.
+    next_step: Do not block narrow slices now.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: medium
+  - id: TASK-21
+    task: POINTER-WIDTH-SERIALIZATION-AUDIT-01
+    priority: P2
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - PORTABILITY-ARCH-POLICY-02 complete
+    inputs_needed:
+    - source inventory
+    expected_output: Audit pointer-sized persisted truth hazards.
+    next_step: Inventory + targeted fixes only.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: medium
+  - id: TASK-22
+    task: SPEC-DEEP-PRIMITIVES-01
+    priority: P3
+    urgency: U2
+    owner: Codex/planning
+    dependencies:
+    - doctrine matrix
+    inputs_needed:
+    - old doctrine/current docs
+    expected_output: Master deep primitives doctrine.
+    next_step: After product spine starts moving.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: medium
+  - id: TASK-23
+    task: SPEC-FAILURE-ONTOLOGY-01
+    priority: P3
+    urgency: U2
+    owner: Codex/planning
+    dependencies:
+    - doctrine matrix
+    inputs_needed:
+    - failure model gaps
+    expected_output: Cross-domain failure ontology.
+    next_step: Later planning.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: medium
+  - id: TASK-24
+    task: DOMAIN-CONSTITUTION-WAVE-01
+    priority: P3
+    urgency: U2
+    owner: Codex/planning
+    dependencies:
+    - deep primitives/failure ontology
+    inputs_needed:
+    - domain template
+    expected_output: First domain constitutions.
+    next_step: Later planning.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+    confidence: medium
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: No broad feature work until authorized
+    type: project sequencing
+    hard_or_soft: hard
+    source_or_basis: Foundation docs/plan
+    implication: Blocks gameplay/render/native GUI/public release until proper slices/gates.
+    violation_risk: high
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-02
+    constraint: Full CTest is not routine gate
+    type: testing
+    hard_or_soft: hard/practical
+    source_or_basis: User preference and Foundation model
+    implication: Use targeted validators/fast strict; full CTest for T4/release/trust.
+    violation_risk: medium
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-03
+    constraint: Parallel workers must not push to main
+    type: workflow
+    hard_or_soft: hard
+    source_or_basis: Parallel plan
+    implication: Avoid race/merge corruption.
+    violation_risk: high
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-04
+    constraint: Parallel workers must not edit global AIDE latest files
+    type: workflow
+    hard_or_soft: hard
+    source_or_basis: Parallel prompt rules
+    implication: Prevents conflicts; coordinator updates latest state.
+    violation_risk: high
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-05
+    constraint: Contracts are law
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: Core doctrine
+    implication: Docs/generation cannot override contracts.
+    violation_risk: high
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-06
+    constraint: Workbench is not authority
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: Workbench discussions
+    implication: Workbench must use commands/services/evidence.
+    violation_risk: high
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-07
+    constraint: Public ABI is C-compatible
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Language/ABI decision
+    implication: No C++ ABI/STL/exceptions across stable boundary.
+    violation_risk: high
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-08
+    constraint: Persisted formats use fixed-width explicit little-endian fields
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: 64-bit/endian discussion
+    implication: No pointer-sized truth.
+    violation_risk: high
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-09
+    constraint: Mainline full native is 64-bit x86_64/arm64
+    type: technical
+    hard_or_soft: hard after policy
+    source_or_basis: 64-bit decision
+    implication: 32-bit is constrained/projection/research.
+    violation_risk: medium
+    label: FACT/UNCERTAIN
+    confidence: Medium
+  - id: CONSTRAINT-10
+    constraint: No silent fallback
+    type: runtime/capability
+    hard_or_soft: hard
+    source_or_basis: Capability/refusal law
+    implication: Missing capabilities produce typed refusal/degradation/evidence.
+    violation_risk: high
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-11
+    constraint: Generated output is not source truth
+    type: repo hygiene
+    hard_or_soft: hard
+    source_or_basis: Core doctrine
+    implication: Generated artifacts ignored/archive/evidence unless promoted.
+    violation_risk: medium
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-12
+    constraint: Do not reintroduce old junk roots
+    type: repo structure
+    hard_or_soft: hard
+    source_or_basis: Root cleanup decision
+    implication: Use canonical roots only.
+    violation_risk: medium
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-13
+    constraint: Use project prefixes for public symbols, not every directory/file
+    type: naming
+    hard_or_soft: preferred/hard for public API
+    source_or_basis: Naming discussion
+    implication: Paths stay readable; public symbols/IDs collision-proof.
+    violation_risk: low
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-14
+    constraint: Do not ask unnecessary clarifying questions
+    type: communication
+    hard_or_soft: soft/hard preference
+    source_or_basis: User profile
+    implication: Proceed with assumptions unless blocked.
+    violation_risk: medium
+    label: FACT
+    confidence: High
+  open_questions:
+  - id: QUESTION-01
+    question: Is Wave 1 actually merged/live on origin/main?
+    why_it_matters: Next task depends on true repo state.
+    known: User-pasted transcript says complete.
+    unknown: Final handoff did not verify after paste.
+    resolution_path: Check live repo commits/docs.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN
+  - id: QUESTION-02
+    question: Has `PORTABILITY-ARCH-POLICY-02` completed and merged?
+    why_it_matters: Determines if pointer-width audit can start and whether command/view
+      prompt must account for it.
+    known: Prompt was issued and user said repo was working on it.
+    unknown: Completion not verified in final handoff.
+    resolution_path: Check latest commits/audits.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN
+  - id: QUESTION-03
+    question: Has `COMMAND-RESULT-VIEW-SLICE-01` already been run?
+    why_it_matters: Avoid duplicate prompt.
+    known: Latest visible instruction asks what's next before prompt generated.
+    unknown: No prompt generated in old chat after final state?
+    resolution_path: Check repo queue/user state.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN
+  - id: QUESTION-04
+    question: Should next prompt be parallel worker or coordinator/main prompt?
+    why_it_matters: Determines path rules and global AIDE edits.
+    known: Parallel workflow active.
+    unknown: Current next task likely product slice, may need worktree.
+    resolution_path: Ask only if live repo does not clarify.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN
+  - id: QUESTION-05
+    question: How complete is the Workbench validation slice implementation?
+    why_it_matters: Command/result/view slice should build on it.
+    known: Pasted transcript says it validates contract-schema target via typed command
+      result.
+    unknown: Need actual files to know exact command/schemas.
+    resolution_path: Inspect audit/docs.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN
+  - id: QUESTION-06
+    question: What specific current command/result schema should view slice use?
+    why_it_matters: Avoid inventing new command if dominium.validation.run exists.
+    known: Transcript suggests use dominium.validation.run.
+    unknown: Need repo file names/paths.
+    resolution_path: Search contracts/command and workbench validation audit.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN
+  - id: QUESTION-07
+    question: Which warnings remain acceptable?
+    why_it_matters: Avoid treating warnings as blockers or ignoring real debt.
+    known: 'Known: dependency-direction warnings, stale AuditX, AIDE review refs,
+      full CTest debt.'
+    unknown: Exact latest warnings may differ.
+    resolution_path: Check latest warning disposition docs.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN
+  - id: QUESTION-08
+    question: Should doctrine matrix be merged into future spec book now or later?
+    why_it_matters: Preservation/aggregation plan depends on it.
+    known: A doctrine matrix prompt was generated and reportedly complete.
+    unknown: No master spec book yet.
+    resolution_path: Ask when user requests aggregation.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Manual drag/drop directory cleanup
+    status: rejected
+    reason: Too risky; breaks path references/proof
+    final_or_tentative: final
+    reconsider_conditions: emergency only
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: '`Pasted markdown.md` / current uploaded preservation prompt'
+    type: uploaded file
+    purpose: Contains the preservation/package instructions for this final handoff.
+    status: loaded/current
+    origin: user upload
+    carry_forward: 'yes'
+    notes: Cited in final report.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: '`Pasted text.txt` uploaded earlier in final context'
+    type: uploaded file
+    purpose: Contained older audit/transcript about doctrine recovery and repo state.
+    status: partially represented
+    origin: user upload
+    carry_forward: 'yes'
+    notes: The system indicated some previous uploads expired, but a current uploaded
+      file was available.
+    label: UNCERTAIN
+  - id: ARTIFACT-03
+    name_or_description: '`FOUNDATION_LOCK.md`'
+    type: repo doc
+    purpose: Foundation status and allowed/blocked work.
+    status: live checked earlier
+    origin: repo
+    carry_forward: 'yes'
+    notes: Reported PASS_WITH_WARNINGS after closeout.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: '`FOUNDATION_CLOSEOUT_02.md`'
+    type: repo audit
+    purpose: Foundation closeout result and warnings.
+    status: live checked earlier
+    origin: repo
+    carry_forward: 'yes'
+    notes: Foundation closed with warnings; Workbench slice authorized.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: '`LANGUAGE_BASELINE.md`'
+    type: repo doc
+    purpose: C17/C++17 language baseline.
+    status: live checked earlier
+    origin: repo
+    carry_forward: 'yes'
+    notes: Verify before language-sensitive work.
+    label: FACT/VERIFY
+  - id: ARTIFACT-06
+    name_or_description: '`PORTABILITY-MATRIX-01` reports/docs'
+    type: repo audit/contracts
+    purpose: Portability matrix and platform rows.
+    status: live checked earlier
+    origin: repo
+    carry_forward: 'yes'
+    notes: 64-bit policy builds on it.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: '`SERVICE-CONFORMANCE-LAW-01` prompt'
+    type: generated prompt
+    purpose: Parallel worker prompt for service/provider conformance law.
+    status: generated in chat
+    origin: assistant
+    carry_forward: 'yes'
+    notes: Likely run/completed per user paste.
+    label: FACT/UNCERTAIN
+  - id: ARTIFACT-08
+    name_or_description: '`DOCUMENT-PATCH-TRANSACTION-RUNTIME-01` prompt'
+    type: generated prompt
+    purpose: Parallel worker prompt for document/patch/transaction law.
+    status: generated in chat
+    origin: assistant
+    carry_forward: 'yes'
+    notes: Likely run/completed per user paste.
+    label: FACT/UNCERTAIN
+  - id: ARTIFACT-09
+    name_or_description: '`PROJECT-GRAPH-SERVICE-01` prompt'
+    type: generated prompt
+    purpose: Parallel worker prompt for project graph law.
+    status: generated in chat
+    origin: assistant
+    carry_forward: 'yes'
+    notes: Likely run/completed per user paste.
+    label: FACT/UNCERTAIN
+  - id: ARTIFACT-10
+    name_or_description: '`COMPOSITION-RESOLVER-LAW-01` prompt'
+    type: generated prompt
+    purpose: Parallel worker prompt for composition resolver/lockfile law.
+    status: generated in chat
+    origin: assistant
+    carry_forward: 'yes'
+    notes: Likely run/completed per user paste.
+    label: FACT/UNCERTAIN
+  - id: ARTIFACT-11
+    name_or_description: '`DOMINIUM-DOCTRINE-RECOVERY-MATRIX-01` prompt'
+    type: generated prompt
+    purpose: Parallel worker prompt for doctrine recovery matrix.
+    status: generated in chat
+    origin: assistant
+    carry_forward: 'yes'
+    notes: Likely run/completed per user paste.
+    label: FACT/UNCERTAIN
+  - id: ARTIFACT-12
+    name_or_description: '`COMMAND-RESULT-VIEW-SLICE-01` proposed task'
+    type: planned prompt
+    purpose: Next task to generate.
+    status: not yet generated in visible old chat
+    origin: assistant/user plan
+    carry_forward: 'yes'
+    notes: Immediate next step if live repo agrees.
+    label: FACT/UNCERTAIN
+  - id: ARTIFACT-13
+    name_or_description: Final handoff generated before current preservation request
+    type: in-chat handoff
+    purpose: Prior COMPLETE CHAT HANDOFF with continuity state.
+    status: generated in chat
+    origin: assistant
+    carry_forward: 'yes'
+    notes: This current package supersedes and expands it.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Future chat restarts old root cleanup debate
+    consequence: Wastes time, frustrates user, repeats settled work.
+    likelihood: medium
+    severity: high
+    mitigation: Verify current repo; focus on next task unless validator shows root
+      issue.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-02
+    risk: Future chat treats Workbench as authority
+    consequence: Creates bypasses and private tool coupling.
+    likelihood: medium
+    severity: high
+    mitigation: Force commands/services/evidence spine.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: RISK-03
+    risk: Parallel workers edit shared AIDE latest files
+    consequence: Merge conflicts and stale status.
+    likelihood: high
+    severity: medium-high
+    mitigation: Use parallel-worker rules; coordinator updates latest files.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-04
+    risk: Prompt runs full CTest unnecessarily
+    consequence: Consumes time, may fail broad debt, slows progress.
+    likelihood: medium
+    severity: medium
+    mitigation: Use targeted validators/fast strict.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-05
+    risk: Assistant assumes user-pasted repo state is current
+    consequence: May duplicate or skip tasks incorrectly.
+    likelihood: medium
+    severity: high
+    mitigation: Always verify live repo before next prompt.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-06
+    risk: Governance expands forever before product work
+    consequence: Project stalls again.
+    likelihood: medium
+    severity: high
+    mitigation: After minimal spine, do narrow product slices.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: RISK-07
+    risk: Product work starts before view/projection spine
+    consequence: Duplicate CLI/Workbench/TUI/rendered systems emerge.
+    likelihood: medium
+    severity: high
+    mitigation: Run COMMAND-RESULT-VIEW-SLICE-01 next.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: RISK-08
+    risk: C++17 features break macOS 10.9.5 floor
+    consequence: Portability claims become false.
+    likelihood: low-medium
+    severity: medium
+    mitigation: Maintain restricted C++17 library policy and validators.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-09
+    risk: Pointer-width values leak into persisted formats
+    consequence: Breaks 32/64/portable/replay compatibility.
+    likelihood: medium
+    severity: high
+    mitigation: Run pointer-width serialization audit after arch policy.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-10
+    risk: Old doctrine gets forgotten during implementation
+    consequence: Long-term vision drifts into shallow features.
+    likelihood: medium
+    severity: high
+    mitigation: Use doctrine recovery matrix and domain constitutions.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Latest `origin/main` commit and queue status
+    why_verification_needed: Needed before generating next prompt.
+    suggested_source_type: GitHub/local git
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: VERIFY-02
+    item: Completion/merge state of `PORTABILITY-ARCH-POLICY-02`
+    why_verification_needed: Determines if pointer-width audit can run and if queue
+      advanced.
+    suggested_source_type: GitHub/local git/audit docs
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: VERIFY-03
+    item: Completion/merge state of Wave 1 tasks
+    why_verification_needed: User pasted complete, but verify before acting.
+    suggested_source_type: GitHub/local git/audit docs
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: VERIFY-04
+    item: Exact command/result schemas from `WORKBENCH-VALIDATION-SLICE-01`
+    why_verification_needed: Needed for `COMMAND-RESULT-VIEW-SLICE-01` prompt.
+    suggested_source_type: Repo search/audit docs
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: VERIFY-05
+    item: Current warning disposition
+    why_verification_needed: Avoid masking new vs known warnings.
+    suggested_source_type: AIDE latest warning docs
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: VERIFY-06
+    item: Whether full CTest debt changed
+    why_verification_needed: May matter for release/full gate later.
+    suggested_source_type: CTest audit/queue docs
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: VERIFY-07
+    item: Actual current CMake language standards if language-sensitive task arises
+    why_verification_needed: There was earlier contradiction.
+    suggested_source_type: CMakeLists/presets
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: VERIFY-08
+    item: Availability of previously uploaded/expired files
+    why_verification_needed: Some previous uploads expired; ask user to re-upload
+      if needed.
+    suggested_source_type: Chat file state
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  spec_book_notes:
+    likely_sections:
+    - Architecture
+    - Repo governance
+    - Workbench
+    - Testing/proof
+    - Portability
+    - Doctrine
+    - Domain constitutions
+    unique_contributions:
+    - Parallel Codex workflow
+    - Foundation-to-product transition
+    - Command/result/view next step
+    possible_duplicates_with_other_chats:
+    - Root cleanup
+    - AIDE install
+    - Doctrine specs
+    conflicts_to_watch_for:
+    - C89/C++98 vs C17/C++17
+    - Foundation blocked vs closed
+    - Wave 1 completion status
+    formal_requirements_candidates:
+    - Workbench not authority
+    - Contracts are law
+    - Fast strict normal gate
+    - Path not identity
+    background_context_candidates:
+    - User frustration with refactor
+    - Threat of manual moves
+    needs_user_confirmation:
+    - Current live task queue
+    - whether COMMAND-RESULT-VIEW has run
+  final_recommendations:
+    next_action_if_continuing_this_chat: Verify live repo, then generate COMMAND-RESULT-VIEW-SLICE-01.
+    next_action_for_aggregator: Merge this handoff with other old-chat reports under
+      Dominium architecture/foundation/workbench chapters.
+    user_checks_required:
+    - Verify latest origin/main and queue
+    - Confirm Wave 1 completion

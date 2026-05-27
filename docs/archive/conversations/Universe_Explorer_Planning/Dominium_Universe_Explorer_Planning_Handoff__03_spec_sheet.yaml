@@ -1,0 +1,302 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Universe Explorer Planning and Repo Handoff
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only unless labelled PROJECT-CONTEXT
+    apparent_coverage: Partial-to-current-visible transcript; not full Dominium One/Two transcripts
+    confidence_1_to_5: 4
+    staleness_risk: Medium to High for repo-state claims
+    safe_for_aggregation: Yes, with caveats
+    main_limitations:
+    - No full external old-chat transcripts
+    - Repo state may have changed
+    - Some assistant recommendations not yet accepted as decisions
+  summary:
+    one_sentence: This chat recovered prior Dominium doctrine, audited live repo context, identified a seamless governed Universe Explorer as the first product objective, and produced a forward plan through presentation/projection and read-only Workbench slices.
+    short_brief: Dominium's old architecture is mostly preserved in repo doctrine; the next product path should stop broad structure cleanup and move through presentation/projection contracts toward a headless then visual Universe Explorer proof before embodiment.
+    main_topics:
+    - Dominium doctrine recovery
+    - Live repo audit
+    - Universe Explorer first objective
+    - Workbench projection
+    - No-modal-loading
+    - Reference frames
+    - Materialization
+    - Targeted cleanup
+    main_outputs:
+    - Recap
+    - Repo audit synthesis
+    - Universe Explorer requirements
+    - Best plan forward
+    - Preservation package
+    highest_priority_carry_forward:
+    - PRESENTATION-CONTRACT-01
+    - PROJECTION-CONFORMANCE-01
+    - UNIVERSE-EXPLORER-CONTRACT-01
+    - FULL-GATE-LEGACY-TEST-ROUTE-01
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Repo canon outranks chat memory
+    - Same-tier conflicts require quarantine/review
+    - Assistant suggestions are not decisions unless accepted
+    staleness_rules:
+    - Re-verify live repo files before acting
+    - Treat GitHub status as dated to last check
+  user_preferences:
+    explicit:
+    - Planning/exploration in this chat
+    - Human-readable report first
+    - Max fidelity preservation
+    - Uncertainty labels
+    - Create files if available
+    inferred:
+    - Audit-ready, source-grounded outputs
+    - Avoid overcompression
+    - Do not repeat already corrected frames
+    uncertain_or_not_established:
+    - Whether to draft Universe Explorer contract next
+    - Whether full-gate cleanup should precede explorer planning
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Chat preservation
+    label: FACT
+    objective: Preserve current chat
+    current_state: Current task
+    desired_end_state: Readable report, registers, spec sheet, aggregator packet, ZIP
+    status: active
+    priority: P0
+    background: User uploaded explicit preservation prompt
+    decisions_made:
+    - DECISION-10
+    decisions_pending: []
+    tasks:
+    - TASK-01
+    constraints:
+    - CONSTRAINT-09
+    dependencies: []
+    timeline: Now
+    blockers: []
+    risks:
+    - RISK-08
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-07
+    success_criteria:
+    - Files created
+    - In-chat report understandable
+    next_action: Use package
+    verification_needed: []
+    confidence: 4
+  - id: WORKSTREAM-06
+    name: Universe Explorer
+    label: FACT/INFERENCE
+    objective: First major product proof for seamless 1:1-scale inspection/materialization
+    current_state: User-proposed, assistant-refined
+    desired_end_state: Headless and visual governed explorer proof
+    status: proposed
+    priority: P0
+    background: User proposed first major objective
+    decisions_made:
+    - DECISION-04
+    decisions_pending:
+    - DECISION-05
+    - DECISION-08
+    - DECISION-09
+    tasks:
+    - TASK-05
+    - TASK-06
+    - TASK-07
+    - TASK-08
+    - TASK-09
+    - TASK-10
+    - TASK-11
+    - TASK-12
+    constraints:
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    dependencies:
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    timeline: After presentation/projection contracts
+    blockers:
+    - Broad feature work blocked until gates change
+    risks:
+    - RISK-04
+    - RISK-05
+    - RISK-06
+    artifacts:
+    - ARTIFACT-05
+    - ARTIFACT-06
+    success_criteria:
+    - No modal loading
+    - Stable reference frames
+    - Explicit materialization
+    - Renderer purity
+    next_action: Draft UNIVERSE-EXPLORER-CONTRACT-01 after queue verification
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-04
+    - VERIFY-05
+    confidence: 3
+  decisions:
+  - id: DECISION-01
+    decision: This chat is planning/exploration, not implementation
+    status: accepted
+    label: FACT
+    evidence_or_basis: User explicitly corrected the assistant
+    rationale: Keep outputs conceptual and avoid unauthorized implementation
+    implications: Plans/specs not code
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: low
+  - id: DECISION-04
+    decision: First major objective should be a Universe Explorer
+    status: user-proposed/strong
+    label: FACT
+    evidence_or_basis: User stated objective
+    rationale: Prove scale, movement, inspection, frames, streaming before embodiment
+    implications: Create Universe Explorer workstream
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: 'medium: exact repo task not yet accepted'
+  tasks:
+  - id: TASK-02
+    task: Run/author PRESENTATION-CONTRACT-01
+    priority: P0
+    urgency: U1
+    owner: future repo agent/human
+    dependencies: []
+    inputs_needed:
+    - latest queue
+    - presentation docs
+    expected_output: presentation contract
+    next_step: verify queue
+    related_workstreams:
+    - WORKSTREAM-04
+    label: PROJECT-CONTEXT
+    confidence: 4
+  - id: TASK-05
+    task: Draft UNIVERSE-EXPLORER-CONTRACT-01
+    priority: P0
+    urgency: U1
+    owner: future planning chat/repo agent
+    dependencies:
+    - TASK-02
+    - TASK-03
+    inputs_needed:
+    - universe/frame/no-loading/materialization docs
+    expected_output: contract spec
+    next_step: ask/draft after presentation
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: 3
+  constraints:
+  - id: CONSTRAINT-03
+    constraint: Broad feature work is blocked
+    type: repo gate
+    hard_or_soft: hard until gate changes
+    source_or_basis: Foundation Lock and queue
+    implication: Narrow product-spine only
+    violation_risk: unauthorized broad work
+    label: PROJECT-CONTEXT
+    confidence: 4
+  open_questions:
+  - id: QUESTION-01
+    question: Has the queue changed after the last checked state?
+    why_it_matters: Next task may differ
+    known: Queue showed Presentation next
+    unknown: Latest repo state
+    resolution_path: Re-fetch queue
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-04
+    label: VERIFY
+  rejected_or_superseded_options:
+  - id: REJECTED-07
+    option: Renderer-first Universe Explorer
+    status: rejected as unsafe recommendation
+    reason: Would risk renderer/camera authority over truth
+    final_or_tentative: tentative but strong
+    reconsider_conditions: after contracts/gates allow renderer work
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Pasted text.txt preservation prompt
+    type: uploaded prompt
+    purpose: Defines requested output package
+    status: used
+    origin: user upload
+    carry_forward: true
+    notes: This package cites it
+    label: FACT
+  risks:
+  - id: RISK-04
+    risk: Universe Explorer becomes renderer-first free camera
+    consequence: Doctrine violation and future rework
+    likelihood: medium
+    severity: high
+    mitigation: contract/headless/projection-first sequence
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  verification_queue:
+  - id: VERIFY-01
+    item: Latest queue
+    why_verification_needed: Task order may change
+    suggested_source_type: GitHub repo
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-04
+    label: VERIFY
+  spec_book_notes:
+    likely_sections:
+    - Project continuity
+    - Universe Explorer
+    - Workbench
+    - No-modal-loading
+    - Reference frames
+    - Materialization
+    - Deep primitives
+    - Failure ontology
+    unique_contributions:
+    - First product objective framed as governed Universe Explorer proof
+    - Bridge from repo structure cleanup to product-spine plan
+    possible_duplicates_with_other_chats:
+    - Λ doctrine
+    - deep primitives
+    - formalization chain
+    - repo structure status
+    conflicts_to_watch_for:
+    - older queue states
+    - old structure docs
+    - Dominium One/Two unverified transcript claims
+    formal_requirements_candidates:
+    - Explorer must be projection-first
+    - No modal loading
+    - Renderer cannot mutate truth
+    - Headless proof before visual
+    background_context_candidates:
+    - game comparisons
+    - deep primitive examples
+    needs_user_confirmation:
+    - accept task sequence
+    - priority of Universe Explorer contract
+    - whether to draft deep primitives spec
+  final_recommendations:
+    next_action_if_continuing_this_chat: Verify current queue, then draft Presentation Contract or Universe Explorer Contract depending on status.
+    next_action_for_aggregator: Merge this package with other old-chat reports and identify duplicated doctrine.
+    user_checks_required:
+    - Which recommendations are accepted decisions?
+    - Should Universe Explorer Contract be drafted next?

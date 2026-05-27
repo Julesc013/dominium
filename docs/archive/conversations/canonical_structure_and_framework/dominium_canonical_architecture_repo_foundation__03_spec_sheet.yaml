@@ -1,0 +1,200 @@
+spec_sheet:
+  metadata:
+    chat_label: "Dominium Canonical Architecture, Repository Foundation, and Provider Model"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This chat only unless labelled PROJECT-CONTEXT"
+    apparent_coverage: "Partial visible transcript; skipped/expired content exists"
+    confidence_1_to_5: 4
+    staleness_risk: "Medium to High for current repo state; Low for internal doctrine"
+    safe_for_aggregation: "Yes, with caveats"
+    main_limitations:
+      - "Some transcript portions are hidden behind skipped-message markers."
+      - "Some uploaded files expired or were mixed across runs."
+      - "Repo commit/test status must be verified live before action."
+  summary:
+    one_sentence: "This chat converted Dominium repo cleanup into a broader Domino framework, provider, public-surface, and proof-gated architecture doctrine."
+    short_brief: "The chat settled root structure, rejected root sprawl, defined Domino vs Dominium, formalized provider/service/profile thinking, and generated many cleanup/proof prompts."
+    main_topics:
+      - "Canonical repo structure"
+      - "Domino framework boundary"
+      - "C17/C++17 and C-compatible ABI"
+      - "Provider architecture for raylib/SDL/Lua"
+      - "Workbench semantic spine"
+      - "Proof gates and full-gate debt"
+    main_outputs:
+      - "Handoff files"
+      - "Preservation package"
+      - "Codex/AIDE prompts"
+      - "Decision/task/risk registers"
+    highest_priority_carry_forward:
+      - "Verify current live repo status."
+      - "Do not add new top-level roots."
+      - "Continue targeted proof hygiene or projection conformance, not broad cleanup."
+  source_rules:
+    labels_used: ["FACT", "INFERENCE", "UNCERTAIN / UNVERIFIED", "PROJECT-CONTEXT"]
+    conflict_rules:
+      - "Prefer direct user statements and committed/status reports over assistant suggestions."
+      - "Verify live repo state when reports disagree."
+    staleness_rules:
+      - "External library/toolchain/version claims require verification before implementation decisions."
+  user_preferences:
+    explicit:
+      - "Direct, audit-ready, uncertainty-labelled answers."
+      - "No root sprawl or repeated src/source wrappers."
+      - "Future-proof modular reusable design."
+    inferred:
+      - "Execution-oriented prompts over endless planning."
+      - "Strong preference for validators and mechanical enforcement."
+    uncertain_or_not_established:
+      - "Exact Lua version."
+      - "external/upstream vs external/vendor."
+  workstreams:
+    - id: WORKSTREAM-01
+      name: "Canonical repo structure"
+      label: FACT
+      objective: "Stabilize roots and internal ownership"
+      current_state: "Credible with warnings by reported status"
+      desired_end_state: "No active old paths and targeted residual warnings only"
+      status: "Mostly complete"
+      priority: P0
+      background: "Core topic of chat"
+      decisions_made: [DECISION-01, DECISION-02]
+      tasks: [TASK-01, TASK-07]
+      constraints: [CONSTRAINT-01, CONSTRAINT-02]
+      dependencies: []
+      blockers: []
+      risks: [RISK-01, RISK-02]
+      artifacts: [ARTIFACT-02, ARTIFACT-03]
+      success_criteria: ["canonical validators pass", "fresh report integrity passes"]
+      next_action: "Verify current fresh export"
+      verification_needed: [VERIFY-01]
+      confidence: 4
+    - id: WORKSTREAM-04
+      name: "Provider architecture"
+      label: FACT
+      objective: "Use service-first replaceable providers"
+      current_state: "Doctrine and some structures reported landed"
+      desired_end_state: "Provider manifests, conformance tests, fenced third-party code"
+      status: "Active"
+      priority: P1
+      background: "raylib/SDL/Lua discussions"
+      decisions_made: [DECISION-06, DECISION-08]
+      tasks: [TASK-06]
+      constraints: [CONSTRAINT-03]
+      dependencies: ["public surface", "profiles", "capability law"]
+      blockers: []
+      risks: [RISK-03]
+      artifacts: []
+      success_criteria: ["no third-party leakage", "provider conformance tests"]
+      next_action: "Provider wedge after proof hygiene"
+      verification_needed: [VERIFY-04]
+      confidence: 4
+  decisions:
+    - id: DECISION-01
+      decision: "Keep a closed top-level root set."
+      status: "current"
+      label: FACT
+      evidence_or_basis: "Repeated user acceptance and cleanup reports"
+      rationale: "Prevents root sprawl"
+      implications: "New concepts must route into canonical roots"
+      related_workstreams: [WORKSTREAM-01]
+      uncertainty: "Low"
+  tasks:
+    - id: TASK-01
+      task: "Verify current repo status from fresh export"
+      priority: P0
+      urgency: U0
+      owner: "User/Codex"
+      dependencies: []
+      inputs_needed: ["fresh tracked export", "git status"]
+      expected_output: "Current truthful status"
+      next_step: "Run report integrity"
+      related_workstreams: [WORKSTREAM-01]
+      label: FACT
+      confidence: 4
+  constraints:
+    - id: CONSTRAINT-01
+      constraint: "No new top-level roots without root-contract update"
+      type: "repo structure"
+      hard_or_soft: "hard"
+      source_or_basis: "user preference and doctrine"
+      implication: "Use existing roots"
+      violation_risk: "root sprawl"
+      label: FACT
+      confidence: 5
+  open_questions:
+    - id: QUESTION-01
+      question: "Is full CTest green now?"
+      why_it_matters: "Release/full proof readiness"
+      known: "Reports say not green or not run"
+      unknown: "Current result"
+      resolution_path: "Run full CTest audit"
+      priority: P0
+      related_workstreams: [WORKSTREAM-06]
+      label: UNCERTAIN
+  rejected_or_superseded_options:
+    - id: REJECTED-01
+      option: "Top-level framework/"
+      status: "rejected"
+      reason: "Framework is public surfaces/contracts, not a source root"
+      final_or_tentative: "mostly final"
+      reconsider_conditions: "explicit root contract change"
+      related_workstreams: [WORKSTREAM-02]
+      label: FACT
+  artifacts:
+    - id: ARTIFACT-01
+      name_or_description: "dominium_canonical_handoff.md"
+      type: "handoff"
+      purpose: "Earlier project handoff"
+      status: "available in sandbox"
+      origin: "this chat"
+      carry_forward: true
+      notes: "Compare with this preservation package"
+      label: FACT
+  risks:
+    - id: RISK-01
+      risk: "Stale/mixed structure reports"
+      consequence: "Wrong cleanup decisions"
+      likelihood: "medium"
+      severity: "high"
+      mitigation: "structure report integrity validator"
+      related_workstreams: [WORKSTREAM-01]
+      label: FACT
+  verification_queue:
+    - id: VERIFY-01
+      item: "Current live repo HEAD/status"
+      why_verification_needed: "User reports changed repeatedly"
+      suggested_source_type: "fresh git status/export"
+      priority: P0
+      related_workstreams: [WORKSTREAM-01]
+      label: FACT
+  spec_book_notes:
+    likely_sections:
+      - "Repository architecture"
+      - "Domino framework boundary"
+      - "Provider model"
+      - "Workbench architecture"
+      - "Proof gates"
+    unique_contributions:
+      - "Path is not identity doctrine"
+      - "Service-first provider model"
+    possible_duplicates_with_other_chats:
+      - "Workbench brainstorming"
+      - "Raylib/SDL/Lua provider discussion"
+    conflicts_to_watch_for:
+      - "C89/C++98 older plans vs C17/C++17 mainline"
+      - "framework root proposals vs no-framework-root decision"
+    formal_requirements_candidates:
+      - "No src/source wrappers"
+      - "Provider implementations cannot leak third-party types"
+    background_context_candidates:
+      - "History of repo frustration"
+    needs_user_confirmation:
+      - "Lua version"
+      - "external/upstream vs external/vendor"
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Verify current repo state and proceed with projection conformance or proof hygiene depending gate status."
+    next_action_for_aggregator: "Merge registers, preserving uncertainty and rejected options."
+    user_checks_required:
+      - "Confirm live repo status"
+      - "Confirm next task priority"

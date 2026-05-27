@@ -1,0 +1,87 @@
+{
+  "chat_label": "Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture",
+  "generated": "2026-05-27 21:05:09 AEST",
+  "zip_file": "Dominium_Modularity_AIDE_Refactorability_Architecture__complete_bundle_with_companion_report.zip",
+  "files": [
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__00_manifest.md",
+      "size_bytes": 2674,
+      "sha256": "24378135aaf1e2e4566f9a44cd0b4198019a7251c9d39e8a3fd8bc155458152d"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__01_human_readable_report.md",
+      "size_bytes": 45544,
+      "sha256": "1a20aca99dcf47abfb9bf63f937cd0356c4fa54b0f2f099419924e9d454cde65"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__02_context_transfer_packet.md",
+      "size_bytes": 4207,
+      "sha256": "2f577e7e8f36c8427d5b878481567e019019dd80a4e89652d72bbac376c847e0"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__03_spec_sheet.yaml",
+      "size_bytes": 32598,
+      "sha256": "a3b0a2be165ede1554670a69974c8b542ec749298538d3fad87663715e9c6a2f"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__04_registers.md",
+      "size_bytes": 26300,
+      "sha256": "ba977c4790dbaef00c08e4a6a8c82242b0dde15e1138f00a49e35e0de8ba0f65"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__05_aggregator_packet.md",
+      "size_bytes": 17336,
+      "sha256": "0c990860b9f98e62b9fb32d02a6ac622c708f50f60f0e7b6bed58b20ae971fed"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__06_reader_brief.md",
+      "size_bytes": 2403,
+      "sha256": "9b91b531188b3110f7b183c3cfe08c694bddbba9fcd6ad2c3179cbb84e66e4b4"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__07_verification_and_audit.md",
+      "size_bytes": 3827,
+      "sha256": "88fab43127134162a82d3e8cff7346f324eb2e5fb42f1f3c34cb6ebe101ee0ad"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__08_future_chat_bootstrap_prompt.md",
+      "size_bytes": 1008,
+      "sha256": "985d4ebc52546ca547e2b046fd5dafc71aeacd5cea78f65855e399c9fbafaa3d"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__09_in_chat_reader.md",
+      "size_bytes": 2145,
+      "sha256": "0e3f80bab3a4e8c6591a3096a2f33b1d3aa2e0189d61cd5b2a4a55b8868f57aa"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__handoff_package.zip",
+      "size_bytes": 46910,
+      "sha256": "d43ef4169e943d5631a1fbe492ed4993f2f77fee63bbed87f5e706906652b112"
+    },
+    {
+      "name": "Pasted text.txt",
+      "size_bytes": 31225,
+      "sha256": "6686114753accfa0ddd2aa1b3ef159bc685c53892dc58ac61e7574b2ae3636db"
+    },
+    {
+      "name": "create_preservation_package.py",
+      "size_bytes": 85756,
+      "sha256": "6c7766c5422cdb3d25d344524e655580f82f6c95c8763d0a31504937c05e77ff"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__10_accompanying_detailed_conversation_report.md",
+      "size_bytes": 27531,
+      "sha256": "401abace1b8fcdfe4bdf2833f5bd9a6713c7edde54d33ab34d8d865c9ba2d375"
+    },
+    {
+      "name": "Dominium_Modularity_AIDE_Refactorability_Architecture__11_complete_bundle_manifest.md",
+      "size_bytes": 4188,
+      "sha256": "f752bdaebc832765b8c23e3982b6da2f323ddde65d20e1cd4e8c2f5c534a5289"
+    }
+  ],
+  "caveats": [
+    "No live Dominium repository verification performed.",
+    "Pasted repo-status claims are preserved as chat content, not verified facts.",
+    "Only files present in /mnt/data at generation time are included."
+  ]
+}

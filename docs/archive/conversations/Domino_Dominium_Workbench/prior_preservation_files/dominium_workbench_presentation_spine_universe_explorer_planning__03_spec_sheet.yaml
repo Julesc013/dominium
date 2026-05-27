@@ -1,0 +1,195 @@
+spec_sheet:
+  metadata:
+    chat_label: "Dominium Workbench, Presentation Spine, and Universe Explorer Planning"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This chat only unless labelled PROJECT-CONTEXT"
+    apparent_coverage: "Partial-to-broad visible transcript context"
+    confidence_1_to_5: 4
+    staleness_risk: "medium-high for repo-current facts"
+    safe_for_aggregation: "yes, with caveats"
+    main_limitations:
+      - "Full raw transcript not guaranteed."
+      - "Live repo facts pasted from other chats not independently verified."
+      - "Screenshots treated as references, not fully analyzed in this package."
+  summary:
+    one_sentence: "This chat replaced the old UI Editor/Tool Editor plan with a modular Dominium Workbench Platform over a unified command/result/view/projection spine."
+    short_brief: "The chat established Workbench as a cross-platform rendered/TUI/CLI/headless production environment, not authority; all apps should share commands, documents, patches, providers, packs, modules, artifacts, diagnostics, and evidence."
+    main_topics:
+      - "Old UI Editor / Tool Editor planning and supersession"
+      - "Dominium Workbench Platform"
+      - "CLI/TUI/rendered/native/headless presentation spine"
+      - "UI/theme/renderer architecture"
+      - "TUI as first-class projection"
+      - "Engineering law and foundation queues"
+      - "Module/pack/provider/app vocabulary"
+      - "Progressive self-hosting"
+      - "Universe Explorer"
+      - "Robot seed-civilization systems"
+    main_outputs:
+      - "Detailed planning rationale"
+      - "Codex prompt plans for old UI editor and later Workbench ideas"
+      - "Workbench/module/workspace roadmap"
+      - "This preservation package"
+    highest_priority_carry_forward:
+      - "Verify current repo gate/status."
+      - "Proceed with COMMAND-RESULT-VIEW-SLICE-01 if gates allow."
+      - "Keep Workbench as projection over contracts/services/proof."
+  source_rules:
+    labels_used: ["FACT", "INFERENCE", "UNCERTAIN / UNVERIFIED", "PROJECT-CONTEXT"]
+    conflict_rules:
+      - "Direct user statements override assistant suggestions."
+      - "Accepted decisions override earlier brainstorms."
+      - "Live repo facts require verification before implementation."
+    staleness_rules:
+      - "Repo current state, platform support, and external technology facts must be verified."
+  user_preferences:
+    explicit:
+      - "Direct, rigorous, audit-ready answers."
+      - "Modular, portable, extensible, future-proof design."
+      - "Reuse across Domino games and other projects."
+      - "Workbench should support human and agentic development."
+    inferred:
+      - "Prefer contracts and validators over prose-only doctrine."
+      - "Prefer code-only baseline with optional packs/assets."
+    uncertain_or_not_established:
+      - "Final Workbench product name."
+      - "Exact final repo paths."
+  workstreams:
+    - id: WORKSTREAM-02
+      name: "Unified presentation spine"
+      label: FACT
+      objective: "Unify CLI, TUI, rendered GUI, native GUI, and headless over one command/result/refusal/document/view system."
+      current_state: "Concept accepted; implementation state unverified."
+      desired_end_state: "All app surfaces project shared commands/results/views."
+      status: active
+      priority: P0
+      background: "Needed to avoid GUI-only logic and enable Workbench/client/server/launcher/setup reuse."
+      decisions_made: [DECISION-03, DECISION-04, DECISION-07]
+      decisions_pending: ["Minimal projection descriptor details"]
+      tasks: [TASK-02, TASK-03]
+      constraints: [CONSTRAINT-02]
+      dependencies: ["Foundation gates", "command/result schema support"]
+      timeline: "Immediate next if gates allow"
+      blockers: ["Unverified repo state"]
+      risks: [RISK-02]
+      artifacts: []
+      success_criteria:
+        - "One command/result/view projected through CLI, TUI/text, rendered placeholder, and headless evidence."
+      next_action: "Draft COMMAND-RESULT-VIEW-SLICE-01 task packet."
+      verification_needed: [VERIFY-01, VERIFY-03]
+      confidence: 5
+  decisions:
+    - id: DECISION-01
+      decision: "Abandon old UI Editor/Tool Editor as final products and recycle concepts into Workbench modules."
+      status: accepted
+      label: FACT
+      evidence_or_basis: "User explicitly said old UI editor/tool editor are good ideas but bad final products and should be abandoned/recycled."
+      rationale: "Avoid a Windows/native-widget one-off architecture."
+      implications: "Interface Studio, Theme Lab, and UI/HUD Sandbox inherit useful features."
+      related_workstreams: [WORKSTREAM-03, WORKSTREAM-04]
+      uncertainty: "No major uncertainty."
+  tasks:
+    - id: TASK-02
+      task: "Execute or plan COMMAND-RESULT-VIEW-SLICE-01."
+      priority: P0
+      urgency: U1
+      owner: "AIDE/Codex after user authorization"
+      dependencies: ["Verified gate status"]
+      inputs_needed: ["existing command/result infrastructure", "validation command", "view/projection proposal"]
+      expected_output: "One end-to-end command/result/view/projection proof."
+      next_step: "Create Codex/AIDE work packet."
+      related_workstreams: [WORKSTREAM-02]
+      label: INFERENCE
+      confidence: 4
+  constraints:
+    - id: CONSTRAINT-01
+      constraint: "Workbench must not be semantic authority."
+      type: "architecture"
+      hard_or_soft: hard
+      source_or_basis: "Repeated decisions in chat."
+      implication: "All Workbench actions go through commands/services/documents/patches."
+      violation_risk: "Workbench becomes separate editor framework."
+      label: FACT
+      confidence: 5
+  open_questions:
+    - id: QUESTION-01
+      question: "What is the verified current repo state and next gate?"
+      why_it_matters: "Determines whether to implement Command-Result-View slice or repair dependencies first."
+      known: "Pasted context reported different gate states over time."
+      unknown: "Current live state."
+      resolution_path: "Run AIDE/repo validation or inspect current docs."
+      priority: P0
+      related_workstreams: [WORKSTREAM-01]
+      label: VERIFY
+  rejected_or_superseded_options:
+    - id: REJECTED-01
+      option: "Windows-only UI Editor as final product"
+      status: superseded
+      reason: "Too narrow; does not prove shared client/runtime architecture."
+      final_or_tentative: "mostly final"
+      reconsider_conditions: "Only as temporary bootstrap tool."
+      related_workstreams: [WORKSTREAM-11]
+      label: FACT
+  artifacts:
+    - id: ARTIFACT-08
+      name_or_description: "Pasted markdown.md preservation request"
+      type: uploaded text
+      purpose: "Defines preservation output requirements."
+      status: used
+      origin: user
+      carry_forward: true
+      notes: "Cited in final response."
+      label: FACT
+  risks:
+    - id: RISK-01
+      risk: "Workbench becomes authority."
+      consequence: "Semantic drift and non-reusable GUI-only behavior."
+      likelihood: medium
+      severity: high
+      mitigation: "Command/document/patch/evidence law and projection tests."
+      related_workstreams: [WORKSTREAM-03]
+      label: FACT
+  verification_queue:
+    - id: VERIFY-01
+      item: "Current repo gate and queue status"
+      why_verification_needed: "Pasted status may be stale."
+      suggested_source_type: "live repo/AIDE status docs"
+      priority: P0
+      related_workstreams: [WORKSTREAM-01]
+      label: VERIFY
+  spec_book_notes:
+    likely_sections:
+      - "Workbench Platform"
+      - "Presentation Spine"
+      - "UI/Theme/Renderer"
+      - "TUI"
+      - "Engineering Governance"
+      - "Module/Packs/Providers"
+      - "Universe Explorer"
+      - "Robot Seed-Civilization"
+    unique_contributions:
+      - "Pivot from old UI Editor/Tool Editor to Workbench Platform."
+      - "Progressive self-hosting doctrine."
+      - "Presentation projection unification."
+    possible_duplicates_with_other_chats:
+      - "Repo Foundation queue"
+      - "Dominium Operating Environment doctrine"
+      - "Universe Explorer planning"
+    conflicts_to_watch_for:
+      - "Current repo status and task ordering"
+      - "Final directory structure"
+    formal_requirements_candidates:
+      - "Workbench must not be authority."
+      - "All presentation modes use shared command/result/refusal spine."
+      - "Every visual edit should produce a patch and evidence."
+    background_context_candidates:
+      - "Old UI Editor prompt plans"
+    needs_user_confirmation:
+      - "Exact next implementation task"
+      - "Final Workbench product name"
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Ask for the Codex/AIDE prompt for COMMAND-RESULT-VIEW-SLICE-01 after verifying repo gate state."
+    next_action_for_aggregator: "Merge decisions and vocabulary, but verify repo-current task/gate statements."
+    user_checks_required:
+      - "Confirm current repo state."
+      - "Confirm whether to proceed with presentation contract or package mount after command-result-view slice."

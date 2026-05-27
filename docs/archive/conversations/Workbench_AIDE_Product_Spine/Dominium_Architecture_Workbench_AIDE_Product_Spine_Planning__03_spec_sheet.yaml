@@ -1,0 +1,231 @@
+spec_sheet:
+  metadata:
+    chat_label: "Dominium Architecture, Workbench, AIDE, and Product-Spine Planning"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This chat only unless labelled PROJECT-CONTEXT"
+    apparent_coverage: "Partial transcript with high contextual reconstruction"
+    confidence_1_to_5: 4
+    staleness_risk: "Medium"
+    safe_for_aggregation: "Yes, with caveats"
+    main_limitations:
+      - "Visible transcript includes skipped-message markers."
+      - "Live repo may advance after report creation."
+      - "Execution status of latest generated prompts must be verified."
+
+  summary:
+    one_sentence: "This chat converged Dominium into a deterministic, contract-governed simulation platform with Workbench as production environment and AIDE as evidence-backed development control plane."
+    short_brief: "The chat established architecture, repo gates, Workbench direction, AIDE dev/main workflow, product-spine task sequencing, and future domain roadmap."
+    main_topics:
+      - "Deterministic sparse worldgen"
+      - "Deep primitives and player creation"
+      - "Repo Foundation Lock"
+      - "Workbench production environment"
+      - "AIDE task operating system"
+      - "Package/replay/barebones product spine"
+      - "Presentation/projection architecture"
+    main_outputs:
+      - "Prompt series for post-foundation slices"
+      - "AIDE dev/main workflow doctrine"
+      - "Product-spine roadmap"
+      - "This preservation report"
+    highest_priority_carry_forward:
+      - "Verify repo state."
+      - "Run missing REPLAY-PROOF-SLICE-01 and BAREBONES-CLIENT-SHELL-01."
+      - "Generate PRODUCT-SPINE-REVIEW-01."
+      - "Add AIDE-WORKFLOW-LAW-01 before large parallel dev."
+
+  source_rules:
+    labels_used:
+      - "FACT"
+      - "INFERENCE"
+      - "UNCERTAIN / UNVERIFIED"
+      - "PROJECT-CONTEXT"
+    conflict_rules:
+      - "Live repo evidence overrides this handoff."
+      - "User-accepted decisions override assistant brainstorms."
+      - "Prompt-generated plans are not implementation proof."
+    staleness_rules:
+      - "Verify current queue and commits before acting."
+      - "Treat repo statuses as potentially stale if not checked live."
+
+  user_preferences:
+    explicit:
+      - "Detailed, source-grounded, audit-ready answers."
+      - "Do not invent facts."
+      - "Prompts in one code block."
+      - "Preserve uncertainty and rejected options."
+      - "Do not over-compress."
+    inferred:
+      - "Prefers architecture and proof before broad implementation."
+      - "Values correction over agreement."
+      - "Wants future assistants to avoid repeated doctrine discussion."
+    uncertain_or_not_established:
+      - "Exact desired cadence once parallel dev begins."
+
+  workstreams:
+    - id: "WORKSTREAM-03"
+      name: "Product Spine"
+      label: "FACT"
+      objective: "Build package mount, replay proof, and barebones product floor."
+      current_state: "Package mount complete; replay and barebones execution uncertain."
+      desired_end_state: "Product spine review authorizes limited parallel development."
+      status: "Active"
+      priority: "P0"
+      background: "Current narrow product slices are permitted after Foundation Lock."
+      decisions_made:
+        - "Package mount is fixture-level only."
+      decisions_pending:
+        - "Whether product spine review passes."
+      tasks:
+        - "REPLAY-PROOF-SLICE-01"
+        - "BAREBONES-CLIENT-SHELL-01"
+        - "PRODUCT-SPINE-REVIEW-01"
+      constraints:
+        - "No broad package runtime."
+        - "No gameplay."
+      dependencies:
+        - "PACKAGE-MOUNT-SLICE-01"
+      timeline: "Immediate"
+      blockers:
+        - "Execution status unknown."
+      risks:
+        - "False runtime claims."
+      artifacts:
+        - "PACKAGE_MOUNT_SLICE_01.md"
+      success_criteria:
+        - "Replay proof and barebones client pass with warnings or better."
+      next_action: "Verify live repo and run missing prompt."
+      verification_needed:
+        - "Check REPLAY_PROOF_SLICE_01 audit."
+      confidence: "High"
+
+  decisions:
+    - id: "DECISION-05"
+      decision: "Development is non-blocking; promotion is evidence-blocked."
+      status: "accepted"
+      label: "FACT"
+      evidence_or_basis: "User and assistant convergence near end of chat."
+      rationale: "Allows parallel progress without corrupting main."
+      implications: "Use dev/task/checkpoint/main model."
+      related_workstreams:
+        - "WORKSTREAM-04"
+      uncertainty: "Exact automation not implemented yet."
+
+  tasks:
+    - id: "TASK-03"
+      task: "REPLAY-PROOF-SLICE-01"
+      priority: "P0"
+      urgency: "U0"
+      owner: "Codex/AIDE"
+      dependencies:
+        - "PACKAGE-MOUNT-SLICE-01"
+      inputs_needed:
+        - "Package mount command/result fixture"
+      expected_output: "Command-level replay/proof fixture and validator."
+      next_step: "Run if audit missing."
+      related_workstreams:
+        - "WORKSTREAM-08"
+      label: "FACT"
+      confidence: "Medium"
+
+  constraints:
+    - id: "CONSTRAINT-01"
+      constraint: "Broad feature work remains blocked."
+      type: "process"
+      hard_or_soft: "hard"
+      source_or_basis: "Queue/Foundation status"
+      implication: "Only narrow slices."
+      violation_risk: "Refactor spiral"
+      label: "FACT"
+      confidence: "High"
+
+  open_questions:
+    - id: "QUESTION-01"
+      question: "Has REPLAY-PROOF-SLICE-01 executed?"
+      why_it_matters: "Determines next task."
+      known: "Prompt generated."
+      unknown: "Execution status."
+      resolution_path: "Check commits and audit file."
+      priority: "P0"
+      related_workstreams:
+        - "WORKSTREAM-08"
+      label: "UNCERTAIN"
+
+  rejected_or_superseded_options:
+    - id: "REJECTED-05"
+      option: "Workbench as monolithic editor."
+      status: "rejected"
+      reason: "Would become authority/blob."
+      final_or_tentative: "final for current architecture"
+      reconsider_conditions: "None for near term."
+      related_workstreams:
+        - "WORKSTREAM-05"
+      label: "FACT"
+
+  artifacts:
+    - id: "ARTIFACT-06"
+      name_or_description: "REPLAY-PROOF-SLICE-01 prompt"
+      type: "prompt"
+      purpose: "Generate narrow command-level replay proof."
+      status: "generated; execution uncertain"
+      origin: "This chat"
+      carry_forward: true
+      notes: "Run after queue reconciliation if missing."
+      label: "FACT"
+
+  risks:
+    - id: "RISK-02"
+      risk: "Docs outrun code."
+      consequence: "False support claims."
+      likelihood: "High"
+      severity: "High"
+      mitigation: "Capability Reality Ledger."
+      related_workstreams:
+        - "WORKSTREAM-04"
+      label: "FACT"
+
+  verification_queue:
+    - id: "VERIFY-01"
+      item: "Current AIDE queue"
+      why_verification_needed: "Determines next prompt."
+      suggested_source_type: ".aide/queue/current.toml"
+      priority: "P0"
+      related_workstreams:
+        - "WORKSTREAM-03"
+      label: "VERIFY"
+
+  spec_book_notes:
+    likely_sections:
+      - "Architecture doctrine"
+      - "Repo governance"
+      - "AIDE workflow"
+      - "Workbench"
+      - "Presentation system"
+      - "Domain primitives"
+      - "Testing gates"
+    unique_contributions:
+      - "Development non-blocking / promotion evidence-blocked doctrine."
+      - "Workbench progressive self-hosting."
+      - "Product-spine sequencing."
+    possible_duplicates_with_other_chats:
+      - "Worldgen architecture"
+      - "Constitutional Architecture"
+      - "Repo convergence"
+    conflicts_to_watch_for:
+      - "C89/C++98 vs C17/C++17 status."
+      - "Queue next-task state."
+    formal_requirements_candidates:
+      - "Path is not identity."
+      - "UI is not authority."
+      - "Task branches per prompt."
+    background_context_candidates:
+      - "Nixie/VFD/OEM+ UI inspirations."
+    needs_user_confirmation:
+      - "Whether origin/dev exists and should become official."
+
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Verify queue and run the next missing product-spine prompt."
+    next_action_for_aggregator: "Merge this report under architecture/AIDE/Workbench/product-spine sections."
+    user_checks_required:
+      - "Check live repo state."
+      - "Confirm whether latest prompts have run."

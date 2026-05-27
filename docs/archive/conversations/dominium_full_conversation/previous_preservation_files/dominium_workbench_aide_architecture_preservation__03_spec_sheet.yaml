@@ -1,0 +1,1362 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, and Product-Spine Planning
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only unless labelled PROJECT-CONTEXT
+    apparent_coverage: Partial-to-broad visible context, not raw complete transcript export
+    confidence_1_to_5: 4
+    staleness_risk: High for live repo/external software, medium for doctrine
+    safe_for_aggregation: yes_with_caveats
+    main_limitations:
+    - No guaranteed full raw transcript
+    - Live repo status not freshly verified
+    - Some early turns summarized/skipped
+    - Screenshots not fully analyzed
+  summary:
+    one_sentence: This chat transformed a UI editor idea into a broad Dominium Workbench/AIDE/provider/presentation architecture
+      and task queue.
+    short_brief: A long planning chat about replacing old UI tooling with Workbench, unifying presentations, governing Codex/AIDE
+      parallel development, fencing third-party providers, and planning targeted maintenance plus projection work.
+    main_topics:
+    - UI Editor supersession
+    - Workbench Platform
+    - AIDE workflow
+    - Presentation/projection architecture
+    - Provider/raylib strategy
+    - Structure/full-gate maintenance
+    - Universe Explorer north-star
+    main_outputs:
+    - Multiple Codex prompts
+    - Handoff material
+    - This preservation package
+    highest_priority_carry_forward:
+    - Verify live repo state
+    - Run/review FULL-GATE-LEGACY-TEST-ROUTE-01
+    - Generate remaining maintenance prompts
+    - Proceed to PROJECTION-CONFORMANCE-01
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Live repo evidence wins over pasted status
+    - Direct user decisions outrank assistant suggestions
+    - Accepted decisions outrank brainstorms
+    staleness_rules:
+    - Current repo/software facts require verification before implementation
+  user_preferences:
+    explicit:
+    - Direct, source-grounded, audit-ready answers with explicit uncertainty.
+    - Generate copyable Codex/AIDE prompts in one fenced block.
+    - Do not re-ask answered questions; proceed with assumptions when safe.
+    - Do not restart settled doctrine.
+    - Preserve rejected/superseded options.
+    - Prefer professional/OS-like engineering over one-off indie architecture.
+    inferred:
+    - Do not re-ask answered questions; proceed with assumptions when safe.
+    uncertain_or_not_established:
+    - Exact current repo state
+    - Exact final provider implementation timing
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Dominium/Domino architectural identity
+    label: FACT/INFERENCE
+    objective: Preserve the distinction between Domino as reusable deterministic substrate and Dominium as game/product family.
+    current_state: Conceptually settled in this chat; repo-current status requires verification.
+    desired_end_state: Contract-governed reusable substrate supporting Dominium and other games/apps.
+    status: Active
+    priority: P0
+    background: See human report sections 1-8
+    decisions_made:
+    - DECISION-01
+    - DECISION-10
+    decisions_pending: []
+    tasks:
+    - TASK-04
+    - TASK-06
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies: []
+    timeline: See timeline register
+    blockers: []
+    risks:
+    - RISK-08
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria: []
+    next_action: See task register
+    verification_needed:
+    - VERIFY-02
+    confidence: '4'
+  - id: WORKSTREAM-02
+    name: AIDE control-plane workflow
+    label: FACT
+    objective: Make AIDE the scheduler/ledger/checkpoint/repair system for bounded Codex work.
+    current_state: Workflow, WorkUnit, dev/main, checkpoint, and capability reality prompts were generated or discussed.
+    desired_end_state: Parallel task execution with evidence-blocked main promotion.
+    status: Active
+    priority: P0
+    background: See human report sections 1-8
+    decisions_made:
+    - DECISION-07
+    - DECISION-08
+    - DECISION-09
+    - DECISION-16
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies: []
+    timeline: See timeline register
+    blockers: []
+    risks:
+    - RISK-05
+    - RISK-06
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria: []
+    next_action: See task register
+    verification_needed:
+    - VERIFY-04
+    confidence: '4'
+  - id: WORKSTREAM-03
+    name: Product spine and queue sequencing
+    label: UNCERTAIN / UNVERIFIED
+    objective: Continue narrow product-spine tasks while broad features remain blocked.
+    current_state: Package mount, replay proof, barebones shell, product spine review, presentation contract and full-gate
+      tasks were discussed; latest execution state is user-reported, not independently verified here.
+    desired_end_state: Proven command/result/view/replay/client shell leading to presentation/projection and Workbench read-only
+      shell.
+    status: Active
+    priority: P0
+    background: See human report sections 1-8
+    decisions_made: []
+    decisions_pending: []
+    tasks:
+    - TASK-17
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies: []
+    timeline: See timeline register
+    blockers: []
+    risks:
+    - RISK-01
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria: []
+    next_action: See task register
+    verification_needed:
+    - VERIFY-01
+    confidence: '3'
+  - id: WORKSTREAM-04
+    name: Unified presentation architecture
+    label: FACT/UNVERIFIED
+    objective: Unify CLI, TUI/text, rendered GUI, native GUI, and headless as projections of commands/results/views.
+    current_state: Presentation contract completed per user report; projection conformance remains next.
+    desired_end_state: One view/action/projection model shared by products and Workbench.
+    status: Active
+    priority: P0
+    background: See human report sections 1-8
+    decisions_made:
+    - DECISION-04
+    decisions_pending: []
+    tasks:
+    - TASK-07
+    - TASK-08
+    - TASK-09
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies: []
+    timeline: See timeline register
+    blockers: []
+    risks:
+    - RISK-02
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria: []
+    next_action: See task register
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-05
+    name: Workbench production environment
+    label: FACT/INFERENCE
+    objective: Make Workbench the visual/agentic production environment, not the authority.
+    current_state: Strong conceptual plan; implementation deferred until contracts/projections/read-only shell.
+    desired_end_state: Progressive self-hosting Workbench that edits artifacts through document patches and evidence.
+    status: Planned
+    priority: P1
+    background: See human report sections 1-8
+    decisions_made:
+    - DECISION-02
+    - DECISION-03
+    - DECISION-05
+    - DECISION-15
+    decisions_pending: []
+    tasks:
+    - TASK-10
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies: []
+    timeline: See timeline register
+    blockers: []
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria: []
+    next_action: See task register
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-06
+    name: Renderer/provider strategy
+    label: FACT/INFERENCE
+    objective: Use raylib/SDL/Lua as fenced providers under Dominium service contracts.
+    current_state: Detailed provider doctrine decided conceptually; implementation not yet started.
+    desired_end_state: Service-first provider system with manifests, profiles, conformance tests, and third-party fences.
+    status: Planned
+    priority: P1
+    background: See human report sections 1-8
+    decisions_made:
+    - DECISION-11
+    - DECISION-12
+    - DECISION-13
+    decisions_pending: []
+    tasks:
+    - TASK-05
+    - TASK-13
+    - TASK-14
+    - TASK-15
+    - TASK-16
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies: []
+    timeline: See timeline register
+    blockers: []
+    risks:
+    - RISK-03
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria: []
+    next_action: See task register
+    verification_needed:
+    - VERIFY-05
+    confidence: '4'
+  - id: WORKSTREAM-07
+    name: Structure stabilization and full-gate cleanup
+    label: FACT
+    objective: Stop broad structure cleanup; run targeted maintenance such as full-gate legacy test routing.
+    current_state: User requested FULL-GATE-LEGACY-TEST-ROUTE-01 next; prompt generated.
+    desired_end_state: Canonical active structure with full-gate tests no longer expecting retired roots.
+    status: Active
+    priority: P0
+    background: See human report sections 1-8
+    decisions_made:
+    - DECISION-06
+    decisions_pending: []
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies: []
+    timeline: See timeline register
+    blockers: []
+    risks:
+    - RISK-04
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria: []
+    next_action: See task register
+    verification_needed:
+    - VERIFY-03
+    confidence: '4'
+  - id: WORKSTREAM-08
+    name: Universe Explorer north-star
+    label: INFERENCE
+    objective: Build read-only Universe Explorer as first meaningful inspection product slice after presentation/projection.
+    current_state: Discussed as future path, not yet implementation.
+    desired_end_state: Headless and then visual no-modal-loading universe inspection proving reference frames, streaming,
+      materialization, and projection.
+    status: Planned
+    priority: P2
+    background: See human report sections 1-8
+    decisions_made:
+    - DECISION-14
+    decisions_pending: []
+    tasks:
+    - TASK-11
+    - TASK-12
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies: []
+    timeline: See timeline register
+    blockers: []
+    risks:
+    - RISK-07
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria: []
+    next_action: See task register
+    verification_needed: []
+    confidence: '3'
+  - id: WORKSTREAM-09
+    name: Modular theme/UI/TUI/rendered system
+    label: FACT/INFERENCE
+    objective: Support modular layouts, controls, widgets, themes, OEM+ mimic styles, TUI profiles, and code-only primitive
+      themes.
+    current_state: Discussed with screenshots and mockups; mostly conceptual.
+    desired_end_state: Theme/control/layout/view system packable and testable across CLI/TUI/rendered/native.
+    status: Planned
+    priority: P1
+    background: See human report sections 1-8
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies: []
+    timeline: See timeline register
+    blockers: []
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria: []
+    next_action: See task register
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-10
+    name: Long-range simulation/game doctrine
+    label: INFERENCE
+    objective: Preserve deep primitives, materialization, representation ladders, formalization, civilization, and failure
+      ontology as future domain doctrine.
+    current_state: Discussed repeatedly but deferred.
+    desired_end_state: Domain constitutions and slices after product spine and Workbench foundations.
+    status: Future
+    priority: P3
+    background: See human report sections 1-8
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies: []
+    timeline: See timeline register
+    blockers: []
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria: []
+    next_action: See task register
+    verification_needed: []
+    confidence: '3'
+  decisions:
+  - id: DECISION-01
+    decision: Domino is the reusable deterministic substrate; Dominium is one product/game family on it.
+    status: Accepted/active
+    label: FACT
+    evidence_or_basis: Repeated user acceptance and later handoffs.
+    rationale: Allows reuse for other games and prevents Dominium-specific systems from contaminating the engine substrate.
+    implications: Affects roots, APIs, provider boundaries, Workbench, packs, and future game projects.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: FACT
+  - id: DECISION-02
+    decision: Workbench is not authority; it is a production environment over contracts, commands, services, documents, patches,
+      evidence, modules, packs, and providers.
+    status: Accepted/active
+    label: FACT
+    evidence_or_basis: User accepted replacement of old UI/Tool Editor with Workbench platform.
+    rationale: Prevents a second GUI framework and keeps CLI/TUI/GUI/headless parity.
+    implications: Workbench must call command/service/document/patch flows, not mutate truth privately.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: FACT
+  - id: DECISION-03
+    decision: Abandon old UI Editor / Tool Editor as final products; recycle their ideas into Workbench modules.
+    status: Accepted/active
+    label: FACT
+    evidence_or_basis: User explicitly said old UI editor/tool editor were good general ideas but bad final products, to abandon
+      and recycle them.
+    rationale: Avoids Windows-first one-off tooling and moves to cross-platform rendered tools.
+    implications: Old concepts become Interface Studio, UI/HUD Sandbox, Theme Lab, Module/Pack Foundry, App Composer.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: FACT
+  - id: DECISION-04
+    decision: CLI, TUI/text, rendered GUI, OS-native GUI, and headless are projections of the same semantic command/result/view
+      system.
+    status: Accepted/active
+    label: FACT
+    evidence_or_basis: Repeatedly discussed and accepted.
+    rationale: Prevents separate implementations and enables reuse across client, server, setup, launcher, and Workbench.
+    implications: Requires presentation contracts and projection conformance before rich UI.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: FACT
+  - id: DECISION-05
+    decision: 'Use progressive self-hosting: seed substrate first, then Workbench edits safe artifacts, then its own presentation,
+      then products.'
+    status: Accepted/active
+    label: FACT
+    evidence_or_basis: User accepted progressive self-hosting model.
+    rationale: Avoids circular dependency and unsafe self-modifying Workbench.
+    implications: Defines Workbench maturity ladder S0-S6.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: FACT
+  - id: DECISION-06
+    decision: Stop broad structure cleanup once canonical active structure is clean enough; use targeted maintenance lanes.
+    status: Accepted/latest plan
+    label: FACT
+    evidence_or_basis: User shifted to full-gate legacy test routing and targeted cleanup.
+    rationale: Avoids cleanup spiral.
+    implications: Maintenance tasks include full-gate legacy test route, pack layout canon, residual taxonomy, public ABI
+      promotion.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: FACT
+  - id: DECISION-07
+    decision: Use AIDE as governor/ledger/checkpoint/repair system and Codex as bounded patch executor.
+    status: Accepted/active
+    label: FACT
+    evidence_or_basis: Explicit in multiple handoff plans.
+    rationale: Supports parallel development without corrupting main.
+    implications: Requires workflow law, WorkUnit schema, dev/main policy, checkpoint loop, capability reality ledger.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: FACT
+  - id: DECISION-08
+    decision: Development is non-blocking; promotion is evidence-blocked.
+    status: Accepted/active
+    label: FACT
+    evidence_or_basis: Repeated as doctrine in user and assistant handoffs.
+    rationale: Allows progress on dev while protecting main.
+    implications: Shapes branch model and testing policy.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: FACT
+  - id: DECISION-09
+    decision: Use task branches/worktrees; do not let multiple agents mutate shared dev directly.
+    status: Accepted/active
+    label: FACT
+    evidence_or_basis: Discussed as required before larger parallelism.
+    rationale: Prevents conflicts and stale AIDE state.
+    implications: Requires branch role policy and checkpoint loop.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: FACT
+  - id: DECISION-10
+    decision: Current mainline language doctrine moved from C89/C++98 ideas to C17 + C++17 with C-compatible ABI boundaries.
+    status: Accepted but verify live repo
+    label: UNCERTAIN / UNVERIFIED
+    evidence_or_basis: User pasted synthesis stating this; earlier chat had C89/C++98 assumptions.
+    rationale: Improves maintainability while preserving ABI portability.
+    implications: Needs live verification in CMake/build policy before final spec merge.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: UNCERTAIN / UNVERIFIED
+  - id: DECISION-11
+    decision: Use raylib/rlgl/rlsw/raygui/raudio/SDL2/Lua aggressively only as replaceable providers behind Dominium service
+      contracts.
+    status: Accepted/conceptual
+    label: FACT/INFERENCE
+    evidence_or_basis: User asked what I thought; assistant agreed and refined.
+    rationale: Gives fast visible progress without architectural lock-in.
+    implications: Provider work should follow AIDE/presentation and manifest/fence/service contract wedges.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: FACT/INFERENCE
+  - id: DECISION-12
+    decision: Do not make raylib, SDL2, Lua, or app variants define the architecture.
+    status: Accepted/conceptual
+    label: FACT/INFERENCE
+    evidence_or_basis: Explicitly discussed as service-first/provider-backed doctrine.
+    rationale: Prevents vendor-shaped directory and API lock-in.
+    implications: Requires forbidden include validator and provider manifests.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: FACT/INFERENCE
+  - id: DECISION-13
+    decision: Raylib rlsw is a raylib software-provider, not the canonical Dominium software renderer.
+    status: Accepted/conceptual
+    label: FACT/INFERENCE
+    evidence_or_basis: Discussed and accepted in provider doctrine.
+    rationale: Preserves first-party reference renderer slot.
+    implications: 'Directory split: runtime/render/providers/software vs runtime/render/providers/rlsw.'
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: FACT/INFERENCE
+  - id: DECISION-14
+    decision: Universe Explorer is a north-star read-only inspection product, not gameplay.
+    status: Tentative/accepted as plan
+    label: INFERENCE
+    evidence_or_basis: Discussed after structure cleanup as first meaningful product identity.
+    rationale: Proves no-modal-loading, reference frames, streaming, materialization, projection before embodiment.
+    implications: Implementation should start with contracts/headless proof, not renderer/gameplay.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: INFERENCE
+  - id: DECISION-15
+    decision: Workbench should begin read-only before editing artifacts.
+    status: Accepted/active
+    label: FACT/INFERENCE
+    evidence_or_basis: Repeated in self-hosting safety stages.
+    rationale: Reduces risk and proves projection/evidence first.
+    implications: First Workbench shell should inspect commands, diagnostics, artifacts, graphs, packs, status.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: FACT/INFERENCE
+  - id: DECISION-16
+    decision: Full CTest remains full-gate/T4 debt, not every-prompt gate.
+    status: Accepted/latest plan
+    label: FACT/UNVERIFIED
+    evidence_or_basis: Repeated; user wants speed on dev with full suite at main/checkpoints.
+    rationale: Supports parallel productivity.
+    implications: Requires targeted validators, fast strict, and checkpoint policy.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: FACT/UNVERIFIED
+  tasks:
+  - id: TASK-01
+    task: FULL-GATE-LEGACY-TEST-ROUTE-01
+    priority: P0
+    urgency: U0
+    owner: Codex/AIDE
+    dependencies:
+    - PRESENTATION-CONTRACT-01 complete; canonical structure clean enough
+    inputs_needed:
+    - Full-gate tests still expecting retired roots; generated prompt
+    expected_output: Audit + targeted test/validator fixes; no retired root expectations
+    next_step: Run/execute generated prompt
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: 4
+  - id: TASK-02
+    task: PACK-INTERNAL-LAYOUT-CANON-01
+    priority: P1
+    urgency: U1
+    owner: Codex/AIDE
+    dependencies:
+    - Current pack layout warnings
+    inputs_needed:
+    - Audit current pack-internal content layout
+    expected_output: Decision and targeted migration/validator update
+    next_step: Generate prompt after or alongside full-gate cleanup
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT/INFERENCE
+    confidence: 4
+  - id: TASK-03
+    task: RUNTIME-ENGINE-RESIDUAL-TAXONOMY-01
+    priority: P1
+    urgency: U1
+    owner: Codex/AIDE
+    dependencies:
+    - Structure audit warning buckets
+    inputs_needed:
+    - Inspect engine/runtime residual paths such as session/serialization/foundation
+    expected_output: Classification or targeted moves
+    next_step: Generate maintenance prompt
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT/INFERENCE
+    confidence: 4
+  - id: TASK-04
+    task: PUBLIC-HEADER-ABI-PROMOTION-01
+    priority: P1
+    urgency: U1
+    owner: Codex/AIDE
+    dependencies:
+    - Public ABI warning debt
+    inputs_needed:
+    - Public surface/header promotion warnings
+    expected_output: Classify public vs internal/provisional; reduce warnings
+    next_step: Generate prompt
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT/INFERENCE
+    confidence: 4
+  - id: TASK-05
+    task: STORAGE-PACKAGE-PROVIDER-SPLIT-01
+    priority: P1
+    urgency: U1
+    owner: Codex/AIDE
+    dependencies:
+    - Provider/package structure warnings
+    inputs_needed:
+    - Current storage/package provider split uncertainty
+    expected_output: Targeted taxonomy/contract clarification
+    next_step: Generate prompt
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT/INFERENCE
+    confidence: 4
+  - id: TASK-06
+    task: POINTER-WIDTH-SERIALIZATION-AUDIT-01
+    priority: P1
+    urgency: U1
+    owner: Codex/AIDE
+    dependencies:
+    - C17/C++17 + 64-bit policy; serialization law
+    inputs_needed:
+    - Code/search audit for pointer-width serialization risks
+    expected_output: Audit and repair tasks
+    next_step: Generate prompt
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: 4
+  - id: TASK-07
+    task: PROJECTION-CONFORMANCE-01
+    priority: P0
+    urgency: U1
+    owner: Codex/AIDE
+    dependencies:
+    - PRESENTATION-CONTRACT-01 complete
+    inputs_needed:
+    - Projection conformance task
+    expected_output: Fixtures/tests proving CLI/text/rendered-placeholder/native/headless projections consume same views
+    next_step: Generate next mainline prompt after maintenance set or now if chosen
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 4
+  - id: TASK-08
+    task: ACCESSIBILITY-CONTRACT-01
+    priority: P1
+    urgency: U1
+    owner: Codex/AIDE
+    dependencies:
+    - Presentation contracts
+    inputs_needed:
+    - Accessibility labels/focus/keyboard/contrast/reduced-motion law
+    expected_output: Contracts/fixtures/validators
+    next_step: Generate after projection conformance
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 4
+  - id: TASK-09
+    task: TEXT-LOCALIZATION-CONTRACT-01
+    priority: P1
+    urgency: U1
+    owner: Codex/AIDE
+    dependencies:
+    - Presentation contracts
+    inputs_needed:
+    - Text/message catalog/localization fallback law
+    expected_output: Contracts/fixtures/validators
+    next_step: Generate after accessibility contract or parallel
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 4
+  - id: TASK-10
+    task: WORKBENCH-SHELL-READONLY-01
+    priority: P1
+    urgency: U2
+    owner: Codex/AIDE
+    dependencies:
+    - Presentation/projection conformance
+    inputs_needed:
+    - Read-only Workbench shell
+    expected_output: Command palette/status/validation/evidence/project graph surfaces, no editing
+    next_step: Generate once projection conformance is stable
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT/INFERENCE
+    confidence: 4
+  - id: TASK-11
+    task: UNIVERSE-EXPLORER-CONTRACT-01
+    priority: P1
+    urgency: U2
+    owner: Codex/AIDE
+    dependencies:
+    - Presentation/projection; read-only shell preferably
+    inputs_needed:
+    - Contract for read-only universe inspection/explorer
+    expected_output: Observer/ref frames/streaming/materialization/fidelity/provenance contracts
+    next_step: Generate after Workbench/read-only or as contract-only lane
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-12
+    task: UNIVERSE-EXPLORER-HEADLESS-01
+    priority: P1
+    urgency: U2
+    owner: Codex/AIDE
+    dependencies:
+    - Universe Explorer contract
+    inputs_needed:
+    - Headless/null-render proof
+    expected_output: Typed traversal/inspection/materialization/refusal evidence without renderer
+    next_step: Generate after contract
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-13
+    task: PROVIDER-MANIFEST-WEDGE-01
+    priority: P1
+    urgency: U2
+    owner: Codex/AIDE
+    dependencies:
+    - AIDE governance/presentation; provider doctrine
+    inputs_needed:
+    - Provider descriptor law
+    expected_output: Provider schema, examples, status vocab, relation to capability ledger
+    next_step: Generate after presentation/projection or as parallel low-risk lane
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-14
+    task: SERVICE-CONTRACT-WEDGE-01
+    priority: P1
+    urgency: U2
+    owner: Codex/AIDE
+    dependencies:
+    - Provider manifest wedge
+    inputs_needed:
+    - Service slots for platform/input/render/draw/audio/assets/script
+    expected_output: Service contracts and null-provider contract fixtures
+    next_step: Generate after provider manifest
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-15
+    task: THIRD-PARTY-FENCE-01
+    priority: P1
+    urgency: U2
+    owner: Codex/AIDE
+    dependencies:
+    - Provider manifest/service contract
+    inputs_needed:
+    - Forbidden include and license/third-party validator
+    expected_output: Boundary validator and third-party manifest policy
+    next_step: Generate before concrete raylib wedge
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-16
+    task: RAYLIB-PROVIDER-WEDGE-01
+    priority: P2
+    urgency: U2
+    owner: Codex/AIDE
+    dependencies:
+    - Manifest/service/fence tasks
+    inputs_needed:
+    - Raylib ecosystem seed provider proof
+    expected_output: Raylib/rlgl/rlsw/raygui/raudio provider proofs; no leakage
+    next_step: Generate after fences
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-17
+    task: PRODUCT-SPINE/STATUS verification before future prompts
+    priority: P0
+    urgency: U0
+    owner: Future assistant/user
+    dependencies:
+    - Current chat state may be stale
+    inputs_needed:
+    - Live repo status from queue/audits/log
+    expected_output: Correct next prompt and prevent stale work
+    next_step: Verify before execution
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Do not turn Workbench into authority.
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: Direct repeated doctrine
+    implication: Workbench must use commands/services/documents/patches/evidence.
+    violation_risk: High
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-02
+    constraint: Broad Workbench UI, provider runtime, package runtime, module loader, renderer/native GUI, gameplay, release
+      publication remain blocked until gates authorize.
+    type: Execution
+    hard_or_soft: Hard
+    source_or_basis: Repeated queue/foundation summaries in chat
+    implication: Future prompts must preserve non-goals.
+    violation_risk: High
+    label: FACT/UNVERIFIED
+    confidence: '4'
+  - id: CONSTRAINT-03
+    constraint: No broad structure cleanup unless validator/audit blocks next slice.
+    type: Execution
+    hard_or_soft: Hard/soft
+    source_or_basis: Latest plan
+    implication: Use targeted maintenance lanes.
+    violation_risk: Medium
+    label: FACT
+    confidence: '4'
+  - id: CONSTRAINT-04
+    constraint: CLI/TUI/rendered/native/headless must be projections of same command/result/view spine.
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: Repeated accepted doctrine
+    implication: Presentation work must avoid separate semantics per UI mode.
+    violation_risk: High
+    label: FACT
+    confidence: '4'
+  - id: CONSTRAINT-05
+    constraint: Third-party types must not leak into engine/game/contracts/content/saves/replays/public SDK.
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: Provider doctrine
+    implication: Provider code must translate to Dominium types.
+    violation_risk: High
+    label: FACT/INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-06
+    constraint: Full CTest is full-gate/T4 debt, not ordinary prompt gate.
+    type: Testing
+    hard_or_soft: Soft but important
+    source_or_basis: Repeated latest plans
+    implication: Dev tasks run targeted validators/fast strict; main/checkpoint more stringent.
+    violation_risk: Medium
+    label: FACT/UNVERIFIED
+    confidence: '4'
+  - id: CONSTRAINT-07
+    constraint: Stable identity is contractual, not path-based.
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: Repeated doctrine
+    implication: Use IDs/manifests/registries, not folder names, as identity.
+    violation_risk: High
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-08
+    constraint: Apps compose; runtime implements; contracts define law; content supplies authored payloads; tools validate/generate/migrate.
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: Repeated doctrine
+    implication: Prevents apps/tools becoming runtime or truth owners.
+    violation_risk: High
+    label: FACT
+    confidence: '4'
+  - id: CONSTRAINT-09
+    constraint: Development non-blocking; promotion evidence-blocked.
+    type: Process
+    hard_or_soft: Hard
+    source_or_basis: Repeated AIDE doctrine
+    implication: Dev may accept classified warnings; main requires checkpoint/evidence.
+    violation_risk: High
+    label: FACT
+    confidence: '4'
+  - id: CONSTRAINT-10
+    constraint: The preservation report itself is for THIS CHAT ONLY unless labelled PROJECT-CONTEXT.
+    type: Reporting
+    hard_or_soft: Hard
+    source_or_basis: Uploaded preservation prompt
+    implication: Do not merge other chat facts unlabelled.
+    violation_risk: Medium
+    label: FACT
+    confidence: '5'
+  open_questions:
+  - id: QUESTION-01
+    question: What is the live repo status at the time of continuation?
+    why_it_matters: The chat includes changing queue and commit state.
+    known: User reported latest tasks and statuses.
+    unknown: Whether subsequent Codex runs changed queue/audits after this preservation.
+    resolution_path: Verify `.aide/queue/current.toml`, latest commits, relevant audits.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: Should the next executable task be FULL-GATE-LEGACY-TEST-ROUTE-01 or PROJECTION-CONFORMANCE-01?
+    why_it_matters: User said first generate maintenance prompts, then replan.
+    known: FULL-GATE prompt was generated immediately before preservation request.
+    unknown: Whether user will run maintenance lane first or mainline projection.
+    resolution_path: Ask user or check queue after files.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT/UNCERTAIN
+  - id: QUESTION-03
+    question: Is C17/C++17 fully implemented in CMake or partially doctrinal?
+    why_it_matters: Language baseline changed during chat.
+    known: Later handoffs state C17/C++17 baseline.
+    unknown: Live CMake/toolchain details.
+    resolution_path: Verify repo files before spec lock.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: How aggressively should provider/raylib work start relative to presentation/projection and Workbench read-only
+      shell?
+    why_it_matters: Provider strategy was accepted conceptually but timing deferred.
+    known: Recommended after AIDE/presentation/fence/manifest tasks.
+    unknown: Exact queue timing after maintenance tasks.
+    resolution_path: Replan after projection conformance and maintenance status.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: QUESTION-05
+    question: What is the final target for Universe Explorer as first product identity?
+    why_it_matters: It is a north-star but not implemented.
+    known: Headless/read-only first, visual later, embodiment after.
+    unknown: How soon to schedule after read-only Workbench/presentation.
+    resolution_path: Formalize UNIVERSE-EXPLORER-CONTRACT-01 when gates allow.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Old Windows-only UI Editor as final product
+    status: Superseded
+    reason: Too narrow, native-widget-first, not cross-platform/reusable; replaced by Workbench modules.
+    final_or_tentative: Final for final product; ideas recycled
+    reconsider_conditions: Temporary for bootstrap only if ever needed.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-02
+    option: Tool Editor as monolithic editor
+    status: Superseded
+    reason: Would become separate architecture; replaced by modular Workbench Platform.
+    final_or_tentative: Final as monolithic product
+    reconsider_conditions: Could reappear as workspace/module concept only.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-03
+    option: Workbench as authority/center of architecture
+    status: Rejected
+    reason: Contracts/commands/services/providers/packs/artifacts/proof are center; Workbench is surface.
+    final_or_tentative: Final
+    reconsider_conditions: Reconsider only as UX language, not architecture.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-04
+    option: Broad root/directory rewrites after structure became clean enough
+    status: Deprioritized
+    reason: Risk of cleanup spiral; remaining work targeted.
+    final_or_tentative: Current plan, not forever
+    reconsider_conditions: If validators show blockers.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-05
+    option: Raylib-shaped architecture or apps/client/rendered/raylib variants
+    status: Rejected
+    reason: Vendor/provider must not define architecture.
+    final_or_tentative: Final
+    reconsider_conditions: Temporary proof folders allowed with retirement notes.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT/INFERENCE
+  - id: REJECTED-06
+    option: Pure C99 or pure C++11 as mainline baseline
+    status: Rejected/superseded
+    reason: C17+C++17 with C-compatible ABI deemed better fit.
+    final_or_tentative: Tentative until live build verified
+    reconsider_conditions: If platform/toolchain evidence contradicts.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Prompt UU1–UU6 plan for UI Editor import/CLI/ops/Minecraft launcher/setup tests
+    type: Prompt plan
+    purpose: Earlier plan for old UI Editor toolchain.
+    status: Superseded/recycled
+    origin: This chat
+    carry_forward: Yes, as rejected/superseded context
+    notes: Ideas became Workbench modules and CLI/presentation concepts.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Final UI Editor implementation prompt with import/CLI/Minecraft tests
+    type: Codex prompt
+    purpose: Implementation prompt for old Phase A UI Editor.
+    status: Superseded
+    origin: This chat
+    carry_forward: Yes, as historical artifact
+    notes: Shows why old approach was abandoned.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: Screenshots/mockups of Workbench themes/modules
+    type: Images
+    purpose: Visual references for OEM+ themes, modules, TUI, Workbench surfaces.
+    status: Reference only
+    origin: Uploaded in chat
+    carry_forward: 'Yes'
+    notes: Used to derive modular theme/workspace concepts, not exact design requirements.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: AIDE/Workbench/product-spine handoff prompt
+    type: Handoff text
+    purpose: Long carry-forward prompt summarizing repo state and next tasks.
+    status: Important
+    origin: This chat
+    carry_forward: 'Yes'
+    notes: Should inform future chat bootstrap; live repo must still be verified.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: 'Codex prompts: STATUS-RECONCILE-02, AIDE-WORKFLOW-LAW-01, AIDE-WORKUNIT-SCHEMA-01, AIDE-DEV-MAIN-POLICY-01,
+      AIDE-CHECKPOINT-LOOP-01, AIDE-CAPABILITY-REALITY-LEDGER-01'
+    type: Codex prompts
+    purpose: Detailed prompts for AIDE workflow layer.
+    status: Generated
+    origin: This chat
+    carry_forward: 'Yes'
+    notes: Some reportedly executed later; verify live repo.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: 'Codex prompt: FULL-GATE-LEGACY-TEST-ROUTE-01'
+    type: Codex prompt
+    purpose: Targeted full-gate stale-root cleanup prompt.
+    status: Generated immediately before preservation request
+    origin: This chat
+    carry_forward: 'Yes'
+    notes: Potential next execution depending on user plan.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: User-uploaded Pasted text.txt preservation instruction
+    type: Uploaded file
+    purpose: Maximum-fidelity preservation package instructions.
+    status: Active input
+    origin: Uploaded file
+    carry_forward: 'Yes'
+    notes: Primary instruction for this response.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: This preservation package files and zip
+    type: Generated export
+    purpose: Downloadable report/register/spec/handoff files created by this response.
+    status: Created now
+    origin: This response
+    carry_forward: 'Yes'
+    notes: Use for aggregation and future chat transfer.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Future assistant treats stale repo status as current.
+    consequence: Wrong prompts, duplicate tasks, stale queues.
+    likelihood: Medium
+    severity: High
+    mitigation: Always verify live repo before current-status decisions.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-02
+    risk: Workbench implementation starts before projection conformance.
+    consequence: Separate UI semantics, later rewrite.
+    likelihood: Medium
+    severity: High
+    mitigation: Require presentation/projection contracts first.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT/INFERENCE
+  - id: RISK-03
+    risk: Raylib/SDL/Lua provider types leak into stable contracts or game state.
+    consequence: Vendor lock-in, replay/save instability.
+    likelihood: Medium
+    severity: High
+    mitigation: Forbidden include/type validator and provider fences.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT/INFERENCE
+  - id: RISK-04
+    risk: Full CTest debt remains ignored too long.
+    consequence: Release gate remains blocked.
+    likelihood: Medium
+    severity: Medium
+    mitigation: Targeted full-gate legacy test routing and debt ledger.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT/UNVERIFIED
+  - id: RISK-05
+    risk: Capability status overclaimed.
+    consequence: Docs/Workbench say implemented when only fixture/stub exists.
+    likelihood: High
+    severity: High
+    mitigation: Capability Reality Ledger.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-06
+    risk: Parallel Codex tasks conflict on coordinator files.
+    consequence: Queue/status corruption.
+    likelihood: Medium
+    severity: High
+    mitigation: Coordinator ownership rules and checkpoint loop.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-07
+    risk: Universe Explorer free-camera becomes implicit gameplay movement.
+    consequence: Wrong gameplay model and authority leakage.
+    likelihood: Low-Medium
+    severity: High
+    mitigation: Separate observer inspection authority from embodied actor authority.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: RISK-08
+    risk: Preservation report overstates decisions from assistant suggestions.
+    consequence: Bad spec aggregation.
+    likelihood: Medium
+    severity: High
+    mitigation: Label decisions accepted by user vs assistant suggestions.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Live repo task queue and audit status.
+    why_verification_needed: Many user-pasted statuses changed over time.
+    suggested_source_type: 'GitHub/repo files: .aide/queue/current.toml, audits, log.'
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: C17/C++17 baseline in current CMake/toolchain docs.
+    why_verification_needed: Earlier chat had C89/C++98; later says C17/C++17.
+    suggested_source_type: CMakeLists, toolchain docs, foundation audit.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Whether FULL-GATE-LEGACY-TEST-ROUTE-01 has been run.
+    why_verification_needed: It was generated, but execution unknown.
+    suggested_source_type: Repo commit/audit search.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Whether AIDE workflow layer prompts have all landed.
+    why_verification_needed: Some reportedly passed in pasted summaries; may be stale.
+    suggested_source_type: AIDE audits and queue.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Third-party current facts for raylib, SDL, Lua.
+    why_verification_needed: External software versions/support/licensing may change.
+    suggested_source_type: Official project docs/releases before implementation.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Architecture doctrine
+    - Workbench
+    - AIDE workflow
+    - Presentation/projection
+    - Provider strategy
+    - Task queue
+    - Domain future doctrine
+    unique_contributions:
+    - Transition from UI Editor to Workbench
+    - Provider-fenced raylib strategy
+    - AIDE parallel dev doctrine
+    possible_duplicates_with_other_chats:
+    - Dominium operating environment doctrine
+    - Foundation Lock
+    - World simulation primitives
+    conflicts_to_watch_for:
+    - Language baseline
+    - Live queue state
+    - Provider timing
+    formal_requirements_candidates:
+    - Workbench not authority
+    - Presentation projections share semantic spine
+    - Third-party types fenced
+    - Promotion evidence-blocked
+    background_context_candidates:
+    - Minecraft-style logical layouts
+    - Theme mockups
+    - Long-range civilization/fabrication dreams
+    needs_user_confirmation:
+    - Live repo state
+    - Next prompt order if maintenance vs projection
+  final_recommendations:
+    next_action_if_continuing_this_chat: Review/execute FULL-GATE-LEGACY-TEST-ROUTE-01 or generate PACK-INTERNAL-LAYOUT-CANON-01.
+    next_action_for_aggregator: Merge this package under Workbench/AIDE/presentation/provider architecture chapters.
+    user_checks_required:
+    - Verify live repo before execution
+    - Confirm whether latest prompts have been run

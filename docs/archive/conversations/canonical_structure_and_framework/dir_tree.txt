@@ -1,0 +1,2430 @@
+# Repository directory tree
+# Generated UTC: 2026-05-20T10:32:02.2218664Z
+# Contains: directories only. Machine-readable equivalent: dir_tree.json
+
+.
+├── .aide/
+│   ├── adapters/
+│   │   └── templates/
+│   ├── cache/
+│   ├── changelog/
+│   │   └── templates/
+│   ├── commands/
+│   ├── context/
+│   ├── controller/
+│   ├── evals/
+│   │   ├── golden-tasks/
+│   │   │   ├── adapter-managed-section-determinism/
+│   │   │   ├── branch_role_detection_golden/
+│   │   │   ├── changelog_json_shape_golden/
+│   │   │   ├── changelog_preview_golden/
+│   │   │   ├── commit_message_standard_golden/
+│   │   │   ├── compact-task-packet-required-sections/
+│   │   │   ├── context-packet-no-full-repo-dump/
+│   │   │   ├── docs_consistency_report_golden/
+│   │   │   ├── drop_candidate_not_delete_approval_golden/
+│   │   │   ├── export_pack_commit_policy_inclusion_golden/
+│   │   │   ├── export_pack_excludes_source_branch_state_golden/
+│   │   │   ├── export_pack_git_policy_inclusion_golden/
+│   │   │   ├── export_pack_task_recovery_inclusion_golden/
+│   │   │   ├── file_classification_policy_golden/
+│   │   │   ├── file_quality_ledger_schema_golden/
+│   │   │   ├── file_quality_policy_golden/
+│   │   │   ├── fixture_import_governance_commands_golden/
+│   │   │   ├── git_helper_policy_golden/
+│   │   │   ├── git_land_plan_golden/
+│   │   │   ├── git_live_repo_no_mutation_golden/
+│   │   │   ├── git_promote_plan_golden/
+│   │   │   ├── git_prune_guard_golden/
+│   │   │   ├── git_workflow_policy_golden/
+│   │   │   ├── github_ci_advisory_golden/
+│   │   │   ├── github_export_inclusion_golden/
+│   │   │   ├── github_protection_policy_golden/
+│   │   │   ├── github_release_asset_schema_golden/
+│   │   │   ├── github_release_assets_have_checksums_golden/
+│   │   │   ├── github_release_checklist_golden/
+│   │   │   ├── github_release_draft_policy_golden/
+│   │   │   ├── github_release_draft_schema_golden/
+│   │   │   ├── github_release_no_publish_golden/
+│   │   │   ├── github_release_upload_plan_golden/
+│   │   │   ├── github_report_only_golden/
+│   │   │   ├── install_conflict_report_schema_golden/
+│   │   │   ├── install_no_apply_golden/
+│   │   │   ├── install_no_source_state_leak_golden/
+│   │   │   ├── install_ownership_ledger_schema_golden/
+│   │   │   ├── install_plan_schema_golden/
+│   │   │   ├── install_policy_golden/
+│   │   │   ├── install_preservation_policy_golden/
+│   │   │   ├── install_preserves_target_state_golden/
+│   │   │   ├── intent_compile_destructive_prompt_golden/
+│   │   │   ├── intent_compile_git_prompt_golden/
+│   │   │   ├── intent_compile_install_prompt_golden/
+│   │   │   ├── intent_compile_overbroad_prompt_golden/
+│   │   │   ├── intent_compile_vague_prompt_golden/
+│   │   │   ├── intent_packet_schema_golden/
+│   │   │   ├── malformed_commit_reporting_golden/
+│   │   │   ├── migration_ledger_policy_golden/
+│   │   │   ├── migration_ledger_schema_golden/
+│   │   │   ├── migration_policy_golden/
+│   │   │   ├── move_map_policy_golden/
+│   │   │   ├── move_map_schema_golden/
+│   │   │   ├── path_alias_policy_golden/
+│   │   │   ├── path_alias_schema_golden/
+│   │   │   ├── promotion_rules_golden/
+│   │   │   ├── prune_policy_golden/
+│   │   │   ├── quality_ledger_generation_golden/
+│   │   │   ├── quality_no_delete_recommendation_golden/
+│   │   │   ├── refactor_map_no_apply_golden/
+│   │   │   ├── refactor_no_apply_golden/
+│   │   │   ├── refactor_plan_schema_golden/
+│   │   │   ├── refactor_policy_golden/
+│   │   │   ├── reference_rewrite_plan_golden/
+│   │   │   ├── release_archive_generation_golden/
+│   │   │   ├── release_asset_schema_golden/
+│   │   │   ├── release_bundle_policy_golden/
+│   │   │   ├── release_checksum_validation_golden/
+│   │   │   ├── release_fixture_extraction_golden/
+│   │   │   ├── release_forbidden_paths_excluded_golden/
+│   │   │   ├── release_manifest_schema_golden/
+│   │   │   ├── release_no_publish_golden/
+│   │   │   ├── release_notes_preview_golden/
+│   │   │   ├── repair_blocks_local_state_and_secrets_golden/
+│   │   │   ├── repair_classes_golden/
+│   │   │   ├── repair_doctor_schema_golden/
+│   │   │   ├── repair_dry_run_schema_golden/
+│   │   │   ├── repair_no_apply_golden/
+│   │   │   ├── repair_plan_schema_golden/
+│   │   │   ├── repair_policy_golden/
+│   │   │   ├── repair_preserves_target_state_golden/
+│   │   │   ├── repo_dependency_map_golden/
+│   │   │   ├── repo_doc_link_map_golden/
+│   │   │   ├── repo_explain_file_golden/
+│   │   │   ├── repo_intelligence_no_local_state_golden/
+│   │   │   ├── repo_inventory_schema_golden/
+│   │   │   ├── repo_ownership_map_golden/
+│   │   │   ├── reuse_modularity_report_golden/
+│   │   │   ├── review-packet-evidence-only/
+│   │   │   ├── rollback_no_apply_golden/
+│   │   │   ├── rollback_plan_schema_golden/
+│   │   │   ├── rollback_policy_golden/
+│   │   │   ├── root_exception_schema_golden/
+│   │   │   ├── root_fate_no_delete_approval_golden/
+│   │   │   ├── root_file_classification_schema_golden/
+│   │   │   ├── root_inventory_schema_golden/
+│   │   │   ├── root_record_schema_golden/
+│   │   │   ├── root_recycling_plan_schema_golden/
+│   │   │   ├── root_recycling_policy_golden/
+│   │   │   ├── roots_no_apply_golden/
+│   │   │   ├── salvage_map_policy_golden/
+│   │   │   ├── salvage_map_schema_golden/
+│   │   │   ├── sync_policy_golden/
+│   │   │   ├── task_resumption_standard_golden/
+│   │   │   ├── test_coverage_map_golden/
+│   │   │   ├── token-ledger-budget-check/
+│   │   │   ├── tool_absorption_policy_golden/
+│   │   │   ├── tool_adapter_map_schema_golden/
+│   │   │   ├── tool_fate_no_delete_approval_golden/
+│   │   │   ├── tool_inventory_schema_golden/
+│   │   │   ├── tool_record_schema_golden/
+│   │   │   ├── tool_wrap_plan_schema_golden/
+│   │   │   ├── tools_no_execution_golden/
+│   │   │   ├── uninstall_no_apply_golden/
+│   │   │   ├── uninstall_no_blanket_aide_delete_golden/
+│   │   │   ├── uninstall_plan_schema_golden/
+│   │   │   ├── uninstall_policy_golden/
+│   │   │   ├── uninstall_preserves_target_state_golden/
+│   │   │   ├── upgrade_compatibility_policy_golden/
+│   │   │   ├── upgrade_dry_run_schema_golden/
+│   │   │   ├── upgrade_mandatory_migration_gate_golden/
+│   │   │   ├── upgrade_no_apply_golden/
+│   │   │   ├── upgrade_no_source_state_leak_golden/
+│   │   │   ├── upgrade_plan_schema_golden/
+│   │   │   ├── upgrade_policy_golden/
+│   │   │   ├── upgrade_preserves_target_state_golden/
+│   │   │   ├── verifier-detects-bad-evidence/
+│   │   │   │   └── fixtures/
+│   │   │   ├── workunit_idempotency_golden/
+│   │   │   └── workunit_sizing_policy_golden/
+│   │   └── runs/
+│   ├── gateway/
+│   ├── git/
+│   ├── github/
+│   ├── hooks/
+│   ├── import/
+│   ├── install/
+│   ├── intake/
+│   ├── ledgers/
+│   ├── memory/
+│   ├── models/
+│   ├── policies/
+│   ├── prompts/
+│   ├── providers/
+│   ├── quality/
+│   ├── queue/
+│   │   ├── DCHECK-01-dominium-aide-operating-baseline-audit/
+│   │   │   ├── command-logs/
+│   │   │   └── final-command-logs/
+│   │   ├── DOMINIUM-AIDE-BASELINE-REPAIR-01/
+│   │   ├── DOMINIUM-AIDE-FRESH-PREFLIGHT-01/
+│   │   ├── DOMINIUM-AIDE-OPERATING-BASELINE-01/
+│   │   │   ├── command-logs/
+│   │   │   ├── command-logs-final/
+│   │   │   └── logs/
+│   │   ├── DOMINIUM-AIDE-PILOT-01/
+│   │   ├── DOMINIUM-AIDE-ROOT-RECYCLING-01/
+│   │   ├── DOMINIUM-AIDE-STABLE-INSTALL-01/
+│   │   ├── DOMINIUM-AIDE-SYNC-01/
+│   │   └── DOMINIUM-AIDE-TOOL-ABSORPTION-01/
+│   ├── refactors/
+│   ├── release/
+│   ├── repair/
+│   ├── repo/
+│   ├── reports/
+│   │   └── roots/
+│   ├── rollback/
+│   ├── roots/
+│   ├── routing/
+│   │   └── examples/
+│   ├── scripts/
+│   │   └── tests/
+│   ├── tools/
+│   │   ├── command-contracts/
+│   │   ├── wrapper-contracts/
+│   │   └── wrapper-plans/
+│   ├── uninstall/
+│   ├── upgrade/
+│   └── verification/
+├── .aide.local.example/
+│   ├── cache/
+│   ├── ledgers/
+│   └── traces/
+├── .github/
+│   └── workflows/
+├── .vscode/
+├── apps/
+│   ├── client/
+│   │   ├── adapters/
+│   │   └── local_server/
+│   ├── launcher/
+│   │   ├── cli/
+│   │   ├── include/
+│   │   │   └── launcher/
+│   │   │       └── _internal/
+│   │   │           ├── dom_launcher/
+│   │   │           └── launcher_internal/
+│   │   ├── lifecycle/
+│   │   └── tui/
+│   ├── server/
+│   ├── setup/
+│   │   ├── cli/
+│   │   ├── include/
+│   │   │   ├── dsk/
+│   │   │   └── dsu/
+│   │   │       └── _internal/
+│   │   │           └── dom_setup/
+│   │   ├── lifecycle/
+│   │   └── tui/
+│   └── workbench/
+│       └── module/
+│           ├── domain/
+│           │   ├── item/
+│           │   ├── technology/
+│           │   ├── transport/
+│           │   └── universe/
+│           ├── game/
+│           │   └── editor/
+│           ├── inspection/
+│           │   └── inspector/
+│           ├── launcher/
+│           │   └── editor/
+│           ├── network/
+│           │   └── inspector/
+│           ├── observability/
+│           │   └── inspector/
+│           ├── pack/
+│           │   └── editor/
+│           ├── policy/
+│           │   └── editor/
+│           ├── process/
+│           │   └── editor/
+│           ├── replay/
+│           │   ├── analyzer/
+│           │   └── viewer/
+│           ├── save/
+│           │   ├── editor/
+│           │   └── inspector/
+│           ├── schema/
+│           │   ├── blueprint/
+│           │   └── structure/
+│           ├── tooling/
+│           │   ├── editor/
+│           │   └── host/
+│           │       └── win32/
+│           ├── ui/
+│           │   ├── doc/
+│           │   ├── editor/
+│           │   │   └── user/
+│           │   ├── preview/
+│           │   │   ├── linux/
+│           │   │   ├── macos/
+│           │   │   ├── native/
+│           │   │   ├── service/
+│           │   │   └── win32/
+│           │   └── registry/
+│           └── world/
+│               └── editor/
+├── archive/
+│   ├── audits/
+│   │   └── data/
+│   ├── generated/
+│   │   ├── agents/
+│   │   ├── aide/
+│   │   │   ├── export/
+│   │   │   │   └── aide-lite-pack-v0/
+│   │   │   │       └── files/
+│   │   │   │           ├── .aide/
+│   │   │   │           │   ├── adapters/
+│   │   │   │           │   │   └── templates/
+│   │   │   │           │   ├── cache/
+│   │   │   │           │   ├── changelog/
+│   │   │   │           │   │   └── templates/
+│   │   │   │           │   ├── commands/
+│   │   │   │           │   ├── context/
+│   │   │   │           │   ├── evals/
+│   │   │   │           │   │   └── golden-tasks/
+│   │   │   │           │   │       ├── adapter-managed-section-determinism/
+│   │   │   │           │   │       ├── branch_role_detection_golden/
+│   │   │   │           │   │       ├── changelog_json_shape_golden/
+│   │   │   │           │   │       ├── changelog_preview_golden/
+│   │   │   │           │   │       ├── commit_message_standard_golden/
+│   │   │   │           │   │       ├── compact-task-packet-required-sections/
+│   │   │   │           │   │       ├── context-packet-no-full-repo-dump/
+│   │   │   │           │   │       ├── docs_consistency_report_golden/
+│   │   │   │           │   │       ├── drop_candidate_not_delete_approval_golden/
+│   │   │   │           │   │       ├── export_pack_commit_policy_inclusion_golden/
+│   │   │   │           │   │       ├── export_pack_excludes_source_branch_state_golden/
+│   │   │   │           │   │       ├── export_pack_git_policy_inclusion_golden/
+│   │   │   │           │   │       ├── export_pack_task_recovery_inclusion_golden/
+│   │   │   │           │   │       ├── file_classification_policy_golden/
+│   │   │   │           │   │       ├── file_quality_ledger_schema_golden/
+│   │   │   │           │   │       ├── file_quality_policy_golden/
+│   │   │   │           │   │       ├── fixture_import_governance_commands_golden/
+│   │   │   │           │   │       ├── git_helper_policy_golden/
+│   │   │   │           │   │       ├── git_land_plan_golden/
+│   │   │   │           │   │       ├── git_live_repo_no_mutation_golden/
+│   │   │   │           │   │       ├── git_promote_plan_golden/
+│   │   │   │           │   │       ├── git_prune_guard_golden/
+│   │   │   │           │   │       ├── git_workflow_policy_golden/
+│   │   │   │           │   │       ├── github_ci_advisory_golden/
+│   │   │   │           │   │       ├── github_export_inclusion_golden/
+│   │   │   │           │   │       ├── github_protection_policy_golden/
+│   │   │   │           │   │       ├── github_release_asset_schema_golden/
+│   │   │   │           │   │       ├── github_release_assets_have_checksums_golden/
+│   │   │   │           │   │       ├── github_release_checklist_golden/
+│   │   │   │           │   │       ├── github_release_draft_policy_golden/
+│   │   │   │           │   │       ├── github_release_draft_schema_golden/
+│   │   │   │           │   │       ├── github_release_no_publish_golden/
+│   │   │   │           │   │       ├── github_release_upload_plan_golden/
+│   │   │   │           │   │       ├── github_report_only_golden/
+│   │   │   │           │   │       ├── install_conflict_report_schema_golden/
+│   │   │   │           │   │       ├── install_no_apply_golden/
+│   │   │   │           │   │       ├── install_no_source_state_leak_golden/
+│   │   │   │           │   │       ├── install_ownership_ledger_schema_golden/
+│   │   │   │           │   │       ├── install_plan_schema_golden/
+│   │   │   │           │   │       ├── install_policy_golden/
+│   │   │   │           │   │       ├── install_preservation_policy_golden/
+│   │   │   │           │   │       ├── install_preserves_target_state_golden/
+│   │   │   │           │   │       ├── intent_compile_destructive_prompt_golden/
+│   │   │   │           │   │       ├── intent_compile_git_prompt_golden/
+│   │   │   │           │   │       ├── intent_compile_install_prompt_golden/
+│   │   │   │           │   │       ├── intent_compile_overbroad_prompt_golden/
+│   │   │   │           │   │       ├── intent_compile_vague_prompt_golden/
+│   │   │   │           │   │       ├── intent_packet_schema_golden/
+│   │   │   │           │   │       ├── malformed_commit_reporting_golden/
+│   │   │   │           │   │       ├── migration_ledger_policy_golden/
+│   │   │   │           │   │       ├── migration_ledger_schema_golden/
+│   │   │   │           │   │       ├── migration_policy_golden/
+│   │   │   │           │   │       ├── move_map_policy_golden/
+│   │   │   │           │   │       ├── move_map_schema_golden/
+│   │   │   │           │   │       ├── path_alias_policy_golden/
+│   │   │   │           │   │       ├── path_alias_schema_golden/
+│   │   │   │           │   │       ├── promotion_rules_golden/
+│   │   │   │           │   │       ├── prune_policy_golden/
+│   │   │   │           │   │       ├── quality_ledger_generation_golden/
+│   │   │   │           │   │       ├── quality_no_delete_recommendation_golden/
+│   │   │   │           │   │       ├── refactor_map_no_apply_golden/
+│   │   │   │           │   │       ├── refactor_no_apply_golden/
+│   │   │   │           │   │       ├── refactor_plan_schema_golden/
+│   │   │   │           │   │       ├── refactor_policy_golden/
+│   │   │   │           │   │       ├── reference_rewrite_plan_golden/
+│   │   │   │           │   │       ├── release_archive_generation_golden/
+│   │   │   │           │   │       ├── release_asset_schema_golden/
+│   │   │   │           │   │       ├── release_bundle_policy_golden/
+│   │   │   │           │   │       ├── release_checksum_validation_golden/
+│   │   │   │           │   │       ├── release_fixture_extraction_golden/
+│   │   │   │           │   │       ├── release_forbidden_paths_excluded_golden/
+│   │   │   │           │   │       ├── release_manifest_schema_golden/
+│   │   │   │           │   │       ├── release_no_publish_golden/
+│   │   │   │           │   │       ├── release_notes_preview_golden/
+│   │   │   │           │   │       ├── repair_blocks_local_state_and_secrets_golden/
+│   │   │   │           │   │       ├── repair_classes_golden/
+│   │   │   │           │   │       ├── repair_doctor_schema_golden/
+│   │   │   │           │   │       ├── repair_dry_run_schema_golden/
+│   │   │   │           │   │       ├── repair_no_apply_golden/
+│   │   │   │           │   │       ├── repair_plan_schema_golden/
+│   │   │   │           │   │       ├── repair_policy_golden/
+│   │   │   │           │   │       ├── repair_preserves_target_state_golden/
+│   │   │   │           │   │       ├── repo_dependency_map_golden/
+│   │   │   │           │   │       ├── repo_doc_link_map_golden/
+│   │   │   │           │   │       ├── repo_explain_file_golden/
+│   │   │   │           │   │       ├── repo_intelligence_no_local_state_golden/
+│   │   │   │           │   │       ├── repo_inventory_schema_golden/
+│   │   │   │           │   │       ├── repo_ownership_map_golden/
+│   │   │   │           │   │       ├── reuse_modularity_report_golden/
+│   │   │   │           │   │       ├── review-packet-evidence-only/
+│   │   │   │           │   │       ├── rollback_no_apply_golden/
+│   │   │   │           │   │       ├── rollback_plan_schema_golden/
+│   │   │   │           │   │       ├── rollback_policy_golden/
+│   │   │   │           │   │       ├── root_exception_schema_golden/
+│   │   │   │           │   │       ├── root_fate_no_delete_approval_golden/
+│   │   │   │           │   │       ├── root_file_classification_schema_golden/
+│   │   │   │           │   │       ├── root_inventory_schema_golden/
+│   │   │   │           │   │       ├── root_record_schema_golden/
+│   │   │   │           │   │       ├── root_recycling_plan_schema_golden/
+│   │   │   │           │   │       ├── root_recycling_policy_golden/
+│   │   │   │           │   │       ├── roots_no_apply_golden/
+│   │   │   │           │   │       ├── salvage_map_policy_golden/
+│   │   │   │           │   │       ├── salvage_map_schema_golden/
+│   │   │   │           │   │       ├── sync_policy_golden/
+│   │   │   │           │   │       ├── task_resumption_standard_golden/
+│   │   │   │           │   │       ├── test_coverage_map_golden/
+│   │   │   │           │   │       ├── token-ledger-budget-check/
+│   │   │   │           │   │       ├── tool_absorption_policy_golden/
+│   │   │   │           │   │       ├── tool_adapter_map_schema_golden/
+│   │   │   │           │   │       ├── tool_fate_no_delete_approval_golden/
+│   │   │   │           │   │       ├── tool_inventory_schema_golden/
+│   │   │   │           │   │       ├── tool_record_schema_golden/
+│   │   │   │           │   │       ├── tool_wrap_plan_schema_golden/
+│   │   │   │           │   │       ├── tools_no_execution_golden/
+│   │   │   │           │   │       ├── uninstall_no_apply_golden/
+│   │   │   │           │   │       ├── uninstall_no_blanket_aide_delete_golden/
+│   │   │   │           │   │       ├── uninstall_plan_schema_golden/
+│   │   │   │           │   │       ├── uninstall_policy_golden/
+│   │   │   │           │   │       ├── uninstall_preserves_target_state_golden/
+│   │   │   │           │   │       ├── upgrade_compatibility_policy_golden/
+│   │   │   │           │   │       ├── upgrade_dry_run_schema_golden/
+│   │   │   │           │   │       ├── upgrade_mandatory_migration_gate_golden/
+│   │   │   │           │   │       ├── upgrade_no_apply_golden/
+│   │   │   │           │   │       ├── upgrade_no_source_state_leak_golden/
+│   │   │   │           │   │       ├── upgrade_plan_schema_golden/
+│   │   │   │           │   │       ├── upgrade_policy_golden/
+│   │   │   │           │   │       ├── upgrade_preserves_target_state_golden/
+│   │   │   │           │   │       ├── verifier-detects-bad-evidence/
+│   │   │   │           │   │       │   └── fixtures/
+│   │   │   │           │   │       ├── workunit_idempotency_golden/
+│   │   │   │           │   │       └── workunit_sizing_policy_golden/
+│   │   │   │           │   ├── gateway/
+│   │   │   │           │   ├── git/
+│   │   │   │           │   ├── github/
+│   │   │   │           │   ├── hooks/
+│   │   │   │           │   ├── install/
+│   │   │   │           │   ├── intake/
+│   │   │   │           │   ├── memory/
+│   │   │   │           │   ├── models/
+│   │   │   │           │   ├── policies/
+│   │   │   │           │   ├── prompts/
+│   │   │   │           │   ├── providers/
+│   │   │   │           │   ├── quality/
+│   │   │   │           │   ├── queue/
+│   │   │   │           │   ├── refactors/
+│   │   │   │           │   ├── release/
+│   │   │   │           │   ├── repair/
+│   │   │   │           │   ├── repo/
+│   │   │   │           │   ├── reports/
+│   │   │   │           │   ├── rollback/
+│   │   │   │           │   ├── roots/
+│   │   │   │           │   ├── routing/
+│   │   │   │           │   │   └── examples/
+│   │   │   │           │   ├── scripts/
+│   │   │   │           │   │   └── tests/
+│   │   │   │           │   ├── tools/
+│   │   │   │           │   ├── uninstall/
+│   │   │   │           │   ├── upgrade/
+│   │   │   │           │   └── verification/
+│   │   │   │           ├── .aide.local.example/
+│   │   │   │           │   ├── cache/
+│   │   │   │           │   ├── ledgers/
+│   │   │   │           │   └── traces/
+│   │   │   │           └── docs/
+│   │   │   │               └── reference/
+│   │   │   ├── generated/
+│   │   │   │   └── adapters/
+│   │   │   │       ├── continue-checks/
+│   │   │   │       ├── cursor-rules/
+│   │   │   │       └── windsurf-rules/
+│   │   │   └── queue/
+│   │   │       ├── DCHECK-01-dominium-aide-operating-baseline-audit/
+│   │   │       │   └── evidence/
+│   │   │       │       ├── command-logs-current/
+│   │   │       │       ├── command-logs-rerun/
+│   │   │       │       └── final-command-logs-rerun/
+│   │   │       ├── DOMINIUM-AIDE-BASELINE-REPAIR-01/
+│   │   │       │   └── evidence/
+│   │   │       ├── DOMINIUM-AIDE-FRESH-PREFLIGHT-01/
+│   │   │       │   └── evidence/
+│   │   │       ├── DOMINIUM-AIDE-OPERATING-BASELINE-01/
+│   │   │       │   └── evidence/
+│   │   │       ├── DOMINIUM-AIDE-ROOT-RECYCLING-01/
+│   │   │       │   └── evidence/
+│   │   │       ├── DOMINIUM-AIDE-STABLE-INSTALL-01/
+│   │   │       │   └── evidence/
+│   │   │       ├── DOMINIUM-AIDE-SYNC-01/
+│   │   │       │   └── evidence/
+│   │   │       └── DOMINIUM-AIDE-TOOL-ABSORPTION-01/
+│   │   │           └── evidence/
+│   │   ├── analysis/
+│   │   ├── architecture/
+│   │   ├── artifacts/
+│   │   │   └── toolchain_runs/
+│   │   │       └── winnt-msvc-x86_64-vs2026/
+│   │   │           └── run.5ea8970d1739f5c2/
+│   │   ├── audit/
+│   │   │   └── convergence_steps/
+│   │   ├── blueprint/
+│   │   ├── performance/
+│   │   ├── refactor/
+│   │   ├── release/
+│   │   ├── repo/
+│   │   ├── restructure/
+│   │   ├── workbench/
+│   │   │   └── tool_editor/
+│   │   │       ├── generated/
+│   │   │       └── user/
+│   │   └── xstack/
+│   ├── historical/
+│   │   ├── attic/
+│   │   │   └── src_quarantine/
+│   │   │       ├── legacy/
+│   │   │       │   └── source/
+│   │   │       │       └── provider/
+│   │   │       └── src/
+│   │   │           └── worldgen/
+│   │   ├── content/
+│   │   │   └── world/
+│   │   │       ├── milky_way/
+│   │   │       └── sol/
+│   │   │           ├── earth/
+│   │   │           │   ├── earth.climate/
+│   │   │           │   ├── earth.regions/
+│   │   │           │   └── earth.surfaces/
+│   │   │           ├── sol.belts/
+│   │   │           ├── sol.bodies/
+│   │   │           └── sol.moons/
+│   │   └── labs/
+│   ├── legacy/
+│   │   ├── _orphaned/
+│   │   │   ├── engine_has_launcher_module/
+│   │   │   │   └── launcher/
+│   │   │   ├── legacy_source_common/
+│   │   │   │   └── common/
+│   │   │   ├── legacy_source_game/
+│   │   │   │   └── game/
+│   │   │   │       ├── _legacy/
+│   │   │   │       │   └── sdk/
+│   │   │   │       ├── cli/
+│   │   │   │       │   └── server/
+│   │   │   │       ├── content/
+│   │   │   │       ├── core/
+│   │   │   │       │   ├── app_mode/
+│   │   │   │       │   └── client/
+│   │   │   │       │       └── input/
+│   │   │   │       ├── frontends/
+│   │   │   │       │   ├── gui/
+│   │   │   │       │   ├── headless/
+│   │   │   │       │   └── tui/
+│   │   │   │       ├── gui/
+│   │   │   │       │   └── dom_sdl/
+│   │   │   │       ├── rules/
+│   │   │   │       ├── runtime/
+│   │   │   │       └── ui/
+│   │   │   └── temp_files/
+│   │   ├── _orphaned_stage2/
+│   │   │   ├── tools_common/
+│   │   │   └── tools_core/
+│   │   ├── data/
+│   │   │   └── tools_demo/
+│   │   ├── engine_core_dominium/
+│   │   ├── engine_core_launcher/
+│   │   ├── engine_modules_engine/
+│   │   │   └── engine/
+│   │   │       ├── agent/
+│   │   │       │   ├── act/
+│   │   │       │   ├── group/
+│   │   │       │   └── mind/
+│   │   │       ├── app/
+│   │   │       ├── cli/
+│   │   │       ├── decor/
+│   │   │       │   ├── compile/
+│   │   │       │   └── model/
+│   │   │       ├── gui/
+│   │   │       ├── io/
+│   │   │       │   └── container/
+│   │   │       ├── mod/
+│   │   │       │   └── host/
+│   │   │       ├── pkg/
+│   │   │       ├── render/
+│   │   │       │   ├── api/
+│   │   │       │   │   ├── core/
+│   │   │       │   │   └── ui/
+│   │   │       │   ├── cga/
+│   │   │       │   ├── dx/
+│   │   │       │   │   └── dx9/
+│   │   │       │   ├── dx11/
+│   │   │       │   ├── dx7/
+│   │   │       │   ├── dx9/
+│   │   │       │   ├── ega/
+│   │   │       │   ├── gdi/
+│   │   │       │   ├── gl2/
+│   │   │       │   ├── herc/
+│   │   │       │   ├── mda/
+│   │   │       │   ├── metal/
+│   │   │       │   ├── null/
+│   │   │       │   ├── quartz/
+│   │   │       │   ├── quickdraw/
+│   │   │       │   ├── soft/
+│   │   │       │   │   ├── core/
+│   │   │       │   │   └── targets/
+│   │   │       │   │       ├── null/
+│   │   │       │   │       └── win32/
+│   │   │       │   ├── vesa/
+│   │   │       │   ├── vga/
+│   │   │       │   ├── vk1/
+│   │   │       │   └── xga/
+│   │   │       ├── sim/
+│   │   │       │   ├── _legacy/
+│   │   │       │   │   └── core_sim/
+│   │   │       │   ├── api/
+│   │   │       │   ├── bus/
+│   │   │       │   ├── hash/
+│   │   │       │   ├── know/
+│   │   │       │   ├── prop/
+│   │   │       │   ├── replay/
+│   │   │       │   │   └── serialize/
+│   │   │       │   ├── sense/
+│   │   │       │   └── vis/
+│   │   │       ├── struct/
+│   │   │       │   ├── compile/
+│   │   │       │   ├── model/
+│   │   │       │   └── phys/
+│   │   │       ├── system/
+│   │   │       │   ├── _legacy/
+│   │   │       │   │   └── scratch/
+│   │   │       │   ├── core/
+│   │   │       │   │   ├── audio/
+│   │   │       │   │   ├── base/
+│   │   │       │   │   │   ├── dom_core/
+│   │   │       │   │   │   └── shared/
+│   │   │       │   │   └── math/
+│   │   │       │   └── plat/
+│   │   │       │       ├── carbon/
+│   │   │       │       ├── cocoa/
+│   │   │       │       ├── cpm80/
+│   │   │       │       ├── cpm86/
+│   │   │       │       ├── dos16/
+│   │   │       │       ├── dos32/
+│   │   │       │       ├── mac/
+│   │   │       │       │   └── cocoa/
+│   │   │       │       ├── null/
+│   │   │       │       ├── posix/
+│   │   │       │       ├── sdl/
+│   │   │       │       │   ├── sdl1/
+│   │   │       │       │   └── sdl2/
+│   │   │       │       ├── sdl1/
+│   │   │       │       ├── sdl2/
+│   │   │       │       ├── unix/
+│   │   │       │       │   ├── posix/
+│   │   │       │       │   │   └── posix_headless/
+│   │   │       │       │   ├── wayland/
+│   │   │       │       │   └── x11/
+│   │   │       │       ├── wayland/
+│   │   │       │       ├── win16/
+│   │   │       │       ├── win32/
+│   │   │       │       ├── windows/
+│   │   │       │       │   └── win32/
+│   │   │       │       └── x11/
+│   │   │       ├── trans/
+│   │   │       │   ├── compile/
+│   │   │       │   └── model/
+│   │   │       ├── ui_codegen/
+│   │   │       │   └── tests/
+│   │   │       ├── ui_ir/
+│   │   │       │   └── tests/
+│   │   │       └── world/
+│   │   │           └── domain/
+│   │   ├── external/
+│   │   │   └── xxhash/
+│   │   ├── include/
+│   │   │   └── dsu/
+│   │   ├── launcher_core_launcher/
+│   │   │   └── launcher/
+│   │   │       ├── adapters/
+│   │   │       │   └── winnt/
+│   │   │       │       ├── cli/
+│   │   │       │       ├── gui/
+│   │   │       │       └── tui/
+│   │   │       ├── core/
+│   │   │       │   ├── artifact/
+│   │   │       │   ├── audit/
+│   │   │       │   ├── include/
+│   │   │       │   ├── installed_state/
+│   │   │       │   ├── instance/
+│   │   │       │   ├── job/
+│   │   │       │   ├── launch/
+│   │   │       │   ├── log/
+│   │   │       │   ├── pack/
+│   │   │       │   ├── profile/
+│   │   │       │   ├── run/
+│   │   │       │   ├── safety/
+│   │   │       │   ├── selection/
+│   │   │       │   ├── task/
+│   │   │       │   ├── tests/
+│   │   │       │   ├── tlv/
+│   │   │       │   └── tool/
+│   │   │       ├── schemas/
+│   │   │       └── tests/
+│   │   ├── setup_core_setup/
+│   │   │   └── setup/
+│   │   │       ├── adapters/
+│   │   │       │   ├── linux/
+│   │   │       │   │   └── package/
+│   │   │       │   │       ├── deb/
+│   │   │       │   │       │   ├── debian/
+│   │   │       │   │       │   └── packaging/
+│   │   │       │   │       ├── pacman/
+│   │   │       │   │       ├── rpm/
+│   │   │       │   │       │   └── packaging/
+│   │   │       │   │       └── tarball/
+│   │   │       │   ├── macosx/
+│   │   │       │   │   ├── gui/
+│   │   │       │   │   │   └── xcode/
+│   │   │       │   │   │       ├── DominiumSetupMac.xcodeproj/
+│   │   │       │   │   │       └── DominiumSetupMacApp/
+│   │   │       │   │   │           └── Resources/
+│   │   │       │   │   │               ├── Assets.xcassets/
+│   │   │       │   │   │               │   └── AppIcon.appiconset/
+│   │   │       │   │   │               └── Base.lproj/
+│   │   │       │   │   └── package/
+│   │   │       │   ├── steam/
+│   │   │       │   │   └── steamworks/
+│   │   │       │   └── winnt/
+│   │   │       │       ├── cli/
+│   │   │       │       ├── package/
+│   │   │       │       │   ├── exe/
+│   │   │       │       │   │   └── vs/
+│   │   │       │       │   └── msi/
+│   │   │       │       │       ├── vs/
+│   │   │       │       │       └── wix/
+│   │   │       │       ├── tui/
+│   │   │       │       └── wix/
+│   │   │       ├── core/
+│   │   │       │   ├── api/
+│   │   │       │   ├── audit/
+│   │   │       │   ├── contracts/
+│   │   │       │   ├── digest/
+│   │   │       │   ├── errors/
+│   │   │       │   ├── fs/
+│   │   │       │   ├── import/
+│   │   │       │   ├── include/
+│   │   │       │   │   ├── dsk/
+│   │   │       │   │   └── dsu/
+│   │   │       │   ├── invocation/
+│   │   │       │   ├── job/
+│   │   │       │   ├── jobs/
+│   │   │       │   ├── log/
+│   │   │       │   ├── manifest/
+│   │   │       │   ├── plan/
+│   │   │       │   ├── platform_iface/
+│   │   │       │   ├── report/
+│   │   │       │   ├── resolve/
+│   │   │       │   ├── splat/
+│   │   │       │   ├── state/
+│   │   │       │   ├── tlv/
+│   │   │       │   ├── txn/
+│   │   │       │   └── util/
+│   │   │       └── tests/
+│   │   │           ├── fixtures/
+│   │   │           │   ├── manifests/
+│   │   │           │   ├── payloads/
+│   │   │           │   │   ├── base/
+│   │   │           │   │   │   ├── packs/
+│   │   │           │   │   │   ├── runtime/
+│   │   │           │   │   │   └── tools/
+│   │   │           │   │   ├── v1/
+│   │   │           │   │   │   └── data/
+│   │   │           │   │   └── v2/
+│   │   │           │   │       └── data/
+│   │   │           │   └── user_data/
+│   │   │           └── golden/
+│   │   │               └── cli/
+│   │   ├── setup_package_scripts/
+│   │   ├── source/
+│   │   │   └── tests/
+│   │   ├── tools_cmake/
+│   │   └── tools_shared_legacy/
+│   ├── quarantine/
+│   │   ├── canon-spine/
+│   │   │   ├── contracts/
+│   │   │   │   └── capabilities/
+│   │   │   ├── runtime/
+│   │   │   │   └── control/
+│   │   │   └── tools/
+│   │   │       ├── auditx/
+│   │   │       ├── compatx/
+│   │   │       ├── controlx/
+│   │   │       ├── performx/
+│   │   │       └── securex/
+│   │   ├── control/
+│   │   ├── data/
+│   │   └── governance/
+│   └── superseded/
+├── cmake/
+│   ├── ide/
+│   │   └── templates/
+│   │       ├── codewarrior/
+│   │       ├── vc6/
+│   │       └── vc71/
+│   ├── legacy_libs/
+│   └── toolchains/
+├── content/
+│   ├── bundles/
+│   │   ├── bundle.base.lab/
+│   │   └── bundle.null/
+│   ├── defaults/
+│   │   └── profiles/
+│   ├── domains/
+│   │   ├── astronomy/
+│   │   │   └── sol/
+│   │   ├── cosmology/
+│   │   ├── mechanics/
+│   │   ├── reality/
+│   │   ├── world/
+│   │   │   ├── milky_way/
+│   │   │   └── sol/
+│   │   │       ├── earth/
+│   │   │       │   ├── earth.climate/
+│   │   │       │   ├── earth.regions/
+│   │   │       │   └── earth.surfaces/
+│   │   │       ├── sol.belts/
+│   │   │       ├── sol.bodies/
+│   │   │       └── sol.moons/
+│   │   └── worldgen/
+│   │       └── real/
+│   │           ├── earth/
+│   │           ├── milky_way/
+│   │           └── sol_system/
+│   ├── examples/
+│   │   └── modding/
+│   │       └── launcher_example/
+│   ├── packs/
+│   │   ├── blueprint/
+│   │   │   └── blueprints.default.m1/
+│   │   │       └── data/
+│   │   ├── core/
+│   │   │   ├── constraints.worldgen.default_lab/
+│   │   │   │   └── data/
+│   │   │   ├── org.dominium.base.body.earth_macro/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.base.rules/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.base.scenarios.minimal/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.base.system.sol/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.base.topology/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.base.universe.milkyway/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.core.assemblies.extended/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.civ_stress.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.contracts.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.ecology.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.enforcement.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.hazards.extended/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.infrastructure.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.institutions.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.instruments.extended/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.instruments.inspection/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.interaction.baseline/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.interfaces/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.law.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.materials.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.materials.extended/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.parts.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.parts.extended/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.population.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.processes.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.processes.extended/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.quality.extended/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.settlements.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.signals.baseline/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.signals.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.standards.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.standards.certification/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.standards.extended/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.trade.basic/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.core.units/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── pack.core.camera/
+│   │   │   │   └── data/
+│   │   │   ├── pack.core.diegetic_instruments/
+│   │   │   │   └── data/
+│   │   │   ├── pack.core.logic_base/
+│   │   │   │   └── data/
+│   │   │   ├── pack.core.runtime/
+│   │   │   │   └── data/
+│   │   │   ├── pack.server.governance/
+│   │   │   │   └── data/
+│   │   │   ├── policy.activation.default_lab/
+│   │   │   │   └── data/
+│   │   │   ├── policy.budget.default_lab/
+│   │   │   │   └── data/
+│   │   │   ├── policy.fidelity.default_lab/
+│   │   │   │   └── data/
+│   │   │   └── system_templates.base/
+│   │   │       └── data/
+│   │   ├── derived/
+│   │   │   ├── org.dominium.earth.tiles/
+│   │   │   │   └── data/
+│   │   │   └── org.dominium.sol.ephemeris/
+│   │   │       └── data/
+│   │   ├── domain/
+│   │   │   ├── astronomy.milky_way/
+│   │   │   │   └── data/
+│   │   │   ├── astronomy.sol/
+│   │   │   │   └── data/
+│   │   │   ├── org.dominium.content.institutions.placeholder/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.content.resources.placeholder/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.content.terrain.placeholder/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.content.worldgen.placeholder/
+│   │   │   │   ├── data/
+│   │   │   │   └── docs/
+│   │   │   ├── org.dominium.epistemics.core/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.lib.on_planet.primitives/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.lib.on_planet.processes/
+│   │   │   │   └── content/
+│   │   │   ├── pack.domain.navigation/
+│   │   │   │   ├── assets/
+│   │   │   │   └── data/
+│   │   │   ├── physics.default.realistic/
+│   │   │   │   └── data/
+│   │   │   │       └── universe/
+│   │   │   └── planet.earth/
+│   │   │       └── data/
+│   │   ├── example/
+│   │   │   ├── org.dominium.examples.false_science/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.examples.lost_civilization/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.examples.magic_earth/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.examples.multicosmology/
+│   │   │   │   └── content/
+│   │   │   └── org.dominium.examples.realistic_earth/
+│   │   │       └── content/
+│   │   ├── experience/
+│   │   │   ├── pack.experience.lab_galaxy/
+│   │   │   │   ├── data/
+│   │   │   │   ├── scenarios/
+│   │   │   │   └── ui/
+│   │   │   ├── profile.lab.developer/
+│   │   │   │   └── data/
+│   │   │   ├── profile.observer.exploration/
+│   │   │   │   └── data/
+│   │   │   ├── profile.player.default/
+│   │   │   │   └── data/
+│   │   │   └── profile.spectator.default/
+│   │   │       └── data/
+│   │   ├── law/
+│   │   │   ├── law.admin.lab/
+│   │   │   │   └── data/
+│   │   │   ├── law.lab.unrestricted/
+│   │   │   │   └── data/
+│   │   │   ├── law.observer.truth/
+│   │   │   │   └── data/
+│   │   │   ├── law.player.diegetic_default/
+│   │   │   │   └── data/
+│   │   │   ├── law.spectator.limited/
+│   │   │   │   └── data/
+│   │   │   └── pack.law.observe_only/
+│   │   │       └── data/
+│   │   ├── official/
+│   │   │   └── pack.sol.pin_minimal/
+│   │   │       └── data/
+│   │   │           └── overlay/
+│   │   ├── reality/
+│   │   │   ├── org.dominium.earth.srtm/
+│   │   │   │   └── data/
+│   │   │   │       └── raw/
+│   │   │   ├── org.dominium.realities.alchemy/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.realities.alt_physics/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.realities.astrology/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.realities.hyperspace/
+│   │   │   │   └── content/
+│   │   │   ├── org.dominium.realities.magic/
+│   │   │   │   └── content/
+│   │   │   └── org.dominium.sol.spice/
+│   │   │       └── data/
+│   │   │           └── kernels/
+│   │   ├── representation/
+│   │   │   └── pack.representation.base/
+│   │   │       └── data/
+│   │   ├── spec/
+│   │   │   └── specs.default.realistic.m1/
+│   │   │       └── data/
+│   │   ├── tool/
+│   │   │   ├── pack.tool.admin_security/
+│   │   │   │   └── ui/
+│   │   │   ├── pack.tool.control_debug/
+│   │   │   │   └── ui/
+│   │   │   ├── pack.tool.inspector/
+│   │   │   │   ├── assets/
+│   │   │   │   └── ui/
+│   │   │   ├── pack.tool.log_viewer/
+│   │   │   │   └── ui/
+│   │   │   ├── pack.tool.navigation/
+│   │   │   │   └── ui/
+│   │   │   ├── pack.tool.time_control/
+│   │   │   │   └── ui/
+│   │   │   ├── workspace.observer.truth/
+│   │   │   │   └── ui/
+│   │   │   ├── workspace.player.diegetic_default/
+│   │   │   │   └── ui/
+│   │   │   └── workspace.spectator.limited/
+│   │   │       └── ui/
+│   │   └── worldgen/
+│   │       ├── org.dominium.worldgen.anchors.planetary/
+│   │       │   ├── data/
+│   │       │   └── docs/
+│   │       ├── org.dominium.worldgen.anchors.system/
+│   │       │   ├── data/
+│   │       │   └── docs/
+│   │       ├── org.dominium.worldgen.base.body/
+│   │       │   └── content/
+│   │       ├── org.dominium.worldgen.base.cosmology/
+│   │       │   └── content/
+│   │       ├── org.dominium.worldgen.base.galaxy/
+│   │       │   └── content/
+│   │       ├── org.dominium.worldgen.base.surface_micro/
+│   │       │   └── content/
+│   │       ├── org.dominium.worldgen.base.system/
+│   │       │   └── content/
+│   │       ├── org.dominium.worldgen.minimal/
+│   │       │   ├── data/
+│   │       │   └── docs/
+│   │       ├── org.dominium.worldgen.real.earth_macro/
+│   │       │   └── content/
+│   │       ├── org.dominium.worldgen.real.milkyway/
+│   │       │   └── content/
+│   │       └── org.dominium.worldgen.real.sol/
+│   │           └── content/
+│   ├── profiles/
+│   │   └── bundles/
+│   └── templates/
+│       └── session/
+├── contracts/
+│   ├── abi/
+│   │   ├── contracts/
+│   │   │   └── include/
+│   │   │       └── dom_contracts/
+│   │   ├── dom_contracts/
+│   │   │   └── include/
+│   │   │       └── dom_contracts/
+│   │   │           ├── _internal/
+│   │   │           ├── app/
+│   │   │           └── dom_shared/
+│   │   └── reality/
+│   ├── audit/
+│   │   └── convergence_steps/
+│   ├── baselines/
+│   │   ├── trust/
+│   │   └── universe/
+│   ├── blueprint/
+│   ├── capability/
+│   ├── compatibility/
+│   ├── distribution/
+│   ├── governance/
+│   ├── install/
+│   ├── instance/
+│   ├── lock/
+│   ├── meta/
+│   ├── package/
+│   │   ├── bundles/
+│   │   ├── locks/
+│   │   └── packs/
+│   ├── planning/
+│   │   ├── checkpoints/
+│   │   ├── readiness/
+│   │   ├── reality/
+│   │   └── reconciliation/
+│   ├── projection/
+│   │   └── ide/
+│   │       └── examples/
+│   ├── protocol/
+│   ├── reality/
+│   ├── registry/
+│   │   ├── architecture/
+│   │   ├── planning/
+│   │   │   └── readiness/
+│   │   ├── reality/
+│   │   ├── release/
+│   │   └── runtime/
+│   ├── release/
+│   ├── replay/
+│   ├── repo/
+│   │   └── repox/
+│   │       └── rulesets/
+│   ├── restructure/
+│   ├── save/
+│   ├── schema/
+│   │   ├── agents/
+│   │   ├── astro/
+│   │   ├── authority/
+│   │   ├── blueprint/
+│   │   ├── capability/
+│   │   ├── client/
+│   │   ├── compatibility/
+│   │   ├── deprecation/
+│   │   ├── distribution/
+│   │   ├── domain/
+│   │   │   ├── chemistry/
+│   │   │   ├── civilization/
+│   │   │   ├── electricity/
+│   │   │   ├── flow/
+│   │   │   ├── fluids/
+│   │   │   ├── geology/
+│   │   │   ├── hazards/
+│   │   │   ├── materials/
+│   │   │   ├── modeling/
+│   │   │   ├── network/
+│   │   │   ├── spatial/
+│   │   │   └── technology/
+│   │   ├── earth/
+│   │   ├── economy/
+│   │   ├── ecs/
+│   │   ├── embodiment/
+│   │   ├── engine/
+│   │   │   ├── component/
+│   │   │   ├── constraint/
+│   │   │   ├── partition/
+│   │   │   ├── schedule/
+│   │   │   └── state/
+│   │   ├── examples/
+│   │   ├── execution/
+│   │   ├── existence/
+│   │   ├── fields/
+│   │   ├── from-root-schemas/
+│   │   ├── governance/
+│   │   ├── identity/
+│   │   ├── infrastructure/
+│   │   ├── inspection/
+│   │   ├── install/
+│   │   ├── integrity/
+│   │   ├── interaction/
+│   │   ├── interior/
+│   │   ├── ipc/
+│   │   ├── knowledge/
+│   │   ├── law/
+│   │   ├── lens/
+│   │   ├── life/
+│   │   ├── logic/
+│   │   ├── logistics/
+│   │   ├── machines/
+│   │   ├── mechanics/
+│   │   ├── meta/
+│   │   ├── mobility/
+│   │   ├── modding/
+│   │   ├── package/
+│   │   │   ├── artifact/
+│   │   │   ├── bundle/
+│   │   │   ├── modding/
+│   │   │   └── provides/
+│   │   ├── performance/
+│   │   ├── physics/
+│   │   ├── planning/
+│   │   │   └── reality/
+│   │   ├── pollution/
+│   │   ├── process/
+│   │   ├── profile/
+│   │   ├── reality/
+│   │   ├── registry/
+│   │   ├── release/
+│   │   ├── repo/
+│   │   │   └── migration/
+│   │   ├── runtime/
+│   │   │   ├── control/
+│   │   │   ├── diagnostics/
+│   │   │   ├── network/
+│   │   │   ├── render/
+│   │   │   └── storage/
+│   │   ├── safety/
+│   │   ├── save/
+│   │   ├── scale/
+│   │   ├── scenario/
+│   │   ├── security/
+│   │   ├── server/
+│   │   ├── session/
+│   │   ├── settings/
+│   │   ├── shell/
+│   │   ├── signals/
+│   │   ├── survival/
+│   │   ├── syscaps/
+│   │   ├── system/
+│   │   ├── thermal/
+│   │   ├── time/
+│   │   ├── tool/
+│   │   ├── travel/
+│   │   ├── ui/
+│   │   ├── universe/
+│   │   ├── validation/
+│   │   │   └── specs/
+│   │   ├── war/
+│   │   ├── world/
+│   │   └── worldgen/
+│   ├── stability/
+│   ├── templates/
+│   ├── worldgen/
+│   │   └── real/
+│   │       ├── earth/
+│   │       ├── milky_way/
+│   │       └── sol_system/
+│   └── xstack/
+├── docs/
+│   ├── apps/
+│   │   ├── client/
+│   │   ├── launcher/
+│   │   ├── server/
+│   │   └── setup/
+│   ├── architecture/
+│   │   └── system/
+│   ├── archive/
+│   │   ├── app/
+│   │   ├── architecture/
+│   │   ├── audit/
+│   │   │   ├── auditx/
+│   │   │   ├── compat/
+│   │   │   ├── controlx/
+│   │   │   ├── convergence_steps/
+│   │   │   ├── perf/
+│   │   │   ├── performance/
+│   │   │   ├── remediation/
+│   │   │   │   ├── anb-omega-empty-path/
+│   │   │   │   │   ├── 20260211T215035Z_precheck_ok/
+│   │   │   │   │   └── 20260211T220047Z_precheck_OTHER/
+│   │   │   │   ├── vs2026/
+│   │   │   │   │   ├── 20260211T080631Z_verify_DERIVED_ARTIFACT_STALE/
+│   │   │   │   │   ├── 20260211T080838Z_verify_OTHER/
+│   │   │   │   │   ├── 20260211T081813Z_verify_ok/
+│   │   │   │   │   ├── 20260211T083343Z_verify_DERIVED_ARTIFACT_STALE/
+│   │   │   │   │   ├── 20260211T090841Z_verify_OTHER/
+│   │   │   │   │   ├── 20260211T111036Z_verify_OTHER/
+│   │   │   │   │   ├── 20260211T121513Z_verify_ok/
+│   │   │   │   │   ├── 20260211T130308Z_verify_ok/
+│   │   │   │   │   ├── 20260211T163146Z_verify_OTHER/
+│   │   │   │   │   ├── 20260211T233128Z_verify_ok/
+│   │   │   │   │   ├── 20260212T143108Z_verify_ok/
+│   │   │   │   │   ├── 20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/
+│   │   │   │   │   ├── 20260213T054938Z_exitcheck_OTHER/
+│   │   │   │   │   ├── 20260213T055921Z_exitcheck_OTHER/
+│   │   │   │   │   ├── 20260213T063945Z_verify_DERIVED_ARTIFACT_STALE/
+│   │   │   │   │   └── 20260213T075116Z_strict_ok/
+│   │   │   │   └── ws-426fb129fc29daec/
+│   │   │   │       ├── 20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/
+│   │   │   │       └── 20260226T070425Z_strict_BUILD_OUTPUT_MISSING/
+│   │   │   ├── repox/
+│   │   │   ├── security/
+│   │   │   ├── system/
+│   │   │   ├── testx/
+│   │   │   └── xstack/
+│   │   ├── blueprint/
+│   │   ├── ci/
+│   │   ├── guides/
+│   │   ├── impact/
+│   │   ├── omega/
+│   │   ├── platform/
+│   │   ├── post-canon/
+│   │   ├── prompts/
+│   │   ├── refactor/
+│   │   ├── repox/
+│   │   ├── restructure/
+│   │   ├── specs/
+│   │   └── stray_root_docs/
+│   ├── canon/
+│   ├── compatibility/
+│   ├── content/
+│   │   ├── archive/
+│   │   │   ├── scenarios/
+│   │   │   └── world/
+│   │   │       ├── milky_way/
+│   │   │       └── sol/
+│   │   │           └── earth/
+│   │   │               └── earth.imports/
+│   │   ├── defaults/
+│   │   ├── law/
+│   │   ├── logs/
+│   │   │   └── bugreports/
+│   │   ├── modules/
+│   │   ├── packs/
+│   │   │   └── sol/
+│   │   ├── standards/
+│   │   └── world/
+│   │       ├── milky_way/
+│   │       └── sol/
+│   │           └── earth/
+│   │               └── earth.imports/
+│   ├── development/
+│   │   ├── aide/
+│   │   ├── guides/
+│   │   │   ├── api/
+│   │   │   ├── book/
+│   │   │   ├── context/
+│   │   │   ├── dev/
+│   │   │   ├── release/
+│   │   │   └── ui_editor/
+│   │   │       ├── fixtures/
+│   │   │       └── ide/
+│   │   │           ├── vscode/
+│   │   │           └── xcode/
+│   │   ├── templates/
+│   │   ├── tools/
+│   │   └── xstack/
+│   ├── distribution/
+│   │   └── package-format/
+│   ├── domains/
+│   │   ├── astronomy/
+│   │   │   └── sol/
+│   │   ├── chemistry/
+│   │   ├── civilization/
+│   │   ├── electricity/
+│   │   ├── embodiment/
+│   │   ├── fields/
+│   │   ├── fluids/
+│   │   ├── geology/
+│   │   ├── infrastructure/
+│   │   ├── interiors/
+│   │   ├── knowledge/
+│   │   ├── logic/
+│   │   ├── materials/
+│   │   ├── mechanics/
+│   │   ├── mobility/
+│   │   ├── physics/
+│   │   │   └── physical/
+│   │   ├── pollution/
+│   │   ├── processes/
+│   │   ├── reality/
+│   │   ├── scale/
+│   │   ├── signals/
+│   │   ├── thermal/
+│   │   ├── universe/
+│   │   └── worldgen/
+│   ├── engine/
+│   │   └── time/
+│   ├── game/
+│   │   ├── agents/
+│   │   ├── diegetics/
+│   │   ├── epistemics/
+│   │   ├── gameplay/
+│   │   ├── interaction/
+│   │   ├── player/
+│   │   └── realities/
+│   ├── governance/
+│   │   ├── control/
+│   │   ├── meta/
+│   │   └── policies/
+│   ├── modding/
+│   ├── operations/
+│   ├── performance/
+│   ├── planning/
+│   │   └── generated-data/
+│   │       └── checkpoints/
+│   ├── reference/
+│   │   ├── contracts/
+│   │   ├── examples/
+│   │   │   ├── false_science/
+│   │   │   ├── lost_civilization/
+│   │   │   ├── magic_earth/
+│   │   │   ├── multicosmology/
+│   │   │   └── realistic_earth/
+│   │   ├── glossary/
+│   │   ├── schema/
+│   │   └── specs/
+│   │       ├── core/
+│   │       ├── launcher/
+│   │       ├── reality/
+│   │       └── setup/
+│   ├── release/
+│   │   ├── mvp/
+│   │   ├── roadmap/
+│   │   └── updates/
+│   ├── repo/
+│   │   ├── audits/
+│   │   ├── data/
+│   │   ├── repox/
+│   │   └── root-recycling/
+│   ├── runtime/
+│   │   ├── diagnostics/
+│   │   ├── network/
+│   │   ├── platform/
+│   │   ├── render/
+│   │   │   └── visualization/
+│   │   ├── settings/
+│   │   ├── shell/
+│   │   ├── storage/
+│   │   └── ui/
+│   │       ├── accessibility/
+│   │       └── ux/
+│   ├── safety/
+│   ├── security/
+│   └── testing/
+│       ├── ci/
+│       └── validation/
+├── engine/
+│   ├── concurrency/
+│   ├── execution/
+│   │   ├── budgets/
+│   │   ├── ir/
+│   │   ├── kernels/
+│   │   │   ├── gpu/
+│   │   │   ├── scalar/
+│   │   │   └── simd/
+│   │   └── scheduler/
+│   ├── include/
+│   │   └── domino/
+│   │       ├── core/
+│   │       ├── ecs/
+│   │       ├── execution/
+│   │       ├── scale/
+│   │       ├── sim/
+│   │       ├── state/
+│   │       ├── sys/
+│   │       └── system/
+│   ├── kernel/
+│   ├── replay/
+│   ├── state/
+│   │   ├── ecs/
+│   │   ├── graph/
+│   │   │   └── part/
+│   │   └── state/
+│   └── time/
+├── game/
+│   ├── domain/
+│   │   ├── agent/
+│   │   ├── ai/
+│   │   ├── astronomy/
+│   │   │   ├── ephemeris/
+│   │   │   ├── illumination/
+│   │   │   └── views/
+│   │   ├── chemistry/
+│   │   │   └── degradation/
+│   │   ├── city/
+│   │   ├── decor/
+│   │   ├── diegetics/
+│   │   ├── economy/
+│   │   ├── electricity/
+│   │   │   ├── fault/
+│   │   │   ├── protection/
+│   │   │   └── storage/
+│   │   ├── embodiment/
+│   │   │   ├── body/
+│   │   │   ├── collision/
+│   │   │   ├── lens/
+│   │   │   ├── movement/
+│   │   │   └── tools/
+│   │   ├── environment/
+│   │   ├── epistemics/
+│   │   │   └── memory/
+│   │   ├── fabrication/
+│   │   ├── fields/
+│   │   │   └── from_root_field/
+│   │   ├── fluids/
+│   │   │   └── network/
+│   │   ├── geology/
+│   │   │   ├── edit/
+│   │   │   ├── frame/
+│   │   │   ├── index/
+│   │   │   ├── kernel/
+│   │   │   ├── lens/
+│   │   │   ├── metric/
+│   │   │   ├── overlay/
+│   │   │   ├── path/
+│   │   │   ├── projection/
+│   │   │   ├── render/
+│   │   │   └── worldgen/
+│   │   ├── governance/
+│   │   ├── hydrology/
+│   │   ├── infrastructure/
+│   │   │   └── formalization/
+│   │   ├── inspection/
+│   │   ├── interaction/
+│   │   │   ├── mount/
+│   │   │   ├── pose/
+│   │   │   └── task/
+│   │   ├── interior/
+│   │   ├── job/
+│   │   ├── knowledge/
+│   │   ├── life/
+│   │   ├── logic/
+│   │   │   ├── compile/
+│   │   │   ├── debug/
+│   │   │   ├── element/
+│   │   │   ├── eval/
+│   │   │   ├── fault/
+│   │   │   ├── network/
+│   │   │   ├── noise/
+│   │   │   ├── protocol/
+│   │   │   ├── signal/
+│   │   │   └── timing/
+│   │   ├── logistics/
+│   │   ├── machines/
+│   │   ├── materials/
+│   │   │   ├── commitments/
+│   │   │   ├── construction/
+│   │   │   ├── maintenance/
+│   │   │   ├── materialization/
+│   │   │   ├── performance/
+│   │   │   └── provenance/
+│   │   ├── mechanics/
+│   │   ├── mobility/
+│   │   │   ├── geometry/
+│   │   │   ├── maintenance/
+│   │   │   ├── micro/
+│   │   │   ├── network/
+│   │   │   ├── signals/
+│   │   │   ├── traffic/
+│   │   │   ├── travel/
+│   │   │   └── vehicle/
+│   │   ├── physics/
+│   │   │   ├── energy/
+│   │   │   └── entropy/
+│   │   ├── player/
+│   │   ├── pollution/
+│   │   ├── population/
+│   │   ├── processes/
+│   │   │   ├── capsules/
+│   │   │   ├── drift/
+│   │   │   ├── maturity/
+│   │   │   ├── qc/
+│   │   │   ├── research/
+│   │   │   └── software/
+│   │   ├── reality/
+│   │   │   ├── ledger/
+│   │   │   └── transitions/
+│   │   ├── research/
+│   │   ├── resource/
+│   │   ├── scale/
+│   │   ├── signals/
+│   │   │   ├── addressing/
+│   │   │   ├── aggregation/
+│   │   │   ├── institutions/
+│   │   │   ├── transport/
+│   │   │   └── trust/
+│   │   ├── simulation/
+│   │   │   ├── act/
+│   │   │   ├── lod/
+│   │   │   └── pkt/
+│   │   │       ├── idmap/
+│   │   │       └── registry/
+│   │   ├── structure/
+│   │   ├── survival/
+│   │   ├── systems/
+│   │   │   ├── certification/
+│   │   │   ├── forensics/
+│   │   │   ├── macro/
+│   │   │   ├── reliability/
+│   │   │   ├── roi/
+│   │   │   ├── statevec/
+│   │   │   ├── templates/
+│   │   │   └── ups/
+│   │   ├── technology/
+│   │   ├── thermal/
+│   │   │   └── network/
+│   │   ├── transport/
+│   │   ├── universe/
+│   │   ├── war/
+│   │   └── worldgen/
+│   │       ├── core/
+│   │       ├── earth/
+│   │       │   ├── lighting/
+│   │       │   ├── material/
+│   │       │   ├── sky/
+│   │       │   ├── water/
+│   │       │   └── wind/
+│   │       ├── galaxy/
+│   │       ├── mw/
+│   │       └── refinement/
+│   ├── include/
+│   │   ├── dominium/
+│   │   │   ├── agents/
+│   │   │   ├── city/
+│   │   │   ├── economy/
+│   │   │   ├── execution/
+│   │   │   ├── fab/
+│   │   │   ├── game/
+│   │   │   ├── governance/
+│   │   │   ├── infrastructure/
+│   │   │   ├── knowledge/
+│   │   │   ├── law/
+│   │   │   ├── life/
+│   │   │   ├── logistics/
+│   │   │   ├── mods/
+│   │   │   ├── physical/
+│   │   │   ├── population/
+│   │   │   ├── scale/
+│   │   │   ├── session/
+│   │   │   ├── sim/
+│   │   │   ├── survival/
+│   │   │   ├── technology/
+│   │   │   └── war/
+│   │   └── domino/
+│   │       └── world/
+│   ├── law/
+│   │   └── authority/
+│   ├── rule/
+│   │   ├── execution/
+│   │   ├── orchestration/
+│   │   └── policy/
+│   └── world/
+│       └── frame/
+├── release/
+│   ├── packaging/
+│   │   └── setup/
+│   │       └── scripts/
+│   │           ├── ci/
+│   │           ├── diagnostics/
+│   │           ├── packaging/
+│   │           │   ├── linux/
+│   │           │   │   ├── deb/
+│   │           │   │   │   └── DEBIAN/
+│   │           │   │   └── rpm/
+│   │           │   ├── macos/
+│   │           │   │   ├── Dominium.app/
+│   │           │   │   │   └── Contents/
+│   │           │   │   └── pkg_scripts/
+│   │           │   ├── scripts/
+│   │           │   ├── tests/
+│   │           │   └── windows/
+│   │           ├── release/
+│   │           ├── repro/
+│   │           └── setup/
+│   └── updates/
+├── runtime/
+│   ├── audio/
+│   ├── capability/
+│   │   ├── compatibility/
+│   │   ├── core/
+│   │   ├── effects/
+│   │   ├── fidelity/
+│   │   └── negotiation/
+│   ├── diagnostics/
+│   ├── include/
+│   │   ├── domino/
+│   │   │   ├── app/
+│   │   │   ├── cli/
+│   │   │   ├── gui/
+│   │   │   ├── input/
+│   │   │   ├── io/
+│   │   │   ├── pkg/
+│   │   │   ├── render/
+│   │   │   └── tui/
+│   │   └── render/
+│   │       └── null/
+│   ├── input/
+│   │   └── client/
+│   ├── network/
+│   │   ├── client/
+│   │   └── server/
+│   │       └── shard/
+│   ├── package/
+│   │   ├── content/
+│   │   └── mod/
+│   ├── platform/
+│   │   ├── system/
+│   │   │   ├── input/
+│   │   │   └── plat/
+│   │   │       ├── cocoa/
+│   │   │       ├── posix/
+│   │   │       ├── sdl1/
+│   │   │       ├── wayland/
+│   │   │       └── x11/
+│   │   └── win32/
+│   │       ├── client/
+│   │       ├── launcher/
+│   │       │   └── win32/
+│   │       ├── server/
+│   │       ├── setup/
+│   │       │   └── win32/
+│   │       ├── shell/
+│   │       └── ui/
+│   │           ├── dui/
+│   │           ├── include/
+│   │           │   └── dui/
+│   │           └── ir/
+│   ├── render/
+│   │   ├── backend/
+│   │   ├── client/
+│   │   │   └── presentation/
+│   │   ├── null/
+│   │   └── software/
+│   ├── shell/
+│   │   ├── client/
+│   │   │   ├── command/
+│   │   │   ├── modes/
+│   │   │   └── session/
+│   │   ├── command/
+│   │   ├── diag/
+│   │   ├── discover/
+│   │   ├── invoke/
+│   │   ├── ipc/
+│   │   ├── lifecycle/
+│   │   │   └── include/
+│   │   │       └── dominium/
+│   │   │           └── app/
+│   │   ├── logging/
+│   │   ├── output/
+│   │   ├── paths/
+│   │   ├── profile/
+│   │   ├── server/
+│   │   ├── session/
+│   │   ├── supervisor/
+│   │   └── tui/
+│   ├── storage/
+│   │   ├── io/
+│   │   └── server/
+│   │       └── persistence/
+│   └── ui/
+│       ├── backend/
+│       │   └── win32/
+│       │       └── include/
+│       │           └── dom_ui_win32/
+│       ├── client/
+│       │   ├── interaction/
+│       │   ├── model/
+│       │   ├── observability/
+│       │   └── workspaces/
+│       │       └── session_transition/
+│       ├── dui/
+│       ├── include/
+│       │   └── dui/
+│       ├── ir/
+│       ├── service/
+│       ├── tui/
+│       └── view/
+├── scripts/
+│   ├── audit/
+│   ├── ci/
+│   ├── dev/
+│   └── repox/
+├── tests/
+│   ├── ai/
+│   ├── app/
+│   ├── authority/
+│   ├── bugreport/
+│   ├── contentlib/
+│   ├── contract/
+│   │   └── product_shell/
+│   ├── control/
+│   │   ├── audit/
+│   │   ├── capability/
+│   │   ├── disabled/
+│   │   ├── interference/
+│   │   └── portability/
+│   ├── data_1/
+│   ├── demo/
+│   ├── determinism/
+│   ├── distribution/
+│   │   └── fixtures/
+│   │       ├── empty_root/
+│   │       ├── legacy_platform_pkg_manifests/
+│   │       ├── lockfiles/
+│   │       ├── packs_legacy/
+│   │       │   └── org.dominium.future.pack/
+│   │       ├── packs_maximal/
+│   │       │   ├── org.dominium.content.real.materials/
+│   │       │   ├── org.dominium.core.units/
+│   │       │   ├── org.dominium.examples.simple_factory/
+│   │       │   ├── org.dominium.l10n.en_us/
+│   │       │   └── org.dominium.worldgen.minimal/
+│   │       ├── packs_prealpha_a/
+│   │       │   └── org.dominium.content.worldgen.placeholder/
+│   │       ├── packs_prealpha_b/
+│   │       │   └── org.dominium.content.worldgen.placeholder/
+│   │       └── profiles/
+│   ├── engine/
+│   ├── entitlement/
+│   ├── fab/
+│   │   └── fixtures/
+│   ├── fixtures/
+│   │   ├── animal/
+│   │   ├── audit/
+│   │   ├── autonomy/
+│   │   ├── baselines/
+│   │   │   ├── disaster/
+│   │   │   ├── gameplay/
+│   │   │   ├── trust/
+│   │   │   ├── universe/
+│   │   │   ├── update_sim/
+│   │   │   └── worldgen/
+│   │   ├── climate/
+│   │   ├── conflict/
+│   │   ├── contentlib/
+│   │   │   ├── core_all/
+│   │   │   │   ├── org.dominium.core.interfaces/
+│   │   │   │   ├── org.dominium.core.materials.basic/
+│   │   │   │   ├── org.dominium.core.parts.basic/
+│   │   │   │   ├── org.dominium.core.processes.basic/
+│   │   │   │   ├── org.dominium.core.standards.basic/
+│   │   │   │   └── org.dominium.core.units/
+│   │   │   ├── core_units/
+│   │   │   │   └── org.dominium.core.units/
+│   │   │   └── empty_root/
+│   │   ├── crafting/
+│   │   ├── data_1/
+│   │   │   ├── assemblies_only/
+│   │   │   │   └── org.dominium.core.assemblies.extended/
+│   │   │   ├── assemblies_with_deps/
+│   │   │   │   ├── org.dominium.core.assemblies.extended/
+│   │   │   │   ├── org.dominium.core.instruments.extended/
+│   │   │   │   ├── org.dominium.core.materials.extended/
+│   │   │   │   ├── org.dominium.core.parts.extended/
+│   │   │   │   ├── org.dominium.core.processes.extended/
+│   │   │   │   └── org.dominium.core.standards.extended/
+│   │   │   ├── full_extended/
+│   │   │   │   ├── org.dominium.core.assemblies.extended/
+│   │   │   │   ├── org.dominium.core.hazards.extended/
+│   │   │   │   ├── org.dominium.core.instruments.extended/
+│   │   │   │   ├── org.dominium.core.materials.extended/
+│   │   │   │   ├── org.dominium.core.parts.extended/
+│   │   │   │   ├── org.dominium.core.processes.extended/
+│   │   │   │   ├── org.dominium.core.quality.extended/
+│   │   │   │   └── org.dominium.core.standards.extended/
+│   │   │   ├── hazards_only/
+│   │   │   │   └── org.dominium.core.hazards.extended/
+│   │   │   ├── instruments_only/
+│   │   │   │   └── org.dominium.core.instruments.extended/
+│   │   │   ├── materials_only/
+│   │   │   │   └── org.dominium.core.materials.extended/
+│   │   │   ├── parts_only/
+│   │   │   │   └── org.dominium.core.parts.extended/
+│   │   │   ├── parts_with_materials/
+│   │   │   │   ├── org.dominium.core.materials.extended/
+│   │   │   │   └── org.dominium.core.parts.extended/
+│   │   │   ├── processes_only/
+│   │   │   │   └── org.dominium.core.processes.extended/
+│   │   │   ├── processes_with_deps/
+│   │   │   │   ├── org.dominium.core.instruments.extended/
+│   │   │   │   ├── org.dominium.core.processes.extended/
+│   │   │   │   └── org.dominium.core.standards.extended/
+│   │   │   ├── quality_only/
+│   │   │   │   └── org.dominium.core.quality.extended/
+│   │   │   └── standards_only/
+│   │   │       └── org.dominium.core.standards.extended/
+│   │   ├── data_2/
+│   │   │   ├── anarchy_root/
+│   │   │   ├── law_basic_root/
+│   │   │   │   ├── org.dominium.core.institutions.basic/
+│   │   │   │   ├── org.dominium.core.law.basic/
+│   │   │   │   └── org.dominium.core.units/
+│   │   │   ├── law_certification_root/
+│   │   │   │   ├── org.dominium.core.institutions.basic/
+│   │   │   │   ├── org.dominium.core.instruments.inspection/
+│   │   │   │   ├── org.dominium.core.law.basic/
+│   │   │   │   ├── org.dominium.core.standards.certification/
+│   │   │   │   └── org.dominium.core.units/
+│   │   │   ├── law_contracts_root/
+│   │   │   │   ├── org.dominium.core.contracts.basic/
+│   │   │   │   ├── org.dominium.core.institutions.basic/
+│   │   │   │   ├── org.dominium.core.law.basic/
+│   │   │   │   └── org.dominium.core.units/
+│   │   │   ├── law_enforcement_root/
+│   │   │   │   ├── org.dominium.core.contracts.basic/
+│   │   │   │   ├── org.dominium.core.enforcement.basic/
+│   │   │   │   ├── org.dominium.core.institutions.basic/
+│   │   │   │   ├── org.dominium.core.instruments.inspection/
+│   │   │   │   ├── org.dominium.core.law.basic/
+│   │   │   │   ├── org.dominium.core.standards.certification/
+│   │   │   │   └── org.dominium.core.units/
+│   │   │   ├── law_removed_enforcement_root/
+│   │   │   │   ├── org.dominium.core.contracts.basic/
+│   │   │   │   ├── org.dominium.core.institutions.basic/
+│   │   │   │   ├── org.dominium.core.instruments.inspection/
+│   │   │   │   ├── org.dominium.core.law.basic/
+│   │   │   │   ├── org.dominium.core.standards.certification/
+│   │   │   │   └── org.dominium.core.units/
+│   │   │   ├── lockfiles/
+│   │   │   ├── scenarios/
+│   │   │   └── variants/
+│   │   ├── data_3/
+│   │   │   ├── anchors_planetary_root/
+│   │   │   │   └── org.dominium.worldgen.anchors.planetary/
+│   │   │   ├── anchors_system_root/
+│   │   │   │   └── org.dominium.worldgen.anchors.system/
+│   │   │   ├── civ_removed_stress_root/
+│   │   │   │   ├── org.dominium.core.ecology.basic/
+│   │   │   │   ├── org.dominium.core.infrastructure.basic/
+│   │   │   │   ├── org.dominium.core.population.basic/
+│   │   │   │   ├── org.dominium.core.settlements.basic/
+│   │   │   │   ├── org.dominium.core.trade.basic/
+│   │   │   │   ├── org.dominium.core.units/
+│   │   │   │   └── org.dominium.worldgen.anchors.planetary/
+│   │   │   ├── civ_stress_root/
+│   │   │   │   ├── org.dominium.core.civ_stress.basic/
+│   │   │   │   ├── org.dominium.core.ecology.basic/
+│   │   │   │   ├── org.dominium.core.infrastructure.basic/
+│   │   │   │   ├── org.dominium.core.population.basic/
+│   │   │   │   ├── org.dominium.core.settlements.basic/
+│   │   │   │   ├── org.dominium.core.trade.basic/
+│   │   │   │   ├── org.dominium.core.units/
+│   │   │   │   └── org.dominium.worldgen.anchors.planetary/
+│   │   │   ├── ecology_root/
+│   │   │   │   ├── org.dominium.core.ecology.basic/
+│   │   │   │   ├── org.dominium.core.units/
+│   │   │   │   └── org.dominium.worldgen.anchors.planetary/
+│   │   │   ├── lockfiles/
+│   │   │   ├── population_root/
+│   │   │   │   ├── org.dominium.core.population.basic/
+│   │   │   │   ├── org.dominium.core.units/
+│   │   │   │   └── org.dominium.worldgen.anchors.planetary/
+│   │   │   ├── scenarios/
+│   │   │   ├── settlement_trade_root/
+│   │   │   │   ├── org.dominium.core.infrastructure.basic/
+│   │   │   │   ├── org.dominium.core.population.basic/
+│   │   │   │   ├── org.dominium.core.settlements.basic/
+│   │   │   │   ├── org.dominium.core.trade.basic/
+│   │   │   │   ├── org.dominium.core.units/
+│   │   │   │   └── org.dominium.worldgen.anchors.planetary/
+│   │   │   └── variants/
+│   │   ├── defaults/
+│   │   │   └── profiles/
+│   │   ├── economy/
+│   │   ├── energy/
+│   │   ├── fluid/
+│   │   ├── geology/
+│   │   ├── hazard/
+│   │   ├── heat/
+│   │   ├── history/
+│   │   ├── institution/
+│   │   ├── knowledge/
+│   │   ├── mining/
+│   │   ├── network/
+│   │   ├── perf/
+│   │   │   ├── deep_history/
+│   │   │   │   └── metrics/
+│   │   │   ├── galaxy_scale_civ/
+│   │   │   │   └── metrics/
+│   │   │   ├── local_density_extreme/
+│   │   │   │   └── metrics/
+│   │   │   ├── mmo_style_load/
+│   │   │   │   └── metrics/
+│   │   │   ├── run_root/
+│   │   │   │   └── perf/
+│   │   │   │       └── budgets/
+│   │   │   └── thrash_attempt/
+│   │   │       └── metrics/
+│   │   ├── planning/
+│   │   ├── playtest/
+│   │   ├── regression/
+│   │   ├── repox/
+│   │   │   └── expected/
+│   │   ├── restructure/
+│   │   ├── risk/
+│   │   ├── srz/
+│   │   ├── standards/
+│   │   ├── structure/
+│   │   ├── terrain/
+│   │   ├── travel/
+│   │   ├── trust/
+│   │   ├── ux/
+│   │   │   ├── accessibility/
+│   │   │   └── locale_packs/
+│   │   │       ├── org.dominium.l10n.en_us/
+│   │   │       │   └── data/
+│   │   │       │       └── locale/
+│   │   │       └── org.dominium.l10n.zz_test/
+│   │   │           └── data/
+│   │   │               └── locale/
+│   │   ├── vegetation/
+│   │   ├── weather/
+│   │   ├── world/
+│   │   │   └── templates/
+│   │   └── worlds/
+│   │       ├── capset_future_affordances/
+│   │       ├── capset_infrastructure_industry/
+│   │       ├── capset_society_institutions/
+│   │       ├── capset_world_life_intelligent/
+│   │       ├── capset_world_life_nonintelligent/
+│   │       ├── capset_world_nonbio/
+│   │       └── capset_world_pretool/
+│   ├── game/
+│   │   ├── civ0/
+│   │   ├── civ0a/
+│   │   ├── civ1/
+│   │   ├── civ2/
+│   │   ├── civ3/
+│   │   ├── civ4/
+│   │   ├── epistemic/
+│   │   ├── fidelity/
+│   │   ├── fixtures/
+│   │   │   ├── fixture_10k_systems_latent/
+│   │   │   ├── fixture_earth_only/
+│   │   │   ├── fixture_market_crisis/
+│   │   │   ├── fixture_timewarp_1000y/
+│   │   │   └── fixture_war_campaign/
+│   │   ├── interest/
+│   │   ├── life/
+│   │   ├── mp0/
+│   │   ├── phase6/
+│   │   └── tests/
+│   │       ├── contract/
+│   │       ├── determinism/
+│   │       ├── dominium_integration/
+│   │       ├── domino_core/
+│   │       ├── domino_decor/
+│   │       ├── domino_gfx/
+│   │       ├── domino_mod/
+│   │       ├── domino_sim/
+│   │       ├── domino_struct/
+│   │       ├── domino_sys/
+│   │       ├── domino_trans/
+│   │       ├── fixtures/
+│   │       │   ├── coredata_invalid_candidate_progression/
+│   │       │   │   ├── astro/
+│   │       │   │   ├── cosmo/
+│   │       │   │   └── mechanics/
+│   │       │   ├── coredata_invalid_missing_profile/
+│   │       │   │   ├── astro/
+│   │       │   │   ├── cosmo/
+│   │       │   │   └── mechanics/
+│   │       │   ├── coredata_invalid_schema/
+│   │       │   │   ├── astro/
+│   │       │   │   ├── cosmo/
+│   │       │   │   └── mechanics/
+│   │       │   ├── coredata_min/
+│   │       │   │   ├── astro/
+│   │       │   │   ├── cosmo/
+│   │       │   │   └── mechanics/
+│   │       │   ├── coredata_valid/
+│   │       │   │   ├── astro/
+│   │       │   │   ├── cosmo/
+│   │       │   │   └── mechanics/
+│   │       │   ├── missing_packs/
+│   │       │   └── ui/
+│   │       ├── setup/
+│   │       │   ├── conformance/
+│   │       │   ├── fixtures/
+│   │       │   │   └── payloads/
+│   │       │   │       ├── v1/
+│   │       │   │       └── v2/
+│   │       │   ├── gold_master/
+│   │       │   ├── golden/
+│   │       │   ├── parity/
+│   │       │   └── parity_lock/
+│   │       └── vectors/
+│   │           └── tlv/
+│   │               ├── caps_snapshot/
+│   │               ├── core_job_def/
+│   │               ├── core_job_state/
+│   │               ├── diag_bundle_index/
+│   │               ├── diag_bundle_meta/
+│   │               ├── installed_state/
+│   │               ├── instance_manifest/
+│   │               ├── launcher_audit/
+│   │               ├── launcher_handshake/
+│   │               ├── pack_manifest/
+│   │               ├── selection_summary/
+│   │               └── tools_registry/
+│   ├── integration/
+│   ├── invariant/
+│   ├── launcher/
+│   ├── ops/
+│   ├── perf/
+│   │   └── exploration_fixtures/
+│   │       ├── deep_hierarchy/
+│   │       │   └── data/
+│   │       │       └── world/
+│   │       │           └── templates/
+│   │       ├── galaxy_scale/
+│   │       │   └── data/
+│   │       │       └── world/
+│   │       │           └── templates/
+│   │       ├── local_only/
+│   │       │   └── data/
+│   │       │       └── world/
+│   │       │           └── templates/
+│   │       └── system_scale/
+│   │           └── data/
+│   │               └── world/
+│   │                   └── templates/
+│   ├── piracy_containment/
+│   ├── platform/
+│   ├── playtest/
+│   ├── regression/
+│   │   └── historical_blockers/
+│   ├── renderer/
+│   ├── schema/
+│   ├── server/
+│   ├── services/
+│   ├── setup/
+│   ├── share/
+│   ├── signal/
+│   ├── systemic/
+│   ├── testx/
+│   │   ├── capability_regression/
+│   │   └── capability_sets/
+│   │       ├── capset_future_affordances/
+│   │       ├── capset_infrastructure_industry/
+│   │       ├── capset_society_institutions/
+│   │       ├── capset_world_life_intelligent/
+│   │       ├── capset_world_life_nonintelligent/
+│   │       ├── capset_world_nonbio/
+│   │       └── capset_world_pretool/
+│   ├── tools/
+│   ├── tourist/
+│   ├── ui_parity/
+│   └── ux/
+└── tools/
+    ├── aide/
+    ├── audit/
+    │   └── review/
+    ├── codegen/
+    │   ├── assets/
+    │   ├── content/
+    │   │   └── coredata_compile/
+    │   ├── demo/
+    │   ├── shell/
+    │   └── ui/
+    │       ├── bind/
+    │       ├── index/
+    │       ├── launcher/
+    │       │   ├── doc/
+    │       │   ├── gen/
+    │       │   ├── registry/
+    │       │   ├── reports/
+    │       │   ├── scripts/
+    │       │   └── user/
+    │       ├── setup/
+    │       │   ├── doc/
+    │       │   ├── gen/
+    │       │   ├── registry/
+    │       │   ├── reports/
+    │       │   ├── scripts/
+    │       │   └── user/
+    │       └── tool_editor/
+    │           └── gen/
+    ├── diagnostics/
+    │   └── bugreport/
+    ├── domain/
+    │   ├── animals/
+    │   ├── astronomy/
+    │   ├── autonomy/
+    │   ├── chemistry/
+    │   ├── climate/
+    │   ├── conflict/
+    │   ├── crafting/
+    │   ├── economy/
+    │   ├── electricity/
+    │   ├── embodiment/
+    │   ├── energy/
+    │   ├── fabrication/
+    │   ├── fluids/
+    │   ├── hazard/
+    │   ├── history/
+    │   ├── institution/
+    │   ├── interaction/
+    │   ├── knowledge/
+    │   ├── logic/
+    │   ├── materials/
+    │   ├── mining/
+    │   ├── mmo/
+    │   ├── mobility/
+    │   ├── pollution/
+    │   ├── processes/
+    │   ├── risk/
+    │   ├── scale/
+    │   ├── signals/
+    │   ├── srz/
+    │   ├── standards/
+    │   ├── structure/
+    │   ├── systems/
+    │   ├── terrain/
+    │   ├── thermal/
+    │   │   └── heat/
+    │   ├── time/
+    │   ├── travel/
+    │   ├── trust/
+    │   ├── vegetation/
+    │   ├── weather/
+    │   └── worldgen/
+    │       ├── earth_stress/
+    │       └── offline/
+    │           └── ui/
+    ├── export/
+    │   └── share/
+    ├── import/
+    │   └── data/
+    ├── migration/
+    │   ├── convergence/
+    │   └── schema/
+    ├── package/
+    │   ├── artifactmeta/
+    │   ├── compatibility/
+    │   ├── distribution/
+    │   ├── launcher/
+    │   ├── libraries/
+    │   │   ├── artifact/
+    │   │   ├── bundle/
+    │   │   ├── export/
+    │   │   ├── import/
+    │   │   ├── install/
+    │   │   ├── instance/
+    │   │   ├── provides/
+    │   │   ├── save/
+    │   │   ├── store/
+    │   │   └── stress/
+    │   ├── mod_builder/
+    │   ├── modpack/
+    │   ├── ops/
+    │   ├── pack/
+    │   └── setup/
+    ├── performance/
+    │   └── envelope/
+    ├── release/
+    │   ├── dist_seed/
+    │   └── mvp/
+    ├── repo/
+    │   ├── ai/
+    │   ├── control/
+    │   ├── dev/
+    │   │   ├── impact_graph/
+    │   │   └── scenarios/
+    │   ├── dirfiles/
+    │   ├── governance/
+    │   │   ├── adapters/
+    │   │   ├── capability/
+    │   │   ├── effects/
+    │   │   ├── fidelity/
+    │   │   ├── ir/
+    │   │   ├── negotiation/
+    │   │   ├── planning/
+    │   │   ├── proof/
+    │   │   └── view/
+    │   ├── meta/
+    │   │   ├── audit/
+    │   │   ├── compile/
+    │   │   ├── compute/
+    │   │   ├── explain/
+    │   │   ├── extensions/
+    │   │   ├── instrumentation/
+    │   │   ├── profile/
+    │   │   ├── provenance/
+    │   │   └── reference/
+    │   ├── models/
+    │   ├── repox/
+    │   │   └── shell/
+    │   ├── specs/
+    │   └── workspace/
+    ├── test/
+    │   ├── cpp/
+    │   ├── dgfx_demo/
+    │   ├── domino/
+    │   │   ├── dom_inspect/
+    │   │   └── dom_validate_content/
+    │   ├── inspect/
+    │   ├── network/
+    │   ├── playtest/
+    │   ├── replay/
+    │   └── server/
+    ├── validators/
+    │   ├── ci/
+    │   ├── compatibility/
+    │   │   ├── descriptor/
+    │   │   ├── handshake/
+    │   │   ├── negotiation/
+    │   │   └── shims/
+    │   ├── content/
+    │   │   ├── coredata/
+    │   │   └── data/
+    │   ├── core/
+    │   │   ├── constraints/
+    │   │   ├── flow/
+    │   │   ├── graph/
+    │   │   ├── hazards/
+    │   │   ├── schedule/
+    │   │   └── spatial/
+    │   ├── distribution/
+    │   ├── domain/
+    │   │   ├── geology/
+    │   │   └── physics/
+    │   ├── engine/
+    │   ├── identity/
+    │   ├── modcheck/
+    │   ├── modding/
+    │   ├── network/
+    │   │   ├── anti_cheat/
+    │   │   ├── policies/
+    │   │   ├── srz/
+    │   │   ├── testing/
+    │   │   └── transport/
+    │   ├── package/
+    │   │   └── compatibility_payload/
+    │   ├── render/
+    │   ├── repo/
+    │   ├── safety/
+    │   ├── security/
+    │   │   ├── model/
+    │   │   └── trust/
+    │   ├── shell/
+    │   ├── stability/
+    │   └── suite/
+    │       └── fixtures/
+    │           ├── bad_fabrication/
+    │           │   └── schema/
+    │           │       └── life/
+    │           ├── bad_fallback/
+    │           │   └── engine/
+    │           │       └── render/
+    │           │           └── features/
+    │           ├── bad_float/
+    │           │   └── schema/
+    │           │       └── demo/
+    │           ├── bad_renderer/
+    │           │   ├── engine/
+    │           │   │   └── render/
+    │           │   │       └── backends/
+    │           │   │           └── implicit/
+    │           │   └── vulkan/
+    │           ├── bad_ui/
+    │           │   └── game/
+    │           │       └── ui/
+    │           └── bad_unbounded/
+    │               └── schema/
+    │                   └── demo/
+    └── xstack/
+        ├── auditx/
+        │   ├── analyzers/
+        │   ├── graph/
+        │   ├── model/
+        │   └── output/
+        ├── cache_store/
+        ├── ci/
+        │   └── profiles/
+        ├── compatx/
+        │   └── core/
+        ├── controlx/
+        │   └── core/
+        ├── core/
+        ├── extensions/
+        │   └── example_x/
+        ├── pack_contrib/
+        ├── pack_loader/
+        ├── packagingx/
+        ├── performx/
+        │   └── core/
+        ├── registry_compile/
+        ├── repox/
+        ├── securex/
+        │   └── core/
+        ├── sessionx/
+        ├── skills/
+        ├── testdata/
+        │   ├── bundles/
+        │   │   └── bundle.base.lab/
+        │   ├── packs/
+        │   │   ├── core/
+        │   │   │   └── pack.test.base/
+        │   │   │       └── data/
+        │   │   ├── domain/
+        │   │   │   └── pack.test.domain/
+        │   │   │       └── data/
+        │   │   ├── experience/
+        │   │   │   └── pack.test.experience/
+        │   │   │       ├── data/
+        │   │   │       ├── scenarios/
+        │   │   │       └── ui/
+        │   │   ├── law/
+        │   │   │   └── pack.test.law/
+        │   │   │       └── data/
+        │   │   └── tool/
+        │   │       └── pack.test.catalog/
+        │   │           └── assets/
+        │   ├── registry/
+        │   ├── session/
+        │   └── ui/
+        └── testx/
+            └── tests/

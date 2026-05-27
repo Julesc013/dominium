@@ -1,0 +1,203 @@
+spec_sheet:
+  metadata:
+    chat_label: "Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This chat only unless labelled PROJECT-CONTEXT"
+    apparent_coverage: "partial-to-broad"
+    confidence_1_to_5: 4
+    staleness_risk: "medium-high"
+    safe_for_aggregation: "yes, with caveats"
+    main_limitations:
+      - "Some repo state is user-reported and unverified in this response."
+      - "Uploaded snapshots may be stale relative to public GitHub main."
+      - "Not every original prompt is reproduced verbatim."
+
+  summary:
+    one_sentence: "This chat turned Dominium from MVP game-engine planning into a deterministic OS-like simulation platform roadmap with repository drift immunity and future live-operations planning."
+    short_brief: "The user wants Dominium/Domino to become a portable, modular, reusable, contract-first deterministic platform. Ω/Ξ/Π series were planned and reportedly executed; next is Ρ snapshot-driven planning before Σ/Φ/Υ/Ζ."
+    main_topics:
+      - "MVP scope and simulation stubs"
+      - "Compatibility, versioning, release, distribution"
+      - "Repository convergence and src/drift prevention"
+      - "XStack architecture enforcement"
+      - "Agent governance across GPT/Claude/Copilot/Codex"
+      - "Runtime microkernel/service/component model"
+      - "Future live operations and Z-series"
+    main_outputs:
+      - "Ω-series plan"
+      - "Ξ-series plan and user-reported execution"
+      - "Π-series plan and user-reported execution"
+      - "Ρ/Σ/Φ/Υ/Ζ roadmap"
+      - "coding/API/schema/repo doctrine"
+    highest_priority_carry_forward:
+      - "Run Ρ-series next."
+      - "Verify current GitHub main."
+      - "Do not restart Ω/Ξ/Π."
+      - "Use XStack as authority."
+
+  source_rules:
+    labels_used:
+      - "FACT"
+      - "INFERENCE"
+      - "UNCERTAIN / UNVERIFIED"
+      - "PROJECT-CONTEXT"
+    conflict_rules:
+      - "If uploaded snapshot contradicts user-reported current repo, verify live repo."
+      - "If documentation contradicts code, run repo reconciliation before deciding."
+    staleness_rules:
+      - "Vendor AI tooling docs must be reverified before implementation."
+      - "GitHub/repo state must be reverified before repo-specific plans."
+
+  user_preferences:
+    explicit:
+      - "Direct, source-grounded, audit-ready answers."
+      - "Distinguish facts, inferences, uncertainty."
+      - "Exhaustive structured planning and handoffs."
+      - "Preserve rejected and superseded ideas."
+    inferred:
+      - "User values ambitious but gated architecture."
+      - "User prefers Codex-ready prompt plans."
+    uncertain_or_not_established:
+      - "Exact physical layout after latest GitHub changes."
+
+  workstreams:
+    - id: "WORKSTREAM-05"
+      name: "Ρ-series snapshot-driven planning"
+      label: "FACT"
+      objective: "Map current repo reality to Ω/Ξ/Π blueprint and synthesize final Σ/Φ/Υ/Ζ plans."
+      current_state: "planned; next recommended work"
+      desired_end_state: "repo-specific execution plans"
+      status: "pending"
+      priority: "P0"
+      background: "Plans must not run against stale assumptions."
+      decisions_made: ["DECISION-08"]
+      decisions_pending: []
+      tasks: ["TASK-01", "TASK-02", "TASK-03", "TASK-04", "TASK-05"]
+      constraints: ["CONSTRAINT-03", "CONSTRAINT-10"]
+      dependencies: ["Ω", "Ξ", "Π", "current repo snapshot"]
+      timeline: "immediate next phase"
+      blockers: ["need current repo truth"]
+      risks: ["RISK-01"]
+      artifacts: ["ARTIFACT-07", "ARTIFACT-08", "ARTIFACT-09"]
+      success_criteria: ["final exact Σ/Φ/Υ/Ζ plan generated"]
+      next_action: "Generate Ρ-0."
+      verification_needed: ["VERIFY-01", "VERIFY-02", "VERIFY-03"]
+      confidence: "high"
+
+  decisions:
+    - id: "DECISION-11"
+      decision: "Stable contracts, replaceable implementations."
+      status: "final doctrine"
+      label: "FACT"
+      evidence_or_basis: "Repeated in chat and accepted direction."
+      rationale: "Allows rewrites/refactors without breaking identity/compatibility."
+      implications: "Focus on contracts/schemas/IDs, not stable files."
+      related_workstreams: ["WORKSTREAM-01"]
+      uncertainty: "none for doctrine; implementation pending."
+
+  tasks:
+    - id: "TASK-01"
+      task: "Generate/execute Ρ-0 Snapshot Intake."
+      priority: "P0"
+      urgency: "U0"
+      owner: "future assistant/Codex"
+      dependencies: ["Π outputs", "current repo or snapshot"]
+      inputs_needed: ["GitHub main or snapshot"]
+      expected_output: "Snapshot intake protocol and normalised inputs."
+      next_step: "Begin Ρ-series."
+      related_workstreams: ["WORKSTREAM-05"]
+      label: "FACT"
+      confidence: "high"
+
+  constraints:
+    - id: "CONSTRAINT-01"
+      constraint: "Truth paths deterministic."
+      type: "technical"
+      hard_or_soft: "hard"
+      source_or_basis: "conversation doctrine"
+      implication: "No wall-clock/float/unnamed RNG in truth paths."
+      violation_risk: "breaks replay/proofs"
+      label: "FACT"
+      confidence: "high"
+
+  open_questions:
+    - id: "QUESTION-01"
+      question: "What is current live repo tree?"
+      why_it_matters: "Final plans must map to reality."
+      known: "User reports main is pushed and Xi/Pi complete."
+      unknown: "Actual current files and roots."
+      resolution_path: "Verify GitHub or fresh snapshot."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-05"]
+      label: "UNCERTAIN / UNVERIFIED"
+
+  rejected_or_superseded_options:
+    - id: "REJECTED-03"
+      option: "Create separate ArchX subsystem."
+      status: "rejected"
+      reason: "Existing RepoX/AuditX/ControlX/TestX plus architecture graph artifact suffice."
+      final_or_tentative: "final unless XStack architecture changes"
+      reconsider_conditions: "If existing XStack components prove insufficient."
+      related_workstreams: ["WORKSTREAM-03"]
+      label: "FACT"
+
+  artifacts:
+    - id: "ARTIFACT-01"
+      name_or_description: "NEW.txt / dir (1).txt repo snapshot"
+      type: "uploaded file"
+      purpose: "Repo structure evidence and drift context."
+      status: "available in this runtime; may be stale"
+      origin: "user upload"
+      carry_forward: true
+      notes: "Shows domain roots and generic src/source pockets."
+      label: "FACT"
+
+  risks:
+    - id: "RISK-01"
+      risk: "Stale snapshot mistaken for current repo."
+      consequence: "Wrong final plan."
+      likelihood: "medium"
+      severity: "high"
+      mitigation: "Verify current GitHub main before repo-specific claims."
+      related_workstreams: ["WORKSTREAM-05"]
+      label: "FACT"
+
+  verification_queue:
+    - id: "VERIFY-01"
+      item: "Current GitHub main state."
+      why_verification_needed: "User-reported state and snapshot may diverge."
+      suggested_source_type: "GitHub browse / git clone / uploaded fresh snapshot"
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-05"]
+      label: "UNCERTAIN / UNVERIFIED"
+
+  spec_book_notes:
+    likely_sections:
+      - "Architecture doctrine"
+      - "Repository governance"
+      - "Agent governance"
+      - "Runtime service architecture"
+      - "Build/release control plane"
+      - "Live operations roadmap"
+    unique_contributions:
+      - "Stable contracts / replaceable implementations doctrine."
+      - "Ω/Ξ/Π/Ρ/Σ/Φ/Υ/Ζ series map."
+    possible_duplicates_with_other_chats:
+      - "Runtime renderer/platform architecture discussions."
+      - "Repo layout/naming convention discussions."
+    conflicts_to_watch_for:
+      - "Whether current repo has src roots."
+      - "Exact final top-level layout."
+    formal_requirements_candidates:
+      - "XStack enforced architecture."
+      - "Versioned identity and migration for all artifacts."
+    background_context_candidates:
+      - "Motivational OS-like platform framing."
+    needs_user_confirmation:
+      - "Final priority among Σ/Φ/Υ after Ρ."
+
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Generate Ρ-0 Snapshot Intake."
+    next_action_for_aggregator: "Merge workstream/decision/task registers into master project spec book."
+    user_checks_required:
+      - "Verify current GitHub main and Xi/Pi artifacts."

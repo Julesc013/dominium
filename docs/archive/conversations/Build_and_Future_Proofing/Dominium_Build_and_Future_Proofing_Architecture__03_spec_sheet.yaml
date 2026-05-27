@@ -1,0 +1,232 @@
+spec_sheet:
+  metadata:
+    chat_label: "Dominium Build and Future-Proofing Architecture"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This visible chat only unless labelled PROJECT-CONTEXT or REPO-CONTEXT"
+    apparent_coverage: "Partial visible chat plus uploaded prompt and repo context surfaced during chat"
+    confidence_1_to_5: 4
+    staleness_risk: "Medium to High"
+    safe_for_aggregation: "With caveats"
+    main_limitations:
+      - "Full older transcripts outside this chat were not accessible."
+      - "Many assistant recommendations were not explicitly accepted by the user."
+      - "Repo/toolchain facts require freshness verification."
+
+  summary:
+    one_sentence: "This chat defines candidate governance for Dominium build/toolchain complexity and long-term modular, portable, replaceable architecture."
+    short_brief: "The chat moved from multi-machine CMake/toolchain strategy into a broader architecture doctrine based on stable contracts, replaceable implementations, and evidence-backed support claims."
+    main_topics:
+      - "Tuple-driven build governance"
+      - "AIDE/XStack/RepoX/TestX roles"
+      - "Modular source spine and ownership"
+      - "Public surface registry"
+      - "Replacement protocol"
+      - "Schema/protocol compatibility"
+    main_outputs:
+      - "Build architecture recommendation"
+      - "Modularity/future-proofing recommendation"
+      - "Preservation package"
+    highest_priority_carry_forward:
+      - "Do not treat recommendations as accepted canon."
+      - "Verify live repo state before implementation."
+      - "Implement public-surface and build-tuple contracts if accepted."
+
+  source_rules:
+    labels_used: ["FACT", "INFERENCE", "UNCERTAIN / UNVERIFIED", "PROJECT-CONTEXT", "RECOMMENDATION"]
+    conflict_rules:
+      - "Direct user constraints outrank assistant recommendations."
+      - "Current repo verification outranks stale chat state."
+      - "Machine-readable contracts should outrank explanatory docs when both are current."
+    staleness_rules:
+      - "Repo HEAD, CI, software versions, and toolchain facts must be reverified."
+      - "Architecture recommendations remain advisory until accepted."
+
+  user_preferences:
+    explicit:
+      - "Human-readable report first."
+      - "Preserve uncertainty labels."
+      - "Do not invent facts."
+      - "Create downloadable files when possible."
+      - "Focus on portability, modularity, extensibility, and future-proofing."
+    inferred:
+      - "Prefer audit-ready, actionable plans over vague doctrine."
+      - "Prefer mechanical governance to memory-based process."
+    uncertain_or_not_established:
+      - "Whether all proposed tasks should become canon immediately."
+
+  workstreams:
+    - id: "WORKSTREAM-01"
+      name: "Build/toolchain governance"
+      label: "RECOMMENDATION"
+      objective: "Move build truth into tuple contracts and generated local presets."
+      current_state: "Recommended in chat."
+      desired_end_state: "Machine-probed, contract-governed CMake/CTest/TestX/RepoX build proof."
+      status: "Proposed"
+      priority: "P0"
+      background: "User has multiple IDE/toolchain hosts and legacy floor ambitions."
+      decisions_made: ["DECISION-02", "DECISION-03", "DECISION-04"]
+      decisions_pending: ["User acceptance"]
+      tasks: ["TASK-01", "TASK-02", "TASK-04"]
+      constraints: ["CONSTRAINT-01", "CONSTRAINT-04", "CONSTRAINT-05", "CONSTRAINT-06"]
+      dependencies: ["Live repo verification", "Toolchain matrix"]
+      timeline: "Next major implementation candidate"
+      blockers: ["Acceptance", "fresh repo/toolchain verification"]
+      risks: ["RISK-01", "RISK-02"]
+      artifacts: ["ARTIFACT-01", "ARTIFACT-02"]
+      success_criteria: ["Generated local presets", "tuple manifests", "proof artifacts"]
+      next_action: "Draft contracts/build schema and machine probe."
+      verification_needed: ["VERIFY-01", "VERIFY-02"]
+      confidence: "High"
+    - id: "WORKSTREAM-03"
+      name: "Public surface governance"
+      label: "RECOMMENDATION"
+      objective: "Define and enforce stable ABI/API/schema/protocol/command surfaces."
+      current_state: "Recommended in chat."
+      desired_end_state: "Machine-readable public surface registry plus validators/tests."
+      status: "Proposed"
+      priority: "P0"
+      background: "Needed to enable safe rewrites and reuse."
+      decisions_made: ["DECISION-05"]
+      decisions_pending: ["User acceptance"]
+      tasks: ["TASK-03", "TASK-06"]
+      constraints: ["CONSTRAINT-01", "CONSTRAINT-02", "CONSTRAINT-06"]
+      dependencies: ["Surface inventory"]
+      timeline: "Candidate first implementation task"
+      blockers: ["Need current surface inventory"]
+      risks: ["RISK-03"]
+      artifacts: ["ARTIFACT-03"]
+      success_criteria: ["Registry exists", "validators pass", "public headers compile"]
+      next_action: "Draft contracts/public_surface."
+      verification_needed: ["VERIFY-01"]
+      confidence: "High"
+
+  decisions:
+    - id: "DECISION-01"
+      decision: "Use C89/C++98/deterministic/per-floor/no-CRT-mixing canon as constraints."
+      status: "Established for this chat"
+      label: "FACT"
+      evidence_or_basis: "User-provided pasted context"
+      rationale: "These constraints bound all architecture and build recommendations."
+      implications: "All future build/API proposals must respect them."
+      related_workstreams: ["WORKSTREAM-01", "WORKSTREAM-03"]
+      uncertainty: "Whether each detail is still current canon should be confirmed before spec-book merge."
+
+  tasks:
+    - id: "TASK-01"
+      task: "Verify current repo HEAD and validation state"
+      priority: "P0"
+      urgency: "U0"
+      owner: "User/Codex/AIDE"
+      dependencies: []
+      inputs_needed: ["Repo access", "CI logs"]
+      expected_output: "Current state report"
+      next_step: "Run live audit"
+      related_workstreams: ["WORKSTREAM-01", "WORKSTREAM-02"]
+      label: "UNVERIFIED"
+      confidence: "High"
+    - id: "TASK-03"
+      task: "Add public surface registry"
+      priority: "P0"
+      urgency: "U1"
+      owner: "Codex/AIDE"
+      dependencies: ["User acceptance", "surface inventory"]
+      inputs_needed: ["headers", "schemas", "commands", "protocols"]
+      expected_output: "contracts/public_surface + validator"
+      next_step: "Draft schema"
+      related_workstreams: ["WORKSTREAM-03"]
+      label: "RECOMMENDATION"
+      confidence: "High"
+
+  constraints:
+    - id: "CONSTRAINT-01"
+      constraint: "Engine C89"
+      type: "Technical"
+      hard_or_soft: "Hard"
+      source_or_basis: "User-provided canon"
+      implication: "Engine public/core surfaces must remain C89-safe."
+      violation_risk: "High"
+      label: "FACT"
+      confidence: "High"
+
+  open_questions:
+    - id: "QUESTION-01"
+      question: "Which recommendations become binding canon?"
+      why_it_matters: "Prevents accidental merge of advisory material as decisions."
+      known: "Recommendations are listed."
+      unknown: "User acceptance."
+      resolution_path: "User reviews Decision Register."
+      priority: "P0"
+      related_workstreams: ["All"]
+      label: "FACT"
+
+  rejected_or_superseded_options:
+    - id: "REJECTED-02"
+      option: "Hand-maintain every possible CMake preset"
+      status: "Deprioritised"
+      reason: "Does not scale across machines/toolchains/floors."
+      final_or_tentative: "Tentative but strong recommendation"
+      reconsider_conditions: "Only for small curated shared presets."
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "RECOMMENDATION"
+
+  artifacts:
+    - id: "ARTIFACT-04"
+      name_or_description: "Pasted text.txt"
+      type: "Uploaded prompt"
+      purpose: "Requested complete preservation package."
+      status: "Used"
+      origin: "User upload"
+      carry_forward: true
+      notes: "Task source for this package."
+      label: "FACT"
+
+  risks:
+    - id: "RISK-01"
+      risk: "Recommendations treated as accepted decisions"
+      consequence: "Bad canon/spec merge"
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Preserve labels and require user acceptance."
+      related_workstreams: ["All"]
+      label: "FACT"
+
+  verification_queue:
+    - id: "VERIFY-01"
+      item: "Current Dominium repo HEAD and CI/build/test status"
+      why_verification_needed: "Repo state is time-sensitive."
+      suggested_source_type: "GitHub/local repo/CI logs"
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-01", "WORKSTREAM-02"]
+      label: "UNVERIFIED"
+
+  spec_book_notes:
+    likely_sections:
+      - "Build and Toolchain Governance"
+      - "Architecture and Source Ownership"
+      - "Public API/ABI Policy"
+      - "Schema and Protocol Compatibility"
+      - "Replacement and Refactor Protocol"
+    unique_contributions:
+      - "Tuple-driven build governance framed against multi-machine reality."
+      - "Contract-first modularity doctrine."
+    possible_duplicates_with_other_chats:
+      - "Dominium repo convergence"
+      - "Toolchain support matrix"
+      - "Runtime/platform/render structure"
+    conflicts_to_watch_for:
+      - "Any later decision changing top-level structure or language constraints."
+    formal_requirements_candidates:
+      - "Public surface registry"
+      - "Tuple build contracts"
+      - "Replacement protocol"
+    background_context_candidates:
+      - "Rationale for avoiding one-off indie structure"
+    needs_user_confirmation:
+      - "Acceptance of recommendations as canon"
+
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Choose and write the implementation prompt for public surface registry or build tuple contracts."
+    next_action_for_aggregator: "Merge as candidate requirements with caveats, not as final decisions."
+    user_checks_required:
+      - "Confirm accepted recommendations."
+      - "Verify current repo state."

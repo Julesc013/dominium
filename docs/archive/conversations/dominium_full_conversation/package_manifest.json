@@ -1,0 +1,24 @@
+{
+  "chat_label": "Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion",
+  "date_anchor": "2026-05-27 Australia/Melbourne",
+  "new_files": [
+    "dominium_full_conversation_companion_report__00_manifest.md",
+    "dominium_full_conversation_companion_report__01_complete_human_report.md",
+    "dominium_full_conversation_companion_report__02_decision_task_risk_registers.md",
+    "dominium_full_conversation_companion_report__03_current_plan_and_prompt_queue.md",
+    "dominium_full_conversation_companion_report__04_specbook_bridge.md",
+    "dominium_full_conversation_companion_report__05_verification_checklist.md",
+    "dominium_full_conversation_companion_report__06_artifact_index.md",
+    "dominium_full_conversation_companion_report__07_reader_brief.md",
+    "dominium_full_conversation_companion_report__08_future_chat_bootstrap_prompt.md",
+    "dominium_full_conversation_companion_report__FULL_COMBINED_REPORT.md"
+  ],
+  "includes_previous_preservation_files": true,
+  "includes_uploaded_instruction": true,
+  "includes_reference_images": 10,
+  "caveats": [
+    "Not a raw transcript export.",
+    "Live repo status must be verified before executing tasks.",
+    "Screenshots are reference artifacts, not formal specs."
+  ]
+}

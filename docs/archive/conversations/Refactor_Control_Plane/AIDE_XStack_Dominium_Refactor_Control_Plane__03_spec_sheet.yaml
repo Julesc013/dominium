@@ -1,0 +1,1625 @@
+spec_sheet:
+  metadata:
+    chat_label: AIDE, XStack, and Dominium Refactor Control Plane
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only plus explicitly cited live GitHub checks
+    apparent_coverage: partial-to-broad visible context
+    confidence_1_to_5: 4
+    staleness_risk: medium-high
+    safe_for_aggregation: yes_with_caveats
+    main_limitations:
+    - earlier uploaded files expired
+    - live repositories may have advanced
+    - some user-provided transcripts from other chats are treated as user-supplied context
+  summary:
+    one_sentence: AIDE should become the repo-native refactor/control plane while XStack becomes Dominium’s strict local profile and legacy validation layer until wrapped and retired.
+    short_brief: This chat defines AIDE’s near-term product, XStack’s migration role, Dominium’s root-recycling plan, AIDE Q35-Q57 roadmap, Git/workunit policy, and preservation package.
+    main_topics:
+    - AI dev workflow
+    - harness engineering
+    - AIDE architecture
+    - XStack migration
+    - Dominium convergence
+    - root recycling
+    - version/capability policy
+    - Git/workunit recovery
+    - external tool research
+    - knowledge preservation
+    main_outputs:
+    - canvas knowledge docs
+    - this zip package
+    - registers/spec/context packet
+    - Dominium/AIDE plan
+    highest_priority_carry_forward:
+    - verify current repo state
+    - finish CTest/RepoX blockers
+    - finish AIDE governance audit
+    - build AIDE root recycling/tool absorption machinery
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - repo artifacts outrank chat memory
+    - Dominium AGENTS/XStack authority outranks generated AIDE outputs until promoted
+    - live repo state must be rechecked before implementation
+    staleness_rules:
+    - external docs and repo states are stale after capture
+    - expired uploads require reupload for exact audit
+  user_preferences:
+    explicit:
+    - Direct, source-grounded, audit-ready answers
+    - Detailed knowledge-base summaries for long chats
+    - Do not ask for unnecessary confirmation; proceed with best effort
+    - Prefer structured markdown and clear headings
+    - Do not over-compress important decisions and rationale
+    - Correct framing when evidence disagrees
+    - Current facts should be verified when possible
+    - Separate Dominium work from AIDE work
+    - Preserve both human-readable and machine-readable artifacts
+    inferred:
+    - Prefer structured markdown and clear headings
+    - Bias toward anti-complexity and incremental proof
+    uncertain_or_not_established:
+    - exact final public naming for Kernel/Core
+    - exact CTest-warning acceptance threshold
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Personal AI development workflow
+    objective: Use ChatGPT/Codex/API/local tools efficiently without manual prompt relay
+    current_state: Conceptual recommendations established
+    desired_end_state: ChatGPT plans/reviews; Codex implements; AIDE standardizes repo context
+    status: Active background
+    priority: P1
+    confidence: '4'
+    label: FACT/INFERENCE
+  - id: WORKSTREAM-02
+    name: Harness engineering doctrine
+    objective: Shift from prompt tricks to environment/tool/context/evidence design
+    current_state: Doctrine accepted and reused
+    desired_end_state: Harness quality becomes default design lens
+    status: Active
+    priority: P0
+    confidence: '5'
+    label: FACT
+  - id: WORKSTREAM-03
+    name: XStack scope and future
+    objective: Prevent XStack from becoming universal product mythology
+    current_state: 'Decision made: XStack stays Dominium strict profile'
+    desired_end_state: XStack logic wrapped/recycled behind AIDE and retired as public ontology over time
+    status: Active
+    priority: P0
+    confidence: '5'
+    label: FACT
+  - id: WORKSTREAM-04
+    name: AIDE product definition
+    objective: Define AIDE as portable repo-native operating layer
+    current_state: Evolved from broad app/runtime vision to Profiles+Harness+Compatibility+Bridge first
+    desired_end_state: AIDE Lite Stable Control Plane then future Runtime/Hosts only if justified
+    status: Active
+    priority: P0
+    confidence: '5'
+    label: FACT
+  - id: WORKSTREAM-05
+    name: AIDE self-hosting and bootstrap
+    objective: Make AIDE manage AIDE and bootstrap repos from small seed/import/template/bundle
+    current_state: Plan accepted; AIDE repo already has .aide profile/harness artifacts
+    desired_end_state: AIDE can install/repair/upgrade/rollback safely and self-host
+    status: Active
+    priority: P0
+    confidence: '4'
+    label: FACT/INFERENCE
+  - id: WORKSTREAM-06
+    name: Dominium repo convergence and cleanup
+    objective: Make Dominium structurally stable, build-proven, and playable
+    current_state: CONVERGE and POST-CONVERGE improved authority/build; CTest still not clean
+    desired_end_state: Boring durable root layout, root exceptions retired, product/playtest proof achieved
+    status: Active
+    priority: P0
+    confidence: '5'
+    label: FACT
+  - id: WORKSTREAM-07
+    name: Topology authority and root recycling
+    objective: Make structure self-enforcing and refactors reversible
+    current_state: Concept defined; next tasks AIDE-STRUCTURE/ROOT waves
+    desired_end_state: AIDE inventories/classifies/migrates roots via salvage/move maps and ledgers
+    status: Active
+    priority: P0
+    confidence: '5'
+    label: FACT/INFERENCE
+  - id: WORKSTREAM-08
+    name: Existing tool absorption
+    objective: Recycle XStack/AuditX/RepoX/TestX tools behind AIDE adapters
+    current_state: Plan accepted; not fully implemented
+    desired_end_state: Useful checks survive under boring tools/aide/audit/repo/test homes
+    status: Active
+    priority: P0
+    confidence: '5'
+    label: FACT/INFERENCE
+  - id: WORKSTREAM-09
+    name: Versioning/release/capabilities
+    objective: Separate release identity, compatibility truth, and provenance
+    current_state: Layered model accepted; schema specs pending
+    desired_end_state: Capability contracts drive compatibility; versions identify releases; GBN/BII identify builds
+    status: Active
+    priority: P1
+    confidence: '4'
+    label: FACT/INFERENCE
+  - id: WORKSTREAM-10
+    name: Git workflow and WorkUnit recovery
+    objective: Create branch/commit/resumption discipline for humans and agents
+    current_state: Plan accepted from AIDE discussion; implementation Q27-Q35
+    desired_end_state: AIDE detects branch roles, enforces structured commits, safe land/promote/prune
+    status: Active
+    priority: P1
+    confidence: '4'
+    label: FACT/INFERENCE
+  - id: WORKSTREAM-11
+    name: External project research
+    objective: Mine Codex/Claude/OMX/claw-code/Graphify/claude-mem etc. for patterns
+    current_state: Several projects assessed; use as reference not foundation
+    desired_end_state: AIDE borrows patterns while keeping canonical contracts provider-neutral
+    status: Ongoing
+    priority: P2
+    confidence: '4'
+    label: FACT/INFERENCE
+  - id: WORKSTREAM-12
+    name: Knowledge preservation and handoff
+    objective: Preserve this long chat as future reference/spec input
+    current_state: Multiple canvas docs created; this package generated now
+    desired_end_state: Downloadable package supports future aggregation and new chat bootstrap
+    status: Active
+    priority: P0
+    confidence: '4'
+    label: FACT
+  decisions:
+  - id: DECISION-01
+    decision: Use harness engineering as central frame
+    status: Accepted
+    evidence_or_basis: Repeatedly adopted by user
+    rationale: Models/prompts alone do not solve reliability; environment/contracts/evidence do
+    implications: Shapes all future design
+    related_workstreams: WORKSTREAM-02
+    confidence: '5'
+    label: FACT
+  - id: DECISION-02
+    decision: Keep ChatGPT/Codex roles distinct
+    status: Accepted
+    evidence_or_basis: Early workflow discussion
+    rationale: ChatGPT for architecture/spec/review; Codex for repo-local implementation
+    implications: Reduces manual prompt relay and drift
+    related_workstreams: WORKSTREAM-01
+    confidence: '4'
+    label: INFERENCE
+  - id: DECISION-03
+    decision: XStack remains Dominium-specific strict profile
+    status: Accepted
+    evidence_or_basis: Multiple user confirmations
+    rationale: XStack grew from Dominium and carries local law; universalizing it causes bloat
+    implications: AIDE becomes public layer; XStack is bridge/profile
+    related_workstreams: WORKSTREAM-03
+    confidence: '5'
+    label: FACT
+  - id: DECISION-04
+    decision: AIDE becomes new portable repo-native operating layer
+    status: Accepted
+    evidence_or_basis: User named AIDE and accepted split
+    rationale: New clean identity avoids XStack baggage
+    implications: AIDE repo owns portable profiles/harness/compatibility
+    related_workstreams: WORKSTREAM-04
+    confidence: '5'
+    label: FACT
+  - id: DECISION-05
+    decision: AIDE v0 is Profiles + Harness + Compatibility + Dominium Bridge, not full runtime
+    status: Accepted
+    evidence_or_basis: Repeated later synthesis
+    rationale: Existing tools already provide runtimes; missing layer is portable repo contract
+    implications: Runtime/Hosts deferred
+    related_workstreams: WORKSTREAM-04
+    confidence: '5'
+    label: FACT
+  - id: DECISION-06
+    decision: Profile and Harness are distinct
+    status: Accepted
+    evidence_or_basis: AIDE discussion quoted and affirmed
+    rationale: Declarative truth and executable machinery must not blur
+    implications: AIDE architecture uses Contract/Profile vs Harness split
+    related_workstreams: WORKSTREAM-04
+    confidence: '5'
+    label: FACT
+  - id: DECISION-07
+    decision: AIDE must self-host from a small seed, not zero magic
+    status: Accepted
+    evidence_or_basis: User supplied bootstrapping synthesis
+    rationale: Honest bootstrap requires repo kind/commands/policy seed
+    implications: AIDE repo should manage itself through .aide
+    related_workstreams: WORKSTREAM-05
+    confidence: '4'
+    label: FACT
+  - id: DECISION-08
+    decision: Use AIDE in Dominium as subordinate pack/control layer first
+    status: Accepted
+    evidence_or_basis: Dominium/AIDE integration discussion
+    rationale: Dominium AGENTS/XStack authority must not be overwritten
+    implications: AIDE imports must preserve local doctrine
+    related_workstreams: WORKSTREAM-06
+    confidence: '5'
+    label: FACT
+  - id: DECISION-09
+    decision: Do not delete XStack checks; wrap/classify/migrate/retire
+    status: Accepted
+    evidence_or_basis: Latest synthesis
+    rationale: Old names are bad, checks are valuable
+    implications: AIDE absorbs old tools by adapters and inventories
+    related_workstreams: WORKSTREAM-08
+    confidence: '5'
+    label: FACT
+  - id: DECISION-10
+    decision: Dominium cleanup must be file-by-file root recycling, not wholesale moves
+    status: Accepted
+    evidence_or_basis: User supplied root recycling plan and asked for synthesis
+    rationale: Mixed roots contain source/docs/policy/tests/generated/history
+    implications: Requires inventory, salvage maps, move maps, ledgers
+    related_workstreams: WORKSTREAM-07
+    confidence: '5'
+    label: FACT
+  - id: DECISION-11
+    decision: Do not start broad feature work until build/CTest/product/projection proof is acceptable
+    status: Accepted
+    evidence_or_basis: Post-CONVERGE planning
+    rationale: Feature expansion amplifies disorder while proof gaps remain
+    implications: Domain/worldgen/render/etc. deferred
+    related_workstreams: WORKSTREAM-06
+    confidence: '5'
+    label: FACT
+  - id: DECISION-12
+    decision: Use versions for release identity, capabilities/contracts for compatibility, GBN/BII for provenance
+    status: Accepted as strong refinement
+    evidence_or_basis: Versioning discussion
+    rationale: Multi-dimensional compatibility cannot be encoded in one version string
+    implications: Capability contract specs needed
+    related_workstreams: WORKSTREAM-09
+    confidence: '4'
+    label: FACT/INFERENCE
+  - id: DECISION-13
+    decision: Use dev as integration branch, not source of truth
+    status: Accepted from AIDE Git plan
+    evidence_or_basis: Multi-machine/agent work needs shareable integration branch
+    rationale: main remains accepted canonical truth
+    implications: AIDE Git policy uses main/dev/task/release roles
+    related_workstreams: WORKSTREAM-10
+    confidence: '4'
+    label: FACT/INFERENCE
+  - id: DECISION-14
+    decision: Structured commits and WorkUnit recovery should become AIDE policy
+    status: Accepted
+    evidence_or_basis: Eureka/AIDE Git workflow discussion
+    rationale: Future automation needs task IDs, branch roles, evidence, trailers
+    implications: Q27-Q35 plan
+    related_workstreams: WORKSTREAM-10
+    confidence: '4'
+    label: FACT/INFERENCE
+  - id: DECISION-15
+    decision: External leak-derived projects are research inputs, not foundations
+    status: Accepted
+    evidence_or_basis: Claude Code/Graphify/OMX discussions
+    rationale: Legal/supply-chain risk and vendor-specific semantics
+    implications: Borrow patterns; do not transplant code
+    related_workstreams: WORKSTREAM-11
+    confidence: '5'
+    label: FACT/INFERENCE
+  - id: DECISION-16
+    decision: Graphify-like tools are optional analysis backends, not canon
+    status: Accepted
+    evidence_or_basis: Graphify discussion
+    rationale: Graph outputs are derived and may be noisy/stale
+    implications: AIDE may benchmark/use as adapter later
+    related_workstreams: WORKSTREAM-11
+    confidence: '4'
+    label: FACT/INFERENCE
+  - id: DECISION-17
+    decision: AIDE must support template, managed product, and release bundle adoption
+    status: Accepted
+    evidence_or_basis: Bootstrap/release discussion
+    rationale: Different repos need different adoption modes
+    implications: AIDE install/repair/upgrade/rollback plans required
+    related_workstreams: WORKSTREAM-05
+    confidence: '4'
+    label: FACT
+  - id: DECISION-18
+    decision: Generated outputs are evidence unless promoted
+    status: Accepted
+    evidence_or_basis: Dominium AGENTS/AIDE generated artifacts discussions
+    rationale: Prevents generated files from competing with canon
+    implications: AIDE managed sections subordinate to source-of-truth
+    related_workstreams: WORKSTREAM-04
+    confidence: '5'
+    label: FACT
+  - id: DECISION-19
+    decision: Use documentation/contract first before runtime/app/extension expansion
+    status: Accepted
+    evidence_or_basis: Repeated throughout
+    rationale: Avoids overbuilding and premature abstraction
+    implications: Q36-Q57 prior to Gateway/Hosts
+    related_workstreams: WORKSTREAM-04
+    confidence: '5'
+    label: FACT
+  - id: DECISION-20
+    decision: This chat should be preserved as a high-fidelity handoff package
+    status: Accepted by current user request
+    evidence_or_basis: User requested downloadable package
+    rationale: Creates persistent artifact for future aggregation
+    implications: Package files become carry-forward artifacts
+    related_workstreams: WORKSTREAM-12
+    confidence: '5'
+    label: FACT
+  tasks:
+  - id: TASK-01
+    task: Run or finish Q35 GitHub Protection and CI Advisory in AIDE
+    priority: P0
+    urgency: U0
+    owner: AIDE repo/Codex
+    dependencies: Q27-Q34 governance wave
+    inputs_needed: Current AIDE repo
+    expected_output: Advisory branch protection/CI files, no GitHub mutation
+    next_step: Then QCHECK-03
+    related_workstreams: WORKSTREAM-10
+    label: FACT
+  - id: TASK-02
+    task: Run QCHECK-03 Governance/Git/Release Readiness Audit
+    priority: P0
+    urgency: U0
+    owner: AIDE repo/Codex
+    dependencies: Q35 complete
+    inputs_needed: AIDE Q27-Q35 artifacts
+    expected_output: PASS/PASS_WITH_WARNINGS/FAIL decision
+    next_step: If pass, Q36; if fail, QFIX-GOV
+    related_workstreams: WORKSTREAM-10
+    label: FACT
+  - id: TASK-03
+    task: Implement Q36 Intent Compiler + WorkUnit Sizing v0
+    priority: P0
+    urgency: U1
+    owner: AIDE repo
+    dependencies: QCHECK-03 acceptable
+    inputs_needed: AIDE policies/intake plan
+    expected_output: Vague prompt -> bounded WorkUnit draft
+    next_step: Then Q37
+    related_workstreams: WORKSTREAM-04
+    label: FACT
+  - id: TASK-04
+    task: Implement Q37 Repo Intelligence Index v0
+    priority: P0
+    urgency: U1
+    owner: AIDE repo
+    dependencies: Q36
+    inputs_needed: Repo files and policies
+    expected_output: file/ownership/dependency/test/doc maps
+    next_step: Then Q38
+    related_workstreams: WORKSTREAM-04
+    label: FACT
+  - id: TASK-05
+    task: Implement Q38 File Quality Ledger v0
+    priority: P1
+    urgency: U1
+    owner: AIDE repo
+    dependencies: Q37
+    inputs_needed: Repo intelligence maps
+    expected_output: Quality ledger/report for files/modules/docs/tests
+    next_step: Then Q39
+    related_workstreams: WORKSTREAM-04
+    label: FACT
+  - id: TASK-06
+    task: Implement Q39 Refactor Control Plane v0
+    priority: P0
+    urgency: U1
+    owner: AIDE repo
+    dependencies: Q38
+    inputs_needed: AIDE refactor requirements
+    expected_output: refactor/migration schemas and dry-run validation
+    next_step: Then Q40
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-07
+    task: Implement Q40 Root Recycling Framework v0
+    priority: P0
+    urgency: U1
+    owner: AIDE repo
+    dependencies: Q39
+    inputs_needed: Root recycling plan
+    expected_output: Root inventory/classification/plan schema and commands
+    next_step: Then Q41
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-08
+    task: Implement Q41 Existing Tool Absorption v0
+    priority: P0
+    urgency: U1
+    owner: AIDE repo
+    dependencies: Q40
+    inputs_needed: Tool absorption plan
+    expected_output: Tool inventory and wrapper plan model
+    next_step: Then Q42
+    related_workstreams: WORKSTREAM-08
+    label: FACT
+  - id: TASK-09
+    task: Implement Q42 move/salvage/path-alias model
+    priority: P0
+    urgency: U1
+    owner: AIDE repo
+    dependencies: Q39-Q41
+    inputs_needed: Refactor schemas
+    expected_output: Dry-run map mechanics, ledger format
+    next_step: Then install/upgrade phase
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-10
+    task: Implement Q43-Q48 install/repair/upgrade/rollback/release bundle planning
+    priority: P1
+    urgency: U2
+    owner: AIDE repo
+    dependencies: Q42
+    inputs_needed: AIDE pack model
+    expected_output: Stable AIDE Lite release bundle and GitHub draft files
+    next_step: Then Dominium preflight
+    related_workstreams: WORKSTREAM-05
+    label: FACT
+  - id: TASK-11
+    task: Run Q49 Dominium Fresh Install Preflight
+    priority: P0
+    urgency: U2
+    owner: Dominium via AIDE
+    dependencies: Stable AIDE pack exists
+    inputs_needed: Dominium repo state
+    expected_output: Preflight report before AIDE upgrade/install
+    next_step: Then Q50
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: TASK-12
+    task: Run Q50 Dominium Fresh Install/Upgrade from Stable Pack
+    priority: P0
+    urgency: U2
+    owner: Dominium via AIDE
+    dependencies: Q49 pass/warnings classified
+    inputs_needed: Stable pack and Dominium doctrine
+    expected_output: AIDE installed/upgraded preserving Dominium truth
+    next_step: Then Q51
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: TASK-13
+    task: Run Q51 Dominium Existing Tool Absorption
+    priority: P0
+    urgency: U2
+    owner: Dominium via AIDE
+    dependencies: Q50
+    inputs_needed: XStack/AuditX/RepoX/TestX/tools
+    expected_output: Tool inventory and adapter map
+    next_step: Then Q52
+    related_workstreams: WORKSTREAM-08
+    label: FACT
+  - id: TASK-14
+    task: Run Q52 Dominium Root Recycling Pilot
+    priority: P0
+    urgency: U2
+    owner: Dominium via AIDE
+    dependencies: Q51
+    inputs_needed: Root recycling framework
+    expected_output: Inventory/salvage plans for safer roots
+    next_step: Then Q53
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-15
+    task: Run Q53 Dominium Operating Baseline
+    priority: P0
+    urgency: U2
+    owner: Dominium via AIDE
+    dependencies: Q49-Q52
+    inputs_needed: AIDE/Dominium reports
+    expected_output: Dominium ready to use AIDE for structured work
+    next_step: Then root waves
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: TASK-16
+    task: Remediate/classify invariant_units_present
+    priority: P0
+    urgency: U0
+    owner: Dominium main chat/Codex
+    dependencies: POST-CONVERGE-10E
+    inputs_needed: CTest output and unit registry
+    expected_output: Clean or accepted blocker
+    next_step: Then inv_repox_rules
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: TASK-17
+    task: Remediate/classify inv_repox_rules and remaining RepoX drift
+    priority: P0
+    urgency: U0
+    owner: Dominium main chat/Codex
+    dependencies: TASK-16 or parallel if scoped
+    inputs_needed: RepoX/CTest output
+    expected_output: Clean or classified warning
+    next_step: Then POST-CONVERGE-11 decision
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: TASK-18
+    task: Decide if POST-CONVERGE-11 can proceed with CTest-warning status
+    priority: P0
+    urgency: U1
+    owner: User/Dominium chat
+    dependencies: TASK-16-17 evidence
+    inputs_needed: Build/CTest blocker reports
+    expected_output: Explicit proceed/block decision
+    next_step: Product boot proof or more remediation
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: TASK-19
+    task: Fix/classify setup Python bridge, dist/bin/dom, server CLI forwarding blockers
+    priority: P1
+    urgency: U1
+    owner: Dominium/Codex
+    dependencies: Build proof available
+    inputs_needed: POST_CONVERGE_NEXT_STEPS and validators
+    expected_output: Command surface proof improvements
+    next_step: Then product/projection proof
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: TASK-20
+    task: Prove portable projection assembly path
+    priority: P1
+    urgency: U2
+    owner: Dominium/Codex
+    dependencies: TASK-19; native binaries
+    inputs_needed: Distribution contracts
+    expected_output: Manifests and portable roots proof
+    next_step: Then release lane
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: TASK-21
+    task: Create AIDE-STRUCTURE-00 in Dominium
+    priority: P0
+    urgency: U1
+    owner: Dominium/Codex
+    dependencies: CTest blockers understood/classified
+    inputs_needed: Root constitution plan
+    expected_output: Repo Constitution and Refactorability Framework
+    next_step: Then tooling inventory
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-22
+    task: Create AIDE-STRUCTURE-01 Existing Tool Recycling Inventory
+    priority: P0
+    urgency: U1
+    owner: Dominium/Codex
+    dependencies: AIDE-STRUCTURE-00
+    inputs_needed: Existing tools dirs
+    expected_output: Tool recycling inventory docs/json
+    next_step: Then wrap before rename
+    related_workstreams: WORKSTREAM-08
+    label: FACT
+  - id: TASK-23
+    task: Create AIDE-STRUCTURE-02 Wrap Before Rename
+    priority: P0
+    urgency: U1
+    owner: Dominium/Codex
+    dependencies: AIDE-STRUCTURE-01
+    inputs_needed: Tool inventory
+    expected_output: tools/aide/run_task wrappers to old tools
+    next_step: Then rename/migrate later
+    related_workstreams: WORKSTREAM-08
+    label: FACT
+  - id: TASK-24
+    task: Create AIDE-ROOT-00 Root Recycling Framework
+    priority: P0
+    urgency: U1
+    owner: Dominium/Codex
+    dependencies: AIDE wrappers exist
+    inputs_needed: Root recycling plan
+    expected_output: Schemas/tools/ledgers/reports, no moves
+    next_step: Then root inventories
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-25
+    task: Run AIDE-ROOT-01 safe root inventory
+    priority: P1
+    urgency: U2
+    owner: Dominium/Codex
+    dependencies: AIDE-ROOT-00
+    inputs_needed: governance/meta/validation/performance/ide roots
+    expected_output: Inventory and recycling plans
+    next_step: Then wrappers/tools inventory
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-26
+    task: Run AIDE-ROOT-02 wrappers/tools inventory
+    priority: P1
+    urgency: U2
+    owner: Dominium/Codex
+    dependencies: AIDE-ROOT-00
+    inputs_needed: root wrappers and obvious tools
+    expected_output: Inventory/salvage plans
+    next_step: Then content roots
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-27
+    task: Run AIDE-ROOT-03 content/package/profile inventory
+    priority: P1
+    urgency: U2
+    owner: Dominium/Codex
+    dependencies: Manifest/path identity rules
+    inputs_needed: data/packs/profiles/bundles/modding/models/templates
+    expected_output: Inventory/salvage plans
+    next_step: Then contract/security roots
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-28
+    task: Run AIDE-ROOT-04 contract/security/spec/update inventory
+    priority: P1
+    urgency: U2
+    owner: Dominium/Codex
+    dependencies: AIDE-ROOT-00
+    inputs_needed: compat/locks/repo/safety/security/specs/updates
+    expected_output: Inventory/salvage plans
+    next_step: Then high-risk roots
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-29
+    task: Run AIDE-ROOT-05 core/control/net inventory
+    priority: P1
+    urgency: U3
+    owner: Dominium/Codex
+    dependencies: Build/CTest stable enough
+    inputs_needed: core/control/net
+    expected_output: High-risk inventory/salvage plans
+    next_step: Then libs inventory
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-30
+    task: Run AIDE-ROOT-06 lib/libs inventory
+    priority: P1
+    urgency: U3
+    owner: Dominium/Codex
+    dependencies: Build/CTest stable enough
+    inputs_needed: lib/libs
+    expected_output: ABI/build-sensitive inventory
+    next_step: Then move waves
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-31
+    task: Apply AIDE-MOVE-01..07 waves only after maps exist
+    priority: P1
+    urgency: U3
+    owner: Dominium/Codex
+    dependencies: Root inventories/salvage maps
+    inputs_needed: Move maps and validators
+    expected_output: Root exceptions retired or narrowed
+    next_step: Then product/release proof
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: TASK-32
+    task: Run POST-CONVERGE-11 product boot proof
+    priority: P0
+    urgency: U2
+    owner: Dominium/Codex
+    dependencies: Build/test acceptable
+    inputs_needed: Native binaries
+    expected_output: Command/status/save/load/shutdown proof
+    next_step: Then projection proof
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: TASK-33
+    task: Run POST-CONVERGE-12 portable projection proof
+    priority: P0
+    urgency: U2
+    owner: Dominium/Codex
+    dependencies: Product boot proof
+    inputs_needed: Release/distribution contracts
+    expected_output: Portable projection manifests/root proof
+    next_step: Then RELEASE-00
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: TASK-34
+    task: Create RELEASE-00 first test release lane
+    priority: P1
+    urgency: U3
+    owner: Dominium/Codex
+    dependencies: Product/projection proof
+    inputs_needed: Binaries/manifests/release docs
+    expected_output: Test release lane proof
+    next_step: Then feature work
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: TASK-35
+    task: Preserve this package and feed future aggregation
+    priority: P0
+    urgency: U0
+    owner: User/future assistant
+    dependencies: This generated zip
+    inputs_needed: Files in package
+    expected_output: Master spec book input
+    next_step: Use future bootstrap prompt
+    related_workstreams: WORKSTREAM-12
+    label: FACT
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Do not overwrite Dominium AGENTS/XStack authority with AIDE-generated guidance
+    type: authority
+    hard_or_soft: hard
+    source_or_basis: Dominium AGENTS and repeated decision
+    implication: AIDE must be subordinate in Dominium until bridge/profile migration
+    violation_risk: Competing governance canon
+    confidence: '5'
+    label: FACT
+  - id: CONSTRAINT-02
+    constraint: Do not delete old XStack/AuditX/RepoX/TestX checks before wrapping/classifying them
+    type: migration
+    hard_or_soft: hard
+    source_or_basis: Latest synthesis
+    implication: Existing validation value must be preserved
+    violation_risk: Loss of drift detection
+    confidence: '5'
+    label: FACT
+  - id: CONSTRAINT-03
+    constraint: No wholesale moves of mixed roots
+    type: repo-structure
+    hard_or_soft: hard
+    source_or_basis: Root recycling doctrine
+    implication: Inventory/classify per file before moving
+    violation_risk: Broken build/semantic demotion
+    confidence: '5'
+    label: FACT
+  - id: CONSTRAINT-04
+    constraint: No feature expansion before build/CTest/product/projection proof is acceptable
+    type: sequencing
+    hard_or_soft: hard
+    source_or_basis: Post-CONVERGE planning
+    implication: Worldgen/render/native/civilization work waits
+    violation_risk: Amplifies disorder
+    confidence: '5'
+    label: FACT
+  - id: CONSTRAINT-05
+    constraint: AIDE Runtime/Gateway/Hosts are deferred
+    type: scope
+    hard_or_soft: hard for now
+    source_or_basis: AIDE plan
+    implication: Focus on Profiles/Harness/Compatibility/Bridge and stable control plane
+    violation_risk: Scope creep
+    confidence: '5'
+    label: FACT
+  - id: CONSTRAINT-06
+    constraint: Generated outputs are not canon unless explicitly promoted
+    type: authority
+    hard_or_soft: hard
+    source_or_basis: AIDE and Dominium decisions
+    implication: Generated manifests/sections are evidence or projections
+    violation_risk: Silent authority inversion
+    confidence: '5'
+    label: FACT
+  - id: CONSTRAINT-07
+    constraint: AIDE updates are additive and compatibility-preserving by default
+    type: upgrade
+    hard_or_soft: hard
+    source_or_basis: Q35-Q57 plan
+    implication: Migration only mandatory/dry-run/evidenced/reversible/gated
+    violation_risk: Target data loss
+    confidence: '4'
+    label: FACT
+  - id: CONSTRAINT-08
+    constraint: Target repo truth wins over AIDE source pack defaults
+    type: install
+    hard_or_soft: hard
+    source_or_basis: AIDE install plan
+    implication: Preserve target memory/doctrine/tools
+    violation_risk: Pack overwrites local canon
+    confidence: '4'
+    label: FACT
+  - id: CONSTRAINT-09
+    constraint: Use repo state over chat memory
+    type: workflow
+    hard_or_soft: hard
+    source_or_basis: Multiple decisions and user preference
+    implication: Task recovery/checks read repo artifacts first
+    violation_risk: Redoing/duplicating stale work
+    confidence: '5'
+    label: FACT
+  - id: CONSTRAINT-10
+    constraint: Every root recycling move requires evidence, validators, rollback notes, and ledger entries
+    type: migration
+    hard_or_soft: hard
+    source_or_basis: Root recycling plan
+    implication: Moves are reversible and auditable
+    violation_risk: Irreversible cleanup errors
+    confidence: '5'
+    label: FACT
+  - id: CONSTRAINT-11
+    constraint: Capabilities/contracts determine compatibility; versions identify releases
+    type: compatibility
+    hard_or_soft: soft-to-hard after spec
+    source_or_basis: Version/capability discussion
+    implication: Avoid version-only compatibility assumptions
+    violation_risk: Misload plugins/packs/saves
+    confidence: '4'
+    label: INFERENCE
+  - id: CONSTRAINT-12
+    constraint: Use small issue-sized Codex tasks for implementation; large prompts only for audit/planning
+    type: workflow
+    hard_or_soft: soft/hard practice
+    source_or_basis: Codex use discussion
+    implication: Reduce overreach and prompt drift
+    violation_risk: Bad diffs/large rewrites
+    confidence: '4'
+    label: INFERENCE
+  - id: CONSTRAINT-13
+    constraint: No leak-derived code as foundation
+    type: legal/safety
+    hard_or_soft: hard
+    source_or_basis: Leak discussions and resource guide
+    implication: Use patterns only; avoid contamination
+    violation_risk: Legal/supply-chain risk
+    confidence: '5'
+    label: FACT
+  - id: CONSTRAINT-14
+    constraint: Expired uploads cannot be treated as fully re-inspected
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: Current file_search notice
+    implication: Use visible transcript and live repo checks; mark gaps
+    violation_risk: False precision
+    confidence: '5'
+    label: FACT
+  - id: CONSTRAINT-15
+    constraint: Future assistants must preserve uncertainty labels
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User preservation prompt
+    implication: Avoid turning suggestions into decisions
+    violation_risk: Bad aggregation
+    confidence: '5'
+    label: FACT
+  open_questions:
+  - id: QUESTION-01
+    question: Will POST-CONVERGE-10F fully resolve invariant_units_present and inv_repox_rules?
+    why_it_matters: Determines whether product boot proof can proceed
+    known: 10E classified blockers
+    unknown: Exact fix/acceptance not yet verified
+    resolution_path: Run targeted remediation and CTest
+    priority: P0
+    related_workstreams: WORKSTREAM-06
+    label: UNVERIFIED
+  - id: QUESTION-02
+    question: When should Dominium accept CTest-warning status for POST-CONVERGE-11?
+    why_it_matters: Could unblock product boot proof without pretending clean CTest
+    known: CTest currently blocked by governance drift and wall-time
+    unknown: User/repo policy acceptance threshold
+    resolution_path: Formal review decision
+    priority: P0
+    related_workstreams: WORKSTREAM-06
+    label: UNCERTAIN
+  - id: QUESTION-03
+    question: What exact AIDE pack version should Dominium import?
+    why_it_matters: Avoids importing unreviewed/local AIDE code
+    known: AIDE Q35-Q57 plan exists; live state may lag
+    unknown: Final release/tag/pack boundary
+    resolution_path: Use stable bundle after Q47/Q50 path
+    priority: P0
+    related_workstreams: WORKSTREAM-05
+    label: UNVERIFIED
+  - id: QUESTION-04
+    question: What is minimal stable .aide schema for v0?
+    why_it_matters: Affects install/export compatibility
+    known: Current .aide profile exists; Q36-Q47 expand it
+    unknown: Exact final schema
+    resolution_path: AIDE Q36-Q48
+    priority: P0
+    related_workstreams: WORKSTREAM-04
+    label: UNCERTAIN
+  - id: QUESTION-05
+    question: Which downstream generated targets are v0 mandatory?
+    why_it_matters: Avoids overgeneration
+    known: AGENTS and .agents skills already managed in AIDE; Claude preview/deferred
+    unknown: Final v0 target list
+    resolution_path: AIDE Q35-Q48 decisions
+    priority: P1
+    related_workstreams: WORKSTREAM-04
+    label: UNCERTAIN
+  - id: QUESTION-06
+    question: How strict should AIDE validation be in dev vs CI?
+    why_it_matters: Controls adoption friction
+    known: Need warning/error/hard-gate classes
+    unknown: Severity model
+    resolution_path: QCHECK-03 and Q36-Q48
+    priority: P1
+    related_workstreams: WORKSTREAM-04
+    label: UNCERTAIN
+  - id: QUESTION-07
+    question: Which root families should be moved first after inventory?
+    why_it_matters: Prevents risky cleanup
+    known: Safe groups identified; moves still pending
+    unknown: Inventory findings
+    resolution_path: AIDE-ROOT-01..06 outputs
+    priority: P1
+    related_workstreams: WORKSTREAM-07
+    label: UNCERTAIN
+  - id: QUESTION-08
+    question: Which XStack tools should be adapted vs archived vs dropped?
+    why_it_matters: Determines tool migration plan
+    known: Plan says inventory/classify all
+    unknown: File-level tool inventory
+    resolution_path: AIDE-STRUCTURE-01
+    priority: P0
+    related_workstreams: WORKSTREAM-08
+    label: UNCERTAIN
+  - id: QUESTION-09
+    question: When does AIDE Runtime become necessary?
+    why_it_matters: Avoids premature build of runtime
+    known: Current plan says later after QCHECK-04
+    unknown: Whether Profiles/Harness solve enough
+    resolution_path: QCHECK-04
+    priority: P2
+    related_workstreams: WORKSTREAM-04
+    label: UNCERTAIN
+  - id: QUESTION-10
+    question: What is final branch protection policy for public repos?
+    why_it_matters: Git/GitHub governance
+    known: Plan says generate advisories only
+    unknown: Exact applied protection rules
+    resolution_path: Q35 + user approval
+    priority: P1
+    related_workstreams: WORKSTREAM-10
+    label: UNCERTAIN
+  - id: QUESTION-11
+    question: What compatibility guarantees will AIDE make?
+    why_it_matters: Affects upgrade/migration trust
+    known: Additive default accepted
+    unknown: Concrete SemVer/capability/support policy
+    resolution_path: Q45/Q47 specs
+    priority: P1
+    related_workstreams: WORKSTREAM-09
+    label: UNCERTAIN
+  - id: QUESTION-12
+    question: Which Graphify/graph-memory features are worth adopting?
+    why_it_matters: Potential context benefit
+    known: Graphify optional backend only
+    unknown: Measured usefulness
+    resolution_path: Bakeoff experiments
+    priority: P3
+    related_workstreams: WORKSTREAM-11
+    label: UNVERIFIED
+  - id: QUESTION-13
+    question: How much of expired uploaded file content should be reuploaded for complete audit?
+    why_it_matters: Package completeness
+    known: Some uploads expired
+    unknown: Whether user wants exact raw re-analysis
+    resolution_path: User reupload if needed
+    priority: P2
+    related_workstreams: WORKSTREAM-12
+    label: UNCERTAIN
+  - id: QUESTION-14
+    question: How should Dominium content identity be made path-independent before moving packs/profiles/data?
+    why_it_matters: Critical for content roots
+    known: 'Rule established: identity by manifest, not path'
+    unknown: Exact validators/manifests
+    resolution_path: AIDE-ROOT-03
+    priority: P0
+    related_workstreams: WORKSTREAM-07
+    label: UNCERTAIN
+  - id: QUESTION-15
+    question: What is the final test release lane definition?
+    why_it_matters: Required before feature work
+    known: Release lane deferred until product/projection proof
+    unknown: Release criteria and assets
+    resolution_path: RELEASE-00
+    priority: P1
+    related_workstreams: WORKSTREAM-06
+    label: UNCERTAIN
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Build AIDE as full coding agent first
+    status: deprioritized
+    reason: Existing tools already provide runtimes; missing wedge is portable repo contract
+    final_or_tentative: tentative but strong
+    reconsider_conditions: If current tools cannot be harnessed or profiles fail
+    related_workstreams: WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-02
+    option: Make XStack universal public abstraction
+    status: rejected
+    reason: XStack is Dominium-shaped and bloated for general public model
+    final_or_tentative: strong
+    reconsider_conditions: If AIDE fails and XStack proves portable with minimal change
+    related_workstreams: WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-03
+    option: Delete XStack/AuditX/RepoX/TestX outright
+    status: rejected
+    reason: Checks are valuable; names/locations are problem
+    final_or_tentative: strong
+    reconsider_conditions: Only after all logic migrated or proven obsolete
+    related_workstreams: WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-04
+    option: Move bad roots wholesale
+    status: rejected
+    reason: Roots are mixed strata; wholesale moves break semantics/build
+    final_or_tentative: strong
+    reconsider_conditions: Only if root is proven pure by inventory
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-05
+    option: Start Dominium feature systems now
+    status: deferred
+    reason: Build/CTest/product/projection proof incomplete
+    final_or_tentative: strong temporary
+    reconsider_conditions: After RELEASE-00/test release proof
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: REJECTED-06
+    option: Use Graphify as canonical AIDE memory layer
+    status: rejected
+    reason: Graph outputs are derived and tool is young/optional
+    final_or_tentative: strong
+    reconsider_conditions: If graph backend becomes evaluated and provenance-aware
+    related_workstreams: WORKSTREAM-11
+    label: FACT/INFERENCE
+  - id: REJECTED-07
+    option: Adopt leak-derived code as base
+    status: rejected
+    reason: Legal/supply-chain/IP contamination and maturity issues
+    final_or_tentative: strong
+    reconsider_conditions: Do not reconsider without clean-room/legal review
+    related_workstreams: WORKSTREAM-11
+    label: FACT
+  - id: REJECTED-08
+    option: Use one version number for all compatibility
+    status: rejected
+    reason: Compatibility is multi-dimensional
+    final_or_tentative: strong
+    reconsider_conditions: None; versions still used for identity
+    related_workstreams: WORKSTREAM-09
+    label: FACT
+  - id: REJECTED-09
+    option: Use dev as second source of truth
+    status: rejected
+    reason: dev should be integration only; main canonical
+    final_or_tentative: strong
+    reconsider_conditions: None unless workflow changes radically
+    related_workstreams: WORKSTREAM-10
+    label: FACT
+  - id: REJECTED-10
+    option: Treat generated outputs as canon
+    status: rejected
+    reason: Dominium/AIDE authority model forbids silent promotion
+    final_or_tentative: strong
+    reconsider_conditions: Only explicit promotion by stronger source
+    related_workstreams: WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-11
+    option: Ask agents to remember better instead of enforcing structure
+    status: rejected
+    reason: Repo must be structurally self-enforcing
+    final_or_tentative: strong
+    reconsider_conditions: None
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-12
+    option: Do desktop/IDE/app surfaces before harness stability
+    status: deferred
+    reason: Would distract from core product
+    final_or_tentative: strong temporary
+    reconsider_conditions: After QCHECK-04
+    related_workstreams: WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-13
+    option: Import unreviewed AIDE Q19 into Dominium as canonical
+    status: rejected
+    reason: Need reviewed/pushed/tagged pack boundary
+    final_or_tentative: strong
+    reconsider_conditions: Quarantined branch only if urgent
+    related_workstreams: WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-14
+    option: Put every test/eval at root in future monorepos
+    status: rejected in analogous archive advice
+    reason: Creates ownership ambiguity
+    final_or_tentative: context-dependent
+    reconsider_conditions: System-level tests only at root
+    related_workstreams: WORKSTREAM-07
+    label: INFERENCE
+  - id: REJECTED-15
+    option: Make memory/infinite context the system center
+    status: rejected
+    reason: Tasks/evidence/contracts are center; memory supports them
+    final_or_tentative: strong
+    reconsider_conditions: If memory tools demonstrably become control layer
+    related_workstreams: WORKSTREAM-11
+    label: INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: AIDE Spinout Pack v0.1
+    type: canvas document
+    purpose: Initial AIDE split charter
+    status: created earlier in chat
+    origin: assistant-generated
+    carry_forward: 'yes'
+    notes: Defined XStack as Dominium profile and AIDE as portable system
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: XStack and AIDE Knowledge Base Snapshot 2026-04-06
+    type: canvas document
+    purpose: Early consolidated KB
+    status: created earlier
+    origin: assistant-generated
+    carry_forward: 'yes'
+    notes: Captured initial XStack/AIDE split before later changes
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: Dominium Main Chat Handoff — XStack, AIDE, and Repo Authority
+    type: canvas document
+    purpose: Handoff to main development chat
+    status: created earlier
+    origin: assistant-generated
+    carry_forward: 'yes'
+    notes: Aligned repo normalization, XStack narrowing, AIDE extraction
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: AIDE and Dominium Ultimate Synthesis 2026-05-13
+    type: canvas document
+    purpose: Latest synthesis before current package
+    status: updated in chat
+    origin: assistant-generated
+    carry_forward: 'yes'
+    notes: Now includes POST-CONVERGE-10E and Q35-Q57 plan
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: Pasted text.txt
+    type: uploaded file
+    purpose: Prompt requesting full preservation package
+    status: available now
+    origin: user-uploaded
+    carry_forward: 'yes'
+    notes: Current package follows this prompt; earlier uploads expired
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: The Grug Brained Developer.pdf
+    type: uploaded/expired
+    purpose: Anti-complexity design filter
+    status: expired now
+    origin: user-uploaded
+    carry_forward: yes if reuploaded
+    notes: Visible transcript discussed its lessons; exact raw file unavailable now
+    label: FACT/UNVERIFIED
+  - id: ARTIFACT-07
+    name_or_description: Claude_Code_Leak_Resource_Guide.pdf
+    type: uploaded/expired
+    purpose: Leak research map/safety warnings
+    status: expired now
+    origin: user-uploaded
+    carry_forward: yes if reuploaded
+    notes: Visible transcript discussed read-only/supply-chain caveats
+    label: FACT/UNVERIFIED
+  - id: ARTIFACT-08
+    name_or_description: Claude Code leak mirrors zips
+    type: uploaded/expired
+    purpose: Pattern research around agent harnesses
+    status: expired now
+    origin: user-uploaded
+    carry_forward: maybe
+    notes: Use only as pattern evidence; do not run
+    label: FACT/UNVERIFIED
+  - id: ARTIFACT-09
+    name_or_description: oh-my-codex-main.zip / claw-code-main.zip
+    type: uploaded/expired
+    purpose: Open source harness comparison
+    status: expired now
+    origin: user-uploaded
+    carry_forward: maybe
+    notes: OMX useful inspiration; claw-code research only
+    label: FACT/UNVERIFIED
+  - id: ARTIFACT-10
+    name_or_description: Live AIDE README.md
+    type: GitHub fetched file
+    purpose: Current AIDE repo state
+    status: verified in chat
+    origin: GitHub connector
+    carry_forward: 'yes'
+    notes: Cited in final package
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: Live AIDE .aide/profile.yaml
+    type: GitHub fetched file
+    purpose: AIDE profile/current focus
+    status: verified
+    origin: GitHub connector
+    carry_forward: 'yes'
+    notes: Shows deferred runtime/hosts
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Live AIDE Harness files
+    type: GitHub fetched files
+    purpose: Harness command surface and AIDE Lite details
+    status: verified
+    origin: GitHub connector
+    carry_forward: 'yes'
+    notes: scripts/aide, aide_harness.py, aide_lite.py
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: Live Dominium README.md
+    type: GitHub fetched file
+    purpose: Dominium identity/governance overview
+    status: verified
+    origin: GitHub connector
+    carry_forward: 'yes'
+    notes: Shows RepoX/TestX/AuditX/XStack governance
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Live Dominium AGENTS.md
+    type: GitHub fetched file
+    purpose: Canonical Dominium agent governance
+    status: verified
+    origin: GitHub connector
+    carry_forward: 'yes'
+    notes: Authority and protected areas; AIDE must not override
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: Live Dominium POST_CONVERGE_NEXT_STEPS.md
+    type: GitHub fetched file
+    purpose: Current post-CONVERGE priority state
+    status: verified
+    origin: GitHub connector
+    carry_forward: 'yes'
+    notes: Shows 10E status and current priority order
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: Dominium commit 0f842...
+    type: GitHub commit
+    purpose: POST-CONVERGE-10D build/UI bind proof
+    status: verified
+    origin: GitHub connector
+    carry_forward: 'yes'
+    notes: Earlier state; superseded in part by 10E
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: Dominium commit 06d383...
+    type: GitHub commit search result
+    purpose: POST-CONVERGE-10E CTest/AuditX remediation
+    status: verified via commit search
+    origin: GitHub connector
+    carry_forward: 'yes'
+    notes: Latest relevant current state
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: Generated package files
+    type: zip contents
+    purpose: This preservation package
+    status: created now
+    origin: assistant-generated
+    carry_forward: 'yes'
+    notes: Downloadable ZIP in /mnt/data
+    label: FACT
+  - id: ARTIFACT-19
+    name_or_description: Future chat bootstrap prompt
+    type: markdown file
+    purpose: Resume in new chat
+    status: created now
+    origin: assistant-generated
+    carry_forward: 'yes'
+    notes: Contains placeholder for context transfer packet
+    label: FACT
+  - id: ARTIFACT-20
+    name_or_description: Spec sheet YAML
+    type: yaml file
+    purpose: Machine-assisted aggregation
+    status: created now
+    origin: assistant-generated
+    carry_forward: 'yes'
+    notes: Secondary to human report
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Future assistant treats AIDE as full runtime now
+    consequence: Scope creep and wrong tasks
+    likelihood: Medium
+    severity: High
+    mitigation: Repeat pre-product boundary and Q35-Q57 sequence
+    related_workstreams: WORKSTREAM-04
+    label: FACT
+  - id: RISK-02
+    risk: Future assistant deletes old XStack checks too early
+    consequence: Loss of validation and drift detection
+    likelihood: Medium
+    severity: High
+    mitigation: Wrap before rename; tool absorption inventory
+    related_workstreams: WORKSTREAM-08
+    label: FACT
+  - id: RISK-03
+    risk: Root cleanup breaks build or semantics
+    consequence: Build failure / lost policy / content identity bugs
+    likelihood: High
+    severity: High
+    mitigation: Inventory/salvage/move maps and validators before moves
+    related_workstreams: WORKSTREAM-07
+    label: FACT
+  - id: RISK-04
+    risk: Generated AIDE artifacts compete with Dominium AGENTS canon
+    consequence: Authority conflict
+    likelihood: Medium
+    severity: High
+    mitigation: Managed sections subordinate; target truth wins
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: RISK-05
+    risk: Expired uploads create false precision
+    consequence: Unsupported details in report
+    likelihood: Medium
+    severity: Medium
+    mitigation: Mark limitations; request reupload for exact audit
+    related_workstreams: WORKSTREAM-12
+    label: FACT
+  - id: RISK-06
+    risk: CTest warnings get accepted without explicit review
+    consequence: False green state
+    likelihood: Medium
+    severity: High
+    mitigation: Formal blocker acceptance before POST-CONVERGE-11
+    related_workstreams: WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-07
+    risk: AIDE install overwrites target-specific memory/evidence
+    consequence: Data loss and contamination
+    likelihood: Medium
+    severity: High
+    mitigation: Install/upgrade dry-run and ownership ledger
+    related_workstreams: WORKSTREAM-05
+    label: FACT
+  - id: RISK-08
+    risk: Dev branch becomes dumping ground
+    consequence: Unstable integration and confusion
+    likelihood: Medium
+    severity: Medium
+    mitigation: AIDE branch roles and promotion gates
+    related_workstreams: WORKSTREAM-10
+    label: INFERENCE
+  - id: RISK-09
+    risk: Capability flags become string soup
+    consequence: Compatibility model unusable
+    likelihood: Medium
+    severity: Medium
+    mitigation: Contract-family registry and schema
+    related_workstreams: WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-10
+    risk: Graph/memory backend treated as canon
+    consequence: Wrong context and bad refactors
+    likelihood: Low-Medium
+    severity: Medium
+    mitigation: Derived artifact policy and evaluation
+    related_workstreams: WORKSTREAM-11
+    label: INFERENCE
+  - id: RISK-11
+    risk: Big prompts cause broad unintended changes
+    consequence: Messier repo and hard reviews
+    likelihood: High
+    severity: Medium
+    mitigation: Intent compiler and WorkUnit sizing
+    related_workstreams: WORKSTREAM-04
+    label: FACT/INFERENCE
+  - id: RISK-12
+    risk: Feature work resumes before product/projection proof
+    consequence: Amplifies technical debt
+    likelihood: Medium
+    severity: High
+    mitigation: Gate feature work behind proof sequence
+    related_workstreams: WORKSTREAM-06
+    label: FACT
+  - id: RISK-13
+    risk: Installer/upgrade logic lacks rollback
+    consequence: Hard-to-repair target repos
+    likelihood: Medium
+    severity: High
+    mitigation: Q43-Q48 before wide adoption
+    related_workstreams: WORKSTREAM-05
+    label: FACT
+  - id: RISK-14
+    risk: AIDE becomes product architecture rather than repo control plane
+    consequence: Boundary collapse
+    likelihood: Medium
+    severity: High
+    mitigation: Keep AIDE under .aide/tools/aide; not engine/game/runtime
+    related_workstreams: WORKSTREAM-04
+    label: FACT
+  - id: RISK-15
+    risk: Old chat decisions are merged with other chats without labels
+    consequence: Spec contamination
+    likelihood: Medium
+    severity: Medium
+    mitigation: Use aggregator packet and FACT/INFERENCE labels
+    related_workstreams: WORKSTREAM-12
+    label: FACT
+  - id: RISK-16
+    risk: Root inventories undercount references
+    consequence: Broken paths after moves
+    likelihood: Medium
+    severity: High
+    mitigation: Reference rewrite plus check_no_raw_root_references
+    related_workstreams: WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-17
+    risk: Q35-Q57 plan shifts in AIDE chat before implementation
+    consequence: Package becomes stale
+    likelihood: Medium
+    severity: Medium
+    mitigation: Verify live AIDE docs before acting
+    related_workstreams: WORKSTREAM-04
+    label: UNVERIFIED
+  - id: RISK-18
+    risk: Dominium content identity remains path-dependent during moves
+    consequence: Packs/profiles invalid or silent drift
+    likelihood: Medium
+    severity: High
+    mitigation: Path-independent manifest validators before content moves
+    related_workstreams: WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-19
+    risk: Release/version/capability policy remains prose only
+    consequence: Inconsistent builds and support claims
+    likelihood: Medium
+    severity: Medium
+    mitigation: Create machine-readable compatibility schemas
+    related_workstreams: WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-20
+    risk: Canvas docs not exported with future package
+    consequence: Loss of prior summaries
+    likelihood: Low
+    severity: Medium
+    mitigation: Include in artifact ledger and package synthesis
+    related_workstreams: WORKSTREAM-12
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Current AIDE Q35/QCHECK-03 implementation state
+    why_verification_needed: Planning may have advanced after visible transcript
+    suggested_source_type: GitHub AIDE repo files/commits
+    priority: P0
+    related_workstreams: WORKSTREAM-04
+    label: UNVERIFIED
+  - id: VERIFY-02
+    item: Current Dominium head after POST-CONVERGE-10E
+    why_verification_needed: Remote may have advanced
+    suggested_source_type: GitHub commits and POST_CONVERGE_NEXT_STEPS
+    priority: P0
+    related_workstreams: WORKSTREAM-06
+    label: FACT/UNVERIFIED
+  - id: VERIFY-03
+    item: Whether invariant_units_present has been fixed
+    why_verification_needed: Blocks product proof
+    suggested_source_type: CTest output/commit logs
+    priority: P0
+    related_workstreams: WORKSTREAM-06
+    label: UNVERIFIED
+  - id: VERIFY-04
+    item: Whether inv_repox_rules has been fixed or accepted
+    why_verification_needed: Blocks full CTest/FAST confidence
+    suggested_source_type: CTest/RepoX reports
+    priority: P0
+    related_workstreams: WORKSTREAM-06
+    label: UNVERIFIED
+  - id: VERIFY-05
+    item: Final AIDE v0 schema and install bundle contents
+    why_verification_needed: Needed before Dominium import
+    suggested_source_type: AIDE release bundle/Q47 outputs
+    priority: P0
+    related_workstreams: WORKSTREAM-05
+    label: UNVERIFIED
+  - id: VERIFY-06
+    item: Which AIDE generated targets are enabled by default
+    why_verification_needed: Avoid target overwrite
+    suggested_source_type: AIDE manifest/policies
+    priority: P1
+    related_workstreams: WORKSTREAM-04
+    label: UNVERIFIED
+  - id: VERIFY-07
+    item: Exact count/current status of Dominium root exceptions
+    why_verification_needed: Root cleanup planning
+    suggested_source_type: contracts/repo/layout_exceptions.toml and validators
+    priority: P0
+    related_workstreams: WORKSTREAM-07
+    label: UNVERIFIED
+  - id: VERIFY-08
+    item: Exact existing XStack/AuditX/RepoX/TestX tool inventory
+    why_verification_needed: Tool absorption
+    suggested_source_type: Repo scan
+    priority: P0
+    related_workstreams: WORKSTREAM-08
+    label: UNVERIFIED
+  - id: VERIFY-09
+    item: Whether expired uploads need reupload
+    why_verification_needed: Completeness of preservation
+    suggested_source_type: User reupload if desired
+    priority: P2
+    related_workstreams: WORKSTREAM-12
+    label: FACT
+  - id: VERIFY-10
+    item: Current official Codex/Claude/OpenHands/Continue project guidance
+    why_verification_needed: Tool adapters can change
+    suggested_source_type: Official docs/web
+    priority: P2
+    related_workstreams: WORKSTREAM-11
+    label: UNVERIFIED
+  - id: VERIFY-11
+    item: Graphify/claude-mem current maturity
+    why_verification_needed: Optional backend evaluation
+    suggested_source_type: Project repos/docs
+    priority: P3
+    related_workstreams: WORKSTREAM-11
+    label: UNVERIFIED
+  - id: VERIFY-12
+    item: GitHub branch protection availability/settings for repos
+    why_verification_needed: AIDE Git advisory
+    suggested_source_type: GitHub API/repo settings
+    priority: P1
+    related_workstreams: WORKSTREAM-10
+    label: UNVERIFIED
+  - id: VERIFY-13
+    item: Actual Dominium product boot command sequence after binaries
+    why_verification_needed: Product proof
+    suggested_source_type: Local run/CI logs
+    priority: P0
+    related_workstreams: WORKSTREAM-06
+    label: UNVERIFIED
+  - id: VERIFY-14
+    item: Portable projection assembly command and manifests
+    why_verification_needed: Release proof
+    suggested_source_type: Distribution validators/artifacts
+    priority: P1
+    related_workstreams: WORKSTREAM-06
+    label: UNVERIFIED
+  - id: VERIFY-15
+    item: Compatibility/capability schema status in Dominium/AIDE
+    why_verification_needed: Versioning model implementation
+    suggested_source_type: contracts/capabilities or AIDE policies
+    priority: P2
+    related_workstreams: WORKSTREAM-09
+    label: UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - AIDE architecture
+    - Dominium refactor control
+    - XStack migration
+    - Root recycling
+    - Git workflow
+    - Versioning/capability compatibility
+    - Harness engineering doctrine
+    unique_contributions:
+    - AIDE as refactor control plane
+    - file fate model for root recycling
+    - Q35-Q57 AIDE stable control plane plan
+    possible_duplicates_with_other_chats:
+    - AIDE development chat
+    - Dominium main development chat
+    - Eureka chat
+    - versioning/release identity chat
+    conflicts_to_watch_for:
+    - newer AIDE plan may supersede Q35-Q57
+    - newer Dominium commits may supersede POST-CONVERGE-10E
+    formal_requirements_candidates:
+    - Generated outputs are not canon unless promoted
+    - Target truth wins over AIDE defaults
+    - Existing tools absorbed before deletion
+    - No wholesale root moves
+    background_context_candidates:
+    - Claude Code leak research
+    - Graphify and memory tools
+    - Codex/Claude/OpenHands/Continue comparisons
+    needs_user_confirmation:
+    - CTest-warning acceptance policy
+    - when to start AIDE-STRUCTURE-00
+    - exact stable AIDE import version
+  final_recommendations:
+    next_action_if_continuing_this_chat: Verify latest AIDE/Dominium repo state and generate the next bounded WorkUnit.
+    next_action_for_aggregator: Merge this package as the AIDE-Dominium refactor-control source, preserving uncertainty labels.
+    user_checks_required:
+    - confirm if expired uploads should be reuploaded
+    - confirm if Q35-Q57 remains authoritative
+    - confirm current Dominium branch/head before implementation

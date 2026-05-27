@@ -1,0 +1,1346 @@
+spec_sheet:
+  metadata:
+    chat_label: Domino Framework and Open-Source Provider Architecture
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only unless labelled PROJECT-CONTEXT
+    apparent_coverage: Partial but substantial visible-chat coverage; past-chat links inaccessible
+    confidence_1_to_5: 4
+    staleness_risk: Medium/High
+    safe_for_aggregation: With caveats
+    main_limitations:
+    - Cannot guarantee full transcript outside visible chat context
+    - External project facts and repo state may be stale
+    - Some decisions are accepted directions rather than implemented decisions
+  summary:
+    one_sentence: This chat established a service-first Domino Framework/provider architecture for accelerating Dominium with
+      raylib, SDL2, Lua, and other open-source references while preserving first-party simulation, contracts, saves, replays,
+      packs, UI documents, and deterministic sparse distributed game law.
+    short_brief: The conversation moved from open-source bootstrap strategy to a Domino Framework model where providers such
+      as raylib/SDL2/Lua implement stable first-party services. It also framed sparse deterministic delegated simulation and
+      CAD-to-runtime graph compilation for the intended game vision.
+    main_topics:
+    - open-source framework approach
+    - raylib ecosystem providers
+    - SDL2/Lua providers
+    - service-first directory structure
+    - Domino Framework split
+    - reference projects
+    - sparse deterministic delegated simulation
+    - CAD/machine systems
+    - preservation package
+    main_outputs:
+    - provider doctrine
+    - directory model
+    - decision/task/risk registers
+    - DOMINO-FRAMEWORK-WEDGE-01 plan
+    - aggregation packet
+    highest_priority_carry_forward:
+    - Define minimal Domino Framework ABI
+    - Verify repo C17/C++17 baseline and dependency floors
+    - Implement provider manifests and forbidden include validator
+    - Create null and raylib provider proof
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Prefer direct user statements over assistant suggestions
+    - Treat stale external facts as verification items
+    - Do not merge unseen past chats
+    staleness_rules:
+    - Verify versions/licenses/platform support/repo state before implementation
+  user_preferences:
+    explicit:
+    - Direct, audit-ready, source-grounded answers with uncertainty labels.
+    - Human-readable explanation first, not just machine registers.
+    - Do not ask whether to proceed; proceed with best effort.
+    - Do not treat brainstorms as decisions.
+    - Preserve rejected/superseded options and contradictions.
+    inferred:
+    - Use modular framework/provider approach rather than monolithic fork.
+    - Keep responses structured with headings/tables where useful.
+    uncertain_or_not_established:
+    - Exact license tolerance for GPL/LGPL
+    - Exact dependency versions
+    - Exact first implementation branch
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Open-source bootstrap strategy
+    label: FACT/INFERENCE
+    objective: Use existing open-source libraries/projects to accelerate Dominium without losing first-party architecture.
+    current_state: Direction accepted; no code changes made in this chat.
+    desired_end_state: A governed dependency/provider strategy with manifests, boundaries, and tests.
+    status: Active
+    priority: P0
+    background: Derived from visible chat discussion.
+    decisions_made:
+    - DECISION-01
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: See chronological timeline register.
+    blockers: []
+    risks:
+    - RISK-01
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    success_criteria:
+    - Implementation or spec output matches first-party contracts and boundary rules
+    next_action: Define next scoped task.
+    verification_needed:
+    - VERIFY-08
+    confidence: '4'
+  - id: WORKSTREAM-02
+    name: Domino Framework / Engine / Game split
+    label: FACT/INFERENCE
+    objective: Define Domino Framework as stable contracts; allow multiple Domino engine implementations; run Dominium as
+      one game implementation.
+    current_state: Concept introduced and accepted directionally by user.
+    desired_end_state: Framework ABI, reference engine implementation, Dominium game implementation, profiles, providers.
+    status: Active
+    priority: P0
+    background: Derived from visible chat discussion.
+    decisions_made: []
+    decisions_pending:
+    - QUESTION-04
+    - QUESTION-05
+    tasks:
+    - TASK-01
+    constraints: []
+    dependencies: []
+    timeline: See chronological timeline register.
+    blockers:
+    - QUESTION-04
+    - QUESTION-05
+    risks:
+    - RISK-01
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    success_criteria:
+    - Implementation or spec output matches first-party contracts and boundary rules
+    next_action: Draft exact file tree and first PR plan.
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-03
+    name: Service-first provider architecture
+    label: FACT
+    objective: Organize runtime by service and provider, not by vendor or app variant.
+    current_state: Strong recurring conclusion.
+    desired_end_state: runtime/<service>/providers/<provider> plus contracts/provider and release/content profiles.
+    status: Active
+    priority: P0
+    background: Derived from visible chat discussion.
+    decisions_made:
+    - DECISION-03
+    - DECISION-04
+    - DECISION-05
+    decisions_pending: []
+    tasks:
+    - TASK-03
+    - TASK-04
+    constraints: []
+    dependencies: []
+    timeline: See chronological timeline register.
+    blockers: []
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    success_criteria:
+    - Implementation or spec output matches first-party contracts and boundary rules
+    next_action: Implement tools/validators/boundary/check_forbidden_includes.py.
+    verification_needed: []
+    confidence: '5'
+  - id: WORKSTREAM-04
+    name: raylib provider suite
+    label: FACT/INFERENCE
+    objective: Use raylib ecosystem as first visible provider suite.
+    current_state: Discussed extensively; proposed directories and boundaries.
+    desired_end_state: raylib/rlgl/rlsw/raygui/raudio providers integrated behind Dominium contracts.
+    status: Active
+    priority: P0
+    background: Derived from visible chat discussion.
+    decisions_made:
+    - DECISION-02
+    - DECISION-08
+    - DECISION-09
+    decisions_pending:
+    - QUESTION-01
+    tasks:
+    - TASK-05
+    - TASK-06
+    constraints: []
+    dependencies: []
+    timeline: See chronological timeline register.
+    blockers:
+    - QUESTION-01
+    risks:
+    - RISK-01
+    - RISK-04
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    success_criteria:
+    - Implementation or spec output matches first-party contracts and boundary rules
+    next_action: Select exact versions and confirm platform floors.
+    verification_needed:
+    - VERIFY-02
+    confidence: '5'
+  - id: WORKSTREAM-05
+    name: SDL2 and platform/input/audio providers
+    label: FACT/INFERENCE
+    objective: Keep SDL2 as first-wave platform/input/audio provider alongside raylib.
+    current_state: Direction accepted; no implementation.
+    desired_end_state: SDL2 provider can be selected by profile and coexist with raylib rendering.
+    status: Active
+    priority: P1
+    background: Derived from visible chat discussion.
+    decisions_made:
+    - DECISION-06
+    decisions_pending: []
+    tasks:
+    - TASK-07
+    constraints: []
+    dependencies: []
+    timeline: See chronological timeline register.
+    blockers: []
+    risks:
+    - RISK-01
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    success_criteria:
+    - Implementation or spec output matches first-party contracts and boundary rules
+    next_action: Start platform/input events and optional audio.
+    verification_needed:
+    - VERIFY-03
+    confidence: '4'
+  - id: WORKSTREAM-06
+    name: Lua scripting provider
+    label: FACT/INFERENCE
+    objective: Use Lua for packs/mods/CLI/Workbench automation, pinned behind Dominium script API.
+    current_state: Direction repeatedly affirmed.
+    desired_end_state: runtime/script/providers/lua54 or lua55 with dominium.script.v1 API.
+    status: Active
+    priority: P1
+    background: Derived from visible chat discussion.
+    decisions_made:
+    - DECISION-07
+    decisions_pending:
+    - QUESTION-03
+    tasks:
+    - TASK-08
+    constraints: []
+    dependencies: []
+    timeline: See chronological timeline register.
+    blockers:
+    - QUESTION-03
+    risks:
+    - RISK-01
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    success_criteria:
+    - Implementation or spec output matches first-party contracts and boundary rules
+    next_action: Choose lua54 vs lua55 and define API.
+    verification_needed:
+    - VERIFY-04
+    confidence: '4'
+  - id: WORKSTREAM-07
+    name: Dominium repo alignment
+    label: UNCERTAIN/UNVERIFIED
+    objective: Compare proposed architecture to julesc013/dominium current repo structure.
+    current_state: Repo was inspected via GitHub in chat; findings may be stale.
+    desired_end_state: C17/C++17 baseline and provider directories aligned with actual repo.
+    status: Active
+    priority: P1
+    background: Derived from visible chat discussion.
+    decisions_made: []
+    decisions_pending:
+    - QUESTION-02
+    tasks:
+    - TASK-02
+    constraints: []
+    dependencies: []
+    timeline: See chronological timeline register.
+    blockers:
+    - QUESTION-02
+    risks:
+    - RISK-01
+    - RISK-03
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    success_criteria:
+    - Implementation or spec output matches first-party contracts and boundary rules
+    next_action: Inspect latest branch and update standards or provider target isolation.
+    verification_needed:
+    - VERIFY-01
+    confidence: '3'
+  - id: WORKSTREAM-08
+    name: Reference projects and research lane
+    label: FACT/INFERENCE
+    objective: Use SpaceEngine, Celestia, PCGUniverse2, pgg, and other open-source games as references.
+    current_state: Classified by reuse risk and value.
+    desired_end_state: Research notes and clean-room pattern extraction, not direct unreviewed code reuse.
+    status: Active
+    priority: P2
+    background: Derived from visible chat discussion.
+    decisions_made:
+    - DECISION-10
+    decisions_pending:
+    - QUESTION-07
+    tasks:
+    - TASK-09
+    constraints: []
+    dependencies: []
+    timeline: See chronological timeline register.
+    blockers:
+    - QUESTION-07
+    risks:
+    - RISK-01
+    - RISK-05
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    success_criteria:
+    - Implementation or spec output matches first-party contracts and boundary rules
+    next_action: Prioritize SpaceEngine addon model, Celestia architecture, Luanti/OpenRA/Mindustry.
+    verification_needed:
+    - VERIFY-05
+    - VERIFY-06
+    - VERIFY-07
+    confidence: '4'
+  - id: WORKSTREAM-09
+    name: Sparse deterministic delegated simulation
+    label: INFERENCE
+    objective: Design architecture for infinite sparse universe with client-contributed compute.
+    current_state: Conceptual architecture proposed; not implemented.
+    desired_end_state: Work leases, cell authority, sparse materialization, deterministic event logs.
+    status: Active
+    priority: P0
+    background: Derived from visible chat discussion.
+    decisions_made:
+    - DECISION-11
+    - DECISION-12
+    decisions_pending:
+    - QUESTION-06
+    - QUESTION-09
+    tasks:
+    - TASK-10
+    - TASK-11
+    constraints: []
+    dependencies: []
+    timeline: See chronological timeline register.
+    blockers:
+    - QUESTION-06
+    - QUESTION-09
+    risks:
+    - RISK-01
+    - RISK-06
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    success_criteria:
+    - Implementation or spec output matches first-party contracts and boundary rules
+    next_action: Define universe_seed, star_system_packet, planet_packet.
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-10
+    name: CAD / machine / arbitrary invention system
+    label: INFERENCE
+    objective: Support arbitrary player/agent/NPC creations by compiling CAD documents into bounded runtime graphs.
+    current_state: Discussed conceptually.
+    desired_end_state: CAD documents, validation, compiled construct graphs, physics/render proxies, machine graphs.
+    status: Active
+    priority: P1
+    background: Derived from visible chat discussion.
+    decisions_made:
+    - DECISION-13
+    decisions_pending:
+    - QUESTION-08
+    tasks:
+    - TASK-12
+    constraints: []
+    dependencies: []
+    timeline: See chronological timeline register.
+    blockers:
+    - QUESTION-08
+    risks:
+    - RISK-01
+    - RISK-07
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    success_criteria:
+    - Implementation or spec output matches first-party contracts and boundary rules
+    next_action: Start with components, ports, power graph.
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-11
+    name: Preservation/export package
+    label: FACT
+    objective: Preserve this chat into human-readable, structured, and downloadable handoff files.
+    current_state: This output creates the package.
+    desired_end_state: Full report, registers, spec sheet, aggregator packet, ZIP.
+    status: Active
+    priority: P0
+    background: Derived from visible chat discussion.
+    decisions_made:
+    - DECISION-14
+    decisions_pending: []
+    tasks:
+    - TASK-13
+    constraints: []
+    dependencies: []
+    timeline: See chronological timeline register.
+    blockers: []
+    risks:
+    - RISK-01
+    - RISK-08
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    success_criteria:
+    - Implementation or spec output matches first-party contracts and boundary rules
+    next_action: Read sections 1, 5, 17-31 first.
+    verification_needed: []
+    confidence: '5'
+  decisions:
+  - id: DECISION-01
+    decision: Use open-source code primarily through a framework/provider approach, not by mutating one large fork.
+    status: Accepted direction
+    label: FACT/INFERENCE
+    evidence_or_basis: User liked framework approach; earlier conversation preferred modular libraries over full engine fork.
+    rationale: Preserves Dominium law and allows replaceability.
+    implications: Creates Domino Framework/provider architecture.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: See status/confidence 4
+  - id: DECISION-02
+    decision: raylib should be used heavily as the first visible provider suite.
+    status: Accepted direction
+    label: FACT
+    evidence_or_basis: User repeatedly agreed with using raylib and asked how to use all of raylib ecosystem.
+    rationale: Fast client, Workbench, rendering, audio, import preview.
+    implications: Add raylib/rlgl/rlsw/raygui/raudio providers; keep fenced.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See status/confidence 5
+  - id: DECISION-03
+    decision: Dominium/Domino contracts, simulation, replay, saves, packs, commands, UI documents, provider law remain first-party.
+    status: Accepted doctrine
+    label: FACT/INFERENCE
+    evidence_or_basis: Repeated across assistant outputs and accepted by user refinement.
+    rationale: Avoids lock-in and supports deterministic/replayable game law.
+    implications: Third-party types forbidden in contracts/game/content/saves/replays.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: See status/confidence 5
+  - id: DECISION-04
+    decision: 'Use service-first runtime layout: runtime/<service>/providers/<provider>.'
+    status: Accepted direction
+    label: FACT/INFERENCE
+    evidence_or_basis: User moved from raylib-shaped directories to provider/service model.
+    rationale: Avoids vendor-shaped architecture.
+    implications: Directories should be organized by platform/input/render/audio/etc.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: See status/confidence 5
+  - id: DECISION-05
+    decision: Profiles select provider combinations; apps should remain generic.
+    status: Accepted direction
+    label: FACT/INFERENCE
+    evidence_or_basis: Transcript repeatedly rejected app variants like apps/client/rendered/raylib as architecture.
+    rationale: Avoids product forks per backend.
+    implications: Use release/profiles or content/profiles.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: See status/confidence 4
+  - id: DECISION-06
+    decision: Keep SDL2 as a first-wave provider, not a fallback afterthought.
+    status: Accepted direction
+    label: FACT/INFERENCE
+    evidence_or_basis: User liked SDL; assistant explained SDL2/raylib coexistence.
+    rationale: Gives stable platform/input/audio substrate.
+    implications: Implement runtime/platform/input/audio/providers/sdl2.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: See status/confidence 4
+  - id: DECISION-07
+    decision: Use Lua, but pin the Lua provider and expose Dominium script API separately.
+    status: Accepted direction
+    label: FACT/INFERENCE
+    evidence_or_basis: User explicitly said Lua support is wise; transcript refined to pin version.
+    rationale: Prevents raw Lua ABI from becoming mod law.
+    implications: runtime/script/providers/lua54 or lua55, dominium.script.v1.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: See status/confidence 4
+  - id: DECISION-08
+    decision: rlsw can be used as a raylib software-render provider, but not as Dominium canonical reference renderer.
+    status: Recommended; likely accepted direction
+    label: FACT/INFERENCE
+    evidence_or_basis: User asked if rlsw could be used; answer differentiated provider vs reference renderer.
+    rationale: Maintains first-party deterministic evidence path.
+    implications: software/ remains Dominium-owned; rlsw/ is provider.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See status/confidence 4
+  - id: DECISION-09
+    decision: rlgl can be used as OpenGL-family provider, but should not be named as final opengl33 law.
+    status: Recommended; likely accepted direction
+    label: FACT/INFERENCE
+    evidence_or_basis: User asked if rlgl could be opengl; answer clarified naming.
+    rationale: Preserves future direct OpenGL provider.
+    implications: runtime/render/providers/rlgl and later opengl33.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See status/confidence 4
+  - id: DECISION-10
+    decision: SpaceEngine, Celestia, PCGUniverse2, and pgg should mainly be reference material, not direct code dependencies.
+    status: Recommended
+    label: FACT/INFERENCE
+    evidence_or_basis: Discussed license/proprietary/GPL/unclear-license issues.
+    rationale: Avoids legal and architectural contamination.
+    implications: Create research notes and clean-room pattern extraction.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: See status/confidence 4
+  - id: DECISION-11
+    decision: For sparse/infinite game design, use infinite address space with finite active set and deterministic cells.
+    status: Recommended design doctrine
+    label: INFERENCE
+    evidence_or_basis: Discussion of deterministic sparse delegated simulation.
+    rationale: Makes infinite/arbitrary world computationally feasible.
+    implications: world/cell/authority/work/construct subsystems.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: See status/confidence 4
+  - id: DECISION-12
+    decision: Clients may contribute compute but should not be blindly trusted as authoritative.
+    status: Recommended doctrine
+    label: INFERENCE
+    evidence_or_basis: User asked about clients dynamically taking load; response set host verification model.
+    rationale: Prevents cheating/desync in distributed compute.
+    implications: Use work leases, verification, state hashes, quorum/spot checks.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: See status/confidence 4
+  - id: DECISION-13
+    decision: Arbitrary CAD creations should compile into bounded runtime representations.
+    status: Recommended doctrine
+    label: INFERENCE
+    evidence_or_basis: User wants arbitrary infinite building/machines/inventions.
+    rationale: Separates design-time freedom from runtime tractability.
+    implications: CAD document -> validation -> construct/machine/physics/render graphs.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: See status/confidence 4
+  - id: DECISION-14
+    decision: Create a full preservation package for this chat.
+    status: Explicit user instruction
+    label: FACT
+    evidence_or_basis: User uploaded preservation prompt and requested files/ZIP.
+    rationale: Allows aggregation and future continuation.
+    implications: This response creates files and report.
+    related_workstreams:
+    - WORKSTREAM-11
+    uncertainty: See status/confidence 5
+  tasks:
+  - id: TASK-01
+    task: Create DOMINO-FRAMEWORK-WEDGE-01 with framework headers, provider ABI, null providers, raylib providers, profiles,
+      validators.
+    priority: P0
+    urgency: U1
+    owner: Project implementer
+    dependencies:
+    - DECISION-01..05
+    inputs_needed:
+    - Repo access, target branch, build policy
+    expected_output: Compilable skeleton with client.raylib and server.null profiles.
+    next_step: Draft exact file tree and first PR plan.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-02
+    task: Update or verify C17/C++17 baseline in the actual repo.
+    priority: P0
+    urgency: U0
+    owner: Project implementer
+    dependencies:
+    - Repo branch confirmation
+    inputs_needed:
+    - Current CMake state
+    expected_output: CMake/toolchain policy aligned with target.
+    next_step: Inspect latest branch and update standards or provider target isolation.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN/UNVERIFIED
+    confidence: see label
+  - id: TASK-03
+    task: Add forbidden include validator.
+    priority: P0
+    urgency: U1
+    owner: Project implementer
+    dependencies:
+    - Provider path policy
+    inputs_needed:
+    - Allowed/forbidden roots
+    expected_output: CI check blocking raylib/SDL/Lua headers in contracts/game/content.
+    next_step: Implement tools/validators/boundary/check_forbidden_includes.py.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT/INFERENCE
+    confidence: see label
+  - id: TASK-04
+    task: Add provider manifest schema and validator.
+    priority: P0
+    urgency: U1
+    owner: Project implementer
+    dependencies:
+    - Contracts/provider design
+    inputs_needed:
+    - Provider fields and paths
+    expected_output: Validated manifests for raylib/SDL2/Lua/null providers.
+    next_step: Create contracts/provider/provider.schema.json.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT/INFERENCE
+    confidence: see label
+  - id: TASK-05
+    task: Vendor/pin raylib, raygui, SDL2, Lua, and license manifests.
+    priority: P1
+    urgency: U1
+    owner: Project implementer
+    dependencies:
+    - License policy, repo dependency policy
+    inputs_needed:
+    - Chosen versions
+    expected_output: external/upstream contents and manifests.
+    next_step: Select exact versions and confirm platform floors.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN/UNVERIFIED
+    confidence: see label
+  - id: TASK-06
+    task: Implement raylib platform/input/render/audio/UI/asset providers.
+    priority: P1
+    urgency: U2
+    owner: Project implementer
+    dependencies:
+    - TASK-01..05
+    inputs_needed:
+    - Provider ABI, raylib version
+    expected_output: Visible client/workbench proof.
+    next_step: Start with rect/text/input/audio/image smoke.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-07
+    task: Implement SDL2 platform/input/audio provider.
+    priority: P1
+    urgency: U2
+    owner: Project implementer
+    dependencies:
+    - TASK-01..05
+    inputs_needed:
+    - SDL2 version
+    expected_output: client.sdl2_raylib profile.
+    next_step: Start platform/input events and optional audio.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-08
+    task: Implement pinned Lua script provider behind dominium.script.v1.
+    priority: P1
+    urgency: U2
+    owner: Project implementer
+    dependencies:
+    - Script API contract
+    inputs_needed:
+    - Lua version choice
+    expected_output: CLI/pack/workbench automation script provider.
+    next_step: Choose lua54 vs lua55 and define API.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-09
+    task: Create reference notes for external projects.
+    priority: P2
+    urgency: U2
+    owner: Researcher/assistant
+    dependencies:
+    - Project links
+    inputs_needed:
+    - Research source review
+    expected_output: docs/research/references/*.md.
+    next_step: Prioritize SpaceEngine addon model, Celestia architecture, Luanti/OpenRA/Mindustry.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT/INFERENCE
+    confidence: see label
+  - id: TASK-10
+    task: Design worldgen/universegen contracts.
+    priority: P1
+    urgency: U2
+    owner: Project architect
+    dependencies:
+    - Reference notes, sparse sim doctrine
+    inputs_needed:
+    - Scope decisions
+    expected_output: contracts/schema/runtime/worldgen/*.schema.json.
+    next_step: Define universe_seed, star_system_packet, planet_packet.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-11
+    task: Design sparse deterministic delegated simulation work-lease packet.
+    priority: P0
+    urgency: U2
+    owner: Project architect
+    dependencies:
+    - Determinism doctrine
+    inputs_needed:
+    - Network/authority assumptions
+    expected_output: work_lease, work_result, verification schemas.
+    next_step: Draft minimal host/client lease smoke.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-12
+    task: Design CAD/construct compile pipeline.
+    priority: P1
+    urgency: U2
+    owner: Project architect
+    dependencies:
+    - CAD goals, machine graph model
+    inputs_needed:
+    - Scope of first components
+    expected_output: CAD document and compiled construct schemas.
+    next_step: Start with components, ports, power graph.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-13
+    task: Manually review this preservation package before merging into a master spec book.
+    priority: P1
+    urgency: U1
+    owner: User/project curator
+    dependencies:
+    - This package
+    inputs_needed:
+    - Human review
+    expected_output: Approved carry-forward items and corrections.
+    next_step: Read sections 1, 5, 17-31 first.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: see label
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Third-party types must not cross framework/contracts/game/content/saves/replays/public SDK boundaries.
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: Repeated doctrine in chat
+    implication: All raylib/SDL/Lua/ImGui usage must be fenced in providers or proof tools.
+    violation_risk: Lock-in, ABI contamination, replay/save instability.
+    label: FACT/INFERENCE
+    confidence: '5'
+  - id: CONSTRAINT-02
+    constraint: Dominium simulation, commands, replay, saves, packs, provider law, UI documents remain first-party.
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: Repeated doctrine accepted in conversation
+    implication: Provider implementations cannot define canonical game law.
+    violation_risk: Third-party engine becomes architecture.
+    label: FACT/INFERENCE
+    confidence: '5'
+  - id: CONSTRAINT-03
+    constraint: Use provider profiles rather than app variants as architecture.
+    type: Architecture
+    hard_or_soft: Hard-ish
+    source_or_basis: Repeated corrected directory design
+    implication: apps/client and apps/workbench remain generic.
+    violation_risk: Backend-specific product forks.
+    label: FACT/INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-04
+    constraint: C ABI boundaries should be POD/fixed-width/versioned/opaque, no STL/exceptions/third-party handles.
+    type: ABI
+    hard_or_soft: Hard
+    source_or_basis: Framework design recommendation
+    implication: Multiple engine/game implementations can interoperate.
+    violation_risk: ABI instability and plugin breakage.
+    label: INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-05
+    constraint: Current target includes Windows 7 SP1+, macOS 10.9.5+, Linux, C17/C++17, Win32/Cocoa/SDL2/OpenGL 3.3.
+    type: Platform
+    hard_or_soft: Hard if user confirms
+    source_or_basis: User stated target earlier in chat
+    implication: Dependency/version choices must respect floors.
+    violation_risk: Selected libraries may not support old floors.
+    label: FACT
+    confidence: '4'
+  - id: CONSTRAINT-06
+    constraint: External facts and license/version claims must be verified before implementation.
+    type: Evidence
+    hard_or_soft: Hard
+    source_or_basis: User preferences and preservation prompt
+    implication: Create verification queue for software status/licenses/APIs.
+    violation_risk: Stale or legally unsafe decisions.
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-07
+    constraint: No direct code reuse from proprietary/GPL/unclear-license projects unless license strategy is explicit.
+    type: Legal/architecture
+    hard_or_soft: Hard
+    source_or_basis: SpaceEngine/Celestia/PCGUniverse/pgg discussion
+    implication: Use reference-only clean-room notes unless GPL/permissions accepted.
+    violation_risk: License contamination or infringement.
+    label: FACT/INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-08
+    constraint: Authoritative client-contributed compute must be verified by host/server.
+    type: Networking/security
+    hard_or_soft: Hard
+    source_or_basis: Sparse delegated simulation discussion
+    implication: Clients produce work results, host verifies before commit.
+    violation_risk: Cheat/desync/state corruption.
+    label: INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-09
+    constraint: Arbitrary CAD creations must compile to bounded runtime graphs/proxies.
+    type: Simulation/performance
+    hard_or_soft: Hard
+    source_or_basis: CAD/machine discussion
+    implication: Runtime sim works on machine graphs/physics proxies, not raw arbitrary geometry.
+    violation_risk: Infinite/unbounded compute and impossible physics.
+    label: INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-10
+    constraint: This preservation report is for this chat only unless labelled PROJECT-CONTEXT.
+    type: Reporting
+    hard_or_soft: Hard
+    source_or_basis: Uploaded preservation prompt
+    implication: Do not merge unseen past chats or project memory silently.
+    violation_risk: False completeness or invented context.
+    label: FACT
+    confidence: '5'
+  open_questions:
+  - id: QUESTION-01
+    question: Which exact versions of raylib, SDL2, Lua, raygui, ImGui, and related libraries should be pinned?
+    why_it_matters: Platform floors and API stability depend on versions.
+    known: The conversation recommended using them.
+    unknown: Exact versions and compatibility with Win7/macOS 10.9.5.
+    resolution_path: Verify upstream release notes and build tests.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN/UNVERIFIED
+  - id: QUESTION-02
+    question: Is Dominium repo main branch actually C17/C++17 or still C90/C++98?
+    why_it_matters: Build baseline affects raylib and framework.
+    known: Earlier assistant inspection found possible C90/C++98 contradiction; later transcript claimed C17/C++17.
+    unknown: Current branch truth.
+    resolution_path: Inspect current repo branch before implementation.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN/UNVERIFIED
+  - id: QUESTION-03
+    question: Should the canonical Lua provider be lua54 or lua55?
+    why_it_matters: Script ABI and mod compatibility.
+    known: Lua should be pinned and hidden behind dominium.script.v1.
+    unknown: Specific series choice.
+    resolution_path: Compare maturity, compatibility, platform support.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN
+  - id: QUESTION-04
+    question: What is the first minimal Domino Framework ABI?
+    why_it_matters: Blocks implementation.
+    known: Concept defined but not specified fully.
+    unknown: Exact structs/functions/services.
+    resolution_path: Draft DOMINO-FRAMEWORK-WEDGE-01 header.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: QUESTION-05
+    question: 'What first provider profile should be implemented: client.raylib, client.sdl2_raylib, or server.null?'
+    why_it_matters: Implementation order.
+    known: All were proposed.
+    unknown: Priority/order and acceptance tests.
+    resolution_path: Choose wedge scope.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: QUESTION-06
+    question: How strict must deterministic simulation be across platforms?
+    why_it_matters: Affects math, threads, providers.
+    known: Determinism required at sim/command layer, not render/audio/UI.
+    unknown: Exact determinism class and tolerated divergence.
+    resolution_path: Define determinism spec.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: QUESTION-07
+    question: What license policy will Dominium adopt for GPL/LGPL/unclear-license references?
+    why_it_matters: Code reuse boundaries.
+    known: Reference-only default recommended.
+    unknown: Formal project legal policy.
+    resolution_path: Write license/provenance policy.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN
+  - id: QUESTION-08
+    question: What is the minimal CAD construct graph for first implementation?
+    why_it_matters: Arbitrary invention system is broad.
+    known: Graph/ports/machine model proposed.
+    unknown: First component set and compile pipeline.
+    resolution_path: Define CAD-WEDGE-01.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+  - id: QUESTION-09
+    question: How will client-contributed work be verified and what trust tiers exist?
+    why_it_matters: Distributed compute feasibility and security.
+    known: Work lease/quorum/spot-check model proposed.
+    unknown: Exact verification policy.
+    resolution_path: Prototype host/client lease smoke.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Forking a full engine as the main architecture.
+    status: Deprioritised
+    reason: Would overwrite Dominium law and create lock-in.
+    final_or_tentative: Tentative but strong
+    reconsider_conditions: Reconsider only for isolated prototype or tool, not canonical core.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT/INFERENCE
+  - id: REJECTED-02
+    option: Letting raylib define game architecture.
+    status: Rejected
+    reason: raylib should be provider, not law.
+    final_or_tentative: Strong
+    reconsider_conditions: Never reconsider unless project goal changes.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-03
+    option: Placing provider identity into app folder names such as apps/client/rendered/raylib.
+    status: Superseded
+    reason: Profiles should select providers; apps remain generic.
+    final_or_tentative: Strong
+    reconsider_conditions: Temporary proof apps may exist under proof/experiments.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT/INFERENCE
+  - id: REJECTED-04
+    option: Top-level labs/ or profiles/ roots as main architecture.
+    status: Deprioritised
+    reason: Could reopen top-level-root sprawl; prefer content/profiles or release/profiles and tools/experiments.
+    final_or_tentative: Tentative
+    reconsider_conditions: Reconsider if repo governance adopts those roots deliberately.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: REJECTED-05
+    option: Using rlsw as canonical Dominium software renderer.
+    status: Rejected
+    reason: rlsw is raylib ecosystem provider; Dominium reference should be first-party.
+    final_or_tentative: Strong
+    reconsider_conditions: Could be temporary fallback but not proof law.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT/INFERENCE
+  - id: REJECTED-06
+    option: Using rlgl as the final direct opengl33 provider.
+    status: Rejected/superseded
+    reason: rlgl is raylib abstraction; direct opengl33 should be separate.
+    final_or_tentative: Strong
+    reconsider_conditions: rlgl can implement first OpenGL-family provider.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT/INFERENCE
+  - id: REJECTED-07
+    option: Trusting client-contributed simulation results without verification.
+    status: Rejected
+    reason: Cheating/desync risk.
+    final_or_tentative: Strong
+    reconsider_conditions: Only in local trusted sandbox/co-op if explicitly chosen.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: REJECTED-08
+    option: Simulating every arbitrary object everywhere continuously.
+    status: Rejected
+    reason: Impossible/unbounded; sparse activation required.
+    final_or_tentative: Strong
+    reconsider_conditions: Local dense simulation can exist in bounded active cells.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: REJECTED-09
+    option: Copying code from proprietary/GPL/unclear-license projects by default.
+    status: Rejected
+    reason: License and architecture risk.
+    final_or_tentative: Strong
+    reconsider_conditions: Reconsider only with explicit license strategy/quarantine.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT/INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Pasted text.txt preservation prompt
+    type: Uploaded file / prompt
+    purpose: Defines required preservation package, sections, files, and labels.
+    status: Available in this chat
+    origin: User upload
+    carry_forward: 'Yes'
+    notes: Primary instruction artifact for this task. fileciteturn29file0
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Prior assistant raylib/provider architecture messages
+    type: In-chat outputs
+    purpose: Developed service-first provider doctrine, raylib/SDL/Lua role, directory structures.
+    status: Visible in chat context
+    origin: This chat
+    carry_forward: 'Yes'
+    notes: Substantive source for report.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: GitHub inspection snippets for julesc013/dominium
+    type: Tool results in chat
+    purpose: Compared current repo dsys/dgfx stubs and possible CMake baseline.
+    status: Visible in chat context; freshness uncertain
+    origin: GitHub connector during chat
+    carry_forward: Yes, with verification
+    notes: Use as historical inspection, not current truth.
+    label: UNCERTAIN/UNVERIFIED
+  - id: ARTIFACT-04
+    name_or_description: Lists of external projects and reference links
+    type: In-chat lists
+    purpose: SpaceEngine, Celestia, PCGUniverse2, pgg, open-source engines/games.
+    status: Visible in chat
+    origin: User and assistant messages
+    carry_forward: 'Yes'
+    notes: Feed research/reference lane.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: DOMINO-FRAMEWORK-WEDGE-01 proposal
+    type: Plan/output
+    purpose: First implementation wedge for framework/provider architecture.
+    status: Proposed, not implemented
+    origin: Assistant suggestion accepted directionally
+    carry_forward: 'Yes'
+    notes: Should become task/epic.
+    label: INFERENCE
+  - id: ARTIFACT-06
+    name_or_description: PROVIDER-WEDGE / RENDER-WEDGE / SCRIPT-WEDGE naming
+    type: Plan/output
+    purpose: Staged implementation plan.
+    status: Proposed, not implemented
+    origin: Assistant outputs
+    carry_forward: 'Yes'
+    notes: Useful for backlog.
+    label: INFERENCE
+  - id: ARTIFACT-07
+    name_or_description: This preservation package files
+    type: Generated files
+    purpose: Markdown/YAML/ZIP handoff package.
+    status: Created by current response
+    origin: Assistant file export
+    carry_forward: 'Yes'
+    notes: Use for aggregation and future continuation.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Future assistant treats recommendations as final decisions.
+    consequence: Spec may overcommit.
+    likelihood: Medium
+    severity: High
+    mitigation: 'Use status labels: accepted direction vs proposed vs unresolved.'
+    related_workstreams:
+    - All
+    label: FACT/INFERENCE
+  - id: RISK-02
+    risk: Third-party libraries leak into public contracts.
+    consequence: Long-term lock-in, save/replay breakage.
+    likelihood: Medium
+    severity: High
+    mitigation: Forbidden include validator and provider manifests.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT/INFERENCE
+  - id: RISK-03
+    risk: C17/C++17 baseline assumed without repo verification.
+    consequence: Build failures or wrong plan.
+    likelihood: Medium
+    severity: High
+    mitigation: Verify current branch before implementation.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN/UNVERIFIED
+  - id: RISK-04
+    risk: raylib/SDL/Lua current versions may not support stated old OS floors.
+    consequence: Platform target failure.
+    likelihood: Medium
+    severity: High
+    mitigation: Pin/test exact versions on Win7/macOS 10.9.5/Linux.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN/UNVERIFIED
+  - id: RISK-05
+    risk: GPL/unclear-license project code copied accidentally.
+    consequence: Legal contamination.
+    likelihood: Low-medium
+    severity: High
+    mitigation: Research-only lane, license validator, provenance policy.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT/INFERENCE
+  - id: RISK-06
+    risk: Distributed client compute becomes cheat vector.
+    consequence: Invalid world state/economy/combat.
+    likelihood: High if unmitigated
+    severity: High
+    mitigation: Host verification, work leases, state hashes, trust tiers.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-07
+    risk: Arbitrary CAD runtime becomes computationally unbounded.
+    consequence: Performance collapse/desync.
+    likelihood: High if raw CAD simulated
+    severity: High
+    mitigation: Compile to bounded graphs/proxies and enforce budgets.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+  - id: RISK-08
+    risk: Report overstates access to full chat or past-chat links.
+    consequence: Bad aggregation.
+    likelihood: Medium
+    severity: Medium
+    mitigation: State source limitation; use this chat only.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: RISK-09
+    risk: External facts go stale.
+    consequence: Wrong dependency/legal choices.
+    likelihood: High over time
+    severity: Medium-high
+    mitigation: Verification queue before implementation.
+    related_workstreams:
+    - All
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Current julesc013/dominium CMake language standards and branch state.
+    why_verification_needed: Prior chat had contradictory statements.
+    suggested_source_type: GitHub repo current branch / local clone.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN/UNVERIFIED
+  - id: VERIFY-02
+    item: raylib current version, license, OS floors, and exact support for Win7/macOS 10.9.5.
+    why_verification_needed: Provider viability depends on it.
+    suggested_source_type: Official raylib repo/release notes/build tests.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN/UNVERIFIED
+  - id: VERIFY-03
+    item: SDL2 exact version and OS floor support.
+    why_verification_needed: Platform/input/audio provider viability.
+    suggested_source_type: SDL release notes/docs/build tests.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN/UNVERIFIED
+  - id: VERIFY-04
+    item: Lua 5.4 vs 5.5 stability and embedding implications.
+    why_verification_needed: Script ABI and mod lifecycle.
+    suggested_source_type: Official Lua docs/release notes.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN
+  - id: VERIFY-05
+    item: Licenses for PCGUniverse2 and Valian/pgg.
+    why_verification_needed: Direct code reuse currently unsafe.
+    suggested_source_type: Repository license files/author clarification.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN/UNVERIFIED
+  - id: VERIFY-06
+    item: Celestia GPL implications for any code reuse.
+    why_verification_needed: Avoid license contamination.
+    suggested_source_type: GPL counsel/project license policy.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN/UNVERIFIED
+  - id: VERIFY-07
+    item: Whether SpaceEngine assets/code can be used at all.
+    why_verification_needed: Likely proprietary; must not copy.
+    suggested_source_type: SpaceEngine EULA/licensing pages.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN/UNVERIFIED
+  - id: VERIFY-08
+    item: Dear ImGui, Nuklear, SQLite, Jolt, Box2D, bgfx license/platform fit before adoption.
+    why_verification_needed: Second-wave dependencies may carry constraints.
+    suggested_source_type: Official repos/licenses/releases.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN/UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Architecture overview
+    - Domino Framework ABI
+    - Provider system
+    - Dependency strategy
+    - Workbench
+    - Scripting/modding
+    - Deterministic simulation
+    - Sparse world and distributed compute
+    - CAD/machine systems
+    - License/provenance
+    - Implementation wedges
+    unique_contributions:
+    - framework/engine/game split
+    - raylib ecosystem classification
+    - sparse deterministic delegated simulation phrase
+    - CAD compile-to-bounded-graphs doctrine
+    possible_duplicates_with_other_chats:
+    - C++ standard upgrade
+    - Dominium architecture
+    - World generation
+    - Documentation/directory
+    - Retrofactory/open-source references
+    conflicts_to_watch_for:
+    - C90/C++98 vs C17/C++17 repo baseline
+    - top-level profiles/labs naming
+    - provider names sdl vs sdl2, opengl vs opengl33
+    - GPL tolerance
+    formal_requirements_candidates:
+    - Third-party type fencing
+    - Provider manifests
+    - Profiles select providers
+    - Null providers
+    - Deterministic command/replay law
+    - Host-verified client compute
+    background_context_candidates:
+    - Reference project lists
+    - raylib feature discussion
+    - open-source engine survey
+    needs_user_confirmation:
+    - Exact dependency versions
+    - Lua series
+    - license policy
+    - implementation wedge ordering
+  final_recommendations:
+    next_action_if_continuing_this_chat: Draft DOMINO-FRAMEWORK-WEDGE-01 as implementation-ready PR plan.
+    next_action_for_aggregator: Merge decisions and workstreams into master spec book with unresolved verification items preserved.
+    user_checks_required:
+    - Confirm whether framework/provider doctrine is formal requirement
+    - Confirm target branch/repo state
+    - Confirm GPL/LGPL policy

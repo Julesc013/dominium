@@ -1,0 +1,233 @@
+{
+    "_readme":  {
+                    "note":  "Strict JSON manifest for this repo-dirfiles run.",
+                    "upload_hint":  "Upload dir_tree.json plus dirfiles.zip for GPT/codebase analysis. dir_tree.txt is for human inspection."
+                },
+    "_meta":  {
+                  "schema":  "repo-dirfiles-manifest-v16",
+                  "generated_at_utc":  "2026-05-20T10:33:01.4133653Z",
+                  "target_root_name":  "dominium",
+                  "output_dir_name":  "tmp",
+                  "source_mode":  "git_tracked",
+                  "lean_mode":  true,
+                  "effective_excluded_directory_names":  [
+                                                             ".cache",
+                                                             ".git",
+                                                             ".gradle",
+                                                             ".idea",
+                                                             ".mypy_cache",
+                                                             ".next",
+                                                             ".nox",
+                                                             ".nuxt",
+                                                             ".pytest_cache",
+                                                             ".ruff_cache",
+                                                             ".tox",
+                                                             ".venv",
+                                                             ".vs",
+                                                             "__pycache__",
+                                                             "bin",
+                                                             "build",
+                                                             "coverage",
+                                                             "dist",
+                                                             "env",
+                                                             "node_modules",
+                                                             "obj",
+                                                             "out",
+                                                             "target",
+                                                             "tmp",
+                                                             "venv"
+                                                         ],
+                  "git":  {
+                              "is_git_worktree":  true,
+                              "branch":  "main",
+                              "commit":  "625f17344f4fc400d810784bd9d49ceacf91ad99",
+                              "dirty":  null
+                          },
+                  "warnings_total":  0,
+                  "elapsed_seconds":  93.91,
+                  "elapsed_human":  "00:01:33"
+              },
+    "results":  {
+                    "index":  {
+                                  "raw_count":  17630,
+                                  "files":  17495,
+                                  "directories":  2426,
+                                  "excluded":  135,
+                                  "missing":  0
+                              },
+                    "report_files":  [
+                                         {
+                                             "file":  "dir_tree.json",
+                                             "kind":  "kept_directory_tree_json",
+                                             "size_bytes":  1328741,
+                                             "size_human":  "1.27 MB",
+                                             "sha256":  "51e3a40a802bdae68e31423a7fd8fc31395a9b167436d3388ae703d85d393acc",
+                                             "kept_uncompressed":  true
+                                         },
+                                         {
+                                             "file":  "dir_tree.txt",
+                                             "kind":  "kept_directory_tree_text",
+                                             "size_bytes":  106629,
+                                             "size_human":  "104.13 KB",
+                                             "sha256":  "7abf8ee46a3683e7e0de9e940c3965757dff9692032e1310bccf3dddf47a7fa4",
+                                             "kept_uncompressed":  true
+                                         },
+                                         {
+                                             "file":  "files_root.json",
+                                             "kind":  "temporary_all_files_json",
+                                             "size_bytes":  18801,
+                                             "size_human":  "18.36 KB",
+                                             "sha256":  "e6941e496b82a1c79d11753a3f65cf51535975cd65e8404b09eacbc37808eb5f",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_.aide.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  978922,
+                                             "size_human":  "955.98 KB",
+                                             "sha256":  "ac01fca3dee4517eb1770317cf0e238239f3f20256204dd740bbd9426d5fd28c",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_.aide.local.example.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  8037,
+                                             "size_human":  "7.85 KB",
+                                             "sha256":  "8aee087d68985914358ca76c7fbdcf2c3f926cd9b9642d4a119e3426a9604efa",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_.github.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  5363,
+                                             "size_human":  "5.24 KB",
+                                             "sha256":  "10648d3b97e2bbf9c5d5e1252143dab552241b5751c8c2fd3925e296b8eee92f",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_.vscode.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  4288,
+                                             "size_human":  "4.19 KB",
+                                             "sha256":  "290feb50f3667de1a49fc9ccd0bf94198d99285b29ad375eca77ddd9ba085c05",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_apps.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  130492,
+                                             "size_human":  "127.43 KB",
+                                             "sha256":  "f77b8c48b45aee405ea2b75c0b8b83f5725b4b39fc2b73ad1f66732b5b32a9e4",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_archive.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  1634278,
+                                             "size_human":  "1.56 MB",
+                                             "sha256":  "b337174b16e647d8db30898ef8ae2eb4c925f9c0f74aaf96c2b19e1591b3004c",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_cmake.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  25293,
+                                             "size_human":  "24.70 KB",
+                                             "sha256":  "ad58caa62ba13a916974682e767745f694d09d9b13bfed259040e169b5848075",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_content.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  609002,
+                                             "size_human":  "594.73 KB",
+                                             "sha256":  "fc0475dc81e8116930cde146793a28f1722c18c63e7a173a763c465008190eec",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_contracts.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  1325154,
+                                             "size_human":  "1.26 MB",
+                                             "sha256":  "92034e2baf085c801f06f00efcd8c7d6e994c94052457ca4c1cdbf49578833a0",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_docs.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  2461309,
+                                             "size_human":  "2.35 MB",
+                                             "sha256":  "98bf69674c044a0aee338e96c1675a27f4ce55d033d4048fd951bfe40c33034f",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_engine.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  156820,
+                                             "size_human":  "153.14 KB",
+                                             "sha256":  "6da3a516812f90940d1c6638413a6cbf387f6acbee863c237bc8fd89cf9864a4",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_game.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  581655,
+                                             "size_human":  "568.02 KB",
+                                             "sha256":  "f54a8e5a959a07f26b101dc76a6fd156a00d624981d25880dc160058af91ee4f",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_release.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  63943,
+                                             "size_human":  "62.44 KB",
+                                             "sha256":  "7e356d67fe896a5feac1ba5fa05c4d33a871b628f5273295c4e5205546c86ea4",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_runtime.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  261453,
+                                             "size_human":  "255.33 KB",
+                                             "sha256":  "1c7baae69b651808f0a56b6c5e8d473a6295ab350617564b001196d1f4fe8079",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_scripts.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  32347,
+                                             "size_human":  "31.59 KB",
+                                             "sha256":  "105f5c8de9d10d6f7448a993d2e0b3d01f938fafc17f7b9ed0970cf38acd2fd4",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_tests.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  799752,
+                                             "size_human":  "781.01 KB",
+                                             "sha256":  "835965cfb36ed93af18b95680c8303cbef2214483b428ff614b0188d2600206d",
+                                             "kept_uncompressed":  false
+                                         },
+                                         {
+                                             "file":  "files_tools.json",
+                                             "kind":  "temporary_first_level_json",
+                                             "size_bytes":  2223802,
+                                             "size_human":  "2.12 MB",
+                                             "sha256":  "6d858bb2cba0c06ead362c84e464823314461a08c7ed49470ff30a2f90aead2d",
+                                             "kept_uncompressed":  false
+                                         }
+                                     ],
+                    "zip_file":  {
+                                     "file":  "dirfiles.zip",
+                                     "kind":  "zip_archive",
+                                     "size_bytes":  610068,
+                                     "size_human":  "595.77 KB",
+                                     "sha256":  "36c48f7e77534ba360f747aa470d69b264426d513e106dde7f30e3a54092c398",
+                                     "kept_uncompressed":  true
+                                 },
+                    "temporary_reports_removed":  18,
+                    "warnings":  [
+
+                                 ]
+                }
+}

@@ -1,0 +1,26 @@
+{
+  "chat_label": "Dominium Architecture, Workbench, AIDE, and Product-Spine Planning",
+  "date_anchor": "2026-05-27 Australia/Melbourne",
+  "created_at_utc": "2026-05-27T11:03:53.495728Z",
+  "source_scope": "This chat only unless labelled PROJECT-CONTEXT",
+  "files_included": [
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__00_manifest.md",
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__01_human_readable_report.md",
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__02_context_transfer_packet.md",
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__03_spec_sheet.yaml",
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__04_registers.md",
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__05_aggregator_packet.md",
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__06_reader_brief.md",
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__07_verification_and_audit.md",
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__08_future_chat_bootstrap_prompt.md",
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__09_in_chat_reader.md",
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__10_accompanying_detailed_summary.md",
+    "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__11_refreshed_manifest_20260527.md"
+  ],
+  "caveats": [
+    "Reconstructed preservation report, not a raw transcript.",
+    "Visible transcript contained skipped-message markers.",
+    "Live repo state must be verified before continuing development."
+  ],
+  "recommended_first_read": "Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__10_accompanying_detailed_summary.md"
+}

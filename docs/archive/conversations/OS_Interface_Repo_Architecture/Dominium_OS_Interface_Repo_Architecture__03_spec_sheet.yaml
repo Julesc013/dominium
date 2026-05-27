@@ -1,0 +1,1461 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium OS-like Architecture, Repository Convergence, and Interface
+      Operating Layer
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only unless labelled PROJECT-CONTEXT
+    apparent_coverage: Partial but high-fidelity over visible transcript and surfaced
+      repo evidence
+    confidence_1_to_5: 4
+    staleness_risk: Medium
+    safe_for_aggregation: Yes, with caveats
+    main_limitations:
+    - No chronological full /docs walk was possible
+    - No docs.zip was visible in loaded files
+    - Repo facts are observations from this chat and should be re-verified before
+      implementation
+  summary:
+    one_sentence: This chat reframed Dominium as a deterministic simulation operating
+      environment with a reusable Interface Operating Layer rather than merely a game,
+      editor, or GUI suite.
+    short_brief: The conversation covered GUI/binary lanes, repo convergence, packaging,
+      current code reality, OS-like architecture, Workbench, and unified CLI/TUI/rendered/headless
+      interface law.
+    main_topics:
+    - GUI lanes
+    - Repository convergence
+    - Distribution/versioning
+    - Current code audit
+    - OS-like environment
+    - Workbench
+    - Interface Operating Layer
+    main_outputs:
+    - Architecture synthesis
+    - Decision/register set
+    - Next tasks
+    - Preservation package
+    highest_priority_carry_forward:
+    - Proof spine
+    - Interface law
+    - Command unification
+    - Rendered-mode law update
+    - Workbench modular host
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Current repo contracts override stale historical docs
+    - Direct user statements outrank assistant inferences
+    - Implementation status requires proof docs or re-verification
+    staleness_rules:
+    - Re-verify repo/platform/toolchain facts before coding or release claims
+  user_preferences:
+    explicit:
+    - Direct, source-grounded, audit-ready answers
+    - Human-readable report first
+    - Preserve uncertainty
+    - Use stable registers and IDs
+    inferred:
+    - Long-term architecture over quick demo
+    - Strong preference for modular extensible systems
+    uncertain_or_not_established:
+    - Final product names
+    - Exact physical engine/kernel naming
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Repo convergence and ownership
+    label: FACT
+    objective: Keep source layout governed by ownership roots and contracts
+    current_state: CONVERGE docs established authority; exceptions remain
+    desired_end_state: Strict layout with retired exceptions and no root sprawl
+    status: Active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: High
+  - id: WORKSTREAM-02
+    name: Proof spine / build and boot
+    label: FACT
+    objective: Prove build, product boot, portable projection, and test gates
+    current_state: Partial/blocked in inspected docs; later docs show build progress
+      but RepoX/CTest blockers
+    desired_end_state: Green product boot and portable projection proof
+    status: Active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium
+  - id: WORKSTREAM-03
+    name: Operating environment doctrine
+    label: INFERENCE
+    objective: Formalize Dominium as deterministic simulation operating environment
+    current_state: Strong conceptual direction; not yet formal doctrine
+    desired_end_state: Approved doctrine mapping kernel/contracts/services/drivers/domains/apps/packs
+    status: Proposed
+    priority: P1
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium-high
+  - id: WORKSTREAM-04
+    name: Interface Operating Layer
+    label: INFERENCE
+    objective: Create shared CLI/TUI/rendered/headless command/document/result spine
+    current_state: Defined in discussion; not implemented
+    desired_end_state: Reusable interface law across products/modules
+    status: Proposed
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium-high
+  - id: WORKSTREAM-05
+    name: Command dispatch unification
+    label: FACT/INFERENCE
+    objective: Replace product-local command forks with one dispatch path
+    current_state: Current adoption partial
+    desired_end_state: Same command/result/refusal across projections
+    status: Active/proposed
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: High
+  - id: WORKSTREAM-06
+    name: Dominium Workbench
+    label: INFERENCE
+    objective: Build modular rendered tools host as proof surface
+    current_state: Concept accepted direction; law conflict remains
+    desired_end_state: Workbench shell + modules over shared runtime services
+    status: Proposed
+    priority: P1
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium-high
+  - id: WORKSTREAM-07
+    name: No-assets UI floor
+    label: FACT/INFERENCE
+    objective: Guarantee primitive rendered UI works without optional assets
+    current_state: GUI baseline doc supports this; current implementation minimal
+    desired_end_state: Product-grade primitive UI controls and themes
+    status: Active/proposed
+    priority: P1
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: High
+  - id: WORKSTREAM-08
+    name: Packaging/release/distribution
+    label: FACT
+    objective: Use deterministic packages, profiles, manifests, thin installers
+    current_state: Docs support model; implementation status varied
+    desired_end_state: Offline-verifiable bundle/package/release pipeline
+    status: Active
+    priority: P1
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: High
+  - id: WORKSTREAM-09
+    name: Platform/render/native lanes
+    label: INFERENCE
+    objective: Plan old/compat/modern binary and GUI lanes
+    current_state: Discussed; not ready for expansion
+    desired_end_state: Matrix-driven support tiers and proof-backed binaries
+    status: Deferred
+    priority: P2
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium
+  - id: WORKSTREAM-10
+    name: Domain/modding/data-driven evolution
+    label: FACT/INFERENCE
+    objective: Split domains and externalize registries/descriptors
+    current_state: Domain split rules exist; runtime data-driven behavior partial
+    desired_end_state: Pack/module/domain activation through contracts and validators
+    status: Active/proposed
+    priority: P1
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: Medium
+  decisions:
+  - id: DECISION-01
+    decision: CLI mandatory, TUI expected, GUI modular
+    status: Accepted direction
+    label: FACT
+    evidence_or_basis: Repeated baseline and AppShell docs
+    rationale: Avoids GUI lock-in
+    implications: Defines all products
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: ''
+  - id: DECISION-02
+    decision: Thin shells over shared backend/contracts
+    status: Accepted direction
+    label: FACT/INFERENCE
+    evidence_or_basis: GUI and AppShell discussions
+    rationale: Prevents product drift
+    implications: Shapes client/launcher/setup/server/tools
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: ''
+  - id: DECISION-03
+    decision: Ownership-based repo layout
+    status: Accepted/current authority
+    label: FACT
+    evidence_or_basis: Post-CONVERGE docs
+    rationale: Makes validation possible
+    implications: Guides all future moves
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: ''
+  - id: DECISION-04
+    decision: Domain split across contracts/game/content/docs/tests
+    status: Accepted/current rule
+    label: FACT
+    evidence_or_basis: Domain split docs
+    rationale: Avoids topic-root chaos
+    implications: Guides domain work
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: ''
+  - id: DECISION-05
+    decision: Deterministic simulation operating environment framing
+    status: Strong direction
+    label: INFERENCE
+    evidence_or_basis: User proposed; assistant endorsed
+    rationale: Fits full ambition better than game-only
+    implications: Needs doctrine
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: ''
+  - id: DECISION-06
+    decision: Workbench modular host, not monolithic editor
+    status: Accepted direction
+    label: FACT/INFERENCE
+    evidence_or_basis: User supplied and assistant agreed
+    rationale: Avoids old UI Editor failure
+    implications: Shapes tools architecture
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: ''
+  - id: DECISION-07
+    decision: Interface Operating Layer under all products
+    status: Strong proposed direction
+    label: INFERENCE
+    evidence_or_basis: Final UI discussion
+    rationale: Generalizes Workbench into platform
+    implications: Needs INTERFACE-LAW-00
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: ''
+  - id: DECISION-08
+    decision: Rendered mode product-declared, not client-only
+    status: Proposed required change
+    label: INFERENCE
+    evidence_or_basis: AppShell conflict identified
+    rationale: Enables rendered Workbench lawfully
+    implications: Requires contract update
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: ''
+  - id: DECISION-09
+    decision: Shipped tool modules outside repo-only tools/
+    status: Proposed/current-rule aligned
+    label: FACT/INFERENCE
+    evidence_or_basis: Ownership rules
+    rationale: Avoids runtime depending on dev tooling
+    implications: Guides paths
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: ''
+  - id: DECISION-10
+    decision: No-assets GUI guaranteed floor
+    status: Accepted direction
+    label: FACT/INFERENCE
+    evidence_or_basis: GUI baseline docs and user plan
+    rationale: Recovery and cross-product UX
+    implications: Shapes UI controls/themes
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: ''
+  - id: DECISION-11
+    decision: Layered deterministic packaging
+    status: Accepted direction
+    label: FACT
+    evidence_or_basis: Distribution/versioning docs
+    rationale: Supports verification/rollback
+    implications: Shapes releases
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: ''
+  - id: DECISION-12
+    decision: Compatibility lanes, not all products/all eras
+    status: Accepted direction
+    label: INFERENCE
+    evidence_or_basis: Binary discussion
+    rationale: Controls matrix explosion
+    implications: Shapes support tiers
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: ''
+  - id: DECISION-13
+    decision: Avoid arbitrary native plugins early
+    status: Proposed direction
+    label: INFERENCE
+    evidence_or_basis: Trust/replay risk rationale
+    rationale: Protects determinism/security
+    implications: Plugin model deferred
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: ''
+  - id: DECISION-14
+    decision: Boot-to-replay proof as better MVP
+    status: Proposed direction
+    label: INFERENCE
+    evidence_or_basis: OS-like discussion
+    rationale: Proves architecture before gameplay sprawl
+    implications: Shapes MVP
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: ''
+  tasks:
+  - id: TASK-01
+    task: Resolve or classify RepoX/CTest blockers
+    priority: P0
+    urgency: U0
+    owner: Project maintainer
+    dependencies:
+    - Current repo state
+    inputs_needed:
+    - Latest build/test logs
+    expected_output: Classified or green gates
+    next_step: Run focused diagnostics
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT/INFERENCE
+    confidence: medium
+  - id: TASK-02
+    task: Repair canonical verify discovery
+    priority: P0
+    urgency: U0
+    owner: Project maintainer
+    dependencies:
+    - Build contract/presets
+    inputs_needed:
+    - CTest output
+    expected_output: Canonical verify discovers expected tests
+    next_step: Inspect CMake presets/test registration
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: medium
+  - id: TASK-03
+    task: Rerun native product boot proof
+    priority: P0
+    urgency: U1
+    owner: Project maintainer
+    dependencies:
+    - Built binaries
+    inputs_needed:
+    - setup/launcher/client/server/tools binaries
+    expected_output: Updated PRODUCT_BOOT_PROOF
+    next_step: Run product help/status/smoke
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: medium
+  - id: TASK-04
+    task: Prove portable projection assembly
+    priority: P0
+    urgency: U1
+    owner: Project maintainer
+    dependencies:
+    - Product binaries + manifest generators
+    inputs_needed:
+    - dist/projection tools
+    expected_output: Portable root with manifests
+    next_step: Run projection tool and verification
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: medium
+  - id: TASK-05
+    task: Draft DOMINIUM_OPERATING_ENVIRONMENT doctrine
+    priority: P1
+    urgency: U1
+    owner: Architect
+    dependencies:
+    - This chat + repo docs
+    inputs_needed:
+    - Architecture decisions
+    expected_output: Doctrine doc
+    next_step: Draft and review
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-06
+    task: Draft INTERFACE-LAW-00
+    priority: P0
+    urgency: U1
+    owner: Architect
+    dependencies:
+    - AppShell/GUI baseline + this chat
+    inputs_needed:
+    - Command/result/UI constraints
+    expected_output: Interface law doc
+    next_step: Define projections and rules
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-07
+    task: Update AppShell rendered-mode law
+    priority: P0
+    urgency: U1
+    owner: Architect/dev
+    dependencies:
+    - AppShell constitution
+    inputs_needed:
+    - Rendered capability contract
+    expected_output: Rendered mode allowed by product declaration
+    next_step: Patch docs/contracts
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-08
+    task: Design command_result_v1 and refusal model
+    priority: P0
+    urgency: U1
+    owner: Architect/dev
+    dependencies:
+    - Existing command registries
+    inputs_needed:
+    - Schemas/registry docs
+    expected_output: Shared result/refusal schema
+    next_step: Draft schema
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-09
+    task: Unify command dispatch path
+    priority: P0
+    urgency: U1
+    owner: Dev
+    dependencies:
+    - Command schemas and registry
+    inputs_needed:
+    - Current product command code
+    expected_output: Shared dispatch used by CLI/TUI/rendered/headless
+    next_step: Implement service/adapters
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT/INFERENCE
+    confidence: medium
+  - id: TASK-10
+    task: Externalize first command descriptors
+    priority: P1
+    urgency: U1
+    owner: Dev
+    dependencies:
+    - Current C registries
+    inputs_needed:
+    - Descriptor schema
+    expected_output: Generated/loaded command tables
+    next_step: Pilot client/tools commands
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-11
+    task: Design module_descriptor_v1
+    priority: P1
+    urgency: U1
+    owner: Architect/dev
+    dependencies:
+    - Workbench plan
+    inputs_needed:
+    - Module registry requirements
+    expected_output: Module descriptor schema
+    next_step: Draft contracts/modules schema
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-12
+    task: Implement Workbench shell skeleton
+    priority: P1
+    urgency: U2
+    owner: Dev
+    dependencies:
+    - Rendered-mode law + command service
+    inputs_needed:
+    - runtime UI/render services
+    expected_output: Booting software-rendered shell
+    next_step: Create apps/tools/workbench
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-13
+    task: Implement Validation Dashboard module
+    priority: P1
+    urgency: U2
+    owner: Dev
+    dependencies:
+    - Command service + validators
+    inputs_needed:
+    - Validator outputs
+    expected_output: Workbench module with CLI/TUI/rendered parity
+    next_step: Wrap validators via command service
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-14
+    task: Implement Pack Browser module
+    priority: P1
+    urgency: U2
+    owner: Dev
+    dependencies:
+    - Package service/pack metadata
+    inputs_needed:
+    - Pack manifests
+    expected_output: Inspect/validate packs
+    next_step: Build module
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-15
+    task: Build draw-list UI primitives
+    priority: P1
+    urgency: U2
+    owner: Dev
+    dependencies:
+    - Software renderer
+    inputs_needed:
+    - UI contracts
+    expected_output: Rect/line/text/clip/scroll controls
+    next_step: Implement runtime/ui
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-16
+    task: Create primitive themes
+    priority: P2
+    urgency: U2
+    owner: Designer/dev
+    dependencies:
+    - Theme descriptor
+    inputs_needed:
+    - Style tokens
+    expected_output: Barebones dark/light/high-contrast etc.
+    next_step: Draft theme registry
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-17
+    task: Build renderer sandbox
+    priority: P2
+    urgency: U2
+    owner: Dev
+    dependencies:
+    - Renderer service
+    inputs_needed:
+    - Draw-list tests
+    expected_output: Golden screenshots
+    next_step: Create module
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-18
+    task: Build UI/HUD sandbox
+    priority: P2
+    urgency: U2
+    owner: Dev
+    dependencies:
+    - UI document schema
+    inputs_needed:
+    - UI renderer path
+    expected_output: Load/edit/preview UI docs
+    next_step: Create module
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-19
+    task: Define boot-to-replay MVP acceptance test
+    priority: P0
+    urgency: U1
+    owner: Architect/dev
+    dependencies:
+    - Operating environment doctrine
+    inputs_needed:
+    - Kernel/service APIs
+    expected_output: Formal MVP gate
+    next_step: Write test plan
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-20
+    task: Audit old UI Editor assets/prompts for salvage
+    priority: P2
+    urgency: U3
+    owner: Architect
+    dependencies:
+    - Other old chats/files
+    inputs_needed:
+    - Old UI editor plans
+    expected_output: Salvage/reject ledger
+    next_step: Review artifacts
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN
+    confidence: medium
+  - id: TASK-21
+    task: Update component matrix for Workbench/rendered tools
+    priority: P1
+    urgency: U2
+    owner: Architect/dev
+    dependencies:
+    - Component matrix contract
+    inputs_needed:
+    - Workbench capability row
+    expected_output: Updated matrix
+    next_step: Patch contract/docs
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-22
+    task: Retire remaining layout exceptions
+    priority: P1
+    urgency: U2
+    owner: Maintainer
+    dependencies:
+    - layout_exceptions.toml
+    inputs_needed:
+    - Exception queue
+    expected_output: Narrowed/retired exceptions
+    next_step: Scoped passes
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: medium
+  - id: TASK-23
+    task: Classify plugin execution tiers
+    priority: P2
+    urgency: U2
+    owner: Architect/security
+    dependencies:
+    - Trust model
+    inputs_needed:
+    - Module policy
+    expected_output: T0-T3 plugin policy
+    next_step: Draft doc
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-24
+    task: Design document_patch_v1
+    priority: P0
+    urgency: U1
+    owner: Architect/dev
+    dependencies:
+    - UI/editor workflows
+    inputs_needed:
+    - Schema needs
+    expected_output: Typed patch/transaction model
+    next_step: Draft schema
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-25
+    task: Design evidence packet model for UI/actions
+    priority: P1
+    urgency: U2
+    owner: Architect/dev
+    dependencies:
+    - Evidence/release docs
+    inputs_needed:
+    - Audit requirements
+    expected_output: Command evidence output
+    next_step: Draft schema
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: medium
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Source layout authority is post-CONVERGE contract stack
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: Repo docs
+    implication: Do not recreate old root sprawl
+    violation_risk: High
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-02
+    constraint: Runtime/product code must not depend on repo-only tools/
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: Ownership rules
+    implication: Shipped modules go under apps/runtime/contracts
+    violation_risk: High
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-03
+    constraint: UI projections must not own product semantics
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: GUI/AppShell doctrine
+    implication: All behavior routes through commands/services
+    violation_risk: High
+    label: FACT/INFERENCE
+    confidence: High
+  - id: CONSTRAINT-04
+    constraint: Renderer must not own simulation truth
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: GUI baseline
+    implication: Render consumes view/draw data only
+    violation_risk: High
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-05
+    constraint: No-assets GUI must work
+    type: UX/recovery
+    hard_or_soft: Hard
+    source_or_basis: GUI baseline + chat
+    implication: No optional assets required for recovery/product use
+    violation_risk: Medium
+    label: FACT/INFERENCE
+    confidence: High
+  - id: CONSTRAINT-06
+    constraint: Rendered mode currently client-only in AppShell docs
+    type: Doctrine
+    hard_or_soft: Hard until changed
+    source_or_basis: AppShell constitution
+    implication: Workbench rendered mode requires law update
+    violation_risk: High
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-07
+    constraint: Facts from repo may be stale later
+    type: Verification
+    hard_or_soft: Hard
+    source_or_basis: Temporal context
+    implication: Re-verify before coding/release claims
+    violation_risk: Medium
+    label: INFERENCE
+    confidence: High
+  - id: CONSTRAINT-08
+    constraint: Do not treat assistant proposals as accepted user decisions
+    type: Preservation
+    hard_or_soft: Hard
+    source_or_basis: User prompt
+    implication: Maintain decision statuses
+    violation_risk: High
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-09
+    constraint: External platform/toolchain facts require verification
+    type: Factuality
+    hard_or_soft: Hard
+    source_or_basis: System/user preference
+    implication: Use official sources before relying
+    violation_risk: Medium
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-10
+    constraint: Domain work must split across contracts/game/content/docs/tests
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: Domain split rules
+    implication: No new root-level domain folders
+    violation_risk: High
+    label: FACT
+    confidence: High
+  - id: CONSTRAINT-11
+    constraint: Packs/modules should be capability/trust governed
+    type: Modding/security
+    hard_or_soft: Hard/soft
+    source_or_basis: Architecture rationale
+    implication: Avoid unsafe arbitrary mutation
+    violation_risk: Medium
+    label: INFERENCE
+    confidence: Medium
+  - id: CONSTRAINT-12
+    constraint: CLI/TUI/rendered/headless parity is mandatory goal for serious modules
+    type: UX/architecture
+    hard_or_soft: Soft-to-hard once formalized
+    source_or_basis: Chat direction
+    implication: Same command/result/refusal across projections
+    violation_risk: High
+    label: INFERENCE
+    confidence: Medium
+  open_questions:
+  - id: QUESTION-01
+    question: Should operating environment doctrine be formalized before code changes?
+    why_it_matters: It affects all future work
+    known: Strongly recommended
+    unknown: User approval/priority
+    resolution_path: Draft doctrine
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: QUESTION-02
+    question: What exact rendered-mode law replaces client-only rule?
+    why_it_matters: Workbench depends on it
+    known: Need product-declared capability
+    unknown: Exact contract wording
+    resolution_path: Patch AppShell/registry
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT/INFERENCE
+  - id: QUESTION-03
+    question: Which command registry is canonical runtime authority?
+    why_it_matters: Command parity depends on it
+    known: Existing appcore/client registries differ
+    unknown: Final chosen source
+    resolution_path: Design command service
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: QUESTION-04
+    question: What is module_descriptor_v1?
+    why_it_matters: Workbench modules require it
+    known: Fields proposed
+    unknown: Schema details
+    resolution_path: Draft contract
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: QUESTION-05
+    question: What is the first Workbench module?
+    why_it_matters: Determines MVP slice
+    known: Validation Dashboard recommended
+    unknown: User confirmation
+    resolution_path: Pick WB module 1
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: QUESTION-06
+    question: How much hard-coded client code should be externalized first?
+    why_it_matters: Avoids over-refactor
+    known: Commands/stages/UI/interaction identified
+    unknown: Ordering
+    resolution_path: Create migration map
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: QUESTION-07
+    question: Is `engine` renamed or only conceptually kernel?
+    why_it_matters: Affects repo churn
+    known: Suggested not to rename yet
+    unknown: User preference
+    resolution_path: Decide doctrine wording
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN
+  - id: QUESTION-08
+    question: What plugin tiers are allowed after built-in modules?
+    why_it_matters: Security/modding issue
+    known: T0-T3 proposal
+    unknown: Policy details
+    resolution_path: Draft plugin policy
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: QUESTION-09
+    question: What repo build/test status is current today?
+    why_it_matters: Implementation planning depends on it
+    known: Prior docs show evolving state
+    unknown: Current logs
+    resolution_path: Re-run/verify
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNVERIFIED
+  - id: QUESTION-10
+    question: How should other old-chat reports be merged?
+    why_it_matters: Spec book aggregation
+    known: This report has packet
+    unknown: Other reports unknown
+    resolution_path: Aggregator process
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: One universal GUI framework
+    status: Rejected
+    reason: Cannot cover host eras well
+    final_or_tentative: Tentative but strong
+    reconsider_conditions: Reconsider only if project scope shrinks
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: REJECTED-02
+    option: One GUI per OS version
+    status: Rejected
+    reason: Matrix explosion
+    final_or_tentative: Strong
+    reconsider_conditions: Never unless generated/profiles only
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: REJECTED-03
+    option: Old UI Editor as final product
+    status: Superseded
+    reason: Workbench/interface layer better
+    final_or_tentative: Strong
+    reconsider_conditions: Could salvage pieces
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT/INFERENCE
+  - id: REJECTED-04
+    option: Monolithic everything editor
+    status: Rejected
+    reason: God app risk
+    final_or_tentative: Strong
+    reconsider_conditions: 'No'
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: REJECTED-05
+    option: Native-widget-first tooling
+    status: Deprioritized
+    reason: Would not prove client/runtime UI
+    final_or_tentative: Tentative
+    reconsider_conditions: Native wrappers later
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: REJECTED-06
+    option: .NET 2.0 old Windows GUI default
+    status: Rejected/deprioritized
+    reason: Wrong dependency for setup/server
+    final_or_tentative: Medium
+    reconsider_conditions: Only for historical compatibility experiments
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: REJECTED-07
+    option: Raw binaries as primary release artifact
+    status: Rejected
+    reason: Weak verification/rollback
+    final_or_tentative: Strong
+    reconsider_conditions: Raw binaries still inside bundles
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT/INFERENCE
+  - id: REJECTED-08
+    option: Arbitrary plugins early
+    status: Deferred
+    reason: Trust/determinism risk
+    final_or_tentative: Strong for early phase
+    reconsider_conditions: After sandbox/trust law
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: REJECTED-09
+    option: Client as the whole game
+    status: Superseded
+    reason: OS-like environment better
+    final_or_tentative: Strong
+    reconsider_conditions: Client remains major shell
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: REJECTED-10
+    option: Workbench as entire UI platform
+    status: Superseded
+    reason: Interface layer broader
+    final_or_tentative: Strong
+    reconsider_conditions: Workbench remains proof host
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Pasted text.txt preservation prompt
+    type: Uploaded file
+    purpose: Defines this task and required output
+    status: Loaded
+    origin: User upload
+    carry_forward: 'Yes'
+    notes: Must cite in response
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: docs/repo/REPO_LAYOUT_TARGET.md
+    type: Repo doc
+    purpose: Current human source layout explanation
+    status: Inspected
+    origin: GitHub connector
+    carry_forward: 'Yes'
+    notes: Defines roots and CONVERGE notes
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: docs/repo/OWNERSHIP_RULES.md
+    type: Repo doc
+    purpose: Ownership model
+    status: Inspected
+    origin: GitHub connector
+    carry_forward: 'Yes'
+    notes: Key for paths/modules
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: docs/repo/DOMAIN_SPLIT_RULES.md
+    type: Repo doc
+    purpose: Domain split model
+    status: Inspected
+    origin: GitHub connector
+    carry_forward: 'Yes'
+    notes: Key for domain work
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md
+    type: Repo doc
+    purpose: Final convergence audit
+    status: Inspected
+    origin: GitHub connector
+    carry_forward: 'Yes'
+    notes: Authority stack
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: docs/repo/POST_CONVERGE_NEXT_STEPS.md
+    type: Repo doc
+    purpose: Current blockers/next work
+    status: Inspected
+    origin: GitHub connector
+    carry_forward: 'Yes'
+    notes: Proof spine priorities
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: docs/appshell/APPSHELL_CONSTITUTION.md
+    type: Repo doc
+    purpose: AppShell modes/lifecycle
+    status: Inspected
+    origin: GitHub connector
+    carry_forward: 'Yes'
+    notes: Rendered-mode conflict
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: docs/architecture/GUI_BASELINE.md
+    type: Repo doc
+    purpose: Zero-asset GUI baseline
+    status: Inspected
+    origin: GitHub connector
+    carry_forward: 'Yes'
+    notes: UI floor
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: docs/audit/CODE_DATA_SEPARATION_REPORT.md
+    type: Repo doc
+    purpose: Code/data reality
+    status: Inspected
+    origin: GitHub connector
+    carry_forward: 'Yes'
+    notes: Command drift evidence
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: docs/audit/MODULARITY_EXTENSION_PROOF.md
+    type: Repo doc
+    purpose: Data extension proof
+    status: Inspected
+    origin: GitHub connector
+    carry_forward: 'Yes'
+    notes: Modularity limits
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: docs/release/PRODUCT_BOOT_PROOF.md
+    type: Repo doc
+    purpose: Product boot status
+    status: Inspected
+    origin: GitHub connector
+    carry_forward: 'Yes'
+    notes: Proof limitations
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: data/registries/product_registry.json
+    type: Repo data
+    purpose: Product capabilities/degrade ladders
+    status: Inspected
+    origin: GitHub connector
+    carry_forward: 'Yes'
+    notes: Capability basis
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: This human-readable report
+    type: Generated file/content
+    purpose: Preserve chat for human readers
+    status: Created now
+    origin: Assistant
+    carry_forward: 'Yes'
+    notes: File 01
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Spec sheet YAML
+    type: Generated file
+    purpose: Aggregation-friendly spec
+    status: Created now
+    origin: Assistant
+    carry_forward: 'Yes'
+    notes: File 03
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: Aggregator packet
+    type: Generated file
+    purpose: Merge with other old-chat reports
+    status: Created now
+    origin: Assistant
+    carry_forward: 'Yes'
+    notes: File 05
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Overstating implementation status
+    consequence: Future plans mistaken for current code
+    likelihood: Medium
+    severity: High
+    mitigation: Use status labels and proof docs
+    related_workstreams:
+    - ALL
+    label: FACT/INFERENCE
+  - id: RISK-02
+    risk: Workbench becomes monolithic editor
+    consequence: Unmaintainable tool drift
+    likelihood: Medium
+    severity: High
+    mitigation: Module descriptors + command service
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-03
+    risk: GUI owns semantics
+    consequence: Product divergence
+    likelihood: Medium
+    severity: High
+    mitigation: All UI through commands/services
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT/INFERENCE
+  - id: RISK-04
+    risk: Runtime depends on repo-only tools
+    consequence: Bad shipping architecture
+    likelihood: Medium
+    severity: High
+    mitigation: Keep shipped modules under apps/runtime/contracts
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-05
+    risk: Rendered-mode law conflict ignored
+    consequence: Workbench violates AppShell doctrine
+    likelihood: High
+    severity: High
+    mitigation: Update AppShell/product capability law
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-06
+    risk: Root sprawl returns
+    consequence: Repo convergence undone
+    likelihood: Medium
+    severity: High
+    mitigation: Strict validators/exceptions
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-07
+    risk: Arbitrary plugin mutation breaks determinism
+    consequence: Unsafe modding
+    likelihood: Medium
+    severity: High
+    mitigation: T0/T1 first; sandbox later
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-08
+    risk: No-assets UI underpowered/slow
+    consequence: Poor UX
+    likelihood: Medium
+    severity: Medium
+    mitigation: Retained UI, dirty regions, virtualization
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-09
+    risk: Data-driven becomes runtime chaos
+    consequence: Unreliable behavior
+    likelihood: Medium
+    severity: High
+    mitigation: Validation/codegen/typed contracts
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+  - id: RISK-10
+    risk: Packaging support claims overrun proof
+    consequence: Release trust loss
+    likelihood: Medium
+    severity: High
+    mitigation: Matrix/support tiers and verification
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT/INFERENCE
+  - id: RISK-11
+    risk: Other chat reports conflict
+    consequence: Spec book inconsistency
+    likelihood: High
+    severity: Medium
+    mitigation: Aggregator conflict rules
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN
+  - id: RISK-12
+    risk: Current repo facts stale
+    consequence: Wrong implementation plan
+    likelihood: Medium
+    severity: Medium
+    mitigation: Re-verify before coding
+    related_workstreams:
+    - ALL
+    label: UNVERIFIED
+  verification_queue:
+  - id: VERIFY-01
+    item: Current repo build/test status
+    why_verification_needed: Docs observed may be stale
+    suggested_source_type: Local CI/build logs
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNVERIFIED
+  - id: VERIFY-02
+    item: Current AppShell rendered-mode contract
+    why_verification_needed: Needed before Workbench
+    suggested_source_type: Repo docs/contracts
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT/UNVERIFIED
+  - id: VERIFY-03
+    item: Current product registry capabilities
+    why_verification_needed: Needed for tools rendered mode
+    suggested_source_type: data/registries/product_registry.json
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNVERIFIED
+  - id: VERIFY-04
+    item: Whether docs.zip exists in another context
+    why_verification_needed: User referenced it earlier
+    suggested_source_type: Uploaded files/library
+    priority: P1
+    related_workstreams:
+    - ALL
+    label: UNCERTAIN
+  - id: VERIFY-05
+    item: Current platform/toolchain support floors
+    why_verification_needed: Time-sensitive
+    suggested_source_type: Official docs
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNVERIFIED
+  - id: VERIFY-06
+    item: Current packaging/projection tooling status
+    why_verification_needed: Needed for release path
+    suggested_source_type: Repo tools/build artifacts
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNVERIFIED
+  - id: VERIFY-07
+    item: Which old UI Editor artifacts exist in other chats
+    why_verification_needed: Needed for salvage
+    suggested_source_type: Other chat reports/files
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN
+  - id: VERIFY-08
+    item: Whether CTest canonical discovery is fixed
+    why_verification_needed: Blocking proof spine
+    suggested_source_type: ctest --preset verify
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Architecture doctrine
+    - Repo layout
+    - Interface Operating Layer
+    - Workbench
+    - Packaging
+    - MVP proof spine
+    - Modding
+    unique_contributions:
+    - OS-like deterministic environment synthesis
+    - Interface Operating Layer synthesis
+    possible_duplicates_with_other_chats:
+    - UI editor
+    - Workbench
+    - worldgen
+    - packaging
+    - repo convergence
+    conflicts_to_watch_for:
+    - Product names
+    - directory names
+    - implementation status
+    - platform targets
+    formal_requirements_candidates:
+    - CLI/TUI/rendered/headless command parity
+    - No-assets UI floor
+    - Thin product shells
+    - Domain split model
+    background_context_candidates:
+    - Old UI Editor rejection
+    - Platform matrix discussion
+    needs_user_confirmation:
+    - Rendered-mode law update
+    - Workbench name
+    - first module
+    - engine/kernel naming
+  final_recommendations:
+    next_action_if_continuing_this_chat: Draft INTERFACE-LAW-00 and DOMINIUM_OPERATING_ENVIRONMENT
+      doctrine.
+    next_action_for_aggregator: Merge this as architecture/interface/workbench/repo-convergence
+      input with status labels preserved.
+    user_checks_required:
+    - Confirm rendered-mode law change
+    - Confirm Workbench name
+    - Confirm MVP priority

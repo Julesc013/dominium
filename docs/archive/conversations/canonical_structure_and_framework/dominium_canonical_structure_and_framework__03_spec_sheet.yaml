@@ -1,0 +1,235 @@
+spec_sheet:
+  metadata:
+    chat_label: "Dominium Canonical Structure and Domino Framework Architecture"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This chat only unless labelled PROJECT-CONTEXT"
+    apparent_coverage: "Partial but substantial"
+    confidence_1_to_5: 4
+    staleness_risk: "medium-high for live repo state; medium for external library facts; low for explicit architecture decisions"
+    safe_for_aggregation: "yes_with_caveats"
+    main_limitations:
+      - "Full transcript export unavailable."
+      - "Some uploaded files expired."
+      - "Several repo structure bundles in the chat were mixed/stale."
+      - "Latest live repo state should be verified before action."
+
+  summary:
+    one_sentence: "This chat converged Dominium from directory-structure chaos toward a Domino framework model based on contracts, public surfaces, services, providers, packs, modules, profiles, proofs, and narrow governed product slices."
+    short_brief: "The chat established a closed top-level root model, rejected src/source/root sprawl, distinguished Domino from Dominium, defined service-first provider architecture for raylib/SDL/Lua, unified Workbench and UI around command/view/action/projection contracts, and tracked multiple cleanup/proof commits while preserving full-gate debt as unresolved."
+    main_topics:
+      - "Canonical repository structure"
+      - "Domino/Dominium framework boundary"
+      - "Public surface and ABI governance"
+      - "Service-first providers"
+      - "Workbench modules/workspaces"
+      - "Presentation/projection architecture"
+      - "Full-gate proof debt"
+    main_outputs:
+      - "Earlier handoff files"
+      - "Large Codex/AIDE cleanup prompts"
+      - "Structured doctrine for roots, providers, modules, packs, apps, workspaces"
+    highest_priority_carry_forward:
+      - "Do not add top-level framework/modules/profiles/labs/sdk roots."
+      - "Keep third-party libraries behind runtime providers."
+      - "Repair proof-gate debt before broad feature work."
+
+  source_rules:
+    labels_used: ["FACT", "INFERENCE", "UNCERTAIN / UNVERIFIED", "PROJECT-CONTEXT"]
+    conflict_rules:
+      - "User-reported current repo state supersedes older uploaded directory trees if clearly later."
+      - "Fresh tracked-only exports supersede mixed or stale dirfiles bundles."
+      - "Explicit user acceptance supersedes assistant brainstorm."
+    staleness_rules:
+      - "External library versions and platform support require verification."
+      - "Live repo state requires fresh git/validator checks."
+
+  user_preferences:
+    explicit:
+      - "Direct, audit-ready, source-grounded answers."
+      - "No src/source folder sprawl."
+      - "No casual new top-level roots."
+      - "Generate executable prompts when requested."
+    inferred:
+      - "The user wants decisive status labels and no false reassurance."
+      - "The user values architecture that can survive future rewrites."
+    uncertain_or_not_established:
+      - "Exact singular/plural spelling for some contract roots."
+      - "Exact external/upstream versus external/vendor convention."
+
+  workstreams:
+    - id: WORKSTREAM-01
+      name: "Canonical Repository Structure"
+      label: FACT
+      objective: "Stop root/path chaos."
+      current_state: "Mostly clean with warnings."
+      desired_end_state: "Closed root set and no active stale paths."
+      status: "PASS_WITH_WARNINGS"
+      priority: P0
+      background: "Repo had many bad roots and redundant structures."
+      decisions_made: [DECISION-01, DECISION-02]
+      decisions_pending: []
+      tasks: [TASK-05, TASK-08]
+      constraints: [CONSTRAINT-01, CONSTRAINT-02]
+      dependencies: []
+      timeline: "Major cleanup occurred across many reported commits."
+      blockers: []
+      risks: [RISK-01, RISK-05]
+      artifacts: [ARTIFACT-02, ARTIFACT-03]
+      success_criteria: ["no unexpected top-level roots", "canonical structure validator passes"]
+      next_action: "Targeted residuals only."
+      verification_needed: [VERIFY-01]
+      confidence: high
+    - id: WORKSTREAM-04
+      name: "Service-first Provider Architecture"
+      label: FACT
+      objective: "Use third-party libraries as replaceable providers."
+      current_state: "Provider structure reportedly committed; provider implementations pending."
+      desired_end_state: "Providers selected by profiles and tested by conformance suites."
+      status: "active"
+      priority: P0
+      background: "Raylib/SDL/Lua considered as accelerators."
+      decisions_made: [DECISION-06]
+      decisions_pending: ["Lua version", "external source path convention"]
+      tasks: [TASK-04]
+      constraints: [CONSTRAINT-03]
+      dependencies: [WORKSTREAM-03]
+      timeline: "Provider model refined after rejecting raylib-shaped architecture."
+      blockers: []
+      risks: [RISK-03]
+      artifacts: []
+      success_criteria: ["forbidden include validator passes", "provider conformance tests exist"]
+      next_action: "Provider wedge after proof gates."
+      verification_needed: [VERIFY-03, VERIFY-04]
+      confidence: high
+
+  decisions:
+    - id: DECISION-04
+      decision: "Do not add top-level framework/."
+      status: "accepted"
+      label: FACT
+      evidence_or_basis: "User-reported Domino framework boundary commit."
+      rationale: "Framework should be contracts/public headers/service law, not a new source root."
+      implications: "Public APIs live under contracts and include roots."
+      related_workstreams: [WORKSTREAM-02]
+      uncertainty: "Need latest repo verification for exact files."
+    - id: DECISION-06
+      decision: "Third-party libraries are providers."
+      status: "accepted"
+      label: FACT
+      evidence_or_basis: "Multiple raylib/SDL/Lua turns and provider-structure commit report."
+      rationale: "Allows acceleration without vendor lock-in."
+      implications: "runtime/<service>/providers/<provider>; apps select profiles."
+      related_workstreams: [WORKSTREAM-04]
+      uncertainty: "Provider implementations not yet complete."
+
+  tasks:
+    - id: TASK-01
+      task: "Repair fast-strict stale evidence/launcher marker debt."
+      priority: P0
+      urgency: U0
+      owner: "AIDE/Codex"
+      dependencies: []
+      inputs_needed: ["latest fast-strict/RepoX output"]
+      expected_output: "clean normal gate or exact failure ledger"
+      next_step: "generate focused repair prompt"
+      related_workstreams: [WORKSTREAM-07]
+      label: FACT
+      confidence: high
+
+  constraints:
+    - id: CONSTRAINT-01
+      constraint: "No new top-level roots without explicit contract approval."
+      type: "repository structure"
+      hard_or_soft: hard
+      source_or_basis: "repeated user requirement and cleanup doctrine"
+      implication: "Reject framework/modules/profiles/labs as roots."
+      violation_risk: "root sprawl and renewed restructure cycle"
+      label: FACT
+      confidence: high
+
+  open_questions:
+    - id: QUESTION-02
+      question: "Which Lua version should be pinned?"
+      why_it_matters: "Lua ABI/version affects script provider and mod compatibility."
+      known: "Scripts should target dominium/domino script API, not raw Lua ABI."
+      unknown: "Final Lua 5.4 vs 5.5 choice."
+      resolution_path: "Verify platform/library constraints and choose one."
+      priority: P1
+      related_workstreams: [WORKSTREAM-04]
+      label: UNCERTAIN
+
+  rejected_or_superseded_options:
+    - id: REJECTED-01
+      option: "Top-level framework/ root"
+      status: "rejected"
+      reason: "Duplicates contracts/public headers and reopens root sprawl."
+      final_or_tentative: "mostly final"
+      reconsider_conditions: "only if root contract is explicitly changed for external SDK/source package"
+      related_workstreams: [WORKSTREAM-02]
+      label: FACT
+
+  artifacts:
+    - id: ARTIFACT-01
+      name_or_description: "dominium_canonical_handoff.md and .txt"
+      type: "handoff"
+      purpose: "Earlier continuation summary"
+      status: "created earlier and mounted"
+      origin: "this chat"
+      carry_forward: true
+      notes: "Historical snapshot, not latest state"
+      label: FACT
+
+  risks:
+    - id: RISK-03
+      risk: "Third-party type leakage into stable surfaces"
+      consequence: "vendor lock-in and replay/save incompatibility"
+      likelihood: medium
+      severity: high
+      mitigation: "forbidden include/type validators and provider boundary docs"
+      related_workstreams: [WORKSTREAM-04]
+      label: FACT
+
+  verification_queue:
+    - id: VERIFY-01
+      item: "latest live repo state"
+      why_verification_needed: "user-reported commits may not reflect current branch"
+      suggested_source_type: "git status, latest audits, validator run"
+      priority: P0
+      related_workstreams: [WORKSTREAM-01, WORKSTREAM-07]
+      label: FACT
+
+  spec_book_notes:
+    likely_sections:
+      - "Repository structure"
+      - "Domino Framework boundary"
+      - "Service/provider architecture"
+      - "Workbench/presentation architecture"
+      - "Testing and proof gates"
+    unique_contributions:
+      - "Detailed root-policy refinement"
+      - "Raylib/SDL/Lua provider doctrine"
+      - "No-framework-root decision"
+    possible_duplicates_with_other_chats:
+      - "Workbench brainstorming"
+      - "Language baseline discussions"
+      - "Raylib provider discussions"
+    conflicts_to_watch_for:
+      - "Exact external path convention"
+      - "Lua version"
+      - "Diagnostic root singular/plural"
+    formal_requirements_candidates:
+      - "No top-level framework/modules/profiles/labs roots"
+      - "runtime/<service>/providers/<provider> provider structure"
+      - "C-compatible public ABI"
+    background_context_candidates:
+      - "Historical frustration and repeated refactor churn"
+    needs_user_confirmation:
+      - "Final Lua version"
+      - "Provider implementation sequencing"
+
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Verify latest repo gate status, then repair fast-strict/evidence debt or proceed to projection conformance."
+    next_action_for_aggregator: "Merge this as the canonical repository/framework/provider architecture thread."
+    user_checks_required:
+      - "Confirm latest commit and full CTest state."
+      - "Confirm provider convention names if repo changed after this chat."

@@ -1,0 +1,762 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only unless labelled PROJECT-CONTEXT
+    apparent_coverage: Partial-to-good for visible chat; no live repo inspection
+    confidence_1_to_5: 4
+    staleness_risk: Medium
+    safe_for_aggregation: With caveats
+    main_limitations:
+    - No live repo verification
+    - No full old-chat transcript beyond visible current conversation
+    - Prior generated files not available
+    - Pasted repo-status claims unverified
+  summary:
+    one_sentence: This chat defines Dominium as a reusable, portable, contract-driven game/engine platform governed by AIDE-backed
+      refactorability rather than ad hoc folder cleanup.
+    short_brief: 'The conversation moved from distribution/source layout cleanup to a full modularity and future-proofing
+      doctrine: stable root constitution, logical-root projections, AIDE control plane, product-line reuse boundaries, contracts/manifests
+      as identity, versioned APIs/schemas/protocols, deterministic tests, and mechanical future refactors.'
+    main_topics:
+    - Unified layout projection system
+    - Stable source repo constitution
+    - AIDE as restructuring control plane
+    - Product-line architecture and reuse levels
+    - Contracts, API, ABI, schemas, and protocols
+    - Naming and component matrices
+    - Build, dependency, and visibility discipline
+    - Determinism, data, compatibility, and testing
+    - Preservation and aggregation
+    main_outputs:
+    - Architecture doctrine
+    - AIDE transition plan
+    - AIDE-STRUCTURE-00 task
+    - AIDE-ARCH-00 task
+    - Preservation package
+    highest_priority_carry_forward:
+    - Verify live repo state
+    - Implement AIDE-STRUCTURE-00
+    - Inventory and wrap old tooling
+    - Implement AIDE-ARCH-00
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - User statements outrank assistant suggestions
+    - Live repo verification outranks pasted old status
+    - Do not silently merge project context
+    staleness_rules:
+    - Repo status, commits, current docs, external tools, and API claims require verification before implementation
+  user_preferences:
+    explicit:
+    - Direct, human-readable explanations first; machine-readable registers second.
+    - Broad and deep architectural reasoning, not shallow folder advice.
+    - Preserve uncertainty and distinguish facts from inferences.
+    - Avoid repeating previously rejected XStack-style ontology as durable architecture.
+    - Code should be reusable across games and projects, not one-off.
+    inferred:
+    - Future work should be executable by Codex/AIDE with clear tasks.
+    uncertain_or_not_established:
+    - Exact compatibility windows
+    - Exact API stability levels per module
+    - How much generated output should be tracked
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Stable repo constitution
+    objective: Define stable top-level ownership roots and refuse future root sprawl.
+    current_state: Conceptually defined in chat; needs implementation.
+    desired_end_state: Contracts, docs, validators, and root admission policy exist and are enforced.
+    status: active
+    priority: P0
+    confidence: high
+    label: FACT/INFERENCE
+  - id: WORKSTREAM-02
+    name: Distribution and install projection
+    objective: Unify package, portable, installed, media, cache, rollback, bundle, save, and diagnostics layouts through logical
+      roots.
+    current_state: Strongly described in pasted prior analysis; not verified against live repo.
+    desired_end_state: One logical-root projection contract drives all physical layouts.
+    status: active
+    priority: P0
+    confidence: medium
+    label: FACT/UNCERTAIN
+  - id: WORKSTREAM-03
+    name: AIDE control plane
+    objective: Use AIDE for migration, validation, evidence, queues, move maps, salvage maps, and refactor history.
+    current_state: User explicitly preferred AIDE over XStack-style framing.
+    desired_end_state: AIDE owns restructuring workflow; old tools are wrapped and recycled.
+    status: active
+    priority: P0
+    confidence: high
+    label: FACT
+  - id: WORKSTREAM-04
+    name: Old tool/code/doc recycling
+    objective: Inventory and classify XStack/AuditX/RepoX/TestX-style material instead of discarding it.
+    current_state: Conceptual plan only.
+    desired_end_state: Useful assets kept/adapted/extracted/converted; bad names retired.
+    status: active
+    priority: P1
+    confidence: high
+    label: FACT/INFERENCE
+  - id: WORKSTREAM-05
+    name: Reusable engine/product-line architecture
+    objective: Separate code by reuse level across Dominium products, future games, and unrelated engine projects.
+    current_state: Outlined in final architecture response.
+    desired_end_state: Reusable layers isolated from Dominium-specific game rules.
+    status: active
+    priority: P0
+    confidence: high
+    label: FACT/INFERENCE
+  - id: WORKSTREAM-06
+    name: Contracts/API/ABI/schema/protocol discipline
+    objective: Make public seams versioned, stable where promised, and negotiable.
+    current_state: Outlined as doctrine; implementation pending.
+    desired_end_state: Contracts define identity and compatibility; public ABI seams are durable.
+    status: active
+    priority: P0
+    confidence: high
+    label: INFERENCE
+  - id: WORKSTREAM-07
+    name: Naming and matrix cleanup
+    objective: Use clean component names with version/status/format fields separated.
+    current_state: Discussed in pasted component-naming analysis.
+    desired_end_state: No durable names like legacy/modern/compat/XStack/gl2/vk1/dx11-as-primary.
+    status: active
+    priority: P1
+    confidence: medium
+    label: FACT/INFERENCE
+  - id: WORKSTREAM-08
+    name: Determinism, testing, and proof matrix
+    objective: Create deterministic, hermetic, replayable proof systems for engine, packages, saves, protocols, and renderers.
+    current_state: Discussed as best practice.
+    desired_end_state: Refactors and releases have reproducible proof outputs.
+    status: active
+    priority: P1
+    confidence: medium
+    label: INFERENCE
+  - id: WORKSTREAM-09
+    name: Spec-book aggregation
+    objective: Preserve this chat for later merging into a master Project Spec Book.
+    current_state: Activated by uploaded prompt.
+    desired_end_state: Human report, registers, YAML spec, aggregator packet, and ZIP exist.
+    status: active
+    priority: P0
+    confidence: high
+    label: FACT
+  decisions:
+  - id: DECISION-01
+    decision: Use a stable top-level root constitution rather than ad hoc root growth.
+    status: accepted direction
+    evidence_or_basis: Repeated user concern about avoiding future restructure; assistant proposals align.
+    rationale: Prevents root sprawl and preserves ownership clarity.
+    implications: Future roots require admission tests and validators.
+    related_workstreams: WORKSTREAM-01
+    confidence: high
+    label: FACT/INFERENCE
+  - id: DECISION-02
+    decision: Treat AIDE as the restructuring control plane.
+    status: accepted by user framing
+    evidence_or_basis: User explicitly said to transition to AIDE ASAP and recycle existing material.
+    rationale: AIDE provides queue, evidence, move-map, and salvage discipline.
+    implications: Old XStack-style tools become transitional assets.
+    related_workstreams: WORKSTREAM-03
+    confidence: high
+    label: FACT
+  - id: DECISION-03
+    decision: Recycle old tools/docs/tests rather than ignore or discard them.
+    status: accepted direction
+    evidence_or_basis: User explicitly said there is code and docs to recycle.
+    rationale: Prevents loss of useful validators and policies.
+    implications: 'Requires classification: keep/adapt/extract/convert/archive/drop.'
+    related_workstreams: WORKSTREAM-04
+    confidence: high
+    label: FACT
+  - id: DECISION-04
+    decision: Paths are not identity; contracts and manifests define identity.
+    status: strong recommendation
+    evidence_or_basis: Repeated in final architecture answer.
+    rationale: Makes directories replaceable and data portable.
+    implications: Packs, saves, schemas, modules, and packages need IDs, versions, hashes, capabilities.
+    related_workstreams: WORKSTREAM-05
+    confidence: high
+    label: INFERENCE
+  - id: DECISION-05
+    decision: Design Dominium as a product-line architecture, not a one-off game.
+    status: accepted objective
+    evidence_or_basis: User explicitly requested proper game/OS-like architecture and reusable code.
+    rationale: Supports reuse across products, games, and projects.
+    implications: Requires stricter separation of engine/game/runtime/contracts/tools/content.
+    related_workstreams: WORKSTREAM-05
+    confidence: high
+    label: FACT
+  - id: DECISION-06
+    decision: Use C89-compatible stable ABI seams, without forcing all internals to be C89.
+    status: recommendation
+    evidence_or_basis: Assistant proposed this refinement.
+    rationale: Stable external seams with flexible implementation.
+    implications: Public headers need opaque handles, allocators, versioned structs, error codes.
+    related_workstreams: WORKSTREAM-06
+    confidence: medium
+    label: INFERENCE
+  - id: DECISION-07
+    decision: Avoid durable architecture names based on temporary tooling or status labels.
+    status: accepted direction
+    evidence_or_basis: User disliked XStack framing; prior component naming analysis rejected legacy/modern/compat labels.
+    rationale: Prevents temporary migration scaffolding becoming permanent ontology.
+    implications: Use boring literal names and matrix fields.
+    related_workstreams: WORKSTREAM-07
+    confidence: high
+    label: FACT/INFERENCE
+  - id: DECISION-08
+    decision: Future refactors should be AIDE work units with move maps and salvage maps.
+    status: recommendation aligned with user goal
+    evidence_or_basis: User wanted future refactors easy and quick.
+    rationale: Turns restructuring into a mechanical process.
+    implications: Requires AIDE refactor schemas, ledgers, validators, and temporary aliases.
+    related_workstreams: WORKSTREAM-03
+    confidence: high
+    label: INFERENCE
+  - id: DECISION-09
+    decision: Apps should be thin; runtime adapts host; engine/game own truth.
+    status: strong recommendation
+    evidence_or_basis: Repeated in architecture doctrine.
+    rationale: Preserves portability and prevents UI/rendering/platform code owning simulation truth.
+    implications: Boundary validators needed.
+    related_workstreams: WORKSTREAM-05
+    confidence: medium-high
+    label: INFERENCE
+  - id: DECISION-10
+    decision: Do not promise compatibility for every internal interface.
+    status: recommendation
+    evidence_or_basis: Final response emphasized stabilizing correct public seams only.
+    rationale: Avoids maintenance paralysis.
+    implications: Need stability levels and deprecation policy.
+    related_workstreams: WORKSTREAM-06
+    confidence: medium
+    label: INFERENCE
+  tasks:
+  - id: TASK-01
+    task: Implement AIDE-STRUCTURE-00 / repo constitution and refactorability framework.
+    priority: P0
+    urgency: U0
+    owner: User/Codex/AIDE
+    dependencies: None beyond repo access.
+    inputs_needed: Current repo tree, existing validators, project doctrine.
+    expected_output: Root constitution, ownership slots, AIDE refactor framework, non-blocking inventory tooling.
+    next_step: Create committed contracts/docs/tools without moving code.
+    related_workstreams: WORKSTREAM-01
+    label: FACT/INFERENCE
+  - id: TASK-02
+    task: Implement AIDE-ARCH-00 / modularity and reuse constitution.
+    priority: P0
+    urgency: U1
+    owner: User/Codex/AIDE
+    dependencies: AIDE-STRUCTURE-00 helpful first.
+    inputs_needed: Architecture doctrine from this chat.
+    expected_output: Dependency layers, API stability levels, C89 ABI rules, modularity docs, boundary checker.
+    next_step: Convert chat doctrine into repo contracts/docs.
+    related_workstreams: WORKSTREAM-05
+    label: FACT/INFERENCE
+  - id: TASK-03
+    task: Inventory existing XStack/AuditX/RepoX/TestX-style tooling and classify it.
+    priority: P0
+    urgency: U1
+    owner: AIDE/Codex
+    dependencies: AIDE inventory scaffolding.
+    inputs_needed: Live repo files, old tool directories.
+    expected_output: Tool recycling inventory and transition plan.
+    next_step: Run non-invasive inventory and mark keep/adapt/extract/convert/archive/drop.
+    related_workstreams: WORKSTREAM-04
+    label: FACT
+  - id: TASK-04
+    task: Wrap old checks behind AIDE before renaming them.
+    priority: P1
+    urgency: U1
+    owner: AIDE/Codex
+    dependencies: TASK-03.
+    inputs_needed: Existing validators/tests/build checks.
+    expected_output: AIDE task runner adapters.
+    next_step: Expose old checks as AIDE tasks while preserving behavior.
+    related_workstreams: WORKSTREAM-03
+    label: INFERENCE
+  - id: TASK-05
+    task: Define logical-root projection contracts for distribution/install/media/bundles.
+    priority: P0
+    urgency: U1
+    owner: AIDE/Codex
+    dependencies: Repo access and current distribution docs.
+    inputs_needed: Existing docs/contracts if present.
+    expected_output: Machine-readable distribution layout contract and docs.
+    next_step: Write contract first; validators non-blocking.
+    related_workstreams: WORKSTREAM-02
+    label: INFERENCE
+  - id: TASK-06
+    task: Add boundary validators for apps/engine/game/runtime/contracts/content/tools.
+    priority: P1
+    urgency: U2
+    owner: AIDE/Codex
+    dependencies: Dependency layer contract.
+    inputs_needed: Build graph, include paths, manifests.
+    expected_output: Report-only checker, later strict gate.
+    next_step: Start with detection only.
+    related_workstreams: WORKSTREAM-06
+    label: INFERENCE
+  - id: TASK-07
+    task: Create component/module manifest pattern.
+    priority: P1
+    urgency: U2
+    owner: AIDE/Codex
+    dependencies: Stable naming and dependency rules.
+    inputs_needed: Candidate modules and targets.
+    expected_output: Module manifests with owner, provides, requires, stability, forbidden dependencies, tests.
+    next_step: Pilot on one renderer and one engine module.
+    related_workstreams: WORKSTREAM-07
+    label: INFERENCE
+  - id: TASK-08
+    task: Define portability threat checks.
+    priority: P1
+    urgency: U2
+    owner: AIDE/Codex
+    dependencies: Architecture doctrine.
+    inputs_needed: Compiler/platform/test matrix.
+    expected_output: Checklist or validator for endian, width, locale, filesystem order, RNG, wall clock, FP determinism.
+    next_step: Add to docs and proof matrix.
+    related_workstreams: WORKSTREAM-08
+    label: INFERENCE
+  - id: TASK-09
+    task: Verify live repo status before executing any concrete cleanup.
+    priority: P0
+    urgency: U0
+    owner: User/Codex
+    dependencies: Repo access.
+    inputs_needed: Current branch, commits, CTest output, validators.
+    expected_output: Verified baseline report.
+    next_step: Do not rely on pasted commit/status claims without verification.
+    related_workstreams: WORKSTREAM-01
+    label: UNCERTAIN
+  - id: TASK-10
+    task: Merge this package into future master Project Spec Book.
+    priority: P1
+    urgency: U2
+    owner: Aggregator chat/user
+    dependencies: Other old-chat reports.
+    inputs_needed: This report and ZIP.
+    expected_output: Spec-book chapters and formal requirements candidates.
+    next_step: Use aggregator packet.
+    related_workstreams: WORKSTREAM-09
+    label: FACT
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Source scope is this chat only unless Project-context is explicitly labelled.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: Uploaded preservation prompt.
+    implication: Do not merge external memories silently.
+    violation_risk: High if a future assistant overgeneralizes.
+    confidence: high
+    label: FACT
+  - id: CONSTRAINT-02
+    constraint: Do not treat assistant suggestions as user decisions unless accepted.
+    type: epistemic
+    hard_or_soft: hard
+    source_or_basis: Uploaded preservation prompt.
+    implication: Decision register must distinguish recommendations from accepted decisions.
+    violation_risk: High.
+    confidence: high
+    label: FACT
+  - id: CONSTRAINT-03
+    constraint: Future architecture should avoid root sprawl.
+    type: architecture
+    hard_or_soft: hard-ish
+    source_or_basis: User wants to avoid repeat restructuring.
+    implication: New roots refused by default.
+    violation_risk: High if no validator exists.
+    confidence: high
+    label: FACT/INFERENCE
+  - id: CONSTRAINT-04
+    constraint: Existing code/docs/tests should be recycled rather than ignored.
+    type: migration
+    hard_or_soft: hard
+    source_or_basis: User explicitly stated this.
+    implication: Use classification before delete/archive.
+    violation_risk: High if cleanup becomes destructive.
+    confidence: high
+    label: FACT
+  - id: CONSTRAINT-05
+    constraint: AIDE names must not contaminate product/runtime/game architecture.
+    type: architecture
+    hard_or_soft: soft-to-hard
+    source_or_basis: Assistant recommendation based on user rejection of XStack framing.
+    implication: AIDE remains control plane; Dominium architecture remains separate.
+    violation_risk: Medium.
+    confidence: medium-high
+    label: INFERENCE
+  - id: CONSTRAINT-06
+    constraint: Portability and modularity are primary design goals.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User explicitly stated this is very important.
+    implication: Avoid hidden OS calls, hardcoded paths, unstable ABI leakage.
+    violation_risk: High.
+    confidence: high
+    label: FACT
+  - id: CONSTRAINT-07
+    constraint: Durable data and protocols need versioning and migration/refusal policy.
+    type: compatibility
+    hard_or_soft: hard-ish
+    source_or_basis: Architecture doctrine.
+    implication: No silent save/package/schema migration.
+    violation_risk: High.
+    confidence: medium-high
+    label: INFERENCE
+  - id: CONSTRAINT-08
+    constraint: Generated outputs must be quarantined.
+    type: repo hygiene
+    hard_or_soft: hard-ish
+    source_or_basis: Repeated assistant recommendation.
+    implication: Generated files go to dist/build/.aide.local or canonical fixture/archive only.
+    violation_risk: Medium.
+    confidence: medium
+    label: INFERENCE
+  open_questions:
+  - id: QUESTION-01
+    question: What is the current live repo state and which of the pasted commit/status claims remain true?
+    why_it_matters: Implementation depends on baseline accuracy.
+    known: Pasted text asserted specific repo status and failures.
+    unknown: Live branch, CTest, validators, current root inventory.
+    resolution_path: Inspect repo with GitHub/Codex and produce baseline report.
+    priority: P0
+    related_workstreams: WORKSTREAM-01
+    label: UNCERTAIN
+  - id: QUESTION-02
+    question: What exact parts of old XStack/AuditX/RepoX/TestX tooling are useful?
+    why_it_matters: Recycling requires classification.
+    known: User wants recycling, not ignoring.
+    unknown: Actual file contents and usefulness.
+    resolution_path: AIDE inventory with keep/adapt/extract/convert/archive/drop.
+    priority: P0
+    related_workstreams: WORKSTREAM-04
+    label: FACT/UNCERTAIN
+  - id: QUESTION-03
+    question: Which APIs deserve stable/frozen compatibility promises?
+    why_it_matters: Over-stabilizing internals is costly; under-stabilizing public seams breaks reuse.
+    known: Candidate seams include C ABI, schemas, commands, saves, packages, protocols.
+    unknown: Actual implementation maturity and external use cases.
+    resolution_path: Define stability levels and public API declarations.
+    priority: P1
+    related_workstreams: WORKSTREAM-06
+    label: INFERENCE
+  - id: QUESTION-04
+    question: Where should domino-engine reusable code stop and Dominium-specific game code begin?
+    why_it_matters: Determines reuse for future games.
+    known: Final answer proposed reuse levels.
+    unknown: Actual current code ownership.
+    resolution_path: Inventory modules and classify reuse level.
+    priority: P0
+    related_workstreams: WORKSTREAM-05
+    label: INFERENCE
+  - id: QUESTION-05
+    question: What generated artifacts are intentionally tracked versus accidental?
+    why_it_matters: Generated-output policy affects cleanup.
+    known: Pasted text references dist/artifacts and generated outputs.
+    unknown: Actual repository policy and files.
+    resolution_path: Generated artifact audit.
+    priority: P1
+    related_workstreams: WORKSTREAM-01
+    label: UNCERTAIN
+  - id: QUESTION-06
+    question: What should become formal Project Spec Book requirements versus background context?
+    why_it_matters: Avoid prematurely hardening brainstorms.
+    known: This chat proposes many doctrines.
+    unknown: User confirmation and cross-chat consistency.
+    resolution_path: Aggregator review.
+    priority: P1
+    related_workstreams: WORKSTREAM-09
+    label: INFERENCE
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Visual drag-and-drop cleanup of root folders
+    status: rejected
+    reason: Would break paths, build, tests, package identity, and authority semantics.
+    final_or_tentative: final unless repo becomes trivial
+    reconsider_conditions: Only reconsider for tiny isolated folders with move map and proof.
+    related_workstreams: WORKSTREAM-01
+    label: FACT/INFERENCE
+  - id: REJECTED-02
+    option: XStack/AuditX/RepoX/TestX as durable architecture ontology
+    status: rejected/superseded
+    reason: User disliked it; names are temporary scaffolding.
+    final_or_tentative: mostly final
+    reconsider_conditions: May remain in history/ledgers during transition.
+    related_workstreams: WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-03
+    option: Discarding old tools/docs/tests during AIDE transition
+    status: rejected
+    reason: User explicitly wants recycling.
+    final_or_tentative: final
+    reconsider_conditions: Only drop after classification and evidence.
+    related_workstreams: WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-04
+    option: Perfect structure that never changes
+    status: superseded
+    reason: Unrealistic; better target is stable top-level roots plus cheap internal refactors.
+    final_or_tentative: final as framing
+    reconsider_conditions: N/A.
+    related_workstreams: WORKSTREAM-01
+    label: INFERENCE
+  - id: REJECTED-05
+    option: Using paths as identity
+    status: rejected
+    reason: Makes moves/refactors break artifacts.
+    final_or_tentative: final as doctrine
+    reconsider_conditions: N/A.
+    related_workstreams: WORKSTREAM-05
+    label: INFERENCE
+  - id: REJECTED-06
+    option: Stabilizing every internal interface forever
+    status: deprioritized
+    reason: Too costly; stabilize public seams and let internals evolve.
+    final_or_tentative: tentative but strong
+    reconsider_conditions: Revisit per API if external dependents emerge.
+    related_workstreams: WORKSTREAM-06
+    label: INFERENCE
+  - id: REJECTED-07
+    option: Component IDs based on legacy/modern/compat/universal or version-coded names
+    status: rejected direction
+    reason: Creates naming debt and mixes axes.
+    final_or_tentative: strong
+    reconsider_conditions: Use only as status/version fields where needed.
+    related_workstreams: WORKSTREAM-07
+    label: FACT/INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Pasted text.txt
+    type: uploaded prompt
+    purpose: Defines required preservation package structure and rules.
+    status: available in this chat
+    origin: user upload
+    carry_forward: 'yes'
+    notes: Must be treated as active instruction for this turn.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Prior distribution/install layout analysis pasted by user
+    type: pasted assistant output
+    purpose: Provided logical-root projection doctrine and layout examples.
+    status: visible in chat, not independently verified
+    origin: user-pasted text
+    carry_forward: 'yes'
+    notes: Use as chat content; repo/doc claims need verification.
+    label: FACT/UNCERTAIN
+  - id: ARTIFACT-03
+    name_or_description: Prior convergence/root cleanup analysis pasted by user
+    type: pasted assistant output
+    purpose: Provided staged repo convergence and root allowlist plan.
+    status: visible in chat, not independently verified
+    origin: user-pasted text
+    carry_forward: 'yes'
+    notes: Some specific live repo claims are unverified.
+    label: FACT/UNCERTAIN
+  - id: ARTIFACT-04
+    name_or_description: Prior component naming/matrix analysis pasted by user
+    type: pasted assistant output
+    purpose: Defined clean component naming doctrine.
+    status: visible in chat
+    origin: user-pasted text
+    carry_forward: 'yes'
+    notes: Should inform spec-book naming/matrix chapter.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: AIDE transition prompt/task proposal
+    type: assistant-generated prompt
+    purpose: Suggested AIDE-00 bootstrap and recycling plan.
+    status: visible in chat
+    origin: assistant response
+    carry_forward: yes, with user review
+    notes: Prompt is recommendation, not executed.
+    label: INFERENCE
+  - id: ARTIFACT-06
+    name_or_description: AIDE-STRUCTURE-00 prompt
+    type: assistant-generated prompt
+    purpose: Defines repo constitution/refactorability framework task.
+    status: visible in chat
+    origin: assistant response
+    carry_forward: 'yes'
+    notes: Candidate next Codex/AIDE task.
+    label: INFERENCE
+  - id: ARTIFACT-07
+    name_or_description: AIDE-ARCH-00 prompt
+    type: assistant-generated prompt
+    purpose: Defines modularity and reuse constitution task.
+    status: visible in chat
+    origin: assistant response
+    carry_forward: 'yes'
+    notes: Candidate next Codex/AIDE task.
+    label: INFERENCE
+  - id: ARTIFACT-08
+    name_or_description: This preservation package
+    type: generated files + ZIP
+    purpose: Preserves this chat for reading, handoff, aggregation, and future spec-book work.
+    status: created in this turn
+    origin: assistant generated
+    carry_forward: 'yes'
+    notes: Contains report, registers, context packet, spec sheet, aggregator packet, audit, reader brief.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Future assistant treats assistant recommendations as user decisions.
+    consequence: Spec book hardens tentative ideas incorrectly.
+    likelihood: medium
+    severity: high
+    mitigation: Keep labels and require user confirmation for major implementation commitments.
+    related_workstreams: WORKSTREAM-09
+    label: FACT
+  - id: RISK-02
+    risk: Live repo claims from pasted text are stale or wrong.
+    consequence: Codex tasks may target wrong blockers or paths.
+    likelihood: medium
+    severity: high
+    mitigation: Verify repo state before implementation.
+    related_workstreams: WORKSTREAM-01
+    label: UNCERTAIN
+  - id: RISK-03
+    risk: AIDE becomes another mythology instead of a control plane.
+    consequence: Product architecture polluted by workflow names.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Keep AIDE under `.aide/`, `tools/aide/`, docs/aide; do not name runtime/game concepts after it.
+    related_workstreams: WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-04
+    risk: Old validators are renamed before being wrapped.
+    consequence: Regression detection lost.
+    likelihood: medium
+    severity: high
+    mitigation: Wrap before rename; preserve behavior first.
+    related_workstreams: WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-05
+    risk: Root constitution becomes too rigid.
+    consequence: Useful evolution blocked.
+    likelihood: low-medium
+    severity: medium
+    mitigation: Allow root admission test with high bar and validator update.
+    related_workstreams: WORKSTREAM-01
+    label: INFERENCE
+  - id: RISK-06
+    risk: Compatibility promises are too broad.
+    consequence: Maintenance burden and slow evolution.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Define stability levels; stabilize only public seams.
+    related_workstreams: WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-07
+    risk: Reusable code remains tangled with Dominium-specific game rules.
+    consequence: Future games/projects cannot reuse the engine cleanly.
+    likelihood: medium-high
+    severity: high
+    mitigation: Classify modules by reuse level and enforce dependencies.
+    related_workstreams: WORKSTREAM-05
+    label: FACT/INFERENCE
+  - id: RISK-08
+    risk: Generated artifacts leak into source roots.
+    consequence: Repo becomes hard to reason about and refactor.
+    likelihood: medium
+    severity: medium
+    mitigation: Generated-output policy and validator.
+    related_workstreams: WORKSTREAM-01
+    label: INFERENCE
+  verification_queue:
+  - id: VERIFY-01
+    item: Current live repo head, branch, validator status, and CTest status.
+    why_verification_needed: Pasted status may be stale/unverified.
+    suggested_source_type: GitHub/Codex live repo inspection.
+    priority: P0
+    related_workstreams: WORKSTREAM-01
+    label: UNCERTAIN
+  - id: VERIFY-02
+    item: Existence and contents of docs referenced in pasted analyses, such as VIRTUAL_PATHS, INSTALL_MODEL, DIST_TREE_CONTRACT,
+      PKG_FORMAT.
+    why_verification_needed: They underpin distribution recommendations.
+    suggested_source_type: Live repo or uploaded docs snapshot.
+    priority: P0
+    related_workstreams: WORKSTREAM-02
+    label: UNCERTAIN
+  - id: VERIFY-03
+    item: Actual XStack/AuditX/RepoX/TestX paths and behavior.
+    why_verification_needed: Recycling plan depends on contents.
+    suggested_source_type: Repo inventory and test runs.
+    priority: P0
+    related_workstreams: WORKSTREAM-04
+    label: UNCERTAIN
+  - id: VERIFY-04
+    item: Current component matrix names and statuses.
+    why_verification_needed: Naming cleanup should target actual files.
+    suggested_source_type: Repo search.
+    priority: P1
+    related_workstreams: WORKSTREAM-07
+    label: UNCERTAIN
+  - id: VERIFY-05
+    item: External best-practice references used in prior answer.
+    why_verification_needed: Could be stale or context-dependent.
+    suggested_source_type: Official docs for CMake, Bazel, Chromium, Linux, SemVer, Google Testing.
+    priority: P2
+    related_workstreams: WORKSTREAM-05
+    label: UNCERTAIN
+  - id: VERIFY-06
+    item: Which prior generated files or old uploads are unavailable/expired.
+    why_verification_needed: Artifact ledger completeness depends on availability.
+    suggested_source_type: Conversation file list / user re-upload.
+    priority: P1
+    related_workstreams: WORKSTREAM-09
+    label: UNCERTAIN
+  spec_book_notes:
+    likely_sections:
+    - Repo Architecture
+    - AIDE Governance
+    - Modular Engine Architecture
+    - Distribution/Install Layout
+    - API/ABI/Schemas/Protocols
+    - Testing and Determinism
+    - Naming Doctrine
+    unique_contributions:
+    - AIDE-first refactorability doctrine
+    - Product-line reuse framing
+    - Stable root constitution plus cheap refactors
+    - Paths are not identity
+    possible_duplicates_with_other_chats:
+    - Repo layout convergence
+    - Distribution layout
+    - Component matrices
+    - AIDE governance
+    conflicts_to_watch_for:
+    - Old XStack terminology
+    - Different root layouts from earlier chats
+    - Over-specific renderer/platform priorities
+    formal_requirements_candidates:
+    - Root constitution
+    - AIDE work unit process
+    - Public API stability levels
+    - Logical-root projection
+    - Generated-output quarantine
+    background_context_candidates:
+    - Pasted repo status
+    - Prior assistant explanations
+    - External big-project examples
+    needs_user_confirmation:
+    - Which assistant recommendations become requirements
+    - Exact compatibility windows
+    - Exact module boundaries
+  final_recommendations:
+    next_action_if_continuing_this_chat: Verify live repo state and draft AIDE-STRUCTURE-00 as a non-invasive task.
+    next_action_for_aggregator: Merge this as architecture/refactorability doctrine with caveats about unverified repo state.
+    user_checks_required:
+    - Confirm AIDE as committed control-plane direction
+    - Confirm stable root set
+    - Confirm whether AIDE-STRUCTURE-00 or AIDE-ARCH-00 should run first

@@ -1,0 +1,238 @@
+spec_sheet:
+  metadata:
+    chat_label: "Dominium UE6, Domino, and Deterministic Universe Feasibility"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This chat only, plus labelled PROJECT-CONTEXT where used"
+    apparent_coverage: "Partial"
+    confidence_1_to_5: 3
+    staleness_risk: "Medium to high for engine and platform claims"
+    safe_for_aggregation: "With caveats"
+    main_limitations:
+      - "Full historical Dominium transcript not visible."
+      - "External UE5/UE6 claims were not freshly verified during this packaging pass."
+      - "Some prior uploaded files in the broader environment may have expired."
+
+  summary:
+    one_sentence: "Dominium should use a custom deterministic simulation/world/server core with Unreal/UE as a possible frontend and Domino as a possible later adapter, not rely on UE6 or any commercial engine as the complete game."
+    short_brief: "The chat evaluated UE6, UE5, Unreal, Domino, and other engines against an ambitious deterministic solar-system-scale MMO/civilization-building vision. It concluded that no commercial engine solves the full requirement set out of the box. The carry-forward architecture is DominiumSim plus DominiumWorldDB plus DominiumServer, with Unreal and Domino clients as replaceable adapters."
+    main_topics:
+      - "UE6 versus UE5 versus Domino"
+      - "Engine-independent simulation core"
+      - "Deterministic full-scale world simulation"
+      - "Sparse planets and terrain edits"
+      - "Fog of war and server authority"
+      - "Single-universe MMO limits"
+      - "Client-shared compute boundaries"
+    main_outputs:
+      - "Hybrid architecture recommendation"
+      - "Decision and risk registers"
+      - "Prototype roadmap"
+      - "Verification queue"
+    highest_priority_carry_forward:
+      - "Build deterministic headless prototype first."
+      - "Do not put canonical game truth in Unreal."
+      - "Clarify Domino’s role."
+      - "Verify current UE5/UE6 facts."
+
+  source_rules:
+    labels_used:
+      - "FACT"
+      - "INFERENCE"
+      - "UNCERTAIN / UNVERIFIED"
+      - "PROJECT-CONTEXT"
+    conflict_rules:
+      - "Direct user statements outrank assistant recommendations."
+      - "Assistant suggestions are not final decisions unless user accepted them."
+      - "Current verified official sources outrank older claims."
+    staleness_rules:
+      - "Engine roadmaps, platform requirements, licensing, and plugin capabilities require re-verification."
+      - "Speculative UE6 claims must not become requirements without current confirmation."
+
+  user_preferences:
+    explicit:
+      - "Human-readable report before machine-readable handoff."
+      - "Preserve uncertainty labels."
+      - "Do not invent facts or silently infer."
+      - "Create files if tools are available."
+    inferred:
+      - "Prefer architectural optionality and long-term correctness."
+      - "Prefer direct feasibility analysis over optimistic framing."
+    uncertain_or_not_established:
+      - "Final tolerance for custom-engine complexity versus commercial-engine speed."
+
+  workstreams:
+    - id: "WORKSTREAM-01"
+      name: "Engine/runtime strategy"
+      label: "INFERENCE"
+      objective: "Define how UE5, UE6, Domino, and custom layers relate."
+      current_state: "Hybrid recommendation exists."
+      desired_end_state: "Formal engine strategy with accepted decisions."
+      status: "active"
+      priority: "P0"
+      background: "User asked whether Dominium could use UE6 instead of Domino and later port to Domino."
+      decisions_made: ["DECISION-01", "DECISION-02", "DECISION-07"]
+      decisions_pending: ["Should Unreal be first renderer?", "What is Domino’s exact role?"]
+      tasks: ["TASK-12", "TASK-13"]
+      constraints: ["CONSTRAINT-04", "CONSTRAINT-07"]
+      dependencies: ["Domino capabilities", "Current UE facts"]
+      timeline: "Near-term architecture planning."
+      blockers: ["Unverified UE6 facts", "Unclear Domino role"]
+      risks: ["RISK-02", "RISK-09"]
+      artifacts: ["ARTIFACT-02", "ARTIFACT-04"]
+      success_criteria: ["Core/adapter boundaries are explicit", "No canonical rule depends on Unreal"]
+      next_action: "Verify UE facts and clarify Domino."
+      verification_needed: ["VERIFY-01", "VERIFY-02", "VERIFY-09"]
+      confidence: 4
+    - id: "WORKSTREAM-02"
+      name: "Deterministic core"
+      label: "INFERENCE"
+      objective: "Build portable fixed-step canonical simulation."
+      current_state: "Concept defined."
+      desired_end_state: "Cross-platform deterministic prototype."
+      status: "active"
+      priority: "P0"
+      background: "Required by user’s deterministic game requirement."
+      decisions_made: ["DECISION-03"]
+      decisions_pending: ["Language", "Math representation", "Determinism standard"]
+      tasks: ["TASK-01", "TASK-02", "TASK-05", "TASK-14"]
+      constraints: ["CONSTRAINT-01", "CONSTRAINT-08"]
+      dependencies: ["MVP scope"]
+      timeline: "First technical proof."
+      blockers: ["Undefined MVP"]
+      risks: ["RISK-03", "RISK-10"]
+      artifacts: ["ARTIFACT-04"]
+      success_criteria: ["Same input log yields same state hash"]
+      next_action: "Specify deterministic MVP."
+      verification_needed: ["VERIFY-06"]
+      confidence: 5
+
+  decisions:
+    - id: "DECISION-01"
+      decision: "Do not start directly on UE6 today."
+      status: "assistant recommendation, not user-final"
+      label: "INFERENCE / UNVERIFIED"
+      evidence_or_basis: "Visible assistant response stated public UE6 information is too thin."
+      rationale: "Avoids dependence on unavailable or unstable technology."
+      implications: "Use UE5/custom core now; revisit UE6 later."
+      related_workstreams: ["WORKSTREAM-01"]
+      uncertainty: "Requires current verification."
+    - id: "DECISION-03"
+      decision: "Build custom deterministic simulation core."
+      status: "assistant recommendation"
+      label: "INFERENCE"
+      evidence_or_basis: "User requires deterministic game and large-scale sparse simulation."
+      rationale: "Commercial engine gameplay stacks are not suitable as canonical deterministic truth."
+      implications: "Prototype headless DominiumSim first."
+      related_workstreams: ["WORKSTREAM-02"]
+      uncertainty: "Implementation language and exact determinism standard remain undecided."
+
+  tasks:
+    - id: "TASK-01"
+      task: "Define deterministic simulation MVP."
+      priority: "P0"
+      urgency: "U0"
+      owner: "Project/user"
+      dependencies: []
+      inputs_needed: ["Minimal entities", "factory graph scope", "terrain edit scope"]
+      expected_output: "MVP technical spec"
+      next_step: "Choose tick model and state hash contents."
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "INFERENCE"
+      confidence: 5
+
+  constraints:
+    - id: "CONSTRAINT-01"
+      constraint: "Canonical simulation must be deterministic if determinism remains a requirement."
+      type: "technical"
+      hard_or_soft: "hard"
+      source_or_basis: "User requirement"
+      implication: "Use fixed-step deterministic core."
+      violation_risk: "Desyncs and non-portable simulation."
+      label: "INFERENCE"
+      confidence: 5
+
+  open_questions:
+    - id: "QUESTION-02"
+      question: "What exactly is Domino’s technical scope and role?"
+      why_it_matters: "Determines what portability requires."
+      known: "User contrasts Domino with UE6 and asks about later portability."
+      unknown: "Domino capabilities and intended boundary."
+      resolution_path: "Retrieve or write Domino architecture definition."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "UNCERTAIN"
+
+  rejected_or_superseded_options:
+    - id: "REJECTED-01"
+      option: "Unreal as the entire game."
+      status: "rejected as recommended architecture"
+      reason: "Blocks determinism and portability."
+      final_or_tentative: "tentative but strong"
+      reconsider_conditions: "Only if project goals are reduced."
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "INFERENCE"
+
+  artifacts:
+    - id: "ARTIFACT-05"
+      name_or_description: "Pasted text.txt"
+      type: "uploaded prompt"
+      purpose: "Requested this preservation package."
+      status: "available during this task"
+      origin: "user"
+      carry_forward: true
+      notes: "Defines output structure and reliability labels."
+      label: "FACT"
+
+  risks:
+    - id: "RISK-02"
+      risk: "Building too much inside Unreal."
+      consequence: "Domino port becomes rewrite and determinism weakens."
+      likelihood: "high"
+      severity: "high"
+      mitigation: "Enforce core/adapter separation."
+      related_workstreams: ["WORKSTREAM-01", "WORKSTREAM-06", "WORKSTREAM-07"]
+      label: "INFERENCE"
+
+  verification_queue:
+    - id: "VERIFY-01"
+      item: "Current UE6 public availability and roadmap."
+      why_verification_needed: "UE6 claims are time-sensitive."
+      suggested_source_type: "Official Epic sources and current announcements."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "UNVERIFIED"
+
+  spec_book_notes:
+    likely_sections:
+      - "Engine/runtime strategy"
+      - "Deterministic simulation"
+      - "World persistence and terrain"
+      - "MMO authority and fog of war"
+      - "Renderer/client adapters"
+    unique_contributions:
+      - "Clear separation between Dominium as simulation/backend and Unreal as frontend."
+      - "Explicit rejection of millions of players in one local fully interactive space."
+    possible_duplicates_with_other_chats:
+      - "Platform/renderer separation doctrine"
+      - "Dominium deterministic C engine doctrine"
+      - "Distribution/setup architecture"
+    conflicts_to_watch_for:
+      - "Any chat that treats Domino as the only possible first implementation."
+      - "Any chat that embeds game rules in renderer-specific systems."
+    formal_requirements_candidates:
+      - "Engine-independent core"
+      - "Server-authoritative MMO outcomes"
+      - "Simulation LOD/collapse-refine"
+    background_context_candidates:
+      - "Engine examples to study: Factorio, EVE, Cesium, UNIGINE, SpaceEngine-like systems."
+    needs_user_confirmation:
+      - "Whether to accept Unreal as first client."
+      - "Whether to formalize custom deterministic core as non-negotiable."
+
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Define DominiumSim deterministic MVP."
+    next_action_for_aggregator: "Merge this as the engine/runtime strategy and simulation authority chapter input."
+    user_checks_required:
+      - "Confirm whether the assistant recommendations should become project decisions."
+      - "Clarify Domino’s role."
+      - "Verify UE5/UE6 facts with current official sources."

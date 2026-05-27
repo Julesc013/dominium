@@ -1,0 +1,77 @@
+{
+  "chat_label": "Dominium Deterministic Solar-System Architecture",
+  "date_anchor": "2026-05-27 Australia/Melbourne",
+  "package_path": "/mnt/data/Dominium_Deterministic_Solar_System_Architecture__complete_bundle_with_accompanying_report.zip",
+  "files": [
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__00_manifest.md",
+      "size_bytes": 2389,
+      "sha256": "d8e9ad908bbef8e55e6346bde1dcda1edba52db7671e7604856105b9204e2905"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__01_human_readable_report.md",
+      "size_bytes": 57540,
+      "sha256": "320d5e21af78e1398f3784a6e1ecc612c047bfb15e6f2c65477ca87f27186c41"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__02_context_transfer_packet.md",
+      "size_bytes": 4303,
+      "sha256": "a07ff9d193d55bc216fa97770b6512922bc0def272e9d700128ce461b26b4078"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__03_spec_sheet.yaml",
+      "size_bytes": 58575,
+      "sha256": "0dcbbc5509d713428dbc0ddd09fe79eedca35e9887b87c20955defb55035e605"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__04_registers.md",
+      "size_bytes": 40599,
+      "sha256": "3c7af3db6949e29ef45f402f8a85b9d6cbbeffccac4fd63f4dda911ffcc5094a"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__05_aggregator_packet.md",
+      "size_bytes": 27431,
+      "sha256": "9674464e0379b64f13eb3d9d404b56a58311661dda0cd9d1f05376ba9932e043"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__06_reader_brief.md",
+      "size_bytes": 3264,
+      "sha256": "56d50d85c678d79cae032dda8ad31f794d2aaaa4f967190dc20268b93fc0a5d1"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__07_verification_and_audit.md",
+      "size_bytes": 4723,
+      "sha256": "6a7e79ed0adad4851c6cf8d7b9909c1bc6416482aeace50b9a62cd7c35e0165f"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__08_future_chat_bootstrap_prompt.md",
+      "size_bytes": 978,
+      "sha256": "984d223840f548c1ed1bb07fe6f59c23ecc570db350091d5345824af1009a8c5"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__09_in_chat_reader.md",
+      "size_bytes": 2199,
+      "sha256": "6cd8b657a8b1b9cf9140517e61c2d772b64d59cfe2457c1a558192faad03d366"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__handoff_package.zip",
+      "size_bytes": 63147,
+      "sha256": "469bfb68b19198d9a1eb3e2e37b985516079cb4b82f960a3842928acbdcf3687"
+    },
+    {
+      "filename": "Pasted text.txt",
+      "size_bytes": 31225,
+      "sha256": "6686114753accfa0ddd2aa1b3ef159bc685c53892dc58ac61e7574b2ae3636db"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__10_accompanying_human_readable_detailed_summary_report.md",
+      "size_bytes": 29184,
+      "sha256": "9e10ec545a94c73aba0eb78ed3215146f460f87f1c74c58c8984fc98c2cf413c"
+    },
+    {
+      "filename": "Dominium_Deterministic_Solar_System_Architecture__11_complete_bundle_manifest.md",
+      "size_bytes": 4199,
+      "sha256": "7e1d56188cd0d34ae1b491dba0a32d11159537d441945a60adb849284afe9e67"
+    }
+  ]
+}

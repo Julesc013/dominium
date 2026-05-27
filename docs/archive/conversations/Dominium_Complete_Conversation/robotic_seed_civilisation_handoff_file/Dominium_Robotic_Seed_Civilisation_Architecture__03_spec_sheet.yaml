@@ -1,0 +1,1277 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Robotic Seed-Civilisation Architecture
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only unless labelled PROJECT-CONTEXT
+    apparent_coverage: 'Partial / unclear: visible transcript and uploaded preservation prompt available; hidden earlier context
+      not verifiable.'
+    confidence_1_to_5: 4
+    staleness_risk: Medium
+    safe_for_aggregation: With caveats
+    main_limitations:
+    - No guarantee of access to invisible prior turns.
+    - No previous generated files were visible before this response.
+    - External facts from earlier assistant messages require verification.
+  summary:
+    one_sentence: This chat defined Dominium as a likely deterministic robotic seed-civilisation game built around science-bounded
+      procedural planets, a limited mothership, robot spawns, nanobot construction, automation-first cities, and machine process
+      graphs.
+    short_brief: 'The user moved from a broad feasibility question about full-scale deterministic solar-system/MMO simulation
+      to a concrete game premise: players are robot bodies fabricated by a seedship, use ship knowledge and limited resources
+      to build industry, avoid worker NPCs, and create factories/machines that compile into process graphs.'
+    main_topics:
+    - deterministic engine architecture
+    - procedural star-system/planet generation
+    - field layers
+    - robotic mothership lore
+    - spawn economy
+    - nanobot construction
+    - no worker NPC labour
+    - machine compiler/process graphs
+    - fog of war
+    - MMO/single-player modes
+    - Unreal integration
+    - vertical slice
+    main_outputs:
+    - human-readable report
+    - registers
+    - context transfer packet
+    - spec sheet
+    - aggregator packet
+    - audit
+    - file export package
+    highest_priority_carry_forward:
+    - Define first playable slice
+    - Define generator/editor model
+    - Define field-layer schema
+    - Define mothership/spawn economy
+    - Define machine compiler
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Direct user statements outrank assistant recommendations.
+    - Assistant suggestions need user ratification before becoming final requirements.
+    - External facts require verification before merge.
+    staleness_rules:
+    - Software/API/engine/current capability claims should be rechecked.
+    - Scientific data/legal licensing claims should be verified before implementation.
+  user_preferences:
+    explicit:
+    - The user wants maximum-fidelity preservation, not a short summary.
+    - The user prefers human-readable explanation before machine-readable handoff.
+    - The user prefers uncertainty labels and careful distinction between facts, inferences, and tentative ideas.
+    - The user values physically/scientifically plausible procedural generation.
+    - 'The user values compute-aware design: sparse state, collapsed sim, avoiding unnecessary NPC/pathfinding/part simulation.'
+    - The user wants exportable files and a ZIP when tools are available.
+    inferred:
+    - 'The user values compute-aware design: sparse state, collapsed sim, avoiding unnecessary NPC/pathfinding/part simulation.'
+    - The user likes diegetic explanations for UI and mechanics.
+    uncertain_or_not_established:
+    - Exact Unreal commitment
+    - Exact official MMO permanence/seasonality
+    - Exact hard-science strictness
+    - Whether humans eventually arrive
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Deterministic Domino simulation architecture
+    label: FACT + INFERENCE
+    objective: Define Domino as the deterministic authoritative simulation core, with renderer clients downstream.
+    current_state: Discussed conceptually; assistant recommended fixed-tick/event-sourced/sparse architecture.
+    desired_end_state: A clear engine architecture spec separating simulation, persistence, networking, and rendering.
+    status: Active / recommended
+    priority: P0
+    background: Discussed conceptually; assistant recommended fixed-tick/event-sourced/sparse architecture.
+    decisions_made:
+    - DECISION-11
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: Initial concept/spec phase
+    blockers:
+    - Unspecified schemas/rules
+    - Need user ratification where assistant-derived
+    risks:
+    - RISK-01
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-05
+    success_criteria: []
+    next_action: Convert to formal requirements and prototype acceptance criteria.
+    verification_needed:
+    - VERIFY-04
+    confidence: '4'
+  - id: WORKSTREAM-02
+    name: Science-bounded procedural star-system and planet generation
+    label: FACT
+    objective: Generate plausible solar systems/planets from physical parameters, with bounded design controls and optional
+      reverse generation.
+    current_state: User explicitly described procedural generation with realistic sliders, designer tweaks, and reverse fitting.
+    desired_end_state: A generator/editor spec with hard validity, soft plausibility, gameplay overrides, and reproducible
+      seeds.
+    status: Active / design direction
+    priority: P0
+    background: User explicitly described procedural generation with realistic sliders, designer tweaks, and reverse fitting.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    decisions_pending: []
+    tasks:
+    - TASK-02
+    constraints: []
+    dependencies: []
+    timeline: Initial concept/spec phase
+    blockers:
+    - Unspecified schemas/rules
+    - Need user ratification where assistant-derived
+    risks:
+    - RISK-01
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-05
+    success_criteria: []
+    next_action: Convert to formal requirements and prototype acceptance criteria.
+    verification_needed:
+    - VERIFY-02
+    - VERIFY-03
+    confidence: '4'
+  - id: WORKSTREAM-03
+    name: Field-layer planet data, saves, packs, and terraforming
+    label: FACT + INFERENCE
+    objective: Use common layered fields for procedural terrain, painted overrides, saves, mod packs, and gameplay terraforming.
+    current_state: User proposed overlaying procedural fields with painted fields and using similar tech for saves/packs/terraforming;
+      assistant formalized layer stack.
+    desired_end_state: A versioned field stack with conservation rules for gameplay layers and non-conservation for editor
+      layers.
+    status: Active / needs design
+    priority: P0
+    background: User proposed overlaying procedural fields with painted fields and using similar tech for saves/packs/terraforming;
+      assistant formalized layer stack.
+    decisions_made:
+    - DECISION-04
+    decisions_pending: []
+    tasks:
+    - TASK-03
+    constraints: []
+    dependencies: []
+    timeline: Initial concept/spec phase
+    blockers:
+    - Unspecified schemas/rules
+    - Need user ratification where assistant-derived
+    risks:
+    - RISK-01
+    - RISK-09
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-05
+    success_criteria: []
+    next_action: Convert to formal requirements and prototype acceptance criteria.
+    verification_needed:
+    - VERIFY-05
+    confidence: '4'
+  - id: WORKSTREAM-04
+    name: Robotic seedship lore, recipe book, and spawn economy
+    label: FACT
+    objective: Make players robot bodies fabricated by a mothership/spawn labs, with the ship providing knowledge but limited
+      resources/throughput.
+    current_state: User developed mothership, robot spawn, body selection, recipe book, finite ship reserves, and remote spawn
+      labs.
+    desired_end_state: A concrete lore/gameplay loop connecting respawn, exploration, industrialization, and progression.
+    status: Active / strong direction
+    priority: P0
+    background: User developed mothership, robot spawn, body selection, recipe book, finite ship reserves, and remote spawn
+      labs.
+    decisions_made:
+    - DECISION-05
+    - DECISION-06
+    - DECISION-10
+    decisions_pending: []
+    tasks:
+    - TASK-04
+    - TASK-05
+    constraints: []
+    dependencies: []
+    timeline: Initial concept/spec phase
+    blockers:
+    - Unspecified schemas/rules
+    - Need user ratification where assistant-derived
+    risks:
+    - RISK-01
+    - RISK-04
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-05
+    success_criteria: []
+    next_action: Convert to formal requirements and prototype acceptance criteria.
+    verification_needed: []
+    confidence: '5'
+  - id: WORKSTREAM-05
+    name: Nanobot construction, blueprinting, cut/fill, and inventory
+    label: FACT + INFERENCE
+    objective: Provide diegetic robot HUD, blueprint previews, nanobot-assisted cut/fill/building, and physical but generous
+      robot logistics.
+    current_state: User proposed nanobots as cheap-to-compute invisible force, blueprint stages, cut/fill, and robot carrying
+      capacity.
+    desired_end_state: 'A validated staged construction workflow: preview, plan, reserve, stage, execute, commit, operate.'
+    status: Active / needs rules
+    priority: P0
+    background: User proposed nanobots as cheap-to-compute invisible force, blueprint stages, cut/fill, and robot carrying
+      capacity.
+    decisions_made:
+    - DECISION-07
+    decisions_pending: []
+    tasks:
+    - TASK-06
+    constraints: []
+    dependencies: []
+    timeline: Initial concept/spec phase
+    blockers:
+    - Unspecified schemas/rules
+    - Need user ratification where assistant-derived
+    risks:
+    - RISK-01
+    - RISK-03
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-05
+    success_criteria: []
+    next_action: Convert to formal requirements and prototype acceptance criteria.
+    verification_needed:
+    - VERIFY-05
+    confidence: '4'
+  - id: WORKSTREAM-06
+    name: Automation, machines, factories, and process graphs
+    label: FACT
+    objective: Avoid expensive worker NPCs and per-part machine simulation by making machines compile into functional graphs/equations.
+    current_state: 'User explicitly deprioritised labour NPCs/pathfinding and wanted process diagrams: input, tick, output.'
+    desired_end_state: A machine compiler and factory simulation model with active visual mode and collapsed aggregate mode.
+    status: Active / core design
+    priority: P0
+    background: 'User explicitly deprioritised labour NPCs/pathfinding and wanted process diagrams: input, tick, output.'
+    decisions_made:
+    - DECISION-08
+    - DECISION-09
+    - DECISION-10
+    decisions_pending: []
+    tasks:
+    - TASK-07
+    constraints: []
+    dependencies: []
+    timeline: Initial concept/spec phase
+    blockers:
+    - Unspecified schemas/rules
+    - Need user ratification where assistant-derived
+    risks:
+    - RISK-01
+    - RISK-05
+    - RISK-06
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-05
+    success_criteria: []
+    next_action: Convert to formal requirements and prototype acceptance criteria.
+    verification_needed: []
+    confidence: '5'
+  - id: WORKSTREAM-07
+    name: Fog of war, sensors, and information security
+    label: FACT + INFERENCE
+    objective: Ensure players/clients only know what sensors, communications, and faction maps reveal.
+    current_state: Initial user asked for fog of war and sensing-limited simulation; assistant expanded server-side truth
+      filtering.
+    desired_end_state: A formal observed/last-known/unknown/secret information model.
+    status: Active / needs spec
+    priority: P1
+    background: Initial user asked for fog of war and sensing-limited simulation; assistant expanded server-side truth filtering.
+    decisions_made: []
+    decisions_pending: []
+    tasks:
+    - TASK-09
+    constraints: []
+    dependencies: []
+    timeline: Initial concept/spec phase
+    blockers:
+    - Unspecified schemas/rules
+    - Need user ratification where assistant-derived
+    risks:
+    - RISK-01
+    - RISK-07
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-05
+    success_criteria: []
+    next_action: Convert to formal requirements and prototype acceptance criteria.
+    verification_needed:
+    - VERIFY-07
+    confidence: '4'
+  - id: WORKSTREAM-08
+    name: Single-player, private servers, official MMO, and distributed authority
+    label: FACT + INFERENCE
+    objective: Support single-player multi-universe play plus an official persistent MMO star system if feasible.
+    current_state: User explicitly wanted single-player across instantiated universes or MMO canonical server; initial query
+      asked about millions/shards/client compute.
+    desired_end_state: Mode-specific architecture and balance rules, including authority, sharding, persistence, and anti-cheat.
+    status: Active / high uncertainty
+    priority: P1
+    background: User explicitly wanted single-player across instantiated universes or MMO canonical server; initial query
+      asked about millions/shards/client compute.
+    decisions_made: []
+    decisions_pending: []
+    tasks:
+    - TASK-11
+    constraints: []
+    dependencies: []
+    timeline: Initial concept/spec phase
+    blockers:
+    - Unspecified schemas/rules
+    - Need user ratification where assistant-derived
+    risks:
+    - RISK-01
+    - RISK-07
+    - RISK-10
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-05
+    success_criteria: []
+    next_action: Convert to formal requirements and prototype acceptance criteria.
+    verification_needed:
+    - VERIFY-06
+    - VERIFY-07
+    confidence: '3'
+  - id: WORKSTREAM-09
+    name: Unreal and renderer/client role
+    label: INFERENCE
+    objective: Evaluate Unreal as renderer/client/tooling rather than authoritative deterministic universe engine.
+    current_state: Assistant repeatedly recommended Unreal as client/renderer while Domino owns deterministic truth; user
+      has not formally accepted.
+    desired_end_state: A documented Unreal integration boundary and verification-backed capability matrix.
+    status: Recommended / not ratified
+    priority: P1
+    background: Assistant repeatedly recommended Unreal as client/renderer while Domino owns deterministic truth; user has
+      not formally accepted.
+    decisions_made:
+    - DECISION-11
+    decisions_pending: []
+    tasks:
+    - TASK-10
+    constraints: []
+    dependencies: []
+    timeline: Initial concept/spec phase
+    blockers:
+    - Unspecified schemas/rules
+    - Need user ratification where assistant-derived
+    risks:
+    - RISK-01
+    - RISK-08
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-05
+    success_criteria: []
+    next_action: Convert to formal requirements and prototype acceptance criteria.
+    verification_needed:
+    - VERIFY-01
+    confidence: '3'
+  - id: WORKSTREAM-10
+    name: Vertical slice and spec-book preparation
+    label: INFERENCE
+    objective: Convert brainstorm into a first playable loop and future master spec-book material.
+    current_state: 'Assistant proposed a vertical slice: mothership spawn, survey, mine, cut/fill, power, refinery, remote
+      spawn lab.'
+    desired_end_state: A prioritized requirements document and prototype plan.
+    status: Active / recommended
+    priority: P0
+    background: 'Assistant proposed a vertical slice: mothership spawn, survey, mine, cut/fill, power, refinery, remote spawn
+      lab.'
+    decisions_made:
+    - DECISION-12
+    decisions_pending: []
+    tasks:
+    - TASK-01
+    - TASK-08
+    - TASK-12
+    constraints: []
+    dependencies: []
+    timeline: Initial concept/spec phase
+    blockers:
+    - Unspecified schemas/rules
+    - Need user ratification where assistant-derived
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-11
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-05
+    success_criteria: []
+    next_action: Convert to formal requirements and prototype acceptance criteria.
+    verification_needed: []
+    confidence: '4'
+  decisions:
+  - id: DECISION-01
+    decision: The main playable setting should start as a procedurally generated star/solar system, not a fully simulated
+      galaxy.
+    status: Tentative user design direction
+    label: FACT
+    evidence_or_basis: User said “Galaxy just a solar system” and focused on planet/system generation.
+    rationale: Narrows initial scope while preserving future universe/multiverse framing.
+    implications: Generation and world scope
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: Tentative if not explicitly final.
+  - id: DECISION-02
+    decision: Planet/system generation should be science-bounded, using plausible parameters rather than arbitrary sliders.
+    status: User-stated design direction
+    label: FACT
+    evidence_or_basis: User said sliders should be bounded to what is realistic and use “real science.”
+    rationale: Provides design freedom without random fantasy settings unless marked as overrides.
+    implications: Editor constraints and generator scoring
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: Tentative if not explicitly final.
+  - id: DECISION-03
+    decision: The editor should allow both forward generation from orbital/planet parameters and reverse fitting from desired
+      planet outcomes.
+    status: Tentative design direction
+    label: FACT
+    evidence_or_basis: User explicitly proposed a reverse process where desired planet design makes parameters “figure themselves
+      out.”
+    rationale: Gives designers control over results without manually painting everything.
+    implications: Generator solver and tool UX
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: Tentative if not explicitly final.
+  - id: DECISION-04
+    decision: Procedural fields, painted overrides, save files, mod packs, and terraforming should share a common layered
+      data approach.
+    status: Tentative design direction
+    label: FACT
+    evidence_or_basis: User said the same technology used for save files should ideally work for packs, worldgen editing,
+      and painted fields over procedural fields.
+    rationale: Unifies persistence, modding, editing, and gameplay terrain changes.
+    implications: Field-layer architecture
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: Tentative if not explicitly final.
+  - id: DECISION-05
+    decision: Players are robots fabricated by a mothership or remote spawn labs.
+    status: Strong user-stated direction
+    label: FACT
+    evidence_or_basis: User described players choosing robot forms and spawning from physical machines that manufacture robots.
+    rationale: Makes respawn, HUD, carrying strength, AI assistance, and automation diegetic.
+    implications: Lore, identity, spawn economy
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: Tentative if not explicitly final.
+  - id: DECISION-06
+    decision: The mothership contains knowledge/recipes but is constrained by finite resources, throughput, scale, heat, and
+      replenishment needs.
+    status: Tentative user direction, assistant refined
+    label: FACT + INFERENCE
+    evidence_or_basis: User explained the ship prevents reinvention of CPUs/rail gauges/calendars but should be resource-limited
+      and eventually require player-supplied materials.
+    rationale: Preserves progression despite advanced seedship technology.
+    implications: Progression and economy
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: Tentative if not explicitly final.
+  - id: DECISION-07
+    decision: Use nanobots/robot HUD/blueprints as the player-facing construction interface.
+    status: Tentative user design direction
+    label: FACT
+    evidence_or_basis: User proposed nanobots, HUD, deterministic non-destructive blueprints, and “make it happen” workflows.
+    rationale: Makes construction powerful and cheap to represent while still requiring rules.
+    implications: Construction UX and cut/fill
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: Tentative if not explicitly final.
+  - id: DECISION-08
+    decision: Avoid worker NPC labour as a core construction/economy system; use automation and AI/process abstraction instead.
+    status: Strong user-stated direction
+    label: FACT
+    evidence_or_basis: User said labour requires pathfinding and is expensive, and suggested jumping straight to automation.
+    rationale: Reduces compute cost and aligns with robot-civilization premise.
+    implications: Civilization and factory simulation
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: Tentative if not explicitly final.
+  - id: DECISION-09
+    decision: Machines/factories should compile into process graphs/equations rather than simulate every physical part continuously.
+    status: Strong user-stated direction
+    label: FACT
+    evidence_or_basis: User wanted input/tick/output process diagrams and whole machine assemblies summarized as one-step
+      equations.
+    rationale: Enables player creativity without unbounded simulation cost.
+    implications: Machine compiler and factory LOD
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: Tentative if not explicitly final.
+  - id: DECISION-10
+    decision: Cities should be easy to start, but advanced technology should require city-scale industry.
+    status: Tentative user direction
+    label: FACT
+    evidence_or_basis: User said basics should be easy, advanced things hard, and advanced production should require making
+      a city.
+    rationale: Creates progression while supporting the fantasy of large-scale settlement building.
+    implications: Progression, cities, factories
+    related_workstreams:
+    - WORKSTREAM-04 / WORKSTREAM-06
+    uncertainty: Tentative if not explicitly final.
+  - id: DECISION-11
+    decision: Domino should own deterministic simulation truth; Unreal, if used, should be a client/renderer/tool layer.
+    status: Assistant recommendation, not formally user-ratified
+    label: INFERENCE
+    evidence_or_basis: Assistant repeatedly argued deterministic database/simulation first and Unreal as renderer/client.
+    rationale: Avoids relying on Unreal actors/physics for a massive deterministic MMO universe.
+    implications: Engine architecture
+    related_workstreams:
+    - WORKSTREAM-01 / WORKSTREAM-09
+    uncertainty: Assistant recommendations need ratification
+  - id: DECISION-12
+    decision: A first playable slice should prove one region loop before solar-system/MMO scale.
+    status: Assistant recommendation, not formally user-ratified
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed a vertical slice containing mothership, robot spawn, survey, mine, cut/fill, power,
+      refinery, fabricator, and remote spawn lab.
+    rationale: Provides a testable path from concept to implementation.
+    implications: Prototype plan
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: Assistant recommendations need ratification
+  tasks:
+  - id: TASK-01
+    task: Write a formal one-page creative pillars document for Dominium’s robotic seed-civilisation premise.
+    priority: P0
+    urgency: U1
+    owner: User / future assistant
+    dependencies:
+    - Current chat preservation
+    inputs_needed:
+    - Visible chat content
+    expected_output: Creative pillars section for spec book
+    next_step: Extract the pillars from Sections 1–4 and Decisions 05–10.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-02
+    task: 'Define the generator/editor parameter model: physical sliders, bounds, plausibility scoring, and override rules.'
+    priority: P0
+    urgency: U1
+    owner: Design/technical team
+    dependencies:
+    - DECISION-02, DECISION-03
+    inputs_needed:
+    - Planet science assumptions and gameplay targets
+    expected_output: Generator/editor spec
+    next_step: List parameters and classify hard/soft/gameplay constraints.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT + INFERENCE
+    confidence: 4
+  - id: TASK-03
+    task: Design the field-layer stack for procedural base, painted overrides, mod packs, saves, terraforming, construction,
+      and damage.
+    priority: P0
+    urgency: U1
+    owner: Engine/data design
+    dependencies:
+    - DECISION-04
+    inputs_needed:
+    - Terrain/field list, storage budget, deterministic operation model
+    expected_output: Layered field data model
+    next_step: Specify layer types and conservation rules.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT + INFERENCE
+    confidence: 4
+  - id: TASK-04
+    task: 'Specify mothership constraints: starter resources, throughput, heat, reserve policy, replenishment, and fabrication
+      limits.'
+    priority: P0
+    urgency: U1
+    owner: Game design/systems
+    dependencies:
+    - DECISION-06
+    inputs_needed:
+    - Progression goals and economy targets
+    expected_output: Mothership resource/fabrication spec
+    next_step: Convert lore constraint into game balance variables.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 4
+  - id: TASK-05
+    task: Define robot identity, body/chassis types, spawn labs, body fabrication costs, and backup/respawn rules.
+    priority: P0
+    urgency: U1
+    owner: Game design/systems
+    dependencies:
+    - DECISION-05
+    inputs_needed:
+    - Chassis list, death rules, MMO permissions
+    expected_output: Spawn economy spec
+    next_step: Create body template table and material/power costs.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 4
+  - id: TASK-06
+    task: Design nanobot blueprint workflow and commit rules for cut/fill/build operations.
+    priority: P0
+    urgency: U1
+    owner: Gameplay/engine design
+    dependencies:
+    - DECISION-07, TASK-03
+    inputs_needed:
+    - Terrain delta model, material conservation, energy model
+    expected_output: Construction interaction spec
+    next_step: Define preview/plan/reserve/stage/execute/commit pipeline.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT + INFERENCE
+    confidence: 4
+  - id: TASK-07
+    task: Design the machine compiler/process graph model.
+    priority: P0
+    urgency: U1
+    owner: Simulation/engine design
+    dependencies:
+    - DECISION-09
+    inputs_needed:
+    - Machine component catalog, graph rules, anti-lag budgets
+    expected_output: Machine/factory simulation spec
+    next_step: Define input/output/power/heat/throughput/failure representation.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: 4
+  - id: TASK-08
+    task: Define the minimal city progression and industrial chain from mothership camp to remote spawn lab.
+    priority: P0
+    urgency: U1
+    owner: Game design
+    dependencies:
+    - TASK-04, TASK-05, TASK-07
+    inputs_needed:
+    - First vertical slice requirements
+    expected_output: Vertical slice progression plan
+    next_step: Write the first 60-minute loop and milestones.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-09
+    task: Create a fog-of-war and sensor truth model.
+    priority: P1
+    urgency: U2
+    owner: Network/simulation design
+    dependencies:
+    - Initial MMO/fog-of-war requirement
+    inputs_needed:
+    - Sensor types, data sharing, server authority model
+    expected_output: Information model spec
+    next_step: Define observed/last-known/inferred/unknown/secret states.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT + INFERENCE
+    confidence: 4
+  - id: TASK-10
+    task: Verify current Unreal capabilities and limits before locking the integration plan.
+    priority: P1
+    urgency: U2
+    owner: Technical research
+    dependencies:
+    - DECISION-11
+    inputs_needed:
+    - Current UE documentation and prototype tests
+    expected_output: Verified capability matrix
+    next_step: Check LWC, World Partition, MassEntity, Iris, Nanite, runtime mesh workflows, determinism constraints.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4
+  - id: TASK-11
+    task: Define official MMO vs single-player/private-server differences.
+    priority: P1
+    urgency: U2
+    owner: Game/network design
+    dependencies:
+    - WORKSTREAM-08
+    inputs_needed:
+    - Mode goals and monetization/hosting assumptions
+    expected_output: Mode comparison spec
+    next_step: Separate what is shared core, what is tuned per mode.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT + INFERENCE
+    confidence: 4
+  - id: TASK-12
+    task: 'Build or specify the first deterministic prototype loop: spawn, survey, mine, cut/fill, power, refinery, fabricator,
+      remote spawn lab.'
+    priority: P0
+    urgency: U1
+    owner: Prototype team
+    dependencies:
+    - TASK-02 through TASK-08
+    inputs_needed:
+    - Prototype engine or paper spec
+    expected_output: Playable or simulated vertical slice
+    next_step: Turn the assistant’s proposed slice into acceptance criteria.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: 4
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Do not treat the whole universe as a normal scene graph or actor list.
+    type: Technical
+    hard_or_soft: Hard
+    source_or_basis: Initial assistant recommendation based on scale goals.
+    implication: Use sparse data, event logs, fields, graphs, and generated render chunks.
+    violation_risk: Severe performance/storage failure.
+    label: INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-02
+    constraint: Generation controls should be plausibility-bounded, not arbitrary magic sliders.
+    type: Design/science
+    hard_or_soft: Soft-to-hard
+    source_or_basis: User explicitly wanted realistic bounds.
+    implication: Editor must surface plausibility and violations.
+    violation_risk: Loss of intended scientific feel.
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-03
+    constraint: Procedural generation should remain overridable with designer/worldgen/packs/terraforming layers.
+    type: Data/design
+    hard_or_soft: Hard
+    source_or_basis: User explicitly wanted overlays and painted fields.
+    implication: Need layer stack, versioning, and conflict rules.
+    violation_risk: Inflexible editor and broken mod/save workflow.
+    label: FACT
+    confidence: '4'
+  - id: CONSTRAINT-04
+    constraint: Gameplay terraforming/construction should obey resource, energy, and time costs.
+    type: Game design
+    hard_or_soft: Hard recommendation
+    source_or_basis: User wanted materials and energy bottlenecks; assistant stressed nanobots not magic.
+    implication: Cut/fill/build cannot be free except previews.
+    violation_risk: Progression collapse and exploits.
+    label: FACT + INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-05
+    constraint: Avoid labour NPC pathfinding as a core economic requirement.
+    type: Performance/design
+    hard_or_soft: Soft-to-hard
+    source_or_basis: User strongly objected to labour compute/pathfinding burden.
+    implication: Use automation, AI controllers, graphs, and abstracted work.
+    violation_risk: Compute blowout and design drift.
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-06
+    constraint: Machines must have collapsed/aggregate representations.
+    type: Performance/design
+    hard_or_soft: Hard recommendation
+    source_or_basis: User wanted process diagrams/equations and assistant reinforced sim LOD.
+    implication: Every machine should compile to functional graph state.
+    violation_risk: Player-made lag machines.
+    label: FACT + INFERENCE
+    confidence: '5'
+  - id: CONSTRAINT-07
+    constraint: Fog-of-war secrets must not be sent to clients in MMO mode.
+    type: Security/networking
+    hard_or_soft: Hard recommendation
+    source_or_basis: Initial user required fog of war; assistant added server-side secrecy.
+    implication: Use sensor-filtered observation packets.
+    violation_risk: Cheating and information leaks.
+    label: INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-08
+    constraint: The mothership cannot be an infinite high-throughput fabricator.
+    type: Progression
+    hard_or_soft: Hard design constraint
+    source_or_basis: User identified this problem and proposed finite reserves/low throughput.
+    implication: Balance ship reserves, fabrication limits, and replenishment.
+    violation_risk: Invalidates mining/factory/city progression.
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-09
+    constraint: Unreal should not be assumed to solve deterministic MMO simulation by itself.
+    type: Technical
+    hard_or_soft: Hard recommendation pending verification
+    source_or_basis: Assistant repeatedly stated this; user asked if Unreal could do it.
+    implication: Verify and bound Unreal role before implementation.
+    violation_risk: Wrong architecture and unachievable performance target.
+    label: INFERENCE
+    confidence: '3'
+  - id: CONSTRAINT-10
+    constraint: Preservation output must remain human-readable and not only machine-readable.
+    type: Process/output
+    hard_or_soft: Hard
+    source_or_basis: Uploaded prompt explicitly requires human-readable report first.
+    implication: Reports need explanatory prose before YAML/registers.
+    violation_risk: User cannot understand old chat without rereading transcript.
+    label: FACT
+    confidence: '5'
+  open_questions:
+  - id: QUESTION-01
+    question: What exact realism bounds should the star-system and planet generator enforce?
+    why_it_matters: Determines editor controls and plausibility scoring.
+    known: User wants realistic sliders and real science.
+    unknown: Exact physical model, allowed fantasy overrides, and gameplay tolerances.
+    resolution_path: Create parameter list and consult/verifiy science sources.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT + UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: How should reverse generation search from desired planet outcomes to plausible parameters?
+    why_it_matters: Key to the user’s desired design workflow.
+    known: User proposed reverse fitting.
+    unknown: Algorithm, scoring, speed, and UX.
+    resolution_path: Prototype optimizer or constraint solver with sample targets.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: QUESTION-03
+    question: What is the exact field-layer schema for terrain, climate, resources, construction, and saves?
+    why_it_matters: Central data model for generation, terraforming, packs, and saves.
+    known: User wants procedural fields overlaid with painted fields and save/pack reuse.
+    unknown: Field resolution, operations, storage, versioning, conflict rules.
+    resolution_path: Design field schema and chunk format.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: QUESTION-04
+    question: What are the mothership’s finite reserves, fabrication throughput, and replenishment rules?
+    why_it_matters: Prevents the seedship from bypassing progression.
+    known: User wants limited reserves and eventual player replenishment.
+    unknown: Quantities, rates, heat/energy limits, safety protocols.
+    resolution_path: Balance model and prototype loop.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: QUESTION-05
+    question: What robot chassis exist at launch and how do they differ mechanically?
+    why_it_matters: Affects player identity and early gameplay.
+    known: User named biped, quadruped, spider, tank-like forms as examples.
+    unknown: Exact chassis stats, costs, unlocks, traversal, cargo, tools.
+    resolution_path: Create body template table.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: QUESTION-06
+    question: How abstract or visible should nanobot construction be?
+    why_it_matters: Controls UX, simulation cost, and fantasy clarity.
+    known: User liked invisible force because it is cheap to compute.
+    unknown: Visual feedback, time cost, range, limits, failure cases.
+    resolution_path: Define nanobot capabilities and construction stages.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: QUESTION-07
+    question: What is the minimum machine graph model that lets players create vehicles/rockets/factories without simulating
+      every part?
+    why_it_matters: Core technical and design challenge.
+    known: User wants machine functions summarized as equations.
+    unknown: Compiler rules, physics interface, failure/wear, exploit prevention.
+    resolution_path: Specify component catalog and compiler output.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: QUESTION-08
+    question: How will cities feel alive without intelligent NPC workers?
+    why_it_matters: Risk to game feel.
+    known: User wants only player characters, mobs/wildlife, and abstract AI agents.
+    unknown: Visual proxies, automation feedback, city dashboards, drone activity.
+    resolution_path: Prototype city feedback layer without worker pathfinding.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: QUESTION-09
+    question: How should official MMO, private server, and single-player modes diverge?
+    why_it_matters: Mode balance affects every system.
+    known: User wants single-player multi-universe and possible official canonical MMO.
+    unknown: Persistence, progression rates, pauses, restarts, anti-cheat, server costs.
+    resolution_path: Mode matrix spec.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: QUESTION-10
+    question: What can Unreal safely own, and what must Domino own?
+    why_it_matters: Avoids architectural mistakes.
+    known: Assistant recommended Unreal as client/renderer.
+    unknown: Current UE capabilities, determinism constraints, runtime terrain options.
+    resolution_path: Verify and write integration boundary.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Manual painting as the main way to make planets
+    status: Deprioritised
+    reason: User said the idea is not manually painting stuff; generation should do most work, with tweaks/overrides.
+    final_or_tentative: Tentative but strong
+    reconsider_conditions: Use painting for overrides, packs, or specific authored features.
+    related_workstreams:
+    - WORKSTREAM-02 / WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-02
+    option: Arbitrary unbounded sliders for planet creation
+    status: Rejected as primary design
+    reason: User said sliders should be bounded to realistic values.
+    final_or_tentative: Strong
+    reconsider_conditions: Allow explicit sci-fi/gameplay overrides if marked and scored.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-03
+    option: Worker NPC labour as core city/construction simulation
+    status: Deprioritised/rejected
+    reason: User said labour is expensive to compute and requires pathfinding; preferred automation from the start.
+    final_or_tentative: Strong
+    reconsider_conditions: Could reappear as local cosmetic drones or abstracted agents, not core labour.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: REJECTED-04
+    option: Simulating machines by every moving part everywhere
+    status: Rejected for scale
+    reason: User wanted machines summarized as process equations; assistant supported aggregation.
+    final_or_tentative: Strong
+    reconsider_conditions: Use high-fidelity visuals only near players or for interactive debugging.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: REJECTED-05
+    option: Infinite mothership fabrication of everything players want
+    status: Rejected as progression-breaking
+    reason: User identified the problem and proposed finite resources/low throughput/replenishment.
+    final_or_tentative: Strong
+    reconsider_conditions: Could allow limited emergency or precision fabrication.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-06
+    option: Unreal as sole authoritative universe engine
+    status: Assistant-rejected, not user-ratified
+    reason: Assistant argued Unreal should be renderer/client; user asked whether Unreal can do it.
+    final_or_tentative: Tentative pending verification
+    reconsider_conditions: Reconsider only after prototypes and verified UE capabilities.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: REJECTED-07
+    option: Millions of players in one fully simulated real-time bubble
+    status: Assistant-rejected as impractical
+    reason: Assistant distinguished millions across universe/shards from millions in one visible interaction bubble.
+    final_or_tentative: Tentative but technically strong
+    reconsider_conditions: Reconsider only with time dilation, instancing, abstraction, or future tech.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: REJECTED-08
+    option: Human-scale inventory limitations as the main carrying model
+    status: Deprioritised
+    reason: User said robots are strong and carrying a 40 kg box should not be an annoying game constraint.
+    final_or_tentative: Tentative
+    reconsider_conditions: Large logistics should still matter for tonnes and megaprojects.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Initial broad Domino/Dominium feasibility question
+    type: User prompt
+    purpose: Asked whether a deterministic full-scale procedural solar-system civilization/MMO game could be built and whether
+      Unreal could do it.
+    status: Preserved in visible chat; no separate file.
+    origin: User
+    carry_forward: 'Yes'
+    notes: Foundational problem statement.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: 'Assistant architecture response: deterministic simulation/database first'
+    type: Assistant output
+    purpose: Explained fixed ticks, hierarchical coordinates, sparse deltas, fog of war, sim LOD, distributed authority, and
+      Unreal limits.
+    status: Preserved in visible chat.
+    origin: Assistant
+    carry_forward: 'Yes'
+    notes: Contains useful recommendations but not all are user decisions.
+    label: INFERENCE
+  - id: ARTIFACT-03
+    name_or_description: 'Assistant architecture response: Domino vs Unreal split and real solar-system data sources'
+    type: Assistant output
+    purpose: Expanded on Domino as deterministic backend and Unreal as renderer/tool client; mentioned JPL/SPICE/IAU/UE features.
+    status: Preserved in visible chat; external facts require verification before spec lock.
+    origin: Assistant
+    carry_forward: 'Yes'
+    notes: Potential duplicate with ARTIFACT-02.
+    label: INFERENCE + UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-04
+    name_or_description: User spoken brainstorm transcript about procedural planets, mothership, robots, nanobots, automation,
+      and process graphs
+    type: User transcript
+    purpose: Core creative/design material of the chat.
+    status: Preserved in visible chat.
+    origin: User
+    carry_forward: 'Yes'
+    notes: Highest-value source for user intent.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: 'Assistant response: robotic seed-civilisation design direction'
+    type: Assistant output
+    purpose: 'Organized the transcript into design pillars: star-system generator, field layers, mothership, robot bodies,
+      nanobot construction, no worker NPCs, machine compiler, vertical slice.'
+    status: Preserved in visible chat.
+    origin: Assistant
+    carry_forward: 'Yes'
+    notes: Use as spec-prep, with user acceptance still needed for recommendations.
+    label: INFERENCE
+  - id: ARTIFACT-06
+    name_or_description: Pasted text.txt preservation prompt
+    type: Uploaded file / prompt
+    purpose: Specified the requested preservation process, sections, registers, spec sheet, aggregator packet, self-audit,
+      and file exports.
+    status: Uploaded in current chat and used to shape this package.
+    origin: User
+    carry_forward: 'Yes'
+    notes: Instruction source, not a gameplay artifact.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: Generated preservation package files
+    type: Generated files
+    purpose: Markdown/YAML files plus ZIP created by this response.
+    status: Created during preservation task.
+    origin: Assistant
+    carry_forward: 'Yes'
+    notes: Package output.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Brainstorm items are accidentally treated as final locked requirements.
+    consequence: Spec may become overcommitted or contradict later user choices.
+    likelihood: High
+    severity: High
+    mitigation: Preserve FACT/INFERENCE/tentative labels and ask for ratification before locking.
+    related_workstreams:
+    - All
+    label: FACT
+  - id: RISK-02
+    risk: Scope explosion from solar system + planets + terraforming + cities + machines + MMO.
+    consequence: Prototype never becomes playable.
+    likelihood: High
+    severity: High
+    mitigation: Start with one-region vertical slice and formalize phases.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+  - id: RISK-03
+    risk: Nanobots become magic and erase logistics/progression.
+    consequence: Mining, factories, cities, and exploration become unnecessary.
+    likelihood: Medium
+    severity: High
+    mitigation: Require energy, matter, time, tool capability, range, heat, and permissions.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-04
+    risk: Mothership fabrication invalidates industrial gameplay.
+    consequence: Players skip factories and cities.
+    likelihood: Medium
+    severity: High
+    mitigation: Define finite reserves, low throughput, heat, scale limits, and mission reserves.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-05
+    risk: No NPC workers makes cities feel empty.
+    consequence: Game may feel sterile despite functional simulation.
+    likelihood: Medium
+    severity: Medium
+    mitigation: Use drones, dashboards, animated infrastructure, wildlife, and player activity as feedback.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-06
+    risk: Player-created machines become lag/exploit machines.
+    consequence: Performance and economy break.
+    likelihood: High
+    severity: High
+    mitigation: Machine compiler, complexity budgets, validation, collapsed representations.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-07
+    risk: Fog-of-war data leaks through client compute or replication.
+    consequence: Cheating and loss of strategic gameplay.
+    likelihood: Medium
+    severity: High
+    mitigation: Never send hidden truth; clients compute only visible/verifiable work.
+    related_workstreams:
+    - WORKSTREAM-07 / WORKSTREAM-08
+    label: INFERENCE
+  - id: RISK-08
+    risk: Unreal capability assumptions become stale or wrong.
+    consequence: Wrong engine boundary and wasted implementation work.
+    likelihood: Medium
+    severity: High
+    mitigation: Verify current docs and prototype integration.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-09
+    risk: Field layers conflict with conservation laws.
+    consequence: Terraforming/save/mod system becomes inconsistent.
+    likelihood: Medium
+    severity: High
+    mitigation: Separate editor/nonconservative layers from gameplay/conservative layers.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-10
+    risk: Official MMO ambitions outpace networking/server budget.
+    consequence: Low latency/high FPS/millions claim fails.
+    likelihood: High
+    severity: High
+    mitigation: Design for distributed regions, not one shared bubble; bound claims.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: RISK-11
+    risk: Future aggregator merges assistant suggestions as user decisions.
+    consequence: Spec book loses epistemic integrity.
+    likelihood: Medium
+    severity: High
+    mitigation: Use labels and decision statuses.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: 'Current Unreal Engine 5/6 capabilities: LWC, World Partition, MassEntity, Iris, Nanite, runtime mesh/dynamic terrain,
+      networking limits.'
+    why_verification_needed: Engine features change over time and prior assistant answers used potentially stale external
+      facts.
+    suggested_source_type: Official Unreal documentation and prototype tests.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: JPL Horizons/SPICE/IAU data suitability and licensing for real Solar System recreation.
+    why_verification_needed: Real-data pipeline and licensing/provenance matter.
+    suggested_source_type: NASA/JPL/NAIF/IAU documentation and license review.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Physical plausibility models for atmosphere retention, climate, orbital stability, tidal locking, magnetospheres,
+      and planet generation.
+    why_verification_needed: Science-bounded generator requires reliable models.
+    suggested_source_type: Planetary science references and simplified gameplay model review.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Determinism risks across CPU/GPU/platforms, floating point, multithreading, and physics.
+    why_verification_needed: Domino’s premise depends on deterministic replay.
+    suggested_source_type: Technical prototype tests and deterministic-simulation literature.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Sparse terrain/voxel/SDF storage and runtime meshing options.
+    why_verification_needed: Cut/fill and terraforming depend on practical editable terrain representation.
+    suggested_source_type: Engine research, prototypes, storage tests.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03 / WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: MMO scalability strategies and realistic player-count claims.
+    why_verification_needed: Initial question asked about millions, shards, low latency, high FPS.
+    suggested_source_type: Network architecture research, MMO case studies, load testing.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Security model for client-shared compute with fog-of-war and anti-cheat.
+    why_verification_needed: Client compute was proposed but is risky.
+    suggested_source_type: Security review and adversarial testing.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-07 / WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Creative pillars
+    - Engine architecture
+    - World generation
+    - Planet field data
+    - Player identity/spawning
+    - Construction/terraforming
+    - Factories/machines
+    - Progression/economy
+    - Fog of war
+    - Multiplayer modes
+    - Prototype plan
+    unique_contributions:
+    - Robotic seed-civilisation premise
+    - Mothership as recipe source but finite factory
+    - Automation-first/no worker NPC pivot
+    - Machine compiler/process-equation idea
+    - Common field layer for generation/saves/packs/terraforming
+    possible_duplicates_with_other_chats:
+    - Deterministic simulation architecture
+    - Unreal integration
+    - MMO scale limits
+    - Procedural planet generation
+    conflicts_to_watch_for:
+    - Any later decision to include human NPC labour
+    - Any later choice to make Unreal authoritative
+    - Any later unlimited fabrication system
+    - Any later non-science-bounded generator
+    formal_requirements_candidates:
+    - Science-bounded generation
+    - Field-layer data model
+    - Robot fabricated bodies
+    - Mothership finite resources
+    - Nanobot blueprint construction
+    - No worker NPC core labour
+    - Machine process graph compiler
+    background_context_candidates:
+    - Humanity seedship lore variants
+    - Potential future human embryo ship
+    - Mystery lore/faction ideas
+    needs_user_confirmation:
+    - Unreal integration boundary
+    - Exact official MMO structure
+    - Exact lore around humans arriving
+    - Exact robot chassis list
+    - Exact vertical slice scope
+  final_recommendations:
+    next_action_if_continuing_this_chat: Write the Dominium First Playable Slice Spec.
+    next_action_for_aggregator: Merge only confirmed user-stated design directions as requirements; keep assistant recommendations
+      labelled pending.
+    user_checks_required:
+    - Confirm decisions DECISION-11 and DECISION-12 if they should become formal requirements.
+    - Confirm no-worker-NPC direction as hard requirement.
+    - Confirm whether official MMO is canonical launch target or long-term goal.

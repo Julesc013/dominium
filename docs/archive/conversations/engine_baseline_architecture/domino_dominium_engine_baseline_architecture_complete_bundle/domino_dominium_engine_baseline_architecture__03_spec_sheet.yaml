@@ -1,0 +1,255 @@
+spec_sheet:
+  metadata:
+    chat_label: "Domino/Dominium Engine Baseline, Architecture, and Feasibility"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This chat only unless labelled PROJECT-CONTEXT"
+    apparent_coverage: "Partial but broad visible chat context"
+    confidence_1_to_5: 4
+    staleness_risk: "Medium"
+    safe_for_aggregation: "Yes, with caveats"
+    main_limitations:
+      - "Local build and CTest claims were pasted by user, not independently rerun."
+      - "Cannot access user's C:/ local repo paths directly."
+      - "GitHub/repo facts may change after fetch."
+      - "Some architecture recommendations are not accepted final decisions."
+
+  summary:
+    one_sentence: "This chat established Domino as a deterministic reusable substrate, Dominium as one game layer, corrected engine readiness to baseline-first, and framed CAD/build/destruction/full-scale universe ambitions as long-term sparse contract-driven systems."
+    short_brief: "The chat moved from project description to engine improvement, modularity, CAD/building, geometry representation, readiness, and full-scale universe feasibility. The key correction is that the repo has a real deterministic substrate but not a finished playable engine; Milestone 0 must make the repo-local playable baseline command pass strict validation before gameplay expansion."
+    main_topics:
+      - "Domino/Dominium architecture boundary"
+      - "Deterministic execution and proof"
+      - "Engine portability/modularity/future-proofing"
+      - "CAD-capable design and construction"
+      - "Hybrid geometry/destruction model"
+      - "Engine readiness and Milestone 0"
+      - "Full-scale universe, planets, fog, sharding, client compute"
+      - "Preservation and aggregation"
+    main_outputs:
+      - "Baseline-first roadmap"
+      - "Contract-compiled simulation platform doctrine"
+      - "Layered CAD/building authoring model"
+      - "Hybrid CSG/B-Rep/NURBS/SDF recommendation"
+      - "Sparse multi-resolution universe architecture"
+      - "Structured preservation package"
+    highest_priority_carry_forward:
+      - "Milestone 0: make canonical repo-local playable baseline command pass strict validation."
+      - "Do not start CAD/destruction/broad gameplay before baseline path is honest."
+      - "Preserve engine/game boundary and deterministic proof requirements."
+
+  source_rules:
+    labels_used:
+      - "FACT"
+      - "INFERENCE"
+      - "UNCERTAIN / UNVERIFIED"
+      - "PROJECT-CONTEXT"
+    conflict_rules:
+      - "Direct user statements outrank assistant suggestions."
+      - "Repo canon/current-reality docs outrank older derived docs."
+      - "Live implementation evidence outranks stale prose."
+      - "Local user-reported test results are evidence but need verification."
+    staleness_rules:
+      - "Re-verify current repo state before implementation."
+      - "Re-verify external engine/tool facts before relying on them."
+
+  user_preferences:
+    explicit:
+      - "Direct, source-grounded, audit-ready answers."
+      - "Portable, modular, reusable engine code."
+      - "No default recipes, tech trees, or experience levels in usual gameplay."
+      - "Support those systems for mods/game modes via capabilities/law/packs."
+      - "Players limited by imagination but able to play without special skills."
+      - "Support low performance, disability controls, minimal GUI."
+      - "Full chat preservation for aggregation."
+    inferred:
+      - "Prefer concrete milestone sequencing to reduce overwhelm."
+      - "Prefer contract-driven architecture over ad hoc feature code."
+      - "Prefer not to rely on Unreal as authoritative core."
+    uncertain_or_not_established:
+      - "Whether Unreal should be used at all as a client/editor shell."
+      - "Which geometry kernel/provider library should be used."
+      - "Exact UI toolkit or renderer strategy."
+
+  workstreams:
+    - id: "WORKSTREAM-02"
+      name: "Baseline path hardening"
+      label: "FACT"
+      objective: "Make one canonical repo-local playable baseline command pass strict validation."
+      current_state: "Substrate exists, but playable path is blocked/fragile."
+      desired_end_state: "Strict validator passes; proof_status not blocked."
+      status: "Active"
+      priority: "P0"
+      background: "User pasted local readiness assessment and assistant verified key repo indicators."
+      decisions_made: ["DECISION-02", "DECISION-03"]
+      decisions_pending: ["Bundle default/wrapper behavior", "canonical command name"]
+      tasks: ["TASK-01", "TASK-02", "TASK-03", "TASK-04", "TASK-05", "TASK-06", "TASK-07"]
+      constraints: ["CONSTRAINT-01", "CONSTRAINT-02", "CONSTRAINT-08"]
+      dependencies: ["Current repo state", "local build environment", "MVP bundle artifacts"]
+      timeline: "Immediate"
+      blockers: ["Circular import", "session boot refusal", "time-anchor registry failure"]
+      risks: ["RISK-01", "RISK-02", "RISK-09"]
+      artifacts: ["ARTIFACT-05", "ARTIFACT-06", "ARTIFACT-07", "ARTIFACT-09"]
+      success_criteria:
+        - "server CLI works"
+        - "session_create -> session_boot passes"
+        - "time-anchor registry validates"
+        - "check_local_playtest_path.py --strict passes"
+      next_action: "Reproduce and fix circular import."
+      verification_needed: ["VERIFY-03", "VERIFY-04", "VERIFY-05"]
+      confidence: "High"
+
+    - id: "WORKSTREAM-06"
+      name: "CAD/design/building substrate"
+      label: "INFERENCE"
+      objective: "Support full design freedom through layered authoring and canonical design artifacts."
+      current_state: "Conceptual plan plus early physical/FAB code."
+      desired_end_state: "DesignArtifact schema, layered UI/tooling, build validation."
+      status: "Future after baseline"
+      priority: "P1"
+      background: "User wants imagination-limited building without requiring CAD skill."
+      decisions_made: ["DECISION-05", "DECISION-06"]
+      decisions_pending: ["Exact schema", "authoring surfaces", "first action scope"]
+      tasks: ["TASK-09", "TASK-11"]
+      constraints: ["CONSTRAINT-07", "CONSTRAINT-10"]
+      dependencies: ["Milestone 0", "first deterministic game action"]
+      timeline: "After baseline"
+      blockers: []
+      risks: ["RISK-07"]
+      artifacts: ["ARTIFACT-08"]
+      success_criteria:
+        - "ordinary and advanced authoring compile to same canonical artifact"
+      next_action: "After Milestone 0, define one minimal build action."
+      verification_needed: []
+      confidence: "Medium"
+
+  decisions:
+    - id: "DECISION-03"
+      decision: "Milestone 0 must precede builder/destruction lab."
+      status: "Accepted sequencing"
+      label: "FACT"
+      evidence_or_basis: "User explicitly agreed with corrected assessment."
+      rationale: "Playable baseline path is blocked."
+      implications: "No broad gameplay expansion before baseline validation."
+      related_workstreams: ["WORKSTREAM-02"]
+      uncertainty: "Exact implementation details pending."
+
+  tasks:
+    - id: "TASK-01"
+      task: "Fix server/runtime circular import."
+      priority: "P0"
+      urgency: "U0"
+      owner: "Developer / future assistant"
+      dependencies: []
+      inputs_needed: ["current stack trace", "server_main.py", "loopback_transport.py", "tick_loop.py"]
+      expected_output: "Server help/smoke command imports cleanly."
+      next_step: "Inspect import graph and split entrypoint/runtime modules."
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "FACT"
+      confidence: "High"
+
+  constraints:
+    - id: "CONSTRAINT-08"
+      constraint: "Baseline-first sequencing."
+      type: "Project sequencing"
+      hard_or_soft: "Hard near-term"
+      source_or_basis: "User correction and repo current-reality framing"
+      implication: "Do not start CAD/destruction/broad gameplay before baseline."
+      violation_risk: "Wasted work and unstable feature development."
+      label: "FACT"
+      confidence: "High"
+
+  open_questions:
+    - id: "QUESTION-04"
+      question: "What is the canonical playtest command?"
+      why_it_matters: "Needed to turn recipe into executable baseline proof."
+      known: "Current path is target recipe, not finished command."
+      unknown: "Final command name/interface/report schema."
+      resolution_path: "Design and implement wrapper after blockers are fixed."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "FACT"
+
+  rejected_or_superseded_options:
+    - id: "REJECTED-02"
+      option: "Start CAD/destruction immediately."
+      status: "Superseded"
+      reason: "Baseline path is blocked."
+      final_or_tentative: "Temporary until Milestone 0 passes."
+      reconsider_conditions: "After strict local playtest path passes."
+      related_workstreams: ["WORKSTREAM-06", "WORKSTREAM-07"]
+      label: "FACT"
+
+  artifacts:
+    - id: "ARTIFACT-01"
+      name_or_description: "Pasted text.txt preservation prompt"
+      type: "Uploaded prompt"
+      purpose: "Defines this preservation/export task."
+      status: "Available"
+      origin: "User upload"
+      carry_forward: true
+      notes: "Should be preserved with package."
+      label: "FACT"
+
+  risks:
+    - id: "RISK-02"
+      risk: "Skipping Milestone 0."
+      consequence: "Feature work builds on broken runtime path."
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Make strict baseline command P0."
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "FACT"
+
+  verification_queue:
+    - id: "VERIFY-01"
+      item: "User-reported targeted CTest pass"
+      why_verification_needed: "Not independently rerun in this chat."
+      suggested_source_type: "Local logs or CI report"
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "UNVERIFIED"
+
+  spec_book_notes:
+    likely_sections:
+      - "Project architecture"
+      - "Deterministic execution"
+      - "Engine/game boundary"
+      - "Baseline roadmap"
+      - "CAD/building/design"
+      - "Geometry/destruction"
+      - "Full-scale universe and MMO"
+      - "Modding/capabilities/packs"
+    unique_contributions:
+      - "Baseline-first correction"
+      - "CAD-capable but not CAD-required authoring"
+      - "Hybrid geometry representation"
+      - "Full scale not full fidelity doctrine"
+    possible_duplicates_with_other_chats:
+      - "Engine/game boundary"
+      - "XStack/governance"
+      - "Pack/capability architecture"
+      - "Playable baseline blockers"
+    conflicts_to_watch_for:
+      - "Older chats may overstate readiness."
+      - "Other chats may assume broad gameplay before baseline."
+      - "Repo default bundle docs may conflict."
+    formal_requirements_candidates:
+      - "One canonical repo-local baseline command."
+      - "No default recipes/tech trees/XP in normal gameplay."
+      - "Client/render must not mutate truth."
+      - "Full-scale systems must collapse inactive fidelity."
+    background_context_candidates:
+      - "Historical engine comparison"
+      - "Unreal comparison"
+      - "Long-term CAD/MMO ambitions"
+    needs_user_confirmation:
+      - "Exact geometry provider strategy."
+      - "Whether Unreal should be used as shell."
+      - "Canonical playtest command name."
+
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Write a concrete Milestone 0 implementation prompt starting with circular import fix."
+    next_action_for_aggregator: "Merge DECISION-03, TASK-01–07, and CONSTRAINT-08 as near-term requirements."
+    user_checks_required:
+      - "Confirm current repo state."
+      - "Upload local validation logs if audit-grade proof is needed."

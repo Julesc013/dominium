@@ -1,0 +1,1278 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Architecture, UI, Providers, and Robot OS Strategy
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only unless labelled PROJECT-CONTEXT
+    apparent_coverage: Partial with caveats
+    confidence_1_to_5: 4
+    staleness_risk: Medium
+    safe_for_aggregation: With caveats
+    main_limitations:
+    - Visible chat includes pasted prior-chat transcripts but not guaranteed full raw older transcripts.
+    - External library/toolchain/platform facts require verification before implementation.
+    - Repo state referenced in chat may have changed.
+  summary:
+    one_sentence: This chat converged Dominium toward a service-first provider-backed architecture and a robotic seed-civilisation
+      game with an OS-like customizable UI.
+    short_brief: Dominium should use C17/C++17, first-party contracts, replaceable providers, profiles, raylib/SDL/Lua as
+      fenced providers, shared CLI/TUI/rendered/native UI projections, Workbench as UI artifact factory, and robotic seed-civilisation
+      as game identity.
+    main_topics:
+    - repo layout
+    - provider architecture
+    - renderer plan
+    - language baseline
+    - Workbench
+    - Robot OS UI
+    - robotic seed-civilisation game design
+    main_outputs:
+    - decisions
+    - tasks
+    - risks
+    - verification queue
+    - context packet
+    - spec sheet
+    - export files
+    highest_priority_carry_forward:
+    - PROVIDER-WEDGE-01
+    - ROBOT-OS-WEDGE-01
+    - game design spec extraction
+    - matrix cleanup
+    - verification of external facts
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Direct user statements outrank assistant suggestions.
+    - Explicitly accepted synthesis outranks tentative brainstorming.
+    - Current verified repo facts outrank pasted stale reports.
+    staleness_rules:
+    - External library/toolchain/platform claims go to verification queue.
+    - Repo status must be refreshed before implementation.
+  user_preferences:
+    explicit:
+    - Prefers rigorous, source-grounded, audit-ready answers with explicit uncertainty.
+    - Prefers intuitive, literal, modular names; dislikes vague labels like compat/universal/ugly compound strings.
+    - Prefers long-term portability, modularity, extensibility, and replaceability over quick one-off indie design.
+    - Prefers native/OEM+ OS apps and CLI/TUI support across products.
+    - Prefers broad, deep strategic synthesis over narrow answers.
+    - Prefers human-readable reports before machine-readable registers.
+    - Wants downloadable files/ZIP when tools are available.
+    - Wants UI/UX to feel like an OS, with deep customization and diegetic robot epistemics.
+    inferred: []
+    uncertain_or_not_established:
+    - Exact preferred Lua version
+    - Exact future role of Unreal
+    - Exact Linux baseline
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Repository and directory architecture
+    label: FACT/INFERENCE
+    objective: Keep Dominium organized by architectural ownership, not topic sprawl or vendor identity.
+    current_state: Top-level structure was converged conceptually and later referenced as mostly clean, with residual taxonomy
+      issues.
+    desired_end_state: Stable source tree with enforced ownership roots and no top-level sprawl.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks:
+    - TASK-13
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    dependencies: []
+    timeline: See section 27.
+    blockers: []
+    risks:
+    - RISK-09
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed:
+    - VERIFY-07
+    confidence: '4'
+  - id: WORKSTREAM-02
+    name: Platform, renderer, and provider strategy
+    label: FACT
+    objective: Define modular runtime services and replaceable providers for platform, input, render, audio, asset, script,
+      and UI.
+    current_state: Direction settled on service-first/provider-backed/profile-selected/contract-governed/third-party-fenced.
+    desired_end_state: Providers are selectable, testable, replaceable, and forbidden from leaking types into core contracts.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made:
+    - DECISION-01
+    - DECISION-07
+    - DECISION-08
+    decisions_pending: []
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    - TASK-04
+    - TASK-11
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    dependencies: []
+    timeline: See section 27.
+    blockers: []
+    risks:
+    - RISK-02
+    - RISK-04
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-03
+    - VERIFY-09
+    confidence: '4'
+  - id: WORKSTREAM-03
+    name: Language and compatibility baseline
+    label: FACT/UNVERIFIED
+    objective: Clarify the language standard and minimum supported systems after transition from C89/C++98.
+    current_state: User stated C17/C++17 and Windows 7 SP1, Mac OS X 10.9.5, Linux as current floor.
+    desired_end_state: Build/toolchain docs and matrices reflect new floor; obsolete lanes are research/back-port only.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made:
+    - DECISION-02
+    - DECISION-03
+    decisions_pending: []
+    tasks:
+    - TASK-12
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    dependencies: []
+    timeline: See section 27.
+    blockers: []
+    risks:
+    - RISK-06
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed:
+    - VERIFY-04
+    - VERIFY-05
+    - VERIFY-06
+    confidence: '4'
+  - id: WORKSTREAM-04
+    name: Rendering and drawing architecture
+    label: FACT/INFERENCE
+    objective: Separate renderer backends from drawing/canvas/UI primitives, and decide first implementation order.
+    current_state: OpenGL 3.3, raylib/rlgl/rlsw, software/null, D3D11, Metal, Vulkan were placed into staged roles.
+    desired_end_state: Renderer backend IDs are clean; drawing/canvas layer is renderer-independent; vector2d not a backend.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made:
+    - DECISION-04
+    - DECISION-05
+    - DECISION-06
+    decisions_pending: []
+    tasks:
+    - TASK-06
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    dependencies: []
+    timeline: See section 27.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed:
+    - VERIFY-08
+    confidence: '4'
+  - id: WORKSTREAM-05
+    name: Workbench and shared UI platform
+    label: FACT
+    objective: Use Workbench to author UI/TUI/rendered/native/immersive artifacts through documents, actions, views, patches,
+      and projections.
+    current_state: Direction settled on shared command/action/view/document/presentation spine; Workbench becomes UI factory.
+    desired_end_state: Workbench edits UI documents, previews projections, validates, packages, and avoids provider-specific
+      law.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made:
+    - DECISION-09
+    decisions_pending: []
+    tasks:
+    - TASK-10
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    dependencies: []
+    timeline: See section 27.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-06
+    name: Robot OS and diegetic UX
+    label: FACT/INFERENCE
+    objective: Make the game UI feel like a customizable robot operating system across boot, node, body, HUD, and Workbench.
+    current_state: User introduced robot seed-civilisation premise and OS-like customizable consciousness shell.
+    desired_end_state: CLI/TUI/rendered/native/immersive shells project same OS semantics; HUD and menus share artifacts.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made:
+    - DECISION-11
+    decisions_pending: []
+    tasks:
+    - TASK-07
+    - TASK-09
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    dependencies: []
+    timeline: See section 27.
+    blockers: []
+    risks:
+    - RISK-03
+    - RISK-05
+    - RISK-08
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-07
+    name: Game design direction
+    label: FACT
+    objective: Reframe Dominium as a robotic seed-civilisation game, not labour-management, with machines, logistics, fields,
+      nanotech, and mothership constraints.
+    current_state: User supplied detailed design doctrine in final game-design message.
+    desired_end_state: Formal gameplay spec with planet generation, field layers, fabrication, spawn economy, machine graphs,
+      fog-of-war, robot bodies.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made:
+    - DECISION-10
+    decisions_pending: []
+    tasks:
+    - TASK-08
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    dependencies: []
+    timeline: See section 27.
+    blockers: []
+    risks:
+    - RISK-07
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-08
+    name: Distribution, setup, launcher, and user-selectable components
+    label: INFERENCE
+    objective: Allow setup/launcher to select compatible distributions, providers, renderers, modes, and profiles safely.
+    current_state: Discussed install-plan resolver and renderer selection through verified component graph/capability contracts.
+    desired_end_state: Setup/launcher expose only valid choices by default; invalid choices have deterministic refusals.
+    status: planned
+    priority: P1
+    background: ''
+    decisions_made:
+    - DECISION-12
+    decisions_pending: []
+    tasks:
+    - TASK-05
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    dependencies: []
+    timeline: See section 27.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '3'
+  - id: WORKSTREAM-09
+    name: Data, schemas, packs, and compatibility
+    label: INFERENCE
+    objective: Ensure packs, saves, replays, fields, documents, UI artifacts, and schemas are versioned and migratable.
+    current_state: Discussed field layers, semantic IDs, schema evolution, and pack governance.
+    desired_end_state: All authored data and generated state versioned, testable, and decoupled from source paths.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    dependencies: []
+    timeline: See section 27.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-10
+    name: Future spec book aggregation
+    label: FACT
+    objective: Preserve this chat as a structured source for a master Project Spec Book.
+    current_state: Current uploaded prompt explicitly requested preservation package, registers, spec sheet, aggregator packet,
+      and files.
+    desired_end_state: This report and files are ready for later aggregation with caveats.
+    status: active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks:
+    - TASK-14
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    dependencies: []
+    timeline: See section 27.
+    blockers: []
+    risks:
+    - RISK-10
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '5'
+  decisions:
+  - id: DECISION-01
+    decision: Architectural direction is service-first, provider-backed, profile-selected, contract-governed, third-party-fenced.
+    status: accepted by user / current doctrine
+    label: FACT
+    evidence_or_basis: User explicitly restated and endorsed this formulation.
+    rationale: Allows raylib/SDL/Lua acceleration without architecture lock-in.
+    implications: All provider work, repo layout, manifests, and tests should follow this.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: See label/confidence.
+  - id: DECISION-02
+    decision: Use C17 + C++17 as the mainline language baseline, not C89/C++98, pure C99, or pure C++11.
+    status: accepted by user
+    label: FACT
+    evidence_or_basis: User stated transition to C17/C++17 and later provided a transcript defending that baseline.
+    rationale: Modernizes implementation while preserving C-compatible boundaries.
+    implications: Obsoletes many old toolchain/render assumptions; requires matrix cleanup.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: See label/confidence.
+  - id: DECISION-03
+    decision: Minimum first-wave systems are Windows 7 SP1+, Mac OS X 10.9.5+, and Linux, with 64-bit x86_64/ARM64 prioritized.
+    status: accepted by user, external specifics unverified
+    label: FACT/VERIFY
+    evidence_or_basis: User stated these floors directly.
+    rationale: Defines what renderers, OS APIs, and toolchains matter first.
+    implications: Moves Win9x/XP/Vista/DOS/Win16/Carbon/PowerPC to research/back-port.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: See label/confidence.
+  - id: DECISION-04
+    decision: OpenGL 3.3 should be the first direct hardware-rendering target before Direct3D 11.
+    status: accepted direction
+    label: FACT/INFERENCE
+    evidence_or_basis: User argued OpenGL 3.3 helps early Mac/Linux/portable shader work; assistant agreed conditionally.
+    rationale: Keeps early rendering cross-platform and shader-first.
+    implications: D3D11 remains Windows renderer second; Metal/Vulkan later.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See label/confidence.
+  - id: DECISION-05
+    decision: OpenGL 1.1, OpenGL 2.1, and Direct3D 5/7/8/9 are deferred indefinitely/back-port research rather than first-wave
+      targets.
+    status: accepted by user
+    label: FACT
+    evidence_or_basis: User explicitly proposed deferring old fixed-function/old D3D lanes.
+    rationale: Reduces architectural burden and lets project focus on shader graphics.
+    implications: These can return only if old-host back-port demand justifies them.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See label/confidence.
+  - id: DECISION-06
+    decision: vector2d should not be a renderer backend; it should become a drawing/canvas feature layer.
+    status: assistant recommendation apparently accepted by continued discussion
+    label: INFERENCE
+    evidence_or_basis: The user challenged vector2d; assistant explained it as a drawing layer rather than backend.
+    rationale: Prevents backend taxonomy confusion.
+    implications: Matrix should remove vector2d as renderer and add drawing/canvas concepts.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See label/confidence.
+  - id: DECISION-07
+    decision: Use raylib ecosystem heavily now as seed providers, not as architecture.
+    status: accepted by user through subsequent synthesis
+    label: FACT/INFERENCE
+    evidence_or_basis: User supplied transcript and asked for ultimate synthesis; final direction endorsed raylib/rlgl/rlsw/raygui/raudio
+      as providers.
+    rationale: Enables visible progress without letting third-party types become law.
+    implications: Requires provider manifests, forbidden include checks, conformance tests.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: See label/confidence.
+  - id: DECISION-08
+    decision: Keep Dominium apps generic and select provider combinations through profiles, not app-directory variants.
+    status: accepted in refined synthesis
+    label: FACT/INFERENCE
+    evidence_or_basis: Repeated preference for service roots and provider leaves; avoid product identities like client_raylib.
+    rationale: Preserves modularity and replaceability.
+    implications: Requires release/content profiles and provider resolver.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: See label/confidence.
+  - id: DECISION-09
+    decision: Workbench should author Dominium UI documents, not raygui/raylib objects directly.
+    status: accepted by sustained discussion
+    label: INFERENCE
+    evidence_or_basis: User asked how Workbench designs UI; assistant laid out document/patch/view workflow; user continued
+      with robot OS model.
+    rationale: Keeps UI customization reusable across CLI/TUI/rendered/native/immersive shells.
+    implications: Requires document/patch/action/view contracts.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: See label/confidence.
+  - id: DECISION-10
+    decision: Dominium should become a robotic seed-civilisation game, not a labour-management game.
+    status: explicit user statement
+    label: FACT
+    evidence_or_basis: User directly stated this as core design direction.
+    rationale: Sets the gameplay, UI diegetics, fog-of-war, spawning, automation, and world simulation model.
+    implications: Human labour simulation should not drive core mechanics.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: See label/confidence.
+  - id: DECISION-11
+    decision: The UI should feel like a customizable robot operating system, with boot/node/body/HUD/workbench shells sharing
+      code and artifacts.
+    status: explicit user statement + accepted synthesis
+    label: FACT/INFERENCE
+    evidence_or_basis: User described booting an OS, downloading consciousness into bodies, and full UI customizability.
+    rationale: Unifies diegetics, menu/HUD continuity, Workbench, TUI/CLI/rendered/VR shells.
+    implications: Requires protected warnings, epistemic constraints, customization safety.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: See label/confidence.
+  - id: DECISION-12
+    decision: Setup/launcher should allow user choice only through verified compatible component profiles, not arbitrary unchecked
+      binaries.
+    status: accepted direction
+    label: INFERENCE
+    evidence_or_basis: Discussed installer as install-plan resolver and launcher renderer selector.
+    rationale: Supports customization without compatibility fraud or unsafe combinations.
+    implications: Requires capability checks, refusals, manifests, profile locks.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: See label/confidence.
+  tasks:
+  - id: TASK-01
+    task: Create/update provider manifest schema and provider capability schema.
+    priority: P0
+    urgency: U0
+    owner: project implementer
+    dependencies:
+    - WORKSTREAM-02 decisions
+    inputs_needed:
+    - Current provider list, service contracts
+    expected_output: contracts/provider schema and validation rules
+    next_step: Draft provider schema and manifest examples for raylib, SDL2, Lua, null providers
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT/INFERENCE
+    confidence: see label
+  - id: TASK-02
+    task: Add forbidden include validator for third-party fences.
+    priority: P0
+    urgency: U0
+    owner: project implementer
+    dependencies:
+    - Provider manifest paths
+    inputs_needed:
+    - Repo paths and include scan policy
+    expected_output: Tool that fails if raylib/SDL/Lua headers leak into engine/game/contracts/content/sdk
+    next_step: Specify allowed and forbidden include roots; implement validator
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT/INFERENCE
+    confidence: see label
+  - id: TASK-03
+    task: Implement null providers for platform/input/render/audio.
+    priority: P0
+    urgency: U0
+    owner: project implementer
+    dependencies:
+    - Service contracts
+    inputs_needed:
+    - Minimal API stubs
+    expected_output: Headless/server/CI provider baseline
+    next_step: Define null provider behavior and conformance fixtures
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-04
+    task: Implement raylib/rlgl/rlsw/raygui/raudio provider wedge.
+    priority: P0
+    urgency: U1
+    owner: project implementer
+    dependencies:
+    - Provider schema, third-party vendoring policy, forbidden include validator
+    inputs_needed:
+    - Pinned raylib/raygui versions and external/upstream layout
+    expected_output: Client and Workbench proof profiles that open windows, draw, preview, play audio, export frame
+    next_step: Create PROVIDER-WEDGE-01 task/branch
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT/INFERENCE
+    confidence: see label
+  - id: TASK-05
+    task: Create release/provider profiles for client, Workbench, and server.
+    priority: P0
+    urgency: U1
+    owner: project implementer
+    dependencies:
+    - Provider manifests and profile schema
+    inputs_needed:
+    - Provider selections
+    expected_output: client.raylib, workbench.raylib, server.null profile files
+    next_step: Define profile schema and sample profiles
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-06
+    task: Clean render matrix names and remove version-coded/ugly component IDs.
+    priority: P0
+    urgency: U1
+    owner: project implementer
+    dependencies:
+    - Existing component matrix
+    inputs_needed:
+    - Current matrix rows for gl1/gl2/gl4/dx9/dx11/vk1/vector2d/etc
+    expected_output: Renderer/drawing matrix with clean family names and version fields
+    next_step: Rewrite matrix rows as renderer=opengl/direct3d/vulkan/software/null and drawing=canvas
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT/INFERENCE
+    confidence: see label
+  - id: TASK-07
+    task: Build ROBOT-OS-WEDGE-01 shared view/projection proof.
+    priority: P0
+    urgency: U1
+    owner: project implementer
+    dependencies:
+    - Command/action/view/document/presentation contracts
+    inputs_needed:
+    - view.node.status definition
+    expected_output: Same node status shown as command/text/rendered/body HUD panel
+    next_step: Draft view.node.status and three projections
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT/INFERENCE
+    confidence: see label
+  - id: TASK-08
+    task: Formalize robotic seed-civilisation design into a game-design spec.
+    priority: P0
+    urgency: U1
+    owner: designer/spec writer
+    dependencies:
+    - User design doctrine from chat
+    inputs_needed:
+    - Gameplay pillars and mechanics lists
+    expected_output: Spec chapter for robotic seed civilisation, mothership, bodies, fields, nanotech, machine graphs, fog
+      of war
+    next_step: Convert final user game-design message into requirements/context/open issues
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: see label
+  - id: TASK-09
+    task: Define UI customization safety and protected alert classes.
+    priority: P0
+    urgency: U1
+    owner: designer/engineer
+    dependencies:
+    - Robot OS UI model
+    inputs_needed:
+    - Threat model for MMO UI customization
+    expected_output: Rules preventing UI mods from hiding critical warnings or cheating
+    next_step: Create UI_SECURITY_AND_CUSTOMIZATION.md
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-10
+    task: Create Workbench UI authoring workflow spec.
+    priority: P1
+    urgency: U1
+    owner: designer/engineer
+    dependencies:
+    - Workbench architecture
+    inputs_needed:
+    - Document/patch/action/view model
+    expected_output: Spec for Interface Studio, Theme Lab, TUI Studio, Preview Matrix, Renderer Sandbox
+    next_step: Draft Workbench authoring module order
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-11
+    task: Pin Lua provider version and define dominium.script.v1.
+    priority: P1
+    urgency: U1
+    owner: engineer
+    dependencies:
+    - Script requirements and external verification
+    inputs_needed:
+    - Lua version selection
+    expected_output: Stable script API contract independent of raw Lua ABI
+    next_step: Choose lua54 or lua55 after verification
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT/VERIFY
+    confidence: see label
+  - id: TASK-12
+    task: Verify current external support claims for raylib, SDL2, Lua, macOS 10.9.5, Windows 7 SP1, OpenGL 3.3, D3D11.
+    priority: P1
+    urgency: U1
+    owner: researcher/engineer
+    dependencies:
+    - Current official documentation
+    inputs_needed:
+    - Official version/support sources
+    expected_output: Verification report and updated matrix
+    next_step: Browse official docs and record dated evidence
+    related_workstreams:
+    - WORKSTREAM-03
+    label: VERIFY
+    confidence: see label
+  - id: TASK-13
+    task: Finish residual repo taxonomy checks from pasted report.
+    priority: P1
+    urgency: U2
+    owner: project implementer
+    dependencies:
+    - Directory tree report if available
+    inputs_needed:
+    - Actual repo tree and validators
+    expected_output: 'Targeted cleanup: schemas, packs, runtime taxonomy, AIDE state, report integrity'
+    next_step: Run validators and inspect actual files
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN
+    confidence: see label
+  - id: TASK-14
+    task: Package this chat preservation report for aggregation.
+    priority: P0
+    urgency: U0
+    owner: assistant
+    dependencies:
+    - Visible chat and uploaded preservation prompt
+    inputs_needed:
+    - Generated files
+    expected_output: Markdown/YAML/ZIP handoff package
+    next_step: Completed in this response
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: see label
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Third-party types must not cross into engine, game, contracts, content, saves, replays, packs, game law, or
+      public SDK.
+    type: technical architecture
+    hard_or_soft: hard
+    source_or_basis: Repeated user/assistant synthesis
+    implication: Adapters translate to Dominium-owned types at provider boundaries.
+    violation_risk: 'High: vendor lock-in and save/replay contamination.'
+    label: FACT/INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-02
+    constraint: Services are first-party; providers are replaceable.
+    type: technical architecture
+    hard_or_soft: hard
+    source_or_basis: User accepted service-first/provider-backed doctrine
+    implication: runtime/<service>/providers/<provider> structure preferred.
+    violation_risk: 'High: vendor-shaped architecture becomes hard to replace.'
+    label: FACT
+    confidence: '4'
+  - id: CONSTRAINT-03
+    constraint: Apps compose; runtime implements; contracts define; content supplies; tools validate.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: Repeated synthesis and repo layout doctrine
+    implication: Product folders must remain thin.
+    violation_risk: 'High: apps become monolithic products and duplicate logic.'
+    label: INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-04
+    constraint: CLI/TUI/rendered/native/immersive are projections of one command/action/view/document system.
+    type: UI architecture
+    hard_or_soft: hard
+    source_or_basis: User wants one OS-like UI across modes
+    implication: Avoid four divergent UI systems.
+    violation_risk: 'High: feature drift and inconsistent UX.'
+    label: FACT/INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-05
+    constraint: The game simulates robots, materials, energy, machines, logistics, sensors, permissions, not human workers.
+    type: game design
+    hard_or_soft: hard
+    source_or_basis: User explicitly stated design direction
+    implication: No labour-management or human worker sim as core.
+    violation_risk: 'Medium: old MMO/city sim assumptions reappear.'
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-06
+    constraint: Nanotech is precise manipulation, not free matter/energy/logistics/instant construction.
+    type: game design
+    hard_or_soft: hard
+    source_or_basis: User explicitly stated rule
+    implication: Blueprints and construction require material/energy/time/tools/sensors/permissions.
+    violation_risk: 'High: nanotech trivializes economy.'
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-07
+    constraint: User customization must not reveal unknown data, hide mandatory warnings, bypass permissions, or automate
+      illegal actions.
+    type: security/game design
+    hard_or_soft: hard
+    source_or_basis: UI/robot OS synthesis
+    implication: Themes/layouts safe; scripts/macros restricted.
+    violation_risk: 'High: cheating, griefing, epistemic breakage.'
+    label: INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-08
+    constraint: External-world facts must be verified before formalizing as current support claims.
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: Uploaded preservation prompt requires stale facts in verification queue
+    implication: Support matrices should not rely on stale memory.
+    violation_risk: 'Medium: matrix claims become outdated.'
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-09
+    constraint: Do not treat assistant suggestions as user decisions unless accepted by user.
+    type: process
+    hard_or_soft: hard
+    source_or_basis: Uploaded preservation prompt
+    implication: Registers distinguish FACT/INFERENCE/UNCERTAIN.
+    violation_risk: 'High: false consensus in spec book.'
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-10
+    constraint: Use C17/C++17 mainline but keep C-shaped ABI boundaries.
+    type: language/ABI
+    hard_or_soft: hard
+    source_or_basis: User provided C17/C++17 transition and transcript
+    implication: Modern internals; stable POD/handles/versioned structs at boundary.
+    violation_risk: 'High: C++ ABI leaks into packs/plugins/saves.'
+    label: FACT/INFERENCE
+    confidence: '4'
+  open_questions:
+  - id: QUESTION-01
+    question: 'Which Lua provider version should be pinned first: lua54 or lua55?'
+    why_it_matters: Script ABI stability and support.
+    known: Lua should be provider behind dominium.script.v1; versions differ.
+    unknown: Which version best balances maturity and future features.
+    resolution_path: Verify current Lua status and choose explicitly.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: VERIFY
+  - id: QUESTION-02
+    question: Should raylib be vendored under external/upstream or pulled as submodule/package?
+    why_it_matters: Reproducibility and patch control.
+    known: Preferred structure says external/upstream with licenses/manifests/patches.
+    unknown: Exact supply-chain method.
+    resolution_path: Define third-party dependency policy.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN
+  - id: QUESTION-03
+    question: How much of raygui should be used for Workbench before first-party UI controls mature?
+    why_it_matters: Avoid raygui lock-in while moving fast.
+    known: Raygui is early provider, not UI law.
+    unknown: When to replace or supplement it.
+    resolution_path: Build Workbench proof then assess limits.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: QUESTION-04
+    question: What exact first-wave Linux baseline is targeted?
+    why_it_matters: Toolchain/glibc/windowing compatibility.
+    known: Linux is in floor; x11/wayland custom providers deferred.
+    unknown: Distro/glibc/minimum compiler assumptions.
+    resolution_path: Create platform matrix and verify toolchain support.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN
+  - id: QUESTION-05
+    question: How should official MMO UI customization restrict scripts/macros?
+    why_it_matters: Anti-cheat and fairness.
+    known: Customization allowed; hidden automation forbidden.
+    unknown: Specific server policy and sandbox model.
+    resolution_path: Threat model and UI security spec.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: QUESTION-06
+    question: What is the first gameplay vertical slice for robotic seed-civilisation?
+    why_it_matters: Implementation order.
+    known: User defined many mechanics.
+    unknown: Minimal playable loop still unchosen.
+    resolution_path: 'Choose first loop: survey -> mine -> refine -> fabricate -> build spawn node?'
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN
+  - id: QUESTION-07
+    question: Should Unreal remain part of the visible-local-world plan or is raylib-first enough for near term?
+    why_it_matters: Visual tech stack and scope.
+    known: User pasted Unreal role in game design transcript; later focus shifted to raylib providers.
+    unknown: Current commitment to Unreal is unclear.
+    resolution_path: Decide whether Unreal is future renderer/provider, external visual client, or deprioritized.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN
+  - id: QUESTION-08
+    question: How should robot consciousness backup, disconnect, and body persistence work on official servers?
+    why_it_matters: Core UX, fairness, and diegetic epistemics.
+    known: User proposed consciousness on ice and speed-of-light mesh nodes.
+    unknown: Exact gameplay and anti-abuse rules.
+    resolution_path: Design session/backup/body-link spec.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: QUESTION-09
+    question: Which repo residual taxonomy items are actually still present after latest repo changes?
+    why_it_matters: Avoid acting on stale tree reports.
+    known: User pasted a report claiming structure mostly clean with residual warnings.
+    unknown: Current live repo state not fully revalidated in this task.
+    resolution_path: Run current tree/report integrity checks.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-01
+    label: VERIFY
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: One universal GUI framework defines the product family.
+    status: rejected/superseded
+    reason: Risk of framework capture and poor old-host/native fit.
+    final_or_tentative: likely final
+    reconsider_conditions: Reconsider only if project narrows to one platform/toolkit.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-02
+    option: One GUI per OS version.
+    status: rejected
+    reason: Creates combinatorial explosion.
+    final_or_tentative: likely final
+    reconsider_conditions: Only reconsider for small high-value host lanes.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-03
+    option: Content/domains as default destination for all domain material.
+    status: rejected
+    reason: Domain material includes code, schemas, registries, docs, packs, fixtures.
+    final_or_tentative: final
+    reconsider_conditions: Only use content for authored data/packs/assets.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-04
+    option: vector2d as a render backend.
+    status: superseded
+    reason: It is drawing/canvas functionality, not backend equivalent to OpenGL/D3D.
+    final_or_tentative: final for first-wave
+    reconsider_conditions: Could exist as feature name, not renderer backend.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: REJECTED-05
+    option: OpenGL 1.1/2.1 and Direct3D 5/7/8/9 as first-wave renderers.
+    status: deprioritized
+    reason: New floors allow shader-first OpenGL 3.3 and D3D11.
+    final_or_tentative: temporary/back-port possible
+    reconsider_conditions: Reconsider for explicit old-host back-port.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-06
+    option: raylib as the game architecture.
+    status: rejected
+    reason: Would contaminate core contracts/saves/replays/game law.
+    final_or_tentative: final
+    reconsider_conditions: raylib remains provider suite.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT/INFERENCE
+  - id: REJECTED-07
+    option: Pure C99 or pure C++11 pivot.
+    status: rejected
+    reason: C17/C++17 gives better machinery while preserving C-compatible ABI.
+    final_or_tentative: likely final
+    reconsider_conditions: Reconsider only if host/toolchain constraints radically change.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-08
+    option: Human worker/labour-management core game.
+    status: rejected by user
+    reason: User chose robotic seed civilisation; no human labour simulation.
+    final_or_tentative: final for current design
+    reconsider_conditions: Could appear only as later narrative/ecology layer, not core.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-09
+    option: Workbench edits provider-specific UI objects as source of truth.
+    status: rejected
+    reason: Would lock UI to raygui/raylib/native toolkit.
+    final_or_tentative: final
+    reconsider_conditions: Workbench edits Dominium documents and projections.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Transfer Knowledge Base — GUI and Binary Rebuild
+    type: pasted prior-chat brief
+    purpose: Provided initial context for GUI/binary/product/platform doctrine.
+    status: preserve
+    origin: user paste in chat
+    carry_forward: 'yes'
+    notes: Contains architecture/non-negotiables/open questions; some later superseded.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Live repo reference `julesc013/dominium`
+    type: repository reference
+    purpose: Established latest docs/code baseline for repo-aware discussion.
+    status: preserve
+    origin: user statement + assistant repo lookups
+    carry_forward: 'yes'
+    notes: Current repo status may have changed; verify before implementing.
+    label: FACT/VERIFY
+  - id: ARTIFACT-03
+    name_or_description: Repo/layout and component matrix excerpts
+    type: assistant retrieved repo files in chat
+    purpose: Supported claims about AppShell, component matrix, layout target, CMake C17/C++17.
+    status: preserve as context
+    origin: api_tool/GitHub connector in prior turns
+    carry_forward: 'yes'
+    notes: Repo-source evidence should be refreshed for implementation.
+    label: PROJECT-CONTEXT/VERIFY
+  - id: ARTIFACT-04
+    name_or_description: Pasted raylib/SDL/Lua provider synthesis transcript
+    type: user-pasted prior chat material
+    purpose: Captured service-first provider architecture and third-party fencing.
+    status: preserve
+    origin: user paste
+    carry_forward: 'yes'
+    notes: External version/support claims need verification.
+    label: FACT/VERIFY
+  - id: ARTIFACT-05
+    name_or_description: Pasted game design direction document
+    type: user-pasted design doctrine
+    purpose: Defines robotic seed-civilisation premise, planet generation, field layers, mothership, nanotech, machine graphs,
+      fog of war.
+    status: preserve
+    origin: user paste
+    carry_forward: 'yes'
+    notes: Should be formalized into game-design spec.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: Pasted preservation prompt file
+    type: uploaded file
+    purpose: Defines this preservation task and output package requirements.
+    status: preserve
+    origin: uploaded Pasted text.txt
+    carry_forward: 'yes'
+    notes: Primary task spec for this response.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: Generated preservation Markdown/YAML/ZIP package
+    type: generated files
+    purpose: This response’s export package for later reading and aggregation.
+    status: new
+    origin: assistant-generated
+    carry_forward: 'yes'
+    notes: Files linked at end.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Renderer naming and vector2d discussion
+    type: conversation output
+    purpose: Clarified software renderer, drawing/canvas, null, OpenGL/D3D/Metal/Vulkan roles.
+    status: preserve
+    origin: this chat
+    carry_forward: 'yes'
+    notes: Convert to renderer matrix cleanup task.
+    label: INFERENCE
+  - id: ARTIFACT-09
+    name_or_description: Workbench/UI authoring architecture
+    type: conversation output
+    purpose: Explains how Workbench edits views/layouts/widgets/themes/documents and previews projections.
+    status: preserve
+    origin: this chat
+    carry_forward: 'yes'
+    notes: Forms UI platform spec foundation.
+    label: INFERENCE
+  - id: ARTIFACT-10
+    name_or_description: Robot OS UI/UX synthesis
+    type: conversation output
+    purpose: Defines boot/node/body/HUD/Workbench shells and diegetic epistemics.
+    status: preserve
+    origin: this chat
+    carry_forward: 'yes'
+    notes: Forms UX spec foundation.
+    label: FACT/INFERENCE
+  risks:
+  - id: RISK-01
+    risk: Future assistant treats assistant suggestions as accepted decisions.
+    consequence: False spec requirements.
+    likelihood: medium
+    severity: high
+    mitigation: Use labels and decision statuses; cite user acceptance where clear.
+    related_workstreams:
+    - all
+    label: FACT
+  - id: RISK-02
+    risk: Third-party provider leakage into engine/game/contracts/content.
+    consequence: Vendor lock-in, broken saves/replays, hard rewrites.
+    likelihood: medium
+    severity: high
+    mitigation: Forbidden include validator, provider manifests, type translation boundaries.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-03
+    risk: UI customization becomes cheating or hides critical warnings.
+    consequence: MMO unfairness, griefing, bad UX safety.
+    likelihood: medium
+    severity: high
+    mitigation: Protected alert classes, sandbox rules, server-side authority, UI security spec.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-04
+    risk: Raylib proof becomes permanent architecture accidentally.
+    consequence: Provider lock-in.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Provider conformance tests and planned replacement path.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-05
+    risk: Robot OS diegetic UI overreaches before core gameplay exists.
+    consequence: Scope creep.
+    likelihood: medium
+    severity: medium
+    mitigation: Build wedge with view.node.status and small modules first.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-06
+    risk: Old compatibility/back-port lanes distract from C17/C++17 first-wave.
+    consequence: Delayed progress.
+    likelihood: medium
+    severity: medium
+    mitigation: 'Matrix phases: first-wave vs research/back-port.'
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT/INFERENCE
+  - id: RISK-07
+    risk: Game design becomes over-simulated too early.
+    consequence: Performance/design paralysis.
+    likelihood: medium
+    severity: high
+    mitigation: Start with simplified fields, cut/fill, machine graph compiler; add fluids/climate later.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-08
+    risk: Fog-of-war and epistemics are implemented only visually, not server-authoritatively.
+    consequence: Cheating and lore breakage.
+    likelihood: medium
+    severity: high
+    mitigation: Server must constrain known data; UI metadata tracks source/confidence/staleness.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-09
+    risk: Repo reports are stale or inconsistent.
+    consequence: Wrong cleanup actions.
+    likelihood: medium
+    severity: medium
+    mitigation: Verify current repo tree and report-integrity pipeline.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: VERIFY
+  - id: RISK-10
+    risk: Preservation package over-compresses nuance.
+    consequence: Loss of context for future spec book.
+    likelihood: low-medium
+    severity: medium
+    mitigation: Human report + registers + spec sheet + aggregator packet created.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Current raylib 6.0 features/support and exact platform floors.
+    why_verification_needed: External library status can change.
+    suggested_source_type: Official raylib repository/release notes.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: VERIFY
+  - id: VERIFY-02
+    item: SDL2 vs SDL3 support, migration differences, and Windows/macOS/Linux floors.
+    why_verification_needed: Provider choice depends on exact support.
+    suggested_source_type: Official SDL docs/release notes.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: VERIFY
+  - id: VERIFY-03
+    item: Lua current version and ABI compatibility policy; choose lua54 or lua55.
+    why_verification_needed: Script provider pinning.
+    suggested_source_type: Official Lua download/version docs.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: VERIFY
+  - id: VERIFY-04
+    item: Windows 7 SP1 D3D11/toolchain support and VS versions usable for target.
+    why_verification_needed: Build floor.
+    suggested_source_type: Microsoft docs/toolchain docs.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-03
+    label: VERIFY
+  - id: VERIFY-05
+    item: Mac OS X 10.9.5 OpenGL/C++17/libc++ deployment support.
+    why_verification_needed: Build/render floor.
+    suggested_source_type: Apple/Xcode/libc++ docs and test machine.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-03
+    label: VERIFY
+  - id: VERIFY-06
+    item: Linux baseline distribution/glibc/compiler/windowing target.
+    why_verification_needed: Portability floor.
+    suggested_source_type: Project decision + distro/toolchain docs.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: VERIFY
+  - id: VERIFY-07
+    item: Current live repo structure after pasted directory report.
+    why_verification_needed: Avoid stale cleanup tasks.
+    suggested_source_type: Fresh tree from GitHub/local repo and validators.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-01
+    label: VERIFY
+  - id: VERIFY-08
+    item: Unreal’s future role after raylib-first provider strategy.
+    why_verification_needed: Tech stack clarity.
+    suggested_source_type: Project decision; Unreal docs only if used.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-04
+    label: VERIFY
+  - id: VERIFY-09
+    item: Any legal/license obligations for raylib, raygui, SDL2, Lua, miniaudio, etc.
+    why_verification_needed: Distribution compliance.
+    suggested_source_type: LICENSE files and dependency manifests.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-02
+    label: VERIFY
+  spec_book_notes:
+    likely_sections:
+    - Architecture doctrine
+    - Repository layout
+    - Renderer strategy
+    - Language/toolchain
+    - UI platform
+    - Game design
+    - Diegetic epistemics
+    - Third-party dependencies
+    - Spec aggregation
+    unique_contributions:
+    - Robotic seed-civilisation direction
+    - Robot OS UI/UX
+    - service/provider/profile doctrine
+    possible_duplicates_with_other_chats:
+    - GUI/binary strategy
+    - repo layout
+    - component matrix
+    - renderer plan
+    conflicts_to_watch_for:
+    - older C89/C++98 plans
+    - older OpenGL/DX priorities
+    - universal GUI framework proposals
+    - Unreal vs raylib role
+    formal_requirements_candidates:
+    - Architecture doctrine
+    - Repository layout
+    - Renderer strategy
+    - Language/toolchain
+    - UI platform
+    - Game design
+    - Diegetic epistemics
+    - Third-party dependencies
+    background_context_candidates:
+    - historical transfer brief
+    - previous assistant repo analyses
+    needs_user_confirmation:
+    - Lua version
+    - Unreal role
+    - first gameplay vertical slice
+    - exact Linux floor
+  final_recommendations:
+    next_action_if_continuing_this_chat: Turn PROVIDER-WEDGE-01 into a Codex-ready implementation task.
+    next_action_for_aggregator: Merge this report into architecture, UI/UX, provider, and game-design chapters.
+    user_checks_required:
+    - Confirm decisions marked INFERENCE before treating them as final.

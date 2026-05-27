@@ -1,0 +1,446 @@
+spec_sheet:
+  metadata:
+    chat_label: "Domino/Dominium Portability, Assurance, and Future-Proof Architecture"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This chat only unless labelled PROJECT-CONTEXT"
+    apparent_coverage: "Partial visible chat context plus uploaded prompt"
+    confidence_1_to_5: 4
+    staleness_risk: "medium"
+    safe_for_aggregation: "with caveats"
+    main_limitations:
+      - "No repository inspection was performed."
+      - "Assistant recommendations are not all user-ratified decisions."
+      - "External standards claims need verification before formal use."
+  summary:
+    one_sentence: "This chat defines a standards-informed, contract-governed, portable Domino/Dominium architecture doctrine and exports it for preservation."
+    short_brief: "The user asked whether assurance standards should inform Domino/Dominium and then broadened to portability, modularity, extensibility, replacement, APIs, data formats, directory structure, and future-proofing."
+    main_topics: ["standards-informed assurance", "engine/product separation", "public API and ABI discipline", "directory/module structure", "persistent data compatibility", "determinism and replay", "conformance testing", "preservation and aggregation"]
+    main_outputs: ["human-readable report", "structured registers", "context transfer packet", "spec sheet", "aggregator packet", "audit", "ZIP export"]
+    highest_priority_carry_forward: ["Confirm doctrine", "Inspect actual repo", "Create public API and data evolution policies", "Create conformance tests and registries"]
+  source_rules:
+    labels_used: ["FACT", "INFERENCE", "UNCERTAIN / UNVERIFIED", "PROJECT-CONTEXT"]
+    conflict_rules:
+      - "Direct user statements outrank assistant recommendations."
+      - "Visible current-chat facts outrank project memory."
+      - "Do not treat proposed architecture as accepted canon without user approval."
+    staleness_rules:
+      - "Verify external standards and current tools before normative use."
+  user_preferences:
+    explicit:
+      - "Human-readable explanation first."
+      - "Portability, modularity, extensibility, reuse, replaceability, and future-proofing are critical."
+    inferred:
+      - "User wants spec-book-ready architecture artifacts."
+    uncertain_or_not_established:
+      - "Whether exact DDAP/DIL structure is accepted."
+      - "Whether exact proposed directory tree is accepted."
+  workstreams:
+    - id: WORKSTREAM-01
+      name: "Standards-informed assurance profile"
+      label: "INFERENCE / assistant recommendation"
+      objective: "Define a Domino/Dominium Assurance Profile that borrows useful assurance ideas without compliance claims."
+      current_state: "Assistant proposed DDAP v0 and DIL levels; not yet user-ratified."
+      desired_end_state: "Written internal profile with levels, gates, schemas, validators, and adoption rules."
+      status: "Proposed"
+      priority: "P1"
+      background: "Derived from visible chat architecture discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, date-anchored 2026-05-27 Australia/Melbourne."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Review and pilot concrete implementation."
+      verification_needed: []
+      confidence: 4
+    - id: WORKSTREAM-02
+      name: "Portable engine platform boundary"
+      label: "FACT / INFERENCE"
+      objective: "Keep Domino reusable across games/projects through stable contracts and replaceable internals."
+      current_state: "User explicitly prioritised portability, modularity, extensibility, reuse, and replaceability."
+      desired_end_state: "Domino usable without Dominium, with public contracts and no accidental product dependency."
+      status: "Active concern"
+      priority: "P0"
+      background: "Derived from visible chat architecture discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, date-anchored 2026-05-27 Australia/Melbourne."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Review and pilot concrete implementation."
+      verification_needed: []
+      confidence: 5
+    - id: WORKSTREAM-03
+      name: "Directory/module structure and ownership"
+      label: "assistant recommendation"
+      objective: "Organise repo around ownership, public contracts, private implementation, tests, and replacement criteria."
+      current_state: "Assistant proposed a tightened tree and module.toml pattern."
+      desired_end_state: "Dependency direction and module ownership are explicit and checked."
+      status: "Proposed"
+      priority: "P1"
+      background: "Derived from visible chat architecture discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, date-anchored 2026-05-27 Australia/Melbourne."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Review and pilot concrete implementation."
+      verification_needed: []
+      confidence: 4
+    - id: WORKSTREAM-04
+      name: "Persistent data and compatibility"
+      label: "assistant recommendation"
+      objective: "Make saves/packs/replays/protocols/schemas versioned, migratable, and safe."
+      current_state: "Assistant proposed TLV/chunk registries, no-ID-reuse, migration tests."
+      desired_end_state: "Versioned formats with registries, fixtures, migration tools, validation."
+      status: "Proposed"
+      priority: "P0"
+      background: "Derived from visible chat architecture discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, date-anchored 2026-05-27 Australia/Melbourne."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Review and pilot concrete implementation."
+      verification_needed: []
+      confidence: 4
+    - id: WORKSTREAM-05
+      name: "Determinism and replay"
+      label: "assistant recommendation"
+      objective: "Make deterministic state transition and replay validation architectural features."
+      current_state: "Assistant proposed fixed tick, RNG streams, no OS/time in simulation, replay equality tests."
+      desired_end_state: "Replay harness and determinism rules enforced by tests/layers."
+      status: "Proposed"
+      priority: "P1"
+      background: "Derived from visible chat architecture discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, date-anchored 2026-05-27 Australia/Melbourne."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Review and pilot concrete implementation."
+      verification_needed: []
+      confidence: 4
+    - id: WORKSTREAM-06
+      name: "Conformance, validation, and tooling"
+      label: "assistant recommendation / PROJECT-CONTEXT for AIDE"
+      objective: "Make modularity mechanically testable."
+      current_state: "Assistant proposed conformance tests, fuzzing, layer checkers, validators, AIDE/XStack enforcement."
+      desired_end_state: "Automated validators for APIs, schemas, layers, release gates, module replacement."
+      status: "Proposed"
+      priority: "P1"
+      background: "Derived from visible chat architecture discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, date-anchored 2026-05-27 Australia/Melbourne."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Review and pilot concrete implementation."
+      verification_needed: []
+      confidence: 4
+    - id: WORKSTREAM-07
+      name: "Setup, launcher, tools, and UI boundaries"
+      label: "assistant recommendation"
+      objective: "Keep setup/launcher/tools/UI as contract consumers, not privileged engine internals."
+      current_state: "Assistant proposed setup transaction flow and semantic command/result UI layer."
+      desired_end_state: "Thin surfaces consume same contracts and respect authority rules."
+      status: "Proposed"
+      priority: "P2"
+      background: "Derived from visible chat architecture discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, date-anchored 2026-05-27 Australia/Melbourne."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Review and pilot concrete implementation."
+      verification_needed: []
+      confidence: 4
+    - id: WORKSTREAM-08
+      name: "Chat preservation and spec-book aggregation"
+      label: "FACT"
+      objective: "Preserve this chat into human-readable and structured artifacts."
+      current_state: "User uploaded preservation prompt requiring report, registers, spec sheet, aggregator packet, audit, files and ZIP."
+      desired_end_state: "Downloadable package plus in-chat reader with caveats."
+      status: "Completed by this response"
+      priority: "P0"
+      background: "Derived from visible chat architecture discussion."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "Current chat, date-anchored 2026-05-27 Australia/Melbourne."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Review and pilot concrete implementation."
+      verification_needed: []
+      confidence: 5
+  decisions:
+    - id: DECISION-01
+      decision: "Use standards as design inputs, not literal compliance targets."
+      status: "Assistant recommendation; not explicitly user-ratified."
+      label: "INFERENCE / assistant recommendation"
+      evidence_or_basis: "User asked whether standards could be used for Domino/Dominium; assistant answered yes, but not as certification/compliance."
+      rationale: "Useful assurance patterns should be borrowed; external certification wrappers are misaligned."
+      implications: "Creates DDAP-style internal profile rather than compliance claim."
+      related_workstreams: ["WORKSTREAM-01"]
+      uncertainty: "Many decisions are recommendations pending user ratification."
+    - id: DECISION-02
+      decision: "Separate Domino as reusable engine/runtime/toolchain from Dominium as one product built on it."
+      status: "Assistant recommendation aligned with explicit user goal."
+      label: "FACT goal + INFERENCE architecture"
+      evidence_or_basis: "User explicitly wanted reuse for another game and other engine/game projects."
+      rationale: "Engine/product separation prevents product assumptions contaminating reusable code."
+      implications: "Domino should not depend on Dominium; Dominium consumes public contracts."
+      related_workstreams: ["WORKSTREAM-02"]
+      uncertainty: "Many decisions are recommendations pending user ratification."
+    - id: DECISION-03
+      decision: "Stable public contracts, replaceable internals."
+      status: "Assistant recommendation; not separately accepted after answer."
+      label: "assistant recommendation"
+      evidence_or_basis: "Assistant framed this as the core doctrine."
+      rationale: "Preserves compatibility while allowing deep refactors."
+      implications: "Public headers/formats/protocols/tests stable; algorithms/private modules replaceable."
+      related_workstreams: ["WORKSTREAM-02"]
+      uncertainty: "Many decisions are recommendations pending user ratification."
+    - id: DECISION-04
+      decision: "Do not make every internal function/header stable."
+      status: "Assistant recommendation."
+      label: "assistant recommendation"
+      evidence_or_basis: "Assistant warned against making all internal headers public or stable."
+      rationale: "Freezing internals creates accidental compatibility burdens."
+      implications: "Need explicit public/private split and lifecycle labels."
+      related_workstreams: ["WORKSTREAM-02"]
+      uncertainty: "Many decisions are recommendations pending user ratification."
+    - id: DECISION-05
+      decision: "Use internal DIL-0 through DIL-5 levels for assurance gates."
+      status: "Assistant recommendation; not user-confirmed."
+      label: "assistant recommendation"
+      evidence_or_basis: "Assistant proposed levels for experiments through external-impacting systems."
+      rationale: "Applies rigor only where trust/persistence/authority/external impact exists."
+      implications: "DIL-3+ receives stronger evidence/tests/review; UI/content stays lighter."
+      related_workstreams: ["WORKSTREAM-01"]
+      uncertainty: "Many decisions are recommendations pending user ratification."
+    - id: DECISION-06
+      decision: "Prioritise assurance for saves, packs, replay, authority, updater/installer, multiplayer, and mod trust."
+      status: "Assistant recommendation."
+      label: "assistant recommendation"
+      evidence_or_basis: "Assistant identified highest-value targets."
+      rationale: "Failures here can corrupt data, break compatibility, or undermine trust/security."
+      implications: "These paths need versioning, validation, negative tests, review gates, audit evidence."
+      related_workstreams: ["WORKSTREAM-04 / WORKSTREAM-06"]
+      uncertainty: "Many decisions are recommendations pending user ratification."
+    - id: DECISION-07
+      decision: "Use conformance tests as proof of replaceability."
+      status: "Assistant recommendation."
+      label: "assistant recommendation"
+      evidence_or_basis: "Assistant stated stable interface without conformance suite is only a promise."
+      rationale: "Replacement must be objectively testable."
+      implications: "tests/conformance becomes first-class repo area."
+      related_workstreams: ["WORKSTREAM-06"]
+      uncertainty: "Many decisions are recommendations pending user ratification."
+    - id: DECISION-08
+      decision: "Treat data evolution as seriously as code evolution."
+      status: "Assistant recommendation."
+      label: "assistant recommendation"
+      evidence_or_basis: "Assistant emphasized saves/packs/schemas/protocols and no tag reuse."
+      rationale: "Long-lived projects often fail through broken data compatibility."
+      implications: "Need registries, fixtures, migration tests, compatibility policy."
+      related_workstreams: ["WORKSTREAM-04"]
+      uncertainty: "Many decisions are recommendations pending user ratification."
+    - id: DECISION-09
+      decision: "Do not present this package as guaranteed full transcript extraction."
+      status: "Decision in this package."
+      label: "FACT / UNCERTAIN scope"
+      evidence_or_basis: "Visible context and uploaded prompt are available; hidden transcript/repo are not guaranteed."
+      rationale: "Preservation must be honest about source scope."
+      implications: "Safe for aggregation only with caveats."
+      related_workstreams: ["WORKSTREAM-08"]
+      uncertainty: "Many decisions are recommendations pending user ratification."
+  tasks:
+    - id: TASK-01
+      task: "Create DDAP v0 document defining DIL-0 through DIL-5 and adoption rules."
+      priority: "P1"
+      urgency: "U1"
+      owner: "Project maintainer / future assistant"
+      dependencies: ["User approval; standards verification"]
+      inputs_needed: ["Current repo, architecture notes, standards map"]
+      expected_output: "docs/assurance/ddap.md or control/assurance/ASSURANCE_PROFILE.md"
+      next_step: "Draft outline and apply to high-trust subsystems."
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "assistant recommendation"
+      confidence: 4
+    - id: TASK-02
+      task: "Define public API/ABI policy for Domino."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Project maintainer"
+      dependencies: ["Clarify language/toolchain targets"]
+      inputs_needed: ["Existing headers, target platforms, plugin requirements"]
+      expected_output: "docs/architecture/public-api-policy.md plus include/domino conventions"
+      next_step: "List current public/private boundaries."
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "assistant recommendation"
+      confidence: 4
+    - id: TASK-03
+      task: "Create contracts/registries for stable IDs: error codes, TLV tags, capabilities, opcodes, subsystem IDs."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Project maintainer"
+      dependencies: ["Initial format decisions"]
+      inputs_needed: ["Current save/pack/protocol drafts"]
+      expected_output: "contracts/registries/*.toml"
+      next_step: "Draft registries with reserved ranges/no-reuse."
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "assistant recommendation"
+      confidence: 4
+    - id: TASK-04
+      task: "Add conformance test area and first replacement tests."
+      priority: "P1"
+      urgency: "U1"
+      owner: "Project maintainer / test harness"
+      dependencies: ["At least one public API boundary"]
+      inputs_needed: ["API specs, fixtures, golden outputs"]
+      expected_output: "tests/conformance/ with executable replacement criteria"
+      next_step: "Start with pack validator or save reader."
+      related_workstreams: ["WORKSTREAM-06"]
+      label: "assistant recommendation"
+      confidence: 4
+    - id: TASK-05
+      task: "Add layer checker / forbidden include checker."
+      priority: "P1"
+      urgency: "U1"
+      owner: "Project maintainer / tooling"
+      dependencies: ["Layering policy"]
+      inputs_needed: ["Directory map and allowed dependencies"]
+      expected_output: "scripts/check_layers.py or equivalent CI gate"
+      next_step: "Encode Domino-must-not-depend-on-Dominium rule."
+      related_workstreams: ["WORKSTREAM-03"]
+      label: "assistant recommendation"
+      confidence: 4
+    - id: TASK-06
+      task: "Write data-evolution policy for saves, packs, schemas, protocols, and replays."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Project maintainer"
+      dependencies: ["Persistent format strategy"]
+      inputs_needed: ["Format drafts, versioning constraints"]
+      expected_output: "docs/architecture/data-evolution-policy.md"
+      next_step: "Define no-ID-reuse and migration fixture rules."
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "assistant recommendation"
+      confidence: 4
+    - id: TASK-07
+      task: "Build deterministic replay comparison harness."
+      priority: "P1"
+      urgency: "U2"
+      owner: "Engine/test maintainer"
+      dependencies: ["Simulation reducer and serialization design"]
+      inputs_needed: ["Tick model, RNG strategy, canonical state serializer"]
+      expected_output: "replay_compare tool and platform equality tests"
+      next_step: "Define minimal canonical state snapshot."
+      related_workstreams: ["WORKSTREAM-05"]
+      label: "assistant recommendation"
+      confidence: 4
+    - id: TASK-08
+      task: "Define module.toml ownership/replacement metadata."
+      priority: "P2"
+      urgency: "U2"
+      owner: "Architecture/tooling"
+      dependencies: ["Directory structure stabilization"]
+      inputs_needed: ["Module list, owners, dependencies, public headers"]
+      expected_output: "module.toml schema and examples"
+      next_step: "Pilot with render.soft or pack validator."
+      related_workstreams: ["WORKSTREAM-03"]
+      label: "assistant recommendation"
+      confidence: 4
+    - id: TASK-09
+      task: "Separate setup transaction engine from gameplay and launcher."
+      priority: "P2"
+      urgency: "U2"
+      owner: "Setup/installer maintainer"
+      dependencies: ["Install layout and release format decisions"]
+      inputs_needed: ["Installer/updater goals, rollback model"]
+      expected_output: "PLAN→STAGE→VERIFY→COMMIT→RECEIPT→ROLLBACK contract"
+      next_step: "Draft setup architecture note."
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "assistant recommendation"
+      confidence: 4
+    - id: TASK-10
+      task: "Preserve current chat as report package and ZIP."
+      priority: "P0"
+      urgency: "U0"
+      owner: "Assistant"
+      dependencies: ["Visible chat context and uploaded prompt"]
+      inputs_needed: ["Current transcript context, Pasted text.txt prompt"]
+      expected_output: "Markdown/YAML files plus ZIP package"
+      next_step: "Completed in this response."
+      related_workstreams: ["WORKSTREAM-08"]
+      label: "FACT"
+      confidence: 4
+    - id: TASK-11
+      task: "Verify external standards and cited practices before formalising spec language."
+      priority: "P1"
+      urgency: "U2"
+      owner: "Future assistant / maintainer"
+      dependencies: ["Internet/source access"]
+      inputs_needed: ["Official standards pages and current docs"]
+      expected_output: "Verified standards mapping with citations"
+      next_step: "Use official sources where possible."
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "VERIFY"
+      confidence: 4
+  constraints: []
+  open_questions: []
+  rejected_or_superseded_options: []
+  artifacts: []
+  risks: []
+  verification_queue: []
+  spec_book_notes:
+    likely_sections: ["Architecture Doctrine", "Domino/Dominium Separation", "Public API and ABI Policy", "Data Compatibility", "Determinism and Replay", "Conformance Testing", "Assurance and Governance"]
+    unique_contributions: ["Connects portability goals to enforceable contracts and tests", "Introduces DDAP/DIL assurance candidate"]
+    possible_duplicates_with_other_chats: ["Platform/render/backend discussions", "Setup/launcher distribution", "AIDE/XStack governance"]
+    conflicts_to_watch_for: ["Exact directory structure", "Strictness of C89/C++98 targets"]
+    formal_requirements_candidates: ["Domino must not depend on Dominium", "Persistent IDs are never reused", "High-trust parsers need malformed-input tests", "Replaceable modules need conformance tests"]
+    background_context_candidates: ["Standards comparisons and external examples"]
+    needs_user_confirmation: ["Accept/revise DDAP", "Accept/revise target tree", "Confirm first pilot module"]
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Inspect actual repo and create boundary audit."
+    next_action_for_aggregator: "Merge as architecture-doctrine source with caveats."
+    user_checks_required: ["Confirm canonical recommendations", "Confirm platform/toolchain targets"]

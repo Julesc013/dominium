@@ -1,0 +1,193 @@
+spec_sheet:
+  metadata:
+    chat_label: "Dominium Timekeeping and 2038 Resilience"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This chat only unless labelled PROJECT-CONTEXT"
+    apparent_coverage: "partial-to-substantial visible transcript and selected repo files"
+    confidence_1_to_5: 4
+    staleness_risk: "medium"
+    safe_for_aggregation: "with caveats"
+    main_limitations:
+      - "Not all Dominium files/backends were audited."
+      - "External platform facts from earlier answers were not reverified during preservation."
+      - "Some decisions are assistant recommendations, not explicit user acceptances."
+  summary:
+    one_sentence: "This chat developed durable timekeeping doctrine for 2038-safe cross-platform software and mapped it onto Dominium's logical ACT/DSYS/observer-clock architecture."
+    short_brief: "The chat moved from Y2038 risk analysis to representation choices, then to a four-domain time framework, then to a repo-grounded Dominium assessment. The main conclusion is that Dominium's core time model is mostly correct, but needs backend, serialization, and boundary hardening."
+    main_topics:
+      - "Y2038 and signed 32-bit time risk"
+      - "Signed 64-bit timestamp precision/range tradeoffs"
+      - "Instant/duration/monotonic/civil time separation"
+      - "Dominium ACT and DSYS time architecture"
+      - "Preservation and aggregation package"
+    main_outputs:
+      - "Human-readable preservation report"
+      - "Registers"
+      - "Context transfer packet"
+      - "Spec sheet"
+      - "Aggregator packet"
+      - "Downloadable ZIP package"
+    highest_priority_carry_forward:
+      - "Audit DSYS backend timers."
+      - "Freeze ACT units and serialization."
+      - "Keep wall-clock time out of authority logic."
+      - "Design civil/astronomical time as projection-only."
+  source_rules:
+    labels_used: ["FACT", "INFERENCE", "UNCERTAIN / UNVERIFIED", "PROJECT-CONTEXT"]
+    conflict_rules:
+      - "Direct user statements override assistant inferences."
+      - "Repo-grounded findings override general advice for Dominium."
+      - "Do not treat assistant recommendations as accepted decisions unless user clearly accepts them."
+    staleness_rules:
+      - "Verify platform/library/toolchain facts before formal spec use."
+      - "Verify repo state before applying code-specific conclusions."
+  user_preferences:
+    explicit:
+      - "Human-readable explanation first."
+      - "No invented facts."
+      - "Preserve uncertainty."
+      - "Create downloadable files if tools are available."
+    inferred:
+      - "Direct, source-grounded, audit-ready technical work."
+      - "Stable IDs for aggregation."
+    uncertain_or_not_established:
+      - "Exact Dominium ACT precision requirement."
+      - "Exact legacy platform/toolchain floor."
+  workstreams:
+    - id: "WORKSTREAM-04"
+      name: "Dominium time architecture mapping"
+      label: "FACT/INFERENCE"
+      objective: "Apply durable timekeeping doctrine to Dominium."
+      current_state: "Core model appears sound from selected repo files."
+      desired_end_state: "Canonical docs, tests, backend audit, serialization discipline."
+      status: "active"
+      priority: "P0"
+      background: "Dominium already separates ACT authority from DSYS runtime timing and derived observer clocks."
+      decisions_made: ["DECISION-05", "DECISION-06", "DECISION-07", "DECISION-08"]
+      decisions_pending: ["QUESTION-02", "QUESTION-03"]
+      tasks: ["TASK-01", "TASK-02", "TASK-03", "TASK-04", "TASK-05"]
+      constraints: ["CONSTRAINT-02", "CONSTRAINT-04"]
+      dependencies: ["Repo access", "backend source files", "save/replay schema audit"]
+      timeline: "No fixed timeline; should precede compatibility freeze."
+      blockers: ["Unverified backend timer implementations", "unverified serialization paths"]
+      risks: ["RISK-01", "RISK-02", "RISK-03", "RISK-06"]
+      artifacts: ["ARTIFACT-05"]
+      success_criteria:
+        - "No authoritative wall-clock dependency."
+        - "ACT unit and serialization are versioned/frozen."
+        - "DSYS timer backends classified and tested."
+      next_action: "Audit repo-wide time usage and DSYS backends."
+      verification_needed: ["VERIFY-05", "VERIFY-06", "VERIFY-07"]
+      confidence: 4
+  decisions:
+    - id: "DECISION-05"
+      decision: "Dominium ACT remains logical authoritative time, not wall-clock."
+      status: "repo-supported conclusion"
+      label: "FACT/INFERENCE"
+      evidence_or_basis: "Distributed time docs and dom_time_core.h"
+      rationale: "Needed for deterministic replay and cross-shard ordering."
+      implications: "Wall-clock APIs must not affect authority logic."
+      related_workstreams: ["WORKSTREAM-04"]
+      uncertainty: "Repo audit selective, not exhaustive."
+  tasks:
+    - id: "TASK-01"
+      task: "Audit all DSYS backend timer implementations."
+      priority: "P0"
+      urgency: "U1"
+      owner: "User/future assistant"
+      dependencies: ["Repo access"]
+      inputs_needed: ["Backend source files"]
+      expected_output: "Timer backend compatibility report"
+      next_step: "Search for time_now_us implementations."
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "INFERENCE"
+      confidence: 4
+  constraints:
+    - id: "CONSTRAINT-02"
+      constraint: "Authoritative Dominium ordering must not use wall-clock time."
+      type: "technical"
+      hard_or_soft: "hard"
+      source_or_basis: "Dominium deterministic/distributed time docs"
+      implication: "Use logical ticks and deterministic keys."
+      violation_risk: "high"
+      label: "FACT"
+      confidence: 5
+  open_questions:
+    - id: "QUESTION-02"
+      question: "Should Dominium ACT remain seconds permanently or gain subsecond/subtick authority?"
+      why_it_matters: "Affects save/replay/network compatibility."
+      known: "Current type is ACT seconds."
+      unknown: "Future precision requirements."
+      resolution_path: "Decide before schema/version freeze."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "UNCERTAIN"
+  rejected_or_superseded_options:
+    - id: "REJECTED-03"
+      option: "Use unsigned 32-bit Unix seconds as future-proof fix."
+      status: "rejected"
+      reason: "Only moves overflow to 2106 and loses signed/pre-epoch semantics."
+      final_or_tentative: "strong"
+      reconsider_conditions: "Only for bounded wrapping counters, not absolute time."
+      related_workstreams: ["WORKSTREAM-01", "WORKSTREAM-02"]
+      label: "INFERENCE"
+  artifacts:
+    - id: "ARTIFACT-01"
+      name_or_description: "Pasted text.txt preservation prompt"
+      type: "uploaded prompt"
+      purpose: "Defines this package structure."
+      status: "used"
+      origin: "user upload"
+      carry_forward: true
+      notes: "Primary instruction artifact."
+      label: "FACT"
+  risks:
+    - id: "RISK-01"
+      risk: "Future code uses host time ABI in persistent schemas."
+      consequence: "Y2038 or replay/compatibility bugs."
+      likelihood: "medium"
+      severity: "high"
+      mitigation: "Ban host ABI time in persistence/protocols and add tests."
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "INFERENCE"
+  verification_queue:
+    - id: "VERIFY-06"
+      item: "All DSYS backend timer implementations"
+      why_verification_needed: "Selective audit did not cover all backends."
+      suggested_source_type: "Repo source audit"
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "UNCERTAIN"
+  spec_book_notes:
+    likely_sections:
+      - "Time Architecture"
+      - "Determinism and Replay"
+      - "Platform Runtime"
+      - "Serialization Compatibility"
+      - "Civil/Astronomical Projection"
+    unique_contributions:
+      - "Mapping of general Y2038-safe framework to Dominium ACT/DSYS architecture."
+    possible_duplicates_with_other_chats:
+      - "Dominium deterministic ordering"
+      - "Platform/runtime separation"
+      - "Replay architecture"
+    conflicts_to_watch_for:
+      - "Any later proposal to use wall-clock time for authority."
+      - "Any later reinterpretation of ACT units without migration."
+    formal_requirements_candidates:
+      - "No wall-clock authority."
+      - "ACT is logical and versioned."
+      - "DSYS time is runtime-only."
+      - "Observer clocks are derived."
+    background_context_candidates:
+      - "General Y2038 explanation."
+      - "100 ns vs microsecond scalar discussion."
+    needs_user_confirmation:
+      - "Whether ACT seconds are final."
+      - "Exact civil/astronomical time requirements."
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Create a concrete Dominium time-audit checklist and run it against the repo."
+    next_action_for_aggregator: "Merge this as the time architecture source packet with caveats."
+    user_checks_required:
+      - "Confirm which recommendations are accepted as Dominium requirements."
+      - "Verify repo state and platform docs before formalization."

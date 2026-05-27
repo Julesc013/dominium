@@ -1,0 +1,776 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Canon, Repository Alignment, and Portability Doctrine
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only unless labelled PROJECT-CONTEXT
+    apparent_coverage: Partial visible transcript plus uploaded preservation prompt
+    confidence_1_to_5: 4
+    staleness_risk: Medium
+    safe_for_aggregation: With caveats
+    main_limitations:
+    - No guaranteed access to every old hidden transcript or expired upload
+    - GitHub repository inspection was partial, not a full local checkout/test run
+    - Some repo layout claims need verification against current physical tree
+    - External examples from previous answer were not reverified in this preservation task
+  summary:
+    one_sentence: This chat restored old Dominium canon, audited current repo alignment, and defined a contract-first portability doctrine for future-proof engine/game architecture.
+    short_brief: The old v1 Constitution and Glossary remain central, but current repo work should use materialized canon docs. The repo is strong at documentation/schema/governance scaffolding and partial at full runtime gameplay implementation. Future-proofing should stabilize contracts and IDs while making implementations replaceable.
+    main_topics:
+    - v1 canon
+    - canonical glossary
+    - repo alignment
+    - docs vs code
+    - portability doctrine
+    - ownership-root layout
+    - API/ABI/schema/protocol practices
+    - chat preservation
+    main_outputs:
+    - repo alignment assessment
+    - portability/modularity doctrine
+    - structured preservation package
+    highest_priority_carry_forward:
+    - verify current repo layout
+    - separate docs/schema/code/test proof
+    - formalize stable API/ABI/data contracts
+    - finish ownership cleanup
+    - preserve uncertainty labels
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Repo-materialized canonical docs outrank raw prompts for current repository authority
+    - Direct user statements outrank assistant suggestions
+    - Code/test evidence outranks documentation claims about implementation status
+    staleness_rules:
+    - Live repo state must be rechecked before acting
+    - External-world examples must be verified before being treated as current
+    - Tool outputs from this chat are partial evidence, not a full audit
+  user_preferences:
+    explicit:
+    - Direct, source-grounded, audit-ready answers.
+    - Human-readable narrative over machine-readable dumps for chat preservation.
+    - Do not treat brainstorms as decisions.
+    - Broad/deep architectural reasoning for Dominium structure and future-proofing.
+    - Prefer portability, modularity, extensibility, replaceability, and backward compatibility.
+    - Use labels FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT where important.
+    inferred: []
+    uncertain_or_not_established:
+    - Priority order among cleanup, API formalization, and reuse proof
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Canon reconstitution and glossary binding
+    label: FACT/INFERENCE
+    objective: Preserve and interpret old v1 Constitution and Glossary as the initial comparison baseline.
+    current_state: Old v1 contract/glossary were pasted and acknowledged; live repo canon files were later found.
+    desired_end_state: Repo canon and chat guidance stay aligned without treating raw prompts as stronger than materialized repo docs.
+    status: Active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-02
+    name: Repository alignment audit
+    label: FACT
+    objective: Assess docs and code of `julesc013/dominium` against the v1 contract/glossary.
+    current_state: GitHub connector audit completed at a broad but not exhaustive level.
+    desired_end_state: Repeatable, cited audit tying docs, schemas, code, tests, and gaps to canon clauses.
+    status: Partially complete
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-03
+    name: Portability and modularity doctrine
+    label: FACT/INFERENCE
+    objective: Define practices for reusable engine/game/runtime platform architecture.
+    current_state: 'A broad doctrine was produced: stable contracts, replaceable implementations, ownership roots, no generic buckets.'
+    desired_end_state: Formalize into repo contracts, coding standards, API rules, and validation gates.
+    status: Active
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-04
+    name: Repository layout and naming convergence
+    label: FACT
+    objective: Finish ownership-root convergence and naming law enforcement.
+    current_state: Current docs define ownership roots and naming contracts but note transitional debt.
+    desired_end_state: Strict layout with retired exceptions and no new ambiguous roots.
+    status: Active
+    priority: P1
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '4'
+  - id: WORKSTREAM-05
+    name: Stable API / ABI / schema boundary design
+    label: INFERENCE
+    objective: Make public boundaries durable while permitting internal rewrites.
+    current_state: Recommended but not fully implemented in this chat.
+    desired_end_state: Public C ABI, versioned data contracts, module descriptors, compatibility tests.
+    status: Planned
+    priority: P1
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '3'
+  - id: WORKSTREAM-06
+    name: Runtime implementation maturity
+    label: INFERENCE
+    objective: Move from declarative registries/scaffolds to real law-gated runtime processes.
+    current_state: Audit found survival mostly registry-level and advanced systems deferred.
+    desired_end_state: Concrete Process/Authority/Law runtime with tests and replay proofs.
+    status: Open
+    priority: P1
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '3'
+  - id: WORKSTREAM-07
+    name: Reusable Domino proof project
+    label: INFERENCE
+    objective: Prove reuse by building a second minimal game/product on Domino.
+    current_state: Recommended as a strong test; not implemented.
+    desired_end_state: Example product that compiles without hidden Dominium coupling.
+    status: Proposed
+    priority: P2
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '3'
+  - id: WORKSTREAM-08
+    name: Chat preservation and aggregation
+    label: FACT
+    objective: Create package that preserves this chat for later project-spec aggregation.
+    current_state: This response and files implement it.
+    desired_end_state: Human-readable report + structured registers + aggregator/spec packets.
+    status: In progress
+    priority: P0
+    background: ''
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: ''
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: ''
+    verification_needed: []
+    confidence: '4'
+  decisions:
+  - id: DECISION-01
+    decision: Treat old v1 Constitution and Glossary as the comparison baseline for this chat.
+    status: Accepted in-chat; repo authority later refined.
+    label: FACT
+    evidence_or_basis: User pasted them as ground truth; assistant acknowledged.
+    rationale: Provides baseline for audit but must not override repo-materialized canon in live repo.
+    implications: WORKSTREAM-01
+    related_workstreams:
+    - '4'
+    uncertainty: ''
+  - id: DECISION-02
+    decision: Prefer repo-materialized canonical documents over raw prompts for current repository authority.
+    status: Established by audit; not directly stated by user, but supported by repo docs.
+    label: FACT/INFERENCE
+    evidence_or_basis: '`CANON_INDEX` says prompts are execution artifacts and not authoritative unless materialized.'
+    rationale: Future work should cite `docs/canon/*` and canon index, not raw chat memory alone.
+    implications: WORKSTREAM-01
+    related_workstreams:
+    - '4'
+    uncertainty: ''
+  - id: DECISION-03
+    decision: Use ownership-based source roots instead of generic `src/`/`source/` layout.
+    status: Recommended and supported by current repo naming/layout docs.
+    label: FACT/INFERENCE
+    evidence_or_basis: Repo docs forbid new `src`/`source` directories and use ownership roots.
+    rationale: Preserve `apps/ engine/ game/ runtime/ contracts/ content/ ...` model.
+    implications: WORKSTREAM-04
+    related_workstreams:
+    - '4'
+    uncertainty: ''
+  - id: DECISION-04
+    decision: Do not freeze all code; freeze contracts and make implementations replaceable.
+    status: Assistant recommendation; user intent strongly supports it.
+    label: INFERENCE
+    evidence_or_basis: User requested full replaceability and reuse across games/projects.
+    rationale: Directs future architecture toward ABI/schema/protocol boundaries.
+    implications: WORKSTREAM-03
+    related_workstreams:
+    - '4'
+    uncertainty: ''
+  - id: DECISION-05
+    decision: Treat survival/runtime gameplay as not fully implemented yet despite strong declarative scaffold.
+    status: Audit conclusion, not a user decision.
+    label: INFERENCE
+    evidence_or_basis: Survival processes/fields found in registries; full agent gameplay loops deferred in status docs.
+    rationale: Avoid overstating implementation maturity.
+    implications: WORKSTREAM-06
+    related_workstreams:
+    - '4'
+    uncertainty: ''
+  - id: DECISION-06
+    decision: Create this preservation package with human-readable report plus structured exports.
+    status: Triggered by uploaded preservation prompt.
+    label: FACT
+    evidence_or_basis: Uploaded prompt explicitly requested files and package without asking whether to proceed.
+    rationale: This answer creates the artifact set.
+    implications: WORKSTREAM-08
+    related_workstreams:
+    - '5'
+    uncertainty: ''
+  tasks:
+  - id: TASK-01
+    task: Retire or resolve remaining layout/naming exceptions through gated move waves.
+    priority: P1
+    urgency: U1
+    owner: Project maintainer / future assistant
+    dependencies:
+    - Layout contract, root allowlist, exception ledger
+    inputs_needed:
+    - Current repo tree, move maps, strict validators
+    expected_output: Reduced bad-root debt with preserved semantic IDs
+    next_step: Plan next safe move/refactor batch
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT/INFERENCE
+    confidence: ''
+  - id: TASK-02
+    task: Define stable public Domino ABI/API spine.
+    priority: P1
+    urgency: U1
+    owner: Engine architect
+    dependencies:
+    - Constitution, glossary, existing headers
+    inputs_needed:
+    - Public header inventory, ABI contract needs
+    expected_output: ABI contract files and public C header rules
+    next_step: Draft `contracts/abi/*` and validate headers
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: ''
+  - id: TASK-03
+    task: Formalize schema/registry/protocol compatibility rules.
+    priority: P1
+    urgency: U1
+    owner: Contracts owner
+    dependencies:
+    - Existing schemas/registries
+    inputs_needed:
+    - Schema versioning inventory
+    expected_output: Migration/refusal/round-trip policy
+    next_step: Audit all schemas for ID/version/stability/migration
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: ''
+  - id: TASK-04
+    task: Add a second minimal Domino-based product/game as reuse proof.
+    priority: P2
+    urgency: U2
+    owner: Future implementation owner
+    dependencies:
+    - Domino public API, runtime services
+    inputs_needed:
+    - Minimal product requirements
+    expected_output: Example app proving engine reuse
+    next_step: Create a small example and measure coupling
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: ''
+  - id: TASK-05
+    task: Implement or audit concrete law-gated Process execution for survival slice.
+    priority: P1
+    urgency: U2
+    owner: Game/runtime owner
+    dependencies:
+    - Survival registries, LawProfiles, AuthorityContext schema
+    inputs_needed:
+    - Process executor design/status
+    expected_output: Runtime proof that registries drive behavior
+    next_step: Inspect process execution code and tests; implement missing handlers
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: ''
+  - id: TASK-06
+    task: Repeat repository audit with full tree and test outputs when needed.
+    priority: P1
+    urgency: U1
+    owner: Future assistant/Codex
+    dependencies:
+    - GitHub repo, local checkout, CI logs
+    inputs_needed:
+    - Full file list, test results
+    expected_output: More complete alignment report
+    next_step: Run strict validators and code search locally
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: ''
+  - id: TASK-07
+    task: Merge this chat package into the master Project Spec Book only with uncertainty labels preserved.
+    priority: P1
+    urgency: U1
+    owner: Aggregator
+    dependencies:
+    - This handoff package and other chat reports
+    inputs_needed:
+    - Other reports/conflicts
+    expected_output: Spec-book sections with source labels
+    next_step: Use aggregator packet first
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT/INFERENCE
+    confidence: ''
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: 'Determinism remains primary: fixed-point authoritative math, named RNG, replay/hash equivalence, thread-count invariance.'
+    type: Technical/canon
+    hard_or_soft: Hard
+    source_or_basis: Old v1 contract and live repo constitution
+    implication: Do not introduce nondeterministic authoritative behavior.
+    violation_risk: High
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-02
+    constraint: Process-only mutation and law-gated authority.
+    type: Technical/canon
+    hard_or_soft: Hard
+    source_or_basis: v1 and live constitution
+    implication: All authoritative state changes must route through processes and AuthorityContext/LawProfile.
+    violation_risk: High
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-03
+    constraint: No runtime mode flags; behavior derives from ExperienceProfile/LawProfile/ParameterBundle.
+    type: Technical/canon
+    hard_or_soft: Hard
+    source_or_basis: v1 and live constitution
+    implication: Avoid `*_mode` gameplay branches and mode-specific logic forks.
+    violation_risk: Medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-04
+    constraint: TruthModel → PerceivedModel → RenderModel separation.
+    type: Architecture
+    hard_or_soft: Hard
+    source_or_basis: v1 and repo docs
+    implication: Renderer/runtime must not access or mutate truth directly.
+    violation_risk: High
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-05
+    constraint: Ownership-root layout; no new generic `src`/`source`/`common`/`shared`/`misc` buckets.
+    type: Repository structure
+    hard_or_soft: Hard for new work
+    source_or_basis: Naming/layout contracts
+    implication: New files must be placed by ownership and role.
+    violation_risk: Medium
+    label: FACT
+    confidence: '4'
+  - id: CONSTRAINT-06
+    constraint: Source repo layout is not install/package/runtime projection layout.
+    type: Repository/distribution
+    hard_or_soft: Hard
+    source_or_basis: Layout docs and no-src policy
+    implication: Do not infer runtime store/save/export roots from source roots.
+    violation_risk: Medium
+    label: FACT
+    confidence: '4'
+  - id: CONSTRAINT-07
+    constraint: Content/packs must not contain untrusted executable authority.
+    type: Security/architecture
+    hard_or_soft: Hard
+    source_or_basis: Pack-driven integration doctrine
+    implication: Future extension code needs separate trust/capability contract.
+    violation_risk: High
+    label: INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-08
+    constraint: Human-readable explanation must come before machine-readable handoff in preservation tasks.
+    type: Communication
+    hard_or_soft: Hard for this task
+    source_or_basis: Uploaded preservation prompt
+    implication: This output must be understandable without downloading files.
+    violation_risk: Medium
+    label: FACT
+    confidence: '5'
+  open_questions:
+  - id: QUESTION-01
+    question: Which repo layout state is current where docs claim product roots moved but earlier fetched code still appeared under root `client/`?
+    why_it_matters: This affects source-layout truth and cleanup planning.
+    known: Docs say `apps/` is canonical; earlier code fetch succeeded under `client/`; `apps/client` fetch failed in this session.
+    unknown: Whether the connector saw stale docs, old paths, branch drift, or unresolved repo inconsistency.
+    resolution_path: Run full tree listing/local checkout validation.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN
+  - id: QUESTION-02
+    question: How much of the survival vertical slice is implemented as runtime Process execution rather than registries?
+    why_it_matters: Determines implementation maturity.
+    known: Fields/process IDs/law profiles exist in registries.
+    unknown: Concrete process executor/handlers/tests status.
+    resolution_path: Inspect game/runtime process code and tests.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN
+  - id: QUESTION-03
+    question: What are the exact public API/ABI boundaries for Domino vs Dominium vs runtime?
+    why_it_matters: Needed for reuse and backward compatibility.
+    known: General doctrine and some headers exist.
+    unknown: Formal ABI stability map and public/private header inventory.
+    resolution_path: Create/API audit and contract map.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: QUESTION-04
+    question: What remaining bad roots/exceptions exist today?
+    why_it_matters: Necessary before feature expansion/refactors.
+    known: Docs mention exceptions and cleanup waves.
+    unknown: Current exact count/status at HEAD.
+    resolution_path: Run strict layout validators and read exception ledger.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN
+  - id: QUESTION-05
+    question: What should become formal requirements in the master Project Spec Book vs background context?
+    why_it_matters: Prevents over-formalizing suggestions.
+    known: This chat contains both accepted canon and assistant recommendations.
+    unknown: User acceptance of specific practices beyond high-level preference.
+    resolution_path: Aggregator review with labels preserved.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: QUESTION-06
+    question: Should a second minimal Domino product be built now or after layout cleanup?
+    why_it_matters: Determines next practical proof.
+    known: Assistant recommended it as reuse proof.
+    unknown: User/project priority and current build readiness.
+    resolution_path: Decision by project owner after current blockers reviewed.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Treat raw chat prompts as stronger than repo-materialized canon.
+    status: Superseded
+    reason: Repo canon index says prompts are execution artifacts unless materialized.
+    final_or_tentative: Final for current repo authority unless canon changes.
+    reconsider_conditions: Only reconsider if repo authority order changes.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-02
+    option: Use generic `src/` or `source/` root as the active layout.
+    status: Rejected/superseded
+    reason: Current naming/no-src policy says ownership roots are active model.
+    final_or_tentative: Final for new active source work.
+    reconsider_conditions: Only reconsider by explicit repo contract amendment.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-03
+    option: Treat docs and registries as proof that full gameplay is implemented.
+    status: Rejected as unsafe
+    reason: Audit separated docs/schema from code behavior.
+    final_or_tentative: Final as epistemic discipline.
+    reconsider_conditions: Reconsider after runtime tests prove behavior.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: REJECTED-04
+    option: Perform a grand rewrite/refactor without gated ownership migration.
+    status: Deprioritised
+    reason: Would risk breaking identity, imports, ABI, and compatibility.
+    final_or_tentative: Tentative; controlled rewrites remain allowed.
+    reconsider_conditions: Only after contracts/tests/migration plan exist.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: DOMINIUM CONSTITUTIONAL ARCHITECTURE & EXECUTION CONTRACT v1
+    type: Pasted prompt/doc
+    purpose: Baseline architecture contract for chat comparison.
+    status: Used in chat; repo has canonical materialized version.
+    origin: User pasted in current chat
+    carry_forward: 'Yes'
+    notes: Treat raw prompt as baseline but repo canon as current authority.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: DOMINIUM CANONICAL GLOSSARY v1.0.0
+    type: Pasted prompt/doc
+    purpose: Vocabulary authority for current chat.
+    status: Used in chat; repo has canonical materialized version.
+    origin: User pasted in current chat
+    carry_forward: 'Yes'
+    notes: Preserve definitions and deprecated/reserved words.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: Repository alignment audit answer
+    type: Chat output
+    purpose: Compared live repo docs/code to old v1.
+    status: Produced in chat, not a file until this package.
+    origin: Assistant
+    carry_forward: 'Yes'
+    notes: 'Key finding: strong docs/schema alignment, partial implementation.'
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: Portability/modularity/future-proofing doctrine answer
+    type: Chat output
+    purpose: Broad guidance on coding practices and repo structure.
+    status: Produced in chat, not a file until this package.
+    origin: Assistant
+    carry_forward: 'Yes'
+    notes: Contains recommendations; not all are user decisions.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: Uploaded `Pasted text.txt`
+    type: Uploaded text file
+    purpose: Mega prompt instructing this preservation/export task.
+    status: Current attachment read successfully.
+    origin: User upload
+    carry_forward: 'Yes'
+    notes: This task’s direct instruction source.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: GitHub connector source observations
+    type: Connector output
+    purpose: Evidence from repo files used for audit.
+    status: Available in current chat through citations; not a local repo checkout.
+    origin: Assistant/tool
+    carry_forward: 'Yes'
+    notes: Partial because not full tree/local test run.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Treating repo docs as fully implemented behavior.
+    consequence: Overstates maturity and causes bad planning.
+    likelihood: Medium
+    severity: High
+    mitigation: Separate docs/schema/code/test status.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT/INFERENCE
+  - id: RISK-02
+    risk: Treating assistant recommendations as accepted decisions.
+    consequence: Spec book may formalize unapproved practices.
+    likelihood: Medium
+    severity: High
+    mitigation: Use decision status and labels.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: RISK-03
+    risk: Breaking semantic IDs during path cleanup.
+    consequence: Saves/packs/contracts/replays may become incompatible.
+    likelihood: Medium
+    severity: High
+    mitigation: Path moves must preserve IDs unless explicit migration.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-04
+    risk: Creating new generic buckets during refactor.
+    consequence: Ownership ambiguity returns.
+    likelihood: Medium
+    severity: Medium
+    mitigation: Use layout/naming contracts and validators.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT/INFERENCE
+  - id: RISK-05
+    risk: Hidden coupling prevents Domino reuse by other games.
+    consequence: Engine becomes Dominium-specific.
+    likelihood: Medium
+    severity: High
+    mitigation: Add second minimal product reuse proof.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-06
+    risk: Runtime/platform/UI layers gain truth authority.
+    consequence: Violates canon and harms multiplayer fairness/determinism.
+    likelihood: Medium
+    severity: High
+    mitigation: Enforce Truth/Perceived/Render and command/refusal spine.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT/INFERENCE
+  - id: RISK-07
+    risk: Current preservation is incomplete because full historical transcript is unavailable.
+    consequence: Future aggregation may miss context outside visible chat.
+    likelihood: Medium
+    severity: Medium
+    mitigation: State coverage limitation and use PROJECT-CONTEXT labels.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Current physical repo tree vs claimed converged `apps/` layout.
+    why_verification_needed: Potential doc/code inconsistency observed in this session.
+    suggested_source_type: Local checkout tree listing or GitHub tree API.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN
+  - id: VERIFY-02
+    item: Current strict layout/root validator status and active exceptions.
+    why_verification_needed: Needed before claiming cleanup completion.
+    suggested_source_type: Run `tools/validators/check_repo_layout.py --strict` and root allowlist validators.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN
+  - id: VERIFY-03
+    item: Survival process runtime implementation status.
+    why_verification_needed: Registry existence does not prove behavior.
+    suggested_source_type: Code search/local tests for process executor/handlers.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN
+  - id: VERIFY-04
+    item: XStack/RepoX/TestX latest pass/fail status.
+    why_verification_needed: Earlier chat audit may be stale.
+    suggested_source_type: Current CI/local `scripts/dev/gate.py verify` and CTest outputs.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN
+  - id: VERIFY-05
+    item: 'External examples cited in prior answer: Linux, SQLite, NASA cFS, SemVer.'
+    why_verification_needed: External-world facts may have changed or were not reverified in this preservation task.
+    suggested_source_type: Official docs/web verification.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Architecture Constitution
+    - Repository Layout
+    - API/ABI Doctrine
+    - Data Contracts
+    - Governance
+    - Implementation Status
+    - Portability Strategy
+    unique_contributions:
+    - Bridge from old canon to current repo reality
+    - Portability doctrine
+    - Separation of docs/schema/code/test maturity
+    possible_duplicates_with_other_chats:
+    - Dominium architecture
+    - repo layout convergence
+    - distribution/portable install
+    - XStack governance
+    conflicts_to_watch_for:
+    - old layout docs vs current layout contracts
+    - docs claims vs physical tree
+    - assistant recommendations vs user decisions
+    formal_requirements_candidates:
+    - ownership-root layout
+    - no src/source
+    - stable contracts replaceable implementations
+    - process-only mutation
+    - data-driven profiles
+    background_context_candidates:
+    - external examples from Linux/SQLite/cFS/SemVer until verified
+    needs_user_confirmation:
+    - priority order
+    - second product proof timing
+    - which recommendations become formal requirements
+  final_recommendations:
+    next_action_if_continuing_this_chat: Produce a current repo layout/API/implementation verification plan.
+    next_action_for_aggregator: Merge using section 31 aggregator packet, preserving labels and caveats.
+    user_checks_required:
+    - Confirm whether to formalize the portability doctrine as repo law
+    - Confirm next work priority

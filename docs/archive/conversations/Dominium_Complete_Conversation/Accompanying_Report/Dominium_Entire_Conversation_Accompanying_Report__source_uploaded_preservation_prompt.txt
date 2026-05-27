@@ -1,0 +1,1109 @@
+You are GPT-5.5 Pro using extended deep reasoning.
+
+This chat is not yet being retired, but I need you to produce the most complete possible preservation package for THIS CHAT.
+
+This is not a normal summary.
+
+This is a maximum-fidelity chat preservation, human explanation, handoff, audit, spec-prep, and export task.
+
+The goal is that after this task, I can:
+1. read and understand this entire old chat without rereading the transcript,
+2. understand what we discussed and why,
+3. understand what decisions were made and why,
+4. understand what changed over time,
+5. preserve all plans, tasks, constraints, files, prompts, artifacts, risks, and open questions,
+6. ask follow-up questions inside this old chat,
+7. download and save a clean report package if tools are available,
+8. later combine this chat’s report with reports from other old chats,
+9. build a full master Project Spec Book from all old-chat reports,
+10. continue the work in a new chat without re-explaining everything.
+
+Most important requirement:
+Produce a HUMAN-READABLE explanatory report first. Do not give me only a machine-readable handoff, YAML file, manifest, register dump, or file list. I need a clear, intuitive, detailed explanation of what this chat was about, what happened, why it mattered, what we decided, why we decided it, and what remains to do.
+
+If this chat previously generated handoff files, ZIP packages, reports, registers, spec sheets, downloadable files, or summaries, use them as supporting material. But do not make the answer only about those files. The main goal is to explain the substance of the conversation itself.
+
+Do not ask me whether to proceed. Proceed.
+
+CHAT LABEL:
+If I have not provided a chat label, infer a short descriptive title from this chat’s actual content and use it consistently.
+
+DATE ANCHOR:
+Use 2026-05-27 Australia/Melbourne as the date anchor unless this chat clearly provides a more specific relevant date.
+
+SOURCE SCOPE:
+This output is for THIS CHAT ONLY.
+
+If you use any Project-level context, Project memory, uploaded files, generated files, or context from outside the visible transcript of this chat, label it clearly as PROJECT-CONTEXT.
+
+If you cannot access the full chat transcript, previously generated files, or older context, say so clearly. Do not pretend the extraction is complete if it is not.
+
+EPISTEMIC LABELS:
+Use these labels where important:
+
+- FACT: explicitly stated or clearly established in this chat.
+- INFERENCE: reasonably inferred from this chat.
+- UNCERTAIN / UNVERIFIED: unclear, incomplete, stale, missing, or not directly established.
+- PROJECT-CONTEXT: coming from Project-level memory, files, instructions, or context outside the visible chat.
+
+CRITICAL RULES:
+1. Do not invent facts.
+2. Do not silently infer.
+3. Do not turn brainstorms into decisions.
+4. Do not treat assistant suggestions as user decisions unless the user clearly accepted them.
+5. Preserve tentative status where applicable.
+6. Preserve rejected, superseded, and deprioritised options.
+7. Preserve contradictions and changes of direction.
+8. Preserve visible rationale for decisions, but do not reveal or claim hidden chain-of-thought.
+9. Preserve all important files, prompts, links, code, documents, generated outputs, plans, frameworks, tables, reports, ZIP packages, and artifacts.
+10. Mark external-world facts as potentially stale unless verified.
+11. If facts may depend on current laws, prices, software versions, APIs, products, schedules, institutional rules, people, roles, or current events, put them in a verification queue.
+12. Use headings and prose to make the output readable.
+13. Use tables only where they genuinely help.
+14. Do not over-compress.
+15. If the output is too long, continue in labelled parts rather than compressing aggressively.
+16. Do not say “download the files to understand this.” The in-chat answer must be understandable without downloading anything.
+17. If file creation tools are available, create actual downloadable files. If they are not available, output the file contents in clearly labelled fenced code blocks.
+18. Do not claim that files were created unless they were actually created.
+19. If you create files, still include a substantial human-readable report in the chat response itself.
+20. The final result must be suitable both for human reading and later machine-assisted aggregation.
+
+OVERALL PROCESS:
+Complete the following phases in order.
+
+PHASE 1 — Coverage and Reliability Check
+First assess what you can actually access.
+
+Determine:
+- whether you can see the full chat or only partial context,
+- whether there are previously generated downloadable files,
+- whether there are uploaded files or artifacts,
+- whether the chat contains future plans,
+- whether the chat contains decisions,
+- whether the chat contains pending tasks,
+- whether the chat contains unresolved questions,
+- whether anything may be stale,
+- whether the final package is safe for later aggregation.
+
+Do not stop after this. Continue to the full report.
+
+PHASE 2 — Deep Reconstruction
+Reconstruct the substance of the chat.
+
+Identify every important:
+- topic,
+- project,
+- plan,
+- future direction,
+- goal,
+- decision,
+- rationale,
+- alternative considered,
+- rejected option,
+- superseded option,
+- pending task,
+- constraint,
+- preference,
+- artifact,
+- file,
+- prompt,
+- link,
+- code output,
+- generated document,
+- timeline,
+- dependency,
+- blocker,
+- risk,
+- contradiction,
+- unresolved question,
+- assumption,
+- verification item,
+- and user-specific preference.
+
+PHASE 3 — Human-Readable Narrative Report
+Write a detailed prose report explaining the chat intuitively.
+
+This should read like a careful briefing written by someone who deeply understood the conversation, not like a database export.
+
+PHASE 4 — Structured Registers
+After the human explanation, create clean registers with stable IDs.
+
+Use IDs:
+- WORKSTREAM-01, WORKSTREAM-02, ...
+- DECISION-01, DECISION-02, ...
+- TASK-01, TASK-02, ...
+- CONSTRAINT-01, CONSTRAINT-02, ...
+- PREF-01, PREF-02, ...
+- QUESTION-01, QUESTION-02, ...
+- ARTIFACT-01, ARTIFACT-02, ...
+- RISK-01, RISK-02, ...
+- REJECTED-01, REJECTED-02, ...
+- VERIFY-01, VERIFY-02, ...
+
+PHASE 5 — Spec and Aggregation Preparation
+Create a structured spec sheet and an aggregator packet so this chat can later be merged with other old-chat reports.
+
+PHASE 6 — Self-Audit and Revision
+Audit your own output for omissions, uncertainty, over-compression, unsupported claims, missing rationale, missing artifacts, and missing next actions.
+
+Then produce the final revised version.
+
+PHASE 7 — File Export
+If tools are available, create downloadable files and a ZIP package.
+
+If tools are not available, output the contents of each file in fenced code blocks.
+
+PHASE 8 — Final In-Chat Reader
+End with a readable guide that lets me inspect and ask questions about this chat without downloading anything.
+
+====================================================================
+
+OUTPUT REQUIREMENTS
+
+Produce the following sections in this order.
+
+# COMPLETE CHAT PRESERVATION REPORT — [Chat Label]
+
+## 0. Coverage and Reliability Assessment
+
+Use this table:
+
+| Field | Assessment |
+|---|---|
+| Chat label | |
+| Date anchor | 2026-05-27 Australia/Melbourne unless otherwise established |
+| Source scope | This chat only unless labelled PROJECT-CONTEXT |
+| Apparent access | Full / Partial / Unclear |
+| Previously generated files available? | Yes / No / Unclear |
+| Uploaded files or artifacts present? | Yes / No / Unclear |
+| Contains future plans? | Yes / No / Unclear |
+| Contains decisions? | Yes / No / Unclear |
+| Contains pending tasks? | Yes / No / Unclear |
+| Contains unresolved questions? | Yes / No / Unclear |
+| Staleness risk | Low / Medium / High |
+| Extraction confidence | 1–5 |
+| Safe for later aggregation? | Yes / No / With caveats |
+| Main limitations | |
+
+Then explain the limitations in plain language.
+
+## 1. One-Page Orientation
+
+Write a clear 500–900 word prose overview.
+
+Explain:
+- what this chat was mainly about,
+- what the user was trying to accomplish,
+- why the topic mattered,
+- what problems or goals drove the conversation,
+- what the main outcomes were,
+- what the future relevance of this chat is,
+- what a future assistant or human reader must understand before reading the rest.
+
+Do not use a table for this section.
+
+## 2. The Story of the Conversation
+
+Explain the conversation chronologically as a narrative.
+
+Do not merely list turns. Tell the story of how the discussion developed.
+
+Cover:
+- how the chat began,
+- the original goal or problem,
+- how the user refined the goal,
+- what major ideas were explored,
+- what outputs were produced,
+- what decisions emerged,
+- what changed over time,
+- what was corrected or rejected,
+- what the final state of the chat became.
+
+Use subsections if helpful.
+
+## 3. Main Topics Discussed
+
+Explain each major topic in detail.
+
+For each topic:
+
+### Topic [number] — [Name]
+
+Include:
+- what the topic was,
+- why it came up,
+- what was discussed,
+- what conclusions were reached,
+- what remains uncertain,
+- how it connects to future work,
+- what the user should remember.
+
+Use prose first. Use bullets only where they improve clarity.
+
+## 4. What We Were Trying to Achieve
+
+Explain the goals behind the chat.
+
+Separate:
+
+### 4.1 Explicit Goals
+Goals the user clearly stated.
+
+### 4.2 Inferred Goals
+Goals reasonably inferred from the conversation.
+
+### 4.3 Goals That Changed Over Time
+Explain what changed and why.
+
+### 4.4 Goals Still Unresolved
+Explain what remains open.
+
+For each goal, explain:
+- why it mattered,
+- how the conversation addressed it,
+- whether it was achieved,
+- what still needs to happen.
+
+## 5. Decisions Made and Why
+
+This is one of the most important sections.
+
+First provide a short decision overview table:
+
+| ID | Decision | Status | Why it mattered | Confidence | Label |
+|---|---|---|---|---|---|
+
+Then explain each important decision in prose.
+
+For every decision, include:
+- what was decided,
+- whether it was final, tentative, superseded, or uncertain,
+- who made or accepted the decision,
+- what alternatives were considered,
+- why this decision made sense at the time,
+- what assumptions it depended on,
+- what it affects going forward,
+- what might cause it to be revisited,
+- any risks or caveats.
+
+Do not treat assistant suggestions as decisions unless the user accepted them.
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+Explain ideas that were considered but not carried forward.
+
+For each:
+- what the idea was,
+- why it was considered,
+- why it was rejected, superseded, or deprioritised,
+- whether that rejection is final or temporary,
+- when it might become relevant again,
+- why preserving this matters for future chats.
+
+## 7. Important Reasoning, Rationale, and Tradeoffs
+
+Explain the visible rationale behind the major conclusions.
+
+Focus on:
+- tradeoffs discussed,
+- constraints that shaped choices,
+- why one path was preferred over another,
+- what risks were being managed,
+- what assumptions were made,
+- what the user seemed to care about most,
+- where the reasoning was uncertain.
+
+Do not provide hidden chain-of-thought. Provide visible, audit-ready rationale only.
+
+## 8. Plans, Future Work, and Next Steps
+
+Explain all future-oriented material from this chat.
+
+Include:
+- future plans,
+- pending tasks,
+- recommended next actions,
+- things to prepare,
+- things to verify,
+- dependencies,
+- blockers,
+- best order of execution.
+
+For each major next step, explain:
+- what it is,
+- why it matters,
+- what must happen before it,
+- what output it should produce,
+- what could go wrong.
+
+Then provide a recommended next-action sequence.
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+Explain the constraints and preferences that shaped the conversation.
+
+Include:
+- user communication preferences,
+- formatting preferences,
+- evidence and citation preferences,
+- technical constraints,
+- time/resource constraints,
+- accuracy requirements,
+- safety/legal/ethical constraints if relevant,
+- things future assistants should avoid.
+
+Separate:
+
+### 9.1 Explicit Constraints and Preferences
+### 9.2 Inferred Constraints and Preferences
+### 9.3 Uncertain or Unestablished Preferences
+
+For each, explain how it should affect future assistance.
+
+## 10. Files, Artifacts, Outputs, and Prompts
+
+Explain all important artifacts associated with this chat.
+
+Include:
+- uploaded files,
+- generated files,
+- ZIP packages,
+- Markdown reports,
+- YAML spec sheets,
+- prompts,
+- links,
+- code,
+- tables,
+- frameworks,
+- plans,
+- checklists,
+- datasets,
+- images,
+- references,
+- outputs.
+
+For each artifact, explain:
+- what it is,
+- why it was created or mentioned,
+- what it contains,
+- how it should be used,
+- whether it should be preserved,
+- whether it should feed into a larger future report/spec book,
+- whether anything about it is uncertain.
+
+If no artifacts were created or mentioned, say that clearly.
+
+## 11. Open Questions and Unresolved Issues
+
+Explain what remains unresolved.
+
+For each unresolved issue:
+- what the question is,
+- why it matters,
+- what is currently known,
+- what is unknown,
+- what would resolve it,
+- whether the user needs to decide something,
+- whether external verification is needed,
+- whether it blocks future work.
+
+## 12. Risks, Failure Modes, and What Future Chats Might Get Wrong
+
+Explain the main ways a future assistant could misunderstand or mishandle this chat.
+
+Include risks such as:
+- forgetting important context,
+- over-compressing the chat,
+- treating tentative ideas as final,
+- repeating rejected suggestions,
+- ignoring user preferences,
+- relying on stale information,
+- losing files or artifacts,
+- merging this chat incorrectly with other chats,
+- inventing missing details,
+- confusing assistant suggestions with user decisions,
+- missing dependencies.
+
+For each risk, explain how to avoid it.
+
+## 13. What This Chat Contributes to the Larger Project or Future Spec Book
+
+Explain how this chat should feed into a future master Project Spec Book.
+
+Include:
+- what unique value this chat contributes,
+- what sections or chapters of a future spec book it should inform,
+- what should become formal requirements,
+- what should remain background context,
+- what likely overlaps with other chats,
+- what might conflict with other chats,
+- what needs verification before being merged,
+- what should not be merged prematurely.
+
+## 14. What I Should Remember
+
+Write a clear memory section.
+
+Include:
+- most important conclusions,
+- most important decisions,
+- most important next actions,
+- most important unresolved issues,
+- most important risks,
+- most important artifacts,
+- most important assumptions,
+- most important things not to lose.
+
+Use bullets if helpful, but make each bullet explanatory rather than terse.
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+Give specific follow-up questions I can ask inside this old chat.
+
+Questions should be tailored to the actual content of this chat, not generic.
+
+Group them by:
+
+### 15.1 Understanding the Chat
+### 15.2 Decisions
+### 15.3 Tasks and Next Actions
+### 15.4 Artifacts and Files
+### 15.5 Risks and Verification
+### 15.6 Future Spec Book / Aggregation
+### 15.7 Deep-Dive Questions Specific to This Chat
+
+Examples should refer to actual topics, decisions, tasks, and artifacts from this chat.
+
+## 16. Compact Human Summary
+
+Write an 800–1,500 word plain-English summary.
+
+This should be the version I can read later if I only have a few minutes.
+
+It should explain:
+- what this chat was about,
+- what mattered most,
+- what was decided,
+- why it was decided,
+- what remains to do,
+- what to preserve,
+- what the next assistant should understand,
+- and what the best next action is.
+
+====================================================================
+
+STRUCTURED REGISTERS
+
+After the human-readable report, produce the following structured registers.
+
+Use stable IDs consistently.
+
+## 17. Workstream Register
+
+| ID | Name | Objective | Current state | Desired end state | Status | Priority | Confidence | Label |
+|---|---|---|---|---|---|---|---|---|
+
+## 18. Decision Register
+
+| ID | Decision | Status | Evidence / basis | Rationale | Implications | Related workstream | Confidence | Label |
+|---|---|---|---|---|---|---|---|---|
+
+## 19. Task Register
+
+| ID | Task | Priority | Urgency | Owner | Dependencies | Inputs needed | Expected output | Next step | Related workstream | Label |
+|---|---|---|---|---|---|---|---|---|---|---|
+
+Priority:
+- P0 = critical / immediate
+- P1 = important
+- P2 = useful
+- P3 = optional
+- PX = unclear
+
+Urgency:
+- U0 = now / blocking
+- U1 = soon
+- U2 = later
+- U3 = no timeline
+- UX = unclear
+
+## 20. Constraint Register
+
+| ID | Constraint | Type | Hard/soft | Source / basis | Practical implication | Violation risk | Confidence | Label |
+|---|---|---|---|---|---|---|---|---|
+
+## 21. User Preference Register
+
+| ID | Preference | Area | Explicit/inferred/uncertain | Strength | Practical implication | Risk if wrong | Label |
+|---|---|---|---|---|---|---|---|
+
+## 22. Open Questions Register
+
+| ID | Question / issue | Why it matters | Known information | Unknown information | Resolution path | Priority | Related workstream | Label |
+|---|---|---|---|---|---|---|---|---|
+
+## 23. Artifact Ledger
+
+| ID | Artifact / file / prompt / output | Type | Purpose | Status | Origin | Carry forward? | Notes | Label |
+|---|---|---|---|---|---|---|---|---|
+
+## 24. Rejected / Superseded Options Register
+
+| ID | Option | Status | Reason | Final or tentative? | Reconsider conditions | Related workstream | Label |
+|---|---|---|---|---|---|---|---|
+
+## 25. Risk Register
+
+| ID | Risk / failure mode | Consequence | Likelihood | Severity | Mitigation | Related workstream | Label |
+|---|---|---|---|---|---|---|---|
+
+## 26. Verification Queue
+
+| ID | Item requiring verification | Why verification is needed | Suggested source/type | Priority | Related workstream | Label |
+|---|---|---|---|---|---|---|
+
+## 27. Chronological Timeline Register
+
+| Sequence | Event / topic | What changed or was decided | Why it mattered | Current relevance | Confidence |
+|---|---|---|---|---|---|
+
+## 28. Spec Book Contribution Register
+
+| Spec-book area | Contribution from this chat | Source IDs | Should become requirement/context/open issue? | Confidence | Notes |
+|---|---|---|---|---|---|
+
+====================================================================
+
+CONTEXT TRANSFER PACKET
+
+## 29. Context Transfer Packet for a Future Chat
+
+Create a clean handoff section that a future assistant can use.
+
+Include:
+
+### 29.1 Ultra-Condensed Bootstrap Brief
+300–700 words.
+
+### 29.2 Source Hierarchy
+Use:
+1. Direct user statements in this chat.
+2. Explicit decisions accepted by the user.
+3. Current task register.
+4. Constraint register.
+5. Artifact ledger.
+6. Inferences.
+7. Assistant suggestions not accepted by the user.
+8. General model knowledge.
+
+### 29.3 Operating Rules for Future Assistants
+Include:
+- preserve uncertainty labels,
+- do not re-ask answered questions,
+- ask clarifying questions only when materially necessary,
+- verify stale facts,
+- do not invent missing details,
+- do not treat tentative items as final,
+- do not repeat rejected options,
+- preserve artifacts,
+- use structured outputs when continuing.
+
+### 29.4 Active Workstreams
+Summarise each active workstream.
+
+### 29.5 Current Priorities
+List the top priorities.
+
+### 29.6 Current Open Questions
+List the main unresolved issues.
+
+### 29.7 Recommended First Action
+Give the best immediate next action.
+
+====================================================================
+
+SPEC SHEET
+
+## 30. Spec Sheet
+
+Create a structured spec sheet in YAML-style format.
+
+Do not make this the main report. This is secondary, for later aggregation.
+
+Use this schema and populate it fully.
+
+```yaml
+spec_sheet:
+  metadata:
+    chat_label:
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope:
+    apparent_coverage:
+    confidence_1_to_5:
+    staleness_risk:
+    safe_for_aggregation:
+    main_limitations: []
+
+  summary:
+    one_sentence:
+    short_brief:
+    main_topics: []
+    main_outputs: []
+    highest_priority_carry_forward: []
+
+  source_rules:
+    labels_used:
+      - FACT
+      - INFERENCE
+      - UNCERTAIN / UNVERIFIED
+      - PROJECT-CONTEXT
+    conflict_rules: []
+    staleness_rules: []
+
+  user_preferences:
+    explicit: []
+    inferred: []
+    uncertain_or_not_established: []
+
+  workstreams:
+    - id:
+      name:
+      label:
+      objective:
+      current_state:
+      desired_end_state:
+      status:
+      priority:
+      background:
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline:
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action:
+      verification_needed: []
+      confidence:
+
+  decisions:
+    - id:
+      decision:
+      status:
+      label:
+      evidence_or_basis:
+      rationale:
+      implications:
+      related_workstreams: []
+      uncertainty:
+
+  tasks:
+    - id:
+      task:
+      priority:
+      urgency:
+      owner:
+      dependencies: []
+      inputs_needed: []
+      expected_output:
+      next_step:
+      related_workstreams: []
+      label:
+      confidence:
+
+  constraints:
+    - id:
+      constraint:
+      type:
+      hard_or_soft:
+      source_or_basis:
+      implication:
+      violation_risk:
+      label:
+      confidence:
+
+  open_questions:
+    - id:
+      question:
+      why_it_matters:
+      known:
+      unknown:
+      resolution_path:
+      priority:
+      related_workstreams: []
+      label:
+
+  rejected_or_superseded_options:
+    - id:
+      option:
+      status:
+      reason:
+      final_or_tentative:
+      reconsider_conditions:
+      related_workstreams: []
+      label:
+
+  artifacts:
+    - id:
+      name_or_description:
+      type:
+      purpose:
+      status:
+      origin:
+      carry_forward:
+      notes:
+      label:
+
+  risks:
+    - id:
+      risk:
+      consequence:
+      likelihood:
+      severity:
+      mitigation:
+      related_workstreams: []
+      label:
+
+  verification_queue:
+    - id:
+      item:
+      why_verification_needed:
+      suggested_source_type:
+      priority:
+      related_workstreams: []
+      label:
+
+  spec_book_notes:
+    likely_sections: []
+    unique_contributions: []
+    possible_duplicates_with_other_chats: []
+    conflicts_to_watch_for: []
+    formal_requirements_candidates: []
+    background_context_candidates: []
+    needs_user_confirmation: []
+
+  final_recommendations:
+    next_action_if_continuing_this_chat:
+    next_action_for_aggregator:
+    user_checks_required: []
+````
+
+====================================================================
+
+AGGREGATOR PACKET
+
+## 31. Aggregator Packet
+
+Create a compact but complete packet that can later be pasted into a central aggregator chat.
+
+Use this structure:
+
+# Aggregator Packet — [Chat Label]
+
+## Packet Metadata
+
+* Chat label:
+* Date anchor:
+* Source scope:
+* Coverage:
+* Confidence:
+* Staleness risk:
+* Merge priority:
+* Main limitations:
+
+## Ultra-Condensed Carry-Forward Capsule
+
+Write 800–1,500 words capturing only the most important information needed for cross-chat aggregation.
+
+## Top Carry-Forward Items
+
+| Priority | Item | Type | Related ID | Why it matters | Label | Confidence |
+| -------- | ---- | ---- | ---------- | -------------- | ----- | ---------- |
+
+## Workstream Summaries
+
+For each:
+
+* ID:
+* Name:
+* Objective:
+* Current state:
+* Desired end state:
+* Priority:
+* Decisions:
+* Tasks:
+* Constraints:
+* Artifacts:
+* Risks:
+* Open questions:
+* Next action:
+
+## Compact Registers for Merge
+
+Include compact versions of:
+
+* Decision Register,
+* Task Register,
+* Constraint Register,
+* Open Questions Register,
+* Artifact Ledger,
+* Risk Register,
+* Verification Queue.
+
+## Possible Cross-Chat Duplicates
+
+List topics or items likely to overlap with other old chats.
+
+## Possible Cross-Chat Conflicts
+
+List anything that may conflict with other chats or later decisions.
+
+## Spec Book Integration Guidance
+
+State:
+
+* what chapters this chat should feed into,
+* what should become requirements,
+* what should remain context,
+* what needs verification,
+* what should not be merged prematurely.
+
+## Aggregator Warnings
+
+List what a future aggregator might misunderstand.
+
+====================================================================
+
+SELF-AUDIT AND REVISION
+
+## 32. Adversarial Self-Audit
+
+Audit everything above.
+
+Your job is to find weaknesses, not reassure me.
+
+Check for:
+
+* missing topics,
+* missing decisions,
+* missing tasks,
+* missing constraints,
+* missing user preferences,
+* missing artifacts,
+* missing rejected options,
+* missing timelines,
+* missing dependencies,
+* missing open questions,
+* missing risks,
+* over-compressed sections,
+* vague wording,
+* unsupported claims,
+* unlabelled inference,
+* tentative ideas treated as final,
+* assistant suggestions treated as user decisions,
+* stale claims not marked for verification,
+* contradictions hidden or smoothed over,
+* places where a future assistant might misunderstand the chat,
+* places where the user would have to re-explain something.
+
+Use:
+
+| Issue | Severity | Correction needed | Correction applied? | Residual risk |
+| ----- | -------- | ----------------- | ------------------- | ------------- |
+
+## 33. Corrections Applied
+
+List the corrections made after the audit.
+
+If there are no corrections, explain why.
+
+## 34. Final Reliability Assessment
+
+Include:
+
+* completeness rating 1–5,
+* reliability rating 1–5,
+* human-readability rating 1–5,
+* aggregation-readiness rating 1–5,
+* main remaining uncertainty sources,
+* whether this should be manually reviewed before being merged.
+
+====================================================================
+
+FILE EXPORT PACKAGE
+
+## 35. Create Downloadable Files if Tools Are Available
+
+If file-generation tools are available, create the following files using a filesystem-safe version of the chat label.
+
+Use these filenames:
+
+1. `CHAT_LABEL__00_manifest.md`
+2. `CHAT_LABEL__01_human_readable_report.md`
+3. `CHAT_LABEL__02_context_transfer_packet.md`
+4. `CHAT_LABEL__03_spec_sheet.yaml`
+5. `CHAT_LABEL__04_registers.md`
+6. `CHAT_LABEL__05_aggregator_packet.md`
+7. `CHAT_LABEL__06_reader_brief.md`
+8. `CHAT_LABEL__07_verification_and_audit.md`
+9. `CHAT_LABEL__08_future_chat_bootstrap_prompt.md`
+10. `CHAT_LABEL__09_in_chat_reader.md`
+11. `CHAT_LABEL__handoff_package.zip`
+
+If file-generation tools are not available, output each file’s contents in clearly labelled fenced code blocks using the filenames above.
+
+Do not claim download links exist unless files were actually created.
+
+File contents:
+
+### File 00 — Manifest
+
+Include:
+
+* files created,
+* purpose of each file,
+* intended reader,
+* whether human-readable,
+* whether aggregator-ready,
+* item counts,
+* main caveats,
+* final package status.
+
+### File 01 — Human-Readable Report
+
+Include sections 0–16 from this response.
+
+### File 02 — Context Transfer Packet
+
+Include section 29.
+
+### File 03 — Spec Sheet
+
+Include section 30.
+
+### File 04 — Registers
+
+Include sections 17–28.
+
+### File 05 — Aggregator Packet
+
+Include section 31.
+
+### File 06 — Reader Brief
+
+Create a shorter human-readable brief:
+
+* what this chat was about,
+* top 20 things to know,
+* decisions,
+* pending tasks,
+* open questions,
+* artifacts,
+* verification items,
+* best next step.
+
+### File 07 — Verification and Audit
+
+Include sections 32–34 plus the verification queue.
+
+### File 08 — Future Chat Bootstrap Prompt
+
+Create a standalone prompt that says:
+
+“I am continuing from a retired chat. The following handoff describes the old chat. Treat it as the starting context. Preserve FACT / INFERENCE / UNCERTAIN / PROJECT-CONTEXT labels. Do not assume access to the old chat. Do not re-ask answered questions. Verify stale facts before relying on them. Flag contradictions. Use the task register and open questions to determine next actions.”
+
+Then include a placeholder:
+[PASTE CONTEXT TRANSFER PACKET HERE]
+
+Then instruct the future chat to respond with:
+
+* context loaded,
+* top active priorities,
+* key constraints,
+* open questions,
+* contradictions or uncertainties,
+* recommended next action.
+
+### File 09 — In-Chat Reader
+
+Include:
+
+* package overview,
+* file index,
+* plain-English explanation,
+* question menu,
+* top things to preserve,
+* safest next actions.
+
+### ZIP Package
+
+If possible, bundle all files into `CHAT_LABEL__handoff_package.zip`.
+
+====================================================================
+
+FINAL IN-CHAT READER
+
+## 36. File Index and Explanation
+
+Whether or not files were created, explain the final package in chat.
+
+Use:
+
+| File | Purpose | What it contains | When to use it | Importance |
+| ---- | ------- | ---------------- | -------------- | ---------- |
+
+Explain each file in plain language.
+
+## 37. Human Reader Guide
+
+Explain:
+
+* what I should read first,
+* what the most important section is,
+* which parts are for later aggregation,
+* which parts are for human understanding,
+* which parts are for verification,
+* what questions I should ask next.
+
+## 38. Best Follow-Up Questions
+
+Give 10–20 specific questions I can ask in this chat next.
+
+They must be specific to this chat’s actual content.
+
+Group them by:
+
+* understanding,
+* decisions,
+* tasks,
+* artifacts,
+* risks,
+* verification,
+* spec-book integration,
+* aggregation.
+
+## 39. Final Package Status
+
+End with this exact section:
+
+# Final Package Status
+
+* Chat label:
+* Report type: full human-readable + structured handoff + spec-prep package
+* Files created: yes / no
+* ZIP created: yes / no
+* Safe for later aggregation: yes / no / with caveats
+* Extraction confidence:
+* Main value of this chat:
+* Most important decision:
+* Most important unresolved issue:
+* Most important next action:
+* Main caveats:
+* Best thing for me to read first:
+* Best question for me to ask next:
+
+If the response is cut off, end with:
+“CONTINUE NEEDED — say ‘continue’ and I will resume from section [section number].”

@@ -1,0 +1,1155 @@
+spec_sheet:
+  metadata:
+    chat_label: "Dominium Deterministic Solar-System Architecture"
+    date_anchor: "2026-05-27 Australia/Melbourne"
+    source_scope: "This chat only unless labelled PROJECT-CONTEXT"
+    apparent_coverage: "Partial visible transcript plus uploaded preservation prompt"
+    confidence_1_to_5: 4
+    staleness_risk: "Medium"
+    safe_for_aggregation: "With caveats"
+    main_limitations:
+      - "No access claimed to hidden older project context."
+      - "Assistant recommendations are not treated as user decisions unless accepted."
+      - "External engine/data claims require verification."
+
+  summary:
+    one_sentence: "Dominium is being shaped as a deterministic robotic seed-civilisation game using sparse procedural planets, mothership-constrained spawning, nanobot construction, machine graph factories, fog of war, and collapsed simulation."
+    short_brief: "The chat began with a feasibility question about deterministic full-scale procedural solar-system/MMO gameplay and evolved into a concrete robotic mothership civilisation premise with automation-first construction and process-graph machines."
+    main_topics:
+      - "Deterministic Domino simulation core"
+      - "Science-bounded procedural planets"
+      - "Field layers and sparse deltas"
+      - "Robotic mothership and spawn economy"
+      - "Nanobot construction and cut/fill"
+      - "Automation over worker NPCs"
+      - "Machine/factory graph abstraction"
+      - "Fog of war and client trust"
+      - "Unreal as potential renderer/client"
+      - "First vertical slice"
+    main_outputs:
+      - "Human-readable preservation report"
+      - "Structured registers"
+      - "Context transfer packet"
+      - "Spec sheet"
+      - "Aggregator packet"
+      - "Audit and verification queue"
+    highest_priority_carry_forward:
+      - "Formalise vertical slice."
+      - "Specify deterministic data core."
+      - "Specify field/delta model."
+      - "Define mothership economy and robot spawn system."
+      - "Design machine graph compiler and fog-of-war model."
+
+  source_rules:
+    labels_used:
+      - "FACT"
+      - "INFERENCE"
+      - "UNCERTAIN / UNVERIFIED"
+      - "PROJECT-CONTEXT"
+    conflict_rules:
+      - "Prefer direct user statements over assistant recommendations."
+      - "Do not promote brainstorms to final requirements without user confirmation."
+      - "When another chat conflicts with this one, preserve both and ask for resolution."
+    staleness_rules:
+      - "Verify engine, API, data-source, network-scale, and licensing claims before formal use."
+      - "Treat prior external citations as leads, not final evidence."
+
+  user_preferences:
+    explicit:
+      - "Human-readable preservation first."
+      - "Science-bounded procedural generation."
+      - "Robotic mothership premise."
+      - "Automation instead of worker NPC labour."
+      - "Sparse/collapsed simulation and fog of war."
+    inferred:
+      - "Diegetic explanations for systems."
+      - "Technical honesty about feasibility."
+      - "Ambitious scope controlled by data abstractions."
+    uncertain_or_not_established:
+      - "Final engine/rendering choice."
+      - "Exact MMO scope."
+      - "Exact realism level."
+      - "Exact robot chassis set."
+
+  workstreams:
+    - id: WORKSTREAM-01
+      name: "Deterministic Domino simulation core"
+      label: "FACT + INFERENCE"
+      objective: "Define Domino as the authoritative deterministic world simulator, not merely a renderer or Unreal plugin."
+      current_state: "Brainstormed and strongly recommended; not yet implemented."
+      desired_end_state: "Fixed-tick, replayable, event-sourced core with state hashes, sparse deltas, and validated commands."
+      status: "Active / design direction"
+      priority: "P0"
+      background: "Define Domino as the authoritative deterministic world simulator, not merely a renderer or Unreal plugin."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "4"
+    - id: WORKSTREAM-02
+      name: "Scientific star-system and planet generation"
+      label: "FACT"
+      objective: "Generate realistic-bounded star systems and planets from physical parameters, with designer overrides."
+      current_state: "User described this as a main goal; assistant formalised forward/reverse generation."
+      desired_end_state: "A generator/editor that creates plausible worlds from data and supports carefully bounded tuning and overrides."
+      status: "Active / design direction"
+      priority: "P0"
+      background: "Generate realistic-bounded star systems and planets from physical parameters, with designer overrides."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "4"
+    - id: WORKSTREAM-03
+      name: "Field layers, sparse deltas, saves, packs, and terraforming"
+      label: "FACT + INFERENCE"
+      objective: "Use the same layered field/delta model for procedural generation, painted overrides, save files, packs, and player terraforming."
+      current_state: "User proposed overlaying procedural fields with painted fields and reusing save tech for packs; assistant formalised a stack."
+      desired_end_state: "Unified data model for terrain/material/climate/ownership/visibility fields plus gameplay-constrained deltas."
+      status: "Active / design direction"
+      priority: "P0"
+      background: "Use the same layered field/delta model for procedural generation, painted overrides, save files, packs, and player terraforming."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "4"
+    - id: WORKSTREAM-04
+      name: "Robotic seed-civilisation premise and mothership economy"
+      label: "FACT"
+      objective: "Use a robotic mothership as spawn source, recipe book, lore anchor, and early resource bottleneck."
+      current_state: "User proposed extensive lore and gameplay role; assistant refined constraints."
+      desired_end_state: "Physical spawn economy where robot bodies and remote spawn labs require power, feedstock, permissions, and fabrication capacity."
+      status: "Active / design direction"
+      priority: "P0"
+      background: "Use a robotic mothership as spawn source, recipe book, lore anchor, and early resource bottleneck."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "4"
+    - id: WORKSTREAM-05
+      name: "Robot avatars, bodies, inventory, and respawn"
+      label: "FACT + INFERENCE"
+      objective: "Define player identities as robot agents instantiated into manufactured bodies."
+      current_state: "User proposed multiple robot forms and physical spawning; details remain open."
+      desired_end_state: "Balanced chassis system with body manufacturing, backups, carrying capacity, hardpoints, and meaningful death/respawn rules."
+      status: "Open design"
+      priority: "P1"
+      background: "Define player identities as robot agents instantiated into manufactured bodies."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "3"
+    - id: WORKSTREAM-06
+      name: "Nanobot construction, blueprinting, cut/fill, and terraforming tools"
+      label: "FACT + INFERENCE"
+      objective: "Make construction convenient without making it free or nondeterministic."
+      current_state: "User proposed nanobots, diegetic HUD, blueprinting, cut/fill; assistant added staged validation."
+      desired_end_state: "Preview-plan-reserve-stage-execute-commit pipeline with material, energy, heat, time, and permission costs."
+      status: "Active / design direction"
+      priority: "P0"
+      background: "Make construction convenient without making it free or nondeterministic."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "4"
+    - id: WORKSTREAM-07
+      name: "Automation, machines, factories, and machine graph compiler"
+      label: "FACT"
+      objective: "Avoid expensive worker NPC simulation by making automation the default and compiling machines into process graphs."
+      current_state: "User explicitly argued against simulating labour/pathfinding and for process diagrams; assistant expanded."
+      desired_end_state: "Machine and factory systems that operate as graphs/equations when distant and visual/interactive systems when near."
+      status: "Active / design direction"
+      priority: "P0"
+      background: "Avoid expensive worker NPC simulation by making automation the default and compiling machines into process graphs."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "4"
+    - id: WORKSTREAM-08
+      name: "Cities, civilisation, economy, and progression"
+      label: "FACT + INFERENCE"
+      objective: "Let players build cities easily, while advanced technology requires industrial scale and coordination."
+      current_state: "User stated cities need to be easy to build and advanced things should require city-scale industry; details remain open."
+      desired_end_state: "Progression from mothership camp to outpost, settlement, industrial city, planetary infrastructure, terraforming, and megaprojects."
+      status: "Open design"
+      priority: "P1"
+      background: "Let players build cities easily, while advanced technology requires industrial scale and coordination."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "3"
+    - id: WORKSTREAM-09
+      name: "Fog of war, sensors, and hidden-state security"
+      label: "FACT + INFERENCE"
+      objective: "Ensure the game only sends/simulates what players can sense, with remembered and unknown states."
+      current_state: "User required fog of war and sensed-only simulation; assistant added server-side truth/perception model."
+      desired_end_state: "Visibility system for sensors, maps, last-known data, undiscovered resources, hidden construction, and MMO secrecy."
+      status: "Active / design direction"
+      priority: "P0"
+      background: "Ensure the game only sends/simulates what players can sense, with remembered and unknown states."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "4"
+    - id: WORKSTREAM-10
+      name: "MMO, client compute, shards, and persistence"
+      label: "FACT + INFERENCE"
+      objective: "Evaluate single persistent universe, private universes, server authority, and client-shared compute."
+      current_state: "User asked whether clients can share compute and whether Unreal can support millions; assistant set trust boundaries."
+      desired_end_state: "Distributed authority model with region servers, event logs, interest management, anti-cheat, and safe limited client assistance."
+      status: "Open architecture"
+      priority: "P0"
+      background: "Evaluate single persistent universe, private universes, server authority, and client-shared compute."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "3"
+    - id: WORKSTREAM-11
+      name: "Unreal/Raylib/client rendering role"
+      label: "INFERENCE"
+      objective: "Clarify what Unreal can and cannot do for this design."
+      current_state: "Assistant recommended custom deterministic backend with Unreal as renderer/client; user has not explicitly accepted."
+      desired_end_state: "Renderer bridge where Unreal visualises Domino state but does not own authoritative world truth."
+      status: "Recommendation pending confirmation"
+      priority: "P1"
+      background: "Clarify what Unreal can and cannot do for this design."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "3"
+    - id: WORKSTREAM-12
+      name: "Vertical slice and roadmap"
+      label: "INFERENCE"
+      objective: "Turn the huge vision into a testable first playable slice."
+      current_state: "Assistant proposed a staged prototype; user has not yet responded."
+      desired_end_state: "One planet region with mothership, robot body, survey, ore, power, cut/fill, refinery, fabricator, remote spawn lab, fog of war."
+      status: "Recommended next step"
+      priority: "P0"
+      background: "Turn the huge vision into a testable first playable slice."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "4"
+    - id: WORKSTREAM-13
+      name: "Preservation and spec-book handoff"
+      label: "FACT"
+      objective: "Create a report, registers, spec sheet, aggregator packet, and export package for this chat."
+      current_state: "Triggered by uploaded preservation prompt."
+      desired_end_state: "Downloadable Markdown/YAML/ZIP package plus in-chat reader that can seed future aggregation."
+      status: "Completed in this response"
+      priority: "P0"
+      background: "Create a report, registers, spec sheet, aggregator packet, and export package for this chat."
+      decisions_made: []
+      decisions_pending: []
+      tasks: []
+      constraints: []
+      dependencies: []
+      timeline: "See chronological timeline register."
+      blockers: []
+      risks: []
+      artifacts: []
+      success_criteria: []
+      next_action: "Refine into formal spec and task plan."
+      verification_needed: []
+      confidence: "5"
+
+  decisions:
+    - id: DECISION-01
+      decision: "Treat Domino as the authoritative deterministic simulation/data core and rendering as a client layer."
+      status: "Recommended / not explicitly user-accepted"
+      label: "INFERENCE"
+      evidence_or_basis: "User asked for determinism and scale; assistant argued the world must be a simulator/database first."
+      rationale: "Keeps deterministic state separate from frame-rate, rendering, physics effects, and engine limitations."
+      implications: "Shapes engine architecture, networking, save format, and tooling."
+      related_workstreams: ["WORKSTREAM-01", "WORKSTREAM-11"]
+      uncertainty: "User-stated or strongly supported by visible chat"
+    - id: DECISION-02
+      decision: "Use science-bounded procedural generation rather than purely arbitrary sliders or manual painting."
+      status: "User-stated design direction"
+      label: "FACT"
+      evidence_or_basis: "User said planets should use real science and sliders should be bounded to realistic ranges."
+      rationale: "Supports surprising worlds while preserving plausibility and design control."
+      implications: "Affects planet editor, generator constraints, and content pipeline."
+      related_workstreams: ["WORKSTREAM-02"]
+      uncertainty: "User-stated or strongly supported by visible chat"
+    - id: DECISION-03
+      decision: "Support procedural fields overlaid with painted/designer/player layers."
+      status: "User-stated direction, technical details open"
+      label: "FACT + INFERENCE"
+      evidence_or_basis: "User said procedural fields should be overlayable with painted fields and save technology should also support packs."
+      rationale: "Unifies worldgen, packs, saves, and terraforming under one model."
+      implications: "Requires layered field/delta data model."
+      related_workstreams: ["WORKSTREAM-03"]
+      uncertainty: "User-stated or strongly supported by visible chat"
+    - id: DECISION-04
+      decision: "Use a robotic seed-ship/mothership premise to explain spawning, recipes, HUD, and automation."
+      status: "User-stated design premise"
+      label: "FACT"
+      evidence_or_basis: "User described humans launching a robotic mothership that manufactures robots to restart civilisation."
+      rationale: "Provides diegetic explanation for robot avatars, HUD, knowledge database, spawn machines, and fabrication."
+      implications: "Affects lore, progression, respawn, recipes, and early-game economy."
+      related_workstreams: ["WORKSTREAM-04", "WORKSTREAM-05"]
+      uncertainty: "User-stated or strongly supported by visible chat"
+    - id: DECISION-05
+      decision: "Make player characters robots with selectable manufactured chassis rather than ordinary humans."
+      status: "User-stated design direction"
+      label: "FACT"
+      evidence_or_basis: "User listed biped/quadruped/spider/tank-like robot forms and spawn-body fabrication."
+      rationale: "Makes HUD, strength, inventory, respawn, hostile environments, and automation coherent."
+      implications: "Requires chassis balance and body manufacturing rules."
+      related_workstreams: ["WORKSTREAM-05"]
+      uncertainty: "User-stated or strongly supported by visible chat"
+    - id: DECISION-06
+      decision: "Use nanobot/automation construction as the main interaction layer, bounded by material, energy, time, and capability."
+      status: "User-stated direction with assistant constraints"
+      label: "FACT + INFERENCE"
+      evidence_or_basis: "User proposed nanobots/invisible force for cut/fill and construction; assistant framed limits to prevent magic."
+      rationale: "Avoids expensive labour simulation and makes construction convenient while preserving economy."
+      implications: "Affects construction UX, resource ledgers, and deterministic operation validation."
+      related_workstreams: ["WORKSTREAM-06"]
+      uncertainty: "User-stated or strongly supported by visible chat"
+    - id: DECISION-07
+      decision: "Deprioritise human-like worker NPC labour and use automation/process graphs instead."
+      status: "Strong user-stated preference / tentative design direction"
+      label: "FACT"
+      evidence_or_basis: "User explicitly said labour is expensive to compute and suggested jumping straight to automation."
+      rationale: "Avoids pathfinding/AI costs and aligns with robot civilisation premise."
+      implications: "Affects city simulation, construction, logistics, and visual life."
+      related_workstreams: ["WORKSTREAM-07", "WORKSTREAM-08"]
+      uncertainty: "User-stated or strongly supported by visible chat"
+    - id: DECISION-08
+      decision: "Use the mothership as the recipe book and early precision fabricator, but constrain it with finite resources and throughput."
+      status: "User-stated direction"
+      label: "FACT"
+      evidence_or_basis: "User said the ship already knows designs but should have limited resources/low throughput so players must build industry."
+      rationale: "Preserves progression while explaining why players know advanced designs."
+      implications: "Requires material reserves, throughput, heat, maintenance, and mission reserve rules."
+      related_workstreams: ["WORKSTREAM-04", "WORKSTREAM-08"]
+      uncertainty: "User-stated or strongly supported by visible chat"
+    - id: DECISION-09
+      decision: "Represent distant machines/factories as processes/equations rather than simulating all physical parts."
+      status: "User-stated direction with assistant formalisation"
+      label: "FACT"
+      evidence_or_basis: "User said entire machines should be summarised as one-step equations/process diagrams when possible."
+      rationale: "Enables scale and preserves performance."
+      implications: "Requires machine compiler, aggregate simulation, and expansion rules."
+      related_workstreams: ["WORKSTREAM-07"]
+      uncertainty: "User-stated or strongly supported by visible chat"
+    - id: DECISION-10
+      decision: "Use sparse construction/destruction and collapsed simulation for unseen/unneeded areas."
+      status: "Core user requirement and assistant recommendation"
+      label: "FACT"
+      evidence_or_basis: "User explicitly required sparse construction/destruction and collapse of unseen world state."
+      rationale: "Makes planet-scale and MMO-scale persistence possible."
+      implications: "Affects terrain, factories, cities, fog of war, and persistence."
+      related_workstreams: ["WORKSTREAM-01", "WORKSTREAM-03", "WORKSTREAM-09", "WORKSTREAM-10"]
+      uncertainty: "Assistant recommendation unless user-stated"
+    - id: DECISION-11
+      decision: "Do not trust clients with hidden information or authoritative MMO results."
+      status: "Assistant recommendation / not explicitly user-accepted"
+      label: "INFERENCE"
+      evidence_or_basis: "User asked about clients sharing compute; assistant explained safe vs unsafe client compute."
+      rationale: "Protects fog-of-war secrets and anti-cheat."
+      implications: "Requires server authority and careful data filtering."
+      related_workstreams: ["WORKSTREAM-09", "WORKSTREAM-10"]
+      uncertainty: "Assistant recommendation unless user-stated"
+    - id: DECISION-12
+      decision: "Treat Unreal as useful for presentation/tooling but not as the whole authoritative deterministic MMO engine."
+      status: "Assistant recommendation / not explicitly user-accepted"
+      label: "INFERENCE"
+      evidence_or_basis: "User asked whether Unreal can do it; assistant concluded Unreal cannot solve the full distributed deterministic world alone."
+      rationale: "Prevents architecture from depending on ordinary engine scene graphs for planetary/MMO authority."
+      implications: "Affects engine choice, prototype planning, and renderer bridge."
+      related_workstreams: ["WORKSTREAM-11"]
+      uncertainty: "Assistant recommendation unless user-stated"
+    - id: DECISION-13
+      decision: "Make the first serious milestone a small vertical slice, not a full solar-system MMO."
+      status: "Assistant recommendation / not explicitly user-accepted"
+      label: "INFERENCE"
+      evidence_or_basis: "Assistant proposed one region with mothership, ore, power, cut/fill, refinery, fabricator, spawn lab, fog of war."
+      rationale: "Tests whether the core loop is fun and technically viable."
+      implications: "Guides next implementation work."
+      related_workstreams: ["WORKSTREAM-12"]
+      uncertainty: "Assistant recommendation unless user-stated"
+
+  tasks:
+    - id: TASK-01
+      task: "Write a formal one-page design pillar document for Dominium\u2019s robotic seed-civilisation premise."
+      priority: "P0"
+      urgency: "U1"
+      owner: "User / design lead"
+      dependencies: ["Current preservation report"]
+      inputs_needed: ["Approved project tone and scope"]
+      expected_output: "A concise design pillars sheet"
+      next_step: "Draft and review pillars"
+      related_workstreams: ["WORKSTREAM-04", "WORKSTREAM-08"]
+      label: "FACT + INFERENCE"
+      confidence: "4"
+    - id: TASK-02
+      task: "Define the deterministic Domino core requirements: ticks, event log, state hashes, command validation, sparse deltas."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Technical lead"
+      dependencies: ["DECISION-01, DECISION-10"]
+      inputs_needed: ["Engine language/runtime choice and determinism requirements"]
+      expected_output: "Engine core specification"
+      next_step: "Draft data model and invariants"
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "INFERENCE"
+      confidence: "4"
+    - id: TASK-03
+      task: "Specify the star-system and planet generator parameter schema, including realism/plausibility bounds."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Design + simulation lead"
+      dependencies: ["DECISION-02"]
+      inputs_needed: ["Target physical model, supported bodies, data sources"]
+      expected_output: "Planet generator spec"
+      next_step: "List parameters and constraints"
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "FACT + INFERENCE"
+      confidence: "4"
+    - id: TASK-04
+      task: "Design the field-layer and delta operation format for procedural generation, saves, packs, terraforming, and construction."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Engine/data lead"
+      dependencies: ["DECISION-03, DECISION-10"]
+      inputs_needed: ["Terrain/material/climate field list"]
+      expected_output: "Layer stack and operation schema"
+      next_step: "Draft operation types and conservation rules"
+      related_workstreams: ["WORKSTREAM-03"]
+      label: "FACT + INFERENCE"
+      confidence: "4"
+    - id: TASK-05
+      task: "Define mothership constraints: starter resources, precision fabrication, throughput, heat, mission reserves, respawn budget."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Game design lead"
+      dependencies: ["DECISION-04, DECISION-08"]
+      inputs_needed: ["Desired early-game difficulty and MMO/single-player differences"]
+      expected_output: "Mothership economy spec"
+      next_step: "Choose initial bottlenecks"
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "FACT"
+      confidence: "4"
+    - id: TASK-06
+      task: "Define robot chassis/body templates and respawn/back-up rules."
+      priority: "P1"
+      urgency: "U1"
+      owner: "Game design lead"
+      dependencies: ["DECISION-05"]
+      inputs_needed: ["Chassis list, environment types, death stakes"]
+      expected_output: "Robot body system spec"
+      next_step: "Draft first 3\u20135 chassis"
+      related_workstreams: ["WORKSTREAM-05"]
+      label: "FACT + INFERENCE"
+      confidence: "4"
+    - id: TASK-07
+      task: "Specify blueprint and nanobot construction pipeline: preview, plan, reserve, stage, execute, commit, operate."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Gameplay systems lead"
+      dependencies: ["DECISION-06"]
+      inputs_needed: ["Resource ledger and terrain delta schema"]
+      expected_output: "Construction interaction spec"
+      next_step: "Define first cut/fill/build operations"
+      related_workstreams: ["WORKSTREAM-06"]
+      label: "INFERENCE"
+      confidence: "4"
+    - id: TASK-08
+      task: "Define machine graph compiler requirements and limits."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Systems design + engine lead"
+      dependencies: ["DECISION-09"]
+      inputs_needed: ["Machine module list, ports, flows, power/heat model"]
+      expected_output: "Machine/factory simulation spec"
+      next_step: "Draft minimal graph schema"
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "FACT + INFERENCE"
+      confidence: "4"
+    - id: TASK-09
+      task: "Design city progression and resource/technology tiers."
+      priority: "P1"
+      urgency: "U2"
+      owner: "Game design lead"
+      dependencies: ["TASK-05, TASK-08"]
+      inputs_needed: ["Mothership constraints and machine graph rules"]
+      expected_output: "Progression ladder from outpost to megaprojects"
+      next_step: "Draft tier table and gating principles"
+      related_workstreams: ["WORKSTREAM-08"]
+      label: "FACT + INFERENCE"
+      confidence: "4"
+    - id: TASK-10
+      task: "Define fog-of-war and sensor model, including what the client may know."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Network/simulation lead"
+      dependencies: ["DECISION-10, DECISION-11"]
+      inputs_needed: ["Sensor types, player/faction knowledge rules"]
+      expected_output: "Visibility and secrecy spec"
+      next_step: "Draft observed/remembered/unknown states"
+      related_workstreams: ["WORKSTREAM-09"]
+      label: "FACT + INFERENCE"
+      confidence: "4"
+    - id: TASK-11
+      task: "Design multiplayer authority and client compute boundaries."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Network/backend lead"
+      dependencies: ["TASK-10"]
+      inputs_needed: ["Trust model, shard model, persistent storage requirements"]
+      expected_output: "MMO architecture draft"
+      next_step: "Separate safe client jobs from server-only jobs"
+      related_workstreams: ["WORKSTREAM-10"]
+      label: "INFERENCE"
+      confidence: "4"
+    - id: TASK-12
+      task: "Verify current Unreal capabilities and limits before making engine commitments."
+      priority: "P1"
+      urgency: "U1"
+      owner: "Technical lead"
+      dependencies: ["DECISION-12"]
+      inputs_needed: ["Current Unreal docs and target platform constraints"]
+      expected_output: "Verification memo"
+      next_step: "Check latest UE docs and alternatives"
+      related_workstreams: ["WORKSTREAM-11"]
+      label: "UNCERTAIN / UNVERIFIED"
+      confidence: "4"
+    - id: TASK-13
+      task: "Build or specify the first vertical slice."
+      priority: "P0"
+      urgency: "U1"
+      owner: "Project lead"
+      dependencies: ["TASK-02 through TASK-08"]
+      inputs_needed: ["Selected engine/prototype stack and minimal assets"]
+      expected_output: "Vertical slice plan or prototype"
+      next_step: "Create milestone breakdown"
+      related_workstreams: ["WORKSTREAM-12"]
+      label: "INFERENCE"
+      confidence: "4"
+    - id: TASK-14
+      task: "Merge this report into the future master Project Spec Book only after uncertainty labels are preserved."
+      priority: "P1"
+      urgency: "U2"
+      owner: "Future aggregator"
+      dependencies: ["This package and reports from other chats"]
+      inputs_needed: ["Other chat preservation reports"]
+      expected_output: "Spec-book integration pass"
+      next_step: "Compare duplicates/conflicts"
+      related_workstreams: ["WORKSTREAM-13"]
+      label: "FACT"
+      confidence: "4"
+
+  constraints:
+    - id: CONSTRAINT-01
+      constraint: "The simulation must be deterministic enough for replay, persistence, and debugging."
+      type: "Technical"
+      hard_or_soft: "Hard"
+      source_or_basis: "User explicitly requested deterministic game."
+      implication: "Fixed tick, stable commands, deterministic RNG, state hashing, and cautious physics use."
+      violation_risk: "Desync, broken saves, untestable MMO state."
+      label: "FACT"
+      confidence: "5"
+    - id: CONSTRAINT-02
+      constraint: "Planets and systems should be procedurally generated from data/science-bounded parameters, not arbitrary decorative sliders."
+      type: "Design"
+      hard_or_soft: "Hard/soft"
+      source_or_basis: "User explicitly requested real science and realistic bounds."
+      implication: "Editor needs plausibility constraints and warnings."
+      violation_risk: "Worlds become incoherent or lose design identity."
+      label: "FACT"
+      confidence: "5"
+    - id: CONSTRAINT-03
+      constraint: "Manual painting should not be the primary worldbuilding workflow, but overrides/painting must be supported."
+      type: "Content pipeline"
+      hard_or_soft: "Soft"
+      source_or_basis: "User said not manually painting stuff, but later said painting/editing full planets should be possible."
+      implication: "Use procedural base plus layered overrides."
+      violation_risk: "Over-labour-intensive content pipeline or insufficient designer control."
+      label: "FACT"
+      confidence: "4"
+    - id: CONSTRAINT-04
+      constraint: "Full planets/universes cannot be stored or simulated as dense maps."
+      type: "Technical"
+      hard_or_soft: "Hard"
+      source_or_basis: "Scale requirement plus assistant rationale."
+      implication: "Use procedural bases and sparse deltas."
+      violation_risk: "Storage/compute explosion."
+      label: "INFERENCE"
+      confidence: "4"
+    - id: CONSTRAINT-05
+      constraint: "Only data players can sense should be loaded/sent/simulated at high fidelity."
+      type: "Technical/security"
+      hard_or_soft: "Hard"
+      source_or_basis: "User explicitly required fog of war and sensed-only simulation."
+      implication: "Use interest management and server-side filtering."
+      violation_risk: "Lag, secret leakage, compute collapse."
+      label: "FACT"
+      confidence: "5"
+    - id: CONSTRAINT-06
+      constraint: "Clients may not be trusted with hidden MMO truth or authority-critical results."
+      type: "Security"
+      hard_or_soft: "Hard for public MMO"
+      source_or_basis: "Assistant recommendation based on client-shared compute discussion."
+      implication: "Client compute must be visible/verifiable/non-secret."
+      violation_risk: "Cheating and fog-of-war failure."
+      label: "INFERENCE"
+      confidence: "3"
+    - id: CONSTRAINT-07
+      constraint: "Labour NPCs and full pathfinding-heavy worker simulation should be avoided or heavily abstracted."
+      type: "Performance/design"
+      hard_or_soft: "Soft but strong"
+      source_or_basis: "User strongly criticised labour compute costs."
+      implication: "Use automation, process graphs, AI controllers, and drones."
+      violation_risk: "Simulation cost and pathfinding complexity."
+      label: "FACT"
+      confidence: "5"
+    - id: CONSTRAINT-08
+      constraint: "Nanobots/construction must consume materials and energy and respect capability limits."
+      type: "Game balance"
+      hard_or_soft: "Hard/soft"
+      source_or_basis: "User wanted energy/material requirements; assistant formalised limits."
+      implication: "Construction cannot become free matter/free logistics."
+      violation_risk: "Loss of progression and economy."
+      label: "FACT + INFERENCE"
+      confidence: "4"
+    - id: CONSTRAINT-09
+      constraint: "The mothership must be useful but not able to trivialise all manufacturing."
+      type: "Game balance"
+      hard_or_soft: "Hard/soft"
+      source_or_basis: "User explicitly described limited resources, low throughput, and need for factories."
+      implication: "Use finite reserves, throughput limits, heat, wear, and rare material bottlenecks."
+      violation_risk: "No reason to build industry."
+      label: "FACT"
+      confidence: "5"
+    - id: CONSTRAINT-10
+      constraint: "Unreal should not be assumed capable of the whole design without a custom backend."
+      type: "Technical"
+      hard_or_soft: "Soft pending verification"
+      source_or_basis: "Assistant recommendation; requires current verification."
+      implication: "Do not base authoritative scale/determinism on UE alone."
+      violation_risk: "Overcommitting to an unsuitable architecture."
+      label: "UNCERTAIN / UNVERIFIED"
+      confidence: "3"
+    - id: CONSTRAINT-11
+      constraint: "The preservation output must be human-readable first and also machine-aggregation-ready."
+      type: "Process"
+      hard_or_soft: "Hard"
+      source_or_basis: "Uploaded preservation prompt."
+      implication: "Include narrative, registers, spec sheet, aggregator packet, audit, and files."
+      violation_risk: "Future chats lose context or cannot merge reports."
+      label: "FACT"
+      confidence: "5"
+
+  open_questions:
+    - id: QUESTION-01
+      question: "Is the official scale one designed star system, many generated systems, or a true galaxy-level structure?"
+      why_it_matters: "Determines generator scope, persistence model, and travel design."
+      known: "User discussed a \u201cGalaxy\u201d but clarified as essentially a solar system with configurable planets."
+      unknown: "Final product scale and naming."
+      resolution_path: "Choose initial official-server scope and name the editor accordingly."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-02", "WORKSTREAM-10"]
+      label: "FACT + UNCERTAIN / UNVERIFIED"
+    - id: QUESTION-02
+      question: "How realistic should the planet generator be, and where should sci-fi overrides be allowed?"
+      why_it_matters: "Controls content freedom and simulation complexity."
+      known: "User wants sliders bounded by realism but also wants designer nudging and overrides."
+      unknown: "Hard vs soft physics boundaries."
+      resolution_path: "Define plausibility scoring and override categories."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "FACT"
+    - id: QUESTION-03
+      question: "What is the exact field-layer format for terrain/material/climate/ownership/visibility data?"
+      why_it_matters: "It is foundational for saves, mods, terraforming, and construction."
+      known: "User wants procedural fields overlaid with painted fields and reused save technology."
+      unknown: "Data schema, operations, compression, conservation rules."
+      resolution_path: "Draft field/delta spec."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-03"]
+      label: "FACT + INFERENCE"
+    - id: QUESTION-04
+      question: "What are the mothership\u2019s initial resources, fabrication rate, and failure/recovery rules?"
+      why_it_matters: "This defines early progression and MMO sustainability."
+      known: "User proposed finite resources, low throughput, and possible world reset/recovery if first players fail."
+      unknown: "Exact numbers and whether official server can reset."
+      resolution_path: "Design mothership economy and failure modes."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "FACT"
+    - id: QUESTION-05
+      question: "How many robot chassis exist at launch and what tradeoffs do they have?"
+      why_it_matters: "Chassis define player role expression and balance."
+      known: "User listed biped/quadruped/spider/tank-like options."
+      unknown: "Launch set, capabilities, costs, progression."
+      resolution_path: "Draft first chassis table."
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-05"]
+      label: "FACT"
+    - id: QUESTION-06
+      question: "What can nanobots do at each tech tier?"
+      why_it_matters: "Nanobots could break progression if too strong."
+      known: "User proposed nanobots as easy compute interface; assistant recommended material/energy/time limits."
+      unknown: "Capability ladder and limits."
+      resolution_path: "Define construction tool tiers."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-06"]
+      label: "FACT + INFERENCE"
+    - id: QUESTION-07
+      question: "How should player-created machines compile into simple equations without killing creativity?"
+      why_it_matters: "This is central to performance and user-generated engineering."
+      known: "User wants machine assemblies summarised as unit steps/process diagrams."
+      unknown: "Compiler limits, modules, validation, exploit prevention."
+      resolution_path: "Draft machine graph compiler rules."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "FACT"
+    - id: QUESTION-08
+      question: "How can cities feel alive without worker NPCs?"
+      why_it_matters: "No labour NPCs removes common visual/social signals."
+      known: "User prefers no intelligent worker NPCs and automation instead."
+      unknown: "Ambient machines, drones, UI, population abstraction, city OS."
+      resolution_path: "Design city feedback loops and visual proxies."
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-08"]
+      label: "FACT + INFERENCE"
+    - id: QUESTION-09
+      question: "What exact information does fog of war hide, remember, infer, or reveal?"
+      why_it_matters: "Affects gameplay, security, and simulation."
+      known: "User required fog of war and sensed-only loading."
+      unknown: "Sensor types, map sharing, hidden resources, enemy bases, caves."
+      resolution_path: "Draft sensor/perception rules."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-09"]
+      label: "FACT"
+    - id: QUESTION-10
+      question: "What client compute is allowed in public MMO mode?"
+      why_it_matters: "Client-shared compute is a core scaling idea but dangerous."
+      known: "User asked about clients sharing compute; assistant recommended only visible/verifiable jobs."
+      unknown: "Precise trust boundaries and validation mechanisms."
+      resolution_path: "Create client compute policy."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-10"]
+      label: "FACT + INFERENCE"
+    - id: QUESTION-11
+      question: "What should Unreal actually do in the production stack?"
+      why_it_matters: "Engine commitment affects architecture and team skills."
+      known: "Assistant recommended Unreal as renderer/client, not source of truth."
+      unknown: "Whether user accepts this and whether current UE features suffice."
+      resolution_path: "Verify and decide renderer strategy."
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-11"]
+      label: "UNCERTAIN / UNVERIFIED"
+    - id: QUESTION-12
+      question: "What is the first vertical slice?"
+      why_it_matters: "A huge design needs a concrete implementation target."
+      known: "Assistant proposed mothership-to-remote-spawn-lab loop."
+      unknown: "User acceptance and exact milestone scope."
+      resolution_path: "Approve or revise vertical slice."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-12"]
+      label: "INFERENCE"
+
+  rejected_or_superseded_options:
+    - id: REJECTED-01
+      option: "Manual painting as the main planet creation method"
+      status: "Deprioritised"
+      reason: "User wants procedural generation from plausible science, with painting as override rather than primary method."
+      final_or_tentative: "Tentative but strong"
+      reconsider_conditions: "Use painting for designer overrides, mods, and exact authored locations."
+      related_workstreams: ["WORKSTREAM-02", "WORKSTREAM-03"]
+      label: "FACT"
+    - id: REJECTED-02
+      option: "Completely arbitrary sliders detached from physical plausibility"
+      status: "Deprioritised"
+      reason: "User said sliders should be bounded by what is realistic."
+      final_or_tentative: "Tentative but strong"
+      reconsider_conditions: "Allow fantasy/sci-fi override modes if explicitly labelled."
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "FACT"
+    - id: REJECTED-03
+      option: "Human-like worker NPC labour as the main construction/economy mechanism"
+      status: "Deprioritised"
+      reason: "User said labour is expensive to compute and suggested jumping straight to automation."
+      final_or_tentative: "Tentative but strong"
+      reconsider_conditions: "Could return as local cosmetic drones/robots or abstracted AI agents, not core labour sim."
+      related_workstreams: ["WORKSTREAM-07", "WORKSTREAM-08"]
+      label: "FACT"
+    - id: REJECTED-04
+      option: "Simulating every machine part, belt item, worker, and device at full fidelity everywhere"
+      status: "Rejected as infeasible by design rationale"
+      reason: "User asked to collapse things; assistant recommended aggregate equations."
+      final_or_tentative: "Tentative but fundamental"
+      reconsider_conditions: "Use local detailed visualization only when sensed/interactive."
+      related_workstreams: ["WORKSTREAM-07", "WORKSTREAM-10"]
+      label: "FACT + INFERENCE"
+    - id: REJECTED-05
+      option: "Unreal Actors as the authoritative representation for all terrain, machines, cities, and planet state"
+      status: "Rejected by assistant recommendation"
+      reason: "Assistant argued Unreal should not own the authoritative universe."
+      final_or_tentative: "Pending user acceptance"
+      reconsider_conditions: "Reconsider only for small prototypes or purely visual local scenes."
+      related_workstreams: ["WORKSTREAM-11"]
+      label: "INFERENCE"
+    - id: REJECTED-06
+      option: "Trusting public MMO clients with secret fog-of-war data or authority-critical results"
+      status: "Rejected by assistant recommendation"
+      reason: "Would leak secrets and enable cheating."
+      final_or_tentative: "Strong recommendation"
+      reconsider_conditions: "Private servers/single-player can relax this."
+      related_workstreams: ["WORKSTREAM-09", "WORKSTREAM-10"]
+      label: "INFERENCE"
+    - id: REJECTED-07
+      option: "World reset as the normal permanent official-server failure response"
+      status: "Deprioritised by assistant recommendation"
+      reason: "User brainstormed restarting if first players fail; assistant suggested emergency recovery instead."
+      final_or_tentative: "Uncertain"
+      reconsider_conditions: "Could be used for alpha seasons, roguelike servers, or explicit challenge modes."
+      related_workstreams: ["WORKSTREAM-04", "WORKSTREAM-10"]
+      label: "INFERENCE"
+
+  artifacts:
+    - id: ARTIFACT-01
+      name_or_description: "Visible chat transcript"
+      type: "Conversation context"
+      purpose: "Primary source for preservation."
+      status: "Available in current chat; not separately exported before this response."
+      origin: "This chat"
+      carry_forward: "Yes"
+      notes: "Contains the user\u2019s MMO/engine question, assistant architecture responses, and user\u2019s detailed seed-civilisation concept."
+      label: "FACT"
+    - id: ARTIFACT-02
+      name_or_description: "Uploaded file: Pasted text.txt"
+      type: "Prompt/instruction file"
+      purpose: "Defines the preservation/export requirements for this response."
+      status: "Uploaded in this turn."
+      origin: "User upload"
+      carry_forward: "Yes"
+      notes: "Requires human-readable report, registers, spec sheet, aggregator packet, audit, files, and ZIP."
+      label: "FACT"
+    - id: ARTIFACT-03
+      name_or_description: "Assistant architecture response 1"
+      type: "In-chat output"
+      purpose: "First structured answer about deterministic simulation, sparse deltas, fog of war, client compute, MMO scale, and Unreal limits."
+      status: "Existing in visible chat."
+      origin: "Assistant"
+      carry_forward: "Yes with uncertainty labels"
+      notes: "Treat as recommendations unless user later accepts."
+      label: "INFERENCE"
+    - id: ARTIFACT-04
+      name_or_description: "Assistant design response 2"
+      type: "In-chat output"
+      purpose: "Expanded design around robot seed civilisation, mothership, nanobots, automation, planet generation, and first vertical slice."
+      status: "Existing in visible chat."
+      origin: "Assistant"
+      carry_forward: "Yes with uncertainty labels"
+      notes: "Treat as recommendations and synthesis; user had not yet replied before preservation request."
+      label: "INFERENCE"
+    - id: ARTIFACT-05
+      name_or_description: "External references cited in assistant responses"
+      type: "Links/citations"
+      purpose: "Prior assistant cited Unreal, NASA/JPL/SPICE, Guinness, EVE, etc."
+      status: "Present as citations in visible chat, not reverified for this report."
+      origin: "Assistant/web citations in prior turns"
+      carry_forward: "Carry forward to verification queue"
+      notes: "Useful for grounding engine/scale claims but may be stale."
+      label: "UNCERTAIN / UNVERIFIED"
+    - id: ARTIFACT-06
+      name_or_description: "This generated preservation package"
+      type: "Markdown/YAML/ZIP files"
+      purpose: "Exports the chat for future reading and aggregation."
+      status: "Created by this response."
+      origin: "Assistant"
+      carry_forward: "Yes"
+      notes: "Includes manifest, report, context transfer packet, spec sheet, registers, aggregator packet, reader brief, audit, bootstrap prompt, in-chat reader, and ZIP."
+      label: "FACT"
+
+  risks:
+    - id: RISK-01
+      risk: "Scope explosion from full solar system, MMO, terraforming, machines, cities, and megaprojects at once."
+      consequence: "Project never reaches a playable core."
+      likelihood: "High"
+      severity: "High"
+      mitigation: "Define and build the vertical slice first."
+      related_workstreams: ["WORKSTREAM-12"]
+      label: "INFERENCE"
+    - id: RISK-02
+      risk: "Future assistant treats brainstormed ideas as final decisions."
+      consequence: "Spec becomes too rigid or misrepresents user intent."
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Use FACT/INFERENCE/UNCERTAIN labels and decision statuses."
+      related_workstreams: ["WORKSTREAM-13"]
+      label: "FACT"
+    - id: RISK-03
+      risk: "Unreal capability assumptions become stale or overoptimistic."
+      consequence: "Wrong engine architecture or performance promises."
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Verify current Unreal docs and prototype critical path."
+      related_workstreams: ["WORKSTREAM-11"]
+      label: "UNCERTAIN / UNVERIFIED"
+    - id: RISK-04
+      risk: "Nanobots become magic and remove the need for industry/logistics."
+      consequence: "Gameplay loses progression and constraints."
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Bound construction by energy, materials, heat, time, and capability."
+      related_workstreams: ["WORKSTREAM-06"]
+      label: "INFERENCE"
+    - id: RISK-05
+      risk: "Client-shared compute leaks hidden information or enables cheating."
+      consequence: "MMO security failure."
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Do not send hidden state to clients; use server authority and validation."
+      related_workstreams: ["WORKSTREAM-09", "WORKSTREAM-10"]
+      label: "INFERENCE"
+    - id: RISK-06
+      risk: "Machine graph compiler allows exploit/lag machines."
+      consequence: "Players can crash servers or bypass economy."
+      likelihood: "High"
+      severity: "High"
+      mitigation: "Use complexity budgets, validation, and collapsed representations."
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "INFERENCE"
+    - id: RISK-07
+      risk: "Cities feel empty without NPCs."
+      consequence: "Player-built civilisation lacks emotional/visual feedback."
+      likelihood: "Medium"
+      severity: "Medium"
+      mitigation: "Use drones, traffic abstractions, city OS UI, visible infrastructure, sensors, and ambient machine activity."
+      related_workstreams: ["WORKSTREAM-08"]
+      label: "INFERENCE"
+    - id: RISK-08
+      risk: "Planet generation realism conflicts with fun layout."
+      consequence: "Official world is plausible but not playable, or fun but implausible."
+      likelihood: "Medium"
+      severity: "Medium"
+      mitigation: "Use plausibility score plus gameplay score and allow labelled overrides."
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "INFERENCE"
+    - id: RISK-09
+      risk: "Saves/mod packs/terraforming share tech but require different conservation rules."
+      consequence: "Worldgen and gameplay data corrupt each other conceptually."
+      likelihood: "Medium"
+      severity: "Medium"
+      mitigation: "Separate editor layers from gameplay-constrained layers."
+      related_workstreams: ["WORKSTREAM-03"]
+      label: "INFERENCE"
+    - id: RISK-10
+      risk: "Mothership fabricator trivialises the tech tree."
+      consequence: "Players skip factories and cities."
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Limit feedstock, throughput, heat, scale, wear, and mission reserves."
+      related_workstreams: ["WORKSTREAM-04"]
+      label: "FACT + INFERENCE"
+    - id: RISK-11
+      risk: "Future aggregation merges this chat with other chats without preserving caveats."
+      consequence: "Master spec contains contradictions or unsupported requirements."
+      likelihood: "Medium"
+      severity: "High"
+      mitigation: "Use artifact ledger, verification queue, and manual review before finalising spec."
+      related_workstreams: ["WORKSTREAM-13"]
+      label: "FACT"
+
+  verification_queue:
+    - id: VERIFY-01
+      item: "Current Unreal Engine capabilities and limitations for Large World Coordinates, World Partition, Iris, Replication Graph, MassEntity, PCG, runtime mesh/geometry, and networked physics."
+      why_verification_needed: "Assistant made feasibility claims based on sources that may change."
+      suggested_source_type: "Official Unreal Engine documentation and prototype tests."
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-11"]
+      label: "UNCERTAIN / UNVERIFIED"
+    - id: VERIFY-02
+      item: "Current JPL Horizons/SPICE/IAU data access, licensing, and suitability for real Solar System data."
+      why_verification_needed: "Real-data planet/system generation may depend on external datasets and licensing."
+      suggested_source_type: "NASA/JPL/NAIF/IAU official sources and license review."
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-02"]
+      label: "UNCERTAIN / UNVERIFIED"
+    - id: VERIFY-03
+      item: "Feasibility of deterministic fixed-point/double hybrid for planet-scale coordinates."
+      why_verification_needed: "Core architecture depends on precision and determinism."
+      suggested_source_type: "Prototype benchmarks and deterministic replay tests."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-01"]
+      label: "INFERENCE"
+    - id: VERIFY-04
+      item: "Network scale assumptions for millions across shards versus in one interaction bubble."
+      why_verification_needed: "Marketing/scope claims must be accurate."
+      suggested_source_type: "Load tests, MMO architecture references, bandwidth/server budget estimates."
+      priority: "P1"
+      related_workstreams: ["WORKSTREAM-10"]
+      label: "UNCERTAIN / UNVERIFIED"
+    - id: VERIFY-05
+      item: "Sparse terrain/delta representation performance for cut/fill at intended resolution."
+      why_verification_needed: "Terraforming and construction depend on it."
+      suggested_source_type: "Prototype with voxel/SDF/field deltas and chunk meshing."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-03", "WORKSTREAM-06"]
+      label: "INFERENCE"
+    - id: VERIFY-06
+      item: "Whether player-created machine graphs can be made expressive while compiling safely."
+      why_verification_needed: "A core gameplay promise may be technically hard."
+      suggested_source_type: "Compiler design prototype and exploit tests."
+      priority: "P0"
+      related_workstreams: ["WORKSTREAM-07"]
+      label: "INFERENCE"
+
+  spec_book_notes:
+    likely_sections:
+      - "Project vision"
+      - "Engine architecture"
+      - "World generation"
+      - "Planet fields and saves"
+      - "Mothership and lore"
+      - "Player bodies and spawning"
+      - "Construction and terraforming"
+      - "Factories and automation"
+      - "Fog of war and multiplayer"
+      - "Prototype roadmap"
+    unique_contributions:
+      - "Robotic seed-civilisation premise."
+      - "Automation-first replacement for worker NPC labour."
+      - "Mothership as recipe/spawn/fabrication bottleneck."
+      - "Machine functions compiled into process graphs."
+    possible_duplicates_with_other_chats:
+      - "Domino deterministic engine discussions."
+      - "Procedural planets and terrain editing."
+      - "MMO architecture and Unreal feasibility."
+    conflicts_to_watch_for:
+      - "If another chat assumes human NPC labour."
+      - "If another chat assumes Unreal is authoritative."
+      - "If another chat treats galaxy scale as launch scope."
+    formal_requirements_candidates:
+      - "Deterministic sparse simulation."
+      - "Science-bounded planet generation."
+      - "Robot avatar spawning."
+      - "Mothership-constrained progression."
+      - "Automation over worker NPCs."
+    background_context_candidates:
+      - "Human eggs/next ship mystery."
+      - "Potential factions around robot autonomy versus human restoration."
+    needs_user_confirmation:
+      - "Unreal role."
+      - "First vertical slice."
+      - "Official server scope and reset rules."
+
+  final_recommendations:
+    next_action_if_continuing_this_chat: "Turn the vertical slice into a milestone/spec document."
+    next_action_for_aggregator: "Merge as a high-priority concept/architecture source, preserving caveats."
+    user_checks_required:
+      - "Confirm which assistant recommendations are accepted."
+      - "Confirm initial star-system/server scope."
+      - "Confirm first vertical slice."
