@@ -1,0 +1,619 @@
+Status: DERIVED
+Last Reviewed: 2026-05-28
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Result: duplicate_topics_report_generated
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`
+
+# Duplicate Topics
+
+A duplicated topic is not a defect. It is a signal that synthesis requires cross-source review.
+
+## `architecture`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `Build_and_Future_Proofing` - Dominium Build and Future-Proofing Architecture
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `Chronology_Celestial_Systems` - Dominium Chronology & Celestial Systems
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_III` - Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `domino_engine_refactor_prompts` - Dominium/Domino Engine Refactor Planning
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `platform_support` - Dominium Platform Support Planning
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Refactor_Architecture` - Dominium + Domino Refactor Architecture
+- `Refactor_Control_Plane` - AIDE, XStack, and Dominium Refactor Control Plane
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `UE6_Domino_Deterministic_Universe` - Dominium UE6, Domino, and Deterministic Universe Feasibility
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+- `xstack_lab_galaxy` - Dominium XStack and Lab Galaxy Handoff
+
+## `content`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `Build_and_Future_Proofing` - Dominium Build and Future-Proofing Architecture
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `Chronology_Celestial_Systems` - Dominium Chronology & Celestial Systems
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_III` - Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `domino_engine_refactor_prompts` - Dominium/Domino Engine Refactor Planning
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `platform_support` - Dominium Platform Support Planning
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Refactor_Architecture` - Dominium + Domino Refactor Architecture
+- `Refactor_Control_Plane` - AIDE, XStack, and Dominium Refactor Control Plane
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `UE6_Domino_Deterministic_Universe` - Dominium UE6, Domino, and Deterministic Universe Feasibility
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+- `xstack_lab_galaxy` - Dominium XStack and Lab Galaxy Handoff
+
+## `contracts_schema`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `Build_and_Future_Proofing` - Dominium Build and Future-Proofing Architecture
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `Chronology_Celestial_Systems` - Dominium Chronology & Celestial Systems
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `domino_engine_refactor_prompts` - Dominium/Domino Engine Refactor Planning
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `platform_support` - Dominium Platform Support Planning
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Refactor_Architecture` - Dominium + Domino Refactor Architecture
+- `Refactor_Control_Plane` - AIDE, XStack, and Dominium Refactor Control Plane
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+- `xstack_lab_galaxy` - Dominium XStack and Lab Galaxy Handoff
+
+## `determinism`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `Build_and_Future_Proofing` - Dominium Build and Future-Proofing Architecture
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_III` - Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `domino_engine_refactor_prompts` - Dominium/Domino Engine Refactor Planning
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `UE6_Domino_Deterministic_Universe` - Dominium UE6, Domino, and Deterministic Universe Feasibility
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+- `xstack_lab_galaxy` - Dominium XStack and Lab Galaxy Handoff
+
+## `governance`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `Build_and_Future_Proofing` - Dominium Build and Future-Proofing Architecture
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `Chronology_Celestial_Systems` - Dominium Chronology & Celestial Systems
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_III` - Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `domino_engine_refactor_prompts` - Dominium/Domino Engine Refactor Planning
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `platform_support` - Dominium Platform Support Planning
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Refactor_Control_Plane` - AIDE, XStack, and Dominium Refactor Control Plane
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `UE6_Domino_Deterministic_Universe` - Dominium UE6, Domino, and Deterministic Universe Feasibility
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+- `xstack_lab_galaxy` - Dominium XStack and Lab Galaxy Handoff
+
+## `platform`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `Build_and_Future_Proofing` - Dominium Build and Future-Proofing Architecture
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `Chronology_Celestial_Systems` - Dominium Chronology & Celestial Systems
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_III` - Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `domino_engine_refactor_prompts` - Dominium/Domino Engine Refactor Planning
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `platform_support` - Dominium Platform Support Planning
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Refactor_Architecture` - Dominium + Domino Refactor Architecture
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `UE6_Domino_Deterministic_Universe` - Dominium UE6, Domino, and Deterministic Universe Feasibility
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+
+## `release`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `Build_and_Future_Proofing` - Dominium Build and Future-Proofing Architecture
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_III` - Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `domino_engine_refactor_prompts` - Dominium/Domino Engine Refactor Planning
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `platform_support` - Dominium Platform Support Planning
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Refactor_Architecture` - Dominium + Domino Refactor Architecture
+- `Refactor_Control_Plane` - AIDE, XStack, and Dominium Refactor Control Plane
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `UE6_Domino_Deterministic_Universe` - Dominium UE6, Domino, and Deterministic Universe Feasibility
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+- `xstack_lab_galaxy` - Dominium XStack and Lab Galaxy Handoff
+
+## `setup_launcher`
+
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_III` - Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `Refactor_Architecture` - Dominium + Domino Refactor Architecture
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+
+## `simulation`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `Build_and_Future_Proofing` - Dominium Build and Future-Proofing Architecture
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `Chronology_Celestial_Systems` - Dominium Chronology & Celestial Systems
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_III` - Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `domino_engine_refactor_prompts` - Dominium/Domino Engine Refactor Planning
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `platform_support` - Dominium Platform Support Planning
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Refactor_Architecture` - Dominium + Domino Refactor Architecture
+- `Refactor_Control_Plane` - AIDE, XStack, and Dominium Refactor Control Plane
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `UE6_Domino_Deterministic_Universe` - Dominium UE6, Domino, and Deterministic Universe Feasibility
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+
+## `timekeeping`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `Chronology_Celestial_Systems` - Dominium Chronology & Celestial Systems
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `platform_support` - Dominium Platform Support Planning
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Refactor_Architecture` - Dominium + Domino Refactor Architecture
+- `Refactor_Control_Plane` - AIDE, XStack, and Dominium Refactor Control Plane
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `UE6_Domino_Deterministic_Universe` - Dominium UE6, Domino, and Deterministic Universe Feasibility
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+- `xstack_lab_galaxy` - Dominium XStack and Lab Galaxy Handoff
+
+## `tooling`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `Build_and_Future_Proofing` - Dominium Build and Future-Proofing Architecture
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `Chronology_Celestial_Systems` - Dominium Chronology & Celestial Systems
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_III` - Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `domino_engine_refactor_prompts` - Dominium/Domino Engine Refactor Planning
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Refactor_Architecture` - Dominium + Domino Refactor Architecture
+- `Refactor_Control_Plane` - AIDE, XStack, and Dominium Refactor Control Plane
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `UE6_Domino_Deterministic_Universe` - Dominium UE6, Domino, and Deterministic Universe Feasibility
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+- `xstack_lab_galaxy` - Dominium XStack and Lab Galaxy Handoff
+
+## `ui`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `Build_and_Future_Proofing` - Dominium Build and Future-Proofing Architecture
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `Chronology_Celestial_Systems` - Dominium Chronology & Celestial Systems
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `documentation_standards_readme` - Documentation Standards, README Strategy, and Handoff Packaging
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_III` - Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `domino_engine_refactor_prompts` - Dominium/Domino Engine Refactor Planning
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `platform_support` - Dominium Platform Support Planning
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Refactor_Architecture` - Dominium + Domino Refactor Architecture
+- `Refactor_Control_Plane` - AIDE, XStack, and Dominium Refactor Control Plane
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `UE6_Domino_Deterministic_Universe` - Dominium UE6, Domino, and Deterministic Universe Feasibility
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+- `xstack_lab_galaxy` - Dominium XStack and Lab Galaxy Handoff
+
+## `workbench`
+
+- `advanced_simulation_infrastructure` - Dominium Advanced Simulation and Infrastructure Architecture
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `engine_baseline_architecture` - Domino/Dominium Engine Baseline, Architecture, and Feasibility
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `OS_Interface_Repo_Architecture` - Dominium OS-like Architecture, Repository Convergence, and Interface Operating Layer
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `Refactor_Architecture` - Dominium + Domino Refactor Architecture
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+
+## `worldgen`
+
+- `app_runtime_platform_renderers` - Dominium APP0 Runtime, Platform, and Renderer Architecture
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `architecture_codex_prompts` - Dominium/Domino Architecture and Codex Prompt Roadmap
+- `architecture_ui_providers` - Dominium Architecture, UI, Providers, and Robot OS Strategy
+- `Build_and_Future_Proofing` - Dominium Build and Future-Proofing Architecture
+- `Chronology_Celestial_Systems` - Dominium Chronology & Celestial Systems
+- `development_routes` - Dominium Development Routes and Continuity Preservation
+- `Dominium_Architecture_I` - Dominium Architecture I
+- `Dominium_Architecture_II` - Dominium Architecture II
+- `Dominium_Architecture_III` - Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+- `Dominium_Architecture_IV` - Dominium Architecture IV
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_domino_codex_planning` - Dominium + Domino Codex Planning and Handoff
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `dominium_setup` - Dominium Setup Architecture and Handoff
+- `Domino_Dominium_Workbench` - Domino Dominium Workbench
+- `domino_engine_refactor_prompts` - Dominium/Domino Engine Refactor Planning
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Framework_Open_Source_Provider` - Domino Framework and Open-Source Provider Architecture
+- `gui_binary_content` - Dominium Content and GUI Rebuild Planning
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `launcher_app_layer` - Dominium Launcher Application-Layer Handoff
+- `Launcher_Setup_Architecture` - Dominium Launcher and Setup Architecture
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `platform_renderer_api_plan` - Dominium Codex Platform Renderer API Plan
+- `platform_support` - Dominium Platform Support Planning
+- `Portability_Assurance_Future_Proof` - Domino/Dominium Portability, Assurance, and Future-Proof Architecture
+- `readme_ports_determinism` - Dominium README Architecture, Ports, and Determinism
+- `Refactor_Control_Plane` - AIDE, XStack, and Dominium Refactor Control Plane
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `Timekeeping_and_2038_Resilience` - Dominium Timekeeping and 2038 Resilience
+- `UE6_Domino_Deterministic_Universe` - Dominium UE6, Domino, and Deterministic Universe Feasibility
+- `ui_editor_tool_editor_planning` - Dominium UI Editor and Tool Editor Planning
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `World_Architecture` - Dominium World Architecture
+- `xstack_lab_galaxy` - Dominium XStack and Lab Galaxy Handoff
+
+## `xstack_aide`
+
+- `app_testx_codehygiene` - Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+- `canonical_structure_and_framework` - Dominium Canonical Architecture, Repository Foundation, and Provider Model
+- `Dominium_Complete_Conversation` - Dominium Canon, Repository Alignment, and Portability Doctrine
+- `dominium_full_conversation` - Dominium Workbench, AIDE, Presentation Architecture, Provider Strategy, Product-Spine Planning, and Preservation Companion
+- `Foundation_Workbench_Codex` - Dominium Foundation Lock, Workbench Spine, and Parallel Codex Handoff
+- `Language_Platform_Architecture` - Dominium Language, Platform, and Architecture Baseline
+- `Modularity_AIDE_Refactorability` - Dominium Modularity, AIDE Refactorability, and Future-Proof Architecture
+- `omega_xi_pi_architecture_future` - Dominium Omega/Xi/Pi Architecture & Future-Proofing Planning
+- `Refactor_Control_Plane` - AIDE, XStack, and Dominium Refactor Control Plane
+- `Release_Identity_and_Versioning` - Dominium XStack Release Identity and Versioning
+- `testx_repox_governance` - Dominium TestX/RepoX Governance and Handoff Chat
+- `Universe_Explorer_Planning` - Dominium Universe Explorer Planning and Repo Handoff
+- `Workbench_AIDE_Product_Spine` - Dominium Architecture, Workbench, AIDE, and Product-Spine Planning
+- `xstack_lab_galaxy` - Dominium XStack and Lab Galaxy Handoff
