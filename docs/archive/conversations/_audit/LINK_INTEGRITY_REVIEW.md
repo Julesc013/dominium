@@ -10,7 +10,7 @@ Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `
 
 Result: `PASS`
 
-Generated Markdown files checked: `106`
+Generated Markdown files checked: `110`
 Broken or unsafe links: `0`
 
 No broken or unsafe generated Markdown links were detected.

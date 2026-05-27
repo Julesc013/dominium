@@ -2543,6 +2543,155 @@ def render_deferred_decisions(metrics: dict) -> str:
     return "\n".join(lines)
 
 
+def promotion_target_for_candidate(candidate: dict) -> Tuple[str, str]:
+    claim = candidate["claim"].lower()
+    if candidate["classification"] == "rejected_noise":
+        return "reject_as_noise", "none"
+    if candidate["classification"] == "blocked_by_current_queue":
+        return "blocked_by_queue", "none"
+    if candidate["classification"] == "needs_user_decision":
+        return "needs_user_decision", "docs/archive/conversations/_decision/DECISION_DOCKET_v0.md"
+    if candidate["classification"] in {"insufficient_evidence", "stale_or_superseded"}:
+        return "insufficient_evidence", "none"
+    if "schema" in claim:
+        return "schema_candidate", "schema/** or schemas/** after authority review"
+    if "contract" in claim or "compat" in claim or "abi" in claim:
+        return "contract_candidate", "contracts/** or docs/reference/contracts/** after authority review"
+    if any(word in claim for word in ["architecture", "engine", "game", "client", "server", "renderer", "workbench", "platform"]):
+        return "architecture_doc_candidate", "docs/architecture/** after target selection"
+    if any(word in claim for word in ["queue", "prompt", "phase", "roadmap", "future work", "planning"]):
+        return "planning_doc_candidate", "docs/planning/** after target selection"
+    if any(word in claim for word in ["readme", "documentation", "doc"]):
+        return "docs_clarification_candidate", "README.md or docs/** after target selection"
+    return "archive_only", "docs/archive/conversations/**"
+
+
+def promotion_review_metrics(repo_root: Path) -> dict:
+    metrics = decision_metrics(repo_root)
+    reviewed = []
+    category_counts: Dict[str, int] = {}
+    for candidate in metrics["candidates"]:
+        category, target = promotion_target_for_candidate(candidate)
+        queue_risk = "blocked" if candidate["blocked_scopes"] else "none_detected"
+        if category in {"contract_candidate", "schema_candidate"}:
+            validation = "authority review plus targeted schema/contract parser and FAST"
+        elif category in {"architecture_doc_candidate", "planning_doc_candidate", "docs_clarification_candidate"}:
+            validation = "source check, authority-order check, link check, generated output validator, FAST"
+        else:
+            validation = "preserve as archive evidence; no live target validation"
+        reviewed.append(
+            {
+                **candidate,
+                "review_category": category,
+                "proposed_target": target,
+                "current_authority_support": "not yet verified against target docs",
+                "current_authority_conflict": "blocked queue scope" if candidate["blocked_scopes"] else "none detected by triage",
+                "queue_risk": queue_risk,
+                "validation_required": validation,
+                "recommended_next_action": "create_microtask" if category in {"docs_clarification_candidate", "planning_doc_candidate", "architecture_doc_candidate"} else "hold_or_review",
+            }
+        )
+        category_counts[category] = category_counts.get(category, 0) + 1
+    wave_1 = [
+        item
+        for item in reviewed
+        if item["review_category"] in {"docs_clarification_candidate", "planning_doc_candidate", "architecture_doc_candidate"}
+        and item["queue_risk"] == "none_detected"
+        and item["score"] >= 5
+    ][:25]
+    not_ready = [item for item in reviewed if item not in wave_1]
+    return {
+        **metrics,
+        "reviewed_candidates": reviewed,
+        "review_category_counts": dict(sorted(category_counts.items())),
+        "promotion_wave_1": wave_1,
+        "promotion_not_ready": not_ready,
+    }
+
+
+def write_promotion_review_board(repo_root: Path) -> List[str]:
+    metrics = promotion_review_metrics(repo_root)
+    root = repo_root / CORPUS_ROOT / "_promotion"
+    changed: List[str] = []
+    changed += changed_path(root / "PROMOTION_REVIEW_BOARD_v0.md", render_promotion_review_board(metrics), repo_root)
+    changed += changed_path(root / "PROMOTION_TARGET_MAP_v0.md", render_promotion_target_map(metrics), repo_root)
+    changed += changed_path(root / "PROMOTION_WAVE_1_CANDIDATES_v0.md", render_promotion_wave_1(metrics), repo_root)
+    changed += changed_path(root / "PROMOTION_NOT_READY_v0.md", render_promotion_not_ready(metrics), repo_root)
+    return changed
+
+
+def render_promotion_review_board(metrics: dict) -> str:
+    lines = [synthesis_header("promotion_review_board_generated"), "# Promotion Review Board v0", ""]
+    lines.append("This board converts raw promotion candidates into bounded review items. It does not patch or promote live docs.")
+    lines.append("")
+    lines.append("## Counts")
+    lines.append("")
+    lines.append(f"- Total candidates: `{len(metrics['reviewed_candidates'])}`")
+    for category, count in metrics["review_category_counts"].items():
+        lines.append(f"- `{category}`: `{count}`")
+    lines.append("")
+    lines.append("## Review Items")
+    lines.append("")
+    for item in metrics["reviewed_candidates"]:
+        lines.append(f"### `{item['id']}` - `{item['review_category']}`")
+        lines.append("")
+        lines.append(f"- Source conversation: `{item['source_conversation']}`")
+        lines.append(f"- Proposed target path: `{item['proposed_target']}`")
+        lines.append(f"- Current authority support: {item['current_authority_support']}")
+        lines.append(f"- Current authority conflict: {item['current_authority_conflict']}")
+        lines.append(f"- Queue risk: `{item['queue_risk']}`")
+        lines.append(f"- Validation required: {item['validation_required']}")
+        lines.append(f"- Recommended next action: `{item['recommended_next_action']}`")
+        lines.append(f"- Claim: {item['claim']}")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def render_promotion_target_map(metrics: dict) -> str:
+    lines = [synthesis_header("promotion_target_map_generated"), "# Promotion Target Map v0", ""]
+    lines.append("Target paths are candidate destinations only. They do not authorize edits.")
+    lines.append("")
+    lines.append("| Candidate | Category | Proposed Target | Queue Risk | Next Action |")
+    lines.append("| --- | --- | --- | --- | --- |")
+    for item in metrics["reviewed_candidates"]:
+        lines.append(
+            f"| `{item['id']}` | `{item['review_category']}` | `{item['proposed_target']}` | `{item['queue_risk']}` | `{item['recommended_next_action']}` |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def render_promotion_wave_1(metrics: dict) -> str:
+    lines = [synthesis_header("promotion_wave_1_candidates_generated"), "# Promotion Wave 1 Candidates v0", ""]
+    lines.append("Wave 1 candidates are docs-only review candidates that appear least blocked by current queue. They still require separate microtasks.")
+    lines.append("")
+    if not metrics["promotion_wave_1"]:
+        lines.append("No Wave 1 candidates met the current filter.")
+        return "\n".join(lines) + "\n"
+    for item in metrics["promotion_wave_1"]:
+        lines.append(f"## `{item['id']}` - `{item['review_category']}`")
+        lines.append("")
+        lines.append(f"- Source conversation: `{item['source_conversation']}`")
+        lines.append(f"- Proposed target: `{item['proposed_target']}`")
+        lines.append(f"- Validation required: {item['validation_required']}")
+        lines.append(f"- Recommended microtask: `DOC-PROMOTION-{item['id']}`")
+        lines.append(f"- Claim: {item['claim']}")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def render_promotion_not_ready(metrics: dict) -> str:
+    lines = [synthesis_header("promotion_not_ready_generated"), "# Promotion Not Ready v0", ""]
+    lines.append("These candidates are not ready for Wave 1 because they are blocked, noisy, stale, under-evidenced, or require user decisions.")
+    lines.append("")
+    for item in metrics["promotion_not_ready"]:
+        lines.append(
+            f"- `{item['id']}` `{item['review_category']}` `{item['source_conversation']}`: {item['reason']}"
+        )
+    if not metrics["promotion_not_ready"]:
+        lines.append("- None.")
+    return "\n".join(lines) + "\n"
+
+
 def validate_outputs(repo_root: Path) -> List[str]:
     errors: List[str] = []
     root = repo_root / CORPUS_ROOT
@@ -2603,6 +2752,14 @@ def validate_outputs(repo_root: Path) -> List[str]:
     ]
     if any(doc.exists() for doc in decision_docs):
         required_docs.extend(decision_docs)
+    promotion_board_docs = [
+        root / "_promotion" / "PROMOTION_REVIEW_BOARD_v0.md",
+        root / "_promotion" / "PROMOTION_TARGET_MAP_v0.md",
+        root / "_promotion" / "PROMOTION_WAVE_1_CANDIDATES_v0.md",
+        root / "_promotion" / "PROMOTION_NOT_READY_v0.md",
+    ]
+    if any(doc.exists() for doc in promotion_board_docs):
+        required_docs.extend(promotion_board_docs)
     if not (root / "_intake" / "SHA256SUMS.txt").exists():
         errors.append("missing generated doc: docs/archive/conversations/_intake/SHA256SUMS.txt")
     for doc in required_docs:
@@ -2647,6 +2804,8 @@ def write_all(repo_root: Path, phases: Sequence[str]) -> List[str]:
         changed.extend(write_reconciliation_and_triage(repo_root))
     if "decision" in phases:
         changed.extend(write_decision_docket(repo_root))
+    if "promotion_board" in phases:
+        changed.extend(write_promotion_review_board(repo_root))
     return sorted(set(changed), key=sort_key)
 
 
@@ -2664,6 +2823,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "synthesis",
             "reconciliation",
             "decision",
+            "promotion-board",
             "all",
             "validate",
         ],
@@ -2702,6 +2862,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.command == "decision":
         changed = write_all(repo_root, ["decision"])
         print(json.dumps({"changed": changed, "phase": "decision"}, indent=2, sort_keys=True))
+        return 0
+    if args.command == "promotion-board":
+        changed = write_all(repo_root, ["promotion_board"])
+        print(json.dumps({"changed": changed, "phase": "promotion-board"}, indent=2, sort_keys=True))
         return 0
     if args.command == "all":
         changed = write_all(repo_root, ["phase1", "phase2", "phase3", "phase4"])
