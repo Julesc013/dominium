@@ -1253,12 +1253,13 @@ def validate_outputs(repo_root: Path) -> List[str]:
         root / "_intake" / "CORPUS_MANIFEST.md",
         root / "_intake" / "PACKAGE_COMPLETENESS.md",
         root / "_intake" / "SOURCE_PROVENANCE.md",
-        root / "_intake" / "SHA256SUMS.txt",
         root / "_reader" / "conversation_reader_index.md",
         root / "_audit" / "CONTRADICTION_MATRIX.md",
         root / "_promotion" / "PROMOTION_QUEUE.md",
         root / "_wiki" / "index.md",
     ]
+    if not (root / "_intake" / "SHA256SUMS.txt").exists():
+        errors.append("missing generated doc: docs/archive/conversations/_intake/SHA256SUMS.txt")
     for doc in required_docs:
         if not doc.exists():
             errors.append(f"missing generated doc: {normalize_rel(doc, repo_root)}")

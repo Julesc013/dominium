@@ -101,6 +101,7 @@
         "contracts_schema",
         "determinism",
         "governance",
+        "platform",
         "release",
         "simulation",
         "timekeeping",
@@ -568,12 +569,14 @@
         "architecture",
         "content",
         "contracts_schema",
+        "determinism",
         "governance",
         "platform",
         "release",
         "simulation",
         "tooling",
         "ui",
+        "workbench",
         "worldgen"
       ],
       "warnings": []
@@ -718,7 +721,7 @@
         "simulation",
         "tooling",
         "ui",
-        "xstack_aide"
+        "worldgen"
       ],
       "warnings": []
     },
@@ -1576,6 +1579,7 @@
         "content",
         "contracts_schema",
         "determinism",
+        "governance",
         "platform",
         "release",
         "simulation",
@@ -3843,6 +3847,7 @@
         "contracts_schema",
         "determinism",
         "governance",
+        "platform",
         "release",
         "simulation",
         "tooling",
@@ -4485,6 +4490,7 @@
         "architecture",
         "content",
         "contracts_schema",
+        "determinism",
         "governance",
         "platform",
         "release",
@@ -4651,13 +4657,15 @@
         "content",
         "contracts_schema",
         "governance",
+        "platform",
         "release",
         "setup_launcher",
         "simulation",
         "timekeeping",
         "tooling",
         "ui",
-        "worldgen"
+        "worldgen",
+        "xstack_aide"
       ],
       "warnings": []
     },
@@ -4816,8 +4824,8 @@
         "governance",
         "platform",
         "release",
+        "setup_launcher",
         "simulation",
-        "timekeeping",
         "tooling",
         "ui",
         "workbench"
@@ -4921,8 +4929,11 @@
         "release",
         "setup_launcher",
         "simulation",
+        "timekeeping",
         "tooling",
-        "ui"
+        "ui",
+        "workbench",
+        "worldgen"
       ],
       "warnings": []
     },
@@ -5928,13 +5939,14 @@
         "architecture",
         "content",
         "contracts_schema",
+        "determinism",
         "governance",
         "platform",
+        "release",
         "simulation",
         "timekeeping",
         "tooling",
         "ui",
-        "workbench",
         "worldgen"
       ],
       "warnings": []
@@ -6491,13 +6503,18 @@
       "topics": [
         "architecture",
         "content",
+        "contracts_schema",
         "determinism",
         "governance",
         "platform",
+        "release",
+        "setup_launcher",
         "simulation",
+        "timekeeping",
         "tooling",
         "ui",
         "workbench",
+        "worldgen",
         "xstack_aide"
       ],
       "warnings": []
@@ -6594,7 +6611,9 @@
         "content",
         "contracts_schema",
         "determinism",
+        "governance",
         "release",
+        "setup_launcher",
         "simulation",
         "timekeeping",
         "tooling",
