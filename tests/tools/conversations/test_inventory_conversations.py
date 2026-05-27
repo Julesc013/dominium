@@ -44,13 +44,14 @@ class InventoryConversationTests(unittest.TestCase):
     def test_phase_outputs_validate(self):
         temp, repo = self.make_repo()
         self.addCleanup(temp.cleanup)
-        corpus.write_all(repo, ["phase1", "phase2", "phase3", "phase4", "acceptance"])
+        corpus.write_all(repo, ["phase1", "phase2", "phase3", "phase4", "acceptance", "synthesis"])
         errors = corpus.validate_outputs(repo)
         self.assertEqual(errors, [])
         data = json.loads((repo / "docs/archive/conversations/_intake/corpus_manifest.json").read_text(encoding="utf-8"))
         self.assertEqual(data["summary"]["source_file_count"], 3)
         self.assertTrue((repo / "docs/archive/conversations/_reader/by_chat/sample_conversation.md").exists())
         self.assertTrue((repo / "docs/archive/conversations/_audit/INTAKE_ACCEPTANCE_REVIEW.md").exists())
+        self.assertTrue((repo / "docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md").exists())
 
 
 if __name__ == "__main__":

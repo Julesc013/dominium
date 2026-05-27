@@ -21,7 +21,7 @@ from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 REVIEW_DATE = "2026-05-28"
 CORPUS_ROOT = Path("docs/archive/conversations")
-MANAGED_DIRS = {"_intake", "_reader", "_wiki", "_audit", "_promotion", "__unsorted"}
+MANAGED_DIRS = {"_intake", "_reader", "_wiki", "_audit", "_promotion", "_synthesis", "__unsorted"}
 HEADER_BINDING = (
     "`docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, "
     "`AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, "
@@ -29,7 +29,25 @@ HEADER_BINDING = (
 )
 
 GENERATED_MARKDOWN_ROOT_FILES = {"README.md", "INDEX.md"}
-GENERATED_MARKDOWN_DIRS = {"_intake", "_reader", "_wiki", "_audit", "_promotion"}
+GENERATED_MARKDOWN_DIRS = {"_intake", "_reader", "_wiki", "_audit", "_promotion", "_synthesis"}
+
+SYNTHESIS_TOPIC_EXPLANATIONS = {
+    "architecture": "system boundaries, product shape, engine/game/client/server separation, and repository structure",
+    "workbench": "operator-facing validation, evidence, inspection, and later authoring surfaces",
+    "determinism": "replay, ordering, proof, fixed identity, RNG discipline, and thread-count invariance",
+    "platform": "runtime shell, platform adapter, renderer boundary, operating-system support, and portability",
+    "release": "version identity, packaging, setup, update, publication, and release-control concerns",
+    "worldgen": "world, universe, celestial, terrain, chronology, and large-scale reality modeling",
+    "tooling": "Codex/AIDE/XStack/TestX/RepoX/AuditX tooling and patch workflow",
+    "setup_launcher": "setup, repair, rollback, launcher profiles, instances, and product orchestration",
+    "governance": "authority order, canon, contracts, refusal, review gates, and agent operation",
+    "simulation": "deterministic domains, processes, machines, physical systems, economy, and civilization dynamics",
+    "content": "packs, mods, authored payload, GUI/content boundaries, and provider/content separation",
+    "timekeeping": "calendar, chronology, timestamp durability, 2038 resilience, and time-domain law",
+    "ui": "presentation, tools, editor concepts, perceived model surfaces, and command/result display",
+    "xstack_aide": "repo-control and assistant-operation systems around AIDE, XStack, AuditX, RepoX, and TestX",
+    "contracts_schema": "machine-readable contracts, schemas, compatibility, manifests, and registries",
+}
 
 EXPECTED_KINDS = {
     "manifest",
@@ -1608,6 +1626,374 @@ def render_link_integrity_review(metrics: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
+def parse_current_queue_constraints(repo_root: Path) -> Dict[str, str]:
+    queue_path = repo_root / ".aide" / "queue" / "current.toml"
+    constraints: Dict[str, str] = {}
+    if not queue_path.exists():
+        return constraints
+    in_constraints = False
+    for raw in queue_path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("["):
+            in_constraints = line == "[constraints]"
+            continue
+        if in_constraints and "=" in line:
+            key, value = line.split("=", 1)
+            constraints[key.strip()] = value.strip().strip('"')
+    return constraints
+
+
+def acceptance_result_from_disk(repo_root: Path) -> str:
+    path = repo_root / CORPUS_ROOT / "_audit" / "INTAKE_ACCEPTANCE_REVIEW.md"
+    if not path.exists():
+        return "not_run"
+    text = path.read_text(encoding="utf-8")
+    match = re.search(r"Result:\s*`([^`]+)`", text)
+    return match.group(1) if match else "unknown"
+
+
+def reader_ref(c: Conversation) -> str:
+    return f"[{c.title}](../_reader/by_chat/{c.slug}.md)"
+
+
+def topic_refs(conversations: List[Conversation], topic: str, limit: int = 8) -> str:
+    convs = [c for c in conversations if topic in c.topics]
+    if not convs:
+        return "none"
+    return ", ".join(reader_ref(c) for c in convs[:limit])
+
+
+def synthesis_metrics(repo_root: Path) -> dict:
+    manifest, conversations = build_manifest(repo_root)
+    findings, promotions = build_findings(repo_root, conversations)
+    topic_counts = {
+        topic: sum(1 for c in conversations if topic in c.topics)
+        for topic in sorted(SYNTHESIS_TOPIC_EXPLANATIONS, key=sort_key)
+    }
+    contradiction_counts: Dict[str, int] = {}
+    for finding in findings:
+        contradiction_counts[finding.class_name] = contradiction_counts.get(finding.class_name, 0) + 1
+    serious_topic_order = sorted(topic_counts.items(), key=lambda item: (-item[1], item[0]))
+    constraints = parse_current_queue_constraints(repo_root)
+    blocked_constraints = {key: value for key, value in constraints.items() if value == "BLOCKED"}
+    decision_candidates = [
+        {
+            "title": "Promotion candidate triage",
+            "why": "The raw promotion queue contains useful leads but also preservation-process noise.",
+            "source": "../_promotion/PROMOTION_QUEUE.md",
+        },
+        {
+            "title": "Workbench scope",
+            "why": "Old conversations discuss Workbench as rich operator surface, but the current queue blocks broad Workbench UI.",
+            "source": "../_wiki/topics/workbench.md",
+        },
+        {
+            "title": "Renderer and platform boundary",
+            "why": "Conversations repeatedly discuss renderer/platform plans, while current authority keeps rendering presentational and implementation scope blocked.",
+            "source": "../_wiki/topics/platform.md",
+        },
+        {
+            "title": "Provider and content boundaries",
+            "why": "Provider, pack, and content discussions need separation from runtime module loading and package runtime blocks.",
+            "source": "../_wiki/topics/content.md",
+        },
+        {
+            "title": "World scale and fidelity roadmap",
+            "why": "Universe, world, chronology, and simulation conversations need sequencing against current contracts and queue limits.",
+            "source": "../_wiki/topics/worldgen.md",
+        },
+        {
+            "title": "Release/publication meaning",
+            "why": "Release/versioning conversations should remain planning until release publication authority opens.",
+            "source": "../_wiki/topics/release.md",
+        },
+    ]
+    return {
+        "manifest": manifest,
+        "conversations": conversations,
+        "findings": findings,
+        "promotions": promotions,
+        "topic_counts": dict(serious_topic_order),
+        "contradiction_counts": dict(sorted(contradiction_counts.items())),
+        "constraints": constraints,
+        "blocked_constraints": blocked_constraints,
+        "acceptance_result": acceptance_result_from_disk(repo_root),
+        "decision_candidates": decision_candidates,
+    }
+
+
+def write_synthesis(repo_root: Path) -> List[str]:
+    metrics = synthesis_metrics(repo_root)
+    root = repo_root / CORPUS_ROOT / "_synthesis"
+    changed: List[str] = []
+    changed += changed_path(root / "PROJECT_SYNTHESIS_BOOK_v0.md", render_project_synthesis_book(metrics), repo_root)
+    changed += changed_path(root / "EXECUTIVE_BRIEF_v0.md", render_executive_brief(metrics), repo_root)
+    changed += changed_path(root / "FULL_PROJECT_PICTURE_v0.md", render_full_project_picture(metrics), repo_root)
+    changed += changed_path(root / "WHAT_NEEDS_DECISION_v0.md", render_what_needs_decision(metrics), repo_root)
+    changed += changed_path(root / "CONTRADICTIONS_TO_RECONCILE_v0.md", render_contradictions_to_reconcile(metrics), repo_root)
+    return changed
+
+
+def synthesis_header(result: str) -> str:
+    return md_header(result) + """Authority Class: advisory_synthesis
+Promotion Status: not_promoted
+Source Class: conversation_corpus_synthesis
+
+"""
+
+
+def render_topic_overview(metrics: dict) -> str:
+    lines = []
+    for topic, count in metrics["topic_counts"].items():
+        if count == 0:
+            continue
+        explanation = SYNTHESIS_TOPIC_EXPLANATIONS.get(topic, "conversation-derived topic")
+        lines.append(f"- `{topic}` ({count} conversations): {explanation}. Sources: {topic_refs(metrics['conversations'], topic, 5)}.")
+    return "\n".join(lines)
+
+
+def render_current_repo_truth_block(metrics: dict) -> str:
+    blocked = ", ".join(f"`{key}`" for key in sorted(metrics["blocked_constraints"])) or "none listed"
+    return f"""Current repo truth, as used by this synthesis:
+
+- [README.md](../../../../README.md) describes Dominium as a deterministic, contract-governed simulation game and operating environment built on the Domino deterministic substrate.
+- [docs/canon/constitution_v1.md](../../../canon/constitution_v1.md) binds determinism, process-only mutation, law-gated authority, no runtime mode flags, pack-driven integration, explicit refusal, and truth/perceived/render separation.
+- [docs/canon/glossary_v1.md](../../../canon/glossary_v1.md) defines vocabulary such as Engine, Client, AuthorityContext, Domain, Derived artifact, and Contract.
+- [AGENTS.md](../../../../AGENTS.md) and [docs/planning/AUTHORITY_ORDER.md](../../../planning/AUTHORITY_ORDER.md) keep archived conversations below canon, glossary, governance, contracts, current queue, and validated repo artifacts.
+- [.aide/queue/current.toml](../../../../.aide/queue/current.toml) currently blocks broad feature work including: {blocked}.
+"""
+
+
+def render_project_synthesis_book(metrics: dict) -> str:
+    conversations = metrics["conversations"]
+    lines = [synthesis_header("project_synthesis_book_generated"), "# Dominium Conversation Corpus Synthesis Book v0", ""]
+    lines.append("This book is a derived reading guide over the archived conversation corpus. It is not canon, not architecture doctrine, not a contract, and not an implementation plan.")
+    lines.append("")
+    lines.append("## 1. Status And Authority")
+    lines.append("")
+    lines.append(f"- Acceptance review result: `{metrics['acceptance_result']}`.")
+    lines.append("- Authority class: `advisory_synthesis`.")
+    lines.append("- Promotion status: `not_promoted`.")
+    lines.append("- Current repo artifacts outrank every conversation-derived statement in this book.")
+    lines.append("")
+    lines.append("## 2. Executive Overview")
+    lines.append("")
+    lines.append("The archive describes Dominium as a long-horizon deterministic simulation product: a game, engine-backed operating environment, validation workbench, content platform, and governance-heavy repository. Across the conversations, the recurring intent is not to build a renderer-owned game loop or a pile of UI screens. The recurring intent is to preserve lawful simulation truth, expose it through command/result/evidence surfaces, and let products project that truth without mutating it.")
+    lines.append("")
+    lines.append("The current repo already establishes the strongest version of that principle through canon, glossary, README, and queue state. The conversation corpus adds historical design intent around world scale, Workbench, setup/launcher, release identity, provider/content boundaries, and future UI/editor experiences. Those claims remain advisory until reconciled and promoted.")
+    lines.append("")
+    lines.append("## 3. What Dominium Is Trying To Be")
+    lines.append("")
+    lines.append("Repo-established truth: Dominium is the official game/product/domain layer on top of Domino, the reusable deterministic substrate. It is concerned with invention, production, logistics, economics, settlement, trust, communication, and institutional power emerging from lawful simulation.")
+    lines.append("")
+    lines.append("Conversation-derived intent: the archive repeatedly extends that picture toward a broad universe-scale simulation platform, with real-world defaults, arbitrary authored packs, robust tooling, deterministic evidence, long-term portability, and a Workbench that makes the project inspectable and operable.")
+    lines.append("")
+    lines.append("## 4. Core Mental Model")
+    lines.append("")
+    lines.append("The current README gives the clearest spine: intent -> command -> capability/refusal check -> service or deterministic process -> result/document/snapshot -> diagnostics/evidence -> view/action model -> projection -> shell. The conversations mostly orbit that same model, even when they discuss UI, renderer, platform, setup, or release packaging.")
+    lines.append("")
+    lines.append("## 5. Engine / Game / Runtime / Product Boundaries")
+    lines.append("")
+    lines.append("Repo truth keeps Engine, Game, Client, Server, Workbench, setup, launcher, tools, contracts, and content in separate roles. Conversation-derived material reinforces the boundary: renderer and UI project state, clients issue intents, server/game/engine law remains authoritative, and tools validate or inspect rather than silently mutate truth.")
+    lines.append("")
+    lines.append(f"Representative sources: {topic_refs(conversations, 'architecture', 8)}.")
+    lines.append("")
+    lines.append("## 6. Determinism, Replay, And Provenance")
+    lines.append("")
+    lines.append("The canon makes determinism primary: ordering, reductions, RNG streams, replay, hash partitions, and provenance are non-negotiable. The corpus adds historical emphasis on deterministic world scale, portable builds, replay proofs, verification artifacts, and avoiding hidden fallback behavior.")
+    lines.append("")
+    lines.append(f"Representative sources: {topic_refs(conversations, 'determinism', 8)}.")
+    lines.append("")
+    lines.append("## 7. Law, Authority, Refusal, And Capability Model")
+    lines.append("")
+    lines.append("Current repo truth says authority permits attempts, law decides accept/refuse/transform, and refusals must be deterministic and auditable. Conversations often use different local language, but the recurring direction is aligned: no convenience bypass, no generated output as truth, and no old prompt as authority.")
+    lines.append("")
+    lines.append(f"Representative sources: {topic_refs(conversations, 'governance', 8)}.")
+    lines.append("")
+    lines.append("## 8. World, Reality, Scale, And Refinement Model")
+    lines.append("")
+    lines.append("Conversation-derived intent is expansive: worlds, planets, celestial systems, universe explorer concepts, chronology, spatial refinement, simulation domains, macro/micro transitions, and real-world defaults recur across the archive. This is a design-intent signal, not current implementation authority.")
+    lines.append("")
+    lines.append(f"Representative sources: {topic_refs(conversations, 'worldgen', 8)}.")
+    lines.append("")
+    lines.append("## 9. Timekeeping, Chronology, And 2038 Resilience")
+    lines.append("")
+    lines.append("Time appears as both a simulation domain and a platform durability concern. The archive repeatedly points to chronology, calendars, celestial alignment, 2038 resilience, and timestamp policy. Current promotion must verify all such claims against current contracts and language/platform baselines.")
+    lines.append("")
+    lines.append(f"Representative sources: {topic_refs(conversations, 'timekeeping', 8)}.")
+    lines.append("")
+    lines.append("## 10. Civilization, Institutions, Economy, Logistics")
+    lines.append("")
+    lines.append("The corpus frames Dominium around emergent production, logistics, economics, settlement, communication, trust, institutions, and power. These are project identity themes; they are not authorization to open gameplay or runtime work while the current queue blocks it.")
+    lines.append("")
+    lines.append(f"Representative sources: {topic_refs(conversations, 'simulation', 8)}.")
+    lines.append("")
+    lines.append("## 11. UI, Renderer, Workbench, And Tools")
+    lines.append("")
+    lines.append("The conversations strongly prefer a rich Workbench and eventual editor/operator surfaces. Current authority is narrower: broad Workbench UI, renderer implementation, and native GUI remain blocked. Therefore synthesis may describe intent, but follow-up tasks must stay contract/planning scoped until the queue opens implementation scope.")
+    lines.append("")
+    lines.append(f"Representative sources: {topic_refs(conversations, 'workbench', 8)}.")
+    lines.append("")
+    lines.append("## 12. AIDE, Codex, Governance, And Patch Workflow")
+    lines.append("")
+    lines.append("The archive treats AIDE/Codex/XStack as repo-control and patch-execution aids. Current repo truth agrees that they do not replace canon, contracts, review gates, or validation. Their correct role is bounded evidence-producing work, not direct semantic authority.")
+    lines.append("")
+    lines.append(f"Representative sources: {topic_refs(conversations, 'xstack_aide', 8)}.")
+    lines.append("")
+    lines.append("## 13. Release, Setup, Launcher, Platform, Portability")
+    lines.append("")
+    lines.append("Conversations cover setup, launcher, release identity, versioning, portability, platform support, and public distribution. Current queue still blocks release publication, so these remain planning and audit material unless a later reviewed task opens the scope.")
+    lines.append("")
+    lines.append(f"Representative sources: {topic_refs(conversations, 'release', 8)}.")
+    lines.append("")
+    lines.append("## 14. Content, Packs, Modding, Providers")
+    lines.append("")
+    lines.append("The corpus repeatedly returns to pack-driven composition, authored content, providers, binary/content boundaries, and modding. Canon requires pack-driven integration and explicit refusal for missing packs. Current queue blocks package runtime and provider runtime, so promotion must be careful.")
+    lines.append("")
+    lines.append(f"Representative sources: {topic_refs(conversations, 'content', 8)}.")
+    lines.append("")
+    lines.append("## 15. What Was Decided Across Conversations")
+    lines.append("")
+    lines.append("The strongest recurring conversation-level decisions are advisory: keep simulation truth deterministic, separate rendering from authority, keep Workbench a projection/inspection/control surface rather than truth owner, preserve source provenance, and avoid direct promotion from old chats. These are valuable because they align with current repo doctrine, but alignment is not the same as promotion.")
+    lines.append("")
+    lines.append("## 16. What Is Still Unresolved")
+    lines.append("")
+    for item in metrics["decision_candidates"]:
+        lines.append(f"- {item['title']}: {item['why']} Source: [{item['source']}]({item['source']}).")
+    lines.append("")
+    lines.append("## 17. Contradictions And Drift")
+    lines.append("")
+    lines.append("The audit layer contains review triggers, not resolved contradictions. The main risk classes are conversation claims against current queue restrictions, stale external/platform claims, old docs/baseline drift, and conversation-vs-conversation disagreements.")
+    lines.append("")
+    for class_name, count in metrics["contradiction_counts"].items():
+        lines.append(f"- `{class_name}`: `{count}` findings.")
+    lines.append("")
+    lines.append("## 18. Stale Claims And Verification Queue")
+    lines.append("")
+    lines.append("External platform, SDK, renderer, language baseline, release, provider, package runtime, and implementation claims must be rechecked. The synthesis should use those old claims to identify questions, not to assert current facts.")
+    lines.append("")
+    lines.append("## 19. Promotion Candidates")
+    lines.append("")
+    lines.append(f"The raw queue contains `{len(metrics['promotions'])}` generated candidates in [PROMOTION_QUEUE.md](../_promotion/PROMOTION_QUEUE.md). Acceptance review found the queue useful but noisy. It should be triaged before any candidate patch work.")
+    lines.append("")
+    lines.append("## 20. Recommended Reconciliation Roadmap")
+    lines.append("")
+    lines.append("1. Keep this synthesis advisory and archive-scoped.")
+    lines.append("2. Build a claim review matrix against canon, glossary, AGENTS, current queue, contracts, schema law, and targeted current docs.")
+    lines.append("3. Triage promotion candidates into serious, historical, stale, noisy, rejected, and needs-user-decision groups.")
+    lines.append("4. Patch live docs only through narrow promotion tasks with named source claims and validation.")
+    lines.append("")
+    lines.append("## 21. Appendices")
+    lines.append("")
+    lines.append(render_current_repo_truth_block(metrics))
+    lines.append("")
+    lines.append("### Topic Coverage")
+    lines.append("")
+    lines.append(render_topic_overview(metrics))
+    return "\n".join(lines) + "\n"
+
+
+def render_executive_brief(metrics: dict) -> str:
+    return synthesis_header("executive_brief_generated") + f"""# Executive Brief v0
+
+The conversation archive now supports a derived project picture: Dominium is a deterministic, contract-governed simulation game and operating environment on top of Domino. The old conversations consistently point toward a broad product: simulation engine, official game/domain layer, Workbench, setup/launcher, content packs, release identity, portability, and repo governance.
+
+This brief is not authority. Current truth remains in [README.md](../../../../README.md), [constitution_v1.md](../../../canon/constitution_v1.md), [glossary_v1.md](../../../canon/glossary_v1.md), [AGENTS.md](../../../../AGENTS.md), contracts, schema law, and current queue state.
+
+## Current Signal
+
+- Source conversations: `{metrics['manifest']['summary']['conversation_count']}`
+- Source files: `{metrics['manifest']['summary']['source_file_count']}`
+- Acceptance result: `{metrics['acceptance_result']}`
+- Promotion candidates: `{len(metrics['promotions'])}`
+- Audit findings: `{len(metrics['findings'])}`
+- Blocked current queue scopes: `{', '.join(sorted(metrics['blocked_constraints']))}`
+
+## Main Takeaway
+
+The archive is ready for understanding and synthesis. It is not ready for direct promotion. The next review surface should compare the synthesis against current repo authority and reduce the raw promotion queue into a smaller decision backlog.
+"""
+
+
+def render_full_project_picture(metrics: dict) -> str:
+    lines = [synthesis_header("full_project_picture_generated"), "# Full Project Picture v0", ""]
+    lines.append("This map combines current repo orientation with conversation-derived design intent. When they differ, current repo authority wins.")
+    lines.append("")
+    lines.append("## Product Identity")
+    lines.append("")
+    lines.append("Domino is the deterministic substrate. Dominium is the official game, product, and domain layer. Workbench is a governed validation and inspection environment. Setup and launcher compose product instances. Tools validate, generate, audit, and migrate. Contracts and schema law define public identity and compatibility meaning.")
+    lines.append("")
+    lines.append("## Boundary Map")
+    lines.append("")
+    lines.append("| Surface | Current Role | Conversation-Derived Intent | Current Caution |")
+    lines.append("| --- | --- | --- | --- |")
+    lines.append("| Engine / Domino | Deterministic substrate | Reusable law-bound simulation foundation | Do not collapse into product UI |")
+    lines.append("| Game / Dominium | Domain rules and official product meaning | Invention, logistics, institutions, world systems | Gameplay remains blocked by current queue |")
+    lines.append("| Client / Renderer | Presentation and intent issuing | Rich visualization and projection | Renderer implementation is blocked |")
+    lines.append("| Server | Authoritative multiplayer validation | Law and authority keeper | Must preserve deterministic proof |")
+    lines.append("| Workbench | Validation and inspection surface | Rich operator and authoring future | Broad Workbench UI is blocked |")
+    lines.append("| Setup / Launcher | Product composition and local orchestration | Install, repair, profiles, instances | Runtime package behavior remains constrained |")
+    lines.append("| Content / Packs | Authored payload and pack-driven composition | Mods, providers, data-driven expansion | Provider/package runtime blocked |")
+    lines.append("| AIDE / Codex / XStack | Repo-control and patch workflow aids | Evidence-producing governance layer | No authority replacement |")
+    lines.append("")
+    lines.append("## Topic Map")
+    lines.append("")
+    lines.append(render_topic_overview(metrics))
+    lines.append("")
+    lines.append("## Blocked Versus Open")
+    lines.append("")
+    lines.append("Open for derived archive work: reading, synthesis, crosswalks, contradiction review, promotion triage, and narrow docs-only planning. Blocked by current queue: broad Workbench UI, runtime module loader, provider runtime, package runtime, gameplay, renderer implementation, native GUI, and release publication.")
+    return "\n".join(lines) + "\n"
+
+
+def render_what_needs_decision(metrics: dict) -> str:
+    lines = [synthesis_header("what_needs_decision_generated"), "# What Needs Decision v0", ""]
+    lines.append("These are not decisions. They are review questions created by reading the conversation corpus after acceptance.")
+    lines.append("")
+    lines.append("| Decision Area | Why It Matters | Source | Current Disposition |")
+    lines.append("| --- | --- | --- | --- |")
+    for item in metrics["decision_candidates"]:
+        lines.append(f"| {item['title']} | {item['why']} | [{item['source']}]({item['source']}) | `needs_user_or_repo_review` |")
+    lines.append("")
+    lines.append("## User-Level Questions")
+    lines.append("")
+    lines.append("- Which promotion candidates should become serious doc-update proposals?")
+    lines.append("- Which conversation themes are only historical and should be preserved without promotion?")
+    lines.append("- Which blocked queue areas should remain blocked even if old conversations discuss them as next work?")
+    lines.append("- Which product names and boundaries should be considered stable enough for a current-doc crosswalk?")
+    lines.append("- Which world/time/civilization ambitions are near-term planning versus long-term vision?")
+    return "\n".join(lines) + "\n"
+
+
+def render_contradictions_to_reconcile(metrics: dict) -> str:
+    lines = [synthesis_header("contradictions_to_reconcile_generated"), "# Contradictions To Reconcile v0", ""]
+    lines.append("This document summarizes contradiction classes that should feed the reconciliation crosswalk. It does not resolve them.")
+    lines.append("")
+    lines.append("## Counts By Class")
+    lines.append("")
+    for class_name, count in metrics["contradiction_counts"].items():
+        lines.append(f"- `{class_name}`: `{count}`")
+    lines.append("")
+    lines.append("## Highest-Priority Classes")
+    lines.append("")
+    lines.append("- `conversation_vs_current_queue`: old work suggestions that touch currently blocked scope.")
+    lines.append("- `conversation_vs_docs`: old baseline or architecture statements that may drift from current README/canon.")
+    lines.append("- `stale_external_claim`: external platform, SDK, language, renderer, or runtime claims needing current verification.")
+    lines.append("- `conversation_vs_conversation`: disagreements among old conversations that need review before promotion.")
+    lines.append("")
+    lines.append("## Sample Findings")
+    lines.append("")
+    for finding in metrics["findings"][:30]:
+        lines.append(f"- `{finding.finding_id}` `{finding.class_name}` `{finding.source_conversation}`: {finding.claim}")
+    lines.append("")
+    lines.append("## Reconciliation Rule")
+    lines.append("")
+    lines.append("Resolve nothing by convenience. Check canon, glossary, AGENTS, authority order, current queue, contracts/schema law, and targeted current docs before promoting any claim.")
+    return "\n".join(lines) + "\n"
+
+
 def validate_outputs(repo_root: Path) -> List[str]:
     errors: List[str] = []
     root = repo_root / CORPUS_ROOT
@@ -1639,6 +2025,15 @@ def validate_outputs(repo_root: Path) -> List[str]:
     ]
     if any(doc.exists() for doc in acceptance_docs):
         required_docs.extend(acceptance_docs)
+    synthesis_docs = [
+        root / "_synthesis" / "PROJECT_SYNTHESIS_BOOK_v0.md",
+        root / "_synthesis" / "EXECUTIVE_BRIEF_v0.md",
+        root / "_synthesis" / "FULL_PROJECT_PICTURE_v0.md",
+        root / "_synthesis" / "WHAT_NEEDS_DECISION_v0.md",
+        root / "_synthesis" / "CONTRADICTIONS_TO_RECONCILE_v0.md",
+    ]
+    if any(doc.exists() for doc in synthesis_docs):
+        required_docs.extend(synthesis_docs)
     if not (root / "_intake" / "SHA256SUMS.txt").exists():
         errors.append("missing generated doc: docs/archive/conversations/_intake/SHA256SUMS.txt")
     for doc in required_docs:
@@ -1677,6 +2072,8 @@ def write_all(repo_root: Path, phases: Sequence[str]) -> List[str]:
         changed.extend(write_phase4(repo_root))
     if "acceptance" in phases:
         changed.extend(write_acceptance(repo_root))
+    if "synthesis" in phases:
+        changed.extend(write_synthesis(repo_root))
     return sorted(set(changed), key=sort_key)
 
 
@@ -1685,7 +2082,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--repo-root", default=".", help="Repository root.")
     parser.add_argument(
         "command",
-        choices=["inventory", "readers", "audit", "wiki", "acceptance", "all", "validate"],
+        choices=["inventory", "readers", "audit", "wiki", "acceptance", "synthesis", "all", "validate"],
         help="Operation to run.",
     )
     args = parser.parse_args(argv)
@@ -1709,6 +2106,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.command == "acceptance":
         changed = write_all(repo_root, ["acceptance"])
         print(json.dumps({"changed": changed, "phase": "acceptance"}, indent=2, sort_keys=True))
+        return 0
+    if args.command == "synthesis":
+        changed = write_all(repo_root, ["synthesis"])
+        print(json.dumps({"changed": changed, "phase": "synthesis"}, indent=2, sort_keys=True))
         return 0
     if args.command == "all":
         changed = write_all(repo_root, ["phase1", "phase2", "phase3", "phase4"])
