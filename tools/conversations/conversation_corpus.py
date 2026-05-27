@@ -275,7 +275,10 @@ def extract_lines(text: str, patterns: Sequence[str], limit: int = 10) -> List[s
     found: List[str] = []
     seen = set()
     for raw in text.splitlines():
-        line = re.sub(r"\s+", " ", raw.strip(" -*\t"))
+        stripped = raw.strip()
+        if stripped.startswith("|") or stripped.startswith("#") or stripped.count("|") > 2:
+            continue
+        line = re.sub(r"\s+", " ", stripped.strip(" -*\t"))
         if len(line) < 24 or len(line) > 420:
             continue
         lower = line.lower()
