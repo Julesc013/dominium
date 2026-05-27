@@ -2692,6 +2692,136 @@ def render_promotion_not_ready(metrics: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
+def foundation_lock_status(repo_root: Path) -> str:
+    path = repo_root / "docs" / "repo" / "FOUNDATION_LOCK.md"
+    if not path.exists():
+        return "not_found"
+    text = path.read_text(encoding="utf-8")
+    for pattern in [
+        r"Current closeout result:\s*([A-Z_]+)",
+        r"Foundation Lock is\s+([A-Z_]+)",
+        r"Result:\s*([A-Z_]+)",
+        r"Foundation Lock:\s*`?([A-Z_]+)`?",
+        r"Status:\s*([A-Z_]+)",
+    ]:
+        match = re.search(pattern, text)
+        if match:
+            return match.group(1)
+    return "present"
+
+
+def write_current_project_atlas(repo_root: Path) -> List[str]:
+    metrics = promotion_review_metrics(repo_root)
+    metrics["foundation_lock_status"] = foundation_lock_status(repo_root)
+    root = repo_root / CORPUS_ROOT / "_synthesis"
+    changed: List[str] = []
+    changed += changed_path(root / "CURRENT_PROJECT_ATLAS_v0.md", render_current_project_atlas(metrics), repo_root)
+    changed += changed_path(root / "READ_THIS_FIRST_v0.md", render_read_this_first(metrics), repo_root)
+    return changed
+
+
+def render_current_project_atlas(metrics: dict) -> str:
+    lines = [synthesis_header("current_project_atlas_generated"), "# Current Project Atlas v0", ""]
+    lines.append("This atlas is a reader map. It is not canon and does not promote archived conversation claims.")
+    lines.append("")
+    lines.append("## Read Order")
+    lines.append("")
+    lines.append("1. [README.md](../../../../README.md) for current project orientation.")
+    lines.append("2. [constitution_v1.md](../../../canon/constitution_v1.md) and [glossary_v1.md](../../../canon/glossary_v1.md) for binding meaning.")
+    lines.append("3. [AGENTS.md](../../../../AGENTS.md) and [AUTHORITY_ORDER.md](../../../planning/AUTHORITY_ORDER.md) for repo/agent authority rules.")
+    lines.append("4. [.aide/queue/current.toml](../../../../.aide/queue/current.toml) for current scope gates.")
+    lines.append("5. [DECISION_DOCKET_v0.md](../_decision/DECISION_DOCKET_v0.md) and [PROMOTION_REVIEW_BOARD_v0.md](../_promotion/PROMOTION_REVIEW_BOARD_v0.md) for archive-derived adjudication.")
+    lines.append("")
+    lines.append("## What Dominium Is")
+    lines.append("")
+    lines.append("Current repo truth: Dominium is a deterministic, contract-governed simulation game and operating environment built on the Domino deterministic substrate. It is about lawful simulation of invention, production, logistics, economics, settlement, trust, communication, and institutional power.")
+    lines.append("")
+    lines.append("Conversation-derived context: the archive expands that picture into a long-horizon product ecosystem: engine substrate, official game/domain layer, Workbench, setup/launcher, content packs, portability, release identity, and repo-governed assistant workflows. That context is historical and advisory.")
+    lines.append("")
+    lines.append("## What Domino Is")
+    lines.append("")
+    lines.append("Domino is the reusable deterministic substrate: execution ordering, storage, replay, ABI-facing boundaries, and engine mechanisms. Archived conversations consistently treat Domino as reusable infrastructure rather than a one-off game binary.")
+    lines.append("")
+    lines.append("## Active Surfaces")
+    lines.append("")
+    lines.append("| Surface | Current Meaning | Archive Context |")
+    lines.append("| --- | --- | --- |")
+    lines.append("| `engine/` | deterministic substrate | reusable Domino foundation |")
+    lines.append("| `game/` | Dominium domain rules and interpretation | official game/product layer |")
+    lines.append("| `runtime/` | shell/platform/adapters/diagnostics/storage host integration | platform and projection glue, not truth owner |")
+    lines.append("| `apps/` | thin product composition | client/server/launcher/setup/workbench entrypoints |")
+    lines.append("| `contracts/` and `schema/` | machine-readable law and compatibility meaning | promotion candidates need high review |")
+    lines.append("| `docs/archive/conversations/` | derived conversation evidence | source layer for synthesis, not authority |")
+    lines.append("| `tools/` | validators and repo tooling | repeatable audit/generation/control surfaces |")
+    lines.append("")
+    lines.append("## Current Work Gates")
+    lines.append("")
+    lines.append(f"- Foundation lock status signal: `{metrics['foundation_lock_status']}`.")
+    lines.append(f"- Current blocked queue scopes: {', '.join(f'`{scope}`' for scope in sorted(metrics['blocked_constraints']))}.")
+    lines.append("- Safe now: archive reading, decision review, promotion review, reconciliation crosswalks, docs-only microtask preparation, and validators.")
+    lines.append("- Not safe now: implementation work in blocked scopes, canon/schema/contract rewrites from archive claims, release publication, renderer implementation, gameplay, provider/package runtime, broad Workbench UI, native GUI.")
+    lines.append("")
+    lines.append("## Unresolved Decisions")
+    lines.append("")
+    lines.append(f"- Decision docket items: `{len(metrics['decision_items'])}`.")
+    for group, count in metrics["decision_group_counts"].items():
+        lines.append(f"- `{group}`: `{count}`.")
+    lines.append("")
+    lines.append("## Promotion State")
+    lines.append("")
+    lines.append(f"- Raw promotion candidates: `{len(metrics['reviewed_candidates'])}`.")
+    lines.append(f"- Wave 1 docs-only candidates: `{len(metrics['promotion_wave_1'])}`.")
+    for category, count in metrics["review_category_counts"].items():
+        lines.append(f"- `{category}`: `{count}`.")
+    lines.append("")
+    lines.append("## What Requires Review Before Promotion")
+    lines.append("")
+    lines.append("- Any claim touching canon, glossary, authority order, contracts, schema law, current queue, release, implementation, or blocked scope.")
+    lines.append("- Any old language/platform/baseline claim.")
+    lines.append("- Any claim whose target path is only a wildcard such as `docs/architecture/**` or `contracts/**`.")
+    lines.append("- Any Wave 1 candidate before source text and target docs are inspected together.")
+    lines.append("")
+    lines.append("## Recommended Next Steps")
+    lines.append("")
+    lines.append("1. Manually review the decision docket and choose defer/preserve/promote-later dispositions.")
+    lines.append("2. Select a small subset of Wave 1 candidates for docs-only microtasks.")
+    lines.append("3. For each microtask, name the source claim ID, exact target doc, authority support, non-goals, validation, and promotion status update.")
+    lines.append("4. Keep implementation blocked unless the current queue opens it.")
+    return "\n".join(lines) + "\n"
+
+
+def render_read_this_first(metrics: dict) -> str:
+    lines = [synthesis_header("read_this_first_generated"), "# Read This First v0", ""]
+    lines.append("Use this page as the shortest path through the conversation-corpus adjudication surfaces.")
+    lines.append("")
+    lines.append("## If You Want Current Truth")
+    lines.append("")
+    lines.append("- Start with [README.md](../../../../README.md).")
+    lines.append("- Then read [constitution_v1.md](../../../canon/constitution_v1.md), [glossary_v1.md](../../../canon/glossary_v1.md), [AGENTS.md](../../../../AGENTS.md), and [.aide/queue/current.toml](../../../../.aide/queue/current.toml).")
+    lines.append("")
+    lines.append("## If You Want Archive Context")
+    lines.append("")
+    lines.append("- Read [PROJECT_SYNTHESIS_BOOK_v0.md](PROJECT_SYNTHESIS_BOOK_v0.md).")
+    lines.append("- Then use [conversation_reader_index.md](../_reader/conversation_reader_index.md) for individual conversations.")
+    lines.append("")
+    lines.append("## If You Want Decisions")
+    lines.append("")
+    lines.append(f"- Read [DECISION_DOCKET_v0.md](../_decision/DECISION_DOCKET_v0.md): `{len(metrics['decision_items'])}` decision items.")
+    lines.append("- Use [DEFERRED_DECISIONS_v0.md](../_decision/DEFERRED_DECISIONS_v0.md) to avoid accidentally opening blocked scope.")
+    lines.append("")
+    lines.append("## If You Want Promotion Candidates")
+    lines.append("")
+    lines.append(f"- Read [PROMOTION_REVIEW_BOARD_v0.md](../_promotion/PROMOTION_REVIEW_BOARD_v0.md): `{len(metrics['reviewed_candidates'])}` candidates.")
+    lines.append(f"- Start with [PROMOTION_WAVE_1_CANDIDATES_v0.md](../_promotion/PROMOTION_WAVE_1_CANDIDATES_v0.md): `{len(metrics['promotion_wave_1'])}` docs-only review candidates.")
+    lines.append("")
+    lines.append("## Hard Guardrails")
+    lines.append("")
+    lines.append("- Do not promote archive claims without a later reviewed task.")
+    lines.append("- Do not patch canon, contracts, schema, implementation, release, or queue files from this atlas.")
+    lines.append("- Do not open blocked queue scopes from old conversations.")
+    return "\n".join(lines) + "\n"
+
+
 def validate_outputs(repo_root: Path) -> List[str]:
     errors: List[str] = []
     root = repo_root / CORPUS_ROOT
@@ -2760,6 +2890,12 @@ def validate_outputs(repo_root: Path) -> List[str]:
     ]
     if any(doc.exists() for doc in promotion_board_docs):
         required_docs.extend(promotion_board_docs)
+    atlas_docs = [
+        root / "_synthesis" / "CURRENT_PROJECT_ATLAS_v0.md",
+        root / "_synthesis" / "READ_THIS_FIRST_v0.md",
+    ]
+    if any(doc.exists() for doc in atlas_docs):
+        required_docs.extend(atlas_docs)
     if not (root / "_intake" / "SHA256SUMS.txt").exists():
         errors.append("missing generated doc: docs/archive/conversations/_intake/SHA256SUMS.txt")
     for doc in required_docs:
@@ -2806,6 +2942,8 @@ def write_all(repo_root: Path, phases: Sequence[str]) -> List[str]:
         changed.extend(write_decision_docket(repo_root))
     if "promotion_board" in phases:
         changed.extend(write_promotion_review_board(repo_root))
+    if "atlas" in phases:
+        changed.extend(write_current_project_atlas(repo_root))
     return sorted(set(changed), key=sort_key)
 
 
@@ -2824,6 +2962,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "reconciliation",
             "decision",
             "promotion-board",
+            "atlas",
             "all",
             "validate",
         ],
@@ -2866,6 +3005,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.command == "promotion-board":
         changed = write_all(repo_root, ["promotion_board"])
         print(json.dumps({"changed": changed, "phase": "promotion-board"}, indent=2, sort_keys=True))
+        return 0
+    if args.command == "atlas":
+        changed = write_all(repo_root, ["atlas"])
+        print(json.dumps({"changed": changed, "phase": "atlas"}, indent=2, sort_keys=True))
         return 0
     if args.command == "all":
         changed = write_all(repo_root, ["phase1", "phase2", "phase3", "phase4"])

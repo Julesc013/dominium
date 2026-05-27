@@ -56,6 +56,7 @@ class InventoryConversationTests(unittest.TestCase):
                 "reconciliation",
                 "decision",
                 "promotion_board",
+                "atlas",
             ],
         )
         errors = corpus.validate_outputs(repo)
@@ -68,6 +69,7 @@ class InventoryConversationTests(unittest.TestCase):
         self.assertTrue((repo / "docs/archive/conversations/_reconciliation/CLAIM_REVIEW_MATRIX_v0.md").exists())
         self.assertTrue((repo / "docs/archive/conversations/_decision/DECISION_DOCKET_v0.md").exists())
         self.assertTrue((repo / "docs/archive/conversations/_promotion/PROMOTION_REVIEW_BOARD_v0.md").exists())
+        self.assertTrue((repo / "docs/archive/conversations/_synthesis/CURRENT_PROJECT_ATLAS_v0.md").exists())
 
 
 if __name__ == "__main__":
