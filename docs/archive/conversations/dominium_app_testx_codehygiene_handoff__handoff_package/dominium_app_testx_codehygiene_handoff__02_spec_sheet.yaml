@@ -1,0 +1,2218 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Application/TestX/CodeHygiene Handoff
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This visible chat only; user-pasted other-chat material labeled PROJECT-CONTEXT.
+    apparent_coverage: full for late visible context; partial for earlier hidden/omitted portions
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes_with_caveats
+    main_limitations:
+    - Actual repo/source/docs were not inspected
+    - Generated prompts may not have been executed
+    - External Project context is visible only via user-pasted excerpts
+  summary:
+    one_sentence: This chat consolidated Dominium/Domino application-layer canon, testing/version/changelog governance, source-code
+      hygiene, and handoff packaging after a larger architecture design phase.
+    short_brief: The latest current artifacts are APP-UNIFIED-CANON for application-layer implementation, TESTX for testing/version/changelog
+      governance, CODEHYGIENE-X for source hygiene/data-boundary enforcement, and this final handoff package. Architecture
+      is treated as closed and canon locked.
+    main_topics:
+    - application layer
+    - setup and launcher
+    - RepoX/TestX/BUILD-ID governance
+    - source code hygiene
+    - documentation/canon handoff
+    - testing and changelog automation
+    main_outputs:
+    - APP-UNIFIED-CANON
+    - TESTX
+    - CODEHYGIENE-X
+    - Context Transfer Packet
+    - final report package
+    highest_priority_carry_forward:
+    - Do not redesign architecture
+    - Use latest application bootstrap and APP-UNIFIED-CANON
+    - Verify actual repo state
+    - Use BUILD-ID-0 semantics
+    - Generated prompts are not executed files
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Explicit user statements outrank assistant suggestions
+    - Latest user-pasted bootstrap outranks earlier assistant plans
+    - Generated prompts are artifacts, not executed state
+    staleness_rules:
+    - External software/API/release facts require fresh verification
+    - Repo state must be inspected before implementation claims
+  user_preferences:
+    explicit:
+    - id: PREF-01
+      preference: Wants maximum-fidelity transfer reports, not normal summaries.
+      basis: Current user request
+      strength: high
+      implication: Future assistants should preserve detail and labels.
+      label: FACT
+    - id: PREF-02
+      preference: Prefers modular, extensible, robust, future-proof designs.
+      basis: Repeated user wording throughout chat
+      strength: high
+      implication: Outputs should emphasize modularity and long-term maintainability.
+      label: FACT
+    - id: PREF-03
+      preference: Wants CLI-only tests/apps unless GUI/TUI specifically required.
+      basis: User testing request
+      strength: high
+      implication: Avoid UI testing friction.
+      label: FACT
+    - id: PREF-04
+      preference: Wants data-driven taxonomies and minimal hardcoded assumptions.
+      basis: User code hygiene request
+      strength: high
+      implication: Use registries/data for open-world concepts.
+      label: FACT
+    - id: PREF-05
+      preference: Wants strict documentation/comment density and cross-referenced blockers.
+      basis: User CODEHYGIENE/TESTX requests
+      strength: medium-high
+      implication: Implement comment/doc policies.
+      label: FACT
+    - id: PREF-07
+      preference: Values auditability, verifiability, and stable IDs.
+      basis: Current report package requirements and prior prompts
+      strength: high
+      implication: Use registers/tables/IDs.
+      label: FACT
+    inferred:
+    - id: PREF-06
+      preference: Likes contiguous TXT blocks for Codex prompts.
+      basis: Multiple asks for one big txt block
+      strength: high
+      implication: Provide copy-paste prompts in code fences.
+      label: INFERENCE
+    uncertain_or_not_established:
+    - Exact RepoX/TestX paths
+    - Whether prompts were executed
+    - Whether GUI/TUI work is immediate
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Dominium / Domino overall canon and architecture closure
+    label: FACT / PROJECT-CONTEXT
+    objective: Preserve and continue a locked deterministic universe engine/game architecture without redesign.
+    current_state: Design canon declared closed/locked in user-pasted bootstrap; repo execution state unverified.
+    desired_end_state: Implementation, audit, optimisation, maintenance under canon only.
+    status: active
+    priority: critical
+    background: See full report
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-08
+    tasks:
+    - TASK-02
+    - TASK-03
+    - TASK-08
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-08
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed:
+    - VERIFY-01
+    confidence: high
+  - id: WORKSTREAM-02
+    name: Application layer implementation
+    label: FACT / PROJECT-CONTEXT
+    objective: Implement setup, launcher, client, server, tools as content-agnostic orchestration shells over engine/game.
+    current_state: APP-UNIFIED-CANON generated; latest user-pasted app bootstrap says app layer only.
+    desired_end_state: Contracts, appcore, command graph, UI IR, RepoX/TestX integration, zero-pack operation.
+    status: active
+    priority: critical
+    background: See full report
+    decisions_made:
+    - DECISION-04
+    - DECISION-05
+    - DECISION-06
+    - DECISION-08
+    - DECISION-10
+    - DECISION-17
+    decisions_pending:
+    - QUESTION-06
+    - QUESTION-07
+    tasks:
+    - TASK-04
+    - TASK-10
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks:
+    - RISK-03
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed:
+    - VERIFY-03
+    - VERIFY-06
+    confidence: high
+  - id: WORKSTREAM-03
+    name: Setup and launcher unified application canon
+    label: FACT
+    objective: Unify setup/launcher plans into final application-layer prompt and share with all app chats.
+    current_state: APP-UNIFIED-CANON produced after comparing two other-chat plans.
+    desired_end_state: Use as binding app-layer implementation prompt.
+    status: active
+    priority: high
+    background: See full report
+    decisions_made:
+    - DECISION-07
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-04
+    name: Testing, versioning, changelog, RepoX/TestX governance
+    label: FACT
+    objective: Create long-lived exhaustive testing/version/build/changelog enforcement.
+    current_state: TEST0 superseded by TESTX; BUILD-ID-0 semantics pasted from other chat.
+    desired_end_state: Run TESTX or implement equivalent repository-wide self-defending test system.
+    status: active
+    priority: critical
+    background: See full report
+    decisions_made:
+    - DECISION-11
+    - DECISION-15
+    - DECISION-19
+    - DECISION-21
+    decisions_pending:
+    - QUESTION-03
+    - QUESTION-04
+    - QUESTION-05
+    tasks:
+    - TASK-05
+    - TASK-11
+    - TASK-12
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks:
+    - RISK-05
+    - RISK-07
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed:
+    - VERIFY-03
+    - VERIFY-04
+    confidence: high
+  - id: WORKSTREAM-05
+    name: Source code hygiene and data/code boundary
+    label: FACT
+    objective: Audit code for hardcoded taxonomies, magic numbers, custom/other enums, mode flags; migrate to registries/data
+      where appropriate.
+    current_state: CODEHYGIENE-X generated.
+    desired_end_state: Run scan -> queue -> safe migrations -> CI enforcement.
+    status: active
+    priority: high
+    background: See full report
+    decisions_made:
+    - DECISION-16
+    - DECISION-18
+    - DECISION-20
+    decisions_pending: []
+    tasks:
+    - TASK-06
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks:
+    - RISK-06
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-06
+    name: Documentation/canon population and chat handoff system
+    label: FACT
+    objective: Create docs/canon package and per-chat transferable reports.
+    current_state: DOCS0 generated; prior Context Transfer Packet generated; this package finalizes old-chat report.
+    desired_end_state: Store package and use in future aggregation/spec book.
+    status: active
+    priority: critical
+    background: See full report
+    decisions_made:
+    - DECISION-14
+    - DECISION-22
+    decisions_pending:
+    - QUESTION-02
+    tasks:
+    - TASK-01
+    - TASK-07
+    - TASK-14
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks:
+    - RISK-09
+    - RISK-10
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed:
+    - VERIFY-02
+    - VERIFY-08
+    confidence: high
+  - id: WORKSTREAM-07
+    name: Content/data population
+    label: FACT
+    objective: Add universe, Sol, Earth, Milky Way, civilizations, economy, scenarios as data only.
+    current_state: Standalone CONTENT0 generated; earlier CONTENT0–3 generated.
+    desired_end_state: Separate content chat can proceed independently later.
+    status: planned
+    priority: medium
+    background: See full report
+    decisions_made: []
+    decisions_pending: []
+    tasks:
+    - TASK-09
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed: []
+    confidence: medium
+  - id: WORKSTREAM-08
+    name: Runtime/execution substrate and hardware abstraction
+    label: FACT
+    objective: Implement Work IR, Access IR, schedulers, ECS storage, kernels, HWCAPS.
+    current_state: EXEC/ECSX/KERN/HWCAPS prompts generated; execution state unverified.
+    desired_end_state: Use if/when implementing engine runtime internals.
+    status: planned / historical
+    priority: medium
+    background: See full report
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed: []
+    confidence: medium
+  - id: WORKSTREAM-09
+    name: 'Reality layer: existence, domain, travel, time, authority'
+    label: FACT
+    objective: Formalize existence/refinement/domain volumes/travel/observer time/omnipotence.
+    current_state: EXIST/DOMAIN/TRAVEL/TIME/OMNI prompts generated; REALITY0 macro generated.
+    desired_end_state: Referenced by docs/canon; likely not current app-layer implementation target.
+    status: historical / planned
+    priority: medium
+    background: See full report
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed: []
+    confidence: medium
+  - id: WORKSTREAM-10
+    name: Life/civilization/war/agent/tool/mod systems
+    label: FACT
+    objective: Earlier game/simulation systems prompt families for life, civ, war, agents, tools, mods, final policies.
+    current_state: Many prompts generated; latest bootstrap says T0–T24 completed and locked.
+    desired_end_state: Do not redesign here; treat as project context unless docs/source provided.
+    status: historical / project-context
+    priority: medium
+    background: See full report
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed: []
+    confidence: medium
+  - id: WORKSTREAM-11
+    name: Application UI / UI IR / accessibility/localisation
+    label: FACT / PROJECT-CONTEXT
+    objective: Ensure all application UI is declarative, accessible, localized, and command-graph-backed.
+    current_state: APP-UNIFIED-CANON and latest app bootstrap require UI IR and locale packs.
+    desired_end_state: Implement UI IR schemas and CLI-first parity later.
+    status: active
+    priority: high
+    background: See full report
+    decisions_made:
+    - DECISION-09
+    decisions_pending:
+    - QUESTION-09
+    tasks:
+    - TASK-13
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed:
+    - VERIFY-07
+    confidence: high
+  - id: WORKSTREAM-12
+    name: Release/build identity system
+    label: FACT / PROJECT-CONTEXT
+    objective: 'Apply BUILD-ID-0 model: SemVer products, build kinds, GBN/BII, channels, protocol/schema/API/ABI versions.'
+    current_state: Latest user-pasted global bootstrap defines locked version model.
+    desired_end_state: Implementation must align with BUILD-ID-0, not earlier simple build-number idea.
+    status: active
+    priority: high
+    background: See full report
+    decisions_made:
+    - DECISION-12
+    - DECISION-13
+    decisions_pending:
+    - QUESTION-10
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - repo/source/docs verification as applicable
+    timeline: See timeline register
+    blockers:
+    - actual repository state unverified
+    risks:
+    - RISK-04
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - workstream-specific prompt criteria
+    next_action: verify actual repo state and choose scope
+    verification_needed:
+    - VERIFY-05
+    confidence: high
+  decisions:
+  - id: DECISION-01
+    decision: Architecture is closed; canon is locked.
+    status: accepted / current
+    label: FACT / PROJECT-CONTEXT
+    evidence_or_basis: 'User-pasted bootstrap: ''Architecture is CLOSED. Canon is LOCKED.'''
+    rationale: Prevents re-architecture in new chats; implementation/audit only.
+    implications: WORKSTREAM-01
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: low
+  - id: DECISION-02
+    decision: Core ontology is Assemblies, Fields, Processes, Agents, Law.
+    status: accepted / current
+    label: FACT / PROJECT-CONTEXT
+    evidence_or_basis: User-pasted bootstrap explicitly lists this ontology.
+    rationale: All proposals must reduce to these primitives or be invalid.
+    implications: WORKSTREAM-01
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: low
+  - id: DECISION-03
+    decision: Engine uses C89; game uses C++98; apps may use newer toolchains without imposing them on engine/game.
+    status: accepted / current
+    label: FACT / PROJECT-CONTEXT
+    evidence_or_basis: User-pasted bootstrap language/tooling section.
+    rationale: Public headers remain stable; apps separate from engine/game ABI.
+    implications: WORKSTREAM-01
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: low
+  - id: DECISION-04
+    decision: Applications are orchestration shells, not gameplay systems.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: Latest app bootstrap and APP-UNIFIED-CANON.
+    rationale: Apps cannot contain simulation logic or mutate authoritative state.
+    implications: WORKSTREAM-02
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: low
+  - id: DECISION-05
+    decision: CLI is canonical; TUI/GUI are views over the same command graph.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: Latest app bootstrap and merged setup/launcher plans.
+    rationale: One command graph avoids UI divergence and enables automation.
+    implications: WORKSTREAM-02
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: low
+  - id: DECISION-06
+    decision: Setup is the only install mutation authority.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: APP-UNIFIED-CANON and other-chat app plan.
+    rationale: Launcher invokes setup for install/repair; client/server/tools do not install/repair.
+    implications: WORKSTREAM-02
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: low
+  - id: DECISION-07
+    decision: Launcher is the reference application.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: Other-chat plan and APP-UNIFIED-CANON.
+    rationale: Other apps should follow launcher module/command/failure patterns.
+    implications: WORKSTREAM-03
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: low
+  - id: DECISION-08
+    decision: Tools are read-only by default.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: Latest app bootstrap and APP-UNIFIED-CANON.
+    rationale: Mutation tools require explicit write flags/capabilities and audits.
+    implications: WORKSTREAM-02
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: low
+  - id: DECISION-09
+    decision: UI is data (UI IR), never business logic.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: Latest app bootstrap and APP-UNIFIED-CANON.
+    rationale: Declarative UI, externalized strings, CLI/TUI/GUI parity.
+    implications: WORKSTREAM-11
+    related_workstreams:
+    - WORKSTREAM-11
+    uncertainty: low
+  - id: DECISION-10
+    decision: Applications must run with zero content packs installed.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: Latest app bootstrap.
+    rationale: Apps show raw keys/diagnostics; no invented defaults.
+    implications: WORKSTREAM-02
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: low
+  - id: DECISION-11
+    decision: RepoX is source of truth for build number, commits, changelogs, canon-clean tags, compatibility data.
+    status: accepted / current
+    label: FACT / PROJECT-CONTEXT
+    evidence_or_basis: Latest app bootstrap.
+    rationale: Apps display RepoX, no manual changelogs.
+    implications: WORKSTREAM-04
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: low
+  - id: DECISION-12
+    decision: Versioning uses product SemVer + build kind + GBN/BII; protocols/schema/API/ABI orthogonal.
+    status: accepted / current
+    label: FACT / PROJECT-CONTEXT
+    evidence_or_basis: Latest global bootstrap BUILD-ID-0 section.
+    rationale: Supersedes earlier simpler build-number idea.
+    implications: WORKSTREAM-12
+    related_workstreams:
+    - WORKSTREAM-12
+    uncertainty: low
+  - id: DECISION-13
+    decision: No distributed artifact without GBN; local/branch/fork builds cannot allocate GBN.
+    status: accepted / current
+    label: FACT / PROJECT-CONTEXT
+    evidence_or_basis: Latest global bootstrap.
+    rationale: Release builds centralized and reproducible.
+    implications: WORKSTREAM-12
+    related_workstreams:
+    - WORKSTREAM-12
+    uncertainty: low
+  - id: DECISION-14
+    decision: Generated prompts are not evidence of executed repo changes.
+    status: accepted in packet
+    label: FACT
+    evidence_or_basis: Prior Context Transfer Packet explicitly marked repo execution state unknown.
+    rationale: Future assistant must inspect repo before claiming file state.
+    implications: WORKSTREAM-06
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: low
+  - id: DECISION-15
+    decision: TESTX supersedes TEST0.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: User asked to replace TEST0 with TESTX; assistant generated TESTX.
+    rationale: Use TESTX for verification/versioning/changelog plan unless user provides newer.
+    implications: WORKSTREAM-04
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: low
+  - id: DECISION-16
+    decision: CODEHYGIENE-X is current code hygiene/data-boundary mega-prompt.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: User asked to proceed; assistant generated CODEHYGIENE-X.
+    rationale: Use it for scan/queue/migrate/enforce hygiene program.
+    implications: WORKSTREAM-05
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: low
+  - id: DECISION-17
+    decision: APP-UNIFIED-CANON supersedes prior app-layer plans.
+    status: accepted in latest exchange
+    label: FACT
+    evidence_or_basis: Assistant explicitly replaced previous application-layer planning prompts; user asked to integrate
+      other-chat setup/launcher plans.
+    rationale: Use APP-UNIFIED-CANON for app chats.
+    implications: WORKSTREAM-02
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: low
+  - id: DECISION-18
+    decision: Hardcoded taxonomies should become data/registries where possible; structural invariants remain code.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: User requested avoiding hardcoded systems; assistant plan generated CODEHYGIENE-X.
+    rationale: Prevents over-data-driving execution semantics while enabling modding.
+    implications: WORKSTREAM-05
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: medium
+  - id: DECISION-19
+    decision: No GUI/TUI tests unless specifically needed; Windows tests CLI-only.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: User explicitly requested CLI-only for simple testing.
+    rationale: Test harness avoids UI build/run fragility.
+    implications: WORKSTREAM-04
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: low
+  - id: DECISION-20
+    decision: Comment density target ~30% with useful documentation, not noise.
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: User explicitly requested ~30% source docs/comments.
+    rationale: CODEHYGIENE-X/TESTX include comment-density checks.
+    implications: WORKSTREAM-05
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: medium
+  - id: DECISION-21
+    decision: Manual changelog editing is disallowed; changelogs generated from commits.
+    status: accepted / current
+    label: FACT / PROJECT-CONTEXT
+    evidence_or_basis: Latest app bootstrap says no manual changelog editing.
+    rationale: Commit taxonomy and RepoX generation required.
+    implications: WORKSTREAM-04
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: low
+  - id: DECISION-22
+    decision: Source scope for this package is this chat only; project context must be labeled.
+    status: accepted for current task
+    label: FACT
+    evidence_or_basis: User explicitly requested source scope rules.
+    rationale: Report uses FACT / PROJECT-CONTEXT labels.
+    implications: WORKSTREAM-06
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: low
+  tasks:
+  - id: TASK-01
+    task: Use this final report package as source material for a new chat.
+    priority: critical
+    urgency: immediate
+    owner: User / future assistant
+    dependencies: []
+    inputs_needed:
+    - Download/save package
+    expected_output: New chat bootstrapped without re-explanation.
+    next_step: Paste bootstrap + attach package or key files.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: high
+  - id: TASK-02
+    task: Verify actual repo state before implementation claims.
+    priority: critical
+    urgency: immediate
+    owner: Future assistant / Codex
+    dependencies:
+    - Repo access
+    inputs_needed:
+    - Source/docs zip or repo
+    expected_output: Known actual files/commits/prompts executed.
+    next_step: Inspect repo; do not infer from generated prompts.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: high
+  - id: TASK-03
+    task: Choose next active workstream.
+    priority: high
+    urgency: immediate
+    owner: User
+    dependencies:
+    - This packet
+    inputs_needed:
+    - User choice
+    expected_output: Focused next chat.
+    next_step: 'Likely options: application implementation, TESTX, CODEHYGIENE-X, docs, content.'
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: high
+  - id: TASK-04
+    task: If app implementation continues, implement libs/contracts and appcore skeleton.
+    priority: high
+    urgency: near-term
+    owner: Codex
+    dependencies:
+    - APP-UNIFIED-CANON
+    - Repo
+    inputs_needed:
+    - Repo source
+    expected_output: '`libs/contracts` POD/TLV headers and `libs/appcore` modules scaffolded.'
+    next_step: Generate concrete implementation prompt.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: medium-high
+  - id: TASK-05
+    task: Run or adapt TESTX.
+    priority: high
+    urgency: near-term
+    owner: Codex
+    dependencies:
+    - Repo
+    - TestX prompt
+    inputs_needed:
+    - Build/test environment
+    expected_output: Self-defending test/version/changelog system.
+    next_step: Execute TESTX or adjust to BUILD-ID-0 docs first.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: high
+  - id: TASK-06
+    task: Run or adapt CODEHYGIENE-X.
+    priority: high
+    urgency: after baseline tests
+    owner: Codex
+    dependencies:
+    - Repo
+    - CODEHYGIENE-X
+    inputs_needed:
+    - Source tree
+    expected_output: HYGIENE_QUEUE, CI scanners, first safe migrations.
+    next_step: Run after/alongside TESTX baseline.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: high
+  - id: TASK-07
+    task: Run DOCS0/CANON0 or verify docs status.
+    priority: medium-high
+    urgency: near-term
+    owner: Codex
+    dependencies:
+    - Repo docs
+    inputs_needed:
+    - Docs tree
+    expected_output: Canon docs populated and status-labeled.
+    next_step: Inspect docs; run DOCS0 if incomplete.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: medium-high
+  - id: TASK-08
+    task: Resolve latest ontology vs older intent/action/effect wording in docs.
+    priority: high
+    urgency: before canon docs finalization
+    owner: Future assistant/Codex
+    dependencies:
+    - CANON_INDEX or docs
+    inputs_needed:
+    - Docs/context
+    expected_output: Terminology consistent.
+    next_step: Treat Assemblies/Fields/Processes/Agents/Law as root ontology unless docs say otherwise.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-09
+    task: Start separate content chat later using standalone CONTENT0.
+    priority: medium
+    urgency: later
+    owner: User / assistant
+    dependencies:
+    - CONTENT0 prompt
+    inputs_needed:
+    - Content scope
+    expected_output: Content/data population plan or prompt execution.
+    next_step: Use content chat, not app/source chat.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: medium
+  - id: TASK-10
+    task: Create application failure-mode docs when implementing launcher/setup.
+    priority: high
+    urgency: near-term app impl
+    owner: Codex
+    dependencies:
+    - APP-UNIFIED-CANON
+    inputs_needed:
+    - App source/docs
+    expected_output: '`launcher/docs/FAILURE_MODES.md` or equivalent.'
+    next_step: Include detection, key, exit code, no auto-repair.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: high
+  - id: TASK-11
+    task: Confirm exact RepoX metadata file paths/formats.
+    priority: high
+    urgency: before app implementation
+    owner: User/Codex
+    dependencies:
+    - Repo
+    inputs_needed:
+    - RepoX docs/source
+    expected_output: Appcore repox reader has real contract.
+    next_step: Inspect repo or ask user.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+    confidence: high
+  - id: TASK-12
+    task: Confirm exact TestX/VALIDATE-0 invocation commands.
+    priority: high
+    urgency: before app validation integration
+    owner: Codex
+    dependencies:
+    - Repo
+    inputs_needed:
+    - Docs/source
+    expected_output: App validate module invokes correct tools.
+    next_step: Inspect docs/source.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+    confidence: high
+  - id: TASK-13
+    task: Create/verify UI IR schemas if app UI work begins.
+    priority: medium-high
+    urgency: near-term app UI
+    owner: Codex
+    dependencies:
+    - APP-UNIFIED-CANON
+    inputs_needed:
+    - Schema tree
+    expected_output: '`schema/ui/*` present and used by views.'
+    next_step: Generate specific UI IR implementation prompt.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: medium-high
+  - id: TASK-14
+    task: Package and store this chat report files.
+    priority: critical
+    urgency: now
+    owner: Assistant/User
+    dependencies: []
+    inputs_needed:
+    - Generated files
+    expected_output: Old chat safely retired.
+    next_step: Download ZIP and files.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: high
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Do not redesign closed architecture.
+    type: governance
+    hard_or_soft: hard
+    source_or_basis: Latest user-pasted bootstrap
+    implication: Implementation/audit/maintenance only.
+    violation_risk: Very high
+    label: FACT / PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-02
+    constraint: All systems reduce to Assemblies, Fields, Processes, Agents, Law.
+    type: ontology
+    hard_or_soft: hard
+    source_or_basis: Latest user-pasted bootstrap
+    implication: New proposals outside ontology invalid.
+    violation_risk: High
+    label: FACT / PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-03
+    constraint: Engine C89; game C++98.
+    type: language
+    hard_or_soft: hard
+    source_or_basis: Latest user-pasted bootstrap
+    implication: No newer language features in those layers.
+    violation_risk: High
+    label: FACT / PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-04
+    constraint: Apps may use newer toolchains but cannot impose requirements on engine/game.
+    type: language / boundary
+    hard_or_soft: hard
+    source_or_basis: Latest user-pasted bootstrap
+    implication: Keep app dependencies isolated.
+    violation_risk: Medium
+    label: FACT / PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-05
+    constraint: Applications contain no gameplay logic.
+    type: app boundary
+    hard_or_soft: hard
+    source_or_basis: Latest app bootstrap
+    implication: Apps orchestrate only.
+    violation_risk: Very high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-06
+    constraint: Applications do not mutate authoritative state.
+    type: authority
+    hard_or_soft: hard
+    source_or_basis: Latest app bootstrap
+    implication: World changes through engine/game processes only.
+    violation_risk: Very high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-07
+    constraint: Applications run with zero content packs installed.
+    type: app/content
+    hard_or_soft: hard
+    source_or_basis: Latest app bootstrap
+    implication: No hidden defaults; diagnostics/raw keys.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-08
+    constraint: CLI is canonical.
+    type: UX/tooling
+    hard_or_soft: hard
+    source_or_basis: Latest app bootstrap
+    implication: TUI/GUI parity over command graph.
+    violation_risk: Medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-09
+    constraint: UI is data; UI contains no business logic.
+    type: UX/architecture
+    hard_or_soft: hard
+    source_or_basis: Latest app bootstrap
+    implication: Use UI IR and commands.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-10
+    constraint: Tools read-only by default.
+    type: tools/integrity
+    hard_or_soft: hard
+    source_or_basis: Latest app bootstrap
+    implication: Explicit write if permitted.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-11
+    constraint: Setup only install mutation authority.
+    type: app boundary
+    hard_or_soft: hard
+    source_or_basis: APP-UNIFIED-CANON
+    implication: Launcher invokes setup for mutations.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-12
+    constraint: RepoX/TestX must not be bypassed.
+    type: CI/release
+    hard_or_soft: hard
+    source_or_basis: Latest bootstrap
+    implication: Build/push gates.
+    violation_risk: High
+    label: FACT / PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-13
+    constraint: No manual changelog editing.
+    type: release
+    hard_or_soft: hard
+    source_or_basis: Latest app bootstrap
+    implication: Changelogs generated from RepoX commits.
+    violation_risk: Medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-14
+    constraint: No distributed artifact without GBN.
+    type: release
+    hard_or_soft: hard
+    source_or_basis: Latest bootstrap BUILD-ID-0
+    implication: Release governance.
+    violation_risk: High
+    label: FACT / PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-15
+    constraint: Mismatch of protocol/schema/API/ABI versions refuses loudly.
+    type: compatibility
+    hard_or_soft: hard
+    source_or_basis: Latest bootstrap
+    implication: No silent fallback.
+    violation_risk: High
+    label: FACT / PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-16
+    constraint: No GUI/TUI tests unless required; Win32 simple tests CLI-only.
+    type: testing
+    hard_or_soft: hard
+    source_or_basis: User message
+    implication: Avoid UI build/run errors.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-17
+    constraint: No hardcoded content or magic defaults.
+    type: data/code boundary
+    hard_or_soft: hard
+    source_or_basis: Latest bootstrap and user request
+    implication: Taxonomies/data via registries.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-18
+    constraint: ~30% source comments/docs target.
+    type: documentation
+    hard_or_soft: soft-hard requested
+    source_or_basis: User message
+    implication: Comment-density checks with meaningful comments.
+    violation_risk: Medium
+    label: FACT
+    confidence: medium-high
+  - id: CONSTRAINT-19
+    constraint: Label important report items FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: Avoid inventing facts.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-20
+    constraint: This report covers this chat only.
+    type: source scope
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: Project context labeled separately.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  open_questions:
+  - id: QUESTION-01
+    question: Which generated prompts were actually executed in Codex?
+    why_it_matters: Determines actual repo state.
+    known: Many prompts were generated.
+    unknown: Execution/commit status unknown.
+    resolution_path: Ask user or inspect repo.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: Does CANON_INDEX.md exist and is it current?
+    why_it_matters: Latest bootstrap says it is single source of truth.
+    known: CLEAN-2 mentioned.
+    unknown: Actual file unknown.
+    resolution_path: Inspect docs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: Where exactly does RepoX metadata live?
+    why_it_matters: Apps need paths/formats for readers.
+    known: RepoX is authoritative.
+    unknown: Files/format unknown.
+    resolution_path: Inspect RepoX docs/source.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: What are exact TestX/TestX2/TestX3 CLI commands and outputs?
+    why_it_matters: Apps and CI need to invoke them.
+    known: TestX exists in canon.
+    unknown: Actual implementation unknown.
+    resolution_path: Inspect docs/source.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: What is VALIDATE-0 interface?
+    why_it_matters: Setup/launcher validation integration.
+    known: VALIDATE-0 mentioned.
+    unknown: Commands/schemas unknown.
+    resolution_path: Inspect docs/source.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Are `libs/contracts` and `libs/appcore` already present?
+    why_it_matters: Determines first app implementation task.
+    known: Plans propose them.
+    unknown: Repo state unknown.
+    resolution_path: Inspect repo.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: 'Which environment variables are canonical: DOMINIUM_RUN_ROOT, DOMINIUM_HOME, both?'
+    why_it_matters: Launch/invoke contract.
+    known: APP-UNIFIED-CANON mentions both.
+    unknown: Exact semantics unknown.
+    resolution_path: Inspect app docs or ask.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: Does latest ontology supersede older intent/action/effect phrasing?
+    why_it_matters: Avoid terminology conflict.
+    known: Latest bootstrap root ontology; older prompts operational flow.
+    unknown: Canonical doc resolution unknown.
+    resolution_path: Inspect CANON_INDEX/docs or ask.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: QUESTION-09
+    question: Are UI IR schemas already implemented?
+    why_it_matters: App UI work depends on them.
+    known: Plans propose schema/ui.
+    unknown: Repo status unknown.
+    resolution_path: Inspect schema.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: Is BUILD-ID-0 implemented or only specified?
+    why_it_matters: Versioning/build automation.
+    known: Bootstrap says governed by BUILD-ID-0.
+    unknown: Implementation unknown.
+    resolution_path: Inspect repo/docs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Hardcoded app modes / game modes.
+    status: superseded
+    reason: Canon uses laws/capabilities, no modes.
+    final_or_tentative: final
+    reconsider_conditions: Never unless canon reopened.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-02
+    option: Admin bypass / isAdmin checks.
+    status: rejected
+    reason: Omnipotence is capability/law/audit, no hidden flags.
+    final_or_tentative: final
+    reconsider_conditions: Never; use capabilities and ToolIntents.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-03
+    option: Manual changelog editing.
+    status: rejected
+    reason: RepoX-generated changelogs only.
+    final_or_tentative: final
+    reconsider_conditions: Only if RepoX canon changes.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT / PROJECT-CONTEXT
+  - id: REJECTED-04
+    option: Apps auto-repairing hidden failures.
+    status: rejected
+    reason: Failure behavior requires explicit user-invoked repair and reports.
+    final_or_tentative: final
+    reconsider_conditions: Never unless setup repair explicitly invoked.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-05
+    option: Apps inferring state from filesystem heuristics where schema artifact exists.
+    status: rejected
+    reason: Schema artifacts are authoritative.
+    final_or_tentative: final
+    reconsider_conditions: Never.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-06
+    option: GUI/TUI as canonical semantics layer.
+    status: rejected
+    reason: CLI is canonical; GUI/TUI are views.
+    final_or_tentative: final
+    reconsider_conditions: Only if app canon reopened.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: REJECTED-07
+    option: Runtime strings instead of registries for data taxonomies.
+    status: rejected
+    reason: Performance/determinism; use IDs/registries.
+    final_or_tentative: final
+    reconsider_conditions: Never in hot paths.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-08
+    option: Enums with CUSTOM/OTHER for open taxonomies.
+    status: rejected
+    reason: Use data registries; architectural enums closed-world only.
+    final_or_tentative: final
+    reconsider_conditions: Never for reality taxonomies.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-09
+    option: Build number as simple global increment after tests for all builds.
+    status: superseded
+    reason: BUILD-ID-0 differentiates GBN/BII/build kind.
+    final_or_tentative: final under current canon
+    reconsider_conditions: Only if BUILD-ID-0 revised.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+  - id: REJECTED-10
+    option: Content assumptions in launcher/client/server/tools.
+    status: rejected
+    reason: Apps run with zero packs installed.
+    final_or_tentative: final
+    reconsider_conditions: Never.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Previous Context Transfer Packet
+    type: report
+    purpose: Base handoff generated before current package
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Needs repair into final package.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: APP-UNIFIED-CANON
+    type: prompt
+    purpose: Final unified application-layer plan
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Current app-layer prompt.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: TESTX
+    type: prompt
+    purpose: Superseding permanent test/version/changelog prompt
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Current testing prompt.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: CODEHYGIENE-X
+    type: prompt
+    purpose: Permanent data/code boundary hygiene prompt
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Current hygiene prompt.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: DOCS0
+    type: prompt
+    purpose: Complete canonical documentation population pass
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Docs prompt.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: CONTENT0 standalone
+    type: prompt
+    purpose: Content/data-only parallel chat prompt
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Content chat.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: APP0 standalone
+    type: prompt
+    purpose: App/runtime/platform/renderers prompt
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: superseded
+    notes: Superseded by APP-UNIFIED-CANON for app layer.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: CANON0
+    type: prompt
+    purpose: Global canon verification/docs sync
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Macro docs prompt.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: REALITY0
+    type: prompt
+    purpose: Unified reality layer docs
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Macro docs prompt.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: LIFE0+
+    type: prompt
+    purpose: Life/population macro docs
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Macro docs prompt.
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: CIV0+
+    type: prompt
+    purpose: Civilization/economy macro docs
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Macro docs prompt.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: FUTURE0
+    type: prompt
+    purpose: Future-proofing/contributing/modding macro docs
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Macro docs prompt.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: Latest global implementation/maintenance bootstrap
+    type: user-pasted text
+    purpose: Closed canon/current mode statement
+    status: from other chat, pasted by user
+    origin: from other chat, pasted by user
+    carry_forward: 'yes'
+    notes: Project-context but visible.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Latest application-layer bootstrap
+    type: user-pasted text
+    purpose: App-specific constraints and responsibilities
+    status: from other chat, pasted by user
+    origin: from other chat, pasted by user
+    carry_forward: 'yes'
+    notes: Project-context but visible.
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: Setup/launcher external plans
+    type: user-pasted text
+    purpose: Additional app execution planning
+    status: from other chat, pasted by user
+    origin: from other chat, pasted by user
+    carry_forward: 'yes'
+    notes: Merged into APP-UNIFIED-CANON.
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: ARCH0
+    type: prompt
+    purpose: Architectural constitution
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Historical canonical prompt.
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: EXEC0–EXEC4
+    type: prompt family
+    purpose: Work IR/execution substrate
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Historical prompt family.
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: ECSX0–ECSX3
+    type: prompt family
+    purpose: ECS/storage modularity
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Historical prompt family.
+    label: FACT
+  - id: ARTIFACT-19
+    name_or_description: KERN0–KERN4
+    type: prompt family
+    purpose: Kernel backend interface/scalar/SIMD/GPU/policy
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Historical prompt family.
+    label: FACT
+  - id: ARTIFACT-20
+    name_or_description: ADOPT0–ADOPT6
+    type: prompt family
+    purpose: Work IR adoption migration
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Historical prompt family.
+    label: FACT
+  - id: ARTIFACT-21
+    name_or_description: DIST0–DIST2
+    type: prompt family
+    purpose: Sharding/distribution/integrity checkpoints
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Historical prompt family.
+    label: FACT
+  - id: ARTIFACT-22
+    name_or_description: EXIST/DOMAIN/TRAVEL/TIME/OMNI prompts
+    type: prompt families
+    purpose: Reality layer details
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Historical prompt families.
+    label: FACT
+  - id: ARTIFACT-23
+    name_or_description: Phase 1 hardening prompts
+    type: prompt families
+    purpose: ENF/DET/PERF/SCALE/DATA/REND/EPIS/PH1 audit
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Historical prompt families.
+    label: FACT
+  - id: ARTIFACT-24
+    name_or_description: LIFE/CIV/WAR/CONTENT/AGENT/TOOL/MOD/FINAL prompt sequences
+    type: prompt families
+    purpose: Gameplay/content/tooling plan
+    status: generated in this chat
+    origin: generated in this chat
+    carry_forward: 'yes'
+    notes: Historical; not necessarily current implementation target.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Future assistant treats prompt text as executed repo state.
+    consequence: Misleading implementation claims.
+    likelihood: medium
+    severity: high
+    mitigation: Require repo inspection and mark unverified.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-02
+    risk: Architecture re-litigation.
+    consequence: Time loss and canon drift.
+    likelihood: medium
+    severity: high
+    mitigation: 'Use latest bootstrap: architecture closed.'
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / PROJECT-CONTEXT
+  - id: RISK-03
+    risk: Application logic creep.
+    consequence: Launcher/client/tools embed game rules.
+    likelihood: medium
+    severity: high
+    mitigation: Use contracts/appcore and CI boundaries.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-04
+    risk: Build/version model conflict.
+    consequence: Wrong artifact versioning/changelog behavior.
+    likelihood: medium
+    severity: high
+    mitigation: Use BUILD-ID-0 latest semantics.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+  - id: RISK-05
+    risk: Manual changelog editing creeps back.
+    consequence: RepoX divergence.
+    likelihood: low-medium
+    severity: medium
+    mitigation: Enforce generated changelogs.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-06
+    risk: Source hygiene becomes over-data-driven.
+    consequence: Performance/complexity loss.
+    likelihood: medium
+    severity: medium
+    mitigation: Keep structural invariants in code.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-07
+    risk: GUI/TUI testing friction slows implementation.
+    consequence: Build/run errors not needed for core tests.
+    likelihood: medium
+    severity: medium
+    mitigation: CLI-only tests unless UI-specific.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-08
+    risk: External other-chat context not available in future.
+    consequence: Missing exact APP-CANON1/BUILD-ID docs.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Ask user or upload docs/source.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: PROJECT-CONTEXT
+  - id: RISK-09
+    risk: Terminology mismatch in docs.
+    consequence: Confusion across prompts/chats.
+    likelihood: medium
+    severity: medium
+    mitigation: Canonicalize via CANON_INDEX and latest ontology.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-10
+    risk: Future aggregator merges tentative prompts as decisions.
+    consequence: Spec pollution.
+    likelihood: medium
+    severity: high
+    mitigation: Use labels and decision evidence.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Which prompts have actually been executed/committed?
+    why_verification_needed: Generated prompts are not repo state.
+    suggested_source_type: Repo history / user confirmation
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Existence and content of CANON_INDEX.md.
+    why_verification_needed: Latest bootstrap names it single source of truth.
+    suggested_source_type: docs tree
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: RepoX metadata paths and schemas.
+    why_verification_needed: Apps need reader contracts.
+    suggested_source_type: RepoX docs/source
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: TestX/VALIDATE-0 commands and outputs.
+    why_verification_needed: Appcore validate and tests depend on them.
+    suggested_source_type: Docs/source/scripts
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: BUILD-ID-0 implementation status.
+    why_verification_needed: Version stamping and release enforcement.
+    suggested_source_type: Docs/source/version files
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Whether app contract/appcore dirs already exist.
+    why_verification_needed: Avoid duplicating or conflicting paths.
+    suggested_source_type: Repo source
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: UI IR schema status.
+    why_verification_needed: UI implementation requirements.
+    suggested_source_type: schema/ui
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Docs status headers and archived docs policy.
+    why_verification_needed: CLEAN-2 compliance.
+    suggested_source_type: docs tree
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Application Layer
+    - Testing and Release Governance
+    - Source Code Hygiene
+    - Canon Handoff Process
+    unique_contributions:
+    - APP-UNIFIED-CANON
+    - TESTX
+    - CODEHYGIENE-X
+    - Final per-chat report package process
+    possible_duplicates_with_other_chats:
+    - core architecture
+    - SRZ-0
+    - RepoX/TestX
+    - APP-CANON0/1
+    - BUILD-ID-0
+    conflicts_to_watch_for:
+    - older build number model vs BUILD-ID-0
+    - intent/action/effect vs Assemblies/Fields/Processes/Agents/Law
+    - APP0 vs APP-UNIFIED-CANON
+    formal_requirements_candidates:
+    - CLI canonical
+    - setup only install mutation authority
+    - tools read-only default
+    - apps run with zero content packs
+    - no manual changelog editing
+    background_context_candidates:
+    - large prompt family history
+    - earlier content/world prompts
+    needs_user_confirmation:
+    - which prompts executed
+    - actual repo docs/source state
+    - RepoX/TestX/VALIDATE-0 paths
+  final_recommendations:
+    next_action_if_continuing_this_chat: Open new chat with bootstrap and choose workstream; for application work, implement
+      libs/contracts and appcore after repo inspection.
+    next_action_for_aggregator: Ingest spec_sheet, aggregator_packet, registers, and manifest; preserve labels and uncertainties.
+    user_checks_required:
+    - Verify repo state
+    - Confirm exact current workstream
+    - Provide docs/source if implementation is requested

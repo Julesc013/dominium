@@ -1,0 +1,916 @@
+GPT-5.5 Pro • build 2026-05-25
+
+# Human-Readable Chat Report — Dominium Launcher and Setup Architecture
+
+## 1. One-Page Orientation
+
+This chat was about designing the **Dominium launcher, setup system, runtime integration model, and surrounding user-facing infrastructure**. It began from a broad architectural philosophy for the Dominium project: keep the simulation core deterministic, boring, portable, and C89; put explicit APIs between layers; use versioned formats; make mods data-first; and prevent tools, launcher, and runtime code from drifting into separate incompatible implementations. From that starting point, the conversation progressively narrowed into a concrete system design for how users install, launch, configure, mod, supervise, and manage Dominium.
+
+The central problem was not “how do we open a game window?” It was how to build a long-lived ecosystem around the game without corrupting the deterministic engine or creating hidden coupling. The launcher needed to be powerful enough to manage multiple instances, installs, mods, settings, logs, profiles, news, changelogs, and future ecosystem features, while the game itself still had to run perfectly well without it. The setup system likewise needed to support normal users, portable users, system administrators, CI, and custom deployments without forcing every code path into a single fragile installer.
+
+A major early conclusion was that Dominium should use **one codebase but multiple binaries**. The assistant proposed, and the user continued from, the idea that setup, launcher, and game should be separate executables rather than one monolithic executable. The visible rationale was practical: setup may need elevated privileges, the launcher is a long-running management application, and the game/runtime must remain performance- and determinism-sensitive. Separate binaries preserve privilege boundaries and crash isolation while still sharing libraries, manifests, and conventions.
+
+A second major conclusion was that the launcher must be **optional**. The user explicitly stated that the game should run perfectly fine with no launcher, with direct executable running, and with launcher contracts disabled if unused. That shaped the runtime contract: runtime binaries may accept launcher session and instance IDs, but must not require them. The launcher can supervise processes, aggregate logs, and pass metadata, but it must not become a gameplay dependency.
+
+The user then defined the instance display model: **NONE, CLI, TUI, GUI**. This became the abstraction for how any runtime instance presents itself. A server might run with no display; a command-line client or tool might use CLI; a text UI could use TUI; a graphical client could use GUI. This abstraction matters because Dominium is intended to span modern and retro environments, not just one desktop platform.
+
+The launcher’s user-facing purpose eventually crystallized into five required tabs: **News**, **Changes**, **Mods**, **Instances**, and **Settings**. The user made clear these should be fully interactive, not decorative. News should browse and open official updates; Changes should show releases, changelogs, betas, and alphas; Mods should be a full mod manager; Instances should be a full instance and installation manager; Settings should be powerful but intuitive. These tabs are the heart of the launcher’s user experience.
+
+The largest change of direction came near the end. Earlier in the conversation, implementation prompts assumed a more conventional C++98 launcher structure with CLI/TUI/GUI frontends, possibly using ncurses, SDL, or similar systems. The user then introduced a new, stricter direction: the launcher should use the Dominium/“Domino” system stack, specifically **dsys** for platform abstraction and **dgfx** for rendering. This superseded the older frontend plan for the launcher. The latest active direction is a **C89 launcher using dsys for windowing, filesystem, input, timers, and processes, and dgfx for all rendering through IR/canvas/multi-view GUI**, with retro and modern backend support.
+
+The chat also produced multiple Codex work-order prompts and finally a downloadable report package. Those artifacts are useful, but the substance is the architecture: keep engine deterministic, keep setup/launcher/runtime boundaries explicit, make the launcher optional and modular, use a strong process/instance model, and now implement the launcher over dsys/dgfx rather than ad hoc platform UI stacks.
+
+The most important unresolved issue is the conflict between earlier JSON-based manifest/config ideas and the user’s broader TLV/versioned-file philosophy, reinforced by the later `.dmeta` direction. Future work must resolve whether launcher/setup persistent files use JSON, TLV `.dmeta`, or a transitional arrangement. The second major unresolved issue is that no repository files were inspected in this chat, so actual dsys/dgfx APIs, build layout, runtime binary names, and existing file-format libraries remain unverified.
+
+---
+
+## 2. The Story of the Conversation
+
+### The architecture began with a strict philosophy
+
+The visible chat began with a long architectural statement that effectively set the rules for the whole system. The user framed Dominium as a project that should avoid clever, fragile architecture. The core idea was a “deterministic, boring, C89 core,” with narrow APIs, versioned TLV file formats, content packs and mods as data plus optional plugins, and shared libraries for tools and launcher rather than duplicated parsers.
+
+**FACT:** The user’s initial architecture text emphasized:
+
+* one deterministic C89 engine core,
+* explicit APIs between layers,
+* versioned file formats,
+* content/mods as data and plugins rather than forks,
+* tools and launcher reusing the same libraries,
+* evolution through migration rather than silent breaking changes.
+
+The assistant responded by stress-testing this philosophy. It pointed out determinism risks around Lua, plugins, time sources, and ABI details, and suggested more explicit contracts for file headers, TLV sections, runtime CLI capabilities, plugin exported symbols, and setup/launcher boundaries. These were assistant proposals, not all user-stated decisions, but the user continued building on that direction.
+
+### The conversation shifted from architecture to user experience
+
+The user then reframed the question from “what should the repo architecture look like?” to “what should users actually experience?” The user described a user flow: download and install the game, run the launcher, create an instance profile, select a game version and mods and system/global settings, and then launch one or more client or server instances.
+
+This shifted the launcher from a simple boot menu to a **supervisor and management application**. The user wanted concurrent instances, GUI/TUI/CLI modes, integrated console/log output, and behavior across Windows, Linux, macOS, DOS, and text-only environments.
+
+The assistant proposed that the launcher should act as a process supervisor: spawn child processes, capture stdout/stderr, tag logs by instance, show aggregated and per-instance logs, and avoid independent console windows by default. This was important because separate OS console windows would break log aggregation and would not work consistently on text-only systems.
+
+### The user clarified that the launcher must remain optional
+
+The next important refinement was the user’s explicit statement that the launcher should be capable of supervising, but the game must always run perfectly fine with no launcher. This prevented the design from turning into a launcher-dependent ecosystem.
+
+The assistant then separated **standalone mode** from **supervised mode**. In standalone mode, the game runs directly from its executable with local config and normal stdout/stderr behavior. In supervised mode, the launcher passes session and instance IDs, captures logs, and optionally controls the process. The contract is additive, not mandatory.
+
+The user also defined the display model: **NONE, CLI, TUI, GUI**. This became a key abstraction for instance management and runtime capabilities.
+
+### The launcher grew into an all-in-one Dominium control center
+
+The user then expanded the launcher’s scope: it should manage mods, accounts, tools, installations, server browsing, wiki/forum access, direct messaging, playtime stats, and “all things Dominium.” The assistant framed this as a launcher hub or control center, with modules for instances, installs, mods, accounts, servers, social, web, and telemetry.
+
+Not all of these features became immediate implementation targets. Later, the user narrowed the visible tab set to five core tabs: News, Changes, Mods, Instances, and Settings. But the earlier all-in-one hub vision remains relevant because it explains why the launcher needs modularity and plugin extension points.
+
+### Setup and installation became a separate system
+
+The user asked how to support portable non-installation, per-user installation, and all-user/system installation on Windows, Linux, and macOS. The assistant introduced the idea of distinguishing install roots from user data roots, and using manifests to identify installs.
+
+Then the user asked how installer, repair, and uninstaller flows should work. The assistant proposed a separate `dom_setup` tool. The key design was that setup, not launcher and not game runtime, owns install/repair/uninstall. The launcher can call setup and show progress, but it does not duplicate setup logic.
+
+The user later added that setup should work both with defaults and fully customized paths/configurations. The assistant responded with a `SetupConfig` model: defaults for ordinary users, CLI flags for explicit overrides, config/answer files for automation, and non-interactive mode for CI/scripts.
+
+### Modularity was extended to launcher, setup, and instances
+
+The user then asked to extend modularity and extensibility not just to the engine and mods, but to the launcher itself, setup, and individual instances. The assistant designed:
+
+* launcher plugins for tabs, commands, instance observers, and plugin storage;
+* setup plugins for install profiles and post-install/repair/uninstall hooks;
+* instance-level sidecars and observers for metrics, overlays, and auxiliary tooling.
+
+**INFERENCE:** The user accepted this direction by continuing the conversation and later asking for the entire system to be detailed. However, not every proposed ABI field should be treated as final until implemented or confirmed.
+
+### Codex prompts were generated for staged implementation
+
+The user asked how many prompts would be needed for Codex to implement the system. The assistant recommended four main prompts:
+
+1. shared foundation, manifests, and launcher state skeleton;
+2. setup system;
+3. launcher core, tabs, actions, and plugin ABI;
+4. UI frontends.
+
+An optional fifth prompt was suggested for runtime CLI/capabilities. The user then asked for the prompts one by one, and the assistant generated them. These prompts were detailed and implementation-oriented, but they reflected the earlier C++98/shared-library approach.
+
+### The major late change: dsys + dgfx
+
+The user then introduced a new instruction block: “DOMINIUM LAUNCHER ARCHITECTURE & FULL IMPLEMENTATION (USING DSYS + DGFX).” This changed the active implementation target for the launcher.
+
+Instead of a C++98 launcher with separate CLI/TUI/GUI frontends and possible ncurses/SDL/ImGui dependencies, the launcher was now to be designed around:
+
+* `dsys` for platform abstraction,
+* `dgfx` for all rendering,
+* C89 APIs,
+* declarative UI tree,
+* dgfx IR emission,
+* multi-view 2D/3D GUI,
+* unified software rendering backend,
+* retro and modern backend support.
+
+The assistant responded with a new architecture specification, C89 header sketches, implementation sketches, platform degradation paths, and a seven-stage Codex work-order sequence.
+
+This is the most important change of direction in the chat. Earlier prompts remain useful historical material, but the latest launcher implementation direction is dsys/dgfx.
+
+### The chat ended by packaging and reading the handoff
+
+The user then requested a maximum-fidelity Context Transfer Packet, followed by a final downloadable report package, followed by an in-chat reader version of that package. The assistant generated the package and then rendered its structured contents in chat.
+
+The current request asks for a more human-readable report instead of a register dump. This report is that narrative explanation.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — The Dominium architectural philosophy
+
+The first and most important topic was the project’s overall engineering philosophy. The user wanted the same philosophy applied everywhere: deterministic core, explicit boundaries, stable contracts, versioned file formats, data-first content/mods, and migration over breakage.
+
+This came up because the user wanted Codex and future implementation work to avoid hidden coupling and future incompatibilities. The assistant expanded the idea into repo layout, file format patterns, CLI contracts, plugin ABIs, and migration/testing expectations.
+
+**Conclusion reached:** Dominium should be structured as a layered ecosystem, with the deterministic engine protected from platform, launcher, setup, UI, and tooling concerns.
+
+**Uncertainty:** The exact repository layout and existing implementation were not inspected in this chat.
+
+### Topic 2 — Engine, runtime, launcher, setup, and tools boundaries
+
+The conversation repeatedly separated responsibilities:
+
+* engine: deterministic C89 simulation and core file/ID/world logic;
+* runtime/game: executable clients/servers/tools that use the engine;
+* launcher: optional supervisor and management hub;
+* setup: install/repair/uninstall authority;
+* tools: offline utilities using shared IO libraries;
+* mods/content: data packs plus optional plugins.
+
+This came up because the user wanted a system that can evolve without forks or duplicated logic.
+
+**Conclusion reached:** The architecture should be one codebase with multiple binaries and shared libraries, not one monolithic executable and not multiple unrelated implementations.
+
+**Uncertainty:** The final language boundary for setup remains unresolved after the later C89/dsys/dgfx launcher direction.
+
+### Topic 3 — Launcher optionality and runtime supervision
+
+The user explicitly said the launcher should be able to run as a supervisor/controller, but the game should always run without it. This shaped the runtime model.
+
+The assistant proposed standalone and supervised modes. Supervised mode uses launcher-provided IDs, stdout/stderr capture, and possibly IPC/control channels. Standalone mode ignores launcher concepts.
+
+**Conclusion reached:** Launcher integration is optional and additive. Runtime binaries must not require launcher metadata.
+
+**Why it matters:** This preserves user freedom, command-line/server use, debugging, retro builds, and scriptability.
+
+### Topic 4 — Instance display modes
+
+The user defined instance display types as **NONE, CLI, TUI, GUI**. This became a cross-cutting model for runtime capabilities and launcher process management.
+
+* `NONE`: headless.
+* `CLI`: line-oriented command interface.
+* `TUI`: full-screen text interface.
+* `GUI`: graphical window/interface.
+
+**Conclusion reached:** Launcher and runtime should represent display type explicitly. A binary may support one or more display types.
+
+**Uncertainty:** The exact mapping into runtime binaries remains unverified.
+
+### Topic 5 — The all-in-one launcher hub
+
+The user wanted the launcher to be “all things Dominium,” capable of managing instances, mods, accounts, tools, installations, servers, wiki/forum access, DMs, playtime, and more.
+
+The assistant framed the launcher as a control center made of modules. This broader hub vision explains why extensibility matters, even though the user later fixed the initial tab set to five tabs.
+
+**Conclusion reached:** The launcher should be modular and extensible enough to grow beyond its first five tabs.
+
+**Uncertainty:** Accounts/social/wiki/forum/direct messaging are future-facing and were not converted into the final five-tab implementation plan.
+
+### Topic 6 — Install modes and setup system
+
+The user asked how portable, per-user, and system-wide installations should work on Windows, Linux, and macOS. Then the user asked how installer, repair, and uninstaller should work.
+
+The assistant proposed separating install roots, shared data roots, and user data roots. It introduced install manifests and a canonical setup tool, `dom_setup`, responsible for install/repair/uninstall/list/info. It also proposed conservative uninstall behavior: preserve user data unless explicitly removed.
+
+**Conclusion reached:** Setup should be separate from launcher and game. Launcher may call setup, but setup owns installation mutation.
+
+**Uncertainty:** Earlier setup designs used JSON manifests. Later dsys/dgfx architecture leaned toward TLV `.dmeta` files.
+
+### Topic 7 — Defaults and customization
+
+The user wanted setup to work with defaults or fully customized deployments. The assistant proposed a central setup configuration model with defaults, CLI overrides, config/answer files, and non-interactive behavior.
+
+This mattered because Dominium needs to serve normal desktop users, portable users, power users, CI, and possibly custom/enterprise-style installs.
+
+**Conclusion reached:** Setup must have both simple default flows and fully explicit flows.
+
+### Topic 8 — Modularity and plugins
+
+The user wanted modularity extended to launcher, setup, and individual instances. The assistant proposed:
+
+* launcher modules/plugins for tabs, commands, instance observers, plugin data;
+* setup plugins for install profiles and hooks;
+* instance sidecars for metrics, overlays, or external tooling.
+
+**Conclusion reached:** Extensibility is a core design feature, not an afterthought.
+
+**Uncertainty:** Actual plugin ABI details and dynamic loading support depend on dsys/repo APIs.
+
+### Topic 9 — Launcher tabs and full interaction
+
+The user fixed the launcher’s tabs as News, Changes, Mods, Instances, and Settings. The user also made clear each tab must support full interaction.
+
+The assistant described each tab:
+
+* News: browse, filter, mark read/pinned, open items.
+* Changes: browse releases/changelog channels, compare versions.
+* Mods: scan packs, create modsets, enable/disable/reorder, validate, apply.
+* Instances: manage installs and running processes, logs, start/stop/restart.
+* Settings: configure UI, discovery, instances, mods, telemetry, plugins, advanced paths.
+
+**Conclusion reached:** These five tabs are the core launcher UX.
+
+### Topic 10 — Agnostic vs binary-dependent launcher code
+
+The user asked how to structure launcher code and separate agnostic from binary-dependent logic. The assistant proposed:
+
+* core state/services: agnostic;
+* domain modules per tab: mostly agnostic;
+* runtime registry: binary-dependent;
+* OS/platform helpers: isolated;
+* UI frontends/views: presentation only.
+
+This was later partly superseded by the dsys/dgfx model, but the separation remains conceptually useful.
+
+**Conclusion reached:** Runtime binary selection and capabilities probing should be isolated from tab logic.
+
+### Topic 11 — dsys/dgfx launcher implementation
+
+This was the late major shift. The user provided a detailed new prompt stating that all dsys and dgfx backends exist and that the launcher should use them.
+
+The assistant responded with:
+
+* architecture specification;
+* directory layout;
+* lifecycle;
+* event loop;
+* rendering pipeline;
+* declarative UI framework;
+* process supervision;
+* install/profile/mod/config/themes systems;
+* C89 API headers;
+* implementation sketches;
+* multi-platform degradation paths;
+* runnable harness sketch;
+* seven Codex work orders.
+
+**Conclusion reached:** The latest active launcher implementation direction is C89 + dsys + dgfx.
+
+**Uncertainty:** Actual dsys/dgfx APIs were not inspected.
+
+### Topic 12 — Handoff/report packaging
+
+The last part of the chat produced a maximum-fidelity Context Transfer Packet, then a final downloadable report package, then an in-chat reader version. These artifacts were created to preserve the chat and allow later aggregation into a master spec book.
+
+**Conclusion reached:** This chat is now documented and can be merged later, but with caveats.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals stated by the user
+
+**FACT:** The user wanted a coherent Dominium launcher and setup architecture that fits the project’s deterministic C89 core philosophy.
+
+**FACT:** The user wanted the launcher to manage game instances, versions, mods, settings, installs, tools, and eventually broader ecosystem features.
+
+**FACT:** The user wanted the game to run with or without the launcher.
+
+**FACT:** The user wanted to support portable, per-user, and system-wide installs.
+
+**FACT:** The user wanted setup to support defaults and full customization.
+
+**FACT:** The user wanted modularity and extensibility for launcher, setup, and instances.
+
+**FACT:** The user wanted five launcher tabs: News, Changes, Mods, Instances, Settings.
+
+**FACT:** The user later wanted the launcher implemented using dsys and dgfx.
+
+### Inferred goals
+
+**INFERENCE:** The user wanted a future-proof architecture that Codex could implement in stages without repeatedly re-deciding the system design.
+
+**INFERENCE:** The user wanted the outputs to become source material for a future Project Spec Book.
+
+**INFERENCE:** The user wanted to avoid later assistant confusion by preserving rejected options, uncertainties, and changes of direction.
+
+### Goals that changed over time
+
+At first, the goal was general architecture alignment. It then became user-facing launcher behavior. It then expanded into install/setup and all-in-one launcher management. It then became staged Codex implementation prompts. Finally, it shifted to a specific C89 dsys/dgfx launcher architecture.
+
+The most important change was the replacement of the earlier C++98 frontend implementation direction with the dsys/dgfx C89 direction.
+
+### Goals still unresolved
+
+The unresolved goals are mostly implementation-definition questions:
+
+* final file format choice;
+* exact dsys/dgfx API mapping;
+* setup language and persistence format;
+* runtime binary/capabilities reality;
+* retro support depth;
+* actual repository integration.
+
+---
+
+## 5. Decisions Made and Why
+
+A short overview of the most important decisions:
+
+| Decision                                               | Status                       | Why it mattered                                         |
+| ------------------------------------------------------ | ---------------------------- | ------------------------------------------------------- |
+| One codebase, multiple binaries                        | Accepted direction           | Shares logic while preserving responsibility boundaries |
+| Engine remains deterministic C89                       | Core invariant               | Protects simulation determinism                         |
+| Launcher optional; game standalone                     | User-stated requirement      | Avoids forced launcher dependency                       |
+| Display modes are NONE/CLI/TUI/GUI                     | User-stated requirement      | Unifies instance/runtime behavior                       |
+| Setup owns install/repair/uninstall                    | Accepted architecture        | Avoids duplicated install mutation                      |
+| Launcher tabs are News/Changes/Mods/Instances/Settings | User-stated requirement      | Defines user-facing UI                                  |
+| Latest launcher uses dsys/dgfx in C89                  | Latest user-stated direction | Supersedes older UI implementation plan                 |
+
+### One codebase, multiple binaries
+
+The conversation considered whether setup, launcher, and game could be one binary. The assistant argued that although technically possible, it would be a bad default because setup may require elevated privileges, the launcher is a supervisor/manager, and the game runtime should not carry installer responsibilities. Separate binaries preserve crash isolation, packaging clarity, and privilege separation.
+
+**Status:** Accepted by continuation, but technically still revisit-able for constrained retro cases.
+
+**Affects:** Repo structure, build targets, installation, launcher/setup boundaries.
+
+### Engine remains deterministic C89
+
+This came directly from the user’s initial project philosophy. The engine should not contain windowing, renderer, filesystem, launcher, or setup concerns. It should expose stable APIs and keep deterministic simulation logic isolated.
+
+**Status:** Strong/final unless the user changes the core project philosophy.
+
+**Affects:** Every later system. Launcher and setup must not call into engine internals.
+
+### Launcher is optional
+
+The user explicitly stated that the launcher should be able to supervise, but the game must run perfectly fine without it. This is one of the clearest decisions in the chat.
+
+**Status:** Final unless user reverses.
+
+**Affects:** Runtime CLI design, launcher integration flags, direct executable behavior, server/headless usage.
+
+### Display types are NONE, CLI, TUI, GUI
+
+The user explicitly defined the display types. The assistant then built runtime and instance management around them.
+
+**Status:** Active requirement.
+
+**Affects:** Runtime capabilities, instance metadata, launcher new-instance UI, backend degradation.
+
+### Setup is separate and authoritative
+
+Setup became its own system because install/repair/uninstall responsibilities differ from launcher and game responsibilities. The launcher may expose setup actions, but should not duplicate setup logic internally.
+
+**Status:** Accepted by continuation.
+
+**Affects:** `dom_setup`, launcher install manager, repair/uninstall flows, package integration.
+
+### Setup supports defaults and customization
+
+The user explicitly wanted this. The assistant proposed a `SetupConfig` model with default mode/path choices, CLI flags, config/answer files, and non-interactive behavior.
+
+**Status:** Active requirement.
+
+**Affects:** Setup CLI, installer UI, CI automation, custom deployments.
+
+### The launcher is an all-in-one Dominium hub
+
+The user wanted the launcher to manage “all things Dominium.” This was not limited to launching the game. It includes mods, profiles, installs, tools, servers, accounts/social, wiki/forum, DMs, playtime, and more.
+
+**Status:** Broad product direction. The initial concrete tab set is narrower.
+
+**Affects:** Modular launcher design and plugin system.
+
+### The five tabs are fixed
+
+The user explicitly named the tabs: News, Changes, Mods, Instances, Settings. This became the canonical initial UI.
+
+**Status:** Active requirement.
+
+**Affects:** UI structure, module order, implementation prompts.
+
+### Tabs must be fully interactive
+
+The user clarified that each tab must be capable of full interaction. The assistant then designed workflows for browsing, filtering, opening, managing, validating, launching, stopping, editing, and configuring.
+
+**Status:** Active requirement.
+
+**Affects:** UI must be a real application, not a static launcher page.
+
+### Modularity and extensibility apply to launcher/setup/instances
+
+The user asked to extend modularity to these systems. The assistant proposed launcher plugins, setup plugins, and instance sidecars.
+
+**Status:** Accepted architecture direction, but specific ABI details remain tentative.
+
+**Affects:** Plugin API, module registry, sidecar process model, settings/plugins UI.
+
+### Latest launcher uses dsys and dgfx
+
+This was the strongest late decision. The user provided a detailed directive that the launcher should use dsys and dgfx, with all backends assumed to exist and strict C89 headers.
+
+**Status:** Latest active direction.
+
+**Affects:** It supersedes earlier C++98 frontend assumptions for launcher implementation.
+
+### File format direction remains unresolved
+
+The user’s philosophy favors versioned TLV files. Earlier generated prompts used JSON for practical manifest/config examples. The dsys/dgfx architecture then referenced `.dmeta` TLV-style files.
+
+**Status:** Unresolved.
+
+**Affects:** Setup, launcher config, install manifests, profiles, modsets, tooling, migration.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### One monolithic executable
+
+This was considered when the user asked whether setup, launcher, and game could be one. The assistant rejected it as the default because it mixes privileges and responsibilities. Setup may require admin/system changes; launcher should be a normal-user supervisor; the game should be independent and runtime-focused.
+
+The rejection is strong, but not absolute. A constrained retro build might someday use a combined executable if process separation is impossible.
+
+### Independent console windows by default
+
+When discussing CLI and headless operation, the assistant argued against launching independent OS console windows by default. The reason was that they break centralized log aggregation and do not generalize to Linux/mac text-only environments, SSH, DOS, or CP/M.
+
+This remains rejected as the default, though an explicit external-console/debug option could still be useful.
+
+### Launcher required for gameplay
+
+The user explicitly rejected this by requiring direct executable running and no-launcher operation. This is final unless the user reverses it.
+
+### Launcher linking engine internals
+
+This was rejected because it violates the deterministic engine boundary. The launcher should read manifests/metadata and communicate with runtimes through explicit contracts, not inspect simulation internals.
+
+### Raw OS drawing or direct platform UI
+
+This became superseded by the latest dsys/dgfx direction. Earlier ideas involving direct GUI/TUI libraries are no longer the active launcher path. The launcher should render through dgfx and receive platform/input/process services through dsys.
+
+### Direct ncurses/SDL/ImGui frontend plan
+
+Earlier prompts described C++98 CLI/TUI/GUI frontends and conditional ncurses/SDL/ImGui. That plan is now historical. It may still contain useful concepts such as view-models and tab workflows, but the implementation substrate is superseded by dsys/dgfx.
+
+### Unversioned or silently changed formats
+
+Rejected from the beginning by the user’s philosophy. All persistent formats should be versioned and migrated explicitly.
+
+### Tools or launcher hand-rolling parsers
+
+Rejected because the user wants one source of truth for formats. Tools and launcher should reuse shared format/IO libraries.
+
+### Full graphical feature parity on CP/M
+
+This was not explicitly rejected by the user, but it is a necessary degradation inference. The user said CP/M support “where possible,” and the assistant identified CP/M as effectively text-only. The launcher can support CLI/TUI there, not full graphical feature parity.
+
+### Deleting user data by default
+
+Rejected in setup design because it is dangerous. Uninstall should preserve user data unless explicitly told to remove it.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The visible rationale throughout the conversation was about **long-term survivability**. The project is not just a one-off game launcher; it is intended to support a broad platform matrix, mods, tools, plugins, multiple instances, multiple install types, and future ecosystem services.
+
+Several tradeoffs shaped the design.
+
+First, the engine must stay simple and deterministic even if everything around it becomes complex. That is why launcher, setup, tools, and runtime frontends are kept out of the engine. The user’s repeated emphasis on a “boring C89 core” drove this boundary.
+
+Second, the launcher must be powerful but optional. This balances user convenience with portability and resilience. A launcher-dependent game would be fragile for servers, scripts, debugging, retro platforms, and users who want direct executable control.
+
+Third, separate binaries were preferred over a monolith because they match the real differences in responsibility. Setup mutates installations and sometimes needs elevated rights. The launcher supervises and manages. The game runs. Those are different failure domains.
+
+Fourth, the display model needed to be abstract. `NONE`, `CLI`, `TUI`, and `GUI` allow one architecture to cover headless servers, command-line tools, text UIs, graphical clients, and retro environments.
+
+Fifth, modularity was extended beyond gameplay mods because the launcher itself is expected to grow. A hardcoded launcher would eventually become brittle. A module/plugin architecture lets future features appear as tabs, commands, hooks, sidecars, or services.
+
+Sixth, the dsys/dgfx shift reflects a deeper project decision: the launcher should not be tied to contemporary desktop UI frameworks. It should use the same abstract platform/rendering stack as the rest of Dominium’s cross-platform ambitions. This makes the launcher more consistent with retro support and internal rendering architecture, but it also increases the burden of verifying actual dsys/dgfx APIs before implementation.
+
+The main assumption throughout is that the underlying project either already has, or will have, the shared libraries and platform abstractions described. That assumption is unverified in this chat.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+### First: inspect the repo
+
+The best first practical step is to inspect the repository. This chat did not inspect actual files. Before generating implementation code, a future assistant or Codex run must find:
+
+* actual directory layout,
+* build system,
+* dsys headers and API names,
+* dgfx headers and API names,
+* existing file format/TLV support,
+* runtime binaries and capabilities,
+* any existing launcher/setup code.
+
+Without that, implementation prompts can only be schematic.
+
+### Second: resolve JSON vs TLV/dmeta
+
+This is the most important design blocker. Earlier setup/launcher prompts used JSON for manifests and DB-like files. The user’s philosophy and later dsys/dgfx architecture favor versioned TLV `.dmeta` files.
+
+A future assistant should not silently choose. It should ask the user or inspect repo conventions. A likely direction, based on the user’s philosophy, is to use TLV/dmeta for durable project formats. But that is an inference, not a confirmed final decision.
+
+### Third: generate dsys/dgfx Work-order 1
+
+The next implementation-ready output should be a Codex work order for the latest active direction:
+
+* C89 launcher core data layer,
+* `launcher_config`,
+* `launcher_install`,
+* `launcher_profile`,
+* `launcher_mods`,
+* dsys filesystem use,
+* versioned metadata,
+* tests/harness.
+
+This corresponds to the latest work-order sequence, not the earlier C++98 prompt sequence.
+
+### Fourth: implement UI foundations
+
+After core data, implement:
+
+* widget tree,
+* layout,
+* event routing,
+* focus/hover/click/text input,
+* theme system.
+
+This matters because all tabs depend on a common UI framework.
+
+### Fifth: implement dgfx rendering
+
+Once the UI tree exists, implement the renderer that emits dgfx IR/canvas commands. This includes:
+
+* shapes,
+* text,
+* icons,
+* scroll views,
+* clipping,
+* possibly a 3D splash/background scene where supported.
+
+### Sixth: implement process supervision
+
+Use dsys process APIs to start, stop, poll, and log game/tool instances. This gives the Instances tab its core behavior.
+
+### Seventh: implement tabs
+
+Once the framework exists, build:
+
+* News,
+* Changes,
+* Mods,
+* Instances,
+* Settings.
+
+Each should be a module with state, actions, and UI.
+
+### Eighth: implement plugins and harness
+
+After core behavior is stable, implement plugin loading and a test harness. The harness is especially important because retro and cross-platform support must be tested through dsys/dgfx backends.
+
+### Things that could go wrong
+
+* Codex might implement the older C++98 frontend plan.
+* The generated code might invent dsys/dgfx functions.
+* The manifest format might diverge between setup and launcher.
+* The launcher might accidentally depend on engine internals.
+* The tab workflows might be oversimplified.
+* Retro support might be claimed but not meaningfully tested.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints from the chat
+
+The most explicit constraints are:
+
+* The engine core is deterministic C89.
+* The launcher must be optional.
+* Game binaries must run standalone.
+* Instance display types are `NONE`, `CLI`, `TUI`, `GUI`.
+* Setup must support portable, per-user, and system-wide installs.
+* Setup must support defaults and full customization.
+* The launcher must have News, Changes, Mods, Instances, Settings tabs.
+* The latest launcher must use dsys and dgfx.
+* File formats should be versioned and migratable.
+
+### Inferred constraints
+
+Some constraints were inferred from user direction and assistant rationale:
+
+* Built-in launcher modules should use the same conceptual registration pattern as plugins.
+* Core should work with zero plugins.
+* Plugin failures should not crash the launcher/setup.
+* Retro targets need explicit degradation paths.
+* UI allocation strategies should consider low-memory platforms.
+
+### Communication and formatting preferences
+
+The user wants strict engineering tone, detailed reasoning, and preservation of uncertainty. In this specific request, the user asked for prose rather than a register dump.
+
+### Things future assistants should avoid
+
+* Do not create another machine-readable handoff unless asked.
+* Do not pretend files were inspected if they were not.
+* Do not treat assistant proposals as final user decisions unless accepted.
+* Do not erase the dsys/dgfx change of direction.
+* Do not implement raw OS drawing or direct UI libraries in the latest launcher plan.
+* Do not delete user data by default.
+* Do not skip verification of current APIs.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+The chat created or described several categories of artifacts.
+
+### Architecture specs
+
+The conversation produced multiple prose architecture specs:
+
+* global Dominium architecture,
+* launcher/setup summary,
+* modular setup/launcher/instance system,
+* dsys/dgfx launcher architecture.
+
+These should be preserved because they contain the rationale and intended boundaries behind the implementation.
+
+### API sketches
+
+Several API/header sketches were generated:
+
+* engine C ABI,
+* engine plugin ABI,
+* setup plugin ABI,
+* launcher plugin ABI,
+* runtime CLI/capabilities JSON,
+* latest dsys/dgfx C89 launcher headers:
+
+  * `launcher.h`,
+  * `ui_widget.h`,
+  * `ui_layout.h`,
+  * `ui_events.h`,
+  * `ui_renderer.h`,
+  * `launcher_profile.h`,
+  * `launcher_mods.h`,
+  * `launcher_process.h`,
+  * `launcher_config.h`.
+
+These are proposals, not verified repo files. They should be used as design inputs, not treated as existing code.
+
+### Codex prompts
+
+The chat generated several implementation prompts:
+
+1. Shared foundation + manifests + launcher state skeleton.
+2. Setup system.
+3. Launcher core + tabs + actions + plugin ABI.
+4. Launcher frontends.
+5. Earlier three-prompt set for setup, launcher, game.
+6. Latest dsys/dgfx work-order sequence.
+
+The earlier prompts are partly superseded. The latest dsys/dgfx sequence is the one to continue for the launcher.
+
+### Report package
+
+The chat created a downloadable report package with:
+
+* full chat report,
+* YAML spec sheet,
+* aggregator packet,
+* registers,
+* reader brief,
+* verification/audit,
+* manifest,
+* ZIP.
+
+These files are useful for later aggregation, but this human report is focused on explaining the substance rather than the package.
+
+### Artifacts to preserve most carefully
+
+* The original architecture philosophy.
+* The launcher optionality requirement.
+* The display modes.
+* The five launcher tabs.
+* The setup authority model.
+* The dsys/dgfx latest direction.
+* The JSON-vs-TLV unresolved issue.
+* The dsys/dgfx work-order sequence.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+### JSON vs TLV/dmeta
+
+This is the biggest unresolved issue. Earlier assistant-generated prompts used JSON for manifests and DB/config-like data. The user’s philosophy strongly emphasizes versioned TLV formats, and the later dsys/dgfx architecture described `.dmeta` TLV-style files.
+
+Why it matters: setup, launcher, tools, profiles, mods, content locks, and migrations all depend on this decision.
+
+What would resolve it: user confirmation or repo inspection showing existing conventions.
+
+### Actual dsys/dgfx APIs
+
+The latest architecture assumes dsys and dgfx exist, but the chat did not inspect their headers or function names.
+
+Why it matters: Codex cannot generate compiling code without actual APIs.
+
+What would resolve it: repo inspection.
+
+### Setup language and platform layer
+
+Earlier setup prompt used C++98 and shared utilities. Later launcher direction uses C89, dsys, and dgfx. It is unclear whether setup should also move to C89/dsys/TLV or remain as originally planned.
+
+Why it matters: setup implementation, shared libraries, and build targets depend on this.
+
+What would resolve it: user decision or repo architecture.
+
+### Runtime binary structure
+
+The chat discussed `dom_main` and possibly role-specific binaries, but did not establish actual repo/runtime structure.
+
+Why it matters: launcher’s runtime registry and instance spawn logic depend on it.
+
+What would resolve it: repo inspection.
+
+### Retro platform scope
+
+The user listed many retro and modern platforms. The architecture includes degradation paths, but it is unclear which platforms must be fully working in the first implementation pass.
+
+Why it matters: memory allocation, UI complexity, process handling, and file format constraints differ radically.
+
+What would resolve it: implementation priority decision.
+
+### Plugin loading support
+
+The chat proposed plugin ABIs, but actual dynamic loading support through dsys is unverified.
+
+Why it matters: plugin architecture depends on backend support.
+
+What would resolve it: inspect dsys APIs or design a fallback/static module path.
+
+### News/Changes online behavior
+
+The launcher should browse news and changes and open them. On modern systems, that suggests network and browser integration. On retro systems, offline cached content or text-only views may be required.
+
+What would resolve it: dsys service capability design.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+### Mistaking old implementation prompts for the latest plan
+
+The biggest risk is that a future assistant sees the earlier C++98/ncurses/SDL prompt sequence and implements that, ignoring the later dsys/dgfx direction. The fix is to treat the dsys/dgfx C89 launcher as the active plan.
+
+### Treating JSON examples as final
+
+The JSON examples were useful during earlier design but conflict with the user’s TLV/versioned-file philosophy. A future assistant should not implement JSON manifests/configs without resolving the format decision.
+
+### Inventing APIs
+
+No dsys/dgfx repo files were inspected. A future assistant must not invent exact function names and present them as real. Work orders should instruct Codex to inspect and adapt to actual APIs.
+
+### Coupling launcher to engine internals
+
+The launcher must not become a simulation tool. It should manage metadata, processes, profiles, installs, mods, settings, and logs. It should not parse region/chunk simulation internals unless using a designated tool/library.
+
+### Weakening the tabs
+
+The user wants full interaction in each tab. Future assistants might reduce News/Changes/Mods/Instances/Settings into superficial placeholders. That would violate the chat’s product direction.
+
+### Losing setup safety
+
+Uninstall must preserve user data by default. Any future setup implementation should be conservative.
+
+### Overclaiming retro support
+
+Retro support should be handled through explicit degradation paths. CP/M cannot be treated like a modern graphical environment.
+
+### Treating the report as code evidence
+
+The generated reports and prompts are artifacts, not proof that repo code exists.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes the **launcher/setup layer** of the future Project Spec Book. It should inform chapters on:
+
+* launcher architecture,
+* setup and installation,
+* runtime-launcher contract,
+* process/instance management,
+* mod management UX,
+* profile/settings systems,
+* plugin/module architecture,
+* dsys/dgfx UI system,
+* retro support and degradation,
+* file format/migration policy.
+
+The unique value of this chat is that it connects user-facing launcher workflows with deep architectural constraints. It does not merely say “make a launcher.” It explains how the launcher should supervise processes, remain optional, manage installs and mods, expose full tabs, use dsys/dgfx, and avoid compromising the deterministic engine.
+
+It likely overlaps with other chats on:
+
+* engine determinism,
+* TLV formats,
+* plugin ABIs,
+* dsys/dgfx details,
+* content/mod pack formats,
+* project repo layout.
+
+Potential conflicts to watch for:
+
+* Other chats may have chosen specific file formats that conflict with JSON examples here.
+* Other chats may have a different dsys/dgfx API shape.
+* Other chats may define runtime binary names.
+* Other chats may have more current setup/install decisions.
+
+Before merging into a master spec, the aggregator should preserve this chat’s source context and uncertainty labels.
+
+---
+
+## 14. What I Should Remember
+
+* The main subject was the **Dominium launcher and setup architecture**, not engine simulation details.
+* The engine must remain a deterministic C89 core.
+* The game must run standalone without the launcher.
+* The launcher is optional but powerful: it can supervise multiple instances, manage installs, mods, profiles, settings, and future ecosystem modules.
+* Setup should be a separate authority, not embedded in launcher or game.
+* Setup supports portable, per-user, and system-wide installs.
+* Setup supports defaults and fully custom/scripted operation.
+* Instance display modes are `NONE`, `CLI`, `TUI`, `GUI`.
+* The launcher’s fixed core tabs are **News**, **Changes**, **Mods**, **Instances**, and **Settings**.
+* Those tabs must be fully interactive.
+* The earlier C++98 launcher frontend plan is historical.
+* The latest active launcher direction is **C89 + dsys + dgfx**.
+* dsys handles platform services.
+* dgfx handles all rendering.
+* Retro platforms require degradation paths.
+* JSON vs TLV/dmeta remains unresolved and must be decided before implementation.
+* No repo files were inspected.
+* Actual dsys/dgfx APIs are unverified.
+* The next useful step is to generate or execute the dsys/dgfx Work-order 1 for core launcher config/install/profile/mods.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Explain the JSON vs TLV/dmeta conflict and recommend a decision framework.”
+2. “Generate the dsys/dgfx Work-order 1 Codex prompt.”
+3. “What parts of the earlier C++98 prompts are still useful?”
+4. “Turn the dsys/dgfx launcher architecture into a phased implementation roadmap.”
+5. “Write the formal requirements for the five launcher tabs.”
+6. “What should I verify in the repo before asking Codex to implement this?”
+7. “Explain how setup should change if we choose TLV/dmeta.”
+8. “Explain how launcher process supervision should work with dsys.”
+9. “What is the minimum viable launcher for DOS/CP/M versus modern OSes?”
+10. “What belongs in the master Project Spec Book from this chat?”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was a long architecture and implementation-planning session for the Dominium launcher, setup system, and runtime integration model. It began with a strong project philosophy: Dominium should have one deterministic, boring C89 engine core; explicit APIs between layers; versioned file formats; data-first content and mods; tools and launchers that reuse shared libraries; and migration rather than silent breakage. That philosophy shaped every later decision.
+
+The conversation first clarified the boundaries between the engine, runtime, launcher, setup, tools, content, mods, and SDK. The engine remains protected: deterministic, C89, no platform or renderer code, no launcher dependency. Runtime binaries sit above the engine and must be able to run directly. The launcher sits outside the game and manages processes, installs, mods, profiles, logs, and settings. Setup is a separate install/repair/uninstall authority. This separation matters because Dominium is intended to be long-lived, cross-platform, moddable, and resistant to hidden coupling.
+
+One of the most important user-stated requirements was that the launcher must be optional. The game must run perfectly well without it. The launcher may supervise and pass metadata, but game binaries must not require launcher IDs, launcher IPC, or launcher configuration. This led to the standalone-versus-supervised runtime model. The user also defined instance display modes: `NONE`, `CLI`, `TUI`, and `GUI`. These modes became the basic abstraction for headless servers, command-line tools, text UIs, and graphical clients.
+
+The setup system became its own major topic. The user wanted portable non-installation, per-user installation, and all-user/system installation across Windows, Linux, and macOS. The assistant proposed a setup tool, `dom_setup`, responsible for install, repair, uninstall, list, and info operations. Launcher and game should not duplicate this logic. Setup should support sane defaults for normal users and full customization for scripts, CI, power users, and unusual install layouts. It should preserve user data by default during uninstall.
+
+The launcher grew into an all-in-one Dominium control center. The user wanted it to manage not just game launching but mods, accounts, tools, installations, servers, wiki/forum access, direct messages, playtime, and future ecosystem features. Later, the user fixed the initial visible launcher tabs as **News**, **Changes**, **Mods**, **Instances**, and **Settings**. These tabs must be real workflows. News browses and opens official updates. Changes browses releases, changelogs, betas, and alphas. Mods is a full mod manager. Instances manages running processes and installations. Settings exposes powerful but intuitive configuration.
+
+Modularity was repeatedly emphasized. The architecture extended modularity to launcher modules, setup plugins, and individual instance sidecars or observers. The visible rationale was that the launcher should not become a rigid monolith. Built-in tabs and future plugins should use compatible registration concepts, and plugins should be ABI-versioned and optional.
+
+The biggest change came late in the chat. Earlier implementation prompts assumed a C++98 launcher with separate CLI/TUI/GUI frontends, possibly using ncurses, SDL, or similar libraries. The user then introduced a new explicit direction: the launcher must be built using **dsys** and **dgfx**. In that latest direction, the launcher is strict C89. dsys provides all platform services: windowing, filesystem, input, timers, and processes. dgfx provides all rendering through IR, canvas, multi-view 2D/3D GUI, vector and raster primitives, and backend abstraction. Retro and modern backends are assumed to exist. This supersedes the earlier direct frontend implementation plan for the launcher.
+
+Several artifacts were produced: architecture specs, API sketches, Codex prompts, a context transfer packet, and a final report package. These are useful, but they are not proof that repository code exists. No repo files were inspected in this chat. Future implementation must verify actual dsys/dgfx APIs, build layout, runtime binaries, file-format libraries, and setup code.
+
+The most important unresolved issue is the conflict between earlier JSON-based examples and the user’s TLV/versioned-file philosophy, reinforced by the later `.dmeta` direction. A future assistant must not silently choose one. It should ask the user or inspect the repo. The likely direction, based on the user’s philosophy, is versioned TLV/dmeta, but that remains unconfirmed.
+
+The best next action is to continue from the latest dsys/dgfx direction and generate the first implementation-ready Codex work order: core launcher config, install discovery, profiles, and mods data layer in C89 using dsys filesystem and versioned metadata. Before coding, verify the repo and resolve JSON versus TLV/dmeta.
+
+# Reader Status
+
+* Chat title: Dominium Launcher and Setup Architecture
+* Report type: human-readable explanatory report
+* Main value of this chat: It defines the Dominium launcher/setup/runtime ecosystem architecture and the latest C89 dsys/dgfx launcher implementation direction.
+* Most important decision: The latest launcher implementation should use C89 with dsys for platform services and dgfx for all rendering, superseding the earlier direct C++98 frontend plan.
+* Most important unresolved issue: Whether persistent launcher/setup files use JSON or versioned TLV `.dmeta`.
+* Most important next action: Verify repo/dsys/dgfx/format reality, then generate dsys/dgfx Work-order 1 for core launcher config/install/profile/mods.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: No repository files were inspected; actual dsys/dgfx APIs are unverified; JSON-vs-TLV remains unresolved; some assistant proposals were accepted only by continuation and should not be treated as final user decisions without confirmation.

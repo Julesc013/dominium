@@ -1,0 +1,2377 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium/Domino Architecture and Codex Prompts
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This visible chat only; no repo/files inspected.
+    apparent_coverage: full for visible chat with implementation caveats
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - No repository code was inspected or modified.
+    - Generated Codex prompts are work orders, not evidence of implementation.
+    - Some assistant proposals were carried forward but may require user confirmation.
+    - Existing code may be stale or divergent.
+  summary:
+    one_sentence: This chat defined the Dominium/Domino architecture and Codex prompt roadmap, then prepared handoff material
+      for continuing with Path D advanced simulation.
+    short_brief: Domino is a deterministic C89 engine; Dominium is a C++98 product layer; real game content must live in packs/mods/TLV.
+      The chat generated an architecture and prompts 1-18 covering core infra, content, GUI, demo slice, advanced simulation,
+      logistics, production, research/economy, netcode, and tools.
+    main_topics:
+    - Domino Engine Core Infrastructure
+    - Dominium Product Suite
+    - Repository, Instance, and Compatibility Model
+    - Content, Packs, Mods, TLV, and Base Pack
+    - DRES Resource System
+    - Environment, Hydrology, Atmosphere, and Lithology
+    - Buildings, Construction, Placement, and Sloped Terrain
+    - Transport and Logistics Splines
+    - Packaging and Containers
+    - Structures, Machines, and Generic Process Runner
+    - Vehicles and Weapons as Compiled Runtime Objects
+    - Jobs, Agents, AI, and Factory Orchestration
+    - Research, Organizations, Economy, and Policies
+    - Multiplayer, Netcode, Replay, and Determinism
+    - GUI, Renderer, View, and UI Framework
+    - Toolchain, Editors, and Authoring Pipeline
+    - Advanced Simulation Path D
+    - Codex Prompt Roadmap and Chat Handoff
+    main_outputs:
+    - Extended Master Starter Prompt — Dominium + Domino
+    - dres modular resource proposal from another chat
+    - Complete integrated system summary
+    - Data/type hierarchy output
+    - Engine-wide hierarchy output
+    - Full stack engine+game+launcher+setup+tools+mods hierarchy
+    - Extensibility refinement pass
+    - Codex prompt split plan (7 prompts)
+    - Prompt 1 — Core Infrastructure & Registries
+    - Prompt 2 — Content & Proto Layer
+    - Prompt 3 — World/Res/Env/Build/Trans/Struct/Vehicle/Job
+    - Prompt 4 — DSIM/ECS, Net, Replay, View, UI
+    - Prompt 5 — Dominium Common Layer
+    - Prompt 6 — Game Product
+    - Prompt 7 — Launcher, Setup, Tools
+    - Prompt 8 — Minimal GUI Vertical Slice
+    - Prompt 9 — Base Pack Structure, TLV Schemas, Autoload
+    - Prompt 10 — Data-Driven Playable Minimal Slice
+    - Prompt 11 — Minimal GUI Gameplay Loop
+    - Prompt 12 — Determinism, Validation, Boundaries
+    - Prompt 13 — World-Scale Physical Systems
+    - Prompt 14 — Logistics Splines, Construction, Packaging
+    - Prompt 15 — Production Chains, Jobs/AI, Economy
+    - Prompt 16 — Research, Orgs, Macro-Econ, Policies
+    - Prompt 17 — Multiplayer, Netcode, Sessions
+    - Prompt 18 — Toolchain & Editors
+    - New Chat Advanced Simulation Starter Prompt
+    - Maximum-fidelity Context Transfer Packet
+    - Final report package request and generated files
+    highest_priority_carry_forward:
+    - No hardcoded actual content in engine/core.
+    - C89/C++98 language split.
+    - Fixed-point deterministic simulation.
+    - GUI-first testing preference.
+    - Path D advanced simulation is the next new-chat focus.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Direct user statements outrank assistant suggestions.
+    - Assistant suggestions remain tentative unless accepted or built upon.
+    - Generated prompts are artifacts, not proof of implementation.
+    - Later stricter data/code separation should govern implementation.
+    staleness_rules:
+    - External/current facts require verification before use.
+    - Actual repo/build/dependencies require inspection.
+    - Prompt assumptions are not repo facts.
+  user_preferences:
+    explicit:
+    - id: PREF-01
+      preference: Direct, technical, concise style.
+      source_basis: explicit
+      strength: User profile/instructions
+      implication: high
+      risk: Future assistants should avoid fluff and focus on engineering detail.
+      label: Medium if ignored.
+    - id: PREF-02
+      preference: Fact-check and cite when using external facts.
+      source_basis: explicit
+      strength: User profile/instructions
+      implication: high
+      risk: Search/verify current external info before relying on it.
+      label: High if ignored.
+    - id: PREF-03
+      preference: Critical rigor over agreement.
+      source_basis: explicit
+      strength: User profile/instructions
+      implication: medium-high
+      risk: Do not rubber-stamp flawed architecture; identify risks.
+      label: Medium.
+    - id: PREF-04
+      preference: GUI-first minimal testing for this project stage.
+      source_basis: explicit
+      strength: User said they do not want CLI testing only.
+      implication: high
+      risk: Prioritize a visible minimal GUI path.
+      label: Medium.
+    - id: PREF-05
+      preference: Maximum-fidelity handoff/reporting.
+      source_basis: explicit
+      strength: Current request and prior transfer packet request.
+      implication: high
+      risk: Preserve details, uncertainty, artifacts, registers.
+      label: High.
+    - id: PREF-09
+      preference: Explicit labels for uncertainty.
+      source_basis: explicit
+      strength: Current request.
+      implication: high
+      risk: Mark FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT.
+      label: High.
+    - id: PREF-10
+      preference: Stable IDs and structured reports for aggregation.
+      source_basis: explicit
+      strength: Current request.
+      implication: high
+      risk: Use normalized IDs/registers/YAML.
+      label: High.
+    inferred:
+    - id: PREF-06
+      preference: Long-horizon modular architecture.
+      source_basis: inferred
+      strength: Repeated acceptance of future-proof modular prompts.
+      implication: medium-high
+      risk: Design extensible systems but avoid gratuitous abstraction.
+      label: Medium.
+    - id: PREF-07
+      preference: Codex-ready implementation prompts.
+      source_basis: inferred
+      strength: User repeatedly requested next prompts.
+      implication: high
+      risk: Provide explicit work orders when asked.
+      label: Low.
+    - id: PREF-08
+      preference: No re-explaining base architecture in new chats.
+      source_basis: inferred
+      strength: User asks transfer packet and bootstrap prompt.
+      implication: medium-high
+      risk: Use packet as state and continue from focused path.
+      label: Medium.
+    uncertain_or_not_established:
+    - Exact GUI backend choice.
+    - Exact fixed-point ranges for advanced solvers.
+    - Whether next chat should output architecture or Codex prompt first.
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Domino Engine Core Infrastructure
+    label: FACT
+    objective: Define deterministic C89 engine core with subsystem/model/schema registries, TLV save/load, fixed-point foundations,
+      and strict platform/render abstractions.
+    current_state: Architecture and Codex prompts defined; implementation not verified.
+    desired_end_state: Working C89 core infrastructure with deterministic tick/save/model/content extension points.
+    status: active
+    priority: critical
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-01
+    - DECISION-03
+    - DECISION-04
+    - DECISION-07
+    - DECISION-08
+    - DECISION-09
+    decisions_pending:
+    - QUESTION-08
+    tasks:
+    - TASK-02
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-13
+    - CONSTRAINT-25
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks:
+    - RISK-03
+    - RISK-10
+    artifacts:
+    - ARTIFACT-09
+    - ARTIFACT-01
+    - ARTIFACT-05
+    - ARTIFACT-07
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed:
+    - VERIFY-02
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-02
+    name: Dominium Product Suite
+    label: FACT
+    objective: 'Define C++98 products on top of Domino: game, launcher, setup, and tools.'
+    current_state: Architecture and prompts defined; implementation not verified.
+    desired_end_state: Thin C++98 product layer using Domino APIs without reimplementing engine systems.
+    status: active
+    priority: high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-02
+    - DECISION-04
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-02
+    - CONSTRAINT-05
+    - CONSTRAINT-10
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks:
+    - RISK-03
+    artifacts:
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-01
+    - ARTIFACT-06
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed:
+    - VERIFY-11
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-03
+    name: Repository, Instance, and Compatibility Model
+    label: FACT
+    objective: Maintain multi-version products, packs, mods, blueprints, and instances under DOMINIUM_HOME.
+    current_state: Canonical layout and compatibility concepts defined.
+    desired_end_state: Non-destructive repo with multi-version builds/content and explicit compat decisions.
+    status: active
+    priority: high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-19
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-15
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-11
+    - ARTIFACT-13
+    - ARTIFACT-01
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed: []
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-04
+    name: Content, Packs, Mods, TLV, and Base Pack
+    label: FACT
+    objective: Keep all gameplay data in packs/mods using TLV schemas and registries.
+    current_state: Content model, base pack, base_demo mod prompts defined.
+    desired_end_state: Validated, versioned content layer where engine sees only IDs/tags/TLV params.
+    status: active
+    priority: critical
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-06
+    - DECISION-10
+    - DECISION-12
+    decisions_pending:
+    - QUESTION-04
+    - QUESTION-07
+    - QUESTION-09
+    tasks:
+    - TASK-04
+    - TASK-12
+    - TASK-16
+    constraints:
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-15
+    - CONSTRAINT-20
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks:
+    - RISK-02
+    - RISK-06
+    artifacts:
+    - ARTIFACT-10
+    - ARTIFACT-17
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed:
+    - VERIFY-04
+    - VERIFY-05
+    - VERIFY-07
+    - VERIFY-10
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-05
+    name: DRES Resource System
+    label: FACT
+    objective: Generic channel-based resource system with model vtables and data-defined deposits.
+    current_state: Baseline architecture accepted; implementation prompts generated.
+    desired_end_state: Resource core independent of ore/oil/tree semantics; models handle strata/reservoir/vegetation/soil.
+    status: active
+    priority: high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-16
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-11
+    - ARTIFACT-18
+    - ARTIFACT-02
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed: []
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-06
+    name: Environment, Hydrology, Atmosphere, and Lithology
+    label: FACT
+    objective: Zone/field-based environmental systems for enclosed spaces, water, gases, heat, light, pollution, radiation,
+      and terrain layers.
+    current_state: Architecture developed; Prompt 13 generated.
+    desired_end_state: Deterministic coarse field/zone/network systems coupled to RES/BUILD/STRUCT/VEH/JOB.
+    status: active
+    priority: high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-19
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-16
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-11
+    - ARTIFACT-21
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed: []
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-07
+    name: Buildings, Construction, Placement, and Sloped Terrain
+    label: FACT
+    objective: Support Sims-style buildings, interior zones, machine placement, off-grid anchors, yaw rotation, and realistic
+      terrain foundations.
+    current_state: Design defined; prompts generated.
+    desired_end_state: Player-designed buildings with auto foundations, interior env zones, and generic placement APIs.
+    status: active
+    priority: high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-16
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-03
+    - CONSTRAINT-07
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-11
+    - ARTIFACT-22
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed: []
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-08
+    name: Transport and Logistics Splines
+    label: FACT
+    objective: Unified spline infrastructure for arbitrary transport modes with endpoints/midpoints, profiles, movers, ports,
+      and low-CPU simulation.
+    current_state: Design defined; Prompt 14 generated.
+    desired_end_state: Generic spline+mover framework for content-defined conveyors/rails/roads/pipes/chutes/etc.
+    status: active
+    priority: high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-13
+    - DECISION-14
+    - DECISION-15
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-03
+    - CONSTRAINT-07
+    - CONSTRAINT-16
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-11
+    - ARTIFACT-22
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed: []
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-09
+    name: Packaging and Containers
+    label: FACT
+    objective: Aggregate items into crates/bags/pallets/containers to reduce simulation cost while respecting mass/volume/density.
+    current_state: Design defined; integrated into Prompt 14.
+    desired_end_state: Generic container states and packing/unpacking processes, content-defined.
+    status: active
+    priority: medium-high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-14
+    - DECISION-18
+    decisions_pending:
+    - QUESTION-11
+    tasks:
+    - TASK-17
+    constraints:
+    - CONSTRAINT-07
+    - CONSTRAINT-15
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks:
+    - RISK-14
+    artifacts:
+    - ARTIFACT-22
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed: []
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-10
+    name: Structures, Machines, and Generic Process Runner
+    label: FACT
+    objective: Generic structures/machines run data-defined processes via ports, inventories, resources, and networks.
+    current_state: Prompts 10 and 15 define minimal and expanded loops.
+    desired_end_state: Data-driven machine/process execution with no process-specific engine branches.
+    status: active
+    priority: high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-06
+    - DECISION-12
+    decisions_pending: []
+    tasks:
+    - TASK-05
+    constraints:
+    - CONSTRAINT-07
+    - CONSTRAINT-15
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-11
+    - ARTIFACT-18
+    - ARTIFACT-23
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed: []
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-11
+    name: Vehicles and Weapons as Compiled Runtime Objects
+    label: FACT
+    objective: Allow player-designed vehicles/weapons compiled from module graphs into single runtime protos.
+    current_state: Design defined; prompt scaffolding generated.
+    desired_end_state: Runtime-cheap vehicles/weapons with aggregate physics, damage modules, mount points, and factory production.
+    status: active
+    priority: medium-high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-17
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-03
+    - CONSTRAINT-07
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-11
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed: []
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-12
+    name: Jobs, Agents, AI, and Factory Orchestration
+    label: FACT
+    objective: Generic job templates, deterministic planner, agent capabilities, and production/logistics orchestration.
+    current_state: Prompt 15 generated.
+    desired_end_state: Agents/workers/vehicles/robots execute jobs deterministically through generic capabilities.
+    status: active
+    priority: high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-15
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-03
+    - CONSTRAINT-15
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-11
+    - ARTIFACT-23
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed: []
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-13
+    name: Research, Organizations, Economy, and Policies
+    label: FACT
+    objective: Generic research/tech, org ownership, accounts, macro metrics, and policy constraints.
+    current_state: Prompt 16 generated.
+    desired_end_state: Data-defined progression and rules influencing processes, builds, jobs, and org economics.
+    status: active
+    priority: medium-high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-03
+    - CONSTRAINT-15
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-24
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed: []
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-14
+    name: Multiplayer, Netcode, Replay, and Determinism
+    label: FACT
+    objective: Deterministic input/command lockstep, TLV net protocol, replay capture, hash-based desync detection.
+    current_state: Prompts 12 and 17 generated.
+    desired_end_state: Host/client deterministic sessions using save snapshots plus command streams.
+    status: active
+    priority: high
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-03
+    - DECISION-20
+    decisions_pending: []
+    tasks:
+    - TASK-07
+    constraints:
+    - CONSTRAINT-03
+    - CONSTRAINT-17
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks:
+    - RISK-07
+    - RISK-13
+    artifacts:
+    - ARTIFACT-12
+    - ARTIFACT-20
+    - ARTIFACT-25
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed:
+    - VERIFY-08
+    - VERIFY-12
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-15
+    name: GUI, Renderer, View, and UI Framework
+    label: FACT
+    objective: GUI-first minimal smoke path through dsys -> dgfx soft renderer -> dview -> dui -> Dominium game/launcher.
+    current_state: Prompts 8 and 11 generated after user rejected CLI-only testing.
+    desired_end_state: Minimal graphical window, UI labels, menu, HUD, camera, and debug panels via engine render pipeline.
+    status: active
+    priority: critical
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-05
+    - DECISION-11
+    decisions_pending:
+    - QUESTION-02
+    - QUESTION-10
+    tasks:
+    - TASK-03
+    - TASK-06
+    - TASK-18
+    constraints:
+    - CONSTRAINT-06
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks:
+    - RISK-08
+    artifacts:
+    - ARTIFACT-12
+    - ARTIFACT-14
+    - ARTIFACT-16
+    - ARTIFACT-19
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed:
+    - VERIFY-03
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-16
+    name: Toolchain, Editors, and Authoring Pipeline
+    label: FACT
+    objective: World/editor/blueprint/tech/policy/process/transport/structure/item/pack/save/replay/net tools.
+    current_state: Prompt 18 generated.
+    desired_end_state: Full C++98 Dominium editor suite generating deterministic TLV content and validating via engine.
+    status: planned
+    priority: medium
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-21
+    decisions_pending: []
+    tasks:
+    - TASK-16
+    constraints:
+    - CONSTRAINT-18
+    - CONSTRAINT-15
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks:
+    - RISK-15
+    artifacts:
+    - ARTIFACT-15
+    - ARTIFACT-26
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed:
+    - VERIFY-13
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-17
+    name: Advanced Simulation Path D
+    label: FACT
+    objective: Dedicated future focus on heat, power grids, fluids, atmosphere, vehicles, structural loads/destruction, and
+      mod-extensible physics.
+    current_state: New-chat starter prompt generated at user request.
+    desired_end_state: A standalone advanced simulation architecture and/or implementation roadmap.
+    status: active-next
+    priority: critical
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-03
+    - DECISION-22
+    decisions_pending:
+    - QUESTION-03
+    - QUESTION-05
+    - QUESTION-06
+    tasks:
+    - TASK-08
+    - TASK-09
+    - TASK-10
+    - TASK-11
+    constraints:
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-16
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks:
+    - RISK-05
+    - RISK-12
+    - RISK-16
+    artifacts:
+    - ARTIFACT-21
+    - ARTIFACT-27
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Start Path D architecture
+    verification_needed:
+    - VERIFY-06
+    - VERIFY-09
+    - VERIFY-14
+    confidence: high for chat content; implementation unverified
+  - id: WORKSTREAM-18
+    name: Codex Prompt Roadmap and Chat Handoff
+    label: FACT
+    objective: Sequence implementation prompts and produce reusable context/report packages for future chats.
+    current_state: Prompts 1-18 and previous transfer packet generated; current request creates final package.
+    desired_end_state: Clean per-chat package usable for continuation and later project spec aggregation.
+    status: active
+    priority: critical
+    background: Defined in this chat through the architecture discussion and/or Codex prompts.
+    decisions_made:
+    - DECISION-23
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-12
+    tasks:
+    - TASK-01
+    - TASK-13
+    - TASK-14
+    - TASK-15
+    constraints:
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    dependencies:
+    - Earlier foundational prompts or equivalent repo systems
+    - Actual repo inspection
+    timeline: See timeline register.
+    blockers:
+    - Repository implementation status unverified
+    risks:
+    - RISK-01
+    - RISK-04
+    - RISK-09
+    - RISK-11
+    artifacts:
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-08
+    success_criteria:
+    - Meets objective while preserving deterministic, data-driven, layered architecture
+    next_action: Verify repo and apply/reconcile relevant prompts
+    verification_needed:
+    - VERIFY-01
+    confidence: high for chat content; implementation unverified
+  decisions:
+  - id: DECISION-01
+    decision: Domino engine code uses ISO C89.
+    status: decided
+    label: FACT
+    evidence_or_basis: User starter prompt.
+    rationale: Retro/modern portability and stable ABI.
+    implications: All engine prompts/code must avoid C99/C++ features.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: high
+  - id: DECISION-02
+    decision: Dominium products/tools/UI use portable C++98 subset.
+    status: decided
+    label: FACT
+    evidence_or_basis: User starter prompt.
+    rationale: Thin portable product layer on top of Domino.
+    implications: No C++11+, no exceptions/RTTI unless explicitly allowed.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-03
+    decision: Simulation must be deterministic and fixed-point.
+    status: decided
+    label: FACT
+    evidence_or_basis: User starter prompt and repeated design constraints.
+    rationale: Replay, multiplayer lockstep, cross-platform reproducibility.
+    implications: Use Q formats, deterministic tick order, no platform RNG/floats where determinism matters.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-14
+    - WORKSTREAM-17
+    uncertainty: high
+  - id: DECISION-04
+    decision: All platform services go through dsys.
+    status: decided
+    label: FACT
+    evidence_or_basis: User starter prompt.
+    rationale: Portability and layering.
+    implications: No OS headers/API calls in engine except dsys backend layer.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-05
+    decision: All drawing goes through dgfx/DVIEW/DUI; no OS-native drawing.
+    status: decided
+    label: FACT
+    evidence_or_basis: User starter prompt.
+    rationale: Renderer abstraction and vector fallback.
+    implications: GUI/TUI/products must render via engine pipelines.
+    related_workstreams:
+    - WORKSTREAM-15
+    uncertainty: high
+  - id: DECISION-06
+    decision: Engine/core must not know actual gameplay data definitions.
+    status: decided
+    label: FACT
+    evidence_or_basis: User explicitly reminded before Prompt 8+ plan.
+    rationale: Modularity and content-driven design.
+    implications: Actual items/machines/recipes/resources live in packs/mods/TLV, not engine code.
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-10
+    uncertainty: high
+  - id: DECISION-07
+    decision: Use Core + Model + Proto + Instance + Registry + TLV pattern across subsystems.
+    status: adopted design
+    label: INFERENCE
+    evidence_or_basis: Assistant proposal repeatedly used and carried through prompts.
+    rationale: Extensibility without hardcoded systems.
+    implications: Each subsystem should expose model/registry/proto/save APIs.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: medium-high
+  - id: DECISION-08
+    decision: Use subsystem registry for init/tick/save/load orchestration.
+    status: planned
+    label: FACT
+    evidence_or_basis: Prompt 1.
+    rationale: Plug-in subsystems and subsystem-scoped TLVs.
+    implications: Core serializer iterates registered descriptors.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: medium-high
+  - id: DECISION-09
+    decision: Use unified model registry with model families.
+    status: planned
+    label: FACT
+    evidence_or_basis: Prompt 1 and extensibility discussion.
+    rationale: Consistent registration for RES/ENV/BUILD/TRANS/VEH/JOB/NET/REPLAY.
+    implications: Subsystem-specific vtables registered behind generic model descriptors.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: medium-high
+  - id: DECISION-10
+    decision: Use TLV schema registry and versioned schemas.
+    status: planned
+    label: FACT
+    evidence_or_basis: Prompt 1/2/9.
+    rationale: Forward/backward compatibility and validation.
+    implications: Content/save schemas must register and validate versions.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: high
+  - id: DECISION-11
+    decision: Prefer GUI-first validation over CLI-only testing.
+    status: decided
+    label: FACT
+    evidence_or_basis: 'User said: ''I want a minimal GUI, I don''t want to test in CLI.'''
+    rationale: User workflow preference and product visibility.
+    implications: Prompt 8 establishes GUI smoke path before deep content testing.
+    related_workstreams:
+    - WORKSTREAM-15
+    uncertainty: high
+  - id: DECISION-12
+    decision: Use a base pack and base_demo mod for data definitions/testing.
+    status: planned
+    label: FACT
+    evidence_or_basis: Prompts 9-11.
+    rationale: Avoid engine data leakage while enabling demo.
+    implications: DomPackSet autoloads base if present; demo content in mod TLV.
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-10
+    uncertainty: high
+  - id: DECISION-13
+    decision: Transport infrastructure uses arbitrary splines with profiles.
+    status: adopted design
+    label: FACT
+    evidence_or_basis: User asked for arbitrary endpoints/midpoints; assistant designed spline system.
+    rationale: Unified roads/rails/belts/pipes/chutes/etc.; low CPU.
+    implications: Profiles define speed/gauge/capacity/max grade; engine remains generic.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: high
+  - id: DECISION-14
+    decision: Belts/conveyors should use packets/containers, not per-item tick simulation.
+    status: adopted design
+    label: FACT
+    evidence_or_basis: User wanted realistic lower-processing belts; assistant proposed packet model.
+    rationale: Performance and realism.
+    implications: Transport cost O(splines+movers), not O(tiles*items).
+    related_workstreams:
+    - WORKSTREAM-08
+    - WORKSTREAM-09
+    uncertainty: high
+  - id: DECISION-15
+    decision: Inserters become generic programmable robot manipulators.
+    status: adopted design
+    label: FACT
+    evidence_or_basis: User asked if inserters may be generic robot arms.
+    rationale: Realistic and general automation.
+    implications: Job-driven pick/place, deterministic kinematics; no tile-locked tick spam.
+    related_workstreams:
+    - WORKSTREAM-08
+    - WORKSTREAM-12
+    uncertainty: medium-high
+  - id: DECISION-16
+    decision: Buildings use a local shell/grid initially, placed in world with arbitrary yaw and generated foundations.
+    status: adopted design
+    label: INFERENCE
+    evidence_or_basis: Building/sloped terrain discussion.
+    rationale: Sims-style construction with manageable path/env computation.
+    implications: Interior zones and terrain foundations can be derived and saved.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: medium-high
+  - id: DECISION-17
+    decision: Vehicles/weapons are designed as blueprints/modules then compiled into single runtime objects.
+    status: adopted design
+    label: FACT
+    evidence_or_basis: Vehicle/weapon construction discussion.
+    rationale: Player design with runtime performance.
+    implications: Runtime vehicle is aggregate rigid body with module state.
+    related_workstreams:
+    - WORKSTREAM-11
+    uncertainty: high
+  - id: DECISION-18
+    decision: Dropped items should be aggregated piles/containers, not thousands of entities.
+    status: adopted design
+    label: FACT
+    evidence_or_basis: Dropped item discussion.
+    rationale: Performance and deterministic scalability.
+    implications: World spills are aggregate content states.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: high
+  - id: DECISION-19
+    decision: Worldgen providers should be modular and DAG/dependency ordered.
+    status: planned
+    label: FACT
+    evidence_or_basis: Extensibility discussion and prompts.
+    rationale: Flexible geology/climate/built-env pipelines.
+    implications: Providers declare dependencies; deterministic chunk populate.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-06
+    uncertainty: medium-high
+  - id: DECISION-20
+    decision: Multiplayer uses deterministic command/input lockstep with TLV protocol.
+    status: planned
+    label: FACT
+    evidence_or_basis: Prompt 17.
+    rationale: No continuous state replication; replay/debug alignment.
+    implications: Host/client share initial save and command stream; desync via hashes.
+    related_workstreams:
+    - WORKSTREAM-14
+    uncertainty: medium-high
+  - id: DECISION-21
+    decision: Toolchain should become full editor/authoring ecosystem.
+    status: planned
+    label: FACT
+    evidence_or_basis: Prompt 18.
+    rationale: Content expansion requires authoring tools.
+    implications: Editor suite under Dominium tools, deterministic TLV export.
+    related_workstreams:
+    - WORKSTREAM-16
+    uncertainty: medium
+  - id: DECISION-22
+    decision: Path D advanced simulation is the next new-chat focus.
+    status: decided
+    label: FACT
+    evidence_or_basis: User said they will branch into another conversation and focus on D.
+    rationale: Next conversation should not restart base architecture.
+    implications: Start with advanced simulation architecture or prompt generation.
+    related_workstreams:
+    - WORKSTREAM-17
+    uncertainty: high
+  - id: DECISION-23
+    decision: Existing code may be stale and must be reconciled, not duplicated.
+    status: decided guidance
+    label: FACT
+    evidence_or_basis: User said major components may already exist but be out of date before Prompt 8.
+    rationale: Avoid parallel incompatible systems.
+    implications: Codex prompts should instruct search/update/refactor first.
+    related_workstreams:
+    - WORKSTREAM-18
+    uncertainty: high
+  tasks:
+  - id: TASK-01
+    task: Inspect actual repository before applying any prompt.
+    priority: critical
+    urgency: immediate
+    owner: Developer/Codex
+    dependencies:
+    - None
+    inputs_needed:
+    - Repo access/build files
+    expected_output: Verified implementation baseline
+    next_step: Run source tree and build inspection.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+    confidence: high
+  - id: TASK-02
+    task: If not implemented, apply Prompt 1 core infrastructure.
+    priority: high
+    urgency: near-term
+    owner: Codex
+    dependencies:
+    - Repo inspection
+    inputs_needed:
+    - Prompt 1 and existing core code
+    expected_output: Subsystem/model/schema/registry scaffolding
+    next_step: Apply/refactor with C89 compliance.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: medium-high
+  - id: TASK-03
+    task: Implement or reconcile GUI smoke path from Prompt 8.
+    priority: high
+    urgency: near-term
+    owner: Codex
+    dependencies:
+    - Core/render/system code
+    inputs_needed:
+    - Available platform backend
+    expected_output: Minimal GUI window via dsys/dgfx/dview/dui
+    next_step: Apply Prompt 8; prefer real backend over stub.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+    confidence: medium-high
+  - id: TASK-04
+    task: Finalize content model and base pack autoload.
+    priority: critical
+    urgency: near-term
+    owner: Codex
+    dependencies:
+    - Prompt 9
+    inputs_needed:
+    - Existing content/TLV code
+    expected_output: Data-only base pack schema and loader
+    next_step: Apply Prompt 9 after core/TLV infra.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: medium-high
+  - id: TASK-05
+    task: Build data-driven demo loop from packs/mods.
+    priority: high
+    urgency: near-term
+    owner: Codex/content author
+    dependencies:
+    - Prompts 9-10
+    inputs_needed:
+    - TLV content generator/loader
+    expected_output: Demo deposit/process/machine/container extraction loop
+    next_step: Apply Prompt 10.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: medium-high
+  - id: TASK-06
+    task: Add GUI gameplay menu/HUD/blueprint placement.
+    priority: high
+    urgency: after TASK-05
+    owner: Codex
+    dependencies:
+    - Prompt 11
+    inputs_needed:
+    - GUI smoke path and demo content
+    expected_output: GUI-first demo world flow
+    next_step: Apply Prompt 11.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+    confidence: medium-high
+  - id: TASK-07
+    task: Add determinism validation and world hash.
+    priority: high
+    urgency: after demo loop
+    owner: Codex
+    dependencies:
+    - Prompt 12
+    inputs_needed:
+    - World/resource/struct state
+    expected_output: Hash/replay/debug validators
+    next_step: Apply Prompt 12.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+    confidence: medium-high
+  - id: TASK-08
+    task: Start Path D advanced simulation architecture in new chat.
+    priority: critical
+    urgency: next chat
+    owner: New assistant
+    dependencies:
+    - This report/bootstrap prompt
+    inputs_needed:
+    - User confirmation only if necessary
+    expected_output: Top-level advanced sim architecture
+    next_step: Use Section 15 bootstrap prompt.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: FACT
+    confidence: high
+  - id: TASK-09
+    task: Design fixed-point solvers for heat/power/fluids/atmosphere.
+    priority: high
+    urgency: Path D phase 1
+    owner: New assistant/architect
+    dependencies:
+    - TASK-08
+    inputs_needed:
+    - Simulation ranges and constraints
+    expected_output: Solver plan with tick dependencies
+    next_step: Produce design before coding.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-10
+    task: Reconcile Prompt 13 with Path D architecture.
+    priority: high
+    urgency: Path D phase 1
+    owner: New assistant
+    dependencies:
+    - Prompt 13 and new design
+    inputs_needed:
+    - Existing env/hydro prompts
+    expected_output: No duplicate physical systems
+    next_step: Map systems to subsystems/models.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: FACT
+    confidence: medium-high
+  - id: TASK-11
+    task: Generate Codex prompt(s) for Path D implementation if requested.
+    priority: medium-high
+    urgency: after architecture
+    owner: Assistant
+    dependencies:
+    - Path D architecture
+    inputs_needed:
+    - Implementation sequencing choice
+    expected_output: Prompt 19+ or split prompt series
+    next_step: Ask user if wants architecture-to-Codex conversion.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-12
+    task: Audit engine for domain leakage.
+    priority: critical
+    urgency: continuous
+    owner: Developer/Codex
+    dependencies:
+    - Implemented code
+    inputs_needed:
+    - Search terms/list of reserved concepts
+    expected_output: Report/remediation PR
+    next_step: Use prompt 12 style validation/audit.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: medium-high
+  - id: TASK-13
+    task: Prepare future master Project Spec Book aggregation.
+    priority: medium
+    urgency: later
+    owner: Aggregator assistant
+    dependencies:
+    - Per-chat report packages
+    inputs_needed:
+    - All old chat packages
+    expected_output: Cross-chat spec book and state file
+    next_step: Use aggregator prompt from previous assistant output.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+    confidence: high
+  - id: TASK-14
+    task: Preserve this report package with all files and ZIP.
+    priority: critical
+    urgency: immediate
+    owner: User
+    dependencies:
+    - Current output
+    inputs_needed:
+    - Download links
+    expected_output: Saved per-chat archive
+    next_step: Download and store in chat-specific folder.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+    confidence: high
+  - id: TASK-15
+    task: Verify stale external/tool facts before future use.
+    priority: medium
+    urgency: as needed
+    owner: Future assistant
+    dependencies:
+    - Any current API/dependency/law/pricing claim
+    inputs_needed:
+    - Web/official docs
+    expected_output: Verified current facts
+    next_step: Do not rely on memory for current external data.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+    confidence: high
+  - id: TASK-16
+    task: Define exact TLV schema field tables before coding content tools.
+    priority: high
+    urgency: before content/tooling
+    owner: Architect/Codex
+    dependencies:
+    - Prompt 9 and docs
+    inputs_needed:
+    - Schema ID conventions
+    expected_output: Canonical DATA_FORMATS section
+    next_step: Generate/confirm with user.
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-16
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: TASK-17
+    task: Decide container nesting policy.
+    priority: medium
+    urgency: before packaging scale-up
+    owner: Architect/user
+    dependencies:
+    - Packaging design
+    inputs_needed:
+    - Performance/UX needs
+    expected_output: Concrete nesting/packing rules
+    next_step: Resolve during Prompt 14 implementation.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-18
+    task: Select or implement at least one real GUI platform backend.
+    priority: high
+    urgency: before visual testing
+    owner: Developer/Codex
+    dependencies:
+    - Build system/platform targets
+    inputs_needed:
+    - SDL2/win32/x11/etc. availability
+    expected_output: Renderable soft framebuffer window
+    next_step: Implement under dsys.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium-high
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Domino engine code must be ISO C89.
+    type: language
+    hard_or_soft: hard
+    source_or_basis: User starter prompt
+    implication: No C99/C++ constructs in source/domino/**.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-02
+    constraint: Dominium code must use portable C++98 subset.
+    type: language
+    hard_or_soft: hard
+    source_or_basis: User starter prompt
+    implication: Avoid C++11+, exceptions/RTTI unless explicitly approved.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-03
+    constraint: Simulation must be deterministic across platforms.
+    type: simulation
+    hard_or_soft: hard
+    source_or_basis: User starter prompt
+    implication: Fixed-point math, deterministic tick/order/randomness.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-04
+    constraint: Use fixed-point Q formats where determinism matters.
+    type: math
+    hard_or_soft: hard
+    source_or_basis: Starter prompt
+    implication: Avoid nondeterministic floats in sim/network/replay.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-05
+    constraint: Platform-specific behavior must be abstracted through dsys.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: Starter prompt
+    implication: No direct OS APIs in engine core/sim/products where prohibited.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-06
+    constraint: Rendering must go through dgfx/DVIEW/DUI.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: Starter prompt
+    implication: No OS-native drawing; soft renderer baseline required.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-07
+    constraint: Engine/core must not contain actual content definitions.
+    type: content
+    hard_or_soft: hard
+    source_or_basis: User explicit reminder
+    implication: Materials/items/machines/recipes/resources in packs/mods/TLV only.
+    violation_risk: critical
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-08
+    constraint: All content formats must be versioned and backward-compatible.
+    type: data
+    hard_or_soft: hard
+    source_or_basis: Starter prompt
+    implication: TLV schemas, unknown field handling, migration/version checks.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-09
+    constraint: Old saves/packs/mods/tools should not be broken.
+    type: compatibility
+    hard_or_soft: hard
+    source_or_basis: Starter prompt
+    implication: Stable IDs/ABI, compat profiles, read-only/limited modes.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-10
+    constraint: GUI/TUI should share logic/pipelines.
+    type: ui
+    hard_or_soft: hard
+    source_or_basis: Starter prompt
+    implication: Single widget tree/core; render backend differences only.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-11
+    constraint: GUI-first testing is preferred for this workflow.
+    type: workflow
+    hard_or_soft: soft-to-hard
+    source_or_basis: User explicit before Prompt 8
+    implication: Do not only provide CLI/headless tests.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-12
+    constraint: World is toroidal 2^24 m surface with ±2 km vertical.
+    type: world
+    hard_or_soft: hard
+    source_or_basis: Starter prompt
+    implication: Coords/worldgen/save must respect topology.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-13
+    constraint: Target platforms include retro and modern systems.
+    type: portability
+    hard_or_soft: hard
+    source_or_basis: Starter prompt
+    implication: Avoid assuming modern GPU/64-bit/threads/filesystem APIs.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-14
+    constraint: Use vector-only fallback; raster packs optional.
+    type: render/content
+    hard_or_soft: hard
+    source_or_basis: Starter prompt
+    implication: Game must function with zero raster packs installed.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-15
+    constraint: Packs/mods must be data-driven and registry-based.
+    type: content
+    hard_or_soft: hard
+    source_or_basis: Conversation decisions
+    implication: Engine looks up IDs/tags/protos; no hardwired paths.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-16
+    constraint: Worldgen randomness must be seed/coordinate/tick derived.
+    type: determinism
+    hard_or_soft: hard
+    source_or_basis: Prompts 10/13/17
+    implication: No wall-clock/random platform source in worldgen/sim.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-17
+    constraint: Network messages must be TLV-encoded/versioned.
+    type: net
+    hard_or_soft: hard
+    source_or_basis: Prompt 17
+    implication: No raw struct dumps over wire.
+    violation_risk: high
+    label: FACT
+    confidence: medium-high
+  - id: CONSTRAINT-18
+    constraint: Tool outputs must be deterministic.
+    type: tools
+    hard_or_soft: hard
+    source_or_basis: Prompt 18
+    implication: Stable sorted TLVs/assets for identical inputs.
+    violation_risk: medium
+    label: FACT
+    confidence: medium-high
+  - id: CONSTRAINT-19
+    constraint: No treating assistant proposals as final if user did not accept them.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User’s current request
+    implication: Preserve tentative statuses.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-20
+    constraint: Important items must be labeled FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User’s current request
+    implication: All reports/registers must include labels.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-21
+    constraint: Date anchor is 2026-05-27 Australia/Melbourne.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User’s current request
+    implication: Use in report metadata.
+    violation_risk: low
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-22
+    constraint: Report scope is this chat only.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User’s current request
+    implication: Project-level context must be labeled if used.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-23
+    constraint: Generated final package should include specific seven files and ZIP if possible.
+    type: artifact
+    hard_or_soft: hard
+    source_or_basis: User’s current request
+    implication: Create downloadable files, no false claims.
+    violation_risk: low
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-24
+    constraint: If facts could change externally, verify before future use.
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: User’s current request/system instructions
+    implication: APIs/laws/prices/current products need future verification.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-25
+    constraint: Avoid over-engineering past diminishing returns.
+    type: architecture
+    hard_or_soft: soft
+    source_or_basis: User asked for modular/future-proof without diminishing returns
+    implication: Prefer stable minimal interfaces over reflection/VM-everything.
+    violation_risk: medium
+    label: FACT
+    confidence: medium-high
+  open_questions:
+  - id: QUESTION-01
+    question: Has any Codex prompt been applied to the actual repository?
+    why_it_matters: Determines whether next step is implementation, audit, or architecture.
+    known: Prompts were generated in chat.
+    unknown: No repo inspection occurred.
+    resolution_path: Inspect repository and build logs.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-18
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: Which GUI/backend dependencies are available?
+    why_it_matters: Prompt 8 depends on a real or stubbed window path.
+    known: User wants GUI-first.
+    unknown: Actual build/dependency state unknown.
+    resolution_path: Inspect build system/deps; choose SDL2/win32/x11/etc.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: Should the new chat produce architecture or Codex prompts for Path D first?
+    why_it_matters: User said focus on D but may want design or implementation prompt.
+    known: Path D starter prompt asks for architecture first.
+    unknown: Exact desired output in next chat unknown.
+    resolution_path: Ask only if ambiguous; default to architecture.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-17
+    label: INFERENCE
+  - id: QUESTION-04
+    question: How strict is the ban on domain words in engine comments/docs?
+    why_it_matters: Prompts evolved from examples to strict no domain leakage.
+    known: Engine runtime should be generic.
+    unknown: Whether comments/examples in engine docs are allowed.
+    resolution_path: Ask user or enforce strict code-only ban.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: What fixed-point formats should each advanced simulation domain use?
+    why_it_matters: Heat/power/fluids need ranges/scales.
+    known: Q16.16/Q24.8 are global defaults.
+    unknown: Domain-specific numeric ranges not designed.
+    resolution_path: Path D architecture should define them.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-17
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: How detailed should initial advanced physics solvers be?
+    why_it_matters: Avoid over-engineering and instability.
+    known: Coarse deterministic models preferred.
+    unknown: Accuracy/performance target unknown.
+    resolution_path: Define minimal stable solver ladder in Path D.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-17
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: Should deterministic scripting/DSL be implemented before plugin ABI?
+    why_it_matters: Affects mod-extensibility roadmap.
+    known: A deterministic DSL was proposed.
+    unknown: Implementation priority unknown.
+    resolution_path: Future architecture decision.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: What build system should Codex modify?
+    why_it_matters: Implementation prompts did not know actual build system.
+    known: Desired source dirs known.
+    unknown: CMake/make/custom unknown.
+    resolution_path: Inspect repo.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: What exact TLV field tags should become canonical?
+    why_it_matters: Prompts include examples, not complete final schema tables.
+    known: Versioned TLV required.
+    unknown: Precise tags need consolidation.
+    resolution_path: Generate DATA_FORMATS spec from prompt sequence and confirm.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: How will retro targets handle GUI smoke tests?
+    why_it_matters: Platform matrix includes DOS/CPM/retro.
+    known: GUI-first desired.
+    unknown: Backend feasibility varies.
+    resolution_path: Design backend-specific fallbacks.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: What is acceptable nesting depth for containers?
+    why_it_matters: Performance risk.
+    known: Limit nesting depth suggested.
+    unknown: Exact policy unknown.
+    resolution_path: Decide during packaging implementation.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: QUESTION-12
+    question: How should existing obsolete code be migrated?
+    why_it_matters: User warned old code may exist.
+    known: Prompts say reconcile, not duplicate.
+    unknown: Actual obsolete code unknown.
+    resolution_path: Repo audit before implementation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-18
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Factorio-style tile/tick belts.
+    status: rejected
+    reason: Too CPU-heavy and arcade-like; user wants realistic low-processing transport.
+    final_or_tentative: mostly final
+    reconsider_conditions: Reconsider only for optional arcade/content pack.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-02
+    option: Per-item simulation for bulk logistics.
+    status: rejected
+    reason: Too expensive; containers/packets reduce state count.
+    final_or_tentative: final
+    reconsider_conditions: Use only for rare visible objects.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: REJECTED-03
+    option: Hardcoded ore/oil/tree logic in resource core.
+    status: rejected
+    reason: Violates data-driven dres architecture.
+    final_or_tentative: final
+    reconsider_conditions: Never in engine core.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-04
+    option: Machine code checking specific resource names.
+    status: rejected
+    reason: Violates generic process/profile model.
+    final_or_tentative: final
+    reconsider_conditions: Never; use tags/protos/TLV.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: REJECTED-05
+    option: OS-native drawing in product/UI code.
+    status: rejected
+    reason: Violates dgfx abstraction.
+    final_or_tentative: final
+    reconsider_conditions: Never.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: REJECTED-06
+    option: CLI-only validation workflow.
+    status: rejected by user
+    reason: User explicitly wanted minimal GUI.
+    final_or_tentative: final for this workflow
+    reconsider_conditions: Headless remains useful for server/tests, not as only test.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: REJECTED-07
+    option: Full per-object general rigid-body simulation for everything.
+    status: deprioritised
+    reason: Too expensive and deterministic-risk; aggregate/simple models preferred.
+    final_or_tentative: tentative
+    reconsider_conditions: Reconsider for limited dynamic subset or editor preview.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: INFERENCE
+  - id: REJECTED-08
+    option: Full per-voxel CFD for atmosphere/hydrology.
+    status: deprioritised
+    reason: Too expensive; zone/field/network models preferred.
+    final_or_tentative: tentative
+    reconsider_conditions: Reconsider for localized high-fidelity modules.
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-17
+    label: INFERENCE
+  - id: REJECTED-09
+    option: Forced flat block foundations or terrain leveling.
+    status: rejected
+    reason: User said they do not want ugly foundation blocks/forced leveling.
+    final_or_tentative: mostly final
+    reconsider_conditions: Manual foundation editing may be optional.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-10
+    option: Runtime simulation of every vehicle bolt/part.
+    status: rejected
+    reason: Compiled aggregate runtime object preferred for performance.
+    final_or_tentative: final
+    reconsider_conditions: Use detailed graph in designer/editor only.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: REJECTED-11
+    option: One huge Codex prompt for entire system.
+    status: superseded
+    reason: User asked split under 10; seven prompts were produced.
+    final_or_tentative: final
+    reconsider_conditions: Only use as reference.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+  - id: REJECTED-12
+    option: Blindly preserving stale existing code.
+    status: rejected
+    reason: User warned existing components may be out of date.
+    final_or_tentative: final
+    reconsider_conditions: Inspect and reconcile/refactor.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Extended Master Starter Prompt — Dominium + Domino
+    type: user prompt
+    purpose: Governing architecture and constraints.
+    status: active
+    origin: User first message
+    carry_forward: 'yes'
+    notes: Contains role/tone, platform matrix, subsystem list, repo layout, product model.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: dres modular resource proposal from another chat
+    type: user-provided design
+    purpose: Baseline for resource system.
+    status: accepted as baseline in discussion
+    origin: User pasted long proposal
+    carry_forward: 'yes'
+    notes: 'Four layers: core, models, content protos, interaction systems.'
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: Complete integrated system summary
+    type: assistant output
+    purpose: Summarized world/resources/env/build/trans/etc.
+    status: generated
+    origin: Assistant response to summary request
+    carry_forward: 'yes'
+    notes: Useful for high-level spec book.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: Data/type hierarchy output
+    type: assistant output
+    purpose: Defined IDs, protos, models, instances, systems.
+    status: generated
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Useful for API/spec sections.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: Engine-wide hierarchy output
+    type: assistant output
+    purpose: Extended pattern to all Domino modules.
+    status: generated
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Covers dcore/dsys/dgfx/dinput/daudio/dsim/dworld etc.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: Full stack engine+game+launcher+setup+tools+mods hierarchy
+    type: assistant output
+    purpose: Defined product suite and content interactions.
+    status: generated
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Useful for Dominium spec.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: Extensibility refinement pass
+    type: assistant output
+    purpose: Proposed universal subsystem/model/registry/event/policy extensions.
+    status: generated
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Captured future-proofing decisions.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Codex prompt split plan (7 prompts)
+    type: assistant output
+    purpose: Implementation roadmap split under 10 prompts.
+    status: generated
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Superseded one huge prompt plan.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: Prompt 1 — Core Infrastructure & Registries
+    type: Codex prompt
+    purpose: Subsystem/model/TLV/dynamic registries and docs.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: First implementation prompt.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: Prompt 2 — Content & Proto Layer
+    type: Codex prompt
+    purpose: Pack/mod manifests, protos, blueprint registry.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Defines content scaffolding.
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: Prompt 3 — World/Res/Env/Build/Trans/Struct/Vehicle/Job
+    type: Codex prompt
+    purpose: Major world subsystems.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Heavy subsystem prompt.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Prompt 4 — DSIM/ECS, Net, Replay, View, UI
+    type: Codex prompt
+    purpose: Tick/replay/net/view/ui infrastructure.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Completes engine scaffolding.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: Prompt 5 — Dominium Common Layer
+    type: Codex prompt
+    purpose: DomSession, paths, instances, compat, packset.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Product glue.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Prompt 6 — Game Product
+    type: Codex prompt
+    purpose: DomGameApp, modes, states, UI, save/load.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Game runtime.
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: Prompt 7 — Launcher, Setup, Tools
+    type: Codex prompt
+    purpose: Launcher/setup/modcheck/docs.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Product suite completion.
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: Prompt 8 — Minimal GUI Vertical Slice
+    type: Codex prompt
+    purpose: Soft renderer, dsys window, DVIEW/DUI, game/launcher GUI.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Reflects user GUI-first preference.
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: Prompt 9 — Base Pack Structure, TLV Schemas, Autoload
+    type: Codex prompt
+    purpose: Base pack and data-only schemas.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Important for data/code separation.
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: Prompt 10 — Data-Driven Playable Minimal Slice
+    type: Codex prompt
+    purpose: Demo deposit/process/machine/container loop.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: First gameplay loop.
+    label: FACT
+  - id: ARTIFACT-19
+    name_or_description: Prompt 11 — Minimal GUI Gameplay Loop
+    type: Codex prompt
+    purpose: Menu, camera, HUD, blueprint placement.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: GUI-driven demo.
+    label: FACT
+  - id: ARTIFACT-20
+    name_or_description: Prompt 12 — Determinism, Validation, Boundaries
+    type: Codex prompt
+    purpose: World hash, replay, validation, debug UI.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Architecture hardening.
+    label: FACT
+  - id: ARTIFACT-21
+    name_or_description: Prompt 13 — World-Scale Physical Systems
+    type: Codex prompt
+    purpose: Hydrology/atmosphere/lithosphere/interior volumes.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Relevant to Path D.
+    label: FACT
+  - id: ARTIFACT-22
+    name_or_description: Prompt 14 — Logistics Splines, Construction, Packaging
+    type: Codex prompt
+    purpose: Spline/mover/build/packaging framework.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Logistics layer.
+    label: FACT
+  - id: ARTIFACT-23
+    name_or_description: Prompt 15 — Production Chains, Jobs/AI, Economy
+    type: Codex prompt
+    purpose: Production, jobs, agents, accounts.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Factory orchestration.
+    label: FACT
+  - id: ARTIFACT-24
+    name_or_description: Prompt 16 — Research, Orgs, Macro-Econ, Policies
+    type: Codex prompt
+    purpose: Research/org/econ/policy systems.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Progression layer.
+    label: FACT
+  - id: ARTIFACT-25
+    name_or_description: Prompt 17 — Multiplayer, Netcode, Sessions
+    type: Codex prompt
+    purpose: Deterministic lockstep netcode.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Multiplayer layer.
+    label: FACT
+  - id: ARTIFACT-26
+    name_or_description: Prompt 18 — Toolchain & Editors
+    type: Codex prompt
+    purpose: Editor/tool suite architecture.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Authoring ecosystem.
+    label: FACT
+  - id: ARTIFACT-27
+    name_or_description: New Chat Advanced Simulation Starter Prompt
+    type: bootstrap prompt
+    purpose: Standalone prompt for Path D continuation.
+    status: generated
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Primary bootstrap for next chat if focusing on D.
+    label: FACT
+  - id: ARTIFACT-28
+    name_or_description: Maximum-fidelity Context Transfer Packet
+    type: handoff document
+    purpose: State transfer for retired chat.
+    status: generated
+    origin: Assistant previous answer
+    carry_forward: 'yes'
+    notes: Used as source for this package.
+    label: FACT
+  - id: ARTIFACT-29
+    name_or_description: Final report package request and generated files
+    type: report package
+    purpose: Current task output.
+    status: in progress
+    origin: Current user request
+    carry_forward: 'yes'
+    notes: This package normalizes IDs and creates files.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Generated prompts may be mistaken for implemented code.
+    consequence: Future assistants may assume nonexistent repo state.
+    likelihood: medium
+    severity: high
+    mitigation: Treat all implementation state as UNVERIFIED until repo inspection.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+  - id: RISK-02
+    risk: Domain data leaks into engine code.
+    consequence: Breaks modding/layering and contradicts user instruction.
+    likelihood: medium
+    severity: critical
+    mitigation: Audit engine C for domain strings/IDs; move examples to packs/mods/docs.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-03
+    risk: Codex uses non-C89/non-C++98 features.
+    consequence: Build/portability failure.
+    likelihood: high
+    severity: high
+    mitigation: Explicit prompt constraints and code review.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-04
+    risk: Existing repo code conflicts with generated architecture.
+    consequence: Duplicate/parallel systems and build breakage.
+    likelihood: medium
+    severity: high
+    mitigation: Search/reconcile/update rather than duplicate.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+  - id: RISK-05
+    risk: Advanced simulation becomes too detailed and unstable.
+    consequence: Performance and determinism problems.
+    likelihood: medium
+    severity: high
+    mitigation: Use coarse bounded solvers and fixed-point stability analysis.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: INFERENCE
+  - id: RISK-06
+    risk: TLV schemas fragment into incompatible versions.
+    consequence: Content/save incompatibility.
+    likelihood: medium
+    severity: high
+    mitigation: Central schema registry and DATA_FORMATS spec.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-07
+    risk: World hash includes pointers/padding.
+    consequence: False desyncs across platforms.
+    likelihood: medium
+    severity: high
+    mitigation: Hash logical sorted values only.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+  - id: RISK-08
+    risk: GUI-first path blocked by missing platform backend.
+    consequence: User cannot visually test.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Implement soft renderer + at least one dsys backend; stub only temporarily.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-09
+    risk: Assistant proposals treated as user-decided final specs.
+    consequence: Overwrites tentative design.
+    likelihood: medium
+    severity: medium
+    mitigation: Preserve labels and request confirmation when needed.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+  - id: RISK-10
+    risk: Over-abstraction slows implementation.
+    consequence: Architecture may exceed useful modularity.
+    likelihood: medium
+    severity: medium
+    mitigation: Follow minimum stable interfaces and avoid reflection/VM-everything unless needed.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: RISK-11
+    risk: Future aggregator merges conflicting chats prematurely.
+    consequence: Spec book contradictions.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Preserve provenance, labels, and conflict registers.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+  - id: RISK-12
+    risk: Retro platform constraints ignored in advanced systems.
+    consequence: Portability failure.
+    likelihood: medium
+    severity: high
+    mitigation: Keep memory/fixed-point/backends minimal and feature-scalable.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: FACT
+  - id: RISK-13
+    risk: Network protocol becomes ad-hoc binary structs.
+    consequence: Endianness/ABI/version failure.
+    likelihood: medium
+    severity: high
+    mitigation: Use TLV message schemas only.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+  - id: RISK-14
+    risk: Containers allow unbounded nesting/state explosion.
+    consequence: Performance and save bloat.
+    likelihood: medium
+    severity: medium
+    mitigation: Set nesting limits and O(1) bulk defaults.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-15
+    risk: Tool outputs non-deterministic packages.
+    consequence: Reproducibility failures.
+    likelihood: medium
+    severity: medium
+    mitigation: Sort keys/files/IDs and stable serialize.
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+  - id: RISK-16
+    risk: Advanced sim cross-coupling creates circular tick dependencies.
+    consequence: Nondeterministic or unstable tick order.
+    likelihood: medium
+    severity: high
+    mitigation: Define dependency graph and fixed solver phases.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: INFERENCE
+  verification_queue:
+  - id: VERIFY-01
+    item: Actual repository state and whether any prompts were applied.
+    why_verification_needed: Implementation status is unknown.
+    suggested_source_type: Repo inspection/build run.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-18
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Available build system and target configuration.
+    why_verification_needed: Prompts need wiring into real build.
+    suggested_source_type: Inspect repo build files.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Availability of GUI backend dependency such as SDL2.
+    why_verification_needed: Prompt 8 may depend on it.
+    suggested_source_type: Inspect dependencies/build scripts.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Existing content/TLV code compatibility.
+    why_verification_needed: User warned code may be stale.
+    suggested_source_type: Search source/domino/content and docs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Exact TLV schema IDs and field tags before formal spec.
+    why_verification_needed: Examples are not fully canonical.
+    suggested_source_type: Generate/validate DATA_FORMATS spec with user.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Fixed-point numeric ranges for heat/power/fluid solvers.
+    why_verification_needed: Advanced simulation stability requires scaling.
+    suggested_source_type: Path D design review/tests.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-17
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Whether engine comments/docs may use domain examples.
+    why_verification_needed: Domain-neutral rule evolved.
+    suggested_source_type: User confirmation or stricter code audit.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: World hash determinism across platforms.
+    why_verification_needed: Replay/net correctness depends on it.
+    suggested_source_type: Cross-platform deterministic test suite.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Retro-target feasibility for memory-heavy systems.
+    why_verification_needed: Platform matrix includes constrained targets.
+    suggested_source_type: Memory/performance budgets per target.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-17
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: Content validation can catch all references/dependencies.
+    why_verification_needed: Mod safety depends on it.
+    suggested_source_type: Run modcheck/validators on base/base_demo.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: Dominium Common path/FS wrappers obey dsys abstraction.
+    why_verification_needed: Layering risk.
+    suggested_source_type: Code review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Networking transport callbacks cover target platforms.
+    why_verification_needed: Multiplayer support depends on backend.
+    suggested_source_type: Prototype host/client smoke test.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-13
+    item: Toolchain deterministic output guarantees.
+    why_verification_needed: Future SDK quality.
+    suggested_source_type: Byte-identical rebuild tests.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-16
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-14
+    item: Whether user wants next chat to generate architecture or prompt for Path D.
+    why_verification_needed: Next output alignment.
+    suggested_source_type: Ask only if necessary; default architecture.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-17
+    label: INFERENCE
+  spec_book_notes:
+    likely_sections:
+    - Project Philosophy and Constraints
+    - Domino Engine Architecture
+    - Dominium Product Suite
+    - Content/TLV/Mods
+    - Resources and Worldgen
+    - Advanced Simulation
+    - Transport and Logistics
+    - Buildings and Construction
+    - Jobs/Agents/Economy
+    - Networking/Replay
+    - Tools/Editors
+    unique_contributions:
+    - Full prompt roadmap 1-18
+    - GUI-first correction
+    - Strict content/data separation reminder
+    - Path D advanced simulation handoff
+    possible_duplicates_with_other_chats:
+    - Domino core architecture
+    - DRES resources
+    - Advanced simulation
+    - UI/rendering
+    - Content/modding
+    conflicts_to_watch_for:
+    - Earlier concrete engine enum examples vs later strict domain-neutrality
+    - Prompt assumptions vs actual repo state
+    formal_requirements_candidates:
+    - C89/C++98 language constraints
+    - Fixed-point determinism
+    - No hardcoded content in engine
+    - Dsys/dgfx strict layering
+    - Versioned TLV content and saves
+    - GUI-first smoke test
+    background_context_candidates:
+    - Prompt sequencing rationale
+    - Demo content examples
+    - Toolchain/editor ideas
+    needs_user_confirmation:
+    - Exact TLV tags
+    - GUI backend
+    - Fixed-point scaling for Path D
+    - Container nesting limits
+  final_recommendations:
+    next_action_if_continuing_this_chat: Start a new Path D chat with the bootstrap prompt and produce the advanced simulation
+      top-level architecture.
+    next_action_for_aggregator: Ingest this package preserving IDs, labels, and artifact provenance.
+    user_checks_required:
+    - Confirm repo implementation status.
+    - Confirm desired Path D next output.
+    - Confirm GUI backend if coding starts.

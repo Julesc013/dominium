@@ -1,0 +1,2610 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Architecture IV
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only; no external verification.
+    apparent_coverage: partial
+    confidence_1_to_5: 4
+    staleness_risk: medium-high
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - Actual repository state unverified.
+    - Visible transcript contains skipped sections.
+    - External tool/platform details require verification.
+    - Some earlier prompt groups are superseded by later roadmap.
+  summary:
+    one_sentence: This chat defines the Dominium/DoMino architecture, ABI/API stack, backend/product roadmap, and prompt plan
+      for implementing a modular multi-platform game ecosystem.
+    short_brief: Domino is the reusable engine layer; Dominium is the game/product layer. Current roadmap is ABIs/APIs, platforms,
+      renderers, setup, launcher, tools, game. Products are described through contracts, commands, queries, models, views,
+      and canvases. Simulation uses deterministic integer/fixed-point policy. Construction, vehicles, space, environment,
+      tools, and SDKs are planned as modular systems.
+    main_topics:
+    - Domino engine
+    - Dominium product/game layer
+    - Repository structure
+    - ABI/API spine
+    - Platform API and backends
+    - Renderer API and backends
+    - Audio API and backends
+    - Unified UI system
+    - Product contracts and runtime selection
+    - Packages, instances, mods, packs
+    - Setup product
+    - Launcher product
+    - Tools and SDKs
+    - Game product
+    - Numeric, units, time, determinism
+    - World/environment fields
+    - Construction, vehicles, machines
+    - Space, orbits, seamless transitions
+    - Actors, AI, jobs, knowledge
+    - Economy, markets, politics
+    - Plugin, schema, scripting, event infrastructure
+    - Save, replay, determinism harness
+    - Multiplayer/distributed sim
+    - Ports, retro editions, hardening
+    main_outputs:
+    - Phase 1 ABIs/API Codex prompts
+    - Platform backend prompt template
+    - Renderer backend prompt template and softref/vtable prompts
+    - Setup Phase 4 prompts
+    - Launcher Phase 5 prompts
+    - Tools Phase 6 prompts
+    - Phase 7+ roadmap
+    highest_priority_carry_forward:
+    - Current implementation order
+    - Domino/Dominium split
+    - Renderer optionality for non-game products
+    - Unified UI mode/backend model
+    - Product contracts/capability matching
+    - Numeric policy
+    - Construction graph model
+    - Kepler/space/seamless transition model
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Direct user statements outrank assistant suggestions.
+    - Later user changes supersede earlier assistant plans.
+    - Superseded options must be preserved.
+    staleness_rules:
+    - Use 2026-05-27 Australia/Melbourne as date anchor.
+    - External-world/tooling/API details require current verification before use.
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: Maximum-fidelity extraction and consolidation.
+      area: handoff
+      strength: strong
+      implication: Do not compress or omit important state.
+      label: FACT
+    - id: PREFERENCE-02
+      preference: Label facts/inferences/uncertainty.
+      area: evidence
+      strength: hard
+      implication: Use FACT/INFERENCE/UNCERTAIN labels.
+      label: FACT
+    - id: PREFERENCE-03
+      preference: No invention or silent inference.
+      area: evidence
+      strength: hard
+      implication: Mark assumptions and gaps.
+      label: FACT
+    - id: PREFERENCE-05
+      preference: Generate Codex prompts one at a time with full context.
+      area: planning/coding
+      strength: strong
+      implication: Avoid broad prompt batches.
+      label: FACT
+    - id: PREFERENCE-06
+      preference: Strong modularity/extensibility planning.
+      area: architecture
+      strength: very strong
+      implication: Plan for plugins/schemas/backends/future systems.
+      label: FACT
+    - id: PREFERENCE-07
+      preference: Native OS installer/UI conventions where appropriate.
+      area: UX/platform
+      strength: strong
+      implication: Use MSI/pkg/deb/native widgets where possible.
+      label: FACT
+    - id: PREFERENCE-08
+      preference: Renderer optional for non-game products.
+      area: architecture
+      strength: strong
+      implication: Launcher/setup/tools must not unnecessarily depend on gfx.
+      label: FACT
+    - id: PREFERENCE-09
+      preference: Common code with arbitrary presentation.
+      area: architecture/UI
+      strength: strong
+      implication: Use views/actions/models/canvases.
+      label: FACT
+    - id: PREFERENCE-10
+      preference: Deterministic fixed-point sim with correct calculations.
+      area: numeric/sim
+      strength: strong
+      implication: Check ranges and units carefully.
+      label: FACT
+    - id: PREFERENCE-11
+      preference: Arbitrary construction over prefab-only design.
+      area: gameplay
+      strength: strong
+      implication: Use construction graph/parts; prefabs as templates.
+      label: FACT
+    - id: PREFERENCE-12
+      preference: Seamless surface/space/scene transitions.
+      area: gameplay
+      strength: strong
+      implication: Use reference frames and tier handoff.
+      label: FACT
+    - id: PREFERENCE-13
+      preference: Comprehensive dev/mod/SDK/editor tooling.
+      area: tools
+      strength: strong
+      implication: Include game/launcher/mod/pack/world/save editors.
+      label: FACT
+    inferred:
+    - id: PREFERENCE-04
+      preference: Structured, audit-ready reports/tables.
+      area: formatting
+      strength: strong
+      implication: Use stable IDs, registers, tables.
+      label: FACT
+    - id: PREFERENCE-14
+      preference: Direct technical planning over high-level generalities.
+      area: reasoning style
+      strength: moderate/strong
+      implication: Provide concrete APIs, prompts, paths.
+      label: INFERENCE
+    - id: PREFERENCE-15
+      preference: Prefer long-term compatibility and stable ABIs.
+      area: architecture
+      strength: strong
+      implication: Design versioning and schemas before ecosystem grows.
+      label: INFERENCE
+    uncertain_or_not_established:
+    - Final scripting VM not established.
+    - Final schema/manifest format not established.
+    - Final default UPS not established.
+    - Exact retro backend acceptance criteria not established.
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Domino engine
+    label: FACT
+    objective: Reusable engine/core/platform/render/sim/mod foundation.
+    current_state: Architecture specified; Phase 1 ABI/API prompts generated; actual implementation unverified.
+    desired_end_state: Stable reusable engine layer for Dominium and future projects.
+    status: active/planned
+    priority: P0
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-01
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: active/planned
+    blockers: []
+    risks:
+    - RISK-02
+    artifacts: []
+    success_criteria:
+    - Stable reusable engine layer for Dominium and future projects.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-02
+    name: Dominium product/game layer
+    label: FACT
+    objective: Game-specific rules/products built on Domino.
+    current_state: Planned with headers/stubs prompts; implementation unverified.
+    desired_end_state: Setup, launcher, tools, and game products implemented over Domino.
+    status: active/planned
+    priority: P0
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-02
+    decisions_pending: []
+    tasks:
+    - TASK-03
+    constraints: []
+    dependencies: []
+    timeline: active/planned
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Setup, launcher, tools, and game products implemented over Domino.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-03
+    name: Repository structure
+    label: FACT
+    objective: Maintain consistent repo layout for engine, products, data, tools, docs, tests.
+    current_state: Planned/adopted in chat; actual repo unknown.
+    desired_end_state: Buildable repo with planned `include/`, `source/`, `docs/`, `data/`, `tools/`, `scripts/`, `cmake/`,
+      `tests/` layout.
+    status: active
+    priority: P0
+    background: Derived from visible chat planning for this workstream.
+    decisions_made: []
+    decisions_pending:
+    - QUESTION-01
+    tasks:
+    - TASK-01
+    constraints: []
+    dependencies: []
+    timeline: active
+    blockers:
+    - Actual repo state unverified
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Buildable repo with planned `include/`, `source/`, `docs/`, `data/`, `tools/`, `scripts/`, `cmake/`, `tests/` layout.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed:
+    - VERIFY-01
+    confidence: high
+  - id: WORKSTREAM-04
+    name: ABI/API spine
+    label: FACT
+    objective: Implement stable public ABIs/APIs first.
+    current_state: Phase 1 prompts generated.
+    desired_end_state: Common service spine for setup, launcher, tools, game, mods, and SDKs.
+    status: active Phase 1
+    priority: P0
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-03
+    - DECISION-04
+    - DECISION-10
+    - DECISION-27
+    decisions_pending:
+    - QUESTION-08
+    tasks:
+    - TASK-02
+    - TASK-06
+    - TASK-07
+    - TASK-11
+    constraints: []
+    dependencies: []
+    timeline: active Phase 1
+    blockers:
+    - Actual repo state unverified
+    risks:
+    - RISK-01
+    - RISK-09
+    artifacts: []
+    success_criteria:
+    - Common service spine for setup, launcher, tools, game, mods, and SDKs.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed:
+    - VERIFY-17
+    confidence: high
+  - id: WORKSTREAM-05
+    name: Platform API and backends
+    label: FACT
+    objective: Implement `dsys` and backends for target OS/platforms.
+    current_state: Backend prompt template and platform parameter list generated.
+    desired_end_state: Capability-described platform backends including Win32, Win16, DOS, CP/M, Carbon, Cocoa, X11, Wayland,
+      POSIX, SDL1, SDL2, null.
+    status: planned Phase 2
+    priority: P0
+    background: Derived from visible chat planning for this workstream.
+    decisions_made: []
+    decisions_pending:
+    - QUESTION-06
+    - QUESTION-07
+    tasks:
+    - TASK-04
+    - TASK-12
+    constraints: []
+    dependencies: []
+    timeline: planned Phase 2
+    blockers: []
+    risks:
+    - RISK-03
+    - RISK-07
+    artifacts: []
+    success_criteria:
+    - Capability-described platform backends including Win32, Win16, DOS, CP/M, Carbon, Cocoa, X11, Wayland, POSIX, SDL1,
+      SDL2, null.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed:
+    - VERIFY-06
+    - VERIFY-07
+    - VERIFY-11
+    - VERIFY-12
+    - VERIFY-20
+    confidence: high
+  - id: WORKSTREAM-06
+    name: Renderer API and backends
+    label: FACT
+    objective: Implement `dgfx` IR and renderer backends.
+    current_state: Renderer template, vtable prompt, and softref prompt generated.
+    desired_end_state: Renderer matrix with software, modern GPU, Apple, Windows, and retro backends, each advertising capabilities.
+    status: planned Phase 3
+    priority: P0
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-11
+    decisions_pending: []
+    tasks:
+    - TASK-05
+    - TASK-10
+    - TASK-13
+    - TASK-14
+    constraints: []
+    dependencies: []
+    timeline: planned Phase 3
+    blockers: []
+    risks:
+    - RISK-08
+    artifacts: []
+    success_criteria:
+    - Renderer matrix with software, modern GPU, Apple, Windows, and retro backends, each advertising capabilities.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed:
+    - VERIFY-08
+    - VERIFY-09
+    - VERIFY-10
+    - VERIFY-16
+    confidence: high
+  - id: WORKSTREAM-07
+    name: Audio API and backends
+    label: FACT
+    objective: Provide sound abstraction with null and real backends.
+    current_state: Stub ABI planned; detailed real backend prompts not generated.
+    desired_end_state: Game and tools can use audio via `daudio`, with null fallback.
+    status: planned
+    priority: P1
+    background: Derived from visible chat planning for this workstream.
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: planned
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Game and tools can use audio via `daudio`, with null fallback.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: medium
+  - id: WORKSTREAM-08
+    name: Unified UI system
+    label: FACT
+    objective: Present products in NONE/CLI/TUI/GUI with native and/or gfx backends.
+    current_state: Designed; stub prompt generated.
+    desired_end_state: Common UI layer for setup, launcher, tools, and optional game menus.
+    status: planned
+    priority: P0
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-05
+    - DECISION-07
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: planned
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Common UI layer for setup, launcher, tools, and optional game menus.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-09
+    name: Product contracts and runtime selection
+    label: FACT
+    objective: Describe products once and bind available sys/gfx/audio/ui drivers through capability matching.
+    current_state: Designed; not yet implemented.
+    desired_end_state: Predictable backend selection and controlled fallback/failure.
+    status: planned
+    priority: P0
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-08
+    - DECISION-09
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: planned
+    blockers: []
+    risks:
+    - RISK-04
+    artifacts: []
+    success_criteria:
+    - Predictable backend selection and controlled fallback/failure.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-10
+    name: Packages, instances, mods, packs
+    label: FACT
+    objective: Manage installed versions, packages, mods, packs, and configured instances.
+    current_state: ABI and persistence prompt generated; manifest/schema unresolved.
+    desired_end_state: Single package/instance system used by setup, launcher, tools, and game.
+    status: planned
+    priority: P0
+    background: Derived from visible chat planning for this workstream.
+    decisions_made: []
+    decisions_pending:
+    - QUESTION-10
+    tasks:
+    - TASK-08
+    constraints: []
+    dependencies: []
+    timeline: planned
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Single package/instance system used by setup, launcher, tools, and game.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-11
+    name: Setup product
+    label: FACT
+    objective: Install, repair, uninstall, and verify Dominium across platforms.
+    current_state: Phase 4 prompts generated.
+    desired_end_state: Setup core plus Windows MSI/EXE, macOS pkg/dmg/app, Linux deb/rpm/run, and retro installers.
+    status: planned Phase 4
+    priority: P1
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-23
+    decisions_pending:
+    - QUESTION-13
+    tasks:
+    - TASK-15
+    - TASK-16
+    - TASK-27
+    constraints: []
+    dependencies: []
+    timeline: planned Phase 4
+    blockers: []
+    risks:
+    - RISK-13
+    artifacts: []
+    success_criteria:
+    - Setup core plus Windows MSI/EXE, macOS pkg/dmg/app, Linux deb/rpm/run, and retro installers.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed:
+    - VERIFY-03
+    - VERIFY-04
+    - VERIFY-05
+    confidence: high
+  - id: WORKSTREAM-12
+    name: Launcher product
+    label: FACT
+    objective: Common launcher core and shells for instance/package/mod/tool management.
+    current_state: Phase 5 prompts generated.
+    desired_end_state: CLI/TUI/GUI launcher with extension hooks and optional gfx canvases.
+    status: planned Phase 5
+    priority: P1
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-24
+    decisions_pending: []
+    tasks:
+    - TASK-17
+    - TASK-18
+    - TASK-19
+    constraints: []
+    dependencies: []
+    timeline: planned Phase 5
+    blockers: []
+    risks:
+    - RISK-11
+    artifacts: []
+    success_criteria:
+    - CLI/TUI/GUI launcher with extension hooks and optional gfx canvases.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-13
+    name: Tools and SDKs
+    label: FACT
+    objective: Provide development tools, editors, and SDK surfaces for game/mod/pack/launcher creation.
+    current_state: Phase 6 prompts generated.
+    desired_end_state: '`dominium-tools`, asset compiler, packer, replay/test tools, world/save/game/launcher editors, GUI
+      editor host, SDK exports.'
+    status: planned Phase 6
+    priority: P1
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-26
+    decisions_pending: []
+    tasks:
+    - TASK-20
+    - TASK-21
+    - TASK-22
+    - TASK-23
+    constraints: []
+    dependencies: []
+    timeline: planned Phase 6
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - '`dominium-tools`, asset compiler, packer, replay/test tools, world/save/game/launcher editors, GUI editor host, SDK
+      exports.'
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-14
+    name: Game product
+    label: FACT
+    objective: Build playable Dominium client and later deep simulation.
+    current_state: Phase 7+ roadmap generated; detailed prompt batch pending.
+    desired_end_state: Deterministic playable core with construction, machines, networks, save/replay, later environment/space/AI/economy.
+    status: planned Phase 7+
+    priority: P0/P1
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-06
+    - DECISION-29
+    decisions_pending:
+    - QUESTION-15
+    tasks:
+    - TASK-09
+    - TASK-24
+    constraints: []
+    dependencies: []
+    timeline: planned Phase 7+
+    blockers: []
+    risks:
+    - RISK-12
+    artifacts: []
+    success_criteria:
+    - Deterministic playable core with construction, machines, networks, save/replay, later environment/space/AI/economy.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-15
+    name: Numeric, units, time, determinism
+    label: FACT
+    objective: Define fixed-point/integer units and UPS/FPS separation.
+    current_state: Architecture specified; implementation pending.
+    desired_end_state: Central numeric policy and deterministic fixed-step sim.
+    status: foundational
+    priority: P0
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-12
+    - DECISION-13
+    - DECISION-14
+    decisions_pending:
+    - QUESTION-04
+    - QUESTION-05
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: foundational
+    blockers: []
+    risks:
+    - RISK-05
+    - RISK-06
+    artifacts: []
+    success_criteria:
+    - Central numeric policy and deterministic fixed-step sim.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed:
+    - VERIFY-02
+    confidence: high
+  - id: WORKSTREAM-16
+    name: World/environment fields
+    label: FACT
+    objective: Use generic fields for terrain, atmosphere, hydrology, climate, pollution, radiation, geology.
+    current_state: Planned; old concrete terrain/hydro prompts superseded by generic primitives.
+    desired_end_state: Modular field/substance/reservoir/network domain systems.
+    status: planned later
+    priority: P1
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-15
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: planned later
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Modular field/substance/reservoir/network domain systems.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-17
+    name: Construction, vehicles, machines
+    label: FACT
+    objective: Unify buildings, vehicles, machines, portable/static/moving structures as constructions made of parts/materials.
+    current_state: Concept specified; implementation later.
+    desired_end_state: Arbitrary construction/destruction/blueprints across static and moving assemblies.
+    status: planned
+    priority: P0/P1
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-19
+    - DECISION-20
+    - DECISION-21
+    decisions_pending:
+    - QUESTION-11
+    tasks:
+    - TASK-29
+    constraints: []
+    dependencies: []
+    timeline: planned
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Arbitrary construction/destruction/blueprints across static and moving assemblies.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed:
+    - VERIFY-19
+    confidence: high
+  - id: WORKSTREAM-18
+    name: Space, orbits, seamless transitions
+    label: FACT
+    objective: Support Keplerian on-rails space and seamless surface/space/interior transitions.
+    current_state: Architecture specified; implementation later.
+    desired_end_state: Reference-frame/tiered transitions, space graph/sites, vehicles/stations/satellites and orbital gameplay.
+    status: planned
+    priority: P1
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-16
+    - DECISION-17
+    - DECISION-18
+    - DECISION-28
+    decisions_pending:
+    - QUESTION-12
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: planned
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Reference-frame/tiered transitions, space graph/sites, vehicles/stations/satellites and orbital gameplay.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-19
+    name: Actors, AI, jobs, knowledge
+    label: FACT
+    objective: Support player/AI actors, jobs, life support, comms, fog-of-war, knowledge transmission.
+    current_state: Conceptual; some earlier prompts; implementation later.
+    desired_end_state: Actors/brains/jobs/knowledge integrated with construction/world/economy.
+    status: planned
+    priority: P1/P2
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-22
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: planned
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Actors/brains/jobs/knowledge integrated with construction/world/economy.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-20
+    name: Economy, markets, politics
+    label: FACT
+    objective: Model markets, trade, companies/factions, law/policy, politics.
+    current_state: Planned later.
+    desired_end_state: Deterministic goods/market/faction systems integrated with logistics/jobs.
+    status: planned later
+    priority: P2
+    background: Derived from visible chat planning for this workstream.
+    decisions_made: []
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: planned later
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Deterministic goods/market/faction systems integrated with logistics/jobs.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: medium-high
+  - id: WORKSTREAM-21
+    name: Plugin, schema, scripting, event infrastructure
+    label: FACT
+    objective: Long-term extensibility through plugin ABIs, schemas, event bus, optional deterministic scripting.
+    current_state: Plugin/event ABI planned; schema/scripting choices unresolved.
+    desired_end_state: Third-party content/logic/launcher extensions via stable APIs and versioned schemas.
+    status: planned
+    priority: P1
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-25
+    decisions_pending:
+    - QUESTION-02
+    - QUESTION-03
+    - QUESTION-09
+    tasks:
+    - TASK-25
+    - TASK-26
+    constraints: []
+    dependencies: []
+    timeline: planned
+    blockers: []
+    risks:
+    - RISK-10
+    artifacts: []
+    success_criteria:
+    - Third-party content/logic/launcher extensions via stable APIs and versioned schemas.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed:
+    - VERIFY-14
+    - VERIFY-15
+    confidence: high
+  - id: WORKSTREAM-22
+    name: Save, replay, determinism harness
+    label: FACT
+    objective: Persist/replay/test deterministic simulations.
+    current_state: Planned; replay/test tools prompt generated.
+    desired_end_state: Save/load, replay recording/inspection, tick hashes and deterministic tests.
+    status: planned
+    priority: P1
+    background: Derived from visible chat planning for this workstream.
+    decisions_made: []
+    decisions_pending: []
+    tasks:
+    - TASK-28
+    constraints: []
+    dependencies: []
+    timeline: planned
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Save/load, replay recording/inspection, tick hashes and deterministic tests.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed:
+    - VERIFY-18
+    confidence: high
+  - id: WORKSTREAM-23
+    name: Multiplayer/distributed sim
+    label: FACT
+    objective: Future lockstep/authoritative multiplayer and servers.
+    current_state: Phase 10 roadmap only.
+    desired_end_state: Headless server, command streams, desync detection, launcher server browser.
+    status: future
+    priority: P2
+    background: Derived from visible chat planning for this workstream.
+    decisions_made: []
+    decisions_pending:
+    - QUESTION-16
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: future
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria:
+    - Headless server, command streams, desync detection, launcher server browser.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed: []
+    confidence: medium
+  - id: WORKSTREAM-24
+    name: Ports, retro editions, hardening
+    label: FACT
+    objective: Modern/retro builds, profiling, save compatibility, documentation.
+    current_state: Future Phase 12 plan.
+    desired_end_state: Stable ports with documented caps and long-term maintenance.
+    status: future
+    priority: P2
+    background: Derived from visible chat planning for this workstream.
+    decisions_made:
+    - DECISION-30
+    decisions_pending:
+    - QUESTION-14
+    tasks: []
+    constraints: []
+    dependencies: []
+    timeline: future
+    blockers: []
+    risks:
+    - RISK-14
+    artifacts: []
+    success_criteria:
+    - Stable ports with documented caps and long-term maintenance.
+    next_action: Verify repository state and follow relevant phase prompt.
+    verification_needed:
+    - VERIFY-13
+    confidence: medium-high
+  decisions:
+  - id: DECISION-01
+    decision: Name reusable engine/core layer Domino.
+    status: final
+    label: FACT
+    evidence_or_basis: User said engine/core/platforms will be called Domino engine.
+    rationale: Reuse across Dominium and other projects.
+    implications: Use `include/domino`, `source/domino`, Domino-prefixed APIs.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: high
+  - id: DECISION-02
+    decision: Separate Dominium game/product layer from Domino engine.
+    status: final
+    label: FACT
+    evidence_or_basis: Repeated repo/layer discussions.
+    rationale: Avoid game-specific lock-in in engine.
+    implications: Use `include/dominium`, `source/dominium`, product/rules split.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-03
+    decision: 'Current main sequence: ABIs/APIs first, then platforms, renderers, setup, launcher, tools, game.'
+    status: final/current
+    label: FACT
+    evidence_or_basis: User explicitly proposed this order.
+    rationale: Stable interfaces should precede implementations/products.
+    implications: Use this roadmap unless changed.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: high
+  - id: DECISION-04
+    decision: Use versioned C ABI structs with `struct_size` and `struct_version`.
+    status: final
+    label: FACT
+    evidence_or_basis: ABI conventions in chat.
+    rationale: Future compatibility for tools/plugins/products.
+    implications: All public boundary structs follow the pattern.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: high
+  - id: DECISION-05
+    decision: Platform is mandatory; renderer optional for launcher/setup/tools unless gfx canvas/custom UI needed.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly requested this.
+    rationale: Native/CLI/TUI operation without renderer dependency.
+    implications: Product contracts distinguish required/optional gfx.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: high
+  - id: DECISION-06
+    decision: Game client requires gfx renderer.
+    status: final/tentative
+    label: INFERENCE
+    evidence_or_basis: Assistant stated and user continued; not directly contradicted.
+    rationale: A game client is graphical; CLI fallback would not be the same product.
+    implications: Game hard-fails if no suitable renderer.
+    related_workstreams:
+    - WORKSTREAM-14
+    uncertainty: medium
+  - id: DECISION-07
+    decision: Unify GUI as `DOM_UI_GUI` with backend flags for native/gfx.
+    status: final
+    label: FACT
+    evidence_or_basis: User asked to unify GUI modes; design accepted.
+    rationale: Avoid separate native/custom mode explosion.
+    implications: UI mode and implementation backend are distinct.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: high
+  - id: DECISION-08
+    decision: Use product contracts and capability matching for runtime backend selection.
+    status: final
+    label: FACT
+    evidence_or_basis: Discussion of arbitrary platform/renderer combos.
+    rationale: Controlled fallback and failure.
+    implications: Implement `dom_product_contract`, `dom_select_runtime`.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: high
+  - id: DECISION-09
+    decision: Graceful degradation must be explicit per product.
+    status: final
+    label: FACT
+    evidence_or_basis: Discussion of fallback danger.
+    rationale: Avoid half-broken functionality.
+    implications: Required/optional features and fallback modes in contracts.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: high
+  - id: DECISION-10
+    decision: Expose product logic through commands, queries, tables, trees, views, canvases.
+    status: final
+    label: FACT
+    evidence_or_basis: Common launcher/API discussions.
+    rationale: Same code can present in CLI/TUI/native/gfx.
+    implications: Implement model/view APIs and canvas builders.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: high
+  - id: DECISION-11
+    decision: Use renderer command-buffer IR consumed by backends.
+    status: final
+    label: FACT
+    evidence_or_basis: Rendering architecture discussion.
+    rationale: Backend independence, replay/logging/remote rendering.
+    implications: Implement `dgfx_cmd_buffer` and opcodes.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: high
+  - id: DECISION-12
+    decision: Use Q4.12, Q16.16, Q48.16 plus integer aliases as core numeric palette.
+    status: final
+    label: FACT
+    evidence_or_basis: Numeric discussions and correction.
+    rationale: Avoid redundant formats and misuse.
+    implications: Implement `dnumeric.h` with semantic aliases.
+    related_workstreams:
+    - WORKSTREAM-15
+    uncertainty: high
+  - id: DECISION-13
+    decision: Inventory/item/material storage counts are whole integers only.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly stated core gameplay systems and item storage should be whole integers.
+    rationale: Economy/BOM clarity.
+    implications: No fractional item stacks/costs.
+    related_workstreams:
+    - WORKSTREAM-15
+    uncertainty: high
+  - id: DECISION-14
+    decision: Treat Q4.12 as chunk-save/storage codec for bounded fields, not primary runtime.
+    status: final
+    label: FACT
+    evidence_or_basis: q4.12 discussion.
+    rationale: Avoid runtime range/precision limits.
+    implications: Decode into runtime Q16.16/Q48.16.
+    related_workstreams:
+    - WORKSTREAM-15
+    uncertainty: high
+  - id: DECISION-15
+    decision: Use signed world coordinates with `0,0,0` at world center and sea level.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly requested center/sea origin.
+    rationale: Semantic coordinates and signed deltas.
+    implications: '`TileCoord`, `TileHeight`, toroidal wrapping.'
+    related_workstreams:
+    - WORKSTREAM-16
+    uncertainty: high
+  - id: DECISION-16
+    decision: Use Cartesian space positions; polar/spherical only derived for UI/indexing.
+    status: final
+    label: FACT
+    evidence_or_basis: Space coordinate discussion.
+    rationale: Avoid trig/wrap/singularity/nonlinear resolution problems.
+    implications: '`SpacePos` uses Q48.16 x/y/z.'
+    related_workstreams:
+    - WORKSTREAM-18
+    uncertainty: high
+  - id: DECISION-17
+    decision: Support arbitrary Keplerian on-rails orbits with optional drifts/precession.
+    status: final
+    label: FACT
+    evidence_or_basis: User requested arbitrary Keplerian orbits.
+    rationale: Realistic-feeling, cheap deterministic space.
+    implications: '`OrbitComponent` and orbit engine.'
+    related_workstreams:
+    - WORKSTREAM-18
+    uncertainty: high
+  - id: DECISION-18
+    decision: Do not implement full N-body dynamics as default core mechanic.
+    status: final
+    label: FACT
+    evidence_or_basis: Visible rationale in space discussion.
+    rationale: Too complex/expensive; not needed for goals.
+    implications: Use tags/scripted effects/approximations for resonances/black holes etc.
+    related_workstreams:
+    - WORKSTREAM-18
+    uncertainty: medium-high
+  - id: DECISION-19
+    decision: Unify vehicles, buildings, machines, portable/static/moving constructions as construction graphs.
+    status: final
+    label: FACT
+    evidence_or_basis: User asked abstraction; assistant design accepted in flow.
+    rationale: Avoid parallel incompatible systems.
+    implications: Parts/materials/graphs/frames/mobility components.
+    related_workstreams:
+    - WORKSTREAM-17
+    uncertainty: high
+  - id: DECISION-20
+    decision: Prefabs/blueprints are templates, not primitive building system.
+    status: final
+    label: FACT
+    evidence_or_basis: User clarified they do not mean prefab structures as primary.
+    rationale: Arbitrary construction is primary.
+    implications: Blueprints compose actual construction primitives.
+    related_workstreams:
+    - WORKSTREAM-17
+    uncertainty: high
+  - id: DECISION-21
+    decision: Blueprints/planners are diffs/operations compiled to jobs.
+    status: final
+    label: FACT
+    evidence_or_basis: Blueprint discussion.
+    rationale: Planning without immediate sim mutation; supports saving drafts.
+    implications: Blueprint ops and job graph.
+    related_workstreams:
+    - WORKSTREAM-17
+    uncertainty: high
+  - id: DECISION-22
+    decision: Player immediate work and queued work share job pipeline.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly wanted both simultaneous/manual and queued execution.
+    rationale: Deterministic common path for players, robots, humans.
+    implications: Direct action is a pre-assigned job.
+    related_workstreams:
+    - WORKSTREAM-19
+    uncertainty: high
+  - id: DECISION-23
+    decision: Use OS-native setup packaging where possible.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly wanted MSI/EXE, Linux/macOS expected style.
+    rationale: User trust/expected OS integration.
+    implications: Setup core plus thin native wrappers.
+    related_workstreams:
+    - WORKSTREAM-11
+    uncertainty: high
+  - id: DECISION-24
+    decision: Launcher is described by views/actions/models, not hardcoded per shell.
+    status: final
+    label: FACT
+    evidence_or_basis: Common launcher discussion.
+    rationale: CLI/TUI/GUI share logic.
+    implications: '`dom_launch` core and `dom_view` models.'
+    related_workstreams:
+    - WORKSTREAM-12
+    uncertainty: high
+  - id: DECISION-25
+    decision: Launcher and game extensions use package/plugin systems.
+    status: final/planned
+    label: FACT
+    evidence_or_basis: Launcher extension prompts.
+    rationale: Third-party customization.
+    implications: '`DOM_PKG_LAUNCHER_UI`, `launcher_ext_vtable`, `dom_mod_vtable`.'
+    related_workstreams:
+    - WORKSTREAM-21
+    uncertainty: high
+  - id: DECISION-26
+    decision: Tools and SDKs are first-class products.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly requested dev tools/editors/SDKs.
+    rationale: Modding/dev ecosystem.
+    implications: '`dominium-tools`, editors, SDK export.'
+    related_workstreams:
+    - WORKSTREAM-13
+    uncertainty: high
+  - id: DECISION-27
+    decision: Generate Codex prompts one subsystem/backend/product at a time.
+    status: final workflow
+    label: FACT
+    evidence_or_basis: User requested one-at-a-time full context; assistant reinforced.
+    rationale: Avoid tangled outputs.
+    implications: Sequential prompts with bounded scope.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: high
+  - id: DECISION-28
+    decision: Use reference frames and sim tiers for seamless transitions.
+    status: final concept
+    label: FACT
+    evidence_or_basis: Seamless transitions discussion.
+    rationale: No-load surface/space/interior transitions.
+    implications: Frame/tier manager and dual-representation handoff.
+    related_workstreams:
+    - WORKSTREAM-18
+    uncertainty: high
+  - id: DECISION-29
+    decision: Defer deep environment/space/economy systems until after playable core.
+    status: planned/final sequencing
+    label: FACT
+    evidence_or_basis: Phase 7+ roadmap.
+    rationale: Avoid scope explosion.
+    implications: Phase 7 first; Phase 8/9 later.
+    related_workstreams:
+    - WORKSTREAM-14
+    uncertainty: medium-high
+  - id: DECISION-30
+    decision: Preserve superseded options and uncertainty in handoff/extraction.
+    status: final for handoff
+    label: FACT
+    evidence_or_basis: User’s explicit extraction rules.
+    rationale: Prevents false continuity.
+    implications: All report items labelled/statused.
+    related_workstreams:
+    - WORKSTREAM-24
+    uncertainty: high
+  tasks:
+  - id: TASK-01
+    task: Verify actual repository state before applying prompts.
+    priority: P0
+    urgency: U0/U1
+    owner: User/future assistant
+    dependencies:
+    - Repository access
+    inputs_needed:
+    - File tree, build output
+    expected_output: Accurate implementation context
+    next_step: Inspect repo and build config.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: high
+  - id: TASK-02
+    task: Apply Phase 1.1.1 Domino ABI prompt.
+    priority: P0
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - Repo verified
+    inputs_needed:
+    - Prompt 1.1.1
+    expected_output: Engine headers and stubs
+    next_step: Run after repo inspection.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: high
+  - id: TASK-03
+    task: Apply Phase 1.1.2 Dominium ABI prompt.
+    priority: P0
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - Phase 1.1.1
+    inputs_needed:
+    - Prompt 1.1.2
+    expected_output: Dominium headers/stubs
+    next_step: Run after Domino ABI prompt.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: high
+  - id: TASK-04
+    task: Implement `dsys` stub.
+    priority: P0
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - sys header
+    inputs_needed:
+    - Prompt 1.2.1
+    expected_output: Platform stub backend
+    next_step: Run prompt.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: high
+  - id: TASK-05
+    task: Implement gfx/audio/ui/input stubs.
+    priority: P0
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - headers
+    inputs_needed:
+    - Prompt 1.2.2
+    expected_output: Null render/audio, UI/input stubs
+    next_step: Run prompt.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: high
+  - id: TASK-06
+    task: Implement core/pkg/inst/sim/canvas/model/event/plugin stubs.
+    priority: P0
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - Core headers
+    inputs_needed:
+    - Prompt 1.2.3
+    expected_output: In-memory service spine
+    next_step: Run prompt.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: high
+  - id: TASK-07
+    task: Implement event bus and core commands/queries.
+    priority: P0
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - Service spine
+    inputs_needed:
+    - Prompt 1.3.1
+    expected_output: Working dispatcher/events
+    next_step: Run prompt.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: high
+  - id: TASK-08
+    task: Implement package/instance persistence.
+    priority: P0
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - Core dispatch; schema choice
+    inputs_needed:
+    - Prompt 1.3.2
+    expected_output: Filesystem package/instance registries
+    next_step: Run after confirming manifest approach.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: high
+  - id: TASK-09
+    task: Hook Dominium sim into Domino sim.
+    priority: P1
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - Core/sim
+    inputs_needed:
+    - Prompt 1.3.3
+    expected_output: Sim orchestration shell
+    next_step: Run prompt.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+    confidence: high
+  - id: TASK-10
+    task: Implement canvas builders.
+    priority: P1
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - dgfx IR and sim stubs
+    inputs_needed:
+    - Prompt 1.3.4
+    expected_output: Basic scene command buffers
+    next_step: Run prompt.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: high
+  - id: TASK-11
+    task: Implement table/tree/view baseline models.
+    priority: P0/P1
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - pkg/inst
+    inputs_needed:
+    - Prompt 1.3.5
+    expected_output: Launcher/tool data models
+    next_step: Run prompt.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: high
+  - id: TASK-12
+    task: Implement platform backends one at a time.
+    priority: P0
+    urgency: U2
+    owner: User/Codex
+    dependencies:
+    - '`dsys` vtable'
+    inputs_needed:
+    - Platform template and toolchains
+    expected_output: Real `dsys` backends
+    next_step: Start Win32, SDL2, POSIX/X11.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: high
+  - id: TASK-13
+    task: Implement renderer vtable and softref.
+    priority: P0
+    urgency: U2
+    owner: User/Codex
+    dependencies:
+    - '`dgfx` ABI'
+    inputs_needed:
+    - Renderer Prompt A/B
+    expected_output: Renderer backend selector and reference renderer
+    next_step: Run Prompt A then B.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: high
+  - id: TASK-14
+    task: Implement remaining renderer backends.
+    priority: P1
+    urgency: U2/U3
+    owner: User/Codex
+    dependencies:
+    - softref/vtable
+    inputs_needed:
+    - Backend templates/APIs
+    expected_output: Renderer matrix
+    next_step: Implement one backend per prompt.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: high
+  - id: TASK-15
+    task: Implement setup core and CLI.
+    priority: P1
+    urgency: U2
+    owner: User/Codex
+    dependencies:
+    - pkg/inst/platform
+    inputs_needed:
+    - Phase 4.1 prompt
+    expected_output: Setup engine and CLI
+    next_step: Run Phase 4.1.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: high
+  - id: TASK-16
+    task: Implement OS setup wrappers/installers.
+    priority: P1
+    urgency: U2/U3
+    owner: User/Codex
+    dependencies:
+    - setup core; packaging tools
+    inputs_needed:
+    - Phase 4.2-4.5 prompts
+    expected_output: Native installers/wrappers
+    next_step: Verify external tools, then run prompts.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: high
+  - id: TASK-17
+    task: Implement launcher core.
+    priority: P1
+    urgency: U2
+    owner: User/Codex
+    dependencies:
+    - core models/pkg/inst
+    inputs_needed:
+    - Phase 5.1 prompt
+    expected_output: UI-agnostic launcher core
+    next_step: Run Phase 5.1.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+    confidence: high
+  - id: TASK-18
+    task: Implement launcher CLI/TUI/GUI.
+    priority: P1
+    urgency: U2
+    owner: User/Codex
+    dependencies:
+    - launcher core; ui/gfx
+    inputs_needed:
+    - Phase 5.2-5.4 prompts
+    expected_output: Launcher shells
+    next_step: Run in order.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+    confidence: high
+  - id: TASK-19
+    task: Implement launcher extension hooks.
+    priority: P1
+    urgency: U2
+    owner: User/Codex
+    dependencies:
+    - plugin/package system
+    inputs_needed:
+    - Phase 5.5 prompt
+    expected_output: Launcher mod/pack extension support
+    next_step: Run Phase 5.5.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+    confidence: high
+  - id: TASK-20
+    task: Implement tool framework.
+    priority: P1
+    urgency: U2
+    owner: User/Codex
+    dependencies:
+    - core APIs
+    inputs_needed:
+    - Phase 6.1 prompt
+    expected_output: '`dominium-tools` host'
+    next_step: Run Phase 6.1.
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+    confidence: high
+  - id: TASK-21
+    task: Implement core dev tools.
+    priority: P1
+    urgency: U2/U3
+    owner: User/Codex
+    dependencies:
+    - tool framework
+    inputs_needed:
+    - Phase 6.2 prompt
+    expected_output: assetc/pack/replay/test
+    next_step: Run Phase 6.2.
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+    confidence: high
+  - id: TASK-22
+    task: Implement editor backends.
+    priority: P1
+    urgency: U3
+    owner: User/Codex
+    dependencies:
+    - schemas/data APIs
+    inputs_needed:
+    - Phase 6.3 prompt
+    expected_output: world/save/game/launcher edit APIs
+    next_step: Run after schema decision.
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+    confidence: high
+  - id: TASK-23
+    task: Implement GUI editor host.
+    priority: P2
+    urgency: U3
+    owner: User/Codex
+    dependencies:
+    - editor backends; UI/gfx
+    inputs_needed:
+    - Phase 6.4 prompt
+    expected_output: Unified editor GUI
+    next_step: Run later.
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+    confidence: high
+  - id: TASK-24
+    task: Generate detailed Phase 7 Codex prompts.
+    priority: P1
+    urgency: U2
+    owner: Future assistant
+    dependencies:
+    - Phase 7 roadmap
+    inputs_needed:
+    - User request
+    expected_output: Game implementation prompt batch
+    next_step: Do when user asks to continue game phase.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+    confidence: high
+  - id: TASK-25
+    task: Define content/schema format and migrations.
+    priority: P0/P1
+    urgency: U1/U2
+    owner: User/future
+    dependencies:
+    - Package/content plans
+    inputs_needed:
+    - Format decision
+    expected_output: Stable schemas and validation
+    next_step: Decide before editor/mod work.
+    related_workstreams:
+    - WORKSTREAM-21
+    label: INFERENCE
+    confidence: medium-high
+  - id: TASK-26
+    task: Choose scripting VM/tier.
+    priority: P2
+    urgency: U3
+    owner: User/future
+    dependencies:
+    - Plugin/event system
+    inputs_needed:
+    - Requirements
+    expected_output: Script layer plan
+    next_step: Evaluate later.
+    related_workstreams:
+    - WORKSTREAM-21
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: TASK-27
+    task: Verify external packaging/platform/render tool details.
+    priority: P1
+    urgency: U2
+    owner: User/future assistant
+    dependencies:
+    - External docs
+    inputs_needed:
+    - Current web/toolchain docs
+    expected_output: Updated assumptions
+    next_step: Verify before implementation.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+    confidence: high
+  - id: TASK-28
+    task: Define save/replay format.
+    priority: P1
+    urgency: U2/U3
+    owner: User/future
+    dependencies:
+    - Game/world schemas
+    inputs_needed:
+    - Format/requirements
+    expected_output: Save/replay spec
+    next_step: Do before save editor/game save implementation.
+    related_workstreams:
+    - WORKSTREAM-22
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium-high
+  - id: TASK-29
+    task: Define construction storage and graph format.
+    priority: P1
+    urgency: U2/U3
+    owner: User/future
+    dependencies:
+    - Construction design
+    inputs_needed:
+    - Data structure/performance criteria
+    expected_output: Construction runtime spec
+    next_step: Do before Phase 7 construction implementation.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium-high
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Domino core should be C89.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Architecture/prompts
+    implication: Use portable C; avoid C++/modern C in core.
+    violation_risk: C++ features or nonportable language features in core.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-02
+    constraint: No floating-point in deterministic sim.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Numeric policy discussions
+    implication: Use fixed-point/integer for sim state/calculations.
+    violation_risk: Frame-time floats or platform math in sim.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-03
+    constraint: Public engine headers must not include OS/graphics API headers.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Platform/render ABI discussions
+    implication: Backends isolate platform-specific headers.
+    violation_risk: Win32/Xlib/GL includes in public core headers.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-04
+    constraint: ABI boundary structs need size/version metadata.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: ABI conventions
+    implication: Compatibility with plugins/tools/future versions.
+    violation_risk: Unversioned ABI structs crossing boundaries.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-05
+    constraint: Inventory/material counts are whole integers only.
+    type: technical/gameplay
+    hard_or_soft: hard
+    source_or_basis: User explicit
+    implication: Items, BOMs, storage use integer counts.
+    violation_risk: Fractional item stacks/costs.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-06
+    constraint: Q4.12 is storage codec for bounded dense values, not primary runtime.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Numeric discussion
+    implication: Decode into runtime fixed formats.
+    violation_risk: Using q4.12 for unbounded runtime state.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-07
+    constraint: Use q48.16 only where high range/sparse totals need it.
+    type: technical
+    hard_or_soft: soft/hard by context
+    source_or_basis: Numeric discussion
+    implication: Avoid dense memory overhead.
+    violation_risk: q48.16 per tile/cell fields.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-08
+    constraint: Renderer is optional for launcher/setup/tools beyond optional canvases.
+    type: architecture
+    hard_or_soft: hard preference
+    source_or_basis: User explicit
+    implication: Products can run CLI/TUI/native UI.
+    violation_risk: Requiring gfx just to list/manage instances.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-09
+    constraint: Game client requires suitable renderer.
+    type: architecture/product
+    hard_or_soft: hard for game client
+    source_or_basis: Accepted design
+    implication: Fail clearly if no gfx backend.
+    violation_risk: Pretending CLI/TUI is full game client.
+    label: INFERENCE
+    confidence: medium
+  - id: CONSTRAINT-10
+    constraint: Fallback/degradation must be declared per product.
+    type: architecture
+    hard_or_soft: hard design rule
+    source_or_basis: Degradation discussion
+    implication: Use product contracts.
+    violation_risk: Silent failure/hidden fallback.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-11
+    constraint: All products should use common core APIs, not duplicate logic per UI shell.
+    type: architecture
+    hard_or_soft: hard design rule
+    source_or_basis: Launcher/common code discussion
+    implication: Shells present views/actions only.
+    violation_risk: Separate CLI/TUI/GUI logic implementations.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-12
+    constraint: Setup wrappers should not reimplement install logic.
+    type: architecture/product
+    hard_or_soft: hard design rule
+    source_or_basis: Setup plan
+    implication: OS installers call setup core/CLI.
+    violation_risk: MSI/pkg/deb duplicating divergent layout rules.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-13
+    constraint: Use one Codex prompt per subsystem/backend/product stage.
+    type: workflow
+    hard_or_soft: strong preference
+    source_or_basis: User and prompt planning
+    implication: Keep changes bounded.
+    violation_risk: Batching all backends/products in one prompt.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-14
+    constraint: Do not treat assistant suggestions as user decisions unless accepted/built upon.
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: Handoff instructions
+    implication: Preserve uncertainty.
+    violation_risk: Promoting brainstorms to facts.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-15
+    constraint: External-world/software/tool details require verification before use.
+    type: evidence/staleness
+    hard_or_soft: hard
+    source_or_basis: Handoff rules/date anchor
+    implication: Use current sources before implementing packaging/platform details.
+    violation_risk: Using stale WiX/macOS/Linux/SDK info as current.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-16
+    constraint: Do not summarise the whole Project; this report covers this chat only.
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User handoff instructions
+    implication: Avoid cross-chat contamination.
+    violation_risk: Adding unlabelled external project memory.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-17
+    constraint: Preserve rejected/superseded options and changes of direction.
+    type: handoff
+    hard_or_soft: hard
+    source_or_basis: User handoff instructions
+    implication: Avoid repeated work and false continuity.
+    violation_risk: Deleting old options from handoff.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-18
+    constraint: Products should be describable once and run under arbitrary supported backend combos.
+    type: architecture
+    hard_or_soft: hard goal
+    source_or_basis: User explicit
+    implication: Product contract/config approach.
+    violation_risk: Hardcoding products per platform/renderer.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-19
+    constraint: Construction system must support arbitrary construction, not only prefabs.
+    type: gameplay
+    hard_or_soft: hard goal
+    source_or_basis: User explicit
+    implication: Parts/construction graph primary.
+    violation_risk: Prefab-only building system.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-20
+    constraint: Seamless transitions/no load screens are desired for surfaces/space/scenes.
+    type: gameplay
+    hard_or_soft: strong goal
+    source_or_basis: User explicit
+    implication: Use frames/streaming/tier handoff.
+    violation_risk: Hard scene boundaries/load transitions as only option.
+    label: FACT
+    confidence: high
+  open_questions:
+  - id: QUESTION-01
+    question: What is the actual repository state?
+    why_it_matters: Prompts depend on files/build state.
+    known: Architecture/prompts exist.
+    unknown: Which files/code actually exist.
+    resolution_path: Inspect repo/build.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: What final schema/data format should be used?
+    why_it_matters: Packages, mods, tools, editors need it.
+    known: JSON/TOML/INI placeholders discussed.
+    unknown: Final format and migrations.
+    resolution_path: User decision/schema prototype.
+    priority: P0/P1
+    related_workstreams:
+    - WORKSTREAM-21
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: What scripting VM/tier should be used?
+    why_it_matters: Mods/automation/sandboxing.
+    known: Lua/Wren/custom mentioned.
+    unknown: Final VM and deterministic policy.
+    resolution_path: Evaluate options.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-21
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: What is final default UPS?
+    why_it_matters: Sim timing/tuning.
+    known: Arbitrary UPS supported; examples vary.
+    unknown: Default and per-save policy.
+    resolution_path: User/spec decision.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: What does README define for scale?
+    why_it_matters: Unit consistency.
+    known: Visible chat has 2^24m/chunks/origin.
+    unknown: README details not visible.
+    resolution_path: Inspect README.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: What are Carbon OS APIs?
+    why_it_matters: Backend implementation.
+    known: Carbon OS target mentioned.
+    unknown: Actual syscalls/toolchain.
+    resolution_path: Project docs/user info.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: What does fully implement mean for retro/limited backends?
+    why_it_matters: Acceptance criteria.
+    known: Caps/fallbacks planned.
+    unknown: Minimum supported features per target.
+    resolution_path: Capability matrix.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: Should public ABI use `double` readouts in `dom_sim_state`?
+    why_it_matters: Potential conflict with no-float policy.
+    known: Examples used `double` for public readout.
+    unknown: Boundary exception/fixed alternative.
+    resolution_path: Design decision.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: How should plugins work on platforms without dynamic loading?
+    why_it_matters: Mod portability.
+    known: Static registration suggested.
+    unknown: Concrete mechanism.
+    resolution_path: Plugin loader spec.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-21
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: What is exact package manifest format and dependency range syntax?
+    why_it_matters: Package system implementation.
+    known: Manifest fields known.
+    unknown: Syntax/version range semantics.
+    resolution_path: Package spec.
+    priority: P0/P1
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: How to store/update huge construction graphs?
+    why_it_matters: Performance and arbitrary construction.
+    known: Construction graph concept known.
+    unknown: Data structure/LOD/update algorithms.
+    resolution_path: Construction runtime prototype/spec.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-17
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: What are exact surface/air/high-atmo/orbit transition thresholds?
+    why_it_matters: Seamless vehicle transitions.
+    known: Conceptual tiers/bands.
+    unknown: Numeric thresholds/criteria.
+    resolution_path: Frame/tier/vehicle spec.
+    priority: P1/P2
+    related_workstreams:
+    - WORKSTREAM-18
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-13
+    question: What current tools/framework versions should be used for packaging/render/platform?
+    why_it_matters: External implementation details may be stale.
+    known: Names of tools/APIs known.
+    unknown: Current commands/best practices.
+    resolution_path: Current documentation verification.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-14
+    question: What licensing constraints apply to dependencies?
+    why_it_matters: Distribution/legal risk.
+    known: Potential deps listed.
+    unknown: License compatibility.
+    resolution_path: Dependency/license audit.
+    priority: P1/P2
+    related_workstreams:
+    - WORKSTREAM-24
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-15
+    question: What detailed Phase 7 prompts are wanted next?
+    why_it_matters: Next roadmap step.
+    known: Phase 7 roadmap exists.
+    unknown: Granularity/order desired.
+    resolution_path: User request.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-16
+    question: What multiplayer protocol will be used?
+    why_it_matters: Future networked sim.
+    known: Lockstep/authoritative discussed.
+    unknown: Concrete protocol.
+    resolution_path: Later design.
+    priority: P3
+    related_workstreams:
+    - WORKSTREAM-23
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Starting with platforms/renderers before ABIs/APIs.
+    status: superseded
+    reason: User later changed sequence to ABIs first.
+    final_or_tentative: final current plan
+    reconsider_conditions: If ABIs already implemented and verified.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-02
+    option: Making launcher/setup/tools require renderers by default.
+    status: rejected
+    reason: User wants renderer optional and native/text modes.
+    final_or_tentative: final as default
+    reconsider_conditions: Custom gfx-only tool/launcher skins.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-03
+    option: Separate GUI modes for native GUI and gfx GUI.
+    status: rejected/superseded
+    reason: User asked to unify GUI mode.
+    final_or_tentative: final
+    reconsider_conditions: Only if UI architecture changes significantly.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-04
+    option: Full signed/unsigned fixed-point type matrix as first-class API.
+    status: rejected
+    reason: Redundant and encourages misuse.
+    final_or_tentative: mostly final
+    reconsider_conditions: Unsigned storage codecs like U4.12.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: REJECTED-05
+    option: q48.16 everywhere including dense fields.
+    status: rejected
+    reason: Too much memory overhead.
+    final_or_tentative: final
+    reconsider_conditions: Sparse/reservoir/global totals.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: REJECTED-06
+    option: Milli-unit q64.0/q32.0 as universal representation.
+    status: rejected
+    reason: Wasteful and less flexible for flows.
+    final_or_tentative: final
+    reconsider_conditions: Specific integer diagnostics/counters.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: REJECTED-07
+    option: Polar/spherical authoritative space coordinates.
+    status: rejected
+    reason: Trig/wrap/singularity/nonlinear resolution problems.
+    final_or_tentative: final
+    reconsider_conditions: UI display/orbital shell indexing.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+  - id: REJECTED-08
+    option: Full N-body space simulation by default.
+    status: rejected
+    reason: Too costly/complex; Kepler on-rails sufficient.
+    final_or_tentative: final for core
+    reconsider_conditions: Optional advanced mod/system.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+  - id: REJECTED-09
+    option: Continuous thrust integration globally for space travel.
+    status: deprioritised
+    reason: Use burns/on-rails; local bubbles for docking.
+    final_or_tentative: final for global
+    reconsider_conditions: Local 6DOF maneuvering/docking.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+  - id: REJECTED-10
+    option: Prefab-only building system.
+    status: rejected
+    reason: User wants arbitrary construction.
+    final_or_tentative: final
+    reconsider_conditions: Prefabs remain templates/blueprints.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: FACT
+  - id: REJECTED-11
+    option: One giant Codex prompt for all systems/backends.
+    status: rejected
+    reason: Likely to tangle implementation.
+    final_or_tentative: final workflow
+    reconsider_conditions: Avoid; keep prompts bounded.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-12
+    option: Full generic meta-UI framework now.
+    status: deprioritised
+    reason: Diminishing returns; minimal views/actions sufficient.
+    final_or_tentative: tentative
+    reconsider_conditions: Rich editor UI later if needed.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Top-level repo tree
+    type: plan
+    purpose: Define directories
+    status: planned/adopted
+    origin: User-provided tree and assistant refinements
+    carry_forward: 'yes'
+    notes: Includes docs/external/include/source/data/tools/scripts/cmake/tests
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Domino/Dominium layer split
+    type: framework
+    purpose: Separate engine and game/product layers
+    status: active
+    origin: Architecture discussion
+    carry_forward: 'yes'
+    notes: Core organizing principle
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: ABI/API layer list L0–L12
+    type: framework/spec
+    purpose: Define public interface stack
+    status: generated
+    origin: Layer/interface request
+    carry_forward: 'yes'
+    notes: Core future handoff material
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: Prompt 1.1.1
+    type: prompt
+    purpose: Domino engine ABI headers/stubs
+    status: generated
+    origin: Phase 1 prompts
+    carry_forward: 'yes'
+    notes: Current Phase 1 artifact
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: Prompt 1.1.2
+    type: prompt
+    purpose: Dominium game ABI headers/stubs
+    status: generated
+    origin: Phase 1 prompts
+    carry_forward: 'yes'
+    notes: Current Phase 1 artifact
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: Prompt 1.2.1
+    type: prompt
+    purpose: '`dsys` stub'
+    status: generated
+    origin: Phase 1 prompts
+    carry_forward: 'yes'
+    notes: Current Phase 1 artifact
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: Prompt 1.2.2
+    type: prompt
+    purpose: '`dgfx`/`daudio`/`dom_ui`/`dom_input` stubs'
+    status: generated
+    origin: Phase 1 prompts
+    carry_forward: 'yes'
+    notes: Current Phase 1 artifact
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Prompt 1.2.3
+    type: prompt
+    purpose: '`dom_core`/pkg/inst/sim/canvas/models/events/plugin stubs'
+    status: generated
+    origin: Phase 1 prompts
+    carry_forward: 'yes'
+    notes: Current Phase 1 artifact
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: Prompts 1.3.1–1.3.5
+    type: prompt group
+    purpose: Core logic, persistence, sim, canvas, models
+    status: generated
+    origin: Phase 1.3 prompts
+    carry_forward: 'yes'
+    notes: Current Phase 1 artifacts
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: Generic dsys backend prompt template
+    type: prompt/template
+    purpose: Implement platform backends
+    status: generated
+    origin: Platform continuation
+    carry_forward: 'yes'
+    notes: Use one per platform
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: Platform parameter table
+    type: table/checklist
+    purpose: Parameters for Win32/Win16/DOS/CPM/etc
+    status: generated
+    origin: Platform continuation
+    carry_forward: 'yes'
+    notes: Includes retro constraints
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Generic renderer backend prompt template
+    type: prompt/template
+    purpose: Implement renderer backends
+    status: generated
+    origin: Renderer continuation
+    carry_forward: 'yes'
+    notes: Use one per renderer
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: Renderer parameter table
+    type: table/checklist
+    purpose: Renderer backend list/caps
+    status: generated
+    origin: Renderer continuation
+    carry_forward: 'yes'
+    notes: Includes modern/Apple/retro/software
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Renderer vtable prompt
+    type: prompt
+    purpose: Implement `dgfx_backend_vtable`
+    status: generated
+    origin: Prompt A
+    carry_forward: 'yes'
+    notes: Phase 3 foundation
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: Softref renderer prompt
+    type: prompt
+    purpose: Implement reference software renderer
+    status: generated
+    origin: Prompt B
+    carry_forward: 'yes'
+    notes: Canonical renderer
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: Phase 4 setup prompts
+    type: prompt group
+    purpose: Setup core and OS installers
+    status: generated
+    origin: Setup phase
+    carry_forward: 'yes'
+    notes: Current Phase 4 artifacts
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: Phase 5 launcher prompts
+    type: prompt group
+    purpose: Launcher core/shells/extensions
+    status: generated
+    origin: Launcher phase
+    carry_forward: 'yes'
+    notes: Current Phase 5 artifacts
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: Phase 6 tools prompts
+    type: prompt group
+    purpose: Tool framework/tools/editors
+    status: generated
+    origin: Tools phase
+    carry_forward: 'yes'
+    notes: Current Phase 6 artifacts
+    label: FACT
+  - id: ARTIFACT-19
+    name_or_description: Phase 7+ roadmap
+    type: plan
+    purpose: Game and beyond
+    status: generated
+    origin: Game phase planning
+    carry_forward: 'yes'
+    notes: Prompts not yet detailed
+    label: FACT
+  - id: ARTIFACT-20
+    name_or_description: Numeric policy spec content
+    type: spec plan
+    purpose: Units/Q formats/determinism
+    status: generated
+    origin: Numeric discussion
+    carry_forward: 'yes'
+    notes: Needs formalization
+    label: FACT
+  - id: ARTIFACT-21
+    name_or_description: Construction abstraction spec content
+    type: spec plan
+    purpose: Unified constructions/vehicles/buildings
+    status: generated
+    origin: Construction discussion
+    carry_forward: 'yes'
+    notes: High-value design
+    label: FACT
+  - id: ARTIFACT-22
+    name_or_description: Seamless transition plan
+    type: spec plan
+    purpose: Frames, tiers, handoff
+    status: generated
+    origin: Transition discussion
+    carry_forward: 'yes'
+    notes: High-value design
+    label: FACT
+  - id: ARTIFACT-23
+    name_or_description: OC-1 Discovery Inventory
+    type: report
+    purpose: Discovery inventory of this chat
+    status: generated
+    origin: Handoff process
+    carry_forward: 'yes'
+    notes: Used to make this package
+    label: FACT
+  - id: ARTIFACT-24
+    name_or_description: Context Transfer Packet
+    type: report
+    purpose: Maximum-fidelity state transfer
+    status: generated
+    origin: Handoff process
+    carry_forward: 'yes'
+    notes: Base for final package
+    label: FACT
+  - id: ARTIFACT-25
+    name_or_description: Final report package files
+    type: generated documents
+    purpose: Downloadable package created by this response
+    status: created now
+    origin: Current task
+    carry_forward: 'yes'
+    notes: Markdown/YAML/ZIP
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Treating prompt-generated plans as already implemented.
+    consequence: Future assistant may assume code exists.
+    likelihood: medium
+    severity: high
+    mitigation: Verify repo state before acting.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-02
+    risk: Over-abstraction makes project unbuildable.
+    consequence: Complexity slows implementation.
+    likelihood: medium
+    severity: high
+    mitigation: Limit abstraction to vtables/caps/contracts/plugins/schemas/events.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-03
+    risk: Platform/renderer leakage into public/core code.
+    consequence: Portability failure.
+    likelihood: medium
+    severity: high
+    mitigation: Enforce backend isolation.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-04
+    risk: Implicit graceful degradation.
+    consequence: Half-broken products.
+    likelihood: medium
+    severity: high
+    mitigation: Use product contracts and clear failure modes.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: RISK-05
+    risk: Floating-point/frame-time leakage into sim.
+    consequence: Replay/multiplayer desync.
+    likelihood: medium
+    severity: critical
+    mitigation: Use fixed-point/fixed-step sim.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: RISK-06
+    risk: Dense storage uses too-large numeric formats.
+    consequence: Memory/performance failure.
+    likelihood: medium
+    severity: high
+    mitigation: Tiered storage/runtime numeric policy.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: RISK-07
+    risk: Retro targets overpromised.
+    consequence: Unsupported windows/processes/3D.
+    likelihood: high
+    severity: medium/high
+    mitigation: Caps, stubs, scoped retro installers/backends.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-08
+    risk: Renderer semantics diverge across backends.
+    consequence: Inconsistent visuals/tools.
+    likelihood: medium
+    severity: medium/high
+    mitigation: softref canonical IR semantics and caps.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-09
+    risk: Codex prompts too broad.
+    consequence: Broken/tangled repo changes.
+    likelihood: high
+    severity: high
+    mitigation: One prompt per backend/subsystem.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-10
+    risk: Save/schema incompatibility later.
+    consequence: Broken mods/saves/tools.
+    likelihood: medium
+    severity: high
+    mitigation: Versioned schemas, migration rules.
+    related_workstreams:
+    - WORKSTREAM-21
+    label: FACT
+  - id: RISK-11
+    risk: Duplicated product logic per shell.
+    consequence: CLI/TUI/GUI drift.
+    likelihood: medium
+    severity: high
+    mitigation: Common core, views/actions/models.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+  - id: RISK-12
+    risk: Game scope explosion before playable core.
+    consequence: No shippable core.
+    likelihood: high
+    severity: high
+    mitigation: Phase 7 playable core first; deep systems later.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: INFERENCE
+  - id: RISK-13
+    risk: External tooling assumptions stale.
+    consequence: Installer/backend implementation errors.
+    likelihood: medium
+    severity: medium/high
+    mitigation: Verify current docs/tools before coding.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: RISK-14
+    risk: Handoff over-compression loses key prompt artifacts.
+    consequence: Future work repeats/reverts decisions.
+    likelihood: medium
+    severity: high
+    mitigation: Preserve artifact ledger and superseded options.
+    related_workstreams:
+    - WORKSTREAM-24
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Actual repo tree and build state.
+    why_verification_needed: Implementation prompts depend on reality.
+    suggested_source_type: Repo inspection/build logs.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: README-defined scale/unit details.
+    why_verification_needed: User referenced existing README scale.
+    suggested_source_type: Project README.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: WiX/MSI/Burn current tooling.
+    why_verification_needed: Packaging commands may be stale.
+    suggested_source_type: Current WiX/Microsoft docs.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: macOS pkgbuild/productbuild/notarization.
+    why_verification_needed: Apple requirements change.
+    suggested_source_type: Apple docs/current tooling.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Linux deb/rpm/AppImage/run packaging details.
+    why_verification_needed: Distro/tool policy varies.
+    suggested_source_type: Debian/Fedora/AppImage docs.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: SDL1/SDL2 availability/targets.
+    why_verification_needed: Library/toolchain support varies.
+    suggested_source_type: SDL docs/package availability.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Wayland backend feasibility/current APIs.
+    why_verification_needed: Wayland specifics evolve.
+    suggested_source_type: Wayland docs/toolkits.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Vulkan/MoltenVK current support.
+    why_verification_needed: SDK/platform details may change.
+    suggested_source_type: Vulkan/MoltenVK docs.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: DirectX 7/9/11 SDK availability.
+    why_verification_needed: Legacy SDK issues.
+    suggested_source_type: Microsoft SDK docs/toolchains.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: QuickDraw/Carbon/macOS Classic toolchains.
+    why_verification_needed: Retro Mac tooling niche.
+    suggested_source_type: Retro toolchain docs.
+    priority: P3
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: Win16/DOS/CPM compilers and memory limits.
+    why_verification_needed: Backend feasibility.
+    suggested_source_type: Target toolchains/emulators.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Carbon OS API/toolchain.
+    why_verification_needed: Custom platform not described.
+    suggested_source_type: Carbon OS docs/files/user info.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-13
+    item: Dependency licenses.
+    why_verification_needed: Distribution/legal compatibility.
+    suggested_source_type: License audit.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-24
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-14
+    item: Schema/data format choice.
+    why_verification_needed: Implementation needs concrete format.
+    suggested_source_type: User decision/spec.
+    priority: P0/P1
+    related_workstreams:
+    - WORKSTREAM-21
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-15
+    item: Scripting VM choice.
+    why_verification_needed: Modding architecture.
+    suggested_source_type: VM evaluation.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-21
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-16
+    item: Renderer IR payload layouts.
+    why_verification_needed: All renderers need stable semantics.
+    suggested_source_type: Spec review/prototype.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-17
+    item: Public ABI `double` use in sim state.
+    why_verification_needed: Could conflict with no-float rule.
+    suggested_source_type: Design review.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-18
+    item: Save/replay file format.
+    why_verification_needed: Tools/game need it.
+    suggested_source_type: Spec/prototype.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-22
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-19
+    item: Construction storage/graph format.
+    why_verification_needed: Arbitrary construction depends on it.
+    suggested_source_type: Prototype/spec.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-17
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-20
+    item: Exact acceptance criteria for “fully implement every platform/renderer”.
+    why_verification_needed: Scope control.
+    suggested_source_type: Capability matrix/user confirmation.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-05/06
+    label: UNCERTAIN / UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Engine Architecture
+    - Platform Abstraction
+    - Renderer Abstraction
+    - UI Architecture
+    - Package/Instance/Mod System
+    - Setup and Distribution
+    - Launcher Product
+    - Tools and SDKs
+    - Numeric and Determinism Policy
+    - World and Simulation
+    - Construction and Vehicles
+    - Space and Orbits
+    - Future Systems
+    unique_contributions:
+    - Implementation phase order
+    - ABI/API stack
+    - Product contracts and UI/render backend model
+    - Renderer backend matrix
+    - Setup/launcher/tools prompts
+    - Arbitrary construction and seamless transition architecture
+    - Numeric/world/space decisions
+    possible_duplicates_with_other_chats:
+    - Repository layout
+    - Package/mod/pack concepts
+    - World/environment systems
+    - Launcher/setup/game plans
+    conflicts_to_watch_for:
+    - Earlier phase orders
+    - Different numeric formats
+    - Different manifest/schema formats
+    - Different world scale/coordinate assumptions
+    formal_requirements_candidates:
+    - Engine Architecture
+    - Platform Abstraction
+    - Renderer Abstraction
+    - UI Architecture
+    - Package/Instance/Mod System
+    - Setup and Distribution
+    - Launcher Product
+    - Tools and SDKs
+    - Numeric and Determinism Policy
+    - World and Simulation
+    - Construction and Vehicles
+    - Space and Orbits
+    background_context_candidates:
+    - Earlier superseded prompts
+    - Long-term economy/politics/multiplayer plans
+    needs_user_confirmation:
+    - Scripting VM
+    - Schema/manifest format
+    - Default UPS
+    - Retro backend minimum acceptance criteria
+    - Save/replay format
+    - Construction graph storage format
+  final_recommendations:
+    next_action_if_continuing_this_chat: Verify actual repository state, then apply Phase 1 prompts beginning with Domino
+      ABI headers/stubs.
+    next_action_for_aggregator: Merge this package by stable IDs, preserving superseded options and uncertainty.
+    user_checks_required:
+    - Confirm repo state.
+    - Confirm current roadmap remains valid.
+    - Confirm schema/manifest format before package persistence.
+    - Confirm Phase 7 prompt generation when ready.

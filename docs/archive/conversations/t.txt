@@ -1,0 +1,641 @@
+GPT-5.5 Pro — 2026-05-27 17:05:46
+
+# Human-Readable Chat Report — Dominium Setup Architecture and Handoff
+
+## 1. One-Page Orientation
+
+This chat was mainly about designing, correcting, and preserving the **Dominium / Domino Setup system**: the installer, updater, verifier, rollback, repair, uninstall, packaging, and distribution layer for the larger Dominium project. The key point is that this was **not** a launcher UI chat, not an engine-design chat, and not a gameplay/simulation-design chat. It focused on the application-layer product called `setup/`, whose job is to install and maintain the rest of the software safely and deterministically.
+
+The user’s goal evolved over the conversation. At first, the discussion was broad and architectural: how should a cross-platform installer work for Windows, macOS, Linux, Steam/Epic, package managers, and legacy platforms? The user wanted a setup system that could support modern Windows through Visual Studio, Windows 9x through Watcom or similar legacy toolchains, macOS X and classic macOS, Linux package managers, Steam/Epic-style distribution, web installers, consoles, retro systems, offline installs, network installs, update checking, package customization, repair, uninstall, downgrade, and rollback. The goal was not just to make an installer executable; it was to define a **deployment control plane** with deterministic behavior, audit logs, reversible transactions, clean installed-state ownership, and long-term survivability.
+
+As the chat progressed, the discussion moved from early directory sketches to a much stricter canonical repository model. Earlier ideas used structures like `setup/adapters/`, `setup/packaging/`, `core/source/`, and platform-specific subtrees. Those were useful exploration steps, but they were later **superseded**. The user introduced a locked repository structure with top-level products such as `engine/`, `game/`, `client/`, `server/`, `launcher/`, `setup/`, `tools/`, `libs/`, `schema/`, `docs/`, `ci/`, `sdk/`, and `legacy/`. Under that model, the setup product has a fixed layout: `setup/core/{fetch,verify,install,rollback}`, `setup/include/{dsk,dsu}`, `setup/packages`, `setup/platform`, `setup/tests`, and `setup/ui`. That canonical structure became the ground truth.
+
+The most important decision in the chat is this: **setup is the only component allowed to install files, modify installation state, verify installed artifacts, repair installs, uninstall, downgrade, upgrade, and own installed-file metadata.** The launcher may invoke setup, but it may not duplicate setup logic. The engine must not know setup exists. Setup communicates with the launcher only through manifests, schemas, installed-state snapshots, reports, and exit/status contracts.
+
+Another major outcome was that the user pasted two large Codex prompts that had already been applied elsewhere. Those prompts were intended to repair the repository, enforce Visual Studio 2026 and CMake build structure, clean up engine purity, move cross-product contracts into `libs/contracts`, and prevent setup/launcher/tool contamination of the engine. This chat then treated those prompts as authoritative but also marked the actual repository state as **UNCERTAIN / UNVERIFIED**, because the build results and final tree were not visible here.
+
+Near the end, the chat shifted into preservation mode. The user asked for a maximum-fidelity context transfer packet, then for a downloadable report package, then for an in-chat reader version of that package. Those outputs preserved the decisions, tasks, constraints, artifacts, rejected options, and verification queue for future assistants or aggregation into a larger Project Spec Book.
+
+What future readers must understand is that this chat is both a **setup-system design record** and a **transition record**. It shows how the setup architecture moved from exploratory design into canonical repository alignment. It also records what must not be repeated: do not resurrect old adapter layouts, do not let the launcher install things, do not let the engine include setup headers, do not treat assistant brainstorms as decisions, and do not continue implementation until the actual repo state has been verified.
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began with a setup-system master prompt
+
+The first major input was a detailed master prompt for the **Dominium / Domino Setup & Installation System**. It said this chat was about setup, installation, packaging, distribution, and uninstallation across supported platforms. It explicitly excluded launcher UI work. The setup system was described as a deterministic deployment control plane, not a simple GUI wizard or a store/DRM mechanism.
+
+The user specified that there should be **one common setup core** shared across platforms, with thin platform-specific frontends. The setup core had to parse manifests, resolve component graphs, execute transactions, record installed state, support install/upgrade/repair/uninstall, and emit audit logs. It also had to support GUI-driven, CLI/headless, package-manager-driven, and Steam-driven installs.
+
+The assistant responded with **Phase 1: Setup Core Architecture**, proposing modules such as manifest parsing, resolution, planning, transaction execution, filesystem/path policy, installed-state, logging, and a platform interface. This was the first conceptual baseline.
+
+### The user asked for “Plan S”
+
+The user then asked for a “plan of plans” called **Plan S**, with subplans S-1, S-2, S-3, and so on. The assistant produced a structured setup roadmap. It covered governance, setup core architecture, manifest schema, installed-state schema, transaction engine, filesystem policy, audit logging, CLI, Windows/macOS/Linux adapters, Steam integration, distribution pipeline, side-by-side upgrades, tests, and documentation.
+
+At that stage, the plan was still mostly abstract and platform-oriented. It was useful because it separated the work into durable phases, but later repository changes made some of its directory assumptions obsolete.
+
+### The conversation moved into concrete directory layout and IDE/toolchain decisions
+
+The user then asked how to start from an empty `/source/setup/` directory and build setup applications for:
+
+* Windows NT 32/64 via Visual Studio 2026,
+* Windows 9x via Watcom or alternatives,
+* macOS X 10.4 through current macOS via Xcode,
+* Intel and ARM, 32-bit and 64-bit,
+* Linux from roughly 2000 onward,
+* package managers,
+* Steam/Epic/web/consoles/retro/legacy distribution.
+
+The assistant recommended a common C/C++ setup core with CMake for modern IDE integration, plus isolated legacy build scripts for targets like Windows 9x. The assistant generated several directory trees. The user suggested modifications, such as using `source` instead of `src`, using `winnt` rather than `win_nt`, adding `macosc` for classic Mac OS, and renaming `integrate` to `integration`.
+
+These directory trees were not final, but they mattered because they exposed the user’s preference for simple, shallow, logical structures and native IDE workflows that do not become the source of truth.
+
+The user also asked whether to use Visual Studio’s **Desktop development with C++** workload or **.NET Desktop Development**, and whether setup should use C/C++ or C#/.NET. The assistant recommended **Desktop development with C++** and C/C++ for the authoritative setup execution path. The reasoning was that setup must support legacy systems, offline installs, stable ABI boundaries, and deterministic behavior. The assistant treated .NET as acceptable only for optional non-authoritative tools, not for setup’s core execution path.
+
+The user later asked where to create Visual Studio and Xcode apps after opening the repo as a folder. The assistant advised that Visual Studio and Xcode projects should be generated through CMake, not hand-authored or treated as authoritative source files. This decision became consistent with later Codex prompts.
+
+### The user showed an existing setup tree with redundancy and drift
+
+A major turn occurred when the user pasted a Windows `tree` output of the current setup directory. It showed many outdated or redundant files: platform adapters under `adapters/`, packaging scripts inside platform adapter folders, committed Visual Studio and Xcode project files, multiple duplicate CLI/main files, mixed `dsu_*` and `dsk_*` namespaces, and an empty `schemas` directory.
+
+The assistant analyzed that tree and identified several problems:
+
+* setup logic and packaging were mixed together,
+* IDE artifacts were in-tree,
+* duplicate entrypoints existed,
+* `dsu_*` and `dsk_*` boundaries were unclear,
+* platform-specific files and packaging scripts were too entangled,
+* core and adapter boundaries were not enforceable enough.
+
+At that moment, the conversation was still framed around improving the existing structure, but the user soon introduced a more authoritative repository layout.
+
+### The canonical repository structure replaced earlier setup trees
+
+The user then gave a strict system-role prompt saying the repository had undergone a major structural refactor and that the filesystem was now canonical ground truth. This superseded earlier structures. The locked top-level products became:
+
+* `engine/`
+* `game/`
+* `client/`
+* `server/`
+* `launcher/`
+* `setup/`
+* `tools/`
+* `libs/`
+* `schema/`
+* `sdk/`
+* `docs/`
+* `ci/`
+* `legacy/`
+
+The canonical setup layout was defined as:
+
+* `setup/core/fetch`
+* `setup/core/verify`
+* `setup/core/install`
+* `setup/core/rollback`
+* `setup/include/dsk`
+* `setup/include/dsu`
+* `setup/packages/client`
+* `setup/packages/server`
+* `setup/packages/tools`
+* `setup/packages/scripts`
+* `setup/platform/win/{win9x,winnt}`
+* `setup/platform/linux`
+* `setup/platform/bsd`
+* `setup/platform/mac/{classic,osx}`
+* `setup/tests`
+* `setup/ui`
+* `setup/CMakeLists.txt`
+
+This became a decisive turning point. Earlier `setup/adapters`, `setup/packaging`, and `core/source` structures became historical and superseded. The assistant amended Plan S to match the new canonical structure and later produced an authoritative Phase 2 directory tree under that model.
+
+### Two applied Codex prompts changed the implementation baseline
+
+The user later pasted two large prompts and stated that they had already been applied. The first prompt was a broad one-pass refactor and repair prompt for Visual Studio 2026, CMake, Codex, buildability, launcher/setup/tools/engine targets, and smoke tests. The second prompt was a final purity and contract ownership repair prompt. It required removing non-engine content from `engine/`, moving setup and UI headers to their correct owners, introducing `libs/contracts/include/dom_contracts`, and enforcing boundaries with scripts and CMake.
+
+This changed the status again: the setup system was no longer being treated as purely theoretical or greenfield. The current implementation was to be treated as authoritative unless it violated locked constraints.
+
+The assistant then produced a Phase 3 schema plan under the new assumptions, covering install plan schemas, installed-state schemas, verification reports, audit logs, and the schema-only setup/launcher handoff.
+
+### The user asked for a final setup-spec alignment prompt
+
+The user then asked for a prompt to get setup code and documentation up to spec before restarting and regenerating future plans. The assistant generated a Codex prompt titled **“Dominium Setup: Final Spec Alignment, Gap Closure, and Hardening Pass.”** This prompt is one of the most important outputs of the chat. It instructs Codex to inventory setup, identify gaps, normalize schemas, harden public APIs, audit platform adapters, audit UI frontends, harden packaging and reproducibility, align tests, and create final documentation/freeze markers.
+
+This prompt is important because it bridges the gap between architectural planning and implementation cleanup. It says: do not redesign setup; finish, document, and align what exists.
+
+### The user clarified setup capabilities
+
+The user asked whether setup could support offline and network installation, update checking, individual package/install customization, repair, uninstall, update, downgrade, and similar operations. The assistant answered yes, but with important boundaries:
+
+* offline and network installs are both supported by a `fetch` abstraction,
+* network is an optional transport, not a dependency,
+* update checking is non-mutating,
+* applying updates/downgrades requires explicit setup invocation,
+* component customization is driven by install plans,
+* repair is explicit and not silent,
+* uninstall uses installed-state ownership,
+* rollback is journal-driven.
+
+This clarified the operation model and preserved the setup authority rule.
+
+### The chat absorbed application-layer canon from other chats
+
+Near the end, the user pasted large project-level application canon from another chat. This material said that architecture is closed, canon is locked, applications are orchestration shells, CLI is canonical, GUI/TUI are views, UI is data via UI IR, tools are read-only by default, setup is the only install mutation authority, launcher is the reference application, RepoX/TestX enforce metadata and validation, and BUILD-ID-0 governs versioning.
+
+This material was visible in the chat, but it came from broader project context. In the later report package it was preserved as **PROJECT-CONTEXT** where relevant.
+
+### The chat ended by producing and then explaining a report package
+
+Finally, the user retired the chat and asked for a maximum-fidelity context transfer packet. The assistant produced one. The user then asked for a downloadable shareable report package. The assistant created Markdown/YAML/report files and a ZIP. The user then asked for an in-chat reader version of the package, and the assistant rendered the package contents directly into the conversation.
+
+The current request asks for something different: not a file index or register dump, but a human-readable narrative explanation of the conversation. This report is that narrative.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — The Setup System as a Deterministic Deployment Authority
+
+The central topic was the setup system itself. It was discussed because the user needed a robust installer/updater/verifier capable of supporting many platforms, distribution channels, legacy environments, package managers, and future update flows.
+
+FACT: The setup system was repeatedly defined as the only component allowed to install files, modify system/installation state, own installed-file metadata, repair installs, verify artifacts, uninstall, downgrade, upgrade, and roll back. This is the most important architectural rule from the chat.
+
+The reason this mattered is that Dominium / Domino is a long-lived deterministic system. If launchers, engines, tools, package scripts, or platform installers each had their own install logic, the result would be untestable, non-deterministic, and difficult to audit. The setup system needed to be a central authority so that installed state, ownership, rollback, and verification all remain coherent.
+
+The conclusion was that setup should have a common core and thin platform-specific services. The core decides what to install and records state; platform code only supplies OS services such as registry entries, desktop integration, privilege handling, package manager glue, and native UI entrypoints.
+
+What remains uncertain is the actual current implementation state in the repository after the applied Codex prompts. The design is clear, but the repo must still be inspected.
+
+### Topic 2 — Directory Structure and Repository Ownership
+
+A large part of the chat explored directory structure. This came up because the user wanted a setup layout that was simple, intuitive, shallow, modular, extensible, and compatible with native IDEs.
+
+Initially, assistant and user explored structures with `setup/core`, `setup/adapters`, `setup/packaging`, `tests`, and `docs`. The user suggested refinements like `winnt`, `macosc`, and `source`. Later, those ideas were superseded when the user introduced a canonical repository structure.
+
+FACT: The final canonical repository structure has top-level products such as `engine/`, `game/`, `client/`, `server/`, `launcher/`, `setup/`, `tools/`, `libs/`, `schema/`, `docs/`, `ci/`, `sdk/`, and `legacy/`.
+
+FACT: The final canonical setup layout uses `setup/core/{fetch,verify,install,rollback}`, `setup/include/{dsk,dsu}`, `setup/packages`, `setup/platform`, `setup/tests`, and `setup/ui`.
+
+This matters because the filesystem is not just organization; it enforces ownership. Setup logic belongs in setup. Engine code belongs in engine. Cross-product contracts belong in neutral libraries. Schemas belong in top-level `schema/`. Packaging belongs under setup packages, not hidden inside adapters.
+
+The unresolved part is whether the actual repository now matches this canonical layout.
+
+### Topic 3 — Visual Studio, Xcode, CMake, and Toolchains
+
+The user asked whether to use Visual Studio 2026’s C++ workload or .NET workload, and whether setup should use C/C++ or C#/.NET.
+
+FACT: The assistant recommended C/C++ and Visual Studio Desktop Development with C++ for setup execution. The reasoning was based on the user’s stated requirements: legacy Windows, Windows 9x support, macOS/Linux portability, offline installs, stable ABI, deterministic behavior, and long-term survivability.
+
+The assistant also advised that Visual Studio and Xcode projects should be generated by CMake, not hand-authored as authoritative build files. This fit later Codex prompts, which required CMakePresets and Visual Studio 2026 readiness.
+
+This topic matters because the setup system needs to be buildable and maintainable over decades. IDE-specific projects can be useful views, but if they become the authoritative source, they drift from CI, command-line builds, and other platforms.
+
+UNCERTAIN / UNVERIFIED: Exact Visual Studio 2026 behavior and toolchain details should be verified in the current environment before relying on them.
+
+### Topic 4 — Engine Purity and Contract Ownership
+
+The user later introduced prompts that had been applied to repair engine purity. These prompts said the engine had contamination such as `engine/include/dsu`, `engine/include/dui`, `engine/launcher_core_launcher`, `engine/setup_core_setup`, `engine/source`, and `engine/external/xxhash`.
+
+FACT: The target state was that engine should contain only engine-owned public headers under `engine/include/domino`, engine modules, render code, tests, and CMake. Cross-product contracts should move to `libs/contracts/include/dom_contracts`.
+
+This mattered because the engine must remain reusable and independent. If setup, launcher, tools, or game-specific APIs leak into engine, then the engine can no longer be treated as a pure reusable layer.
+
+UNCERTAIN / UNVERIFIED: The user stated the prompts were applied, but this chat did not show the final repository tree or build results.
+
+### Topic 5 — Setup Schemas and Launcher Handoff
+
+The setup/launcher handoff was another core topic. The user repeatedly emphasized that the launcher consumes setup output and does not install itself or repair installations.
+
+The assistant defined the setup handoff as schema-based: install plans, installed-state snapshots, verification reports, audit logs, and exit/status contracts. The installed-state manifest is the key artifact because it tells the launcher what is installed, where, with what hashes and versions, and under what ownership rules.
+
+This matters because it prevents the launcher from guessing. It should not inspect arbitrary filesystem paths and infer that installation succeeded. It should read setup-produced state.
+
+UNCERTAIN / UNVERIFIED: The actual schema files under `schema/setup/` need to be checked.
+
+### Topic 6 — Offline, Network, Update, Repair, Downgrade, and Rollback Support
+
+The user explicitly asked whether the setup system could support offline and network installation, update checking, package customization, repair, uninstall, update, downgrade, and related operations.
+
+The conclusion was yes, with boundaries. The setup architecture supports these operations if they are expressed through install plans, fetch/verify/install/rollback modules, installed-state, and explicit CLI/API operations. Update checking is not the same as applying an update; checking can produce a report without mutation. Repair is explicit. Downgrade is plan-driven and should require explicit request and compatibility checks.
+
+This topic matters because it clarifies the future feature surface without weakening setup authority.
+
+### Topic 7 — Application-Layer Canon
+
+Near the end, the user pasted broader application-layer canon. It stated that applications are orchestration shells, content-agnostic, rule-agnostic, authority-agnostic, and must not contain gameplay logic. CLI is canonical. GUI and TUI are views over the same command graph. UI is data via UI IR. Tools are read-only by default. RepoX/TestX and BUILD-ID-0 govern metadata, validation, changelogs, and releases.
+
+This material was not invented in this chat, but it was visible here and must be preserved as project context. It affects setup because setup is one of the application-layer products, and it affects launcher because launcher may invoke setup but cannot bypass setup guarantees.
+
+### Topic 8 — Report Packaging and Knowledge Preservation
+
+The final part of the chat was about preserving the conversation itself. The user asked for a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat reader version, and now this human-readable narrative report.
+
+This matters because the user is building a large project across multiple chats and wants to later combine old-chat reports into a full Project Spec Book. This chat contributes setup architecture, canonical layout history, repository enforcement context, and warnings about superseded options.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+The explicit goal at the beginning was to design a cross-platform setup and installer system for Dominium / Domino. The user wanted it to handle many platforms and distribution models while preserving determinism, auditability, modularity, and long-term support. The setup system had to be robust enough for modern systems, old systems, package managers, Steam/Epic-like distribution, offline installs, and future rollback/repair/update flows.
+
+Another explicit goal was to make the directory structure simple, logical, intuitive, and consistent with industry practice. The user was dissatisfied with structures that felt too deep or counterintuitive, especially nested `source` directories or platform-specific sprawl. This goal changed over time when the canonical repository structure was introduced. Once that happened, directory discussion stopped being open-ended design and became alignment to fixed law.
+
+A third explicit goal was to support native IDE workflows without letting IDEs own the project. The user wanted to use Visual Studio 2026 and Xcode for ease of programming and integration, but without sacrificing modularity or robustness. The resulting approach was CMake as authority, with Visual Studio/Xcode as generated views.
+
+A later explicit goal was to bring existing setup code and documentation up to spec, not redesign it. This is why the generated setup hardening prompt is important. It says: inventory what exists, normalize schemas, document gaps, audit adapters/UI/packages/tests, and freeze the baseline.
+
+An inferred goal is that the user wants to prevent future assistants from undoing settled decisions. The repeated requests for context packets, reports, registers, and in-chat readers show a concern about continuity loss, over-compression, and accidental redesign. This report is meant to support that goal.
+
+Several goals remain unresolved because the actual repo was not inspected here. We do not know whether the applied Codex prompts fully succeeded, whether setup builds, whether schemas exist, whether `libs/contracts` is complete, or whether setup/launcher CLI smoke tests pass.
+
+---
+
+## 5. Decisions Made and Why
+
+The decisions in this chat can be grouped into five major categories: setup authority, repository structure, build/toolchain policy, operation semantics, and application-layer rules.
+
+### Setup is the sole installation authority
+
+FACT: The chat repeatedly established that setup is the only component allowed to install, upgrade, downgrade, repair, verify, uninstall, roll back, and own installed-file metadata.
+
+This decision is final under the current canon. The user made it explicit in multiple prompts. It was made because installation is a high-risk mutation activity. If the launcher, engine, or tools could each modify installation state independently, then rollback, repair, verification, and audit logs would become unreliable.
+
+This affects everything going forward. Launcher can request setup operations, but cannot perform them. Engine cannot know setup exists. Tools cannot silently mutate installs. Package scripts cannot decide install logic.
+
+It would only be revisited if the user explicitly changed the project canon, which the chat repeatedly says is locked.
+
+### One common setup core with thin platform services
+
+FACT: The setup architecture uses one common core shared across platforms. Platform-specific code is thin and supplies OS services only.
+
+This decision was made to avoid duplicated business logic. It also supports deterministic behavior, because install planning, verification, state writing, and rollback are centralized. Windows, macOS, Linux, Steam, Epic, and legacy adapters should not each invent their own installation rules.
+
+The assumption is that platform-specific differences can be expressed through platform interfaces and packaging glue without changing the setup core’s authority.
+
+### Canonical setup layout replaces earlier layouts
+
+FACT: The final setup layout is `setup/core/{fetch,verify,install,rollback}`, `setup/include/{dsk,dsu}`, `setup/packages`, `setup/platform`, `setup/tests`, and `setup/ui`.
+
+This decision superseded earlier directory trees. It was made because the repository had undergone a larger refactor, and the user explicitly said the filesystem was fixed ground truth.
+
+This matters because future work must not refer to old structures like `setup/adapters` as canonical. Those may exist as legacy or historical content, but they should not be used as the active architecture.
+
+### Setup depends only on `libs/` and `schema/`
+
+FACT: Setup may depend only on `libs/` and `schema/`.
+
+This decision was made to enforce product boundaries. Setup should not include engine internals, launcher internals, game logic, or tools internals. It should operate from schemas, manifests, packages, and shared libraries.
+
+This affects CMake include directories, dependency graphs, and enforcement scripts.
+
+### `dsk` and `dsu` have distinct public meanings
+
+FACT: Under canonical setup, `setup/include/dsk` is the public setup kernel API, and `setup/include/dsu` is the public setup execution/platform interface layer.
+
+This decision clarifies ownership. Internal headers stay under `setup/core/**`, not in public include paths. The decision helps prevent accidental API leakage.
+
+### Packaging belongs under `setup/packages`
+
+FACT: All installers and package recipes are produced from `setup/packages/`.
+
+This was decided because earlier trees placed packaging under adapters, which mixed concerns. Packaging should assemble artifacts and templates, not contain install logic. Install logic remains in setup core.
+
+### Setup and launcher communicate through schemas and contracts only
+
+FACT: Launcher consumes setup output through manifests, schemas, installed-state snapshots, reports, and exit/status contracts.
+
+This decision prevents launcher from guessing installation state. It also keeps setup as the writer of installed-state and launcher as a reader.
+
+### Engine purity and neutral contracts are mandatory
+
+FACT: The user pasted prompts requiring engine purity and `libs/contracts/include/dom_contracts`.
+
+The decision is that cross-product contracts must not live in engine or game internals. Engine must not include setup, launcher, tools, or `dom_contracts`.
+
+This protects the engine’s long-term reusability.
+
+### CMake is the build authority
+
+FACT: The assistant recommended and later prompts reinforced that CMake should be authoritative; Visual Studio and Xcode projects should be generated, not hand-authored as the source of truth.
+
+This decision was made because generated projects keep IDE workflows aligned with CI and command-line builds.
+
+### C/C++ is preferred for setup execution, not .NET
+
+FACT with some assistant-originated rationale: The assistant recommended Visual Studio Desktop Development with C++ and C/C++ for setup execution. The user did not reject this and continued from it.
+
+This decision was based on legacy platform support, stable ABI, deterministic behavior, offline installs, and avoiding runtime dependencies. It is strong, but because the user did not explicitly restate it as canon in the same way as setup authority, it should be treated as accepted guidance rather than a project-wide immutable law.
+
+### Offline and network install are both supported
+
+FACT / INFERENCE: The assistant answered that setup can support both offline and network installation. The user did not object.
+
+The reasoning is that `fetch` can treat network as one transport among others. Offline install uses local bundles or cache. Network install fetches content-addressed payloads and then verifies them.
+
+Implementation still needs verification.
+
+### Update checking is non-mutating
+
+FACT / INFERENCE: The assistant clarified that update checking compares current installed state with candidate plans and produces a report. It should not mutate installed files unless an explicit update operation is invoked.
+
+This preserves auditability and avoids hidden behavior.
+
+### Repair is explicit; rollback is first-class
+
+FACT: Repair is explicit and never silent. Rollback is journaled and first-class.
+
+These decisions follow directly from deterministic setup principles. They prevent the system from hiding failures or altering state behind the user’s back.
+
+### Application-layer canon applies to setup and launcher
+
+FACT / PROJECT-CONTEXT: The user pasted application-layer canon. It says CLI is canonical, GUI/TUI are views, UI is data, tools are read-only by default, and RepoX/TestX enforce metadata and validation.
+
+This affects future application work, but some exact implementation paths remain unverified.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+Earlier directory structures using `setup/adapters/` were superseded. They were considered because they naturally grouped platform-specific setup code, but the canonical layout replaced them with `setup/platform/` for OS services and `setup/ui/` for frontends. This rejection is final unless the repository canon changes.
+
+The old `setup/packaging/` or adapter-local packaging model was superseded by `setup/packages/`. Packaging under adapters was considered because installers are platform-specific, but it mixed packaging with platform services. The canonical model keeps packaging recipes under setup’s package area and prevents packaging scripts from owning install logic.
+
+Generic nested `source/` directories under setup were rejected. The user explicitly found them counterintuitive, and the later canonical setup layout removed them. This rejection is final for setup under the current canon.
+
+Using .NET for authoritative setup execution was rejected or at least strongly deprioritized. It was considered because Visual Studio offers `.NET Desktop Development`, but it conflicts with legacy/offline/stable-ABI goals. It could still be reconsidered for non-authoritative developer tools or optional management utilities, but not for setup core execution.
+
+Hand-authored Visual Studio or Xcode project files as authoritative build files were rejected. They were considered because the user wanted native IDE workflows, but the accepted model is that CMake generates IDE projects. Generated IDE projects are allowed; committed project files as build truth are not.
+
+Launcher-side install/update/repair logic was rejected. It would be tempting to make launcher manage updates because launchers often do that, but in this architecture setup owns install mutation. Launcher can present information and invoke setup.
+
+Engine-side setup awareness was rejected. The engine must remain pure and reusable.
+
+Manual changelog editing was rejected by project-level application/release canon. RepoX is the source of truth.
+
+Tools mutating by default were rejected. Tools are read-only unless explicitly designed and gated for mutation.
+
+Several assistant proposals were superseded by later canon rather than formally rejected. Examples include a top-level `components/` layer and a `shared/foundation` structure. They were reasonable during brainstorming, but the user later locked the actual top-level repository layout and `libs/`/`schema/` ownership model.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The visible reasoning throughout the chat is dominated by four concerns: **authority**, **determinism**, **long-term maintainability**, and **mechanical enforcement**.
+
+Authority matters because installation is not just copying files. It creates ownership, mutates system state, writes installed-state, registers OS integrations, and determines what rollback means. If that authority is split between launcher, engine, platform installers, package scripts, and tools, then no single component can produce reliable audit logs or repair state. This is why setup became the sole authority.
+
+Determinism matters because Dominium / Domino is a long-lived deterministic simulation project. Even though setup is not simulation logic, it still participates in reproducibility. Installing the same manifest and payloads should produce the same installed layout and state. This is why manifests, schemas, hashes, state snapshots, audit logs, deterministic output, and explicit transaction phases matter.
+
+Long-term maintainability matters because the user wants support across modern and legacy systems. The discussion repeatedly accounted for Windows NT, Windows 9x, macOS X, classic macOS, Linux, package managers, Steam/Epic, offline installs, and possibly web/consoles/retro. This drove the C/C++ and CMake choices and the rejection of runtime-dependent authoritative setup logic.
+
+Mechanical enforcement matters because conventions are not enough. The user’s later prompts emphasize CMake include boundaries, verification scripts, tree sanity checks, CI gates, RepoX/TestX, and schema validation. The rationale is that if the architecture is only documented but not enforced, it will drift.
+
+The major tradeoff was between ease of native IDE use and long-term build portability. The compromise was to use native IDEs as generated views through CMake, not as the source of truth.
+
+Another tradeoff was between broad future support and current implementation scope. The architecture allows legacy platforms, storefronts, and offline/online acquisition, but many implementation details remain unverified. The chat preserved those as goals without pretending they are already implemented.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+The immediate next step is not more design. It is verification.
+
+First, the actual repository state must be inspected. This means checking the current `setup/` tree, `schema/` tree, `libs/contracts`, root CMake, setup CMake, CMake presets, and enforcement scripts. The user stated two Codex prompts were applied, but the chat did not show final build results.
+
+Second, run the build and smoke tests. The expected checks are CMake configure, CMake build, CTest, `setup --help`, and `launcher --help`. The exact command names depend on the actual presets, but the earlier prompts referenced Visual Studio 2026 x64 debug presets.
+
+Third, determine whether the generated **Setup Final Spec Alignment, Gap Closure, and Hardening Pass** prompt has already been executed. Evidence would include documents like `docs/SETUP_GAPS.md`, `docs/SETUP_KERNEL.md`, `docs/SETUP_UI.md`, `docs/SETUP_PACKAGING.md`, `docs/SETUP_ARCHITECTURE.md`, `docs/SETUP_CONTRACTS.md`, `docs/SETUP_FAILURE_MODES.md`, and `docs/SETUP_BASELINE_FROZEN.md`. If those do not exist, execute the prompt. If they do exist, audit them.
+
+Fourth, normalize schemas. Setup I/O should be backed by schemas under `schema/setup/`, including install plans, installed-state snapshots, verification reports, and audit logs. If current setup code emits ad-hoc JSON or TLV, it should be mapped to schema fields.
+
+Fifth, audit public setup APIs. `setup/include/dsk` and `setup/include/dsu` need to be minimal, stable, and intentional. Internal headers should not leak into public include paths.
+
+Sixth, audit platform adapters, UI, packages, and tests. Platform code should provide OS services only. UI should be a thin frontend. Package scripts should be reproducible and declarative. Tests should cover partial installs, interrupted installs, corrupted payloads, idempotency, uninstall ownership, and rollback.
+
+Seventh, only after the above is complete should higher-level planning restart. The user explicitly wanted setup code/docs brought up to spec before regenerating further plans.
+
+What could go wrong is straightforward: acting on stale directory assumptions, assuming the repo matches the canonical structure without checking, treating a stub as a finished implementation, or turning assistant proposals into canon.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints
+
+The hardest constraints are architectural:
+
+* Setup is the sole install mutation authority.
+* Launcher may invoke setup but must not duplicate setup logic.
+* Engine must not know setup exists.
+* Setup depends only on `libs/` and `schema/`.
+* Setup public APIs live only under `setup/include/dsk` and `setup/include/dsu`.
+* Internal setup headers stay under `setup/core/**`.
+* Packaging belongs under `setup/packages`.
+* Launcher/setup handoff is schema/report/contract based.
+* Engine public headers are only engine ABI.
+* Cross-product contracts belong in `libs/contracts`.
+* CMake and scripts must enforce boundaries.
+
+The setup behavior constraints are also strict:
+
+* No hidden mutation.
+* No silent repair.
+* Rollback is first-class.
+* Install transactions are staged, verified, committed, and rollback-capable.
+* Installed-state is setup-written and launcher-read-only.
+* Offline installs must be possible.
+* Network must be optional transport.
+* Package scripts must not own install logic.
+
+The application-layer constraints from project context are:
+
+* Applications are content-agnostic.
+* CLI is canonical.
+* GUI/TUI are views over the same command graph.
+* UI is data, not logic.
+* Tools are read-only by default.
+* RepoX/TestX govern validation, changelogs, and metadata.
+* BUILD-ID-0 governs build identity and release numbering.
+
+The user also has communication preferences: high accuracy, explicit uncertainty labels, minimal unsupported inference, engineering precision, no marketing tone, and complete preservation of decisions and artifacts.
+
+### Inferred preferences
+
+It is reasonable to infer that the user values durable project memory, highly structured but human-readable reports, direct Codex prompts, and careful distinction between accepted decisions and assistant brainstorming. This is inferred from repeated requests for context packets, report packages, registers, and handoff material.
+
+### Things future assistants should avoid
+
+They should avoid redesigning locked architecture, reviving old directory layouts, using .NET for setup execution, letting launcher install files, letting engine include setup/launcher/tool headers, ignoring verification items, or inventing current repo state.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+This chat involved many artifacts. The most important are prompts and reports rather than source files.
+
+The first major artifact was the initial setup master prompt. It established the setup system’s purpose, legal/IP limits, core philosophy, manifest model, transaction model, platform adapters, CLI, testing, and documentation expectations. It should be preserved as historical foundation, though later canonical paths supersede its directory assumptions.
+
+The second major artifact was **Plan S**, the plan-of-plans. It organized setup work into subplans from governance through documentation. It remains useful conceptually but must be interpreted through the later canonical repository layout.
+
+The user’s old setup directory tree is an important artifact because it shows the actual problems being solved: outdated files, redundant entrypoints, platform/package mixing, committed IDE artifacts, mixed DSK/DSU headers, and an empty schemas area. It is not current proof, but it explains why the later refactor and hardening prompts were necessary.
+
+The canonical repo/setup prompt is one of the highest-value artifacts. It locked the current filesystem model and dependency rules.
+
+The two applied Codex prompts are also critical. One handled broad VS2026/CMake/build/refactor work; the other handled engine purity and contract ownership. The chat treats them as applied, but their results must be verified.
+
+The generated **Dominium Setup: Final Spec Alignment, Gap Closure, and Hardening Pass** prompt is the most actionable artifact for future work. It should be executed or audited. It is designed to finish setup code and docs without redesigning them.
+
+The application-layer canon prompts are important project-context artifacts. They should inform application work but should not be confused with setup-specific decisions created entirely in this chat.
+
+Finally, the chat generated a context transfer packet, downloadable report package, and in-chat reader. Those are preservation artifacts. They should be useful for future aggregation into a Project Spec Book, but this human-readable report is meant to explain the substance more naturally.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+The biggest unresolved issue is the actual repository state. The user said two Codex prompts were applied, but this chat did not inspect or display the final tree or build logs. That means many implementation claims remain unverified. The next assistant should not assume `setup/`, `schema/`, or `libs/contracts` are correct until they are inspected.
+
+Another unresolved issue is whether the setup hardening prompt has already been executed. If documents like `docs/SETUP_GAPS.md` and `docs/SETUP_BASELINE_FROZEN.md` exist, then the next task is audit. If they do not, the next task is execution.
+
+The schema state is unresolved. The chat defined install plan, installed-state, verification report, and audit log schemas conceptually, but it did not prove that these exist in `schema/setup/`.
+
+The setup CLI state is unresolved. The system is supposed to support commands like help, version, status, install, verify, repair, uninstall, upgrade, downgrade, and rollback, but the current implementation status is unknown.
+
+The build state is unresolved. We do not know whether CMake configure, build, and CTest pass in the current repo.
+
+The exact UI IR path and application command-spine implementation are unresolved. The project canon requires CLI canonical behavior and UI-as-data, but this chat’s suggestions about `libs/appcmd` or `schema/ui_ir` are proposals unless confirmed elsewhere.
+
+The priority of legacy platform support is also unresolved. The architecture preserves Windows 9x, classic macOS, and other legacy paths, but the chat does not establish how much of that should be implemented immediately.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+A future assistant might accidentally follow obsolete directory layouts. This is likely because the chat contains several earlier trees. The mitigation is simple: use only the canonical repo/setup layout unless discussing history.
+
+A future assistant might treat assistant proposals as user decisions. For example, `libs/appcmd` was proposed as a possible command-spine location, but the exact path was not locked in this chat. The mitigation is to preserve labels: FACT, INFERENCE, UNCERTAIN, and PROJECT-CONTEXT.
+
+A future assistant might assume the repo is already correct because the user said prompts were applied. That would be unsafe. Applied prompts are important, but their results must be verified through tree inspection, CMake, tests, and smoke commands.
+
+A future assistant might let launcher duplicate setup logic. This is one of the most serious mistakes because it would violate setup authority and break auditability.
+
+A future assistant might let engine purity regress. The old tree had concrete engine contamination, so this must be enforced mechanically.
+
+A future assistant might over-merge this chat with other old-chat reports. Because some project-level canon was pasted from other chats, aggregation must preserve provenance. It should not pretend all project canon was developed in this setup chat.
+
+A future assistant might over-focus on generated package files instead of the substantive design. The files are useful, but the important content is setup authority, canonical structure, schema handoff, build enforcement, and verification.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes a detailed record of the **setup system’s architectural role** and its transition into the canonical repository. It should feed into future Project Spec Book chapters on:
+
+* Setup architecture,
+* Installation and rollback authority,
+* Repository structure,
+* Product boundaries,
+* Build and CMake enforcement,
+* Schema contracts,
+* Application-layer setup/launcher handoff,
+* Packaging and reproducibility,
+* Legacy platform support,
+* Context transfer/reporting process.
+
+The most important formal requirements candidates are:
+
+* setup is sole installation authority,
+* launcher consumes setup output and invokes setup only,
+* engine is unaware of setup,
+* setup depends only on `libs/` and `schema/`,
+* setup writes installed-state,
+* repair/update/downgrade are explicit,
+* rollback is journaled,
+* packaging recipes do not own install logic,
+* schemas are the canonical setup data format,
+* CMake is the build authority.
+
+Background context that should not become formal requirements includes the superseded early directory trees, the old setup tree except as migration evidence, and assistant-only proposals that were never accepted as canon.
+
+Likely overlaps with other chats include application-layer canon, RepoX/TestX, BUILD-ID-0, UI IR, engine purity, and project-wide architecture rules.
+
+Potential conflicts may arise if other chats propose different directory layouts, different setup/launcher authority boundaries, or different command/UI architecture. The future aggregator must preserve provenance and resolve conflicts through the latest user-provided canon.
+
+---
+
+## 14. What I Should Remember
+
+* The main subject of this chat was **Dominium Setup**, not launcher UI, engine simulation, or game rules.
+* The most important rule is that **setup is the sole authority for installation and installed-state mutation**.
+* The launcher may invoke setup and read setup outputs, but it must not repair, install, update, or infer state itself.
+* The engine must remain pure and unaware of setup.
+* The final canonical setup layout is under `setup/core`, `setup/include`, `setup/packages`, `setup/platform`, `setup/tests`, and `setup/ui`.
+* Earlier `setup/adapters`, adapter-local packaging, and generic `source` directories are historical or superseded.
+* CMake is the authoritative build system; Visual Studio/Xcode are generated views, not source-of-truth project systems.
+* C/C++ is the right setup execution path because of legacy/offline/stable ABI requirements.
+* The two applied Codex prompts are important but their results must be verified in the repo.
+* The generated **Setup Final Spec Alignment** prompt is the key next-action artifact.
+* Setup supports offline and network installs, update checking, component customization, repair, uninstall, update, downgrade, and rollback, but actual implementation must be checked.
+* Project-level application canon says CLI is canonical, UI is data, tools are read-only, and RepoX/TestX/BUILD-ID-0 govern metadata and validation.
+* The biggest unresolved issue is actual repo state.
+* The biggest future mistake would be treating old brainstorms as canon or assuming implementation success without verification.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Give me the exact commands and file checks to verify the current repo against this chat.”
+2. “Explain the Setup Final Spec Alignment prompt in plain language.”
+3. “Which setup directory structures are superseded, and why?”
+4. “Summarize the setup authority model for the future Project Spec Book.”
+5. “What are the highest-risk violations of setup/launcher/engine boundaries?”
+6. “Turn the unresolved setup verification items into a Codex prompt.”
+7. “Which decisions in this chat are hard canon, and which are assistant suggestions?”
+8. “Explain how offline install, online install, update check, repair, downgrade, and rollback should work.”
+9. “What parts of this chat overlap with application-layer canon from other chats?”
+10. “What should a future aggregator preserve from this chat and not merge prematurely?”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was about creating, refining, and preserving the architecture and implementation plan for the **Dominium / Domino Setup system**. Setup is the installer/updater/verifier/rollback product. It is not the launcher, not the engine, not game logic, and not a general tool. Its job is to install and maintain Dominium software safely, deterministically, and audibly.
+
+The conversation began with a broad setup-system master prompt. The user wanted a setup system that could support Windows, macOS, Linux, package managers, Steam/Epic-style distribution, offline installs, network installs, repair, uninstall, update, downgrade, rollback, and long-term legacy support. The assistant responded by designing a setup core with manifest parsing, dependency resolution, plan construction, transaction execution, filesystem policy, installed-state writing, logging, and platform interfaces.
+
+The user then asked for **Plan S**, a plan-of-plans for the setup system. That plan organized the work into phases: governance, core architecture, manifest schema, installed-state schema, transaction engine, filesystem/path policy, audit logging, CLI, platform adapters, Steam integration, distribution pipeline, compatibility, testing, and documentation.
+
+The chat then moved into concrete directory structures and native IDE workflows. Early trees used `setup/core`, `setup/adapters`, `setup/packaging`, `tests`, and `docs`. The user wanted simple, shallow, logical structures and support for Visual Studio 2026, Watcom/OpenWatcom for Windows 9x, Xcode for macOS, and Linux package managers. The assistant recommended C/C++ for setup execution, CMake as the build authority, and generated Visual Studio/Xcode projects rather than hand-authored IDE projects. It also recommended Visual Studio’s C++ desktop workload, not .NET, for the authoritative setup path.
+
+A major shift happened when the user pasted an existing setup tree showing drift: packaging inside adapters, duplicate CLI files, committed VS/Xcode project files, mixed DSK/DSU headers, and an empty schema area. The assistant identified these as structural problems.
+
+Then the user introduced a new canonical repository structure. This superseded earlier directory designs. The final top-level products are `engine`, `game`, `client`, `server`, `launcher`, `setup`, `tools`, `libs`, `schema`, `sdk`, `docs`, `ci`, and `legacy`. The canonical setup layout became `setup/core/{fetch,verify,install,rollback}`, `setup/include/{dsk,dsu}`, `setup/packages/{client,server,tools,scripts}`, `setup/platform/{win/{win9x,winnt},linux,bsd,mac/{classic,osx}}`, `setup/tests`, `setup/ui`, and `setup/CMakeLists.txt`.
+
+The most important architectural decision is that **setup is the sole authority for installation and installed-state mutation**. Launcher may invoke setup, but it cannot reimplement setup logic. Engine must not know setup exists. Setup depends only on `libs` and `schema`. Setup communicates with launcher only through schemas, manifests, installed-state snapshots, reports, and exit/status contracts.
+
+The user later pasted two applied Codex prompts. One covered repository refactor, Visual Studio 2026/CMake readiness, build targets, smoke tests, and boundary enforcement. The other covered final engine purity and contract ownership, including moving cross-product contracts to `libs/contracts/include/dom_contracts`. This changed the chat from greenfield design to implementation alignment: existing implementation should now be treated as authoritative unless it violates canon.
+
+The assistant generated a key future-work prompt titled **“Dominium Setup: Final Spec Alignment, Gap Closure, and Hardening Pass.”** This prompt tells Codex to inventory setup, document gaps, normalize schemas, harden public APIs, audit platform adapters, audit UI frontends, harden packaging, align tests, and create baseline documentation. It is probably the most important actionable artifact from the chat.
+
+The user asked whether setup could support offline and network installs, update checking, customization, repair, uninstall, update, downgrade, and rollback. The answer was yes, with clear boundaries: network is optional transport; update check is non-mutating; repair is explicit; uninstall is ownership-based; rollback is journaled.
+
+Near the end, the user pasted broader application-layer canon from other chats. That canon says applications are content-agnostic orchestration shells, CLI is canonical, GUI/TUI are views, UI is data via UI IR, tools are read-only by default, and RepoX/TestX/BUILD-ID-0 govern metadata, validation, changelogs, and releases. This is project context visible in the chat, not something invented by the assistant.
+
+The final part of the chat focused on preservation. A maximum-fidelity context transfer packet was produced, then a downloadable report package, then an in-chat reader. This current report translates the substance of the chat into a human-readable narrative.
+
+What remains unresolved is the actual state of the repository. The two Codex prompts were said to be applied, but this chat did not show the final tree, CMake output, test results, setup CLI output, schema files, or `libs/contracts` contents. Before implementing anything, the next assistant should verify the repo tree, schemas, contracts, CMake build, CTest, `setup --help`, `launcher --help`, and enforcement scripts.
+
+The key memory is simple: **do not redesign setup; verify and harden it.** Preserve setup authority, canonical paths, schema-only handoff, engine purity, CMake enforcement, explicit repair/update semantics, and the generated setup hardening prompt.
+
+# Reader Status
+
+* Chat title: Dominium Setup Architecture and Handoff
+* Report type: human-readable explanatory report
+* Main value of this chat: It records the evolution from setup-system architecture brainstorming to canonical repository alignment, setup authority rules, schema handoff, build enforcement, and future setup-hardening work.
+* Most important decision: Setup is the sole authority for installation, upgrade, downgrade, verification, repair, uninstall, rollback, installed-state ownership, and packaging layout enforcement.
+* Most important unresolved issue: The actual repository state after the two applied Codex prompts remains unverified in this chat.
+* Most important next action: Verify the current repo tree/build/schema/contract state, then execute or audit the generated Setup Final Spec Alignment prompt.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: Some material is project-context pasted from other chats; early directory structures are superseded; actual implementation/build state is unverified; assistant proposals must not be treated as user decisions unless accepted or canonized.

@@ -1,0 +1,3073 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Architecture II
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: Visible chat content only; no project files or external verification used.
+    apparent_coverage: Partial visible transcript with prior OC-1 and Context Transfer Packet; some earlier messages skipped.
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - actual repo files not inspected
+    - uploaded ZIP not inspected
+    - external platform/toolchain/legal facts need verification
+    - some early messages skipped
+  summary:
+    one_sentence: Dominium Architecture II defined the deterministic engine architecture, MVP scope, repository/spec docs,
+      Codex prompts, renderer/platform split, Lua data plan, and future roadmap for Dominium.
+    short_brief: 'This chat, **Dominium Architecture II**, is a high-density architecture, specification, and Codex-preparation
+      session for the Dominium engine/game project. It develops a deterministic, modular, multi-scale simulation engine intended
+      to support both retro and modern platforms, with an immediate MVP target and a long-term extensible platform/renderer/data/modding
+      architecture. The most important state to preserve is that Dominium is not merely a game idea; in this chat it was shaped
+      into a tightly constrained deterministic engine architecture with explicit repository contracts and Codex implementation
+      prompts.
+
+
+      The most important user-defined MVP is: a fully complete core; one full-size Earth surface; all systems interactable
+      through minimal data prototypes; Lua for all data; Windows/DX9/Win32/SDL2 path; 2D vector top-down and 3D vector first-person
+      rendering. Textures, sounds, music, multiplayer, the Sol system/space expansion, additional renderers, and additional
+      platforms are post-MVP.
+
+
+      Major architectural choices were fixed. The world uses meters with Q16.16 fixed substeps, not a millimeter base. The
+      spatial ladder is base-16 from subnano to surface, with sparse chunk/microgrid storage rather than a dense planetary
+      grid. The simulation is deterministic, integer/fixed-point, tick-based, C89-compatible in core, and strictly separated
+      from platform and renderer code. The renderer is a pure observer. Platform backends handle OS/window/input/time; renderer
+      backends handle graphics APIs; the sim never includes OS, DirectX, OpenGL, Vulkan, SDL, or other external platform/graphics
+      headers.
+
+
+      The building and infrastructure model was heavily refined. Buildings use blocks/modules/cells/faces/edges as simulation
+      truth, with walls/floors/roofs on grid faces/edges including diagonals. Doors and devices are explicit fixtures on anchors;
+      they must not appear automatically or be hardcoded into every tunnel type. Terrain uses immutable base terrain plus
+      earthworks deltas/cavities a'
+    main_topics:
+    - Unified documentation/source-of-truth
+    - Deterministic core/kernel
+    - ECS architecture
+    - Messaging, events, jobs
+    - Spatial hierarchy and cosmic identity
+    - Terrain, cut/fill, and microgrids
+    - 'Building system: cells, faces, edges, fixtures'
+    - Vector corridor/spline infrastructure
+    - 'Utility networks: power, data, fluids, thermal'
+    - Transport systems
+    - Pathfinding and deterministic movement
+    - Surface vs space and orbital systems
+    - Orbital construction/logistics
+    - Renderer/platform mix-and-match
+    - Lua data and script binding
+    - Serialization, save/replay, state hash
+    - Build system and CMake
+    - MVP client loop and UI/HUD
+    - Testing and CI
+    - Legal/governance docs
+    - Future multiplayer and server universe
+    - Future platforms/renderers/assets
+    main_outputs:
+    - User-provided current directory tree
+    - BUILDING.md V4
+    - SPEC_CORE.md V4
+    - DATA_FORMATS.md V4
+    - DIRECTORY_CONTEXT.md V4
+    - Codex consistency pass prompt
+    - Codex CMake/build skeleton prompt
+    - Codex core API skeleton prompt
+    - Codex sim/ECS shell prompt
+    - Codex platform/render shell prompt
+    - Codex minimal client loop prompt
+    - Lua clarification answer
+    - OC-1 Discovery Inventory
+    highest_priority_carry_forward:
+    - MVP scope exactly as user stated
+    - Strict deterministic integer/fixed-point core
+    - Renderer/platform/sim separation
+    - User-provided current file tree
+    - V4 BUILDING/SPEC_CORE/DATA_FORMATS/DIRECTORY_CONTEXT
+    - docs/dev/dominium_new_addendum.txt addendum location
+    - Spatial ladder and Earth/Sol/Milky Way defaults
+    - Blocks/cells/faces/edges + explicit fixtures
+    - Immutable base terrain + earthworks + microgrids
+    - Splines baked into chainpoints/microgrids
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Direct user statements outrank assistant suggestions.
+    - Newer user-provided tree and V4 docs outrank older idealized trees.
+    - Tentative assistant recommendations remain tentative unless accepted.
+    staleness_rules:
+    - External platform, API, compiler, licence, product and toolchain claims require verification before implementation/release.
+  user_preferences:
+    explicit:
+    - Maximum-fidelity, structured handoff rather than normal summary.
+    - No invented facts or silent inference.
+    - Preserve rejected/superseded/deprioritised options.
+    - Prioritise direct user statements over assistant suggestions.
+    - Use Codex with strict scoped prompts.
+    - Vector graphics first; textures/sounds/music later.
+    - Lua for all MVP data.
+    - Determinism and integer math as non-negotiable.
+    - Restrictive licensing.
+    - Do not make doors auto-appear; arbitrary explicit placement.
+    - Use real file tree and avoid phantom files.
+    inferred:
+    - Detailed architecture/spec outputs, often as long as possible.
+    - Retro and future extensibility kept in architecture even if deferred.
+    uncertain_or_not_established:
+    - legal jurisdiction for licence
+    - exact long-term data format policy
+    - whether SDL2 is required in first pass
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Unified documentation/source-of-truth
+    label: FACT
+    objective: Consolidate architecture and Codex-facing instructions into a coherent source of truth.
+    current_state: V4 replacements for BUILDING.md, SPEC_CORE.md, DATA_FORMATS.md, and DIRECTORY_CONTEXT.md were generated
+      in this chat; actual on-disk application is unverified.
+    desired_end_state: The four docs plus docs/dev/dominium_new_addendum.txt consistently guide Codex without contradictions.
+    status: active
+    priority: P0
+    background: The chat identified spec drift from earlier generated volumes and moved toward binding docs and codegen addenda.
+    decisions_made:
+    - docs/dev/dominium_new_addendum.txt is the addendum location, not a new CODEGEN_ADDENDUM.md.
+    - Actual user-provided file names and tree win over earlier generic names.
+    decisions_pending:
+    - Verify whether generated V4 docs were applied to disk.
+    - Reconcile any lingering references to /docs/spec if the actual tree has docs root files.
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    - TASK-04
+    - TASK-05
+    constraints:
+    - CONSTRAINT-07
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    dependencies: &id001
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    timeline: Immediate, before Codex implementation.
+    blockers:
+    - Actual repo state unknown.
+    risks:
+    - RISK-01
+    - RISK-02
+    artifacts: *id001
+    success_criteria:
+    - Four key docs align with actual file tree and dev addenda.
+    next_action: Run the Codex consistency pass or manually verify the four docs.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-02
+    name: Deterministic core/kernel
+    label: FACT
+    objective: Implement the deterministic C89 simulation kernel.
+    current_state: Detailed V3 determinism material and SPEC_CORE V4 exist as visible design outputs.
+    desired_end_state: A ticking deterministic core with fixed phases, lanes, merge, fixed-point math, and no sim floats.
+    status: active
+    priority: P0
+    background: The project identity is deterministic simulation across modern and retro systems.
+    decisions_made:
+    - No floats in /engine/core or /engine/sim.
+    - Seven-phase tick pipeline.
+    - Simulation slows rather than skipping ticks.
+    decisions_pending:
+    - Exact C API function signatures during implementation.
+    tasks:
+    - TASK-06
+    - TASK-07
+    - TASK-17
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    dependencies: &id002
+    - WORKSTREAM-03
+    - WORKSTREAM-16
+    timeline: First implementation after docs/build skeleton.
+    blockers: []
+    risks:
+    - RISK-05
+    - RISK-10
+    artifacts: *id002
+    success_criteria:
+    - Headless world ticks deterministically and hashes reproduce.
+    next_action: Generate engine/core skeletons and sim tick/ECS shell.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-03
+    name: ECS architecture
+    label: FACT
+    objective: Define and implement deterministic entity/component/system architecture.
+    current_state: V3 1B material and engine/ecs dev spec were generated.
+    desired_end_state: Stable entity IDs/generations, POD components, dense arrays, sorted active lists, deterministic iteration.
+    status: active
+    priority: P0
+    background: All simulation objects, buildings, workers, vehicles, networks, fixtures and devices depend on ECS.
+    decisions_made:
+    - Entity handle is ID plus generation.
+    - Components are POD with fixed layout.
+    - Structural changes deferred to command buffers and merge.
+    decisions_pending:
+    - Final component set and exact field names for MVP.
+    tasks:
+    - TASK-07
+    - TASK-18
+    constraints:
+    - CONSTRAINT-06
+    - CONSTRAINT-09
+    dependencies: &id003
+    - WORKSTREAM-02
+    - WORKSTREAM-04
+    timeline: Early implementation.
+    blockers: []
+    risks:
+    - RISK-10
+    - RISK-17
+    artifacts: *id003
+    success_criteria:
+    - Entity/component operations deterministic and serializable.
+    next_action: Implement ECS shell with deterministic tests.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-04
+    name: Messaging, events, jobs
+    label: FACT
+    objective: Provide deterministic event buses, command buffers, jobs, deferred ops and interrupts.
+    current_state: V3 1B-2a/b visible and sim dev spec generated.
+    desired_end_state: Fixed-size queues, deterministic ordering, one-tick cross-lane/global latency, job assignment with
+      stable tie-breaks.
+    status: active
+    priority: P0
+    background: Needed for construction, workers, devices, networks and Lua command orchestration.
+    decisions_made:
+    - Queue overflow deterministic oldest-drop plus flag.
+    - Jobs assigned deterministically.
+    - Commands mutate world only at safe phases.
+    decisions_pending:
+    - MVP job type enum and minimal worker tasks.
+    tasks:
+    - TASK-07
+    - TASK-22
+    constraints:
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    dependencies: &id004
+    - WORKSTREAM-03
+    timeline: Early implementation.
+    blockers: []
+    risks:
+    - RISK-05
+    - RISK-10
+    artifacts: *id004
+    success_criteria:
+    - Command emitted during sim applies in merge; worker can perform a fixed job.
+    next_action: Implement event/job skeletons and minimal worker job prototype.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-05
+    name: Spatial hierarchy and cosmic identity
+    label: FACT
+    objective: Define coordinates, scale ladder, sparse chunking, and universe/galaxy/system/planet/surface IDs.
+    current_state: User fixed the scale ladder and defaults; SPEC_CORE/DATA_FORMATS were updated around it.
+    desired_end_state: Single Earth surface MVP with full hierarchy capability and sparse chunks/microgrids.
+    status: active
+    priority: P0
+    background: The engine must support full-size planetary surfaces without dense global arrays.
+    decisions_made:
+    - Subnano through Surface base-16 ladder.
+    - Default Earth/Sol/Milky Way.
+    - Base game starts with one surface.
+    decisions_pending:
+    - Exact packed CosmicKey/hash/text representation.
+    tasks:
+    - TASK-19
+    constraints:
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    dependencies: &id005
+    - WORKSTREAM-06
+    - WORKSTREAM-16
+    timeline: MVP needs one Earth surface; multi-surface later.
+    blockers: []
+    risks:
+    - RISK-15
+    artifacts: *id005
+    success_criteria:
+    - World coords/chunks map deterministically and save metadata is stable.
+    next_action: Implement constants and single-surface sparse chunk roots.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-06
+    name: Terrain, cut/fill, and microgrids
+    label: FACT
+    objective: Support terrain edits, underground/overground structures, and logical separation from base terrain.
+    current_state: 'Three-layer model established: immutable base terrain, earthworks deltas/cavities, structural microgrids.'
+    desired_end_state: Flat MVP surface with future-ready cut/fill/cavity hooks.
+    status: active
+    priority: P1
+    background: Needed for tunnels, basements, canals, bridges and future collapse/subsidence.
+    decisions_made:
+    - Base terrain immutable.
+    - 'Earthworks are deltas: H_eff = H_base + ΔH.'
+    - Structures are separate microgrids.
+    decisions_pending:
+    - Exact minimal data fields for MVP terrain/chunk storage.
+    tasks:
+    - TASK-19
+    - TASK-27
+    constraints:
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    dependencies: &id006
+    - WORKSTREAM-05
+    - WORKSTREAM-07
+    timeline: MVP can stub complex terrain with flat Earth surface.
+    blockers: []
+    risks:
+    - RISK-15
+    - RISK-17
+    artifacts: *id006
+    success_criteria:
+    - Structures and earthworks can serialize separately from base terrain.
+    next_action: Implement flat heightfield plus delta/cavity placeholders.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-07
+    name: 'Building system: cells, faces, edges, fixtures'
+    label: FACT
+    objective: Use a unified building system for surface, underground and orbital structures.
+    current_state: Blocks/modules/cells/faces/edges model and explicit fixture/anchor system defined.
+    desired_end_state: MVP can place functional blocks/devices and simple walls/floors; future supports collapse/destruction.
+    status: active
+    priority: P0
+    background: User wanted blocks for structural/functional components and walls/floors/roofs between metre-grid blocks.
+    decisions_made:
+    - Blocks/modules are sim truth.
+    - Walls/floors/roofs on faces/edges, including diagonals.
+    - Doors/devices are explicit fixtures; no automatic doors.
+    decisions_pending:
+    - Exact component structures and Lua prefab fields.
+    tasks:
+    - TASK-15
+    - TASK-20
+    - TASK-21
+    constraints:
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies: &id007
+    - WORKSTREAM-03
+    - WORKSTREAM-06
+    - WORKSTREAM-15
+    timeline: MVP functional placement first; destruction/collapse later.
+    blockers:
+    - Lua data schema not finalized.
+    risks:
+    - RISK-11
+    - RISK-17
+    artifacts: *id007
+    success_criteria:
+    - User can place and inspect minimal structures/devices.
+    next_action: Define minimal prefab schema and place generator/consumer/cable/building blocks.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-08
+    name: Vector corridor/spline infrastructure
+    label: FACT
+    objective: Support arbitrary vector splines for roads, rails, tunnels, bridges, platforms and utilities.
+    current_state: Alignment-to-chainpoint-to-linear-microgrid pipeline defined; full implementation deferred beyond minimal
+      MVP.
+    desired_end_state: Data-driven corridor archetypes, fixtures/anchors, bridge/tunnel/cut/fill generation, node topology.
+    status: active/future
+    priority: P1
+    background: User asked how to handle long stations, tunnels, bridges, doors/utilities, overlapping microgrids, grades/cliffs.
+    decisions_made:
+    - Splines are authoring metadata; runtime uses baked chainpoints/cells/graphs.
+    - Corridors use archetypes+instances.
+    - Doors/utilities are fixtures/patterns only when explicitly placed.
+    decisions_pending:
+    - Exact algorithm/data schema for corridor baking and overlaps.
+    tasks:
+    - TASK-25
+    constraints:
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    dependencies: &id008
+    - WORKSTREAM-06
+    - WORKSTREAM-07
+    - WORKSTREAM-10
+    timeline: Minimal straight segment for MVP; full splines later.
+    blockers: []
+    risks:
+    - RISK-12
+    - RISK-15
+    artifacts: *id008
+    success_criteria:
+    - A vehicle can move deterministically along a simple segment; full corridor generator remains spec-ready.
+    next_action: Implement simplest straight corridor/vehicle path only in MVP.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-09
+    name: 'Utility networks: power, data, fluids, thermal'
+    label: FACT
+    objective: Graph/field utility systems for machines and infrastructure.
+    current_state: Power/data/fluid/thermal network specs generated; MVP requires minimal interactive prototypes.
+    desired_end_state: Power gen/load works first; fluid/data minimal snapshots; thermal may be stubbed.
+    status: active
+    priority: P0/P1
+    background: Earlier chats discussed electrical phases, voltages, data networks and utilities; SPEC_CORE includes network
+      core.
+    decisions_made:
+    - Power balances generation/load per connected component.
+    - Data packets/signals one hop/tick.
+    - Fluids deterministic pressure/flow graph.
+    decisions_pending:
+    - Exact MVP network component fields and Lua definitions.
+    tasks:
+    - TASK-20
+    - TASK-21
+    constraints:
+    - CONSTRAINT-05
+    - CONSTRAINT-24
+    dependencies: &id009
+    - WORKSTREAM-03
+    - WORKSTREAM-16
+    - WORKSTREAM-15
+    timeline: 'Power first in MVP, fluid/data thinner. '
+    blockers:
+    - Component/data schema.
+    risks:
+    - RISK-13
+    artifacts: *id009
+    success_criteria:
+    - Power status visibly updates and hashes deterministically.
+    next_action: Implement generator-consumer-cable power prototype.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-10
+    name: Transport systems
+    label: FACT
+    objective: Represent rail, road, water, air and space movement as graphs/corridors/fields.
+    current_state: Generalized design exists; MVP only needs one minimal transport segment/vehicle.
+    desired_end_state: Unified transport graph with modes, vehicles, stations, signals, bridges/tunnels.
+    status: active/future
+    priority: P1
+    background: Long early discussion covered rail gauges/traction, roads, waterways, airways, spaceways.
+    decisions_made:
+    - Topology connects at nodes; mid-edge connection creates/splits nodes.
+    - Rail/road etc. map to graph/corridor primitives.
+    decisions_pending:
+    - Which transport mode first for MVP (rail or road).
+    tasks:
+    - TASK-25
+    constraints:
+    - CONSTRAINT-22
+    - CONSTRAINT-28
+    dependencies: &id010
+    - WORKSTREAM-08
+    - WORKSTREAM-11
+    timeline: MVP minimal; full multimodal later.
+    blockers:
+    - Path/physics/corridor APIs.
+    risks:
+    - RISK-11
+    artifacts: *id010
+    success_criteria:
+    - Vehicle moves visibly and deterministically.
+    next_action: Pick rail or road and implement a straight segment with one deterministic vehicle.
+    verification_needed: []
+    confidence: medium-high
+  - id: WORKSTREAM-11
+    name: Pathfinding and deterministic movement
+    label: FACT
+    objective: Deterministic path and vehicle/worker movement primitives.
+    current_state: Engine/path and engine/physics dev specs generated; no code confirmed.
+    desired_end_state: Integer A*/routing and simple kinematics suitable for workers/vehicles/corridors.
+    status: active
+    priority: P1
+    background: Needed for workers, roads/rails, grades, slopes, tunnels, bridges.
+    decisions_made:
+    - A* deterministic tie-breaking.
+    - Runtime movement uses discrete/chain constraints.
+    decisions_pending:
+    - Exact path API and component integration.
+    tasks:
+    - TASK-22
+    - TASK-25
+    constraints:
+    - CONSTRAINT-22
+    - CONSTRAINT-02
+    dependencies: &id011
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    - WORKSTREAM-08
+    timeline: Minimal worker path and vehicle line follow in MVP.
+    blockers: []
+    risks:
+    - RISK-10
+    - RISK-12
+    artifacts: *id011
+    success_criteria:
+    - Worker reaches target reproducibly.
+    next_action: 'Implement grid/straight-line path stub sufficient for one worker/job. '
+    verification_needed: []
+    confidence: medium-high
+  - id: WORKSTREAM-12
+    name: Surface vs space and orbital systems
+    label: FACT
+    objective: Separate high-resolution surface sim from logical on-rails space sim.
+    current_state: Design defined, post-MVP.
+    desired_end_state: Orbit rails, SOI, Lagrange points, belts/clouds/EM fields, local bubbles, docking transitions.
+    status: future
+    priority: P2
+    background: User asked about space, orbital mechanics, stations, docking, asteroid belts, gas clouds, EM.
+    decisions_made:
+    - Use on-rails orbital mechanics.
+    - Local bubbles for docking/approach.
+    - Discrete domain transitions.
+    decisions_pending:
+    - Exact orbital data format/API.
+    tasks:
+    - TASK-29
+    constraints:
+    - CONSTRAINT-26
+    dependencies: &id012
+    - WORKSTREAM-05
+    - WORKSTREAM-16
+    timeline: After MVP core/multiplayer maybe.
+    blockers:
+    - Core surface MVP first.
+    risks:
+    - RISK-07
+    artifacts: *id012
+    success_criteria:
+    - Later Sol system can be added without rewriting core.
+    next_action: 'Keep stubs only; do not implement in MVP. '
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-13
+    name: Orbital construction/logistics
+    label: FACT
+    objective: Support construction and servicing of orbital ships/stations.
+    current_state: Conceptual design defined, not MVP.
+    desired_end_state: Orbital yards/stations/ships serviced by rockets/drop pods/cargo tugs.
+    status: future
+    priority: P2
+    background: User explicitly asked to support orbital ships/stations serviced from surfaces and between orbital objects.
+    decisions_made:
+    - Stations/ships/yards are ECS entities.
+    - Rockets/drop pods bridge surface-orbit.
+    - Tugs are orbital worker/vehicle jobs.
+    decisions_pending:
+    - Docking/inventory/module schemas.
+    tasks:
+    - TASK-29
+    constraints:
+    - CONSTRAINT-26
+    dependencies: &id013
+    - WORKSTREAM-12
+    - WORKSTREAM-04
+    - WORKSTREAM-07
+    timeline: Post-MVP space phase.
+    blockers:
+    - Orbital domain not implemented.
+    risks:
+    - RISK-07
+    artifacts: *id013
+    success_criteria:
+    - Orbital construction uses same building/job systems.
+    next_action: Preserve design, defer implementation.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-14
+    name: Renderer/platform mix-and-match
+    label: FACT
+    objective: Cleanly separate OS/platform and renderer backends and allow cross-product selection.
+    current_state: Addendum and BUILDING V4 specify platform API, renderer API, backend registry, DX9 MVP.
+    desired_end_state: 'Win32+DX9 MVP; later SDL2/DX11/GL/VK/DX12/Linux/macOS/retro. '
+    status: active
+    priority: P0
+    background: User explicitly asked to mix and match renderers/platforms with staged rollout.
+    decisions_made:
+    - MVP Windows NT 2000 SP4 through Windows 11+, DX9.0c.
+    - Native Win32 first, SDL2 optional/later.
+    - Renderer pure observer.
+    decisions_pending:
+    - Exact final draw command/camera structs.
+    tasks:
+    - TASK-08
+    - TASK-09
+    - TASK-34
+    constraints:
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-25
+    dependencies: &id014
+    - WORKSTREAM-17
+    timeline: Phase 1 MVP, future backends later.
+    blockers:
+    - API finalization and external compat verification.
+    risks:
+    - RISK-04
+    - RISK-08
+    - RISK-09
+    artifacts: *id014
+    success_criteria:
+    - Window opens and draws vector grid/crosshair while sim remains isolated.
+    next_action: Finalize render API then implement Win32 + DX9 vector shell.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-15
+    name: Lua data and script binding
+    label: FACT
+    objective: Enable Lua-driven data prototypes and sandboxed script interaction.
+    current_state: 'Codex clarification answered: /engine/script, Lua 5.4.4, API namespaces and sandbox.'
+    desired_end_state: Lua loads data/prefabs/jobs/net snapshots through safe deterministic engine APIs.
+    status: active
+    priority: P0
+    background: User said “Lua for all data.” Codex needed specifics.
+    decisions_made:
+    - Create /engine/script.
+    - Vendor Lua 5.4.4.
+    - Expose dom.entity/query/prefab/data/net/jobs/random.
+    - Disable io/os/unrestricted debug/native modules.
+    decisions_pending:
+    - Exact Lua data table schema.
+    - Lua-vs-JSON long-term docs.
+    tasks:
+    - TASK-12
+    - TASK-13
+    - TASK-14
+    - TASK-15
+    - TASK-16
+    - TASK-33
+    constraints:
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    dependencies: &id015
+    - WORKSTREAM-03
+    - WORKSTREAM-09
+    - WORKSTREAM-16
+    timeline: After minimal core loop but before data prototypes.
+    blockers:
+    - Directory contract update, Lua vendoring.
+    risks:
+    - RISK-05
+    - RISK-06
+    artifacts: *id015
+    success_criteria:
+    - Lua data pack loads deterministically and can spawn prefabs via commands.
+    next_action: Amend DIRECTORY_CONTEXT and implement VM/sandbox skeleton.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-16
+    name: Serialization, save/replay, state hash
+    label: FACT
+    objective: Persist and hash authoritative state deterministically.
+    current_state: DATA_FORMATS V4 generated; FNV-1a hash rule clarified.
+    desired_end_state: Canonical serialization buffer for save/load/replay/hash, FNV-1a tick hash tests.
+    status: active
+    priority: P0
+    background: 'Needed for determinism, saves, CI, lockstep. '
+    decisions_made:
+    - FNV-1a 64-bit over full authoritative serialized sim state.
+    - Exclude debug/reconstructable caches.
+    - Little-endian binary formats; no pointers.
+    decisions_pending:
+    - Exact block/struct layouts for MVP components.
+    tasks:
+    - TASK-17
+    - TASK-18
+    - TASK-26
+    constraints:
+    - CONSTRAINT-10
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    dependencies: &id016
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    - WORKSTREAM-09
+    timeline: 'Implement early even if subsystems stubbed. '
+    blockers:
+    - State structures finalized enough to serialize.
+    risks:
+    - RISK-10
+    - RISK-14
+    artifacts: *id016
+    success_criteria:
+    - Headless test emits stable tick/hash pairs.
+    next_action: Implement dom_core_hash and canonical serializer skeleton.
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-17
+    name: Build system and CMake
+    label: FACT
+    objective: Create deterministic modular CMake build and stubs.
+    current_state: BUILDING V4 and root CMake draft/prompt exist; actual applied state unknown.
+    desired_end_state: Root and per-dir CMake with explicit file lists, DR mode, MVP backend flags.
+    status: active
+    priority: P0
+    background: 'Codex needs build first before code. '
+    decisions_made:
+    - CMake canonical for modern builds.
+    - Retro builds isolated under /ports.
+    - No globbing.
+    decisions_pending:
+    - Actual directories and target files.
+    tasks:
+    - TASK-06
+    constraints:
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    dependencies: &id017
+    - WORKSTREAM-01
+    - WORKSTREAM-14
+    timeline: 'First Codex implementation task. '
+    blockers:
+    - Docs consistency pass.
+    risks:
+    - RISK-02
+    - RISK-16
+    artifacts: *id017
+    success_criteria:
+    - Project configures and builds stub targets.
+    next_action: 'Run CMake skeleton prompt. '
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-18
+    name: MVP client loop and UI/HUD
+    label: FACT
+    objective: Produce a playable vector-only minimal loop.
+    current_state: Prompt generated for minimal client loop; no code confirmed.
+    desired_end_state: 2D/3D camera, tick loop, vector rendering, selection/placement UI, minimal HUD.
+    status: active
+    priority: P0/P1
+    background: User wants playable MVP, all systems interactable.
+    decisions_made:
+    - 2D top-down vector and 3D first-person vector.
+    - No textures/audio in MVP.
+    decisions_pending:
+    - Exact input bindings/UI hotbar details.
+    tasks:
+    - TASK-09
+    - TASK-10
+    - TASK-24
+    constraints:
+    - CONSTRAINT-27
+    - CONSTRAINT-35
+    dependencies: &id018
+    - WORKSTREAM-02
+    - WORKSTREAM-14
+    - WORKSTREAM-15
+    timeline: 'After platform/render/sim skeletons. '
+    blockers:
+    - Render/camera API.
+    risks:
+    - RISK-11
+    artifacts: *id018
+    success_criteria:
+    - Can pan/zoom/toggle 3D and see deterministic world tick.
+    next_action: 'Wire minimal client loop with flat world. '
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-19
+    name: Testing and CI
+    label: FACT
+    objective: Validate determinism and prevent regressions.
+    current_state: Tests dev spec generated; FNV tick+hash test planned.
+    desired_end_state: Unit, integration, replay, perf tests; CI boundary checks.
+    status: active
+    priority: P0/P1
+    background: Deterministic project requires early tests.
+    decisions_made:
+    - Hash full authoritative sim state via FNV-1a.
+    - Headless tick+hash test first.
+    decisions_pending:
+    - Test harness implementation.
+    tasks:
+    - TASK-18
+    constraints:
+    - CONSTRAINT-36
+    dependencies: &id019
+    - WORKSTREAM-16
+    timeline: 'Early, immediately after serializer. '
+    blockers:
+    - Serializer/hash.
+    risks:
+    - RISK-10
+    artifacts: *id019
+    success_criteria:
+    - Same seed/ticks yields identical hash.
+    next_action: 'Implement first deterministic headless test. '
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-20
+    name: Legal/governance docs
+    label: FACT
+    objective: Provide restrictive project governance, licence, contribution and security docs.
+    current_state: Drafts generated for README, LICENCE, CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, CHANGELOG, .gitignore, etc.
+    desired_end_state: Consistent, legally reviewed governance docs.
+    status: active draft
+    priority: P1
+    background: 'User asked for restrictive licence and root docs. '
+    decisions_made:
+    - Licence should be completely restrictive except personal use/source viewing.
+    decisions_pending:
+    - Legal review; actual doc application.
+    tasks:
+    - TASK-31
+    constraints:
+    - CONSTRAINT-34
+    dependencies: &id020 []
+    timeline: 'Before public release. '
+    blockers:
+    - Legal expertise.
+    risks:
+    - RISK-18
+    artifacts: *id020
+    success_criteria:
+    - Docs match user intent and are legally usable.
+    next_action: 'Legal review of LICENCE.md and references. '
+    verification_needed: []
+    confidence: medium
+  - id: WORKSTREAM-21
+    name: Future multiplayer and server universe
+    label: FACT
+    objective: Add deterministic multiplayer, server/shard interaction and cross-server trade/communication.
+    current_state: Planned after MVP; net protocol/dev specs exist conceptually.
+    desired_end_state: Lockstep or server-authoritative multiplayer with async cross-surface interactions.
+    status: future
+    priority: P2
+    background: 'User wants multiplayer next; servers/surfaces discussed. '
+    decisions_made:
+    - Multiplayer after MVP.
+    - Cross-surface interactions async only.
+    decisions_pending:
+    - Security/signing, server trust, protocol specifics.
+    tasks:
+    - TASK-28
+    constraints:
+    - CONSTRAINT-26
+    dependencies: &id021
+    - WORKSTREAM-16
+    - WORKSTREAM-02
+    timeline: 'Post-MVP. '
+    blockers:
+    - Core/save/hash first.
+    risks:
+    - RISK-07
+    - RISK-19
+    artifacts: *id021
+    success_criteria:
+    - Later network implementation does not alter sim determinism.
+    next_action: 'Keep net stubs and replay tests; defer live multiplayer. '
+    verification_needed: []
+    confidence: medium-high
+  - id: WORKSTREAM-22
+    name: Future platforms/renderers/assets
+    label: FACT
+    objective: Add non-MVP renderers/platforms/textures/audio/music.
+    current_state: Roadmap defined; implementation deferred.
+    desired_end_state: DX11/GL1/GL2/VK1/DX12, Windows 98, Linux/macOS, retro, textures/audio/music packs.
+    status: future
+    priority: P2/P3
+    background: 'User explicitly listed staged platform/renderer plan and assets later. '
+    decisions_made:
+    - DX9 first; other backends later.
+    - Textures/sounds/music later.
+    decisions_pending:
+    - Verification of platform/API support.
+    tasks:
+    - TASK-29
+    - TASK-30
+    constraints:
+    - CONSTRAINT-25
+    - CONSTRAINT-33
+    dependencies: &id022
+    - WORKSTREAM-14
+    timeline: 'After MVP. '
+    blockers:
+    - Stable platform/render API.
+    risks:
+    - RISK-08
+    - RISK-09
+    artifacts: *id022
+    success_criteria:
+    - Backends can be added without changing sim.
+    next_action: 'Do not implement prematurely; keep stubs/fallbacks only. '
+    verification_needed: []
+    confidence: medium-high
+  decisions:
+  - id: DECISION-01
+    decision: Use meter-based world coordinates with fixed substeps/Q16.16.
+    status: final
+    label: FACT
+    evidence_or_basis: User selected world unit option B.
+    rationale: Fits base-16 hierarchy and avoids millimeter-wide coordinates.
+    implications: Spatial representation and serialization use meter tiles plus substeps.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: high
+  - id: DECISION-02
+    decision: Use strict sim/render separation.
+    status: final
+    label: FACT
+    evidence_or_basis: User selected rendering contract A.
+    rationale: Simplifies determinism proof.
+    implications: Renderer is pure observer; sim has no GPU/OS dependencies.
+    related_workstreams:
+    - WORKSTREAM-14
+    uncertainty: high
+  - id: DECISION-03
+    decision: Adopt base-16 spatial ladder from subnano to surface.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly provided ladder.
+    rationale: Matches fixed-point subdivisions and chunk hierarchy.
+    implications: Constants and chunking derive from ladder.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: high
+  - id: DECISION-04
+    decision: Store surfaces as sparse microgrids/chunks, not continuous dense arrays.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly stated no continuous grid.
+    rationale: Full-size surfaces are too large dense.
+    implications: Only active chunks/microgrids allocate data.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: high
+  - id: DECISION-05
+    decision: Default local world is Earth/Sol/Milky Way.
+    status: final
+    label: FACT
+    evidence_or_basis: User stated default planet/system/galaxy.
+    rationale: Canonical single-player world.
+    implications: MVP starts on Earth surface.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: high
+  - id: DECISION-06
+    decision: Support canonical surface plus multiple surface instances for shards/mirrors.
+    status: final-ish
+    label: FACT
+    evidence_or_basis: User asked; assistant reconciled one surface vs sharding; no rejection.
+    rationale: Needed for servers and mirrors without cross-sim coupling.
+    implications: SurfaceID identifies instance; one canonical default.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: medium-high
+  - id: DECISION-07
+    decision: Cross-surface interactions are asynchronous external events only.
+    status: final-ish
+    label: FACT
+    evidence_or_basis: Assistant recommendation after sharding discussion; continuation accepted.
+    rationale: Avoids cross-shard desync.
+    implications: No shared physics/networks across surfaces.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: medium-high
+  - id: DECISION-08
+    decision: Use on-rails orbital mechanics, not full n-body.
+    status: final-ish
+    label: FACT
+    evidence_or_basis: Space mechanics answer.
+    rationale: Full n-body harms determinism/debuggability.
+    implications: Orbit graph/rails and local bubbles.
+    related_workstreams:
+    - WORKSTREAM-12
+    uncertainty: high
+  - id: DECISION-09
+    decision: Docking, landing and takeoff are state-machine/domain transitions.
+    status: final-ish
+    label: FACT
+    evidence_or_basis: Space and orbital logistics answers.
+    rationale: One domain owns entity at a time.
+    implications: Rockets/pods/craft transition via command events.
+    related_workstreams:
+    - WORKSTREAM-12
+    uncertainty: high
+  - id: DECISION-10
+    decision: Use blocks/modules/cells/faces/edges as building simulation truth.
+    status: final
+    label: FACT
+    evidence_or_basis: User and assistant building discussion.
+    rationale: Discrete sim supports pathing/collision/pressure/retro.
+    implications: Buildings, stations, ships share representation.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: high
+  - id: DECISION-11
+    decision: Use vector shapes/splines as authoring, generation and visual layers only.
+    status: final
+    label: FACT
+    evidence_or_basis: Building/spline discussions.
+    rationale: Avoid continuous geometry in sim.
+    implications: Vectors bake into chainpoints/cells/meshes.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: high
+  - id: DECISION-12
+    decision: Place walls/floors/roofs on grid faces/edges including diagonals.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly requested.
+    rationale: Allows arbitrary orthogonal/diagonal layouts.
+    implications: FaceWall/EdgeWall lattice needed.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: high
+  - id: DECISION-13
+    decision: Buildings rigid for now but schema supports destruction/collapse later.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly stated.
+    rationale: Avoids MVP complexity but future-proofs data.
+    implications: Strength/connectivity fields may be present.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: high
+  - id: DECISION-14
+    decision: Doors/devices are explicit fixtures placed manually or by explicit blueprint/pattern.
+    status: final
+    label: FACT
+    evidence_or_basis: User did not want auto doors; assistant socket model.
+    rationale: Avoids coding doors into each tunnel type.
+    implications: Anchors/sockets + fixture entities.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: high
+  - id: DECISION-15
+    decision: Immutable base terrain plus earthworks deltas and cavities.
+    status: final
+    label: FACT
+    evidence_or_basis: Cut/fill discussion.
+    rationale: Preserves natural terrain and tracks modifications.
+    implications: H_eff=H_base+ΔH; cavities overlay terrain.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: high
+  - id: DECISION-16
+    decision: Vector alignments bake into deterministic ChainPoints and linear microgrids.
+    status: final
+    label: FACT
+    evidence_or_basis: Spline answer.
+    rationale: Runtime efficiency/determinism.
+    implications: Corridor generator pipeline.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: high
+  - id: DECISION-17
+    decision: Connections occur at nodes; mid-segment connections create/split nodes.
+    status: final
+    label: FACT
+    evidence_or_basis: Earlier way-spline answer.
+    rationale: Simplifies topology and signalling.
+    implications: Graph topologies remain explicit.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: medium-high
+  - id: DECISION-18
+    decision: Generalize architecture to five primitives.
+    status: final-ish
+    label: FACT
+    evidence_or_basis: Generalization answer.
+    rationale: Avoids 100 subsystems.
+    implications: Frames/lattices, archetypes/components, graphs/fields, blueprints/diffs, ticks/jobs.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: high
+  - id: DECISION-19
+    decision: MVP is one full-size Earth surface with all systems interactable via minimal prototypes.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicit MVP.
+    rationale: Test core breadth without full content.
+    implications: Implementation scope.
+    related_workstreams:
+    - WORKSTREAM-18
+    uncertainty: high
+  - id: DECISION-20
+    decision: MVP uses Lua for all data.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicit MVP.
+    rationale: Data-driven prototypes.
+    implications: Lua binding must exist.
+    related_workstreams:
+    - WORKSTREAM-15
+    uncertainty: high
+  - id: DECISION-21
+    decision: MVP uses 2D vector top-down and 3D vector first-person rendering.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicit MVP.
+    rationale: Avoid texture/sound asset bottleneck.
+    implications: Vector render shell needed.
+    related_workstreams:
+    - WORKSTREAM-18
+    uncertainty: high
+  - id: DECISION-22
+    decision: Initial platform/render target is Windows 2000+ to Windows 11+ with DX9.0c and Win32/SDL2.
+    status: final-ish
+    label: FACT
+    evidence_or_basis: User explicit rollout.
+    rationale: Focus implementation.
+    implications: Win32+DX9 first; SDL2 optional/later.
+    related_workstreams:
+    - WORKSTREAM-14
+    uncertainty: medium-high
+  - id: DECISION-23
+    decision: Textures, sounds and music are post-MVP.
+    status: final
+    label: FACT
+    evidence_or_basis: User stated they will make textures/sounds/music later.
+    rationale: Avoid assets during core work.
+    implications: Null audio/vector only for now.
+    related_workstreams:
+    - WORKSTREAM-22
+    uncertainty: high
+  - id: DECISION-24
+    decision: Multiplayer is post-MVP.
+    status: final
+    label: FACT
+    evidence_or_basis: User next steps list.
+    rationale: Core first.
+    implications: Net stubs/serialization now; live multiplayer later.
+    related_workstreams:
+    - WORKSTREAM-21
+    uncertainty: high
+  - id: DECISION-25
+    decision: Space/Sol system is post-MVP.
+    status: final
+    label: FACT
+    evidence_or_basis: User next steps list.
+    rationale: Core/surface first.
+    implications: Orbital stubs/context only.
+    related_workstreams:
+    - WORKSTREAM-12
+    uncertainty: high
+  - id: DECISION-26
+    decision: Add /engine/script for Lua binding and amend directory contract.
+    status: final
+    label: FACT
+    evidence_or_basis: Codex clarification answer.
+    rationale: Needed for Lua without misplacing code.
+    implications: New engine subdir.
+    related_workstreams:
+    - WORKSTREAM-15
+    uncertainty: high
+  - id: DECISION-27
+    decision: Vendor Lua 5.4.4 under /third_party.
+    status: final-ish
+    label: FACT
+    evidence_or_basis: Clarification answer.
+    rationale: Chosen Lua runtime.
+    implications: Third-party pinned source/includes.
+    related_workstreams:
+    - WORKSTREAM-15
+    uncertainty: medium-high
+  - id: DECISION-28
+    decision: Lua API is sandboxed and limited to data/light orchestration.
+    status: final
+    label: FACT
+    evidence_or_basis: Clarification answer.
+    rationale: Protect determinism/security.
+    implications: No OS/native module access; commands only.
+    related_workstreams:
+    - WORKSTREAM-15
+    uncertainty: high
+  - id: DECISION-29
+    decision: Use FNV-1a 64-bit over canonical serialized sim state for tests.
+    status: final
+    label: FACT
+    evidence_or_basis: Clarification answer.
+    rationale: Early deterministic validation.
+    implications: Implement dom_core_hash and serializer.
+    related_workstreams:
+    - WORKSTREAM-16
+    uncertainty: high
+  - id: DECISION-30
+    decision: Codex must use only listed files.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicit.
+    rationale: Avoid hidden-project assumptions.
+    implications: Prompts scope tightly.
+    related_workstreams:
+    - WORKSTREAM-22
+    uncertainty: high
+  - id: DECISION-31
+    decision: Regenerate BUILDING.md, SPEC_CORE.md, DATA_FORMATS.md, DIRECTORY_CONTEXT.md as next docs.
+    status: done
+    label: FACT
+    evidence_or_basis: User explicit; assistant generated V4 replacements.
+    rationale: Aligns core spec layer.
+    implications: Docs should be applied/verified.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: high
+  - id: DECISION-32
+    decision: Licence should be restrictive except personal use/source viewing.
+    status: draft/final intent
+    label: FACT
+    evidence_or_basis: User explicitly requested.
+    rationale: Protect IP.
+    implications: LICENCE.md draft generated; legal review needed.
+    related_workstreams:
+    - WORKSTREAM-20
+    uncertainty: medium
+  tasks:
+  - id: TASK-01
+    task: Apply/verify BUILDING.md V4
+    priority: P0
+    urgency: U0
+    owner: User/Codex
+    dependencies:
+    - Generated BUILDING V4
+    inputs_needed:
+    - Existing docs/BUILDING.md
+    expected_output: Updated BUILDING.md
+    next_step: Patch or compare file
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: high
+  - id: TASK-02
+    task: Apply/verify SPEC_CORE.md V4
+    priority: P0
+    urgency: U0
+    owner: User/Codex
+    dependencies:
+    - Generated SPEC_CORE V4
+    inputs_needed:
+    - Existing docs/SPEC_CORE.md
+    expected_output: Updated SPEC_CORE.md
+    next_step: Patch or compare file
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: high
+  - id: TASK-03
+    task: Apply/verify DATA_FORMATS.md V4
+    priority: P0
+    urgency: U0
+    owner: User/Codex
+    dependencies:
+    - Generated DATA_FORMATS V4
+    inputs_needed:
+    - Existing docs/DATA_FORMATS.md
+    expected_output: Updated DATA_FORMATS.md
+    next_step: Patch or compare file
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: high
+  - id: TASK-04
+    task: Apply/verify DIRECTORY_CONTEXT.md V4
+    priority: P0
+    urgency: U0
+    owner: User/Codex
+    dependencies:
+    - Generated DIRECTORY_CONTEXT V4
+    - User tree
+    inputs_needed:
+    - Existing docs/DIRECTORY_CONTEXT.md
+    expected_output: Updated directory contract
+    next_step: Patch or compare file
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: high
+  - id: TASK-05
+    task: Verify dominium_new_addendum.txt contains renderer/platform addendum
+    priority: P0
+    urgency: U0
+    owner: User/Codex
+    dependencies:
+    - Addendum generated in chat
+    inputs_needed:
+    - docs/dev/dominium_new_addendum.txt
+    expected_output: Correct addendum file
+    next_step: Inspect/paste/update
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: high
+  - id: TASK-06
+    task: Generate CMake/build skeleton
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Docs consistency
+    inputs_needed:
+    - CMake prompt
+    - BUILDING V4
+    expected_output: Root/per-dir CMake and minimal stubs
+    next_step: Run generated prompt
+    related_workstreams:
+    - WORKSTREAM-17
+    label: FACT
+    confidence: high
+  - id: TASK-07
+    task: Implement core/sim/ECS shell
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - CMake skeleton
+    - Core docs
+    inputs_needed:
+    - Core and sim prompts
+    expected_output: dom_core and dom_sim skeleton files
+    next_step: Run core then sim prompts
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: high
+  - id: TASK-08
+    task: Implement Win32 + DX9 vector shell
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Platform/render API
+    inputs_needed:
+    - Render/platform prompt
+    expected_output: Window, input, DX9 vector backend
+    next_step: Run prompt after build skeleton
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+    confidence: high
+  - id: TASK-09
+    task: Wire minimal client loop
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Core/sim/render/platform shells
+    inputs_needed:
+    - Client loop prompt
+    expected_output: Empty Earth surface loop with cameras
+    next_step: Run prompt after shells
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+    confidence: high
+  - id: TASK-10
+    task: Implement 2D/3D vector camera/input controls
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Client loop
+    - Render API
+    inputs_needed:
+    - Input/camera spec needs finalization
+    expected_output: Pan/zoom/toggle first-person camera
+    next_step: Finalize API then implement
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+    confidence: medium-high
+  - id: TASK-11
+    task: Add /engine/script to DIRECTORY_CONTEXT/build
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Lua decision
+    inputs_needed:
+    - Clarification answer
+    expected_output: Directory contract and build include script dir
+    next_step: Patch docs and CMake
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+    confidence: high
+  - id: TASK-12
+    task: Vendor Lua 5.4.4
+    priority: P0
+    urgency: U1
+    owner: Codex/User
+    dependencies:
+    - Third-party policy
+    inputs_needed:
+    - Lua source
+    - Licence
+    expected_output: Pinned Lua source/includes
+    next_step: Verify and add
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+    confidence: medium-high
+  - id: TASK-13
+    task: Implement script VM and sandbox
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Lua vendored
+    inputs_needed:
+    - Lua API/sandbox spec
+    expected_output: dom_script_vm and sandbox files
+    next_step: Create /engine/script skeleton
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+    confidence: high
+  - id: TASK-14
+    task: Implement Lua bindings
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Script VM
+    - ECS/prefabs/net/jobs APIs
+    inputs_needed:
+    - Binding scope
+    expected_output: dom.entity/query/prefab/data/net/jobs/random
+    next_step: Implement minimal safe bindings
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+    confidence: high
+  - id: TASK-15
+    task: Create minimal Lua data prototypes
+    priority: P0
+    urgency: U1
+    owner: Codex/User
+    dependencies:
+    - Lua bindings
+    inputs_needed:
+    - Data schema decision
+    expected_output: Generator/consumer/cable/worker/vehicle prototypes
+    next_step: Define data tables
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+    confidence: high
+  - id: TASK-16
+    task: Reconcile Lua-for-data with DATA_FORMATS JSON sections
+    priority: P0
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - MVP data decision
+    inputs_needed:
+    - DATA_FORMATS V4
+    expected_output: Clear data policy
+    next_step: Update docs if needed
+    related_workstreams:
+    - WORKSTREAM-15
+    label: INFERENCE
+    confidence: high
+  - id: TASK-17
+    task: Implement FNV-1a hash
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Core skeleton
+    inputs_needed:
+    - Hash spec
+    expected_output: dom_core_hash.[ch]
+    next_step: Implement early
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+    confidence: high
+  - id: TASK-18
+    task: Implement canonical state serializer and headless hash test
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - ECS/sim state
+    - Hash
+    inputs_needed:
+    - DATA_FORMATS
+    - test spec
+    expected_output: Serialized state hash and test
+    next_step: Implement after sim shell
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+    confidence: high
+  - id: TASK-19
+    task: Implement single Earth surface spatial roots
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Spatial constants
+    inputs_needed:
+    - Scale ladder
+    - SPEC_CORE
+    expected_output: Flat/sparse Earth surface root
+    next_step: Implement minimal spatial module
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: high
+  - id: TASK-20
+    task: Implement minimal power prototype
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - ECS/network components
+    - Lua data
+    inputs_needed:
+    - SPEC_CORE
+    expected_output: Generator-consumer-cable working
+    next_step: Implement first network
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+    confidence: high
+  - id: TASK-21
+    task: Implement minimal fluid/data prototypes
+    priority: P1
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Network shell
+    inputs_needed:
+    - SPEC_CORE
+    expected_output: Simple flow and data snapshots
+    next_step: Implement after power
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+    confidence: medium-high
+  - id: TASK-22
+    task: Implement worker/job prototype
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Jobs
+    - path
+    - Lua data
+    inputs_needed:
+    - Job specs
+    expected_output: Worker walks/performs fixed job
+    next_step: Implement with simple path
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: high
+  - id: TASK-23
+    task: Implement minimal building/device placement
+    priority: P0
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Lua prefabs
+    - ECS
+    - client UI
+    inputs_needed:
+    - Building spec
+    expected_output: Place generator/consumer/cable/building
+    next_step: Implement after data loading
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: high
+  - id: TASK-24
+    task: Implement minimal HUD/hotbar/selection
+    priority: P1
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Client loop
+    - render/UI
+    inputs_needed:
+    - MVP UI needs
+    expected_output: Tick/hash/status/hotbar/inspector
+    next_step: Implement thin UI
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+    confidence: medium-high
+  - id: TASK-25
+    task: Implement one transport segment and vehicle
+    priority: P1
+    urgency: U1
+    owner: Codex
+    dependencies:
+    - Path/physics/render
+    inputs_needed:
+    - Pick rail/road
+    expected_output: Deterministic vehicle movement
+    next_step: Choose simplest mode
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: medium-high
+  - id: TASK-26
+    task: Implement minimal save/load roundtrip
+    priority: P1
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - Serializer
+    - world state
+    inputs_needed:
+    - DATA_FORMATS
+    expected_output: Save/load same hash
+    next_step: Implement after serializer
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+    confidence: medium-high
+  - id: TASK-27
+    task: Stub terrain cut/fill fields
+    priority: P1
+    urgency: U2
+    owner: Codex
+    dependencies:
+    - Spatial/chunk
+    inputs_needed:
+    - Terrain design
+    expected_output: Base terrain + ΔH/cavity placeholders
+    next_step: Implement flat terrain first
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: medium
+  - id: TASK-28
+    task: Keep multiplayer as stub/future
+    priority: P2
+    urgency: U2
+    owner: Codex/User
+    dependencies:
+    - Core/net
+    inputs_needed:
+    - Roadmap
+    expected_output: No premature multiplayer complexity
+    next_step: Do not implement live MP yet
+    related_workstreams:
+    - WORKSTREAM-21
+    label: FACT
+    confidence: high
+  - id: TASK-29
+    task: Keep space/Sol/orbital as stub/future
+    priority: P2
+    urgency: U2
+    owner: Codex/User
+    dependencies:
+    - Core/spatial
+    inputs_needed:
+    - Roadmap
+    expected_output: No premature space implementation
+    next_step: Preserve design only
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+    confidence: high
+  - id: TASK-30
+    task: Defer textures/audio/music/extra renderers
+    priority: P2
+    urgency: U2
+    owner: Codex/User
+    dependencies:
+    - MVP scope
+    inputs_needed:
+    - Roadmap
+    expected_output: No asset dependency in MVP
+    next_step: Use vector/null audio
+    related_workstreams:
+    - WORKSTREAM-22
+    label: FACT
+    confidence: high
+  - id: TASK-31
+    task: Legal-review restrictive LICENCE.md
+    priority: P1
+    urgency: U2
+    owner: User/legal
+    dependencies:
+    - Licence draft
+    inputs_needed:
+    - Legal expertise
+    expected_output: Valid restrictive licence
+    next_step: Seek review before public release
+    related_workstreams:
+    - WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: TASK-32
+    task: Verify DirectX9/Win2000/SDK compatibility
+    priority: P1
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - External docs
+    inputs_needed:
+    - DX9/Win2000 info
+    expected_output: Confirmed viable platform target
+    next_step: Research/test
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: TASK-33
+    task: Verify Lua 5.4.4 old compiler portability
+    priority: P1
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - Lua source
+    - toolchains
+    inputs_needed:
+    - Compiler tests
+    expected_output: Confirmed or patched Lua
+    next_step: Test build
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: TASK-34
+    task: Finalize DomDrawCmd/camera API
+    priority: P0
+    urgency: U1
+    owner: User/Codex
+    dependencies:
+    - Addendum
+    - DATA_FORMATS
+    inputs_needed:
+    - Render API choices
+    expected_output: Consistent render header
+    next_step: Resolve before DX9 implementation
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+    confidence: high
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Simulation must be deterministic for identical inputs/version.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: V3/SPEC_CORE
+    implication: All state order fixed; no nondeterminism.
+    violation_risk: Desync, invalid replays.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-02
+    constraint: No floating point in authoritative simulation.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Repeated specs
+    implication: Use integer/fixed-point only.
+    violation_risk: Cross-platform divergence.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-03
+    constraint: /engine/core and /engine/sim must be C89.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: BUILDING/CONTRIBUTING
+    implication: Preserve retro/old compiler compatibility.
+    violation_risk: Build incompatibility.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-04
+    constraint: Non-core engine/game may use C++98 max, no newer features.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: BUILDING/CONTRIBUTING
+    implication: Avoid modern language dependence.
+    violation_risk: Toolchain mismatch.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-05
+    constraint: No OS headers outside /engine/platform or /ports.
+    type: technical/architecture
+    hard_or_soft: hard
+    source_or_basis: DIRECTORY_CONTEXT/Addendum
+    implication: Keep platform isolation.
+    violation_risk: Layer contamination.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-06
+    constraint: No graphics headers/calls outside /engine/render.
+    type: technical/architecture
+    hard_or_soft: hard
+    source_or_basis: Addendum
+    implication: Keep renderer isolation.
+    violation_risk: GPU API leakage.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-07
+    constraint: Codex must use only listed files/context.
+    type: process
+    hard_or_soft: hard
+    source_or_basis: User statement
+    implication: Avoid hallucinated context.
+    violation_risk: Wrong docs/code.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-08
+    constraint: World mutations go through command buffers/deferred phases.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: V3/Jobs/ECS
+    implication: Safe deterministic mutation.
+    violation_risk: Mid-tick inconsistency.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-09
+    constraint: No direct global writes from virtual lanes.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: V3 determinism
+    implication: Lane-local then merge.
+    violation_risk: Race/order bugs.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-10
+    constraint: Binary formats little-endian; no pointers; no floats.
+    type: data
+    hard_or_soft: hard
+    source_or_basis: DATA_FORMATS
+    implication: Portable save/network.
+    violation_risk: Unreadable/incompatible saves.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-11
+    constraint: No new top-level dirs unless DIRECTORY_CONTEXT updated.
+    type: process/directory
+    hard_or_soft: hard
+    source_or_basis: Directory contract
+    implication: Controlled structure.
+    violation_risk: Repo sprawl.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-12
+    constraint: Use actual file names from user tree.
+    type: process/directory
+    hard_or_soft: hard
+    source_or_basis: User tree
+    implication: Avoid broken references.
+    violation_risk: Broken docs/Codex.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-13
+    constraint: Lua script sandbox disables OS/time/native access.
+    type: security/technical
+    hard_or_soft: hard
+    source_or_basis: Lua clarification
+    implication: Protect determinism/security.
+    violation_risk: Sandbox escape/desync.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-14
+    constraint: Lua may mutate sim only through deterministic engine APIs/commands.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Lua clarification
+    implication: Preserve tick/order.
+    violation_risk: Undocumented state changes.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-15
+    constraint: No dense full surface allocation.
+    type: resource/technical
+    hard_or_soft: hard
+    source_or_basis: Spatial discussion
+    implication: Use sparse chunks/microgrids.
+    violation_risk: Memory explosion.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-16
+    constraint: Base game MVP uses one Earth surface.
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User MVP
+    implication: Keep scope bounded.
+    violation_risk: Multiworld scope creep.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-17
+    constraint: Base terrain immutable.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Cut/fill discussion
+    implication: Earthworks overlay base.
+    violation_risk: Loss of original terrain.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-18
+    constraint: Structural microgrids separate from terrain.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Cut/fill discussion
+    implication: Over/under structures remain distinct.
+    violation_risk: Terrain/structure conflation.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-19
+    constraint: Blocks/modules are sim truth for structures.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Building decision
+    implication: Deterministic structure/path/pressure.
+    violation_risk: Continuous geometry complexity.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-20
+    constraint: Doors/devices must be explicitly placed fixtures.
+    type: user preference/technical
+    hard_or_soft: hard
+    source_or_basis: User statement
+    implication: No automatic doors.
+    violation_risk: Unwanted doors/type bloat.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-21
+    constraint: Buildings rigid for MVP, but data future-proofs collapse.
+    type: scope/technical
+    hard_or_soft: hard
+    source_or_basis: User statement
+    implication: Avoid collapse implementation now.
+    violation_risk: MVP creep or incompatible data.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-22
+    constraint: Splines are baked to discrete chainpoints for runtime.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Spline discussion
+    implication: Runtime deterministic cells/graphs.
+    violation_risk: Runtime curve complexity.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-23
+    constraint: Connections occur at explicit graph nodes.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Way connectivity discussion
+    implication: Topology stable.
+    violation_risk: Mid-edge graph ambiguity.
+    label: FACT
+    confidence: medium-high
+  - id: CONSTRAINT-24
+    constraint: Networks deterministic, fixed capacity/latency/ordering.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Network specs
+    implication: No random loss/ordering.
+    violation_risk: Desync.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-25
+    constraint: Renderer/platform mix-and-match via APIs/vtables.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User rollout/addendum
+    implication: Extensible backend matrix.
+    violation_risk: Hardcoded backend coupling.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-26
+    constraint: Cross-surface interactions async only.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: Sharding discussion
+    implication: Surface isolation.
+    violation_risk: Cross-shard desync.
+    label: FACT
+    confidence: medium-high
+  - id: CONSTRAINT-27
+    constraint: MVP vector-only, textures/audio later.
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User MVP
+    implication: No asset blockers.
+    violation_risk: Scope creep.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-28
+    constraint: All systems interactable in MVP via minimal prototypes.
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User MVP
+    implication: Thin systems, not full simulation.
+    violation_risk: Either too narrow or too broad.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-29
+    constraint: Unknown binary blocks skippable.
+    type: data compatibility
+    hard_or_soft: hard
+    source_or_basis: DATA_FORMATS
+    implication: Forward compatibility.
+    violation_risk: Future format breakage.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-30
+    constraint: No hash tables serialized directly; sorted lists only.
+    type: data/determinism
+    hard_or_soft: hard
+    source_or_basis: DATA_FORMATS
+    implication: Deterministic serialization.
+    violation_risk: Ordering mismatch.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-31
+    constraint: FNV hash over authoritative state only.
+    type: testing
+    hard_or_soft: hard
+    source_or_basis: Hash clarification
+    implication: Stable determinism testing.
+    violation_risk: False positives/negatives.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-32
+    constraint: CMake explicit file lists; no globbing.
+    type: build
+    hard_or_soft: hard
+    source_or_basis: BUILDING
+    implication: Deterministic sources.
+    violation_risk: Accidental files included.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-33
+    constraint: Retro builds isolated under /ports.
+    type: build/platform
+    hard_or_soft: hard
+    source_or_basis: BUILDING/ports
+    implication: Modern CMake not contaminated.
+    violation_risk: Toolchain sprawl.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-34
+    constraint: Licence restrictive except personal use/source viewing.
+    type: legal/user preference
+    hard_or_soft: hard intent
+    source_or_basis: User request
+    implication: Distribution restrictions.
+    violation_risk: Licence intent violated.
+    label: FACT
+    confidence: medium
+  - id: CONSTRAINT-35
+    constraint: No textures/sounds/music required in MVP.
+    type: scope/resource
+    hard_or_soft: hard
+    source_or_basis: User statement
+    implication: Vector/null audio initially.
+    violation_risk: Asset bottleneck.
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-36
+    constraint: Tests must avoid OS randomness/wallclock dependencies.
+    type: testing
+    hard_or_soft: hard
+    source_or_basis: Tests dev spec
+    implication: Cross-platform validation.
+    violation_risk: Flaky tests.
+    label: FACT
+    confidence: high
+  open_questions:
+  - id: QUESTION-01
+    question: Have V4 docs been applied to the actual repository?
+    why_it_matters: Codex state depends on disk contents.
+    known: Generated V4 docs exist in chat.
+    unknown: On-disk state unknown.
+    resolution_path: Inspect repo files.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: Does the actual repo contain /engine, /game, /data etc. yet?
+    why_it_matters: Determines whether Codex creates dirs or edits existing.
+    known: User tree showed only root/docs.
+    unknown: Actual filesystem unknown.
+    resolution_path: Codex/file inspection.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-17
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: Should docs root remain flat or use /docs/spec?
+    why_it_matters: Old and new docs differ.
+    known: User tree has docs root files.
+    unknown: Final organization unclear if future moves planned.
+    resolution_path: Follow current tree or user confirm.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / UNCERTAIN
+  - id: QUESTION-04
+    question: How to reconcile Lua-for-all-data with JSON-oriented DATA_FORMATS sections?
+    why_it_matters: Affects data loader and Codex implementation.
+    known: User wants Lua MVP; DATA_FORMATS includes JSON/mod schema.
+    unknown: Final long-term policy.
+    resolution_path: Update DATA_FORMATS/BUILDING or ask user.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: What is the final DomDrawCmd/camera API?
+    why_it_matters: DX9 renderer implementation needs exact API.
+    known: Addendum and DATA_FORMATS have differing sketches.
+    unknown: Final coordinate/types.
+    resolution_path: Finalize dom_render_api.h.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Native Win32 or SDL2 first?
+    why_it_matters: Initial platform implementation scope.
+    known: User allowed both; assistant recommended Win32 first.
+    unknown: Whether SDL2 is MVP requirement.
+    resolution_path: Clarify or implement Win32 first with SDL2 optional.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT / INFERENCE
+  - id: QUESTION-07
+    question: Can DX9.0c reliably target Windows 2000 SP4 through Windows 11?
+    why_it_matters: Platform feasibility.
+    known: User wants it.
+    unknown: SDK/runtime details.
+    resolution_path: External verification/test.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: Can SDL2 support Windows 2000 target?
+    why_it_matters: If SDL2 is used early.
+    known: SDL2 named by user.
+    unknown: Version support.
+    resolution_path: External verification.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: Can Lua 5.4.4 build with old/retro compilers?
+    why_it_matters: Vendor/runtime feasibility.
+    known: Assistant recommended 5.4.4.
+    unknown: Portability/patched needs.
+    resolution_path: Test/verify.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: What exact ECS component set is MVP?
+    why_it_matters: Data/scripts/networks need fields.
+    known: Transform/occupancy/network/worker/building implied.
+    unknown: Exact fields.
+    resolution_path: Define minimal component schema.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: Which transport mode first for MVP?
+    why_it_matters: Implementation priority.
+    known: Need at least one segment/vehicle.
+    unknown: Rail vs road choice.
+    resolution_path: User or Codex decide simplest.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: What does “fully complete core” mean at MVP depth?
+    why_it_matters: Scope control.
+    known: All systems interactable minimal.
+    unknown: How thin each system can be.
+    resolution_path: MVP acceptance checklist.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-18
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-13
+    question: Do generated root docs like VERSION exist or matter?
+    why_it_matters: Avoid referencing missing files.
+    known: VERSION generated earlier; user tree lacks it.
+    unknown: User intent.
+    resolution_path: Inspect repo/ask if needed.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-14
+    question: Is the restrictive licence legally valid?
+    why_it_matters: Release risk.
+    known: Draft exists.
+    unknown: Legal enforceability.
+    resolution_path: Legal review.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-15
+    question: Are docs/dev files identical to generated dev specs?
+    why_it_matters: Codex source fidelity.
+    known: Names listed.
+    unknown: Contents uninspected.
+    resolution_path: Inspect files.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Pure vector shapes as simulation truth.
+    status: rejected
+    reason: Too complex for deterministic collision/serialization/retro.
+    final_or_tentative: final
+    reconsider_conditions: Use vectors as skins/editor/generators.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-02
+    option: Pure blocks without vector authoring.
+    status: rejected as sole system
+    reason: Insufficient for arbitrary curves/splines.
+    final_or_tentative: final-ish
+    reconsider_conditions: Blocks remain sim truth; vectors authoring.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-03
+    option: Full n-body orbital mechanics.
+    status: rejected
+    reason: Complex and hostile to determinism/debuggability.
+    final_or_tentative: final-ish
+    reconsider_conditions: Optional future high-fidelity non-core only.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+  - id: REJECTED-04
+    option: Synchronous cross-surface simulation.
+    status: rejected
+    reason: Would break surface/shard isolation.
+    final_or_tentative: final-ish
+    reconsider_conditions: Async messaging/trade only.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: REJECTED-05
+    option: Hard one-surface-per-planet limit.
+    status: superseded
+    reason: Sharding/mirroring requires multiple surface instances.
+    final_or_tentative: final-ish
+    reconsider_conditions: One canonical surface remains.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: REJECTED-06
+    option: Arbitrary mid-edge topology without nodes.
+    status: rejected
+    reason: Graph/path/signal ambiguity.
+    final_or_tentative: final-ish
+    reconsider_conditions: Auto-split/create node.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-07
+    option: Coding doors into every tunnel type.
+    status: rejected
+    reason: User explicitly did not want it.
+    final_or_tentative: final
+    reconsider_conditions: Use fixtures/anchors.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-08
+    option: Auto-spawned doors/utilities.
+    status: rejected
+    reason: User wants only explicit placement.
+    final_or_tentative: final
+    reconsider_conditions: Pattern/blueprint only if invoked.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-09
+    option: Runtime arbitrary spline math in sim.
+    status: rejected
+    reason: Runtime determinism/performance.
+    final_or_tentative: final
+    reconsider_conditions: Bake to chainpoints.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-10
+    option: Continuous mesh collisions.
+    status: rejected
+    reason: Too heavy, float-prone, retro-unfriendly.
+    final_or_tentative: final-ish
+    reconsider_conditions: AABB/cell/edge collision.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: REJECTED-11
+    option: Collapse/destruction in MVP.
+    status: deprioritised
+    reason: User said rigid for now, future support.
+    final_or_tentative: tentative for MVP
+    reconsider_conditions: Later structural graph.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-12
+    option: Textures/sounds/music in MVP.
+    status: deprioritised
+    reason: User wants vector now, assets later.
+    final_or_tentative: final for MVP
+    reconsider_conditions: Post-MVP.
+    related_workstreams:
+    - WORKSTREAM-22
+    label: FACT
+  - id: REJECTED-13
+    option: Multiplayer in MVP.
+    status: deprioritised
+    reason: User lists next steps after MVP.
+    final_or_tentative: final for MVP
+    reconsider_conditions: Post-MVP.
+    related_workstreams:
+    - WORKSTREAM-21
+    label: FACT
+  - id: REJECTED-14
+    option: Sol system/space in MVP.
+    status: deprioritised
+    reason: User lists next steps.
+    final_or_tentative: final for MVP
+    reconsider_conditions: Post-MVP.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+  - id: REJECTED-15
+    option: DX11/GL/VK/DX12 in MVP.
+    status: deprioritised
+    reason: DX9 first.
+    final_or_tentative: final for MVP
+    reconsider_conditions: Later renderer phases.
+    related_workstreams:
+    - WORKSTREAM-22
+    label: FACT
+  - id: REJECTED-16
+    option: Mac Classic/MS-DOS/Android in MVP.
+    status: deprioritised
+    reason: User says later.
+    final_or_tentative: final for MVP
+    reconsider_conditions: Later ports.
+    related_workstreams:
+    - WORKSTREAM-22
+    label: FACT
+  - id: REJECTED-17
+    option: CMake as primary retro build system.
+    status: rejected
+    reason: Retro uses isolated build systems.
+    final_or_tentative: final-ish
+    reconsider_conditions: CMake stubs only.
+    related_workstreams:
+    - WORKSTREAM-22
+    label: FACT
+  - id: REJECTED-18
+    option: Top-level /render and /platform dirs.
+    status: superseded
+    reason: Directory contract puts them under /engine.
+    final_or_tentative: final-ish
+    reconsider_conditions: Only if contract changes.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+  - id: REJECTED-19
+    option: Separate CODEGEN_ADDENDUM.md file.
+    status: rejected
+    reason: User wants only listed files.
+    final_or_tentative: final
+    reconsider_conditions: Use docs/dev/dominium_new_addendum.txt.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-20
+    option: Unbounded queues/dynamic sim allocation.
+    status: rejected
+    reason: Determinism/resource control.
+    final_or_tentative: final
+    reconsider_conditions: Preallocated bounded buffers.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Referenced ZIP with 17 files
+    type: file reference
+    purpose: Existing files from earlier chat
+    status: Mentioned, not inspected
+    origin: User mention
+    carry_forward: maybe
+    notes: Visible transcript does not include zip contents.
+    label: FACT / UNCERTAIN
+  - id: ARTIFACT-02
+    name_or_description: V3 Volume 1A-1 Determinism Kernel Foundations
+    type: generated document
+    purpose: Determinism foundations
+    status: Visible
+    origin: Transcribed in chat
+    carry_forward: 'yes'
+    notes: Important historical spec.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: V3 Volume 1A-2 Determinism Pipeline & Parallelism
+    type: generated document
+    purpose: Tick/lane/merge/network propagation
+    status: Visible
+    origin: Transcribed
+    carry_forward: 'yes'
+    notes: Important historical spec.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: V3 Volume 1B-1 Core Simulation Architecture
+    type: generated document
+    purpose: ECS/entity/component/system model
+    status: Visible
+    origin: Transcribed
+    carry_forward: 'yes'
+    notes: Important historical spec.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: V3 Volume 1B-2a Messaging Architecture
+    type: generated document
+    purpose: Events/commands/deferred ops
+    status: Visible
+    origin: Transcribed
+    carry_forward: 'yes'
+    notes: Important.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: V3 Volume 1B-2b Jobs/Interrupts/Routing
+    type: generated document
+    purpose: Jobs and task routing
+    status: Visible
+    origin: Transcribed
+    carry_forward: 'yes'
+    notes: Important.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: V3 Volume 1B-3a Serialization/Persistence
+    type: generated document
+    purpose: Save/replay/chunks
+    status: Visible
+    origin: Transcribed
+    carry_forward: 'yes'
+    notes: Important.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: V3 Volume 1B-3b Spatial/Physics/Prefabs/Mods
+    type: generated document
+    purpose: Spatial/prefab/mod architecture
+    status: Visible
+    origin: Transcribed
+    carry_forward: 'yes'
+    notes: Important.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: Unified Engine Specification outline
+    type: framework/plan
+    purpose: 12-section UES plan
+    status: Visible
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Not full formal spec but useful.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: Massive unified summary
+    type: generated summary
+    purpose: Whole-engine macro summary
+    status: Visible
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Architecture bridge.
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: Updated world rundown
+    type: generated summary
+    purpose: Cosmic/spatial/server/worldgen model
+    status: Visible
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Use for world model.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Surface vs space design answer
+    type: generated design
+    purpose: Physical/logical domains and orbits
+    status: Visible
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Use for future space.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: Orbital construction answer
+    type: generated design
+    purpose: Stations/ships/rockets/pods/tugs
+    status: Visible
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Future space logistics.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Building/cut-fill/spline design answers
+    type: generated design
+    purpose: Blocks, fixtures, terrain, corridors
+    status: Visible
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Core architecture.
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: Five primitives generalization
+    type: framework
+    purpose: Unifying systems
+    status: Visible
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: High-value architecture.
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: Full ASCII git directory tree
+    type: directory plan
+    purpose: Ideal repo structure
+    status: Visible
+    origin: Assistant output
+    carry_forward: historical
+    notes: Superseded by user actual tree.
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: Per-directory dev spec messages
+    type: generated specs
+    purpose: Detailed file/API guidance
+    status: Visible
+    origin: Assistant outputs
+    carry_forward: 'yes'
+    notes: Likely reflected in docs/dev files.
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: Root docs drafts
+    type: generated documents
+    purpose: README, LICENCE, CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, .gitignore, CMake, CHANGELOG, BUILDING, VERSION
+    status: Visible
+    origin: Assistant outputs
+    carry_forward: some
+    notes: Some may not exist in actual tree.
+    label: FACT / UNCERTAIN
+  - id: ARTIFACT-19
+    name_or_description: User-provided current directory tree
+    type: file tree
+    purpose: Actual current file set for Codex
+    status: Visible
+    origin: User
+    carry_forward: 'yes'
+    notes: Highest-priority structure source.
+    label: FACT
+  - id: ARTIFACT-20
+    name_or_description: BUILDING.md V4
+    type: generated document
+    purpose: Updated build/platform spec
+    status: Visible
+    origin: Assistant after old doc pasted
+    carry_forward: 'yes'
+    notes: Apply/verify.
+    label: FACT
+  - id: ARTIFACT-21
+    name_or_description: SPEC_CORE.md V4
+    type: generated document
+    purpose: Updated core spec
+    status: Visible
+    origin: Assistant after old doc pasted
+    carry_forward: 'yes'
+    notes: Apply/verify.
+    label: FACT
+  - id: ARTIFACT-22
+    name_or_description: DATA_FORMATS.md V4
+    type: generated document
+    purpose: Updated data formats spec
+    status: Visible
+    origin: Assistant after old doc pasted
+    carry_forward: 'yes'
+    notes: Apply/verify.
+    label: FACT
+  - id: ARTIFACT-23
+    name_or_description: DIRECTORY_CONTEXT.md V4
+    type: generated document
+    purpose: Updated directory contract
+    status: Visible
+    origin: Assistant after old doc pasted
+    carry_forward: 'yes'
+    notes: Apply/verify.
+    label: FACT
+  - id: ARTIFACT-24
+    name_or_description: Codex consistency pass prompt
+    type: prompt
+    purpose: Ask Codex to reconcile four docs
+    status: Visible
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Immediate use.
+    label: FACT
+  - id: ARTIFACT-25
+    name_or_description: Codex CMake/build skeleton prompt
+    type: prompt
+    purpose: Build system implementation step
+    status: Visible
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Next implementation.
+    label: FACT
+  - id: ARTIFACT-26
+    name_or_description: Codex core API skeleton prompt
+    type: prompt
+    purpose: engine/core skeleton step
+    status: Visible
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Implementation.
+    label: FACT
+  - id: ARTIFACT-27
+    name_or_description: Codex sim/ECS shell prompt
+    type: prompt
+    purpose: Tick/ECS/events/jobs skeleton
+    status: Visible
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Implementation.
+    label: FACT
+  - id: ARTIFACT-28
+    name_or_description: Codex platform/render shell prompt
+    type: prompt
+    purpose: Win32/DX9 vector shell
+    status: Visible
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Implementation.
+    label: FACT
+  - id: ARTIFACT-29
+    name_or_description: Codex minimal client loop prompt
+    type: prompt
+    purpose: MVP loop step
+    status: Visible
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Implementation.
+    label: FACT
+  - id: ARTIFACT-30
+    name_or_description: Lua clarification answer
+    type: implementation decision
+    purpose: /engine/script, Lua 5.4.4, API, FNV hash
+    status: Visible
+    origin: Assistant to Codex question
+    carry_forward: 'yes'
+    notes: Essential.
+    label: FACT
+  - id: ARTIFACT-31
+    name_or_description: OC-1 Discovery Inventory
+    type: handoff artifact
+    purpose: Discovery pass inventory
+    status: Visible
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Basis for packet.
+    label: FACT
+  - id: ARTIFACT-32
+    name_or_description: Partial OC-2 registers
+    type: handoff artifact
+    purpose: Structured registers started but superseded
+    status: Partial
+    origin: Assistant
+    carry_forward: historical
+    notes: This packet supersedes.
+    label: FACT
+  - id: ARTIFACT-33
+    name_or_description: Current Context Transfer Packet
+    type: handoff report
+    purpose: Maximum-fidelity chat state transfer
+    status: Current output
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Use for next chat.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Spec drift across docs/dev files.
+    consequence: Codex implements contradictory architecture.
+    likelihood: high
+    severity: high
+    mitigation: Run consistency pass; keep V4 docs canonical.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-02
+    risk: Codex invents directories or files outside contract.
+    consequence: Repo sprawl and bad implementation.
+    likelihood: medium
+    severity: high
+    mitigation: Prompt scope and DIRECTORY_CONTEXT.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-22
+    label: FACT
+  - id: RISK-03
+    risk: Treating brainstorming as final decisions.
+    consequence: Wrong architecture enters spec.
+    likelihood: medium
+    severity: high
+    mitigation: Use labels and user-statement priority.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-04
+    risk: Platform/render boundaries blur.
+    consequence: OS/GPU APIs leak into sim/game.
+    likelihood: medium
+    severity: critical
+    mitigation: Addendum, BUILDING V4, lint checks.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+  - id: RISK-05
+    risk: Floats enter authoritative simulation through Lua/render/helpers.
+    consequence: Cross-platform desync.
+    likelihood: medium
+    severity: critical
+    mitigation: API conversion, no sim floats, tests.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-15
+    label: FACT
+  - id: RISK-06
+    risk: Lua sandbox escape or nondeterministic script behavior.
+    consequence: Security/desync.
+    likelihood: medium
+    severity: critical
+    mitigation: Disable OS/native/debug and deterministic RNG.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: RISK-07
+    risk: Surface/space/cross-surface sync overreach.
+    consequence: Sharding/orbit complexity, desync.
+    likelihood: medium
+    severity: high
+    mitigation: Defer space/multiplayer; async only.
+    related_workstreams:
+    - WORKSTREAM-12
+    - WORKSTREAM-21
+    label: FACT
+  - id: RISK-08
+    risk: DX9/Win2000 target not feasible as assumed.
+    consequence: MVP platform failure.
+    likelihood: medium
+    severity: high
+    mitigation: Verify SDK/runtime early.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-09
+    risk: SDL2 or Lua version incompatible with old targets.
+    consequence: Build/tooling failures.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Verify and patch/version-pin.
+    related_workstreams:
+    - WORKSTREAM-14
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-10
+    risk: Canonical hash/serializer includes unstable data or misses authoritative state.
+    consequence: False determinism results.
+    likelihood: medium
+    severity: high
+    mitigation: Define serialization order and exclusions.
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+  - id: RISK-11
+    risk: MVP scope too broad.
+    consequence: Implementation stalls.
+    likelihood: high
+    severity: high
+    mitigation: Minimal prototypes only; defer assets/multiplayer/space.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+  - id: RISK-12
+    risk: Corridor/microgrid overlap ambiguity.
+    consequence: Invalid construction/pathing.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Ownership/portal rules.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: RISK-13
+    risk: Network solver complexity creep.
+    consequence: MVP delay.
+    likelihood: medium
+    severity: medium
+    mitigation: Simple power first, fluid/data thin.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-14
+    risk: Binary formats too underdefined for Codex.
+    consequence: Serializer guesses layouts.
+    likelihood: medium
+    severity: high
+    mitigation: Finalize exact structs for MVP components.
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+  - id: RISK-15
+    risk: Sparse/full-size surface overdesign.
+    consequence: Memory/perf or slow implementation.
+    likelihood: medium
+    severity: medium
+    mitigation: MVP flat sparse test area with full surface metadata.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-16
+    risk: .gitignore/build rules hide needed files.
+    consequence: Missing tracked build configs.
+    likelihood: medium
+    severity: medium
+    mitigation: Audit git ignore.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: INFERENCE
+  - id: RISK-17
+    risk: Actual repo tree differs from generated specs.
+    consequence: Patches fail or create wrong files.
+    likelihood: medium
+    severity: medium
+    mitigation: Inspect before applying.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-18
+    risk: Restrictive licence legally weak.
+    consequence: Legal exposure.
+    likelihood: unclear
+    severity: high
+    mitigation: Legal review.
+    related_workstreams:
+    - WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-19
+    risk: Future cross-server trade/security underspecified.
+    consequence: Cheating/rollback/desync.
+    likelihood: medium
+    severity: high
+    mitigation: Future security/net spec.
+    related_workstreams:
+    - WORKSTREAM-21
+    label: INFERENCE
+  verification_queue:
+  - id: VERIFY-01
+    item: Actual repo file contents and whether V4 docs applied.
+    why_verification_needed: Generated docs may not be on disk.
+    suggested_source_type: Repo inspection/diff.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Actual directory existence under /engine, /game, /data, etc.
+    why_verification_needed: User tree only showed root/docs.
+    suggested_source_type: Filesystem inspection.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-17
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: DX9.0c support on Windows 2000 SP4 through Windows 11+.
+    why_verification_needed: External API/runtime/toolchain fact.
+    suggested_source_type: Microsoft/SDK/runtime docs and test build.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: SDL2 support for Windows 2000 target.
+    why_verification_needed: Version-dependent.
+    suggested_source_type: SDL2 docs/build test.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Lua 5.4.4 portability to required compilers.
+    why_verification_needed: May require shims.
+    suggested_source_type: Build/test with target compilers.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Restrictive LICENCE.md legal enforceability.
+    why_verification_needed: Legal validity depends on jurisdiction.
+    suggested_source_type: Legal review.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: CMake minimum/toolchains and flags.
+    why_verification_needed: External toolchain compatibility.
+    suggested_source_type: CMake/compiler docs and build tests.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-17
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: JSON-vs-Lua data policy.
+    why_verification_needed: Docs and MVP may conflict.
+    suggested_source_type: User confirmation and doc update.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Final DomDrawCmd/camera API.
+    why_verification_needed: Conflicting sketches.
+    suggested_source_type: Header design/user confirmation.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: Current docs use LICENCE.md and SPEC_CORE.md names consistently.
+    why_verification_needed: Name mismatches likely.
+    suggested_source_type: Search repo.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: .gitignore behaviour.
+    why_verification_needed: Could ignore /build/cmake.
+    suggested_source_type: git check-ignore tests.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-17
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Third-party licence compliance for Lua/LZ4/etc.
+    why_verification_needed: Legal/build risk.
+    suggested_source_type: Licence audit.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-15
+    - WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-13
+    item: OpenGL/Vulkan/future platform support matrices.
+    why_verification_needed: External-world/API facts stale.
+    suggested_source_type: Official API/platform docs.
+    priority: P3
+    related_workstreams:
+    - WORKSTREAM-22
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-14
+    item: Win98 SE DX9/GL1 feasibility.
+    why_verification_needed: Historical platform support nuanced.
+    suggested_source_type: SDK/runtime tests.
+    priority: P3
+    related_workstreams:
+    - WORKSTREAM-22
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-15
+    item: Exact contents of docs/dev/dominium_new_*.txt.
+    why_verification_needed: Listed but not inspected.
+    suggested_source_type: Read files.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Architecture Overview and Determinism Kernel
+    - Repository and Directory Contract
+    - Build and Platform Strategy
+    - Spatial Hierarchy and World Model
+    - Terrain, Earthworks and Microgrids
+    - Buildings, Fixtures and Construction
+    - Transport Corridors and Vector Alignments
+    - Utilities and Networks
+    - Renderer/Platform Abstraction
+    - Lua Data and Modding
+    - Serialization, Replay and Determinism Hashing
+    - MVP Roadmap and Implementation Plan
+    unique_contributions:
+    - Finalized meter+Q16.16 world unit decision.
+    - Finalized strict render/platform/sim separation for MVP.
+    - Detailed terrain/earthworks/microgrid model.
+    - Detailed block/face/edge/fixture building model.
+    - Vector corridor baking model for infrastructure.
+    - Explicit MVP definition and Codex implementation sequence.
+    - Lua binding decisions including /engine/script and Lua 5.4.4.
+    - FNV-1a full-state hash decision.
+    possible_duplicates_with_other_chats:
+    - rail gauges and transport
+    - determinism/ECS/save volumes
+    - directory/dev spec generation
+    - building/vector/cut-fill design
+    conflicts_to_watch_for:
+    - Lua-only MVP vs JSON data specs
+    - actual docs tree vs /docs/spec old contract
+    - render API float vs integer command sketches
+    - LICENCE/LICENSE and SPEC_CORE/SPEC-core naming
+    formal_requirements_candidates:
+    - No floats in authoritative sim.
+    - Renderer pure observer.
+    - Codex uses listed files only.
+    - MVP vector-only and DX9-first.
+    - Lua sandbox restrictions.
+    - Canonical state hash requirements.
+    background_context_candidates:
+    - Earlier rail gauge exploration.
+    - Full future orbital/logistics ideas.
+    - Retro platform aspirations.
+    needs_user_confirmation:
+    - Lua vs JSON long-term data policy.
+    - Final DomDrawCmd/camera API.
+    - Native Win32 vs SDL2 first implementation path.
+    - Legal licence validity.
+  final_recommendations:
+    next_action_if_continuing_this_chat: Verify/apply V4 key docs and run Codex consistency pass.
+    next_action_for_aggregator: Ingest this package as the Dominium Architecture II source for MVP/codegen/docs/renderer-platform
+      split.
+    user_checks_required:
+    - repo file state
+    - V4 docs applied
+    - Lua-vs-JSON policy
+    - DomDrawCmd/camera API
+    - DX9/Win2000 compatibility
+    - Lua 5.4.4 portability

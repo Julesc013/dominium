@@ -1,0 +1,1987 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium GUI/Binary + CONTENT0 Handoff
+    filesystem_label: dominium_gui_binary_content_handoff
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This visible chat only; PROJECT-CONTEXT marks outside/project-level context.
+    apparent_coverage: full for visible chat context and previous packet; unclear for inaccessible earlier repo/files
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - No repository/file inspection performed
+    - External platform facts require re-verification
+    - Linux/Android remain open
+    - Assistant suggestions are not user decisions unless labelled FACT from user statement
+  summary:
+    one_sentence: 'This chat preserves and normalizes Dominium/Domino CONTENT0 content-layer doctrine and the latest GUI/binary
+      rebuild direction: CLI mandatory, TUI expected, modular native GUIs attached to shared backends.'
+    short_brief: The chat begins with CONTENT0 canonical content population and shifts to a current main workstream of rebuilding
+      GUIs and binaries across Windows, macOS, Linux, and Android while preserving CLI/TUI and backend modularity.
+    main_topics:
+    - CONTENT0 content population
+    - full-universe/default datapack
+    - Milky Way/Sol canonical content
+    - GUI/binary rebuild
+    - Windows frontend lanes
+    - macOS frontend lanes
+    - Linux/Android open strategy
+    - backend contract
+    - packaging/build matrix
+    main_outputs:
+    - assistant draft CONTENT0 prompt
+    - CONTENT0 critique
+    - GUI/binary transfer knowledge base
+    - maximum-fidelity context transfer packet
+    - this final report package
+    highest_priority_carry_forward:
+    - GUI rebuild from scratch
+    - CLI mandatory
+    - TUI expected
+    - modular GUIs attached to backends
+    - backend contract first
+    - CONTENT0 data-only provenance doctrine
+    - Linux/Android unresolved
+    - verify platform facts
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Direct user statements outrank assistant suggestions.
+    - Later user corrections outrank earlier assistant outputs.
+    - Assistant drafts are not decisions unless accepted.
+    - External facts require re-verification before implementation.
+    staleness_rules:
+    - Software/toolchain/platform support claims must be rechecked before future use.
+    - Links from the previous packet are references, not current guarantees.
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: Discuss before planning or generating prompts when conceptual ambiguity exists.
+      category: explicit
+      source: User message after initial CONTENT0 rewrite
+      strength: high
+      implication: Do discussion/issue resolution first.
+      risk: Premature prompt/code output may lock wrong assumptions.
+      label: FACT
+    - id: PREFERENCE-02
+      preference: Maximum-fidelity state transfer rather than normal summary.
+      category: explicit
+      source: User context-transfer request
+      strength: high
+      implication: Preserve decisions, constraints, artifacts, contradictions, and uncertainty.
+      risk: Over-compression loses reusable project state.
+      label: FACT
+    - id: PREFERENCE-03
+      preference: Label facts, inferences, and uncertainty explicitly.
+      category: explicit
+      source: Current and previous transfer-packet prompts
+      strength: high
+      implication: Registers must use FACT / INFERENCE / UNCERTAIN / PROJECT-CONTEXT.
+      risk: Future assistants may promote guesses to decisions.
+      label: FACT
+    - id: PREFERENCE-05
+      preference: Structured headings, tables, stable IDs, and reusable files.
+      category: explicit
+      source: Current request
+      strength: high
+      implication: Use normalized registers and package files.
+      risk: Unstructured prose is hard to aggregate.
+      label: FACT
+    - id: PREFERENCE-06
+      preference: Avoid treating brainstorms or assistant suggestions as decisions.
+      category: explicit
+      source: Current request
+      strength: high
+      implication: Preserve tentative status.
+      risk: Spec book may contain false commitments.
+      label: FACT
+    inferred:
+    - id: PREFERENCE-07
+      preference: Prefer rigorous challenge of feasibility over agreeable answers.
+      category: inferred
+      source: User accepted/asked about Xcode/.NET/Linux limitations; profile reinforces
+      strength: medium-high
+      implication: Correct technical framing when evidence conflicts.
+      risk: Bad support claims enter build matrix.
+      label: INFERENCE
+    uncertain_or_not_established:
+    - Exact desired Linux GUI stack
+    - Exact Android role
+    - Exact TUI parity level
+    - Exact visual profile set
+    project_context:
+    - id: PREFERENCE-04
+      preference: Direct, source-grounded, audit-ready answers with explicit uncertainty.
+      category: project-context
+      source: User profile outside visible chat
+      strength: high
+      implication: Use citations/verification and confidence labels.
+      risk: Unsupported claims will reduce trust.
+      label: PROJECT-CONTEXT
+  workstreams:
+  - id: WORKSTREAM-01
+    name: CONTENT0 canonical content population
+    label: FACT
+    objective: Populate Dominium/Domino canonical universe, civilization, economy, history, population, technology, and start-condition
+      content through data, schemas, and docs only.
+    current_state: User supplied CONTENT0 prompt; assistant produced a draft rewrite; user redirected to discussion-first
+      before more prompting.
+    desired_end_state: Data-driven canonical content with Sol and Earth macro-defined, all major structures documented, no
+      entity appearing without origin/provenance.
+    status: active but paused
+    priority: medium-high
+    background: CONTENT0 targets GPT-5.2 CODEX and is scoped to data/, schema/, docs/ only.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks:
+    - RISK-06
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: define pending decisions before implementation
+    verification_needed:
+    - VERIFY-02
+    - VERIFY-14
+    confidence: high
+  - id: WORKSTREAM-02
+    name: CONTENT0 prompt refinement and discussion-first process
+    label: FACT
+    objective: Refine the content-generation prompt only after unresolved conceptual issues are discussed.
+    current_state: Assistant draft exists but is not accepted as final.
+    desired_end_state: A Codex-ready prompt that preserves data-only scope, provenance, deterministic seeds, and refinable
+      macro content.
+    status: active / draft
+    priority: medium
+    background: User explicitly said, 'First, let's discuss this before we plan or generate any prompts.'
+    decisions_made:
+    - DECISION-03
+    decisions_pending: []
+    tasks:
+    - TASK-13
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks: []
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Use the ten issue list as agenda
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-03
+    name: Full-universe/default datapack architecture
+    label: FACT
+    objective: Plan a universe representation that is efficient in storage and memory and supports fully procedural, partially
+      defined with procedural gaps, and fully defined/architected universes.
+    current_state: Goal stated by user; no finalized architecture.
+    desired_end_state: A scalable content model with explicit definition levels, procedural gaps, provenance, and refinement
+      paths.
+    status: active concept
+    priority: medium
+    background: User wants an 'optimally large macro prompt plan' that can eventually support a full universe.
+    decisions_made: []
+    decisions_pending:
+    - QUESTION-13
+    tasks:
+    - TASK-14
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks:
+    - RISK-07
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Define levels of definition and importance dimensions
+    verification_needed:
+    - VERIFY-15
+    confidence: high
+  - id: WORKSTREAM-04
+    name: Default Milky Way datapack
+    label: FACT
+    objective: Define the default shipped datapack containing the Milky Way and the galaxy's most important stars, systems,
+      and celestial sites.
+    current_state: User goal stated; selection criteria unresolved.
+    desired_end_state: Milky Way data with important visiting, harvesting, research, navigation, and other sites selected
+      by explicit criteria.
+    status: active concept
+    priority: medium
+    background: User specifically named the Milky Way as default shipped content.
+    decisions_made:
+    - DECISION-04
+    decisions_pending:
+    - QUESTION-14
+    tasks: []
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks: []
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: define pending decisions before implementation
+    verification_needed:
+    - VERIFY-16
+    confidence: high
+  - id: WORKSTREAM-05
+    name: Sol system canonical data
+    label: FACT
+    objective: Define the Sol system and its important celestial bodies, structures, satellites, belts, fields, and points.
+    current_state: Mandatory in CONTENT0 and emphasized by user; not implemented here.
+    desired_end_state: Macro-complete, refinable Sol system with formation history, orbital/domain data, visitability rules,
+      and provenance.
+    status: required / unresolved
+    priority: medium-high
+    background: CONTENT0 makes Sol mandatory; user specifically included Sol among key systems.
+    decisions_made:
+    - DECISION-05
+    decisions_pending: []
+    tasks: []
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks: []
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: define pending decisions before implementation
+    verification_needed: []
+    confidence: high
+  - id: WORKSTREAM-06
+    name: GUI and binary rebuild
+    label: FACT
+    objective: Redo all GUIs from scratch across products while preserving CLI, expected TUI, and modular GUI frontends attached
+      to shared backends.
+    current_state: Current main workstream; explicit user decision made.
+    desired_end_state: A coherent multi-platform frontend/binary strategy for setup, launcher, client, server, and tools.
+    status: active
+    priority: critical
+    background: User decided to rebuild GUIs and listed Windows/macOS lanes; Linux/Android remain open.
+    decisions_made:
+    - DECISION-06
+    - DECISION-07
+    decisions_pending:
+    - QUESTION-03
+    - QUESTION-15
+    tasks:
+    - TASK-01
+    - TASK-03
+    - TASK-12
+    constraints:
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks:
+    - RISK-02
+    - RISK-12
+    artifacts:
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Produce first in new chat before code
+    verification_needed:
+    - VERIFY-01
+    confidence: high
+  - id: WORKSTREAM-07
+    name: Shared backend/UI contract
+    label: INFERENCE
+    objective: Define the shared contract consumed by CLI, TUI, and GUI frontends so product logic stays backend-owned.
+    current_state: Recognized as the first unresolved design issue; no shape finalized.
+    desired_end_state: Stable command/state/event/error/versioning model exposed through suitable in-process ABI, IPC, or
+      both.
+    status: active / unresolved
+    priority: critical
+    background: The modular-GUI plan implies a common contract beneath every frontend.
+    decisions_made:
+    - DECISION-09
+    - DECISION-16
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-02
+    tasks:
+    - TASK-02
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks:
+    - RISK-01
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Draft candidate contract model and identify repo facts needed
+    verification_needed:
+    - VERIFY-13
+    confidence: medium-high
+  - id: WORKSTREAM-08
+    name: Windows frontend family matrix
+    label: FACT
+    objective: 'Plan Windows GUI/build lanes: Win32 ANSI, Win32 Unicode, WinForms compatibility family, and WinUI 3 modern
+      family.'
+    current_state: User proposed families; assistant corrected feasibility issues around .NET Framework targeting.
+    desired_end_state: Explicit Windows matrix by product, architecture, OS floor, framework/runtime, toolchain, packaging,
+      and support level.
+    status: partially specified
+    priority: high
+    background: Windows lane has the most detailed user-provided stack list.
+    decisions_made:
+    - DECISION-10
+    - DECISION-11
+    decisions_pending:
+    - QUESTION-05
+    - QUESTION-06
+    tasks:
+    - TASK-04
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks:
+    - RISK-10
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Normalize user-proposed Windows families
+    verification_needed:
+    - VERIFY-03
+    - VERIFY-04
+    - VERIFY-05
+    confidence: high
+  - id: WORKSTREAM-09
+    name: macOS frontend family matrix
+    label: FACT
+    objective: Plan macOS GUI/build lanes using AppKit and SwiftUI with explicit deployment floors and toolchains.
+    current_state: User proposed AppKit and SwiftUI lanes; assistant identified macOS 10.9/frozen-toolchain issue.
+    desired_end_state: Explicit macOS matrix by product, architecture, macOS floor, Xcode/SDK version, packaging/signing,
+      and support level.
+    status: partially specified
+    priority: high
+    background: User wants AppKit for setup/launcher/client/server and SwiftUI for future launcher/server.
+    decisions_made:
+    - DECISION-12
+    - DECISION-13
+    decisions_pending:
+    - QUESTION-07
+    - QUESTION-08
+    tasks:
+    - TASK-05
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks:
+    - RISK-09
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Clarify whether macOS 10.9 is hard requirement
+    verification_needed:
+    - VERIFY-06
+    - VERIFY-07
+    confidence: high
+  - id: WORKSTREAM-10
+    name: Linux frontend strategy
+    label: FACT
+    objective: Define Linux GUI/build lanes consistent with backend-contract/thin-shell doctrine.
+    current_state: In scope but exact stack undecided.
+    desired_end_state: Linux frontend strategy with distro baseline, toolkit/renderer choice, packaging forms, and support
+      policy.
+    status: open
+    priority: high
+    background: User said Linux will do something similar; assistant recommended not copying Windows stack count blindly.
+    decisions_made:
+    - DECISION-14
+    decisions_pending:
+    - QUESTION-09
+    tasks:
+    - TASK-06
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks:
+    - RISK-08
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Compare Qt, GTK, Avalonia, custom renderer host, and TUI-first approaches
+    verification_needed:
+    - VERIFY-08
+    - VERIFY-09
+    confidence: high
+  - id: WORKSTREAM-11
+    name: Android frontend strategy
+    label: FACT
+    objective: Define Android role and frontend strategy under the same backend doctrine where appropriate.
+    current_state: In scope but exact strategy undecided.
+    desired_end_state: Android-specific product role and UI/package plan, not merely desktop scaled down.
+    status: open
+    priority: medium-high
+    background: User said Android similar again; assistant noted mobile should be treated as a distinct host family.
+    decisions_made:
+    - DECISION-14
+    decisions_pending:
+    - QUESTION-10
+    tasks:
+    - TASK-07
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks:
+    - RISK-11
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Decide Android role before toolkit selection
+    verification_needed:
+    - VERIFY-10
+    confidence: high
+  - id: WORKSTREAM-12
+    name: Packaging, linking, and distribution doctrine
+    label: INFERENCE
+    objective: Decide per-product/per-platform packaging forms, static vs dynamic linking, plugin/library boundaries, installers,
+      and portable artifacts.
+    current_state: Partially discussed; no final matrix.
+    desired_end_state: Clear packaging model by product and platform with support/test implications.
+    status: open / partially discussed
+    priority: high
+    background: User asked whether code compiles into executables or separate libraries/DLLs; assistant advised static/self-contained
+      where it reduces deployment complexity.
+    decisions_made: []
+    decisions_pending:
+    - QUESTION-11
+    tasks:
+    - TASK-10
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks: []
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Separate static/self-contained vs dynamic/plugin cases
+    verification_needed:
+    - VERIFY-11
+    confidence: medium
+  - id: WORKSTREAM-13
+    name: Build, toolchain, and CI matrix
+    label: INFERENCE
+    objective: Create a formal build matrix across OS, architecture, framework/runtime, toolchain, packaging, signing, and
+      support status.
+    current_state: Recognized as necessary; not built.
+    desired_end_state: Auditable matrix mapping every support claim to a build lane and test lane.
+    status: open
+    priority: high
+    background: Legacy support for .NET and macOS requires real toolchains.
+    decisions_made: []
+    decisions_pending: []
+    tasks:
+    - TASK-11
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks:
+    - RISK-03
+    - RISK-13
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Verify official docs before finalizing
+    verification_needed: []
+    confidence: medium-high
+  - id: WORKSTREAM-14
+    name: Visual profile and OEM+ system
+    label: INFERENCE
+    objective: Use a small set of visual/behavior profiles rather than separate GUI codebases per OS era.
+    current_state: Assistant recommendation; user did not explicitly lock exact profile set.
+    desired_end_state: Defined profile set such as classic/OEM+/modern/reduced-admin with clear behavior and visual differences.
+    status: recommended / unresolved
+    priority: medium-high
+    background: Earlier discussion asked whether separate GUIs were needed per era; assistant recommended profiles.
+    decisions_made:
+    - DECISION-15
+    decisions_pending:
+    - QUESTION-12
+    tasks:
+    - TASK-09
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks:
+    - RISK-04
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Draft classic/OEM+/modern/reduced-admin candidates
+    verification_needed: []
+    confidence: medium
+  - id: WORKSTREAM-15
+    name: TUI doctrine
+    label: FACT
+    objective: Define what 'expected to work with TUI' means for every product.
+    current_state: Requirement stated; parity level unresolved.
+    desired_end_state: TUI scope and parity rules mapped to backend contract and product matrix.
+    status: open
+    priority: high
+    background: User explicitly said products are expected to work with TUI.
+    decisions_made:
+    - DECISION-08
+    decisions_pending:
+    - QUESTION-04
+    tasks:
+    - TASK-08
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks: []
+    artifacts: []
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Classify TUI as full parity, admin parity, or fallback per product
+    verification_needed:
+    - VERIFY-12
+    confidence: high
+  - id: WORKSTREAM-16
+    name: Per-chat context transfer and report package
+    label: FACT
+    objective: Create a downloadable, shareable, reusable report package for this old chat.
+    current_state: This response generates the package.
+    desired_end_state: Markdown/YAML report files and ZIP package usable for future aggregation.
+    status: active / being completed
+    priority: critical
+    background: User requested maximum-fidelity package with registers, manifest, verification/audit, and spec sheet.
+    decisions_made:
+    - DECISION-17
+    decisions_pending: []
+    tasks:
+    - TASK-15
+    constraints: []
+    dependencies:
+    - see task register and verification queue
+    timeline: No calendar schedule established; sequencing described in task register.
+    blockers:
+    - open decisions
+    - verification items as applicable
+    risks:
+    - RISK-05
+    - RISK-14
+    - RISK-15
+    artifacts:
+    - ARTIFACT-10
+    - ARTIFACT-19
+    success_criteria:
+    - see full report detailed workstream state
+    next_action: Store Markdown/YAML/ZIP together
+    verification_needed:
+    - VERIFY-17
+    confidence: high
+  decisions:
+  - id: DECISION-01
+    decision: 'CONTENT0 work is content-layer only: data/, schema/, docs/; no engine/runtime/code logic changes.'
+    status: decided
+    label: FACT
+    evidence_or_basis: User CONTENT0 prompt.
+    rationale: Keeps content population separate from simulation architecture.
+    implications: Content-generation prompts must not touch engine/game/client/server/tools except documentation where explicitly
+      allowed.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: see label/status
+  - id: DECISION-02
+    decision: No entity/population/city/resource/civilization/start may appear without explicit causal origin/provenance.
+    status: decided
+    label: FACT
+    evidence_or_basis: User CONTENT0 philosophy.
+    rationale: Prevents fabricated gameplay assets and maintains historical/physical continuity.
+    implications: Schemas/data/docs need origin, process, construction/history, and refinement metadata.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: see label/status
+  - id: DECISION-03
+    decision: Discuss before generating more prompts.
+    status: decided
+    label: FACT
+    evidence_or_basis: 'User said: ''First, let''s discuss this before we plan or generate any prompts.'''
+    rationale: Avoid premature prompt-writing and hidden assumptions.
+    implications: Assistant-cleaned CONTENT0 prompt remains draft/superseded.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: see label/status
+  - id: DECISION-04
+    decision: Default shipped datapack should include the Milky Way galaxy.
+    status: decided
+    label: FACT
+    evidence_or_basis: User explicitly stated default data pack should contain the Milky Way galaxy.
+    rationale: Milky Way is canonical/default galaxy for shipped content.
+    implications: Need selection criteria for important stars/systems/sites.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: see label/status
+  - id: DECISION-05
+    decision: Sol system must be included and specially defined among important systems.
+    status: decided
+    label: FACT
+    evidence_or_basis: CONTENT0 mandates Sol; user specifically included Sol system.
+    rationale: Sol/Earth/humanity are central canonical anchors.
+    implications: Sol system requires bodies, structures, satellites, belts, fields, points, histories, and visitability rules.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: see label/status
+  - id: DECISION-06
+    decision: Redo GUIs from scratch.
+    status: decided
+    label: FACT
+    evidence_or_basis: 'User: ''I''ve decided I want to redo the GUIs from scratch.'''
+    rationale: Latest direction for GUI work.
+    implications: New planning should not assume old GUI architecture is retained.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: see label/status
+  - id: DECISION-07
+    decision: Every product must always work with CLI.
+    status: decided
+    label: FACT
+    evidence_or_basis: User explicit statement.
+    rationale: Guarantees baseline operability, automation, and headless use.
+    implications: CLI must be part of every product matrix and should consume the same backend contract.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: see label/status
+  - id: DECISION-08
+    decision: Every product is expected to work with TUI.
+    status: decided but scope unresolved
+    label: FACT
+    evidence_or_basis: User explicit statement.
+    rationale: Provides richer terminal control across products.
+    implications: TUI doctrine and parity rules are needed.
+    related_workstreams:
+    - WORKSTREAM-15
+    uncertainty: see label/status
+  - id: DECISION-09
+    decision: Products will have multiple modular GUIs attached to product backends to compile native applications.
+    status: decided
+    label: FACT
+    evidence_or_basis: User explicit statement.
+    rationale: Supports platform/era-specific frontends while keeping product logic centralized.
+    implications: Backend/UI contract is first-class; GUI shells must be replaceable.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: see label/status
+  - id: DECISION-10
+    decision: Windows frontend family list includes Win32 ANSI x86, Win32 Unicode x64/ARM64, WinForms .NET Framework family,
+      and WinUI 3 x64/ARM64.
+    status: proposed/accepted by user statement
+    label: FACT
+    evidence_or_basis: User listed these Windows frontends.
+    rationale: Covers legacy native, main native, managed compatibility, and modern Windows lanes.
+    implications: Must be normalized into build/toolchain lanes.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: see label/status
+  - id: DECISION-11
+    decision: WinForms old-framework support must use real distinct target/build lanes, not a single .NET 4.8 binary claiming
+      .NET 4.0 support.
+    status: technical correction / not explicitly user-ratified
+    label: UNCERTAIN / UNVERIFIED
+    evidence_or_basis: Assistant correction based on external docs in previous packet; future verification required.
+    rationale: Avoid compatibility fraud.
+    implications: Need exact .NET target list and tooling versions.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: see label/status
+  - id: DECISION-12
+    decision: macOS frontend family list includes AppKit and SwiftUI.
+    status: proposed/accepted by user statement
+    label: FACT
+    evidence_or_basis: User listed AppKit and SwiftUI lanes.
+    rationale: Covers native Apple desktop and future modern Apple UI.
+    implications: Need deployment floors, Xcode versions, universal binary policy.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: see label/status
+  - id: DECISION-13
+    decision: macOS 10.9 AppKit support requires a frozen legacy Apple toolchain unless later verified otherwise.
+    status: technical correction / not explicitly user-ratified
+    label: UNCERTAIN / UNVERIFIED
+    evidence_or_basis: Assistant correction based on external docs in previous packet; future verification required.
+    rationale: Current toolchains generally cannot target such old floors.
+    implications: Need decide if macOS 10.9 is hard requirement.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: see label/status
+  - id: DECISION-14
+    decision: Linux and Android are in scope but exact GUI stacks are open.
+    status: open
+    label: FACT
+    evidence_or_basis: User said Linux similar and Android similar, without choosing stacks.
+    rationale: Avoid inventing platform plans.
+    implications: New chat must compare and decide Linux/Android strategies.
+    related_workstreams:
+    - WORKSTREAM-10
+    - WORKSTREAM-11
+    uncertainty: see label/status
+  - id: DECISION-15
+    decision: Do not make one separate GUI per OS version/era by default; use compatibility lanes and visual profiles.
+    status: assistant recommendation / not explicit user final
+    label: INFERENCE
+    evidence_or_basis: Assistant recommended this; user later listed frontend families rather than per-version GUIs.
+    rationale: Avoid matrix explosion.
+    implications: Visual profile system should be planned.
+    related_workstreams:
+    - WORKSTREAM-14
+    uncertainty: see label/status
+  - id: DECISION-16
+    decision: Stable C ABI / interop boundary is a candidate backend-contract approach, not a final decision.
+    status: candidate
+    label: INFERENCE
+    evidence_or_basis: Assistant recommendation in prior packet.
+    rationale: Could support Win32, .NET P/Invoke, AppKit/Swift bridges, Linux, and Android bindings.
+    implications: Must not be treated as final until user/project validates.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: see label/status
+  - id: DECISION-17
+    decision: Use this chat-specific report package for future aggregation.
+    status: decided for current task
+    label: FACT
+    evidence_or_basis: Current user requested downloadable, shareable, reusable report package.
+    rationale: Preserve old-chat state for future Project Spec Book.
+    implications: Create Markdown/YAML/ZIP files and manifest.
+    related_workstreams:
+    - WORKSTREAM-16
+    uncertainty: see label/status
+  tasks:
+  - id: TASK-01
+    task: Define GUI/binary architecture doctrine.
+    priority: critical
+    urgency: immediate
+    owner: new assistant + user
+    dependencies:
+    - This package
+    inputs_needed:
+    - Current user decisions and open questions
+    expected_output: Doctrine for CLI/TUI/GUI/backends/host profiles/packages
+    next_step: Produce first in new chat before code
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: high
+  - id: TASK-02
+    task: Define backend/UI contract shape.
+    priority: critical
+    urgency: immediate
+    owner: new assistant + user
+    dependencies:
+    - Product backend architecture
+    inputs_needed:
+    - Repo/API inspection if available; product operation model
+    expected_output: In-process ABI/IPC/both; command/state/event/error/versioning model
+    next_step: Draft candidate contract model and identify repo facts needed
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: medium-high
+  - id: TASK-03
+    task: Build product matrix for setup, launcher, client, server, and tools.
+    priority: critical
+    urgency: early
+    owner: new assistant
+    dependencies:
+    - Doctrine and backend contract assumptions
+    inputs_needed:
+    - Product list and required capabilities
+    expected_output: Matrix mapping products to CLI/TUI/GUI families/packages
+    next_step: Create matrix after doctrine
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: high
+  - id: TASK-04
+    task: Build Windows frontend/build matrix.
+    priority: high
+    urgency: early
+    owner: new assistant
+    dependencies:
+    - Product matrix
+    inputs_needed:
+    - OS floors, architectures, VS/SDK/.NET versions
+    expected_output: Windows build lanes and artifact list
+    next_step: Normalize user-proposed Windows families
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: high
+  - id: TASK-05
+    task: Build macOS frontend/build matrix.
+    priority: high
+    urgency: early
+    owner: new assistant
+    dependencies:
+    - Product matrix
+    inputs_needed:
+    - macOS floors, Xcode/SDK versions, Intel/ARM policy
+    expected_output: macOS build lanes and artifact list
+    next_step: Clarify whether macOS 10.9 is hard requirement
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+    confidence: high
+  - id: TASK-06
+    task: Choose Linux GUI stack/lane model.
+    priority: high
+    urgency: early
+    owner: new assistant + user
+    dependencies:
+    - Backend contract
+    inputs_needed:
+    - Distro baselines, toolkit constraints, packaging preferences
+    expected_output: Linux strategy and matrix
+    next_step: Compare Qt, GTK, Avalonia, custom renderer host, and TUI-first approaches
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: high
+  - id: TASK-07
+    task: Define Android product role and frontend approach.
+    priority: medium-high
+    urgency: after desktop doctrine
+    owner: new assistant + user
+    dependencies:
+    - Backend contract and product roles
+    inputs_needed:
+    - Whether Android is full client, launcher, admin companion, or tools
+    expected_output: Android strategy
+    next_step: Decide Android role before toolkit selection
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: high
+  - id: TASK-08
+    task: Define TUI doctrine and parity level.
+    priority: high
+    urgency: early
+    owner: new assistant + user
+    dependencies:
+    - Backend contract
+    inputs_needed:
+    - Which operations must be available in TUI
+    expected_output: TUI scope/parity rules by product
+    next_step: Classify TUI as full parity, admin parity, or fallback per product
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+    confidence: high
+  - id: TASK-09
+    task: Define visual profile/OEM+ system.
+    priority: medium-high
+    urgency: mid
+    owner: new assistant + user
+    dependencies:
+    - GUI family matrix
+    inputs_needed:
+    - Visual style goals and era/native expectations
+    expected_output: Small profile set with scope and constraints
+    next_step: Draft classic/OEM+/modern/reduced-admin candidates
+    related_workstreams:
+    - WORKSTREAM-14
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-10
+    task: Define packaging/linking doctrine.
+    priority: high
+    urgency: early-mid
+    owner: new assistant
+    dependencies:
+    - Product/platform matrices
+    inputs_needed:
+    - Installer/portable/plugin/update requirements
+    expected_output: Packaging matrix by product/platform
+    next_step: Separate static/self-contained vs dynamic/plugin cases
+    related_workstreams:
+    - WORKSTREAM-12
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-11
+    task: Define build/toolchain/CI matrix.
+    priority: high
+    urgency: mid
+    owner: new assistant
+    dependencies:
+    - Platform matrices
+    inputs_needed:
+    - Toolchain versions, SDKs, runners, signing/notarization
+    expected_output: Auditable build matrix
+    next_step: Verify official docs before finalizing
+    related_workstreams:
+    - WORKSTREAM-13
+    label: INFERENCE
+    confidence: medium-high
+  - id: TASK-12
+    task: Inspect actual repository/files before implementation.
+    priority: critical
+    urgency: before code
+    owner: new assistant
+    dependencies:
+    - Repo/file access
+    inputs_needed:
+    - Actual project tree and build files
+    expected_output: Concrete implementation plan grounded in files
+    next_step: Do not assume prior assistant's repo references
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+    confidence: high
+  - id: TASK-13
+    task: Resolve CONTENT0 conceptual issues before final prompt generation.
+    priority: medium
+    urgency: later unless content resumes
+    owner: new assistant + user
+    dependencies:
+    - CONTENT0 and content architecture
+    inputs_needed:
+    - Schema strategy, seed model, timeline/knowledge/conservation rules
+    expected_output: Final content prompt doctrine
+    next_step: Use the ten issue list as agenda
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: high
+  - id: TASK-14
+    task: Define universe procedural-gap representation and importance taxonomy.
+    priority: medium
+    urgency: later unless content resumes
+    owner: new assistant + user
+    dependencies:
+    - Content architecture
+    inputs_needed:
+    - Storage/memory goals and content importance criteria
+    expected_output: Universe/datapack representation strategy
+    next_step: Define levels of definition and importance dimensions
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: high
+  - id: TASK-15
+    task: Use generated report package in future aggregation.
+    priority: high
+    urgency: when aggregating
+    owner: user + future aggregator
+    dependencies:
+    - This file package
+    inputs_needed:
+    - Other old-chat packages
+    expected_output: Master Project Spec Book and Living State File
+    next_step: Store Markdown/YAML/ZIP together
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+    confidence: high
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: CONTENT0 may touch only data/, schema/, docs/.
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User CONTENT0
+    implication: No engine/runtime/client/server/tools modifications except documentation where allowed.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-02
+    constraint: CONTENT0 must not change engine code, runtime logic, execution, ECS, domains, authority, or time models.
+    type: scope/architecture
+    hard_or_soft: hard
+    source_or_basis: User CONTENT0
+    implication: Rules are fixed; content is data-only.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-03
+    constraint: No entity exists unless created by explicit process.
+    type: content philosophy
+    hard_or_soft: hard
+    source_or_basis: User CONTENT0
+    implication: Every content entity needs origin/provenance.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-04
+    constraint: No population exists unless born.
+    type: content philosophy
+    hard_or_soft: hard
+    source_or_basis: User CONTENT0
+    implication: Population content needs birth/origin model.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-05
+    constraint: No city exists unless built.
+    type: content philosophy
+    hard_or_soft: hard
+    source_or_basis: User CONTENT0
+    implication: Settlements require construction/history.
+    violation_risk: medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-06
+    constraint: No resource exists unless extracted or produced.
+    type: content/economy
+    hard_or_soft: hard
+    source_or_basis: User CONTENT0
+    implication: Resource/economy content must obey conservation and production/extraction origin.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-07
+    constraint: No civilization exists unless it emerged historically.
+    type: content/history
+    hard_or_soft: hard
+    source_or_basis: User CONTENT0
+    implication: Civilizations need origin, governance, territory, economy, legitimacy.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-08
+    constraint: Macro content may exist without micro simulation, but must be refinable.
+    type: content modeling
+    hard_or_soft: hard
+    source_or_basis: User CONTENT0
+    implication: Need resolution/refinement contract.
+    violation_risk: medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-09
+    constraint: Use deterministic seeds for universe/galaxy content; no procedural generation logic in data prompts.
+    type: content modeling
+    hard_or_soft: hard
+    source_or_basis: User CONTENT0
+    implication: Seeds are parameters, not generation code.
+    violation_risk: medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-10
+    constraint: Every product always works with CLI.
+    type: product architecture
+    hard_or_soft: hard
+    source_or_basis: User GUI decision
+    implication: CLI belongs in product matrix and should share backend contract.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-11
+    constraint: Every product is expected to work with TUI.
+    type: product architecture
+    hard_or_soft: strong
+    source_or_basis: User GUI decision
+    implication: TUI doctrine is required.
+    violation_risk: medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-12
+    constraint: GUIs are modular frontends attached to product backends.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User GUI decision
+    implication: GUI shells must not own product logic.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-13
+    constraint: Do not treat assistant suggestions as user decisions unless accepted.
+    type: evidence/process
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: Keep brainstorms/tentative items labelled.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-14
+    constraint: External-world facts/software versions/toolchain support require verification before future use.
+    type: evidence/staleness
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: Platform facts should be marked VERIFY before implementation.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-15
+    constraint: Source scope is this chat only; outside context must be labelled PROJECT-CONTEXT.
+    type: scope/evidence
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: Do not summarize whole project.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-16
+    constraint: Use stable IDs for registers.
+    type: format
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: All important items need WORKSTREAM/DECISION/etc. IDs.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-17
+    constraint: Windows App SDK / WinUI 3 Windows 10 1809+ support must be reverified before future use.
+    type: technical
+    hard_or_soft: hard for implementation
+    source_or_basis: Previous packet external reference
+    implication: Do not finalize WinUI lane without current docs.
+    violation_risk: medium-high
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: CONSTRAINT-18
+    constraint: .NET Framework 4.0–4.8 support requires real target/build lanes.
+    type: technical
+    hard_or_soft: hard for implementation
+    source_or_basis: Assistant correction / external docs in previous packet
+    implication: Need frozen VS/tooling for old .NET targets.
+    violation_risk: high
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: CONSTRAINT-19
+    constraint: macOS 10.9 support cannot be assumed with current Xcode; requires legacy/frozen toolchain or verification.
+    type: technical
+    hard_or_soft: hard for implementation
+    source_or_basis: Assistant correction / external docs in previous packet
+    implication: Need decide if 10.9 is real support target.
+    violation_risk: high
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: CONSTRAINT-20
+    constraint: .NET MAUI should not be treated as a complete Linux desktop solution without verification.
+    type: technical
+    hard_or_soft: hard for implementation
+    source_or_basis: Previous packet external reference
+    implication: Linux stack remains open.
+    violation_risk: medium
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  open_questions:
+  - id: QUESTION-01
+    question: What is the exact backend/UI contract shape?
+    why_it_matters: All CLI/TUI/GUI frontends depend on it.
+    known: GUIs must attach to product backends; CLI always works; TUI expected.
+    unknown: ABI vs IPC vs both; command/state/event/error/versioning/security models.
+    resolution_path: Draft candidate contract and inspect repo/backend APIs.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: QUESTION-02
+    question: Should the backend expose a stable C ABI?
+    why_it_matters: Would simplify native and managed interop.
+    known: Assistant proposed it as candidate; not user-final.
+    unknown: Backend language, existing API shape, suitability.
+    resolution_path: Review backend architecture and compare interop options.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: QUESTION-03
+    question: Is the client GUI primarily host-native, renderer-driven, or hybrid?
+    why_it_matters: Client is likely performance/UX-sensitive.
+    known: User listed Win32/AppKit lanes; earlier assistant discussed renderer-driven approach.
+    unknown: Final rendering/UI doctrine.
+    resolution_path: Decide client requirements and architecture.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: What level of TUI parity is required?
+    why_it_matters: Affects backend capabilities and implementation scope.
+    known: Every product expected to work with TUI.
+    unknown: Full feature parity, admin parity, fallback, or per-product subset.
+    resolution_path: Define TUI doctrine by product.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: QUESTION-05
+    question: What exact Windows OS floors are targeted by each lane?
+    why_it_matters: Defines support claims and toolchains.
+    known: WinUI 3 lane says Windows 10 1809 graceful degradation; Win32/WinForms floors unspecified.
+    unknown: Legacy Windows versions and support levels.
+    resolution_path: User decision plus current Microsoft docs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: QUESTION-06
+    question: Which .NET Framework versions must be supported?
+    why_it_matters: Determines WinForms build lanes and Visual Studio versions.
+    known: User mentioned .NET 4.8 with conditional down to 4.0; assistant corrected that real lanes are needed.
+    unknown: 'Actual required floors: 4.0, 4.5.2, 4.6.2, 4.8, etc.'
+    resolution_path: User decision and official docs/toolchain verification.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: QUESTION-07
+    question: Is macOS 10.9 a hard requirement?
+    why_it_matters: May require frozen legacy Xcode/SDK and old build hardware/VMs.
+    known: User named macOS 10.9; assistant warned current toolchains likely insufficient.
+    unknown: Hard support target vs aspirational.
+    resolution_path: User decision and Apple toolchain verification.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: QUESTION-08
+    question: Should AppKit builds target Apple silicon too?
+    why_it_matters: User listed AppKit as 64-bit Intel only, but Apple silicon matters for modern macOS.
+    known: SwiftUI lane includes Intel and ARM; assistant suggested AppKit need not be Intel-only.
+    unknown: Final AppKit arch policy.
+    resolution_path: User decision.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: QUESTION-09
+    question: What Linux GUI stack should be used?
+    why_it_matters: Linux support remains undefined.
+    known: Linux in scope; same backend doctrine should apply.
+    unknown: Qt, GTK, Avalonia, custom renderer host, TUI-first, etc.
+    resolution_path: Compare options against goals and distro baselines.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: QUESTION-10
+    question: What is Android's product role?
+    why_it_matters: Determines whether Android needs full client UI, launcher, admin companion, or tools.
+    known: Android in scope.
+    unknown: Role, UI stack, API floor, backend binding.
+    resolution_path: Define Android use cases before stack choice.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: QUESTION-11
+    question: What packaging forms are required per product/platform?
+    why_it_matters: Affects executable/library layout and user installation.
+    known: User asked compiled vs libraries/DLLs; assistant recommended static/self-contained where useful.
+    unknown: Installer/portable/bundle/package/plugin decisions.
+    resolution_path: Packaging doctrine and platform matrix.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-12
+    label: INFERENCE
+  - id: QUESTION-12
+    question: How many visual/OEM+ profiles are desired?
+    why_it_matters: Controls UI consistency and matrix size.
+    known: Assistant suggested profiles rather than per-era GUIs.
+    unknown: Exact profile names/count/behavior.
+    resolution_path: User design decision.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-14
+    label: INFERENCE
+  - id: QUESTION-13
+    question: How should procedural gaps and fully defined data coexist in universe content?
+    why_it_matters: Core to minimal storage/memory full-universe goal.
+    known: User wants support from fully procedural through fully architected universes.
+    unknown: Data model, levels of definition, provenance for gaps.
+    resolution_path: Content architecture planning.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: QUESTION-14
+    question: What makes a celestial site 'important'?
+    why_it_matters: Default Milky Way selection depends on criteria.
+    known: User listed visiting, harvesting, research, navigation, etc.
+    unknown: Weights, thresholds, catalog sources, scenario relevance.
+    resolution_path: Define importance taxonomy.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: QUESTION-15
+    question: Do actual repository files exist and what do they contain?
+    why_it_matters: Implementation cannot proceed from this packet alone.
+    known: Previous assistant mentioned repo/files, but this package did not inspect them.
+    unknown: Actual tree, existing code, schemas, build files.
+    resolution_path: Inspect uploaded repo/files in new chat.
+    priority: critical before implementation
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Generate final CONTENT0 prompts immediately.
+    status: superseded
+    reason: User explicitly said to discuss before planning/generating prompts.
+    final_or_tentative: final process correction
+    reconsider_conditions: After discussion resolves conceptual issues.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-02
+    option: Treat assistant-cleaned CONTENT0 prompt as final.
+    status: superseded
+    reason: It was generated before user's discussion-first correction.
+    final_or_tentative: final unless user later accepts revised draft
+    reconsider_conditions: Use as reference only when revising prompt.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-03
+    option: One universal GUI framework as the entire GUI strategy.
+    status: deprioritized
+    reason: Does not fit old/new/native/platform goals as well as modular frontend families.
+    final_or_tentative: tentative
+    reconsider_conditions: If legacy/native goals are reduced.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: REJECTED-04
+    option: One separate GUI codebase per OS version/era.
+    status: deprioritized
+    reason: Would cause matrix explosion; profiles/lanes recommended instead.
+    final_or_tentative: tentative
+    reconsider_conditions: If period-authentic retro-native UI becomes explicit product goal.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: INFERENCE
+  - id: REJECTED-05
+    option: Let GUI shells own product logic.
+    status: rejected
+    reason: Contradicts modular backend-attached GUI plan and causes drift.
+    final_or_tentative: final architecture principle
+    reconsider_conditions: Only for intentionally independent tools.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: REJECTED-06
+    option: Single .NET 4.8 WinForms binary supports .NET 4.0 machines.
+    status: rejected/corrected
+    reason: Assistant identified .NET Framework targeting/version issue; future verification still required.
+    final_or_tentative: final as phrased
+    reconsider_conditions: Never as phrased; use separate target/build lanes.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: REJECTED-07
+    option: Current Xcode alone supports macOS 10.9 AppKit target.
+    status: rejected/corrected
+    reason: Assistant identified deployment-floor issue; future verification still required.
+    final_or_tentative: final as phrased
+    reconsider_conditions: If an available toolchain actually supports 10.9 or requirement is dropped.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: REJECTED-08
+    option: Use .NET MAUI as complete Windows/macOS/Linux desktop answer.
+    status: rejected for Linux completeness
+    reason: Prior packet noted MAUI does not cover Linux desktop officially; verify before future use.
+    final_or_tentative: tentative but likely
+    reconsider_conditions: If official Linux support or third-party support becomes acceptable.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: REJECTED-09
+    option: Treat Android as desktop UI scaled down.
+    status: rejected/recommended against
+    reason: Android is a mobile host family and needs distinct UX/product role.
+    final_or_tentative: tentative
+    reconsider_conditions: Never by default; only if Android role is explicitly limited.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: INFERENCE
+  - id: REJECTED-10
+    option: Summarize the whole project rather than this chat.
+    status: rejected by current prompt
+    reason: User limited source scope to this chat only.
+    final_or_tentative: final for this package
+    reconsider_conditions: In a later master aggregation task.
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: PROMPT CONTENT0 — CANONICAL GAME CONTENT & DATA POPULATION
+    type: user prompt
+    purpose: Defines data/schema/docs-only canonical content population scope.
+    status: source artifact
+    origin: User first message in visible context
+    carry_forward: 'yes'
+    notes: Reproduced in prior packet; should be preserved verbatim.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Assistant cleaned CONTENT0 prompt
+    type: assistant draft
+    purpose: Codex-ready rewrite of CONTENT0.
+    status: draft/superseded
+    origin: Assistant response before user discussion-first correction
+    carry_forward: yes, draft only
+    notes: Do not treat as accepted final prompt.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: Assistant CONTENT0 critique
+    type: assistant analysis
+    purpose: Lists unresolved content issues.
+    status: useful draft analysis
+    origin: Assistant response after user correction
+    carry_forward: 'yes'
+    notes: Issues include schema semantics, seeds, refinement contract, timelines, conservation, knowledge uncertainty.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: User full-universe/default-Milky-Way goal statement
+    type: user planning statement
+    purpose: Defines long-term content/default datapack objective.
+    status: active source
+    origin: User message after CONTENT0 discussion
+    carry_forward: 'yes'
+    notes: Includes procedural/full universe compatibility and importance criteria.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: Cross-platform GUI feasibility answer
+    type: assistant output
+    purpose: Discussed Xcode, Linux, .NET, Apple equivalents, static/dynamic packaging.
+    status: background guidance
+    origin: Assistant response
+    carry_forward: yes with verification
+    notes: External facts are stale-prone and need rechecking.
+    label: INFERENCE
+  - id: ARTIFACT-06
+    name_or_description: GUI per OS/era answer
+    type: assistant output
+    purpose: Recommended host integrations and visual profiles rather than per-era codebases.
+    status: background guidance
+    origin: Assistant response
+    carry_forward: yes as recommendation
+    notes: Not a direct user decision.
+    label: INFERENCE
+  - id: ARTIFACT-07
+    name_or_description: User GUI rebuild decision and frontend list
+    type: user decision
+    purpose: Defines current GUI/binary direction.
+    status: active source
+    origin: User message starting 'Okay, I've decided...'
+    carry_forward: 'yes'
+    notes: Most important GUI artifact in chat.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Assistant validation/correction of GUI rebuild
+    type: assistant output
+    purpose: Corrected WinForms/AppKit/Xcode details and normalized plan.
+    status: useful with verification
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Technical claims need re-verification before implementation.
+    label: INFERENCE
+  - id: ARTIFACT-09
+    name_or_description: Transfer Knowledge Base — GUI and Binary Rebuild
+    type: assistant output
+    purpose: Initial compact handoff for new chat.
+    status: superseded by maximum-fidelity packet but useful
+    origin: Assistant response
+    carry_forward: yes, lower priority
+    notes: Precursor to final packet.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: CONTEXT TRANSFER PACKET
+    type: assistant output
+    purpose: Maximum-fidelity state transfer generated before this package.
+    status: primary source for this final package
+    origin: Assistant response immediately before current request
+    carry_forward: 'yes'
+    notes: Audited and normalized here.
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: Microsoft Windows App SDK docs link
+    type: external reference
+    purpose: Verify WinUI 3 / Windows App SDK requirements.
+    status: requires future verification
+    origin: Prior packet
+    carry_forward: 'yes'
+    notes: https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/system-requirements
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-12
+    name_or_description: Microsoft Windows Forms overview link
+    type: external reference
+    purpose: Verify WinForms platform/framework context.
+    status: requires future verification
+    origin: Prior packet
+    carry_forward: 'yes'
+    notes: https://learn.microsoft.com/en-us/dotnet/desktop/winforms/overview/
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-13
+    name_or_description: Microsoft .NET Framework versions/dependencies link
+    type: external reference
+    purpose: Verify .NET Framework in-place updates and VS targeting constraints.
+    status: requires future verification
+    origin: Prior packet
+    carry_forward: 'yes'
+    notes: https://learn.microsoft.com/en-us/dotnet/framework/migration-guide/versions-and-dependencies
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-14
+    name_or_description: Microsoft .NET MAUI supported platforms link
+    type: external reference
+    purpose: Verify MAUI platform support.
+    status: requires future verification
+    origin: Prior packet
+    carry_forward: 'yes'
+    notes: https://learn.microsoft.com/en-us/dotnet/maui/supported-platforms
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-15
+    name_or_description: Microsoft P/Invoke docs link
+    type: external reference
+    purpose: Verify .NET unmanaged interop.
+    status: requires future verification
+    origin: Prior packet
+    carry_forward: 'yes'
+    notes: https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-16
+    name_or_description: Microsoft Native AOT docs link
+    type: external reference
+    purpose: Verify .NET Native AOT packaging constraints.
+    status: requires future verification
+    origin: Prior packet
+    carry_forward: 'yes'
+    notes: https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-17
+    name_or_description: Apple Xcode support page link
+    type: external reference
+    purpose: Verify Xcode deployment target/toolchain floors.
+    status: requires future verification
+    origin: Prior packet
+    carry_forward: 'yes'
+    notes: https://developer.apple.com/support/xcode/
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-18
+    name_or_description: Uploaded repo/files
+    type: possible artifact
+    purpose: Implementation context if present.
+    status: uncertain/unverified
+    origin: Prior assistant mentioned repo; no file inspected in this package.
+    carry_forward: yes, but verify
+    notes: Do not infer sandbox paths or file contents.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-19
+    name_or_description: This final report package
+    type: generated package
+    purpose: Downloadable reusable chat-specific report package.
+    status: created by current response
+    origin: Current user request
+    carry_forward: 'yes'
+    notes: Includes Markdown, YAML, and ZIP manifest.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: GUI family drift
+    consequence: Different frontends implement different behavior.
+    likelihood: medium
+    severity: high
+    mitigation: Define shared backend contract and test CLI/TUI/GUI against same capabilities.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-02
+    risk: Framework capture
+    consequence: WinForms/SwiftUI/etc. becomes product architecture instead of shell.
+    likelihood: medium
+    severity: high
+    mitigation: Keep product logic backend-owned and shells thin.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-03
+    risk: Compatibility fraud
+    consequence: Claimed support for old hosts cannot be built or tested.
+    likelihood: high
+    severity: high
+    mitigation: Require toolchain/build/test lane for every support claim.
+    related_workstreams:
+    - WORKSTREAM-13
+    label: INFERENCE
+  - id: RISK-04
+    risk: Matrix explosion
+    consequence: Too many OS/arch/framework/era/style combinations to maintain.
+    likelihood: medium-high
+    severity: high
+    mitigation: Use compatibility lanes and small visual profile set.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: INFERENCE
+  - id: RISK-05
+    risk: Premature prompt/code generation
+    consequence: Locks in unresolved assumptions.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Begin new chat with doctrine and matrices, not code.
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+  - id: RISK-06
+    risk: Schema behavior smuggling in CONTENT0
+    consequence: Data schemas imply runtime mechanics contrary to scope.
+    likelihood: medium
+    severity: high
+    mitigation: Limit schemas to shape, units, references, required fields; no behavior/default logic.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: RISK-07
+    risk: Fake precision in universe/content data
+    consequence: Content appears authoritative but is fabricated or too precise.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Use provenance, confidence, macro resolution, and sources.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-08
+    risk: Linux fragmentation
+    consequence: GUI/package fails across distros or display stacks.
+    likelihood: medium
+    severity: medium
+    mitigation: Choose distro baselines and packaging formats explicitly.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+  - id: RISK-09
+    risk: macOS legacy trap
+    consequence: macOS 10.9 consumes disproportionate tooling effort.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Confirm whether 10.9 is hard requirement before committing.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-10
+    risk: Old .NET target trap
+    consequence: Supporting .NET 4.0 requires unsupported/old build tooling.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Define exact .NET floor and maintain frozen VS lane if needed.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-11
+    risk: Android scope creep
+    consequence: Mobile project expands into full parity without clear need.
+    likelihood: medium
+    severity: medium
+    mitigation: Define Android role first.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: INFERENCE
+  - id: RISK-12
+    risk: Over-reliance on this package without repo inspection
+    consequence: Future plan may not match actual files.
+    likelihood: medium
+    severity: high
+    mitigation: Inspect repo/files before implementation.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-13
+    risk: Stale platform/toolchain facts
+    consequence: Build matrix uses outdated support data.
+    likelihood: medium
+    severity: high
+    mitigation: Re-verify official docs before acting.
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+  - id: RISK-14
+    risk: Treating assistant suggestions as user decisions
+    consequence: Spec book gains false requirements.
+    likelihood: medium
+    severity: high
+    mitigation: Preserve labels and source hierarchy.
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+  - id: RISK-15
+    risk: Bad aggregation with other chat reports
+    consequence: Contradictions or duplicates are silently merged.
+    likelihood: medium
+    severity: high
+    mitigation: Use IDs, labels, provenance, and conflict register.
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Confirm actual repository/file availability and structure.
+    why_verification_needed: Prior assistant references to repo/files are unverified here.
+    suggested_source_type: File upload/repo inspection
+    priority: critical before implementation
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: 'Confirm project name convention: Dominium vs Domino.'
+    why_verification_needed: Both names appear in prompt context.
+    suggested_source_type: User or repo metadata
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Verify current Windows App SDK / WinUI 3 system requirements and Windows 10 1809 floor.
+    why_verification_needed: Toolchain facts are time-sensitive.
+    suggested_source_type: Official Microsoft docs
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Verify WinForms/.NET Framework targeting support and Visual Studio versions.
+    why_verification_needed: Old .NET support requires real lanes.
+    suggested_source_type: Official Microsoft docs and installed toolchains
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Confirm exact .NET Framework target floors desired.
+    why_verification_needed: User named .NET 4.0 but support cost may be high.
+    suggested_source_type: User decision
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: VERIFY-06
+    item: Verify current Xcode deployment targets and old SDK feasibility.
+    why_verification_needed: macOS 10.9 support is toolchain-sensitive.
+    suggested_source_type: Official Apple docs and actual Xcode/SDK availability
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Confirm whether macOS 10.9 is hard requirement.
+    why_verification_needed: Legacy macOS lane may be expensive.
+    suggested_source_type: User decision
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: VERIFY-08
+    item: Verify .NET MAUI supported platforms if considered.
+    why_verification_needed: MAUI support changes over time and Linux desktop is not established here.
+    suggested_source_type: Official Microsoft docs
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: 'Compare Linux GUI stack current support: Qt, GTK, Avalonia, custom renderer host.'
+    why_verification_needed: Linux stack is undecided and current package support matters.
+    suggested_source_type: Official docs and distro/package docs
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: Confirm Android target role and API floor.
+    why_verification_needed: Android is in scope but undefined.
+    suggested_source_type: User decision and Android docs
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: VERIFY-11
+    item: Verify Native AOT suitability for any .NET shells.
+    why_verification_needed: AOT limitations may conflict with plugins/reflection/dynamic loading.
+    suggested_source_type: Official Microsoft docs and prototype
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Confirm TUI parity expectations.
+    why_verification_needed: '''Expected to work with TUI'' is not detailed.'
+    suggested_source_type: User decision
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: VERIFY-13
+    item: Confirm whether stable C ABI is acceptable.
+    why_verification_needed: Candidate only; impacts all frontend integration.
+    suggested_source_type: User/project architecture review
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: VERIFY-14
+    item: Resolve CONTENT0 schema semantic boundaries.
+    why_verification_needed: Descriptive schemas can accidentally imply behavior.
+    suggested_source_type: Schema review and user decision
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: VERIFY-15
+    item: Define deterministic seed hierarchy for content.
+    why_verification_needed: CONTENT0 requires seeds but not seed namespace rules.
+    suggested_source_type: Content architecture decision
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: VERIFY-16
+    item: Define importance criteria for Milky Way celestial sites.
+    why_verification_needed: Default datapack selection depends on this.
+    suggested_source_type: Design decision and astronomical data-source review
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: VERIFY-17
+    item: Confirm current facts before final Project Spec Book aggregation.
+    why_verification_needed: This package includes stale-prone external references.
+    suggested_source_type: Official docs/current source pass
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+  spec_book_notes:
+    likely_sections:
+    - Content Layer Doctrine
+    - Canonical Universe and Default Datapack
+    - GUI and Binary Architecture
+    - Product Surface Model
+    - Backend/UI Contract
+    - Windows Frontend Lanes
+    - macOS Frontend Lanes
+    - Linux and Android Strategy
+    - Packaging and Build Matrix
+    - Verification Policy
+    unique_contributions:
+    - Explicit GUI rebuild decision
+    - CLI/TUI/modular GUI requirements
+    - Windows/macOS frontend family lists
+    - CONTENT0 provenance doctrine
+    - Milky Way/Sol default content ambition
+    possible_duplicates_with_other_chats:
+    - engine/runtime architecture
+    - existing GUI code
+    - repository build files
+    - content schemas
+    - toolchain plans
+    conflicts_to_watch_for:
+    - any later chat retaining old GUI architecture
+    - claims of legacy support without toolchains
+    - assistant suggestions promoted to decisions
+    - CONTENT0 treated as finalized
+    formal_requirements_candidates:
+    - CLI mandatory
+    - TUI expected
+    - modular GUIs attached to backends
+    - content provenance
+    - data-only content prompt scope
+    - support claims require build/test lanes
+    background_context_candidates:
+    - stable C ABI candidate
+    - visual profile suggestions
+    - static/self-contained packaging preference
+    needs_user_confirmation:
+    - backend contract shape
+    - TUI parity
+    - Linux stack
+    - Android role
+    - macOS 10.9 hard requirement
+    - .NET Framework floor
+    - visual profile set
+  final_recommendations:
+    next_action_if_continuing_this_chat: Define GUI/binary architecture doctrine and backend/UI contract before code.
+    next_action_for_aggregator: Ingest IDs and labels, preserve uncertainty, and do not merge similar items without cross-chat
+      evidence.
+    user_checks_required:
+    - confirm repo/files
+    - confirm TUI parity
+    - confirm macOS 10.9 requirement
+    - confirm .NET floor
+    - confirm Linux/Android strategy priorities

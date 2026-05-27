@@ -1,0 +1,2210 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Chronology & Celestial Systems
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: THIS CHAT ONLY; PROJECT-CONTEXT appears only where sourced from visible project/system context or user references
+      to other Dominium chats.
+    apparent_coverage: full visible chat context plus previous context transfer packet
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - No access to actual Plan G/The Game chat or codebase in this chat.
+    - Assistant-generated astronomy data and constants require verification.
+    - Some planetary/moon calendar names and leap rules remain tentative.
+    - Prior implementation language/module claims are unverified.
+  summary:
+    one_sentence: This chat defined Dominium's multi-scale celestial scope and a modular time/calendar/chronology/knowledge/governance
+      architecture from Earth calendars to universal epoch systems.
+    short_brief: The chat produced design doctrine, calendar definitions, celestial scope, world-start rules, diegetic time
+      knowledge, and handoff prompts for integration with The Game/Plan G.
+    main_topics:
+    - celestial content scope
+    - Sol system detail
+    - time core
+    - calendars
+    - Perfect Earth Calendar
+    - planetary/moon calendars
+    - world instantiation
+    - diegetic HUD
+    - governance standards
+    - modularity
+    - handoff prompts
+    main_outputs:
+    - Broad celestial body/system category list
+    - Sol/Milky Way/Universe inclusion list
+    - Canonical Milky Way system set v1.0
+    - System-by-system body/site breakdown
+    - Gameplay mechanics mapping for celestial features
+    - Full Sol system inclusion spec
+    - Earth calendar specification
+    - Final HPC-E definition
+    - Planetary/moon calendar specs
+    - Complete calendar inventory
+    - Calendar naming layer
+    - Leap seconds/relativity doctrine
+    - World initialization/time discovery addendum
+    - Modularity/extensibility plan
+    - The Game chat handoff prompt
+    - Celestial content inventory
+    - Maximum-fidelity Context Transfer Packet
+    - Final downloadable report package
+    highest_priority_carry_forward:
+    - ACT is authoritative; calendars are pure renderers.
+    - HPC-E final month order and intercalary placement.
+    - Default date Jan 1 2000 Gregorian; spawn at local sunrise.
+    - No initial time/date HUD; time knowledge is diegetic.
+    - Time standards are designated by organizations, jurisdictions, regions, and individuals.
+    - Sol system has maximum explicit detail.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Direct user statements outrank assistant proposals.
+    - Later user corrections outrank earlier assistant summaries.
+    - Tentative assistant-generated names/data require user confirmation or verification.
+    - Project-codebase claims from this chat must be checked against the actual project.
+    staleness_rules:
+    - External-world facts, constants, APIs, standards, and astronomy data require verification before use.
+    - Implementation details may be stale or unsupported unless verified in the project.
+  user_preferences:
+    explicit:
+    - id: PREF-01
+      preference: Start messages with model version and build date.
+      basis: User profile/instructions visible in chat context
+      strength: strong
+      implication: Future assistants should include model/build header if possible.
+      risk: User may view omission as noncompliance.
+      label: FACT
+    - id: PREF-02
+      preference: Be straightforward, critical, and fact-check.
+      basis: User profile/instructions
+      strength: strong
+      implication: Avoid vague reassurance; mark uncertainty.
+      risk: Overconfident or soft responses reduce usefulness.
+      label: FACT
+    - id: PREF-03
+      preference: Prefer rigorous, correctly cited, unbiased facts.
+      basis: User profile
+      strength: strong
+      implication: Verify current/scientific facts before hardcoding.
+      risk: Assistant-proposed facts may be mistaken.
+      label: FACT
+    - id: PREF-04
+      preference: Avoid making user repeat decisions.
+      basis: User requested handoff and package
+      strength: strong
+      implication: Use packet as memory.
+      risk: Loss of continuity wastes user effort.
+      label: FACT
+    - id: PREF-05
+      preference: Use modular, extensible, robust architecture.
+      basis: User asked directly
+      strength: strong
+      implication: Favor plugin/data-driven design.
+      risk: Hardcoded design will not scale.
+      label: FACT
+    - id: PREF-06
+      preference: Preserve tentative status and contradictions.
+      basis: Current request
+      strength: strong
+      implication: Do not flatten uncertainty.
+      risk: Wrong decisions may be fossilized.
+      label: FACT
+    - id: PREF-07
+      preference: Diegetic/VR-friendly UI for time information.
+      basis: User stated
+      strength: strong
+      implication: No free HUD clock/date.
+      risk: Breaks intended realism.
+      label: FACT
+    - id: PREF-08
+      preference: Detailed structured outputs with registers and IDs.
+      basis: Current request
+      strength: strong
+      implication: Use stable IDs/tables.
+      risk: Harder aggregation if absent.
+      label: FACT
+    - id: PREF-09
+      preference: High-fidelity Sol system content.
+      basis: User stated most playtime in Sol
+      strength: strong
+      implication: Prioritize Sol detail in spec.
+      risk: Underdeveloped core play area.
+      label: FACT
+    inferred:
+    - id: PREF-10
+      preference: Second/third-order design thinking.
+      basis: User profile and project dialogue
+      strength: medium
+      implication: Explain implications and failure modes.
+      risk: Shallow design may miss systemic interactions.
+      label: INFERENCE
+    uncertain_or_not_established:
+    - Exact implementation language constraints.
+    - Final names for all non-Earth calendars.
+    - Exact UI visual design.
+    - Phase-one implementation scope.
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Multi-scale celestial content architecture
+    label: FACT / INFERENCE
+    objective: Define celestial bodies, structures, regions, systems, and sites for gameplay across Earth, Sol, Milky Way,
+      and universe scales without redundant simulation.
+    current_state: 'Scope and classification were defined conceptually: explicit, procedural, or parametric; Sol system is
+      highest fidelity; Milky Way has a real-system backbone plus procedural expansion; universe is mostly parametric.'
+    desired_end_state: A data-driven celestial registry integrated with simulation, navigation, gameplay mechanics, time,
+      governance, and knowledge/fog-of-war systems.
+    status: active
+    priority: high
+    background: 'The chat began with the user asking what celestial bodies/systems to include in a logical universe simulation
+      without too much redundancy. The user then specified gameplay scales: Earth, Sol, Milky Way, and universe.'
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    decisions_pending:
+    - QUESTION-07
+    - QUESTION-08
+    - QUESTION-09
+    tasks:
+    - TASK-02
+    - TASK-18
+    constraints:
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    dependencies:
+    - Versioned constants/ephemerides
+    - Verified astronomical data
+    - Plan G integration
+    timeline: Defined early, refined after Sol system and celestial scope questions.
+    blockers:
+    - Unverified astronomy details
+    - No access in this chat to the actual Plan G codebase or full chat.
+    risks:
+    - RISK-07
+    - RISK-08
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-16
+    success_criteria:
+    - Sol system is deep and explicit; Milky Way/universe stay performant; explicit objects are gameplay-relevant.
+    next_action: Verify celestial lists, then convert into data schemas with fidelity classes.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-03
+    confidence: medium-high
+  - id: WORKSTREAM-02
+    name: Authoritative time core and coordinate frames
+    label: FACT
+    objective: Define simulation-authoritative time layers and frame transforms from local gameplay to cosmological timescales.
+    current_state: ACT, BST, GCT, CPT, CDC, proper-time, leap-second policy, and scale transition doctrine are conceptually
+      defined.
+    desired_end_state: A deterministic engine-level time core storing ACT plus frame/version metadata, with frame transforms
+      and proper-time utilities.
+    status: active
+    priority: high
+    background: Developed after the user asked for perfect measurement and calendar systems for Earth-centric and Sol-centric
+      civilizations.
+    decisions_made:
+    - DECISION-04
+    - DECISION-05
+    - DECISION-06
+    - DECISION-07
+    - DECISION-08
+    - DECISION-21
+    - DECISION-22
+    decisions_pending:
+    - QUESTION-03
+    - QUESTION-16
+    tasks:
+    - TASK-06
+    - TASK-11
+    - TASK-17
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    dependencies:
+    - Constants table
+    - Ephemeris packs
+    - Serialization system
+    - Calendar renderers
+    timeline: Established after Earth/Sol timekeeping discussion and reinforced during leap seconds/relativity/cosmology discussion.
+    blockers:
+    - Exact epoch/time-scale mapping unresolved
+    - Transform fidelity tiers unresolved
+    risks:
+    - RISK-02
+    - RISK-03
+    - RISK-11
+    artifacts:
+    - ARTIFACT-05
+    - ARTIFACT-11
+    - ARTIFACT-12
+    success_criteria:
+    - No calendar or display concept can change physics; all save/load and replay remain deterministic.
+    next_action: Define core timestamp schema and frame transform interfaces after inspecting existing engine architecture.
+    verification_needed:
+    - VERIFY-05
+    - VERIFY-06
+    - VERIFY-07
+    confidence: high
+  - id: WORKSTREAM-03
+    name: Earth calendars and Perfect Earth Calendar (HPC-E)
+    label: FACT
+    objective: Support existing widely used Earth calendars and define the custom Perfect Earth Calendar with user-specified
+      names and intercalary rules.
+    current_state: Existing calendar set and final HPC-E naming/structure are defined; exact HPC-E leap rule is still pending.
+    desired_end_state: Calendar plugins/renderers, NameSets, strict and compatibility modes, and test vectors.
+    status: active
+    priority: high
+    background: The user first listed Gregorian, Julian, Islamic, Hebrew, Chinese, Persian, Holocene, Metric, and a custom
+      Perfect calendar. Later the user corrected the Perfect Earth Calendar naming and intercalary placement.
+    decisions_made:
+    - DECISION-09
+    - DECISION-10
+    - DECISION-11
+    - DECISION-12
+    decisions_pending:
+    - QUESTION-05
+    - QUESTION-06
+    tasks:
+    - TASK-03
+    - TASK-07
+    - TASK-13
+    - TASK-14
+    constraints:
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    dependencies:
+    - Calendar renderer architecture
+    - NameSets
+    - Intercalary token model
+    timeline: Defined after Earth calendar discussion; revised after user specified March-start and Undecember/February sink.
+    blockers:
+    - Leap rule not final
+    risks:
+    - RISK-05
+    artifacts:
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-11
+    success_criteria:
+    - HPC-E dates are perpetual; months remain 28 days; intercalary days round-trip correctly; existing calendars remain renderers.
+    next_action: Finalize HPC-E leap rule, then implement strict and compatibility renderers.
+    verification_needed:
+    - VERIFY-08
+    - VERIFY-09
+    confidence: high
+  - id: WORKSTREAM-04
+    name: Planetary, moon, Pluto, and TNO calendars
+    label: FACT / UNCERTAIN
+    objective: Define local scientific and civil time systems for Mars, Venus, Mercury, major moons, Pluto, and TNO/deep-time
+      contexts.
+    current_state: Many assistant-proposed calendar structures and names exist; some are accepted design intent through continuation,
+      but final naming/leap details remain uncertain.
+    desired_end_state: A calendar registry for body/system-specific scientific clocks, civil calendars, engineered calendars,
+      and name sets.
+    status: active
+    priority: medium-high
+    background: The user asked successively for Mars, Venus, Mercury, Jupiter and moons, Saturn and moons, Uranus, Neptune,
+      Pluto/TNOs/Moon/Sun/Sol/Undefined.
+    decisions_made:
+    - DECISION-18
+    - DECISION-19
+    decisions_pending:
+    - QUESTION-10
+    - QUESTION-11
+    - QUESTION-12
+    tasks:
+    - TASK-04
+    - TASK-05
+    - TASK-07
+    - TASK-13
+    constraints:
+    - CONSTRAINT-02
+    - CONSTRAINT-09
+    dependencies:
+    - Final naming policy
+    - Calendar plugin interface
+    - Verified body rotation/orbit constants
+    timeline: Developed sequentially after Earth calendars.
+    blockers:
+    - Names and leap rules not fully validated; some contradictions in naming doctrine.
+    risks:
+    - RISK-09
+    - RISK-10
+    artifacts:
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    success_criteria:
+    - Each inhabited/usable body can expose a local calendar without compromising ACT or forcing global uniformity.
+    next_action: Review all assistant-proposed names and classify non-7-day cycles as work cycles or weeks.
+    verification_needed:
+    - VERIFY-10
+    - VERIFY-11
+    confidence: medium
+  - id: WORKSTREAM-05
+    name: Sol-wide, galactic, and universal epoch systems
+    label: FACT
+    objective: Define civil/archival time frameworks above the planetary scale.
+    current_state: SCT/SEC, GalCT/GEC, UCT/UEF are defined conceptually; acronym collision risk remains.
+    desired_end_state: Scale-aware renderer/data definitions with no false human calendar semantics at galactic/universal
+      scale.
+    status: active
+    priority: medium-high
+    background: User asked to extend Sol-system-wide calendars to Milky Way and universe as a whole.
+    decisions_made:
+    - DECISION-20
+    decisions_pending:
+    - QUESTION-06
+    - QUESTION-13
+    tasks:
+    - TASK-04
+    - TASK-07
+    - TASK-13
+    constraints:
+    - CONSTRAINT-10
+    - CONSTRAINT-13
+    dependencies:
+    - Time core frames ACT/BST/GCT/CPT
+    - NameSets
+    - Unique IDs
+    timeline: Defined after all local calendars were discussed.
+    blockers:
+    - Acronym collisions and exact naming policy.
+    risks:
+    - RISK-06
+    - RISK-13
+    artifacts:
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    success_criteria:
+    - Sol uses structured empire calendar; galaxy/universe use duration/epoch only.
+    next_action: Assign unique internal IDs and keep human-readable aliases separate.
+    verification_needed:
+    - VERIFY-12
+    confidence: medium-high
+  - id: WORKSTREAM-06
+    name: World instantiation and local sunrise start
+    label: FACT
+    objective: Define how each world/universe instance starts and how the player’s spawn time is selected.
+    current_state: 'User-specified default: Gregorian Jan 1, 2000 AD; time starts at local sunrise on the spawn planet/time
+      zone/solar context; fallback rules were proposed but need formalization.'
+    desired_end_state: World-instance initialization schema and deterministic sunrise/fallback algorithm.
+    status: active
+    priority: high
+    background: The user introduced this after prompt-generation work, adding crucial gameplay start-state requirements.
+    decisions_made:
+    - DECISION-13
+    - DECISION-14
+    decisions_pending:
+    - QUESTION-03
+    - QUESTION-04
+    tasks:
+    - TASK-10
+    - TASK-11
+    constraints:
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    dependencies:
+    - Ephemeris/sunrise solver
+    - World-instance schema
+    - Time core
+    timeline: Added late in the chat, after calendar architecture was mostly established.
+    blockers:
+    - Exact definition of sunrise and initial date time scale undefined.
+    risks:
+    - RISK-12
+    artifacts:
+    - ARTIFACT-13
+    success_criteria:
+    - Every world can start independently; default world starts on the specified civil anchor and player begins at local environmental
+      morning where possible.
+    next_action: Define deterministic sunrise/fallback function with exact solar elevation threshold and time-scale mapping.
+    verification_needed:
+    - VERIFY-13
+    - VERIFY-14
+    confidence: high for intent, medium for exact implementation
+  - id: WORKSTREAM-07
+    name: Diegetic HUD, time knowledge, and fog-of-war
+    label: FACT
+    objective: Ensure time/date knowledge is unavailable until obtained through devices, calendars, documents, astronomy,
+      networks, or organizations.
+    current_state: Doctrine defined; capability schema and device models still pending.
+    desired_end_state: Capability-gated diegetic HUD and time-display system integrated with fog-of-war.
+    status: active
+    priority: high
+    background: User explicitly stated no initial timekeeping devices/calendars and no available HUD information, with VR-friendly
+      diegetic HUD.
+    decisions_made:
+    - DECISION-15
+    decisions_pending:
+    - QUESTION-14
+    - QUESTION-15
+    tasks:
+    - TASK-09
+    - TASK-20
+    constraints:
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    dependencies:
+    - Knowledge/fog-of-war system
+    - Device/inventory system
+    - UI/HUD system
+    timeline: Added late, then integrated into modularity and The Game handoff discussions.
+    blockers:
+    - Existing knowledge/fog-of-war architecture unknown.
+    risks:
+    - RISK-04
+    - RISK-15
+    artifacts:
+    - ARTIFACT-13
+    - ARTIFACT-14
+    success_criteria:
+    - HUD only shows time/date through in-world access; damage/loss of device removes or degrades display.
+    next_action: Define KnowledgeCapability IDs and map devices/organizations to capabilities.
+    verification_needed:
+    - VERIFY-15
+    confidence: high
+  - id: WORKSTREAM-08
+    name: Governance, jurisdictions, organizations, and time standards
+    label: FACT / INFERENCE
+    objective: Model time/calendar standards as social/legal data objects designated by regions, jurisdictions, organizations,
+      and individuals.
+    current_state: User requirement exists; assistant proposed TimeStandard object and resolution order.
+    desired_end_state: TimeStandard schema integrated with governance, contracts, scheduling, law, and individual preferences.
+    status: active
+    priority: high
+    background: User explicitly said organizations, regions, jurisdictions, and individuals may designate systems as standard.
+    decisions_made:
+    - DECISION-16
+    - DECISION-17
+    - DECISION-18
+    decisions_pending:
+    - QUESTION-17
+    tasks:
+    - TASK-08
+    - TASK-12
+    - TASK-20
+    constraints:
+    - CONSTRAINT-20
+    dependencies:
+    - Existing governance/jurisdiction systems
+    - Calendar registry
+    - Knowledge system
+    timeline: Added with world instantiation and expanded during modularity/integration discussion.
+    blockers:
+    - Actual Plan G governance architecture unknown.
+    risks:
+    - RISK-14
+    artifacts:
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    success_criteria:
+    - Contracts and jurisdictions can render and enforce time standards without mutating physics time.
+    next_action: Inspect existing governance model and define TimeStandard as a data object.
+    verification_needed:
+    - VERIFY-16
+    confidence: medium-high
+  - id: WORKSTREAM-09
+    name: Modularity, extensibility, reliability, and integration architecture
+    label: FACT / INFERENCE
+    objective: Refactor the full design into modular layers suitable for the existing game/engine architecture.
+    current_state: Architecture principles and module boundaries were proposed; exact implementation depends on actual codebase/context.
+    desired_end_state: A validated integration design and Codex-ready phased implementation prompt.
+    status: active
+    priority: high
+    background: User asked how to make the whole system more modular/extensible/robust, then asked to merge with The Game
+      chat.
+    decisions_made:
+    - DECISION-21
+    - DECISION-22
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-02
+    tasks:
+    - TASK-01
+    - TASK-06
+    - TASK-07
+    - TASK-08
+    - TASK-09
+    - TASK-11
+    - TASK-12
+    - TASK-13
+    - TASK-14
+    - TASK-15
+    - TASK-18
+    constraints:
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    dependencies:
+    - Actual codebase architecture
+    - Existing Plan G systems
+    timeline: Late-stage consolidation after all core design discussions.
+    blockers:
+    - No actual access in this chat to other chat/codebase.
+    risks:
+    - RISK-01
+    - RISK-11
+    artifacts:
+    - ARTIFACT-14
+    - ARTIFACT-15
+    success_criteria:
+    - New assistant can generate Codex prompt without re-explanation and without assuming unsupported implementation facts.
+    next_action: Use this package in The Game chat; inspect actual project context; produce implementation prompt.
+    verification_needed:
+    - VERIFY-17
+    - VERIFY-18
+    confidence: medium
+  - id: WORKSTREAM-10
+    name: Prompt handoff and report packaging
+    label: FACT
+    objective: Preserve the decisions and convert the chat into reusable prompts/reports for future chats and Codex implementation.
+    current_state: Context transfer packet exists; this current package creates downloadable report files and a ZIP.
+    desired_end_state: Reusable per-chat package suitable for aggregation into a future full Project Spec Book.
+    status: active
+    priority: high
+    background: User asked for prompts for The Game chat, then asked for maximum-fidelity context transfer, then asked for
+      final downloadable package.
+    decisions_made:
+    - DECISION-23
+    decisions_pending: []
+    tasks:
+    - TASK-16
+    - TASK-21
+    constraints:
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    dependencies:
+    - Visible chat context
+    - Previous context transfer packet
+    timeline: Final stage of this retired chat.
+    blockers: []
+    risks:
+    - RISK-16
+    - RISK-17
+    artifacts:
+    - ARTIFACT-15
+    - ARTIFACT-17
+    - ARTIFACT-18
+    success_criteria:
+    - Files can be downloaded, shared, and used by future assistants without original chat access.
+    next_action: Download and store package; use Section 15 bootstrap prompt in the next chat.
+    verification_needed:
+    - VERIFY-19
+    confidence: high
+  decisions:
+  - id: DECISION-01
+    decision: Game operates across Earth, Sol, Milky Way, and universe scales.
+    status: locked
+    label: FACT
+    evidence_or_basis: User explicitly listed the four gameplay scales.
+    rationale: Scale determines content and time system architecture.
+    implications: Requires hierarchical fidelity and time models.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: high
+  - id: DECISION-02
+    decision: Sol system receives maximum explicit detail.
+    status: locked
+    label: FACT
+    evidence_or_basis: User said most playtime will be in Sol and to pull out all the stops.
+    rationale: Sol is the main play space.
+    implications: Sol bodies/sites must be explicit and rich.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: high
+  - id: DECISION-03
+    decision: Celestial content uses explicit/procedural/parametric classification.
+    status: accepted design principle
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed; carried forward in later scope lists.
+    rationale: Avoids simulation redundancy.
+    implications: Data schemas need fidelity tags.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: medium
+  - id: DECISION-04
+    decision: Atomic Continuous Time (ACT) is authoritative simulation time.
+    status: locked
+    label: FACT
+    evidence_or_basis: Repeated doctrine in calendar/time specs.
+    rationale: Monotonic determinism.
+    implications: Save files store ACT, not dates.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-05
+    decision: Use coordinate frames BST, GCT, and CPT above ACT.
+    status: accepted design principle
+    label: FACT
+    evidence_or_basis: Defined in Sol/Galactic/Universal time discussions.
+    rationale: Supports scale transitions.
+    implications: Need versioned transforms.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: medium-high
+  - id: DECISION-06
+    decision: Calendars are pure renderers and never affect physics.
+    status: locked
+    label: FACT
+    evidence_or_basis: 'Repeated doctrine: calendars are interfaces.'
+    rationale: Prevents causality corruption.
+    implications: Calendar plugins must be stateless/reversible.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-07
+    decision: Leap seconds are display-only and absent from core time.
+    status: locked
+    label: FACT
+    evidence_or_basis: Leap-second discussion.
+    rationale: Avoids discontinuities.
+    implications: UTC renderer may use external leap tables.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-08
+    decision: Proper time is derived only; calendars render coordinate time.
+    status: locked
+    label: FACT
+    evidence_or_basis: Relativity discussion.
+    rationale: Avoids frame-dependent civil authority.
+    implications: Proper time used for clocks/aging, not authoritative now.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-09
+    decision: Earth supports Gregorian, Julian, Islamic, Hebrew, Chinese, Persian, Holocene, Metric/French Revolutionary calendars.
+    status: locked
+    label: FACT
+    evidence_or_basis: User explicitly listed them.
+    rationale: Cultural/historical coverage.
+    implications: Need plugins/renderers for each.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: high
+  - id: DECISION-10
+    decision: Perfect Earth Calendar has 13 months × 28 days and Monday–Sunday weeks.
+    status: locked
+    label: FACT
+    evidence_or_basis: User specified days and final calendar direction; assistant formalized.
+    rationale: Perpetual regularity with familiar names.
+    implications: HPC-E implementation invariant.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: high
+  - id: DECISION-11
+    decision: Perfect Earth Calendar month order is March through February with Undecember as 11th month.
+    status: locked
+    label: FACT
+    evidence_or_basis: User explicitly specified March start, December 10th, 11th historically proposed, January 12th, February
+      13th.
+    rationale: Seasonal start while preserving English Gregorian names.
+    implications: HPC-E month array fixed.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: high
+  - id: DECISION-12
+    decision: HPC-E Year Day and Leap Day are appended after February; canonical mode is undated and compatibility mode may
+      use Feb 29/30.
+    status: mostly accepted; compatibility is assistant recommendation
+    label: FACT / INFERENCE
+    evidence_or_basis: User required February sink and no January 0; assistant proposed strict+compat mode.
+    rationale: Preserves perpetual weeks while supporting software compatibility.
+    implications: Need intercalary tokens and optional projection.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: medium-high
+  - id: DECISION-13
+    decision: Default world date anchor is Gregorian January 1, 2000 AD.
+    status: locked
+    label: FACT
+    evidence_or_basis: User explicit.
+    rationale: Known reference start point.
+    implications: Exact time scale still pending.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: high
+  - id: DECISION-14
+    decision: Player spawn time is local sunrise at spawn location.
+    status: locked
+    label: FACT
+    evidence_or_basis: User explicit.
+    rationale: Embodied local start rather than abstract timestamp.
+    implications: Requires deterministic sunrise solver and fallbacks.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: high
+  - id: DECISION-15
+    decision: Player starts with no clock/calendar/date HUD.
+    status: locked
+    label: FACT
+    evidence_or_basis: User explicit.
+    rationale: Diegetic VR realism and knowledge progression.
+    implications: UI must be capability-gated.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: high
+  - id: DECISION-16
+    decision: Players can define custom timekeeping/date systems or choose provided systems.
+    status: locked
+    label: FACT
+    evidence_or_basis: User explicit.
+    rationale: Player agency/culture simulation.
+    implications: Need safe custom calendar schema.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: high
+  - id: DECISION-17
+    decision: Organizations, regions, jurisdictions, and individuals may designate standard systems.
+    status: locked
+    label: FACT
+    evidence_or_basis: User explicit.
+    rationale: Governance and social standard gameplay.
+    implications: Need TimeStandard data object.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: high
+  - id: DECISION-18
+    decision: 'TimeStandard resolution order proposed: explicit context, organization, jurisdiction, personal, fallback.'
+    status: proposal
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed during integration.
+    rationale: Provides deterministic conflict resolution.
+    implications: Must be checked against real governance systems.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: medium
+  - id: DECISION-19
+    decision: Gas giants and the Sun have no civil calendars; moons/habitats may.
+    status: accepted design principle
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed repeatedly; user continued building on it.
+    rationale: No lived surface; only scientific/environmental clocks.
+    implications: Use local/moon/habitat standards.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: medium
+  - id: DECISION-20
+    decision: Galactic and universal scales use epoch/duration frameworks rather than normal calendars.
+    status: accepted design principle
+    label: FACT
+    evidence_or_basis: Milky Way/universe extension discussion.
+    rationale: No meaningful local days/months at those scales.
+    implications: GEC/UEF numeric only.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: medium-high
+  - id: DECISION-21
+    decision: Constants, ephemerides, time models, and calendar plugins must be versioned/pinned.
+    status: accepted design principle
+    label: INFERENCE
+    evidence_or_basis: Modularity discussion.
+    rationale: Prevent patch drift and save corruption.
+    implications: World saves pin versions.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: medium-high
+  - id: DECISION-22
+    decision: Save files persist ACT/frame/version/knowledge state, not rendered date strings.
+    status: accepted design principle
+    label: INFERENCE
+    evidence_or_basis: Serialization policy from assistant; consistent with core doctrine.
+    rationale: Round-trip and patch safety.
+    implications: Requires derived rendering on load.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: medium-high
+  - id: DECISION-23
+    decision: The old chat must be converted into downloadable per-chat report package.
+    status: locked
+    label: FACT
+    evidence_or_basis: Current user request.
+    rationale: Future aggregation and reuse.
+    implications: This response must create files and ZIP if possible.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: high
+  tasks:
+  - id: TASK-01
+    task: Inspect actual Plan G/The Game architecture before implementation planning.
+    priority: high
+    urgency: immediate
+    owner: new assistant
+    dependencies: Access to project context
+    inputs_needed: Actual chat/codebase/design docs
+    expected_output: Validated integration constraints
+    next_step: Open The Game/Plan G context and compare with this package.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+    confidence: high
+  - id: TASK-02
+    task: Verify celestial body/system lists against authoritative astronomy sources.
+    priority: high
+    urgency: near-term
+    owner: new assistant/user
+    dependencies: Canonical lists from this chat
+    inputs_needed: Astronomical catalogs/sources
+    expected_output: Corrected celestial registry
+    next_step: Flag and repair likely errors such as SN 1987A classification.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: high
+  - id: TASK-03
+    task: Finalize HPC-E leap rule.
+    priority: high
+    urgency: near-term
+    owner: user/new assistant
+    dependencies: HPC-E structure
+    inputs_needed: Tropical-year correction options
+    expected_output: Exact leap algorithm
+    next_step: Choose Gregorian-like rule or drift accumulator.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: high
+  - id: TASK-04
+    task: Resolve acronym collisions and internal calendar IDs.
+    priority: medium
+    urgency: near-term
+    owner: new assistant
+    dependencies: Calendar inventory
+    inputs_needed: Naming/ID policy
+    expected_output: Unique registry IDs
+    next_step: Rename internal IDs such as SOL_SCT vs SAT_CT.
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-04
+    label: FACT
+    confidence: medium-high
+  - id: TASK-05
+    task: Normalize week vs work-cycle terminology.
+    priority: medium
+    urgency: near-term
+    owner: user/new assistant
+    dependencies: Planetary calendar list
+    inputs_needed: UX/naming policy
+    expected_output: Final cycle terminology
+    next_step: Decide if non-7-day cycles are weeks or work cycles.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: medium
+  - id: TASK-06
+    task: Define TimeCore schema and API.
+    priority: high
+    urgency: near-term
+    owner: Codex/new assistant
+    dependencies: Existing engine architecture
+    inputs_needed: ACT/frame/version requirements
+    expected_output: Engine-level time core design
+    next_step: Design canonical timestamp record.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: medium-high
+  - id: TASK-07
+    task: Define calendar renderer/plugin interface.
+    priority: high
+    urgency: near-term
+    owner: Codex/new assistant
+    dependencies: Calendar inventory
+    inputs_needed: Render/parse/intercalary needs
+    expected_output: Calendar plugin API
+    next_step: Specify stateless reversible interfaces.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: medium-high
+  - id: TASK-08
+    task: Define TimeStandard schema.
+    priority: high
+    urgency: near-term
+    owner: new assistant/Codex
+    dependencies: Governance architecture
+    inputs_needed: Org/jurisdiction requirements
+    expected_output: TimeStandard data object
+    next_step: Bind calendar, clock, frame, policy, NameSet.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT / INFERENCE
+    confidence: medium-high
+  - id: TASK-09
+    task: Define KnowledgeCapability schema for time/date access.
+    priority: high
+    urgency: near-term
+    owner: new assistant/Codex
+    dependencies: Fog-of-war/knowledge systems
+    inputs_needed: Device and standard needs
+    expected_output: Capability graph
+    next_step: Map devices/docs/orgs to capabilities.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT / INFERENCE
+    confidence: medium-high
+  - id: TASK-10
+    task: Define deterministic sunrise/fallback algorithm.
+    priority: high
+    urgency: near-term
+    owner: new assistant/Codex
+    dependencies: Ephemeris/astronomy model
+    inputs_needed: Spawn body/location/context
+    expected_output: Sunrise solver spec
+    next_step: Define solar elevation threshold and fallbacks.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: high
+  - id: TASK-11
+    task: Define serialization/save policy.
+    priority: high
+    urgency: near-term
+    owner: Codex/new assistant
+    dependencies: Save system
+    inputs_needed: ACT/frame/version doctrine
+    expected_output: Save schema
+    next_step: Prevent rendered dates from being persisted.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: medium-high
+  - id: TASK-12
+    task: Build recurrence/scheduling model.
+    priority: medium
+    urgency: medium
+    owner: Codex/new assistant
+    dependencies: Calendar plugins, TimeStandards
+    inputs_needed: Scheduling requirements
+    expected_output: Physical/civil/astronomical recurrence engine
+    next_step: Define intercalary inclusion policies.
+    related_workstreams:
+    - WORKSTREAM-08
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-13
+    task: Separate NameSets/localization from calendar algorithms.
+    priority: medium
+    urgency: medium
+    owner: Codex/new assistant
+    dependencies: Calendar names
+    inputs_needed: Localization needs
+    expected_output: NameSet registry
+    next_step: Implement inheritance (e.g. HPC-E weekdays).
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-14
+    task: Create tests and golden vectors.
+    priority: high
+    urgency: medium
+    owner: Codex/new assistant
+    dependencies: Exact algorithms
+    inputs_needed: Calendar/time definitions
+    expected_output: Test suite
+    next_step: Prioritize round-trip, intercalary, serialization, sunrise determinism.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: medium-high
+  - id: TASK-15
+    task: Write project docs for time/calendar systems.
+    priority: high
+    urgency: medium
+    owner: Codex/new assistant
+    dependencies: Final schemas
+    inputs_needed: Report package
+    expected_output: Documentation set
+    next_step: Produce TIMECORE, CALENDARS, STANDARDS, TEST_VECTORS docs.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-16
+    task: Generate Codex-ready implementation prompt in The Game chat.
+    priority: high
+    urgency: near-term
+    owner: The Game chat/new assistant
+    dependencies: This package + actual project context
+    inputs_needed: Architecture verification
+    expected_output: Phased Codex prompt
+    next_step: Use this package as source material.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: high
+  - id: TASK-17
+    task: Verify constants/equations before coding.
+    priority: high
+    urgency: near-term
+    owner: new assistant/Codex
+    dependencies: Suffix prompt constants
+    inputs_needed: NASA/JPL/IAU/IERS or relevant sources
+    expected_output: Verified constants pack
+    next_step: Do not hardcode assistant-provided numbers blindly.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: high
+  - id: TASK-18
+    task: Decide phase-one implementation scope.
+    priority: high
+    urgency: near-term
+    owner: user/new assistant
+    dependencies: Project capacity
+    inputs_needed: All workstreams
+    expected_output: Phased roadmap
+    next_step: Implement core/HPC-E/knowledge first or similar.
+    related_workstreams:
+    - WORKSTREAM-09
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-19
+    task: Define custom calendar/player-created clock schema.
+    priority: medium
+    urgency: medium
+    owner: new assistant/Codex
+    dependencies: User requirement
+    inputs_needed: Validation rules
+    expected_output: Safe custom calendar system
+    next_step: Require reversibility and ACT mapping.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT / INFERENCE
+    confidence: medium
+  - id: TASK-20
+    task: Integrate with governance, jurisdiction, knowledge, and fog-of-war systems.
+    priority: high
+    urgency: near-term
+    owner: new assistant/Codex
+    dependencies: Actual project systems
+    inputs_needed: Existing data models
+    expected_output: Integration plan
+    next_step: Do after inspecting Plan G context.
+    related_workstreams:
+    - WORKSTREAM-07
+    - WORKSTREAM-08
+    - WORKSTREAM-09
+    label: FACT
+    confidence: medium-high
+  - id: TASK-21
+    task: Download and archive this report package.
+    priority: high
+    urgency: immediate
+    owner: user
+    dependencies: Generated files
+    inputs_needed: Download links
+    expected_output: Stored per-chat package
+    next_step: Save ZIP and Markdown/YAML files together.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: high
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Core time must be continuous and monotonic.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Repeated doctrine
+    implication: Use ACT as authoritative now.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-02
+    constraint: Calendars must never affect physics.
+    type: technical/design
+    hard_or_soft: hard
+    source_or_basis: Repeated doctrine
+    implication: Calendar code only renders/parses.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-03
+    constraint: Leap seconds must not enter core simulation time.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Leap-second discussion
+    implication: UTC rendering only; external table.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-04
+    constraint: Proper time must not become authoritative civil/calendar time.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Relativity discussion
+    implication: Proper time used only for clocks/aging.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-05
+    constraint: Save files must not persist rendered dates or names as truth.
+    type: serialization
+    hard_or_soft: hard
+    source_or_basis: Serialization policy
+    implication: Persist ACT/frame/version IDs.
+    violation_risk: High
+    label: INFERENCE
+    confidence: medium-high
+  - id: CONSTRAINT-06
+    constraint: Constants and ephemerides must be versioned and pinned per world.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Modularity discussion
+    implication: Patch updates cannot alter old saves silently.
+    violation_risk: High
+    label: INFERENCE
+    confidence: medium-high
+  - id: CONSTRAINT-07
+    constraint: HPC-E months must remain 28 days.
+    type: calendar
+    hard_or_soft: hard
+    source_or_basis: User-defined calendar
+    implication: No normal month variation.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-08
+    constraint: HPC-E weekdays Monday–Sunday must not drift.
+    type: calendar
+    hard_or_soft: hard
+    source_or_basis: User-defined calendar
+    implication: Intercalary days outside week.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-09
+    constraint: Intercalary days are explicit tokens canonically.
+    type: calendar
+    hard_or_soft: hard
+    source_or_basis: Intercalary compatibility discussion
+    implication: Do not treat as normal dates except compatibility projection.
+    violation_risk: Medium
+    label: FACT / INFERENCE
+    confidence: medium-high
+  - id: CONSTRAINT-10
+    constraint: Galactic/universal frameworks must avoid false local calendar semantics.
+    type: design
+    hard_or_soft: hard
+    source_or_basis: Scale discussion
+    implication: Use duration/epochs only.
+    violation_risk: Medium
+    label: FACT
+    confidence: medium-high
+  - id: CONSTRAINT-11
+    constraint: Sol system must be high fidelity.
+    type: content
+    hard_or_soft: hard
+    source_or_basis: User explicitly requested
+    implication: Full explicit Sol scope.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-12
+    constraint: Avoid redundant explicit simulation.
+    type: performance/design
+    hard_or_soft: hard
+    source_or_basis: Initial user request
+    implication: Use explicit/procedural/parametric classes.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-13
+    constraint: Gas giants and Sun do not have planet-surface civil calendars.
+    type: content/design
+    hard_or_soft: soft-hard
+    source_or_basis: Assistant proposal carried forward
+    implication: Use scientific/environmental clocks only.
+    violation_risk: Medium
+    label: INFERENCE
+    confidence: medium
+  - id: CONSTRAINT-14
+    constraint: No January 0 designation.
+    type: calendar/naming
+    hard_or_soft: hard
+    source_or_basis: User explicit
+    implication: Intercalary sink after February.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-15
+    constraint: Existing English weekday/month names used for HPC-E as specified.
+    type: calendar/naming
+    hard_or_soft: hard
+    source_or_basis: User explicit
+    implication: NameSet must preserve exact order.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-16
+    constraint: Each world/universe can instantiate at different date/time.
+    type: world generation
+    hard_or_soft: hard
+    source_or_basis: User explicit
+    implication: World instance has independent epoch.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-17
+    constraint: Default spawn occurs at local sunrise where possible.
+    type: world generation
+    hard_or_soft: hard
+    source_or_basis: User explicit
+    implication: Requires deterministic astronomy query.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-18
+    constraint: No initial time/date HUD without device/knowledge.
+    type: UI/gameplay
+    hard_or_soft: hard
+    source_or_basis: User explicit
+    implication: Capability-gated diegetic HUD.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-19
+    constraint: HUD should be diegetic and VR-friendly.
+    type: UI/gameplay
+    hard_or_soft: hard
+    source_or_basis: User explicit
+    implication: Use in-world devices/displays.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-20
+    constraint: Organizations, regions, jurisdictions, and individuals may designate standards.
+    type: governance
+    hard_or_soft: hard
+    source_or_basis: User explicit
+    implication: TimeStandard data objects.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-21
+    constraint: Do not assume codebase details from this chat.
+    type: process
+    hard_or_soft: hard
+    source_or_basis: User said The Game chat will handle implementation; assistant admitted limited access
+    implication: New chat must inspect actual project.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-22
+    constraint: Unknown data should yield UNKNOWN, not fabricated output.
+    type: robustness
+    hard_or_soft: hard
+    source_or_basis: Modularity recommendation
+    implication: Prevents false UI/gameplay facts.
+    violation_risk: Medium
+    label: INFERENCE
+    confidence: medium-high
+  - id: CONSTRAINT-23
+    constraint: Implementation should be modular, extensible, reliable, and robust.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User explicit
+    implication: Plugin/data-driven design.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-24
+    constraint: This report must cover this chat only.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: Do not summarize whole project.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-25
+    constraint: Important items must be labelled FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: Preserve reliability states.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  open_questions:
+  - id: QUESTION-01
+    question: What is the actual Plan G/The Game architecture?
+    why_it_matters: Implementation must align with real systems.
+    known: User referenced it; this chat lacks access.
+    unknown: Codebase/chats/module layout.
+    resolution_path: Inspect project context.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: Are Domino C89 / Dominium C++98 constraints real?
+    why_it_matters: Language/API decisions depend on it.
+    known: Assistant previously claimed this.
+    unknown: User did not confirm in visible chat.
+    resolution_path: Verify project docs/code.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: What exact time scale maps Jan 1 2000 to ACT?
+    why_it_matters: Start timestamp determinism.
+    known: User specified Gregorian Jan 1 2000 AD.
+    unknown: UTC/TAI/TT/game-defined noon/midnight mapping.
+    resolution_path: Choose and document epoch.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-02
+    label: UNCERTAIN
+  - id: QUESTION-04
+    question: What exact definition of sunrise is used?
+    why_it_matters: Spawn time and astronomical recurrence need consistency.
+    known: User wants local sunrise; assistant proposed solar elevation crossing 0 degrees.
+    unknown: Refraction, terrain horizon, solar radius, atmosphere, fallback priority.
+    resolution_path: Define deterministic algorithm.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN
+  - id: QUESTION-05
+    question: What is the exact HPC-E leap rule?
+    why_it_matters: Leap Day placement requires cadence.
+    known: Year Day/Leap Day exist; drift-based idea discussed.
+    unknown: Exact algorithm.
+    resolution_path: User/design decision.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN
+  - id: QUESTION-06
+    question: Should compatibility projection Feb 29/Feb 30 be default?
+    why_it_matters: External API/date-string behavior.
+    known: Assistant proposed optional compatibility.
+    unknown: Default mode/policy not user-confirmed.
+    resolution_path: User or implementation decision.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN
+  - id: QUESTION-07
+    question: How many real Milky Way systems should be explicit?
+    why_it_matters: Data scope/performance.
+    known: User wanted dozens to hundreds; assistant listed ~50.
+    unknown: Final count and criteria.
+    resolution_path: Design/data review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN
+  - id: QUESTION-08
+    question: Which assistant-listed celestial systems are scientifically correct?
+    why_it_matters: Avoid hardcoding false astronomical data.
+    known: Initial list exists.
+    unknown: Verification status.
+    resolution_path: Authoritative catalogs/sources.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: Which exoplanets/sites per Milky Way system are explicit?
+    why_it_matters: System detail level.
+    known: Some system contents listed; incomplete.
+    unknown: Final bodies/sites for each system.
+    resolution_path: Data design review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN
+  - id: QUESTION-10
+    question: Which planetary/moon calendar names are final?
+    why_it_matters: Avoid freezing assistant brainstorm names.
+    known: Many names proposed.
+    unknown: User did not confirm each.
+    resolution_path: User review/naming policy.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN
+  - id: QUESTION-11
+    question: Should non-7-day cycles be weeks or work cycles?
+    why_it_matters: UX and naming consistency.
+    known: Some calendars had 5/8/11-day cycles.
+    unknown: Final terminology.
+    resolution_path: User/design decision.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN
+  - id: QUESTION-12
+    question: Do engineered mythological names remain despite no-mythology rule?
+    why_it_matters: Naming consistency.
+    known: Names such as Arean/Aphrodite appeared.
+    unknown: Whether user wants them.
+    resolution_path: User review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN
+  - id: QUESTION-13
+    question: How to resolve SCT acronym collision?
+    why_it_matters: Avoid registry/serialization bugs.
+    known: Sol Coordinated Time and Saturn Coordinated Time both had SCT in assistant output.
+    unknown: Final unique IDs.
+    resolution_path: Registry design.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN
+  - id: QUESTION-14
+    question: What is the exact time-knowledge capability list?
+    why_it_matters: HUD gating and fog-of-war.
+    known: Concept defined.
+    unknown: Capability IDs and unlock logic.
+    resolution_path: Design implementation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN
+  - id: QUESTION-15
+    question: How do device drift, damage, and synchronization work?
+    why_it_matters: Diegetic realism.
+    known: Devices mentioned.
+    unknown: Mechanics per device class.
+    resolution_path: Gameplay design.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN
+  - id: QUESTION-16
+    question: How much relativity is implemented initially?
+    why_it_matters: Scope/performance.
+    known: Relativity first-class conceptually.
+    unknown: Fidelity tiers and phase-one scope.
+    resolution_path: Implementation planning.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN
+  - id: QUESTION-17
+    question: How do governance conflicts over time standards work mechanically?
+    why_it_matters: Contracts/law/gameplay.
+    known: Standards can differ.
+    unknown: Enforcement/disputes/precedence in existing governance model.
+    resolution_path: The Game integration.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN
+  - id: QUESTION-18
+    question: Which generated prompts should remain canonical?
+    why_it_matters: Avoid outdated prompt copies.
+    known: Several prompts generated; packet supersedes them.
+    unknown: Whether to use old prompt or this package.
+    resolution_path: Use latest package unless user says otherwise.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Simulate every star/asteroid/galaxy explicitly.
+    status: rejected
+    reason: Scale explosion and redundancy.
+    final_or_tentative: final principle
+    reconsider_conditions: Reconsider only if object becomes gameplay-critical.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-02
+    option: Named real stars only Sol.
+    status: superseded
+    reason: User requested dozens to hundreds of real Milky Way systems.
+    final_or_tentative: final for backbone
+    reconsider_conditions: No blanket Sol-only real names.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-03
+    option: Individual asteroids/comets fully explicit by default.
+    status: rejected
+    reason: Too much redundancy; fields better for most.
+    final_or_tentative: final default
+    reconsider_conditions: Major named/player-relevant objects can be explicit.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-04
+    option: Civil calendar on Sun.
+    status: rejected
+    reason: No civil habitation on Sun; environmental cycles only.
+    final_or_tentative: final
+    reconsider_conditions: Artificial solar habitats can have their own standards.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: REJECTED-05
+    option: Civil calendars on gas giants themselves.
+    status: rejected
+    reason: No lived surface; moons/habitats carry calendars.
+    final_or_tentative: mostly final
+    reconsider_conditions: Floating habitats may define habitat standards.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: REJECTED-06
+    option: Leap seconds inside core simulation time.
+    status: rejected
+    reason: Discontinuous and political; breaks computation.
+    final_or_tentative: final
+    reconsider_conditions: Never; display only.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-07
+    option: Calendar-driven physics time.
+    status: rejected
+    reason: Breaks causality and determinism.
+    final_or_tentative: final
+    reconsider_conditions: Never.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-08
+    option: Proper time as authoritative calendar time.
+    status: rejected
+    reason: Frame-dependent and desynchronizing.
+    final_or_tentative: final
+    reconsider_conditions: Proper time only derived.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-09
+    option: Universal/galactic ordinary months/weeks/years.
+    status: rejected
+    reason: Meaningless at scale.
+    final_or_tentative: final
+    reconsider_conditions: Use metadata/lore labels only if needed.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-10
+    option: January 0 for intercalary days.
+    status: rejected by user
+    reason: User explicitly avoided January 0.
+    final_or_tentative: final
+    reconsider_conditions: Never.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-11
+    option: 14th pseudo-month for intercalary days.
+    status: rejected/proposed not recommended
+    reason: Conflicts with February sink and adds edge cases.
+    final_or_tentative: tentative-final
+    reconsider_conditions: Reconsider only if compatibility systems cannot handle tokens/projection.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: REJECTED-12
+    option: Intercalary days as normal canonical February dates.
+    status: rejected
+    reason: Breaks no-week/no-month invariant.
+    final_or_tentative: final for canonical
+    reconsider_conditions: Compatibility projection only.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: REJECTED-13
+    option: Forced initial HUD clock/date.
+    status: rejected by user
+    reason: Player starts with no timekeeping devices/calendars.
+    final_or_tentative: final
+    reconsider_conditions: Only scenarios granting devices can show time.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-14
+    option: Single hidden global standard calendar for all actors.
+    status: rejected by design
+    reason: User wants orgs/jurisdictions/individuals to designate standards.
+    final_or_tentative: final
+    reconsider_conditions: Use TimeStandard pluralism.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-15
+    option: Silent patching of constants/ephemerides/calendar algorithms.
+    status: rejected
+    reason: Would corrupt saves/replays.
+    final_or_tentative: final principle
+    reconsider_conditions: Use versioning and migrations.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Broad celestial body/system category list
+    type: output/spec
+    purpose: Initial universe simulation categories
+    status: superseded but useful
+    origin: Early assistant response
+    carry_forward: 'yes'
+    notes: Use as rationale only.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Sol/Milky Way/Universe inclusion list
+    type: output/spec
+    purpose: Scale-specific content scope
+    status: partially superseded
+    origin: Assistant response after user defined scales
+    carry_forward: 'yes'
+    notes: Use with later refined celestial inventory.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: Canonical Milky Way system set v1.0
+    type: output/spec
+    purpose: Real-system backbone
+    status: needs verification
+    origin: Assistant-generated
+    carry_forward: 'yes'
+    notes: Likely contains errors; verify before hardcoding.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-04
+    name_or_description: System-by-system body/site breakdown
+    type: output/spec
+    purpose: Contents per canonical system
+    status: incomplete subset
+    origin: Assistant-generated
+    carry_forward: partial
+    notes: Useful as template, not final data.
+    label: UNCERTAIN
+  - id: ARTIFACT-05
+    name_or_description: Gameplay mechanics mapping for celestial features
+    type: output/spec
+    purpose: Connect astronomical features to gameplay
+    status: current rationale
+    origin: Assistant-generated
+    carry_forward: 'yes'
+    notes: Preserve as design rationale.
+    label: FACT / INFERENCE
+  - id: ARTIFACT-06
+    name_or_description: Full Sol system inclusion spec
+    type: output/spec
+    purpose: High-detail Sol scope
+    status: current design intent
+    origin: Assistant-generated after user requested all stops
+    carry_forward: 'yes'
+    notes: Use as Sol content baseline.
+    label: FACT / INFERENCE
+  - id: ARTIFACT-07
+    name_or_description: Earth calendar specification
+    type: output/spec
+    purpose: Existing calendars + initial perfect calendar
+    status: superseded by final HPC-E
+    origin: Assistant-generated
+    carry_forward: 'yes'
+    notes: Historical context only for HPC-E evolution.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Final HPC-E definition
+    type: output/spec
+    purpose: Authoritative Perfect Earth Calendar
+    status: locked except leap rule
+    origin: User correction + assistant formalization
+    carry_forward: 'yes'
+    notes: High-priority carry-forward.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: Planetary/moon calendar specs
+    type: output/spec
+    purpose: Mars/Venus/Mercury/gas giants/moons/Pluto systems
+    status: needs refinement
+    origin: Assistant-generated
+    carry_forward: 'yes'
+    notes: Review names and leap rules.
+    label: UNCERTAIN
+  - id: ARTIFACT-10
+    name_or_description: Complete calendar inventory
+    type: output/spec
+    purpose: List of calendars/time systems
+    status: current but partly tentative
+    origin: Assistant-generated
+    carry_forward: 'yes'
+    notes: Use with uncertainty labels.
+    label: FACT / UNCERTAIN
+  - id: ARTIFACT-11
+    name_or_description: Calendar naming layer
+    type: output/spec
+    purpose: Names for days/months/seasons
+    status: partly superseded
+    origin: Assistant-generated
+    carry_forward: yes with caveats
+    notes: HPC-E portion superseded by user correction.
+    label: UNCERTAIN
+  - id: ARTIFACT-12
+    name_or_description: Leap seconds/relativity doctrine
+    type: output/spec
+    purpose: Core physics/time policy
+    status: current doctrine
+    origin: Assistant response to user question
+    carry_forward: 'yes'
+    notes: High-priority carry-forward.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: World initialization/time discovery addendum
+    type: output/spec
+    purpose: Default start, sunrise spawn, no HUD, custom standards
+    status: current doctrine
+    origin: User + assistant formalization
+    carry_forward: 'yes'
+    notes: High-priority carry-forward.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Modularity/extensibility plan
+    type: output/spec
+    purpose: Architecture recommendations
+    status: current but codebase-unverified
+    origin: Assistant-generated
+    carry_forward: 'yes'
+    notes: Use after inspecting project.
+    label: INFERENCE
+  - id: ARTIFACT-15
+    name_or_description: The Game chat handoff prompt
+    type: prompt
+    purpose: Paste into The Game chat to generate Codex prompt
+    status: useful but superseded by this package
+    origin: Assistant-generated
+    carry_forward: 'yes'
+    notes: Prefer this package plus bootstrap prompt now.
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: Celestial content inventory
+    type: output/spec
+    purpose: Astronomical/spatial scope counterpart to time scope
+    status: current design intent
+    origin: Assistant-generated
+    carry_forward: 'yes'
+    notes: Needs scientific verification.
+    label: FACT / UNCERTAIN
+  - id: ARTIFACT-17
+    name_or_description: Maximum-fidelity Context Transfer Packet
+    type: handoff
+    purpose: State transfer for new chat
+    status: completed before this request
+    origin: Assistant-generated
+    carry_forward: 'yes'
+    notes: Source basis for this package.
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: Final downloadable report package
+    type: report package
+    purpose: Markdown/YAML/ZIP package for this chat
+    status: created by current response
+    origin: Current task
+    carry_forward: 'yes'
+    notes: Contains normalized IDs and reports.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: New chat assumes unverified codebase details.
+    consequence: Implementation mismatch.
+    likelihood: medium
+    severity: high
+    mitigation: Inspect actual Plan G/codebase before Codex prompt.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-02
+    risk: Calendars contaminate physics time.
+    consequence: Causality/save corruption.
+    likelihood: medium
+    severity: high
+    mitigation: Enforce one-way dependency and pure renderers.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-03
+    risk: Rendered dates persisted as truth.
+    consequence: Patch drift and date corruption.
+    likelihood: medium
+    severity: high
+    mitigation: Persist ACT/frame/version only.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-04
+    risk: HUD leaks unknown time/date.
+    consequence: Breaks fog-of-war and diegetic premise.
+    likelihood: medium
+    severity: high
+    mitigation: Capability-gate all displays.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: RISK-05
+    risk: Intercalary days mishandled as normal dates.
+    consequence: Week/month invariants break.
+    likelihood: medium
+    severity: high
+    mitigation: Use canonical tokens and optional projection.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT / INFERENCE
+  - id: RISK-06
+    risk: Acronym collisions cause registry bugs.
+    consequence: Wrong standard/calendar selected.
+    likelihood: medium
+    severity: medium
+    mitigation: Use unique internal IDs.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN
+  - id: RISK-07
+    risk: Assistant-generated astronomy errors become hardcoded.
+    consequence: Scientific/design inaccuracies.
+    likelihood: high
+    severity: high
+    mitigation: Verify celestial lists before data entry.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-08
+    risk: Overimplementation of galaxy/universe detail.
+    consequence: Performance/scope explosion.
+    likelihood: medium
+    severity: high
+    mitigation: Use explicit/procedural/parametric classes.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-09
+    risk: Non-7-day cycles confuse players.
+    consequence: UX and calendar semantics problems.
+    likelihood: medium
+    severity: medium
+    mitigation: Classify as WorkCycles if appropriate.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN
+  - id: RISK-10
+    risk: Assistant-created names conflict with naming principles.
+    consequence: Spec inconsistency.
+    likelihood: medium
+    severity: medium
+    mitigation: Review and normalize naming policy.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN
+  - id: RISK-11
+    risk: Patch updates alter constants/ephemerides/calendar behavior.
+    consequence: Old saves/replays change.
+    likelihood: medium
+    severity: high
+    mitigation: Version and pin all data/model packs.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-12
+    risk: Sunrise undefined at spawn location.
+    consequence: Start condition failure.
+    likelihood: medium
+    severity: medium
+    mitigation: Define deterministic fallbacks.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-13
+    risk: Over-humanizing galactic/universal calendars.
+    consequence: False conceptual model.
+    likelihood: low
+    severity: medium
+    mitigation: Keep GEC/UEF as epoch/duration frameworks.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-14
+    risk: Governance standards hardcoded too early.
+    consequence: Plural standards become brittle.
+    likelihood: medium
+    severity: medium
+    mitigation: Use data-driven TimeStandard objects.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT / INFERENCE
+  - id: RISK-15
+    risk: Device knowledge model too shallow.
+    consequence: Diegetic HUD loses gameplay depth.
+    likelihood: medium
+    severity: medium
+    mitigation: Define capability/device/drift models.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-16
+    risk: Report package overcompresses or loses context.
+    consequence: Future assistant asks user to repeat work.
+    likelihood: low
+    severity: high
+    mitigation: Use full report plus registers and YAML.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: RISK-17
+    risk: Future aggregator treats tentative assistant proposals as locked decisions.
+    consequence: Spec book fossilizes brainstorms.
+    likelihood: medium
+    severity: high
+    mitigation: Preserve labels and source hierarchy.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Verify all canonical Milky Way system entries.
+    why_verification_needed: Assistant-generated astronomy list may contain errors.
+    suggested_source_type: Astronomical catalogs / NASA / ESA / SIMBAD / peer-reviewed sources.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Check SN 1987A classification/location.
+    why_verification_needed: 'Likely issue: commonly associated with LMC, not Milky Way.'
+    suggested_source_type: Authoritative astronomy references.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Verify Sol system body/site scope against desired gameplay and science.
+    why_verification_needed: Prevent omissions or over-scope.
+    suggested_source_type: NASA/JPL/IAU plus gameplay review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN
+  - id: VERIFY-04
+    item: Verify celestial mechanics constants before coding.
+    why_verification_needed: Assistant-supplied values may be approximations.
+    suggested_source_type: NASA/JPL Horizons, IAU, SPICE kernels.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Verify ACT epoch and Jan 1 2000 mapping.
+    why_verification_needed: Required for deterministic start.
+    suggested_source_type: 'Time-scale standards: UTC/TAI/TT/TDB; project decision.'
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: UNCERTAIN
+  - id: VERIFY-06
+    item: Verify leap-second handling against intended UTC display compatibility.
+    why_verification_needed: Avoid UTC bugs.
+    suggested_source_type: IERS/ITU/official leap-second tables; project display requirements.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Verify relativity equation/fidelity tier before implementation.
+    why_verification_needed: Assistant equation was illustrative and may not be sufficient.
+    suggested_source_type: Physics review / authoritative astrodynamics sources.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Verify historical status and spelling of Undecember.
+    why_verification_needed: User requested historically proposed name.
+    suggested_source_type: Calendar history sources.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Finalize and verify HPC-E leap algorithm.
+    why_verification_needed: Calendar consistency.
+    suggested_source_type: User decision + calendar arithmetic tests.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN
+  - id: VERIFY-10
+    item: Review planetary/moon calendar names for consistency and user preference.
+    why_verification_needed: Some names may be assistant brainstorms.
+    suggested_source_type: User review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN
+  - id: VERIFY-11
+    item: Verify planetary/moon rotation/orbit periods before data pack creation.
+    why_verification_needed: Scientific values require accuracy.
+    suggested_source_type: NASA/JPL/IAU sources.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Resolve internal calendar/time standard IDs.
+    why_verification_needed: Acronym collisions exist.
+    suggested_source_type: Registry design review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN
+  - id: VERIFY-13
+    item: Define deterministic sunrise algorithm and edge cases.
+    why_verification_needed: Spawn and astronomical recurrence depend on it.
+    suggested_source_type: Astro algorithm spec + gameplay review.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN
+  - id: VERIFY-14
+    item: Verify default start date should be Jan 1 2000 Gregorian at what time of day before sunrise adjustment.
+    why_verification_needed: User specified date but not initial time-scale instant.
+    suggested_source_type: User confirmation / design choice.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN
+  - id: VERIFY-15
+    item: Verify existing knowledge/fog-of-war systems in The Game.
+    why_verification_needed: Integration depends on actual architecture.
+    suggested_source_type: Plan G/The Game chat/codebase.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-07
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-16
+    item: Verify existing governance/jurisdiction/contract systems.
+    why_verification_needed: TimeStandard integration depends on these.
+    suggested_source_type: Plan G/The Game chat/codebase.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-17
+    item: Verify codebase language, architecture, and module boundaries.
+    why_verification_needed: Prior implementation claims are unverified.
+    suggested_source_type: Project repo/docs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-18
+    item: Check generated prompts against current project conventions before Codex use.
+    why_verification_needed: Avoid stale or over-broad implementation instructions.
+    suggested_source_type: The Game chat and repo context.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN
+  - id: VERIFY-19
+    item: Manual review of this report package for completeness before aggregation.
+    why_verification_needed: Final package may still omit nuances from visible chat.
+    suggested_source_type: User review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN
+  spec_book_notes:
+    likely_sections:
+    - Time Core and Coordinate Frames
+    - Calendar and Chronology Systems
+    - Perfect Earth Calendar
+    - Planetary and Moon Calendars
+    - Diegetic HUD and Knowledge/Fog-of-War
+    - Governance, Jurisdictions, and Time Standards
+    - Celestial Content Scope
+    - Sol System High-Fidelity Content
+    - Galactic and Universal Scale Abstractions
+    - Serialization, Versioning, and Testing
+    unique_contributions:
+    - Full time/calendar doctrine from ACT to UEF.
+    - User-defined HPC-E month order and intercalary rules.
+    - Default world start and local sunrise spawn.
+    - Diegetic no-time-HUD start.
+    - Time standards as governance/jurisdiction/player objects.
+    - Celestial explicit/procedural/parametric scope.
+    possible_duplicates_with_other_chats:
+    - governance
+    - jurisdictions
+    - knowledge/fog-of-war
+    - engine modularity
+    - world generation
+    - celestial content
+    conflicts_to_watch_for:
+    - existing time/date systems
+    - existing omniscient HUD
+    - existing governance precedence
+    - different celestial scope decisions
+    formal_requirements_candidates:
+    - ACT authoritative
+    - calendars pure renderers
+    - no leap seconds in core
+    - HPC-E structure
+    - no initial time HUD
+    - TimeStandard model
+    - versioned constants/ephemerides
+    background_context_candidates:
+    - assistant-proposed non-Earth calendar names
+    - gameplay mechanics mappings
+    - initial Milky Way list
+    - suffix prompt constants
+    needs_user_confirmation:
+    - HPC-E leap rule
+    - non-7-day cycle terminology
+    - non-Earth calendar names
+    - phase-one implementation scope
+  final_recommendations:
+    next_action_if_continuing_this_chat: Finalize HPC-E leap rule and verify celestial/constants data.
+    next_action_for_aggregator: Merge this package with The Game/Plan G architecture reports and resolve conflicts.
+    user_checks_required:
+    - HPC-E leap rule
+    - non-Earth calendar naming
+    - compatibility projection default
+    - phase-one scope

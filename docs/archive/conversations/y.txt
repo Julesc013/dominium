@@ -1,0 +1,662 @@
+GPT-5.5 Pro — 2026-05-27 17:06:56
+
+# Human-Readable Chat Report — Dominium APP0 Runtime, Platform, and Renderer Architecture
+
+## 1. One-Page Orientation
+
+This chat was mainly about the **Dominium / Domino project’s application and runtime layer**, referred to throughout as **APP0**. The user began by giving a large implementation-oriented prompt titled **“PROMPT APP0 — RUNTIMES, APPLICATIONS, PLATFORMS & RENDERERS.”** That prompt defined a strict scope: work on the **client, server, launcher, setup/installer, tools, renderers, and platform support**, while not redesigning the simulation itself. The key philosophical rule was that applications are **shells around the simulation**, not decision-makers. The authoritative game logic remains in **engine + game**.
+
+The initial direction looked like it might become a Codex implementation prompt immediately. A first assistant response turned the APP0 prompt into a large implementation-pack prompt, including possible CMake targets, executable names, CLI flags, docs, smoke tests, and commit sequencing. The user then corrected the direction: **“First, let's discuss this before we plan or generate any prompts.”** That changed the conversation from implementation-prompt generation into architectural review.
+
+The discussion then moved into what APP0 really needs to accomplish. The user clarified that the long-term macro-prompt plan should not merely produce documentation or empty stubs. At the end of that plan, the project should have a **running executable** capable of displaying a **real, interactive, resizable window** across supported platform and renderer combinations. That clarification was important because it exposed a missing or under-specified layer: a **platform runtime layer**. A renderer alone cannot responsibly own windows, event loops, resizing, surface handles, timing, and headless support. The proposed architecture therefore separated **platform/windowing** from **rendering**: platform creates windows and surfaces; renderers consume surfaces; the client orchestrates both; the server remains headless and authoritative.
+
+The user then asked whether write access to `render`, `platform`, `application`, `client`, `server`, and docs was enough, or whether `engine` and `game` also needed to be writable. The answer given was conditional: for APP0, engine/game write access should not be needed **if** the existing engine/game code already exposes stable public APIs for initialization, ticking, observation, and shutdown. That answer was explicitly uncertain because the actual repository snapshot had not been verified in this visible chat. The user later asked to inspect an old code snapshot in project attachments, but the package preserved that inspection claim as **UNCERTAIN / UNVERIFIED**.
+
+A major part of the conversation then focused on renderer and platform support. The user listed many possible renderers and targets: null renderer, software renderer, D3D7, D3D9, D3D11, D3D12, Vulkan, GL1 through GL4, Metal, Windows, Linux, macOS, PC, Mac, Xbox, PlayStation, Nintendo Switch, Intel, AMD, NVIDIA, vintage systems, and more. The answer proposed a more intelligent structure: do not create one renderer per GPU vendor or one support promise per nostalgic machine. Instead, organize by **API/backend family**, **capability tier**, and **support class**. GPU vendors become metadata under APIs such as Direct3D, Vulkan, OpenGL, Metal, or software/translation layers. Vintage systems should be handled through capability bands rather than unbounded one-off promises.
+
+The conversation then evolved toward a more modular architecture: runtime framework, module loader, capability detection, platform modules, renderer modules, render devices, possible framegraph, module manifests, and distribution through a stable executable core plus selectable backend modules. These were presented as **proposals**, not final user decisions. The user wanted plug-and-play, mix-and-match architecture and broad binary distribution, but the exact mechanism—static registration, dynamic plugins, or a hybrid—remained unresolved.
+
+Later, the chat shifted from architecture discussion into preservation. The user asked for a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat reader version. Those outputs were about preserving the substance of the conversation for future assistants and future spec-book aggregation. The most important thing to remember is that this chat is not a final implementation spec. It is a carefully scoped architectural discussion that produced several hard requirements, several strong proposals, and several verification tasks. The next practical step is not coding and not another prompt; it is to **inspect the actual old repository snapshot** and verify the real directory structure, build system, renderer/platform/client/server code, and engine/game public APIs.
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began with an APP0 implementation prompt
+
+The conversation started when the user provided a structured prompt called **APP0 — Runtimes, Applications, Platforms & Renderers**. It was addressed to **GPT-5.2 Codex** and framed as part of the ongoing **Dominium / Domino project**. The prompt’s purpose was to build executable and platform support correctly while staying inside the application/runtime layer.
+
+The initial APP0 prompt established several hard rules. The assistant was not allowed to redesign simulation rules, alter content definitions, change life/civilization/economy logic, or introduce gameplay shortcuts. This mattered because Dominium appears to have a strong distinction between **authoritative simulation/game logic** and the shells that host, display, launch, inspect, or distribute that logic.
+
+The prompt listed the applications to build: **client**, **server**, **launcher**, **setup/installer**, and **tools**. It also required renderer support and documentation under `docs/app/`. The acceptance criteria were architectural rather than just code-oriented: responsibilities should be clear and non-overlapping; rendering should be isolated; servers should be authoritative; platforms should be supported cleanly; and docs should explain everything.
+
+### The first response jumped into prompt generation
+
+A first assistant response converted the user’s APP0 prompt into a large implementation pack. It proposed repository shapes, CMake targets, executable names, renderer backends, CLI flags, smoke tests, and a commit sequence. It was useful as an implementation artifact, but it was premature relative to the user’s actual desired process.
+
+The user immediately corrected the direction: **“First, let's discuss this before we plan or generate any prompts.”** That was an important change. It meant the user did not want a Codex prompt yet. They wanted to reason about the architecture before locking implementation instructions.
+
+### The conversation shifted into architectural evaluation
+
+After the correction, the assistant evaluated APP0 conceptually. The main conclusion was that the broad APP0 philosophy was sound: applications should be shells, the client should not be authoritative, the server should be authoritative and headless-capable, the launcher and setup should remain separate, tools should respect law/authority, and rendering should never affect simulation.
+
+However, the critique identified that APP0 still needed stronger mechanical enforcement. It was not enough to say “clients must not simulate authoritative state” or “rendering must not affect simulation.” Future code would need dependency boundaries, include/link rules, stable APIs, and likely compile-time separation to prevent violations. The critique also identified unresolved topics: client prediction policy, renderer capability schema, server sharding semantics, and setup/content trust model.
+
+### The user clarified the real end state: a running resizable window
+
+The user then explained that by the end of the macro-prompt plan, the project should have a **running executable** capable of displaying an **interactive and resizable window** for each supported platform and renderer combination. This made the discussion more concrete. APP0 was no longer just about docs and stubs; it had to create a real runtime path.
+
+The answer reframed this as a platform/runtime problem, not just a rendering problem. A visible window requires OS event loops, resize events, close handling, timing, native surface handles, and presentation. Those responsibilities do not belong inside the renderer itself. This led to the proposal of a dedicated **platform runtime layer**.
+
+The proposed stack was:
+
+```text
+OS Window / Event Loop
+  → Platform Runtime Layer
+  → Renderer Backend
+  → Renderer Interface
+  → Client Application
+  → Engine / Game
+```
+
+The key principle was that renderers should receive surfaces from the platform layer; renderers should not create windows. The first success milestone should be simple: a window opens, resizes, clears or blits using the software renderer, responds to close, and exits cleanly. GPU APIs should come later.
+
+### The user clarified write permissions
+
+The user then stated that future implementation would have permission to modify `render`, `platform`, `application`, `client`, `server`, and docs. They asked whether this was enough or whether `engine` and `game` also needed write access.
+
+The answer was conditional. **FACT:** the user granted those runtime-layer areas. **INFERENCE:** that should be enough for APP0 if the engine/game code already exposes usable public APIs. **UNCERTAIN / UNVERIFIED:** whether that is actually true in the repository. The answer warned that if the engine requires window handles, renderer headers, platform-owned clocks, or application-specific logic, then the architecture is already coupled and would need further refactoring, possibly requiring engine/game changes. But under the intended APP0 philosophy, needing engine/game writes would be a warning sign, not the normal path.
+
+### Renderer and platform support expanded dramatically
+
+The user then broadened the question: Dominium has or should have null, software, and many hardware renderers such as D3D7, D3D9, D3D11, D3D12, Vulkan, GL1 through GL4, Metal, and so on. They asked what else exists across Windows, Linux, macOS, PC, Mac, consoles, Intel, AMD, NVIDIA, vintage systems, and similar targets.
+
+The answer proposed a taxonomy instead of an exhaustive flat matrix. The main idea was that GPU vendors should not be modeled as renderer backends. Intel, AMD, NVIDIA, and Apple GPUs are hardware/driver providers under APIs. The renderer architecture should be based on API families and capability descriptors. It also proposed native backends, translation backends, software/virtual/CI backends, support classes, and vintage capability tiers.
+
+This was a key conceptual step. The chat moved from “which renderers should exist?” to “how should the project model renderer capability without exploding into hundreds of combinations?”
+
+### The user pushed for a smarter, modular, repository-aware architecture
+
+The user then asked whether this was the best possible design and requested a smarter, more intuitive, robust, compatible, optimized, powerful, moddable, modular, and extensible architecture. They wanted plug-and-play code, mix-and-match modules, and binaries that could support as many architectures/platforms/renderers as possible in the same executable or small set of executables.
+
+A prior assistant claimed to inspect the old code snapshot and proposed a more advanced architecture: applications over a runtime framework, modules for render/platform/audio/network/filesystem/input, engine/game below that, render devices instead of renderer monoliths, framegraph, module manifests, capability negotiation, static core executables plus dynamic modules, and a Dominium Component Model. The later report package treated the inspection claim as **UNCERTAIN / UNVERIFIED**. The architecture ideas themselves are useful, but they remain proposals unless accepted by the user and verified against actual code.
+
+### The final part of the chat became about preservation
+
+The user then asked for a maximum-fidelity context transfer packet, followed by a final downloadable report package, then an in-chat reader version. Those outputs were not new architecture decisions; they were preservation and aggregation tools. The final state of the conversation became a carefully indexed understanding of the chat’s substance: hard APP0 requirements, strong architecture proposals, unresolved questions, verification items, and next actions.
+
+The current user request asks for this narrative report: not a register dump, not a file index, but a plain-language explanation of what happened and what matters.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — APP0 scope and authority boundaries
+
+The central topic was APP0: the application/runtime/platform/renderer layer of Dominium. This topic came up because the user provided a formal prompt defining what APP0 should do.
+
+The most important conclusion was that APP0 must remain outside the core simulation rules. **FACT:** the user explicitly forbade redesigning simulation rules, altering content definitions, changing life/civilization/economy logic, and introducing gameplay shortcuts. **FACT:** authoritative logic remains in engine + game.
+
+This matters because runtime code can easily become a backdoor into game logic. Clients can be tempted to simulate state. Tools can become god-mode editors. Launchers can mutate content. Renderers can accidentally affect timing. The chat’s architectural direction was to prevent those boundary violations before implementation.
+
+What remains uncertain is whether the current repository already enforces these boundaries mechanically. The actual code needs inspection.
+
+### Topic 2 — Client responsibilities and non-authority
+
+The client was discussed as a presentation and interaction shell. It captures input, renders, handles audio, UI, network I/O, and observer clocks. It supports spectator, player, and admin views.
+
+The key conclusion is that the client must not simulate authoritative state, bypass law, or invent data. This is final because it comes directly from the APP0 prompt. The unresolved issue is prediction. A client may eventually need local prediction or rollback-like behavior, but the chat did not decide whether that exists or where it belongs. The safe position is that any prediction must be explicitly non-authoritative and must not commit simulation state.
+
+Future work must define the client’s allowed dependency surface and whether it can access any simulation-adjacent prediction layer.
+
+### Topic 3 — Server as the authoritative headless runtime
+
+The server was defined as the authoritative runtime host. It handles simulation, sharding, scheduling, law enforcement, persistence, integrity, and anti-cheat. It must be headless-capable and support AI-only autorun and MMO scale.
+
+The key conclusion is that the server should not depend on graphics or windowing. This matters because dedicated servers, cloud servers, and AI-only autorun must run without a GPU or display.
+
+The unresolved issue is sharding semantics. APP0 requires sharding hooks, but the chat did not decide whether shards are spatial, logical, temporal, jurisdictional, or something else. The report preserved the idea that APP0 can provide sharding plumbing without inventing simulation semantics.
+
+### Topic 4 — Launcher and setup separation
+
+The launcher and setup/installer were discussed as distinct application responsibilities. The launcher selects instances, profiles, detects capabilities, and orchestrates sessions. Setup installs engine/content, manages versions, and validates integrity.
+
+The key conclusion is that the launcher must not install content or alter simulation state. That belongs to setup. This separation matters because launchers often become bloated, state-mutating, or inconsistent with installer/versioning logic.
+
+The unresolved issue is the trust and integrity model for setup. The chat did not decide whether content verification should use hashes, signatures, local manifests, network verification, or another model.
+
+### Topic 5 — Tools under authority and law
+
+Tools were discussed as world inspectors, economy inspectors, replay viewers, validators, optional editors, and profilers. The important point is that tools must use the same authority rules, never bypass law, and be auditable.
+
+This is a distinctive part of Dominium’s philosophy. Many projects treat tools as privileged by default. This chat preserved the opposite idea: tools may need elevated abilities, but those abilities must be explicit, authorized, and logged.
+
+The unresolved issue is the exact elevation/audit model. The chat did not decide how tools authenticate, request write permissions, log actions, or interact with law enforcement modules.
+
+### Topic 6 — Platform runtime as the missing layer
+
+The platform runtime topic came up after the user clarified that the end goal is a real interactive resizable window across platforms and renderers.
+
+The key idea was that windows are not renderer responsibilities. Platform code should own OS-specific mechanics: window creation, event pumping, resize, close, timing, native surface handles, possibly filesystem/process/dynamic-library services. Renderers should consume surfaces. The client should orchestrate both.
+
+This is a proposal, not a user-confirmed final design, but it follows strongly from the stated goal. The actual repository must be inspected to see whether such a layer already exists.
+
+### Topic 7 — Renderer architecture and capability model
+
+Renderer support became a major topic when the user listed many API generations and platforms. The conversation covered null renderer, software renderer, Direct3D generations, Vulkan, OpenGL generations, Metal, translation layers, software rasterizers, virtual/CI paths, vendors, consoles, and vintage systems.
+
+The main conclusion was that the architecture should not be organized as a flat matrix of OS × renderer × GPU vendor × vintage system. It should instead use backend families, capability descriptors, policy-based selection, support classes, and capability tiers.
+
+The unresolved issue is the exact renderer capability schema. The chat proposed ideas but did not finalize fields, priorities, or target matrices.
+
+### Topic 8 — Modular distribution and plug-and-play architecture
+
+The user explicitly wanted plug-and-play, mix-and-match code without rewriting or duplication, and binaries that can run on as many supported architectures/platforms/renderers as possible. This led to a proposal for a runtime framework with modules, manifests, dynamic or hybrid backend loading, and stable executable cores.
+
+The idea is attractive because it supports broad distribution and long-term extensibility. But it is not a final decision. Dynamic plugins introduce ABI, packaging, security, and platform restrictions. Static registration may be simpler. A hybrid may be best. The repository and build system need to be inspected before deciding.
+
+### Topic 9 — Old repository snapshot verification
+
+The user asked to look at the old code snapshot in project attachments. A prior assistant claimed to inspect it, but later preservation documents marked that claim as **UNCERTAIN / UNVERIFIED**.
+
+This became one of the most important unresolved issues. Almost every implementation question depends on the real code: directory layout, build system, languages, existing platform/render layers, client/server dependencies, and engine/game public APIs. The next real step is repository verification.
+
+### Topic 10 — Preservation and future aggregation
+
+The final part of the chat was about preserving the conversation. The user asked for a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat reader. These outputs exist to let future chats continue without losing nuance.
+
+This matters because the conversation contains both hard requirements and speculative proposals. A future assistant must know which is which.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals the user stated
+
+The user explicitly wanted to continue the Dominium / Domino project by defining APP0: runtimes, applications, platforms, renderers, and executable support. The user wanted the application layer built correctly without altering simulation rules or gameplay logic.
+
+The user also explicitly wanted discussion before generating further prompts. This goal mattered because architecture mistakes in this layer would become hard to undo.
+
+Later, the user explicitly stated a stronger end goal: by the end of the macro-prompt plan, there should be a running executable capable of displaying an interactive, resizable window on each supported platform and renderer combination. That made the project more concrete and forced discussion of platform runtime, renderer selection, and bring-up sequence.
+
+The user also explicitly wanted a smarter architecture: modular, robust, compatible, optimized, extensible, moddable, plug-and-play, mix-and-match, and suitable for broad binary distribution.
+
+Finally, the user wanted the chat preserved in high fidelity so future assistants would not require re-explanation.
+
+### Inferred goals
+
+**INFERENCE:** The user wants an architecture that will scale over years rather than a quick demo. This follows from repeated emphasis on modularity, platform breadth, renderer breadth, executability, and future spec-book aggregation.
+
+**INFERENCE:** The user wants the eventual Codex prompts to be implementation-ready but not premature. The user values detailed planning before code generation.
+
+**INFERENCE:** The user wants future assistants to be epistemically careful: not inventing repository facts, not treating proposals as decisions, and not losing uncertainty.
+
+### Goals that changed over time
+
+The initial apparent goal was to produce an implementation prompt. That changed when the user said to discuss first.
+
+The early APP0 prompt could have been interpreted as docs and scaffolding. It later became clear that the macro-plan should ultimately produce real executable windows.
+
+The renderer question began as “what renderers and platforms should we support?” It evolved into “how do we architect this so the support matrix does not explode?”
+
+### Goals that remained unresolved
+
+The exact module architecture remains unresolved. The exact platform/renderer support matrix remains unresolved. The exact relationship to the current repository remains unresolved because the old snapshot has not been verified. The exact setup trust model, tool audit model, sharding semantics, and client prediction policy remain unresolved.
+
+---
+
+## 5. Decisions Made and Why
+
+The most important decisions are best understood in groups.
+
+### APP0 is runtime/application scope only
+
+**FACT:** The user decided the scope. APP0 is about runtime/application/platform/renderer support, not simulation redesign.
+
+This decision is final unless the user explicitly changes scope. It makes sense because application code is supposed to wrap the simulation, not define it. The alternative—letting APP0 change engine/game rules—would risk mixing infrastructure work with gameplay logic and making future correctness harder.
+
+This affects everything going forward. Future work should stay within docs, render, platform, application, client, and server unless permission changes.
+
+### Applications are orchestrators, not decision-makers
+
+**FACT:** The user’s APP0 prompt says applications are shells and orchestrators. This decision is final within APP0.
+
+The reason is architectural cleanliness. If applications become decision-makers, the same simulation could behave differently depending on whether it is run by the client, server, launcher, or tool. That would undermine determinism and authority.
+
+This affects the client, server, launcher, setup, and tools. The client can display and interact; the server can host authority; the launcher can start sessions; setup can install and verify; tools can inspect and audit. But none of them should invent unauthorized simulation outcomes.
+
+### Engine + game remain authoritative
+
+**FACT:** This was explicitly stated by the user. It is one of the strongest decisions in the chat.
+
+The alternative would be to distribute authority into clients, tools, renderers, or setup logic. That was not accepted. This decision protects the simulation model and is especially important for MMO scale, anti-cheat, replay, and law enforcement.
+
+The assumption behind this decision is that engine/game code can be hosted through stable public APIs. Whether the current repo already supports that is **UNCERTAIN / UNVERIFIED**.
+
+### The client is non-authoritative
+
+**FACT:** The APP0 prompt explicitly states that the client must not simulate authoritative state, bypass law, or invent data.
+
+This decision makes sense because the client is exposed to users and is therefore not trusted. It also prevents visual/presentation behavior from altering the world.
+
+The unresolved caveat is prediction. If client-side prediction is later needed, it must be designed carefully as non-authoritative and probably separated from authority-committing simulation code.
+
+### The server is authoritative and headless-capable
+
+**FACT:** The APP0 prompt explicitly states this.
+
+The server must be able to run without a graphical environment. That is necessary for dedicated servers, cloud hosting, AI-only autorun, and MMO scaling. The alternative—server depending on graphics/windowing—would be inefficient and fragile.
+
+This decision affects dependency rules. Server should not link to renderer/windowing unless there is a very narrow null/headless abstraction, and even that should be treated cautiously.
+
+### Rendering never affects simulation
+
+**FACT:** This is directly from APP0.
+
+The reason is determinism and authority. Frame rate, GPU driver behavior, renderer backend, window size, or visual settings should not affect the authoritative world. This decision prevents a large class of subtle bugs.
+
+This affects renderer APIs, client loops, frame timing, UI, and profiling. Rendering can observe and display; it cannot decide simulation outcomes.
+
+### Launcher and setup are separate
+
+**FACT:** The APP0 prompt says the launcher must not install content itself, while setup installs engine/content, manages versions, and validates integrity.
+
+This separation makes sense because launch orchestration and package installation are different authority domains. The launcher should select and launch. Setup should mutate installation state.
+
+The unresolved issue is setup’s trust model: hash verification, signatures, manifests, repair semantics, and network trust remain open.
+
+### Tools must obey law and be auditable
+
+**FACT:** The APP0 prompt explicitly states this.
+
+This is one of the more philosophically important decisions. It prevents tools from becoming hidden bypasses around Dominium’s law/authority model. Editors or inspectors may need special powers, but those powers must be explicit and auditable.
+
+The unresolved issue is how elevation works in practice.
+
+### Discussion before further prompts
+
+**FACT:** The user explicitly redirected the process away from immediate prompt generation.
+
+This decision matters because the initial implementation-pack prompt was useful but premature. It should be preserved as an artifact, not treated as the final implementation instruction.
+
+Future Codex prompts should be generated only after the repository is verified and the user asks for them.
+
+### Current write permission excludes engine/game
+
+**FACT:** The user granted write access to render, platform, application, client, server, and docs. They did not grant engine/game write access.
+
+This decision affects implementation boundaries. The tentative answer was that this should be enough for APP0 if public APIs are adequate. That condition is unverified.
+
+### Platform runtime layer is a strong proposal, not yet a final user decision
+
+**INFERENCE:** The platform layer proposal follows from the user’s windowed-executable goal, but the user did not formally accept it as a final architecture.
+
+It makes sense because OS windows and renderer APIs should not be coupled. It affects future directory layout, interface design, and implementation order.
+
+It could be revisited if the existing repository already has a different clean abstraction, but the principle remains important: windowing and rendering should not be fused casually.
+
+### Null/software before GPU is a strong proposal
+
+**INFERENCE:** The assistant proposed this, and it was preserved as a recommended path. The user did not explicitly ratify it as final.
+
+It makes sense because software rendering verifies windowing, resizing, event loops, and presentation without GPU API complexity. It could be revisited if the existing repo already has a working GPU path, but even then a software/null baseline remains valuable.
+
+### Renderer support should be capability-based, not vendor-based
+
+**INFERENCE:** This was an assistant proposal, but a strong one.
+
+The user asked about Intel, AMD, NVIDIA, and other targets. The answer reframed those as hardware/driver vendors rather than renderer APIs. That helps avoid a combinatorial explosion.
+
+This should be formalized only after reviewing the existing render code and target matrix.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Immediate prompt generation
+
+The idea of immediately turning APP0 into implementation prompts was superseded by the user’s correction. The initial implementation pack remains useful, but the process changed. This rejection is final until the user explicitly asks for prompts again.
+
+### Renderers creating windows
+
+This was rejected as an architectural direction, though the rejection is technically an assistant proposal rather than a user-finalized rule. It was rejected because it couples rendering APIs to OS-specific windowing and makes headless/server support harder.
+
+It might be acceptable only for a throwaway prototype, not for the intended Dominium architecture.
+
+### GPU-first bring-up
+
+Starting with Vulkan, Direct3D, Metal, or OpenGL before proving the platform/window/software path was deprioritized. The reason is practical: GPU APIs add complexity, and bugs become hard to attribute. A software renderer path gives a simpler first success state.
+
+This could be revisited if the existing repository already has a mature GPU backend, but the recommended bring-up remains null/software first.
+
+### Renderer families by GPU vendor
+
+This idea was rejected conceptually. Intel, AMD, NVIDIA, and Apple are not renderer APIs. They are adapter/driver vendors under API families. Modelling vendors as renderers would duplicate logic and explode the support matrix.
+
+Vendor information may still matter for diagnostics, workarounds, profiling, and capabilities.
+
+### Promising every vintage system individually
+
+This was rejected or at least deprioritized. The user asked about vintage systems, but the proposed answer was to support vintage through capability tiers rather than individual promises. That avoids an unbounded list of old systems.
+
+This could become relevant again if the user names specific vintage targets.
+
+### Flat OS × renderer × vendor support matrix
+
+A flat support matrix was rejected because it becomes unmanageable. The better proposal is to use platform descriptors, renderer descriptors, capability tiers, and support classes.
+
+### Launcher installing content
+
+This is rejected by the APP0 prompt itself. The launcher must not install content. Setup owns installation.
+
+### Tools bypassing law
+
+This is also rejected by APP0. Tools must not bypass law just because they are development utilities. If they need power, it must be explicit and auditable.
+
+### Trusting the prior repo-inspection claim
+
+The prior assistant claimed to inspect the old snapshot, but the final package treated that claim as unverified. This rejection is important because future architecture must not rely on a potentially hallucinated tree.
+
+### Assuming engine/game can never be touched
+
+The chat rejected that as too absolute. Current permission excludes engine/game, but if verification shows engine/game APIs are insufficient, the user might later grant permission. For now, the correct stance is: do not edit engine/game under APP0 unless verification and user approval justify it.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The visible reasoning throughout the chat was shaped by a few core concerns.
+
+First, the project needs **authority integrity**. If a client, renderer, launcher, setup tool, or inspector can mutate simulation state outside engine/game authority, the project’s law, replay, multiplayer, and anti-cheat models become unreliable. This is why so much emphasis was placed on applications as shells, tools as auditable, and rendering as non-authoritative.
+
+Second, the project needs **platform and renderer independence**. If renderers create windows, then each renderer needs OS-specific windowing code, and every backend becomes harder to port. If platform code owns windows and surfaces, renderers can stay focused on rendering. This also allows headless servers and software/CI paths to remain clean.
+
+Third, the project needs **staged bring-up**. A real windowed executable is a concrete milestone, but trying to build every GPU backend at once would be fragile. The proposed safe order is: platform runtime, null path, software renderer, client loop, renderer selection, then GPU backends one at a time.
+
+Fourth, the project needs **bounded compatibility**. The user wants broad support, including modern systems, old APIs, consoles, vendors, and vintage systems. But supporting everything equally is impossible. Capability tiers and support classes were proposed to manage the support surface honestly.
+
+Fifth, the project needs **modularity without premature overengineering**. The user wants plug-and-play and broad binary distribution. Modules, manifests, dynamic plugins, framegraph, and render devices are plausible answers. But they depend on the actual codebase, build system, and platform constraints. They should not become final requirements until verified.
+
+The main assumptions were:
+
+* engine/game can be hosted through public APIs;
+* platform and render can be separated cleanly;
+* the existing repository can accommodate a runtime/module architecture;
+* broad renderer/platform support is desirable but must be tiered;
+* the old snapshot is available for verification.
+
+Several of these assumptions remain unverified.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+The first future task is to **inspect the old repository snapshot**. This matters because almost every implementation decision depends on real files. The output should be a verified inventory: directory tree, build system, languages, existing client/server/render/platform code, docs, tests, and engine/game public APIs. What could go wrong is relying on prior assistant claims rather than actual files.
+
+The second task is to **resolve the directory and build-system facts**. The chat contains a naming mismatch: the implementation pack used `apps/`, the user granted `application/`, and a prior assistant claimed a snapshot with `app/`. This must be verified before any prompt or patch plan.
+
+The third task is to **verify engine/game public APIs**. This determines whether current permissions are enough. The ideal APP0 plan does not require engine/game edits, but that depends on whether engine/game already expose stable host interfaces.
+
+The fourth task is to **map dependencies**. The future assistant should check whether server depends on graphics, whether renderers create windows, whether platform code depends on engine/game, and whether client code crosses authority boundaries.
+
+The fifth task is to **define the authority/layer boundary map**. This should convert philosophy into concrete rules: allowed includes, allowed links, forbidden dependencies, public/private headers, and possibly compile-time guards.
+
+The sixth task is to **define the platform runtime contract**. It should specify minimal services: init/shutdown, window create/destroy, event polling, resize, close, surface handle, and monotonic time. It should avoid UI semantics, simulation authority, or renderer-specific logic.
+
+The seventh task is to **define the renderer capability schema**. This should describe renderer API family, version, feature tier, required surface types, software/hardware, headless capability, and policy priority.
+
+The eighth task is to **decide support classes and module strategy**. The user likely needs to choose which platforms/renderers are canonical, compatibility, or experimental, and whether backend selection is static, dynamic, or hybrid.
+
+Only after these steps should new Codex implementation prompts be generated. The chat repeatedly preserved that implementation prompts should be repo-specific and should not be generated prematurely.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints
+
+The strongest explicit constraints are from APP0:
+
+* Do not redesign simulation rules.
+* Do not alter content definitions.
+* Do not change life/civ/economy logic.
+* Do not introduce gameplay shortcuts.
+* Applications are shells and orchestrators.
+* Engine + game remain authoritative.
+* Client must not simulate authoritative state, bypass law, or invent data.
+* Server must be authoritative and headless-capable.
+* Rendering never affects simulation.
+* Launcher must not install content or alter simulation state.
+* Setup owns install/version/integrity responsibilities.
+* Tools must use the same authority rules and be auditable.
+* Current write permission covers docs plus `render`, `platform`, `application`, `client`, and `server`.
+
+The user also explicitly wanted discussion before further prompts and wanted high-fidelity preservation.
+
+### Inferred preferences
+
+**INFERENCE:** The user prefers robust, long-term, modular architecture over a quick prototype. This is inferred from their repeated emphasis on “intelligent,” “robust,” “compatible,” “optimized,” “moddable,” “modular,” “extensible,” and “plug and play.”
+
+**INFERENCE:** The user values auditability and epistemic hygiene. They repeatedly requested FACT / INFERENCE / UNCERTAIN labels and preservation of uncertainty.
+
+### Evidence and citation preferences
+
+The user’s broader profile emphasizes correctly cited sources and rigorous facts. In this chat, the report package preserved that external API/platform claims should be verified before use. Since this report is about the chat itself, external web citations are not needed here.
+
+### Things future assistants should avoid
+
+Future assistants should avoid:
+
+* inventing repo structure,
+* treating proposals as final decisions,
+* touching engine/game without permission,
+* producing implementation prompts before repository verification,
+* collapsing platform and renderer,
+* starting with GPU backends too early,
+* modelling renderers by vendor,
+* letting tools bypass law,
+* ignoring setup trust and tool audit questions,
+* overpromising consoles or vintage systems.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+The first major artifact is the **APP0 user prompt**. It is the root artifact of the chat. It defines scope, constraints, applications, responsibilities, docs, platform support, and acceptance criteria. It should be preserved and should feed directly into the future Project Spec Book.
+
+The second artifact is the **assistant-generated APP0 implementation pack**. It turned APP0 into a possible Codex prompt with targets, CLI flags, renderer backends, docs, tests, and commit sequencing. It should be preserved, but not treated as final. It was generated before the user said to discuss first, and it used assumptions such as CMake and an `apps/` layout that must be verified.
+
+The third artifact is the **user’s correction to discuss before prompts**. This is not a file, but it is an important process artifact. It changes how future assistants should proceed.
+
+The fourth artifact is the **APP0 conceptual critique**, which identified missing enforcement mechanisms, prediction policy, renderer capability schema, sharding semantics, and setup trust model. It should be preserved as a design checklist.
+
+The fifth artifact is the **executable-window goal**. This is one of the most important chat artifacts because it changes APP0 from just scaffolding into real runtime bring-up.
+
+The sixth artifact is the **platform runtime proposal**. It separates OS window/event/surface/timing services from renderers. It is a strong proposal but needs verification against existing code.
+
+The seventh artifact is the **write-permission statement**. The user allowed future modifications to docs plus `render`, `platform`, `application`, `client`, and `server`.
+
+The eighth artifact is the **engine/game permission answer**. It said engine/game writes should not be needed if public APIs are adequate. This must remain conditional and unverified.
+
+The ninth artifact is the **renderer/platform/vintage/consoles question**. It drove the renderer taxonomy discussion and should feed into the future platform-support chapter.
+
+The tenth artifact is the **renderer taxonomy proposal**. It included native backends, translation backends, software/virtual paths, support classes, and R0–R5 tiers. It is useful but not final.
+
+The eleventh artifact is the **smarter architecture and old snapshot request**. This set up the need for repository verification.
+
+The twelfth artifact is the **advanced runtime/module/framegraph/component architecture proposal**. It is important as a design candidate, but the claimed repository inspection inside it is unverified.
+
+The thirteenth artifact is the **maximum-fidelity context transfer packet**. It preserved the state of the chat for future continuation.
+
+The fourteenth artifact is the **downloadable final report package**. It created Markdown/YAML/report files and a ZIP bundle. These files are preservation artifacts, not new architecture decisions.
+
+The fifteenth artifact is the **in-chat reader version**. It made the package readable inside the chat.
+
+The sixteenth artifact is the **old repository snapshot/project attachments**, which were mentioned by the user but not verified in this report. This is the most important missing input for future work.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+The first unresolved issue is the actual repository structure. The chat contains conflicting or uncertain references to `app`, `apps`, and `application`. This matters because implementation prompts and patches must target real paths.
+
+The second unresolved issue is the build system and language. The earlier implementation pack assumed CMake and C/C++-style targets, but the actual repo must be inspected.
+
+The third unresolved issue is whether engine/game expose stable public APIs. This determines whether current write permissions are enough.
+
+The fourth unresolved issue is whether renderers already exist and whether they currently create windows. If they do, the refactor path differs from building a new clean abstraction.
+
+The fifth unresolved issue is whether a platform layer already exists and what it currently owns.
+
+The sixth unresolved issue is static versus dynamic module strategy. The user wants plug-and-play and broad distribution, but dynamic plugins bring ABI and packaging risks.
+
+The seventh unresolved issue is the exact platform and renderer support matrix. Windows, Linux, macOS, headless, consoles, vintage systems, D3D, Vulkan, OpenGL, Metal, software, and null were discussed, but not prioritized.
+
+The eighth unresolved issue is the setup trust model. Installation and verification can be hash-based, signature-based, manifest-based, local-only, network-aware, or some combination.
+
+The ninth unresolved issue is the tools authorization model. Tools must be useful but cannot bypass law.
+
+The tenth unresolved issue is server sharding semantics. APP0 requires sharding support, but the meaning of shards remains undefined.
+
+The eleventh unresolved issue is client-side prediction and rollback. The client is non-authoritative, but future UX/networking may require prediction buffers.
+
+The twelfth unresolved issue is shader/pipeline abstraction. Framegraph and shader IR were proposed but not decided.
+
+The thirteenth unresolved issue is asset/data pipeline integration. The prior assistant mentioned data/schema-like structure, but that repo claim is unverified.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+The biggest risk is **repo hallucination**. A future assistant might assume the prior claimed repository tree is real. To avoid this, inspect the actual old snapshot before any implementation prompt.
+
+Another major risk is **treating assistant proposals as user decisions**. Platform runtime, capability tiers, module architecture, framegraph, and support classes are strong proposals, not final decisions. Future reports must preserve that status.
+
+A third risk is **authority leakage**. Client, tools, runtime, or renderer code could accidentally affect authoritative simulation. Avoid this through dependency boundaries and clear APIs.
+
+A fourth risk is **renderer/window coupling**. If renderers create windows, portability and headless support suffer. Avoid this by separating platform from render.
+
+A fifth risk is **GPU-first complexity**. Starting with Vulkan/D3D/Metal before a software window path may slow progress. Avoid this by bringing up null/software first.
+
+A sixth risk is **support matrix explosion**. Trying to support every OS, renderer, vendor, console, and vintage machine equally is not sustainable. Avoid this with support classes and capability tiers.
+
+A seventh risk is **plugin ABI instability**. Dynamic modules may be attractive but fragile. Avoid this by designing versioned manifests and stable boundaries if dynamic modules are chosen.
+
+An eighth risk is **overpromising console or vintage support**. Console SDKs and vintage systems have real constraints. Treat them as experimental or private-adapter topics until verified.
+
+A ninth risk is **setup trust model weakness**. Without a clear integrity model, installation and content validation will be unreliable.
+
+A tenth risk is **tool god-mode**. Tools must remain governed and auditable, or they undermine the project’s law model.
+
+An eleventh risk is **engine/game API insufficiency**. If engine/game do not expose public host APIs, APP0 may be blocked or require expanded permissions.
+
+A twelfth risk is **aggregation loss**. Future spec-book aggregation could flatten uncertainty or delete rejected options. Avoid this by preserving labels and caveats.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes the APP0 foundation for the larger Dominium project. It should inform future spec-book chapters on:
+
+* application/runtime architecture,
+* authority boundaries,
+* client responsibilities,
+* server responsibilities,
+* renderer architecture,
+* platform runtime,
+* launcher/setup separation,
+* tools and audit,
+* platform support,
+* distribution and modules,
+* verification prerequisites.
+
+The strongest formal requirements are the APP0 constraints: applications are orchestrators, engine/game remain authoritative, rendering never affects simulation, client is non-authoritative, server is headless and authoritative, launcher does not install content, setup handles installation/integrity, and tools are lawful/auditable.
+
+The background context includes the initial implementation pack, renderer taxonomy brainstorming, platform runtime proposal, and advanced module/framegraph proposal.
+
+Likely overlaps with other chats include engine authority, renderer design, modding/plugin architecture, build system design, content packaging, and tool governance.
+
+Potential conflicts with other chats may include different repository layouts, different renderer priorities, different plugin strategies, different engine/game permission assumptions, or different platform support promises.
+
+Before merging this chat into a master Project Spec Book, future aggregation should verify the repository snapshot and preserve the distinction between user-decided requirements and assistant-proposed designs.
+
+---
+
+## 14. What I Should Remember
+
+* **APP0 is not gameplay work.** It is runtime/application/platform/render infrastructure.
+* **Engine + game remain authoritative.** This is the core boundary.
+* **Applications are shells.** Client, launcher, setup, and tools should not become simulation decision-makers.
+* **The server is authoritative and headless.** It should not depend on rendering or windows.
+* **The client is non-authoritative.** It can capture input and render, but it cannot invent state.
+* **Rendering never affects simulation.** Renderer choice, frame rate, and visuals must not alter the world.
+* **Launcher and setup are separate.** Launcher orchestrates; setup installs and verifies.
+* **Tools are not god-mode.** They must obey authority/law and be auditable.
+* **The user wants real executable windows eventually.** The macro-plan should end with an interactive resizable window across supported platform/renderer combinations.
+* **Platform and renderer should be separated.** Platform owns windows/events/surfaces/timing; renderers consume surfaces.
+* **Null/software should come before GPU backends.** This is the safest bring-up path.
+* **Renderer support should be capability-based, not vendor-based.**
+* **Broad platform support needs tiers.** Do not promise every combination equally.
+* **Module/plugin/framegraph ideas are proposals.** They are not final decisions yet.
+* **Current write permission excludes engine/game.** Do not edit them unless verification and user approval justify it.
+* **The old repo snapshot must be inspected.** This is the most important next action.
+* **Do not trust prior repo-inspection claims.** They are unverified.
+* **Do not generate more implementation prompts until asked.** Discussion and verification come first.
+* **The preservation files exist to support future aggregation.** They are not architecture decisions by themselves.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Explain which parts of APP0 are hard requirements versus assistant proposals.”
+2. “Turn the repository verification work into a step-by-step inspection checklist.”
+3. “What exactly should I look for in the old code snapshot?”
+4. “Explain the platform-runtime layer in simpler terms.”
+5. “Why should renderers not create windows?”
+6. “What is the safest renderer bring-up sequence?”
+7. “How should Dominium classify canonical, compatibility, and experimental platforms?”
+8. “What should the renderer capability schema include?”
+9. “Should Dominium use dynamic plugins, static registration, or a hybrid?”
+10. “Which parts of the first APP0 implementation pack should be kept or discarded?”
+11. “What must be true before engine/game write access is unnecessary?”
+12. “What should the future Project Spec Book take from this chat?”
+13. “Which open questions require user decisions?”
+14. “Which open questions require code inspection?”
+15. “Which risks would cause the most expensive future refactors?”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was about defining and preserving the architecture of **APP0**, the Dominium / Domino project’s application/runtime/platform/renderer layer. The user began with a formal prompt requiring executable and platform support for client, server, launcher, setup/installer, tools, and renderers. The prompt established a strict boundary: this work must not redesign simulation rules, alter content definitions, change life/civilization/economy logic, or introduce gameplay shortcuts. All authoritative logic remains in engine + game.
+
+At first, the assistant generated a large implementation-pack prompt. That prompt proposed build targets, executables, renderer stubs, CLI flags, docs, tests, and commit sequencing. The user then redirected the process, saying to discuss before planning or generating prompts. That correction is important because it means the implementation pack should be preserved as an artifact, not treated as the final plan.
+
+The discussion then evaluated APP0 conceptually. The main conclusion was that the philosophy is sound: applications are shells and orchestrators, not decision-makers; the client is non-authoritative; the server is authoritative and headless-capable; rendering never affects simulation; launcher and setup have separate responsibilities; and tools must obey the same authority/law model and be auditable. The critique also identified missing details: mechanical enforcement of authority boundaries, client prediction policy, renderer capability schema, server sharding semantics, and setup trust model.
+
+The user then clarified a concrete long-term goal: by the end of the macro-prompt plan, the project should have a running executable capable of opening a real, interactive, resizable window across supported platform and renderer combinations. That goal changed the architecture discussion. A real window is not just a renderer issue; it requires platform runtime services such as window creation, event loops, resize handling, close handling, timing, and native surface handles. The proposed design therefore separates platform and rendering. Platform creates windows and provides surfaces; renderers consume surfaces and present frames; the client orchestrates both; the server remains headless.
+
+The user then clarified future write permissions: docs plus `render`, `platform`, `application`, `client`, and `server` may be modified. Engine/game were not included. The answer given was conditional: this should be enough for APP0 if engine/game already expose stable public host APIs. That condition is unverified. The next assistant must inspect the actual repository before relying on it.
+
+The renderer/platform discussion broadened substantially. The user mentioned null and software renderers, many Direct3D generations, Vulkan, OpenGL generations, Metal, Windows, Linux, macOS, PC, Mac, consoles, vendors, and vintage systems. The proposed architecture was to avoid modelling renderers by GPU vendor and avoid a flat support matrix. Instead, organize by API/backend family, capability descriptor, support class, and vintage/modern capability tier. This was a proposal, not a final user decision.
+
+The user then asked for the smartest possible modular architecture and wanted the old code snapshot considered. A prior assistant claimed to inspect the snapshot and proposed a runtime/module/framegraph/component architecture: applications over runtime services, modules for platform/render/audio/network/filesystem/input, render devices instead of renderer monoliths, module manifests, capability negotiation, and broad binary distribution. However, the later report preserved the claimed repository inspection as **UNCERTAIN / UNVERIFIED**. The architecture ideas remain useful proposals, but they must be checked against actual code.
+
+The final part of the chat focused on preservation. The user requested a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat reader version. Those outputs exist to keep the conversation usable for future assistants and future Project Spec Book aggregation.
+
+The most important decisions are: APP0 is runtime/application scope only; engine/game remain authoritative; applications are orchestrators; the client is non-authoritative; the server is authoritative and headless; rendering never affects simulation; launcher and setup remain separate; tools must be lawful and auditable; and current write permission excludes engine/game. The most important proposals are: create or formalize a platform runtime layer; keep renderers from creating windows; bring up null/software before GPU; use capability-based renderer selection; use support classes and capability tiers; and consider modules/plugins/manifests for plug-and-play distribution.
+
+The biggest unresolved issue is repository verification. The actual old code snapshot must be inspected to determine the real directory layout, build system, languages, existing render/platform/client/server code, engine/game APIs, docs, tests, and dependency boundaries. Until that happens, no repo-specific implementation prompt should be trusted.
+
+What must be preserved is the distinction between **hard user requirements** and **assistant proposals**. Future assistants should not convert brainstorms into decisions, should not edit engine/game without permission, should not trust unverified repo claims, and should not overpromise platform/renderer/vintage/console support. The best next action is to inspect the old repository snapshot and produce a verified inventory before generating any new implementation prompts.
+
+# Reader Status
+
+* Chat title: Dominium APP0 Runtime, Platform, and Renderer Architecture
+* Report type: human-readable explanatory report
+* Main value of this chat: it defines the APP0 runtime/application/platform/renderer philosophy, preserves authority boundaries, and identifies the next verification work needed before implementation.
+* Most important decision: APP0 must remain an application/runtime layer around authoritative engine + game logic, not a simulation or gameplay redesign.
+* Most important unresolved issue: the actual old repository snapshot has not been verified, so repo-specific architecture and implementation prompts remain blocked.
+* Most important next action: inspect the old repo snapshot/project attachments and verify directory layout, build system, existing platform/render/client/server code, and engine/game public APIs.
+* Safe to use for later aggregation: with caveats
+* Main caveats: assistant architecture proposals are not automatically user decisions; prior repo-inspection claims are unverified; external graphics/API/platform facts require future verification; engine/game write access is not currently granted.

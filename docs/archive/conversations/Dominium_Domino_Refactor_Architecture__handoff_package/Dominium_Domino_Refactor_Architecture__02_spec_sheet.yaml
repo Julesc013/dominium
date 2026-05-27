@@ -1,0 +1,2307 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium + Domino Refactor Architecture
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: 'THIS CHAT ONLY: visible transcript plus the Context Transfer Packet generated in this same chat; no external
+      repo inspection performed.'
+    apparent_coverage: full for visible chat and prior transfer packet; no live repo audit
+    confidence_1_to_5: 5
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - No repository modifications were performed or verified in this chat.
+    - Codex prompt application status is unknown.
+    - Exact current version numbers are not established.
+    - UI/packs architecture is design-level and later-phase.
+  summary:
+    one_sentence: This chat finalized the Dominium + Domino source/product/version/repo/refactor architecture and produced
+      Codex prompts plus a transfer package.
+    short_brief: Domino remains the engine under source/domino; Dominium is flattened into common/game/launcher/setup/tools;
+      Game is one product with modes; Launcher is the suite hub; DOMINIUM_HOME stores versioned products/mods/packs and instances;
+      versioning uses separate core/product/protocol/format identities with Suite=Game.
+    main_topics:
+    - Domino engine identity and source boundary
+    - Dominium source layout flattening
+    - Dominium product model
+    - Game client/listen/dedicated/demo modes
+    - Launcher as main suite hub
+    - Setup/install/package management
+    - DOMINIUM_HOME repository and instance system
+    - Versioning and compatibility metadata
+    - Mods, packs, base data, DLC, demo content
+    - OS family, architecture, packaging, wrappers
+    - Backend selection via dsys/dgfx
+    - UI/UX/packs presentation architecture
+    - Codex refactor and consistency prompts
+    - Starter prompts and future chat continuity
+    main_outputs:
+    - Master Refactor Prompt
+    - Post-Refactor Consistency Pass Prompt
+    - Prompt for Codex to generate ChatGPT starter prompt
+    - Prompt for Codex to generate Extended Master Starter Prompt
+    - Initial Context Transfer Packet
+    - Final downloadable report package files
+    highest_priority_carry_forward:
+    - Flatten source/dominium layout.
+    - Do not rename source/domino or install Domino runtime globally.
+    - Game is one product with modes.
+    - Launcher is main access point and actions-driven.
+    - DOMINIUM_HOME repo/instances model.
+    - Suite version equals Game version.
+    - Base mod version matching is convention, not hard invariant.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Direct user statements outrank assistant suggestions.
+    - Assistant suggestions become decisions only when accepted or built upon.
+    - Preserve rejected and superseded options.
+    staleness_rules:
+    - Repo implementation status must be verified.
+    - External platform/package facts require verification.
+    - Version examples are illustrative unless found in files.
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: Straightforward, strict technical language.
+      source_or_basis: User instructions
+      implication: Use concise, dense, direct responses.
+      strength: high
+      risk: Risk of user dissatisfaction and ambiguity.
+      label: FACT
+    - id: PREFERENCE-02
+      preference: Correctly cited/fact-checked sources where current external facts are used.
+      source_or_basis: User profile/instructions
+      implication: Search web for current facts when needed; not relevant for this internal package.
+      strength: high
+      risk: Could violate trust if external claims made.
+      label: FACT
+    - id: PREFERENCE-03
+      preference: Maximum-fidelity transfer and preservation of decisions, rejected options, prompts, files.
+      source_or_basis: Current request
+      implication: Do not compress aggressively.
+      strength: high
+      risk: Loss of context for future chats.
+      label: FACT
+    - id: PREFERENCE-06
+      preference: Preserve source layout decisions exactly.
+      source_or_basis: User corrected source layout
+      implication: Do not reopen settled source directory choices.
+      strength: high
+      risk: Wasted discussion/repeated options.
+      label: FACT
+    - id: PREFERENCE-07
+      preference: Use explicit architecture names, no x64 ambiguity.
+      source_or_basis: User statement
+      implication: Use x86-64 in examples and package names.
+      strength: medium
+      risk: Naming inconsistency.
+      label: FACT
+    - id: PREFERENCE-08
+      preference: No normal summary for transfer tasks.
+      source_or_basis: Current request
+      implication: Produce registers/package, not generic prose summary.
+      strength: high
+      risk: Output fails task.
+      label: FACT
+    inferred:
+    - id: PREFERENCE-04
+      preference: Codex-ready prompts with concrete paths and constraints.
+      source_or_basis: Repeated requests for Codex prompts
+      implication: Generate implementation-oriented prompts.
+      strength: high
+      risk: Prompts too vague for Codex.
+      label: INFERENCE
+    - id: PREFERENCE-05
+      preference: Long-lived modular architecture over quick hacks.
+      source_or_basis: Repeated emphasis on extensibility/robustness
+      implication: Avoid brittle hardcoded solutions.
+      strength: high
+      risk: Future refactors become harder.
+      label: INFERENCE
+    uncertain_or_not_established:
+    - Exact UI visual style
+    - Exact current version numbers
+    - Exact OS-specific DOMINIUM_HOME defaults
+    - Whether Codex has applied any prompt
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Domino engine identity and source boundary
+    label: FACT
+    objective: Preserve Domino as the named deterministic engine under source/domino, not a generic source/engine directory.
+    current_state: Existing repo tree includes source/domino with core, render, sim, system, mod, ui, audio, input and many
+      d*.c modules.
+    desired_end_state: Domino remains source/domino and include/domino. New compat/platform headers may be added without changing
+      sim semantics.
+    status: active
+    priority: high
+    background: User asked whether to use source/Domino and source/dominium or source/engine for Domino; assistant recommended
+      source/domino and user did not object.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    decisions_pending:
+    - QUESTION-09
+    tasks:
+    - TASK-03
+    - TASK-04
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-04
+    dependencies: []
+    timeline: Settled after discussion of runtime bundling and source naming.
+    blockers: []
+    risks:
+    - RISK-01
+    - RISK-08
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-09
+    success_criteria:
+    - source/domino remains engine root
+    - include/domino remains public engine header root
+    - No global runtime Domino install is introduced
+    next_action: When refactoring, add compat/platform headers under include/domino but keep existing engine behavior stable.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    confidence: 5
+  - id: WORKSTREAM-02
+    name: Dominium source layout flattening
+    label: FACT
+    objective: Remove source/dominium/products and place common, game, launcher, setup, and tools directly under source/dominium.
+    current_state: Existing repo tree contains source/dominium/products/common, game, launcher, setup and source/dominium/rules.
+    desired_end_state: source/dominium/common, source/dominium/game, source/dominium/launcher, source/dominium/setup, source/dominium/tools,
+      with rules under source/dominium/game/rules.
+    status: active
+    priority: critical
+    background: 'User explicitly stated: ''Remove the products subdirectory under dominium, and just put game, launcher, setup,
+      and tools subdirectories in dominium.'''
+    decisions_made:
+    - DECISION-03
+    - DECISION-04
+    decisions_pending:
+    - QUESTION-11
+    tasks:
+    - TASK-01
+    - TASK-02
+    constraints:
+    - CONSTRAINT-03
+    dependencies:
+    - Existing repo tree
+    timeline: Chosen after several earlier product-layout proposals.
+    blockers:
+    - Need Codex/refactor to update CMake and includes.
+    risks:
+    - RISK-02
+    - RISK-03
+    artifacts:
+    - ARTIFACT-09
+    - ARTIFACT-10
+    success_criteria:
+    - No source/dominium/products references remain in primary build
+    - CMake targets build from new paths
+    - Docs use new layout
+    next_action: Run master refactor prompt or apply equivalent moves manually.
+    verification_needed:
+    - VERIFY-03
+    - VERIFY-04
+    confidence: 5
+  - id: WORKSTREAM-03
+    name: Dominium product model
+    label: FACT
+    objective: 'Maintain four top-level Dominium products: Game, Launcher, Setup, Tools.'
+    current_state: Existing build targets include dominium_game_cli, dominium_launcher_cli, dominium_setup_cli, dominium_modcheck,
+      dominium_product_common.
+    desired_end_state: 'Four product targets: DominiumGame/dominium_game_cli, DominiumLauncher/dominium_launcher_cli, DominiumSetup/dominium_setup_cli,
+      DominiumTools/dominium_tools.'
+    status: active
+    priority: critical
+    background: User wanted separate binaries per product rather than one monolithic suite executable.
+    decisions_made:
+    - DECISION-05
+    decisions_pending:
+    - QUESTION-06
+    tasks:
+    - TASK-05
+    - TASK-06
+    constraints:
+    - CONSTRAINT-05
+    - CONSTRAINT-07
+    dependencies:
+    - WORKSTREAM-02
+    timeline: Evolved from initial one-binary-per-platform discussion to user preference for separate product binaries.
+    blockers: []
+    risks:
+    - RISK-04
+    artifacts:
+    - ARTIFACT-03
+    - ARTIFACT-09
+    success_criteria:
+    - Products are separate build targets
+    - All products expose product info
+    - Domino is not treated as product
+    next_action: Normalize target names and product metadata after moving directories.
+    verification_needed:
+    - VERIFY-05
+    - VERIFY-06
+    confidence: 5
+  - id: WORKSTREAM-04
+    name: Game client/listen/dedicated/demo modes
+    label: FACT
+    objective: Use one Game product/binary with modes for client, listen server, dedicated server, and demo/full.
+    current_state: Existing tree includes game cli, client main, server main, and runtime_display_* implementations.
+    desired_end_state: dominium_game_cli supports --mode=gui|tui|headless, --server=off|listen|dedicated, --instance, --demo,
+      and routes all startup paths through a unified mode selector.
+    status: active
+    priority: high
+    background: User asked whether client/server should be separate binaries or startup flags; assistant recommended startup
+      flags.
+    decisions_made:
+    - DECISION-06
+    - DECISION-07
+    decisions_pending: []
+    tasks:
+    - TASK-07
+    - TASK-08
+    constraints:
+    - CONSTRAINT-06
+    - CONSTRAINT-08
+    dependencies:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    timeline: Settled after source layout discussion.
+    blockers:
+    - Need inspect existing main functions to route without breaking behavior.
+    risks:
+    - RISK-05
+    - RISK-06
+    artifacts:
+    - ARTIFACT-09
+    - ARTIFACT-10
+    success_criteria:
+    - No separate demo product
+    - No separate server product by default
+    - Old client/server mains route through shared mode code
+    next_action: Implement/centralize g_runtime/g_modes or equivalent.
+    verification_needed:
+    - VERIFY-07
+    - VERIFY-08
+    confidence: 5
+  - id: WORKSTREAM-05
+    name: Launcher as main suite hub
+    label: FACT
+    objective: Make Launcher the main point of access to the entire suite.
+    current_state: Existing launcher tree includes CLI/core/gui/model/services/instances/tui and discovery/process-related
+      files.
+    desired_end_state: Launcher enumerates instances, repo product builds, mods/packs, and actions; it launches Game/Tools/Setup
+      through action descriptors rather than hardcoded paths.
+    status: active
+    priority: high
+    background: User explicitly stated the launcher should be the main point of access to the entire suite.
+    decisions_made:
+    - DECISION-08
+    - DECISION-15
+    decisions_pending: []
+    tasks:
+    - TASK-12
+    - TASK-13
+    constraints:
+    - CONSTRAINT-09
+    dependencies:
+    - WORKSTREAM-07
+    - WORKSTREAM-08
+    timeline: Added after architecture naming and suite extension discussion.
+    blockers:
+    - Actions and repo/instance model need implementation.
+    risks:
+    - RISK-07
+    - RISK-09
+    artifacts:
+    - ARTIFACT-06
+    - ARTIFACT-10
+    - ARTIFACT-11
+    success_criteria:
+    - Launcher starts by default from wrapper scripts
+    - Launcher menus are action-driven
+    - Launcher can diagnose broken instances
+    next_action: Implement dmn_actions and refactor launcher execution paths.
+    verification_needed:
+    - VERIFY-09
+    - VERIFY-10
+    confidence: 5
+  - id: WORKSTREAM-06
+    name: Setup/install/package management
+    label: FACT
+    objective: Support portable, per-user, and system-wide install modes, with non-destructive repo import and GC.
+    current_state: Existing setup product tree has CLI/core/model/os stubs and FORMAT_INSTALL_MANIFEST.md.
+    desired_end_state: Setup distinguishes InstallRoot from DOMINIUM_HOME, imports products/mods/packs non-destructively,
+      registers shortcuts, repairs/uninstalls, and runs GC.
+    status: active
+    priority: high
+    background: User wanted all downloads portable out of the box and optional install to portable/per-user/system-wide.
+    decisions_made:
+    - DECISION-09
+    - DECISION-10
+    decisions_pending:
+    - QUESTION-05
+    tasks:
+    - TASK-14
+    - TASK-15
+    - TASK-16
+    constraints:
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    dependencies:
+    - WORKSTREAM-07
+    - WORKSTREAM-11
+    timeline: Discussed before and after repo/instances.
+    blockers:
+    - Need repo API and install manifest schema.
+    risks:
+    - RISK-10
+    - RISK-11
+    artifacts:
+    - ARTIFACT-10
+    - ARTIFACT-11
+    success_criteria:
+    - InstallRoot/DOMINIUM_HOME separated
+    - Import does not overwrite identical builds
+    - GC preview/confirm available
+    next_action: Codify setup import flow and update docs.
+    verification_needed:
+    - VERIFY-11
+    - VERIFY-12
+    confidence: 5
+  - id: WORKSTREAM-07
+    name: DOMINIUM_HOME repository and instance system
+    label: FACT
+    objective: Store multiple versions of products/mods/packs once and let instances reference them.
+    current_state: Concept fully specified in chat; current code status unverified.
+    desired_end_state: DOMINIUM_HOME/repo/products, repo/mods, repo/packs, and instances/<id>/instance.json are used across
+      Launcher/Game/Setup/Tools.
+    status: active
+    priority: critical
+    background: User asked how to store multiple different versions of chosen products for many instances without storing
+      whole suites.
+    decisions_made:
+    - DECISION-11
+    - DECISION-12
+    decisions_pending:
+    - QUESTION-03
+    - QUESTION-04
+    - QUESTION-05
+    tasks:
+    - TASK-09
+    - TASK-10
+    - TASK-11
+    constraints:
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    dependencies:
+    - WORKSTREAM-08
+    timeline: Introduced after suite/install discussion.
+    blockers:
+    - Need code implementation and JSON schema parsing.
+    risks:
+    - RISK-12
+    - RISK-13
+    artifacts:
+    - ARTIFACT-05
+    - ARTIFACT-10
+    - ARTIFACT-11
+    success_criteria:
+    - Instances reference build IDs and mod/pack versions
+    - No full suite copies per instance
+    - Repo GC safe
+    next_action: Implement dmn_paths, dmn_repo, dmn_instance.
+    verification_needed:
+    - VERIFY-13
+    - VERIFY-14
+    confidence: 5
+  - id: WORKSTREAM-08
+    name: Versioning and compatibility metadata
+    label: FACT
+    objective: Allow products, formats, protocols, mods, and packs to negotiate compatibility and degrade safely.
+    current_state: Concept and headers specified; implementation unverified.
+    desired_end_state: All products expose DomProductInfo via --introspect-json and build metadata; compatibility decisions
+      use DomCompatProfile.
+    status: active
+    priority: critical
+    background: User wanted separate version numbers for core/game/launcher/setup/tools/protocols and arbitrary combinations
+      that gracefully degrade.
+    decisions_made:
+    - DECISION-13
+    - DECISION-14
+    - DECISION-16
+    decisions_pending:
+    - QUESTION-02
+    tasks:
+    - TASK-03
+    - TASK-04
+    - TASK-17
+    constraints:
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    dependencies:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    timeline: Developed through product/package/version discussions.
+    blockers:
+    - Need actual version constants and format/protocol values from repo.
+    risks:
+    - RISK-14
+    artifacts:
+    - ARTIFACT-10
+    - ARTIFACT-11
+    success_criteria:
+    - Product info valid JSON
+    - Compat ranges defined
+    - Incompatibilities refuse safely
+    next_action: Add compat/platform headers and product info stubs.
+    verification_needed:
+    - VERIFY-15
+    - VERIFY-16
+    confidence: 5
+  - id: WORKSTREAM-09
+    name: Mods, packs, base data, DLC, demo content
+    label: FACT
+    objective: Version and load content packs/mods independently while preserving base-game clarity.
+    current_state: Existing data tree has mods/base, mods/examples, mods/space, mods/war, packs/graphics/music/sounds, versions/1.0.0.
+    desired_end_state: Base official modpack version conventionally matches GAME_VERSION; DLC/user mods/packs are independent
+      and declare compatibility ranges; demo uses demo base pack and instance flag.
+    status: active
+    priority: high
+    background: User discussed base modpack matching game version but not DLC/user mods/packs; later asked whether to hardwire
+      the link.
+    decisions_made:
+    - DECISION-17
+    - DECISION-18
+    decisions_pending:
+    - QUESTION-10
+    tasks:
+    - TASK-18
+    - TASK-19
+    constraints:
+    - CONSTRAINT-16
+    dependencies:
+    - WORKSTREAM-07
+    - WORKSTREAM-08
+    timeline: Settled after versioning and repo discussions.
+    blockers:
+    - Need inspect actual data manifests.
+    risks:
+    - RISK-15
+    artifacts:
+    - ARTIFACT-09
+    - ARTIFACT-11
+    success_criteria:
+    - Base manifest version aligned
+    - DLC/user mods independent
+    - Demo represented as content
+    next_action: Audit data manifests and update docs.
+    verification_needed:
+    - VERIFY-17
+    - VERIFY-18
+    confidence: 5
+  - id: WORKSTREAM-10
+    name: OS family, architecture, packaging, wrappers
+    label: FACT
+    objective: Use explicit OS/architecture tags and package naming across all suites.
+    current_state: Packaging scripts exist under scripts/packaging with wrapper templates.
+    desired_end_state: Suite artifacts named Dominium-Suite-<GAME_VERSION>-<OSFam>-<Arch>.<ext>; wrappers launch launcher/game
+      modes; arch tags avoid x64 ambiguity.
+    status: active
+    priority: medium
+    background: User asked to define names for each architecture and disliked x64 ambiguity.
+    decisions_made:
+    - DECISION-19
+    - DECISION-20
+    decisions_pending:
+    - QUESTION-12
+    tasks:
+    - TASK-20
+    - TASK-21
+    constraints:
+    - CONSTRAINT-17
+    dependencies:
+    - WORKSTREAM-08
+    timeline: After OS suite extension and launcher access discussions.
+    blockers:
+    - Need update packaging scripts.
+    risks:
+    - RISK-16
+    artifacts:
+    - ARTIFACT-10
+    - ARTIFACT-11
+    success_criteria:
+    - No x64 in package names
+    - Wrapper scripts call correct product/actions
+    next_action: Update scripts/packaging and docs.
+    verification_needed:
+    - VERIFY-19
+    confidence: 5
+  - id: WORKSTREAM-11
+    name: Backend selection via dsys/dgfx
+    label: FACT
+    objective: Allow products to choose valid platform and renderer backends through shared Domino APIs.
+    current_state: Existing repo has many platform/render backends; unified registry/CLI status unverified.
+    desired_end_state: Products accept --platform and --renderer, and call Domino backend registries such as dom_sys_select_backend
+      and dom_gfx_select_backend.
+    status: active
+    priority: medium
+    background: User asked whether binaries can use shared platform/renderer APIs and support variety of combinations.
+    decisions_made:
+    - DECISION-21
+    decisions_pending:
+    - QUESTION-08
+    tasks:
+    - TASK-22
+    constraints:
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    dependencies:
+    - WORKSTREAM-01
+    timeline: Discussed before product/version packaging.
+    blockers:
+    - Need inspect existing backend init APIs.
+    risks:
+    - RISK-17
+    artifacts:
+    - ARTIFACT-11
+    success_criteria:
+    - No product bypasses dsys/dgfx
+    - CLI backend flags documented
+    next_action: Add registries/CLI flags incrementally.
+    verification_needed:
+    - VERIFY-20
+    confidence: 4
+  - id: WORKSTREAM-12
+    name: UI/UX/packs presentation architecture
+    label: FACT
+    objective: Create a modular UI and packs stack on top of dsys/dgfx with vector-only fallback and optional raster/audio/music
+      packs.
+    current_state: Design proposed; implementation state unverified. Existing repo has UI/render files.
+    desired_end_state: Unified UI toolkit used by launcher, game menus/HUD, setup, and tools; vector baseline always works;
+      raster/sound/music packs optional.
+    status: active but later-phase
+    priority: medium
+    background: Initial thread prompt was explicitly graphics/UI/UX/packs architecture.
+    decisions_made:
+    - DECISION-22
+    decisions_pending:
+    - QUESTION-07
+    tasks:
+    - TASK-23
+    constraints:
+    - CONSTRAINT-20
+    dependencies:
+    - WORKSTREAM-01
+    - WORKSTREAM-11
+    timeline: First major topic, then deferred from source refactor.
+    blockers:
+    - Large scope; needs separate implementation phase.
+    risks:
+    - RISK-18
+    artifacts:
+    - ARTIFACT-02
+    success_criteria:
+    - All UI through dgfx
+    - vector fallback
+    - packs optional
+    next_action: Keep out of initial refactor except for docs/guardrails; later generate dedicated prompt.
+    verification_needed:
+    - VERIFY-21
+    confidence: 4
+  - id: WORKSTREAM-13
+    name: Codex refactor and consistency prompts
+    label: FACT
+    objective: Provide Codex with prompts to apply architecture changes and then normalize repo consistency.
+    current_state: Multiple prompts have been generated in chat; application status unverified.
+    desired_end_state: Codex applies refactor, then consistency pass, producing buildable repo aligned with architecture.
+    status: active
+    priority: critical
+    background: User repeatedly asked for Codex prompts, including master refactor, consistency pass, and starter prompt generation.
+    decisions_made: []
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-06
+    tasks:
+    - TASK-24
+    - TASK-25
+    constraints:
+    - CONSTRAINT-21
+    dependencies:
+    - All architecture decisions
+    timeline: Late thread outputs.
+    blockers:
+    - Need user to run Codex and report results.
+    risks:
+    - RISK-19
+    artifacts:
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    success_criteria:
+    - Prompts produce actual repo changes
+    - Build passes
+    - Docs consistent
+    next_action: Ask user whether Codex has run or generate a final cleaned prompt package.
+    verification_needed:
+    - VERIFY-22
+    confidence: 5
+  - id: WORKSTREAM-14
+    name: Starter prompts and future chat continuity
+    label: FACT
+    objective: Generate reusable starter prompts and transfer packets so future ChatGPT conversations can continue without
+      re-explanation.
+    current_state: Starter-prompt generator prompts and an initial Context Transfer Packet were produced; current task packages
+      this chat into final downloadable files.
+    desired_end_state: A shareable per-chat report package plus future starter prompt material.
+    status: active
+    priority: high
+    background: User asked for maximum-fidelity transfer and now asks to convert it into a downloadable report package.
+    decisions_made: []
+    decisions_pending: []
+    tasks:
+    - TASK-26
+    constraints:
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    dependencies:
+    - Prior transfer packet
+    timeline: Final part of retired chat.
+    blockers: []
+    risks:
+    - RISK-20
+    - RISK-21
+    artifacts:
+    - ARTIFACT-14
+    - ARTIFACT-15
+    success_criteria:
+    - Markdown/YAML/ZIP files created
+    - Safe for aggregation with caveats
+    next_action: Save the ZIP and use it in future aggregation.
+    verification_needed:
+    - VERIFY-23
+    confidence: 5
+  decisions:
+  - id: DECISION-01
+    decision: Use `source/domino` as engine source root, not `source/engine`.
+    status: decided
+    label: FACT
+    evidence_or_basis: User asked; assistant recommended; no later objection.
+    rationale: Domino is a named engine and matches include/domino.
+    implications: Keeps naming explicit and avoids generic engine ambiguity.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-02
+    decision: Do not install Domino as a separate end-user runtime product.
+    status: decided
+    label: FACT
+    evidence_or_basis: User asked bundle vs separate; assistant recommended bundling/static linking; user proceeded.
+    rationale: Avoids DLL/runtime version skew.
+    implications: Domino is linked/bundled into Dominium products; SDK may be future dev artifact.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-03
+    decision: Remove `source/dominium/products`.
+    status: decided
+    label: FACT
+    evidence_or_basis: User explicitly instructed removal.
+    rationale: Simplifies source layout.
+    implications: Move common/game/launcher/setup/tools directly under source/dominium.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-04
+    decision: Move Dominium rules into `source/dominium/game/rules`.
+    status: decided
+    label: INFERENCE
+    evidence_or_basis: Assistant included this in Codex prompts based on existing `source/dominium/rules` and product layout.
+    rationale: Rules are game-specific content/runtime logic.
+    implications: CMake and includes must update.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: some implementation/detail uncertainty
+  - id: DECISION-05
+    decision: 'Use four top-level Dominium products: Game, Launcher, Setup, Tools.'
+    status: decided
+    label: FACT
+    evidence_or_basis: User wanted separate set of binaries per product.
+    rationale: Clear product boundaries without monolithic executable.
+    implications: Targets map to those products; Domino is not product.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-06
+    decision: Use one Game product/binary with client/listen/dedicated modes via flags.
+    status: decided
+    label: FACT
+    evidence_or_basis: User asked; assistant recommended; prompts encode it.
+    rationale: Avoids version skew and duplicate products.
+    implications: Existing client/server entrypoints route through central mode logic.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: none
+  - id: DECISION-07
+    decision: Demo is content/instance policy, not a separate product/binary.
+    status: decided
+    label: FACT
+    evidence_or_basis: User asked; assistant recommended; later prompts enforce.
+    rationale: Avoids duplicate game binary and save/mod divergence.
+    implications: Use demo base pack and instance flag.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: none
+  - id: DECISION-08
+    decision: Launcher is the main access point to the suite.
+    status: decided
+    label: FACT
+    evidence_or_basis: User explicitly stated this.
+    rationale: Centralizes suite UX.
+    implications: Wrappers should default to launcher; actions drive execution.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: none
+  - id: DECISION-09
+    decision: Downloads/installations should be portable out of the box.
+    status: decided
+    label: FACT
+    evidence_or_basis: User explicitly requested portable by default.
+    rationale: Supports no-install use and movable installs.
+    implications: Setup must support portable fallback DOMINIUM_HOME.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: none
+  - id: DECISION-10
+    decision: Support portable, per-user, and system-wide install modes.
+    status: decided
+    label: FACT
+    evidence_or_basis: User explicitly requested these modes.
+    rationale: Flexible deployment.
+    implications: Setup must distinguish install modes.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: none
+  - id: DECISION-11
+    decision: Use DOMINIUM_HOME repo plus lightweight instances.
+    status: decided
+    label: FACT
+    evidence_or_basis: User asked how to store multiple versions; assistant proposed; no objection.
+    rationale: Dedupes product/mod/pack versions.
+    implications: Instances reference builds rather than copying suites.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: none
+  - id: DECISION-12
+    decision: Suite install/import must be non-destructive and not overwrite existing versions.
+    status: decided
+    label: FACT
+    evidence_or_basis: 'User explicitly: suite install should not overwrite if already installed.'
+    rationale: Preserves multiple versions and old instances.
+    implications: Setup imports only missing builds/mods/packs.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: none
+  - id: DECISION-13
+    decision: Use independent versions for core, game, launcher, setup, tools, and protocols.
+    status: decided
+    label: FACT
+    evidence_or_basis: User explicitly wanted separate version numbers.
+    rationale: Allows arbitrary product combinations and compat negotiation.
+    implications: Need DomProductInfo and compat metadata.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: none
+  - id: DECISION-14
+    decision: Suite version equals Game version.
+    status: decided
+    label: FACT
+    evidence_or_basis: 'User explicitly corrected assistant: Suite version should be game version.'
+    rationale: User-facing clarity.
+    implications: Package names and suite manifests use GAME_VERSION.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: none
+  - id: DECISION-15
+    decision: Use actions descriptors for Launcher-to-product/tool execution.
+    status: decided
+    label: FACT
+    evidence_or_basis: Assistant recommended; user continued with it in prompts.
+    rationale: Avoid hardcoded paths and supports many tools.
+    implications: Product builds include actions.json; launcher enumerates.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: none
+  - id: DECISION-16
+    decision: Compatibility outcomes are FULL, LIMITED, READONLY, REFUSE/INCOMPATIBLE.
+    status: decided
+    label: FACT
+    evidence_or_basis: Assistant proposed; carried into prompts.
+    rationale: Graceful degradation without crash/corruption.
+    implications: Implement dom_decide_compat.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: some implementation/detail uncertainty
+  - id: DECISION-17
+    decision: Base official modpack version should match Game/Suite version as release convention.
+    status: decided with nuance
+    label: FACT
+    evidence_or_basis: User said base modpack should match game version; later accepted not hardwired.
+    rationale: Clarity for official releases.
+    implications: Official suite ships matching base pack.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: none
+  - id: DECISION-18
+    decision: Do not hardwire base version equality into engine validity; use compatibility ranges.
+    status: decided
+    label: FACT
+    evidence_or_basis: User asked if arbitrary link wise; assistant recommended convention not invariant.
+    rationale: Allows engine-only/data-only hotfixes.
+    implications: Loader checks compat, not strict equality.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: none
+  - id: DECISION-19
+    decision: Avoid ambiguous `x64`; use explicit architecture tags like `x86-64`.
+    status: decided
+    label: FACT
+    evidence_or_basis: User explicitly disliked x64.
+    rationale: Unambiguous multi-arch packages.
+    implications: Update package names and docs.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: none
+  - id: DECISION-20
+    decision: 'Suite artifact naming pattern: Dominium-Suite-<GAME_VERSION>-<OSFam>-<Arch>.<ext>.'
+    status: decided
+    label: FACT
+    evidence_or_basis: Assistant proposed; prompts use it.
+    rationale: Consistent distribution naming.
+    implications: Update packaging scripts.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: none
+  - id: DECISION-21
+    decision: All products must use shared dsys/dgfx platform/render APIs, not product-specific APIs.
+    status: decided
+    label: FACT
+    evidence_or_basis: User asked; assistant answered 'only'.
+    rationale: Avoid duplicate rendering/platform paths.
+    implications: Products accept backend selection flags and call Domino.
+    related_workstreams:
+    - WORKSTREAM-11
+    uncertainty: none
+  - id: DECISION-22
+    decision: UI/packs stack must keep vector-only fallback and optional raster/audio/music packs.
+    status: decided as architecture
+    label: FACT
+    evidence_or_basis: Initial user prompt required vector-only baseline and optional packs.
+    rationale: Cross-platform and no-asset baseline.
+    implications: Future UI implementation must honor this.
+    related_workstreams:
+    - WORKSTREAM-12
+    uncertainty: none
+  tasks:
+  - id: TASK-01
+    task: Move source/dominium/products/common to source/dominium/common.
+    priority: high
+    urgency: high
+    owner: Codex/developer
+    dependencies:
+    - WORKSTREAM-02
+    inputs_needed:
+    - Current repo tree
+    expected_output: Common code in new path
+    next_step: Apply refactor and update CMake/includes
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  - id: TASK-02
+    task: Move game/launcher/setup directories and rules to new source/dominium layout.
+    priority: high
+    urgency: high
+    owner: Codex/developer
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Existing source tree
+    expected_output: Flattened source/dominium layout
+    next_step: Run master refactor prompt
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  - id: TASK-03
+    task: Add include/domino/platform.h and include/domino/compat.h.
+    priority: high
+    urgency: high
+    owner: Codex/developer
+    dependencies:
+    - WORKSTREAM-01
+    inputs_needed:
+    - Specified enum/struct definitions
+    expected_output: Public compatibility/platform API
+    next_step: Add headers and adjust includes
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 5
+  - id: TASK-04
+    task: Implement source/domino/compat/compat_core.c.
+    priority: high
+    urgency: high
+    owner: Codex/developer
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - DomCompatProfile definitions
+    expected_output: Range-based compat helpers
+    next_step: Wire into CMake
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 5
+  - id: TASK-05
+    task: Create/normalize product info providers for Game, Launcher, Setup, Tools.
+    priority: high
+    urgency: high
+    owner: Codex/developer
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - Version macros
+    expected_output: dom_get_product_info_* functions
+    next_step: Add stubs and test
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 5
+  - id: TASK-06
+    task: Add --introspect-json to all products.
+    priority: high
+    urgency: high
+    owner: Codex/developer
+    dependencies:
+    - TASK-05
+    inputs_needed:
+    - Product info structs
+    expected_output: Valid JSON product metadata output
+    next_step: Implement in CLI mains
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 5
+  - id: TASK-07
+    task: Centralize Game mode parsing and options.
+    priority: high
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - WORKSTREAM-04
+    inputs_needed:
+    - Existing game CLI files
+    expected_output: Parsed --mode/--server/--instance/--demo
+    next_step: Add options struct
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 5
+  - id: TASK-08
+    task: Route client/server old entrypoints through unified Game mode selector.
+    priority: high
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-07
+    inputs_needed:
+    - dom_client_main.c, dom_server_main.c
+    expected_output: One startup pathway
+    next_step: Refactor carefully
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 5
+  - id: TASK-09
+    task: Implement dmn_get_dominium_home path discovery.
+    priority: high
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - WORKSTREAM-07
+    inputs_needed:
+    - OS path policy
+    expected_output: Central DOMINIUM_HOME API
+    next_step: Create dmn_paths module
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: 5
+  - id: TASK-10
+    task: Implement repo API for products/mods/packs.
+    priority: high
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-09
+    inputs_needed:
+    - Repo layout schema
+    expected_output: dmn_repo helpers
+    next_step: Write tests with temp DOMINIUM_HOME
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: 5
+  - id: TASK-11
+    task: Implement instance load/save/list API.
+    priority: high
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-09
+    inputs_needed:
+    - instance.json schema
+    expected_output: dmn_instance module
+    next_step: Refactor launcher instances service
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: 5
+  - id: TASK-12
+    task: Implement product actions loader.
+    priority: high
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-10
+    inputs_needed:
+    - actions.json schema
+    expected_output: dmn_actions_list functions
+    next_step: Load actions from repo builds
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: 5
+  - id: TASK-13
+    task: Refactor Launcher to invoke actions instead of hardcoded executables.
+    priority: high
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-12
+    inputs_needed:
+    - Launcher process code
+    expected_output: Action-driven Launcher
+    next_step: Search hardcoded calls
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: 5
+  - id: TASK-14
+    task: Implement Setup non-destructive import into repo.
+    priority: high
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-10
+    inputs_needed:
+    - InstallRoot model
+    expected_output: Import builds/mods/packs if missing
+    next_step: Add dry-run/logging
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: 5
+  - id: TASK-15
+    task: Implement Setup portable/per-user/system-wide mode handling.
+    priority: medium
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-09
+    inputs_needed:
+    - Install mode policy
+    expected_output: Setup CLI/model supports modes
+    next_step: Update docs/help
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: 5
+  - id: TASK-16
+    task: Implement GC preview/confirm for unused repo entries.
+    priority: medium
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-10
+    - TASK-11
+    inputs_needed:
+    - Repo and instance APIs
+    expected_output: Safe cleanup command
+    next_step: Add preview before deletion
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: 5
+  - id: TASK-17
+    task: Centralize version macros in include/dominium/version.h and dominium_version.c.
+    priority: high
+    urgency: high
+    owner: Codex/developer
+    dependencies:
+    - WORKSTREAM-08
+    inputs_needed:
+    - Existing version files
+    expected_output: Single version source
+    next_step: Replace hardcoded versions
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 5
+  - id: TASK-18
+    task: Update base and demo content manifests.
+    priority: medium
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-17
+    inputs_needed:
+    - data/mods and data/versions
+    expected_output: Base/demo version/compat aligned
+    next_step: Inspect actual manifests
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+    confidence: 5
+  - id: TASK-19
+    task: Ensure DLC/user mods/packs keep independent versions and compatibility ranges.
+    priority: medium
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-18
+    inputs_needed:
+    - data/mods/space/war/examples
+    expected_output: Manifest consistency
+    next_step: Update docs and validation
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+    confidence: 5
+  - id: TASK-20
+    task: Update packaging artifact naming and arch tags.
+    priority: medium
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-17
+    inputs_needed:
+    - scripts/packaging
+    expected_output: Dominium-Suite-<GAME_VERSION>-<OSFam>-<Arch> names
+    next_step: Edit packaging scripts
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: 5
+  - id: TASK-21
+    task: Update wrapper scripts to launch Launcher/client/server modes.
+    priority: medium
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - TASK-07
+    inputs_needed:
+    - scripts/packaging/scripts
+    expected_output: dominium/dom-client/dom-server wrappers aligned
+    next_step: Edit .cmd.in/.sh.in
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: 5
+  - id: TASK-22
+    task: Add backend selection CLI flags and registry stubs.
+    priority: medium
+    urgency: medium
+    owner: Codex/developer
+    dependencies:
+    - WORKSTREAM-11
+    inputs_needed:
+    - Existing dsys/dgfx init
+    expected_output: --platform and --renderer work or fail clearly
+    next_step: Implement minimally
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: 4
+  - id: TASK-23
+    task: Defer full UI/packs refactor into dedicated later prompt/spec.
+    priority: medium
+    urgency: low
+    owner: Developer/assistant
+    dependencies:
+    - WORKSTREAM-12
+    inputs_needed:
+    - Initial UI architecture
+    expected_output: Separate UI implementation plan
+    next_step: Do not mix into Phase 1 refactor
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+    confidence: 4
+  - id: TASK-24
+    task: Run master refactor prompt in Codex.
+    priority: critical
+    urgency: high
+    owner: User/Codex
+    dependencies:
+    - All decisions
+    inputs_needed:
+    - Master refactor prompt
+    expected_output: Repo refactored
+    next_step: User should execute or ask assistant to refine prompt
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+    confidence: 5
+  - id: TASK-25
+    task: Run post-refactor consistency prompt after build.
+    priority: high
+    urgency: high
+    owner: User/Codex
+    dependencies:
+    - TASK-24
+    inputs_needed:
+    - Consistency prompt
+    expected_output: Stale references removed
+    next_step: Run grep/build/tests
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+    confidence: 5
+  - id: TASK-26
+    task: Save this report package and use it in future aggregation.
+    priority: high
+    urgency: high
+    owner: User
+    dependencies:
+    - Current package
+    inputs_needed:
+    - Generated files
+    expected_output: Reusable chat-specific report package
+    next_step: Download ZIP
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+    confidence: 5
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Domino engine code should remain C89-compatible where applicable.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User/project instructions and repeated prompts
+    implication: Avoid modern C features in engine headers/sources.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-02
+    constraint: Do not change deterministic simulation semantics.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Repeated Codex guardrails
+    implication: Refactor must not alter sim algorithms or save/replay semantics.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-03
+    constraint: Use flattened source/dominium layout with no products subdirectory.
+    type: structural
+    hard_or_soft: hard
+    source_or_basis: User explicit instruction
+    implication: CMake/includes/docs must migrate.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-04
+    constraint: Domino is not an end-user runtime product.
+    type: packaging
+    hard_or_soft: hard
+    source_or_basis: Accepted recommendation
+    implication: No global Domino runtime install tree.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-05
+    constraint: Dominium has separate product binaries by product.
+    type: product
+    hard_or_soft: hard
+    source_or_basis: User preference
+    implication: Do not collapse all products into one executable.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-06
+    constraint: Game is one product with modes by default.
+    type: product
+    hard_or_soft: hard
+    source_or_basis: Accepted recommendation
+    implication: No separate client/server/demo products in primary architecture.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-07
+    constraint: All products must expose shared version/compat metadata.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Versioning model
+    implication: Implement DomProductInfo/--introspect-json.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-08
+    constraint: Demo must be content/instance policy, not separate product.
+    type: product/content
+    hard_or_soft: hard
+    source_or_basis: Accepted recommendation
+    implication: Use demo base pack and flags.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-09
+    constraint: Launcher must be main access point where feasible.
+    type: product/UX
+    hard_or_soft: hard
+    source_or_basis: User explicit instruction
+    implication: Wrapper/default desktop entry points to launcher.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-10
+    constraint: Downloads should be portable out of the box.
+    type: distribution
+    hard_or_soft: hard
+    source_or_basis: User explicit instruction
+    implication: Portable DOMINIUM_HOME fallback required.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-11
+    constraint: Install/import must not overwrite already installed identical versions.
+    type: distribution
+    hard_or_soft: hard
+    source_or_basis: User explicit instruction
+    implication: Setup must be non-destructive.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-12
+    constraint: Instances must reference repo versions rather than copying suites.
+    type: storage
+    hard_or_soft: hard
+    source_or_basis: Repo model discussion
+    implication: Implement build IDs and mod/pack references.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-13
+    constraint: Repo supports multiple versions of products, mods, and packs.
+    type: storage
+    hard_or_soft: hard
+    source_or_basis: User request
+    implication: No single-current-version assumption.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-14
+    constraint: Suite version equals Game version.
+    type: versioning
+    hard_or_soft: hard
+    source_or_basis: User explicit correction
+    implication: Package names and suite metadata follow GAME_VERSION.
+    violation_risk: low
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-15
+    constraint: Do not conflate product/core/protocol/format versions.
+    type: versioning
+    hard_or_soft: hard
+    source_or_basis: User versioning request
+    implication: Separate macros and compat ranges.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-16
+    constraint: Base version matching game is convention, not engine validity invariant.
+    type: content/versioning
+    hard_or_soft: hard
+    source_or_basis: Later decision refinement
+    implication: Loader must use compat ranges.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-17
+    constraint: Do not use ambiguous x64 naming in architecture tags.
+    type: naming
+    hard_or_soft: hard
+    source_or_basis: User explicit preference
+    implication: Use x86-64 etc.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-18
+    constraint: All product platform/renderer access must go through dsys/dgfx.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User prompt and assistant answer
+    implication: No direct platform drawing/backend bypass.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-19
+    constraint: Setup should use conservative renderer/backend choices by default.
+    type: robustness
+    hard_or_soft: soft
+    source_or_basis: Assistant recommendation
+    implication: Favor soft/TUI fallback.
+    violation_risk: low
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-20
+    constraint: Vector-only UI fallback must remain functional.
+    type: UI
+    hard_or_soft: hard
+    source_or_basis: Initial thread requirements
+    implication: No raster asset dependency for functionality.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-21
+    constraint: Codex prompts must not introduce new external libraries.
+    type: implementation
+    hard_or_soft: hard
+    source_or_basis: Codex guardrails
+    implication: Use existing JSON/helpers/manual output.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-22
+    constraint: Context transfer outputs must label FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User final transfer request
+    implication: Future aggregation needs provenance labels.
+    violation_risk: low
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-23
+    constraint: This package is for this chat only.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User current request
+    implication: Do not summarize whole project beyond visible chat scope.
+    violation_risk: low
+    label: FACT
+    confidence: 5
+  open_questions:
+  - id: QUESTION-01
+    question: Has Codex applied any generated prompt?
+    why_it_matters: Determines whether next work is implementation, audit, or prompt refinement.
+    known: Prompts were generated.
+    unknown: No confirmation of repo changes.
+    resolution_path: User/repo check.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-13
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: What are the current actual version values?
+    why_it_matters: Needed for macros, package names, base manifests.
+    known: Existing files include .dominium_build_number and data/versions/1.0.0.
+    unknown: Final GAME/CORE/product versions not established.
+    resolution_path: Inspect include/dominium/version.h and data manifests.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: Which JSON/TOML parser should repo/instance/actions use?
+    why_it_matters: Implementation needs parser choice.
+    known: Existing repo has json.cpp and manifest_io.c.
+    unknown: TOML support unclear.
+    resolution_path: Inspect code/external libs.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: Should include/domino/repo.h exist or should repo APIs be dominium-only?
+    why_it_matters: Earlier assistant suggested both; repo seems product-suite specific.
+    known: Final prompts lean to dominium/common and include/dominium/instance.h.
+    unknown: Public API boundary unresolved.
+    resolution_path: User/architecture decision.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: What exact default DOMINIUM_HOME paths should each OS use?
+    why_it_matters: Affects setup/portable logic.
+    known: Examples were discussed.
+    unknown: Final per-OS defaults not confirmed.
+    resolution_path: User/platform policy decision.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-07
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Which root-level tools should become DominiumTools?
+    why_it_matters: Prevents misclassification of Domino dev tools.
+    known: dominium_modcheck should move.
+    unknown: domino_assetc/pack/replay/test status unclear.
+    resolution_path: User decision or code audit.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-13
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: How much UI/packs architecture should be implemented now?
+    why_it_matters: Large scope could derail source refactor.
+    known: Architecture specified.
+    unknown: Timing not decided beyond deferral suggestion.
+    resolution_path: User prioritization.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: What exact product capability masks by backend are final?
+    why_it_matters: Needed for robust backend selection.
+    known: High-level recommendations exist.
+    unknown: Exact code matrix not fixed.
+    resolution_path: Spec and user review.
+    priority: low
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: Should private dynamic Domino libs ever be supported?
+    why_it_matters: Affects packaging complexity.
+    known: Static linking recommended.
+    unknown: Future constraints unknown.
+    resolution_path: Reconsider only if concrete need arises.
+    priority: low
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: What is the final base mod compatibility range syntax?
+    why_it_matters: Needed for manifests.
+    known: Suggested game_min/game_max etc.
+    unknown: Exact format may already exist in SPEC_DOMINO_MOD/SPEC_PACKAGES.
+    resolution_path: Inspect docs/data.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: What exact current repo status after build artifacts?
+    why_it_matters: Needed before moving files.
+    known: User pasted tree at one point.
+    unknown: Repo may have changed after chat.
+    resolution_path: Fresh file tree.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: Should package generation include ZIP and installer formats immediately?
+    why_it_matters: Affects scripts scope.
+    known: Naming scheme decided.
+    unknown: Exact formats per OS not finalized in implementation.
+    resolution_path: Packaging plan.
+    priority: low
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Use `source/engine` for Domino.
+    status: rejected
+    reason: Domino is a named engine and include path is include/domino.
+    final_or_tentative: final
+    reconsider_conditions: Only reconsider if project renames Domino.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-02
+    option: Install Domino as a separate global runtime beside Dominium.
+    status: rejected
+    reason: Avoid DLL/runtime version skew.
+    final_or_tentative: final for end-user runtime
+    reconsider_conditions: Reconsider only as developer SDK or private per-suite dynamic lib.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-03
+    option: Keep source/dominium/products.
+    status: rejected
+    reason: User explicitly requested flattened layout.
+    final_or_tentative: final
+    reconsider_conditions: None likely.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-04
+    option: One monolithic binary for all products.
+    status: rejected
+    reason: User wanted separate binaries per product.
+    final_or_tentative: final
+    reconsider_conditions: Constrained targets may have special combined builds.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-05
+    option: Separate demo product/binary.
+    status: rejected
+    reason: Demo should be content/instance policy.
+    final_or_tentative: final unless legal/commercial need
+    reconsider_conditions: Commercial/legal demo packaging requirement.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-06
+    option: Separate server product/binary by default.
+    status: rejected
+    reason: One game binary with flags avoids skew.
+    final_or_tentative: tentatively final
+    reconsider_conditions: Minimal dedicated server distro requiring lean binary.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-07
+    option: Hardcode launcher execution paths to game/tools.
+    status: superseded
+    reason: Actions system chosen for extensibility.
+    final_or_tentative: final direction
+    reconsider_conditions: Temporary migration scaffolding only.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-08
+    option: Make Suite version equal Core version.
+    status: rejected
+    reason: User corrected Suite=Game.
+    final_or_tentative: final
+    reconsider_conditions: None.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-09
+    option: Force all product versions to match.
+    status: rejected
+    reason: User requested separate versions.
+    final_or_tentative: final
+    reconsider_conditions: None.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-10
+    option: Hardwire base mod version equality in engine.
+    status: rejected
+    reason: Too rigid for engine-only/data-only patches.
+    final_or_tentative: final
+    reconsider_conditions: Use as release convention only.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: REJECTED-11
+    option: Use ambiguous `x64` package arch naming.
+    status: rejected
+    reason: User disliked ambiguity.
+    final_or_tentative: final
+    reconsider_conditions: None.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: REJECTED-12
+    option: Full UI/packs rewrite in first source refactor.
+    status: deprioritized
+    reason: Too large; initial refactor should be structural.
+    final_or_tentative: tentative
+    reconsider_conditions: After layout/version/repo foundations are stable.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Initial Graphics/UI/UX/Packs Thread Prompt
+    type: user prompt
+    purpose: Defined presentation-layer scope and constraints.
+    status: source context
+    origin: User first message in chat
+    carry_forward: 'yes'
+    notes: Includes dsys/dgfx/UI/packs requirements.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Layered UI/packs architecture response
+    type: assistant output
+    purpose: Proposed UI core/style/render/events/fonts/packs design.
+    status: generated design
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Future UI implementation reference.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: Product binaries and CLI discussion outputs
+    type: assistant outputs
+    purpose: Established separate products and shared CLI patterns.
+    status: generated design
+    origin: Assistant responses
+    carry_forward: 'yes'
+    notes: Some earlier one-binary suggestions superseded.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: Versioning/package scheme discussion outputs
+    type: assistant outputs
+    purpose: Established core/product/suite/format/protocol model.
+    status: generated design
+    origin: Assistant responses
+    carry_forward: 'yes'
+    notes: Suite=Game correction by user is final.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: DOMINIUM_HOME repo/instances response
+    type: assistant output
+    purpose: Specified shared repo and instances.
+    status: generated design
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Core carry-forward artifact.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: Launcher-as-main-access response
+    type: assistant output
+    purpose: Defined launcher hub responsibilities.
+    status: generated design
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Actions/instances/tools integration.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: Domino runtime placement response
+    type: assistant output
+    purpose: Recommended static/internal link and SDK separation.
+    status: generated recommendation
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Avoid separate runtime.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Source/domino vs source/engine response
+    type: assistant output
+    purpose: Recommended source/domino and source/dominium.
+    status: generated recommendation
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Source layout decision.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: Existing repo directory tree
+    type: user-provided file/tree listing
+    purpose: Source for path-specific refactor prompt.
+    status: input artifact
+    origin: User pasted full tree
+    carry_forward: 'yes'
+    notes: Must not be treated as current after future changes.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: Master Refactor Prompt
+    type: Codex prompt
+    purpose: Instructed Codex to refactor layout/version/repo/actions/package model.
+    status: generated prompt
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: May be reused/refined.
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: Post-Refactor Consistency Pass Prompt
+    type: Codex prompt
+    purpose: Instructed Codex to remove stale refs and align docs/code.
+    status: generated prompt
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Run after master prompt.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Prompt for Codex to generate ChatGPT starter prompt
+    type: Codex prompt
+    purpose: Generates concise starter prompt for future chats.
+    status: generated prompt
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Useful for continuity.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: Prompt for Codex to generate Extended Master Starter Prompt
+    type: Codex prompt
+    purpose: Generates maximal project-wide starter prompt.
+    status: generated prompt
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Useful for project-wide context.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Initial Context Transfer Packet
+    type: handoff text
+    purpose: Maximum-fidelity state transfer before packaging.
+    status: generated report
+    origin: Assistant response immediately before current request
+    carry_forward: 'yes'
+    notes: This package repairs/normalizes it.
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: Final downloadable report package files
+    type: generated files
+    purpose: Current output package.
+    status: current artifact
+    origin: This assistant response
+    carry_forward: 'yes'
+    notes: Markdown/YAML/ZIP files.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Accidental engine semantic changes
+    consequence: Breaks determinism/saves/tests
+    likelihood: medium
+    severity: critical
+    mitigation: 'Guardrail: structural refactor only; review sim diffs.'
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-02
+    risk: Old source/dominium/products references remain
+    consequence: Build/docs inconsistency
+    likelihood: high
+    severity: high
+    mitigation: Run consistency grep/pass.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-03
+    risk: CMake breakage after moves
+    consequence: Build fails
+    likelihood: high
+    severity: high
+    mitigation: Update CMake incrementally and run tests.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-04
+    risk: Domino treated as product or installed runtime
+    consequence: Version skew/DLL hell
+    likelihood: medium
+    severity: high
+    mitigation: No domino runtime targets; link internally.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-05
+    risk: Client/server startup paths diverge
+    consequence: Different behavior/version skew
+    likelihood: medium
+    severity: high
+    mitigation: Route through shared mode selector.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-06
+    risk: Demo becomes separate binary
+    consequence: Duplicate product surface
+    likelihood: medium
+    severity: medium
+    mitigation: Enforce content/instance demo model.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-07
+    risk: Launcher hardcodes paths
+    consequence: Actions/repo extensibility broken
+    likelihood: high
+    severity: medium
+    mitigation: Search and replace with dmn_actions.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-08
+    risk: Generic engine naming resurfaces
+    consequence: Docs/code ambiguity
+    likelihood: low
+    severity: medium
+    mitigation: Preserve Domino name in source and docs.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-09
+    risk: Tool integration becomes ad hoc
+    consequence: Launcher cannot scale to many tools
+    likelihood: medium
+    severity: medium
+    mitigation: Actions system; tools registry.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-10
+    risk: Setup overwrites existing versions
+    consequence: Breaks old instances
+    likelihood: medium
+    severity: high
+    mitigation: Non-destructive import with hashes/build IDs.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-11
+    risk: InstallRoot and DOMINIUM_HOME conflated
+    consequence: Portable/user/system modes break
+    likelihood: medium
+    severity: high
+    mitigation: Central path APIs and docs.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-12
+    risk: Instances copy suites/assets
+    consequence: Disk bloat and version inconsistency
+    likelihood: medium
+    severity: medium
+    mitigation: Instances reference repo entries only.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: RISK-13
+    risk: Repo GC deletes referenced data
+    consequence: Broken instances
+    likelihood: low
+    severity: critical
+    mitigation: GC scans instances and requires preview/confirm.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: RISK-14
+    risk: Compatibility model overpromises never-fail behavior
+    consequence: Unsafe operations may happen
+    likelihood: medium
+    severity: high
+    mitigation: Use refuse/read-only when impossible; never corrupt.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: RISK-15
+    risk: Base version equality treated as hard invariant
+    consequence: Artificial forced bumps and invalid mixes
+    likelihood: medium
+    severity: medium
+    mitigation: Use compat ranges; convention only.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: RISK-16
+    risk: Package names use inconsistent arch tags
+    consequence: User confusion and build matrix ambiguity
+    likelihood: medium
+    severity: medium
+    mitigation: Use x86-64 etc.; update scripts.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: RISK-17
+    risk: Products bypass dsys/dgfx
+    consequence: Duplicate platform/render code
+    likelihood: medium
+    severity: high
+    mitigation: Shared backend registries; audit GUI code.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: RISK-18
+    risk: UI/packs scope bloats initial refactor
+    consequence: Refactor becomes unmanageable
+    likelihood: medium
+    severity: medium
+    mitigation: Defer full UI work to later phase.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: INFERENCE
+  - id: RISK-19
+    risk: Codex prompt too broad causes unsafe changes
+    consequence: Large diff with behavior changes
+    likelihood: medium
+    severity: high
+    mitigation: Phase prompts or enforce guardrails/tests.
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+  - id: RISK-20
+    risk: Future assistant loses nuance from this chat
+    consequence: Repeated decisions or wrong architecture
+    likelihood: medium
+    severity: high
+    mitigation: Use this package and bootstrap prompt.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+  - id: RISK-21
+    risk: Future aggregation treats assistant suggestions as user decisions
+    consequence: Spec book becomes overcommitted
+    likelihood: medium
+    severity: high
+    mitigation: Preserve labels and decision evidence.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Confirm source/domino still contains existing engine modules after refactor.
+    why_verification_needed: Ensure engine not accidentally moved/renamed.
+    suggested_source_type: Fresh repo tree/build check.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Confirm no global Domino runtime target/install path was added.
+    why_verification_needed: Avoid rejected runtime model.
+    suggested_source_type: CMake/install script inspection.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Search for source/dominium/products references after refactor.
+    why_verification_needed: Ensure layout consistency.
+    suggested_source_type: grep/search.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Build after directory moves.
+    why_verification_needed: Ensure CMake/includes correct.
+    suggested_source_type: CMake/Ninja/CTest.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Confirm four product targets exist and build.
+    why_verification_needed: Product model sanity.
+    suggested_source_type: CMake target list.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Confirm dominium_modcheck moved or wrapped under DominiumTools.
+    why_verification_needed: Tools product migration.
+    suggested_source_type: Tree/CMake check.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Run dominium_game_cli --help and check game mode flags.
+    why_verification_needed: Game mode CLI.
+    suggested_source_type: CLI run.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Confirm dom_client_main/dom_server_main route through shared runtime mode.
+    why_verification_needed: Avoid divergent code paths.
+    suggested_source_type: Code review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Search Launcher code for hardcoded executable invocations.
+    why_verification_needed: Actions compliance.
+    suggested_source_type: grep/code review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: Confirm launcher is default wrapper target in packaging scripts.
+    why_verification_needed: Main access point.
+    suggested_source_type: script inspection.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: Confirm Setup distinguishes InstallRoot and DOMINIUM_HOME.
+    why_verification_needed: Install correctness.
+    suggested_source_type: Code/doc review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Confirm setup import is non-destructive.
+    why_verification_needed: Old versions safety.
+    suggested_source_type: Tests/code review.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-13
+    item: Confirm dmn_get_dominium_home exists and all products use it.
+    why_verification_needed: Central paths.
+    suggested_source_type: grep/code review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-14
+    item: Validate instance.json schema in docs/code/tests.
+    why_verification_needed: Instance compatibility.
+    suggested_source_type: Schema/test fixture review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-15
+    item: Confirm include/domino/compat.h and platform.h compile in C/C++.
+    why_verification_needed: API health.
+    suggested_source_type: Build/test.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-16
+    item: Run --introspect-json for all products and validate JSON.
+    why_verification_needed: Metadata contract.
+    suggested_source_type: CLI + JSON validation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-17
+    item: Inspect data/mods/base manifest for version and compat fields.
+    why_verification_needed: Base/game convention.
+    suggested_source_type: File review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-18
+    item: Confirm no demo product/target exists after refactor.
+    why_verification_needed: Demo model compliance.
+    suggested_source_type: CMake/tree search.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-19
+    item: Check package scripts for x64 or old artifact names.
+    why_verification_needed: Naming consistency.
+    suggested_source_type: grep scripts/docs.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-20
+    item: Confirm --platform and --renderer behavior is documented/implemented consistently.
+    why_verification_needed: Backend selection.
+    suggested_source_type: CLI/docs/code review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-21
+    item: Audit product GUI paths for direct OS drawing.
+    why_verification_needed: UI layering.
+    suggested_source_type: Code review.
+    priority: low
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-22
+    item: Confirm whether Codex prompts have been applied.
+    why_verification_needed: Avoid assuming completed work.
+    suggested_source_type: User report/repo check.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-13
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-23
+    item: Open generated package ZIP and confirm all seven files exist.
+    why_verification_needed: Report package integrity.
+    suggested_source_type: Manual download/open.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Domino vs Dominium identity
+    - Source layout
+    - Product model and binaries
+    - Game modes
+    - DOMINIUM_HOME repo and instances
+    - Versioning and compatibility
+    - Setup/install/import/GC
+    - Launcher actions
+    - Packaging and architecture tags
+    - UI/packs architecture overview
+    unique_contributions:
+    - Flattened source/dominium decision
+    - No global Domino runtime
+    - One Game binary with client/server/demo modes
+    - DOMINIUM_HOME multi-version repo model
+    - Actions-based launcher model
+    possible_duplicates_with_other_chats:
+    - Detailed dsys/dgfx specs
+    - Simulation/worldgen specs
+    - Mod/package formats
+    - Full UI/packs implementation
+    conflicts_to_watch_for:
+    - source/dominium/products references
+    - separate demo/server product assumptions
+    - Suite version equals Core version
+    - x64 package naming
+    formal_requirements_candidates:
+    - source/dominium flattened layout
+    - Suite version equals Game version
+    - Product introspection
+    - Non-destructive repo import
+    - Actions-based launcher
+    background_context_candidates:
+    - Illustrative version examples
+    - Earlier monolithic binary discussion
+    needs_user_confirmation:
+    - Exact current version numbers
+    - Exact DOMINIUM_HOME paths
+    - Scope of root tools migration
+    - Timing of full UI/packs implementation
+  final_recommendations:
+    next_action_if_continuing_this_chat: Ask whether Codex has applied the refactor; if not, run or refine the master refactor
+      prompt.
+    next_action_for_aggregator: Ingest spec_sheet.yaml and aggregator_packet.md, preserving IDs and labels.
+    user_checks_required:
+    - Verify repo state
+    - Verify versions
+    - Verify Codex application status
+    - Verify generated package files

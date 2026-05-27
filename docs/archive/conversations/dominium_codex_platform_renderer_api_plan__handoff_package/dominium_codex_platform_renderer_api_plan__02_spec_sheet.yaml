@@ -1,0 +1,1940 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Codex Platform Renderer API Plan
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: THIS CHAT ONLY; Project-level context is included only where visible in this chat or explicitly marked PROJECT-CONTEXT.
+    apparent_coverage: full for visible chat context and previous Context Transfer Packet; repo contents unverified
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - The uploaded repo archive /mnt/data/dominium.zip was not inspected in this chat before prompt generation.
+    - Some repo-specific file paths and target names came from user statements or assistant prompts and require verification.
+    - The final prompt pack is a plan for Codex, not evidence that the repository already contains the resulting files or
+      code.
+    - Several earlier prompt plans were superseded; only the final 9-prompt pack is active unless the user reopens earlier
+      alternatives.
+    - Future AAA feature discussions were brainstorming and architecture-slot planning, not finalized implementation scope.
+  summary:
+    one_sentence: This chat produced and preserved a Codex prompt plan for completing Dominium/Domino platforms, renderers,
+      APIs, product smoke tests, and long-term ABI/determinism architecture.
+    short_brief: The active output is a 9-prompt post-master implementation pack for Codex GPT-5.2 in VS Code/Codex CLI, with
+      C89/C++98 baseline enforcement, C ABI/vtable facades, capability registry, D0/D1/D2 determinism, CMake presets/null
+      backends, Tier-1 Win32 and software/DX9 completion, Tier-2 gating, TLV-as-ABI, launcher/game GUI smoke tests, and changelog
+      tooling.
+    main_topics:
+    - Dominium/Domino engine
+    - Codex prompt planning
+    - platform API
+    - renderer API
+    - C89/C++98
+    - stable ABI
+    - facades/backends
+    - capability registry
+    - determinism
+    - TLV serialization
+    - smoke tests
+    - AAA future roadmap
+    main_outputs:
+    - Final Prompt 1 — Baseline enforcement + ABI/vtable + facades + commits
+    - Final Prompt 2 — Capability registry + determinism grades + launcher profiles
+    - Final Prompt 3 — CMake switchboard + presets + null backends + build metadata
+    - Final Prompt 4 — Tier-1 platform Win32/win32_headless + system smoke
+    - Final Prompt 5 — Tier-1 renderer soft + DX9 + dgfx_demo
+    - Final Prompt 6 — Tier-2 platform/render gating + compile correctness
+    - Final Prompt 7 — TLV-as-ABI + net handshake + schema IDs + tests
+    - Final Prompt 8 — Launcher/game GUI smoke + verify script
+    - Final Prompt 9 — Changelog pipeline + release notes automation
+    highest_priority_carry_forward:
+    - Final 9-prompt pack
+    - C89/C++98 baseline rules
+    - Stable C ABI/POD/vtable interfaces
+    - Capability registry and determinism grades
+    - TLV-as-ABI
+    - Codex git commit discipline
+    - Repo archive unverified caveat
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - User statements outrank assistant suggestions.
+    - Later user instructions supersede earlier assistant plans.
+    - Superseded prompt packs must remain historical, not active.
+    staleness_rules:
+    - Repo/toolchain/software facts require verification before implementation.
+    - Uploaded archive contents were not inspected in this chat.
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: Direct, dense, no-filler assistance.
+      basis: User profile/instructions
+      implication: Use concise, structured responses.
+      risk: If misunderstood, assistant may waste user time.
+      label: FACT
+    - id: PREFERENCE-02
+      preference: Rigorously tested facts and correctly cited sources when factual/current.
+      basis: User profile
+      implication: Verify unstable facts; cite if using web/files.
+      risk: Overconfident claims reduce trust.
+      label: FACT
+    - id: PREFERENCE-03
+      preference: Prefer fewer larger Codex prompts.
+      basis: User statement
+      implication: Do not split final pack into many small prompts unless needed.
+      risk: Too many prompts slow workflow.
+      label: FACT
+    - id: PREFERENCE-04
+      preference: Codex prompts must be ready-to-run and self-contained.
+      basis: Initial request
+      implication: Each prompt restates context, commands, tasks, acceptance.
+      risk: Codex may fail or ask questions unnecessarily.
+      label: FACT
+    - id: PREFERENCE-05
+      preference: Repo must remain buildable after each prompt.
+      basis: Initial request
+      implication: Incremental implementation and verification.
+      risk: Broken intermediate states unacceptable.
+      label: FACT
+    - id: PREFERENCE-06
+      preference: Git commits throughout with detailed bodies.
+      basis: User request
+      implication: Prompts require commit discipline.
+      risk: Changelog generation harder.
+      label: FACT
+    - id: PREFERENCE-07
+      preference: Long-term extensibility and AAA readiness.
+      basis: Repeated user requests
+      implication: Reserve extension slots and avoid core bloat.
+      risk: Future rewrite risk.
+      label: FACT
+    - id: PREFERENCE-09
+      preference: Preserve uncertainty and rejected options.
+      basis: Current packaging prompt
+      implication: Use labels and registers.
+      risk: Bad aggregation/spec errors.
+      label: FACT
+    - id: PREFERENCE-10
+      preference: Start messages with model version/build date.
+      basis: User profile instruction
+      implication: Future assistant should comply unless system conflicts.
+      risk: Style mismatch.
+      label: FACT
+    inferred:
+    - id: PREFERENCE-08
+      preference: Avoid re-asking already answered questions.
+      basis: System/user style and this handoff request
+      implication: Use this packet as continuity source.
+      risk: User frustration and lost continuity.
+      label: INFERENCE
+    uncertain_or_not_established:
+    - Exact changelog format
+    - Tier-1 UI text strategy
+    - Full Tier-2 runtime completion expectation
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Master deterministic engine-core refactor prompts 1-14
+    label: FACT
+    objective: 'Establish deterministic core primitives: packets, scheduler, fields/events, LOD, arbitrary placement, TRANS,
+      STRUCT, DECOR, agents, graph toolkit, domains/frames/propagators, knowledge/fog/comms, and regression hardening.'
+    current_state: User pasted this as an existing pending prompt plan. Later post-14 work assumes it has been implemented
+      for planning purposes, but actual repo implementation is unverified.
+    desired_end_state: A deterministic, quantized, replayable, non-grid-bound engine core with regression tests and no new
+      gameplay semantics.
+    status: assumed prerequisite / historical active plan
+    priority: high
+    background: User supplied the full master prompt plan and explicitly asked new planning to assume those prior prompts
+      have been implemented already.
+    decisions_made:
+    - No floats in deterministic core.
+    - No grid assumptions.
+    - Everything parametric, quantized, deterministic, replayable.
+    decisions_pending:
+    - Verify whether prompts 1-14 have actually been run in the repository.
+    tasks:
+    - VERIFY-01
+    - TASK-01
+    constraints:
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    dependencies:
+    - Repository inspection
+    - Codex execution history if available
+    timeline: Precedes all post-14 platform/render/API work.
+    blockers:
+    - Actual implementation state not verified.
+    risks:
+    - RISK-01
+    - RISK-02
+    artifacts:
+    - ARTIFACT-02
+    success_criteria:
+    - Prompts 1-14 implemented and buildable.
+    - Determinism regression suite passes.
+    next_action: Verify repository state if implementation-specific actions are needed.
+    verification_needed:
+    - VERIFY-01
+    confidence: 4
+    carry_forward_priority: high
+  - id: WORKSTREAM-02
+    name: Post-master platforms/renderers/APIs/product completion prompt pack
+    label: FACT
+    objective: Produce and preserve a ready-to-run Codex prompt pack to complete platforms, renderers, APIs, build/test infrastructure,
+      and basic launcher/game GUI smoke tests.
+    current_state: Final active prompt pack contains nine large prompts, each with git commit discipline and verification
+      gates.
+    desired_end_state: A repository state with enforced baseline language/ABI rules, facaded DSYS/DGFX APIs, central capability
+      registry, Win32/Win32-headless Tier-1 platform completion, soft/DX9 Tier-1 renderer completion, Tier-2 gating, TLV-as-ABI,
+      launcher/game GUI smokes, verify script, and changelog tooling.
+    status: active
+    priority: critical
+    background: User requested fewer larger prompts for GPT-5.2 VS Code Codex because it generates thousands of lines per
+      run and takes a while.
+    decisions_made:
+    - Use final 9-prompt pack as active plan.
+    - Each prompt requires multiple changelog-ready git commits.
+    decisions_pending:
+    - Exact repo target names.
+    - DSYS vs legacy domino_sys policy if conflict appears.
+    - Text rendering strategy for smoke UI if needed.
+    tasks:
+    - TASK-02
+    - TASK-03
+    - TASK-04
+    - TASK-05
+    - TASK-06
+    - TASK-07
+    - TASK-08
+    - TASK-09
+    - TASK-10
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    dependencies:
+    - WORKSTREAM-01
+    - Repository access
+    - CMake/Ninja
+    - Windows toolchain
+    timeline: After master prompt 14; prompts 1-9 must run sequentially.
+    blockers:
+    - Unverified repository structure
+    - Potential existing C99/C++11 header violations
+    - Potential target-name mismatch
+    risks:
+    - RISK-01
+    - RISK-03
+    - RISK-04
+    - RISK-05
+    artifacts:
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    success_criteria:
+    - scripts\build_codex_verify.bat succeeds after Prompt 8.
+    - Prompt 9 creates changelog/release-note tooling.
+    next_action: Run Prompt 1 in Codex or, if already run, continue with the next unexecuted prompt.
+    verification_needed:
+    - VERIFY-02
+    - VERIFY-03
+    - VERIFY-04
+    confidence: 5
+    carry_forward_priority: critical
+  - id: WORKSTREAM-03
+    name: 'API architecture: stable ABI, facades, backends, capabilities, determinism'
+    label: FACT
+    objective: Make DSYS/DGFX and other evolvable systems modular, versioned, extensible, deterministic, and C89/C++98-compliant.
+    current_state: Architecture was designed in discussion and embedded into Prompts 1-3 and later prompts.
+    desired_end_state: Every cross-module/plugin boundary is C ABI/POD/versioned; every evolvable subsystem uses baseline
+      facade plus selectable backends; central registry controls backend selection and determinism grades.
+    status: active design requirement
+    priority: critical
+    background: User asked how to make platform/renderer APIs extensible and maintainable under C89/C++98 and later injected
+      mandatory constraints.
+    decisions_made:
+    - C ABI only across boundaries.
+    - Every interface begins with abi_version and struct_size.
+    - Capability registry and D0/D1/D2 determinism are mandatory.
+    - Launcher profiles select features/backends, not language standards.
+    decisions_pending:
+    - Which current headers are canonical if repo has competing public APIs.
+    tasks:
+    - TASK-02
+    - TASK-03
+    - TASK-04
+    constraints:
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    dependencies:
+    - WORKSTREAM-02
+    timeline: Implemented first in active Prompt 1 and Prompt 2.
+    blockers:
+    - Existing public headers may violate baseline constraints.
+    risks:
+    - RISK-04
+    - RISK-05
+    - RISK-06
+    artifacts:
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    success_criteria:
+    - Baseline header checker passes.
+    - DSYS/DGFX surfaces are vtable-driven.
+    - Capability registry selection is inspectable and deterministic.
+    next_action: Execute Prompt 1 and Prompt 2.
+    verification_needed:
+    - VERIFY-05
+    - VERIFY-06
+    confidence: 5
+    carry_forward_priority: critical
+  - id: WORKSTREAM-04
+    name: AAA future readiness roadmap
+    label: FACT
+    objective: Reserve clean architectural slots for advanced future game/engine features beyond the current prompt pack.
+    current_state: Brainstormed extensively; not fully converted into implementation prompts except for extension slots in
+      renderer/audio and general architecture constraints.
+    desired_end_state: Dominium can evolve over years toward AAA-grade graphics, audio, AI, navigation, terrain, vehicles,
+      economy, combat, weather, online systems, tools, modding, and setup/distribution without architectural rewrites.
+    status: future roadmap / not current implementation scope
+    priority: medium-high
+    background: User wants early game simple like old-school RuneScape but later capable of UE5-class graphics/audio/input
+      and full AAA Dominium.
+    decisions_made:
+    - Advanced features should be extensions/capability-gated, not core API bloat.
+    - Presentation output must not feed deterministic sim.
+    decisions_pending:
+    - Which future feature family becomes the next prompt phase after platform/render/API completion.
+    tasks:
+    - TASK-11
+    constraints:
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-16
+    dependencies:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    timeline: After current platforms/renderers/API/product smoke pack, unless user prioritizes a feature earlier.
+    blockers:
+    - Current engine/platform/render foundation must be stable first.
+    risks:
+    - RISK-07
+    - RISK-08
+    artifacts:
+    - ARTIFACT-20
+    success_criteria:
+    - Future features have extension slots, data formats, and compiler-backed systems without forcing early implementation.
+    next_action: Do not implement now; preserve as future Project Spec Book material.
+    verification_needed:
+    - VERIFY-12
+    confidence: 4
+    carry_forward_priority: medium-high
+  - id: WORKSTREAM-05
+    name: Chat-specific handoff/report packaging
+    label: FACT
+    objective: Produce a downloadable, shareable, reusable report package for this old chat, suitable for future aggregation
+      and Project Spec Book construction.
+    current_state: This current response creates the requested files and ZIP package.
+    desired_end_state: Seven report files plus a ZIP, with stable IDs, registers, YAML spec sheet, aggregator packet, reader
+      brief, audit, and manifest.
+    status: active in current response
+    priority: high
+    background: User requested conversion of the previous Context Transfer Packet into final per-chat report package.
+    decisions_made:
+    - Chat label inferred as Dominium Codex Platform Renderer API Plan.
+    - Date anchor is 2026-05-27 Australia/Melbourne.
+    - Scope is this chat only.
+    decisions_pending:
+    - None unless user wants a different label.
+    tasks:
+    - TASK-12
+    constraints:
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    dependencies:
+    - Previous Context Transfer Packet
+    - Visible chat context
+    timeline: Finalization step for retired chat.
+    blockers: []
+    risks:
+    - RISK-09
+    - RISK-10
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    success_criteria:
+    - Files created and downloadable.
+    - ZIP created.
+    - Safe for aggregation with caveats.
+    next_action: Download and store the ZIP and individual files.
+    verification_needed:
+    - VERIFY-13
+    confidence: 5
+    carry_forward_priority: high
+  decisions:
+  - id: DECISION-01
+    decision: Use C89 for Domino core forever.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory constraint.
+    rationale: Old-platform compatibility and ABI stability.
+    implications: All Domino public/core code must be C89-clean.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-02
+    decision: Use C++98 for Dominium layer forever.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory constraint.
+    rationale: Long-term compatibility.
+    implications: No C++11 baseline leakage.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-03
+    decision: C99/C11/C++11+ are optional acceleration layers only.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory constraint.
+    rationale: Correctness cannot require newer standards.
+    implications: Modern preset cannot remove baseline paths.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-04
+    decision: Reject runtime language-standard switching.
+    status: decided
+    label: FACT
+    evidence_or_basis: User explicitly required rejecting runtime C89 vs C11 switching.
+    rationale: Language standard is compile-time concern.
+    implications: Launcher profiles select features/backends only.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-05
+    decision: All ABI-relevant boundaries use C ABI, POD structs, explicit function tables.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory stable ABI requirement.
+    rationale: Avoid compiler/RTTI/STL incompatibility.
+    implications: No C++ types/templates/exceptions across ABI boundaries.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-06
+    decision: Every interface struct begins with u32 abi_version and u32 struct_size.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory stable ABI rule.
+    rationale: Versioned compatibility and size negotiation.
+    implications: All vtables/interfaces must follow template.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-07
+    decision: Use facade + backend architecture for all evolvable subsystems.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory rule.
+    rationale: Allows baseline/stub/optimized backends.
+    implications: Platform facets, renderer, jobs, SIMD, IO streaming follow this pattern.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-08
+    decision: Use a centralized capability registry for backend selection.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory rule and Prompt 2.
+    rationale: Selection must be deterministic and inspectable.
+    implications: All backends declare OS/ISA, determinism, perf class.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-09
+    decision: Use determinism grades D0/D1/D2.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory rule.
+    rationale: Prevents silent downgrade.
+    implications: Lockstep refuses non-D0 for lockstep-relevant backends.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-10
+    decision: Lockstep strict requires D0 only.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory rule.
+    rationale: Guarantees bit-exact authoritative simulation.
+    implications: D1/D2 backends presentation-only or rejected.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-11
+    decision: Treat serialization/assets/saves/replays as public ABI.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory rule.
+    rationale: Long-term compatibility.
+    implications: One TLV container, skip-unknown, migrations.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-12
+    decision: Networking handshake must include build/schema/determinism/content hashes.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory rule.
+    rationale: Avoid mixed-version undefined behavior.
+    implications: Mixed sessions rejected unless compatibility table allows.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-13
+    decision: Launcher profiles select feature profiles/backends, not language standards.
+    status: decided
+    label: FACT
+    evidence_or_basis: User mandatory and Prompt 2.
+    rationale: User-facing configurability without correctness changes.
+    implications: --profile and --lockstep-strict become selection inputs.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-14
+    decision: Final active plan is the 9-prompt post-master pack.
+    status: decided
+    label: FACT
+    evidence_or_basis: Latest user asked to start with prompt 1; assistant generated prompts 1-9.
+    rationale: Fewer larger prompts preferred.
+    implications: Supersedes earlier 15-24 and 15-28 plans.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-15
+    decision: Codex must make detailed commits throughout.
+    status: decided
+    label: FACT
+    evidence_or_basis: User requested commits for changelog later.
+    rationale: Changelog extraction.
+    implications: Every prompt includes commit discipline.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-16
+    decision: Tier-1 platform completion focuses on Win32 and Win32 headless.
+    status: decided
+    label: FACT
+    evidence_or_basis: User platform tier and final Prompt 4.
+    rationale: MVP validation on Windows Codex runtime.
+    implications: System smoke tests required.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-17
+    decision: Software renderer is D0 reference backend.
+    status: decided
+    label: FACT
+    evidence_or_basis: User renderer tier and final Prompt 5.
+    rationale: Deterministic pixel-hash reference.
+    implications: Soft renderer required for lockstep-safe tests.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-18
+    decision: DX9 is Tier-1 runtime-present backend.
+    status: decided
+    label: FACT
+    evidence_or_basis: User renderer tier and final Prompt 5.
+    rationale: Early Windows graphics MVP.
+    implications: DX9 demo required, likely D2.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-19
+    decision: Tier-2 platforms/renderers are gated and compile-correct in current pack.
+    status: decided with caveat
+    label: FACT
+    evidence_or_basis: Final Prompt 6.
+    rationale: Windows Codex cannot run native POSIX/macOS.
+    implications: May need later runtime prompts if user wants full Tier-2 runtime.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: see status/label
+  - id: DECISION-20
+    decision: Launcher and game need basic GUI smoke tests.
+    status: decided
+    label: FACT
+    evidence_or_basis: User request and final Prompt 8.
+    rationale: Product done must prove integration.
+    implications: --smoke-gui flags required.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-21
+    decision: Future AAA features are extension/capability slots, not immediate implementation scope.
+    status: decided for current plan
+    label: INFERENCE
+    evidence_or_basis: Assistant recommendation accepted implicitly by moving to prompt pack; no user objected.
+    rationale: Avoid bloating current pack.
+    implications: Graphics/audio/AI/etc remain future spec material.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: see status/label
+  - id: DECISION-22
+    decision: This report package chat label is inferred as Dominium Codex Platform Renderer API Plan.
+    status: decided for packaging
+    label: INFERENCE
+    evidence_or_basis: User did not provide chat label; prompt says infer one.
+    rationale: Consistent filenames.
+    implications: Can be renamed later if desired.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: see status/label
+  tasks:
+  - id: TASK-01
+    task: Verify whether MASTER prompts 1-14 were implemented in the repository.
+    priority: high
+    urgency: before implementation-specific assumptions
+    owner: future assistant/Codex
+    dependencies:
+    - WORKSTREAM-01
+    inputs_needed:
+    - Repo access
+    - Build logs
+    expected_output: Verified status of prerequisite engine-core work.
+    next_step: Inspect repo; run searches/builds.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4
+  - id: TASK-02
+    task: Run or hand off final Prompt 1.
+    priority: critical
+    urgency: first implementation step
+    owner: Codex
+    dependencies:
+    - WORKSTREAM-02
+    inputs_needed:
+    - Final Prompt 1 text
+    - Repo
+    expected_output: Baseline enforcement, abi.h, DSYS/DGFX facades, docs, commits.
+    next_step: Execute in Codex at repo path.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 5
+  - id: TASK-03
+    task: Run final Prompt 2.
+    priority: critical
+    urgency: after Prompt 1
+    owner: Codex
+    dependencies:
+    - TASK-02
+    inputs_needed:
+    - Prompt 2
+    expected_output: Capability registry, determinism grades, launcher profiles.
+    next_step: Execute after Prompt 1 passes.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 5
+  - id: TASK-04
+    task: Run final Prompt 3.
+    priority: high
+    urgency: after Prompt 2
+    owner: Codex
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - Prompt 3
+    expected_output: Presets, null backends, config header, build metadata, verify skeleton.
+    next_step: Execute after Prompt 2 passes.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  - id: TASK-05
+    task: Run final Prompt 4.
+    priority: high
+    urgency: after Prompt 3
+    owner: Codex
+    dependencies:
+    - TASK-04
+    inputs_needed:
+    - Prompt 4
+    expected_output: Win32/win32_headless DSYS complete; domino_sys_smoke.
+    next_step: Execute and verify both platforms.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  - id: TASK-06
+    task: Run final Prompt 5.
+    priority: high
+    urgency: after Prompt 4
+    owner: Codex
+    dependencies:
+    - TASK-05
+    inputs_needed:
+    - Prompt 5
+    expected_output: Soft D0 renderer, DX9 present, dgfx_demo.
+    next_step: Execute and verify soft hash + DX9 demo.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  - id: TASK-07
+    task: Run final Prompt 6.
+    priority: medium-high
+    urgency: after Prompt 5
+    owner: Codex
+    dependencies:
+    - TASK-06
+    inputs_needed:
+    - Prompt 6
+    expected_output: Tier-2 gating and compile correctness.
+    next_step: Execute gating and optional backend compile checks.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  - id: TASK-08
+    task: Run final Prompt 7.
+    priority: high
+    urgency: after Prompt 6
+    owner: Codex
+    dependencies:
+    - TASK-07
+    inputs_needed:
+    - Prompt 7
+    expected_output: TLV container, net handshake, schema IDs, tests.
+    next_step: Execute and run regression tests.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  - id: TASK-09
+    task: Run final Prompt 8.
+    priority: critical
+    urgency: after Prompt 7
+    owner: Codex
+    dependencies:
+    - TASK-08
+    inputs_needed:
+    - Prompt 8
+    expected_output: Launcher/game GUI smokes and end-to-end verify script.
+    next_step: Execute; scripts\build_codex_verify.bat must pass.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  - id: TASK-10
+    task: Run final Prompt 9.
+    priority: medium
+    urgency: after Prompt 8
+    owner: Codex
+    dependencies:
+    - TASK-09
+    inputs_needed:
+    - Prompt 9
+    expected_output: Changelog pipeline and release-note process.
+    next_step: Execute after done gates pass.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  - id: TASK-11
+    task: Preserve AAA future feature roadmap for later Project Spec Book.
+    priority: medium
+    urgency: after current foundation
+    owner: future assistant/user
+    dependencies:
+    - WORKSTREAM-04
+    inputs_needed:
+    - Roadmap items from this chat
+    expected_output: Future-phase requirements/background material.
+    next_step: Do not implement now unless user asks.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 4
+  - id: TASK-12
+    task: Create final downloadable chat report package.
+    priority: high
+    urgency: now
+    owner: assistant
+    dependencies:
+    - Previous transfer packet
+    - Visible chat context
+    inputs_needed:
+    - This chat context
+    expected_output: Markdown/YAML files plus ZIP.
+    next_step: Generate files and links.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: 5
+  - id: TASK-13
+    task: Resolve DSYS vs domino_sys policy if repo conflict occurs.
+    priority: high
+    urgency: only if blocker appears
+    owner: user/Codex
+    dependencies:
+    - Prompt 1 repo discovery
+    inputs_needed:
+    - Callsite/header scan
+    expected_output: 'Policy decision: shim indefinitely vs migrate.'
+    next_step: Use Prompt 1 stop-and-ask.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 5
+  - id: TASK-14
+    task: Resolve smoke UI text strategy if needed.
+    priority: medium
+    urgency: Prompt 5 or 8
+    owner: user/Codex
+    dependencies:
+    - IR/UI scan
+    inputs_needed:
+    - Existing text/font code
+    expected_output: Bitmap font, rectangles only, or UI toolkit path.
+    next_step: Use stop-and-ask.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 4
+  - id: TASK-15
+    task: Confirm exact launcher/game target names.
+    priority: high
+    urgency: Prompt 8
+    owner: Codex/user
+    dependencies:
+    - CMake target list
+    inputs_needed:
+    - cmake --build --target help
+    expected_output: Correct smoke executable invocation.
+    next_step: Use Prompt 8 stop-and-ask if unknown.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 4
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Codex runtime OS is Windows.
+    type: runtime
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Validation commands target Windows; POSIX/macOS backends must be gated.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-02
+    constraint: Repo path is c:\Inbox\Git Repos\dominium.
+    type: runtime
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: All prompts use this path.
+    violation_risk: low
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-03
+    constraint: Approval policy is NEVER.
+    type: process
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Prompts cannot require interactive approvals.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-04
+    constraint: Network enabled but no dependency downloads unless explicitly approved.
+    type: dependency
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: CMake must not fetch deps.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-05
+    constraint: Repo must remain buildable after each prompt.
+    type: build
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: No big-bang broken states.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-06
+    constraint: Domino core ISO C89 baseline forever.
+    type: language
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Core/public C headers must remain C89-clean.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-07
+    constraint: Dominium layer C++98 baseline forever.
+    type: language
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: No C++11 baseline constructs.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-08
+    constraint: Modern standards are optional acceleration only.
+    type: language
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Correctness cannot depend on C11/C++11.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-09
+    constraint: No runtime language-standard switching.
+    type: compatibility
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Launcher profiles cannot select C89/C11.
+    violation_risk: low
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-10
+    constraint: Stable ABI uses C ABI, POD, no C++ boundary types.
+    type: ABI
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: All plugin/cross-DLL interfaces use function tables.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-11
+    constraint: Every interface begins with u32 abi_version and u32 struct_size.
+    type: ABI
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Vtables/interfaces must follow template.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-12
+    constraint: No floating point in deterministic core.
+    type: determinism
+    hard_or_soft: hard
+    source_or_basis: User/master plan
+    implication: Use fixed-point/integers in sim.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-13
+    constraint: No grid assumptions in core placement/world systems.
+    type: simulation
+    hard_or_soft: hard
+    source_or_basis: User/master plan
+    implication: Pose/anchor systems must be arbitrary/quantized.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-14
+    constraint: No tolerance solvers in deterministic core.
+    type: determinism
+    hard_or_soft: hard
+    source_or_basis: User/master plan
+    implication: Avoid non-deterministic numeric solvers.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-15
+    constraint: Lockstep strict requires D0 bit-exact backends for lockstep-relevant subsystems.
+    type: determinism
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Registry must refuse non-D0.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-16
+    constraint: Serialization formats are public ABI.
+    type: compatibility
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: TLV/version/migration/skip-unknown required.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-17
+    constraint: This report covers this chat only.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Do not summarize whole Project except labelled project context.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-18
+    constraint: Important items must be labelled FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Avoid unlabelled inference.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-19
+    constraint: Create downloadable files and ZIP if tools available.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Must not claim files saved unless created.
+    violation_risk: low
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-20
+    constraint: Preserve superseded/rejected/deprioritised options.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Future aggregators need lineage.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-21
+    constraint: Direct user statements outrank assistant suggestions.
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Assistant proposals are not decisions unless accepted.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-22
+    constraint: No new third-party dependencies in prompts unless approved.
+    type: dependency
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Use existing vendored/system deps only.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-23
+    constraint: Prefer fewer larger Codex prompts.
+    type: process
+    hard_or_soft: soft/hard for plan
+    source_or_basis: User
+    implication: Final plan consolidated to 9 prompts.
+    violation_risk: low
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-24
+    constraint: Codex commits throughout with detailed bodies.
+    type: process
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Every prompt includes commit discipline.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  open_questions:
+  - id: QUESTION-01
+    question: Were MASTER prompts 1-14 actually implemented in the repo?
+    why_it_matters: Post-14 plan assumes them.
+    known: User says a prior prompt plan exists.
+    unknown: Actual repo state.
+    resolution_path: Inspect repo/build/history.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: Which DSYS API is authoritative if dsys_* and domino_sys_* conflict?
+    why_it_matters: Prompt 1 refactor depends on it.
+    known: User said both surfaces exist.
+    unknown: Actual callsite distribution and desired compatibility policy.
+    resolution_path: Repo search; stop-and-ask.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: QUESTION-03
+    question: Which headers are baseline-visible?
+    why_it_matters: Header checker scope.
+    known: Likely include/ public headers.
+    unknown: Exact exclusions/generated/vendor handling.
+    resolution_path: Repo inspection.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: Do public headers currently contain C99/C++11 constructs?
+    why_it_matters: Prompt 1 may fail if violations exist.
+    known: Baseline rules are required.
+    unknown: Actual code.
+    resolution_path: Run checker/grep.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: What are exact launcher and game target/executable names?
+    why_it_matters: Prompt 8 needs correct commands.
+    known: User listed likely targets including dominium-launcher and dominium_game.
+    unknown: Actual generated target names.
+    resolution_path: cmake --build --target help.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Is there an existing UI toolkit?
+    why_it_matters: Determines smoke GUI implementation.
+    known: Prompts allow immediate-mode dgfx primitives.
+    unknown: Actual UI layer status.
+    resolution_path: Search repo.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: What is Tier-1 UI text strategy?
+    why_it_matters: Smoke UI may need text.
+    known: Prompt allows optional title text or rectangles.
+    unknown: Existing font/text support.
+    resolution_path: Search repo; stop-and-ask.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: QUESTION-08
+    question: 'Win32 path encoding policy: UTF-8 or UTF-16 internally?'
+    why_it_matters: Filesystem correctness.
+    known: Win32 platform facet must implement paths.
+    unknown: Project policy.
+    resolution_path: Inspect docs; ask if absent.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: QUESTION-09
+    question: 'Minimum process feature: spawn+wait or stdout/stderr capture now?'
+    why_it_matters: Prompt 4 process scope.
+    known: Prompt handles unsupported if not declared.
+    unknown: User preference if API declares capture.
+    resolution_path: Inspect sys header; ask if complex.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: QUESTION-10
+    question: 'Minimum networking facet: TCP only or TCP+UDP?'
+    why_it_matters: Prompt 4 net scope.
+    known: Sockets planned.
+    unknown: Exact Tier-1 required API.
+    resolution_path: Inspect headers/specs; ask.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: QUESTION-11
+    question: Which legacy file formats must remain readable immediately?
+    why_it_matters: Prompt 7 migrations.
+    known: TLV-as-ABI required.
+    unknown: Existing format list.
+    resolution_path: Search repo/docs; ask if complex.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: QUESTION-12
+    question: Does an existing networking join path exist?
+    why_it_matters: Prompt 7 handshake integration.
+    known: Handshake required.
+    unknown: Where to wire it.
+    resolution_path: Search net code; create demo if absent.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-13
+    question: Is full Tier-2 runtime completion required now or is compile-gated coverage acceptable?
+    why_it_matters: User said fully complete; Prompt 6 gates compile correctness.
+    known: Current final pack chooses gated compile correctness.
+    unknown: User acceptance for runtime full Tier-2.
+    resolution_path: Clarify only if user reopens scope.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: QUESTION-14
+    question: Should D3D12 be added in a later prompt phase?
+    why_it_matters: User mentioned future advanced graphics; current dgfx excludes D3D12.
+    known: D3D12 planned in docs per user statement.
+    unknown: Whether/when to implement.
+    resolution_path: Future planning.
+    priority: low
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: QUESTION-15
+    question: Does existing changelog format need preservation?
+    why_it_matters: Prompt 9 generator output format.
+    known: Prompt creates CHANGELOG_DRAFT.
+    unknown: Existing CHANGELOG policy.
+    resolution_path: Inspect repo; ask if needed.
+    priority: low
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Runtime C89 vs C11/C++ standard switching.
+    status: rejected
+    reason: User explicitly rejected; standards are compile-time.
+    final_or_tentative: final
+    reconsider_conditions: Only if user reverses mandatory rule.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-02
+    option: CMake dependency downloads.
+    status: rejected
+    reason: User forbids downloads unless approved.
+    final_or_tentative: final
+    reconsider_conditions: With explicit user approval.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-03
+    option: C++ ABI boundaries.
+    status: rejected
+    reason: User requires C ABI/POD/function tables.
+    final_or_tentative: final
+    reconsider_conditions: Not for cross-module/plugin ABI.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-04
+    option: Monolithic platform API as long-term architecture.
+    status: superseded
+    reason: User requires facade/backend and platform facets.
+    final_or_tentative: final for new architecture
+    reconsider_conditions: Only as legacy shim.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-05
+    option: Single fast path only.
+    status: rejected
+    reason: User explicitly prohibited.
+    final_or_tentative: final
+    reconsider_conditions: Never for correctness-critical paths.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-06
+    option: Silent determinism downgrade.
+    status: rejected
+    reason: User explicitly prohibited.
+    final_or_tentative: final
+    reconsider_conditions: Never.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-07
+    option: Unversioned serialization formats.
+    status: rejected
+    reason: User required TLV/versioning.
+    final_or_tentative: final
+    reconsider_conditions: Never.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-08
+    option: Advanced graphics/audio directly in core API.
+    status: superseded
+    reason: Extension/caps model chosen.
+    final_or_tentative: final for current architecture
+    reconsider_conditions: If future user explicitly changes API philosophy.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: REJECTED-09
+    option: Renderer/audio output feeding simulation.
+    status: rejected
+    reason: Would violate deterministic sim.
+    final_or_tentative: final
+    reconsider_conditions: Never for authoritative lockstep.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: REJECTED-10
+    option: Full Vulkan implementation in current pack.
+    status: deprioritised
+    reason: Prompt 6 only gates/compile-fixes VK1.
+    final_or_tentative: tentative
+    reconsider_conditions: Later advanced renderer phase.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-11
+    option: D3D12 as current pack backend.
+    status: deprioritised
+    reason: User said D3D12 planned but not current dgfx contract.
+    final_or_tentative: tentative
+    reconsider_conditions: Future renderer phase.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-12
+    option: Runtime validation of Linux/macOS backends on Windows Codex.
+    status: deprioritised
+    reason: Not possible in Windows runtime.
+    final_or_tentative: final for current Codex environment
+    reconsider_conditions: Native CI or later platform-specific sessions.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-13
+    option: Initial assistant platform/render prompt pack as active plan.
+    status: superseded
+    reason: Later final 9-prompt pack replaced it.
+    final_or_tentative: final
+    reconsider_conditions: Historical only.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-14
+    option: Post-engine prompts 15-24 as active plan.
+    status: superseded
+    reason: Injected constraints and optimized pack replaced it.
+    final_or_tentative: final
+    reconsider_conditions: Historical only.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-15
+    option: Revised prompts 15-28 as active plan.
+    status: superseded
+    reason: Consolidated into fewer larger prompts 1-9.
+    final_or_tentative: final
+    reconsider_conditions: Re-expand only if Codex needs smaller prompts.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Previous maximum-fidelity Context Transfer Packet
+    type: report
+    purpose: Base handoff for this package
+    status: consumed and repaired
+    origin: Assistant response in this chat
+    carry_forward: 'yes'
+    notes: Contained sections 0-18; used as primary source.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: MASTER CODEX PROMPT PLAN prompts 1-14
+    type: prompt plan
+    purpose: Prior deterministic engine-core refactor
+    status: assumed prerequisite; implementation unverified
+    origin: User pasted
+    carry_forward: 'yes'
+    notes: Covers invariants, packets, scheduler, fields, LOD, pose, TRANS, STRUCT, DECOR, AI, graphs, domains, knowledge,
+      determinism.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: /mnt/data/dominium.zip
+    type: uploaded repo archive
+    purpose: Repo copy provided by user
+    status: uploaded; contents unverified in this chat
+    origin: User upload
+    carry_forward: 'yes'
+    notes: File ID file-5jr5EtLr5Sj6Wz5g5WcbuX.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: Initial questionnaire and user answers
+    type: planning input
+    purpose: Defined platforms/renderers/APIs/done/build context
+    status: used
+    origin: User/assistant exchange
+    carry_forward: 'yes'
+    notes: User gave detailed platform tiers and render tiers.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: Initial assistant platform/render prompt pack 1-14
+    type: prompt plan
+    purpose: Early platforms/renderers/APIs implementation plan
+    status: superseded
+    origin: Assistant
+    carry_forward: historical
+    notes: Replaced by later final pack.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: Post-engine plan prompts 15-24
+    type: prompt plan
+    purpose: First post-master API/platform/render continuation
+    status: superseded
+    origin: Assistant
+    carry_forward: historical
+    notes: Replaced by injected constraints and final pack.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: User injected mandatory constraints
+    type: requirements text
+    purpose: Hard constraints for language/ABI/facades/caps/determinism/TLV/CI
+    status: integrated
+    origin: User
+    carry_forward: 'yes'
+    notes: Dated in pasted text as GPT-5.2 Thinking — Build 2025-12-15.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Revised post-14 prompts 15-28
+    type: prompt plan
+    purpose: Expanded plan with injected constraints
+    status: superseded
+    origin: Assistant
+    carry_forward: historical
+    notes: Consolidated into final 9-prompt pack.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: Final Prompt 1 — Baseline enforcement + ABI/vtable + facades + commits
+    type: Codex prompt
+    purpose: First active implementation prompt
+    status: active
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Includes docs, config headers, abi.h, DSYS/DGFX facades, jobs/SIMD/IO templates.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: Final Prompt 2 — Capability registry + determinism grades + launcher profiles
+    type: Codex prompt
+    purpose: Second active implementation prompt
+    status: active
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Central registry, D0/D1/D2, profiles, backend registration.
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: Final Prompt 3 — CMake switchboard + presets + null backends + build metadata
+    type: Codex prompt
+    purpose: Third active implementation prompt
+    status: active
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Baseline/modern presets, null platform/renderer, build metadata, verify skeleton.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Final Prompt 4 — Tier-1 platform Win32/win32_headless + system smoke
+    type: Codex prompt
+    purpose: Fourth active implementation prompt
+    status: active
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Completes DSYS facets and domino_sys_smoke.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: Final Prompt 5 — Tier-1 renderer soft + DX9 + dgfx_demo
+    type: Codex prompt
+    purpose: Fifth active implementation prompt
+    status: active
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Soft D0 hash test, DX9 present, demo harness.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Final Prompt 6 — Tier-2 platform/render gating + compile correctness
+    type: Codex prompt
+    purpose: Sixth active implementation prompt
+    status: active
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: POSIX/X11/Wayland/Cocoa and DX11/GL2/VK1/Metal gating.
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: Final Prompt 7 — TLV-as-ABI + net handshake + schema IDs + tests
+    type: Codex prompt
+    purpose: Seventh active implementation prompt
+    status: active
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Container/TLV library, migrations, handshake, tests.
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: Final Prompt 8 — Launcher/game GUI smoke + verify script
+    type: Codex prompt
+    purpose: Eighth active implementation prompt
+    status: active
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Product done gates and end-to-end verification.
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: Final Prompt 9 — Changelog pipeline + release notes automation
+    type: Codex prompt
+    purpose: Ninth active implementation prompt
+    status: active
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Commit conventions, changelog generator, release process.
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: README-style bootstrap prompt for new chat
+    type: prompt
+    purpose: New chat continuation instructions
+    status: created in transfer packet
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Contains active plan and constraints.
+    label: FACT
+  - id: ARTIFACT-19
+    name_or_description: Manual verification checklist
+    type: checklist
+    purpose: Before relying on handoff
+    status: created in transfer packet
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Includes repo inspection/build steps.
+    label: FACT
+  - id: ARTIFACT-20
+    name_or_description: AAA future feature roadmap
+    type: brainstorm/architecture notes
+    purpose: Future Project Spec Book material
+    status: not current implementation scope
+    origin: User questions + assistant answers
+    carry_forward: 'yes'
+    notes: Graphics/audio/input/AI/nav/terrain/vehicles/economy/combat/weather/tools/modding.
+    label: FACT
+  - id: ARTIFACT-21
+    name_or_description: dominium_codex_platform_renderer_api_plan__01_full_chat_report.md
+    type: generated report file
+    purpose: Main human-readable report
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-22
+    name_or_description: dominium_codex_platform_renderer_api_plan__02_spec_sheet.yaml
+    type: generated YAML file
+    purpose: Structured data for future spec book
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-23
+    name_or_description: dominium_codex_platform_renderer_api_plan__03_aggregator_packet.md
+    type: generated report file
+    purpose: Compact cross-chat aggregation packet
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-24
+    name_or_description: dominium_codex_platform_renderer_api_plan__04_registers.md
+    type: generated registers file
+    purpose: All normalized tables
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-25
+    name_or_description: dominium_codex_platform_renderer_api_plan__05_reader_brief.md
+    type: generated brief
+    purpose: Short human-readable version
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-26
+    name_or_description: dominium_codex_platform_renderer_api_plan__06_verification_and_audit.md
+    type: generated audit file
+    purpose: Quality-control record
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-27
+    name_or_description: dominium_codex_platform_renderer_api_plan__manifest.md
+    type: generated manifest
+    purpose: Package inventory and counts
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-28
+    name_or_description: dominium_codex_platform_renderer_api_plan__handoff_package.zip
+    type: generated zip
+    purpose: Downloadable package archive
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: ZIP bundle.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Repo-specific claims may be wrong because uploaded zip was not inspected.
+    consequence: Future assistant may implement against wrong file paths/API assumptions.
+    likelihood: medium
+    severity: high
+    mitigation: Verify repo/archive before implementation-specific claims.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-02
+    risk: MASTER prompts 1-14 may not actually be implemented.
+    consequence: Post-14 prompts may fail due missing prerequisites.
+    likelihood: medium
+    severity: high
+    mitigation: Run verification searches/builds before execution.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-03
+    risk: Final pack may not satisfy 'fully complete' for Tier-2 runtime backends.
+    consequence: User may expect runtime X11/Wayland/Cocoa/DX11/GL2/VK/Metal completion rather than compile-gated coverage.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Clarify if user reopens scope; add future runtime prompts.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-04
+    risk: Baseline header checker may flag many existing violations.
+    consequence: Prompt 1 could become larger than expected.
+    likelihood: medium
+    severity: high
+    mitigation: Use stop-and-ask if rewriting/moving/deleting declarations needs policy.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-05
+    risk: Legacy DSYS vs new DSYS surface conflict.
+    consequence: Facade refactor may break callers.
+    likelihood: medium
+    severity: high
+    mitigation: Keep legacy shim or ask policy per Prompt 1.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-06
+    risk: Backend determinism grades may be hard to prove.
+    consequence: Incorrect D0 claims could break lockstep.
+    likelihood: medium
+    severity: high
+    mitigation: Default uncertain optimized/platform-specific backends to D2 until proven.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-07
+    risk: AAA brainstorm could be mistaken as current scope.
+    consequence: Scope creep, implementation overload.
+    likelihood: medium
+    severity: medium
+    mitigation: Label future features as roadmap/spec candidates only.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-08
+    risk: Advanced presentation features could contaminate deterministic sim.
+    consequence: Replay/network desync.
+    likelihood: low-medium
+    severity: high
+    mitigation: Keep presentation non-authoritative; use caps/extensions.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-09
+    risk: Report package may over-compress exact prompt text.
+    consequence: Future assistant may need original prompt wording.
+    likelihood: low-medium
+    severity: medium
+    mitigation: Preserve active prompt IDs and key requirements; refer to chat context for exact text if needed.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-10
+    risk: Generated report may treat assistant suggestions as accepted decisions.
+    consequence: Spec book could overstate commitment.
+    likelihood: low-medium
+    severity: medium
+    mitigation: Labels distinguish FACT/INFERENCE; future aggregator must preserve uncertainty.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-11
+    risk: DX9 availability/toolchain mismatch.
+    consequence: Prompt 5 may fail to compile/link.
+    likelihood: medium
+    severity: medium
+    mitigation: CMake detection and clear errors; system SDK only.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-12
+    risk: Smoke UI text requirement may exceed renderer IR subset.
+    consequence: Launcher/game smoke blocked.
+    likelihood: medium
+    severity: medium
+    mitigation: Use rectangles or ask text strategy.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-13
+    risk: TLV migration scope unknown.
+    consequence: Prompt 7 may miss legacy formats.
+    likelihood: medium
+    severity: high
+    mitigation: Inventory formats before conversion.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-14
+    risk: Verify script may be Windows-only.
+    consequence: Cross-platform CI needs later scripts.
+    likelihood: low
+    severity: medium
+    mitigation: Accept for current Windows Codex; add POSIX scripts later if needed.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-15
+    risk: Stale external software/toolchain facts.
+    consequence: Build assumptions may age.
+    likelihood: medium
+    severity: medium
+    mitigation: Reverify CMake/toolchain/SDK status before future use.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-16
+    risk: Future aggregation may merge superseded plans incorrectly.
+    consequence: Project spec may include obsolete prompt packs.
+    likelihood: medium
+    severity: high
+    mitigation: Use rejected/superseded register.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Inspect repo/archive to confirm MASTER prompts 1-14 implementation.
+    why_verification_needed: Prerequisite state unverified.
+    suggested_source_type: Repo search/build/history.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Run initial CMake configure/build in repo.
+    why_verification_needed: Need actual build baseline.
+    suggested_source_type: cmake -S . -B build\verify_initial -G Ninja; build target help.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: VERIFY-03
+    item: Search DSYS/DGFX callsites.
+    why_verification_needed: API refactor depends on actual usage.
+    suggested_source_type: ripgrep dsys/domino_sys/dgfx.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    label: FACT
+  - id: VERIFY-04
+    item: Confirm exact launcher/game target names.
+    why_verification_needed: Prompt 8 command lines require exact names.
+    suggested_source_type: CMake target help.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: VERIFY-05
+    item: Run baseline header checker once implemented.
+    why_verification_needed: Validate C89/C++98 visibility.
+    suggested_source_type: CMake configure with checker.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: VERIFY-06
+    item: Print capability registry selection audit.
+    why_verification_needed: Ensure backend selection is deterministic/inspectable.
+    suggested_source_type: --print-selection output.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: VERIFY-07
+    item: Run domino_sys_smoke for win32 and win32_headless.
+    why_verification_needed: Tier-1 platform completion.
+    suggested_source_type: Prompt 4 commands.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: VERIFY-08
+    item: Run soft renderer hash test and dgfx_demo.
+    why_verification_needed: Tier-1 renderer completion.
+    suggested_source_type: Prompt 5 commands.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: VERIFY-09
+    item: Run Tier-2 incompatible-selection configure tests.
+    why_verification_needed: Gating correctness.
+    suggested_source_type: Prompt 6 bad platform/backend cmake calls.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: VERIFY-10
+    item: Run TLV/handshake regression tests.
+    why_verification_needed: Serialization/network ABI correctness.
+    suggested_source_type: ctest or direct test exes.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: VERIFY-11
+    item: Run scripts\build_codex_verify.bat after Prompt 8.
+    why_verification_needed: Final done gate.
+    suggested_source_type: Verify script.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: VERIFY-12
+    item: Confirm which AAA roadmap items become formal future requirements.
+    why_verification_needed: Brainstorm vs spec separation.
+    suggested_source_type: User review in future spec aggregation.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: VERIFY-13
+    item: Verify generated report files and ZIP are downloadable/readable.
+    why_verification_needed: Package quality.
+    suggested_source_type: Open files; check ZIP contents.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: VERIFY-14
+    item: Check whether existing CHANGELOG format exists.
+    why_verification_needed: Prompt 9 format compatibility.
+    suggested_source_type: Repo inspection.
+    priority: low-medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  spec_book_notes:
+    likely_sections:
+    - Language Baselines
+    - ABI and Plugin Boundaries
+    - Facade/Backend Architecture
+    - Capability Registry
+    - Determinism Grades
+    - Platform Roadmap
+    - Renderer Roadmap
+    - TLV Serialization
+    - Networking Handshake
+    - Build Matrix and Smoke Tests
+    - Future AAA Roadmap
+    unique_contributions:
+    - Final 9-prompt active Codex pack
+    - Integrated mandatory constraints
+    - Commit discipline and changelog pipeline
+    - Product GUI smoke tests as done gate
+    possible_duplicates_with_other_chats:
+    - Master engine-core prompts 1-14
+    - Determinism policy
+    - TRANS/STRUCT/DECOR details
+    - AAA future roadmap items
+    conflicts_to_watch_for:
+    - Tier-2 runtime-complete vs compile-gated scope
+    - Repo file paths/targets not verified
+    - Superseded plans versus active final pack
+    formal_requirements_candidates:
+    - Use C89 for Domino core forever.
+    - Use C++98 for Dominium layer forever.
+    - C99/C11/C++11+ are optional acceleration layers only.
+    - Reject runtime language-standard switching.
+    - All ABI-relevant boundaries use C ABI, POD structs, explicit function tables.
+    - Every interface struct begins with u32 abi_version and u32 struct_size.
+    - Use facade + backend architecture for all evolvable subsystems.
+    - Use a centralized capability registry for backend selection.
+    - Use determinism grades D0/D1/D2.
+    - Lockstep strict requires D0 only.
+    - Treat serialization/assets/saves/replays as public ABI.
+    - Networking handshake must include build/schema/determinism/content hashes.
+    - Launcher profiles select feature profiles/backends, not language standards.
+    - Final active plan is the 9-prompt post-master pack.
+    - Codex must make detailed commits throughout.
+    - Tier-1 platform completion focuses on Win32 and Win32 headless.
+    - Software renderer is D0 reference backend.
+    - DX9 is Tier-1 runtime-present backend.
+    - Tier-2 platforms/renderers are gated and compile-correct in current pack.
+    - Launcher and game need basic GUI smoke tests.
+    background_context_candidates:
+    - Future AAA feature roadmap
+    - Superseded prompt plans
+    - Initial platform/render questionnaire answers
+    needs_user_confirmation:
+    - Whether master prompts 1-14 have run
+    - Full runtime Tier-2 scope
+    - UI text strategy
+    - Legacy format migration scope
+  final_recommendations:
+    next_action_if_continuing_this_chat: Run or hand off Final Prompt 1 to Codex after verifying repository state.
+    next_action_for_aggregator: Ingest spec_sheet.yaml and aggregator_packet.md, preserving labels and superseded-plan status.
+    user_checks_required:
+    - Confirm active prompt pack remains desired
+    - Confirm master prompt implementation status
+    - Download/store package files

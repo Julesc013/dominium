@@ -1,0 +1,1683 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium XStack Lab Galaxy Handoff
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: THIS CHAT ONLY; includes visible chat context and uploaded transcript.txt as chat artifact.
+    apparent_coverage: partial-to-full for this chat; repo state not independently verified
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes_with_caveats
+    main_limitations:
+    - Repository state not directly verified in this report.
+    - Transcript-reported implementation facts need repo verification.
+    - Potential conflict between older gate.py production XStack and newer tools/xstack/run substrate.
+    - Potential contradiction between run-meta isolation policy and committed docs/audit artifacts.
+  summary:
+    one_sentence: This chat captured the Dominium/XStack architecture, production hardening, normative glossary direction,
+      and a later 13-prompt Lab Galaxy substrate transcript requiring verification.
+    short_brief: Dominium is a deterministic universe simulation/game project with a portable XStack agentic development suite.
+      This chat moved from governance frustration to a mature XStack doctrine and then recorded a user-reported 13-prompt
+      Lab Galaxy substrate run with schemas, packs, registry compile, session boot, observation, lab navigation, astronomy
+      packs, tool UI, ROI/SRZ, packaging, and thematic commits.
+    main_topics:
+    - Dominium / Domino deterministic simulation architecture
+    - XStack portable agentic development suite
+    - Lab Galaxy deterministic substrate
+    - Canonical docs, glossary, and README/documentation front door
+    - Survival and gameplay vertical slice
+    - Future realism/domain pack extensibility
+    main_outputs:
+    - Dominium Constitutional Architecture & Execution Contract v1 / constitution_v1.md
+    - Canonical glossary v1.0.0 / glossary_v1.md
+    - AGENTS.md
+    - docs/contracts/*.md
+    - UAEP-1 / UAEP-1H prefix
+    - tools/xstack/run / run.cmd / run.py
+    - scripts/dev/gate.py
+    - tools/xstack/repox, testx, auditx, controlx, performx, compatx, securex
+    - XStack production hardening reports
+    - .gitignore update for tools/xstack/out/**
+    - schemas/*.schema.json
+    - tools/xstack/compatx/schema_validate/version_registry
+    highest_priority_carry_forward:
+    - Verify actual repo state before trusting transcript.
+    - Preserve XStack removability.
+    - Preserve no-mode-flags and process-only mutation.
+    - Audit old gate.py vs tools/xstack/run.
+    - Audit tracking/ignore policy and docs/audit artifacts.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Current user statements override this report.
+    - Repository files override transcript claims.
+    - Direct user statements override assistant suggestions.
+    - Tentative brainstorms are not decisions.
+    staleness_rules:
+    - External-world facts require current verification.
+    - Repo state and command outputs must be verified in the actual checkout.
+    - Commit/push status is stale unless checked.
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: Responses should start with model/date/time prefix.
+      source_basis: User profile instructions.
+      strength: explicit
+      implication: Use prefix in future replies if not overridden.
+      risk: User may see responses as noncompliant.
+      label: PROJECT-CONTEXT
+    - id: PREFERENCE-02
+      preference: Prioritize epistemic accuracy and long-term correctness.
+      source_basis: User profile.
+      strength: explicit
+      implication: Label uncertainty and verify current facts.
+      risk: Overconfident answers damage trust.
+      label: PROJECT-CONTEXT
+    - id: PREFERENCE-03
+      preference: Do not ask obvious permission to fix mechanical issues.
+      source_basis: Repeated user statements in chat.
+      strength: explicit
+      implication: Provide concrete remediation or execute if tool available.
+      risk: User frustration.
+      label: FACT
+    - id: PREFERENCE-04
+      preference: Avoid arbitrary time/token limits that halt autonomous work.
+      source_basis: User statements during gate optimization.
+      strength: explicit
+      implication: Use structural bounding/caching instead of hard stop limits.
+      risk: Development stalls.
+      label: FACT
+    - id: PREFERENCE-05
+      preference: Keep systems modular, extensible, robust, reliable, future-proof.
+      source_basis: Repeated user phrasing.
+      strength: explicit
+      implication: Evaluate designs through modularity/portability.
+      risk: Short-term hacks accumulate.
+      label: FACT
+    - id: PREFERENCE-06
+      preference: XStack must remain portable/removable.
+      source_basis: Explicit user concern.
+      strength: explicit
+      implication: Audit runtime coupling.
+      risk: Wrong architecture.
+      label: FACT
+    - id: PREFERENCE-07
+      preference: Detailed prompts and reports are acceptable when useful.
+      source_basis: User repeatedly requested mega prompts and maximum-fidelity packets.
+      strength: explicit
+      implication: Do not over-compress critical handoffs.
+      risk: Context loss.
+      label: FACT
+    inferred:
+    - id: PREFERENCE-08
+      preference: After governance is stable, move to actual game/engine/client work.
+      source_basis: User repeatedly wanted survival/building/playing.
+      strength: inferred/explicit
+      implication: Avoid unnecessary governance churn after audit.
+      risk: Meta spiral.
+      label: INFERENCE
+    uncertain_or_not_established:
+    - Exact next feature priority after audit
+    - Whether to push or rebase the reported 10 commits
+    - Whether to run strict/full verification immediately
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Dominium / Domino deterministic simulation architecture
+    label: FACT
+    objective: Preserve and extend the deterministic universe simulation architecture based on Assemblies, Fields, Processes,
+      Agents, and Law.
+    current_state: A constitutional architecture and glossary were designed in this chat, and the later transcript reports
+      canonical docs and schemas were created in the repository. Repo verification is still required.
+    desired_end_state: A stable deterministic engine/game architecture with process-only mutation, replay, fixed-point authoritative
+      logic, named RNG streams, and no hardcoded mode flags.
+    status: active
+    priority: P0
+    background: This chat repeatedly defined the Dominium architecture as a law-governed deterministic simulation/game platform.
+      Domino is the deterministic engine layer; Dominium is the game/product layer.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    - DECISION-04
+    decisions_pending:
+    - QUESTION-05
+    tasks:
+    - TASK-01
+    - TASK-07
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    dependencies:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    timeline: Foundational architecture was discussed before XStack finalization and before the 13-prompt Lab Galaxy run.
+    blockers:
+    - Actual repository state not independently verified in this chat.
+    risks:
+    - RISK-01
+    - RISK-05
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    success_criteria:
+    - No mode flags
+    - Process-only mutation
+    - Deterministic replay
+    - Runtime independent from XStack
+    next_action: Verify current repo docs and schemas against the constitutional architecture and glossary.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-07
+    confidence: 4
+  - id: WORKSTREAM-02
+    name: XStack portable agentic development suite
+    label: FACT
+    objective: Maintain XStack as a portable, removable, deterministic agentic development and governance suite.
+    current_state: Earlier in this chat, XStack was designed and production-hardened with RepoX, TestX, AuditX, ControlX,
+      PerformX, CompatX, SecureX, gate/gate.py concepts, run-meta isolation, snapshot mode, and removability. The 13-prompt
+      transcript later reports a new tools/xstack/run surface and modular subsystems.
+    desired_end_state: A production-grade, portable, removable XStack with FAST/STRICT/FULL profiles, deterministic reports,
+      cache/sharding, and no runtime contamination.
+    status: active
+    priority: P0
+    background: This workstream arose because repeated Codex/agent gate failures wasted time and money. The user demanded
+      autonomous repair and fast verification.
+    decisions_made:
+    - DECISION-05
+    - DECISION-06
+    - DECISION-07
+    - DECISION-08
+    - DECISION-09
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-02
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    - TASK-04
+    constraints:
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    dependencies:
+    - WORKSTREAM-01
+    timeline: Major focus of the chat; progressed from gate frustration to final production hardening and then the later transcript
+      new tools/xstack runner.
+    blockers:
+    - Possible conflict between older gate.py/governance work and later tools/xstack/run substrate.
+    risks:
+    - RISK-02
+    - RISK-03
+    - RISK-04
+    - RISK-06
+    artifacts:
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    success_criteria:
+    - FAST path quick
+    - STRICT/FULL sharded/cached
+    - No tracked writes outside snapshot
+    - Runtime builds without XStack
+    next_action: Audit actual tools/xstack, scripts/dev/gate.py, .gitignore, and removability tests.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-03
+    - VERIFY-04
+    confidence: 4
+  - id: WORKSTREAM-03
+    name: Lab Galaxy deterministic substrate
+    label: FACT
+    objective: Create a reproducible deterministic Lab Galaxy build with pack-driven content, session boot, navigation, tool
+      UI, ROI/SRZ scaffolding, and deterministic packaging.
+    current_state: The uploaded transcript reports that prompts 1–13 were implemented and committed in ten thematic commits,
+      with tools/xstack/run.cmd fast passing.
+    desired_end_state: A verified, reproducible lab build that future feature work can build on without re-explaining substrate
+      details.
+    status: active but verification pending
+    priority: P0
+    background: The 13-prompt run started after this chat’s XStack production hardening and implemented a fresh substrate
+      from canonical docs through packaging.
+    decisions_made:
+    - DECISION-10
+    - DECISION-11
+    - DECISION-12
+    - DECISION-13
+    decisions_pending:
+    - QUESTION-03
+    - QUESTION-04
+    tasks:
+    - TASK-01
+    - TASK-05
+    - TASK-06
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    dependencies:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    timeline: Executed in a new chat after this chat’s XStack production hardening. The transcript is uploaded and cited in
+      the final response.
+    blockers:
+    - The user said they were not sure what was actually done and needs completion/accuracy/consistency verification.
+    risks:
+    - RISK-01
+    - RISK-05
+    - RISK-07
+    - RISK-08
+    artifacts:
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    success_criteria:
+    - tools/xstack/run fast passes
+    - Prompt deliverables exist
+    - Deterministic hashes reproduce
+    - No runtime contamination
+    next_action: Perform a prompt-by-prompt deliverable audit against actual repository files and the transcript.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-05
+    - VERIFY-06
+    - VERIFY-08
+    - VERIFY-09
+    confidence: 4
+  - id: WORKSTREAM-04
+    name: Canonical docs, glossary, and README/documentation front door
+    label: FACT
+    objective: Create usable canonical documentation and an industry-standard README layer without dumping internal constitution
+      into the README.
+    current_state: This chat designed a normative glossary and discussed README/CONTRIBUTING/ARCHITECTURE/XSTACK/SURVIVAL
+      docs. The transcript reports docs/canon and many architecture docs were added.
+    desired_end_state: 'Layered documentation: README as accessible entry; canon/glossary/contracts as authoritative; architecture
+      docs and XStack docs as technical references.'
+    status: active
+    priority: P1
+    background: The user wanted docs useful to laymen and developers and later asked for glossary/dictionary definitions.
+    decisions_made:
+    - DECISION-14
+    - DECISION-15
+    decisions_pending:
+    - QUESTION-06
+    tasks:
+    - TASK-07
+    - TASK-08
+    constraints:
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    dependencies:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    timeline: Discussed before final context transfer; later 13-prompt transcript reports docs and skills created.
+    blockers:
+    - Need to verify whether README/docs are consistent, not duplicated or stale.
+    risks:
+    - RISK-09
+    - RISK-10
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-20
+    - ARTIFACT-21
+    success_criteria:
+    - Terms normative
+    - Deprecated terms flagged
+    - README readable
+    - Docs cross-linked
+    next_action: Audit docs for contradictions, duplicate canon, and unresolved TODOs that should be issue-tracked.
+    verification_needed:
+    - VERIFY-07
+    - VERIFY-10
+    confidence: 4
+  - id: WORKSTREAM-05
+    name: Survival and gameplay vertical slice
+    label: INFERENCE
+    objective: After substrate verification, implement a real playable survival slice using profiles, law, processes, diegetic
+      UI, needs/resources/hazards/crafting/shelter/death persistence.
+    current_state: Heavily discussed and planned, but not implemented as the main result of the 13-prompt Lab Galaxy run.
+      Some substrate required for future survival now exists.
+    desired_end_state: A deterministic Earth-based survival loop with no non-diegetic HUD by default, future extensibility
+      for realism packs, and multiplayer/server authority compatibility.
+    status: future active plan
+    priority: P2 after audit
+    background: The user pivoted from governance back to actual play, survival/hardcore/building/making/playing, and realism
+      questions.
+    decisions_made:
+    - DECISION-16
+    - DECISION-17
+    - DECISION-18
+    decisions_pending:
+    - QUESTION-07
+    - QUESTION-08
+    tasks:
+    - TASK-09
+    - TASK-10
+    constraints:
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    dependencies:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    timeline: Discussed before the 13-prompt transcript; postponed until after substrate/gov audit.
+    blockers:
+    - Need confirmed substrate consistency before building gameplay.
+    risks:
+    - RISK-11
+    - RISK-12
+    artifacts:
+    - ARTIFACT-22
+    - ARTIFACT-23
+    success_criteria:
+    - Needs decay deterministic
+    - Gather/craft/build shelter via processes
+    - Death persists
+    - Survival no HUD/freecam/console by default
+    next_action: After audit, generate a bounded Survival Vertical Slice prompt.
+    verification_needed:
+    - VERIFY-12
+    confidence: 3
+  - id: WORKSTREAM-06
+    name: Future realism/domain pack extensibility
+    label: INFERENCE
+    objective: Prepare architecture for astronomy-realistic skies, climate/weather, biology, evolution, materials/affordances,
+      diseases, injuries, animals, chemistry, magic, and other realism/fantasy domains as optional packs.
+    current_state: Mostly design doctrine; astronomy/Earth packs now reportedly implemented for Lab Galaxy.
+    desired_end_state: Realism is selectable through domain packs, solver tiers, budgets/fidelity policies, observation layers,
+      and refusal contracts, not hardcoded all-at-once simulation.
+    status: future plan
+    priority: P3
+    background: User asked broad/deep questions about realism, lag, modding, trees, animals, diseases, injuries, impossible
+      actions, graceful degradation.
+    decisions_made:
+    - DECISION-19
+    - DECISION-20
+    decisions_pending:
+    - QUESTION-09
+    tasks:
+    - TASK-11
+    constraints:
+    - CONSTRAINT-17
+    dependencies:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    timeline: Discussed before context transfer; not the immediate next task.
+    blockers:
+    - Requires careful scoping after core gameplay substrate.
+    risks:
+    - RISK-13
+    - RISK-14
+    artifacts:
+    - ARTIFACT-24
+    success_criteria:
+    - No refactor needed to add domains
+    - Budget/fidelity graceful degradation
+    - Refusal explains missing processes/packs
+    next_action: Keep as design constraint; do not implement until survival/lab substrate verified.
+    verification_needed:
+    - VERIFY-13
+    confidence: 3
+  decisions:
+  - id: DECISION-01
+    decision: Use Assemblies, Fields, Processes, Agents, and Law as the core ontology.
+    status: accepted
+    label: FACT
+    evidence_or_basis: Repeatedly specified in the conversation and constitutional prompt.
+    rationale: Provides a minimal stable model for simulation, gameplay, extension, and governance.
+    implications: All mechanics must reduce to these primitives.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: Repository implementation must be verified.
+  - id: DECISION-02
+    decision: All mutation must occur through Processes.
+    status: accepted
+    label: FACT
+    evidence_or_basis: User repeatedly wanted process-only mutation; AGENTS/canon prompts enforce it.
+    rationale: Preserves deterministic replay and prevents hidden state changes.
+    implications: UI/tools/camera/survival actions must emit intents/processes, not mutate fields directly.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    uncertainty: Need code audit for violations.
+  - id: DECISION-03
+    decision: TruthModel, PerceivedModel, and RenderModel must remain separated.
+    status: accepted
+    label: FACT
+    evidence_or_basis: Prompt 7 and prior design; renderer must never access TruthModel.
+    rationale: Prevents epistemic leakage and multiplayer/client cheating.
+    implications: UI binds only to PerceivedModel; renderer consumes RenderModel only.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    uncertainty: Need test/build boundary verification.
+  - id: DECISION-04
+    decision: Use named RNG streams, fixed-point authoritative logic, and replay hashes for determinism.
+    status: accepted
+    label: FACT
+    evidence_or_basis: Multiple canon/AGENTS requirements.
+    rationale: Ensures reproducible simulation across hardware/thread counts.
+    implications: No nondeterministic wall-clock inputs in canonical state.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: Thread-count invariance is reported partly stubbed.
+  - id: DECISION-05
+    decision: XStack must be portable and removable from runtime.
+    status: accepted
+    label: FACT
+    evidence_or_basis: User explicitly stated XStack should be a portable agentic development suite and removable with no
+      impact on code/data runtime.
+    rationale: Avoids development tooling contaminating engine/game.
+    implications: Runtime must not import tools/xstack.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: Need actual removability test pass.
+  - id: DECISION-06
+    decision: Mechanical blockers must be remediated instead of halting and asking the user.
+    status: accepted
+    label: FACT
+    evidence_or_basis: User repeatedly expressed frustration with Codex stopping at gates.
+    rationale: Maintains autonomous queue development.
+    implications: Prompts/gate/ControlX should self-heal mechanical failures.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: Agent behavior depends on future prompts/tools.
+  - id: DECISION-07
+    decision: Use FAST/STRICT/FULL profiles with caching/sharding rather than full verification on every prompt.
+    status: accepted
+    label: FACT
+    evidence_or_basis: Extensive gate optimization work and later transcript using tools/xstack/run profiles.
+    rationale: Prevents governance throughput collapse.
+    implications: Local iteration should use FAST; strict/full only as needed.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: Need reconcile old gate.py with new tools/xstack/run.
+  - id: DECISION-08
+    decision: Run-meta should not dirty tracked files; snapshot mode is the intended tracked-report writer.
+    status: accepted but potentially contradicted
+    label: FACT
+    evidence_or_basis: Final XStack polish established no tracked writes outside snapshot mode; transcript later committed
+      docs/audit artifacts.
+    rationale: Keep repo clean after verification.
+    implications: Need audit docs/audit tracking policy.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: Potential contradiction with later audit snapshot commit.
+  - id: DECISION-09
+    decision: Prefer tools/xstack/run as stable XStack surface in the 13-prompt substrate.
+    status: accepted in transcript
+    label: FACT
+    evidence_or_basis: Prompt 5/13 explicitly made tools/xstack/run the stable orchestrator and reported pass.
+    rationale: Consolidates XStack commands.
+    implications: Future prompts may use tools/xstack/run fast/strict/full.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    uncertainty: Need verify interaction with scripts/dev/gate.py.
+  - id: DECISION-10
+    decision: Use data-only packs and typed contributions.
+    status: accepted
+    label: FACT
+    evidence_or_basis: Prompts 3, 4, 9, 10, 11 use packs and typed contributions.
+    rationale: Allows modular content without runtime hardcoding.
+    implications: No executable code inside packs.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-06
+    uncertainty: Need verify pack manifests and loader enforce it.
+  - id: DECISION-11
+    decision: Compile pack contributions into deterministic registries and lockfiles before runtime.
+    status: accepted
+    label: FACT
+    evidence_or_basis: Prompts 4 and 13; registry_compile and lockfile_build reported.
+    rationale: Prevents runtime merging and improves reproducibility.
+    implications: Session boot/launcher must enforce lockfile.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: Need validate lockfile commands.
+  - id: DECISION-12
+    decision: Lab Galaxy build uses headless/deterministic verification, not necessarily full interactive GUI.
+    status: accepted by implementation
+    label: FACT
+    evidence_or_basis: Prompt 10 notes actual interactive GUI session not run; verification used deterministic headless UI
+      tests.
+    rationale: Keeps milestone verifiable and low-risk.
+    implications: Do not overclaim interactive gameplay yet.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: Actual client interactivity remains to be built.
+  - id: DECISION-13
+    decision: SRZ v1 remains single-process/single-shard ready, no networking yet.
+    status: accepted
+    label: FACT
+    evidence_or_basis: Prompt 12 constraints and reported TODOs.
+    rationale: Prepare sharding without nondeterministic networking complexity.
+    implications: Distributed SRZ is future work.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: Need verify SRZ tests.
+  - id: DECISION-14
+    decision: README should be an accessible front door; Constitution/glossary remain deeper docs.
+    status: accepted conceptually
+    label: FACT
+    evidence_or_basis: User asked about README and accepted direction.
+    rationale: Avoid overwhelming lay users while preserving technical depth.
+    implications: README links to architecture/canon docs.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: Need verify README generated or updated.
+  - id: DECISION-15
+    decision: Glossary should be normative rather than merely descriptive.
+    status: accepted
+    label: FACT
+    evidence_or_basis: User explicitly said glossary/dictionary should be normative.
+    rationale: Prevents conceptual drift.
+    implications: Deprecated/reserved terms can be enforced.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: Need verify glossary quality.
+  - id: DECISION-16
+    decision: Survival default should be diegetic-only with no non-diegetic HUD/freecam/console.
+    status: accepted conceptually
+    label: FACT
+    evidence_or_basis: User explicitly wanted survival-style gameplay with no non-diegetic epistemic UI/HUD.
+    rationale: Supports immersive survival and epistemic integrity.
+    implications: HUD/debug/freecam must be law/lens gated.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: Not implemented as survival yet.
+  - id: DECISION-17
+    decision: Hardcore, Creative, Observer, Lab are law/profile deltas rather than mechanics forks.
+    status: accepted
+    label: FACT
+    evidence_or_basis: Repeated design and mode refactor discussions.
+    rationale: Avoids hardcoded branching.
+    implications: Modes are labels only; code uses profiles.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: Need future code enforcement.
+  - id: DECISION-18
+    decision: 'Survival vertical slice should be bounded: needs, hazards, resources, crafting, shelter, death persistence.'
+    status: planned
+    label: INFERENCE
+    evidence_or_basis: Assistant/user planning, not yet executed.
+    rationale: Avoid meta spiral and deliver play.
+    implications: Likely next feature after audit.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: User may choose different next work.
+  - id: DECISION-19
+    decision: Realism extensions should be domain/model packs + solver tiers + observation layers.
+    status: accepted conceptually
+    label: FACT
+    evidence_or_basis: User asked broad realism questions; assistant proposed and user continued with architecture.
+    rationale: Avoid impossible global micro-simulation.
+    implications: Astronomy/weather/biology/magic can be optional packs.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: Not all domains implemented.
+  - id: DECISION-20
+    decision: Graceful degradation must change fidelity/presentation, not epistemics or determinism.
+    status: accepted conceptually
+    label: FACT
+    evidence_or_basis: User explicitly asked degradation without degrading epistemics/fidelity/information/determinism; design
+      responded with budget/fidelity policies.
+    rationale: Avoid lag and truth leakage.
+    implications: Refuse or degrade solver tier deterministically.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: Implementation limited to Prompt 11 scaffolding.
+  tasks:
+  - id: TASK-01
+    task: Verify current repository state after the 13-prompt run.
+    priority: P0
+    urgency: immediate
+    owner: new assistant / user with repo access
+    dependencies: []
+    inputs_needed:
+    - Repository checkout
+    expected_output: 'Factual status report: clean/dirty, commits, files, verification results.'
+    next_step: Run git status/log and tools/xstack/run fast.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 5
+  - id: TASK-02
+    task: Audit old gate.py versus new tools/xstack/run to avoid divergence.
+    priority: P0
+    urgency: high
+    owner: new assistant/Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - scripts/dev/gate.py
+    - tools/xstack/run
+    - docs/testing/xstack_profiles.md
+    expected_output: Entrypoint map and recommended canonical command path.
+    next_step: Inspect files and docs.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-03
+    task: Verify XStack removability.
+    priority: P0
+    urgency: high
+    owner: new assistant/Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Removability test if present
+    expected_output: Pass/fail proof that runtime does not depend on tools/xstack.
+    next_step: Run reported removability test or equivalent.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 4
+  - id: TASK-04
+    task: Audit tracking/ignore policy for generated outputs and docs/audit artifacts.
+    priority: P1
+    urgency: high
+    owner: new assistant/Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - .gitignore
+    - git ls-files docs/audit
+    - artifact contract registry
+    expected_output: List of tracked/ignored artifacts and policy discrepancies.
+    next_step: Run git ls-files and inspect .gitignore.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 4
+  - id: TASK-05
+    task: Perform prompt-by-prompt completion audit for prompts 1–13.
+    priority: P0
+    urgency: immediate
+    owner: new assistant/Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - transcript.txt
+    - repo tree
+    expected_output: 'Deliverable matrix: present/missing/partial/contradictory.'
+    next_step: Build checklist from transcript and compare to files.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 5
+  - id: TASK-06
+    task: Run or verify Lab Galaxy deterministic build pipeline.
+    priority: P1
+    urgency: medium-high
+    owner: new assistant/Codex
+    dependencies:
+    - TASK-01
+    - TASK-05
+    inputs_needed:
+    - setup/build, launcher/launch, bundle.base.lab
+    expected_output: Reproduced dist hashes/composite hash or discrepancy report.
+    next_step: Run packaging/launcher commands if feasible.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 4
+  - id: TASK-07
+    task: Audit canonical docs/glossary/AGENTS.md consistency.
+    priority: P1
+    urgency: medium
+    owner: new assistant
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - docs/canon
+    - AGENTS.md
+    - docs/contracts
+    expected_output: Doc consistency report and list of unresolved TODOs.
+    next_step: Inspect docs and run glossary/canon checks.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 4
+  - id: TASK-08
+    task: Produce or verify industry-standard README/docs entry layer.
+    priority: P2
+    urgency: medium
+    owner: future assistant/Codex
+    dependencies:
+    - TASK-05
+    - TASK-07
+    inputs_needed:
+    - Actual repo docs/code
+    expected_output: README/CONTRIBUTING/ARCHITECTURE/XSTACK docs if missing or refined.
+    next_step: Audit README against actual code.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-09
+    task: Plan first Survival Vertical Slice prompt after audit.
+    priority: P2
+    urgency: after audit
+    owner: user + assistant
+    dependencies:
+    - TASK-05
+    inputs_needed:
+    - Verified substrate state
+    expected_output: Bounded implementation prompt for needs/hazards/resources/crafting/shelter/death.
+    next_step: Confirm user wants survival next.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-10
+    task: Implement survival diegetic lens enforcement when survival work begins.
+    priority: P2
+    urgency: after survival starts
+    owner: Codex/future assistant
+    dependencies:
+    - TASK-09
+    inputs_needed:
+    - Lens/law profile registries
+    expected_output: Tests proving no HUD/freecam/console in survival default.
+    next_step: Include in survival prompt.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: 4
+  - id: TASK-11
+    task: Prepare future realism domain pack strategy.
+    priority: P3
+    urgency: low
+    owner: future assistant
+    dependencies:
+    - TASK-05
+    - TASK-09
+    inputs_needed:
+    - Domain registry, solver tiers, budget/fidelity policies
+    expected_output: Roadmap for optional realism packs.
+    next_step: Do not implement until core gameplay direction clear.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-12
+    task: Decide whether to amend/rebase poor first commit message.
+    priority: P3
+    urgency: before push if not pushed
+    owner: user
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Remote push status
+    expected_output: Clean or accepted commit history.
+    next_step: If not pushed, consider interactive rebase/amend.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 4
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: No hardcoded mode flags; use profiles/law/parameters.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User/canon
+    implication: Search and reject survival_mode/creative_mode/hardcore_mode/debug_mode/godmode/sandbox identifiers.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-02
+    constraint: All simulation mutation through Processes only.
+    type: determinism
+    hard_or_soft: hard
+    source_or_basis: User/canon
+    implication: UI/session tools must emit intents/processes.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-03
+    constraint: TruthModel/PerceivedModel/RenderModel separation.
+    type: epistemic
+    hard_or_soft: hard
+    source_or_basis: User/canon/Prompt 7
+    implication: Renderer/UI cannot access TruthModel directly.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-04
+    constraint: Deterministic replay and hash equivalence.
+    type: determinism
+    hard_or_soft: hard
+    source_or_basis: User/canon
+    implication: No nondeterministic clocks/timestamps in canonical outputs.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-05
+    constraint: XStack must be portable/removable.
+    type: tool/runtime boundary
+    hard_or_soft: hard
+    source_or_basis: User explicit concern
+    implication: Runtime cannot import tools/xstack.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-06
+    constraint: Mechanical blockers should be remediated automatically.
+    type: agentic workflow
+    hard_or_soft: hard preference
+    source_or_basis: User statements during gate/UAEP discussion
+    implication: Do not stop and ask whether to fix obvious gate/tool issues.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-07
+    constraint: Verification must be fast, incremental, cached, sharded.
+    type: performance
+    hard_or_soft: hard practical
+    source_or_basis: Gate performance work
+    implication: Avoid monolithic local testx_all/full scans.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-08
+    constraint: Run-meta must not dirty tracked files except explicit snapshot/canonical reports.
+    type: artifact hygiene
+    hard_or_soft: hard unless superseded
+    source_or_basis: XStack final polish
+    implication: Audit docs/audit tracking.
+    violation_risk: medium-high
+    label: FACT
+    confidence: 4
+  - id: CONSTRAINT-09
+    constraint: Do not add governance without concrete failure class.
+    type: process
+    hard_or_soft: soft/hard preference
+    source_or_basis: User desire to stop governance spiral
+    implication: Prefer feature work after audit.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-10
+    constraint: Packs are data-only.
+    type: pack system
+    hard_or_soft: hard
+    source_or_basis: Prompts 3 and 10
+    implication: No executable code inside packs.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-11
+    constraint: Runtime uses compiled registries and lockfiles, not raw pack merging.
+    type: integration
+    hard_or_soft: hard
+    source_or_basis: Prompts 4, 6, and 13
+    implication: Session boot/launcher enforces lockfile.
+    violation_risk: medium-high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-12
+    constraint: Glossary is normative.
+    type: documentation/governance
+    hard_or_soft: hard
+    source_or_basis: User explicit instruction
+    implication: Definitions constrain code/docs; deprecated terms enforced.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-13
+    constraint: README should be accessible; deep doctrine belongs in docs/canon or architecture docs.
+    type: documentation
+    hard_or_soft: soft
+    source_or_basis: README discussion
+    implication: Do not dump Constitution into README.
+    violation_risk: low-medium
+    label: FACT
+    confidence: 4
+  - id: CONSTRAINT-14
+    constraint: Survival default has no non-diegetic HUD/freecam/console.
+    type: UX/epistemic
+    hard_or_soft: hard for survival
+    source_or_basis: User explicit preference
+    implication: Survival UI must be diegetic lens/instrument driven.
+    violation_risk: high when survival begins
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-15
+    constraint: Hardcore is law/parameter delta, not separate mechanics fork.
+    type: game architecture
+    hard_or_soft: hard
+    source_or_basis: Mode refactor decisions
+    implication: No hardcore branch.
+    violation_risk: medium
+    label: FACT
+    confidence: 4
+  - id: CONSTRAINT-16
+    constraint: No survival/crafting/economy in Lab Galaxy substrate prompts.
+    type: scope
+    hard_or_soft: hard for prompts 7-13
+    source_or_basis: Transcript prompts
+    implication: Do not misrepresent Lab Galaxy as survival gameplay.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-17
+    constraint: Graceful degradation must not degrade epistemics or determinism.
+    type: performance/epistemic
+    hard_or_soft: hard
+    source_or_basis: User realism/performance discussion
+    implication: Use budget/fidelity policies and refusal, not nondeterministic degradation.
+    violation_risk: medium-high
+    label: FACT
+    confidence: 4
+  open_questions:
+  - id: QUESTION-01
+    question: 'Which verification entrypoint is canonical now: scripts/dev/gate.py or tools/xstack/run?'
+    why_it_matters: Avoid two diverging governance systems.
+    known: Earlier chat hardened gate.py; later transcript implemented tools/xstack/run.
+    unknown: Actual repo integration and intended future command.
+    resolution_path: Inspect docs/testing/xstack_profiles.md, scripts/dev/gate.py, tools/xstack/run, AGENTS.md.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: Are docs/audit run-meta artifacts intentionally tracked or accidentally committed?
+    why_it_matters: Conflicts with run-meta isolation policy.
+    known: Transcript reports a commit refreshing audit snapshots and proof manifests.
+    unknown: Whether these are canonical snapshots or run-meta drift.
+    resolution_path: Inspect derived artifact contract, docs/audit files, .gitignore, and git ls-files.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: Did all 13 prompts actually implement their deliverables in the repo?
+    why_it_matters: User explicitly asked to ensure completion and consistency.
+    known: Transcript reports success.
+    unknown: Actual file-level completeness and correctness.
+    resolution_path: Prompt-by-prompt repo audit.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: Is the Lab Galaxy milestone truly complete or only headless/tooling complete?
+    why_it_matters: Affects whether to proceed to gameplay or finish UX.
+    known: Prompt 13 marks milestone complete; prompt 10 notes interactive GUI not manually run.
+    unknown: User expectations for complete.
+    resolution_path: Run dist/launcher and inspect milestone doc.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: Does runtime code fully preserve the process-only mutation and truth/render boundary?
+    why_it_matters: Core architecture depends on it.
+    known: Tests reportedly added.
+    unknown: Actual code path coverage.
+    resolution_path: Run/inspect boundary tests and static scans.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Are README and high-level docs polished and consistent with actual implementation?
+    why_it_matters: Project needs human-readable front door.
+    known: Discussed and prompts may have updated docs.
+    unknown: Actual README quality.
+    resolution_path: Audit README/CONTRIBUTING/docs.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: Should next feature work be survival vertical slice or Lab Galaxy refinement?
+    why_it_matters: Determines next prompt direction.
+    known: Survival was strongly discussed; Lab Galaxy substrate just ran.
+    unknown: User current preference after audit.
+    resolution_path: Ask after audit, or present options.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: Should survival be observer-first or embodied first?
+    why_it_matters: Changes implementation shape.
+    known: Observer-first was recommended earlier; user wants actual playing/building.
+    unknown: Final user choice.
+    resolution_path: Confirm after substrate audit.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: When should advanced realism domains be implemented?
+    why_it_matters: Avoid scope explosion.
+    known: Architecture should support them as packs.
+    unknown: Priority after survival/lab.
+    resolution_path: Keep as roadmap; implement only after bounded milestone.
+    priority: P3
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: QUESTION-10
+    question: Are the 10 thematic commits already pushed?
+    why_it_matters: Determines whether history can be cleaned or must be preserved.
+    known: Transcript says branch ahead by 10 commits and clean.
+    unknown: Remote state.
+    resolution_path: git status --branch; git log origin/main..HEAD.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Hardcoded mode flags
+    status: rejected
+    reason: Causes branching, drift, and violates profile doctrine.
+    final_or_tentative: final
+    reconsider_conditions: None known.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-02
+    option: Full gate/check suite on every prompt
+    status: rejected
+    reason: Destroyed throughput and wasted agentic development time.
+    final_or_tentative: final
+    reconsider_conditions: Only release/CI/full-all contexts.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-03
+    option: Runtime depends on XStack
+    status: rejected
+    reason: XStack must be portable/removable.
+    final_or_tentative: final
+    reconsider_conditions: None known.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-04
+    option: Dump constitutional contract into README
+    status: rejected
+    reason: Too overwhelming; README should be accessible front door.
+    final_or_tentative: final
+    reconsider_conditions: Never as the main README; deep docs can link.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-05
+    option: Live-switch law profiles mid-session for early survival
+    status: deprioritised
+    reason: Complicates determinism; session restart boundary preferred.
+    final_or_tentative: tentative
+    reconsider_conditions: After transition contract matures.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: REJECTED-06
+    option: Global full micro-simulation for realism
+    status: rejected
+    reason: Computationally infeasible; use macro capsules and interest regions.
+    final_or_tentative: final
+    reconsider_conditions: Never as global default; micro-sim in activated contexts only.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: REJECTED-07
+    option: Rewrite gate/XStack in Rust or C++ before profiling
+    status: rejected/deprioritised
+    reason: Bottleneck was algorithmic scoping/caching, not interpreter speed.
+    final_or_tentative: tentative
+    reconsider_conditions: If true CPU-bound hotspot remains after incremental architecture.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-08
+    option: Manual prompt rewriting of all old prompts
+    status: rejected
+    reason: Too much work; use UAEP/reconciliation/ControlX-like sanitization.
+    final_or_tentative: final
+    reconsider_conditions: Only for specific high-risk prompt.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Dominium Constitutional Architecture & Execution Contract v1 / constitution_v1.md
+    type: document
+    purpose: Canonical architecture doctrine.
+    status: reported created in transcript; must verify
+    origin: This chat and Prompt 1/13
+    carry_forward: 'yes'
+    notes: May overlap with older ARCH0_CONSTITUTION docs.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Canonical glossary v1.0.0 / glossary_v1.md
+    type: document
+    purpose: Normative definitions and deprecated/reserved terms.
+    status: reported created in transcript; must verify
+    origin: This chat and Prompt 1/13
+    carry_forward: 'yes'
+    notes: Should be bound to RepoX eventually.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: AGENTS.md
+    type: control file
+    purpose: Binding rules for future agents.
+    status: reported created
+    origin: Prompt 1/13
+    carry_forward: 'yes'
+    notes: High priority to inspect.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: docs/contracts/*.md
+    type: contract docs
+    purpose: SessionSpec, AuthorityContext, LawProfile, Lens, Refusal, versioning etc.
+    status: reported created/updated
+    origin: Prompts 1,2,6,7,8,10,12,13
+    carry_forward: 'yes'
+    notes: Need consistency audit.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: UAEP-1 / UAEP-1H prefix
+    type: prompt policy
+    purpose: Autonomous execution prefix for bad prompts.
+    status: designed in chat
+    origin: This chat
+    carry_forward: 'yes'
+    notes: Doctrine, not necessarily repo file.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: tools/xstack/run / run.cmd / run.py
+    type: tool command
+    purpose: Stable FAST/STRICT/FULL XStack entrypoint in 13-prompt substrate.
+    status: reported implemented
+    origin: Prompt 5/13
+    carry_forward: 'yes'
+    notes: Need verify against old gate.py.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: scripts/dev/gate.py
+    type: tool command
+    purpose: Earlier optimized gate system.
+    status: exists historically; current relation unknown
+    origin: Earlier in this chat
+    carry_forward: yes but audit
+    notes: Possible divergence.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: tools/xstack/repox, testx, auditx, controlx, performx, compatx, securex
+    type: tooling
+    purpose: Governance/verification suite modules.
+    status: reported implemented/expanded
+    origin: Earlier hardening + Prompt 5/13
+    carry_forward: 'yes'
+    notes: Need check modularity/removability.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: XStack production hardening reports
+    type: reports
+    purpose: Evidence of gate performance/removability/cache/determinism.
+    status: reported earlier
+    origin: Previous part of chat
+    carry_forward: maybe
+    notes: May be superseded by new tools/xstack substrate.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: .gitignore update for tools/xstack/out/**
+    type: repo policy
+    purpose: Ignore generated XStack run outputs.
+    status: reported committed
+    origin: Final commit batching
+    carry_forward: 'yes'
+    notes: Commit message first attempt odd; verify file.
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: schemas/*.schema.json
+    type: schemas
+    purpose: Canonical JSON schemas v1.0.0.
+    status: reported added
+    origin: Prompts 2,6,9,10,11,12
+    carry_forward: 'yes'
+    notes: Must validate.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: tools/xstack/compatx/schema_validate/version_registry
+    type: tooling
+    purpose: Deterministic schema validation and migration stubs.
+    status: reported implemented
+    origin: Prompt 2
+    carry_forward: 'yes'
+    notes: Need verify CLI.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: packs/* and bundles/bundle.base.lab
+    type: content/data
+    purpose: Pack-driven Lab Galaxy content and bundle profile.
+    status: reported committed
+    origin: Prompts 3,6,8,9,10,11
+    carry_forward: 'yes'
+    notes: Check pack schema validity.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: tools/xstack/registry_compile and lockfile tools
+    type: tooling
+    purpose: Deterministic registry compilation and bundle lockfile.
+    status: reported implemented
+    origin: Prompt 4
+    carry_forward: 'yes'
+    notes: Key for reproducibility.
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: tools/xstack/sessionx and session_create/session_boot/session_script_run
+    type: tool/runtime harness
+    purpose: Headless deterministic session lifecycle and script runner.
+    status: reported implemented
+    origin: Prompts 6,8,12
+    carry_forward: 'yes'
+    notes: Clarify tool harness vs product runtime.
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: engine/include/domino/truth_model_v1.h, client/observability, client/presentation
+    type: runtime boundary stubs
+    purpose: Truth/Perceived/Render separation proof.
+    status: reported implemented
+    origin: Prompt 7/10
+    carry_forward: 'yes'
+    notes: Need build verification.
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: 'Astronomy packs: astronomy.milky_way, astronomy.sol, planet.earth'
+    type: content packs
+    purpose: Milky Way/Sol/Earth navigation data and site registry.
+    status: reported implemented
+    origin: Prompt 9
+    carry_forward: 'yes'
+    notes: Data accuracy is minimal/coarse, not scientific-grade.
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: 'Tool UI packs: navigation, inspector, time_control, log_viewer'
+    type: tool packs
+    purpose: Descriptor-driven lab UI windows.
+    status: reported implemented
+    origin: Prompt 10
+    carry_forward: 'yes'
+    notes: Headless UI tests only; not manually interactive.
+    label: FACT
+  - id: ARTIFACT-19
+    name_or_description: tools/setup/build and tools/launcher/launch
+    type: tooling
+    purpose: Deterministic dist build and launcher lockfile enforcement.
+    status: reported implemented
+    origin: Prompt 13
+    carry_forward: 'yes'
+    notes: Important to verify.
+    label: FACT
+  - id: ARTIFACT-20
+    name_or_description: docs/architecture/*.md
+    type: architecture docs
+    purpose: Truth model, observation, pack system, registry compile, time, SRZ, packaging, etc.
+    status: reported created/updated
+    origin: Multiple prompts
+    carry_forward: 'yes'
+    notes: May contain placeholders/TODOs.
+    label: FACT
+  - id: ARTIFACT-21
+    name_or_description: tools/xstack/skills/*.md
+    type: skill templates
+    purpose: Agentic task templates for repo audit/schema/pack/client UI/TestX.
+    status: reported created/updated
+    origin: Prompt 1 and later
+    carry_forward: 'yes'
+    notes: Useful but may need alignment to final commands.
+    label: FACT
+  - id: ARTIFACT-22
+    name_or_description: Survival Vertical Slice prompt plan
+    type: future prompt/plan
+    purpose: Future survival implementation plan.
+    status: planned, not executed
+    origin: This chat
+    carry_forward: 'yes'
+    notes: Only after audit.
+    label: INFERENCE
+  - id: ARTIFACT-23
+    name_or_description: Diegetic survival lens/profile doctrine
+    type: design decision
+    purpose: Survival no non-diegetic UI/HUD by default.
+    status: accepted conceptually
+    origin: This chat
+    carry_forward: 'yes'
+    notes: Must be enforced when survival implemented.
+    label: FACT
+  - id: ARTIFACT-24
+    name_or_description: Future realism/domain pack doctrine
+    type: design rationale
+    purpose: Support realism/magic/weather/biology/etc via packs/solvers/budgets.
+    status: planned, not executed except astronomy scaffold
+    origin: This chat
+    carry_forward: 'yes'
+    notes: Avoid scope creep.
+    label: FACT
+  - id: ARTIFACT-25
+    name_or_description: transcript.txt
+    type: uploaded file
+    purpose: Full transcript of new 13-prompt run and commit batching.
+    status: available in this chat file context
+    origin: User upload
+    carry_forward: 'yes'
+    notes: Primary evidence for 13-prompt run.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Transcript overclaims implementation status.
+    consequence: Future work builds on missing/partial substrate.
+    likelihood: medium
+    severity: high
+    mitigation: Verify repo files and run tests before proceeding.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-02
+    risk: Old gate.py and new tools/xstack/run diverge.
+    consequence: Different agents use different verification paths.
+    likelihood: medium
+    severity: high
+    mitigation: Entrypoint audit and docs update.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-03
+    risk: Run-meta artifacts tracked in docs/audit.
+    consequence: Dirty repo, false changes, cache/policy confusion.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Tracking/ignore audit; mark snapshot vs run-meta.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-04
+    risk: XStack contaminates runtime imports/builds.
+    consequence: Portable suite no longer removable.
+    likelihood: medium
+    severity: high
+    mitigation: Run removability test and static import scan.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-05
+    risk: Mode flags or direct mutation creep in.
+    consequence: Breaks core architecture and future modularity.
+    likelihood: medium
+    severity: high
+    mitigation: RepoX/AuditX scan; enforce glossary/deprecated terms.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-06
+    risk: Governance creep continues despite production hardening.
+    consequence: User loses productivity again.
+    likelihood: medium
+    severity: medium
+    mitigation: Freeze governance unless concrete failure appears.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-07
+    risk: Lab Galaxy is headless only but misrepresented as interactive gameplay.
+    consequence: Wrong expectations for next stage.
+    likelihood: medium
+    severity: medium
+    mitigation: Document that UI host is headless/minimal and interactive GUI not manually verified.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-08
+    risk: New packages/schemas docs inconsistent after rapid commits.
+    consequence: Future prompts encounter contradictions.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Prompt-by-prompt completion/consistency audit.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-09
+    risk: Glossary over-freezes terms prematurely.
+    consequence: Bad abstractions become constraints.
+    likelihood: low-medium
+    severity: medium
+    mitigation: Normative glossary with versioning and change workflow.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-10
+    risk: README/docs become too internal or overlong.
+    consequence: Less useful for laymen/developers.
+    likelihood: medium
+    severity: low-medium
+    mitigation: 'Layer docs: README summary, architecture details, canon deep reference.'
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-11
+    risk: Survival implementation becomes recipe/hardcoded-mode driven.
+    consequence: Breaks modular realism and profile doctrine.
+    likelihood: medium
+    severity: high
+    mitigation: Use LawProfile/ExperienceProfile/ParameterBundle plus affordance/process graph.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-12
+    risk: Survival adds non-diegetic HUD by convenience.
+    consequence: Violates user desired survival epistemics.
+    likelihood: medium
+    severity: high
+    mitigation: Strict survival diegetic lens tests.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-13
+    risk: Future realism requests trigger impossible global micro-simulation.
+    consequence: Lag and architectural collapse.
+    likelihood: medium
+    severity: high
+    mitigation: Domain packs, solver tiers, macro capsules, interest regions.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-14
+    risk: Modded realism bypasses law/determinism/security.
+    consequence: Inconsistent or unsafe simulation.
+    likelihood: medium
+    severity: high
+    mitigation: Pack schemas, registry compile, SecureX/lockfile enforcement.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  verification_queue:
+  - id: VERIFY-01
+    item: Repository git state and commit history.
+    why_verification_needed: Transcript reports branch clean/ahead by 10 commits, but not independently verified.
+    suggested_source_type: git status/log
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: XStack canonical entrypoint(s).
+    why_verification_needed: Older gate.py and newer tools/xstack/run may coexist.
+    suggested_source_type: Inspect docs/scripts and run commands.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Run-meta / docs/audit tracking policy.
+    why_verification_needed: Potential contradiction between run-meta isolation and committed audit artifacts.
+    suggested_source_type: .gitignore, git ls-files, derived artifact contract.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Runtime can build/run without tools/xstack.
+    why_verification_needed: XStack removability is a hard user requirement.
+    suggested_source_type: Run removability test or temp copy build without tools/xstack.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Prompt 1–13 deliverable checklist against repo files.
+    why_verification_needed: User said they are not sure what was actually done.
+    suggested_source_type: File inventory and test execution.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: VERIFY-06
+    item: tools/xstack/run fast passes from clean checkout.
+    why_verification_needed: Reported pass; must verify current state.
+    suggested_source_type: Command execution.
+    priority: P0
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Canon/glossary/AGENTS consistency.
+    why_verification_needed: Multiple docs and old/new canon sources may overlap.
+    suggested_source_type: Doc scan and RepoX/AuditX.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Deterministic dist build and launcher composite hash.
+    why_verification_needed: Prompt 13 reports reproducibility; must verify if needed.
+    suggested_source_type: tools/setup/build and tools/launcher/launch.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Reported hashes match actual outputs.
+    why_verification_needed: Hashes are key milestone evidence.
+    suggested_source_type: Run compile/build and compare outputs.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: README/front-door docs quality.
+    why_verification_needed: User wanted industry-standard docs; may not yet exist or be final.
+    suggested_source_type: Manual doc review.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: Deprecated terms scan.
+    why_verification_needed: No mode flags is critical.
+    suggested_source_type: RepoX/rg scan.
+    priority: P1
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-05
+    label: FACT
+  - id: VERIFY-12
+    item: Survival scope not accidentally implemented or misrepresented.
+    why_verification_needed: 13 prompts intentionally avoided survival/crafting/economy.
+    suggested_source_type: File/content scan.
+    priority: P2
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: VERIFY-13
+    item: Future realism remains pack/extensibility doctrine, not hardcoded code.
+    why_verification_needed: Prevent premature domain implementation.
+    suggested_source_type: Architecture/pack review.
+    priority: P3
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  spec_book_notes:
+    likely_sections:
+    - Dominium constitutional architecture
+    - XStack portable governance suite
+    - Lab Galaxy deterministic substrate
+    - Pack/registry/lockfile architecture
+    - Session/SRZ/determinism
+    - Future survival vertical slice
+    - Normative glossary
+    unique_contributions:
+    - Agentic autonomy doctrine and user frustration rationale
+    - Final XStack hardening history
+    - 13-prompt Lab Galaxy implementation transcript
+    - Mode/profile and diegetic survival doctrine
+    possible_duplicates_with_other_chats:
+    - Worldgen planning
+    - Client UI system
+    - Settings ownership
+    - Prior mega prompts and queued prompt files
+    conflicts_to_watch_for:
+    - old gate.py vs tools/xstack/run
+    - run-meta isolation vs tracked docs/audit
+    - headless UI vs interactive UX claims
+    - new docs/canon vs older canon docs
+    formal_requirements_candidates:
+    - No mode flags
+    - XStack removable
+    - Process-only mutation
+    - Truth/Perceived/Render separation
+    - Packs data-only
+    - Lockfile enforced
+    - Run-meta isolated
+    background_context_candidates:
+    - The emotional history of Codex gate failures
+    - Long-term realism/domain pack ideas
+    needs_user_confirmation:
+    - Push/rebase status
+    - Next feature focus
+    - Acceptability of committed docs/audit artifacts
+  final_recommendations:
+    next_action_if_continuing_this_chat: Verify repository state and audit the 13-prompt deliverables against actual files
+      before new feature work.
+    next_action_for_aggregator: Merge this as the XStack/Lab Galaxy substrate context but preserve uncertainty labels.
+    user_checks_required:
+    - Confirm repo clean/ahead status
+    - Confirm whether commits are pushed
+    - Confirm next workstream after audit

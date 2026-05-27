@@ -1,0 +1,811 @@
+GPT-5.5 Pro — Build date not provided
+
+# Human-Readable Chat Report — Dominium/Domino Engine Refactor Planning
+
+## 1. One-Page Orientation
+
+This chat was a long-form architecture and planning session for the **Dominium/Domino deterministic engine**. Its central purpose was not to write code, but to define how a very large, deterministic simulation engine should be structured so that it can support complex world simulation, agents, infrastructure, future DLCs, modding, replay, multiplayer lockstep, and large-scale performance without collapsing into hardcoded special cases.
+
+**FACT:** The user began by establishing very strict architectural constraints. The **Domino Engine** must be ISO C89, deterministic, portable, fixed-point where determinism matters, and free of OS, platform, UI, rendering, or gameplay-semantic dependencies. The **Dominium** layer is the C++98 UI/tools layer and must only visualize, debug, or emit deterministic commands. The engine must preserve strict layering across systems such as BUILD, TRANS, STRUCT, DECOR, SIM, RES, ENV, JOB, and AGENT. It must use TLV-versioned content formats, stable IDs, deterministic tick scheduling, replay, and input-driven lockstep multiplayer.
+
+The discussion started with advanced physical simulation systems: heat, power, fluids, atmospheres, vehicles, structural loads, destruction, and a mod-extensible physics framework. The important outcome was not a final implementation for each solver, but a general design rule: every heavy system should be content-driven, deterministic, fixed-point, bounded, and integrated through generic primitives such as graphs, fields, ports, events, messages, actions, deltas, and replay hashes.
+
+The focus then shifted to agents and life systems. The user wanted the engine to support everything from unintelligent wildlife and pests to commandable pets, intelligent workers, robots, players, companions, plants, trees, crops, weeds, swarms, herds, flocks, and predator-prey dynamics. The solution that emerged was a generic **actor substrate**: actors are not hardcoded as “human,” “animal,” “robot,” or “plant.” They are entities composed from components. Their behavior flows through a deterministic pipeline: **sensors produce observations; minds or controllers produce intents; actions validate intents and produce deltas; deltas mutate state in a sorted commit phase.** This allows arbitrary stimuli and arbitrary actions without the core engine knowing what those things “mean.”
+
+Performance became a major theme. The chat established that the engine cannot simulate every blade of grass, pest, animal, vehicle, building surface, pipe, or social interaction at full fidelity all the time. Instead, the engine should use a representation ladder: **R0 full**, **R1 lite**, **R2 aggregate**, and **R3 dormant**. Dumb animals and plants can be represented as fields or population aggregates until they become important. Buildings and infrastructure can be represented as parametric authoring state plus compiled caches. Networks can collapse to aggregate envelopes when far away. Work must be budgeted, deferred deterministically, and accumulated so that performance optimizations change latency or fidelity, not authoritative outcomes.
+
+Later, the user introduced two future DLC directions: **Interstellar** (`data/space/`) and **Wargames** (`data/war/`). Rather than add “space” or “war” systems to the core, the architecture generalized their requirements. Space becomes a use case for **domains, frame graphs, and propagators**. Fog of war and information dissemination become use cases for **observer contexts, belief stores, visibility/occlusion, and communications graphs**. Combat becomes a use case for generic interactions, actions, effects, damage, and deltas rather than a hardcoded combat subsystem.
+
+A major correction came when the user pasted a sister-chat prompt requiring arbitrary placement, no grid lock, full 3D curved geometry, TRANS corridors, STRUCT buildings, DECOR signage/markings, corridor co-location, and real-world infrastructure scale. This forced the plan to explicitly support **fixed-point pose + parametric anchors** as the source of truth, not baked meshes or grid cells. TRANS became the canonical corridor/alignment system with cross-section slots. STRUCT became the system for arbitrary footprints, volumes, enclosures, carriers, surfaces, and sockets. DECOR became a host-agnostic rulepack and override system for signs, markings, decals, props, and surface details.
+
+The final major output was a **14-prompt Codex implementation roadmap**, followed by a documentation validation prompt. These prompts are the practical bridge from architecture to implementation. They cover the deterministic engine spine, packets, scheduler, fields/events/messages, LOD, pose/anchors, TRANS, STRUCT, DECOR, agents, graphs, domains, knowledge/comms, replay, regression tests, and documentation consistency.
+
+The chat then produced a maximum-fidelity context transfer packet and later a downloadable report package. Those are artifacts of preservation, but the substance of the chat is the architecture itself: a deterministic, modular, data-driven engine plan that can scale from plants and wildlife to cities, power grids, spacecraft, fog of war, and future DLCs without violating strict determinism.
+
+The most important thing to remember is this: **the project direction is to build a small number of generic deterministic primitives, then express all gameplay, simulation, mod, DLC, and content semantics through data-driven composition on top of those primitives.**
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began with strict engineering constraints
+
+The user opened by defining the assistant’s role as a senior simulation systems architect for the Dominium/Domino deterministic engine. This was not a casual brainstorming session. The user specified a technical tone and a set of hard constraints that governed the entire conversation.
+
+**FACT:** The Domino engine must be ISO C89. The Dominium UI/tools layer must be portable C++98. Engine code must not use OS APIs. Determinism matters, so floats are disallowed in deterministic paths. The engine must avoid platform-dependent behavior and hardcoded game semantics. Everything should be content-driven.
+
+The user also listed existing conceptual systems: dsys for platform abstraction, dgfx for renderer abstraction, deterministic world models using Q16.16 / Q24.8 coordinates, TLV content formats, deterministic scheduler and replay, lockstep multiplayer, and existing domain names such as RES, ENV, BUILD, TRANS, STRUCT, JOB, and AGENT.
+
+The first request was to architect advanced simulation systems: heat, power, fluids, atmosphere, vehicles, structural loads, destruction, and a mod-extensible physics framework. The initial plan established a reusable simulation stack: deterministic scheduler, world storage, TLV registries, fixed-point math, physics families, graph and field layers, and cross-system interaction through ports, fields, events, and replay hashes.
+
+### The discussion shifted from physics to actors and life
+
+The user then redirected the chat toward “agents/actors/characters/players/npcs/humans/robots/companions/pets/pests/wildlife/flora/fauna/etc.” This changed the center of gravity from physical simulation to living and artificial actors.
+
+The answer reframed actors as compositional entities rather than hardcoded classes. A human, robot, dog, deer, crop, tree, pest swarm, or machine controller would be distinguished by components and prototypes, not by engine branches. Components could include body, motion, needs, health, senses, mind, inventory, role, reproduction, social relationships, or group membership.
+
+The user then asked how the engine could support unintelligent wildlife, commandable pets, highly intelligent workers and robots, plants, trees, grass, weeds, crops, swarms, herds, flocks, predator-prey behavior, and intelligent behavior. The answer introduced an “intelligence spectrum”:
+
+* wildlife can use simple reactive minds;
+* pets can use commandable minds with bond/training/ownership constraints;
+* workers and robots can use job or planning systems;
+* plants can use growth/resource components rather than minds;
+* groups can use group controllers plus local steering;
+* predator-prey can emerge from species interaction matrices, needs, sensors, and fields.
+
+This was an important development because it prevented the engine from needing separate hardcoded systems for humans, animals, robots, plants, pests, and groups. Everything became a variant of the same substrate.
+
+### Arbitrary behavior led to the typed IO/action pipeline
+
+The user then asked a more general question: how to support arbitrary actors with arbitrary behaviors, arbitrary stimuli, and arbitrary actions. The answer generalized the agent system into a strict pipeline:
+
+1. sensors convert world state into observations;
+2. minds or controllers convert observations and internal state into intents;
+3. actions validate and execute intents by producing deltas;
+4. deltas are applied later in a deterministic commit phase.
+
+This became one of the central architectural ideas of the chat. It makes behavior extensible without giving minds direct write access to the world. A mod can add new sensors, observations, intents, capabilities, or actions, but state mutation still passes through a deterministic pipeline.
+
+The answer also introduced a deterministic bytecode VM as the preferred way to support modded behavior. A question was raised about whether native-code plugins should also be allowed, but the user did not answer. That remains unresolved.
+
+### Performance concerns pushed the architecture toward LOD, fields, and aggregates
+
+The user then asked how to optimize systems for dumb agents, especially large numbers of plants and animals. This led to the representation ladder idea:
+
+* R0/Tier 0: full entity simulation;
+* R1/Tier 1: lite entity simulation;
+* R2/Tier 2: aggregate field or population simulation;
+* R3/Tier 3: dormant persisted state.
+
+For plants, the plan was to default to vegetation fields rather than individual entities. Grass, weeds, and early crop stages should be density/biomass/moisture/nutrient fields. Trees or large interactive specimens can become entities. For wildlife and pests, far-away or unimportant populations can be represented as counts, densities, age bins, energy bins, and movement fluxes. Individuals are promoted only near players, owned structures, hazards, interactions, or other deterministic interest volumes.
+
+This performance discussion then expanded to the entire engine. The user asked whether the same methods could apply everywhere. The answer said yes: representation ladders, typed IO, deterministic budgets, and data-defined wiring should be core engine services, not agent-specific tricks.
+
+### Heavy systems, especially buildings, became a major focus
+
+The user asked what else could be improved and whether these techniques could optimize custom buildings. The answer identified buildings as one of the heaviest subsystems because they combine geometry, enclosures, ports, surfaces, pathing, heat, atmosphere, fluids, power, structure, and player editing.
+
+The building plan introduced separate representations for buildings:
+
+* R0 full building with detailed occupancy, enclosures, ports, surfaces, supports;
+* R1 lite building with coarse zones and simplified thermal/load models;
+* R2 aggregate building with scalar envelopes such as sealedness, thermal mass, power demand, storage totals, structural integrity;
+* R3 dormant persisted state.
+
+The answer also introduced incremental compilation from edit buffers into derived artifacts: occupancy, ports, connectivity, enclosures, surfaces, supports, nav hints, and boundary lists. This later became a key part of the TRANS/STRUCT/DECOR prompt plan.
+
+### The plan was generalized across systems and made more modular
+
+The user then asked which other systems could benefit from the same approach and how deterministic multiplayer would be maintained. The answer extended the methodology to pathfinding, economy/logistics, fluids/gases, power grids, heat/fire, structural integrity, terrain, rendering, and audio. It also gave a deterministic multiplayer checklist: interest volumes must be deterministic; promotion/demotion must use stable ordering; budgets must only affect latency, not outcomes; all queues must be deterministic; solvers must use fixed iterations; and hashes must localize desyncs.
+
+The user then asked whether there was value in making systems even more modular, and which systems should be combined or split. The answer proposed a small set of reusable engine kernels: scheduler, registries, spatial index, graphs, fields, event/message buses, representation ladder, deterministic VM, probes, traces, hashing, replay. It recommended combining all network-like systems under one graph toolkit, all continuous-ish phenomena under fields, all decision systems under the same sensor/intent/action pipeline, and all editing under edit-buffer plus compiler pipelines. It recommended splitting STRUCT into occupancy, ports, connectivity, enclosures, supports, surfaces, and nav hints.
+
+### Future DLC requirements were generalized into core primitives
+
+The user introduced future **Interstellar** and **Wargames** DLCs. This could have led to hardcoded space and combat systems, but the answer deliberately generalized the requirements.
+
+For Interstellar-like needs, the plan introduced generic **domains**, **coordinate frame graphs**, and **propagators**. These can represent different spatial models and time-evolving states without the engine knowing whether something is “space,” “surface,” or “orbit.”
+
+For Wargames-like needs, the plan introduced generic **observer contexts**, **belief stores**, **visibility/occlusion**, **communications graphs**, and generic interactions. Fog of war became query filtering over a belief state, not a renderer trick. Comms became deterministic packet routing with integer tick latency and congestion queues.
+
+The user explicitly asked to make this more extensible and coherent as core engine architecture, not space- or war-specific. That confirmed the direction: space and war were to be content/DLC applications of generic primitives.
+
+### A sister-chat prompt added mandatory spatial authoring requirements
+
+The user then pasted a prompt from a sister conversation. This prompt added mandatory requirements: arbitrary placement, arbitrary rotation/inclination, curved 3D geometry, no grid lock, TRANS corridors, cross-section slot packing, junctions, STRUCT arbitrary footprints and volumetric enclosures, DECOR host-agnostic signage and markings, corridor co-location, real-world infrastructure scale, and deterministic compilation.
+
+This was a significant change. It forced the existing plan to explicitly support:
+
+* fixed-point pose and parametric anchors;
+* no baked geometry as authoritative state;
+* TRANS as canonical corridor alignment and slot-packing system;
+* STRUCT as arbitrary buildings/infrastructure/enclosures/carriers/surface graphs;
+* DECOR as rule-generated and manually overridden host-agnostic detail system.
+
+The answer produced a delta plan showing what was already satisfied and what needed to be added. Then the user asked for the full new prompt plan.
+
+### The architecture became a 14-prompt Codex roadmap
+
+The assistant produced a full prompt plan for Codex. The user then requested each prompt one by one with “Next.” Fourteen prompts were generated:
+
+1. engine invariants, specs, scaffolding;
+2. typed packet ABI and TLV registries;
+3. scheduler, budgets, queues, delta commit;
+4. fields, events, messages;
+5. representation ladder, interest volumes, accumulators;
+6. pose, anchors, arbitrary placement;
+7. TRANS corridors, slots, junctions;
+8. STRUCT buildings, enclosures, carriers, surfaces;
+9. DECOR signage, markings, rulepacks, overrides;
+10. agents, sensors, minds, actions, groups;
+11. unified graph toolkit and rebuild harness;
+12. domains, frame graph, propagators;
+13. observer contexts, knowledge, visibility, comms;
+14. determinism hardening, replay, regression suite.
+
+The user then asked for a documentation validation prompt to ensure the docs remain valid, consistent, and correct. That prompt was generated as well.
+
+### The final phase preserved the chat itself
+
+After the architecture and prompts were created, the user asked for a maximum-fidelity context transfer packet. The assistant produced one. The user then asked for a downloadable report package; the assistant generated package files and a ZIP. The user later asked for an in-chat reader version of that package, and finally requested this current human-readable explanatory report.
+
+The final state of the conversation is therefore not just an architecture. It is an architecture plus an implementation roadmap plus preservation artifacts. The important substance remains the deterministic engine design and the prompt plan, not the packaging files.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — The deterministic engine foundation
+
+The foundation of the chat was the user’s hard constraint set for Domino and Dominium. Domino is the deterministic engine core. Dominium is the UI/tools layer. This distinction shaped every answer.
+
+The core idea is that deterministic simulation cannot tolerate platform-dependent behavior, nondeterministic iteration, floating-point inconsistencies, OS dependencies, or UI-driven state mutation. The engine must be portable, reproducible, and replayable. Therefore the architecture repeatedly favored fixed-size integer IDs, fixed-point math, TLV schemas, sorted iteration, deterministic queues, and replay hashes.
+
+The conclusion was that the engine needs a small set of generic deterministic primitives. These primitives should not know gameplay semantics. They should know how to schedule, store, serialize, hash, route, query, and commit state changes. Content and mods define what those things mean.
+
+What remains uncertain is the actual repository state. The chat designed architecture and prompts, but did not inspect source code. Therefore the plan needs repo verification before implementation.
+
+### Topic 2 — Advanced simulation systems
+
+The first substantive design topic was advanced simulation: heat, power, fluids, atmosphere, vehicles, structures, destruction, and mod-extensible physics.
+
+The discussion established that these systems should be integrated through common mechanisms rather than isolated custom solvers. Heat uses fields and ports. Power uses deterministic graphs. Fluids use both terrain-scale hydrology and pipe/duct networks. Atmospheres use enclosed-space gas mixtures and pressure/temperature/humidity states. Vehicles use deterministic kinematics and constraints. Structures use support/load graphs and damage accumulation. All should be content-driven and fixed-point.
+
+The conclusion was not a final physics implementation. It was a framework direction: each physics family should be a deterministic family plugged into the scheduler, using content-defined TLV prototypes, fixed iteration solvers, stable vtables, and replay hooks.
+
+The unresolved work is to generate detailed subsystem implementation prompts for heat, power, fluids, atmospheres, vehicles, and structural loads after the core engine spine is implemented.
+
+### Topic 3 — Agents, actors, life, and behavior
+
+The user wanted the engine to support a wide range of living and artificial actors. The important design move was to avoid hardcoded categories. A tree, deer, worker, robot, pet, pest swarm, and player-controlled human are all entities or aggregate representations with different components and controllers.
+
+The behavior substrate became: sensors generate observations; minds/controllers generate intents; actions validate intents and produce deltas. This allows arbitrary behavior and arbitrary stimuli without allowing arbitrary mutation. It also supports different intelligence levels. Wildlife can be reactive. Pets can be commandable. Workers and robots can be job-driven. Plants may not need minds at all; they can use growth/resource systems.
+
+The remaining uncertainty is plugin policy. A deterministic VM was proposed, but whether native-code plugins are allowed remains unresolved.
+
+### Topic 4 — Plants, wildlife, populations, and performance
+
+The user explicitly asked how to support large numbers of plants and animals. The conclusion was that full entities should be the exception, not the default, for dumb or numerous life.
+
+Plants can use vegetation fields: biomass, density, moisture stress, nutrient stress, species mix, regrowth timers. Wildlife and pests can use population fields or aggregate cell counts. Individual entities are promoted when they become important: near players, structures, hazards, jobs, or interaction zones.
+
+The rationale was performance and determinism. Field sampling is cheap and deterministic. Aggregate rates avoid O(N²) interactions. Promotion/demotion allows local detail without simulating everything everywhere.
+
+What remains uncertain is the exact thresholds and content policies for when things promote or demote.
+
+### Topic 5 — Engine-wide modularity and optimization
+
+The user asked whether the same methods could apply across the whole engine. The answer was yes. This became a central theme.
+
+The architecture standardized several cross-cutting primitives:
+
+* typed packets;
+* fields, events, and messages;
+* sorted delta commit;
+* deterministic scheduler phases;
+* budgets and carryover queues;
+* representation ladder;
+* graph toolkit;
+* deterministic VM;
+* probes, hashes, replay;
+* dirty incremental rebuilds;
+* source-of-truth versus derived cache separation.
+
+This matters because without common primitives, every subsystem would reinvent scheduling, queues, graphs, IDs, serialization, and determinism. That would create bugs and inconsistency.
+
+The conclusion was to combine shared mechanisms but split domain-specific artifacts. For example, power, fluids, comms, supports, enclosures, and routing all use graphs, but each defines its own node/edge semantics through data.
+
+### Topic 6 — Buildings and infrastructure at scale
+
+Buildings became a major example of heavy subsystem optimization. The user wanted custom buildings and infrastructure that could scale to real-world complexity. The answer reframed buildings as parametric authoring state plus deterministic compiled artifacts.
+
+Instead of storing final geometry as truth, buildings store footprints, volumes, enclosure definitions, surfaces, sockets, carrier intents, and edit records. Derived compilers produce occupancy, voids, enclosure graphs, surface graphs, support graphs, and carrier artifacts. These are caches, not authority.
+
+This matters because buildings connect many systems: heat, atmosphere, power, fluids, agents, decor, pathing, structural loads, destruction. Without derived artifacts and incremental dirty rebuilds, edits would require expensive full recomputation.
+
+The unresolved issue is how much of STRUCT compilation should be implemented first. The prompt plan is broad; a real implementation may need a smaller first milestone.
+
+### Topic 7 — Future Interstellar and Wargames DLCs
+
+The user introduced future DLC directions. Instead of designing “space code” and “war code,” the plan generalized their needs.
+
+For Interstellar, the core primitives are domains, frames, and propagators. A domain can represent a surface, orbital space, station interior, or other spatial context without hardcoding those names. A frame graph handles coordinate transforms. A propagator handles time-evolving states such as trajectories or moving fronts.
+
+For Wargames, fog and information become observer contexts, belief stores, visibility/occlusion, and communications graphs. Knowledge is simulation state, not UI state. This is essential because fog of war affects what players and AI can know and act on; it must therefore be deterministic and replayable.
+
+The conclusion was that DLCs should be content packs and optional plugin families built on generic primitives. They should not add semantic assumptions to the core.
+
+### Topic 8 — Arbitrary placement, TRANS, STRUCT, and DECOR
+
+The sister-chat prompt added a major spatial authoring requirement: no grid lock. All placement must support arbitrary position, rotation, inclination, and curved geometry in 3D. Engine logic cannot depend on a global grid. Grids may exist only as optional UI snapping aids.
+
+This led to the pose-and-anchor model. Placement commands are quantized and stored as parametric anchors, not baked world-space mesh coordinates. A corridor anchor uses alignment station and local offsets. A structure surface anchor uses surface parameter coordinates. A socket anchor references a stable socket.
+
+TRANS became the canonical system for corridors and alignments: splines or polylines, z-profiles, roll, cross-section slots, attachments over station intervals, and junctions. Co-location is handled through slots. A road, rail, utility duct, electrification line, and pipeline can share a single corridor model rather than fighting as independent splines.
+
+STRUCT handles arbitrary buildings and infrastructure. DECOR handles signs, markings, decals, props, and surface details across all host types through rulepacks and overrides.
+
+This topic is one of the most important contributions of the chat.
+
+### Topic 9 — The Codex prompt roadmap
+
+Once the architecture stabilized, the user asked for a plan of prompts to give Codex. The assistant first produced an 8-prompt plan, but that was superseded after the sister-chat requirements. The final version became a 14-prompt roadmap.
+
+This roadmap is important because it translates architecture into implementation phases. It starts with invariants and scaffolding, then builds packet IO, scheduler, fields/messages/events, LOD, placement, TRANS, STRUCT, DECOR, agents, graphs, domains, knowledge/comms, and finally determinism hardening.
+
+Each prompt included constraints, file paths, module goals, tests, documentation updates, and acceptance criteria. The prompts were designed to prevent Codex from overreaching into gameplay semantics too early.
+
+### Topic 10 — Documentation validation and preservation
+
+After the prompt plan, the user wanted the docs to be kept valid and consistent. A documentation validation prompt was generated. It instructed Codex to reconcile terminology, subsystem boundaries, determinism guarantees, no-baked-geometry rules, arbitrary placement correctness, and source-of-truth versus derived-cache tables.
+
+Finally, the user asked for context transfer, then report packaging, then an in-chat reader, and now this human-readable report. These later steps were about preserving the chat’s output for future aggregation and spec-book construction.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals
+
+**FACT:** The user explicitly wanted an advanced deterministic simulation architecture for the Dominium/Domino engine. This included heat, power, fluids, atmosphere, vehicles, structures, agents, plants, animals, actors, future DLCs, arbitrary placement, infrastructure, signage, fog of war, information dissemination, and Codex implementation prompts.
+
+The explicit goal was to create a plan that could be implemented without violating core constraints.
+
+### Inferred goals
+
+**INFERENCE:** The user was not merely asking for isolated feature designs. The conversation implies a deeper goal: to prevent future engine growth from becoming a web of hardcoded, nondeterministic, special-case systems.
+
+The repeated requests for extensibility, modularity, optimization, deterministic multiplayer, and prompt plans suggest the user wanted a reusable architectural foundation that can scale over years of development.
+
+### Goals that changed over time
+
+The chat began with physical simulation. It then moved to agents and life. Then it generalized to whole-engine methodology. Then it focused on buildings. Then it expanded to future DLC foundations. Then it corrected the spatial authoring model with arbitrary placement and no grid lock. Finally, it turned into an implementation prompt plan and preservation package.
+
+The underlying goal remained consistent: build a deterministic, extensible engine. But the scope widened and became more concrete.
+
+### Goals that remain unresolved
+
+Several goals were not fully resolved:
+
+* exact Q-format numeric policy;
+* VM-only versus native plugin policy;
+* detailed physics solver prompts;
+* exact repository integration;
+* minimal first implementation scope for STRUCT/TRANS/DECOR;
+* whether later chats supersede parts of this plan.
+
+---
+
+## 5. Decisions Made and Why
+
+A short map of the most important decisions:
+
+| Decision area    | Decision                                                                | Label                    |
+| ---------------- | ----------------------------------------------------------------------- | ------------------------ |
+| Engine language  | Domino core is ISO C89.                                                 | FACT                     |
+| Tooling language | Dominium tools/UI are portable C++98.                                   | FACT                     |
+| Determinism      | Fixed-point, stable IDs, ordered iteration, replay, lockstep.           | FACT                     |
+| Semantics        | No hardcoded gameplay semantics.                                        | FACT                     |
+| Mutation         | Use sorted delta commit as the sole mutation point.                     | INFERENCE                |
+| Behavior         | Use sensors → observations → minds → intents → actions → deltas.        | INFERENCE                |
+| Scale            | Use R0/R1/R2/R3 representation ladder.                                  | INFERENCE                |
+| Placement        | Use fixed-point pose + parametric anchors; grids are UI-only.           | FACT                     |
+| Geometry         | No baked geometry as authoritative state.                               | FACT                     |
+| TRANS            | Corridors use slots for co-location.                                    | FACT                     |
+| STRUCT           | Buildings/infrastructure use parametric authoring + compiled artifacts. | FACT / INFERENCE mixture |
+| DECOR            | Rulepacks + manual overrides, host-agnostic.                            | FACT                     |
+| DLCs             | Space/war requirements become generic core primitives.                  | INFERENCE                |
+| Implementation   | Use a 14-prompt Codex roadmap.                                          | FACT                     |
+
+### The foundational language and determinism decisions
+
+**FACT:** The user explicitly set Domino as ISO C89 and Dominium as C++98. These are final unless the user later changes them. The reason is portability and deterministic control. C89 also restricts language features, which reduces accidental platform-specific behavior but increases the need for careful architecture.
+
+**FACT:** Fixed-point math is required where determinism matters. This decision affects geometry, physics, movement, scheduling, replay, networking, and procedural generation. It was made because floating-point behavior can differ across platforms, compilers, and CPU modes.
+
+**FACT:** No OS, platform, UI, or rendering APIs are allowed in the engine. This protects the deterministic core from external nondeterminism and preserves strict layering.
+
+### The semantic-free engine decision
+
+**FACT:** The user stated that no hardcoded game semantics are allowed and everything must be data-driven.
+
+This decision drives nearly everything else. The engine cannot have special branches for humans, animals, robots, roads, rails, combat, space, crops, or factories. Instead, it has registries, TLV prototypes, type IDs, capabilities, actions, graphs, fields, and data-defined models.
+
+This decision could be revisited only if the user chooses to sacrifice extensibility for simplicity in a specific subsystem, but that would contradict the chat’s core direction.
+
+### The delta commit decision
+
+**INFERENCE:** The assistant proposed that all state mutation should happen through sorted delta commit, and the user continued building on the plan. This should be treated as accepted working architecture, but it is not an explicit user sentence.
+
+The rationale is strong. If subsystems mutate state directly while running, outcomes can depend on update order, memory layout, container order, or platform differences. A sorted delta commit creates one canonical mutation point.
+
+This affects agents, actions, physics, construction, decor promotion, knowledge updates, and network effects.
+
+### The behavior pipeline decision
+
+**INFERENCE:** The user asked for arbitrary actors, arbitrary stimuli, and arbitrary actions. The assistant proposed the sensor/observation/mind/intent/action/delta pipeline. The user accepted the direction by continuing the conversation.
+
+This decision makes behavior extensible while keeping mutation controlled. It allows simple wildlife, commandable pets, job-driven workers, robot controllers, group controllers, and machine controllers to share one model.
+
+The alternative would be bespoke AI systems per actor type. That was not carried forward because it would violate modularity and hardcode semantics.
+
+### The representation ladder decision
+
+**INFERENCE:** The assistant proposed R0/R1/R2/R3 and the user repeatedly asked how to apply it more broadly. It became a central working decision.
+
+The reason is scale. A game/simulation with large vegetation, wildlife, buildings, networks, atmospheres, and infrastructure cannot afford full-detail simulation everywhere. The representation ladder lets the engine preserve authoritative state while reducing fidelity and cadence where possible.
+
+This decision depends on good promotion/demotion rules and accumulators. If implemented poorly, LOD can change simulation outcomes and break determinism.
+
+### The pose and anchor decision
+
+**FACT:** The sister-chat prompt explicitly required arbitrary placement, no grid lock, quantized command inputs, fixed-point math, and parametric anchoring. The assistant integrated this into the plan.
+
+This is one of the strongest decisions in the chat. It means the source of truth for placement is not a grid cell or baked mesh. It is a quantized parametric anchor and local pose. This supports arbitrary rotation, inclination, curved corridors, and rebuildable geometry.
+
+This affects BUILD, TRANS, STRUCT, DECOR, visibility, pathing, and every placement/edit command.
+
+### The TRANS/STRUCT/DECOR decisions
+
+**FACT:** The sister prompt explicitly required TRANS corridors, STRUCT arbitrary buildings, and DECOR signage/markings/surface detail. The assistant turned that into Prompts 7–9.
+
+TRANS becomes the canonical corridor alignment system. STRUCT becomes the building/infrastructure/enclosure/carrier/surface system. DECOR becomes a host-agnostic rulepack/override system.
+
+The key rationale is that real-world infrastructure cannot be represented cleanly as grid-locked objects or independent splines. Corridors need co-location. Buildings need arbitrary oriented volumes. Decor needs automatic generation plus manual user control.
+
+### The space/war generalization decision
+
+**INFERENCE:** The user asked to prepare for Interstellar and Wargames, then explicitly asked to make it core and not space/war-specific. The assistant generalized the systems.
+
+The decision was to represent space-like needs through domains, frames, and propagators, and war-like information needs through observers, beliefs, visibility, and comms. This avoids hardcoded DLC semantics.
+
+This decision would be revisited only if future DLC requirements prove the generic primitives insufficient.
+
+### The Codex prompt roadmap decision
+
+**FACT:** The user explicitly requested a master plan of prompts and then requested each prompt. This is a concrete artifact and process decision.
+
+The prompts are implementation scaffolding, not code. They should be adapted to the actual repository before execution.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Global grid-locked placement
+
+This was rejected because the sister-chat requirements explicitly required arbitrary position, rotation, inclination, and curved 3D geometry. Grids may exist as UI snapping aids or spatial indices, but not as authoritative placement logic.
+
+This rejection is final unless the user changes a hard requirement.
+
+### Baked geometry as source of truth
+
+This was rejected because it breaks deterministic rebuilds, replay, arbitrary editing, and parametric placement. Baked geometry can exist as a derived cache, but it cannot be the authoritative state.
+
+This is final under the current plan.
+
+### Stacked independent splines for co-located corridors
+
+This was rejected because the user specifically required corridor overlap and co-location through cross-section slots. Independent splines would fight for space and make upgrades, utilities, electrification, road/rail sharing, and junctions harder.
+
+The accepted alternative is one corridor alignment with slot-based occupants and attachments.
+
+### Per-entity simulation for all grass, weeds, pests, and wildlife
+
+This was rejected as the default because it does not scale. The accepted model uses vegetation fields, population aggregates, and deterministic promotion.
+
+It can become relevant again for important individual plants or animals, but only after promotion.
+
+### Global intelligence for every herd/flock/swarm member
+
+This was rejected as unnecessary and too expensive. Group controllers and local bounded steering are preferred.
+
+Full intelligence remains possible for important agents, leaders, companions, or player-visible individuals.
+
+### Direct mutation from minds or controllers
+
+This was rejected in the architecture because it would break deterministic ordering. Minds and controllers emit intents; actions emit deltas; the commit phase mutates state.
+
+### Renderer-based fog of war
+
+This was rejected because fog of war affects knowledge and action validity. It must be simulation state, not a rendering trick.
+
+### Hardcoded space or war systems
+
+This was rejected because it would violate the no-hardcoded-semantics rule. Interstellar and Wargames should be content/DLC use cases of generic domains, frames, propagators, observers, beliefs, visibility, comms, and actions.
+
+### The initial 8-prompt plan
+
+This was superseded, not wrong. It was replaced by the 14-prompt plan after the sister-chat requirements added arbitrary placement and TRANS/STRUCT/DECOR details.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The visible reasoning throughout the chat was dominated by four concerns: determinism, extensibility, scale, and source-of-truth discipline.
+
+Determinism required stable IDs, fixed-point math, fixed iteration counts, canonical ordering, sorted deltas, replay hashes, deterministic PRNG streams, and avoidance of platform-dependent behavior. Every time a system could become nondeterministic, the plan pushed it behind a canonical API or ordered queue.
+
+Extensibility required the engine not to know gameplay semantics. This is why the plan favors type IDs, registries, TLV schemas, component composition, capabilities, actions, fields, graph nodes/edges, and data-defined prototypes. The engine should provide the machinery; content defines the meaning.
+
+Scale required the representation ladder and field/aggregate models. The chat repeatedly recognized that simulating everything in full detail is impossible. Plants, animals, buildings, networks, fog, comms, visibility, pathing, and fluids all need LOD, dirty rebuilds, caches, or aggregates.
+
+Source-of-truth discipline became especially important after the arbitrary placement requirements. The plan distinguishes authoring state from derived caches. Authoring state is stable, parametric, replayable, and versioned. Compiled artifacts are rebuildable and disposable. This protects the engine from geometry drift, save corruption, and nondeterministic rebuilds.
+
+The user seemed to care most about preserving rigorous architecture rather than rushing into code. The repeated requests asked how to make systems more modular, more extensible, more optimized, and more deterministic. The final prompt-generation phase shows the user wanted this thinking converted into concrete implementation instructions.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+### The primary next step: inspect the repository
+
+Before running any Codex prompt, the actual repository should be inspected. This is necessary because the prompt plan assumes paths such as `source/domino/...`, `docs/...`, and CMake integration.
+
+If the repo differs, the prompts should be adapted rather than blindly applied.
+
+### Then run or adapt Codex Prompt 1
+
+Prompt 1 establishes specs, invariants, scaffolding, and directory structure. It should not implement gameplay logic. It sets the ground rules for everything else.
+
+The expected output is documentation, invariant headers, scaffolding directories, and build integration.
+
+What could go wrong: Codex might add implementation logic too early or use non-C89 constructs.
+
+### Build the deterministic spine
+
+Prompts 2–5 should establish packets, scheduler, budgets, delta commit, events/messages/fields, and representation ladders. These are foundational.
+
+They matter because later systems depend on them. TRANS, STRUCT, DECOR, agents, graphs, domains, and knowledge all rely on deterministic packet flow, budgets, queues, and LOD.
+
+### Implement placement and spatial authoring
+
+Prompt 6 must precede TRANS/STRUCT/DECOR because pose and anchors are the placement foundation. Then Prompts 7–9 implement TRANS, STRUCT, and DECOR.
+
+This sequence matters because arbitrary placement and no-baked-geometry are cross-cutting. If they are not established early, later systems may accidentally assume grids or baked meshes.
+
+### Implement behavior and graph foundations
+
+Prompt 10 implements agents/actions/groups. Prompt 11 implements the graph toolkit. Depending on repository structure, Prompt 11 might be useful earlier because many systems need graphs.
+
+The plan presented Prompt 10 before Prompt 11, but implementation may reasonably adjust if graph dependencies are stronger.
+
+### Implement domains and information systems
+
+Prompts 12–13 add domains, frame graphs, propagators, observers, beliefs, visibility, and comms.
+
+These are especially relevant for Interstellar and Wargames foundations, but remain semantic-free core primitives.
+
+### Harden determinism and validate documentation
+
+Prompt 14 adds hash/replay/regression guardrails. The documentation validation prompt should run once specs exist and enough architecture has been scaffolded.
+
+This prevents drift.
+
+### Future physics-specific prompts
+
+After the core spine, the advanced physics systems still need detailed implementation prompts: heat, power, fluids, atmosphere, vehicles, structural loads/destruction. The chat established the conceptual plan but did not generate those detailed subsystem prompts.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints
+
+The hard constraints are:
+
+* Domino engine: ISO C89.
+* Dominium tools/UI: portable C++98 subset.
+* No OS/platform/UI/rendering APIs in engine.
+* No floats where determinism matters.
+* No platform-dependent behavior.
+* No hardcoded gameplay semantics.
+* TLV-versioned content and commands.
+* Deterministic scheduler, replay, lockstep multiplayer.
+* Stable IDs and ordered iteration.
+* Bounded work per tick.
+* No global grid dependency in engine logic.
+* No baked geometry as authoritative state.
+* Placement via fixed-point pose and parametric anchors.
+* Corridor co-location via TRANS slots.
+* UI/tools must not mutate engine state directly.
+
+### Inferred preferences
+
+**INFERENCE:** The user prefers concrete implementation prompts, not vague summaries. This is based on the repeated “Next” requests for Codex prompts.
+
+**INFERENCE:** The user prefers architecture that anticipates future extensibility rather than minimal short-term solutions.
+
+**PROJECT-CONTEXT:** The user profile indicates interest in rigor, citations, and unbiased tested facts. In this chat, citations were not central because the work was internal architecture rather than external factual research. Future external claims should still be verified.
+
+### Things future assistants should avoid
+
+Future assistants should avoid:
+
+* presenting assistant suggestions as user-stated facts;
+* ignoring FACT/INFERENCE/UNCERTAIN labels;
+* reintroducing grid-locked placement;
+* treating compiled geometry as truth;
+* proposing hardcoded humans/animals/robots/space/war systems;
+* using floats or tolerance solvers in deterministic paths;
+* skipping repository verification before implementation;
+* generating another package when the user asks for a human explanation.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+The most important artifacts are the generated plans and prompts, not the packaging files.
+
+### The architecture outputs
+
+The chat produced several architecture plans:
+
+* advanced simulation stack;
+* agent/life/ecology system;
+* arbitrary behavior/action system;
+* performance methodology for dumb agents/plants;
+* engine-wide modularity/performance plan;
+* building/infrastructure optimization plan;
+* deterministic multiplayer under LOD/budgets plan;
+* space/war generalized core primitive plan;
+* arbitrary placement and TRANS/STRUCT/DECOR integration plan.
+
+These should feed the future project spec book as background and requirements material.
+
+### The 14 Codex prompts
+
+The 14 Codex prompts are the main implementation artifacts. They should be preserved and used in order, with adaptation after repo inspection.
+
+They are:
+
+1. Engine invariants, specs, scaffolding.
+2. Typed packet ABI and TLV registries.
+3. Deterministic scheduler, budgets, queues, delta commit.
+4. Fields, events, messages.
+5. Representation ladder, interest volumes, accumulators.
+6. Pose, anchors, arbitrary placement.
+7. TRANS corridors, slots, junctions.
+8. STRUCT buildings, enclosures, carriers, surfaces.
+9. DECOR signage, markings, decals, props.
+10. Agents, sensors, minds, actions, groups.
+11. Unified graph toolkit and rebuild harness.
+12. Domains, frame graph, propagators.
+13. Observer contexts, knowledge, visibility, comms.
+14. Determinism hardening, replay, regression.
+
+### The documentation validation prompt
+
+This prompt is important because the architecture spans many docs and can easily drift. It instructs Codex to normalize terminology, reconcile contradictions, validate boundaries, enforce determinism, preserve no-baked-geometry rules, and create a documentation validation report.
+
+### The handoff and report package
+
+Later in the chat, a context transfer packet and downloadable report package were created. These are preservation artifacts. They are useful for aggregation and future spec-book construction, but they are not the substance of the architecture itself.
+
+**UNCERTAIN / UNVERIFIED:** The package files were generated in the sandbox during the prior step, but repository files were not created or inspected.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+### VM-only versus native-code plugins
+
+The architecture proposed a deterministic VM for behavior and transforms. It also left room for native plugins, but the user did not decide whether native-code plugins should be allowed in lockstep simulation.
+
+This matters because native plugins can be faster and more powerful but are harder to sandbox and keep deterministic. VM-only is safer but may be less flexible.
+
+Resolution requires a user/architect policy decision before implementing plugin ABI.
+
+### Exact fixed-point Q formats
+
+The chat mentioned examples such as Q16.16, Q24.8, and Q48.16, but it did not establish a final numeric table for every domain.
+
+This matters because heat, pressure, energy, volume, position, velocity, torque, forces, population counts, and probabilities all need ranges and precision.
+
+Resolution requires a numeric specification.
+
+### Repository state
+
+The chat did not inspect the actual repository. It proposed paths and files, but those are not verified.
+
+Resolution requires repo inspection before Codex implementation.
+
+### Existing TLV/RES and scheduler state
+
+The prompts assume TLV and scheduler infrastructure can be added or extended. The actual current implementation is unknown.
+
+Resolution requires code inspection.
+
+### STRUCT/TRANS/DECOR minimum viable implementation
+
+The prompts are broad. A real implementation may need a smaller first milestone.
+
+Resolution requires planning against repo complexity and project priorities.
+
+### Derived cache hashing policy
+
+The plan says authoritative state must be hashed, and caches can be hashed canonically if included. It does not settle whether derived caches are always hashed, excluded, or selectively hashed.
+
+Resolution requires determinism/replay policy.
+
+### Later-chat supersession
+
+This chat may later be superseded by other project chats. This report should not be treated as the final project truth until aggregated with other reports.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+### Treating suggestions as hard user decisions
+
+Many architecture decisions are assistant-proposed but accepted by continuation. They are strong working decisions, but they should retain **INFERENCE** labels unless the user explicitly confirms them elsewhere.
+
+Avoidance: preserve labels.
+
+### Forgetting the no-grid and no-baked-geometry requirements
+
+These are among the most important later additions. A future assistant might remember the earlier simulation architecture but forget the sister-chat spatial requirements.
+
+Avoidance: make pose+anchors, no grid lock, and no baked geometry formal requirements.
+
+### Reintroducing hardcoded semantics
+
+Future designs might be tempted to add “combat,” “space,” “human,” “animal,” “rail,” or “road” logic directly into the engine.
+
+Avoidance: use generic primitives and content-defined type IDs.
+
+### Overbuilding before verifying the repo
+
+The prompts are detailed, but repository state is unverified. Blindly applying them could create duplicate systems or wrong paths.
+
+Avoidance: inspect before implementation.
+
+### Losing unresolved issues
+
+VM/native plugin policy and Q formats are not settled. If a future assistant ignores this, it may implement an irreversible architecture too early.
+
+Avoidance: ask before implementing plugin ABI or numeric-heavy systems.
+
+### Over-compressing the chat
+
+This chat produced a lot of layered architecture. A short summary could lose the relationships among scheduler, packets, LOD, placement, TRANS, STRUCT, DECOR, agents, domains, and knowledge.
+
+Avoidance: use this human report or the package before merging.
+
+### Treating the generated package as the project spec
+
+The package is a chat-specific report, not the whole project spec. It should feed a future spec book, not replace it.
+
+Avoidance: aggregate with other chat reports.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes a major architecture slice for the Dominium/Domino project. It likely belongs in several future spec-book chapters:
+
+* Engine invariants and deterministic architecture.
+* Simulation scheduler and replay.
+* Typed IO, packets, TLV, registries.
+* Representation ladder and budgets.
+* Agents and behavior.
+* TRANS/STRUCT/DECOR spatial authoring.
+* Arbitrary placement and anchors.
+* Graph toolkit and fields.
+* Domains, frames, propagators.
+* Knowledge, visibility, and communications.
+* Documentation and regression rules.
+* Codex implementation roadmap.
+
+The unique contribution is the integration of several concerns into one coherent plan: simulation physics, agents, performance, buildings, space/war foundations, arbitrary placement, and implementation prompts.
+
+Likely overlaps with other chats include engine constraints, dsys/dgfx, TLV formats, existing module definitions, worldgen, economy, and specific gameplay design.
+
+Potential conflicts to watch for include:
+
+* other chats may define different directory structures;
+* other chats may have different Q formats;
+* other chats may already have a plugin policy;
+* other chats may use different BUILD/TRANS/STRUCT/DECOR boundaries;
+* later implementation may supersede prompt sequencing.
+
+Before merging this into a master spec, preserve uncertainty labels and verify against repository state and later decisions.
+
+---
+
+## 14. What I Should Remember
+
+* The central goal was to design a deterministic, modular, data-driven engine architecture, not to implement gameplay features directly.
+* The Domino engine is constrained to C89, fixed-point determinism, no OS/UI/rendering APIs, no hardcoded semantics, TLV data, stable IDs, replay, and lockstep.
+* Dominium is the C++98 UI/tools layer and should not mutate engine state directly.
+* The engine should be built from generic primitives: packets, fields, events, messages, graphs, actions, deltas, schedulers, budgets, LOD, domains, frames, propagators, beliefs, comms, probes, hashes.
+* Actors are composition-based. Humans, animals, robots, plants, workers, pets, pests, and swarms should not be hardcoded categories.
+* Behavior should flow through sensors, observations, minds/controllers, intents, actions, and deltas.
+* Large-scale plants and wildlife should default to fields and aggregates, with deterministic promotion to full entities when important.
+* Heavy systems should use R0/R1/R2/R3 representation ladders and deterministic budgets.
+* Buildings and infrastructure should use parametric authoring state plus derived compiled artifacts.
+* Placement must not be grid-locked. Fixed-point pose and parametric anchors are source of truth.
+* Baked geometry is never authoritative.
+* TRANS corridors use alignments, cross-section slots, attachments, and junctions. Co-location is handled through slots.
+* STRUCT handles arbitrary footprints, volumes, enclosures, carriers, surfaces, sockets, and support graphs.
+* DECOR handles signs, markings, decals, props, rulepacks, and manual overrides across all host types.
+* Space and war features are generalized as domains, frames, propagators, observers, beliefs, visibility, comms, and generic actions.
+* The primary deliverable was a 14-prompt Codex implementation roadmap plus a docs validation prompt.
+* The most important unresolved issues are VM/native plugin policy, exact Q formats, repository structure, existing TLV/scheduler state, and derived cache hash policy.
+* The next practical step is repository inspection, then adapting/running Prompt 1.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Explain the 14 Codex prompts in a more intuitive implementation order.”
+2. “Which parts of this plan are explicit user requirements versus assistant-proposed architecture?”
+3. “What is the minimum viable implementation path for Prompts 1–5?”
+4. “Explain pose and anchors in detail, with examples.”
+5. “Explain TRANS corridors and slot-based co-location in plain language.”
+6. “Explain STRUCT authoring versus compiled artifacts.”
+7. “Explain DECOR rulepacks and manual overrides.”
+8. “What exactly should go into the future Project Spec Book from this chat?”
+9. “What should I verify in the repository before running Codex Prompt 1?”
+10. “What unresolved decisions should I answer before implementation starts?”
+11. “How would the heat/power/fluids prompts build on this architecture?”
+12. “Which rejected options are most likely to accidentally return?”
+13. “How does deterministic multiplayer survive LOD and budget deferral?”
+14. “What is the difference between a field, an event, a message, an observation, an intent, and a delta?”
+15. “What would a smaller first milestone look like if the full 14-prompt plan is too large?”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was a deep architecture and planning session for the Dominium/Domino deterministic engine. The user began by setting strict technical constraints: the Domino engine core must be ISO C89, deterministic, fixed-point where determinism matters, free of OS/platform/UI/rendering APIs, and free of hardcoded gameplay semantics. Dominium is the portable C++98 UI/tools layer and must only emit deterministic commands. The engine must use TLV-versioned data, stable IDs, deterministic scheduling, replay, and input-driven lockstep multiplayer.
+
+The conversation first addressed advanced simulation systems: heat, power, fluids, atmosphere, vehicles, structures, destruction, and mod-extensible physics. The important outcome was a general architecture rather than specific solvers. These systems should be content-driven, fixed-point, graph/field-based, versioned, bounded, and replayable. They should interact through ports, fields, events, messages, actions, and deltas rather than direct hardcoded calls.
+
+The focus then moved to agents and life. The user wanted the engine to handle humans, NPCs, robots, companions, pets, wildlife, pests, plants, trees, grass, crops, swarms, herds, flocks, and predator-prey behavior. The solution was a generic actor substrate: actors are component compositions, not hardcoded classes. Behavior flows through sensors, observations, minds or controllers, intents, actions, and deltas. This allows simple wildlife, commandable pets, job-driven workers, robots, plant growth systems, and group controllers to share one extensible model.
+
+Performance became central. The chat established that full simulation everywhere is impossible. The engine should use a representation ladder: R0 full, R1 lite, R2 aggregate, and R3 dormant. Dumb animals, pests, grass, weeds, and crops can be represented by fields and aggregate populations until they become important. Buildings, networks, physics, pathfinding, visibility, and decor can also use lower-detail representations when far away or inactive. Work must be budgeted and deferred deterministically, using accumulators so that performance optimization affects timing or fidelity rather than authoritative outcomes.
+
+The user then asked whether these same techniques could optimize heavy systems such as custom buildings. The plan separated authoring state from compiled artifacts. Buildings and infrastructure should be stored as parametric definitions and edit records, while derived caches provide occupancy, enclosures, surfaces, supports, ports, nav hints, and boundary lists. This lets the engine rebuild only dirty regions under deterministic budgets instead of recomputing everything.
+
+The conversation later introduced future Interstellar and Wargames DLC needs. Instead of adding hardcoded space or war systems, the architecture generalized them. Space-like needs become domains, coordinate frame graphs, and propagators. Fog of war and information dissemination become observer contexts, belief stores, visibility/occlusion, and communications graphs. Knowledge is simulation state and must participate in replay and hashing. Combat-like interactions should eventually be expressed as generic actions and deltas, not special combat code in the core.
+
+A major refinement came from a sister-chat prompt. It required arbitrary placement, arbitrary rotation and inclination, curved 3D geometry, no engine grid lock, corridor co-location, real-world infrastructure scale, signage, markings, and surface detail. This forced the plan to explicitly adopt fixed-point pose plus parametric anchors as the placement source of truth. Grids are only UI snapping aids or spatial indices. Baked geometry is never authoritative. TRANS became the canonical corridor/alignment system with cross-section slots and junctions. STRUCT became the system for arbitrary buildings, volumes, enclosures, carriers, surfaces, and sockets. DECOR became a host-agnostic system for rule-generated and manually overridden signs, decals, markings, and props.
+
+The final practical product of the chat was a 14-prompt Codex implementation roadmap. The prompts cover, in order: engine invariants/specs/scaffolding; packet ABI/TLV registries; scheduler/budgets/delta commit; fields/events/messages; representation ladder; pose/anchors; TRANS; STRUCT; DECOR; agents/actions/groups; graph toolkit; domains/frames/propagators; observer/knowledge/visibility/comms; and determinism hardening/replay/regression. A separate documentation validation prompt was also created to keep all specs consistent and formal.
+
+Several issues remain unresolved. The actual repository was not inspected, so paths and build assumptions require verification. Exact fixed-point Q formats are not settled. The project still needs a decision on whether deterministic mods should be VM-only or allow native-code plugins. The detailed physics subsystem prompts still need to be generated after the core spine. The minimum viable implementation scope for large systems such as STRUCT, TRANS, and DECOR may need to be narrowed when implementation starts.
+
+The most important thing to preserve is the architectural direction: build a small set of deterministic, generic, data-driven engine primitives, and express all simulation, actor, infrastructure, DLC, and mod semantics through those primitives. Do not reintroduce grid-locked placement, baked geometry as truth, hardcoded humans/animals/robots/space/war logic, direct state mutation, unordered iteration, floating deterministic solvers, or UI-driven simulation state.
+
+The best next action is to inspect the repository and then adapt or run Codex Prompt 1. From there, proceed through the prompt plan carefully, verifying each foundation before building the next layer.
+
+# Reader Status
+
+* Chat title: Dominium/Domino Engine Refactor Planning
+* Report type: human-readable explanatory report
+* Main value of this chat: it created a coherent deterministic engine architecture and a 14-prompt Codex implementation roadmap integrating simulation, agents, performance, infrastructure, arbitrary placement, and future DLC foundations.
+* Most important decision: the engine must remain a semantic-free deterministic core built from generic primitives, with placement based on fixed-point pose and parametric anchors rather than grids or baked geometry.
+* Most important unresolved issue: VM-only versus native-code plugin policy, plus exact fixed-point Q-format specification.
+* Most important next action: inspect the actual repository, then adapt/run Codex Prompt 1.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: repository state was not inspected; some architecture decisions are assistant-proposed and should retain INFERENCE status unless confirmed elsewhere; exact prompt wording is summarized here; later chats may supersede parts of this plan.

@@ -1,0 +1,651 @@
+GPT-5.5 Pro — 2026-05-27 17:05:41
+
+# Human-Readable Chat Report — Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+
+## 1. One-Page Orientation
+
+This chat was a long, high-density planning and consolidation session for the **Dominium / Domino** project. In plain terms, it was about turning an extremely ambitious simulation-game vision into a disciplined, modular, future-proof engineering program. The project being discussed is not a normal game in the narrow sense. It is intended to be a deterministic universe engine and game platform: something that can support tiny single-room scenarios, singleplayer survival, co-op, MMO-scale shared universes, AI-only autorun civilizations, player-only worlds, spectator-only museums, strict competitive servers, anarchy servers, and god-mode administrative tooling without violating determinism, epistemics, reproducibility, or architecture boundaries.
+
+The conversation began as an extended planning effort around engine/game systems: rendering, simulation scale, procedural and real-world world data, timekeeping, calendars, economy, currencies, deaths, respawning, AI agents, politics, war, modding, tooling, and multi-platform support. Over time, the user repeatedly pushed the design toward a single underlying philosophy: **anything that represents world content, laws, capabilities, standards, or gameplay styles should be data-defined and composable where possible, while the engine/game code should provide stable, deterministic mechanisms and enforcement.** That philosophy became central. It was applied to calendars, currencies, units, rendering backends, UI, laws, capabilities, worlds, populations, economies, agents, authority, tools, tests, versions, changelogs, and source-code hygiene.
+
+A major turning point was the repository architecture refactor. The user provided canonical top-level layout rules: `engine/`, `game/`, `client/`, `server/`, `launcher/`, `setup/`, `tools/`, `libs/`, and `schema/` each have sharply separated responsibilities. The engine is reusable and independent. The game depends only on engine public APIs. Client/server are executables that bind engine + game. Launcher and setup must not leak into engine/game. This became a recurring constraint.
+
+Another major shift happened later, when the user pasted a new, stricter “current canon” from another chat. That context stated that the project architecture is **closed**, canon is **locked**, and future work should focus on **implementation, audit, optimisation, and maintenance**, not redesign. It also introduced a compressed ontology: all systems reduce to **Assemblies**, **Fields**, **Processes**, **Agents**, and **Law**. That later canon supersedes some earlier phrasing, though the earlier concepts remain useful background.
+
+The final active focus of the chat became the **application layer**, **testing/version/changelog governance**, and **source-code hygiene**. The application layer was clarified as a set of orchestration shells: setup, launcher, client, server, and tools. Applications must not contain gameplay logic, mutate authoritative world state, invent defaults, or bypass law, authority, RepoX, TestX, or epistemics. The launcher became the reference application; setup became the only install mutation authority; CLI became canonical; TUI/GUI became views over the same command graph; UI became data via UI IR; tools became read-only by default.
+
+The chat also produced or refined three highly important final prompt artifacts: **APP-UNIFIED-CANON**, **TESTX**, and **CODEHYGIENE-X**. APP-UNIFIED-CANON is the final application-layer plan. TESTX is the permanent verification/versioning/changelog/testing mega-prompt that supersedes TEST0. CODEHYGIENE-X is the source-code hygiene and data/code boundary program for removing hardcoded taxonomies, magic numbers, `CUSTOM/OTHER` enums, raw TODOs, and hidden app/admin assumptions.
+
+Finally, because the chat had grown huge, the user asked for a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat reader version, and now this human-readable explanation. The most important thing to remember is that this chat’s output is mostly **design plans, prompts, and handoff material**, not proof that the repository already contains those files or that Codex has executed the prompts. A future assistant must inspect the actual repo before claiming implementation state.
+
+---
+
+## 2. The Story of the Conversation
+
+### The early phase: expanding the game vision
+
+The conversation started as part of a broader effort to generate detailed Codex prompts for the Dominium / Domino project. The user wanted systems that would go far beyond ordinary games: deterministic simulation, massive worlds, real-world data import, procedural universes, epistemic fog of war, real economic systems, command-driven agents, calendars and timekeeping, custom HUD/UI, and player-programmable interfaces.
+
+The user repeatedly challenged the assistant to think beyond ordinary genre limitations. Examples included wanting a world that could simulate Sol, Earth, galaxies, cities, labor, property, companies, markets, currencies, calendars, communications protocols, measurement systems, war, AI agents, births, deaths, and long time spans. A recurring concern was avoiding the failure modes of games like Minecraft, Factorio, Cities: Skylines, EVE Online, Dwarf Fortress, Star Citizen, and Civilization when they try to satisfy “pipe dream” player demands. The conclusion was not to simulate everything at full micro fidelity all the time, but to simulate consequences under explicit constraints, using aggregation, fidelity projection, provenance, and deterministic refinement.
+
+### The architecture hardening phase
+
+The chat then moved into repo and architecture enforcement. The user supplied a canonical repository layout and strict engine/game separation rules. That reset the plan: future prompts had to respect `engine/` as a reusable library, `game/` as game logic, `client/` and `server/` as executables, `launcher/` and `setup/` as orchestration/install products, `tools/` as first-class tools, `libs/` as shared pure libraries, and `schema/` as canonical data formats.
+
+A large set of prompts was then generated to lock down architecture, determinism, performance, schema governance, rendering, epistemic UI, sharding, interest sets, and fidelity projection. This became the Phase 1 hardening layer. Additional audit prompts were introduced to ensure consistency before proceeding into life, civilization, war, content, agents, tools, mods, and final long-term policy.
+
+### The rendering and backend phase
+
+The user pasted external advice about rendering architecture: design from explicit APIs first, avoid lowest-common-denominator abstractions, treat old APIs as sinks, and support many renderers from legacy to modern. The discussion refined renderer directory naming. Capability folders like `implicit/` or ambiguous names like `gl2_3` were rejected. The preferred approach was API/backend identity folders plus runtime capability metadata. Rendering became a clear example of the broader philosophy: **folders describe implementation identity; capabilities describe behavior and feature support.**
+
+### The life, civilization, and conflict phase
+
+The plan then moved through LIFE and CIV systems. The user wanted death to be meaningful, hardcore by default, but with softcore, creative, and spectator behavior expressible through capability packages rather than hardcoded game modes. This led to person/body/controller separation, death pipelines, estates, inheritance, births, lineage, remains, salvage, survival needs, cohorts, households, migration, cities, infrastructure, governance, legitimacy, knowledge, technology diffusion, scale domains, and war.
+
+War and conflict were treated as event-driven, logistics-bounded, law-governed processes, not twitch combat minigames. Occupation, resistance, route interdiction, blockades, and interstellar warfare were all modeled as deterministic scheduled processes that integrate with life, logistics, legitimacy, and epistemics.
+
+### The execution substrate phase
+
+The user then asked how to support future hardware, parallelism, arbitrary cores, GPUs, distributed computing, and long-lived optimization. This led to the Work IR / Access IR execution substrate: gameplay systems express work declaratively; schedulers and backends decide how to execute it. A full prompt family was generated for Work IR, deterministic reordering, scheduler interfaces, parallel scheduler, ECS storage backends, scalar/SIMD/GPU kernels, subsystem adoption, sharding, integrity checkpoints, and regression audits.
+
+This was one of the most important engineering turns in the conversation. It made future performance work a backend/policy problem rather than a gameplay rewrite problem.
+
+### The reality, domain, travel, time, and authority phase
+
+The user then expanded the idea of arbitrary world boundaries and visitable AI civilizations. The answer was to add domain volumes, existence states, refinement contracts, visitability, reachability, travel graphs, observer clocks, buffered perception, and omnipotence/capability law. Domain volumes were recommended to use SDFs as canonical runtime representation, with CSG/splines/meshes as authoring formats baked to SDF. Travel became graph edges, even for portals and wormholes. God mode and admin powers were reframed as law-gated capabilities, not bypasses.
+
+### The testing, versioning, and hygiene phase
+
+Later, the user shifted from design to maintenance and enforcement. They wanted exhaustive tests, CLI-only where possible, long-lived modular tests, assertions, debugging aids, blockers documented both in docs and source, comment-density enforcement, build/version/changelog integration, and strict git rules. This produced TESTX, a superseding test governance prompt, and CODEHYGIENE-X, a source-code hygiene/data-boundary prompt.
+
+The user then added a newer versioning model from another chat: product SemVer is manual; build kind is dev/ci/beta/rc/release/hotfix; global build number is only for distributed beta/rc/release/hotfix; build instance ID always exists for dev/ci; channels are separate; all products in a release share the same GBN. This superseded the earlier simpler “build number increments whenever tests pass” model.
+
+### The application-layer convergence
+
+Near the end, the user pasted an application-layer bootstrap and setup/launcher plans from another chat. Those plans sharpened the application layer. Applications are now explicitly shells. Setup is the only installer/repair authority. Launcher is the reference app. CLI is canonical. GUI/TUI are views. UI is declarative data. RepoX is visible, not implicit. Tools are read-only by default.
+
+The assistant unified those into APP-UNIFIED-CANON, which is now the most important app-layer artifact from this chat.
+
+### The handoff/reporting phase
+
+Because the chat was huge, the user asked for a maximum-fidelity context transfer packet. Then they asked for downloadable report files. Then they asked for an in-chat reader. Finally, they asked for this human-readable explanatory report. This final report is meant to let a future assistant or human understand the substance without re-reading the whole conversation.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — The Dominium / Domino project vision
+
+The central project is a deterministic universe engine/game. The user’s ambition is not just a normal game but a world runtime that can represent everything from a single-room scenario to an AI-only universe to an MMO. The project is meant to support real-world defaults, arbitrary modding, procedural and defined content, strong epistemics, and long-term replayability.
+
+The key conclusion was that such a project cannot simulate every atom or every agent at maximum fidelity at all times. Instead, it needs layers: macro aggregation, refinement contracts, provenance, laws, capabilities, execution budgets, and deterministic scheduling. The user repeatedly pushed toward “anything possible,” but also accepted that “anything possible” must be expressed through explicit contracts, capabilities, modules, and laws.
+
+### Topic 2 — Engine/game/repo separation
+
+The user provided a canonical repository structure and non-negotiable engine/game dependency direction. The engine is reusable and independent. The game depends on engine public APIs only. Engine internals must not leak into game/tools. Rendering backends belong to the engine, not the client. Launcher/setup logic must not enter engine/game. Client/server are executables that bind engine and game.
+
+This mattered because many earlier designs could have accidentally put too much into the engine or application layer. The repo structure became a way to enforce architectural truth physically through directories, CMake, and CI.
+
+### Topic 3 — Deterministic simulation and execution substrate
+
+A major topic was how to make performance, parallelism, SIMD, GPU compute, and distributed execution future-proof. The answer became Work IR and Access IR. Instead of each gameplay system executing work directly or managing threads, systems emit tasks with declared reads/writes/reductions, law targets, determinism classes, costs, and fidelity. Schedulers can then execute those tasks deterministically, first with a single-thread reference scheduler, later with parallel schedulers or backend swaps.
+
+This topic is central to long-term scalability. It allows future CPUs, GPUs, NPUs, heterogeneous cores, cache structures, and distributed servers to be supported by adding backend policies rather than rewriting gameplay.
+
+### Topic 4 — Rendering architecture
+
+The user explored whether renderers should be foldered by feature/capability or by API/backend name. Capability folders like `implicit/` and ambiguous folders like `gl2_3` were criticized. The conclusion was that folders should identify concrete backends—such as `vulkan`, `d3d12`, `metal`, `gl`, `software`, `null`—while capabilities and families live in metadata/RenderCaps.
+
+Rendering decisions were framed around explicit API first: Vulkan/DX12/Metal inform core contracts; legacy renderers are sinks or downgraded consumers. Rendering never affects authoritative simulation.
+
+### Topic 5 — Data-defined worlds, laws, capabilities, standards, and gameplay styles
+
+A huge theme was avoiding hardcoded lists, enums, “custom/other” types, magic values, and hidden defaults. The user wanted calendars, currencies, units, law systems, gameplay styles, capabilities, economies, and standards to be data-defined where appropriate. The assistant refined the rule: not everything should be data. Execution semantics, determinism enforcement, ECS mechanics, law resolution algorithms, and storage backends remain code. But reality taxonomies, laws, capabilities, resources, materials, production chains, standards, and tunables should be data/registries.
+
+This led directly to CODEHYGIENE-X.
+
+### Topic 6 — Meta-law, capability law, and omnipotence
+
+The user wanted worlds ranging from spectator-only to no-griefing, no-PvP, no-war, anti-cheat, no-chat, no-respawn, no-tech, no-modded-clients, full anarchy, meta-anarchy, and omnipotent admin god mode. The solution was to treat all these not as game modes but as configurations of laws and capabilities.
+
+Meta-law decides what may exist or happen. Capability law decides who may attempt or observe something. Policy law constrains allowed actions. Omnipotence is not a bypass; it is a set of explicit capabilities that still produces auditable effects. This idea later merged into the application/tooling plan: even console commands, freecam, teleport, and dev tools are command intents gated by capability/law, not hidden shortcuts.
+
+### Topic 7 — Existence, domains, travel, visitability, and time perception
+
+The user asked how to support arbitrary-shaped playable boundaries and worlds of any size or shape. The answer was domain volumes, with SDF as the recommended canonical runtime representation. Domains define where simulation, law, travel, refinement, and jurisdiction apply. Travel becomes a graph of scheduled transitions. Exotic travel—portals, wormholes, hyperspace—is explicit graph edges, never hidden teleportation.
+
+The user also wanted AI-only civilizations that could exist outside bounds of play but become visitable and indistinguishable from real civilizations. The answer was existence states and refinement contracts. A macro civilization can be alive without micro-simulating every citizen, but if it is reachable and visitable, it must refine deterministically into micro detail consistent with its macro history.
+
+Time perception was separated from simulation truth. ACT remains authoritative; observer clocks and buffered perception create slow motion, fast-forward, replay, and spectator views without changing truth.
+
+### Topic 8 — Life, civilization, war, agents, content, tools, mods
+
+Large prompt families were generated for life/death/continuity, civilization/economy/governance, war/conflict, canonical content, agents, tools, mods, and final long-term maintenance. These are extensive background artifacts. Later, the chat shifted away from implementing those systems here because another bootstrap declared the core design complete and locked.
+
+For future use, those prompt families are historical/planned artifacts. They may be useful in content/spec aggregation, but current work should not redesign them.
+
+### Topic 9 — Testing, versioning, build identity, and changelogs
+
+The user wanted exhaustive tests for every generated code path, with CLI-only builds where possible, long-lived tests, deterministic logs, assertions, blockers in docs and source, comment density checks, and automatic changelog generation from git commits. TEST0 was generated, refined, and then replaced by TESTX.
+
+Later, the user pasted a newer build/version model from another chat. That model superseded simpler earlier ideas: GBN is only for distributed artifacts, BII exists always, build kind and channel are distinct, product SemVer is manual, and all protocols/schemas/API/ABI versions are orthogonal. This matters because future testing and app prompts must use BUILD-ID-0, not the earlier model.
+
+### Topic 10 — Application layer, setup, launcher, client, server, tools
+
+This became the final active topic. The user provided an application-layer bootstrap and two setup/launcher plans. Those were judged better than earlier app plans because they added concrete contract headers, launcher reference modules, UI IR, command graph parity, RepoX visibility, failure-mode docs, and read-only tools.
+
+The assistant unified them into APP-UNIFIED-CANON. This is the latest, most relevant plan for actual next implementation work.
+
+### Topic 11 — Handoff and report packaging
+
+Because the chat became large and slow, the user asked how to transfer knowledge to new chats. The answer was to materialize knowledge into docs and handoff packages. The chat generated a Context Transfer Packet, then a downloadable report package, then an in-chat reader. This final report is the human-readable version.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals the user stated
+
+The user explicitly wanted:
+
+* Fully customisable and programmable HUD/UI.
+* Data-defined calendars, currencies, standards, economies, laws, capabilities, measurement units, protocols, structures, and content.
+* Procedural plus defined worlds, including real-world data and procedural gap-filling.
+* Large-scale universes with deterministic simulation that can degrade gracefully.
+* Hardcore/softcore/creative/spectator as capability packages, not hardcoded modes.
+* Arbitrary world boundaries and visitability from room to galaxy scale.
+* AI-only, player-only, mixed, spectator-only, anarchy, and god-mode worlds.
+* Open-source LLMs as advisory, not authoritative.
+* Exhaustive testing, debugging, assertions, comments, blockers, versioning, changelogs, and CI.
+* Application layer separation with setup/launcher/client/server/tools.
+* A downloadable and then readable report package for this old chat.
+
+### Inferred goals
+
+**INFERENCE:** The user wanted to prevent future chats or Codex sessions from drifting, forgetting, or simplifying. They care deeply about maintaining continuity across many chats and turning fragmented planning into a stable project corpus.
+
+**INFERENCE:** The user wants the project to be usable as both a game and a world-simulation platform, with modding, education, research, content, and MMO operation possible long-term.
+
+### Goals that changed over time
+
+At first the chat was actively designing systems. Later it moved toward consolidating and enforcing architecture. Then it moved into application layer implementation planning. Finally it shifted into handoff/report packaging.
+
+The biggest change was from “generate more design prompts” to “architecture is closed; now implement, audit, maintain, and preserve.”
+
+### Unresolved goals
+
+The main unresolved goal is practical execution: which prompts have actually been run, which files exist, and what implementation should happen next.
+
+---
+
+## 5. Decisions Made and Why
+
+A short overview of the most important decisions:
+
+| Decision                                          | Status                  | Why it mattered                        |
+| ------------------------------------------------- | ----------------------- | -------------------------------------- |
+| Architecture closed/canon locked                  | Current PROJECT-CONTEXT | Prevents redesign drift                |
+| Apps are orchestration shells only                | Current                 | Prevents app logic creep               |
+| CLI is canonical                                  | Current                 | Ensures CLI/TUI/GUI parity             |
+| Setup is install mutation authority               | Current                 | Avoids duplicated install/repair logic |
+| Launcher is reference app                         | Current                 | Gives one application pattern          |
+| UI is data via UI IR                              | Current                 | Accessibility/localization/parity      |
+| Tools read-only by default                        | Current                 | Prevents hidden mutation               |
+| RepoX is build/changelog truth                    | Current                 | Automation and reproducibility         |
+| TESTX supersedes TEST0                            | Current                 | Latest test governance                 |
+| CODEHYGIENE-X is current hygiene plan             | Current                 | Latest data/code boundary plan         |
+| APP-UNIFIED-CANON supersedes previous app plans   | Current                 | Latest app-layer plan                  |
+| Generated prompts are not proof of implementation | Current                 | Prevents false repo-state claims       |
+
+### Architecture closed and canon locked
+
+**FACT / PROJECT-CONTEXT:** The latest user-pasted bootstrap says architecture is closed and canon locked. This is not merely an assistant suggestion. It is user-provided current context. The reason is practical: this chat had already explored enough architecture that further redesign would cause drift and delay. Going forward, the correct mode is implementation, audit, optimisation, and maintenance.
+
+This decision affects everything. A future assistant should not propose new ontology, new architecture, or major rule changes unless the user explicitly asks.
+
+### Apps as orchestration shells
+
+This was accepted through the latest application-layer bootstrap and APP-UNIFIED-CANON. Applications are allowed to display, invoke, validate, inspect, and orchestrate. They are not allowed to decide simulation rules, mutate authoritative state, or invent defaults. This protects the engine/game from application-layer contamination.
+
+### CLI canonical; GUI/TUI as views
+
+The decision was driven by parity, automation, testing, and accessibility. CLI can be tested easily and consistently. GUI/TUI must not become separate semantic layers. They render the same command graph.
+
+This also matches the user’s testing preference: avoid GUI/TUI build/run errors unless explicitly necessary.
+
+### Setup as install mutation authority
+
+Setup handles install, verify, repair, rollback, upgrade, downgrade, uninstall, and status. Launcher can invoke Setup, but must not replicate its mutation logic. This prevents two products from disagreeing about installation state.
+
+### Launcher as reference app
+
+The launcher is the canonical application pattern because it touches instance selection, profiles, packs, RepoX, compatibility, validation, launch requests, and diagnostics. Once it is right, setup/client/server/tools can follow its appcore/command/output patterns.
+
+### UI IR as data
+
+This emerged from the broader philosophy: if something can be expressed as data, especially UI layout and strings, it should be. UI IR supports CLI/TUI/GUI parity, localization, screen reader tags, keyboard navigation, and removal of business logic from UI.
+
+### RepoX and changelogs
+
+RepoX became the source of truth for build number, commit history, changelogs, canon-clean tags, and compatibility. This replaced manual changelogs. The rationale is that manual changelogs drift, while commit-derived changelogs can be enforced.
+
+### TESTX superseding TEST0
+
+The original TEST0 prompt aimed to generate and run exhaustive tests. The user then added requirements for long-lived modular tests, version integration, changelogs, git discipline, blockers, assertions, comment density, and future automation. TESTX replaced TEST0 to include all of that.
+
+### CODEHYGIENE-X
+
+The user noticed hardcoded systems/types/variables and wanted data-driven modularity. CODEHYGIENE-X was generated as a long-lived program, not a one-time cleanup. It separates architectural enums that stay code from reality taxonomies that should become data/registries.
+
+### APP-UNIFIED-CANON
+
+After the user pasted setup/launcher plans from another chat, the assistant judged them better and merged them with prior app planning. APP-UNIFIED-CANON became the latest application-layer plan.
+
+### Generated prompts are not repo facts
+
+This is an extremely important decision. The chat generated many prompts, but there is no evidence in this conversation that they were executed. Future assistants must inspect the repository before claiming files exist.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Hardcoded game modes
+
+Hardcoded modes like “creative mode,” “anarchy mode,” or “admin mode” were superseded by data-defined laws and capabilities. This rejection is final under current canon. If a future feature looks like a mode, it should probably be expressed as a capability/law/profile.
+
+### Admin bypasses and `isAdmin`
+
+The idea of admin as a hidden bypass was rejected. God mode exists, but as explicit capabilities and law-governed effects with audit trails. This matters because hidden admin shortcuts would corrupt replayability, integrity, and trust.
+
+### Manual changelog editing
+
+Manual changelogs were rejected once RepoX was established as changelog source of truth. This is current and final unless RepoX itself changes.
+
+### GUI/TUI as semantic layers
+
+Rejected because CLI is canonical. GUI/TUI can exist, but only as views over the same command graph. This prevents divergent behavior and test complexity.
+
+### Magic teleportation
+
+Rejected earlier in the reality/travel layer. Movement must go through travel graphs, even exotic movement like portals and wormholes.
+
+### Hardcoded open taxonomies
+
+Enums with `CUSTOM`, `OTHER`, or fixed resource/material/capability lists were rejected for open-world concepts. Use stable IDs and registries instead.
+
+### Simple global build number for everything
+
+Superseded. Earlier build-number logic said build number increments after all tests pass. Later BUILD-ID-0 provided a more nuanced model: GBN only for distributed artifacts, BII for dev/ci.
+
+### Content assumptions in applications
+
+Rejected. Apps must run with zero content packs installed. Missing content produces diagnostics or raw keys, not hidden defaults.
+
+### Broad redesign inside application chats
+
+Rejected by the latest user-pasted bootstrap. Application chats are for implementation and maintenance only.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The biggest visible reasoning pattern was **separation of concerns for long-term survival**. Every time a system threatened to become hardcoded, the plan shifted toward data, contracts, registries, schemas, or law/capability definitions. Every time a system threatened determinism or authority, the plan shifted toward explicit processes, audit logs, refusal states, and validation.
+
+Several tradeoffs shaped the choices:
+
+### Flexibility versus performance
+
+The user wanted almost everything customizable and extensible, but also cared about performance and optimization. The solution was not to use strings and scripts everywhere. Instead, open taxonomies become data-defined registries with stable numeric IDs. Runtime hot paths use IDs and arrays, while strings appear only at load time, tools, or debugging.
+
+### Omnipotence versus integrity
+
+The user wanted everything from strict spectator-only servers to god-mode admins. The solution was to treat omnipotence as capability, not bypass. Admins can be powerful, but actions still become explicit effects with auditability.
+
+### Infinite worlds versus performance
+
+The project wants arbitrary scale. The solution was not to simulate everything at once. Instead, existence states, macro capsules, refinement contracts, visitability checks, interest, domains, budgets, and Work IR let the project scale by simulating only what matters at the needed fidelity.
+
+### Application convenience versus canonical boundaries
+
+Setup/launcher/client/server/tools could easily become messy convenience layers. The final plan prevents that by making applications shells over contracts, command graphs, appcore, RepoX/TestX, and schema artifacts.
+
+### Testing effort versus future safety
+
+The user wanted tests to be exhaustive, long-lived, and portable. The rationale is that this project is too complex to rely on manual discipline. Tests, assertions, CI, comment density, blockers, versions, and changelogs become part of the architecture, not optional QA.
+
+### Human continuity versus chat drift
+
+The user repeatedly worried about transferring context between chats. The handoff/report-package process exists because assistant memory is not reliable enough for a project this large. The visible reasoning was: materialize knowledge into docs/reports/packages, then use those as source.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+### Best immediate next step
+
+The best next step is to start a new chat with this report or the bootstrap and choose a single active workstream. If the user wants application-layer work, the next assistant should inspect the repo first, then generate or run a concrete Codex prompt for `libs/contracts` and `libs/appcore`.
+
+### Application implementation path
+
+First, verify whether `libs/contracts` and `libs/appcore` already exist. Then implement the pure contract headers and appcore skeleton. This should include:
+
+* `app_launch_request`
+* `app_launch_result`
+* `app_instance_manifest`
+* `app_pack_state`
+* `app_capabilities`
+* `app_version_info`
+* `app_failure_report`
+* `app_diagnostics_report`
+* appcore modules for discover/profile/repox/validate/invoke/command/output
+
+The danger is accidentally putting business logic or simulation assumptions into these libraries. They must remain application-only and content-agnostic.
+
+### RepoX/TestX/VALIDATE verification
+
+Before implementing app RepoX integration, verify actual RepoX metadata paths, TestX invocation, VALIDATE-0 commands, and BUILD-ID-0 files. Without that, an implementation prompt would guess.
+
+### TESTX execution
+
+If the user chooses testing next, run or adapt TESTX. This should create or normalize the test harness, assertion tiers, blocker docs, changelog/version logic, and CI integration. It should be careful to use BUILD-ID-0 semantics, not the superseded earlier model.
+
+### CODEHYGIENE-X execution
+
+If the user chooses source hygiene next, run CODEHYGIENE-X. Ideally do this after a baseline test run so refactors have protection. The first stage should be scan-only and queue generation, not broad rewrites.
+
+### Docs/canon verification
+
+If the user wants to consolidate docs, run DOCS0 or CANON0/FUTURE0 after inspecting actual docs. The key issue is whether `CANON_INDEX.md`, status headers, and current canon files exist.
+
+### Content/data work
+
+Content work should happen in a separate chat. Use the standalone CONTENT0 prompt. Do not mix content population with app-layer implementation or source hygiene.
+
+### Dependencies and blockers
+
+Major blockers are the lack of verified repo state and missing exact paths/interfaces for RepoX/TestX/VALIDATE-0/BUILD-ID-0.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints
+
+* Architecture closed; canon locked.
+* Engine C89.
+* Game C++98.
+* Apps may use newer toolchains but must not impose them on engine/game.
+* Applications cannot contain gameplay logic.
+* Applications cannot mutate authoritative world state.
+* Applications cannot bypass law, authority, or epistemics.
+* Applications must run with zero content packs.
+* CLI is canonical.
+* GUI/TUI are views over the same command graph.
+* UI is data, never business logic.
+* Tools read-only by default.
+* Setup is install mutation authority.
+* RepoX/TestX must not be bypassed.
+* No manual changelog editing.
+* Build/version mismatches refuse loudly.
+* Windows/simple tests should be CLI-only unless GUI/TUI is specifically necessary.
+* Use labels like FACT, INFERENCE, UNCERTAIN, PROJECT-CONTEXT in reports.
+* Do not treat generated prompts as executed code.
+
+### Explicit user preferences
+
+The user wants:
+
+* high fidelity and detail,
+* modularity,
+* extensibility,
+* robustness,
+* future-proofing,
+* Codex-ready prompts,
+* plain-language reports when requested,
+* rigorous context transfer,
+* strong testing/versioning/changelog automation,
+* source code comments and documentation,
+* data-driven definitions where appropriate,
+* no unnecessary GUI/TUI friction.
+
+### Inferred preferences
+
+**INFERENCE:** The user prefers large, comprehensive prompts over many tiny ones when designing major systems, but also appreciates modular internal structure.
+
+**INFERENCE:** The user cares more about long-term correctness and future maintainability than short-term convenience.
+
+### Evidence/citation requirements
+
+From the user profile and instructions, future assistants should verify time-sensitive/current facts with web where relevant. This chat itself is mostly internal project planning, so external citations are not central.
+
+### Things future assistants should avoid
+
+* Re-designing locked architecture.
+* Making app-layer assumptions about content.
+* Claiming files exist without repo inspection.
+* Treating assistant suggestions as user decisions.
+* Treating brainstorms as final.
+* Using older superseded plans when newer ones exist.
+* Turning this report into a database export when user asks for prose.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+This chat generated many prompts and later packaged them into report files. The most important artifacts are:
+
+### APP-UNIFIED-CANON
+
+This is the final unified application-layer plan. It should be preserved and used as the basis for application implementation. It contains the `libs/contracts` and `libs/appcore` architecture, command graph, UI IR, setup/launcher/client/server/tools responsibilities, RepoX integration, accessibility/localisation, and failure behavior.
+
+### TESTX
+
+This supersedes TEST0. It is the current testing/version/changelog mega-prompt. It should be used if the user wants to implement the permanent verification system.
+
+### CODEHYGIENE-X
+
+This is the current source hygiene/data-code boundary prompt. It scans, queues, migrates, and enforces rules against hardcoded taxonomies, magic numbers, mode/admin flags, and undocumented TODOs.
+
+### DOCS0, CANON0, REALITY0, LIFE0+, CIV0+, FUTURE0
+
+These were macro documentation/canon prompts meant to populate docs and consolidate the massive architecture into readable canon. They are important for the future Project Spec Book but are not necessarily executed.
+
+### Standalone CONTENT0 and APP0
+
+These were designed for separate chats that do not have access to the whole conversation. APP0 was later superseded by APP-UNIFIED-CANON for application-layer work. CONTENT0 remains useful for a content/data-only chat.
+
+### Execution/runtime prompt families
+
+EXEC, ECSX, KERN, ADOPT, DIST, HWCAPS, EXIST, DOMAIN, TRAVEL, TIME, OMNI, LIFE, CIV, WAR, AGENT, TOOL, MOD, FINAL prompt families were generated earlier. They are important as historical design artifacts, but actual repo execution is unverified.
+
+### Report package files
+
+The chat produced downloadable handoff files and later an in-chat reader. Those files are useful for aggregation but are not themselves project source code. The package’s main caveat is that it does not verify actual repository state.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+The most important unresolved issue is actual repository state. We do not know which prompts were run, which files exist, or which systems are implemented.
+
+### Which prompts were actually executed?
+
+This matters because the chat generated many Codex-ready prompts. Without repo inspection, they remain planned artifacts. The resolution is to inspect git history, source tree, and docs, or ask the user.
+
+### Does `CANON_INDEX.md` exist?
+
+The latest project-context says `CANON_INDEX.md` is the single source of truth. The package does not verify its existence. This should be checked before using docs as canon.
+
+### Where are RepoX metadata files?
+
+Application implementation depends on reading RepoX build, version, changelog, canon-clean tag, and compatibility data. The exact paths and formats are unknown.
+
+### What are TestX and VALIDATE-0 interfaces?
+
+The appcore validate module cannot be implemented safely until the commands, output formats, and failure semantics are known.
+
+### Is BUILD-ID-0 implemented?
+
+The versioning model is stated as canon, but actual implementation is unverified.
+
+### Do `libs/contracts`, `libs/appcore`, and `schema/ui` exist?
+
+These are proposed by APP-UNIFIED-CANON. If they already exist, future implementation should extend them rather than recreate them.
+
+### How should `DOMINIUM_RUN_ROOT` and `DOMINIUM_HOME` work?
+
+APP-UNIFIED-CANON references the environment/run-root contract but does not finalize exact semantics in this report. Future work should inspect docs or ask.
+
+### Does latest ontology supersede older phrasing?
+
+The report flags possible terminology conflict. The latest ontology is Assemblies, Fields, Processes, Agents, Law. Older prompts used Intent/Action/Effect. This should be reconciled in docs.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+### Mistaking prompt artifacts for implementation
+
+This is the biggest risk. The chat generated many prompts, but they are not proof that files exist or code works. Future assistants must inspect source/docs before implementation claims.
+
+### Re-opening architecture
+
+A future assistant might try to improve or simplify architecture. The latest user-pasted canon forbids that. The architecture is closed.
+
+### Letting application logic creep in
+
+Setup, launcher, client, server, and tools must not contain gameplay logic or hidden defaults. The application layer is especially vulnerable to convenience hacks.
+
+### Using the wrong build/version model
+
+The earlier build-number idea is superseded by BUILD-ID-0. Future work must use the later model.
+
+### Forgetting zero-pack operation
+
+Apps must run without content packs. If future app work assumes content exists, it violates canon.
+
+### Treating UI as code
+
+UI should be data/IR and command-bound. GUI/TUI must not become independent logic layers.
+
+### Losing external context
+
+Several current constraints came from user-pasted other-chat context. Future chats may not have APP-CANON1, APP-AUTO-0, APP-UI-BIND-0, BUILD-ID-0, SRZ-0, VALIDATE-0, CLEAN-2, or DEV-OPS-0 docs unless provided.
+
+### Overcompressing
+
+The project is too complex for vague summaries. Future assistants should preserve IDs, artifacts, and caveats.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat’s unique contributions are mainly in:
+
+1. **Application layer canon**
+   APP-UNIFIED-CANON should feed into the Application Layer chapter of a future Project Spec Book.
+
+2. **Testing/release governance**
+   TESTX and BUILD-ID-0 reconciliation should feed into Testing, Release, Versioning, and RepoX chapters.
+
+3. **Source-code hygiene**
+   CODEHYGIENE-X should feed into Code Quality, Data/Code Boundary, and Contributor Governance chapters.
+
+4. **Context transfer methodology**
+   The handoff/report package process should feed into Project Knowledge Management or Spec Aggregation methodology.
+
+The chat overlaps with other chats on core architecture, SRZ-0, RepoX/TestX, app canon, and build ID semantics. It should not be treated as the only source for those systems. Instead, it should be merged with reports from the specific chats where those systems were originally designed.
+
+What should become formal requirements:
+
+* Applications are orchestration shells.
+* CLI canonical.
+* Setup-only install mutation authority.
+* Tools read-only by default.
+* UI IR data-driven.
+* RepoX-generated changelogs.
+* No manual changelog editing.
+* Generated prompts not proof of implementation.
+* Data/code boundary hygiene rules.
+
+What should remain background context:
+
+* The long sequence of earlier generated prompts, unless those prompt bodies are later promoted into actual docs.
+
+What needs verification:
+
+* Actual repo state, docs, source, and prompt execution status.
+
+---
+
+## 14. What I Should Remember
+
+* This chat ended with **implementation, audit, optimisation, and maintenance** as the accepted operating mode. Not redesign.
+* The latest root ontology is **Assemblies, Fields, Processes, Agents, Law**.
+* The application layer is the most current active workstream.
+* **APP-UNIFIED-CANON** is the latest application-layer plan.
+* Applications are shells. They do not contain gameplay logic.
+* Setup is the only install mutation authority.
+* Launcher is the reference application.
+* CLI is canonical; GUI/TUI are views.
+* UI is declarative data via UI IR.
+* Tools are read-only by default.
+* Apps must run with zero content packs.
+* RepoX is the source of truth for build/changelog/compatibility.
+* Manual changelogs are rejected.
+* BUILD-ID-0 supersedes earlier build-number ideas.
+* **TESTX** supersedes TEST0.
+* **CODEHYGIENE-X** is the current source hygiene/data-boundary plan.
+* Generated prompts are not executed repo facts.
+* Before implementing anything, inspect the repository.
+* The best next implementation target, if continuing application work, is likely `libs/contracts` + `libs/appcore`.
+* The biggest unresolved issue is what actually exists in the repo.
+* The biggest risk is a future assistant treating this chat’s plans as already implemented.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Explain APP-UNIFIED-CANON in practical implementation order.”
+2. “Generate the first concrete Codex prompt for `libs/contracts` and `libs/appcore`.”
+3. “Which repository files should I inspect first before continuing?”
+4. “Explain how TESTX should be reconciled with BUILD-ID-0.”
+5. “Explain CODEHYGIENE-X and what it should scan first.”
+6. “Which parts of this chat should become formal spec-book requirements?”
+7. “Which artifacts are superseded and should not be used?”
+8. “Create a new-chat bootstrap specifically for application implementation.”
+9. “Create a checklist for verifying RepoX/TestX/VALIDATE-0 before app work.”
+10. “Summarize this chat for an aggregator in 1,000 words.”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was a long consolidation and planning session for the Dominium / Domino project, a deterministic simulation-first universe engine/game. The broader project aims to support worlds from tiny single-room maps to MMO-scale universes, with strong epistemics, no fake systems, and no hidden shortcuts. Earlier parts of the conversation generated many prompt families for engine/game architecture, rendering, execution backends, ECS storage, kernels, sharding, existence, domains, travel, time, authority, life, civilization, war, content, agents, tools, mods, testing, and documentation. Those prompts are important artifacts, but the chat later shifted away from broad architecture design and toward implementation-readiness, application-layer planning, testing/version governance, source hygiene, and handoff packaging.
+
+The most important change over time was that the user supplied newer project-context from another chat declaring that the architecture is closed and canon is locked. From that point onward, the correct mode became implementation, audit, optimisation, and maintenance only. The latest ontology says every system must reduce to Assemblies, Fields, Processes, Agents, and Law. Engine code is C89, game code is C++98, and applications may use newer toolchains only if they do not impose requirements on engine or game.
+
+The current active workstream is the application layer. The user pasted setup and launcher plans from another chat, and those were merged into APP-UNIFIED-CANON. This is the latest application-layer plan. It says all applications are orchestration shells: content-agnostic, rule-agnostic, authority-agnostic, deterministic, inspectable, and replaceable. They must not contain gameplay logic, mutate authoritative world state, invent defaults, hide failures, or bypass RepoX/TestX. Setup is the only authority for install, verify, repair, rollback, upgrade, downgrade, uninstall, and status. Launcher is the reference application. CLI is canonical; TUI and GUI are merely views over the same command graph. UI is data through UI IR, not business logic. Tools are read-only by default. All apps must run with zero content packs installed.
+
+APP-UNIFIED-CANON proposes `libs/contracts/include/dom_contracts/` as a pure POD/TLV-friendly contract layer and `libs/appcore/` as shared app-only functionality. The contract layer includes launch requests/results, instance manifests, pack state, capabilities, version info, failure reports, and diagnostics. Appcore includes discovery, profile checks, RepoX reading, validation/TestX invocation, process invocation, command parsing, and output rendering. This should be the basis for concrete application implementation, but actual repo state is unverified.
+
+Another major output is TESTX, which supersedes the earlier TEST0 prompt. TESTX defines a permanent verification and testing system: CLI-first tests, deterministic harnesses, assertion tiers, comment-density checks, blocker tracking in docs and source, version/build metadata, commit taxonomy, and automatic changelog generation. However, later user-pasted BUILD-ID-0 semantics supersede the earlier simple build-number model. The current model uses product SemVer, build kind, global build number for distributed beta/rc/release/hotfix artifacts, build instance ID for dev/ci, separate channels, and orthogonal protocol/schema/API/ABI versions. Mismatches must refuse loudly.
+
+The third major active output is CODEHYGIENE-X. This is a source-code hygiene and data/code boundary program. It scans for hardcoded taxonomies, magic numbers, enums with `CUSTOM` or `OTHER`, hidden mode/admin flags, raw TODOs, and missing comments. It classifies which concepts must stay in code and which should become data or registries. Structural invariants like execution semantics, law resolution algorithms, ECS mechanics, and deterministic scheduling stay in code. Open-world concepts like resources, materials, capabilities, law targets, production chains, standards, and tunable parameters should become schema-validated data or stable registries.
+
+The chat also produced report packages for itself: a context transfer packet, downloadable package, in-chat reader, and this human-readable report. These exist because the chat became too large and the user wanted future assistants to continue without re-reading everything. The most important warning is that generated prompts are artifacts, not proof of implementation. A future assistant must inspect actual repo/source/docs before claiming files exist or code is implemented.
+
+The most important next action is to start a new chat with this report or the bootstrap, choose a workstream, and verify actual repository state. If continuing application work, the likely first implementation target is `libs/contracts` plus `libs/appcore`, but only after checking whether they already exist and how RepoX/TestX/VALIDATE-0/BUILD-ID-0 are represented in the repo. If continuing testing work, adapt TESTX to the latest BUILD-ID-0 model. If continuing source hygiene, run CODEHYGIENE-X, preferably after establishing a test baseline.
+
+The key things to preserve are: architecture closed; apps are shells; CLI canonical; setup-only install authority; launcher reference app; UI as data; tools read-only; zero content packs; RepoX/TestX enforcement; BUILD-ID-0 versioning; TESTX and CODEHYGIENE-X as current prompts; and the fact that actual repo state remains unverified.
+
+# Reader Status
+
+* Chat title: Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning
+* Report type: human-readable explanatory report
+* Main value of this chat: It consolidates the project’s late-stage implementation posture, especially the application layer, testing/version governance, source hygiene, and handoff strategy.
+* Most important decision: APP-UNIFIED-CANON is the current application-layer plan, and architecture is closed/canon locked.
+* Most important unresolved issue: Which generated prompts have actually been executed and what the actual repository state is.
+* Most important next action: Inspect the repo, then if continuing application work, generate/execute a concrete prompt for `libs/contracts` and `libs/appcore` under APP-UNIFIED-CANON.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: Generated prompts are not evidence of implemented code; user-pasted external project context needs original docs/source for full verification; BUILD-ID-0, RepoX, TestX, VALIDATE-0, and CANON_INDEX paths/interfaces remain unverified.

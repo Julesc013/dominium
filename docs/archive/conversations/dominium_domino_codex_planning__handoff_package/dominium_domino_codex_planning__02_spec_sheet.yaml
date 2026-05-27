@@ -1,0 +1,2213 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Domino Codex Planning
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: THIS CHAT ONLY; project-level context labelled PROJECT-CONTEXT where used.
+    apparent_coverage: full visible-chat coverage with repo-state caveats
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - Repo-specific claims must be verified against dominium.zip/current checkout.
+    - Generated Codex prompts are summarized rather than reproduced verbatim.
+    - Execution status of prompts is unknown.
+    - Prior assistant claim of inspecting dominium.zip is unverified in visible context.
+  summary:
+    one_sentence: This chat defined and packaged the Dominium + Domino planning state, including architecture constraints,
+      Codex prompt sequences, startup policy, repo-questionnaire caveats, and a final handoff package.
+    short_brief: 'This chat centered on the Dominium + Domino project: a deterministic, fixed-point, cross-platform engine/product
+      suite. The user''s opening project specification established Domino as the lower-level ISO C89 engine and Dominium as
+      the C++98 product suite above it, with content/mods/packs above Dominium. The central architectural requirements were
+      strict layering, deterministic simulation across platforms, stable versioned ABIs and file formats, and portable rendering
+      and system abstractions. The key named abstractions are dsys for platform services and dgfx for rendering. The user
+      repeatedly emphasized compatibility: old saves, packs, mods, instances, and tools must not silently break.
+
+
+      The chat produced a staged plan and then a series of self-contained Codex prompts. First, the assistant recommended
+      narrowing the initial implementation to a Milestone-0 vertical slice instead of attempting all platforms, renderers,
+      UI systems, and simulation features simultaneously. The user accepted the direction by asking for six Codex prompts.
+      Those prompts covered: canonical spec docs, repo/CMake skeleton, deterministic numeric core, DOMINIUM_HOME product manifest
+      loading, minimal deterministic sim/headless game/TLV save, and launcher-to-game process spawning through dsys. The user
+      explicitly reminded that numeric formats include U8/I8/U16/I16/U32/I32/u64/i64 and fixed-point Q4.12/q16.16/Q24.8/q48.16.
+
+
+      The chat then expanded into shared product interfaces. The user requested three prompts covering CLI, TUI, and GUI for
+      launcher, game, setup, and tools using common components. The assistant generated universal CLI, TUI, and GUI prompts.
+      The user next requested three more prompts: shared input/state/IME, multi-window GUI/dgfx pipelines/GPU backend detection,
+      and pack-system integration...'
+    main_topics:
+    - Dominium + Domino architecture
+    - Milestone-0 implementation prompts
+    - Shared CLI/TUI/GUI prompts
+    - Input/state/IME prompt
+    - Multi-window/dgfx/backend detection prompt
+    - Missing pack-system prompt
+    - Unified startup/mode dispatcher
+    - Platform/render/API questionnaire
+    - Context transfer and final report packaging
+    main_outputs:
+    - Forward plan phases 0-12
+    - Codex Prompt 1 — SPEC_IDENTITY + SPEC_PRODUCTS
+    - Codex Prompt 2 — Repo layout, CMake skeleton, core/product targets
+    - Codex Prompt 3 — Deterministic numeric core + test harness
+    - Codex Prompt 4 — DOMINIUM_HOME repo model + launcher enumeration
+    - Codex Prompt 5 — Deterministic sim + headless game + TLV save
+    - Codex Prompt 6 — Launcher to game process spawn via dsys
+    - Prompt A — Universal CLI Layer
+    - Prompt B — Universal TUI Layer
+    - Prompt C — Universal GUI Layer
+    - Prompt — Shared Input System + State Machines + Cross-Platform IME
+    - Prompt — Multi-window GUI + dgfx Pipelines + GPU Backend Detection
+    - Prompt — Unified Startup / Mode Dispatcher
+    - Context Transfer Packet from prior assistant
+    - dominium_domino_codex_planning__01_full_chat_report.md
+    - dominium_domino_codex_planning__02_spec_sheet.yaml
+    - dominium_domino_codex_planning__03_aggregator_packet.md
+    - dominium_domino_codex_planning__04_registers.md
+    - dominium_domino_codex_planning__05_reader_brief.md
+    - dominium_domino_codex_planning__06_verification_and_audit.md
+    - dominium_domino_codex_planning__manifest.md
+    - dominium_domino_codex_planning__handoff_package.zip
+    highest_priority_carry_forward:
+    - Domino C89 / Dominium C++98 language split
+    - dsys-only platform access
+    - dgfx-only rendering path
+    - Deterministic fixed-point simulation
+    - Compatibility guarantees for old saves/mods/packs/tools
+    - Milestone-0 six-prompt sequence
+    - Common CLI/TUI/GUI prompt set
+    - Missing pack-system prompt
+    - 'Startup policy: terminal CLI, no-terminal GUI→TUI→CLI'
+    - Startup prompt linker risk
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Direct user statements outrank assistant suggestions.
+    - Actual repo files outrank pasted or assistant-summarized repo facts.
+    - Do not treat assistant recommendations as decisions unless user accepted or acted on them.
+    - Preserve contradictions and tentative status.
+    staleness_rules:
+    - Repo/build/toolchain/API claims require current verification before implementation.
+    - External-world facts and software versions may have changed.
+    - Generated prompts do not prove implemented code.
+  user_preferences:
+    explicit:
+    - id: PREF-01
+      preference: Direct, technical, concise responses with no filler.
+      label: FACT
+      source_basis: User profile/instructions in chat context.
+      strength: high
+      implication: Future assistants should avoid hype, soft asks, and conversational padding.
+      risk_if_misunderstood: Responses may feel evasive or bloated.
+    - id: PREF-02
+      preference: Use rigorous, verified, cited facts where factual claims matter.
+      label: FACT
+      source_basis: User profile says correctly cited sources and rigorously tested facts; final request demands verification
+        labels.
+      strength: high
+      implication: Inspect repo/files/web where required; label uncertainty.
+      risk_if_misunderstood: Unverified claims may be mistaken for decisions/facts.
+    - id: PREF-03
+      preference: Prefer second- and third-order architectural thinking.
+      label: FACT
+      source_basis: User profile.
+      strength: medium-high
+      implication: Discuss implications, risks, dependencies, and future-proofing.
+      risk_if_misunderstood: Overly shallow implementation prompts may create rework.
+    - id: PREF-05
+      preference: Do not ask unnecessary clarifying questions; make best-effort recommendations.
+      label: FACT / PROJECT-CONTEXT
+      source_basis: User instruction profile and developer instruction favor best effort.
+      strength: high
+      implication: Proceed with reasonable assumptions while labelling them.
+      risk_if_misunderstood: Work may stall on avoidable questions.
+    - id: PREF-06
+      preference: Start each message with model version and build date.
+      label: FACT
+      source_basis: User instruction profile.
+      strength: high
+      implication: Future assistant should use this format unless higher-priority instructions conflict.
+      risk_if_misunderstood: User formatting preference violated.
+    - id: PREF-07
+      preference: Preserve maximum-fidelity context across chats.
+      label: FACT
+      source_basis: Current and prior context-transfer requests.
+      strength: high
+      implication: Reports should be structured, auditable, and downloadable when possible.
+      risk_if_misunderstood: Loss of prior decisions/prompts/tasks.
+    - id: PREF-08
+      preference: Be critical by default, especially about over-broad scope and implementation risks.
+      label: FACT
+      source_basis: User profile says be critical by default; assistant recommendations followed this.
+      strength: high
+      implication: Flag architectural risks and prompt design flaws rather than just comply superficially.
+      risk_if_misunderstood: Risky prompts may be executed without safeguards.
+    inferred:
+    - id: PREF-04
+      preference: Generate self-contained Codex prompts for implementation work.
+      label: INFERENCE
+      source_basis: User repeatedly requested prompts to give to Codex.
+      strength: high within this chat
+      implication: Future prompts should include scope, constraints, file paths, output expectations.
+      risk_if_misunderstood: Codex may lack context and implement incorrectly.
+    uncertain_or_not_established:
+    - Future env/config startup override preference not established.
+    - D3D12 scope not established.
+    - Windows subsystem strategy not established.
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Dominium + Domino Core Architecture Continuity
+    label: FACT
+    objective: Preserve and continue the architecture for Domino as deterministic C89 engine and Dominium as C++98 product
+      suite built on it.
+    current_state: The chat established the architecture constraints in the user's Extended Master Starter Prompt and the
+      prior transfer packet preserved them. Actual repo implementation state must be verified separately.
+    desired_end_state: A stable deterministic engine/product suite with strict dsys/dgfx layering, versioned ABI/file formats,
+      and compatibility-preserving products.
+    status: active
+    priority: highest
+    background: The user provided a detailed master prompt covering engine identity, repository layout, platform/rendering
+      matrices, product model, compatibility, simulation, modding, and UI constraints.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    - DECISION-04
+    - DECISION-05
+    - DECISION-06
+    - DECISION-07
+    - DECISION-08
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-02
+    - QUESTION-03
+    - QUESTION-09
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-05
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies:
+    - Verified repo contents
+    - CMake targets
+    - dsys/dgfx/core modules
+    timeline: Originating project context was given first; all later prompt planning depends on it.
+    blockers:
+    - Repo state not verified in this final packaging task.
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-04
+    - RISK-08
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-39
+    success_criteria:
+    - Future assistant preserves all hard architectural constraints.
+    - Repo-specific claims are verified before action.
+    next_action: Verify current repo, then continue from the relevant prompt/workstream.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    confidence: 5
+    carry_forward_priority: highest
+  - id: WORKSTREAM-02
+    name: Milestone-0 Vertical Slice via Six Codex Prompts
+    label: FACT
+    objective: 'Create a minimal launcher-to-game deterministic pipeline: specs, layout, numeric core, repo model, sim/TLV,
+      launcher process spawn.'
+    current_state: Six Codex prompts were generated. It is not established in this chat whether they were executed.
+    desired_end_state: 'A working vertical slice: launcher discovers product manifest, spawns game, game runs deterministic
+      headless sim, prints checksum, writes TLV save.'
+    status: active / execution uncertain
+    priority: highest
+    background: Assistant recommended narrowing the first working thing to prevent architecture overreach; the user then requested
+      six implementation prompts.
+    decisions_made:
+    - DECISION-09
+    - DECISION-10
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-03
+    - QUESTION-04
+    - QUESTION-05
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    - TASK-04
+    - TASK-05
+    - TASK-06
+    - TASK-07
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-09
+    dependencies:
+    - Codex execution
+    - CMake
+    - Domino core
+    - Dominium product targets
+    timeline: Prompts 1 through 6 were generated sequentially after user repeatedly asked 'Next'.
+    blockers:
+    - Unknown execution status
+    - Potential C89/C++98 issues in generated snippets
+    - Potential endian incompatibility in TLV prompt.
+    risks:
+    - RISK-02
+    - RISK-04
+    - RISK-05
+    - RISK-06
+    - RISK-07
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    success_criteria:
+    - domino_numeric_test stable
+    - dominium_game headless checksum stable
+    - launcher can run game through dsys process API.
+    next_action: Inspect repo for files from prompts 1-6 and run the golden build/test set.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-03
+    - VERIFY-04
+    - VERIFY-05
+    confidence: 5
+    carry_forward_priority: highest
+  - id: WORKSTREAM-03
+    name: Shared CLI, TUI, and GUI Layers Across Products
+    label: FACT
+    objective: Create common CLI, TUI, and GUI frameworks used by launcher, game, setup, and tools.
+    current_state: Three Codex prompts were generated for universal CLI, TUI, and GUI. Execution status is not established.
+    desired_end_state: Products expose common CLI/TUI/GUI paths through shared Domino components without duplicated product
+      pipelines.
+    status: active / execution uncertain
+    priority: high
+    background: User requested 3 more prompts completing CLI/TUI/GUI features for all products using common components.
+    decisions_made:
+    - DECISION-11
+    - DECISION-12
+    decisions_pending:
+    - QUESTION-10
+    tasks:
+    - TASK-08
+    - TASK-09
+    - TASK-10
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-11
+    dependencies:
+    - dsys terminal/window APIs
+    - dgfx IR
+    - input/state framework
+    - product entrypoints
+    timeline: Generated after Milestone-0 prompt set.
+    blockers:
+    - Needs repo verification; prompts may overlap existing modules.
+    risks:
+    - RISK-09
+    - RISK-10
+    - RISK-11
+    artifacts:
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    success_criteria:
+    - Common CLI command registry
+    - Common deterministic TUI
+    - GUI through dgfx only.
+    next_action: Verify existing CLI/TUI/GUI modules and decide whether to split prompts before implementation.
+    verification_needed:
+    - VERIFY-06
+    confidence: 5
+    carry_forward_priority: high
+  - id: WORKSTREAM-04
+    name: Shared Input System, State Machines, and Cross-Platform IME
+    label: FACT
+    objective: Add a unified input event queue, deterministic state-machine framework, and IME abstraction shared across modes/products.
+    current_state: A Codex prompt was generated. Execution status is not established.
+    desired_end_state: Input and IME events feed GUI/TUI through deterministic event ordering; products use common state machines.
+    status: active / execution uncertain
+    priority: high
+    background: User requested this as the first of three new prompts after CLI/TUI/GUI prompts.
+    decisions_made:
+    - DECISION-13
+    decisions_pending:
+    - QUESTION-11
+    tasks:
+    - TASK-11
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-06
+    dependencies:
+    - dsys raw input APIs
+    - TUI/GUI widgets
+    - product state definitions
+    timeline: Generated before multi-window/dgfx prompt.
+    blockers:
+    - IME backend complexity
+    - Existing input modules must be inspected.
+    risks:
+    - RISK-12
+    artifacts:
+    - ARTIFACT-13
+    success_criteria:
+    - Unified input events
+    - state machine API
+    - IME abstraction with fallback direct char input.
+    next_action: Inspect current source/domino/input and source/domino/state before applying.
+    verification_needed:
+    - VERIFY-06
+    confidence: 5
+    carry_forward_priority: high
+  - id: WORKSTREAM-05
+    name: Multi-Window GUI, dgfx Pipelines, and GPU Backend Detection
+    label: FACT
+    objective: Extend GUI/dgfx to logical multi-window support, render pipeline/pass/target abstractions, and backend detection/selection.
+    current_state: A Codex prompt was generated. Execution status is not established.
+    desired_end_state: GUI windows use dsys windows and dgfx pipelines; software backend always works; GPU backends are optional
+      and detected deterministically.
+    status: active / execution uncertain
+    priority: medium-high
+    background: User asked for this as the second of three prompts after input/state/IME.
+    decisions_made:
+    - DECISION-14
+    decisions_pending:
+    - QUESTION-12
+    - QUESTION-13
+    tasks:
+    - TASK-12
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    dependencies:
+    - dgfx IR
+    - software renderer
+    - dsys window API
+    - GUI core
+    timeline: Generated after input/state/IME prompt.
+    blockers:
+    - Existing dgfx API must be inspected before implementation.
+    risks:
+    - RISK-09
+    - RISK-13
+    artifacts:
+    - ARTIFACT-14
+    success_criteria:
+    - d_gui_window API
+    - d_gfx_pipeline/pass/target API
+    - backend detection with soft fallback.
+    next_action: Rewrite prompt against actual renderer headers after repo verification if necessary.
+    verification_needed:
+    - VERIFY-07
+    confidence: 5
+    carry_forward_priority: medium-high
+  - id: WORKSTREAM-06
+    name: Pack System Integration Prompt
+    label: FACT
+    objective: Generate a Codex prompt for sound, music, texture, shader, GUI theme packs, vector icons, and asset streaming.
+    current_state: User requested this as the third prompt, but it was not generated before the conversation changed direction.
+    desired_end_state: A self-contained Codex prompt covering versioned pack manifests, deterministic discovery/load ordering,
+      asset streaming, vector fallback, and pack compatibility.
+    status: active / not yet produced
+    priority: high if continuing prompt sequence
+    background: Requested in the same message as input/state/IME and multi-window/dgfx prompts.
+    decisions_made: []
+    decisions_pending:
+    - QUESTION-14
+    - QUESTION-15
+    tasks:
+    - TASK-13
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies:
+    - Content/pack docs
+    - asset format policy
+    - audio/render/backend decisions
+    timeline: Should be next if user says to continue the previous three-prompt sequence.
+    blockers:
+    - Need inspect existing pack/content modules before repo-specific prompt.
+    risks:
+    - RISK-14
+    artifacts:
+    - ARTIFACT-15
+    success_criteria:
+    - Prompt is self-contained and does not violate deterministic streaming or pack compatibility.
+    next_action: Generate missing prompt when requested; preferably verify pack docs first.
+    verification_needed:
+    - VERIFY-08
+    confidence: 5
+    carry_forward_priority: high
+  - id: WORKSTREAM-07
+    name: Unified Startup and Mode Dispatcher
+    label: FACT
+    objective: 'Implement product startup policy: terminal invocation uses CLI; double-click/no terminal tries GUI then TUI
+      then CLI; explicit modes override; game server/headless flags force headless.'
+    current_state: Recommendations were made and a large Codex prompt was generated. It contains a known potential linker
+      design risk.
+    desired_end_state: Every product has consistent startup behavior through dsys terminal detection, mode parsing, capabilities,
+      and product entry wrappers.
+    status: active / prompt generated, implementation uncertain
+    priority: high
+    background: User requested one-binary behavior for CLI/desktop launch and asked for recommendations before requesting
+      a big Codex prompt.
+    decisions_made:
+    - DECISION-15
+    - DECISION-16
+    - DECISION-17
+    - DECISION-18
+    - DECISION-19
+    - DECISION-20
+    decisions_pending:
+    - QUESTION-06
+    - QUESTION-07
+    - QUESTION-08
+    tasks:
+    - TASK-14
+    - TASK-15
+    - TASK-16
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-06
+    - CONSTRAINT-12
+    dependencies:
+    - dsys terminal detection
+    - product entry wrappers
+    - CLI/TUI/GUI runners
+    - CMake target structure
+    timeline: Generated after startup policy discussion.
+    blockers:
+    - Potential unresolved symbols from dispatcher in domino_core referencing product-specific C++ functions.
+    risks:
+    - RISK-03
+    - RISK-04
+    - RISK-15
+    artifacts:
+    - ARTIFACT-16
+    success_criteria:
+    - Terminal => CLI
+    - Double-click/no terminal => GUI->TUI->CLI
+    - Explicit modes respected
+    - Game headless/server bypasses UI.
+    next_action: Refine implementation design with callback table or product-local dispatcher before applying prompt.
+    verification_needed:
+    - VERIFY-09
+    confidence: 5
+    carry_forward_priority: highest
+  - id: WORKSTREAM-08
+    name: Platform, Renderer, API Questionnaire and Repo-State Answer
+    label: UNCERTAIN / UNVERIFIED
+    objective: Answer a detailed questionnaire about target platforms, renderers, APIs, completion gates, build context, and
+      repo state.
+    current_state: User pasted a questionnaire and a Codex-in-repo answer; assistant produced a refined answer but repo inspection
+      evidence is not visible in this chat.
+    desired_end_state: A verified questionnaire answer based on actual repo/docs with uncertainty labels and citations/file
+      references.
+    status: active / verification required
+    priority: medium-high
+    background: User said dominium.zip was an up-to-date repo copy and wanted missing data filled from repo/docs.
+    decisions_made: []
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-02
+    - QUESTION-12
+    tasks:
+    - TASK-17
+    constraints:
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    dependencies:
+    - dominium.zip
+    - repo docs
+    - CMake files
+    timeline: Occurred after startup dispatcher prompt.
+    blockers:
+    - Need actual file inspection in the new chat.
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-16
+    artifacts:
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    success_criteria:
+    - Accurate platform/render/API/build matrix with verification labels.
+    next_action: Inspect uploaded/current repo before relying on prior questionnaire details.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-10
+    - VERIFY-11
+    confidence: 3
+    carry_forward_priority: medium-high
+  - id: WORKSTREAM-09
+    name: Chat Handoff and Report Package
+    label: FACT
+    objective: Transform the existing Context Transfer Packet and visible chat into a downloadable report package for future
+      aggregation and continuation.
+    current_state: This response creates the final package files, including report, YAML, aggregator packet, registers, reader
+      brief, verification/audit, manifest, and ZIP.
+    desired_end_state: A reusable per-chat package that can be saved, shared, aggregated, and used to continue work without
+      re-explaining this chat.
+    status: active / being completed in this response
+    priority: highest for this final chat task
+    background: User explicitly requested finishing the job by producing a clean final report package.
+    decisions_made:
+    - DECISION-21
+    decisions_pending: []
+    tasks:
+    - TASK-18
+    constraints:
+    - CONSTRAINT-13
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    dependencies:
+    - Existing transfer packet
+    - Visible chat context
+    - File generation capability
+    timeline: Final task of this chat.
+    blockers: []
+    risks:
+    - RISK-17
+    - RISK-18
+    artifacts:
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    success_criteria:
+    - Files created and ZIP bundled; final response lists downloadable artifacts.
+    next_action: Store package and use it as source for next chat or later aggregation.
+    verification_needed:
+    - VERIFY-12
+    confidence: 5
+    carry_forward_priority: highest
+  decisions:
+  - id: DECISION-01
+    decision: Domino engine is ISO C89.
+    status: decided
+    label: FACT
+    evidence: User Extended Master Starter Prompt.
+    rationale: Maximal portability and stable C ABI across retro/modern platforms.
+    implications: Domino modules cannot use C99/C11 or C++ features.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-02
+    decision: Dominium product/UI code may use portable C++98 subset where needed.
+    status: decided
+    label: FACT
+    evidence: User Extended Master Starter Prompt.
+    rationale: Allows product/UI structure while preserving old-platform portability.
+    implications: No C++11+, exceptions, RTTI-heavy design, or modern STL assumptions unless user later changes policy.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-03
+    decision: All platform interaction must go through dsys.
+    status: decided
+    label: FACT
+    evidence: User Extended Master Starter Prompt.
+    rationale: Prevents platform divergence and direct OS calls in products/sim/render logic.
+    implications: Windowing/input/fs/process/timing abstractions belong in dsys/platform backends.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-04
+    decision: All rendering must go through dgfx IR/backends.
+    status: decided
+    label: FACT
+    evidence: User Extended Master Starter Prompt.
+    rationale: Supports software/GPU/retro renderers without product-side native drawing.
+    implications: GUI/TUI/game rendering cannot call OS-native immediate drawing APIs directly.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    uncertainty: none
+  - id: DECISION-05
+    decision: Software renderer is mandatory baseline.
+    status: decided
+    label: FACT
+    evidence: User Extended Master Starter Prompt.
+    rationale: Deterministic baseline and fallback for retro/no-GPU targets.
+    implications: GPU backends optional; soft must remain functional.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-05
+    uncertainty: none
+  - id: DECISION-06
+    decision: Vector-only fallback UI/pack path must always function.
+    status: decided
+    label: FACT
+    evidence: User Extended Master Starter Prompt.
+    rationale: Products must work with zero raster packs installed.
+    implications: Built-in vector style/icon/theme fallback required.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    - WORKSTREAM-06
+    uncertainty: none
+  - id: DECISION-07
+    decision: DOMINIUM_HOME repository model is canonical for products, mods, packs, and instances.
+    status: decided
+    label: FACT
+    evidence: User Extended Master Starter Prompt.
+    rationale: Allows multiple product/core/pack/mod versions and non-destructive imports.
+    implications: Launcher/setup/tools must use repo paths and instance IDs rather than hardcoded product paths.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-08
+    decision: Backward/forward compatibility is mandatory for saves, packs, mods, tools where possible.
+    status: decided
+    label: FACT
+    evidence: User Extended Master Starter Prompt.
+    rationale: User explicitly says never break old instances/packs/mods/tools/content.
+    implications: Versioned ABI/format headers, compatibility profiles, migration/read-only fallback.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-06
+    uncertainty: none
+  - id: DECISION-09
+    decision: First implementation should be a narrow Milestone-0 vertical slice.
+    status: recommended and implicitly accepted
+    label: INFERENCE
+    evidence: Assistant recommended narrowing; user proceeded to request six Codex prompts following that path.
+    rationale: Avoid architecture overreach and prove core layering early.
+    implications: Retro/GPU/full UI/hydrology/net delayed until skeleton works.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: User did not formally state 'accepted', but action implied acceptance.
+  - id: DECISION-10
+    decision: Codex prompts should be self-contained implementation packages.
+    status: working decision
+    label: FACT
+    evidence: User repeatedly requested Codex prompts; assistant generated self-contained prompts.
+    rationale: Codex sessions may not share context reliably.
+    implications: Prompts must include constraints, assumptions, files, outputs, and scope restrictions.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    - WORKSTREAM-06
+    - WORKSTREAM-07
+    uncertainty: none
+  - id: DECISION-11
+    decision: CLI/TUI/GUI should be common/shared across launcher, game, setup, and tools.
+    status: decided by user request
+    label: FACT
+    evidence: User requested three prompts completing CLI, TUI, GUI features for each product using common components.
+    rationale: Avoid duplicated UI/tooling pipelines and preserve product consistency.
+    implications: Common modules under Domino; product wrappers in Dominium.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-12
+    decision: TUI and GUI must use dsys/dgfx abstractions, not direct platform drawing.
+    status: decided
+    label: FACT
+    evidence: User master prompt plus generated TUI/GUI prompt constraints.
+    rationale: Preserve strict layering and portability.
+    implications: TUI outputs through dsys terminal; GUI through dgfx IR.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-13
+    decision: Input/IME/state machine systems should be shared and deterministic.
+    status: prompt generated
+    label: FACT
+    evidence: Generated input/state/IME Codex prompt.
+    rationale: Unified event ordering and shared UI/product states reduce divergence.
+    implications: GUI/TUI text inputs should consume the same event/IME model.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: Implementation status unknown.
+  - id: DECISION-14
+    decision: GPU backend detection must always include software fallback.
+    status: prompt generated / architecture-consistent
+    label: FACT
+    evidence: Generated multi-window/dgfx prompt and master prompt software baseline.
+    rationale: Guarantee render availability and deterministic fallback.
+    implications: Backend selection should be deterministic and never leave no renderer when soft can run.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: Implementation status unknown.
+  - id: DECISION-15
+    decision: Terminal invocation with no explicit mode defaults to CLI.
+    status: decided by user request
+    label: FACT
+    evidence: User said binaries when 'called in the terminal uses the cli'.
+    rationale: Expected scripting/terminal behavior.
+    implications: Startup needs dsys terminal detection and AUTO policy.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: none
+  - id: DECISION-16
+    decision: Double-click/no-terminal launch defaults to GUI, then TUI, then CLI fallback.
+    status: decided by user request
+    label: FACT
+    evidence: User said double clicked in desktop explorer defaults to gui, then if that fails tui, then if that fails.
+    rationale: Desktop UX with degradation path.
+    implications: Startup fallback chain and structural error codes needed.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: User sentence ended incomplete after 'then if that fails', but assistant and context completed it as CLI
+      fallback; user did not object.
+  - id: DECISION-17
+    decision: Explicit --mode flags should override AUTO heuristics.
+    status: recommended and accepted by requesting prompt
+    label: INFERENCE
+    evidence: Assistant recommended; user asked for one big prompt implementing it.
+    rationale: Predictability and scriptability.
+    implications: Mode parser runs before terminal/double-click heuristic.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: Implicit acceptance.
+  - id: DECISION-18
+    decision: Game --server/--dedicated/--listen/--mode=headless force headless and bypass GUI/TUI.
+    status: recommended and included in generated prompt
+    label: INFERENCE
+    evidence: Assistant recommendation and generated startup prompt.
+    rationale: Server/CI determinism and no accidental UI init.
+    implications: Headless is not in AUTO fallback; only explicit/server flags.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: User did not separately confirm, but requested the prompt.
+  - id: DECISION-19
+    decision: Do not add env/config startup mode overrides in v1.
+    status: recommended
+    label: INFERENCE
+    evidence: Assistant recommendation response.
+    rationale: Avoid reproducibility/config complexity before startup core stabilizes.
+    implications: Only flags and terminal-detection heuristic initially.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: Not explicitly confirmed by user.
+  - id: DECISION-20
+    decision: Fallback should occur only on structural GUI/TUI unsupported errors, not logical/content errors.
+    status: recommended
+    label: INFERENCE
+    evidence: Assistant recommendation response and startup prompt.
+    rationale: Avoid hiding real errors behind fallback behavior.
+    implications: Need distinct error codes and careful wrapper behavior.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: Not explicitly confirmed by user.
+  - id: DECISION-21
+    decision: This old chat should be exported as a downloadable multi-file report package.
+    status: decided by user request
+    label: FACT
+    evidence: User final request to produce files/ZIP if available.
+    rationale: User wants old chat reusable, shareable, aggregatable, and source material for future project spec book.
+    implications: Create Markdown/YAML/ZIP package with registers and stable IDs.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: none
+  tasks:
+  - id: TASK-01
+    task: Verify actual repo state from dominium.zip or current checkout.
+    priority: highest
+    urgency: immediate
+    owner: future assistant / user tooling
+    dependencies: []
+    inputs_needed:
+    - dominium.zip or repo checkout
+    expected_output: Verified file tree, docs, CMake targets, and prompt-execution status.
+    next_step: Extract/list repo and inspect key files.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 5
+  - id: TASK-02
+    task: Determine which generated Codex prompts were executed.
+    priority: highest
+    urgency: immediate
+    owner: future assistant / user
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - repo file tree
+    - git status or file timestamps
+    expected_output: Map of prompts to actual files/changes.
+    next_step: Search for files named in each prompt.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  - id: TASK-03
+    task: Build and run golden target set.
+    priority: high
+    urgency: early
+    owner: user/Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - CMake build dir
+    - toolchain
+    expected_output: Build/test status for core targets.
+    next_step: Run CMake/Ninja targets and numeric/headless tests.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-08
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-04
+    task: Audit generated numeric core for strict C89 and deterministic overflow behavior.
+    priority: high
+    urgency: before merge
+    owner: Codex/future assistant
+    dependencies:
+    - TASK-02
+    inputs_needed:
+    - types.h
+    - fixed.c
+    - rng.c
+    expected_output: C89-compatible numeric core or issue list.
+    next_step: Check 64-bit typedefs, saturation constants, shifts, and no floating point in sim path.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-05
+    task: Define endian-stable TLV IO helpers if not already present.
+    priority: high
+    urgency: before cross-platform save reliance
+    owner: Codex/future assistant
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - DATA_FORMATS docs
+    - sim save/load code
+    expected_output: Stable little-endian or documented binary serialization helpers.
+    next_step: Inspect existing TLV/data format rules.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-06
+    task: Verify launcher→game process spawn path and manifest path handling.
+    priority: high
+    urgency: after Milestone-0 code exists
+    owner: Codex/user
+    dependencies:
+    - TASK-02
+    - TASK-03
+    inputs_needed:
+    - DOMINIUM_HOME test repo
+    - product.json
+    - built game executable
+    expected_output: Launcher can spawn game and report exit code.
+    next_step: Run launcher run-game command with seed/ticks.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-07
+    task: Keep docs/specs aligned with generated code.
+    priority: medium-high
+    urgency: ongoing
+    owner: Codex/future assistant
+    dependencies:
+    - TASK-02
+    inputs_needed:
+    - docs
+    - implemented headers
+    expected_output: No drift between SPEC docs and actual code.
+    next_step: Diff generated headers/APIs against docs.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-08
+    task: Implement or refine common CLI framework.
+    priority: medium-high
+    urgency: after Milestone-0
+    owner: Codex
+    dependencies:
+    - TASK-01
+    - TASK-02
+    inputs_needed:
+    - Universal CLI prompt
+    - existing CLI code
+    expected_output: Shared CLI registry and product command routing.
+    next_step: Inspect source/domino/cli and product CLI code.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 5
+  - id: TASK-09
+    task: Implement or refine common TUI framework.
+    priority: medium
+    urgency: after dsys terminal exists
+    owner: Codex
+    dependencies:
+    - TASK-01
+    - TASK-08
+    inputs_needed:
+    - Universal TUI prompt
+    - dsys terminal APIs
+    expected_output: Shared deterministic text UI framework.
+    next_step: Inspect dsys terminal implementation state.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 5
+  - id: TASK-10
+    task: Implement or refine common GUI framework.
+    priority: medium
+    urgency: after dgfx/window baseline
+    owner: Codex
+    dependencies:
+    - TASK-01
+    - TASK-12
+    inputs_needed:
+    - Universal GUI prompt
+    - dgfx/window APIs
+    expected_output: Shared widget/tree/style GUI through dgfx.
+    next_step: Inspect render/gui modules.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    label: FACT
+    confidence: 5
+  - id: TASK-11
+    task: Implement shared input/state/IME after inspecting existing modules.
+    priority: medium-high
+    urgency: before full TUI/GUI
+    owner: Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Input/state/IME prompt
+    - existing input/state code
+    expected_output: Unified event queue, state machine, IME abstraction.
+    next_step: Search source/domino/input and source/domino/state.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 5
+  - id: TASK-12
+    task: Implement or rewrite multi-window/dgfx pipeline/backend detection prompt against actual renderer API.
+    priority: medium
+    urgency: after dgfx baseline
+    owner: Codex/future assistant
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Renderer headers/docs
+    - Prompt 2 of 3
+    expected_output: Repo-aligned backend/pipeline/multi-window implementation plan.
+    next_step: Compare proposed APIs with include/domino/gfx.h and render sources.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: 5
+  - id: TASK-13
+    task: Generate the missing pack system integration Codex prompt.
+    priority: high if continuing prompt sequence
+    urgency: next on that branch
+    owner: future assistant
+    dependencies:
+    - TASK-01 optional
+    inputs_needed:
+    - Pack/content docs if available
+    expected_output: Self-contained prompt for packs, themes, vector icons, shader/audio/texture assets, asset streaming.
+    next_step: If user asks 'next', generate prompt; if repo-specific, inspect docs first.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: 5
+  - id: TASK-14
+    task: Refine unified startup dispatcher design to avoid linker/circular dependency issues.
+    priority: highest for startup implementation
+    urgency: before applying prompt
+    owner: future assistant/Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - CMake target graph
+    - product entry structure
+    expected_output: Safe startup implementation prompt/design using callbacks or product-local dispatchers.
+    next_step: Inspect CMake/product target linkage.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-15
+    task: Implement dsys_running_in_terminal for active platforms.
+    priority: high
+    urgency: when implementing startup
+    owner: Codex
+    dependencies:
+    - TASK-14
+    inputs_needed:
+    - dsys platform layout
+    expected_output: POSIX/WinNT/stub terminal detection.
+    next_step: Wire one implementation per platform in CMake.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: 5
+  - id: TASK-16
+    task: Implement startup mode parsing, capabilities, and product mode wrappers.
+    priority: high
+    urgency: after dispatcher design fixed
+    owner: Codex
+    dependencies:
+    - TASK-14
+    - TASK-15
+    inputs_needed:
+    - product CLI/TUI/GUI/headless functions
+    expected_output: Consistent startup behavior across launcher/game/setup/tools.
+    next_step: Refactor product main functions.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: 5
+  - id: TASK-17
+    task: Produce a verified platform/render/API questionnaire answer from actual repo/docs.
+    priority: medium-high
+    urgency: when needed for planning/spec
+    owner: future assistant
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - questionnaire
+    - repo docs
+    - CMake
+    - source tree
+    expected_output: Accurate labelled questionnaire response with file evidence.
+    next_step: Inspect files; do not rely solely on previous assistant answer.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 5
+  - id: TASK-18
+    task: Save this chat-specific report package and ZIP for future aggregation.
+    priority: highest for current task
+    urgency: now
+    owner: assistant/user
+    dependencies: []
+    inputs_needed:
+    - this chat context
+    - previous transfer packet
+    expected_output: Seven report files plus ZIP download.
+    next_step: Download/store the generated package.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+    confidence: 5
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Domino engine code must be ISO C89/C90.
+    type: language
+    hard_or_soft: hard
+    source_or_basis: User master prompt; root CMake pasted by user also sets C_STANDARD 90.
+    implication: Avoid C99/C11 constructs, C++ in Domino, mixed declarations if strict, and non-portable types unless abstracted.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-02
+    constraint: Dominium product/UI code must be portable C++98 where needed.
+    type: language
+    hard_or_soft: hard
+    source_or_basis: User master prompt; pasted root CMake sets CXX_STANDARD 98.
+    implication: Avoid C++11+, exceptions if policy forbids, modern STL constructs, std::snprintf portability assumptions.
+    violation_risk: medium-high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-03
+    constraint: Simulation must be deterministic across supported OS/architectures.
+    type: determinism
+    hard_or_soft: hard
+    source_or_basis: User master prompt.
+    implication: Fixed timestep, deterministic RNG, deterministic scheduling and serialization; UI/render/platform must not
+      change sim state.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-04
+    constraint: Core simulation uses fixed-point/integer numeric formats including u8/i8/u16/i16/u32/i32/u64/i64/q4_12/q16_16/q24_8/q48_16.
+    type: numeric
+    hard_or_soft: hard
+    source_or_basis: User explicit correction before Prompt 1.
+    implication: Numeric core must define and consistently use these formats; 64-bit under strict C89 needs special handling.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-05
+    constraint: No host floating point inside deterministic simulation logic.
+    type: determinism
+    hard_or_soft: hard
+    source_or_basis: User master prompt.
+    implication: No float/double math in sim/world/replay/net deterministic paths.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-06
+    constraint: All platform-specific interactions route through dsys.
+    type: layering
+    hard_or_soft: hard
+    source_or_basis: User master prompt.
+    implication: Products and deterministic core must not call OS APIs directly.
+    violation_risk: medium-high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-07
+    constraint: All rendering routes through dgfx IR/backend abstraction.
+    type: layering
+    hard_or_soft: hard
+    source_or_basis: User master prompt.
+    implication: No product/game OS-native drawing; GUI produces draw list/IR.
+    violation_risk: medium-high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-08
+    constraint: Vector-only fallback must always work.
+    type: UI/assets
+    hard_or_soft: hard
+    source_or_basis: User master prompt.
+    implication: GUI/theme/icon systems cannot require raster packs.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-09
+    constraint: Old saves, packs, mods, instances, and tools must not silently break.
+    type: compatibility
+    hard_or_soft: hard
+    source_or_basis: User master prompt.
+    implication: Need versioned formats, compatibility profiles, migration/read-only/incompatible decisions.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-10
+    constraint: DOMINIUM_HOME repository layout supports multiple coexisting versions and non-destructive import.
+    type: repo/model
+    hard_or_soft: hard
+    source_or_basis: User master prompt.
+    implication: Launcher/setup/pkg code must resolve products/mods/packs/instances through repo model.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-11
+    constraint: GUI/TUI/CLI product logic should be shared, not duplicated.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User master prompt and explicit common-components request.
+    implication: Common modules with product wrappers; avoid separate behavior pipelines.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-12
+    constraint: Startup explicit mode flags override AUTO; no-terminal launch tries GUI/TUI/CLI; terminal launch uses CLI.
+    type: startup behavior
+    hard_or_soft: hard for user desired behavior; implementation details pending
+    source_or_basis: User startup request and accepted assistant prompt.
+    implication: Requires terminal detection, mode parser, fallback error classification.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-13
+    constraint: Repo-specific claims must be verified against files before future use.
+    type: evidence
+    hard_or_soft: hard for future accuracy
+    source_or_basis: User requested repo/doc-derived data; previous inspection claim unverified in visible chat.
+    implication: Future assistant must inspect dominium.zip/current checkout before acting on repo details.
+    violation_risk: high
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 5
+  - id: CONSTRAINT-14
+    constraint: External-world facts/software versions/APIs/current state require verification before future use.
+    type: evidence/staleness
+    hard_or_soft: hard
+    source_or_basis: User final package rules and system web-verification requirement.
+    implication: Do not rely on stale toolchain/API claims without checking.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-15
+    constraint: This final package is scoped to this chat only.
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User final request.
+    implication: Do not summarize the whole project beyond context visible in this chat; label project context.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-16
+    constraint: Final package must preserve tentative status, rejected options, artifacts, risks, contradictions, and stable
+      IDs.
+    type: reporting/output
+    hard_or_soft: hard
+    source_or_basis: User final request.
+    implication: Report files must include registers and not flatten uncertainty.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  open_questions:
+  - id: QUESTION-01
+    question: Which generated Codex prompts have actually been applied to the repo?
+    why_it_matters: Avoid duplicate/conflicting code and determine true implementation state.
+    known: Prompts were generated in this chat.
+    unknown: Execution status and resulting file changes.
+    resolution_path: Inspect repo/git state for files and diffs.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: What is the actual current repo structure and target list in dominium.zip/current checkout?
+    why_it_matters: Implementation prompts must match actual files and CMake targets.
+    known: User says dominium.zip is up to date; user pasted some tree/CMake/target data.
+    unknown: Whether pasted data matches current repo; previous inspection claim not proven.
+    resolution_path: Open/extract repo and inspect key files.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: Does the repo already contain files from prompts 1-6?
+    why_it_matters: Determines whether to implement, repair, or skip Milestone-0 tasks.
+    known: File names were specified in prompts.
+    unknown: Actual existence/content.
+    resolution_path: Search for docs/SPEC_IDENTITY.md, include/domino/core/fixed.h, repo.h, sim.h, etc.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: How should strict C89 support exact 64-bit types and q48_16 across retro compilers?
+    why_it_matters: User requires u64/i64/q48_16, but ISO C89 lacks long long.
+    known: Generated prompt suggested compiler-guarded long long, which is not ISO C89.
+    unknown: Existing repo policy for 64-bit portability.
+    resolution_path: Inspect existing type headers/docs; decide emulation or compiler-extension policy.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: Should TLV save format be native-endian temporarily or endian-stable immediately?
+    why_it_matters: Cross-platform save compatibility is a core requirement.
+    known: Prompt 5 allowed native-endian for Milestone 0; project requires compatibility.
+    unknown: Existing data format endian rules.
+    resolution_path: Inspect docs/DATA_FORMATS.md and TLV code.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Where should startup mode dispatch live to avoid C/C++ linker issues?
+    why_it_matters: Generated prompt risks unresolved symbols from domino_core to all product wrappers.
+    known: Startup prompt proposed startup.c in Domino calling product-specific C++ functions.
+    unknown: Actual target linkage and best design.
+    resolution_path: Inspect CMake; prefer callback table or product-local dispatcher.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: QUESTION-07
+    question: Should Windows products be console-subsystem, windows-subsystem, or dual wrapper binaries?
+    why_it_matters: Affects terminal detection and double-click UX.
+    known: User wants one executable behavior; assistant noted Windows subsystem concerns.
+    unknown: Final packaging/build choice.
+    resolution_path: User/build-system decision after inspecting packaging targets.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: Should future startup mode overrides via env/config be supported?
+    why_it_matters: Affects mode precedence and reproducibility.
+    known: Assistant recommended no env/config in v1.
+    unknown: User's long-term preference.
+    resolution_path: Defer until config system stabilizes or user requests.
+    priority: low
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: QUESTION-09
+    question: What are final Tier 1/2/3 platform priorities?
+    why_it_matters: Prevents overbuilding retro/GPU targets before core platforms work.
+    known: Master prompt lists a huge matrix; questionnaire answer proposes tiers.
+    unknown: Confirmed priority order after repo verification.
+    resolution_path: Verify docs and ask/confirm only if needed.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: Should common CLI/TUI/GUI prompts be applied as broad prompts or split into smaller implementation prompts?
+    why_it_matters: Large prompts risk inconsistent code.
+    known: Prompts exist and are broad.
+    unknown: Repo maturity and existing modules.
+    resolution_path: Inspect current modules and decide module-by-module.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: QUESTION-11
+    question: How complete are current input/state/IME modules?
+    why_it_matters: Generated prompt may overwrite or duplicate existing work.
+    known: Prompt was generated; prior repo answer mentioned input/IME modules but unverified.
+    unknown: Actual module content.
+    resolution_path: Inspect source/domino/input and source/domino/state.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: Which render backends are actually wired and which are only source-tree stubs?
+    why_it_matters: Backend detection/pipeline prompt must match implementation reality.
+    known: Prior answer lists soft/DX/GL/Metal/Vulkan/retro, but verification needed.
+    unknown: Actual build wiring and API shape.
+    resolution_path: Inspect render docs, source/domino/render, CMake.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-13
+    question: Is D3D12 in scope?
+    why_it_matters: Questionnaire included D3D12, but master prompt emphasized DX7/9/11.
+    known: D3D12 appeared in questionnaire, not clearly in master prompt.
+    unknown: Repo/docs current stance.
+    resolution_path: Inspect render docs and ask user if needed.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-14
+    question: 'What pack format(s) should the missing pack-system prompt target: TLV, JSON metadata, or both?'
+    why_it_matters: Pack integration must preserve compatibility and deterministic load order.
+    known: User master prompt mentions TLV or JSON metadata and versioned pack format.
+    unknown: Existing repo implementation/docs.
+    resolution_path: Inspect content/pack docs and source.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-15
+    question: How should shader packs be represented across multiple render backends?
+    why_it_matters: Shader packs interact with dgfx backend pipelines and offline/runtime compilation.
+    known: User wants shader packs included; prior answer says toolchains not vendored but unverified.
+    unknown: Allowed shader languages/artifacts and pack compatibility rules.
+    resolution_path: Inspect render docs and decide per backend.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Build all platforms, renderers, and systems at once.
+    status: deprioritised
+    reason: Assistant warned it would likely stall the project; user proceeded with narrower prompts.
+    final_or_tentative: tentative until Milestone 0 works
+    reconsider_conditions: After vertical slice and core tests are stable.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: REJECTED-02
+    option: Start with hydrology, AI, ECS, networking, or complex worldgen before numeric determinism.
+    status: deprioritised
+    reason: Deterministic scaffolding must come first.
+    final_or_tentative: tentative sequencing decision
+    reconsider_conditions: After deterministic core/sim/replay tests exist.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: REJECTED-03
+    option: Build a huge flat dsys/dgfx abstraction before exercising it.
+    status: deprioritised
+    reason: Over-abstract API risk; vertical slices should drive API growth.
+    final_or_tentative: tentative design strategy
+    reconsider_conditions: When real backend needs require expanded APIs.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: REJECTED-04
+    option: Use env/config startup mode override in v1.
+    status: deferred
+    reason: Adds precedence and reproducibility complexity.
+    final_or_tentative: not final; v1 only
+    reconsider_conditions: After stable config/instance system exists.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: REJECTED-05
+    option: Fallback from GUI/TUI on logical/content/config errors.
+    status: rejected in recommendation
+    reason: Would hide real errors and create confusing behavior.
+    final_or_tentative: should remain final unless user changes policy
+    reconsider_conditions: Only if user explicitly requests permissive fallback.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: REJECTED-06
+    option: Include headless in AUTO startup fallback.
+    status: rejected in recommendation
+    reason: Headless is server/explicit mode, not a UI fallback.
+    final_or_tentative: tentative but strong
+    reconsider_conditions: Dedicated server shortcut UX requirements.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: REJECTED-07
+    option: Duplicate CLI/TUI/GUI behavior pipelines per product.
+    status: rejected by architecture
+    reason: Violates common-components and no-duplication requirements.
+    final_or_tentative: final unless architecture changes
+    reconsider_conditions: Never without explicit user override.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-08
+    option: Use OS-native product drawing directly.
+    status: rejected by user constraint
+    reason: Violates dgfx abstraction.
+    final_or_tentative: final
+    reconsider_conditions: Never unless user changes master architecture.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-09
+    option: Use C++11+ for product code.
+    status: rejected by user constraint
+    reason: Dominium product code is C++98 portable subset.
+    final_or_tentative: final for current project policy
+    reconsider_conditions: Only if user changes language policy.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-10
+    option: Use floating-point in deterministic simulation.
+    status: rejected by user constraint
+    reason: Fixed-point deterministic sim required.
+    final_or_tentative: final
+    reconsider_conditions: Never for deterministic sim; tooling/debug conversions may be separate if isolated.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-11
+    option: Allow build-time network downloads for dependencies.
+    status: rejected / requires verification
+    reason: Prior questionnaire answer said repo BUILDING forbids downloads; must verify before using as fact.
+    final_or_tentative: tentative until repo docs verified
+    reconsider_conditions: If repo docs/user explicitly allow downloads.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: REJECTED-12
+    option: Treat assistant recommendations as final user decisions automatically.
+    status: rejected by current packaging rules
+    reason: User explicitly says not to turn brainstorms into decisions or treat assistant suggestions as user decisions unless
+      accepted.
+    final_or_tentative: final for reporting methodology
+    reconsider_conditions: Never for evidence labelling.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Extended Master Starter Prompt — Dominium + Domino
+    type: user project spec
+    purpose: Canonical project constraints and architecture context.
+    status: active source material
+    origin: User first message in chat
+    carry_forward: 'yes'
+    notes: Includes role/tone, global identity, repo layout, platform matrix, dsys, dgfx, UI/packs, product model, versioning,
+      repo model, sim/modding/rendering constraints.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Assistant acknowledgement of master prompt
+    type: assistant response
+    purpose: Restated key constraints to operate under.
+    status: historical
+    origin: Assistant response after user master prompt
+    carry_forward: limited
+    notes: Useful as early confirmation, but user prompt outranks it.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: Forward plan phases 0-12
+    type: plan
+    purpose: Roadmap from docs/specs to replay/networking.
+    status: planning reference
+    origin: Assistant response to 'generate a plan going forwards'
+    carry_forward: 'yes'
+    notes: Phase list included specs, layout, dsys, dgfx, UI, repo model, launcher, game, tools, packs, retro, replay/net,
+      docs/examples.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: Codex Prompt 1 — SPEC_IDENTITY + SPEC_PRODUCTS
+    type: Codex prompt
+    purpose: Create two canonical spec docs only.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: 'Files: docs/SPEC_IDENTITY.md, docs/SPEC_PRODUCTS.md.'
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: Codex Prompt 2 — Repo layout, CMake skeleton, core/product targets
+    type: Codex prompt
+    purpose: Create canonical layout, CMake, stub core/product code.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Defines include/source layout and targets domino_core, dominium_game, dominium_launcher.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: Codex Prompt 3 — Deterministic numeric core + test harness
+    type: Codex prompt
+    purpose: Implement types/fixed/rng and domino_numeric_test.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Requires audit for strict C89 and saturation correctness.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: Codex Prompt 4 — DOMINIUM_HOME repo model + launcher enumeration
+    type: Codex prompt
+    purpose: Implement repo.h/repo.c, product.json subset, launcher printout.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Hardcoded platform path and minimal JSON parser require future cleanup.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Codex Prompt 5 — Deterministic sim + headless game + TLV save
+    type: Codex prompt
+    purpose: Implement minimal d_world, deterministic ticks, checksum, TLV, game headless flags.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Native-endian TLV and RNG state load details need review.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: Codex Prompt 6 — Launcher to game process spawn via dsys
+    type: Codex prompt
+    purpose: Add process API and launcher run-game command.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: C++98 formatting and path duplication risks.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: Prompt A — Universal CLI Layer
+    type: Codex prompt
+    purpose: Shared CLI framework across launcher/game/setup/tools.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Includes command registry and product command lists.
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: Prompt B — Universal TUI Layer
+    type: Codex prompt
+    purpose: Shared dsys-terminal-based TUI framework.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Adds dsys_terminal_* API and text widgets.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Prompt C — Universal GUI Layer
+    type: Codex prompt
+    purpose: Shared dgfx-based GUI framework and vector style pack.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Adds GUI primitives, widgets, style, product GUI modes.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: Prompt — Shared Input System + State Machines + Cross-Platform IME
+    type: Codex prompt
+    purpose: Unified input events, state machines, IME abstraction.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: First of requested three advanced prompts.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Prompt — Multi-window GUI + dgfx Pipelines + GPU Backend Detection
+    type: Codex prompt
+    purpose: Logical multi-window GUI, dgfx pipeline/pass/target APIs, backend selection.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Second of requested advanced prompts.
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: Missing Prompt — Pack system integration
+    type: requested but not generated
+    purpose: Would cover sound/music/texture/shader/theme packs, vector icons, asset streaming.
+    status: not yet produced
+    origin: User request
+    carry_forward: 'yes'
+    notes: Likely next prompt if continuing that sequence.
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: Prompt — Unified Startup / Mode Dispatcher
+    type: Codex prompt
+    purpose: Implement CLI/default terminal and GUI→TUI→CLI desktop fallback across products.
+    status: generated, execution unknown
+    origin: Assistant
+    carry_forward: yes, with design fixes
+    notes: Known linker-risk due startup.c referencing all product wrappers.
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: 'User questionnaire: Platforms, Renderers, APIs, Completion, Repo/build context'
+    type: user prompt/questionnaire
+    purpose: Collect detailed repo/platform/render/API facts.
+    status: answered but verification required
+    origin: User
+    carry_forward: 'yes'
+    notes: Should be answered again from verified repo if used for spec.
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: User-pasted Codex-in-repo questionnaire answer
+    type: pasted output
+    purpose: Candidate answer filled from repo/docs by Codex in repo.
+    status: unverified candidate data
+    origin: User paste
+    carry_forward: yes with uncertainty
+    notes: Includes platform tiers, subsystem table, renderers, APIs, build context.
+    label: FACT
+  - id: ARTIFACT-19
+    name_or_description: Assistant refined questionnaire answer
+    type: assistant output
+    purpose: Further filled platform/render/API/build answer.
+    status: unverified candidate data
+    origin: Assistant
+    carry_forward: yes with verification caveat
+    notes: Claimed repo extraction/inspection but visible trace absent.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-20
+    name_or_description: User-pasted root CMakeLists.txt
+    type: file content excerpt
+    purpose: Build context reference.
+    status: pasted; current repo validity unverified
+    origin: User/Codex answer
+    carry_forward: 'yes'
+    notes: Sets C90/C++98, adds source/domino, source/dominium, source/tests.
+    label: FACT
+  - id: ARTIFACT-21
+    name_or_description: User-pasted source/CMakeLists.txt
+    type: file content excerpt
+    purpose: Aggregated source layout reference.
+    status: pasted; current repo validity unverified
+    origin: User/Codex answer
+    carry_forward: 'yes'
+    notes: Adds domino, dominium, tools subdirs.
+    label: FACT
+  - id: ARTIFACT-22
+    name_or_description: User-pasted source tree excerpt
+    type: file tree excerpt
+    purpose: Repo structure reference.
+    status: pasted; current repo validity unverified
+    origin: User/Codex answer
+    carry_forward: 'yes'
+    notes: Shows source/domino modules including app/audio/cli/gui/input/render/state/tui etc.
+    label: FACT
+  - id: ARTIFACT-23
+    name_or_description: User-pasted docs/OVERVIEW_ARCHITECTURE.md excerpt
+    type: documentation excerpt
+    purpose: Architecture context and repo layout reference.
+    status: pasted; current repo validity unverified
+    origin: User/Codex answer
+    carry_forward: 'yes'
+    notes: Mentions Domino C89, Dominium C++98, DOMINIUM_HOME layout, common layer.
+    label: FACT
+  - id: ARTIFACT-24
+    name_or_description: Context Transfer Packet from prior assistant
+    type: handoff document
+    purpose: Maximum-fidelity continuity state for new chat.
+    status: source for this final package
+    origin: Assistant previous response
+    carry_forward: 'yes'
+    notes: This final package audits and normalizes it.
+    label: FACT
+  - id: ARTIFACT-25
+    name_or_description: dominium_domino_codex_planning__01_full_chat_report.md
+    type: generated file
+    purpose: Main human-readable report for this chat.
+    status: created by this response
+    origin: Assistant final packaging
+    carry_forward: 'yes'
+    notes: Primary report.
+    label: FACT
+  - id: ARTIFACT-26
+    name_or_description: dominium_domino_codex_planning__02_spec_sheet.yaml
+    type: generated file
+    purpose: Structured YAML for later spec-book construction.
+    status: created by this response
+    origin: Assistant final packaging
+    carry_forward: 'yes'
+    notes: Aggregator-ready structured data.
+    label: FACT
+  - id: ARTIFACT-27
+    name_or_description: dominium_domino_codex_planning__03_aggregator_packet.md
+    type: generated file
+    purpose: Compact merge packet for future aggregation.
+    status: created by this response
+    origin: Assistant final packaging
+    carry_forward: 'yes'
+    notes: Use when combining multiple chats.
+    label: FACT
+  - id: ARTIFACT-28
+    name_or_description: dominium_domino_codex_planning__04_registers.md
+    type: generated file
+    purpose: Standalone normalized registers.
+    status: created by this response
+    origin: Assistant final packaging
+    carry_forward: 'yes'
+    notes: Tables for workstreams/decisions/tasks/etc.
+    label: FACT
+  - id: ARTIFACT-29
+    name_or_description: dominium_domino_codex_planning__05_reader_brief.md
+    type: generated file
+    purpose: Short human-readable brief.
+    status: created by this response
+    origin: Assistant final packaging
+    carry_forward: 'yes'
+    notes: Fast onboarding.
+    label: FACT
+  - id: ARTIFACT-30
+    name_or_description: dominium_domino_codex_planning__06_verification_and_audit.md
+    type: generated file
+    purpose: Audit and residual risk record.
+    status: created by this response
+    origin: Assistant final packaging
+    carry_forward: 'yes'
+    notes: QC file.
+    label: FACT
+  - id: ARTIFACT-31
+    name_or_description: dominium_domino_codex_planning__manifest.md
+    type: generated file
+    purpose: Package manifest and item counts.
+    status: created by this response
+    origin: Assistant final packaging
+    carry_forward: 'yes'
+    notes: Lists files and counts.
+    label: FACT
+  - id: ARTIFACT-32
+    name_or_description: dominium_domino_codex_planning__handoff_package.zip
+    type: generated ZIP
+    purpose: Bundled downloadable package.
+    status: created by this response
+    origin: Assistant final packaging
+    carry_forward: 'yes'
+    notes: Contains all seven files.
+    label: FACT
+  - id: ARTIFACT-33
+    name_or_description: Copy-paste bootstrap prompt from previous transfer packet
+    type: prompt text
+    purpose: Start a new chat with continuity from this one.
+    status: included in previous packet and adapted in reports
+    origin: Assistant previous response
+    carry_forward: 'yes'
+    notes: Useful for new assistant setup.
+    label: FACT
+  - id: ARTIFACT-34
+    name_or_description: Later aggregator prompt supplied by user
+    type: prompt text
+    purpose: Future central aggregation of many old chat packages into spec book/living state file.
+    status: user-supplied in final request
+    origin: User
+    carry_forward: 'yes'
+    notes: Should be used when all packages are collected.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Unverified repo-state claims are treated as verified facts.
+    consequence: Future prompts/code may target wrong files/platforms/APIs.
+    likelihood: medium-high
+    severity: high
+    mitigation: Inspect dominium.zip/current repo and label facts with file evidence.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-02
+    risk: Generated prompts are mistaken for implemented code.
+    consequence: Duplicate work, conflicts, or missed implementation gaps.
+    likelihood: high
+    severity: high
+    mitigation: Check repo for generated files before continuing.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-03
+    risk: Startup dispatcher in domino_core references all product C++ wrappers and causes unresolved symbols.
+    consequence: Build/link failure for tests or individual product targets.
+    likelihood: medium
+    severity: high
+    mitigation: Use callback-table/generic dispatcher or product-local dispatcher instead.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-04
+    risk: Strict C89 and C++98 are violated by generated snippets.
+    consequence: Build portability failure and policy violation.
+    likelihood: medium-high
+    severity: high
+    mitigation: Audit for long long, std::snprintf, declarations, and modern constructs.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-05
+    risk: q48_16/u64/i64 implementation relies on non-C89 compiler extensions without clear fallback.
+    consequence: Retro/compiler portability failure.
+    likelihood: medium
+    severity: high
+    mitigation: Define portability policy or emulation for strict C89 targets.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-06
+    risk: Native-endian TLV save/load conflicts with cross-platform compatibility.
+    consequence: Old/cross-platform saves may not load deterministically.
+    likelihood: medium
+    severity: high
+    mitigation: Introduce endian-stable TLV helpers early.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-07
+    risk: Minimal JSON manifest parser is brittle.
+    consequence: Manifest parsing fails on valid but differently formatted JSON or edge cases.
+    likelihood: medium
+    severity: medium
+    mitigation: Constrain manifest subset or replace with robust deterministic parser/TLV manifest.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-08
+    risk: Layering violations introduced by Codex.
+    consequence: Product code may call OS APIs or render APIs directly, undermining portability.
+    likelihood: medium
+    severity: high
+    mitigation: Each prompt must explicitly restate dsys/dgfx boundaries and reviews must enforce them.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-09
+    risk: Broad GUI/TUI/dgfx prompts overreach existing API maturity.
+    consequence: Large inconsistent changes and build failures.
+    likelihood: medium-high
+    severity: medium-high
+    mitigation: Split prompts after repo inspection.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-10
+    risk: GUI/TUI product logic diverges from CLI behavior.
+    consequence: Bugs and incompatible product workflows.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Use shared state machines and product action models.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-11
+    risk: GUI directly depends on raster/theme packs and breaks vector-only fallback.
+    consequence: Products fail without optional assets.
+    likelihood: medium
+    severity: medium
+    mitigation: Ensure built-in vector style/icon pack remains mandatory.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-12
+    risk: IME/input event timing contaminates deterministic sim.
+    consequence: Sim results differ by platform/UI mode.
+    likelihood: low-medium
+    severity: high
+    mitigation: Input event streams are deterministic per frame; sim RNG isolated from UI systems.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-13
+    risk: Backend detection or GUI timing uses nondeterministic environment values for sim-affecting choices.
+    consequence: Different render backend may alter sim behavior.
+    likelihood: low-medium
+    severity: high
+    mitigation: Keep render/UI backend separate from sim; fixed tick and deterministic input stream.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-14
+    risk: Pack-system prompt becomes too broad and under-specified.
+    consequence: Asset loading, shader packs, audio packs, and streaming become inconsistent.
+    likelihood: medium-high
+    severity: medium-high
+    mitigation: Split pack prompt or define pack manifest and deterministic load order first.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-15
+    risk: Windows/macOS packaging realities break one-binary startup assumptions.
+    consequence: Double-click vs terminal detection may not behave as intended.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Decide Windows subsystem and macOS bundle strategy after repo/build inspection.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-16
+    risk: Questionnaire answer carries stale/external software-version claims.
+    consequence: Platform/render/API plan may rely on outdated build facts.
+    likelihood: medium
+    severity: medium
+    mitigation: Re-verify current docs/toolchains before using.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-17
+    risk: This final report package over-compresses generated prompts.
+    consequence: Future assistant may need original chat to recover exact prompt text.
+    likelihood: low-medium
+    severity: medium
+    mitigation: Report preserves prompt objectives, files, constraints, APIs, and risks; original chat remains ideal source
+      for exact wording.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-18
+    risk: Future aggregator merges recommendations as decisions.
+    consequence: Spec Book may incorrectly formalize tentative suggestions.
+    likelihood: medium
+    severity: high
+    mitigation: Use labels/status fields and preserve uncertainty.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Open/extract dominium.zip or current checkout.
+    why_verification_needed: Repo-specific claims in the chat are not independently verified here.
+    suggested_source_type: file inspection
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Inspect root CMakeLists.txt, source CMake files, and CMakePresets.json.
+    why_verification_needed: Build target and language-standard claims depend on actual files.
+    suggested_source_type: repo files
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Search for files specified by prompts 1-6.
+    why_verification_needed: Need know whether prompts were executed.
+    suggested_source_type: repo file tree
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Build golden target set and run numeric/headless tests.
+    why_verification_needed: Determine current build health and determinism baseline.
+    suggested_source_type: CMake/Ninja/test run
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: VERIFY-05
+    item: Inspect numeric typedef/fixed-point implementation for C89 compliance.
+    why_verification_needed: u64/i64/q48_16 under ISO C89 is unresolved.
+    suggested_source_type: source review
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: VERIFY-06
+    item: Inspect existing CLI/TUI/GUI/input/state modules before applying common-framework prompts.
+    why_verification_needed: Avoid overwriting or duplicating existing implementation.
+    suggested_source_type: repo file inspection
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: VERIFY-07
+    item: Inspect dgfx/render headers and backend implementation names.
+    why_verification_needed: Multi-window/pipeline/backend prompt may not match actual API.
+    suggested_source_type: repo file inspection
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Inspect content/pack/data format docs before generating pack-system prompt.
+    why_verification_needed: Pack prompt should target actual repo formats and compatibility rules.
+    suggested_source_type: repo docs/source inspection
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: VERIFY-09
+    item: Inspect CMake target graph before implementing startup dispatcher.
+    why_verification_needed: Avoid unresolved product wrapper symbols from shared core.
+    suggested_source_type: CMake/source review
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: VERIFY-10
+    item: Verify platform tier/render backend claims in docs/source.
+    why_verification_needed: Prior questionnaire answer is unverified in this packaging task.
+    suggested_source_type: docs/source inspection
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: Verify third-party library/vendor/toolchain claims.
+    why_verification_needed: External-world/software-version facts can become stale.
+    suggested_source_type: repo external dir, docs, build environment
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Download and store the generated report package files/ZIP.
+    why_verification_needed: Ensure handoff package persists outside this retired chat.
+    suggested_source_type: user local storage
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  spec_book_notes:
+    likely_sections:
+    - Architecture Overview
+    - Language and Determinism Policy
+    - Repository and DOMINIUM_HOME Model
+    - Build and Toolchain Policy
+    - Platform Abstraction (dsys)
+    - Rendering Architecture (dgfx)
+    - 'Product Model: Launcher/Game/Setup/Tools'
+    - Startup and Mode Dispatch Policy
+    - CLI/TUI/GUI Shared Interfaces
+    - Input, State, and IME Systems
+    - Pack and Content System
+    - Compatibility and Versioning
+    - Implementation Milestones and Codex Prompt Workflow
+    - Risk and Verification Policy
+    unique_contributions:
+    - Detailed Codex prompt sequence for Milestone 0.
+    - Unified startup behavior policy for terminal vs double-click launches.
+    - Identification of startup dispatcher linker risk.
+    - Missing pack-system prompt as explicit carry-forward item.
+    - Questionnaire workflow and caveat about repo-state verification.
+    possible_duplicates_with_other_chats:
+    - Master architecture constraints may appear in many chats.
+    - Platform/render matrix likely overlaps with repo/docs-focused chats.
+    - Codex prompt sequences may be copied into implementation chats.
+    - Startup CLI/TUI/GUI policy may overlap product UX chats.
+    conflicts_to_watch_for:
+    - C89 vs long long/64-bit implementation strategy.
+    - Native-endian TLV in early prompt vs cross-platform save compatibility.
+    - Monolithic domino_core vs modular domino_sys/domino_gfx target architecture.
+    - Windows one-binary UX vs console/windows subsystem build mode.
+    - D3D12 mention in questionnaire vs master prompt backends.
+    formal_requirements_candidates:
+    - Domino C89, Dominium C++98.
+    - dsys-only platform access.
+    - dgfx-only rendering.
+    - terminal => CLI; no-terminal => GUI->TUI->CLI startup policy.
+    - game headless/server flags bypass UI.
+    - stable versioned ABI/data formats and no silent old-content breakage.
+    - vector-only fallback always available.
+    background_context_candidates:
+    - Assistant-generated roadmap phases.
+    - Prompt inventory and sequencing.
+    - Questionnaire answer candidate details pending verification.
+    needs_user_confirmation:
+    - Final platform tier priorities.
+    - Windows subsystem/bundle strategy.
+    - Whether env/config startup mode overrides are desired later.
+    - D3D12 scope.
+    - Pack format and shader pack strategy.
+  final_recommendations:
+    next_action_if_continuing_this_chat: Verify the repo/zip, determine which prompts were applied, then either generate the
+      missing pack-system prompt or repair/implement the startup dispatcher.
+    next_action_for_aggregator: Ingest YAML and aggregator packet, preserve IDs and uncertainty labels, and verify repo facts
+      before merging into formal spec.
+    user_checks_required:
+    - Confirm dominium.zip/current repo state.
+    - Confirm which Codex prompts were run.
+    - Confirm whether startup env/config overrides or Windows subsystem strategy should be formalized.

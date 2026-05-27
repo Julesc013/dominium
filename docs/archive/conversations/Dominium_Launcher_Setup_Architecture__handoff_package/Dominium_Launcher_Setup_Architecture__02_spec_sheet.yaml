@@ -1,0 +1,1860 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Launcher Setup Architecture
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This visible chat only; project-level profile context is labelled PROJECT-CONTEXT where used.
+    apparent_coverage: full for visible chat architecture; unclear for actual repository
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - No repository inspection occurred in this chat.
+    - Earlier C++98 launcher prompts are partly superseded by latest dsys/dgfx C89 direction.
+    - JSON-vs-TLV/dmeta persistent format conflict remains unresolved.
+    - Actual dsys/dgfx API names and build system are unverified.
+  summary:
+    one_sentence: This chat defined the Dominium launcher/setup/runtime architecture, culminating in a latest active C89 dsys/dgfx
+      launcher direction with five full tabs and staged Codex work orders.
+    short_brief: The chat specified a modular Dominium ecosystem with deterministic C89 engine, optional launcher, setup authority,
+      portable/user/system installs, display modes NONE/CLI/TUI/GUI, full launcher tabs, and a later dsys/dgfx C89 launcher
+      architecture superseding earlier desktop frontend assumptions.
+    main_topics:
+    - Deterministic C89 engine philosophy
+    - Runtime standalone and supervised contracts
+    - Setup install/repair/uninstall system
+    - Launcher as all-in-one control center
+    - 'Tabs: News, Changes, Mods, Instances, Settings'
+    - Modularity and plugins
+    - dsys/dgfx C89 launcher implementation
+    - Codex work-order sequences
+    main_outputs:
+    - 'ARTIFACT-01: Global architecture philosophy text'
+    - 'ARTIFACT-02: Proposed top-level repo layout'
+    - 'ARTIFACT-03: `engine_api.h` C ABI sketch'
+    - 'ARTIFACT-04: `engine_plugin.h` sketch'
+    - 'ARTIFACT-05: `DomFileHeader` / `DomTLV` format sketch'
+    - 'ARTIFACT-06: Runtime CLI contract'
+    - 'ARTIFACT-07: Display mode enum NONE/CLI/TUI/GUI'
+    - 'ARTIFACT-08: `dom_setup` architecture spec'
+    - 'ARTIFACT-09: Portable/user/system install path spec'
+    - 'ARTIFACT-10: All-in-one launcher hub spec'
+    - 'ARTIFACT-11: Launcher tab set'
+    - 'ARTIFACT-12: Full tab interaction model'
+    - 'ARTIFACT-13: Launcher plugin ABI concepts'
+    - 'ARTIFACT-14: Setup plugin ABI concepts'
+    - 'ARTIFACT-15: Prompt 1: shared foundation + manifests + launcher state skeleton'
+    - 'ARTIFACT-16: Prompt 2: setup system'
+    - 'ARTIFACT-17: Prompt 3: launcher core + tabs + actions + plugin ABI'
+    - 'ARTIFACT-18: Prompt 4: launcher frontends'
+    - 'ARTIFACT-19: dSys/dgfx launcher architecture response'
+    - 'ARTIFACT-20: Context Transfer Packet'
+    - 'ARTIFACT-21: Runtime `--version`/`--capabilities` JSON examples'
+    - 'ARTIFACT-22: This report package'
+    highest_priority_carry_forward:
+    - Latest launcher direction is C89 + dsys + dgfx.
+    - Game must run standalone without launcher.
+    - Tabs are News, Changes, Mods, Instances, Settings.
+    - Resolve JSON vs TLV/dmeta before implementation.
+    - Inspect repo before generating code.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - User statements outrank assistant proposals.
+    - Latest explicit user direction outranks earlier assistant implementation assumptions.
+    - Preserve contradictions until resolved, especially JSON vs TLV and C++98 vs C89 launcher direction.
+    staleness_rules:
+    - External software/API/platform details require verification before implementation.
+    - OS path conventions and dsys/dgfx API assumptions must be checked against current repo docs.
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: Strict engineering tone
+      source_basis: User latest dsys/dgfx prompt and report instructions
+      strength: strong
+      implication: Use specs, tables, exact APIs; avoid filler.
+      risk_if_misunderstood: Future assistant may over-soften output.
+      label: FACT
+    - id: PREFERENCE-02
+      preference: Maximum-fidelity preservation
+      source_basis: User requested context transfer and report package
+      strength: strong
+      implication: Preserve contradictions, tentative status, artifacts, IDs.
+      risk_if_misunderstood: Summaries may lose key details.
+      label: FACT
+    - id: PREFERENCE-04
+      preference: No invented facts
+      source_basis: User report instructions
+      strength: strong
+      implication: Label uncertainty and do not fabricate repo state.
+      risk_if_misunderstood: Critical trust failure if ignored.
+      label: FACT
+    - id: PREFERENCE-05
+      preference: Preserve rejected/superseded options
+      source_basis: User report instructions
+      strength: strong
+      implication: Registers must keep old C++98 model and rejected monolith option.
+      risk_if_misunderstood: Future assistant may repeat rejected work.
+      label: FACT
+    inferred:
+    - id: PREFERENCE-03
+      preference: Codex-ready implementation prompts
+      source_basis: User repeatedly requested Codex prompts
+      strength: strong
+      implication: Produce work orders with files, APIs, end conditions.
+      risk_if_misunderstood: Answers may be too vague for implementation.
+      label: INFERENCE
+    - id: PREFERENCE-06
+      preference: Prefer rigorous boundaries and modularity
+      source_basis: User opening philosophy and modularity requests
+      strength: strong
+      implication: Separate engine/runtime/setup/launcher/modules/plugins.
+      risk_if_misunderstood: Hidden coupling risk.
+      label: FACT
+    uncertain_or_not_established:
+    - id: PREFERENCE-07
+      preference: Start responses with model version/build date
+      source_basis: System/user profile context, not visible chat request text
+      strength: medium
+      implication: Future assistant may include model/build header.
+      risk_if_misunderstood: Not established solely by visible chat.
+      label: PROJECT-CONTEXT
+    - id: PREFERENCE-08
+      preference: Citations/fact checking generally desired
+      source_basis: User profile context
+      strength: medium
+      implication: For external current facts, verify with sources.
+      risk_if_misunderstood: Could overburden purely internal spec responses.
+      label: PROJECT-CONTEXT
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Global Dominium architecture and repo strategy
+    label: FACT
+    objective: Maintain a coherent monorepo architecture spanning engine, runtime, launcher, setup, tools, content, mods,
+      SDK, docs, and scripts.
+    current_state: Architectural direction was specified in this chat; no repository was inspected or modified in this chat.
+    desired_end_state: One coherent repository with strict layering, stable APIs/ABIs, versioned file formats, migration paths,
+      and reusable libraries.
+    status: active
+    priority: highest
+    background: 'The user opened with a philosophy: one deterministic boring C89 core, narrow explicit APIs, version+TLV formats,
+      content packs/mods as data plus optional plugins, tools and launcher reuse libraries.'
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    - DECISION-04
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-04
+    tasks:
+    - TASK-01
+    - TASK-02
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    dependencies:
+    - Actual repository layout
+    - Existing build system
+    - Existing dsys/dgfx/TLV APIs
+    timeline: Defines all later work. Must be stabilized before large Codex implementation runs.
+    blockers:
+    - No repo inspection in this chat
+    - JSON vs TLV contradiction unresolved
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-05
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-20
+    success_criteria:
+    - All subsystems have clear boundaries
+    - No launcher/setup code depends on engine internals
+    - File formats are versioned
+    next_action: Inspect repo and confirm active file-format/build conventions before implementation.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-03
+    confidence: 5
+  - id: WORKSTREAM-02
+    name: Deterministic C89 engine core
+    label: FACT
+    objective: Preserve the engine as a deterministic, platform-independent C89 core with stable C APIs.
+    current_state: Only constraints and desired architecture were discussed here; engine code was not inspected.
+    desired_end_state: C89 fixed-point deterministic simulation library with stable C ABI, versioned file IO, and optional
+      ABI-versioned engine plugins.
+    status: active
+    priority: highest
+    background: The user's first message made the deterministic C89 core the primary design invariant.
+    decisions_made:
+    - DECISION-03
+    - DECISION-04
+    - DECISION-08
+    decisions_pending:
+    - QUESTION-07
+    tasks:
+    - TASK-15
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-05
+    - CONSTRAINT-13
+    dependencies:
+    - Engine C ABI
+    - TLV/file-format library
+    - Mod/plugin registry definitions
+    timeline: Engine boundary must remain protected while launcher/setup work proceeds.
+    blockers:
+    - No engine file inspection
+    risks:
+    - RISK-06
+    - RISK-08
+    artifacts:
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    success_criteria:
+    - Engine does not call runtime/launcher/setup
+    - No floats in sim/file formats
+    - Stable ABI version checks
+    next_action: Do not modify engine while implementing launcher/setup unless adding explicitly reviewed ABI headers.
+    verification_needed:
+    - VERIFY-03
+    - VERIFY-06
+    confidence: 5
+  - id: WORKSTREAM-03
+    name: Runtime/game executable integration
+    label: FACT
+    objective: Support direct standalone game execution and optional launcher-supervised execution through a stable CLI/capabilities
+      contract.
+    current_state: CLI contract and display modes were specified; no runtime code was edited.
+    desired_end_state: Runtime binaries support role/display selection, version/capabilities JSON or equivalent metadata,
+      launcher IDs, and standalone operation.
+    status: active
+    priority: high
+    background: User required direct executable running and optional launcher contracts; assistant specified `--role`, `--display`,
+      `--capabilities`, and launcher ID flags.
+    decisions_made:
+    - DECISION-05
+    - DECISION-06
+    - DECISION-07
+    decisions_pending:
+    - QUESTION-06
+    - QUESTION-08
+    tasks:
+    - TASK-14
+    constraints:
+    - CONSTRAINT-03
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    dependencies:
+    - Runtime binary names
+    - Engine C ABI
+    - Display backend support
+    - Capabilities schema
+    timeline: Can be implemented in parallel with launcher core but must exist before real instance launching.
+    blockers:
+    - Actual runtime tree and binary names unknown
+    risks:
+    - RISK-07
+    - RISK-12
+    artifacts:
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-21
+    success_criteria:
+    - '`dom_main --capabilities` works'
+    - Launcher can select a runtime by role/display
+    - Runtime works without launcher flags
+    next_action: Generate or adapt runtime CLI/capabilities prompt after repo inspection.
+    verification_needed:
+    - VERIFY-06
+    - VERIFY-07
+    confidence: 4
+  - id: WORKSTREAM-04
+    name: Setup system (`dom_setup`)
+    label: FACT
+    objective: Provide canonical install, repair, uninstall, list, and info functionality for portable, user-local, and system-wide
+      installs.
+    current_state: A detailed C++98/JSON-based Codex prompt was generated. Latest dsys/dgfx/TLV direction may require adaptation.
+    desired_end_state: A setup tool that supports defaults, full customization, non-interactive config files, conservative
+      uninstall, and optional setup plugins.
+    status: active, partly unresolved
+    priority: high
+    background: User asked how installation, repair, uninstallation, portable/user/system modes, and customized setup should
+      work.
+    decisions_made:
+    - DECISION-09
+    - DECISION-10
+    - DECISION-11
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-03
+    - QUESTION-05
+    tasks:
+    - TASK-03
+    - TASK-04
+    - TASK-05
+    constraints:
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies:
+    - Manifest format
+    - Path rules
+    - Platform integration
+    - File copy/packaging strategy
+    timeline: Should be implemented after shared formats/path conventions are settled.
+    blockers:
+    - JSON vs TLV unresolved
+    - Actual packaging layout unknown
+    risks:
+    - RISK-09
+    - RISK-10
+    artifacts:
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-17
+    success_criteria:
+    - '`install`, `repair`, `uninstall`, `list`, `info` work'
+    - No user data deletion by default
+    - Manifests are valid and discoverable
+    next_action: Revise setup work order around final manifest format and dsys filesystem if needed.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-04
+    - VERIFY-05
+    confidence: 4
+  - id: WORKSTREAM-05
+    name: Launcher as all-in-one Dominium hub
+    label: FACT
+    objective: Build the optional Dominium launcher as a full management hub for news, changes, mods, instances, installs,
+      profiles, settings, and future modules.
+    current_state: Extensive architecture specified. Latest implementation target is C89 + dsys + dgfx.
+    desired_end_state: A modular, extensible launcher capable of GUI/TUI/CLI operation across modern and retro backends, with
+      process supervision and full tab workflows.
+    status: active
+    priority: highest
+    background: User asked for an all-in-one launcher and later specified exact built-in tabs and dsys/dgfx implementation
+      layer.
+    decisions_made:
+    - DECISION-05
+    - DECISION-12
+    - DECISION-13
+    - DECISION-14
+    - DECISION-15
+    decisions_pending:
+    - QUESTION-02
+    - QUESTION-04
+    - QUESTION-09
+    tasks:
+    - TASK-06
+    - TASK-07
+    - TASK-08
+    - TASK-09
+    - TASK-10
+    - TASK-11
+    - TASK-12
+    - TASK-13
+    constraints:
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-14
+    dependencies:
+    - dsys
+    - dgfx
+    - setup/manifest system
+    - runtime capabilities
+    - UI framework
+    timeline: 'Implement in staged work orders: core/config, UI core, renderer, loop/processes, tabs, plugins, harness.'
+    blockers:
+    - Actual dsys/dgfx APIs unknown
+    - Manifest/config format unresolved
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-03
+    - RISK-04
+    - RISK-11
+    artifacts:
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-18
+    - ARTIFACT-20
+    success_criteria:
+    - Launcher works without engine coupling
+    - All five tabs functional
+    - Instances can be supervised
+    - Retro degradation works
+    next_action: Produce dsys/dgfx Work-order 1 for core config/install/profile/mods.
+    verification_needed:
+    - VERIFY-02
+    - VERIFY-03
+    - VERIFY-08
+    confidence: 5
+  - id: WORKSTREAM-06
+    name: Launcher tabs and user interaction model
+    label: FACT
+    objective: Define full user interactions for News, Changes, Mods, Instances, and Settings tabs.
+    current_state: Detailed behavior for each tab was specified; no UI implementation exists in chat.
+    desired_end_state: Each tab is fully interactive and uses shared state/actions/widgets, with plugin extensibility.
+    status: active
+    priority: high
+    background: User explicitly listed tabs and required full interaction capability.
+    decisions_made:
+    - DECISION-12
+    - DECISION-13
+    decisions_pending:
+    - QUESTION-09
+    - QUESTION-10
+    tasks:
+    - TASK-10
+    - TASK-11
+    constraints:
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-15
+    dependencies:
+    - UI widget/layout/event system
+    - dgfx renderer
+    - state/config modules
+    - optional network/browser/clipboard support
+    timeline: After UI core and rendering work orders.
+    blockers:
+    - UI framework not implemented
+    - News/changes data source not finalized
+    risks:
+    - RISK-03
+    - RISK-11
+    artifacts:
+    - ARTIFACT-12
+    - ARTIFACT-15
+    success_criteria:
+    - News/Changes can browse/open cached/remote content
+    - Mods can manage modsets
+    - Instances can start/stop processes
+    - Settings persists changes
+    next_action: Convert tab interaction model into C89 module UI work order after UI core/rendering.
+    verification_needed:
+    - VERIFY-09
+    - VERIFY-10
+    confidence: 5
+  - id: WORKSTREAM-07
+    name: Launcher/setup/plugin extensibility
+    label: FACT
+    objective: Make launcher, setup, and instances extensible through ABI-versioned plugins, modules, and sidecars.
+    current_state: Architecture specified conceptually; no code implemented.
+    desired_end_state: Built-in modules and external plugins can register tabs, commands, hooks, profiles, and instance observers
+      without destabilizing core.
+    status: active
+    priority: medium-high
+    background: User explicitly asked to extend modularity and extensibility to launcher, setup, and individual instances.
+    decisions_made:
+    - DECISION-14
+    - DECISION-15
+    decisions_pending:
+    - QUESTION-11
+    tasks:
+    - TASK-12
+    constraints:
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    dependencies:
+    - Dynamic loading support in dsys
+    - ABI headers
+    - versioning policy
+    - plugin directories
+    timeline: After core state and UI modules exist.
+    blockers:
+    - Actual dynamic loading API unknown
+    risks:
+    - RISK-08
+    - RISK-13
+    artifacts:
+    - ARTIFACT-13
+    - ARTIFACT-14
+    success_criteria:
+    - Incompatible plugins refused
+    - Core works with zero plugins
+    - Plugins cannot mutate engine state
+    next_action: Formalize C89 plugin ABI after core launcher context/state exists.
+    verification_needed:
+    - VERIFY-11
+    confidence: 4
+  - id: WORKSTREAM-08
+    name: dSys/dgfx C89 launcher implementation
+    label: FACT
+    objective: 'Implement launcher using the Domino system/rendering stack: dsys for platform services and dgfx for rendering.'
+    current_state: Latest architecture response specified lifecycle, rendering pipeline, headers, work orders, platform constraints,
+      and harness.
+    desired_end_state: C89 launcher runs over dsys/dgfx across all declared backends with appropriate fallback/degradation.
+    status: active / latest direction
+    priority: highest
+    background: User supplied a large explicit prompt requiring dsys/dgfx usage and strict C89 engineering.
+    decisions_made:
+    - DECISION-16
+    - DECISION-17
+    - DECISION-18
+    decisions_pending:
+    - QUESTION-02
+    - QUESTION-12
+    tasks:
+    - TASK-06
+    - TASK-07
+    - TASK-08
+    - TASK-09
+    - TASK-10
+    - TASK-11
+    - TASK-12
+    - TASK-13
+    constraints:
+    - CONSTRAINT-02
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-14
+    - CONSTRAINT-18
+    dependencies:
+    - All dsys backends
+    - All dgfx backends
+    - IR/canvas/multi-view implementation
+    - soft renderer
+    - C89 build support
+    timeline: Immediate next workstream if continuing this chat.
+    blockers:
+    - Actual dsys/dgfx APIs not verified
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-04
+    - RISK-14
+    artifacts:
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    success_criteria:
+    - No raw OS drawing
+    - No raw OS process/window/fs/input calls
+    - C89 headers compile
+    - Harness runs on dgfx soft backend
+    next_action: Generate implementation-ready Codex Work-order 1 for launcher core/config/install/profile/mods using dsys
+      FS and versioned metadata.
+    verification_needed:
+    - VERIFY-02
+    - VERIFY-03
+    - VERIFY-08
+    confidence: 5
+  decisions:
+  - id: DECISION-01
+    decision: Use one monorepo / one codebase for Dominium subsystems.
+    status: accepted by continuation
+    label: FACT
+    evidence_or_basis: User asked one codebase vs separate; assistant recommended one codebase and user continued.
+    rationale: Avoid duplicated implementations; centralize shared logic.
+    implications: Shared utilities and common specs feed setup/launcher/runtime/tools.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: see status/evidence
+  - id: DECISION-02
+    decision: Use separate binaries for setup, launcher, and game/runtime.
+    status: accepted by continuation
+    label: FACT
+    evidence_or_basis: Assistant recommended `dom_setup`, `dom_launcher`, runtime binaries; user continued with that model.
+    rationale: Privilege separation, packaging clarity, crash isolation.
+    implications: Do not merge setup/launcher/game into one monolithic executable by default.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    uncertainty: see status/evidence
+  - id: DECISION-03
+    decision: Engine core remains deterministic C89 with no platform/rendering concerns.
+    status: active
+    label: FACT
+    evidence_or_basis: User’s opening philosophy and repeated constraints.
+    rationale: Protect simulation determinism and portability.
+    implications: Launcher/setup/tool code cannot leak into engine core.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: see status/evidence
+  - id: DECISION-04
+    decision: All file formats should be versioned and migration-based, with TLV preferred by philosophy.
+    status: active, format detail unresolved
+    label: FACT
+    evidence_or_basis: 'User opening: version+TLV everywhere; later dmeta/TLV spec.'
+    rationale: No silent breakage; future-compatible data.
+    implications: Must resolve JSON-vs-TLV before implementation.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-04
+    - WORKSTREAM-08
+    uncertainty: see status/evidence
+  - id: DECISION-05
+    decision: Game must run standalone without launcher.
+    status: final unless user reverses
+    label: FACT
+    evidence_or_basis: User explicitly stated game should run perfectly fine with no launcher.
+    rationale: Launcher is optional; runtime contracts must degrade cleanly.
+    implications: Runtime must not require launcher IDs, IPC, or launcher DB.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    uncertainty: see status/evidence
+  - id: DECISION-06
+    decision: Instances use display types NONE, CLI, TUI, GUI.
+    status: active
+    label: FACT
+    evidence_or_basis: User explicitly specified these display types.
+    rationale: Unifies runtime and launcher instance metadata.
+    implications: All spawn/UI code should represent display mode explicitly.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    uncertainty: see status/evidence
+  - id: DECISION-07
+    decision: Launcher supervision metadata is optional and disableable.
+    status: active
+    label: FACT
+    evidence_or_basis: User said contracts can be disabled if unused; assistant specified `--launcher-integration=off`.
+    rationale: Standalone and supervised modes can share binaries.
+    implications: Launch flags/env vars must not affect gameplay semantics.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: see status/evidence
+  - id: DECISION-08
+    decision: Launcher/tools must not hand-roll simulation formats or inspect engine internals.
+    status: active
+    label: FACT
+    evidence_or_basis: User opening philosophy and assistant stress tests.
+    rationale: Prevents drift between game and tools/launcher.
+    implications: Launcher reads metadata/manifests, not chunk/sim internals.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-05
+    uncertainty: see status/evidence
+  - id: DECISION-09
+    decision: Setup is the canonical install/repair/uninstall authority.
+    status: active
+    label: FACT
+    evidence_or_basis: Assistant proposal after user asked setup behavior; user continued.
+    rationale: Centralizes install mutation logic.
+    implications: Launcher should call setup or shared setup APIs rather than duplicating install logic.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: see status/evidence
+  - id: DECISION-10
+    decision: Setup must support portable, per-user, and system-wide modes.
+    status: active
+    label: FACT
+    evidence_or_basis: User explicitly asked about these modes across Windows/Linux/macOS.
+    rationale: Covers USB/non-install and OS-integrated installs.
+    implications: Path logic and manifests must encode install type.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: see status/evidence
+  - id: DECISION-11
+    decision: Setup must support defaults and fully customized operation.
+    status: active
+    label: FACT
+    evidence_or_basis: User explicitly stated setup should work with defaults or fully customized.
+    rationale: Supports normal users, scripts, CI, and custom layouts.
+    implications: Requires CLI flags, config/answer files, non-interactive behavior.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: see status/evidence
+  - id: DECISION-12
+    decision: Launcher built-in tabs are News, Changes, Mods, Instances, Settings.
+    status: active
+    label: FACT
+    evidence_or_basis: User explicitly listed the tabs.
+    rationale: Defines core UI surface.
+    implications: All future UI plans should preserve these tab identities.
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-06
+    uncertainty: see status/evidence
+  - id: DECISION-13
+    decision: Each launcher tab should be fully interactive, not decorative.
+    status: active
+    label: FACT
+    evidence_or_basis: User explicitly requested full interaction in each tab.
+    rationale: Drives widget/state/action design.
+    implications: Need deep workflows for browsing, mod management, instance management, settings.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: see status/evidence
+  - id: DECISION-14
+    decision: Launcher/setup/instances should be modular and extensible.
+    status: active
+    label: FACT
+    evidence_or_basis: User explicitly asked to extend modularity to launcher/setup/instances.
+    rationale: Prevents monolithic code and enables future modules/plugins.
+    implications: Need module registries, ABI versioning, hook points.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: see status/evidence
+  - id: DECISION-15
+    decision: Built-in launcher modules should use the same conceptual registration model as plugins.
+    status: proposed/accepted by continuation
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed tab descriptors; user continued.
+    rationale: Simplifies extensibility and future plugin tabs.
+    implications: Tabs should be registered through descriptors, not hard-coded UI blocks only.
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-07
+    uncertainty: see status/evidence
+  - id: DECISION-16
+    decision: Latest launcher implementation should use dsys for all platform services.
+    status: active/latest
+    label: FACT
+    evidence_or_basis: User latest major prompt explicitly required dsys for windowing/filesystem/input/processes.
+    rationale: No raw platform calls in launcher.
+    implications: Codex prompts must inspect/use dsys APIs.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: see status/evidence
+  - id: DECISION-17
+    decision: Latest launcher rendering should use dgfx exclusively.
+    status: active/latest
+    label: FACT
+    evidence_or_basis: User latest major prompt explicitly required dgfx rendering.
+    rationale: No raw OS drawing; no direct ImGui/ncurses/SDL drawing model.
+    implications: UI tree emits dgfx IR/canvas commands.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: see status/evidence
+  - id: DECISION-18
+    decision: Latest launcher API/header direction is strict C89.
+    status: active/latest
+    label: FACT
+    evidence_or_basis: User latest prompt requested C89 headers for launcher APIs.
+    rationale: Earlier C++98 launcher frontend prompts are superseded for launcher implementation.
+    implications: Implement launcher core/UI headers and likely source in C89 unless user says otherwise.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: see status/evidence
+  tasks:
+  - id: TASK-01
+    task: Inspect actual repository layout and build system.
+    priority: highest
+    urgency: immediate
+    owner: New assistant/Codex
+    dependencies: []
+    inputs_needed:
+    - Repo access
+    expected_output: Verified directory/build conventions.
+    next_step: Run repo scan before any generated code changes.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: 5
+  - id: TASK-02
+    task: Resolve JSON vs TLV/dmeta persistent format direction.
+    priority: highest
+    urgency: immediate
+    owner: User/new assistant
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Existing format library
+    - User confirmation
+    expected_output: Final format choice for manifests/config/profile/mods.
+    next_step: Ask user or inspect repo conventions.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-04
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 5
+  - id: TASK-03
+    task: Adapt setup work order to final format and dsys if needed.
+    priority: high
+    urgency: soon
+    owner: New assistant
+    dependencies:
+    - TASK-02
+    inputs_needed:
+    - Setup prompt
+    - dsys FS APIs
+    expected_output: Implementation-ready setup prompt/spec.
+    next_step: Revise earlier C++98/JSON setup prompt only after format decision.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-04
+    task: Define conservative uninstall policy.
+    priority: high
+    urgency: soon
+    owner: Codex/new assistant
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - Install ID/data root strategy
+    expected_output: Uninstall behavior preserving user data by default.
+    next_step: Include explicit remove-user-data option and safe path checks.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 4
+  - id: TASK-05
+    task: Define setup plugin hooks and install profiles.
+    priority: medium
+    urgency: later
+    owner: Codex/new assistant
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - Dynamic loading API
+    expected_output: Setup plugin ABI scaffold.
+    next_step: Implement after core setup commands.
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-07
+    label: FACT
+    confidence: 4
+  - id: TASK-06
+    task: Generate dsys/dgfx Work-order 1.
+    priority: highest
+    urgency: immediate
+    owner: New assistant
+    dependencies:
+    - TASK-01
+    - TASK-02
+    inputs_needed:
+    - Latest dsys/dgfx architecture
+    expected_output: Codex prompt for core/config/install/profile/mods data layer.
+    next_step: Produce staged prompt with C89 files and end conditions.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 5
+  - id: TASK-07
+    task: Implement launcher config/install/profile/mods data layer.
+    priority: high
+    urgency: after TASK-06
+    owner: Codex
+    dependencies:
+    - TASK-06
+    inputs_needed:
+    - dsys FS
+    - TLV schema
+    expected_output: C89 modules and harness tests.
+    next_step: Run Work-order 1.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-08
+    task: Implement UI widget/layout/events system.
+    priority: high
+    urgency: after core data
+    owner: Codex
+    dependencies:
+    - TASK-07
+    inputs_needed:
+    - UI header specs
+    expected_output: C89 UI tree, layout, focus, input routing.
+    next_step: Run Work-order 2.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 4
+  - id: TASK-09
+    task: Implement dgfx renderer integration.
+    priority: high
+    urgency: after UI core
+    owner: Codex
+    dependencies:
+    - TASK-08
+    inputs_needed:
+    - dgfx drawing APIs
+    expected_output: Widget-to-dgfx IR renderer plus 3D scene module.
+    next_step: Run Work-order 3.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 4
+  - id: TASK-10
+    task: Implement launcher loop and process supervision.
+    priority: high
+    urgency: after renderer/core
+    owner: Codex
+    dependencies:
+    - TASK-07
+    - TASK-09
+    inputs_needed:
+    - dsys event/process APIs
+    expected_output: Main loop, dsys event handling, instance supervision.
+    next_step: Run Work-order 4.
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 4
+  - id: TASK-11
+    task: Implement built-in tab UIs.
+    priority: high
+    urgency: after UI/render/process
+    owner: Codex
+    dependencies:
+    - TASK-08
+    - TASK-09
+    - TASK-10
+    inputs_needed:
+    - Tab interaction specs
+    expected_output: News/Changes/Mods/Instances/Settings modules.
+    next_step: Run Work-order 5.
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 4
+  - id: TASK-12
+    task: Implement launcher plugin/module ABI.
+    priority: medium-high
+    urgency: after core and tabs
+    owner: Codex
+    dependencies:
+    - TASK-10
+    - TASK-11
+    inputs_needed:
+    - dsys dynamic loading
+    expected_output: Plugin loader and ABI for tabs/commands/KV/hooks.
+    next_step: Run Work-order 6.
+    related_workstreams:
+    - WORKSTREAM-07
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 4
+  - id: TASK-13
+    task: Implement launcher harness and retro degradation tests.
+    priority: high
+    urgency: after UI/render/core
+    owner: Codex
+    dependencies:
+    - TASK-07
+    - TASK-08
+    - TASK-09
+    - TASK-10
+    inputs_needed:
+    - dgfx soft backend
+    - test framework
+    expected_output: Runnable harness and CLI/text tests.
+    next_step: Run Work-order 7.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 4
+  - id: TASK-14
+    task: Implement or verify runtime CLI/capabilities.
+    priority: high
+    urgency: parallel
+    owner: Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Runtime source tree
+    expected_output: Runtime binaries support role/display/capabilities.
+    next_step: Generate separate prompt if not present.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 4
+  - id: TASK-15
+    task: Protect engine boundary during launcher/setup implementation.
+    priority: highest
+    urgency: continuous
+    owner: All implementers
+    dependencies: []
+    inputs_needed:
+    - Engine API docs
+    expected_output: No accidental engine coupling.
+    next_step: Review build dependencies and includes.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Engine core must remain deterministic C89.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User opening philosophy.
+    implication: No platform/launcher/render dependencies in engine.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-02
+    constraint: Latest launcher direction uses C89 APIs and likely C89 source.
+    type: technical
+    hard_or_soft: hard unless revised
+    source_or_basis: User latest dsys/dgfx prompt.
+    implication: Do not blindly implement C++98 launcher frontends.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-03
+    constraint: Game must run standalone without launcher.
+    type: product
+    hard_or_soft: hard
+    source_or_basis: User explicit clarification.
+    implication: Launcher IDs/contracts optional.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-04
+    constraint: Use stable explicit APIs and ABIs.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User opening philosophy.
+    implication: Version C ABI/plugin contracts.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-05
+    constraint: Files should be versioned; TLV preferred by philosophy.
+    type: format
+    hard_or_soft: hard direction, exact format pending
+    source_or_basis: User opening and latest dmeta mention.
+    implication: Avoid unversioned JSON blobs unless deliberately accepted.
+    violation_risk: high
+    label: FACT
+    confidence: 4
+  - id: CONSTRAINT-06
+    constraint: Instance display types are NONE, CLI, TUI, GUI.
+    type: product/technical
+    hard_or_soft: hard
+    source_or_basis: User explicit statement.
+    implication: UI/process/runtime metadata must support all four.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-07
+    constraint: Launcher supervision contracts must be disableable/unused-safe.
+    type: runtime
+    hard_or_soft: hard
+    source_or_basis: User explicit statement.
+    implication: Runtime behavior cannot depend on launcher.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-08
+    constraint: Setup supports portable, per-user, and system installs.
+    type: platform
+    hard_or_soft: hard
+    source_or_basis: User explicit question accepted as requirement.
+    implication: Install root/data root/path logic needed.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-09
+    constraint: Setup preserves user data by default.
+    type: safety
+    hard_or_soft: hard
+    source_or_basis: Assistant design accepted by continuation.
+    implication: Uninstall requires explicit remove-user-data.
+    violation_risk: high
+    label: FACT
+    confidence: 4
+  - id: CONSTRAINT-10
+    constraint: Setup supports defaults and full customization.
+    type: product
+    hard_or_soft: hard
+    source_or_basis: User explicit statement.
+    implication: CLI/config/non-interactive modes required.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-11
+    constraint: Launcher uses dsys exclusively for platform services.
+    type: technical
+    hard_or_soft: hard/latest
+    source_or_basis: User latest prompt.
+    implication: No direct WinAPI/POSIX/SDL/file calls in launcher.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-12
+    constraint: Launcher uses dgfx exclusively for rendering.
+    type: technical
+    hard_or_soft: hard/latest
+    source_or_basis: User latest prompt.
+    implication: No raw OS drawing, no direct ImGui/ncurses rendering.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-13
+    constraint: No floats in deterministic engine/file formats.
+    type: determinism
+    hard_or_soft: hard
+    source_or_basis: User opening philosophy.
+    implication: Renderer/UI can use floats if not feeding sim state; engine cannot.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-14
+    constraint: Retro platforms require degradation paths.
+    type: platform
+    hard_or_soft: hard direction
+    source_or_basis: User latest prompt lists retro platforms.
+    implication: CP/M likely TUI/CLI only; DOS full-screen soft/TUI.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-15
+    constraint: Launcher tabs must be fully interactive.
+    type: UX
+    hard_or_soft: hard
+    source_or_basis: User explicit request.
+    implication: Need real workflows, not decorative pages.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-16
+    constraint: Core must work with zero plugins.
+    type: extensibility
+    hard_or_soft: hard
+    source_or_basis: Assistant architecture for safe modularity.
+    implication: Plugins optional; failures logged/refused.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-17
+    constraint: Plugins must be ABI-versioned and refused on mismatch.
+    type: extensibility
+    hard_or_soft: hard
+    source_or_basis: Assistant architecture based on user modularity requirement.
+    implication: Requires ABI version constants and symbol checks.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-18
+    constraint: All external/current software/API facts require verification before use.
+    type: evidence
+    hard_or_soft: hard for future implementation
+    source_or_basis: User package instructions and system guidance.
+    implication: Do not trust unstated dsys/dgfx exact APIs.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  open_questions:
+  - id: QUESTION-01
+    question: Should install/config/profile/mod files use JSON or TLV `.dmeta`?
+    why_it_matters: Affects all persistent files and setup/launcher compatibility.
+    known: Earlier prompts used JSON; user's philosophy and latest dsys/dgfx spec use versioned TLV/dmeta.
+    unknown: Final format choice and existing repo utilities.
+    resolution_path: Ask user or inspect repo TLV library.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-04
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: What are the exact dsys and dgfx API names/signatures?
+    why_it_matters: Implementation prompts/code must compile.
+    known: User assumes all backends and IR/canvas exist.
+    unknown: Actual header names/function signatures.
+    resolution_path: Inspect repo.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: Should `dom_setup` also be rewritten to C89/dsys/TLV?
+    why_it_matters: Earlier setup prompt was C++98/JSON; latest launcher direction is C89/dsys/dgfx.
+    known: Setup remains separate conceptually.
+    unknown: Language/system-layer requirements for setup.
+    resolution_path: Ask user after presenting tradeoff.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: What is the actual build system and directory layout?
+    why_it_matters: All Codex work orders depend on real target names and paths.
+    known: Earlier prompts assumed CMake and proposed directories.
+    unknown: Repo reality.
+    resolution_path: Inspect repo.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: How should system registration work on retro systems?
+    why_it_matters: Setup and install discovery may not map cleanly to DOS/CP/M.
+    known: Modern OS path models were specified; retro support added later.
+    unknown: Retro install conventions.
+    resolution_path: Design per backend after repo/platform policy.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Is `dom_main` the canonical runtime binary or are there role-specific binaries?
+    why_it_matters: Launcher runtime registry needs binary selection rules.
+    known: Both models were discussed.
+    unknown: Repo/runtime structure.
+    resolution_path: Inspect runtime directory or ask user.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: Does engine IO/TLV library already exist?
+    why_it_matters: Launcher/setup should reuse it if appropriate.
+    known: User wants one format implementation.
+    unknown: Actual library presence/API.
+    resolution_path: Inspect repo.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: Should runtime display modes use dsys/dgfx too?
+    why_it_matters: Launcher and game UI may share system/rendering layers.
+    known: Latest prompt focuses launcher using dsys/dgfx; engine supports UI rendering on any backend.
+    unknown: Runtime implementation plan.
+    resolution_path: Ask user/inspect design docs.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: How should News/Changes fetch/open external content on unsupported platforms?
+    why_it_matters: News/Changes tabs require browsing/opening; retro systems may lack browser/network.
+    known: User wants browse/open; dsys system services are where supported.
+    unknown: Fallback UX and cache format.
+    resolution_path: Design explicit backend capability flags.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: How much account/social/server browser functionality belongs in current tab set?
+    why_it_matters: Earlier all-in-one launcher included these; final tabs do not list separate social/server tabs.
+    known: Server/browser/social mentioned as future modules; tabs fixed to five.
+    unknown: Whether these are plugin modules or hidden within tabs/settings.
+    resolution_path: Ask user when implementing modules.
+    priority: low-medium
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: Does dsys provide dynamic library loading for plugins?
+    why_it_matters: Plugin ABI implementation depends on loader APIs.
+    known: Plugin system desired.
+    unknown: Actual dsys dynamic loading API.
+    resolution_path: Inspect dsys.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-07
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: What memory allocation strategy should UI use on retro platforms?
+    why_it_matters: Immutable UI tree per frame may allocate heavily.
+    known: C89 retro support required.
+    unknown: Arena/static pool strategy and limits.
+    resolution_path: Design in Work-order 2.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Single monolithic setup+launcher+game binary
+    status: rejected/strongly discouraged
+    reason: Privilege separation, packaging, and crash isolation concerns.
+    final_or_tentative: tentative but strongly preferred
+    reconsider_conditions: Reconsider only for extremely constrained retro builds where process separation is impossible.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-02
+    option: Launcher required for gameplay
+    status: rejected
+    reason: User explicitly requires direct executable running without launcher.
+    final_or_tentative: final unless user reverses
+    reconsider_conditions: Only if user changes product model.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-03
+    option: Independent console windows by default
+    status: rejected as default
+    reason: Breaks aggregated logging and fails in text-only environments.
+    final_or_tentative: tentative
+    reconsider_conditions: May be optional debug/external-console mode.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-04
+    option: Launcher linking engine core or sim internals
+    status: rejected
+    reason: Violates layering and deterministic boundary.
+    final_or_tentative: final
+    reconsider_conditions: Do not reconsider; tools may use engine IO separately.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-05
+    option: Raw OS drawing in launcher
+    status: superseded/rejected
+    reason: Latest user says dgfx exclusively.
+    final_or_tentative: final for latest launcher
+    reconsider_conditions: Only if user explicitly allows emergency fallback.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-06
+    option: Direct ncurses/SDL/ImGui launcher UI plan
+    status: superseded
+    reason: Latest dsys/dgfx direction supersedes earlier C++98 frontend prompt.
+    final_or_tentative: tentative/latest
+    reconsider_conditions: Reconsider only if user returns to desktop-only launcher plan.
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-07
+    option: Unversioned or silently changed file formats
+    status: rejected
+    reason: User requires version+TLV/migration.
+    final_or_tentative: final
+    reconsider_conditions: Never; all formats need versions and migrations.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-08
+    option: Tools or launcher hand-roll parsers
+    status: rejected
+    reason: User explicitly says tools/launcher reuse same libraries.
+    final_or_tentative: final
+    reconsider_conditions: Only small bootstrap parser if no shared library exists, then centralize.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-09
+    option: Full graphical feature parity on CP/M
+    status: deprioritized/degraded
+    reason: CP/M is text-mode; user said where possible.
+    final_or_tentative: final as degradation
+    reconsider_conditions: Reconsider only if actual backend supports richer graphics.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: REJECTED-10
+    option: Deleting user data by default during uninstall
+    status: rejected
+    reason: Safety rationale in setup design.
+    final_or_tentative: final unless user requests destructive uninstall default
+    reconsider_conditions: Only with explicit user confirmation/flag.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Global architecture philosophy text
+    type: user statement
+    purpose: Foundational design constraints.
+    status: source context
+    origin: User first message in visible chat.
+    carry_forward: 'yes'
+    notes: Includes deterministic C89 core, stable APIs, TLV, mods/plugins, tools reuse libraries.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Proposed top-level repo layout
+    type: architecture proposal
+    purpose: Organize engine/runtime/launcher/setup/tools/modsdk/content/mods/docs/scripts.
+    status: proposed
+    origin: Assistant early architecture response.
+    carry_forward: 'yes'
+    notes: Needs repo verification.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: '`engine_api.h` C ABI sketch'
+    type: API proposal
+    purpose: Engine-runtime boundary.
+    status: proposed
+    origin: Assistant response.
+    carry_forward: 'yes'
+    notes: Exact API unverified.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: '`engine_plugin.h` sketch'
+    type: API proposal
+    purpose: Engine plugin ABI.
+    status: proposed
+    origin: Assistant response.
+    carry_forward: 'yes'
+    notes: Versioned plugin symbol proposed.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: '`DomFileHeader` / `DomTLV` format sketch'
+    type: format proposal
+    purpose: Shared versioned file pattern.
+    status: proposed
+    origin: Assistant response.
+    carry_forward: 'yes'
+    notes: Should be reconciled with existing TLV library.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: Runtime CLI contract
+    type: API proposal
+    purpose: Standalone/supervised runtime integration.
+    status: proposed
+    origin: Assistant response after user optional launcher clarification.
+    carry_forward: 'yes'
+    notes: Includes role/display/capabilities/launcher IDs.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: Display mode enum NONE/CLI/TUI/GUI
+    type: model
+    purpose: Instance display abstraction.
+    status: accepted concept
+    origin: User and assistant.
+    carry_forward: 'yes'
+    notes: Core carry-forward item.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: '`dom_setup` architecture spec'
+    type: system spec
+    purpose: Setup install/repair/uninstall.
+    status: proposed/accepted by continuation
+    origin: Assistant response.
+    carry_forward: 'yes'
+    notes: Needs adaptation to dsys/TLV if latest direction applies.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: Portable/user/system install path spec
+    type: platform spec
+    purpose: Install modes across Windows/Linux/macOS.
+    status: proposed
+    origin: Assistant response.
+    carry_forward: 'yes'
+    notes: External OS paths should be verified before implementation.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: All-in-one launcher hub spec
+    type: system spec
+    purpose: Launcher functions beyond game launching.
+    status: proposed/continued
+    origin: Assistant response.
+    carry_forward: 'yes'
+    notes: Future modules include accounts/social/server browser/tools.
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: Launcher tab set
+    type: user requirement
+    purpose: News, Changes, Mods, Instances, Settings.
+    status: active
+    origin: User explicit statement.
+    carry_forward: 'yes'
+    notes: Highest priority UI artifact.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Full tab interaction model
+    type: UX spec
+    purpose: What users can do in each tab.
+    status: proposed
+    origin: Assistant response.
+    carry_forward: 'yes'
+    notes: Should be carried into dsys/dgfx work orders.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: Launcher plugin ABI concepts
+    type: extensibility spec
+    purpose: Tabs, commands, instance hooks, plugin KV.
+    status: proposed
+    origin: Assistant response.
+    carry_forward: 'yes'
+    notes: Needs C89/dsys adaptation.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Setup plugin ABI concepts
+    type: extensibility spec
+    purpose: Install profiles and post hooks.
+    status: proposed
+    origin: Assistant response.
+    carry_forward: 'yes'
+    notes: Needs final language/format decision.
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: 'Prompt 1: shared foundation + manifests + launcher state skeleton'
+    type: Codex prompt
+    purpose: Initial implementation plan for earlier architecture.
+    status: generated
+    origin: Assistant output.
+    carry_forward: historical/partial
+    notes: Superseded partly by dsys/dgfx but useful for data-layer thinking.
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: 'Prompt 2: setup system'
+    type: Codex prompt
+    purpose: Implementation plan for `dom_setup`.
+    status: generated
+    origin: Assistant output.
+    carry_forward: yes/adapt
+    notes: C++98/JSON orientation may need revision.
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: 'Prompt 3: launcher core + tabs + actions + plugin ABI'
+    type: Codex prompt
+    purpose: Backend launcher implementation for earlier architecture.
+    status: generated
+    origin: Assistant output.
+    carry_forward: historical/adapt
+    notes: Superseded by C89/dsys/dgfx for launcher but concepts remain useful.
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: 'Prompt 4: launcher frontends'
+    type: Codex prompt
+    purpose: CLI/TUI/GUI frontends for earlier architecture.
+    status: generated
+    origin: Assistant output.
+    carry_forward: historical
+    notes: Direct ncurses/SDL/ImGui plan superseded.
+    label: FACT
+  - id: ARTIFACT-19
+    name_or_description: dSys/dgfx launcher architecture response
+    type: architecture + API sketches
+    purpose: Latest active launcher direction.
+    status: generated from user latest prompt
+    origin: Assistant latest architecture response before transfer request.
+    carry_forward: yes/highest
+    notes: Includes headers, lifecycle, rendering pipeline, work orders, platform constraints, harness.
+    label: FACT
+  - id: ARTIFACT-20
+    name_or_description: Context Transfer Packet
+    type: handoff text
+    purpose: State transfer for new chat.
+    status: generated
+    origin: Assistant previous final answer.
+    carry_forward: 'yes'
+    notes: This package normalizes and exports it.
+    label: FACT
+  - id: ARTIFACT-21
+    name_or_description: Runtime `--version`/`--capabilities` JSON examples
+    type: API proposal
+    purpose: Launcher runtime probing.
+    status: generated
+    origin: Assistant prior prompts.
+    carry_forward: 'yes'
+    notes: May need TLV/dsys runtime equivalent if JSON is rejected.
+    label: FACT
+  - id: ARTIFACT-22
+    name_or_description: This report package
+    type: exported files
+    purpose: Downloadable/shareable per-chat report package.
+    status: created now
+    origin: Current assistant response.
+    carry_forward: 'yes'
+    notes: Contains Markdown/YAML/ZIP outputs.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Future assistant follows superseded C++98/SDL/ncurses launcher plan.
+    consequence: Wrong implementation direction.
+    likelihood: medium
+    severity: high
+    mitigation: Treat latest dsys/dgfx C89 launcher direction as active.
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-08
+    label: FACT
+  - id: RISK-02
+    risk: Codex invents dsys/dgfx API names.
+    consequence: Generated code may not compile.
+    likelihood: high
+    severity: high
+    mitigation: Require repo inspection and adaptation to actual APIs.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-03
+    risk: Tabs are implemented as decorative pages rather than full workflows.
+    consequence: Launcher fails user’s UX requirement.
+    likelihood: medium
+    severity: high
+    mitigation: Carry detailed tab interaction model into work orders.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-04
+    risk: Retro platform support overpromised.
+    consequence: Impossible or unusable implementation on CP/M/DOS/Win16.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Define explicit degradation paths and capability flags.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: RISK-05
+    risk: JSON/TLV contradiction causes incompatible files.
+    consequence: Setup/launcher/tools disagree on manifests/config.
+    likelihood: high
+    severity: high
+    mitigation: Resolve format decision before implementation.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-04
+    - WORKSTREAM-08
+    label: FACT
+  - id: RISK-06
+    risk: Engine determinism boundary leaks.
+    consequence: Simulation divergence or hidden coupling.
+    likelihood: medium
+    severity: high
+    mitigation: Review includes/dependencies; keep launcher/setup out of engine.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-07
+    risk: Runtime capabilities not implemented but launcher assumes them.
+    consequence: Instance launch selection fails.
+    likelihood: medium
+    severity: high
+    mitigation: Implement or stub runtime capability probing clearly.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-08
+    risk: Plugin ABI changes silently.
+    consequence: Plugins break unpredictably.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Use ABI version checks and exported symbol contracts.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-09
+    risk: Setup uninstall deletes wrong data.
+    consequence: User data loss.
+    likelihood: low-medium
+    severity: critical
+    mitigation: Preserve user data by default; conservative path checks.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-10
+    risk: System install permissions mishandled.
+    consequence: Install/repair/uninstall fail or require unsafe elevation.
+    likelihood: medium
+    severity: medium
+    mitigation: Separate portable/user/system logic and privilege boundaries.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-11
+    risk: UI tree per-frame allocation too heavy for retro systems.
+    consequence: Memory/performance problems.
+    likelihood: medium
+    severity: medium
+    mitigation: Use arenas/static pools and low-memory fallbacks.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: RISK-12
+    risk: Game becomes dependent on launcher paths/DB.
+    consequence: Standalone requirement violated.
+    likelihood: medium
+    severity: high
+    mitigation: Runtime reads its own config/CLI; launcher metadata optional.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-13
+    risk: Plugin failures crash launcher/setup.
+    consequence: Extensibility destabilizes core.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Core must run with zero plugins; plugin load failures logged/refused.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-14
+    risk: Package report treated as proof code exists.
+    consequence: Future implementation assumes nonexistent files.
+    likelihood: medium
+    severity: medium
+    mitigation: Manifest/report states no repo was inspected and artifacts are proposed.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: 'Final persistent format: JSON vs TLV `.dmeta`.'
+    why_verification_needed: Current chat contains both earlier JSON and latest TLV/dmeta direction.
+    suggested_source_type: User confirmation and repo format library inspection.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-04
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Actual dsys and dgfx API names/signatures.
+    why_verification_needed: Latest architecture assumes layers exist but did not provide exact APIs.
+    suggested_source_type: Repository headers/docs.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Actual repository layout/build system.
+    why_verification_needed: All file paths/targets are proposed.
+    suggested_source_type: Repo inspection.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Setup implementation language and platform layer.
+    why_verification_needed: Earlier setup prompt is C++98; latest launcher direction is C89/dsys.
+    suggested_source_type: User confirmation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Install path policy for retro platforms.
+    why_verification_needed: Modern paths are specified; retro install conventions are not.
+    suggested_source_type: Platform policy/design docs.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Runtime binary names and capabilities support.
+    why_verification_needed: Launcher instance manager depends on it.
+    suggested_source_type: Runtime source inspection.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Engine C ABI availability.
+    why_verification_needed: Runtime and tools need stable boundary.
+    suggested_source_type: Engine headers/docs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: dgfx support for text/fonts/icons/themes and 3D primitives.
+    why_verification_needed: UI renderer and splash scene depend on it.
+    suggested_source_type: dgfx docs/headers/test harness.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Network/browser/open URL support through dsys.
+    why_verification_needed: News/Changes open/browse behavior depends on backend capability.
+    suggested_source_type: dsys service APIs.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: File dialog/clipboard support through dsys.
+    why_verification_needed: Mods/settings/user paths UX depends on it.
+    suggested_source_type: dsys service APIs.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: Dynamic plugin loading support.
+    why_verification_needed: Launcher/setup plugin loaders depend on it.
+    suggested_source_type: dsys dynamic library API or platform abstraction.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Whether project has existing TLV migrators.
+    why_verification_needed: Migration requirement depends on available tooling.
+    suggested_source_type: Repo/docs inspection.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Architecture Philosophy and Layering
+    - Engine Boundary and Determinism
+    - Setup and Installation System
+    - Runtime/Launcher Contract
+    - Launcher over dsys/dgfx
+    - Launcher Tabs and UX Workflows
+    - Mod Management and Content Locking
+    - Plugin and Module ABIs
+    - Retro Platform Degradation
+    - Verification and Migration Policy
+    unique_contributions:
+    - Full launcher tab set and UX expectations
+    - All-in-one launcher scope
+    - Setup defaults/customization model
+    - Latest C89 dsys/dgfx launcher architecture
+    - Staged Codex work-order sequence
+    possible_duplicates_with_other_chats:
+    - Engine C89 determinism
+    - TLV/versioned file formats
+    - Runtime capabilities
+    - Plugin ABI strategy
+    conflicts_to_watch_for:
+    - Earlier JSON manifests vs later TLV/dmeta direction
+    - Earlier C++98 launcher frontend plan vs latest C89 dsys/dgfx launcher plan
+    - Full retro support claims vs actual backend capabilities
+    formal_requirements_candidates:
+    - Game must run standalone without launcher
+    - Launcher uses dsys/dgfx under latest plan
+    - 'Tabs: News, Changes, Mods, Instances, Settings'
+    - Setup supports portable, per-user, system installs
+    - Persistent formats must be versioned and migratable
+    background_context_candidates:
+    - Earlier C++98 prompt sequence
+    - Assistant-proposed JSON schemas
+    - Future accounts/social/server browser ideas
+    needs_user_confirmation:
+    - Final persistent format
+    - Setup language/platform layer
+    - Runtime binary structure
+    - First platforms to target in implementation
+  final_recommendations:
+    next_action_if_continuing_this_chat: Produce dsys/dgfx Work-order 1 for core launcher config/install/profile/mods data
+      layer in C89 using dsys FS and versioned metadata.
+    next_action_for_aggregator: Merge by workstream, preserve the direction change to dsys/dgfx, and keep JSON-vs-TLV unresolved
+      until confirmed.
+    user_checks_required:
+    - Confirm TLV/dmeta vs JSON.
+    - Confirm launcher source must be fully C89.
+    - Confirm setup should be adapted to dsys/TLV.
+    - Provide or inspect dsys/dgfx API headers.

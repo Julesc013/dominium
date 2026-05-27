@@ -1,0 +1,2353 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium APP0 Runtime, Platform, and Renderer Architecture
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: THIS CHAT ONLY; PROJECT-CONTEXT explicitly labelled where used
+    apparent_coverage: Full visible chat coverage; project attachments not inspected
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - Actual old repository snapshot was not inspected by this package.
+    - Prior assistant repo-inspection claim is unverified.
+    - Assistant architecture suggestions are not user decisions unless accepted.
+    - External graphics API/platform facts require future verification.
+  summary:
+    one_sentence: 'This chat defined and refined APP0 for Dominium: the application/runtime/platform/renderer layer, with
+      strict authority separation and a desired future real resizable windowed executable across supported platform/renderer
+      combinations.'
+    short_brief: APP0 covers client, server, launcher, setup, tools, renderers, and platform/runtime support while keeping
+      engine/game authoritative. The user requested discussion before more prompts, later clarified the final macro-plan should
+      produce a real interactive resizable window, granted write permission to render/platform/application/client/server/docs
+      only, and asked for a smarter modular architecture supporting broad platform/renderer distribution. The next step is
+      to inspect the old code snapshot and verify actual repo structure before prompt generation.
+    main_topics:
+    - APP0 application/runtime layer
+    - Client runtime and real window bring-up
+    - Server runtime
+    - Renderer architecture and capability model
+    - Platform runtime and window/presentation services
+    - Launcher orchestration
+    - Setup / installer / integrity layer
+    - 'Tools: inspectors, validator, replay viewer, editor, profiler'
+    - Distribution, modules, plugins, and mix-and-match architecture
+    - Old repository snapshot integration and verification
+    main_outputs:
+    - APP0 implementation pack (prior assistant, not final)
+    - Architecture critique
+    - Platform runtime proposal
+    - Renderer/platform taxonomy proposal
+    - Advanced runtime/module/framegraph proposal
+    - Maximum-fidelity Context Transfer Packet
+    - Final report package
+    highest_priority_carry_forward:
+    - APP0 scope and authority boundaries
+    - Engine/game remain authoritative
+    - Current write permissions exclude engine/game
+    - Real windowed executable is the macro-plan end state
+    - Inspect old repo snapshot before repo-specific plans
+    - Platform and renderer should be separate
+    - Null/software path before GPU backends
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Explicit user statements outrank assistant proposals.
+    - Assistant suggestions are not decisions unless user accepted them.
+    - Unverified repo-specific claims must not be merged as facts.
+    - Project context must be labelled separately from visible chat facts.
+    staleness_rules:
+    - External-world facts about APIs, software support, platforms, laws, products, prices, or schedules require future verification.
+    - Prior cited links are artifacts, not current authoritative proof.
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: Prefer maximum-fidelity state transfer over normal summaries
+      basis: User requested maximum-fidelity Context Transfer Packet and final package
+      strength: strong
+      implication: Preserve details, uncertainty, registers, artifacts, and next actions.
+      risk: Lossy summaries would force re-explanation.
+      label: FACT
+    - id: PREFERENCE-02
+      preference: Prefer discussion before prompt generation
+      basis: User said to discuss before planning or generating prompts
+      strength: strong
+      implication: Do not jump to Codex prompts without explicit request.
+      risk: Premature prompt generation may misalign architecture.
+      label: FACT
+    - id: PREFERENCE-03
+      preference: Prefer robust, modular, extensible architecture
+      basis: User asked for intelligent, intuitive, robust, compatible, optimized, moddable, modular, extensible design
+      strength: strong
+      implication: Evaluate designs by long-term maintainability and plug-and-play capability.
+      risk: Overly minimal scaffolds may be insufficient.
+      label: FACT
+    - id: PREFERENCE-04
+      preference: Prefer plug-and-play and mix-and-match code/data
+      basis: User wants to mix and match code without rewriting or duplication
+      strength: strong
+      implication: Use interfaces, modules, capability descriptors, and shared code paths.
+      risk: Monolithic designs would conflict with goal.
+      label: FACT
+    - id: PREFERENCE-05
+      preference: Prefer broad binary/platform/renderer distribution
+      basis: User wants same executable or set of executables across supported systems
+      strength: strong
+      implication: Design packaging/modules/selection for breadth.
+      risk: Naive per-combination binaries may cause matrix explosion.
+      label: FACT
+    - id: PREFERENCE-06
+      preference: Prefer epistemic labels and no invented facts
+      basis: User package prompt and prior preferences
+      strength: strong
+      implication: Use FACT/INFERENCE/UNCERTAIN labels and avoid unsupported claims.
+      risk: Overconfidence damages future aggregation.
+      label: FACT
+    inferred:
+    - id: PREFERENCE-INFERRED-01
+      preference: Likely prefers robust long-term architecture over quick stubs.
+      basis: User asked for intelligent, robust, modular, extensible, plug-and-play design.
+      strength: medium
+      implication: Design should optimize maintainability and extensibility.
+      risk: Overbuilding without verification.
+      label: INFERENCE
+    uncertain_or_not_established:
+    - Exact coding standard
+    - Exact build generator
+    - Exact renderer priority order
+    - Exact OS version minimums
+    - Exact packaging format
+  workstreams:
+  - id: WORKSTREAM-01
+    name: APP0 application/runtime layer
+    label: FACT
+    objective: 'Define and eventually implement the application/runtime layer only: client, server, launcher, setup/installer,
+      tools, platform support, and renderers.'
+    current_state: APP0 exists as a user-provided prompt and was expanded once into a Codex-style implementation pack. No
+      actual repository modifications are established by this chat.
+    desired_end_state: All APP0 applications and runtime layers are clearly defined, responsibility boundaries are non-overlapping,
+      rendering is isolated, servers are authoritative, supported platforms are cleanly handled, and docs explain the architecture.
+    status: active
+    priority: critical
+    background: The user positioned APP0 as part of the Dominium/Domino project and explicitly limited it to the application
+      and runtime layer.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    - DECISION-09
+    - DECISION-10
+    decisions_pending: []
+    tasks:
+    - TASK-05
+    - TASK-06
+    - TASK-12
+    - TASK-13
+    - TASK-14
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Verified repository snapshot
+    - Build system
+    - Public APIs
+    - User confirmation for proposed architecture
+    timeline: Verify repository before implementation prompts.
+    blockers:
+    - Unverified code snapshot
+    - Unresolved module/support/ABI decisions
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    success_criteria:
+    - APP0 acceptance criteria
+    - No authority boundary violations
+    - Docs and implementation match verified repo
+    next_action: Proceed after repository verification and boundary mapping.
+    verification_needed:
+    - VERIFY-05
+    - VERIFY-10
+    - VERIFY-11
+    confidence: 5
+  - id: WORKSTREAM-02
+    name: Client runtime and real window bring-up
+    label: FACT
+    objective: Produce a client executable that can open a real, interactive, resizable window while remaining non-authoritative.
+    current_state: Desired end state was stated by the user. Actual client code is unverified because the old repository snapshot
+      was not inspected in this visible chat.
+    desired_end_state: A client that orchestrates platform runtime, renderer selection, input capture, audio/UI/network placeholders
+      as needed, observer clocks, and a clean presentation loop without sim authority.
+    status: active
+    priority: critical
+    background: APP0 defined client responsibilities and prohibitions; the user later clarified the final macro-plan should
+      yield a running windowed executable.
+    decisions_made:
+    - DECISION-05
+    - DECISION-14
+    decisions_pending: []
+    tasks:
+    - TASK-15
+    - TASK-16
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Verified repository snapshot
+    - Build system
+    - Public APIs
+    - User confirmation for proposed architecture
+    timeline: Verify repository before implementation prompts.
+    blockers:
+    - Unverified code snapshot
+    - Unresolved module/support/ABI decisions
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    success_criteria:
+    - APP0 acceptance criteria
+    - No authority boundary violations
+    - Docs and implementation match verified repo
+    next_action: Proceed after repository verification and boundary mapping.
+    verification_needed:
+    - VERIFY-08
+    confidence: 5
+  - id: WORKSTREAM-03
+    name: Server runtime
+    label: FACT
+    objective: Define and scaffold or implement a headless-capable authoritative server runtime.
+    current_state: APP0 requirements are clear. Existing server implementation is unverified.
+    desired_end_state: Server is authoritative, headless-capable, supports AI-only autorun, sharding hooks, scheduling, persistence
+      hooks, law enforcement, and integrity/anti-cheat hooks without renderer/window dependencies.
+    status: active
+    priority: critical
+    background: APP0 specified server responsibilities and requirements.
+    decisions_made:
+    - DECISION-06
+    decisions_pending: []
+    tasks:
+    - TASK-21
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Verified repository snapshot
+    - Build system
+    - Public APIs
+    - User confirmation for proposed architecture
+    timeline: Verify repository before implementation prompts.
+    blockers:
+    - Unverified code snapshot
+    - Unresolved module/support/ABI decisions
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    success_criteria:
+    - APP0 acceptance criteria
+    - No authority boundary violations
+    - Docs and implementation match verified repo
+    next_action: Proceed after repository verification and boundary mapping.
+    verification_needed:
+    - VERIFY-09
+    confidence: 5
+  - id: WORKSTREAM-04
+    name: Renderer architecture and capability model
+    label: FACT
+    objective: Create a renderer architecture supporting null, software, Direct3D generations, Vulkan, OpenGL generations,
+      Metal, and possible translation/software/virtual backends through capability-driven selection.
+    current_state: User stated Dominium has or should have null, software, and multiple hardware renderer families. Actual
+      code presence is unverified.
+    desired_end_state: Renderer backends are replaceable, capability-described, policy-selected, isolated from simulation,
+      and do not create windows.
+    status: active
+    priority: critical
+    background: The user asked how to support Windows, Linux, macOS, PC, Mac, Xbox, PlayStation, Nintendo Switch, Intel, AMD,
+      NVIDIA, vintage systems, etc.
+    decisions_made:
+    - DECISION-04
+    - DECISION-13
+    - DECISION-15
+    - DECISION-16
+    - DECISION-17
+    - DECISION-19
+    decisions_pending: []
+    tasks:
+    - TASK-08
+    - TASK-09
+    - TASK-17
+    - TASK-18
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Verified repository snapshot
+    - Build system
+    - Public APIs
+    - User confirmation for proposed architecture
+    timeline: Verify repository before implementation prompts.
+    blockers:
+    - Unverified code snapshot
+    - Unresolved module/support/ABI decisions
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    success_criteria:
+    - APP0 acceptance criteria
+    - No authority boundary violations
+    - Docs and implementation match verified repo
+    next_action: Proceed after repository verification and boundary mapping.
+    verification_needed:
+    - VERIFY-06
+    - VERIFY-12
+    - VERIFY-14
+    confidence: 5
+  - id: WORKSTREAM-05
+    name: Platform runtime and window/presentation services
+    label: INFERENCE
+    objective: Introduce or formalize a platform runtime layer for windows, events, resize, native surfaces, timing, filesystem/process/dylib
+      services, and headless operation.
+    current_state: A prior assistant proposed this as the missing layer needed for real windows. Actual platform code is unverified.
+    desired_end_state: Platform creates windows and surfaces; renderers consume opaque surface handles; client orchestrates
+      both; server can remain headless.
+    status: active
+    priority: critical
+    background: The user wants real windows across renderer/platform combinations. This cannot be implemented cleanly inside
+      renderers.
+    decisions_made:
+    - DECISION-12
+    decisions_pending: []
+    tasks:
+    - TASK-07
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Verified repository snapshot
+    - Build system
+    - Public APIs
+    - User confirmation for proposed architecture
+    timeline: Verify repository before implementation prompts.
+    blockers:
+    - Unverified code snapshot
+    - Unresolved module/support/ABI decisions
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    success_criteria:
+    - APP0 acceptance criteria
+    - No authority boundary violations
+    - Docs and implementation match verified repo
+    next_action: Proceed after repository verification and boundary mapping.
+    verification_needed:
+    - VERIFY-07
+    confidence: 4
+  - id: WORKSTREAM-06
+    name: Launcher orchestration
+    label: FACT
+    objective: Define launcher responsibilities for instance/profile selection, capability detection, and session orchestration.
+    current_state: APP0 requirements are clear. Existing launcher code is unverified.
+    desired_end_state: Launcher detects capabilities, selects profiles/instances, and launches client/server/setup/tools without
+      installing content or mutating simulation state.
+    status: active
+    priority: high
+    background: APP0 explicitly separated launcher from setup/installer.
+    decisions_made:
+    - DECISION-07
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Verified repository snapshot
+    - Build system
+    - Public APIs
+    - User confirmation for proposed architecture
+    timeline: Verify repository before implementation prompts.
+    blockers:
+    - Unverified code snapshot
+    - Unresolved module/support/ABI decisions
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    success_criteria:
+    - APP0 acceptance criteria
+    - No authority boundary violations
+    - Docs and implementation match verified repo
+    next_action: Proceed after repository verification and boundary mapping.
+    verification_needed: []
+    confidence: 5
+  - id: WORKSTREAM-07
+    name: Setup / installer / integrity layer
+    label: FACT
+    objective: Define setup responsibilities for engine/content installation, version management, and integrity validation.
+    current_state: APP0 requirements are clear. Trust model and actual implementation are unresolved.
+    desired_end_state: Setup manages install/verify/repair/versioning through manifests and integrity checks without embedding
+      simulation logic.
+    status: active
+    priority: high
+    background: APP0 separated setup from launcher.
+    decisions_made: []
+    decisions_pending: []
+    tasks:
+    - TASK-19
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Verified repository snapshot
+    - Build system
+    - Public APIs
+    - User confirmation for proposed architecture
+    timeline: Verify repository before implementation prompts.
+    blockers:
+    - Unverified code snapshot
+    - Unresolved module/support/ABI decisions
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    success_criteria:
+    - APP0 acceptance criteria
+    - No authority boundary violations
+    - Docs and implementation match verified repo
+    next_action: Proceed after repository verification and boundary mapping.
+    verification_needed:
+    - VERIFY-15
+    confidence: 5
+  - id: WORKSTREAM-08
+    name: 'Tools: inspectors, validator, replay viewer, editor, profiler'
+    label: FACT
+    objective: Define tools that inspect, validate, replay, profile, or optionally edit worlds while respecting the same authority/law
+      model.
+    current_state: APP0 requirements are clear. Actual tools and their authority boundaries are unverified.
+    desired_end_state: Tools are auditable and never bypass law; write/elevated operations are explicit, authorized, and logged.
+    status: active
+    priority: high
+    background: APP0 explicitly lists world inspector, economy inspector, replay viewer, optional editor, and profiler.
+    decisions_made:
+    - DECISION-08
+    decisions_pending: []
+    tasks:
+    - TASK-20
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Verified repository snapshot
+    - Build system
+    - Public APIs
+    - User confirmation for proposed architecture
+    timeline: Verify repository before implementation prompts.
+    blockers:
+    - Unverified code snapshot
+    - Unresolved module/support/ABI decisions
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    success_criteria:
+    - APP0 acceptance criteria
+    - No authority boundary violations
+    - Docs and implementation match verified repo
+    next_action: Proceed after repository verification and boundary mapping.
+    verification_needed:
+    - VERIFY-16
+    confidence: 5
+  - id: WORKSTREAM-09
+    name: Distribution, modules, plugins, and mix-and-match architecture
+    label: INFERENCE
+    objective: Design a modular runtime/package architecture that lets code and data be plugged, mixed, matched, and distributed
+      across many platforms/renderers with minimal duplication.
+    current_state: The user explicitly requested plug-and-play, mix-and-match, broad binary distribution. Module/component
+      architecture was proposed but not accepted as final.
+    desired_end_state: Per-platform/per-architecture packages with stable executable cores and optional/static or dynamic
+      backend modules selected by capability and policy.
+    status: active
+    priority: high
+    background: The user wants binaries that run on as many architectures/platforms/renderers as possible in the same executable
+      or set of executables for supported systems.
+    decisions_made:
+    - DECISION-18
+    decisions_pending: []
+    tasks:
+    - TASK-10
+    - TASK-11
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Verified repository snapshot
+    - Build system
+    - Public APIs
+    - User confirmation for proposed architecture
+    timeline: Verify repository before implementation prompts.
+    blockers:
+    - Unverified code snapshot
+    - Unresolved module/support/ABI decisions
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    success_criteria:
+    - APP0 acceptance criteria
+    - No authority boundary violations
+    - Docs and implementation match verified repo
+    next_action: Proceed after repository verification and boundary mapping.
+    verification_needed:
+    - VERIFY-04
+    - VERIFY-13
+    - VERIFY-17
+    - VERIFY-18
+    confidence: 4
+  - id: WORKSTREAM-10
+    name: Old repository snapshot integration and verification
+    label: FACT
+    objective: Inspect the old code snapshot/project attachments and make future architecture/prompt work fit the actual codebase.
+    current_state: User requested inspection. A prior assistant claimed to inspect it, but that claim is unverified in this
+      visible chat and must not be relied on without re-checking.
+    desired_end_state: 'Verified repository inventory: actual tree, build system, languages, existing render/platform/client/server
+      code, engine/game APIs, docs, and tests.'
+    status: active
+    priority: critical
+    background: The user specifically asked to look at the old code snapshot in ChatGPT project attachments.
+    decisions_made:
+    - DECISION-11
+    - DECISION-20
+    decisions_pending: []
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    - TASK-04
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Verified repository snapshot
+    - Build system
+    - Public APIs
+    - User confirmation for proposed architecture
+    timeline: Verify repository before implementation prompts.
+    blockers:
+    - Unverified code snapshot
+    - Unresolved module/support/ABI decisions
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    success_criteria:
+    - APP0 acceptance criteria
+    - No authority boundary violations
+    - Docs and implementation match verified repo
+    next_action: Inspect and verify the repository snapshot before generating implementation prompts.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-03
+    confidence: 5
+  decisions:
+  - id: DECISION-01
+    decision: APP0 scope is application/runtime layer only
+    status: accepted / hard
+    label: FACT
+    evidence_or_basis: User APP0 prompt
+    rationale: Prevents simulation/content/gameplay changes while building executables and platform support.
+    implications: Future work should stay in render/platform/application/client/server/docs unless permission expands.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-02
+    decision: Applications are shells and orchestrators, not decision-makers
+    status: accepted / hard
+    label: FACT
+    evidence_or_basis: User APP0 prompt
+    rationale: Keeps apps replaceable and optional around the simulation.
+    implications: Apps host and orchestrate but do not own authoritative decisions.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-03
+    decision: Authoritative logic remains in engine + game
+    status: accepted / hard
+    label: FACT
+    evidence_or_basis: User APP0 prompt
+    rationale: Protects simulation authority and prevents client/tool/runtime drift.
+    implications: Engine/game are treated as authority black boxes for APP0.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-04
+    decision: Rendering never affects simulation
+    status: accepted / hard
+    label: FACT
+    evidence_or_basis: User APP0 prompt
+    rationale: Required for determinism and authority boundaries.
+    implications: Renderer timing/output must not influence sim state.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: none
+  - id: DECISION-05
+    decision: Client is non-authoritative
+    status: accepted / hard
+    label: FACT
+    evidence_or_basis: User APP0 prompt
+    rationale: Avoids cheating/divergence and law bypass.
+    implications: Prediction, if later added, must remain explicitly non-authoritative.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-06
+    decision: Server is authoritative and headless-capable
+    status: accepted / hard
+    label: FACT
+    evidence_or_basis: User APP0 prompt
+    rationale: Enables dedicated servers, MMO scale, and AI-only autorun.
+    implications: Server must not depend on renderer/windowing.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-07
+    decision: Launcher must not install content or mutate simulation state
+    status: accepted / hard
+    label: FACT
+    evidence_or_basis: User APP0 prompt
+    rationale: Keeps launcher as session orchestrator only.
+    implications: Setup owns installation; engine/server own authority.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: none
+  - id: DECISION-08
+    decision: Tools must obey authority/law and be auditable
+    status: accepted / hard
+    label: FACT
+    evidence_or_basis: User APP0 prompt
+    rationale: Prevents inspectors/editors from becoming hidden god-mode paths.
+    implications: Tool writes/elevation need explicit authorization and logging.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: none
+  - id: DECISION-09
+    decision: Discuss before generating more prompts
+    status: accepted at that time
+    label: FACT
+    evidence_or_basis: 'User said: “First, let''s discuss this before we plan or generate any prompts.”'
+    rationale: User wanted architectural discussion before prompt generation.
+    implications: Do not generate new Codex prompts until user asks.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-10
+    decision: Current write permission includes render, platform, application, client, server, and docs
+    status: accepted / current
+    label: FACT
+    evidence_or_basis: User explicitly granted these areas.
+    rationale: Defines allowed modification areas for future implementation.
+    implications: Avoid engine/game writes unless permission changes.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-11
+    decision: Engine/game write access is not needed for APP0 if public boundaries already suffice
+    status: tentative / unverified
+    label: UNCERTAIN / UNVERIFIED
+    evidence_or_basis: Prior assistant answer; not verified against code.
+    rationale: APP0 should host existing authority rather than refactor it.
+    implications: Must verify engine/game public APIs before relying on this.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: requires verification or user confirmation
+  - id: DECISION-12
+    decision: Introduce or formalize a platform runtime layer
+    status: proposed / strong
+    label: INFERENCE
+    evidence_or_basis: Assistant proposal after user stated windowed executable goal.
+    rationale: Real windows require OS/window/event/surface abstraction separate from renderers.
+    implications: Platform layer should own windows, events, resize, timing, surface handles.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: requires verification or user confirmation
+  - id: DECISION-13
+    decision: Renderers should not create windows
+    status: proposed / strong
+    label: INFERENCE
+    evidence_or_basis: Assistant proposal based on platform/render separation.
+    rationale: Avoids duplication and preserves portability/headless operation.
+    implications: Renderers consume platform surface handles.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: requires verification or user confirmation
+  - id: DECISION-14
+    decision: Bring up null/software paths before GPU backends
+    status: proposed / strong
+    label: INFERENCE
+    evidence_or_basis: Assistant proposal during executable-window discussion.
+    rationale: Software validates windowing/presentation before GPU complexity.
+    implications: First success state should be window clears/resizes/closes cleanly.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: requires verification or user confirmation
+  - id: DECISION-15
+    decision: Do not model renderers by GPU vendor
+    status: proposed / strong
+    label: INFERENCE
+    evidence_or_basis: Assistant renderer/platform taxonomy answer.
+    rationale: GPU vendors are adapter/driver metadata, not renderer APIs.
+    implications: Use API/backend/capability descriptors instead.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: requires verification or user confirmation
+  - id: DECISION-16
+    decision: 'Use support classes: canonical, compatibility, experimental'
+    status: proposed
+    label: INFERENCE
+    evidence_or_basis: Assistant renderer/platform taxonomy answer.
+    rationale: Prevents support matrix explosion.
+    implications: Needs user confirmation before becoming formal spec.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: requires verification or user confirmation
+  - id: DECISION-17
+    decision: Use capability tiers R0–R5 for vintage/modern support
+    status: proposed
+    label: INFERENCE
+    evidence_or_basis: Assistant renderer/platform taxonomy answer.
+    rationale: Allows vintage systems to be described by capability rather than one-off nostalgia targets.
+    implications: Needs user confirmation and mapping to real targets.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: requires verification or user confirmation
+  - id: DECISION-18
+    decision: Consider runtime modules/plugins/manifests for plug-and-play distribution
+    status: proposed
+    label: INFERENCE
+    evidence_or_basis: Assistant advanced architecture answer.
+    rationale: Addresses user desire for mix-and-match code and broad binaries.
+    implications: Requires ABI/versioning/package design before implementation.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: requires verification or user confirmation
+  - id: DECISION-19
+    decision: Consider render device + framegraph architecture
+    status: proposed
+    label: INFERENCE
+    evidence_or_basis: Assistant advanced architecture answer.
+    rationale: Reduces backend duplication across D3D/Vulkan/Metal/GL/software.
+    implications: Likely staged after minimal APP0 unless user elevates priority.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: requires verification or user confirmation
+  - id: DECISION-20
+    decision: Inspect old repo snapshot before repo-specific prompts
+    status: required next action
+    label: FACT
+    evidence_or_basis: User asked to look at old snapshot; prior inspection claim unverified.
+    rationale: Prevents wrong paths/build assumptions.
+    implications: Next assistant should verify actual files first.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: none
+  tasks:
+  - id: TASK-01
+    task: Inspect old code snapshot/project attachments
+    priority: critical
+    urgency: immediate
+    owner: future assistant
+    dependencies:
+    - Access to attachments or files
+    inputs_needed:
+    - Old repo archive/files
+    expected_output: Verified repository inventory
+    next_step: Open and inspect the actual snapshot before planning implementation.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: 5
+  - id: TASK-02
+    task: Verify actual top-level repo layout
+    priority: critical
+    urgency: immediate
+    owner: future assistant
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Directory tree
+    expected_output: FACT-based tree and naming map
+    next_step: Resolve app/apps/application and render/platform/client/server paths.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: 5
+  - id: TASK-03
+    task: Verify build system, languages, and toolchains
+    priority: critical
+    urgency: immediate
+    owner: future assistant
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Build files, source extensions, presets
+    expected_output: Build constraints and implementation language assumptions
+    next_step: Locate CMake or other build definitions and compiler targets.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: 5
+  - id: TASK-04
+    task: Verify engine/game public APIs
+    priority: critical
+    urgency: immediate
+    owner: future assistant
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Headers/source/docs
+    expected_output: Decision on whether APP0 can avoid engine/game writes
+    next_step: Find init/tick/shutdown/observer/read-only/public interfaces.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: 5
+  - id: TASK-05
+    task: Map current dependency graph
+    priority: critical
+    urgency: high
+    owner: future assistant
+    dependencies:
+    - TASK-02
+    - TASK-03
+    inputs_needed:
+    - Build files/includes/link targets
+    expected_output: Boundary risk map
+    next_step: Identify current render/platform/app/client/server/engine/game dependencies.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-06
+    task: Define authority/layer boundary map
+    priority: critical
+    urgency: high
+    owner: future assistant
+    dependencies:
+    - TASK-05
+    inputs_needed:
+    - Verified repo graph
+    expected_output: Allowed dependency and include rules
+    next_step: Draft explicit layer diagram and forbidden dependencies.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-07
+    task: Define minimal platform runtime contract
+    priority: critical
+    urgency: high
+    owner: future assistant
+    dependencies:
+    - TASK-06
+    inputs_needed:
+    - Windowing/presentation needs
+    expected_output: Platform interface proposal
+    next_step: Specify window, event, resize, surface, time contracts.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-08
+    task: Define renderer capability schema
+    priority: critical
+    urgency: high
+    owner: future assistant
+    dependencies:
+    - TASK-07
+    inputs_needed:
+    - Backend inventory
+    expected_output: Capability descriptor and selection model
+    next_step: Define API family, version, surface, feature tier, software/hardware/headless flags.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-09
+    task: Define support classes and target matrix
+    priority: high
+    urgency: high
+    owner: user + assistant
+    dependencies:
+    - TASK-08
+    inputs_needed:
+    - Target platform priorities
+    expected_output: Canonical/compatibility/experimental matrix
+    next_step: Present support classes for user confirmation.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-10
+    task: Decide static vs dynamic module strategy
+    priority: high
+    urgency: high
+    owner: user + assistant
+    dependencies:
+    - TASK-03
+    - TASK-08
+    inputs_needed:
+    - Distribution requirements
+    expected_output: Module strategy decision
+    next_step: Compare static registration, dynamic plugins, and hybrid model.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-11
+    task: Design module manifests and ABI/versioning
+    priority: high
+    urgency: medium
+    owner: future assistant
+    dependencies:
+    - TASK-10
+    inputs_needed:
+    - Language/toolchain/package constraints
+    expected_output: Stable module model draft
+    next_step: Define module identity, capabilities, version compatibility, loading rules.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-12
+    task: Draft revised repo-specific APP0 architecture plan
+    priority: high
+    urgency: medium
+    owner: future assistant
+    dependencies:
+    - TASK-01 through TASK-11
+    inputs_needed:
+    - Verified facts and decisions
+    expected_output: Implementation sequence and boundaries
+    next_step: Produce plan before any Codex prompt.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-13
+    task: Generate revised Codex implementation prompts only when requested
+    priority: medium
+    urgency: blocked
+    owner: future assistant
+    dependencies:
+    - TASK-12 and user request
+    inputs_needed:
+    - Architecture plan
+    expected_output: Prompt set for implementation
+    next_step: Wait for explicit user request before prompt generation.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: 5
+  - id: TASK-14
+    task: Implement null/headless runtime smoke path
+    priority: future
+    urgency: medium
+    owner: implementation agent
+    dependencies:
+    - TASK-12
+    inputs_needed:
+    - Repo code
+    expected_output: Executable status path
+    next_step: Add or verify headless/null initialization paths.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-15
+    task: Implement software renderer window path
+    priority: future
+    urgency: medium
+    owner: implementation agent
+    dependencies:
+    - TASK-07
+    - TASK-08
+    - TASK-12
+    inputs_needed:
+    - Platform + render code
+    expected_output: Resizable window clearing or blitting via software renderer
+    next_step: Build universal baseline before GPU backends.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-16
+    task: Implement client presentation loop
+    priority: future
+    urgency: medium
+    owner: implementation agent
+    dependencies:
+    - TASK-15
+    inputs_needed:
+    - Client/platform/render interfaces
+    expected_output: Interactive resizable client executable
+    next_step: Add event pump, resize handling, close, frame loop.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-17
+    task: Add renderer selection policy
+    priority: future
+    urgency: medium
+    owner: implementation agent
+    dependencies:
+    - TASK-08
+    - TASK-16
+    inputs_needed:
+    - Capability schema
+    expected_output: auto/override renderer selection
+    next_step: Implement policy-driven backend selection.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-18
+    task: Add GPU backends incrementally
+    priority: future
+    urgency: medium
+    owner: implementation agent
+    dependencies:
+    - TASK-17
+    inputs_needed:
+    - SDKs/platform surfaces
+    expected_output: D3D/VK/GL/Metal backends staged by platform
+    next_step: Start with one GPU backend after software success.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-19
+    task: Define setup trust/integrity model
+    priority: high
+    urgency: medium
+    owner: user + assistant
+    dependencies:
+    - TASK-10
+    inputs_needed:
+    - Package/content rules
+    expected_output: Hash/signature/manifest/versioning model
+    next_step: Resolve before serious installer implementation.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-20
+    task: Define tools elevation and audit model
+    priority: high
+    urgency: medium
+    owner: user + assistant
+    dependencies:
+    - TASK-06
+    inputs_needed:
+    - Authority/law requirements
+    expected_output: Tool authorization/audit policy
+    next_step: Resolve before write-capable editors/tools.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-21
+    task: Define sharding semantics or explicitly label as plumbing only
+    priority: medium
+    urgency: medium
+    owner: user + assistant
+    dependencies:
+    - Server architecture
+    inputs_needed:
+    - Simulation/server requirements
+    expected_output: Sharding policy or APP0 stub boundary
+    next_step: Avoid accidental MMO semantic assumptions.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+    confidence: 4
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Do not redesign simulation rules
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Runtime work must not change simulation behavior.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-02
+    constraint: Do not alter content definitions
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: APP0 should not modify game content/data definitions.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-03
+    constraint: Do not change life/civ/economy logic
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Keep life/civilization/economy logic out of runtime refactor.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-04
+    constraint: Do not introduce gameplay shortcuts
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Avoid temporary client/server hacks that alter game behavior.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-05
+    constraint: Applications are shells around the simulation
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Apps orchestrate but do not decide authority.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-06
+    constraint: All authoritative logic remains in engine + game
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Runtime layers must call into authority, not replace it.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-07
+    constraint: Client must not simulate authoritative state
+    type: architecture/security
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Client prediction, if any, must be non-authoritative.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-08
+    constraint: Client must not bypass law or invent data
+    type: architecture/security
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Client cannot forge state or ignore law systems.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-09
+    constraint: Server must be authoritative and headless-capable
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Server cannot depend on window/render paths.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-10
+    constraint: Rendering never affects simulation
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: No render timing/output enters authoritative state.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-11
+    constraint: Renderer selection must be capability-driven and policy-driven
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Backend selection cannot be a hardcoded single path.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-12
+    constraint: Launcher must not alter simulation state or install content
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Launcher is orchestration-only.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-13
+    constraint: Setup installs content/engine, manages versions, validates integrity
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Setup owns installation/integrity workflows.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-14
+    constraint: Tools must use same authority rules and be auditable
+    type: architecture/security
+    hard_or_soft: hard
+    source_or_basis: User APP0 prompt
+    implication: Tools need authorization/audit; no silent bypass.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-15
+    constraint: Current allowed write areas are render, platform, application, client, server, and docs
+    type: permission
+    hard_or_soft: hard/current
+    source_or_basis: User follow-up
+    implication: Future implementation should avoid engine/game writes unless permission changes.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-16
+    constraint: Do not generate prompts before discussion unless user asks
+    type: process
+    hard_or_soft: hard/current
+    source_or_basis: User follow-up
+    implication: New assistant should continue discussion/verification first.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-17
+    constraint: This package covers this chat only
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User package request
+    implication: Do not summarize entire project unless labelled PROJECT-CONTEXT.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-18
+    constraint: Important items must be labelled FACT, INFERENCE, UNCERTAIN / UNVERIFIED, or PROJECT-CONTEXT
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User package request
+    implication: Future report aggregation should preserve epistemic status.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-19
+    constraint: Do not treat assistant suggestions as user decisions unless accepted
+    type: reporting/process
+    hard_or_soft: hard
+    source_or_basis: User package request
+    implication: Proposals remain tentative.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-20
+    constraint: External-world/API/platform claims require future verification
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: User package request
+    implication: Prior API links should not be treated as current facts without re-checking.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-21
+    constraint: Start responses with model/date/time prefix
+    type: formatting
+    hard_or_soft: soft/hard per user preference
+    source_or_basis: User profile/context
+    implication: Future assistant should preserve the requested format when possible.
+    violation_risk: low
+    label: PROJECT-CONTEXT
+    confidence: 4
+  open_questions:
+  - id: QUESTION-01
+    question: What is the actual current repository structure?
+    why_it_matters: Architecture and prompts must match real paths.
+    known: Prior assistant claimed a tree; user referenced old snapshot.
+    unknown: Actual files were not inspected in this visible chat.
+    resolution_path: Inspect project attachments/repo snapshot.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: Is the canonical application directory app, apps, or application?
+    why_it_matters: Implementation prompts and permissions use different names.
+    known: APP0 implementation pack used apps; user granted application; prior claimed snapshot had app.
+    unknown: Actual tree and intended naming.
+    resolution_path: Inspect repo and ask user if needed.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: What build system and languages does the repo use?
+    why_it_matters: CMake/C/C++ assumptions may be wrong.
+    known: Prior prompt assumed CMake and C/C++ style examples.
+    unknown: Actual build system/languages/toolchains.
+    resolution_path: Inspect root build files and source extensions.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: Do engine/game expose stable public host APIs?
+    why_it_matters: Determines whether APP0 can avoid engine/game writes.
+    known: Assistant said engine/game writes unnecessary if boundaries exist.
+    unknown: Actual init/tick/shutdown/observer APIs.
+    resolution_path: Inspect headers/source/docs.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: Do null/software/hardware renderers already exist in code?
+    why_it_matters: Avoid duplicating/refactoring wrong abstractions.
+    known: User said Dominium has null/software and hardware renderers, but code status unverified.
+    unknown: Actual render implementation status.
+    resolution_path: Inspect render code.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Does a platform layer already exist?
+    why_it_matters: Determines whether to introduce, formalize, or refactor platform runtime.
+    known: User granted platform; assistant proposed missing layer.
+    unknown: Actual platform code and responsibilities.
+    resolution_path: Inspect platform directory.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: Should modules be dynamic plugins, static registrations, or hybrid?
+    why_it_matters: Affects distribution, ABI, build complexity, and compatibility.
+    known: User wants plug-and-play; assistant proposed dynamic modules.
+    unknown: User has not accepted a specific strategy.
+    resolution_path: Analyze repo/toolchains and present tradeoffs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: QUESTION-08
+    question: What is the module ABI/versioning policy?
+    why_it_matters: Needed for long-term plugin compatibility.
+    known: Module manifests proposed.
+    unknown: No ABI decision exists.
+    resolution_path: Design after language/build verification.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: QUESTION-09
+    question: Which platforms are canonical, compatibility, or experimental?
+    why_it_matters: Testing and support matrix must be bounded.
+    known: Windows/Linux/macOS/headless are APP0; consoles/vintage were asked about.
+    unknown: Exact platform versions/architectures unclear.
+    resolution_path: User confirmation and code feasibility analysis.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: QUESTION-10
+    question: Which renderers are canonical vs compatibility vs experimental?
+    why_it_matters: Prevents renderer support explosion.
+    known: D3D/VK/GL/Metal/software/null discussed.
+    unknown: Priority and exact versions undecided.
+    resolution_path: Create matrix for user confirmation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: QUESTION-11
+    question: What is the vintage support policy?
+    why_it_matters: Vintage systems can consume unlimited effort.
+    known: Capability tiers R0–R5 proposed.
+    unknown: Actual target vintage systems unknown.
+    resolution_path: User decision after matrix proposal.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: QUESTION-12
+    question: Are consoles in near-term scope or architecture-only?
+    why_it_matters: Console SDKs require private adapters and legal constraints.
+    known: Xbox/PlayStation/Nintendo Switch mentioned by user.
+    unknown: SDK access and target priority unknown.
+    resolution_path: Ask user or mark experimental/private.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-13
+    question: What is the setup trust/integrity model?
+    why_it_matters: Installer and multiplayer trust depend on it.
+    known: Setup must validate integrity.
+    unknown: Hash/signature/manifest/network trust unspecified.
+    resolution_path: Design trust model.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: QUESTION-14
+    question: What is the tools authorization/elevation model?
+    why_it_matters: Tools must obey law yet may need write/edit powers.
+    known: APP0 says tools must be auditable and lawful.
+    unknown: How to authorize elevated tool actions.
+    resolution_path: Design policy with user.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: QUESTION-15
+    question: What are sharding semantics?
+    why_it_matters: Server MMO design depends on shard model.
+    known: APP0 says server supports sharding.
+    unknown: Spatial/logical/temporal/jurisdictional semantics unknown.
+    resolution_path: Label APP0 as plumbing or design later.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: QUESTION-16
+    question: Is client-side prediction or rollback planned?
+    why_it_matters: Client architecture may need simulation-adjacent code.
+    known: Client cannot be authoritative.
+    unknown: Prediction/rollback location and authority rules unknown.
+    resolution_path: Defer or explicitly reserve layer.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: QUESTION-17
+    question: What shader/pipeline abstraction should be used?
+    why_it_matters: Cross-renderer duplication depends on it.
+    known: Shader IR/framegraph proposed.
+    unknown: Actual rendering needs/toolchains unknown.
+    resolution_path: Render architecture design after repo inspection.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: QUESTION-18
+    question: What asset/data pipeline exists?
+    why_it_matters: Platform variants and mods may need compiled assets.
+    known: Data/schema directories were claimed but unverified.
+    unknown: Actual asset/data pipeline unknown.
+    resolution_path: Inspect repo.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Generate more prompts immediately
+    status: rejected / superseded by discussion
+    reason: User explicitly asked to discuss before planning/generating prompts.
+    final_or_tentative: final until user asks for prompts
+    reconsider_conditions: When user explicitly requests prompt generation.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-02
+    option: Let renderer backends create windows
+    status: rejected by architecture proposal
+    reason: Would couple render APIs to OS windowing and break portability/headless separation.
+    final_or_tentative: strong but pending formal acceptance
+    reconsider_conditions: Only for throwaway prototype, not architecture.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: REJECTED-03
+    option: Start with GPU renderer before platform/software baseline
+    status: deprioritized
+    reason: GPU complexity would obscure window/event/presentation bugs.
+    final_or_tentative: strong but pending formal acceptance
+    reconsider_conditions: After null/software window path works.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: REJECTED-04
+    option: Model renderers by GPU vendor
+    status: rejected by assistant proposal
+    reason: Intel/AMD/NVIDIA are vendors/adapters/drivers, not renderer APIs.
+    final_or_tentative: strong
+    reconsider_conditions: Only use vendor metadata for profiling/workarounds/extensions.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: REJECTED-05
+    option: Promise every vintage system individually
+    status: rejected by assistant proposal
+    reason: Creates unbounded compatibility burden.
+    final_or_tentative: tentative
+    reconsider_conditions: Use capability tiers instead.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: REJECTED-06
+    option: Flat OS × renderer × vendor support matrix
+    status: rejected by assistant proposal
+    reason: Combinatorial explosion.
+    final_or_tentative: tentative
+    reconsider_conditions: Use descriptors, capability tiers, and support classes.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: REJECTED-07
+    option: Launcher installs content
+    status: rejected by APP0
+    reason: APP0 says launcher must not install content itself.
+    final_or_tentative: final unless user changes architecture
+    reconsider_conditions: Never under current APP0.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: REJECTED-08
+    option: Tools bypass law because they are development utilities
+    status: rejected by APP0
+    reason: APP0 says tools must use same authority rules, never bypass law, and be auditable.
+    final_or_tentative: final unless user changes architecture
+    reconsider_conditions: Use explicit logged elevation instead.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-09
+    option: Treat prior assistant repo-inspection claim as reliable
+    status: rejected for package purposes
+    reason: The current visible chat cannot verify the claimed snapshot inspection.
+    final_or_tentative: final until actual files are inspected
+    reconsider_conditions: Reconsider after direct file verification.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: REJECTED-10
+    option: Assume engine/game edits are impossible forever
+    status: rejected as overstatement
+    reason: Current permission excludes them, but future user permission could change if APIs are insufficient.
+    final_or_tentative: final as current-scope constraint only
+    reconsider_conditions: Reconsider after repo verification and user approval.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: 'User APP0 prompt: Runtimes, Applications, Platforms & Renderers'
+    type: prompt
+    purpose: Defines APP0 scope, responsibilities, constraints, docs, and acceptance criteria.
+    status: primary source
+    origin: User
+    carry_forward: 'yes'
+    notes: Preserve exact key wording; this is the root artifact.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Assistant APP0 implementation pack
+    type: generated prompt/output
+    purpose: Expanded APP0 into possible Codex implementation plan with targets, CLI flags, CMake options, docs, tests, commit
+      plan.
+    status: not accepted as final
+    origin: Assistant
+    carry_forward: yes, with caution
+    notes: Use only after repo-specific repair; it used apps/ while user later granted application/.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: 'User process correction: discuss before prompts'
+    type: chat statement
+    purpose: Changed direction away from immediate prompt generation.
+    status: accepted process constraint
+    origin: User
+    carry_forward: 'yes'
+    notes: 'Exact wording: “First, let''s discuss this before we plan or generate any prompts.”'
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: Assistant APP0 conceptual critique
+    type: analysis/output
+    purpose: Identified missing enforcement, prediction policy, renderer capability schema, sharding semantics, setup trust
+      model.
+    status: proposal/critique
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Useful design checklist, not all decisions.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: User executable-window goal
+    type: chat statement
+    purpose: Expanded final macro-plan target to real interactive resizable windows per platform/renderer combo.
+    status: active goal
+    origin: User
+    carry_forward: 'yes'
+    notes: Drives need for platform runtime and software renderer path.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: Assistant platform runtime proposal
+    type: architecture proposal
+    purpose: Introduced platform layer for windows/events/surfaces/timing separate from rendering.
+    status: proposal
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Strong candidate architecture; verify existing platform code first.
+    label: INFERENCE
+  - id: ARTIFACT-07
+    name_or_description: User write-permission statement
+    type: chat statement
+    purpose: Granted write access to render, platform, application, client, server, and docs.
+    status: active constraint
+    origin: User
+    carry_forward: 'yes'
+    notes: Engine/game not granted.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Assistant engine/game permission answer
+    type: analysis/output
+    purpose: Said APP0 does not require engine/game writes if public boundaries suffice.
+    status: tentative/unverified
+    origin: Assistant
+    carry_forward: yes, with warning
+    notes: Must verify actual engine/game APIs.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-09
+    name_or_description: User renderer/platform/vintage/consoles question
+    type: chat statement
+    purpose: Asked about D3D7/9/11/12, Vulkan, GL1-4, Metal, Windows/Linux/macOS/PC/Mac/consoles/vendors/vintage systems.
+    status: active architecture prompt
+    origin: User
+    carry_forward: 'yes'
+    notes: Sets broad compatibility/modularity concern.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: Assistant renderer/platform taxonomy answer
+    type: architecture proposal
+    purpose: Proposed backend families, translation backends, software/virtual backends, platform tiers, support classes,
+      vintage R0-R5 tiers.
+    status: proposal
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Requires verification/user confirmation before spec formalization.
+    label: INFERENCE
+  - id: ARTIFACT-11
+    name_or_description: User request for smarter architecture and old snapshot integration
+    type: chat statement
+    purpose: Asked whether design is best possible and requested inspection of old code snapshot/project attachments.
+    status: active requirement
+    origin: User
+    carry_forward: 'yes'
+    notes: Triggers TASK-01.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Assistant advanced runtime/module/framegraph/component architecture answer
+    type: architecture proposal
+    purpose: Proposed runtime framework, modules, render devices, framegraph, module manifests, capability negotiation, DCM.
+    status: proposal; repo-inspection claim unverified
+    origin: Assistant
+    carry_forward: yes, with caution
+    notes: Do not treat claimed repo tree as fact until verified.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-13
+    name_or_description: Previously generated Context Transfer Packet
+    type: handoff text
+    purpose: Maximum-fidelity transfer packet summarizing the chat before final package generation.
+    status: source for this package
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: This package repairs/normalizes it.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Current final report package
+    type: generated files
+    purpose: Downloadable Markdown/YAML/ZIP package for this old chat.
+    status: created by current response
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Includes report, spec sheet, aggregator packet, registers, brief, audit, manifest.
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: Prior external reference links about graphics APIs/tools
+    type: links/references
+    purpose: Links cited in prior assistant answer for D3D12, WebGPU, ANGLE, MoltenVK, Zink, WARP, SwiftShader, Mesa, Vulkan,
+      SDL.
+    status: unverified in this package
+    origin: Assistant
+    carry_forward: optional
+    notes: External API/platform facts require future web verification.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-16
+    name_or_description: Old code snapshot / project attachments
+    type: file/source to inspect
+    purpose: Actual repo state needed for integration.
+    status: not inspected in this package
+    origin: User/project attachments
+    carry_forward: 'yes'
+    notes: Critical verification target.
+    label: UNCERTAIN / UNVERIFIED
+  risks:
+  - id: RISK-01
+    risk: Repo hallucination or stale snapshot assumption
+    consequence: Bad architecture/prompt paths and invalid implementation steps.
+    likelihood: medium
+    severity: high
+    mitigation: Inspect actual attachments before repo-specific claims.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-02
+    risk: Treating assistant proposals as accepted decisions
+    consequence: Future spec could overstate tentative architecture.
+    likelihood: medium
+    severity: high
+    mitigation: Preserve labels and request user confirmation for proposed items.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-03
+    risk: Authority leakage into client/tools/runtime
+    consequence: Could corrupt simulation, law, anti-cheat, or determinism.
+    likelihood: medium
+    severity: critical
+    mitigation: Hard dependency boundaries, audit/elevation model, no sim authority in apps.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-04
+    risk: Renderer/window coupling
+    consequence: Would duplicate code and harm platform portability.
+    likelihood: medium
+    severity: high
+    mitigation: Platform owns windows/surfaces/events; renderers consume surfaces.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-05
+    risk: GPU-backend-first complexity
+    consequence: Slow progress and hard-to-debug startup failures.
+    likelihood: medium
+    severity: medium
+    mitigation: Bring up null/software/window path first.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-06
+    risk: Support matrix explosion
+    consequence: Unbounded OS/API/vendor/vintage/console combinations.
+    likelihood: high
+    severity: high
+    mitigation: Use support classes, capability tiers, descriptors, and policy selection.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-07
+    risk: Plugin ABI instability
+    consequence: Dynamic modules may break across versions.
+    likelihood: medium
+    severity: high
+    mitigation: Versioned manifests, stable C ABI or explicit compatibility policy.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-08
+    risk: Overpromising vintage/consoles
+    consequence: Legal/toolchain/SDK limitations may be ignored.
+    likelihood: medium
+    severity: high
+    mitigation: Mark vintage/console as compatibility or experimental until verified.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-09
+    risk: Setup trust model gap
+    consequence: Content/version integrity may be weak or inconsistent.
+    likelihood: medium
+    severity: high
+    mitigation: Define hashes/signatures/manifests and repair semantics.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-10
+    risk: Tool god-mode shortcuts
+    consequence: Editors/inspectors could bypass law.
+    likelihood: medium
+    severity: high
+    mitigation: Require authorization and auditable logs.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: RISK-11
+    risk: Engine/game public API insufficiency
+    consequence: APP0 may be blocked without engine/game permission.
+    likelihood: unknown
+    severity: high
+    mitigation: Verify APIs; ask user before expanding permissions.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-12
+    risk: Package summarization loss
+    consequence: Future assistant may miss nuanced constraints or tentative status.
+    likelihood: medium
+    severity: medium
+    mitigation: Use this package’s stable IDs and labels.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-13
+    risk: External API/platform fact staleness
+    consequence: Graphics/toolchain facts can change.
+    likelihood: medium
+    severity: medium
+    mitigation: Reverify external links and API support before implementation.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-14
+    risk: Launcher/setup responsibility confusion
+    consequence: Launcher may accidentally install or mutate content.
+    likelihood: low
+    severity: medium
+    mitigation: Keep launcher orchestration-only and setup install-only.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-15
+    risk: Sharding ambiguity
+    consequence: Server hooks may imply semantics not yet chosen.
+    likelihood: medium
+    severity: medium
+    mitigation: Label APP0 sharding as plumbing unless semantics are explicitly designed.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  verification_queue:
+  - id: VERIFY-01
+    item: Actual old repo snapshot/project attachments
+    why_verification_needed: Needed because user asked to integrate with old code and prior assistant inspection is unverified.
+    suggested_source_type: Direct file/attachment inspection
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Top-level directory tree and naming
+    why_verification_needed: Must resolve app/apps/application mismatch.
+    suggested_source_type: Filesystem tree
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Build system and presets
+    why_verification_needed: CMake and target assumptions are unverified.
+    suggested_source_type: Build files and CI config
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Programming languages and ABI feasibility
+    why_verification_needed: Module/plugin strategy depends on language/toolchain.
+    suggested_source_type: Source extensions and compiler config
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Engine/game public APIs
+    why_verification_needed: Determines whether engine/game writes are avoidable.
+    suggested_source_type: Headers/source/docs
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Existing renderers and renderer ownership of windows
+    why_verification_needed: Determines refactor scope and coupling.
+    suggested_source_type: render directory/source search
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Existing platform layer responsibilities
+    why_verification_needed: Determines whether to introduce or refactor platform runtime.
+    suggested_source_type: platform directory/source search
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Client/server current dependencies
+    why_verification_needed: Need detect authority/render/platform coupling.
+    suggested_source_type: Build graph/include graph
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Whether server currently depends on graphics/window code
+    why_verification_needed: Server must be headless.
+    suggested_source_type: Build/link dependency inspection
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: Current docs/app content
+    why_verification_needed: Avoid duplicating or contradicting existing docs.
+    suggested_source_type: docs directory inspection
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: Existing tests and smoke paths
+    why_verification_needed: Needed for APP0 acceptance/testing.
+    suggested_source_type: tests/CI inspection
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: External graphics API/backend facts
+    why_verification_needed: Prior citations may be stale.
+    suggested_source_type: Official API/vendor/project docs via web
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-13
+    item: Console SDK feasibility
+    why_verification_needed: Console support requires special access and constraints.
+    suggested_source_type: User confirmation and SDK/legal status
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-14
+    item: Vintage target list
+    why_verification_needed: Capability tiers need mapping to actual desired vintage systems.
+    suggested_source_type: User confirmation
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-15
+    item: Setup trust model requirements
+    why_verification_needed: Security/integrity semantics unresolved.
+    suggested_source_type: User/design discussion
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: VERIFY-16
+    item: Tools law/elevation model
+    why_verification_needed: Tools must be lawful and auditable but write behavior is unspecified.
+    suggested_source_type: User/design discussion
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: VERIFY-17
+    item: Whether dynamic modules are acceptable for distribution
+    why_verification_needed: Plugin loading may be complicated by platforms/consoles/security.
+    suggested_source_type: User/design discussion and toolchain review
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: VERIFY-18
+    item: Exact intended binary distribution model
+    why_verification_needed: User wants same executable or set, but packaging details are open.
+    suggested_source_type: User confirmation
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  spec_book_notes:
+    likely_sections:
+    - 'Spec section: Application/runtime architecture'
+    - 'Spec section: Authority boundaries'
+    - 'Spec section: Platform runtime'
+    - 'Spec section: Renderer architecture'
+    - 'Spec section: Distribution and modules'
+    - 'Spec section: Tooling governance'
+    - 'Spec section: Setup/trust/integrity'
+    - 'Spec section: Server runtime'
+    unique_contributions:
+    - APP0 runtime/application scope and authority model
+    - Executable-window requirement for platform/render bring-up
+    - Renderer/platform taxonomy and support-tier proposals
+    - Module/plugin distribution architecture proposal
+    - Caveat that old repo snapshot must be verified
+    possible_duplicates_with_other_chats:
+    - Engine/game authority boundaries
+    - Renderer architecture
+    - Platform support
+    - Build system/refactor plans
+    - Modding and plugin architecture
+    conflicts_to_watch_for:
+    - Different repo directory naming in other chats
+    - Different renderer priority/support matrix
+    - Different stance on engine/game write permission
+    - Different plugin/static linking strategy
+    formal_requirements_candidates:
+    - Applications are shells/orchestrators
+    - Engine/game remain authoritative
+    - Rendering never affects simulation
+    - Server headless and authoritative
+    - Launcher/setup separation
+    - Tools obey law and are auditable
+    background_context_candidates:
+    - Prior assistant implementation pack
+    - Renderer taxonomy brainstorming
+    - Advanced module/framegraph proposal
+    needs_user_confirmation:
+    - Dynamic module/plugin strategy
+    - Framegraph/render-device model
+    - Support classes and R0-R5 tiers
+    - Canonical renderer/platform matrix
+    - Vintage and console scope
+  final_recommendations:
+    next_action_if_continuing_this_chat: Inspect the old code snapshot/project attachments and produce a verified repository
+      inventory.
+    next_action_for_aggregator: Merge this package as the APP0 runtime/platform/renderer architecture source with uncertainty
+      preserved.
+    user_checks_required:
+    - Confirm actual next step after repository verification.
+    - Confirm whether architecture proposals should become formal spec items.
+    - Confirm support matrix priorities.

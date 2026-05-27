@@ -1,0 +1,3733 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Architecture I
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This visible chat only; project-level context labelled separately when used.
+    apparent_coverage: partial
+    confidence_1_to_5: 3
+    staleness_risk: high for external claims; medium for assistant-generated specs; low for explicit user decisions
+    safe_for_aggregation: with caveats
+    main_limitations:
+    - Many earlier turns are collapsed/skipped.
+    - Top-level docs/legal docs/context MDs are referenced but not visible.
+    - Generated specs contain API and language-standard inconsistencies.
+    - No repo files or external facts were inspected.
+  summary:
+    one_sentence: Dominium Architecture I is a retired architecture/spec-generation chat that produced a large per-file Codex
+      devspec corpus for a deterministic cross-platform simulation game, with continuation point game/g_world.cpp.txt and
+      major API conflicts requiring canonicalisation.
+    short_brief: 'This chat, labelled **Dominium Architecture I**, is a retired architecture/specification chat for the **Dominium
+      Game** project. The visible thread is not a normal project-planning chat; it is primarily a long-running specification-generation
+      session meant to prepare Dominium for automated implementation with **Codex 5.1 Max**. The user’s explicit workflow
+      changed during the chat: the initial idea was for Codex to read a full transcript and compile a complete v3 “book of
+      volumes,” but the user later decided that Codex could not reliably read the entire context at once. The workflow therefore
+      shifted to creating a **set of `.txt` implementation-spec prompt files**, one per file in the intended repository tree.
+
+
+      The dominant artifact stream is a large **`devspec/` file tree**. The user provided the full directory/file list, skipped
+      top-level `.txt` files because original Markdown docs already exist in `/docs/...`, and then repeatedly instructed the
+      assistant to proceed in strict order. Visible generated specs cover much of the architecture: engine modules from math/memory/ECS/jobs/save/replay/network/log/config/serialization/locale;
+      platform abstraction backends; render abstraction a'
+    main_topics:
+    - Final report package for retired chat
+    - Dominium Game architecture
+    - Codex per-file devspec automation
+    - Spec v3 volume corpus
+    - Top-level docs, context MDs, and legal/policy docs
+    - Engine core specs
+    - Platform abstraction specs
+    - Rendering specs
+    - Audio specs
+    - Systems layer specs
+    - Game layer specs
+    - UI layer specs
+    - Launcher specs
+    - Mods and base Lua specs
+    - Tools specs
+    - Data schema specs
+    - Test specs
+    - Build and CI script specs
+    - API canonicalisation and contradiction repair
+    - External compatibility, legal, and tool verification
+    main_outputs:
+    - Context Transfer Packet
+    - This report package
+    - Large visible devspec prompt inventory
+    highest_priority_carry_forward:
+    - Resume file generation at game/g_world.cpp.txt if continuing strict sequence.
+    - Per-file .txt specs are the primary Codex workflow.
+    - Use UTF-8 internally with retro fallbacks.
+    - Semantic versioning with metadata build provenance.
+    - Determinism is core.
+    - Skip top_level devspec because /docs originals exist.
+    - Duplicate dweather/dhydro/dai_core specs must be reconciled.
+    - dmem and dserialize APIs are inconsistent in drafts.
+    - C89/C++98 compliance is intended but violated in drafts.
+    - External platform/tool/legal claims require verification.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - User statements outrank assistant outputs.
+    - Duplicate generated specs must remain unresolved until canonicalised.
+    - Assistant-generated pseudo-code is draft guidance, not final API truth.
+    staleness_rules:
+    - External tool/platform/library/legal/API claims require current verification.
+    - Internal user decisions remain useful unless contradicted by later user direction.
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: Maximum-fidelity context transfer, not a normal summary.
+      basis: Current user request.
+      strength: strong
+      implication: Produce complete package and preserve details.
+      risk: Loss of continuity.
+      label: FACT
+    - id: PREFERENCE-02
+      preference: Label important items as FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT.
+      basis: Current user request.
+      strength: strong
+      implication: Use labels in reports/registers.
+      risk: Unsupported facts carried forward.
+      label: FACT
+    - id: PREFERENCE-03
+      preference: Prioritise user statements over assistant statements.
+      basis: Current user request.
+      strength: strong
+      implication: Do not treat assistant drafts as user decisions.
+      risk: Brainstorms become false decisions.
+      label: FACT
+    - id: PREFERENCE-04
+      preference: Include rejected/superseded/deprioritised options.
+      basis: Current user request.
+      strength: strong
+      implication: Maintain rejected register.
+      risk: Repeated rejected work.
+      label: FACT
+    - id: PREFERENCE-05
+      preference: Use stable IDs and structured tables.
+      basis: Current user request.
+      strength: strong
+      implication: Normalize registers.
+      risk: Difficult aggregation.
+      label: FACT
+    - id: PREFERENCE-06
+      preference: Proceed in strict file order.
+      basis: Repeated user corrections.
+      strength: strong
+      implication: Resume at correct next file.
+      risk: Out-of-order gaps.
+      label: FACT
+    - id: PREFERENCE-07
+      preference: Detailed per-file specs for Codex.
+      basis: Earlier user requests.
+      strength: strong
+      implication: Long implementation-spec outputs.
+      risk: Insufficient Codex prompts.
+      label: FACT
+    - id: PREFERENCE-08
+      preference: Semantic versioning with metadata build info.
+      basis: Explicit user decision.
+      strength: strong
+      implication: Respect packaging rules.
+      risk: Wrong release naming.
+      label: FACT
+    inferred:
+    - id: PREFERENCE-09
+      preference: Prefers detail over brevity for technical architecture.
+      basis: Repeated long spec requests.
+      strength: strong
+      implication: Avoid over-compression.
+      risk: Loss of implementation details.
+      label: INFERENCE
+    - id: PREFERENCE-10
+      preference: Wants assistant to continue without re-asking known context.
+      basis: Handoff/strict-order requests.
+      strength: moderate-high
+      implication: Use transfer packet.
+      risk: User frustration/repetition.
+      label: INFERENCE
+    - id: PREFERENCE-11
+      preference: Values contradiction tracking before implementation.
+      basis: Current packet/audit rules.
+      strength: strong
+      implication: Flag conflicts rather than hide them.
+      risk: Bad canonical spec.
+      label: INFERENCE
+    uncertain_or_not_established:
+    - id: PREFERENCE-12
+      preference: Exact target compiler/toolchain versions.
+      basis: Not established in visible chat.
+      strength: unknown
+      implication: Ask/verify before hardcoding.
+      risk: Wrong build assumptions.
+      label: UNCERTAIN / UNVERIFIED
+    - id: PREFERENCE-13
+      preference: Exact legal jurisdiction for EULA/TOS/privacy.
+      basis: Not established.
+      strength: unknown
+      implication: Do not finalise legal docs.
+      risk: Legal risk.
+      label: UNCERTAIN / UNVERIFIED
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Final report package for retired chat
+    label: FACT
+    objective: Produce downloadable, shareable, reusable report files for this individual old chat.
+    current_state: Active in this response; package generated from the visible chat and previous transfer packet.
+    desired_end_state: Markdown/YAML/ZIP package saved and usable for later aggregation.
+    status: active
+    priority: highest
+    background: The current user request asks to turn the existing Context Transfer Packet into a final downloadable package
+      for this individual chat.
+    decisions_made:
+    - Use chat-specific scope
+    - create report/YAML/aggregator/register/brief/audit/manifest files
+    - create ZIP if tools are available.
+    decisions_pending:
+    - None for package generation, except residual manual verification after download.
+    tasks:
+    - TASK-01, TASK-02.
+    constraints:
+    - CONSTRAINT-01 through CONSTRAINT-05, CONSTRAINT-19, CONSTRAINT-20.
+    dependencies:
+    - Visible chat context and the previously generated Context Transfer Packet.
+    timeline: Current final task after OC-1 and context transfer packet.
+    blockers:
+    - None for file creation; full historical accuracy limited by skipped context.
+    risks:
+    - RISK-01, RISK-09, RISK-10.
+    artifacts:
+    - This report package files.
+    success_criteria:
+    - Downloadable Markdown/YAML/ZIP package exists and is safe for aggregation with caveats.
+    next_action: Download and store the package; use it to bootstrap new chat.
+    verification_needed:
+    - Manual review of generated files and missing skipped-context gaps.
+    confidence: high
+  - id: WORKSTREAM-02
+    name: Dominium Game architecture
+    label: PROJECT-CONTEXT / FACT
+    objective: Carry forward the architecture of the Dominium deterministic simulation/game project.
+    current_state: Architecture/specification phase; many implementation-spec prompts generated.
+    desired_end_state: Complete source tree implemented and validated from specs.
+    status: active
+    priority: highest
+    background: Dominium Game is the larger project context; the visible chat focuses on architecture/spec/coding-prep, not
+      a whole project summary.
+    decisions_made:
+    - Determinism, UTF-8, semantic versioning, per-file specs, strict layers.
+    decisions_pending:
+    - Platform support tiers and canonical APIs.
+    tasks:
+    - TASK-10, TASK-21, TASK-22.
+    constraints:
+    - CONSTRAINT-07 through CONSTRAINT-17.
+    dependencies:
+    - All downstream workstreams.
+    timeline: Active throughout the chat.
+    blockers:
+    - Unfinished specs and contradictions.
+    risks:
+    - RISK-02 through RISK-07, RISK-11 through RISK-15.
+    artifacts:
+    - Spec v3, devspecs, docs.
+    success_criteria:
+    - Project can proceed to implementation and deterministic tests.
+    next_action: Either continue specs or canonicalise before coding.
+    verification_needed:
+    - External support, legal docs, Codex capabilities.
+    confidence: high
+  - id: WORKSTREAM-03
+    name: Codex per-file devspec automation
+    label: FACT
+    objective: Create one .txt implementation-spec prompt per repo file for Codex 5.1 Max.
+    current_state: Generated through game/g_world.h.txt visibly; many later files remain pending.
+    desired_end_state: Complete devspec tree covering every listed file.
+    status: active
+    priority: highest
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-04
+    name: Spec v3 volume corpus
+    label: FACT
+    objective: Earlier volume/subvolume book describing the whole project.
+    current_state: Referenced but many contents are collapsed/skipped in visible context.
+    desired_end_state: Recovered or cross-linked into later master spec book.
+    status: historical / partially superseded
+    priority: high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: medium
+  - id: WORKSTREAM-05
+    name: Top-level docs, context MDs, and legal/policy docs
+    label: FACT / UNCERTAIN
+    objective: README, context MD files, legal/policy docs, cross-dependencies.
+    current_state: Requested/generated earlier but contents mostly not visible; user said originals exist in /docs/.
+    desired_end_state: Verified docs aligned with current spec.
+    status: historical / needs verification
+    priority: high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: medium
+  - id: WORKSTREAM-06
+    name: Engine core specs
+    label: FACT
+    objective: Low-level deterministic engine modules.
+    current_state: Many visible specs generated; dcore/dtime not visible in accessible segment.
+    desired_end_state: Canonical, C89-compliant engine API implemented.
+    status: active / partially incomplete
+    priority: high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: medium-high
+  - id: WORKSTREAM-07
+    name: Platform abstraction specs
+    label: FACT
+    objective: Cross-platform platform layer and backends.
+    current_state: dplat.h/common/win32/sdl2/x11/macos/headless visible; fs/input/time listed but not visible.
+    desired_end_state: Complete platform abstraction with file system, input, time, backends.
+    status: active / incomplete
+    priority: high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: medium-high
+  - id: WORKSTREAM-08
+    name: Rendering specs
+    label: FACT
+    objective: Renderer abstraction, 2D helpers, software/GL/DX9 backends, font rendering.
+    current_state: Visible specs generated through dr_font.c.
+    desired_end_state: Consistent render API and backends.
+    status: active / needs API audit
+    priority: high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-09
+    name: Audio specs
+    label: FACT
+    objective: Audio abstraction and null/SDL/OpenAL backends.
+    current_state: Visible specs generated.
+    desired_end_state: Deterministic mixer and platform backends, null fallback.
+    status: active / mostly specified
+    priority: medium-high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-10
+    name: Systems layer specs
+    label: FACT
+    objective: Core deterministic simulation systems.
+    current_state: Visible specs generated through dresearch.c; weather/hydro/AI duplicated with conflicts.
+    desired_end_state: Canonical APIs and implementations for all systems.
+    status: active / needs consolidation
+    priority: highest
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-11
+    name: Game layer specs
+    label: FACT
+    objective: High-level game orchestration and domain registries.
+    current_state: g_core.h, g_core.cpp, g_world.h visible; g_world.cpp onward pending.
+    desired_end_state: Complete game layer specs through g_sim_loop.
+    status: active / incomplete
+    priority: high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-12
+    name: UI layer specs
+    label: FACT
+    objective: UI framework, input, map/3D/economy/research/blueprints/launcher UI.
+    current_state: Listed but not generated visibly.
+    desired_end_state: Complete UI implementation-spec prompts.
+    status: pending
+    priority: medium-high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-13
+    name: Launcher specs
+    label: FACT
+    objective: Launcher main/detect/config/CLI.
+    current_state: Listed but not generated visibly.
+    desired_end_state: Complete launcher specs.
+    status: pending
+    priority: medium-high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-14
+    name: Mods and base Lua specs
+    label: FACT
+    objective: C/C++ Lua API, loader, base mod scripts.
+    current_state: Listed but not generated visibly.
+    desired_end_state: Complete mod API/loader/base Lua specs.
+    status: pending
+    priority: medium-high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-15
+    name: Tools specs
+    label: FACT
+    objective: World editor, asset pipeline, modkit, replay viewer, profiler, CLI tools.
+    current_state: Listed but not generated visibly.
+    desired_end_state: Complete tool specs.
+    status: pending
+    priority: medium
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-16
+    name: Data schema specs
+    label: FACT
+    objective: JSON schemas/content expectations for entities/machines/vehicles/materials/research/economy/locales.
+    current_state: Listed but not generated visibly.
+    desired_end_state: Complete data schema specs aligned with systems/game APIs.
+    status: pending
+    priority: high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-17
+    name: Test specs
+    label: FACT
+    objective: Determinism, ECS, math, networks, economy, climate, save/load, replay, mod API tests.
+    current_state: Listed but not generated visibly.
+    desired_end_state: Complete test prompt specs and eventual test implementation.
+    status: pending
+    priority: high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-18
+    name: Build and CI script specs
+    label: FACT
+    objective: Build scripts and CI verification scripts.
+    current_state: Listed but not generated visibly.
+    desired_end_state: Portable build scripts and determinism CI.
+    status: pending
+    priority: medium-high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-19
+    name: API canonicalisation and contradiction repair
+    label: INFERENCE
+    objective: Resolve duplicated/conflicting specs and inconsistent APIs before coding.
+    current_state: Identified as necessary by visible contradictions.
+    desired_end_state: Canonical API/register and corrected spec pack.
+    status: active need / not yet done
+    priority: highest before coding
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  - id: WORKSTREAM-20
+    name: External compatibility, legal, and tool verification
+    label: FACT / UNCERTAIN
+    objective: Verify external claims such as Codex, SDL/OpenAL/DX9/OpenGL, old OS support, and legal docs.
+    current_state: Not verified in this chat.
+    desired_end_state: Current verified support/legal matrix.
+    status: pending
+    priority: medium-high
+    background: See inventory and registers; this workstream is established by the visible file list or generated specs.
+    decisions_made:
+    - See decision register for related decisions.
+    decisions_pending:
+    - See open questions and tasks.
+    tasks:
+    - See task register.
+    constraints:
+    - See constraint register.
+    dependencies:
+    - Related generated specs and upstream engine/system APIs.
+    timeline: Follows strict file order.
+    blockers:
+    - Unresolved conflicts or incomplete generation if noted.
+    risks:
+    - See risk register.
+    artifacts:
+    - See artifact ledger.
+    success_criteria:
+    - Complete, consistent, Codex-ready specs and eventual implementation.
+    next_action: Continue strict order or canonicalise as appropriate.
+    verification_needed:
+    - Verify external assumptions and inspect skipped/referenced docs if needed.
+    confidence: high
+  decisions:
+  - id: DECISION-01
+    decision: Use UTF-8 Unicode as canonical internal text encoding.
+    status: final design intent
+    label: FACT
+    evidence_or_basis: Visible localisation discussion and dlocale specs.
+    rationale: Support modern localisation while allowing retro fallback.
+    implications: All text/data/mod/config should be UTF-8 internally.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-02
+    decision: Provide retro ASCII/ANSI/SFN fallbacks for legacy platforms.
+    status: final design intent
+    label: FACT
+    evidence_or_basis: dlocale specs include ANSI/SFN helpers.
+    rationale: Retro builds may not support Unicode/long filenames.
+    implications: Requires filename sanitisation, SFN generation, fallback fonts.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: medium-high
+  - id: DECISION-03
+    decision: Use major.minor.patch semantic versioning for all components/packages and the complete game.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly stated this.
+    rationale: Clean package/component version policy.
+    implications: Build/package metadata design.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-04
+    decision: Do not include build numbers/dates in filenames.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly stated this.
+    rationale: Avoid filename clutter.
+    implications: Build info must be in metadata instead.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-05
+    decision: Include build numbers/dates and useful provenance in metadata.
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly stated this.
+    rationale: Preserve traceability without filename clutter.
+    implications: Metadata schema needed.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-06
+    decision: Use per-file .txt implementation specs for Codex.
+    status: final workflow
+    label: FACT
+    evidence_or_basis: User explicitly requested one .txt per git file.
+    rationale: Codex cannot read full chat at once.
+    implications: Devspec generation is main autocode prep.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: high
+  - id: DECISION-07
+    decision: Skip top-level devspec .txt files.
+    status: final for current workflow
+    label: FACT
+    evidence_or_basis: User said original MD files exist in /docs/.
+    rationale: Avoid duplicating existing docs.
+    implications: Need verify /docs content later.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: medium-high
+  - id: DECISION-08
+    decision: Proceed through file specs in strict directory order.
+    status: final workflow
+    label: FACT
+    evidence_or_basis: User repeatedly corrected assistant to use same order.
+    rationale: Avoid gaps/confusion.
+    implications: Resume at game/g_world.cpp.txt if continuing.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: high
+  - id: DECISION-09
+    decision: Determinism is a core hard requirement.
+    status: final architecture
+    label: FACT
+    evidence_or_basis: Repeated throughout specs.
+    rationale: Replay/lockstep/save consistency.
+    implications: All core systems must be deterministic.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-10
+    decision: Systems must not depend on render/UI/audio/platform.
+    status: final architecture
+    label: FACT
+    evidence_or_basis: Repeated prohibitions.
+    rationale: Layer separation and deterministic core.
+    implications: Systems APIs must be pure and data-oriented.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: high
+  - id: DECISION-11
+    decision: No dynamic allocation in simulation hot paths/ticks.
+    status: final architecture
+    label: FACT
+    evidence_or_basis: Repeated specs.
+    rationale: Performance and determinism.
+    implications: Use fixed pools/preallocation.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: high
+  - id: DECISION-12
+    decision: Prefer integer/fixed-point for simulation state.
+    status: final for most systems
+    label: FACT
+    evidence_or_basis: Repeated specs.
+    rationale: Cross-platform determinism.
+    implications: dmath/fixed math foundation needed.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: high
+  - id: DECISION-13
+    decision: Use deterministic lockstep for networking.
+    status: final design intent
+    label: FACT
+    evidence_or_basis: dnet_core specs.
+    rationale: Multiplayer/replay determinism.
+    implications: Input aggregation and hash checks.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: high
+  - id: DECISION-14
+    decision: Null audio backend must exist and do no-op output.
+    status: final design intent
+    label: FACT
+    evidence_or_basis: daudio_null spec.
+    rationale: Headless/server/CI fallback.
+    implications: Audio events can run without hardware.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: high
+  - id: DECISION-15
+    decision: Software renderer fallback must exist.
+    status: final design intent
+    label: FACT
+    evidence_or_basis: dr_soft spec.
+    rationale: Low-end/headless/offline capture/testing.
+    implications: Render system must abstract hardware.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: high
+  - id: DECISION-16
+    decision: Research system is numeric substrate; tech tree lives in game layer.
+    status: final design intent
+    label: FACT
+    evidence_or_basis: dresearch specs.
+    rationale: Separation of numeric progress from unlock logic.
+    implications: g_research_tree owns dependencies/effects.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: high
+  - id: DECISION-17
+    decision: AI core should be primitives/substrate, not full high-level behaviour.
+    status: final v1 intent but duplicated API conflict
+    label: FACT
+    evidence_or_basis: dai_core specs.
+    rationale: Keep deterministic AI foundation simple.
+    implications: High-level AI should live in game layer.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: medium
+  - id: DECISION-18
+    decision: Weather/hydrology/climate should be simplified deterministic models, not CFD/GCM.
+    status: final v1 intent
+    label: FACT
+    evidence_or_basis: dclimate/dweather/dhydro specs.
+    rationale: Low cost, reproducible, property/planet scale.
+    implications: Use scalar/bucket models.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: high
+  - id: DECISION-19
+    decision: C89 for C modules and C++98 for game/UI are intended standards.
+    status: intended but inconsistent
+    label: FACT
+    evidence_or_basis: Many specs state C89; game specs state C++98.
+    rationale: Legacy portability.
+    implications: Generated specs need compliance audit.
+    related_workstreams:
+    - WORKSTREAM-19
+    uncertainty: medium
+  - id: DECISION-20
+    decision: Canonical dweather/dhydro/dai_core versions are not yet selected.
+    status: pending
+    label: FACT
+    evidence_or_basis: Duplicate conflicting specs visible.
+    rationale: Avoid implementing wrong API.
+    implications: Canonicalisation required.
+    related_workstreams:
+    - WORKSTREAM-19
+    uncertainty: high
+  - id: DECISION-21
+    decision: No full book generation via Codex from entire transcript for now.
+    status: superseded option
+    label: FACT
+    evidence_or_basis: User said Codex cannot read whole context.
+    rationale: Per-file specs replace full-book workflow.
+    implications: Full spec book may be built later from reports.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: high
+  - id: DECISION-22
+    decision: This report package is for this chat only.
+    status: final handoff rule
+    label: FACT
+    evidence_or_basis: User explicitly scoped output.
+    rationale: Do not summarise whole project.
+    implications: Aggregation later must preserve provenance.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: high
+  tasks:
+  - id: TASK-01
+    task: Save/download this report package.
+    priority: highest
+    urgency: immediate
+    owner: User
+    dependencies:
+    - none
+    inputs_needed:
+    - Download links
+    expected_output: Local saved package
+    next_step: Download Markdown/YAML/ZIP.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: high
+  - id: TASK-02
+    task: Use this package in the next chat.
+    priority: highest
+    urgency: immediate
+    owner: User / future assistant
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Package files
+    expected_output: Continuity restored.
+    next_step: Paste or upload report/ZIP into new chat.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: high
+  - id: TASK-03
+    task: If continuing spec generation, generate game/g_world.cpp.txt next.
+    priority: high
+    urgency: next if continuing
+    owner: Future assistant
+    dependencies:
+    - This packet
+    inputs_needed:
+    - Current file order
+    expected_output: Next per-file spec.
+    next_step: Resume strict order.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: high
+  - id: TASK-04
+    task: Resolve duplicate dweather specs.
+    priority: high
+    urgency: before coding
+    owner: Future assistant/user
+    dependencies:
+    - none
+    inputs_needed:
+    - Both dweather variants
+    expected_output: Canonical weather API/spec.
+    next_step: Run canonicalisation pass.
+    related_workstreams:
+    - WORKSTREAM-19
+    label: FACT
+    confidence: high
+  - id: TASK-05
+    task: Resolve duplicate dhydro specs.
+    priority: high
+    urgency: before coding
+    owner: Future assistant/user
+    dependencies:
+    - none
+    inputs_needed:
+    - Both dhydro variants
+    expected_output: Canonical hydrology API/spec.
+    next_step: Run canonicalisation pass.
+    related_workstreams:
+    - WORKSTREAM-19
+    label: FACT
+    confidence: high
+  - id: TASK-06
+    task: Resolve duplicate dai_core specs.
+    priority: high
+    urgency: before coding
+    owner: Future assistant/user
+    dependencies:
+    - none
+    inputs_needed:
+    - Both dai_core variants
+    expected_output: Canonical AI API/spec.
+    next_step: Run canonicalisation pass.
+    related_workstreams:
+    - WORKSTREAM-19
+    label: FACT
+    confidence: high
+  - id: TASK-07
+    task: Normalise dmem API.
+    priority: high
+    urgency: before coding
+    owner: Future assistant/Codex
+    dependencies:
+    - none
+    inputs_needed:
+    - dmem specs and call sites
+    expected_output: Single memory API.
+    next_step: Create correction register.
+    related_workstreams:
+    - WORKSTREAM-19
+    label: INFERENCE
+    confidence: high
+  - id: TASK-08
+    task: Normalise dserialize API.
+    priority: high
+    urgency: before coding
+    owner: Future assistant/Codex
+    dependencies:
+    - none
+    inputs_needed:
+    - dserialize specs and call sites
+    expected_output: Single serialization API.
+    next_step: Create correction register.
+    related_workstreams:
+    - WORKSTREAM-19
+    label: INFERENCE
+    confidence: high
+  - id: TASK-09
+    task: Audit C89/C++98 compliance.
+    priority: high
+    urgency: before coding
+    owner: Future assistant/Codex
+    dependencies:
+    - none
+    inputs_needed:
+    - All specs
+    expected_output: Corrected language-standard plan.
+    next_step: List invalid constructs.
+    related_workstreams:
+    - WORKSTREAM-19
+    label: INFERENCE
+    confidence: high
+  - id: TASK-10
+    task: Verify external platform/library/tool claims.
+    priority: medium-high
+    urgency: before build/release
+    owner: User/future assistant
+    dependencies:
+    - none
+    inputs_needed:
+    - Current docs
+    expected_output: Verified support matrix.
+    next_step: Browse/verify when asked.
+    related_workstreams:
+    - WORKSTREAM-20
+    label: FACT
+    confidence: high
+  - id: TASK-11
+    task: Recover or inspect /docs top-level docs.
+    priority: high
+    urgency: before aggregation/coding
+    owner: User/future assistant
+    dependencies:
+    - none
+    inputs_needed:
+    - /docs files
+    expected_output: Verified doc inventory.
+    next_step: Ask user to provide or inspect files.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: medium
+  - id: TASK-12
+    task: Finish platform dplat_fs/input/time specs if missing.
+    priority: medium-high
+    urgency: before platform implementation
+    owner: Future assistant
+    dependencies:
+    - WORKSTREAM-07
+    inputs_needed:
+    - File list
+    expected_output: Missing platform specs.
+    next_step: Generate or recover.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-13
+    task: Finish game specs.
+    priority: high
+    urgency: after g_world.cpp
+    owner: Future assistant
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - Game file list
+    expected_output: All game file specs.
+    next_step: Continue strict order.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: high
+  - id: TASK-14
+    task: Finish UI specs.
+    priority: medium-high
+    urgency: after game or when requested
+    owner: Future assistant
+    dependencies:
+    - WORKSTREAM-12
+    inputs_needed:
+    - UI file list
+    expected_output: UI devspecs.
+    next_step: Continue strict order.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+    confidence: high
+  - id: TASK-15
+    task: Finish launcher specs.
+    priority: medium-high
+    urgency: after UI
+    owner: Future assistant
+    dependencies:
+    - none
+    inputs_needed:
+    - Launcher file list
+    expected_output: Launcher devspecs.
+    next_step: Continue strict order.
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+    confidence: high
+  - id: TASK-16
+    task: Finish mods/base Lua specs.
+    priority: medium-high
+    urgency: after launcher
+    owner: Future assistant
+    dependencies:
+    - none
+    inputs_needed:
+    - Mods file list
+    expected_output: Mod devspecs.
+    next_step: Continue strict order.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+    confidence: high
+  - id: TASK-17
+    task: Finish tools specs.
+    priority: medium
+    urgency: later
+    owner: Future assistant
+    dependencies:
+    - none
+    inputs_needed:
+    - Tools file list
+    expected_output: Tool devspecs.
+    next_step: Continue strict order.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+    confidence: high
+  - id: TASK-18
+    task: Finish data schema specs.
+    priority: high
+    urgency: before content coding
+    owner: Future assistant
+    dependencies:
+    - none
+    inputs_needed:
+    - Data file list
+    expected_output: JSON schema/content specs.
+    next_step: Continue strict order.
+    related_workstreams:
+    - WORKSTREAM-16
+    label: FACT
+    confidence: high
+  - id: TASK-19
+    task: Finish tests specs.
+    priority: high
+    urgency: before validation
+    owner: Future assistant
+    dependencies:
+    - none
+    inputs_needed:
+    - Test file list
+    expected_output: Test devspecs.
+    next_step: Continue strict order.
+    related_workstreams:
+    - WORKSTREAM-17
+    label: FACT
+    confidence: high
+  - id: TASK-20
+    task: Finish build/CI script specs.
+    priority: medium-high
+    urgency: before repo build
+    owner: Future assistant
+    dependencies:
+    - none
+    inputs_needed:
+    - Script file list
+    expected_output: Build/CI specs.
+    next_step: Continue strict order.
+    related_workstreams:
+    - WORKSTREAM-18
+    label: FACT
+    confidence: high
+  - id: TASK-21
+    task: Convert devspec content into actual repo files.
+    priority: high
+    urgency: after specs/canonicalisation
+    owner: User/Codex
+    dependencies:
+    - Specs complete enough
+    inputs_needed:
+    - Generated text
+    expected_output: devspec tree on disk.
+    next_step: Create files in repo.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+    confidence: medium
+  - id: TASK-22
+    task: Start Codex implementation.
+    priority: high
+    urgency: after prompts/canonical APIs
+    owner: User/Codex
+    dependencies:
+    - TASK-21, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08
+    inputs_needed:
+    - Repo/devspec
+    expected_output: Source implementation.
+    next_step: Feed per-file specs to Codex.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: medium
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Scope this package to this visible chat only.
+    type: handoff
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Do not summarise whole Project.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-02
+    constraint: Label important items as FACT / INFERENCE / UNCERTAIN / PROJECT-CONTEXT.
+    type: handoff
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Preserve provenance.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-03
+    constraint: Do not invent facts or silently infer.
+    type: handoff
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Mark gaps explicitly.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-04
+    constraint: Direct user statements outrank assistant suggestions.
+    type: source hierarchy
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Do not treat assistant drafts as final decisions unless user accepted them.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-05
+    constraint: External-world/tool/legal/platform facts require verification before use.
+    type: verification
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Avoid stale claims.
+    violation_risk: medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-06
+    constraint: Strict file generation order.
+    type: workflow
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Resume at correct next file.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-07
+    constraint: Use deterministic simulation.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Specs/user
+    implication: Same inputs produce same outputs.
+    violation_risk: very high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-08
+    constraint: No hidden randomness/time/OS dependence in sim.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Specs
+    implication: Replay/lockstep consistency.
+    violation_risk: very high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-09
+    constraint: No dynamic allocation in sim tick/hot paths.
+    type: technical/resource
+    hard_or_soft: hard
+    source_or_basis: Specs
+    implication: Use fixed pools.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-10
+    constraint: No systems dependency on render/UI/audio/platform.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: Specs
+    implication: Layer purity.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-11
+    constraint: C89 for C modules.
+    type: language
+    hard_or_soft: hard but currently violated in drafts
+    source_or_basis: Specs
+    implication: Audit generated specs.
+    violation_risk: high
+    label: FACT
+    confidence: medium
+  - id: CONSTRAINT-12
+    constraint: C++98 for game/UI C++ modules.
+    type: language
+    hard_or_soft: hard but currently violated in drafts
+    source_or_basis: Specs
+    implication: Avoid modern C++ syntax.
+    violation_risk: medium-high
+    label: FACT
+    confidence: medium
+  - id: CONSTRAINT-13
+    constraint: UTF-8 canonical internal text.
+    type: technical/design
+    hard_or_soft: hard
+    source_or_basis: User/specs
+    implication: Data/mod/UI text UTF-8.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-14
+    constraint: Retro ANSI/SFN fallback support.
+    type: technical/platform
+    hard_or_soft: hard for retro builds
+    source_or_basis: User/specs
+    implication: dlocale/platform file path helpers.
+    violation_risk: medium
+    label: FACT
+    confidence: medium
+  - id: CONSTRAINT-15
+    constraint: Major.minor.patch semantic versioning.
+    type: packaging
+    hard_or_soft: hard preference
+    source_or_basis: User
+    implication: Version policy.
+    violation_risk: low
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-16
+    constraint: No build date/number in filenames.
+    type: packaging
+    hard_or_soft: hard preference
+    source_or_basis: User
+    implication: Put provenance in metadata.
+    violation_risk: low
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-17
+    constraint: Build date/number in metadata.
+    type: packaging
+    hard_or_soft: hard preference
+    source_or_basis: User
+    implication: Metadata schema required.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-18
+    constraint: Use per-file `.txt` prompts to support Codex context limits.
+    type: workflow
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Keep specs modular.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-19
+    constraint: Preserve rejected/deprioritised options.
+    type: handoff
+    hard_or_soft: hard
+    source_or_basis: User
+    implication: Avoid repeated work.
+    violation_risk: medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-20
+    constraint: Do not reveal hidden chain-of-thought.
+    type: handoff/reasoning
+    hard_or_soft: hard
+    source_or_basis: User/system
+    implication: Only visible rationale.
+    violation_risk: high
+    label: FACT
+    confidence: high
+  open_questions:
+  - id: QUESTION-01
+    question: Which dweather spec is canonical?
+    why_it_matters: Duplicate APIs create implementation conflict.
+    known: Two dweather variants visible.
+    unknown: User preference/final choice.
+    resolution_path: Canonicalisation pass/user confirmation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-19, WORKSTREAM-10
+    label: FACT
+  - id: QUESTION-02
+    question: Which dhydro spec is canonical?
+    why_it_matters: Duplicate APIs create implementation conflict.
+    known: Two dhydro variants visible.
+    unknown: User preference/final choice.
+    resolution_path: Canonicalisation pass/user confirmation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-19, WORKSTREAM-10
+    label: FACT
+  - id: QUESTION-03
+    question: Which dai_core spec is canonical?
+    why_it_matters: Duplicate AI APIs conflict.
+    known: Two dai_core variants visible.
+    unknown: User preference/final choice.
+    resolution_path: Canonicalisation pass/user confirmation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-19, WORKSTREAM-10
+    label: FACT
+  - id: QUESTION-04
+    question: Were dcore.h/c and dtime.h/c generated in skipped turns?
+    why_it_matters: Foundational engine specs missing from visible context.
+    known: They are listed.
+    unknown: Actual contents.
+    resolution_path: Recover transcript/files or regenerate.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: Were dplat_fs.c, dplat_input.c, dplat_time.c generated elsewhere?
+    why_it_matters: Platform folder completeness.
+    known: Listed, not visible.
+    unknown: Whether specs exist.
+    resolution_path: Recover transcript/files or regenerate.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Are `/docs/...` originals complete and current?
+    why_it_matters: Top-level specs skipped because of them.
+    known: User says they exist.
+    unknown: Content/currentness.
+    resolution_path: Inspect files.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: What is the canonical dmem API?
+    why_it_matters: Many specs call different memory functions.
+    known: Inconsistency visible.
+    unknown: Final function names/signatures.
+    resolution_path: API normalisation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-19
+    label: FACT
+  - id: QUESTION-08
+    question: What is the canonical dserialize API?
+    why_it_matters: Save/replay/codegen depends on it.
+    known: Multiple naming patterns visible.
+    unknown: Final stream/buffer model.
+    resolution_path: API normalisation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-19
+    label: FACT
+  - id: QUESTION-09
+    question: How strict are the retro target requirements?
+    why_it_matters: Old OS support may be costly/unrealistic.
+    known: Specs mention DOS/Win3.x/Win9x/Win2000.
+    unknown: Actual tiers/toolchains.
+    resolution_path: User confirmation + external verification.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: Is internal double allowed in dclimate?
+    why_it_matters: dclimate specs conflict.
+    known: Header and source spec differ.
+    unknown: Final determinism model.
+    resolution_path: Canonicalisation.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: QUESTION-11
+    question: What does Codex 5.1 Max currently support?
+    why_it_matters: Automation workflow depends on it.
+    known: User intends to use it.
+    unknown: Current tool availability/context limits.
+    resolution_path: Verify current docs.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03, WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: Are legal docs valid?
+    why_it_matters: Distribution risk.
+    known: Docs requested/generated.
+    unknown: Legal sufficiency.
+    resolution_path: Legal review.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Have Codex read the entire transcript and compile a complete book before coding.
+    status: superseded
+    reason: Codex cannot read entire context at once.
+    final_or_tentative: tentative/current
+    reconsider_conditions: If larger context/chunked system becomes available.
+    related_workstreams:
+    - WORKSTREAM-04, WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-02
+    option: Regenerate top-level devspec .txt files.
+    status: deprioritised
+    reason: Original MD files exist in /docs/ according to user.
+    final_or_tentative: current/final
+    reconsider_conditions: If /docs files are missing or stale.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-03
+    option: Put build numbers/dates in filenames.
+    status: rejected
+    reason: User explicitly does not want this.
+    final_or_tentative: final
+    reconsider_conditions: Only if package ecosystem forces it.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-04
+    option: Direct OS/platform APIs in systems.
+    status: rejected
+    reason: Layering/determinism prohibitions.
+    final_or_tentative: final
+    reconsider_conditions: Never unless architecture changes.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: REJECTED-05
+    option: Runtime allocation in simulation ticks.
+    status: rejected
+    reason: Determinism/performance.
+    final_or_tentative: final
+    reconsider_conditions: Only outside deterministic hot path.
+    related_workstreams:
+    - WORKSTREAM-06, WORKSTREAM-10
+    label: FACT
+  - id: REJECTED-06
+    option: Floating point in most core systems.
+    status: mostly rejected
+    reason: Fixed-point/determinism specs.
+    final_or_tentative: strong but climate exception unresolved
+    reconsider_conditions: If carefully bounded and deterministic; requires decision.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: REJECTED-07
+    option: Full CFD/tile-level hydrology for v1.
+    status: deprioritised
+    reason: Hydrology is property/bucket scale for cost/determinism.
+    final_or_tentative: current v1
+    reconsider_conditions: Future advanced simulation.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: REJECTED-08
+    option: Complex GOAP/behaviour tree inside dai_core v1.
+    status: deprioritised
+    reason: dai_core substrate only.
+    final_or_tentative: current v1
+    reconsider_conditions: Higher-level AI or future version.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: REJECTED-09
+    option: OS font discovery/system fonts.
+    status: rejected
+    reason: Fonts/data packs only for determinism.
+    final_or_tentative: final v1
+    reconsider_conditions: Future deterministic bundled font tooling.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-10
+    option: D3D9Ex/vendor-specific APIs for DX9 backend.
+    status: rejected
+    reason: Legacy DX9 compatibility.
+    final_or_tentative: final for DX9 v1
+    reconsider_conditions: Future modern render backend.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-001
+    name_or_description: Spec v3 volumes/subvolumes
+    type: Specification corpus
+    purpose: Whole-project architecture
+    status: Referenced; contents partly skipped
+    origin: Visible user/assistant context
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-002
+    name_or_description: BUILDING.MD
+    type: Context MD
+    purpose: Building/spec details
+    status: Requested/generated earlier; content skipped
+    origin: Visible user request
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-003
+    name_or_description: DATA_FORMATS.MD
+    type: Context MD
+    purpose: Data format policy
+    status: Requested/generated earlier; content skipped
+    origin: Visible user request
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-004
+    name_or_description: LANGUAGE_POLICY.MD
+    type: Context MD
+    purpose: Language/localisation policy
+    status: Requested/generated earlier; content skipped
+    origin: Visible user request
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-005
+    name_or_description: MILESTONES.MD
+    type: Context MD
+    purpose: Development milestones
+    status: Requested/generated earlier; content skipped
+    origin: Visible user request
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-006
+    name_or_description: STYLE.MD
+    type: Context MD
+    purpose: Style/code conventions
+    status: Requested/generated earlier; content skipped
+    origin: Visible user request
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-007
+    name_or_description: SPEC_CORE.MD
+    type: Context MD
+    purpose: Core spec summary
+    status: Requested/generated earlier; content skipped
+    origin: Visible user request
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-008
+    name_or_description: README.md
+    type: GitHub doc
+    purpose: Repo introduction
+    status: Requested/generated earlier; content skipped
+    origin: Visible user request
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-009
+    name_or_description: LICENSE/LICENCE_MASTER.md
+    type: Legal doc
+    purpose: Licensing
+    status: Requested/generated earlier; content skipped
+    origin: Visible user request
+    carry_forward: 'yes'
+    notes: Needs legal review
+    label: FACT
+  - id: ARTIFACT-010
+    name_or_description: EULA.md
+    type: Legal doc
+    purpose: End-user license
+    status: Requested/generated earlier; content skipped
+    origin: Visible user request
+    carry_forward: 'yes'
+    notes: Needs legal review
+    label: FACT
+  - id: ARTIFACT-011
+    name_or_description: TOS.md
+    type: Legal doc
+    purpose: Terms of service
+    status: Requested/generated earlier; content skipped
+    origin: Visible user request
+    carry_forward: 'yes'
+    notes: Needs legal review
+    label: FACT
+  - id: ARTIFACT-012
+    name_or_description: WARRANTY.md
+    type: Legal doc
+    purpose: Warranty/disclaimer
+    status: Requested/generated earlier; content skipped
+    origin: Visible file list
+    carry_forward: 'yes'
+    notes: Needs legal review
+    label: FACT
+  - id: ARTIFACT-013
+    name_or_description: PRIVACY_POLICY.md
+    type: Legal doc
+    purpose: Privacy
+    status: Requested/generated earlier; content skipped
+    origin: Visible file list
+    carry_forward: 'yes'
+    notes: Needs legal/privacy review
+    label: FACT
+  - id: ARTIFACT-014
+    name_or_description: SAFETY_GUIDELINES.md
+    type: Policy doc
+    purpose: Safety
+    status: Requested/generated earlier; content skipped
+    origin: Visible file list
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-015
+    name_or_description: MULTIPLAYER_POLICY.md
+    type: Policy doc
+    purpose: Multiplayer/server behaviour
+    status: Requested/generated earlier; content skipped
+    origin: Visible file list
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-016
+    name_or_description: SERVER_OPERATORS_GUIDE.md
+    type: Policy/guide
+    purpose: Server operation
+    status: Requested/generated earlier; content skipped
+    origin: Visible file list
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-017
+    name_or_description: CROSS_DEPENDENCIES.md
+    type: Dev doc
+    purpose: Developer detail of cross dependencies
+    status: Requested/generated earlier; content skipped
+    origin: Visible user request
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-018
+    name_or_description: /docs/... originals
+    type: Repo docs path
+    purpose: Existing top-level docs
+    status: Referenced but not inspected
+    origin: User statement
+    carry_forward: 'yes'
+    notes: Verify contents
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-019
+    name_or_description: engine/dmath.h.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-020
+    name_or_description: engine/dmath.c.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-021
+    name_or_description: engine/dmem.h.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-022
+    name_or_description: engine/dmem.c.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-023
+    name_or_description: engine/decs.h.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-024
+    name_or_description: engine/decs.c.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-025
+    name_or_description: engine/djob.h.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-026
+    name_or_description: engine/djob.c.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-027
+    name_or_description: engine/dsave.h.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-028
+    name_or_description: engine/dsave.c.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-029
+    name_or_description: engine/dreplay.h.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-030
+    name_or_description: engine/dreplay.c.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-031
+    name_or_description: engine/dnet_core.h.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-032
+    name_or_description: engine/dnet_core.c.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-033
+    name_or_description: engine/dlog.h.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-034
+    name_or_description: engine/dlog.c.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-035
+    name_or_description: engine/dcfg.h.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-036
+    name_or_description: engine/dcfg.c.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-037
+    name_or_description: engine/dserialize.h.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-038
+    name_or_description: engine/dserialize.c.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-039
+    name_or_description: engine/dlocale.h.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-040
+    name_or_description: engine/dlocale.c.txt
+    type: implementation-spec prompt
+    purpose: Codex source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Carry forward with API/C89 audit.
+    label: FACT
+  - id: ARTIFACT-041
+    name_or_description: engine/dcore.h.txt
+    type: implementation-spec prompt
+    purpose: Engine source-file guidance
+    status: listed but not visible in accessible context
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Recover or regenerate.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-042
+    name_or_description: engine/dcore.c.txt
+    type: implementation-spec prompt
+    purpose: Engine source-file guidance
+    status: listed but not visible in accessible context
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Recover or regenerate.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-043
+    name_or_description: engine/dtime.h.txt
+    type: implementation-spec prompt
+    purpose: Engine source-file guidance
+    status: listed but not visible in accessible context
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Recover or regenerate.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-044
+    name_or_description: engine/dtime.c.txt
+    type: implementation-spec prompt
+    purpose: Engine source-file guidance
+    status: listed but not visible in accessible context
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Recover or regenerate.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-045
+    name_or_description: platform/dplat.h.txt
+    type: implementation-spec prompt
+    purpose: Platform source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-046
+    name_or_description: platform/dplat_common.c.txt
+    type: implementation-spec prompt
+    purpose: Platform source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-047
+    name_or_description: platform/dplat_win32.c.txt
+    type: implementation-spec prompt
+    purpose: Platform source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-048
+    name_or_description: platform/dplat_sdl2.c.txt
+    type: implementation-spec prompt
+    purpose: Platform source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-049
+    name_or_description: platform/dplat_x11.c.txt
+    type: implementation-spec prompt
+    purpose: Platform source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-050
+    name_or_description: platform/dplat_macos.c.txt
+    type: implementation-spec prompt
+    purpose: Platform source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-051
+    name_or_description: platform/dplat_headless.c.txt
+    type: implementation-spec prompt
+    purpose: Platform source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-052
+    name_or_description: platform/dplat_fs.c.txt
+    type: implementation-spec prompt
+    purpose: Platform source-file guidance
+    status: listed but not visible in accessible context
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Recover or generate.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-053
+    name_or_description: platform/dplat_input.c.txt
+    type: implementation-spec prompt
+    purpose: Platform source-file guidance
+    status: listed but not visible in accessible context
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Recover or generate.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-054
+    name_or_description: platform/dplat_time.c.txt
+    type: implementation-spec prompt
+    purpose: Platform source-file guidance
+    status: listed but not visible in accessible context
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Recover or generate.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-055
+    name_or_description: render/drender.h.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-056
+    name_or_description: render/drender.c.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-057
+    name_or_description: render/dr_vec2d.h.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-058
+    name_or_description: render/dr_vec2d.c.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-059
+    name_or_description: render/dr_tex2d.h.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-060
+    name_or_description: render/dr_tex2d.c.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-061
+    name_or_description: render/dr_soft.h.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-062
+    name_or_description: render/dr_soft.c.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-063
+    name_or_description: render/dr_gl1.h.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-064
+    name_or_description: render/dr_gl1.c.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-065
+    name_or_description: render/dr_gl2.h.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-066
+    name_or_description: render/dr_gl2.c.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-067
+    name_or_description: render/dr_dx9.h.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-068
+    name_or_description: render/dr_dx9.c.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-069
+    name_or_description: render/dr_font.h.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-070
+    name_or_description: render/dr_font.c.txt
+    type: implementation-spec prompt
+    purpose: Render source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Audit type/API mismatches.
+    label: FACT
+  - id: ARTIFACT-071
+    name_or_description: audio/daudio.h.txt
+    type: implementation-spec prompt
+    purpose: Audio source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-072
+    name_or_description: audio/daudio.c.txt
+    type: implementation-spec prompt
+    purpose: Audio source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-073
+    name_or_description: audio/daudio_null.c.txt
+    type: implementation-spec prompt
+    purpose: Audio source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-074
+    name_or_description: audio/daudio_sdl.c.txt
+    type: implementation-spec prompt
+    purpose: Audio source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-075
+    name_or_description: audio/daudio_openal.c.txt
+    type: implementation-spec prompt
+    purpose: Audio source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: ''
+    label: FACT
+  - id: ARTIFACT-076
+    name_or_description: systems/dterrain.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-077
+    name_or_description: systems/dterrain.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-078
+    name_or_description: systems/dchunks.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-079
+    name_or_description: systems/dchunks.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-080
+    name_or_description: systems/dnet_power.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-081
+    name_or_description: systems/dnet_power.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-082
+    name_or_description: systems/dnet_fluid.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-083
+    name_or_description: systems/dnet_fluid.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-084
+    name_or_description: systems/dnet_data.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-085
+    name_or_description: systems/dnet_data.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-086
+    name_or_description: systems/dinventory.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-087
+    name_or_description: systems/dinventory.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-088
+    name_or_description: systems/dlogistics.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-089
+    name_or_description: systems/dlogistics.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-090
+    name_or_description: systems/deconomy.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-091
+    name_or_description: systems/deconomy.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-092
+    name_or_description: systems/dclimate.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-093
+    name_or_description: systems/dclimate.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly; conflicts with C89/fixed-point constraints; repair before coding.
+    label: FACT
+  - id: ARTIFACT-094
+    name_or_description: systems/dweather.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly but duplicated/conflicting in this chat; canonicalise before coding.
+    label: FACT
+  - id: ARTIFACT-095
+    name_or_description: systems/dweather.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly but duplicated/conflicting in this chat; canonicalise before coding.
+    label: FACT
+  - id: ARTIFACT-096
+    name_or_description: systems/dhydro.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly but duplicated/conflicting in this chat; canonicalise before coding.
+    label: FACT
+  - id: ARTIFACT-097
+    name_or_description: systems/dhydro.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly but duplicated/conflicting in this chat; canonicalise before coding.
+    label: FACT
+  - id: ARTIFACT-098
+    name_or_description: systems/dai_core.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly but duplicated/conflicting in this chat; canonicalise before coding.
+    label: FACT
+  - id: ARTIFACT-099
+    name_or_description: systems/dai_core.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly but duplicated/conflicting in this chat; canonicalise before coding.
+    label: FACT
+  - id: ARTIFACT-100
+    name_or_description: systems/dresearch.h.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-101
+    name_or_description: systems/dresearch.c.txt
+    type: implementation-spec prompt
+    purpose: Systems source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Generated visibly.
+    label: FACT
+  - id: ARTIFACT-102
+    name_or_description: game/g_core.h.txt
+    type: implementation-spec prompt
+    purpose: Game source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Current sequence interrupted after g_world.h.
+    label: FACT
+  - id: ARTIFACT-103
+    name_or_description: game/g_core.cpp.txt
+    type: implementation-spec prompt
+    purpose: Game source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Current sequence interrupted after g_world.h.
+    label: FACT
+  - id: ARTIFACT-104
+    name_or_description: game/g_world.h.txt
+    type: implementation-spec prompt
+    purpose: Game source-file guidance
+    status: generated visibly
+    origin: visible assistant output
+    carry_forward: 'yes'
+    notes: Current sequence interrupted after g_world.h.
+    label: FACT
+  - id: ARTIFACT-105
+    name_or_description: game/g_world.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-106
+    name_or_description: game/g_property.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-107
+    name_or_description: game/g_property.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-108
+    name_or_description: game/g_company.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-109
+    name_or_description: game/g_company.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-110
+    name_or_description: game/g_workers.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-111
+    name_or_description: game/g_workers.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-112
+    name_or_description: game/g_building.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-113
+    name_or_description: game/g_building.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-114
+    name_or_description: game/g_machines.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-115
+    name_or_description: game/g_machines.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-116
+    name_or_description: game/g_vehicles.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-117
+    name_or_description: game/g_vehicles.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-118
+    name_or_description: game/g_research_tree.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-119
+    name_or_description: game/g_research_tree.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-120
+    name_or_description: game/g_blueprints.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-121
+    name_or_description: game/g_blueprints.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-122
+    name_or_description: game/g_economy_game.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-123
+    name_or_description: game/g_economy_game.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-124
+    name_or_description: game/g_sim_loop.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-125
+    name_or_description: game/g_sim_loop.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-126
+    name_or_description: ui/ui_core.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-127
+    name_or_description: ui/ui_core.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-128
+    name_or_description: ui/ui_inputs.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-129
+    name_or_description: ui/ui_inputs.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-130
+    name_or_description: ui/ui_mapview.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-131
+    name_or_description: ui/ui_mapview.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-132
+    name_or_description: ui/ui_3dview.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-133
+    name_or_description: ui/ui_3dview.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-134
+    name_or_description: ui/ui_overlays.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-135
+    name_or_description: ui/ui_overlays.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-136
+    name_or_description: ui/ui_economy.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-137
+    name_or_description: ui/ui_economy.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-138
+    name_or_description: ui/ui_research.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-139
+    name_or_description: ui/ui_research.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-140
+    name_or_description: ui/ui_blueprints.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-141
+    name_or_description: ui/ui_blueprints.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-142
+    name_or_description: ui/ui_launcher.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-143
+    name_or_description: ui/ui_launcher.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-144
+    name_or_description: launcher/launcher_main.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-145
+    name_or_description: launcher/launcher_detect.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-146
+    name_or_description: launcher/launcher_config.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-147
+    name_or_description: launcher/launcher_cli.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-148
+    name_or_description: mods/mod_api.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-149
+    name_or_description: mods/mod_api.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-150
+    name_or_description: mods/mod_loader.h.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-151
+    name_or_description: mods/mod_loader.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-152
+    name_or_description: mods/base/base_init.lua.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-153
+    name_or_description: mods/base/base_entities.lua.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-154
+    name_or_description: mods/base/base_recipes.lua.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-155
+    name_or_description: mods/base/base_research.lua.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-156
+    name_or_description: mods/base/base_ui.lua.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-157
+    name_or_description: tools/t_worldedit.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-158
+    name_or_description: tools/t_asset_pipeline.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-159
+    name_or_description: tools/t_modkit.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-160
+    name_or_description: tools/t_replay_viewer.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-161
+    name_or_description: tools/t_profiler.cpp.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-162
+    name_or_description: tools/t_cli_tools.c.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-163
+    name_or_description: data/data_entities.json.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-164
+    name_or_description: data/data_machines.json.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-165
+    name_or_description: data/data_vehicles.json.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-166
+    name_or_description: data/data_materials.json.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-167
+    name_or_description: data/data_research.json.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-168
+    name_or_description: data/data_economy.json.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-169
+    name_or_description: data/data_locale_en.json.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-170
+    name_or_description: data/data_locale_xx.json.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-171
+    name_or_description: tests/test_determinism.c.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-172
+    name_or_description: tests/test_ecs.c.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-173
+    name_or_description: tests/test_math.c.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-174
+    name_or_description: tests/test_networks.c.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-175
+    name_or_description: tests/test_economy.c.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-176
+    name_or_description: tests/test_climate.c.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-177
+    name_or_description: tests/test_save_load.c.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-178
+    name_or_description: tests/test_replay.c.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-179
+    name_or_description: tests/test_mod_api.c.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-180
+    name_or_description: scripts/build_all.sh.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-181
+    name_or_description: scripts/build_win.bat.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-182
+    name_or_description: scripts/build_linux.sh.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-183
+    name_or_description: scripts/build_macos.sh.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-184
+    name_or_description: scripts/ci_verify_determinism.sh.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  - id: ARTIFACT-185
+    name_or_description: scripts/ci_run_tests.sh.txt
+    type: implementation-spec prompt
+    purpose: Source/data/script guidance
+    status: listed but not generated visibly
+    origin: user file list
+    carry_forward: 'yes'
+    notes: Pending in strict order.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Partial visible transcript omits earlier decisions/artifacts.
+    consequence: Missing or wrong aggregation.
+    likelihood: high
+    severity: high
+    mitigation: Mark gaps; recover transcript/files.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-02
+    risk: Duplicate specs implemented without reconciliation.
+    consequence: API conflicts and compile failures.
+    likelihood: high
+    severity: high
+    mitigation: Canonicalisation before coding.
+    related_workstreams:
+    - WORKSTREAM-19
+    label: FACT
+  - id: RISK-03
+    risk: Generated specs treated as compile-ready code.
+    consequence: Codex produces invalid code.
+    likelihood: medium-high
+    severity: high
+    mitigation: Treat as requirements drafts; audit.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-04
+    risk: C89/C++98 violations persist.
+    consequence: Legacy compilation fails.
+    likelihood: high
+    severity: high
+    mitigation: Language compliance audit.
+    related_workstreams:
+    - WORKSTREAM-19
+    label: FACT
+  - id: RISK-05
+    risk: dmem/dserialize API mismatch.
+    consequence: Widespread integration failure.
+    likelihood: high
+    severity: high
+    mitigation: Normalise core APIs.
+    related_workstreams:
+    - WORKSTREAM-19
+    label: FACT
+  - id: RISK-06
+    risk: External platform/library claims stale or wrong.
+    consequence: Bad support matrix/build failures.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Verify current docs/toolchains.
+    related_workstreams:
+    - WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-07
+    risk: Legal/policy docs over-trusted.
+    consequence: Legal/compliance risk.
+    likelihood: medium
+    severity: high
+    mitigation: Professional review.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-08
+    risk: Future assistant restarts or skips file order.
+    consequence: Lost continuity and duplicate work.
+    likelihood: medium
+    severity: medium
+    mitigation: Use continuation point.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-09
+    risk: Assistant suggestions mistaken as user decisions.
+    consequence: Spec polluted with unaccepted choices.
+    likelihood: medium
+    severity: high
+    mitigation: Prioritise user statements.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-10
+    risk: Over-compression loses artifact list.
+    consequence: Aggregator cannot reconstruct work.
+    likelihood: medium
+    severity: high
+    mitigation: Preserve artifact ledger.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-11
+    risk: Retro support over-scoped.
+    consequence: Development burden and false claims.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Define support tiers.
+    related_workstreams:
+    - WORKSTREAM-20
+    label: INFERENCE
+  - id: RISK-12
+    risk: Save/replay serialization inconsistencies.
+    consequence: Broken saves/desyncs.
+    likelihood: medium
+    severity: high
+    mitigation: Serialization schema/tests.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-13
+    risk: Floating point creeps into deterministic systems.
+    consequence: Cross-platform divergence.
+    likelihood: medium
+    severity: high
+    mitigation: Fixed-point audit.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: RISK-14
+    risk: Codex context/tool assumptions stale.
+    consequence: Automation plan fails.
+    likelihood: medium
+    severity: medium
+    mitigation: Verify Codex capabilities.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-15
+    risk: Unfinished game/UI/data/test specs delay coding.
+    consequence: Implementation incomplete.
+    likelihood: high
+    severity: medium-high
+    mitigation: Finish file sequence.
+    related_workstreams:
+    - WORKSTREAM-11, WORKSTREAM-12
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Codex 5.1 Max availability/capabilities
+    why_verification_needed: Tool naming/features may be stale.
+    suggested_source_type: Current OpenAI/Codex docs
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: SDL2 support on old Windows/Win9x status
+    why_verification_needed: Platform claim external.
+    suggested_source_type: SDL docs/build matrix
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: OpenAL support/headers/build viability
+    why_verification_needed: External dependency.
+    suggested_source_type: OpenAL docs/toolchain
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Direct3D 9 on Windows 2000/XP target details
+    why_verification_needed: External OS/API/toolchain claim.
+    suggested_source_type: Microsoft/SDK docs
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: OpenGL 1.x/2.x support across target OSes
+    why_verification_needed: Driver/API support varies.
+    suggested_source_type: Platform graphics docs
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: macOS 10.6 Cocoa/OpenGL shim feasibility
+    why_verification_needed: External toolchain/platform claim.
+    suggested_source_type: Apple SDK/toolchain docs
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: DOS/Win3.x/Win9x compiler and runtime feasibility
+    why_verification_needed: Retro support may be unrealistic.
+    suggested_source_type: Toolchain docs/user decision
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Legal docs validity
+    why_verification_needed: Legal enforceability depends on jurisdiction/product.
+    suggested_source_type: Legal review
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Privacy/multiplayer/server policies
+    why_verification_needed: Regulations can change.
+    suggested_source_type: Legal/privacy review
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: C89 availability of stdint.h/int32_t
+    why_verification_needed: C89 compilers may lack stdint.h.
+    suggested_source_type: Compiler/toolchain docs
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-19
+    label: FACT
+  - id: VERIFY-11
+    item: Existing /docs content
+    why_verification_needed: Top-level specs skipped based on it.
+    suggested_source_type: Repo inspection
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: VERIFY-12
+    item: Skipped chat contents
+    why_verification_needed: May contain missing specs/decisions.
+    suggested_source_type: Full transcript export
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: VERIFY-13
+    item: Semantic version metadata conventions for target packages
+    why_verification_needed: Package ecosystems may have constraints.
+    suggested_source_type: Package manager docs
+    priority: low
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-14
+    item: Actual current OpenAI model/tool naming
+    why_verification_needed: Old assistant labels may be stale.
+    suggested_source_type: Official docs
+    priority: low
+    related_workstreams:
+    - WORKSTREAM-20
+    label: UNCERTAIN / UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Architecture Overview
+    - Determinism and Replay
+    - Codex Automation
+    - Coding Standards
+    - Engine
+    - Platform
+    - Rendering
+    - Audio
+    - Systems
+    - Game
+    - UI/Launcher/Mods/Tools/Data/Tests/Scripts
+    unique_contributions:
+    - Per-file devspec workflow
+    - Strict file-order sequence
+    - UTF-8/semantic versioning/package metadata decisions
+    - Large artifact ledger
+    - Contradiction register
+    possible_duplicates_with_other_chats:
+    - Spec v3 volumes
+    - Top-level docs
+    - Legal docs
+    - Milestones
+    - Cross-dependencies
+    conflicts_to_watch_for:
+    - dweather duplicates
+    - dhydro duplicates
+    - dai_core duplicates
+    - dmem API
+    - dserialize API
+    - C89/C++98 violations
+    formal_requirements_candidates:
+    - Deterministic simulation
+    - UTF-8 internal
+    - No tick allocation
+    - Strict layer separation
+    - Semantic versioning
+    - Per-file Codex specs
+    background_context_candidates:
+    - Old volume generation sequence
+    - Assistant pseudo-code details needing audit
+    needs_user_confirmation:
+    - Canonical duplicate systems
+    - Retro support tiers
+    - Whether to canonicalise before continuing generation
+  final_recommendations:
+    next_action_if_continuing_this_chat: Generate game/g_world.cpp.txt next.
+    next_action_for_aggregator: Ingest this package with caveats, preserve IDs and labels, do not merge conflicts prematurely.
+    user_checks_required:
+    - Verify /docs originals
+    - Verify external support claims
+    - Review legal docs
+    - Decide canonical duplicate system specs

@@ -1,0 +1,2490 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Platform Support Planning
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: 'THIS CHAT ONLY: visible user/assistant turns in this chat, including the previously generated Context Transfer
+      Packet. No web browsing, uploaded files, File Library, or external project materials were used.'
+    apparent_coverage: full with caveats
+    confidence_1_to_5: 4
+    staleness_risk: high
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - No external verification was performed for current platform facts.
+    - Prior assistant citations are not portable into future chats.
+    - No engine/toolchain, timeline, budget, team, or repository details were established.
+    - Some assistant-introduced concepts, especially “Domino,” are unconfirmed.
+    - This package intentionally covers only this chat, not the entire Dominium project.
+  summary:
+    one_sentence: This chat defined Dominium’s platform-support direction, with PC first and Android, iOS, and Web elevated
+      to primary top-tier targets after PC.
+    short_brief: The chat moved from broad systems/OS support to a comprehensive device-family strategy. The strongest decision
+      is that Android, iOS, and Web are primary top-tier support after PC. Consoles, PC handhelds, XR, and legacy systems
+      remain important but require tiering, verification, and explicit scope.
+    main_topics:
+    - Dominium operating system and platform support
+    - PC, Android, iOS, and Web Tier-0 priority
+    - PlayStation/Xbox/Nintendo console support
+    - PC handheld support
+    - Android and Apple ecosystem classification
+    - Web/WASM/browser/PWA support
+    - AR/VR/XR runtime strategy
+    - Legacy/retro/constrained support
+    - Cross-platform architecture, rendering, input, storage, and QA
+    - Report-package handoff and future aggregation
+    main_outputs:
+    - Current working Tier-0 hierarchy
+    - Open/closed/legacy/emulated support classification
+    - Context Transfer Packet
+    - This final report package
+    highest_priority_carry_forward:
+    - PC is the first primary platform family.
+    - Android is primary top-tier support after PC.
+    - iOS is primary top-tier support after PC.
+    - Web is primary top-tier support after PC.
+    - Mobile and Web should not be treated as late ports.
+    - Use a formal platform support matrix/platform contracts.
+    - Consoles are desired but gated/secondary unless elevated.
+    - Legacy consoles/retro OSes are constrained/research by default.
+    - “Domino” engine/core name is unconfirmed.
+    - All external platform facts require verification before future use.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Current system/developer instructions outrank this package.
+    - Explicit user statements in this chat outrank assistant suggestions.
+    - Latest user statements outrank earlier brainstorms.
+    - Assistant claims require verification before becoming implementation facts.
+    - Preserve contradictions rather than resolving them silently.
+    staleness_rules:
+    - SDK, store, browser, console, hardware, OS, and legal/process claims require current official verification.
+    - Prior citation IDs from the old chat are not portable.
+    - User-provided hardware lists are conversation facts, not verified current-world facts.
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: Maximum-fidelity state transfer, not normal summary.
+      category: explicit
+      source_basis: User requested a Context Transfer Packet and later a final report package; both prompts emphasize not
+        compressing aggressively.
+      strength: strong
+      implication: Preserve details, uncertainty, rejected options, and next actions.
+      risk_if_misunderstood: Critical project state may be lost.
+      label: FACT
+    - id: PREFERENCE-02
+      preference: No invented facts and no silent inference.
+      category: explicit
+      source_basis: Current user prompt critical rules.
+      strength: strong
+      implication: Use labels and unknowns rather than filling gaps.
+      risk_if_misunderstood: False requirements or platform claims may enter the spec.
+      label: FACT
+    - id: PREFERENCE-03
+      preference: Important items must be labeled by evidentiary status.
+      category: explicit
+      source_basis: Current user prompt.
+      strength: strong
+      implication: Use FACT, INFERENCE, UNCERTAIN / UNVERIFIED, PROJECT-CONTEXT consistently.
+      risk_if_misunderstood: Future assistants may mistake speculation for decision.
+      label: FACT
+    - id: PREFERENCE-04
+      preference: User statements outrank assistant statements.
+      category: explicit
+      source_basis: Current user prompt; previous packet rules.
+      strength: strong
+      implication: Latest explicit user priority controls platform hierarchy.
+      risk_if_misunderstood: Assistant proposals like “Domino” or retro tiers may become false decisions.
+      label: FACT
+    - id: PREFERENCE-05
+      preference: Preserve rejected, superseded, deprioritized, contradictory, and tentative items.
+      category: explicit
+      source_basis: Current user prompt.
+      strength: strong
+      implication: Registers must include rejected options and changes of direction.
+      risk_if_misunderstood: Future work may repeat old mistakes or erase unresolved conflicts.
+      label: FACT
+    - id: PREFERENCE-06
+      preference: Structured headings, tables, stable IDs, and consistent terminology.
+      category: explicit
+      source_basis: Current user prompt specifies ID patterns and file structures.
+      strength: strong
+      implication: Use normalized registers suitable for aggregation.
+      risk_if_misunderstood: Later spec-book construction becomes harder.
+      label: FACT
+    - id: PREFERENCE-07
+      preference: Downloadable files and ZIP if possible.
+      category: explicit
+      source_basis: Current user prompt.
+      strength: strong
+      implication: Create actual Markdown/YAML files and archive them; do not merely print content if tools are available.
+      risk_if_misunderstood: User may not get reusable package.
+      label: FACT
+    - id: PREFERENCE-08
+      preference: Use date anchor 2026-05-27 Australia/Melbourne.
+      category: explicit
+      source_basis: Current user prompt.
+      strength: strong
+      implication: Metadata and staleness notes should use the supplied anchor.
+      risk_if_misunderstood: Reports may mix incompatible dates.
+      label: FACT
+    - id: PREFERENCE-09
+      preference: This-chat-only source scope unless external context is labeled PROJECT-CONTEXT.
+      category: explicit
+      source_basis: Current user prompt.
+      strength: strong
+      implication: Avoid importing whole-project memories or user profile into this package unless labeled.
+      risk_if_misunderstood: Aggregation may contaminate chat-specific provenance.
+      label: FACT
+    - id: PREFERENCE-10
+      preference: Report should support future master Project Spec Book construction.
+      category: explicit
+      source_basis: Current user prompt and aggregator prompt included by user.
+      strength: strong
+      implication: Include YAML, aggregator packet, spec-book notes, and merge warnings.
+      risk_if_misunderstood: Output may be readable but not machine/aggregation-ready.
+      label: FACT
+    inferred:
+    - id: PREFERENCE-12
+      preference: Engine or implementation details should not be assumed.
+      category: inferred
+      source_basis: The chat listed many runtimes/APIs but did not choose one.
+      strength: medium
+      implication: Ask/decide engine separately; avoid defaulting to Unity/Unreal/custom.
+      risk_if_misunderstood: Planning may lock into unsupported architecture prematurely.
+      label: INFERENCE
+    uncertain_or_not_established:
+    - No engine/toolchain preference is established in this chat.
+    - No budget, team size, release date, or commercial priority order is established.
+    - No exact minimum OS/API versions are established.
+    - No confirmed name for a separate engine/core layer is established.
+    - No final decision on console generation priority is established.
+    - No final decision on XR priority is established.
+    - No final decision on tvOS, watchOS, visionOS, Android Automotive, or Android TV tier status is established.
+    - No existing source files, repositories, build scripts, or design documents were provided in this chat.
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Overall Dominium platform support strategy and tier model
+    label: FACT / INFERENCE
+    objective: Define which operating systems, devices, and runtime families Dominium should support and classify each into
+      a support tier.
+    current_state: 'Latest visible priority: PC first; Android, iOS, and Web are also primary top-tier support. Consoles and
+      legacy systems remain desired but not equal to Tier-0 unless later elevated.'
+    desired_end_state: A formal platform support matrix and platform-contract system with explicit support scope, minimum
+      versions, APIs, QA obligations, and legal constraints per target.
+    status: active
+    priority: highest
+    background: The user started with broad system/OS questions, expanded to console/mobile/web/XR device families, then explicitly
+      elevated Android/iOS/Web after PC.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    - DECISION-04
+    - DECISION-05
+    - DECISION-10
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-18
+    - QUESTION-19
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-17
+    - TASK-18
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-07
+    - CONSTRAINT-12
+    dependencies:
+    - Current official platform facts
+    - Engine/toolchain decision
+    - Formal definition of support levels
+    timeline: 'No implementation timeline provided. Sequencing inferred: define matrix first, then contracts, then baselines
+      and verification.'
+    blockers:
+    - Undefined meaning of support for many devices
+    - Unknown engine/toolchain
+    - Unverified platform requirements
+    risks:
+    - RISK-01
+    - RISK-03
+    - RISK-07
+    - RISK-15
+    artifacts:
+    - ARTIFACT-07
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    success_criteria:
+    - Every device family maps to an explicit tier
+    - Tier-0 obligations are unambiguous
+    - Secondary/research targets are not confused with parity support
+    next_action: Create a formal Platform Support Matrix with stable support categories and verification status per platform
+      family.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-05
+    - VERIFY-06
+    - VERIFY-07
+    confidence: 5
+    carry_forward_priority: critical
+  - id: WORKSTREAM-02
+    name: Tier-0 PC desktop operating system support
+    label: FACT / INFERENCE
+    objective: Support PC as the first primary platform family, including Windows, macOS, and Linux.
+    current_state: PC is established by user wording as the platform before Android/iOS/Web. Earlier assistant outputs proposed
+      Windows 10/11, macOS Apple Silicon/Intel optional, Linux x64/ARM64 with X11/Wayland.
+    desired_end_state: A precise PC support contract covering Windows, macOS, Linux, CPU architectures, graphics APIs, packaging,
+      input, storage, and QA targets.
+    status: active
+    priority: highest
+    background: User asked what operating systems Dominium can run on. Assistant repeatedly placed Windows/macOS/Linux as
+      full-product targets.
+    decisions_made:
+    - DECISION-01
+    decisions_pending:
+    - QUESTION-06
+    - QUESTION-07
+    - QUESTION-08
+    - QUESTION-20
+    tasks:
+    - TASK-03
+    - TASK-13
+    - TASK-14
+    - TASK-17
+    constraints:
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-12
+    dependencies:
+    - Renderer strategy
+    - Build system
+    - Distribution channels
+    - QA device coverage
+    timeline: Should be specified before implementation planning; no dates given.
+    blockers:
+    - Minimum OS versions unknown
+    - Architecture targets unknown
+    - Engine/toolchain unknown
+    risks:
+    - RISK-02
+    - RISK-08
+    - RISK-15
+    artifacts:
+    - ARTIFACT-04
+    - ARTIFACT-10
+    - ARTIFACT-11
+    success_criteria:
+    - PC platforms have explicit minimum versions
+    - Windows/macOS/Linux are supported with defined renderer/input/storage backends
+    - PC does not become the only architecture driver
+    next_action: Define Windows/macOS/Linux baseline rows in the platform matrix.
+    verification_needed:
+    - VERIFY-15
+    - VERIFY-19
+    confidence: 4
+    carry_forward_priority: critical
+  - id: WORKSTREAM-03
+    name: Tier-0 Android ecosystem support
+    label: FACT
+    objective: Make Android primary top-tier support after PC across relevant Android phones, tablets, TV/handheld classes,
+      and compatible environments.
+    current_state: User explicitly elevated Android to primary top-tier support. User listed Android phones, tablets, Android
+      TV/Google TV, Android Automotive, Android handheld consoles, Chromebooks, AOSP, Android Go, and vendor ROMs.
+    desired_end_state: A first-class Android support contract with minimum API level, ABI list, graphics backend, lifecycle
+      model, input model, device class support, store/distribution rules, and QA tiers.
+    status: active
+    priority: highest
+    background: Android was initially one of many device families, then was explicitly promoted by the user after PC.
+    decisions_made:
+    - DECISION-02
+    - DECISION-05
+    decisions_pending:
+    - QUESTION-02
+    - QUESTION-09
+    - QUESTION-25
+    tasks:
+    - TASK-04
+    - TASK-13
+    - TASK-14
+    - TASK-15
+    - TASK-16
+    - TASK-18
+    constraints:
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-12
+    - CONSTRAINT-18
+    dependencies:
+    - Android SDK/NDK facts
+    - Graphics backend decision
+    - Input/UI strategy
+    - QA device plan
+    timeline: Tier-0 contract should be defined immediately after the global support matrix.
+    blockers:
+    - Minimum API and ABI not chosen
+    - Android TV/Automotive/Go scope unresolved
+    - Store targets not chosen
+    risks:
+    - RISK-06
+    - RISK-18
+    artifacts:
+    - ARTIFACT-07
+    - ARTIFACT-09
+    - ARTIFACT-10
+    success_criteria:
+    - Android is not treated as a port
+    - Lifecycle and memory constraints shape core architecture
+    - Supported Android subfamilies are explicitly classified
+    next_action: Define Android subtargets and minimum API/ABI/graphics baseline; mark Android Go, TV, Automotive, and Chromebooks
+      as pending until scoped.
+    verification_needed:
+    - VERIFY-05
+    - VERIFY-11
+    confidence: 5
+    carry_forward_priority: critical
+  - id: WORKSTREAM-04
+    name: Tier-0 iOS/iPadOS and Apple-family classification
+    label: FACT / INFERENCE
+    objective: Make iOS primary top-tier support after PC and classify related Apple platforms.
+    current_state: User explicitly elevated iOS to primary top-tier support. Assistant included iPadOS as co-primary. User
+      listed iPhone, iPod Touch, iPad families, Apple TV, Apple Watch, Mac Intel/Apple Silicon, iOS, iPadOS, tvOS, watchOS,
+      and macOS.
+    desired_end_state: A clear Apple support contract distinguishing Tier-0 iOS/iPadOS/macOS from possible secondary or unsupported
+      Apple-family targets such as tvOS, watchOS, and visionOS.
+    status: active
+    priority: highest
+    background: Apple platforms appeared in the target inventory, and iOS was later promoted to top-tier after PC.
+    decisions_made:
+    - DECISION-03
+    - DECISION-05
+    decisions_pending:
+    - QUESTION-03
+    - QUESTION-10
+    - QUESTION-26
+    tasks:
+    - TASK-05
+    - TASK-13
+    - TASK-14
+    - TASK-15
+    - TASK-16
+    - TASK-18
+    constraints:
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-12
+    dependencies:
+    - Apple SDK and distribution rules
+    - Metal or engine rendering path
+    - Device baseline decision
+    timeline: Should be defined alongside Android and Web because it is Tier-0.
+    blockers:
+    - Minimum OS version unknown
+    - iPadOS explicit status not separately confirmed
+    - tvOS/watchOS/visionOS unresolved
+    risks:
+    - RISK-06
+    - RISK-17
+    artifacts:
+    - ARTIFACT-07
+    - ARTIFACT-09
+    - ARTIFACT-10
+    success_criteria:
+    - iOS/iPadOS support is first-class
+    - Apple-family non-mobile platforms are not accidentally promised
+    - Apple-specific lifecycle and sandbox constraints are captured
+    next_action: Define iOS/iPadOS minimum OS/device baseline and classify tvOS/watchOS/visionOS separately.
+    verification_needed:
+    - VERIFY-06
+    - VERIFY-10
+    confidence: 4
+    carry_forward_priority: critical
+  - id: WORKSTREAM-05
+    name: Tier-0 Web/WASM/browser/PWA support
+    label: FACT
+    objective: Make Web primary top-tier support after PC using WASM/browser technologies.
+    current_state: User explicitly elevated Web to primary top-tier support. User listed WASM, HTML5, JavaScript, WebGL, WebGPU,
+      PWA, and major browsers.
+    desired_end_state: A first-class Web support contract specifying browser baselines, WASM features, graphics fallback policy,
+      storage/save behavior, asset loading, PWA/offline status, and QA matrix.
+    status: active
+    priority: highest
+    background: Web was first described by assistant as a universal fallback; latest user decision makes it a top-tier primary
+      target, not merely a fallback.
+    decisions_made:
+    - DECISION-04
+    - DECISION-05
+    - DECISION-09
+    decisions_pending:
+    - QUESTION-04
+    - QUESTION-05
+    - QUESTION-22
+    tasks:
+    - TASK-06
+    - TASK-14
+    - TASK-15
+    - TASK-16
+    - TASK-18
+    constraints:
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-12
+    - CONSTRAINT-20
+    dependencies:
+    - WASM toolchain
+    - WebGPU/WebGL policy
+    - Browser storage strategy
+    - Asset pipeline
+    timeline: Should be defined at the same level as PC/mobile contracts.
+    blockers:
+    - Browser minimums unknown
+    - WebGPU/WebGL fallback unresolved
+    - PWA/offline status unknown
+    risks:
+    - RISK-02
+    - RISK-06
+    - RISK-19
+    artifacts:
+    - ARTIFACT-07
+    - ARTIFACT-09
+    - ARTIFACT-10
+    success_criteria:
+    - Web build is not a demo unless explicitly scoped
+    - Browser compatibility matrix exists
+    - Web constraints influence core design
+    next_action: Define browser support matrix and WebGPU/WebGL/WASM feature policy.
+    verification_needed:
+    - VERIFY-07
+    - VERIFY-08
+    - VERIFY-18
+    confidence: 5
+    carry_forward_priority: critical
+  - id: WORKSTREAM-06
+    name: 'Closed console support strategy: PlayStation, Xbox, Nintendo'
+    label: FACT / INFERENCE
+    objective: Plan support for PlayStation, Xbox, and Nintendo hardware/software families without confusing official commercial
+      support with legacy/research or emulator support.
+    current_state: User requested broad console support. Assistant proposed current commercial consoles as Tier-1/gated and
+      legacy consoles as constrained/research. No user acceptance of exact console tiering beyond not objecting before elevating
+      Android/iOS/Web.
+    desired_end_state: A console strategy that separates current officially supported SKUs from legacy, handheld, remote-play,
+      and research-only targets.
+    status: active but secondary
+    priority: medium-high
+    background: User listed many PlayStation, Xbox, and Nintendo generations, firmware/OS names, and handhelds.
+    decisions_made:
+    - DECISION-06
+    - DECISION-11
+    - DECISION-12
+    decisions_pending:
+    - QUESTION-14
+    - QUESTION-15
+    tasks:
+    - TASK-08
+    - TASK-09
+    - TASK-18
+    constraints:
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-19
+    dependencies:
+    - Official platform-holder access
+    - Devkits/toolchains
+    - Certification rules
+    - Console-specific QA
+    timeline: After Tier-0 platform contracts unless the user elevates consoles.
+    blockers:
+    - No confirmed partner program/devkit access
+    - Specific current-gen/cross-gen strategy undecided
+    risks:
+    - RISK-05
+    - RISK-07
+    - RISK-11
+    - RISK-16
+    artifacts:
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria:
+    - Console claims are legal, official, and scoped
+    - Legacy console claims are not mistaken for parity support
+    - Every console family maps to a clear status
+    next_action: 'Create a console submatrix: current commercial, legacy research, remote-play only, emulator-hosted, unsupported.'
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-03
+    - VERIFY-04
+    - VERIFY-13
+    confidence: 4
+    carry_forward_priority: high
+  - id: WORKSTREAM-07
+    name: PC handheld support
+    label: FACT / INFERENCE
+    objective: Support PC handheld devices through PC OS targets plus handheld-specific UX, input, and performance profiles.
+    current_state: User listed Steam Deck, ROG Ally, Legion Go, Ayaneo, GPD, OneXPlayer, MSI Claw, Zotac Zone, AOKZOE, and
+      Smach Z. Assistant proposed mapping them to Windows/Linux/SteamOS rather than treating each as a separate OS target.
+    desired_end_state: A PC handheld submatrix with Steam Deck, Windows handhelds, and Linux handhelds mapped to support levels,
+      performance targets, controller UI, resolution scaling, and suspend/resume behavior.
+    status: active
+    priority: high
+    background: PC handhelds were included in the user's expanded hardware family list and are closely related to Tier-0 PC
+      support.
+    decisions_made:
+    - DECISION-08
+    decisions_pending:
+    - QUESTION-13
+    - QUESTION-17
+    tasks:
+    - TASK-07
+    - TASK-15
+    - TASK-17
+    - TASK-18
+    constraints:
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-12
+    dependencies:
+    - PC support contract
+    - Controller-first UI
+    - Performance presets
+    - Steam/handheld QA devices
+    timeline: Should be specified after PC baseline but before claiming handheld support.
+    blockers:
+    - Steam Deck status undecided
+    - Handheld performance floor unknown
+    risks:
+    - RISK-06
+    - RISK-09
+    - RISK-15
+    artifacts:
+    - ARTIFACT-07
+    success_criteria:
+    - Handheld devices are not treated as generic desktops
+    - Controller UI and small-screen behavior are specified
+    - Steam Deck/Windows handhelds have clear verification status
+    next_action: Add PC handheld profiles to the support matrix and decide Steam Deck tier.
+    verification_needed:
+    - VERIFY-09
+    - VERIFY-14
+    confidence: 4
+    carry_forward_priority: high
+  - id: WORKSTREAM-08
+    name: AR/VR/XR support strategy
+    label: FACT / INFERENCE
+    objective: Classify AR/VR/XR devices and runtimes in the broader support plan.
+    current_state: User listed AR and VR hardware/software. Assistant proposed runtime-first support via OpenXR and WebXR
+      but XR priority was not decided.
+    desired_end_state: A clear XR tier decision and runtime strategy that maps XR devices to OpenXR/WebXR/platform-specific
+      paths without derailing Tier-0 PC/mobile/web.
+    status: unclear / future
+    priority: medium
+    background: XR appeared in the user's comprehensive device list but was not included in the latest top-tier priority statement.
+    decisions_made:
+    - DECISION-14
+    decisions_pending:
+    - QUESTION-16
+    tasks:
+    - TASK-10
+    - TASK-18
+    constraints:
+    - CONSTRAINT-12
+    - CONSTRAINT-18
+    dependencies:
+    - Product design decision
+    - Renderer stereo support
+    - OpenXR/WebXR status
+    - Platform-specific stores
+    timeline: Not sequenced; likely after Tier-0 contracts unless elevated.
+    blockers:
+    - No XR priority
+    - No confirmed engine/runtime
+    - No XR-specific gameplay requirement
+    risks:
+    - RISK-07
+    - RISK-14
+    - RISK-20
+    artifacts:
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria:
+    - XR support is explicitly scoped
+    - XR does not implicitly become Tier-0
+    - Runtime-based approach is verified before use
+    next_action: Classify XR as pending/future unless user elevates it, then verify OpenXR/WebXR feasibility.
+    verification_needed:
+    - VERIFY-12
+    confidence: 3
+    carry_forward_priority: medium
+  - id: WORKSTREAM-09
+    name: Legacy, retro, bare-metal, and constrained support
+    label: FACT / INFERENCE
+    objective: Preserve optional legacy/retro/bare-metal possibilities without turning them into full Dominium parity commitments.
+    current_state: Earlier assistant listed CP/M, DOS, Win16/Win9x, Classic Mac, AmigaOS, OS/2, Z80/8080/8085, S-100, RC2014,
+      and firmware targets. Later framing demoted these to constrained/research/engine-only.
+    desired_end_state: A legacy target policy defining which, if any, retro systems receive engine-only demos, validation
+      builds, community ports, or no support.
+    status: historical / secondary
+    priority: low-medium
+    background: The first assistant answer was broad and retro-heavy; later user focus shifted to console/mobile/web and then
+      Tier-0 PC/mobile/web.
+    decisions_made:
+    - DECISION-07
+    - DECISION-12
+    decisions_pending:
+    - QUESTION-15
+    tasks:
+    - TASK-09
+    - TASK-18
+    constraints:
+    - CONSTRAINT-09
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    dependencies:
+    - Engine/core portability
+    - Legal BIOS/firmware approach
+    - Retro toolchains
+    timeline: No timeline; should not precede Tier-0 contracts unless the user reprioritizes.
+    blockers:
+    - No explicit latest user commitment
+    - Severe technical limits
+    - Legal uncertainty for firmware/BIOS
+    risks:
+    - RISK-05
+    - RISK-07
+    - RISK-10
+    artifacts:
+    - ARTIFACT-02
+    - ARTIFACT-04
+    - ARTIFACT-11
+    success_criteria:
+    - Retro systems are not mistaken for full-product targets
+    - Any reduced builds are explicitly labeled
+    - No proprietary firmware/BIOS is bundled
+    next_action: Keep legacy as Tier-2/research in the matrix and avoid architecture debt unless there is low-cost portability
+      benefit.
+    verification_needed:
+    - VERIFY-13
+    confidence: 4
+    carry_forward_priority: medium
+  - id: WORKSTREAM-10
+    name: Cross-cutting architecture, backend, runtime, and compatibility strategy
+    label: FACT / INFERENCE
+    objective: Define shared technical architecture needed to support PC, Android, iOS, Web, consoles, handhelds, and XR.
+    current_state: User listed native C/C++ runtimes, Vulkan, OpenGL/ES, DirectX 9–12, Metal, SDL, GLFW, Unity Runtime, Unreal
+      Runtime, Wine, and Proton. Assistant proposed a portable core plus platform host layers and render backends, but engine/toolchain
+      remains undecided.
+    desired_end_state: An architecture decision record covering engine choice, platform abstraction, renderer backends, input/UI
+      abstraction, audio, filesystem/save, networking, asset pipeline, deterministic core, and compatibility policies.
+    status: active / unresolved
+    priority: highest
+    background: The breadth of desired platforms creates hard architecture constraints before implementation starts.
+    decisions_made:
+    - DECISION-13
+    - DECISION-15
+    decisions_pending:
+    - QUESTION-11
+    - QUESTION-20
+    - QUESTION-21
+    - QUESTION-22
+    - QUESTION-23
+    tasks:
+    - TASK-11
+    - TASK-13
+    - TASK-14
+    - TASK-15
+    - TASK-16
+    - TASK-17
+    constraints:
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-12
+    - CONSTRAINT-20
+    dependencies:
+    - Platform contracts
+    - Engine/toolchain decision
+    - Renderer API feasibility
+    - Input/UI requirements
+    timeline: Must be resolved before implementation claims are made.
+    blockers:
+    - Engine choice unknown
+    - Backend policy unknown
+    - Support scope unknown for many devices
+    risks:
+    - RISK-06
+    - RISK-08
+    - RISK-15
+    - RISK-19
+    artifacts:
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-10
+    - ARTIFACT-11
+    success_criteria:
+    - Architecture can serve Tier-0 without PC-only assumptions
+    - Backend policies are explicit
+    - Compatibility layers are not overpromised
+    next_action: After the support matrix, create architecture contracts for platform abstraction, render, input, storage,
+      network, and build/release.
+    verification_needed:
+    - VERIFY-15
+    - VERIFY-16
+    - VERIFY-19
+    confidence: 4
+    carry_forward_priority: critical
+  - id: WORKSTREAM-11
+    name: Chat-specific handoff/report package
+    label: FACT
+    objective: Convert the previously generated Context Transfer Packet and visible chat context into downloadable Markdown/YAML/ZIP
+      report files.
+    current_state: This package is being generated from the visible chat and previous Context Transfer Packet.
+    desired_end_state: A reusable per-chat package containing a full report, spec sheet YAML, aggregator packet, registers,
+      reader brief, verification/audit, manifest, and ZIP archive.
+    status: active during this response
+    priority: highest for current task
+    background: User explicitly requested a final downloadable, shareable, reusable report package for this individual old
+      chat.
+    decisions_made:
+    - DECISION-16
+    decisions_pending: []
+    tasks:
+    - TASK-19
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    dependencies:
+    - Visible chat context
+    - Previously generated Context Transfer Packet
+    - File generation tools
+    timeline: Current response.
+    blockers: []
+    risks:
+    - RISK-01
+    - RISK-12
+    - RISK-13
+    artifacts:
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    success_criteria:
+    - All requested files are created
+    - ZIP exists if possible
+    - Files use stable IDs
+    - Report is safe for later aggregation with caveats
+    next_action: Store the package and use it as input to a later cross-chat aggregation process.
+    verification_needed:
+    - VERIFY-20
+    confidence: 5
+    carry_forward_priority: critical
+  decisions:
+  - id: DECISION-01
+    decision: PC is the first primary platform family for Dominium.
+    status: decided by explicit user wording
+    label: FACT
+    evidence_or_basis: 'User: “Android, iOS, and Web will be our primary focus after PC...”'
+    rationale: The phrase “after PC” establishes PC as the preceding primary focus.
+    implications: Windows, macOS, and Linux need first-class planning before or alongside other Tier-0 contracts.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    uncertainty: Exact PC OS versions, architectures, and distribution channels remain undecided.
+    confidence: 5
+  - id: DECISION-02
+    decision: Android is primary top-tier support after PC.
+    status: decided by explicit user statement
+    label: FACT
+    evidence_or_basis: 'User: “Android... will be our primary focus after PC, and should be primary top tier support likewise.”'
+    rationale: User explicitly elevated Android.
+    implications: Android lifecycle, memory, touch/controller input, ABI, graphics, packaging, and QA must shape architecture
+      early.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    - WORKSTREAM-10
+    uncertainty: Minimum API, ABIs, and subdevice tiers are not defined.
+    confidence: 5
+  - id: DECISION-03
+    decision: iOS is primary top-tier support after PC.
+    status: decided by explicit user statement
+    label: FACT
+    evidence_or_basis: 'User: “iOS... will be our primary focus after PC, and should be primary top tier support likewise.”'
+    rationale: User explicitly elevated iOS.
+    implications: iOS and likely iPadOS must be first-class mobile targets, not ports.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-04
+    - WORKSTREAM-10
+    uncertainty: iPadOS was included by assistant but user’s exact latest wording said iOS; minimum OS/devices remain undecided.
+    confidence: 5
+  - id: DECISION-04
+    decision: Web is primary top-tier support after PC.
+    status: decided by explicit user statement
+    label: FACT
+    evidence_or_basis: 'User: “Web will be our primary focus after PC, and should be primary top tier support likewise.”'
+    rationale: User explicitly elevated Web.
+    implications: WASM/browser constraints must be architectural drivers, not afterthoughts.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-05
+    - WORKSTREAM-10
+    uncertainty: Browser baseline, WebGPU/WebGL policy, and PWA scope remain unresolved.
+    confidence: 5
+  - id: DECISION-05
+    decision: Mobile and Web should be treated as co-equal roots with PC, not late ports.
+    status: inferred working decision based on explicit user priority and prior assistant framing
+    label: INFERENCE
+    evidence_or_basis: 'Latest user priority plus assistant statement: “Mobile and Web are not ‘ports.’ They are co-equal
+      roots with PC.”'
+    rationale: Top-tier support cannot be credible if mobile/web constraints are deferred until after PC-only design.
+    implications: Core systems must account for touch, suspend/resume, browser sandboxing, memory limits, variable refresh,
+      and asset size from the beginning.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    - WORKSTREAM-10
+    uncertainty: User did not use the exact phrase “co-equal roots,” but latest statement strongly supports it.
+    confidence: 4
+  - id: DECISION-06
+    decision: Closed commercial consoles are secondary/gated support targets, not current Tier-0.
+    status: assistant-proposed working classification; not explicitly accepted or rejected
+    label: INFERENCE
+    evidence_or_basis: Assistant classified PS4/PS5, Xbox One/Series, and Switch as Tier-1/gated; user then elevated Android/iOS/Web
+      after PC without elevating consoles.
+    rationale: Console SDKs, devkits, partner programs, certification, and distribution are gated by platform holders.
+    implications: Console planning should not block Tier-0 PC/mobile/web. Console-specific code should be isolated.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-06
+    uncertainty: User may later elevate consoles or provide partner access.
+    confidence: 4
+  - id: DECISION-07
+    decision: Legacy consoles and retro systems are constrained/research/engine-only targets by default, not full Dominium
+      parity targets.
+    status: assistant-proposed working classification
+    label: INFERENCE
+    evidence_or_basis: Assistant classified PS1/PS2/PS3/PSP/Vita, original Xbox/360, pre-Switch Nintendo, and retro OSes as
+      Class C/Tier-2 constrained/research.
+    rationale: Severe hardware limits, obsolete/restricted tooling, and BIOS/firmware/legal constraints make parity support
+      unrealistic by default.
+    implications: Legacy support should be explicitly scoped as research, demo, emulator-hosted, community, or unsupported.
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-09
+    uncertainty: User asked to support as many as possible; exact legacy ambition remains unresolved.
+    confidence: 4
+  - id: DECISION-08
+    decision: PC handhelds should map primarily to PC OS targets rather than become separate base platform families.
+    status: assistant-proposed working classification
+    label: INFERENCE
+    evidence_or_basis: Assistant classified Steam Deck as SteamOS/Linux, Windows handhelds as Windows, and Linux handhelds
+      as Linux.
+    rationale: Most listed PC handhelds run Windows/Linux/SteamOS and can share PC builds plus handheld-specific QA.
+    implications: Support matrix should include handheld profiles under PC, with controller/UI/performance requirements.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-07
+    uncertainty: Steam Deck named support tier is not yet decided.
+    confidence: 4
+  - id: DECISION-09
+    decision: Web/WASM is both a universal fallback and a Tier-0 support target.
+    status: decided/inferred from latest user priority
+    label: FACT / INFERENCE
+    evidence_or_basis: Assistant previously called Web/WASM universal fallback; user later promoted Web to primary top-tier.
+    rationale: Web reaches many device classes without console-style platform gatekeeping, but latest priority means it must
+      not be demoted to demo/fallback only.
+    implications: Web build should have formal parity/degradation rules and browser QA.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: Exact parity level and fallback graphics policy are undecided.
+    confidence: 5
+  - id: DECISION-10
+    decision: Use platform contracts/support matrix rather than an undifferentiated “support everything” claim.
+    status: assistant-proposed; strongly implied by scope
+    label: INFERENCE
+    evidence_or_basis: Assistant repeatedly proposed platform contracts and tiering; user requested many devices and later
+      report normalization.
+    rationale: Device breadth is too large to manage without explicit support levels.
+    implications: Future planning should use formal rows/columns for target, tier, scope, APIs, QA, and verification.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-10
+    uncertainty: Exact matrix schema can still evolve.
+    confidence: 5
+  - id: DECISION-11
+    decision: Closed console support must use official platform-holder paths for commercial/native support.
+    status: assistant-proposed constraint requiring external verification
+    label: UNCERTAIN / UNVERIFIED
+    evidence_or_basis: Assistant stated PlayStation, Xbox, and Nintendo support require partner programs/devkits/SDKs/certification.
+    rationale: Commercial console development is generally gated by platform-holder processes.
+    implications: Do not plan commercial console ports around unofficial tooling or public reverse-engineered details.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: Specific current program details must be verified from official sources.
+    confidence: 4
+  - id: DECISION-12
+    decision: Do not bundle proprietary BIOS/firmware or rely on firmware redistribution for legacy support.
+    status: assistant-proposed legal/safety constraint
+    label: INFERENCE
+    evidence_or_basis: Assistant warned not to ship copyrighted BIOS/firmware for legacy/emulated targets.
+    rationale: Firmware/BIOS redistribution may violate IP rights unless licensed.
+    implications: Legacy/emulated strategies must support user-provided/legal system software or avoid requiring it.
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-09
+    uncertainty: Specific legal status depends on jurisdiction and licensing; verify before implementation.
+    confidence: 4
+  - id: DECISION-13
+    decision: A platform abstraction layer and backend strategy are needed.
+    status: assistant-proposed architectural conclusion
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed one portable core with host layers for window/input/audio/filesystem/network and
+      render backends.
+    rationale: The platform matrix spans PC, mobile, web, consoles, handhelds, and XR.
+    implications: Architecture must isolate platform differences and avoid PC-only assumptions.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: Actual engine/toolchain is undecided.
+    confidence: 5
+  - id: DECISION-14
+    decision: XR should be runtime-first via OpenXR/WebXR if pursued.
+    status: assistant-proposed; not user-confirmed
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed OpenXR as primary XR abstraction and WebXR as browser complement.
+    rationale: Targeting runtimes reduces device-specific fragmentation.
+    implications: XR devices should map through runtime support rather than every headset being a separate primary platform.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: XR priority and feasibility remain undecided; OpenXR/WebXR facts require verification.
+    confidence: 3
+  - id: DECISION-15
+    decision: The prior “Dominium full product vs Domino engine/core” split is unconfirmed.
+    status: not decided; naming flagged as uncertain
+    label: UNCERTAIN / UNVERIFIED
+    evidence_or_basis: Assistant introduced “Domino” as engine core/reduced mode; user did not confirm the name.
+    rationale: Useful architectural split, but assistant-introduced names should not become project decisions without user
+      acceptance.
+    implications: New chats should say “engine/core” unless the user confirms “Domino.”
+    related_workstreams:
+    - WORKSTREAM-09
+    - WORKSTREAM-10
+    uncertainty: Requires user confirmation.
+    confidence: 5
+  - id: DECISION-16
+    decision: This report package uses chat-only scope, normalized IDs, and the 2026-05-27 Australia/Melbourne date anchor.
+    status: decided by current user instruction
+    label: FACT
+    evidence_or_basis: Current user prompt explicitly provided source scope, ID pattern, file set, and date anchor.
+    rationale: Enables future aggregation across many old-chat packages.
+    implications: The package should not silently import whole-project memories or unverified external facts.
+    related_workstreams:
+    - WORKSTREAM-11
+    uncertainty: None for report construction.
+    confidence: 5
+  tasks:
+  - id: TASK-01
+    task: Create a formal Platform Support Matrix for Dominium.
+    priority: highest
+    urgency: high
+    owner: future assistant / project owner
+    dependencies:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    - DECISION-04
+    - DECISION-10
+    inputs_needed:
+    - User target list
+    - Tier model
+    - Current verification data
+    expected_output: Matrix of platform family, targets, tier, scope, OS/API, CPU/ABI, graphics, input, storage, networking,
+      distribution, QA, legal constraints, risks, verification status, next action.
+    next_step: 'Start with Tier-0 rows: PC, Android, iOS/iPadOS, Web.'
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-02
+    task: Define Tier-0 platform contracts.
+    priority: highest
+    urgency: high
+    owner: project owner / future assistant
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Definition of support levels
+    - Platform baselines
+    expected_output: Contract per Tier-0 family defining parity, allowed degradation, test requirements, and release obligations.
+    next_step: Draft contracts with unknowns explicitly marked.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-03
+    task: Define PC OS baselines.
+    priority: high
+    urgency: medium
+    owner: project owner
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Windows/macOS/Linux support goals
+    - Current OS/API facts
+    expected_output: Windows, macOS, Linux baseline table including architecture, graphics, packaging, and QA targets.
+    next_step: Decide Windows 10/11, macOS Apple Silicon/Intel, Linux distro/runtime assumptions.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-04
+    task: Define Android minimum API, ABI, graphics, and subdevice scope.
+    priority: highest
+    urgency: high
+    owner: project owner
+    dependencies:
+    - TASK-01
+    - TASK-02
+    inputs_needed:
+    - Android SDK/NDK facts
+    - Device-class priorities
+    expected_output: Android support contract including phones/tablets, TV/handhelds, Automotive, Go, Chromebooks, vendor
+      ROMs.
+    next_step: Verify current Android/Google Play requirements and choose baseline.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-05
+    task: Define iOS/iPadOS minimum OS/device baseline and Apple-family classification.
+    priority: highest
+    urgency: high
+    owner: project owner
+    dependencies:
+    - TASK-01
+    - TASK-02
+    inputs_needed:
+    - Apple SDK/App Store facts
+    - Apple platform priorities
+    expected_output: 'Apple mobile/desktop classification table: iOS, iPadOS, macOS, tvOS, watchOS, visionOS if relevant.'
+    next_step: Verify current Apple requirements and classify tvOS/watchOS/visionOS.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-06
+    task: Define Web/WASM/browser/PWA baseline.
+    priority: highest
+    urgency: high
+    owner: project owner
+    dependencies:
+    - TASK-01
+    - TASK-02
+    inputs_needed:
+    - Browser support goals
+    - WASM feature needs
+    - Graphics policy
+    expected_output: Web support contract covering browser minimums, WASM features, WebGPU/WebGL, PWA/offline, storage, and
+      QA.
+    next_step: Decide whether WebGPU is required and WebGL fallback mandatory.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-07
+    task: Create PC handheld profile.
+    priority: high
+    urgency: medium
+    owner: project owner
+    dependencies:
+    - TASK-03
+    - TASK-15
+    inputs_needed:
+    - Steam Deck priority
+    - Windows/Linux handheld list
+    - UX/performance targets
+    expected_output: Handheld profile for Steam Deck, Windows handhelds, Linux handhelds, controller UI, performance and suspend/resume
+      requirements.
+    next_step: Decide whether Steam Deck is an explicit Tier-0 subtarget.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-08
+    task: Define console Tier-1 strategy.
+    priority: medium-high
+    urgency: medium
+    owner: project owner
+    dependencies:
+    - TASK-01
+    - VERIFY-01
+    inputs_needed:
+    - Platform-holder access status
+    - Current console generation priorities
+    expected_output: 'Console submatrix for PlayStation, Xbox, Nintendo: current commercial, cross-gen, legacy, remote-play,
+      research, unsupported.'
+    next_step: Verify official partner/development requirements from current sources.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-09
+    task: Define legacy/retro target policy.
+    priority: medium
+    urgency: low
+    owner: project owner
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - User appetite for retro work
+    - Legal/toolchain constraints
+    expected_output: Policy for engine-only demos, emulator-hosted support, community ports, and unsupported legacy targets.
+    next_step: Keep legacy targets Tier-2/research unless user elevates them.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-10
+    task: Decide XR priority and runtime strategy.
+    priority: medium
+    urgency: low
+    owner: project owner
+    dependencies:
+    - TASK-01
+    - TASK-14
+    inputs_needed:
+    - XR product goals
+    - OpenXR/WebXR feasibility
+    expected_output: 'XR classification: future, Tier-2, Tier-1, or Tier-0; runtime targets and device mappings.'
+    next_step: Do not elevate XR without explicit product decision.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-11
+    task: Choose or confirm engine/toolchain strategy.
+    priority: highest
+    urgency: high
+    owner: project owner
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Custom engine vs Unity vs Unreal vs SDL/GLFW preference
+    - Rendering/input/platform needs
+    expected_output: Architecture decision record for engine/toolchain.
+    next_step: Ask/decide only when continuing implementation planning; do not infer from current chat.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 5
+  - id: TASK-12
+    task: Confirm or retire the “Domino” engine/core name.
+    priority: medium
+    urgency: low
+    owner: user / project owner
+    dependencies: []
+    inputs_needed:
+    - User naming preference
+    expected_output: Confirmed engine/core naming or instruction to avoid “Domino.”
+    next_step: Treat as unconfirmed until user states otherwise.
+    related_workstreams:
+    - WORKSTREAM-09
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 5
+  - id: TASK-13
+    task: Design platform abstraction layer.
+    priority: highest
+    urgency: high
+    owner: engineering / future assistant
+    dependencies:
+    - TASK-01
+    - TASK-11
+    inputs_needed:
+    - Platform contracts
+    - Engine/toolchain decision
+    expected_output: Host-layer architecture for windowing, input, audio, filesystem/storage, networking, lifecycle, and build
+      integration.
+    next_step: Use Tier-0 constraints as non-negotiable inputs.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-14
+    task: Define rendering backend policy.
+    priority: highest
+    urgency: high
+    owner: engineering / project owner
+    dependencies:
+    - TASK-01
+    - TASK-11
+    inputs_needed:
+    - Graphics targets
+    - Browser/mobile/console requirements
+    expected_output: Renderer policy for Vulkan/Metal/WebGPU/WebGL/GLES/OpenGL/DirectX as applicable.
+    next_step: Verify backend feasibility and avoid treating assistant proposal as final.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-15
+    task: Define input and UI strategy across desktop, touch, controller, TV, handheld, and browser.
+    priority: highest
+    urgency: high
+    owner: design / engineering
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Supported device classes
+    - UX priorities
+    expected_output: Input/UI contract for mouse/keyboard, touch, gamepad, TV remote if relevant, XR controllers if relevant.
+    next_step: Design touch/controller-first requirements before locking UI framework.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    - WORKSTREAM-07
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-16
+    task: Define save/storage/sync model across native, mobile, and Web.
+    priority: high
+    urgency: medium
+    owner: engineering / product owner
+    dependencies:
+    - TASK-01
+    - TASK-05
+    - TASK-06
+    inputs_needed:
+    - Persistence requirements
+    - Offline/cloud goals
+    - Browser/mobile sandbox constraints
+    expected_output: Storage/save contract and migration/sync strategy.
+    next_step: Separate local saves, browser storage, mobile sandboxing, and optional cloud sync.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-17
+    task: Define QA and release cadence by tier.
+    priority: high
+    urgency: medium
+    owner: project owner / QA
+    dependencies:
+    - TASK-01
+    - TASK-02
+    inputs_needed:
+    - Tier definitions
+    - Release priorities
+    expected_output: QA obligations and release cadence for Tier-0, Tier-1, Tier-2.
+    next_step: Determine whether PC+Android+iOS+Web ship simultaneously or in synchronized windows.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-18
+    task: Verify all external-world platform facts with current official sources.
+    priority: highest
+    urgency: high before implementation
+    owner: future assistant / project owner
+    dependencies: []
+    inputs_needed:
+    - Official platform docs
+    - Current SDK/store/browser data
+    expected_output: Verified source-backed platform fact sheet replacing unverified assistant claims.
+    next_step: Use official sources for Android, Apple, browser, console, SteamOS, XR, and SDK facts.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    - WORKSTREAM-06
+    - WORKSTREAM-08
+    - WORKSTREAM-09
+    - WORKSTREAM-10
+    label: FACT / INFERENCE
+    confidence: 5
+  - id: TASK-19
+    task: Use this package in later cross-chat aggregation and Project Spec Book construction.
+    priority: high
+    urgency: when aggregating
+    owner: future aggregator assistant / user
+    dependencies:
+    - ARTIFACT-13
+    inputs_needed:
+    - This package
+    - Other old-chat packages
+    expected_output: Merged master spec book, master living state file, conflict register, deduplication register, master
+      task/decision/artifact registers.
+    next_step: Store package in its own folder and feed the ZIP or key files into aggregator chat later.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT / INFERENCE
+    confidence: 5
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Direct user statements outrank assistant suggestions.
+    type: source hierarchy
+    hard_or_soft: hard
+    source_or_basis: Current user prompt and previous Context Transfer Packet rules.
+    implication: Do not treat assistant-proposed platform tiers or names as user decisions unless accepted.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-02
+    constraint: Important items must be labeled FACT, INFERENCE, UNCERTAIN / UNVERIFIED, or PROJECT-CONTEXT.
+    type: epistemic
+    hard_or_soft: hard
+    source_or_basis: Current user prompt.
+    implication: Registers and prose must preserve uncertainty and source type.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-03
+    constraint: Do not invent facts or silently infer.
+    type: epistemic
+    hard_or_soft: hard
+    source_or_basis: Current user prompt.
+    implication: Unknown platform details must remain unknown until verified.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-04
+    constraint: Do not turn brainstorms into decisions.
+    type: decision integrity
+    hard_or_soft: hard
+    source_or_basis: Current user prompt.
+    implication: Earlier assistant lists and proposals must remain tentative unless user confirmed them.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-05
+    constraint: Use 2026-05-27 Australia/Melbourne as date anchor.
+    type: metadata
+    hard_or_soft: hard
+    source_or_basis: Current user prompt.
+    implication: Reports and verification should use that date anchor, not any earlier date in the previous packet.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-06
+    constraint: Source scope is this chat only unless external context is explicitly labeled PROJECT-CONTEXT.
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: Current user prompt.
+    implication: Do not import memories, file-library content, or whole-project assumptions silently.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-07
+    constraint: PC, Android, iOS, and Web are primary top-tier support.
+    type: product priority
+    hard_or_soft: hard unless user changes it
+    source_or_basis: Latest explicit user platform decision.
+    implication: These targets must drive architecture, QA, and release planning.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-08
+    constraint: Mobile and Web cannot be treated as afterthought ports.
+    type: architecture/product
+    hard_or_soft: hard by implication
+    source_or_basis: Latest user priority plus assistant's accepted framing in previous reply.
+    implication: Touch, lifecycle, browser sandbox, memory, and asset constraints must be designed early.
+    violation_risk: high
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-09
+    constraint: Do not plan to redistribute proprietary BIOS/firmware for legacy or emulated targets.
+    type: legal/IP
+    hard_or_soft: hard pending legal review
+    source_or_basis: Assistant constraint in prior context packet.
+    implication: Legacy/emulator support must avoid bundled proprietary system software unless licensed.
+    violation_risk: high
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-10
+    constraint: Commercial closed-console support requires official platform-holder access.
+    type: legal/commercial/technical
+    hard_or_soft: hard pending verification
+    source_or_basis: Prior assistant classification; external details unverified.
+    implication: PlayStation/Xbox/Nintendo support cannot be promised as native commercial builds without partner/devkit/certification
+      path.
+    violation_risk: high
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4
+  - id: CONSTRAINT-11
+    constraint: Legacy consoles and retro OSes are not parity targets by default.
+    type: scope/technical
+    hard_or_soft: soft-to-hard working guardrail
+    source_or_basis: Prior assistant classification.
+    implication: Classify them as research, engine-only, reduced, emulator-hosted, or unsupported unless user elevates them.
+    violation_risk: high
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-12
+    constraint: External-world platform facts require current verification before future use.
+    type: evidence/staleness
+    hard_or_soft: hard
+    source_or_basis: Current user prompt and platform volatility.
+    implication: SDK, store, console, browser, device, and OS claims must be checked against current official sources.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-13
+    constraint: Preserve visible rationale and assumptions but do not reveal hidden chain-of-thought.
+    type: reasoning/output
+    hard_or_soft: hard
+    source_or_basis: Current user prompt.
+    implication: Report may explain why decisions were made using visible conversation only.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-14
+    constraint: Create the exact requested file set if file generation is available.
+    type: output/file
+    hard_or_soft: hard for current task
+    source_or_basis: Current user prompt.
+    implication: Generate full report, YAML spec sheet, aggregator packet, registers, reader brief, verification/audit, manifest,
+      and ZIP if possible.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-15
+    constraint: Normalize important items into stable IDs.
+    type: format/aggregation
+    hard_or_soft: hard
+    source_or_basis: Current user prompt.
+    implication: Use WORKSTREAM, DECISION, TASK, CONSTRAINT, QUESTION, ARTIFACT, RISK, REJECTED, VERIFY IDs.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-16
+    constraint: Do not claim files were saved unless downloadable files were actually created.
+    type: truthfulness/output
+    hard_or_soft: hard
+    source_or_basis: Current user prompt.
+    implication: Final response must only list real files created in sandbox.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-17
+    constraint: Rejected, superseded, and deprioritized options must be preserved.
+    type: state preservation
+    hard_or_soft: hard
+    source_or_basis: Current and previous user prompts.
+    implication: Include rejected options to avoid future repeated work.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-18
+    constraint: Cross-platform input, UI, lifecycle, memory, and asset constraints must be explicit.
+    type: technical
+    hard_or_soft: hard by implication for Tier-0
+    source_or_basis: Prior assistant architecture consequences and latest user priority.
+    implication: Platform contracts must include touch, gamepad, suspend/resume, low-memory, and browser/mobile constraints.
+    violation_risk: high
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-19
+    constraint: Console-specific restricted material should be isolated and not leaked into open/public code.
+    type: legal/process
+    hard_or_soft: hard if console development proceeds
+    source_or_basis: Prior assistant console strategy.
+    implication: NDA-bound SDK headers/docs/libraries must not enter unrestricted repos or public artifacts.
+    violation_risk: high
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-20
+    constraint: Prior non-portable citations and assistant claims are not sufficient verification.
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: Previous packet’s audit and current prompt’s verification requirement.
+    implication: Do not rely on earlier turn citation IDs; rebuild citations from official current sources later.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  open_questions:
+  - id: QUESTION-01
+    question: What exact target families are Tier-0 besides PC, Android, iOS, and Web?
+    why_it_matters: Tier-0 determines architecture, QA, release cadence, and support obligations.
+    known: PC, Android, iOS, and Web are primary top-tier by latest user statement.
+    unknown: Whether iPadOS, Android TV, tvOS, Steam Deck, or other subfamilies are formally Tier-0.
+    resolution_path: User/project decision during platform matrix construction.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / INFERENCE
+  - id: QUESTION-02
+    question: What minimum Android API level and ABI set will be supported?
+    why_it_matters: Affects engine, NDK, graphics, store compliance, device reach, and QA.
+    known: Android is Tier-0; arm64-v8a was earlier proposed but not verified/final.
+    unknown: API level, ABI list, Vulkan/GLES requirements, Android Go support.
+    resolution_path: Verify current Android/Google Play requirements and choose product baseline.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: What minimum iOS/iPadOS version and device generations will be supported?
+    why_it_matters: Affects Apple SDK, App Store submission, Metal support, memory/performance budgets.
+    known: iOS is Tier-0; iPadOS was included by assistant as likely co-target.
+    unknown: Minimum iOS/iPadOS version, supported iPhone/iPad generations, iPod Touch treatment.
+    resolution_path: Verify Apple current requirements and choose baseline.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: What is the Web/browser baseline?
+    why_it_matters: Affects WASM features, memory, threading, WebGPU/WebGL, PWA support, and testing.
+    known: Web is Tier-0; user listed major browsers.
+    unknown: Minimum browser versions, required browser APIs, Safari constraints.
+    resolution_path: Verify current browser support and define matrix.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: Is WebGPU required, preferred, or optional, and is WebGL fallback mandatory?
+    why_it_matters: Determines renderer architecture and browser reach.
+    known: Assistant proposed WebGPU primary and WebGL fallback; user listed both.
+    unknown: Final graphics policy.
+    resolution_path: Architecture decision after verifying browser support and performance needs.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Which Windows versions and CPU architectures are supported?
+    why_it_matters: Defines PC compatibility and build targets.
+    known: Assistant previously proposed Windows 10/11 x64 and optional ARM64.
+    unknown: Whether Windows 10 is required, whether Windows 11 only, whether ARM64 is in scope.
+    resolution_path: Project decision plus current toolchain verification.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: Which macOS versions and Mac architectures are supported?
+    why_it_matters: Affects Apple Silicon/Intel builds, Metal version, packaging, and QA.
+    known: Assistant previously proposed Apple Silicon primary and Intel optional; user listed Mac Intel and Apple Silicon.
+    unknown: Minimum macOS, Intel Mac support, Apple Silicon-only possibility.
+    resolution_path: Project decision plus Apple platform verification.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: What Linux baseline is required?
+    why_it_matters: Affects distro compatibility, glibc/musl, packaging, graphics, X11/Wayland, and Steam Deck.
+    known: Assistant proposed Linux x64/ARM64 and X11/Wayland; user listed Linux distros for handhelds.
+    unknown: Distros, package formats, runtime targets, ARM64 status.
+    resolution_path: Define Linux support contract and verify current ecosystem assumptions.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: Are Android TV / Google TV first-class Tier-0 targets or secondary Android subtargets?
+    why_it_matters: TV UX, remote/controller input, store compliance, and QA differ from phones/tablets.
+    known: User listed Android TV / Google TV devices and software.
+    unknown: Tier and feature scope.
+    resolution_path: User/project decision in Android submatrix.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: Are tvOS, watchOS, and visionOS in scope, and at what tier?
+    why_it_matters: Apple TV, Apple Watch, and Vision Pro require different UX/runtime assumptions than iPhone/iPad/Mac.
+    known: User listed Apple TV, Apple Watch, and Apple platform software; Apple Vision Pro appeared under AR.
+    unknown: Full support, companion-only, future XR, or unsupported status.
+    resolution_path: User/project decision after classifying Apple-family targets.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: What engine/toolchain will Dominium use?
+    why_it_matters: All platform feasibility depends on custom engine vs Unity vs Unreal vs SDL/GLFW or another stack.
+    known: User listed cross-cutting runtimes/APIs; assistant proposed a portable core but did not confirm engine.
+    unknown: Actual engine/toolchain.
+    resolution_path: User/project architecture decision.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: Is “Domino” the real name for the engine/core layer?
+    why_it_matters: Avoids naming drift and false project terminology.
+    known: Assistant introduced “Domino”; user did not confirm.
+    unknown: Whether to use, rename, or discard it.
+    resolution_path: User confirmation.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-09
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-13
+    question: Is Steam Deck a named Tier-0 subtarget?
+    why_it_matters: Steam Deck support implies specific performance, controller, resolution, suspend/resume, and possibly
+      Steam verification goals.
+    known: User listed Steam Deck LCD/OLED; assistant maps it to SteamOS/Linux PC.
+    unknown: Tier, QA, and distribution status.
+    resolution_path: Project decision in PC handheld submatrix.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-14
+    question: Which current console generations are commercial targets?
+    why_it_matters: Affects partner onboarding, devkit needs, certification, performance floors, and release planning.
+    known: User listed PS4/PS5, Xbox One/Series, Switch; assistant placed current consoles in Tier-1.
+    unknown: PS4 vs PS5, Xbox One vs Series, Switch vs successor-class priorities.
+    resolution_path: User/project decision after verifying official access.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-15
+    question: Are any legacy consoles or retro OSes actual goals rather than aspirational coverage?
+    why_it_matters: Legacy support can consume large effort and force feature reductions.
+    known: User listed many legacy consoles; assistant proposed research/constrained status.
+    unknown: Which legacy targets, if any, get real work.
+    resolution_path: User/project decision after Tier-0 matrix.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-16
+    question: What priority does XR have?
+    why_it_matters: XR can require stereo rendering, low-latency frame pacing, comfort design, and different input models.
+    known: User listed AR/VR devices; assistant proposed OpenXR/WebXR runtime-first.
+    unknown: Future-only, Tier-2, Tier-1, or Tier-0.
+    resolution_path: User/product decision.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-17
+    question: Should Tier-0 platforms ship simultaneously?
+    why_it_matters: Release cadence affects build farm, QA, certification, store submission, and scope control.
+    known: Assistant proposed PC+Android+iOS+Web ship together; user did not explicitly confirm.
+    unknown: Actual release cadence.
+    resolution_path: Project release planning decision.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: QUESTION-18
+    question: What are the QA obligations for each support tier?
+    why_it_matters: Tier names are meaningless without test and release obligations.
+    known: Assistant used terms like first-class, full QA, parity, constrained, research.
+    unknown: Concrete pass/fail criteria and device coverage.
+    resolution_path: Define tier contract document.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: QUESTION-19
+    question: What does “support” mean for each device family?
+    why_it_matters: Prevents conflating full product, playable, engine-only, emulator-hosted, remote-play, or unsupported.
+    known: Prior packet recommended explicit categories.
+    unknown: Final category meanings and obligations.
+    resolution_path: Define support taxonomy before platform matrix.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: QUESTION-20
+    question: What is the final rendering backend policy?
+    why_it_matters: Rendering drives platform reach and engine complexity.
+    known: User listed Vulkan, OpenGL/ES, DirectX, Metal, WebGL, WebGPU; assistant proposed Vulkan/Metal/WebGPU first with
+      fallbacks.
+    unknown: Final API support and fallback obligations.
+    resolution_path: Architecture decision after platform baselines and verification.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-21
+    question: What is the cross-platform input/UI model?
+    why_it_matters: PC, mobile, TV, handheld, browser, console, and XR inputs differ substantially.
+    known: Assistant warned against PC-only assumptions.
+    unknown: Input devices, UI scaling, controller/touch-first rules.
+    resolution_path: UX/platform contract decision.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+  - id: QUESTION-22
+    question: What is the save/storage/sync model across native, mobile, and web?
+    why_it_matters: Storage APIs and sandboxing differ; future compatibility depends on early design.
+    known: Need storage abstraction was inferred; no concrete design exists.
+    unknown: Local saves, cloud sync, browser storage, file exports/imports, account system.
+    resolution_path: Architecture/product decision.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-23
+    question: What distribution channels are targeted per Tier-0 platform?
+    why_it_matters: Stores impose packaging, entitlement, review, and update constraints.
+    known: No distribution plan established; possible stores are implied by platforms.
+    unknown: Steam, Epic, itch, App Store, Play Store, direct web hosting, PWA install, etc.
+    resolution_path: Product/distribution planning.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-24
+    question: Which previous assistant claims require source re-verification?
+    why_it_matters: The retired chat contained non-portable citations and current-fact claims.
+    known: The prior packet warned that citations and platform facts are not portable/current.
+    unknown: Which claims survive official-source verification.
+    resolution_path: Create verification pass using official sources.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / UNCERTAIN
+  - id: QUESTION-25
+    question: Is Android Automotive an actual target?
+    why_it_matters: Automotive platforms differ legally, UX-wise, and operationally from normal Android game devices.
+    known: User listed Android Automotive head units and OS.
+    unknown: Support tier or rejection.
+    resolution_path: Classify separately in Android submatrix.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-26
+    question: Is Apple Watch/watchOS full support, companion-only, or out of scope?
+    why_it_matters: Full Dominium on watchOS is a radically different product scope from iOS/iPadOS.
+    known: User listed Apple Watch/watchOS.
+    unknown: Intended support meaning.
+    resolution_path: User/project decision in Apple-family classification.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Treat Android, iOS, and Web as secondary ports after PC.
+    status: superseded
+    reason: User explicitly promoted Android, iOS, and Web to primary top-tier support after PC.
+    final_or_tentative: final unless user changes priority
+    reconsider_conditions: Only if user explicitly demotes any of these targets.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-02
+    option: Treat all console families as equal Tier-0 by default.
+    status: deprioritized
+    reason: Latest priority explicitly names PC then Android/iOS/Web; assistant classified consoles as gated secondary targets.
+    final_or_tentative: tentative
+    reconsider_conditions: If user elevates consoles or confirms official platform access and business priority.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: REJECTED-03
+    option: Promise full Dominium parity on legacy consoles and old handhelds.
+    status: deprioritized/rejected by working model
+    reason: Assistant classified legacy consoles as constrained/research due severe hardware, tooling, and legal limitations.
+    final_or_tentative: tentative but strongly recommended
+    reconsider_conditions: If user commissions reduced product profiles or legally supported research ports.
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: REJECTED-04
+    option: Bundle proprietary BIOS/firmware for old systems or emulators.
+    status: rejected
+    reason: Legal/IP risk identified by assistant; no license established in this chat.
+    final_or_tentative: final unless rights are obtained
+    reconsider_conditions: Only with explicit legal rights/licensing and separate legal review.
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: REJECTED-05
+    option: Use console homebrew/modding paths as official commercial support strategy.
+    status: rejected for commercial support
+    reason: Official console support should use platform-holder programs; homebrew/modding is not a credible commercial-native
+      path in this planning context.
+    final_or_tentative: final for commercial product
+    reconsider_conditions: Research/community discussion only, with legal boundaries and no bypass instructions.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: REJECTED-06
+    option: Treat PlayStation Portal as a native compute target.
+    status: deprioritized/rejected by prior assistant classification
+    reason: Assistant classified it as a remote-play client rather than a native Dominium platform.
+    final_or_tentative: tentative pending verification
+    reconsider_conditions: If current official facts show native app/game execution capability or if streaming support is
+      separately planned.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: REJECTED-07
+    option: Use the claim “supports everything” without tiers.
+    status: rejected
+    reason: Too ambiguous for engineering, QA, legal, and future aggregation; support must be tiered and scoped.
+    final_or_tentative: final
+    reconsider_conditions: Do not reconsider; use explicit tier/category language instead.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: REJECTED-08
+    option: Design a PC-only architecture and later retrofit mobile/web.
+    status: rejected/superseded
+    reason: Contradicts the user’s latest Tier-0 mobile/web priority.
+    final_or_tentative: final unless priority changes
+    reconsider_conditions: Only if user explicitly changes product strategy.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    - WORKSTREAM-10
+    label: FACT / INFERENCE
+  - id: REJECTED-09
+    option: Rely on prior assistant citation IDs as source evidence in future chats.
+    status: rejected
+    reason: Prior citations are non-portable and may be stale; current prompt requires verification of external facts.
+    final_or_tentative: final
+    reconsider_conditions: Do not rely on them; rebuild source citations from official current sources.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-10
+    option: Treat “Domino” as a confirmed engine/core name.
+    status: rejected as a fact; retained as unconfirmed placeholder
+    reason: Assistant introduced the name; user did not confirm it.
+    final_or_tentative: tentative
+    reconsider_conditions: If user confirms or rejects the name.
+    related_workstreams:
+    - WORKSTREAM-09
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: REJECTED-11
+    option: Treat Web as only a demo or fallback rather than a primary product target.
+    status: superseded
+    reason: User explicitly made Web primary top-tier after PC.
+    final_or_tentative: final unless user demotes Web.
+    reconsider_conditions: Only if Web scope is explicitly reduced by user/project decision.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-12
+    option: Treat all Apple devices as equivalent Dominium targets.
+    status: deprioritized
+    reason: User listed many Apple devices, but only iOS was explicitly promoted; macOS belongs to PC; tvOS/watchOS/visionOS
+      remain unclassified.
+    final_or_tentative: tentative
+    reconsider_conditions: Classify Apple TV, Apple Watch, and Vision Pro after platform-specific feasibility review.
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: REJECTED-13
+    option: Interpret “iPhone all generations” literally as support for every iPhone ever released.
+    status: deprioritized as likely impractical
+    reason: The user list included “all generations,” but no minimum OS/device baseline was chosen and platform support must
+      be technically feasible.
+    final_or_tentative: tentative
+    reconsider_conditions: If a separate legacy iOS compatibility policy is created, verified, and funded.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: REJECTED-14
+    option: Make Wine/Proton a core contract instead of native Linux.
+    status: deprioritized by previous assistant response
+    reason: Assistant framed Proton/Wine as nice-to-have while native Linux remains the contract.
+    final_or_tentative: tentative
+    reconsider_conditions: If Steam Deck strategy changes or native Linux is not shipped.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-07
+    label: INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: 'User prompt: “So, in the end, what systems will we support?”'
+    type: prompt
+    purpose: Started broad support-systems discussion.
+    status: preserved in report
+    origin: visible user message in this chat
+    carry_forward: true
+    notes: Broad origin of platform-support discussion.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Assistant retro-heavy Tier 0/1/2 systems answer
+    type: assistant output
+    purpose: Proposed bare-metal/firmware, legacy OS, and classic GUI targets.
+    status: historical / partly superseded
+    origin: visible assistant message
+    carry_forward: true
+    notes: Do not treat as user decision; useful as rejected/deprioritized context.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: 'User prompt: “what operating systems will we be able to run Dominium on?”'
+    type: prompt
+    purpose: Narrowed the discussion from systems to operating systems.
+    status: preserved
+    origin: visible user message
+    carry_forward: true
+    notes: Introduced explicit Dominium OS framing.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: Assistant Dominium full product vs Domino engine/core split
+    type: assistant output
+    purpose: Separated full product targets from reduced/engine-only legacy targets.
+    status: useful but unconfirmed naming
+    origin: visible assistant message
+    carry_forward: true
+    notes: “Domino” is assistant-introduced and must not be treated as confirmed.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-05
+    name_or_description: User prompt requesting support for PlayStation, Xbox, PC handhelds, Nintendo, Android, iOS, Web,
+      etc.
+    type: prompt
+    purpose: Expanded scope to major device families.
+    status: preserved
+    origin: visible user message
+    carry_forward: true
+    notes: Led to family-level target planning.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: Assistant family-target answer with Web, PC handhelds, Android/iOS, and consoles
+    type: assistant output
+    purpose: Proposed top-level family support approach.
+    status: intermediate / partly superseded
+    origin: visible assistant message
+    carry_forward: true
+    notes: 'Contained count inconsistency: said roughly 8 top-level targets but listed 9.'
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: User comprehensive hardware/software target inventory
+    type: prompt / target list
+    purpose: Master list of PlayStation, Xbox, Nintendo, PC handheld, Android, Apple, Web, AR, VR, and cross-cutting runtimes/APIs.
+    status: central source artifact
+    origin: visible user message
+    carry_forward: true
+    notes: Conversation fact, not verified as current real-world truth.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Assistant Class A/B/C/D classification output
+    type: assistant output / planning framework
+    purpose: Classified open platforms, closed consoles, legacy closed consoles, and emulated runtime; proposed OpenXR/WebXR
+      for XR.
+    status: useful assistant proposal
+    origin: visible assistant message
+    carry_forward: true
+    notes: Lower trust than user decisions; requires current verification for external facts.
+    label: INFERENCE
+  - id: ARTIFACT-09
+    name_or_description: 'User prompt: “Android, iOS, and Web will be our primary focus after PC...”'
+    type: prompt / decision statement
+    purpose: Promoted Android, iOS, and Web to primary top-tier support after PC.
+    status: highest-priority carry-forward artifact
+    origin: visible user message
+    carry_forward: true
+    notes: Controls current platform hierarchy.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: Assistant Tier-0 lock response
+    type: assistant output
+    purpose: Locked working hierarchy as PC + Android + iOS/iPadOS + Web Tier-0, consoles Tier-1, legacy Tier-2.
+    status: current working assistant synthesis
+    origin: visible assistant message
+    carry_forward: true
+    notes: Aligned with latest user priority but still assistant-authored details should be checked.
+    label: INFERENCE
+  - id: ARTIFACT-11
+    name_or_description: Previously generated maximum-fidelity Context Transfer Packet
+    type: handoff artifact
+    purpose: Transferred state from this old chat before package generation.
+    status: complete but repaired/normalized by this package
+    origin: visible assistant final response before current prompt
+    carry_forward: true
+    notes: Strong foundation; lacked stable IDs/files and included some external/profile context not strictly visible-chat
+      scoped.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Current user prompt requesting downloadable final report package
+    type: prompt / packaging instruction
+    purpose: Specified exact files, schema, stable ID patterns, audit/repair process, date anchor, and final response format.
+    status: current task driver
+    origin: visible user message
+    carry_forward: true
+    notes: Defines this package’s output requirements.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: Final report package generated in this response
+    type: generated files
+    purpose: Downloadable package with Markdown/YAML/ZIP files for later reading, sharing, aggregation, and spec-book construction.
+    status: created by current response
+    origin: assistant-generated file outputs
+    carry_forward: true
+    notes: Files are listed in the manifest; ZIP created if available.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Prior web-style citation references such as turn0search/turn1search IDs
+    type: reference/citation artifact
+    purpose: Previously supported some assistant claims in the old chat.
+    status: non-portable; do not rely on them
+    origin: prior assistant outputs
+    carry_forward: false
+    notes: Rebuild citations from official sources in a future verification pass.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-15
+    name_or_description: No downloadable files existed before the current report package
+    type: artifact absence note
+    purpose: Prevents future reader from looking for missing earlier files.
+    status: absence recorded
+    origin: visible chat inspection
+    carry_forward: true
+    notes: Previous outputs were chat messages, not saved files.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Summarisation loss during handoff or aggregation.
+    consequence: Future assistants may lose latest priority, unresolved status, or assistant-vs-user distinction.
+    likelihood: medium
+    severity: high
+    mitigation: Use stable IDs, labels, and this package’s full report/YAML/registers together.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: INFERENCE
+  - id: RISK-02
+    risk: Stale external platform facts.
+    consequence: SDK/store/browser/console assumptions may be wrong when implementation starts.
+    likelihood: high
+    severity: high
+    mitigation: Verify all platform facts from current official sources before acting.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / UNCERTAIN
+  - id: RISK-03
+    risk: Assistant suggestions treated as user decisions.
+    consequence: The project may adopt unconfirmed names, tiers, or technical strategies.
+    likelihood: medium
+    severity: high
+    mitigation: Apply source hierarchy; user statements outrank assistant outputs.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-04
+    risk: Tentative or superseded options repeated in future chats.
+    consequence: Repeated planning churn and possible contradiction of latest user priority.
+    likelihood: medium
+    severity: medium
+    mitigation: Use Rejected/Superseded register.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: RISK-05
+    risk: Legal/IP mistakes around console firmware, BIOS, or unofficial tooling.
+    consequence: Unsafe or noncommercially viable implementation path.
+    likelihood: medium
+    severity: high
+    mitigation: Use official console paths and avoid proprietary firmware redistribution unless licensed.
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-06
+    risk: Mobile/Web constraints under-designed because PC dominates early architecture.
+    consequence: Tier-0 Android/iOS/Web support becomes expensive or impossible to retrofit.
+    likelihood: medium
+    severity: high
+    mitigation: Treat mobile and Web as co-equal architecture roots.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    - WORKSTREAM-10
+    label: INFERENCE
+  - id: RISK-07
+    risk: Scope explosion from trying to support every listed device literally.
+    consequence: Unbounded engineering, QA, legal, and support burden.
+    likelihood: high
+    severity: high
+    mitigation: Use platform contracts and classify unsupported/research/constrained targets explicitly.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-06
+    - WORKSTREAM-08
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-08
+    risk: Engine/toolchain decision remains unknown.
+    consequence: Platform feasibility estimates may be speculative.
+    likelihood: high
+    severity: high
+    mitigation: Create an architecture decision record before implementation planning.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-09
+    risk: PC handheld support overclaimed without device-specific UX/performance testing.
+    consequence: Poor Steam Deck/handheld usability despite PC build running.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Define handheld profiles and test on representative devices.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-10
+    risk: Retro/legacy work diverts effort from Tier-0 delivery.
+    consequence: Primary platform progress slows and architecture may overfit obsolete constraints.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Keep legacy as Tier-2/research unless explicitly elevated.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-11
+    risk: Console support promised before official access or certification plan exists.
+    consequence: Unreliable roadmap and possible platform-holder/process blockers.
+    likelihood: medium
+    severity: high
+    mitigation: Mark consoles as gated and verify partner/developer requirements.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-12
+    risk: Project-context contamination.
+    consequence: Report may import preferences, files, or plans not actually established in this chat.
+    likelihood: low-medium
+    severity: medium
+    mitigation: Use THIS CHAT ONLY scope; label external context as PROJECT-CONTEXT if used.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: RISK-13
+    risk: Bad future aggregation merges distinct workstreams too aggressively.
+    consequence: Loss of provenance, contradictions erased, decisions falsely deduplicated.
+    likelihood: medium
+    severity: high
+    mitigation: Use IDs, source labels, and possible cross-chat conflict notes.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: INFERENCE
+  - id: RISK-14
+    risk: XR support becomes hidden major scope increase.
+    consequence: XR renderer/input/comfort requirements could derail core product planning.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Keep XR priority undecided/future until explicitly elevated.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: RISK-15
+    risk: Support term remains undefined.
+    consequence: Different readers may interpret support as full parity, compatibility, emulator-hosted, or research demo.
+    likelihood: high
+    severity: high
+    mitigation: Define support taxonomy before matrix finalization.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: RISK-16
+    risk: Current hardware status in user list is stale or historically phrased.
+    consequence: Examples like “PS5 Pro (announced)” may no longer match current reality.
+    likelihood: high
+    severity: medium
+    mitigation: Treat user list as conversation artifact and verify current market/platform facts later.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-17
+    risk: Apple-family targets are overgeneralized.
+    consequence: Future plan may accidentally imply full Dominium on Apple Watch/tvOS/visionOS without scope.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Classify Apple subplatforms separately.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-18
+    risk: Android ecosystem fragmentation is underestimated.
+    consequence: Vendor ROMs, Android Go, TV, Automotive, and handheld devices may fail assumptions.
+    likelihood: high
+    severity: medium-high
+    mitigation: Tier Android subtargets and set device/API baselines.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-19
+    risk: Web parity is promised without resolving browser/storage/performance limits.
+    consequence: Web build may fail to meet full product expectations.
+    likelihood: medium
+    severity: high
+    mitigation: Define Web-specific parity/degradation rules and browser tests.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-20
+    risk: OpenXR/WebXR assumptions become stale or device-specific gaps appear.
+    consequence: XR plan may be incompatible with targeted devices or runtimes.
+    likelihood: medium
+    severity: medium
+    mitigation: Verify XR runtime status and keep XR secondary until scoped.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  verification_queue:
+  - id: VERIFY-01
+    item: Current official commercial console developer access requirements for PlayStation, Xbox, and Nintendo.
+    why_verification_needed: Prior assistant claims about partner programs/devkits/certification are unverified and time-sensitive.
+    suggested_source_type: Official platform-holder developer/partner sites and current documentation.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Current PlayStation hardware/platform support status, including PS4/PS5/PS5 variants and PlayStation Portal role.
+    why_verification_needed: User list may be stale and assistant classified Portal as remote-play only without current verification.
+    suggested_source_type: Official Sony/PlayStation developer and product sources.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Current Xbox One/Series development and compatibility model.
+    why_verification_needed: Assistant claims about Xbox OS/GDK/certification need current official backing.
+    suggested_source_type: Official Microsoft Xbox developer documentation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Current Nintendo Switch/successor developer support and platform facts.
+    why_verification_needed: Nintendo hardware/platform status can change; official access is gated.
+    suggested_source_type: Official Nintendo developer portal and public product information.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Current Android SDK/NDK, Google Play target API, ABI, Android TV/Go/Automotive requirements.
+    why_verification_needed: Android is Tier-0 and platform rules change.
+    suggested_source_type: Official Android Developers and Google Play policy documentation.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Current Apple SDK, App Store, iOS/iPadOS/macOS/tvOS/watchOS/visionOS submission and support requirements.
+    why_verification_needed: iOS is Tier-0 and Apple rules are time-sensitive.
+    suggested_source_type: Official Apple Developer documentation and App Store Connect guidelines.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Current WebGPU browser support and limitations.
+    why_verification_needed: Web is Tier-0 and rendering policy depends on WebGPU availability.
+    suggested_source_type: Official browser/platform documentation, MDN, W3C/WebGPU status pages where applicable.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Current WebAssembly features needed for Dominium, including SIMD, threads, memory limits, filesystem/storage patterns.
+    why_verification_needed: WASM feature availability affects Web parity.
+    suggested_source_type: Official WebAssembly docs, browser docs, MDN, Emscripten docs if used.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Steam Deck/SteamOS current developer guidance, Steam Deck Verified requirements, and Linux runtime assumptions.
+    why_verification_needed: PC handheld support and Steam Deck target status need current facts.
+    suggested_source_type: Official Steamworks/Valve documentation.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: 'Feasibility of listed Apple devices: iPod Touch, Apple TV, Apple Watch, Vision Pro, Intel Mac, Apple Silicon Mac.'
+    why_verification_needed: User listed broad Apple hardware but only iOS was explicitly promoted.
+    suggested_source_type: Official Apple platform docs and current product/OS support matrices.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: Android TV, Google TV, Android Automotive, Chromebook Android compatibility, and vendor ROM constraints.
+    why_verification_needed: User listed them, but support meaning and app/game suitability differ.
+    suggested_source_type: Official Android/ChromeOS/Automotive developer docs and platform policies.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Current OpenXR, WebXR, ARKit, ARCore, SteamVR, Meta, PlayStation VR, Windows Mixed Reality, and Pico runtime status.
+    why_verification_needed: XR strategy was assistant-proposed and may be stale or platform-specific.
+    suggested_source_type: Official Khronos/OpenXR, W3C/WebXR, Apple, Google, Valve, Meta, Sony, Microsoft, Pico docs.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-13
+    item: Legal and technical feasibility for legacy console/handheld/firmware targets and emulator-hosted support.
+    why_verification_needed: Legacy paths can involve copyrighted BIOS/firmware or obsolete toolchains.
+    suggested_source_type: Official platform/legal docs if available; legal review; public emulator licensing docs for emulator-hosted
+      strategy.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-14
+    item: Wine/Proton compatibility strategy and whether Proton should be official support or best-effort.
+    why_verification_needed: Assistant called Proton/Wine nice-to-have but Steam Deck strategy may change this.
+    suggested_source_type: Steamworks/Proton documentation and project decision.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-15
+    item: Feasibility of Vulkan, Metal, WebGPU, WebGL, GLES, OpenGL, DirectX backend strategy.
+    why_verification_needed: Rendering stack determines platform reach and complexity.
+    suggested_source_type: Official API docs and engine/toolchain support docs.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-16
+    item: Unity/Unreal/custom engine export/support implications if one is chosen.
+    why_verification_needed: User listed Unity Runtime and Unreal Runtime but engine choice is not established.
+    suggested_source_type: Official Unity/Unreal/custom build tool docs once engine choice is known.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-17
+    item: Current status of user-listed hardware examples, especially historically phrased items such as PS5 Pro “announced”
+      and Smach Z “cancelled.”
+    why_verification_needed: User list may be outdated or intentionally historical; future claims should be current.
+    suggested_source_type: Official product pages and reputable current references.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-18
+    item: Browser storage, PWA/offline, service worker, IndexedDB/OPFS, and save-file feasibility.
+    why_verification_needed: Web Tier-0 requires reliable persistence strategy.
+    suggested_source_type: Official browser docs, MDN, web platform specifications.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-19
+    item: Cross-platform audio, filesystem, networking, and input library support for selected engine/toolchain.
+    why_verification_needed: Platform contracts require more than graphics support.
+    suggested_source_type: Official engine/library/platform documentation after toolchain decision.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-20
+    item: Package files exist, YAML parses, ZIP includes all requested files.
+    why_verification_needed: Current task requires real downloadable files, not claimed files.
+    suggested_source_type: Local file system check and YAML parser.
+    priority: highest
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  spec_book_notes:
+    likely_sections:
+    - Platform Support Strategy
+    - Tier-0 Platforms
+    - Console Strategy
+    - PC Handheld Strategy
+    - Web Runtime Strategy
+    - Mobile Runtime Strategy
+    - XR Roadmap
+    - Legacy/Retro Research Targets
+    - Architecture Requirements
+    - Verification Queue
+    unique_contributions:
+    - Explicit promotion of Android, iOS, and Web to primary top-tier after PC.
+    - Comprehensive device-family target inventory.
+    - Working support hierarchy separating Tier-0, gated consoles, legacy/research, and XR/future targets.
+    - Strong verification requirement for platform facts.
+    possible_duplicates_with_other_chats:
+    - Platform support matrix
+    - Engine/toolchain decision
+    - Rendering backend policy
+    - Mobile/Web architecture requirements
+    - Console support roadmap
+    - Legacy/retro support ambitions
+    - XR runtime strategy
+    conflicts_to_watch_for:
+    - Other chats may elevate consoles or legacy systems above current working tier.
+    - Other chats may confirm or reject the “Domino” name.
+    - Other chats may pick a specific engine/toolchain.
+    - Other chats may change WebGPU/WebGL or native renderer strategy.
+    - Other chats may define release dates or minimum OS versions.
+    formal_requirements_candidates:
+    - PC, Android, iOS, and Web are Tier-0 unless changed by the user.
+    - Platform support must be expressed using support contracts.
+    - External platform facts require official-source verification.
+    - Mobile/Web constraints must be first-class architectural inputs.
+    background_context_candidates:
+    - Broad legacy/retro OS list
+    - Comprehensive historic console inventory
+    - OpenXR/WebXR proposal
+    - Prior assistant Dominium/Domino split
+    needs_user_confirmation:
+    - Exact meaning of support per tier
+    - Whether iPadOS is explicitly Tier-0 with iOS
+    - Whether Android TV/Google TV/tvOS/watchOS/visionOS are in scope
+    - Whether “Domino” is a real project name
+    - Whether any console/XR/legacy target should be elevated
+    - Engine/toolchain choice
+  final_recommendations:
+    next_action_if_continuing_this_chat: Create the formal Platform Support Matrix, starting with Tier-0 PC, Android, iOS/iPadOS,
+      and Web.
+    next_action_for_aggregator: Ingest this package as the chat-specific platform-support source, preserve stable IDs and
+      labels, and compare against other chat packages for conflicts.
+    user_checks_required:
+    - Confirm exact support taxonomy.
+    - Confirm iPadOS status.
+    - Confirm or reject “Domino.”
+    - Confirm whether any secondary platforms should be elevated.
+    - Verify external platform facts before implementation.

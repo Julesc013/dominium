@@ -1,0 +1,1717 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Launcher Application Layer Handoff
+    filesystem_safe_label: dominium_launcher_app_layer_handoff
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only; project-level context pasted into this chat is labelled PROJECT-CONTEXT.
+    apparent_coverage: full visible chat coverage, based on prior transfer packet plus visible context
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - Current repository state was not inspected during package generation.
+    - Uploaded file contents were not reopened.
+    - Applied Codex prompt results are user-reported but unverified here.
+    - Assistant-generated concrete filenames are not canon unless repo confirms them.
+  summary:
+    one_sentence: This chat preserves and hardens the Dominium Launcher application-layer plan after canonical repo, engine
+      purity, CMake, contracts, UI IR, RepoX/TestX, and BUILD-ID governance were locked.
+    short_brief: The launcher is a first-class product under launcher/, not an engine subcomponent; engine purity, neutral
+      contracts, setup-only install mutation, CMake-authoritative VS2026 workflow, CLI canonical command graph, UI IR, RepoX/TestX,
+      and BUILD-ID-0 are the carry-forward anchors.
+    main_topics:
+    - Dominium / Domino application-layer canon
+    - Dominium Launcher product
+    - Engine purity and boundary enforcement
+    - Setup product and launcher/setup boundary
+    - Neutral contracts and canonical schemas
+    - UI command graph, UI IR, accessibility, and localisation
+    - VS2026, CMake, CI, and build/test gates
+    - RepoX, TestX, VALIDATE-0, and BUILD-ID-0 governance
+    - Tools and validators
+    - Client and server application constraints
+    - This chat handoff and report package
+    main_outputs:
+    - Launcher realignment plan
+    - Launcher hardening Codex prompt
+    - Context Transfer Packet
+    - Final report package
+    highest_priority_carry_forward:
+    - Do not redesign architecture.
+    - Verify repo state before acting.
+    - Use launcher hardening prompt if not applied.
+    - Preserve boundary rules and superseded options.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - User statements outrank assistant suggestions.
+    - Later canonical repo prompts supersede earlier layout advice.
+    - Applied Codex prompts supersede older IDE project recommendations.
+    - Current repository verification outranks assumptions from this chat.
+    staleness_rules:
+    - Build/tool/version behavior requires verification against current repo and toolchain.
+    - Uploaded files require reopening before use.
+    - Implementation status is unverified unless build/tests confirm.
+  user_preferences:
+    explicit:
+    - ID: PREF-01
+      Preference: Responses should start with model/date/time prefix.
+      Source type: Explicit
+      Source basis: User profile instruction.
+      Strength: strong
+      Implication: Future assistants should preserve requested prefix when possible.
+      Risk if misunderstood: May conflict with strict output formats; higher-priority instructions win.
+      Label: FACT
+    - ID: PREF-02
+      Preference: Epistemic accuracy, decision utility, long-term correctness.
+      Source type: Explicit
+      Source basis: User profile.
+      Strength: strong
+      Implication: Prioritize rigorous labeled facts over engagement.
+      Risk if misunderstood: Overconfident inference will frustrate user.
+      Label: FACT
+    - ID: PREF-03
+      Preference: Correctly cited sources and unbiased rigorously tested facts.
+      Source type: Explicit
+      Source basis: User profile.
+      Strength: strong
+      Implication: Use citations/verification when external or current facts matter.
+      Risk if misunderstood: Unverified current claims should be labelled.
+      Label: FACT
+    - ID: PREF-04
+      Preference: Deliver answers, not dialogue; ask only if missing info blocks correctness.
+      Source type: Explicit
+      Source basis: User profile.
+      Strength: medium-high
+      Implication: Prefer concrete outputs and next actions.
+      Risk if misunderstood: Unnecessary questions slow implementation.
+      Label: FACT
+    - ID: PREF-07
+      Preference: Preserve uncertainty, rejected options, and changes of direction.
+      Source type: Explicit
+      Source basis: Context transfer/package request.
+      Strength: strong
+      Implication: Do not compress away superseded options.
+      Risk if misunderstood: Future aggregation may repeat mistakes.
+      Label: FACT
+    inferred:
+    - ID: PREF-05
+      Preference: Mechanical enforcement over convention.
+      Source type: Inferred
+      Source basis: Repeated emphasis on CMake/CI/scripts/boundaries.
+      Strength: high
+      Implication: Design prompts should include scripts, tests, stop conditions.
+      Risk if misunderstood: Purely aspirational docs may be rejected.
+      Label: INFERENCE
+    - ID: PREF-06
+      Preference: Codex-style phased prompts with commits and verification commands.
+      Source type: Inferred
+      Source basis: User repeatedly requested/generated such prompts.
+      Strength: high
+      Implication: When asked for prompts, use execution phases and stop conditions.
+      Risk if misunderstood: Vague plans will be less useful.
+      Label: INFERENCE
+    uncertain_or_not_established:
+    - No specific final GUI toolkit preference established.
+    - No exact UI IR file format established unless repo confirms it.
+    - No preference for authoritative hand-authored IDE projects; later prompts reject that.
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Dominium / Domino application-layer canon
+    label: PROJECT-CONTEXT
+    objective: Continue implementation, audit, optimisation, and maintenance for applications without redesigning the closed
+      engine/game/simulation architecture.
+    current_state: Architecture and canon were stated as closed/locked. The chat is now scoped to application-layer implementation
+      and maintenance only.
+    desired_end_state: All application work proceeds within APP-CANON0/1, APP-AUTO-0, APP-UI-BIND-0, BUILD-ID-0, RepoX/TestX/VALIDATE-0,
+      and the product-first repo structure.
+    status: active
+    priority: critical
+    background: User pasted project-level canon from another chat into this chat, including ontology, invariants, application-layer
+      rules, and build governance.
+    decisions_made:
+    - Architecture closed; applications are orchestration shells; applications do not contain gameplay logic or mutate authoritative
+      state.
+    decisions_pending:
+    - None at architecture level; implementation verification remains pending.
+    tasks:
+    - Verify canon anchors and app docs; ensure app tooling enforces constraints.
+    constraints:
+    - No redesign; no hidden defaults; no bypassing RepoX/TestX; content-agnostic apps.
+    dependencies:
+    - CANON_INDEX.md, APP-CANON0/1, APP-AUTO-0, APP-UI-BIND-0, BUILD-ID-0, RepoX, TestX.
+    timeline: Must be treated as prior context before any launcher implementation work.
+    blockers:
+    - Unknown current repo state.
+    risks:
+    - Assistant may re-plan or reinterpret canon.
+    artifacts:
+    - Latest application-layer canon prompt; latest overall canon prompt.
+    success_criteria:
+    - Future work treats canon as locked and verifies implementation against it.
+    next_action: Use this report to bootstrap the next chat, then run repo verification gates.
+    verification_needed:
+    - Confirm repo docs and scripts actually encode the canon.
+    confidence: high
+  - id: WORKSTREAM-02
+    name: Dominium Launcher product
+    label: FACT
+    objective: Maintain and harden the launcher as a first-class product and reference application.
+    current_state: Launcher was realigned to the canonical product layout. A closure prompt was generated to bring code and
+      docs up to spec. It is not confirmed in this chat that the closure prompt has been applied.
+    desired_end_state: Launcher builds, runs, documents its boundaries, uses common command graph/UI IR, passes zero-pack
+      smoke tests, and does not violate product boundaries.
+    status: active
+    priority: critical
+    background: Initial discussion was about a fast native cross-platform launcher similar to pre-2016 Minecraft launchers,
+      then shifted into product-first repo governance.
+    decisions_made:
+    - Launcher lives under launcher/; canonical structure uses core/discover, core/profile, core/invoke, ui, platform, tests.
+    decisions_pending:
+    - Whether current implementation has command graph, UI IR binding validation, RepoX integration, and complete docs.
+    tasks:
+    - Run launcher hardening prompt or audit its results.
+    constraints:
+    - No setup internals; no engine internals; no gameplay logic; no install mutation; content-agnostic.
+    dependencies:
+    - libs/, schema/, libs/contracts/, engine public API, optional game metadata/launch contracts.
+    timeline: Complete launcher code/doc hardening before regenerating further plans.
+    blockers:
+    - Current repo state and closure prompt application status unknown.
+    risks:
+    - Reintroducing older standalone launcher layout or adapter-level business logic.
+    artifacts:
+    - Launcher master prompt, realignment plan, hardening prompt.
+    success_criteria:
+    - launcher --help passes; docs/status headers present; boundary checks pass; zero-pack tests pass.
+    next_action: Verify repo gates and execute/audit the hardening prompt phases.
+    verification_needed:
+    - Inspect launcher tree, CMake targets, docs, tests, command graph, UI IR.
+    confidence: high for plan; medium for implementation status
+  - id: WORKSTREAM-03
+    name: Engine purity and boundary enforcement
+    label: FACT
+    objective: Ensure engine remains reusable and independent, with no launcher/setup/tools/contracts contamination.
+    current_state: User stated two Codex prompts have been applied, including final purity and contract ownership repair.
+      Actual repository state was not verified in this chat.
+    desired_end_state: engine/ contains only include/domino, modules, render, tests, CMakeLists.txt; engine does not include
+      dom_contracts or app/product internals.
+    status: active verification target
+    priority: critical
+    background: A prior prompt listed violations such as engine/include/dsu, engine/include/dui, engine/launcher_core_launcher,
+      engine/setup_core_setup, engine/source, engine/external/xxhash.
+    decisions_made:
+    - Non-engine content is evicted to legacy or correct owners; neutral contracts are not engine-owned.
+    decisions_pending:
+    - Any ambiguous headers must be classified if found.
+    tasks:
+    - Run verify_tree_sanity and verify_includes_sanity.
+    constraints:
+    - Engine C89; public headers parseable forever; no C++ ABI leakage.
+    dependencies:
+    - CMake enforcement; sanity scripts; include ownership.
+    timeline: Verification must precede further launcher planning.
+    blockers:
+    - Unverified current tree.
+    risks:
+    - Hidden include paths or legacy references can keep contamination alive.
+    artifacts:
+    - Final purity Codex prompt; verify scripts.
+    success_criteria:
+    - Scripts pass; engine builds without launcher/setup/tools.
+    next_action: Run the verification commands.
+    verification_needed:
+    - Actual repository inspection.
+    confidence: medium until repo verification
+  - id: WORKSTREAM-04
+    name: Setup product and launcher/setup boundary
+    label: FACT
+    objective: Keep setup as the sole install mutation authority and launcher as a consumer/invoker via contracts.
+    current_state: Setup was covered by an earlier generated setup prompt and by the applied one-pass refactor prompt. Actual
+      implementation is unverified.
+    desired_end_state: setup builds and runs at least CLI help; setup owns install, update, verify, repair, rollback, and
+      installed-state manifests.
+    status: active boundary condition
+    priority: critical
+    background: User repeatedly distinguished launcher from setup; launcher must not install software.
+    decisions_made:
+    - Launcher/setup communicate only via schema/manifests/contracts; setup owns installed-state mutation.
+    decisions_pending:
+    - Whether existing launcher code has any leftover repair/install paths.
+    tasks:
+    - Run setup --help; scan launcher includes/links for setup internals.
+    constraints:
+    - No setup internals in launcher; no hidden mutation.
+    dependencies:
+    - schema/, libs/contracts/, setup product build.
+    timeline: Boundary verification belongs in launcher hardening phase.
+    blockers:
+    - Repo not inspected in this report-generation step.
+    risks:
+    - Launcher convenience actions may become install repair logic.
+    artifacts:
+    - Setup master prompt; one-pass Codex prompt.
+    success_criteria:
+    - setup help works; launcher invokes setup only through declared contracts.
+    next_action: Verify boundary with include script and tests.
+    verification_needed:
+    - Inspect launcher/setup integration.
+    confidence: high for rule; medium for implementation
+  - id: WORKSTREAM-05
+    name: Neutral contracts and canonical schemas
+    label: FACT
+    objective: Use libs/contracts and schema as the only cross-product channels.
+    current_state: The final purity prompt introduced libs/contracts/include/dom_contracts. The latest canon requires schemas
+      and manifests as setup-launcher channels.
+    desired_end_state: All cross-product data is schema-defined or dom_contracts-defined; product internals are not included
+      across boundaries.
+    status: active
+    priority: critical
+    background: Earlier contamination involved game/include/dominium exporting launcher/setup/tool APIs and engine exporting
+      dsu/dui.
+    decisions_made:
+    - launcher/setup/tools/game may include dom_contracts; engine must not.
+    decisions_pending:
+    - Exact contract coverage for build IDs, launch requests, product manifests, command graph, UI IR remains implementation-dependent.
+    tasks:
+    - Enumerate contracts used by launcher; add docs/CONTRACT_USAGE.md in launcher hardening.
+    constraints:
+    - No foreign product private headers.
+    dependencies:
+    - libs/contracts target; schema validation; CMake target include dirs.
+    timeline: Must be audited before further features.
+    blockers:
+    - Unknown current header set.
+    risks:
+    - Shared headers might be incorrectly placed in game or tools.
+    artifacts:
+    - libs/contracts target definition from prompt; schema references.
+    success_criteria:
+    - Contract usage documented and enforced; schema validation passes.
+    next_action: Inspect include graph and contract headers.
+    verification_needed:
+    - Actual file and CMake target inspection.
+    confidence: high for desired model; medium for implementation
+  - id: WORKSTREAM-06
+    name: UI command graph, UI IR, accessibility, and localisation
+    label: FACT
+    objective: Ensure CLI/TUI/GUI share one canonical command graph and UI is data, not logic.
+    current_state: Application canon requires this. Assistant suggested concrete artifacts such as launcher/ui/command_graph
+      and schema/ui. Implementation status is unknown.
+    desired_end_state: CLI canonical; GUI/TUI views over command graph; UI IR validates bindings, strings, accessibility,
+      keyboard navigation, localisation fallback.
+    status: active, likely incomplete until verified
+    priority: high
+    background: The user clarified that CLI/TUI/GUI core functionality belongs in one common core; later canon locked UI IR
+      and command graph requirements.
+    decisions_made:
+    - CLI is canonical; UI is data; no business logic embedded in UI.
+    decisions_pending:
+    - Exact file format and location for command graph/UI IR if not already established in repo.
+    tasks:
+    - Verify command graph, UI IR schema, binding validator, and zero-pack/missing-locale tests.
+    constraints:
+    - All strings externalised; no color-only semantics; keyboard-only operation; screen reader tags.
+    dependencies:
+    - schema/, tools validator, launcher/ui, TestX/RepoX gates.
+    timeline: Should be included in launcher spec completion before new plans.
+    blockers:
+    - No repo inspection in this step.
+    risks:
+    - Treating assistant-suggested filenames as locked canon; only the requirements are locked unless files exist.
+    artifacts:
+    - APP-UI-BIND-0, UI/UX canon, assistant checklist.
+    success_criteria:
+    - Binding validator passes; CLI/TUI/GUI parity is mechanically checked.
+    next_action: Inspect current UI implementation and add missing docs/tests under closure scope.
+    verification_needed:
+    - Repo files and tests.
+    confidence: high for requirements; unknown implementation
+  - id: WORKSTREAM-07
+    name: VS2026, CMake, CI, and build/test gates
+    label: FACT
+    objective: Use CMakePresets and target-based boundaries to build and verify the repo, especially on Visual Studio 2026.
+    current_state: One-pass Codex prompt required CMakePresets, target graph normalization, setup/launcher/tools builds, and
+      CTest smoke tests. Actual result unverified.
+    desired_end_state: Open Folder in VS2026 works; cmake configure/build/ctest pass; launcher/setup help run.
+    status: active verification target
+    priority: critical
+    background: Earlier manual IDE project advice was superseded by CMake as authoritative.
+    decisions_made:
+    - CMake generates VS projects; no hand-written vcxproj as authoritative build.
+    decisions_pending:
+    - Whether current presets and smoke tests pass.
+    tasks:
+    - Run cmake --preset vs2026-x64-debug; build; ctest; help commands.
+    constraints:
+    - No global include dirs; target_include_directories with PUBLIC/PRIVATE.
+    dependencies:
+    - CMakePresets.json; scripts; CTest; product CMakeLists.
+    timeline: First verification step in new chat.
+    blockers:
+    - Actual environment/toolchain availability.
+    risks:
+    - Old IDE advice may be revived; CMake target graph may be incomplete.
+    artifacts:
+    - One-pass Codex prompt; docs/BUILDING.md requirement.
+    success_criteria:
+    - All specified verification commands pass.
+    next_action: Run commands and record results.
+    verification_needed:
+    - Actual build output.
+    confidence: medium until repo verification
+  - id: WORKSTREAM-08
+    name: RepoX, TestX, VALIDATE-0, and BUILD-ID-0 governance
+    label: PROJECT-CONTEXT
+    objective: Enforce canon, versioning, changelogs, compatibility, schema validation, and UI binding validation mechanically.
+    current_state: Latest canon locks these systems. Implementation status is not verified in this chat.
+    desired_end_state: RepoX/TestX gates prevent invalid states; applications display build IDs/changelogs and refuse mismatches
+      loudly.
+    status: active
+    priority: critical
+    background: User pasted versioning model and application automation requirements.
+    decisions_made:
+    - No manual changelog editing; no distributed artifact without GBN; build identity format locked.
+    decisions_pending:
+    - How launcher currently surfaces RepoX metadata.
+    tasks:
+    - Verify CANON_INDEX, RepoX outputs, build identity parsing/enforcement, TestX gates.
+    constraints:
+    - GBN only centrally allocated for beta/rc/release/hotfix; dev/ci use BII.
+    dependencies:
+    - RepoX metadata, TestX gates, schema validation, UI binding validator.
+    timeline: Should be audited as part of launcher hardening.
+    blockers:
+    - Unknown current tooling state.
+    risks:
+    - Manual changelogs or silent version mismatch.
+    artifacts:
+    - BUILD-ID-0; APP-AUTO-0; APP-UI-BIND-0.
+    success_criteria:
+    - Launcher displays generated changelogs/build IDs and refuses incompatible product mismatches.
+    next_action: Add to verification queue and tests.
+    verification_needed:
+    - Inspect/build/run tooling.
+    confidence: high for requirement; unknown implementation
+  - id: WORKSTREAM-09
+    name: Tools and validators
+    label: FACT
+    objective: Keep tools first-class, read-only by default, and use them for validation such as UI binding/schema checks.
+    current_state: Tools are part of canonical layout. UI binding validator was recommended but implementation unknown.
+    desired_end_state: tools/_shared and tools validators build; tools do not include launcher/setup internals; write modes
+      explicit.
+    status: active
+    priority: medium-high
+    background: Tools were elevated from utility folder to first-class products in earlier structural discussion and later
+      canon.
+    decisions_made:
+    - Tools are read-only by default; tools use tools/_shared plus libs/contracts/schema as needed.
+    decisions_pending:
+    - Exact validator inventory.
+    tasks:
+    - Verify UI binding validator and schema validators.
+    constraints:
+    - No launcher/setup internals unless public; explicit --write for mutation if ever allowed.
+    dependencies:
+    - TestX/RepoX integration.
+    timeline: After base build verification, before relying on UI/command graph.
+    blockers:
+    - Unknown tools tree.
+    risks:
+    - Validators missing or not wired to CI.
+    artifacts:
+    - One-pass Codex prompt tools phase; APP-UI-BIND-0.
+    success_criteria:
+    - Required validators build and run in CI/TestX.
+    next_action: Inspect tools targets.
+    verification_needed:
+    - Current repo inspection.
+    confidence: medium
+  - id: WORKSTREAM-10
+    name: Client and server application constraints
+    label: PROJECT-CONTEXT
+    objective: Preserve client/server app-layer boundaries while focusing on launcher.
+    current_state: Mentioned in application canon; not directly implemented in this chat.
+    desired_end_state: Client handles presentation/input/inspection with no authority; server is headless-first and authoritative/SRZ-aware.
+    status: background active
+    priority: medium
+    background: Canonical top-level products include client/ and server/. Latest canon specifies their app responsibilities.
+    decisions_made:
+    - Client no authority; server assigns SRZ authority; apps do not change SRZ authority.
+    decisions_pending:
+    - None in this chat.
+    tasks:
+    - None before launcher closure.
+    constraints:
+    - No UI assumptions for server; no world mutation by client UI.
+    dependencies:
+    - Engine/game public APIs, SRZ-0 canon.
+    timeline: Deferred until launcher/spec closure.
+    blockers:
+    - Not in scope.
+    risks:
+    - Future assistant may conflate launcher/client/server.
+    artifacts:
+    - Latest application canon.
+    success_criteria:
+    - Future implementation preserves roles.
+    next_action: Do not act until launcher closure unless user asks.
+    verification_needed:
+    - None for this chat beyond noting scope.
+    confidence: high for constraints; no implementation facts
+  - id: WORKSTREAM-11
+    name: This chat handoff and report package
+    label: FACT
+    objective: Produce a final downloadable, shareable, reusable report package for this old chat.
+    current_state: This package is being generated from the previous context transfer packet and visible chat context.
+    desired_end_state: Seven report files plus ZIP exist and are safe for later aggregation with caveats.
+    status: active finalization
+    priority: critical for continuity
+    background: User explicitly requested a maximum-fidelity Context Transfer Packet, then requested this final package.
+    decisions_made:
+    - Chat label inferred as Dominium Launcher Application Layer Handoff.
+    decisions_pending:
+    - None.
+    tasks:
+    - Download and store package files.
+    constraints:
+    - Do not invent facts; label uncertainty; include stable IDs; create actual files if possible.
+    dependencies:
+    - Visible conversation and previous packet.
+    timeline: Final action in this chat.
+    blockers:
+    - None.
+    risks:
+    - Over-compression or future aggregation misread.
+    artifacts:
+    - All files in this package.
+    success_criteria:
+    - Files created and ZIP downloadable.
+    next_action: Save ZIP and key Markdown/YAML files.
+    verification_needed:
+    - User should inspect manifest and audit file.
+    confidence: high
+  decisions:
+  - id: DECISION-01
+    decision: Architecture is closed; canon is locked.
+    status: locked
+    label: PROJECT-CONTEXT
+    evidence_or_basis: User pasted multiple canon prompts stating this directly.
+    rationale: Prevent redesign and keep work implementation-focused.
+    implications: All future work must operate within canon.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-02
+    decision: Applications are orchestration shells and must not contain gameplay logic or mutate authoritative state.
+    status: locked
+    label: PROJECT-CONTEXT
+    evidence_or_basis: Application-layer canon pasted by user.
+    rationale: Protect deterministic simulation authority and epistemics.
+    implications: Launcher/setup/client/server/tools cannot decide rules or alter world state.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none
+  - id: DECISION-03
+    decision: Launcher is a first-class product under launcher/.
+    status: locked
+    label: FACT
+    evidence_or_basis: User canonical repository prompt.
+    rationale: Avoid engine contamination and make application boundaries explicit.
+    implications: Launcher code/docs/tests belong under launcher/ or neutral schema/contracts.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-04
+    decision: Canonical launcher modules are core/discover, core/profile, core/invoke, ui, platform, tests.
+    status: locked
+    label: FACT
+    evidence_or_basis: User canonical launcher location.
+    rationale: Clear responsibility split and no generic source directories.
+    implications: Old standalone launcher/core/source structures are obsolete.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none
+  - id: DECISION-05
+    decision: Engine purity is non-negotiable.
+    status: locked
+    label: FACT
+    evidence_or_basis: User canonical prompt and final purity Codex prompt.
+    rationale: Engine must remain reusable and independent.
+    implications: No launcher/setup/tools/dom_contracts in engine.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none
+  - id: DECISION-06
+    decision: Cross-product contracts live in libs/contracts/include/dom_contracts.
+    status: locked
+    label: FACT
+    evidence_or_basis: Final purity Codex prompt.
+    rationale: Neutral ownership for shared product contracts.
+    implications: Launcher/setup/tools/game can include; engine cannot.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: none
+  - id: DECISION-07
+    decision: Setup is the only install mutation authority.
+    status: locked
+    label: FACT
+    evidence_or_basis: Application-layer canon and earlier launcher/setup boundary prompts.
+    rationale: Separate install mutation from orchestration.
+    implications: Launcher cannot install, silently repair, or mutate installed payloads.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: none
+  - id: DECISION-08
+    decision: Launcher/setup communicate only via schemas, manifests, and contracts.
+    status: locked
+    label: FACT
+    evidence_or_basis: User dependency rules.
+    rationale: Prevent setup internals from leaking into launcher.
+    implications: Launcher must not link/include setup internals.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: none
+  - id: DECISION-09
+    decision: CMake is the authoritative VS2026 build path.
+    status: locked
+    label: FACT
+    evidence_or_basis: Applied one-pass Codex prompt says no hand-written vcxproj as authoritative build.
+    rationale: CMake target graph enforces boundaries and supports VS Open Folder.
+    implications: Earlier manual IDE project advice is superseded.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: none
+  - id: DECISION-10
+    decision: CLI is canonical and GUI/TUI are views over the same command graph.
+    status: locked
+    label: PROJECT-CONTEXT
+    evidence_or_basis: Application-layer canon.
+    rationale: Ensures scriptability, parity, and testability.
+    implications: Platform adapters must not invent commands.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: none
+  - id: DECISION-11
+    decision: UI is data via UI IR; UI must contain no business logic.
+    status: locked
+    label: PROJECT-CONTEXT
+    evidence_or_basis: UI/UX requirements and APP-UI-BIND-0.
+    rationale: Supports accessibility, localisation, portability, validation.
+    implications: UI binding validation is required.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: none
+  - id: DECISION-12
+    decision: All app strings are externalised and locale packs are normal packs with raw-key fallback.
+    status: locked
+    label: PROJECT-CONTEXT
+    evidence_or_basis: UI/UX requirements pasted by user.
+    rationale: Ensures i18n and content-agnostic app behavior.
+    implications: Hardcoded UI strings are violations except possibly documented temporary stubs.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: none
+  - id: DECISION-13
+    decision: RepoX is source of truth for changelogs, build metadata, canon tags, and compatibility data.
+    status: locked
+    label: PROJECT-CONTEXT
+    evidence_or_basis: RepoX/versioning canon pasted by user.
+    rationale: Eliminates manual drift and hidden release state.
+    implications: Launcher must display generated changelogs and warn/refuse incompatibilities.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: none
+  - id: DECISION-14
+    decision: Versioning format is <product>-<semver>+<build_kind>.<id>, with GBN rules from BUILD-ID-0.
+    status: locked
+    label: PROJECT-CONTEXT
+    evidence_or_basis: Latest canon pasted by user.
+    rationale: Release traceability and compatibility enforcement.
+    implications: No distributed artifact without GBN; local builds use BII; mismatch refuses loudly.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: none
+  - id: DECISION-15
+    decision: Tools are first-class and read-only by default.
+    status: locked
+    label: PROJECT-CONTEXT
+    evidence_or_basis: Application-layer canon.
+    rationale: Prevents tooling from becoming hidden mutation authority.
+    implications: Validators/inspectors should not mutate unless explicitly flagged.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: none
+  - id: DECISION-16
+    decision: The launcher code/docs must be hardened before regenerating further plans.
+    status: active
+    label: FACT
+    evidence_or_basis: User requested a prompt for that purpose; assistant generated closure prompt.
+    rationale: Avoid planning on implicit/incomplete implementation state.
+    implications: Next work should be audit/spec completion, not feature design.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: implementation or application status may require verification
+  tasks:
+  - id: TASK-01
+    task: Run repo sanity, include, build, ctest, launcher/setup help gates.
+    priority: critical
+    urgency: immediate
+    owner: User/Codex/new assistant
+    dependencies:
+    - Current repo checkout
+    - VS2026/CMake environment
+    inputs_needed:
+    - Repo files
+    - CMakePresets.json
+    expected_output: Verified baseline status.
+    next_step: Execute commands listed in VERIFY-01 through VERIFY-07.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: high
+  - id: TASK-02
+    task: Determine whether the Launcher Spec Completion prompt has been applied.
+    priority: critical
+    urgency: immediate after baseline
+    owner: User/Codex
+    dependencies:
+    - Current git history/docs
+    inputs_needed:
+    - Repo commits
+    - launcher/docs
+    expected_output: Clear applied/not-applied status.
+    next_step: Inspect docs/LAUNCHER_AUDIT.md, launcher/docs/*, and commit history.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: TASK-03
+    task: If not applied, execute the Launcher Spec Completion, Gap Closure, and Documentation Hardening phases.
+    priority: critical
+    urgency: soon
+    owner: Codex
+    dependencies:
+    - Passing baseline gates
+    inputs_needed:
+    - Generated prompt
+    - current implementation
+    expected_output: Launcher docs/code made explicit and boundary-safe.
+    next_step: Start phase 0 baseline audit snapshot.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: high
+  - id: TASK-04
+    task: Audit CANON_INDEX.md for APP-CANON0/1, APP-AUTO-0, APP-UI-BIND-0, BUILD-ID-0.
+    priority: high
+    urgency: soon
+    owner: Codex
+    dependencies:
+    - Repo docs
+    inputs_needed:
+    - CANON_INDEX.md
+    expected_output: Canon anchors present and referenced.
+    next_step: Open/update CANON_INDEX.md.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: TASK-05
+    task: Ensure application docs have status headers and canon refs.
+    priority: high
+    urgency: soon
+    owner: Codex
+    dependencies:
+    - CLEAN-2/app canon
+    inputs_needed:
+    - Docs tree
+    expected_output: Docs have STATUS, CANON REF, SCOPE, NON-GOALS.
+    next_step: Scan and update launcher/app docs.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: TASK-06
+    task: Verify launcher command graph exists and drives CLI help.
+    priority: high
+    urgency: soon
+    owner: Codex
+    dependencies:
+    - Launcher UI layer
+    inputs_needed:
+    - launcher/ui
+    - schema
+    expected_output: Single canonical command graph is used by CLI/TUI/GUI.
+    next_step: Inspect and add missing tests/docs if needed.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: TASK-07
+    task: Verify UI IR schema and UI binding validator exist and are wired to TestX/RepoX.
+    priority: high
+    urgency: soon
+    owner: Codex
+    dependencies:
+    - schema
+    - tools
+    - TestX/RepoX
+    inputs_needed:
+    - schema/ui
+    - tools validators
+    expected_output: APP-UI-BIND-0 enforceable gate.
+    next_step: Inspect schema/tools and add closure work if absent.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: TASK-08
+    task: Add/verify zero-pack and missing-locale launcher smoke tests.
+    priority: high
+    urgency: soon
+    owner: Codex
+    dependencies:
+    - Launcher test harness
+    inputs_needed:
+    - Test fixtures
+    expected_output: Launcher runs with zero content packs and raw key fallback.
+    next_step: Run or add smoke tests.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: PROJECT-CONTEXT
+    confidence: medium
+  - id: TASK-09
+    task: Verify RepoX changelog/build identity display and mismatch refusal in launcher.
+    priority: high
+    urgency: soon
+    owner: Codex
+    dependencies:
+    - RepoX metadata
+    - BUILD-ID-0
+    inputs_needed:
+    - Build metadata outputs
+    expected_output: Launcher surfaces changelog/build IDs and refuses incompatible mismatches.
+    next_step: Inspect version modules/tests and add missing coverage.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: PROJECT-CONTEXT
+    confidence: medium
+  - id: TASK-10
+    task: Audit launcher/setup boundary for direct internals or mutation.
+    priority: critical
+    urgency: soon
+    owner: Codex
+    dependencies:
+    - Include/link scanners
+    inputs_needed:
+    - Launcher/setup code
+    expected_output: No setup internals or install mutation in launcher.
+    next_step: Run include scanner and inspect invoke/repair paths.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: high
+  - id: TASK-11
+    task: Classify ambiguous shared headers if scanners reveal them.
+    priority: medium
+    urgency: as needed
+    owner: User + Codex
+    dependencies:
+    - Offending headers
+    inputs_needed:
+    - Header contents and include graph
+    expected_output: Headers moved to correct owner/contracts/schema.
+    next_step: Stop and ask user if ownership cannot be determined.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+    confidence: medium
+  - id: TASK-12
+    task: Save this handoff package and use it as input to a future aggregator.
+    priority: high
+    urgency: now
+    owner: User
+    dependencies:
+    - Generated files
+    inputs_needed:
+    - ZIP and individual files
+    expected_output: Package preserved for future spec-book construction.
+    next_step: Download ZIP and store in per-chat folder.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: high
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Architecture closed; canon locked.
+    type: Governance
+    hard_or_soft: hard
+    source_or_basis: User canon prompts
+    implication: Implementation only; no redesign.
+    violation_risk: Very high
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-02
+    constraint: All systems reduce to Assemblies, Fields, Processes, Agents, Law.
+    type: Ontology
+    hard_or_soft: hard
+    source_or_basis: Latest canon prompt
+    implication: No new primitives or fake systems.
+    violation_risk: High
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-03
+    constraint: Process-only mutation.
+    type: Simulation
+    hard_or_soft: hard
+    source_or_basis: Latest canon prompt
+    implication: Apps cannot mutate authoritative world state.
+    violation_risk: High
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-04
+    constraint: Deterministic, replayable simulation with fixed-point authoritative logic and named RNG streams.
+    type: Simulation
+    hard_or_soft: hard
+    source_or_basis: Latest canon prompt
+    implication: Apps cannot introduce hidden nondeterministic defaults.
+    violation_risk: High
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-05
+    constraint: Strong epistemics and fog of war everywhere.
+    type: Simulation
+    hard_or_soft: hard
+    source_or_basis: Latest canon prompt
+    implication: Apps/tools must not reveal omniscient state unless authorized inspection semantics exist.
+    violation_risk: High
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-06
+    constraint: Applications are content-agnostic and must run with zero content packs installed.
+    type: Application
+    hard_or_soft: hard
+    source_or_basis: Application-layer canon
+    implication: Launcher/help/diagnostics cannot require content packs.
+    violation_risk: High
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-07
+    constraint: Applications do not contain gameplay logic or mutate authoritative state.
+    type: Application
+    hard_or_soft: hard
+    source_or_basis: Application-layer canon
+    implication: Launcher/client/tools do not decide rules.
+    violation_risk: High
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-08
+    constraint: Setup is the only install mutation authority.
+    type: Application
+    hard_or_soft: hard
+    source_or_basis: Application-layer canon
+    implication: Launcher cannot install or repair directly.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-09
+    constraint: Launcher is first-class under launcher/.
+    type: Repository
+    hard_or_soft: hard
+    source_or_basis: Canonical repo prompt
+    implication: No launcher code in engine/ or standalone old tree.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-10
+    constraint: Engine must not include or link launcher/setup/tools/dom_contracts.
+    type: Repository
+    hard_or_soft: hard
+    source_or_basis: Engine purity prompt
+    implication: Engine PUBLIC include is engine/include only.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-11
+    constraint: Cross-product contracts live in libs/contracts/include/dom_contracts.
+    type: Repository
+    hard_or_soft: hard
+    source_or_basis: Final purity prompt
+    implication: Shared APIs must not live in engine/game internals.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-12
+    constraint: Launcher depends only on libs, engine public API, schema, dom_contracts, and optional game metadata contracts.
+    type: Dependency
+    hard_or_soft: hard
+    source_or_basis: Canonical launcher dependency rules
+    implication: No engine internals, setup internals, tools internals.
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-13
+    constraint: CMake is authoritative for VS2026 builds.
+    type: Build
+    hard_or_soft: hard
+    source_or_basis: Applied one-pass Codex prompt
+    implication: No hand-written vcxproj as authoritative build graph.
+    violation_risk: Medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-14
+    constraint: Use target include dirs; no global include_directories except minimal generated config.
+    type: Build
+    hard_or_soft: hard
+    source_or_basis: Applied one-pass Codex prompt
+    implication: Boundary enforcement through CMake.
+    violation_risk: Medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-15
+    constraint: Engine C89; game C++98; public headers parseable forever; no C++ ABI leakage across boundaries.
+    type: Toolchain/API
+    hard_or_soft: hard
+    source_or_basis: Latest canon prompt
+    implication: Shared/public contracts must stay conservative.
+    violation_risk: High
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-16
+    constraint: CLI is canonical; GUI/TUI are views over same command graph.
+    type: UI
+    hard_or_soft: hard
+    source_or_basis: Application-layer canon
+    implication: Adapters cannot invent commands or semantics.
+    violation_risk: High
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-17
+    constraint: UI is data via UI IR; no business logic in UI.
+    type: UI
+    hard_or_soft: hard
+    source_or_basis: Application-layer canon and APP-UI-BIND-0
+    implication: Bindings must be validated; render backend interchangeable.
+    violation_risk: High
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-18
+    constraint: Accessibility and localisation mandatory.
+    type: UI/UX
+    hard_or_soft: hard
+    source_or_basis: Application-layer UI/UX requirements
+    implication: Keyboard-only, screen reader tags, font/contrast, no color-only semantics, externalised strings, raw-key
+      fallback.
+    violation_risk: Medium-high
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-19
+    constraint: RepoX/TestX enforce canon, changelogs, schema validation, UI binding validation, metadata stamping.
+    type: Automation
+    hard_or_soft: hard
+    source_or_basis: Latest canon prompt
+    implication: No manual changelog editing or bypassed gates.
+    violation_risk: High
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-20
+    constraint: BUILD-ID-0 versioning and mismatch refusal are locked.
+    type: Release governance
+    hard_or_soft: hard
+    source_or_basis: Latest canon prompt
+    implication: No distributed artifact without GBN; mismatch refuses loudly.
+    violation_risk: High
+    label: PROJECT-CONTEXT
+    confidence: high
+  - id: CONSTRAINT-21
+    constraint: Do not invent facts; label uncertainty; preserve superseded options.
+    type: Reporting
+    hard_or_soft: hard
+    source_or_basis: User request for this package
+    implication: Future readers must distinguish facts from inferences.
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  open_questions:
+  - id: QUESTION-01
+    question: Did the two applied Codex prompts fully succeed in the actual repo?
+    why_it_matters: All next actions depend on current build and boundary status.
+    known: User says they were applied.
+    unknown: Actual build/script results unknown.
+    resolution_path: Run sanity scripts, CMake configure/build, CTest, launcher/setup help.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: Has the launcher spec completion/hardening prompt been applied?
+    why_it_matters: Determines whether to execute it or audit its outputs.
+    known: Prompt was generated.
+    unknown: No confirmation it was run.
+    resolution_path: Inspect commits/docs such as docs/LAUNCHER_AUDIT.md and launcher/docs/*.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: Does CANON_INDEX.md contain required app/build canon IDs?
+    why_it_matters: Docs and enforcement need canonical anchors.
+    known: Latest canon requires it.
+    unknown: File content unknown.
+    resolution_path: Open CANON_INDEX.md.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: Does launcher/ui contain a command graph artifact used by CLI help?
+    why_it_matters: CLI canonicality must be mechanical.
+    known: Requirement is locked.
+    unknown: Implementation unknown.
+    resolution_path: Inspect launcher/ui and CLI help generation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: Does schema/ui or equivalent UI IR schema exist?
+    why_it_matters: UI is data and binding validation require schemas.
+    known: UI IR requirement locked.
+    unknown: Exact schema files unknown.
+    resolution_path: Inspect schema/ and tools validators.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Is APP-UI-BIND-0 enforced by a validator in tools/TestX?
+    why_it_matters: Prevents GUI/TUI drift and logic leakage.
+    known: Binding validation required.
+    unknown: Tool implementation unknown.
+    resolution_path: Inspect tools and CI/TestX configuration.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: Does launcher run with zero packs and missing locale pack?
+    why_it_matters: Content-agnostic app requirement.
+    known: Requirement locked.
+    unknown: Test coverage unknown.
+    resolution_path: Run/add zero-pack and raw-key fallback tests.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: Does launcher display RepoX changelog/build metadata and enforce BUILD-ID-0 mismatches?
+    why_it_matters: Release governance and compatibility depend on this.
+    known: Requirement locked.
+    unknown: Implementation unknown.
+    resolution_path: Inspect RepoX outputs and launcher version/diagnostic code.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: Are any shared headers ambiguously owned?
+    why_it_matters: Misplaced headers cause boundary violations.
+    known: Final purity prompt anticipated stop conditions.
+    unknown: Current header inventory unknown.
+    resolution_path: Run include sanity script and inspect offenders.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: Do any old launcher files from the earlier current tree remain in obsolete locations?
+    why_it_matters: Old structure can cause duplicate logic or drift.
+    known: Old tree was provided before refactors.
+    unknown: Current tree unknown.
+    resolution_path: Inspect repository tree and legacy/ quarantine.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: Do setup and launcher communicate only through schema/contracts?
+    why_it_matters: Boundary requirement is critical.
+    known: Rule locked.
+    unknown: Actual integration unknown.
+    resolution_path: Scan includes/links and invoke paths.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: Are uploaded Plan 8/repo files still needed for future work?
+    why_it_matters: They may contain historical context but are superseded by later canon.
+    known: Files were uploaded in this chat.
+    unknown: Contents were not inspected in this final package.
+    resolution_path: Only open if resolving historical Plan 8 questions.
+    priority: low
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Launcher as engine subcomponent.
+    status: superseded/rejected
+    reason: Violates engine purity and canonical product-first layout.
+    final_or_tentative: final
+    reconsider_conditions: Only reconsider if canon explicitly changes.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-02
+    option: Launcher code or headers inside engine/.
+    status: rejected
+    reason: Violates engine ownership and purity.
+    final_or_tentative: final
+    reconsider_conditions: Never under current canon.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-03
+    option: Engine exporting setup/launcher/tool headers.
+    status: rejected
+    reason: Engine include must export only domino engine ABI.
+    final_or_tentative: final
+    reconsider_conditions: Never under current canon.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-04
+    option: Hand-authored VS/Xcode projects as authoritative build graph.
+    status: superseded
+    reason: Applied prompt requires CMake-generated VS solution/projects.
+    final_or_tentative: final as authoritative build
+    reconsider_conditions: Native designer artifacts may exist only if CMake remains authoritative.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-05
+    option: Standalone dominium-launcher/ repository tree as current plan.
+    status: superseded
+    reason: Canonical repo is product-first monorepo with launcher/.
+    final_or_tentative: final under current repo
+    reconsider_conditions: Only if project intentionally splits repos later.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-06
+    option: Generic source/ or core/source/ directories.
+    status: rejected
+    reason: User objected to source-within-source; later canon forbids generic source dirs.
+    final_or_tentative: final
+    reconsider_conditions: Avoid unless canon changes.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-07
+    option: CLI/TUI/GUI business logic separately per platform adapter.
+    status: rejected
+    reason: CLI canonical and common command graph require shared semantics.
+    final_or_tentative: final
+    reconsider_conditions: Platform presentation/input remains separate.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: PROJECT-CONTEXT
+  - id: REJECTED-08
+    option: Platform adapters inventing commands or resolving profiles/packs.
+    status: rejected
+    reason: Adapters are host/UI glue only; business logic belongs in launcher core/ui command graph.
+    final_or_tentative: final
+    reconsider_conditions: Never under current canon.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-09
+    option: Launcher directly installing, repairing, or mutating installed files.
+    status: rejected
+    reason: Setup is only install mutation authority.
+    final_or_tentative: final
+    reconsider_conditions: Launcher may invoke setup repair via contract only.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-10
+    option: Launcher reading engine/setup/game internals for capabilities or state.
+    status: rejected
+    reason: Dependencies restrict to public APIs, schemas, and contracts.
+    final_or_tentative: final
+    reconsider_conditions: Add public API/schema/contract if needed.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-11
+    option: Manual changelog editing.
+    status: rejected
+    reason: RepoX generates changelogs from commits.
+    final_or_tentative: final
+    reconsider_conditions: Never for canonical/distributed artifacts.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: PROJECT-CONTEXT
+  - id: REJECTED-12
+    option: Hardcoded UI strings or color-only UI semantics.
+    status: rejected
+    reason: Accessibility and localisation canon requires externalised strings and non-color semantics.
+    final_or_tentative: final
+    reconsider_conditions: Temporary stubs must be documented and replaced.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: PROJECT-CONTEXT
+  - id: REJECTED-13
+    option: UI business logic embedded in widgets or event handlers.
+    status: rejected
+    reason: UI is data and bindings map to command graph/intents.
+    final_or_tentative: final
+    reconsider_conditions: Never under current canon.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: PROJECT-CONTEXT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: dominium.zip
+    type: uploaded repo archive
+    purpose: Copy of repo as of Plan 8 prompt 3 completion.
+    status: Unverified in this report; user uploaded earlier.
+    origin: User upload
+    carry_forward: yes if available
+    notes: Not inspected in final package generation.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-02
+    name_or_description: PLAN-8-CODEX-PROMPTS.txt
+    type: uploaded text file
+    purpose: Plan 8 structure and changes.
+    status: Unverified in this report.
+    origin: User upload
+    carry_forward: yes if resolving Plan 8 history
+    notes: Superseded by later canon where conflicting.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-03
+    name_or_description: Minecraft launcher reference images
+    type: uploaded images
+    purpose: Visual/UX inspiration for fast native cross-platform launcher.
+    status: Available earlier in chat context; not analyzed for technical facts.
+    origin: User upload
+    carry_forward: optional UX reference
+    notes: Includes Screen_Shot_2022-08-08 images, yDYjX.png, 638238760876459333.png, hvD9R.png, LauncherC.png, LauncherCover.png,
+      minecraftlauncher.png.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: GPT-5.2 MASTER PROMPT — DOMINIUM / DOMINO LAUNCHER SYSTEM
+    type: user-pasted prompt
+    purpose: Initial launcher architecture phases.
+    status: Partially superseded/rebased.
+    origin: User
+    carry_forward: carry non-conflicting concepts
+    notes: Use only where aligned with canonical repo.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: Phase 1 Launcher Core Architecture answer
+    type: assistant output
+    purpose: Pure control-plane launcher architecture with host APIs/determinism/error model.
+    status: Useful but rebased.
+    origin: Assistant
+    carry_forward: yes selectively
+    notes: Map to launcher/core/discover/profile/invoke.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: VS/Xcode manual project advice
+    type: assistant output
+    purpose: Earlier advice on IDE project locations.
+    status: Superseded.
+    origin: Assistant
+    carry_forward: no except rejected history
+    notes: Contradicted by CMake authoritative prompt.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: Box-drawing dominium-launcher directory tree
+    type: assistant output
+    purpose: Initial standalone launcher tree.
+    status: Superseded.
+    origin: Assistant
+    carry_forward: historical only
+    notes: Do not implement as current layout.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Setup master prompt
+    type: assistant-generated prompt
+    purpose: Deterministic setup core and adapters plan.
+    status: Partially superseded by one-pass Codex prompt.
+    origin: Assistant
+    carry_forward: yes if setup chat needs context
+    notes: Respect current setup canon first.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: User-provided old current directory tree
+    type: pasted file tree
+    purpose: Evidence of prior redundant/outdated launcher layout.
+    status: Historical after later refactors.
+    origin: User
+    carry_forward: yes as migration history
+    notes: Contains adapters/core/schemas/tests tree with old files.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: Canonical repo update prompt
+    type: user-pasted prompt
+    purpose: Locked top-level products, engine purity, canonical launcher structure, dependencies.
+    status: Authoritative.
+    origin: User
+    carry_forward: 'yes'
+    notes: Major turning point in chat.
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: 'Plan Continuation: Launcher Realignment'
+    type: assistant output
+    purpose: Rebased launcher plan to canonical repo.
+    status: Relevant if aligned with latest canon.
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Use as implementation guidance, not higher than user canon.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: One-pass refactor + repair + future-proof Codex prompt
+    type: user-pasted applied prompt
+    purpose: CMake/VS2026 build repair, target normalization, setup/launcher/tools smoke tests.
+    status: Applied per user; actual result unverified.
+    origin: User
+    carry_forward: 'yes'
+    notes: Authoritative applied context.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: Final purity + contract ownership repair Codex prompt
+    type: user-pasted applied prompt
+    purpose: Engine purity, neutral contracts, sanity scripts.
+    status: Applied per user; actual result unverified.
+    origin: User
+    carry_forward: 'yes'
+    notes: Authoritative applied context.
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: Launcher Spec Completion, Gap Closure, and Documentation Hardening prompt
+    type: assistant-generated prompt
+    purpose: Closure task to finish launcher code/docs before future planning.
+    status: Not confirmed applied.
+    origin: Assistant
+    carry_forward: yes, likely next action
+    notes: Strictly no feature additions/redesign.
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: Application-layer canon prompt
+    type: user-pasted prompt
+    purpose: Applications only, UI/UX, RepoX/versioning, SRZ, allowed work.
+    status: Authoritative context.
+    origin: User
+    carry_forward: 'yes'
+    notes: Project-level canon pasted in chat.
+    label: PROJECT-CONTEXT
+  - id: ARTIFACT-16
+    name_or_description: Latest overall canon prompt from other chat
+    type: user-pasted prompt
+    purpose: Full architecture closed, ontology, invariants, APP-CANON, BUILD-ID-0, RepoX/TestX.
+    status: Authoritative context.
+    origin: User
+    carry_forward: 'yes'
+    notes: Highest-level project context.
+    label: PROJECT-CONTEXT
+  - id: ARTIFACT-17
+    name_or_description: Previous Context Transfer Packet
+    type: assistant output
+    purpose: Maximum-fidelity handoff for new chat.
+    status: Consumed and normalized into this package.
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: This package is derived from and repairs it.
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: This final report package
+    type: generated files
+    purpose: Downloadable package for this old chat.
+    status: Created by current response.
+    origin: Assistant
+    carry_forward: 'yes'
+    notes: Contains full report, YAML, aggregator packet, registers, brief, audit, manifest, ZIP.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Future assistant reopens architecture or proposes new layouts.
+    consequence: Wastes time and violates canon.
+    likelihood: medium
+    severity: high
+    mitigation: Use canon and rejected options registers; verify before planning.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: PROJECT-CONTEXT
+  - id: RISK-02
+    risk: Old manual IDE project advice is followed.
+    consequence: Conflicts with CMake-authoritative build and enforcement.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Mark as superseded; use CMakePresets.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: RISK-03
+    risk: Engine contamination reappears.
+    consequence: Engine loses reusability/purity.
+    likelihood: medium
+    severity: critical
+    mitigation: Run sanity scripts and CMake include/link checks.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-04
+    risk: Launcher becomes installer/repair tool.
+    consequence: Violates setup authority and hides mutation.
+    likelihood: medium
+    severity: high
+    mitigation: Restrict to setup invocation contracts.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-05
+    risk: UI command semantics diverge between CLI/TUI/GUI.
+    consequence: Breaks canonical CLI and parity.
+    likelihood: medium
+    severity: high
+    mitigation: Single command graph and binding validator.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: PROJECT-CONTEXT
+  - id: RISK-06
+    risk: Hardcoded UI strings or content assumptions persist.
+    consequence: Breaks localisation and zero-pack requirement.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Externalize strings; raw-key fallback; zero-pack tests.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: PROJECT-CONTEXT
+  - id: RISK-07
+    risk: RepoX/BUILD-ID mismatches are silently ignored.
+    consequence: Release/compatibility failures.
+    likelihood: medium
+    severity: high
+    mitigation: BUILD-ID-0 tests and loud refusal paths.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: PROJECT-CONTEXT
+  - id: RISK-08
+    risk: Shared headers remain incorrectly owned.
+    consequence: Boundary regression and hidden coupling.
+    likelihood: medium
+    severity: high
+    mitigation: Contract usage audit and header classification.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-09
+    risk: This report overstates unverified implementation status.
+    consequence: Future work assumes missing tools/tests exist.
+    likelihood: medium
+    severity: medium
+    mitigation: Respect UNCERTAIN labels and run verification queue.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: RISK-10
+    risk: Aggregator merges assistant suggestions as final decisions.
+    consequence: Spec book gains false requirements.
+    likelihood: medium
+    severity: high
+    mitigation: Preserve labels and source hierarchy.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: RISK-11
+    risk: Uploaded historical files are lost or unavailable.
+    consequence: Some Plan 8 context unavailable.
+    likelihood: low-medium
+    severity: medium
+    mitigation: Treat as optional/historical; request re-upload if needed.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-12
+    risk: Tools mutate or bypass authority.
+    consequence: Could violate read-only/default and epistemics constraints.
+    likelihood: low-medium
+    severity: high
+    mitigation: Explicit write gates; tools read-only by default.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: PROJECT-CONTEXT
+  verification_queue:
+  - id: VERIFY-01
+    item: Run scripts/verify_tree_sanity.bat.
+    why_verification_needed: Confirms engine purity and forbidden directories.
+    suggested_source_type: Repo script on current checkout.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: VERIFY-02
+    item: Run python scripts/verify_includes_sanity.py.
+    why_verification_needed: Confirms forbidden cross-product includes are absent.
+    suggested_source_type: Repo script on current checkout.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: VERIFY-03
+    item: Run cmake --preset vs2026-x64-debug.
+    why_verification_needed: Confirms CMakePresets and configure path.
+    suggested_source_type: CMake/VS2026 environment.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: VERIFY-04
+    item: Run cmake --build --preset vs2026-x64-debug.
+    why_verification_needed: Confirms build targets compile.
+    suggested_source_type: CMake build output.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: VERIFY-05
+    item: Run ctest --preset vs2026-x64-debug.
+    why_verification_needed: Confirms test suite baseline.
+    suggested_source_type: CTest output.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: VERIFY-06
+    item: Run launcher --help from build output.
+    why_verification_needed: Confirms launcher executable works.
+    suggested_source_type: Built executable.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: VERIFY-07
+    item: Run setup --help from build output.
+    why_verification_needed: Confirms setup executable works.
+    suggested_source_type: Built executable.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: VERIFY-08
+    item: Inspect CANON_INDEX.md for required canon IDs.
+    why_verification_needed: Docs must cite valid canon anchors.
+    suggested_source_type: Repo docs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: PROJECT-CONTEXT
+  - id: VERIFY-09
+    item: Inspect launcher/docs status headers and boundary docs.
+    why_verification_needed: Ensures docs reflect canon and current implementation.
+    suggested_source_type: launcher/docs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: VERIFY-10
+    item: Confirm command graph drives CLI help and GUI/TUI bindings.
+    why_verification_needed: Required by CLI canonicality.
+    suggested_source_type: launcher/ui, tests, tool validators.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: PROJECT-CONTEXT
+  - id: VERIFY-11
+    item: Confirm UI IR schema and binding validator exist and run in TestX/RepoX.
+    why_verification_needed: Required by APP-UI-BIND-0.
+    suggested_source_type: schema/, tools/, CI/TestX.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: PROJECT-CONTEXT
+  - id: VERIFY-12
+    item: Run zero-pack and missing-locale launcher smoke tests.
+    why_verification_needed: Confirms app content-agnostic and i18n fallback behavior.
+    suggested_source_type: Launcher test suite.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: PROJECT-CONTEXT
+  - id: VERIFY-13
+    item: Verify launcher displays RepoX changelog/build identity and refuses mismatches.
+    why_verification_needed: Required by BUILD-ID-0 and RepoX canon.
+    suggested_source_type: Launcher diagnostics/version tests.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: PROJECT-CONTEXT
+  - id: VERIFY-14
+    item: Open uploaded Plan 8/repo artifacts only if historical Plan 8 details are needed.
+    why_verification_needed: Contents were not inspected here.
+    suggested_source_type: Uploaded files or re-upload from user.
+    priority: low
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Application Layer Canon
+    - Launcher Product Specification
+    - Repository Boundaries
+    - Engine Purity
+    - Contracts and Schemas
+    - Setup/Launcher Boundary
+    - UI Command Graph and UI IR
+    - Build and CI Governance
+    - RepoX/TestX/BUILD-ID Governance
+    unique_contributions:
+    - Launcher-specific rebasing from Plan 8/native UI discussion to canonical product-first repo.
+    - Supersession of manual IDE project advice by CMake authoritative workflow.
+    - Launcher spec completion/hardening prompt.
+    possible_duplicates_with_other_chats:
+    - APP-CANON0/1
+    - APP-AUTO-0
+    - APP-UI-BIND-0
+    - BUILD-ID-0
+    - RepoX/TestX
+    - Engine purity
+    - Setup system
+    conflicts_to_watch_for:
+    - Older layouts versus canonical product-first layout.
+    - Assistant-suggested file names versus actual repo files.
+    - Applied prompt assumptions versus actual build results.
+    formal_requirements_candidates:
+    - Launcher canonical structure.
+    - Engine purity.
+    - Neutral dom_contracts.
+    - Setup-only install mutation.
+    - CMake authoritative VS2026 workflow.
+    - CLI canonical command graph.
+    - UI IR binding validation.
+    - Zero-pack app operation.
+    - BUILD-ID mismatch refusal.
+    background_context_candidates:
+    - Minecraft launcher visual inspiration.
+    - Plan 8 historical details.
+    - Old directory tree before refactor.
+    needs_user_confirmation:
+    - Whether launcher hardening prompt was applied.
+    - Current repo verification results.
+    - Exact UI IR/command graph implementation status.
+  final_recommendations:
+    next_action_if_continuing_this_chat: Run verification gates, then execute or audit the launcher spec completion/hardening
+      prompt.
+    next_action_for_aggregator: Ingest spec_sheet and aggregator_packet, merge by stable IDs, and preserve labels/uncertainty.
+    user_checks_required:
+    - Confirm current repo state.
+    - Confirm applied prompt outcomes with build/test logs.
+    - Confirm whether launcher hardening has been applied.

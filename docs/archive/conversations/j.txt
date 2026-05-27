@@ -1,0 +1,683 @@
+GPT-5.5 Pro • build 2026-05-27
+
+# Human-Readable Chat Report — Dominium Architecture IV
+
+## 1. One-Page Orientation
+
+This chat was mainly about turning **Dominium** from a broad game idea into a deeply planned software ecosystem. The conversation moved across engine architecture, platform abstraction, renderer abstraction, install modes, launcher design, setup packaging, tools and SDKs, game simulation architecture, construction systems, vehicles, spaceflight, planets, economy, actors, and long-term modding. The most important outcome was not a piece of code, but a coherent architectural roadmap and a large set of Codex-ready implementation prompts.
+
+The user’s underlying goal was to build **Dominium** as more than a single game executable. The desired result is an extensible ecosystem with a reusable engine, a launcher, setup tools, editors, mod/pack SDKs, game creation tools, and a game that can eventually support realistic surfaces, arbitrary construction, vehicles, atmospheric/hydrological/geological systems, spaceflight, AI actors, life support, markets, and politics. The chat therefore focused heavily on **foundations**: what layers should exist, what APIs should be stable, what abstractions should be shared, and what should be built first so future systems do not need constant rewrites.
+
+A central decision was to separate the project into two conceptual layers. **Domino** is the reusable engine layer: platform abstraction, renderer abstraction, audio, UI, core services, package/instance management, simulation control, events, plugins, and low-level reusable systems. **Dominium** is the game/product layer: setup, launcher, tools, game, rules, content, and Dominium-specific systems. This separation matters because the user explicitly wants the engine to be reusable for other games and projects, not locked to Dominium alone.
+
+The conversation changed direction several times. Earlier, the user wanted to build platforms and renderers first, then use them for the launcher, setup, and game. Later, after discussing many systems and realising the scale of the foundation, the implementation order was refined: first implement **all ABIs and APIs**, then platform backends, then renderer backends, then setup, launcher, tools, and finally the game. This later order is the current preferred roadmap. It supersedes earlier sequences and should be preserved.
+
+Another major outcome was the decision to make products **presentation-independent**. Setup, launcher, tools, and game should not each be hardcoded separately for every OS, renderer, or UI style. Instead, common logic should live behind stable services such as `dom_core`, `dom_pkg`, `dom_inst`, `dom_sim`, `dom_canvas`, tables, trees, views, events, and product contracts. A launcher view, for example, should be describable once and then presented through CLI, TUI, native GUI, or custom GFX UI. This is why the chat spent so much time defining unified UI modes, backend capability descriptors, and runtime product contracts.
+
+The user also pushed strongly for **arbitrary construction**. Buildings should not be treated as prefab structures. Vehicles, buildings, machines, rooms, hulls, portable bases, spacecraft, stations, pipes, HVAC, and pressure systems should all be expressed through a unified construction model: materials, parts, graphs, networks, rooms, and a transform/reference frame. Prefabs and blueprints are useful, but only as templates over the actual construction primitives. This design is meant to support everything from small machines and cars to underground labs, skyscrapers, ships, stations, and spacecraft.
+
+The game world vision also expanded. The user wants a 3D sparse grid over a `2^24 m` toroidal world, with origin `0,0,0` at the world center and sea level. The simulation should use deterministic integer/fixed-point math, not floating-point gameplay state. Space should be logical and efficient but still support arbitrary Keplerian on-rails orbits, Lagrange sites, rings, belts, radiation, gas clouds, moons, planets, black holes, and wormholes. Seamless transitions between surfaces, atmosphere, orbit, interiors, and other scenes should be supported through reference frames, sim tiers, transition bands, and streaming.
+
+Finally, the chat produced many implementation artifacts: Codex prompt plans for Phase 1 through Phase 6, platform backend templates, renderer backend templates, setup prompts, launcher prompts, tools/editor prompts, and a Phase 7+ roadmap for the game itself. The actual repository state remains **UNCERTAIN / UNVERIFIED**. The best next step from this chat alone is to verify the repo state, then proceed with the current roadmap beginning at Phase 1: implement the ABI/API spine.
+
+## 2. The Story of the Conversation
+
+### Early framing: platforms, renderers, launcher, setup, game
+
+The conversation began from a project-planning frame. The user wanted to build things in an order roughly like: first develop platforms and renderers, then use them to implement the launcher, then setup, then the game. The early concern was practical: the project needed three binaries per system — setup, launcher, and game — and those products had to run across many platforms.
+
+From there, the user started refining installation and data layout. A distinction emerged between the **program directory** and the **data directory**. The user wanted portable installs, per-user installs, and system-wide installs. Game versions, official content, mods, packs, and instances needed to be stored and managed without duplicating every possible combination. The idea of an instance became important: an instance combines a game executable version, mods, packs, preferences, saves, keybinds, server lists, and overrides. Some data is shared between instances; some can be instance-specific when explicitly configured.
+
+This led naturally to the launcher. The launcher was not just a “Start Game” button. It needed to manage installed versions, mods, packs, DLC, instances, tools, settings, and perhaps even its own extensions. The user asked how third parties could customise the launcher and game. The answer developed into a package/mod/pack architecture, where both game content and launcher customisations could be packaged and managed consistently.
+
+### The repo and the Domino/Dominium split
+
+The user then asked about repository structure. A tree emerged with top-level folders such as `docs/`, `external/`, `include/`, `source/`, `data/`, `tools/`, `scripts/`, `cmake/`, and `tests/`. `include/domino` and `source/domino` would hold the reusable engine, while `include/dominium` and `source/dominium` would hold game-specific systems and product code.
+
+The reusable engine layer was named **Domino**. This became one of the most important naming and architectural decisions in the chat. Domino is the engine/core/platform/sim/mod layer, reusable for other games and projects. Dominium is the game/product layer built on it.
+
+The repo structure was refined several times. The user wanted data laid out with authoring assets, packs, mods, test data, versions, and official/unofficial separation. There was discussion of whether old binaries and old data should live in the repo. The settled direction was that source tracking should store the latest source/content; old binaries and versions belong in releases or versioned package/data systems, not in source control.
+
+### Platforms and renderers expand dramatically
+
+The discussion then expanded into platform and renderer support. The user wanted support not only for modern Windows, macOS, Linux, Android, etc., but also for older or unusual systems: MS-DOS 16-bit and 32-bit, Windows 3.x, Windows 9x/NT via Win16/Win32 distinctions, Mac OS Classic, macOS X, CP/M-80, CP/M-86, and a custom Carbon/Z80-type target mentioned later. The renderer list also became broad: software renderers, VGA, EGA, CGA, VESA, QuickDraw, Quartz, Metal, GDI, DirectX versions, OpenGL versions, Vulkan, Hercules, MDA, XGA, and so on.
+
+A key distinction developed: **platform** and **renderer** should be separate. A platform backend handles OS services: windows, filesystem, paths, timers, input, processes. A renderer backend handles drawing. The launcher and setup tools should require a platform but should not require a renderer unless they actually need one. This became a major design principle.
+
+### The first wave of Codex prompts, then a pause
+
+A number of Codex prompts were generated earlier in the chat for refactoring the repo, implementing runtime/platform/render APIs, setup, launcher, game bootstrap, ECS/SIM, and world/terrain/hydrology. However, the user later clarified that none of the Phase 2.5+ prompts had been implemented yet and wanted to pause before going further. The user wanted the systems to be more extensible and modular before committing.
+
+This was a major change of direction. Instead of building specific terrain/hydro systems too early, the design pivoted to more generic primitives: space/geometry, fields, substances, mixtures, reservoirs, networks, and domain modules. Atmosphere, hydrology, geology, pollution, radiation, power, and other systems should all be expressed through shared substrates rather than each inventing its own storage and update model.
+
+### The simulation becomes much more ambitious
+
+The user then described very large-scale simulation goals: weather, climate, pollutants, gases, atmospheric composition, pressure, tanks, pockets, seas, lakes, basins, floods, cisterns, liquids, solutions, geology/lithology, space, orbits, radiation belts, clouds, and so on. The world model also became clearer: a 3D sparse grid over a `2^24 m` surface, 16×16×16 chunks, possibly multiple grids, intersecting grids, caves, waterfalls, volcanoes, factories, labs, skyscrapers, and logical off-world space.
+
+The architecture responded by introducing generic field storage, substances/mixtures, reservoir and network models, and domain modules such as atmosphere, hydrology, geology, and space environment. The idea was that new systems should register fields, substances, network types, rules, and update systems rather than hardcoding one-off arrays.
+
+### Numeric policy and determinism
+
+The user then focused on units and numeric representation. They wanted core gameplay systems to work in whole integers, especially inventory and item/material storage. Fixed-point math should be used where sub-unit values are necessary: positions, rotations, velocity, fields, flows, pressure, energy, mass, etc.
+
+Several formats were considered, including `q8.0`, `u8.0`, `q4.12`, `u4.12`, `q16.16`, `u16.16`, `q48.16`, `u48.16`, and milligram/millilitre integer alternatives. The final direction was to keep a minimal fixed-point palette: `Q4.12`, `Q16.16`, and `Q48.16`, plus ordinary integer aliases. `Q4.12` is mainly a compact storage codec for bounded chunk fields and fractions. `Q16.16` is the general runtime fixed-point format for positions, rotations, local fields, speeds, and common physical values. `Q48.16` is for large aggregate/reservoir quantities such as mass, volume, energy, charge, and totals. Inventory counts remain whole integers.
+
+The user also explicitly wanted `0,0,0` at the center of the world and sea level. That led to signed world coordinates and a toroidal horizontal surface.
+
+### Space and vehicles
+
+The conversation then moved into space. At first, space was framed as logical rather than fully physical, but the user later clarified that the space system should support arbitrary Keplerian on-rails orbits. The design settled on Cartesian authoritative positions for space, with Keplerian orbit components for on-rails motion. Polar/spherical coordinates are useful for UI and derived indexing, but not as primary storage.
+
+Orbital precession, nodal and apsidal drift, migration of orbital elements, Lagrange points, belts, rings, radiation fields, gas clouds, asteroids, comets, moons, black holes, and wormholes were all considered. The decision was to keep space deterministic and cheap: use analytic orbits, slow drifts, synthetic Lagrange sites, and graph-based travel/routes rather than full N-body or full continuous thrust integration everywhere. Local 6-DOF bubbles can be used for docking or close maneuvers.
+
+Vehicle support also expanded. The user wanted cars, trucks, buses, trains, planes, helicopters, boats, ships, submarines, rockets, spaceplanes, satellites, landers, stations, bases, and arbitrary constructed vehicles. The design response was to make vehicles and buildings both instances of a unified construction/aggregate system, with environment modes and reference frames determining how they move or interact.
+
+### Arbitrary construction and blueprints
+
+The user clarified that “buildings” did not mean prefabricated structures. They wanted arbitrary construction, including cut/fill terrain, mineshafts, open-cut mining, earthworks, sprawling surface factories, underground labs, tall buildings, and blueprinting mode. Blueprints are not the construction primitive; they are planned operations over construction primitives.
+
+The resulting design treats construction as materials + parts + a graph + a frame. A building, car, ship, station, machine, portable module, or base is a construction. Static vs moving is a property or component, not a fundamentally different type. Machines, rooms, networks, HVAC, pressure zones, and structural integrity all sit on or over the same construction graph.
+
+Blueprints are plans or diffs: place element, remove element, modify terrain, place machine, connect network, etc. When accepted, they generate jobs. Manual player actions and queued work for humans, robots, or other agents should use the same job pipeline. This matters because it keeps replay, AI, and automation consistent.
+
+### Launcher/setup/tools/game architecture
+
+After deep architecture work, the conversation returned to products. The user wanted to know how this all connects back to platform APIs, renderer APIs, launcher, setup, game, and tools. The design crystallized into a layered ABI/API architecture.
+
+The core services include command/query APIs, packages, instances, sim control, canvases, tables, trees, views, event bus, plugin ABIs, and product contracts. Products are described once and run under the selected UI/platform/renderer/audio configuration.
+
+The launcher is a common core with state, views, actions, and data models. CLI, TUI, native GUI, and GFX GUI shells should simply present the same model differently. Launcher extensions can register additional views, actions, and canvases.
+
+Setup has a cross-platform setup engine and OS-native wrappers. Windows should provide MSI and EXE bootstrapper, macOS should use app bundles/pkg/dmg, Linux should support deb/rpm/run/AppImage-like packaging, and retro systems should get text/TUI installers.
+
+Tools became a major workstream. The user wanted not only small dev tools but a full SDK ecosystem: asset compiler, pack builder, replay inspector, test runner, world editor, save editor, game data editor, launcher editor/creator, mod editor/creator, pack tools, game SDK, launcher SDK, and a GUI editor host.
+
+### The final roadmap
+
+The user then asked how to structure Codex prompts. The final high-level roadmap became:
+
+1. Implement every ABI/API.
+2. Implement every platform.
+3. Implement every renderer.
+4. Build setup.
+5. Build launcher.
+6. Build tools.
+7. Build the game.
+
+The assistant generated detailed Phase 1 prompts, platform backend templates, renderer backend templates, setup prompts, launcher prompts, tools prompts, and finally a Phase 7+ roadmap for the game. The game phase itself was not expanded into the same full prompt detail as Phases 1–6. That remains a future task.
+
+### Retirement and handoff
+
+At the end, the user shifted from architecture planning to chat retirement. The chat produced a discovery inventory, a context transfer packet, a final downloadable report package, and then an in-chat reader version. The current request asks for a human-readable narrative explanation rather than more registers or machine-oriented handoff files.
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Domino and Dominium separation
+
+The most foundational topic was the separation between **Domino** and **Dominium**. Domino is the reusable engine layer. It owns platform abstraction, renderer abstraction, audio, UI, input, core services, package/instance management, simulation control, canvas rendering, model/view APIs, events, and plugin ABIs. Dominium is the game/product layer. It owns setup, launcher, tools, game, rules, content, and Dominium-specific simulation.
+
+This came up because the user wanted an engine or core that could be reused for other games and projects. The split prevents platform/render/sim infrastructure from being tangled with Dominium-specific gameplay. It also gives the repo a clean structure: `include/domino`, `source/domino`, `include/dominium`, and `source/dominium`.
+
+The conclusion was clear and accepted: **Domino is the reusable engine; Dominium is the game/product layer**. What remains uncertain is the actual repository state. The chat planned the split, but did not verify whether the repo already matches it.
+
+### Topic 2 — Repository and directory structure
+
+The repo structure was discussed early and repeatedly. The user proposed a tree with `CMakeLists.txt`, `docs`, `external`, `include`, `source`, `data`, `tools`, `scripts`, `cmake`, `tests`, and `.github`. The directory structure evolved to support Domino and Dominium separately, plus product subdirectories for setup, launcher, tools, and game.
+
+The topic mattered because every Codex prompt depends on paths and module boundaries. If the repo layout is inconsistent, prompts will fail or scatter code into the wrong places.
+
+The conclusion was to keep the top-level layout stable and avoid arbitrary new top-level directories. Product code should live under `source/dominium/product/`, while reusable engine code should live under `source/domino/`. Tools should be under `source/dominium/tools/` or `tools/` depending on how implementation proceeds.
+
+The unresolved issue is that the actual repo was not inspected in this chat. The planned structure may not match the current files.
+
+### Topic 3 — Platform API and platform backends
+
+The platform layer, called `dsys`, is supposed to abstract OS-specific services: lifecycle, time, sleep, window creation, fullscreen/windowed mode, input events, filesystem, paths, directory iteration, and process spawning.
+
+This topic came up because the user wants setup, launcher, tools, and game to run on many systems: modern Windows, old Windows, DOS, macOS, Mac OS Classic, Linux, BSD, Android-like systems, SDL, CP/M, and a custom Carbon/Z80 environment. It was therefore necessary to avoid direct platform calls in game/product code.
+
+The conclusion was to use a `dsys` ABI with backend vtables and capability descriptors. Backends should advertise what they support. For example, CP/M or DOS may only support CLI/TUI, not windows or process spawning. Unsupported functions should fail clearly or be stubbed, not pretend to work.
+
+A platform backend prompt template was generated, along with parameter sets for Win32, Win16, DOS32, DOS16, CP/M-80, CP/M-86, Carbon, Cocoa, X11, Wayland, POSIX, SDL1, SDL2, and null.
+
+The unresolved issue is practical feasibility, especially for retro targets and Carbon OS. Their actual toolchains and system calls remain unverified.
+
+### Topic 4 — Renderer API and renderer backends
+
+The renderer layer, `dgfx`, became one of the major technical workstreams. The user wants support for many renderers and display systems: DirectX 7/9/11, Vulkan 1, OpenGL 1/2, QuickDraw, Quartz, Metal, GDI, VESA, VGA, CGA, EGA, XGA, Hercules, MDA, and software. Each backend should support 2D, 3D, vector, and raster graphics where possible.
+
+The conclusion was to use a renderer command-buffer IR. Game/tools build a backend-agnostic command buffer with commands such as clear, viewport, camera, pipeline, texture, draw sprites, draw meshes, draw lines, and draw text. Renderers consume that IR according to their capabilities.
+
+This matters because it allows the same game or tool rendering logic to run under modern GPU APIs, software renderers, and retro graphics modes. The software reference renderer, `softref`, is especially important because it becomes the canonical CPU implementation for testing semantics.
+
+The unresolved issue is the exact IR payload layout and how far limited renderers should go. A CGA or MDA backend cannot realistically support modern 3D in the same way as Vulkan. The agreed approach is explicit capability flags and graceful fallback or no-op behaviour.
+
+### Topic 5 — Unified UI and presentation independence
+
+A major topic was how launcher, setup, tools, and game should present themselves. The user wanted a platform to be required but the renderer to be optional beyond software. The launcher and tools should be able to use native UI where appropriate, TUI/CLI where needed, or custom GFX UI when desired.
+
+Initially, native GUI and custom GUI were discussed separately. The user then asked if they could be unified. The answer became a single `DOM_UI_GUI` mode with backend flags such as `DOM_UI_BACKEND_NATIVE` and `DOM_UI_BACKEND_GFX`. CLI and TUI remain separate modes: `DOM_UI_CLI` and `DOM_UI_TUI`.
+
+This matters because it lets products be described once. A launcher can expose the same views and actions whether presented as a native Windows UI, a text UI, a CLI, or a custom rendered interface. It also makes renderer dependency optional for non-game products.
+
+The conclusion was to define UI modes separately from UI backends. This is one of the central product architecture decisions.
+
+### Topic 6 — Product contracts and graceful degradation
+
+The user asked whether all this was enough to support headless, CLI, TUI, and GUI for setup, launcher, game, and tools under arbitrary platform/renderer combinations. The answer was yes in principle, but only if each product has an explicit **feature contract**.
+
+A product contract says what the product requires and what is optional. For example, a launcher might require GUI native or allow fallback to TUI/CLI, while the game requires GFX. A setup CLI does not need a renderer. A tool with a preview canvas may need a renderer only for that canvas.
+
+This topic mattered because “graceful degradation” can become dangerous if implicit. A program should not silently half-work because a renderer is missing. It should either disable optional widgets, fall back to a declared mode, or fail with a clear reason.
+
+The conclusion was to use capability descriptors and runtime selection. Products should be described once, then bound to available drivers through a selector.
+
+### Topic 7 — Package, mod, pack, and instance management
+
+The package/instance system is central to the whole ecosystem. The user wants installed versions, official base/DLC/mod content, downloaded third-party mods and packs, shared data, instance-specific overrides, and arbitrary combinations without duplicating every possible mix.
+
+The architecture treats installable units as packages. Package kinds include game code, game data, tools, launcher UI extensions, and shared packs. Instances are configured combinations of packages in load order, plus settings and paths.
+
+This system supports setup, launcher, game, tools, and modding. Setup installs packages and creates default instances. The launcher lists packages and attaches/detaches them from instances. The game loads active packages for an instance. Tools inspect and build packages.
+
+The unresolved issue is the exact manifest/schema format. JSON, TOML, and INI-like examples appeared in prompts, but no final schema choice was made.
+
+### Topic 8 — Setup architecture
+
+Setup was eventually planned as a cross-platform setup engine plus native wrappers. The user specifically wanted platform-appropriate installers. On Windows, that means MSI and EXE bootstrapper in an authentic Windows style. On macOS, app bundles, `.pkg`, and `.dmg`. On Linux, `.deb`, `.rpm`, `.run`, or AppImage-like formats. Retro systems get smaller TUI or console installers.
+
+The key design is that native wrappers should not reimplement install logic. They should call or delegate to a common setup core that understands install scopes, packages, instances, verification, repair, uninstall, and paths.
+
+This matters because without a setup core, Windows MSI, Linux packages, and macOS packages could all behave differently and corrupt install consistency.
+
+The unresolved issue is that external packaging details require verification. WiX, macOS notarization, Linux packaging, and AppImage tooling are all external-world facts and may be stale.
+
+### Topic 9 — Launcher architecture
+
+The launcher was designed as a common core with views and actions, not as a hardcoded GUI. It should manage instances, packages, mods, tools, saves, settings, and previews. CLI, TUI, native GUI, and GFX GUI shells should all call the same launcher core.
+
+The launcher exposes views such as instances, packages, mods, tools, saves, world preview, orbit map, etc. Actions include launch instance, create/delete/edit instance, list packages, enable/disable mods, open settings, and view world. Launcher extensions can add views, actions, and canvases.
+
+This matters because the launcher is central to user workflow and mod ecosystem. It also demonstrates the broader architecture: common logic, arbitrary presentation.
+
+A full set of Phase 5 prompts was generated for launcher core, CLI, TUI, GUI, and extensions.
+
+### Topic 10 — Tools, SDKs, and editors
+
+The user expanded tools from simple dev utilities into a full SDK ecosystem. Tools include asset compiler, pack builder, replay inspector, test runner, world editor, save editor, game data editor, launcher editor/creator, mod editor/creator, pack tools, game SDK, launcher SDK, and GUI editor host.
+
+The architecture treats tools as first-class products using the same core APIs. A unified `dominium-tools` host dispatches subcommands. Editing backends provide non-UI APIs, while GUI editors present those backends using `dsys`, `dgfx`, and UI abstractions.
+
+This matters because modding and content creation are central to the user’s goals. The tools also serve as test cases for the architecture: if the common APIs are good, tools can inspect, edit, build, package, and visualize without bypassing engine internals.
+
+Phase 6 prompts were generated for the tool framework, core dev tools, editing backends, and GUI editor host.
+
+### Topic 11 — Numeric policy and deterministic simulation
+
+The user wanted correctness and consistency in numeric formats. The conversation discussed signed and unsigned fixed-point types, SI units, storage sizes, and dense vs sparse values.
+
+The conclusion was to keep only a small fixed-point set: `Q4.12`, `Q16.16`, and `Q48.16`, plus integer aliases. `Q4.12` is for compact bounded storage such as fractions or small field offsets. `Q16.16` is for general runtime values. `Q48.16` is for large aggregate quantities like mass, volume, charge, energy, and reservoirs. Item counts remain integers.
+
+Time is also decoupled. The universe sim should run at arbitrary UPS; the client can render at arbitrary FPS, UPS-locked, or vsync-locked. Rendering never drives simulation.
+
+This matters because deterministic sim, replay, multiplayer, and cross-platform builds depend on consistent numeric rules.
+
+### Topic 12 — World model and environmental systems
+
+The user described a 3D sparse grid over a `2^24 m` world, with 16×16×16 chunks, vertically spanning a page of 4096 tiles. There can be multiple grids, intersecting grids, deep caves, waterfalls, volcanoes, factories, labs, skyscrapers, and more. The world must support surface, underground, high atmosphere, and eventually space transitions.
+
+The environmental systems include weather, climate, hydrology, geology/lithology, atmosphere, pollutants, gases, pressure, liquids, basins, floods, tanks, cisterns, radiation, clouds, and biomes. Instead of each system owning its own bespoke arrays, the architecture uses shared fields, substances, mixtures, reservoirs, and networks.
+
+This topic remains largely planned rather than implemented. The important conclusion is the generic substrate. Deep environmental systems should be implemented after the playable core, not before.
+
+### Topic 13 — Construction, buildings, vehicles, machines, rooms, HVAC
+
+This is one of the richest topics in the chat. The user clarified that “building” does not mean prefab structures. The system must support arbitrary construction, terrain cut/fill, mineshafts, open-cut mining, earthworks, sprawling factories, underground labs, skyscrapers, vehicles, ships, aircraft, spaceplanes, spacecraft, stations, bases, and portable structures.
+
+The resulting model is that everything is a construction: materials + parts + graph + frame. Machines are parts/components in constructions. Rooms and HVAC are graphs/zones over construction volumes. Vehicles and buildings are not different primitive types; they differ by mobility, environment, and physics components. Static vs moving is a flag or component, not a separate architecture.
+
+Blueprint mode allows planning in a sandbox/god-mode freecam or map view. The user can edit terrain and place constructions before accepting changes, queueing jobs, or saving a blueprint/draft. Destruction and upgrade planners are also blueprint-derived.
+
+This architecture is intended to support destruction, salvage, life support, pressure, networks, and arbitrary scale.
+
+### Topic 14 — Space, orbits, vehicles, and seamless transitions
+
+The user wants realistic-feeling progression from surface to orbit and between planets. Space should support arbitrary Keplerian orbits, Lagrange sites, satellites, landers, stations, bases, rings, belts, radiation, gas clouds, comets, asteroids, moons, planets, black holes, and wormholes. But the system should remain easy to compute.
+
+The design uses Keplerian on-rails orbits with optional drift/precession, synthetic Lagrange sites, graph routes, local 6-DOF bubbles, and reference frames. Vehicles can switch between surface, air, high atmosphere, orbit, and local vacuum modes.
+
+Seamless transitions are handled through reference frames and sim tiers. A vehicle climbing from the surface enters a transition band where both surface and orbital representations exist. When conditions are met, ownership switches from surface physics to orbital mechanics. Rendering uses frames and canvases, so the camera can move smoothly without blocking load screens.
+
+This remains a high-level design, not an implemented system.
+
+### Topic 15 — Actors, AI, life support, knowledge, economy, politics
+
+The user asked how to integrate user actors and AI actors of all types, life support, communications, fog of war, knowledge transmission, trading, markets, economics, and politics. The design places these on top of existing primitives.
+
+Actors are bodies plus brains. A player is just an actor with direct input. AI actors use brains/controllers and jobs. Life support uses zones, atmospheres, gases, pressure, temperature, and HVAC. Communications use network graphs and feed knowledge bases. Fog of war is a knowledge graph per faction. Markets and politics are higher-level systems over items, logistics, factions, law, and territories.
+
+These systems are planned for later phases. The important decision is that they should not create separate incompatible frameworks; they should use the same fields, networks, jobs, packages, and event systems.
+
+### Topic 16 — Handoff and report packaging
+
+The last part of the chat shifted from architecture to extraction. The user wanted the old chat retired and asked for discovery inventory, structured registers, context transfer packet, final report package, and in-chat reader report. Downloadable files were created earlier, but the current request asks for a human-readable explanation rather than file/package management.
+
+The package and this report should help future assistants continue without re-reading the whole chat. However, they must preserve uncertainty: actual repo state is unverified, some transcript sections were skipped, external tooling facts may be stale, and assistant suggestions are not user decisions unless accepted or built upon.
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals
+
+The user explicitly wanted to plan a modular, extensible foundation for Dominium. They wanted to support portable/per-user/system-wide installs, package/mod/pack/instance management, launcher customisation, setup, tools, game, arbitrary construction, vehicles, atmospheric and hydrological systems, space systems, and long-term third-party customisation.
+
+The user explicitly wanted the engine or core to be reusable, leading to the Domino engine concept. They wanted the launcher, setup, and game to compile into binaries for each system. They wanted native OS installer experiences. They wanted platform support across modern and retro systems. They wanted renderer support across hardware, software, and retro renderers. They wanted tools and SDKs for mod/pack/game/launcher creation.
+
+The user explicitly wanted a Codex prompt roadmap, because much of the implementation would be carried out by Codex against an existing repo with fragmented/outdated generated code.
+
+### Inferred goals
+
+It is reasonable to infer that the user wants to avoid architectural dead ends. The conversation repeatedly returned to “plan ahead,” “extensible,” “modular,” and “avoid having to duplicate combinations.” The user appears to care strongly about not painting the project into a corner before the game systems become complex.
+
+It is also reasonable to infer that the user wants the future project spec book to preserve rationale, not just lists of decisions. The later handoff requests emphasised visible rationale, rejected options, uncertainty, and changes of direction.
+
+### Goals that changed over time
+
+The biggest change was implementation order. The earlier goal was to develop platforms/renderers first and then build products. Later, the user decided that every ABI/API should be implemented first, then every platform, then every renderer, then products. This change reflects a recognition that backend implementation without stable interfaces could cause churn.
+
+Another change was world/system implementation. Earlier prompts were more concrete around ECS, terrain, and hydrology. The user paused before implementation and wanted a more generic foundation that could support atmosphere, hydrology, geology, space, pressure, mixtures, and future systems. The design shifted to shared primitives.
+
+### Goals still unresolved
+
+The project still needs decisions on schema format, scripting VM, save/replay format, construction storage, default UPS, and exact backend acceptance criteria. It also needs repo verification. None of those were resolved in the chat.
+
+## 5. Decisions Made and Why
+
+The most important decisions can be grouped into architecture, product presentation, simulation, construction, space, and workflow.
+
+### Domino and Dominium separation
+
+**FACT:** The user accepted the idea of calling the reusable engine/core/platform layer **Domino**. Dominium remains the game/product layer.
+
+This decision made sense because the user wants the engine to be reused for other games and projects. It affects everything: directory names, API prefixes, docs, product boundaries, and future SDKs. It should be considered final unless the user explicitly renames the project structure.
+
+### ABIs/APIs first
+
+**FACT:** The user set the major implementation plan as: first fully implement every ABI/API, second every platform, third every renderer, then setup, launcher, tools, and game.
+
+This decision supersedes earlier plans. The rationale is that platforms, renderers, setup, launcher, tools, and game all need a stable interface surface. If the project starts with backends or products before defining ABIs, later refactors will be expensive.
+
+This decision affects the Codex prompt roadmap. Future assistants should not jump directly into game systems unless the user explicitly requests it.
+
+### Platform required, renderer optional for non-game products
+
+**FACT:** The user wanted platform support required, but renderer support optional beyond software. Launcher/setup/tools should be able to use native UI, CLI, or TUI. Renderer should only be needed for game or custom canvas/preview features.
+
+This decision makes products more portable. It also reduces dependencies for setup and launcher. It depends on `dom_ui`, product contracts, and capability descriptors.
+
+### Unified GUI mode
+
+**FACT:** The user asked whether GUI modes could be unified. The resulting design uses `DOM_UI_GUI` and separate backend flags such as `DOM_UI_BACKEND_NATIVE` and `DOM_UI_BACKEND_GFX`.
+
+This avoids treating native and custom GUI as separate product types. It means a GUI launcher can use native widgets, custom renderer UI, or both. A future assistant should preserve this distinction.
+
+### Product contracts and explicit fallback
+
+**FACT:** The conversation concluded that graceful degradation is good only when declared. Products need contracts that say what is required and what is optional.
+
+This decision prevents hidden failures. For example, a launcher can hide a preview canvas if no renderer is available, but a game cannot pretend to be playable without gfx. This affects setup, launcher, tools, and game bootstrapping.
+
+### Renderer command-buffer IR
+
+**FACT:** The renderer architecture uses a command-buffer IR. Backends consume commands such as clear, viewport, camera, pipeline, texture, draw sprites, draw meshes, draw lines, and draw text.
+
+The rationale is backend independence. It allows software, GPU, and retro renderers to share semantics. It also supports logging, replay, remote rendering, and testing. The exact IR payload layout remains to be finalized.
+
+### Numeric policy
+
+**FACT:** The numeric palette was reduced to `Q4.12`, `Q16.16`, and `Q48.16`, plus ordinary integers. Inventory counts remain whole integers only. `Q4.12` is primarily for compact storage of bounded fields.
+
+This decision came from comparing fixed-point alternatives. The rationale was memory efficiency, determinism, and avoiding type proliferation. It affects almost every simulation system.
+
+### Signed world origin at center/sea level
+
+**FACT:** The user wanted `0,0,0` to be the world center at sea level. This led to signed world coordinates and toroidal wrapping.
+
+This decision affects coordinate math, chunk mapping, and world/space transitions.
+
+### Cartesian space plus Keplerian orbits
+
+**FACT:** Space should store authoritative positions in Cartesian coordinates, while using Keplerian on-rails orbit components for orbital motion. Polar/spherical coordinates are derived for UI or indexing.
+
+This decision avoids polar-coordinate issues while supporting realistic-looking orbital mechanics. It rejects full N-body by default.
+
+### Unified construction graph
+
+**FACT:** Vehicles, buildings, machines, portable structures, and static/moving assemblies should be unified as constructions composed of materials and parts in graphs/frames.
+
+This decision was driven by the user’s desire for arbitrary construction. It avoids separate building/vehicle/machine systems. It is a core future game architecture decision.
+
+### Blueprints and jobs
+
+**FACT:** Blueprints are plans or operations, not raw world copies. They compile to jobs. Manual player actions and queued worker/robot/AI actions should use the same job path.
+
+This supports blueprinting, automation, replay, and AI.
+
+### OS-native setup wrappers
+
+**FACT:** The user wants setup binaries to match official OS setup styles. That means MSI/EXE on Windows, pkg/dmg/app bundle on macOS, deb/rpm/run/AppImage-like on Linux, and simpler TUI/console installers on retro systems.
+
+The common install logic should still live in setup core.
+
+### Tools and SDKs as first-class products
+
+**FACT:** The user wants all useful dev tools and SDKs, not just a launcher/game. This includes mod and pack SDKs, game editor/creator, game data editor, save editor, world editor, launcher editor/creator, mod editor/creator, and packaging tools.
+
+This affects Phase 6 and future ecosystem planning.
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Starting with platforms/renderers before ABIs
+
+This was the earlier plan, but it was superseded. The current roadmap starts with ABIs/APIs because all backends and products need stable interfaces. Reconsider only if the repo already has a solid ABI layer.
+
+### Renderer-mandatory launcher/setup/tools
+
+This was rejected because launcher/setup/tools should be able to run natively, in CLI, or in TUI without needing the graphics stack. Renderer use remains optional for canvases/previews.
+
+### Separate native-GUI and gfx-GUI modes
+
+This was superseded by a unified `DOM_UI_GUI` mode with backend flags. Reconsider only if the UI model proves too limiting.
+
+### Full fixed-point type matrix
+
+The idea of making many signed/unsigned variants first-class was rejected as redundant. Keep ordinary integers plus `Q4.12`, `Q16.16`, and `Q48.16`.
+
+### q48.16 everywhere
+
+Rejected for dense fields because of memory overhead. It remains appropriate for sparse aggregate values.
+
+### Universal milli-unit integers
+
+Rejected as a general representation because it loses flexibility and still needs metadata. It may be useful for very specific counters.
+
+### Polar/spherical space storage
+
+Rejected for authoritative state due to angle wrap, trig, singularity, and non-linear resolution problems. Still useful for display and orbit bands.
+
+### Full N-body global orbital simulation
+
+Rejected as default because it is too expensive and unnecessary for the intended gameplay. Approximate/scripted effects may appear later.
+
+### Prefab-only building system
+
+Rejected because the user wants arbitrary construction. Prefabs remain useful templates, not the construction primitive.
+
+### Giant Codex prompts
+
+Rejected because Codex is more likely to tangle broad refactors. The current workflow is one bounded prompt per subsystem/backend/product stage.
+
+## 7. Important Reasoning and Rationale
+
+The visible reasoning in the chat consistently favoured **long-term modularity without uncontrolled abstraction**. The project needs to support many platforms, renderers, products, and gameplay systems. That requires clear seams: platform APIs, renderer APIs, product contracts, plugin ABIs, schemas, and events. However, the chat also explicitly warned against over-abstracting everything. The chosen approach is to modularize the seams that matter — backend vtables, command/query APIs, packages, events, views, and schemas — while keeping core simulation and UI primitives concrete enough to implement.
+
+The renderer design was chosen because direct renderer calls would bind the game to backend-specific semantics. A command-buffer IR lets the same canvas or scene be rendered by software, OpenGL, DirectX, Vulkan, or retro framebuffer modes. The software reference renderer gives a baseline semantics.
+
+The UI design was chosen because setup, launcher, tools, and game are not the same kind of product. The game needs graphics. The launcher and setup often do not. A native OS installer or native launcher should not carry unnecessary renderer dependencies. The `DOM_UI_GUI` + backend flags design keeps native and custom GUI unified while preserving flexibility.
+
+The numeric design was shaped by determinism, memory efficiency, and gameplay clarity. Whole-integer inventory avoids fractional item problems. Fixed-point physical quantities allow deterministic simulation across platforms. The tiered storage approach prevents dense fields from consuming huge memory.
+
+The construction design was shaped by the user’s ambition. If buildings, vehicles, machines, and spacecraft were separate primitives, arbitrary construction and destruction would be difficult. Treating all of them as construction graphs over parts and materials gives one model for static and moving structures.
+
+The space design balances realism and computation. Keplerian on-rails orbits, Lagrange sites, belts, and graph routes provide realistic-feeling progression without full orbital physics everywhere. Local 6-DOF bubbles preserve piloting/docking feel where needed.
+
+The implementation roadmap was reshaped by risk management. The user saw that implementing later prompts too early could bake in narrow assumptions. The new plan puts ABIs and APIs first.
+
+## 8. Plans, Future Work, and Next Steps
+
+The future work is structured by phase.
+
+### Phase 1 — ABIs/APIs
+
+This is the immediate foundation. It should create the public headers, stubs, core service dispatch, package/instance persistence, sim shell, canvases, and table/tree/view models. It matters because every later phase depends on these APIs.
+
+Before doing it, verify the repo state. The generated prompts assume specific directories and may need adaptation.
+
+### Phase 2 — Platforms
+
+Implement `dsys` backends one at a time. Start with practical targets such as Win32, SDL2, POSIX/X11. Retro targets can follow with limited caps.
+
+This phase depends on the `dsys` ABI and vtable.
+
+### Phase 3 — Renderers
+
+Implement renderer vtable and softref first, then other renderers one at a time. The softref renderer is the canonical reference. Hardware and retro backends can partially support commands according to capability descriptors.
+
+This phase depends on stable IR payloads.
+
+### Phase 4 — Setup
+
+Implement setup core, CLI, and OS-native wrappers. This depends on package/instance APIs and platform filesystem/process support. External packaging tool details must be verified.
+
+### Phase 5 — Launcher
+
+Implement launcher core, CLI, TUI, GUI, and extension hooks. This depends on core models, package/instance APIs, `dom_ui`, and optionally `dgfx`.
+
+### Phase 6 — Tools and SDKs
+
+Implement tool framework, dev tools, editing backends, and GUI editor host. This depends heavily on schema/data formats, package APIs, and rendering/UI.
+
+### Phase 7 — Game
+
+The game phase is the biggest. The roadmap includes game shell, deterministic loop, world runtime, constructions, basic networks, blueprint/jobs, HUD/input, save/replay, and debug tools. This phase is not yet expanded into detailed Codex prompts. It should start with a playable core before deep systems.
+
+### Later phases
+
+Environment, life support, actors, AI, space, vehicles, economy, politics, multiplayer, content ramp, UX polish, ports, and hardening follow after the playable core.
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints
+
+The user explicitly wants:
+
+* No invention or silent inference in handoffs.
+* Important items labelled as fact, inference, or uncertainty.
+* Direct user statements prioritised over assistant suggestions.
+* Tentative and superseded status preserved.
+* Codex prompts generated one at a time when needed.
+* Modularity and extensibility planned deeply.
+* Native platform feel for setup and tools where possible.
+* Renderer optional for launcher/setup/tools.
+* Arbitrary construction.
+* Seamless transitions.
+* Deterministic fixed-point correctness.
+
+### Technical constraints
+
+Domino should be portable and deterministic. Public engine headers should not leak OS or graphics APIs. Sim should avoid floating-point. Fixed-point types and integer counts should be used consistently. Products should use capability contracts and backend selection. Unsupported backend features should be explicit.
+
+### Formatting and evidence constraints
+
+The user strongly prefers structured, audit-ready outputs when asking for extraction, but in the current request specifically wants a human-readable narrative report rather than registers or YAML. Future assistants should match the requested format instead of defaulting to data dumps.
+
+### Things to avoid
+
+Do not assume repo code exists. Do not apply old superseded prompt order. Do not require renderer for launcher/setup/tools. Do not collapse native/custom GUI modes back into separate product concepts. Do not treat full N-body physics as planned default. Do not ignore stale verification needs.
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+This chat produced a lot of prompt and planning artifacts.
+
+The most important are the **Phase 1 prompts**. These define how to create Domino and Dominium headers/stubs, `dsys`, `dgfx`, `daudio`, `dom_ui`, `dom_input`, `dom_core`, package/instance APIs, sim, canvas, model/view APIs, event bus, and plugin stubs. These are the immediate implementation prompts if work continues.
+
+The **platform backend template** is another important artifact. It describes how to implement `dsys` backends for specific platforms through a vtable and capability descriptors. It came with parameter blocks for Win32, Win16, DOS32, DOS16, CP/M-80, CP/M-86, Carbon, Cocoa, X11, Wayland, POSIX, SDL1, SDL2, and null.
+
+The **renderer backend template** and **softref/vtable prompts** define the `dgfx` backend architecture. They should be preserved because renderer implementation depends on them.
+
+The **Phase 4 setup prompts** describe setup core and wrappers for Windows, macOS, Linux, and retro targets. They should be used only after verifying current external packaging tool details.
+
+The **Phase 5 launcher prompts** define launcher core, CLI, TUI, GUI, and extension hooks. These are important because the launcher is central to package/instance management.
+
+The **Phase 6 tools prompts** define the tool framework, asset compiler, pack builder, replay/test tools, editing backends, and GUI editor. These capture the user’s expanded SDK/tooling ambitions.
+
+The **Phase 7+ roadmap** is not a detailed prompt set yet, but it is the guide for turning the architecture into an actual game.
+
+The chat also created downloadable report files and handoff packages. For understanding the substance of the chat, the important thing is not the files themselves but the information they preserved: roadmap, decisions, tasks, constraints, risks, and unresolved issues.
+
+## 11. Open Questions and Unresolved Issues
+
+The most important unresolved issue is **actual repo state**. The chat generated prompts and plans, but it did not inspect the repository. Before implementation, someone must check which files already exist, what CMake looks like, and whether old generated code conflicts with the new plan.
+
+The second major unresolved issue is **schema and manifest format**. Packages, mods, packs, tools, editors, and game data all depend on versioned schemas. The chat mentioned JSON/TOML/INI-like examples but did not decide the final format.
+
+The third is **scripting**. A script layer was recommended for mods/tools/experimentation, but no VM was chosen. Lua, Wren, or custom DSL were mentioned only as possibilities.
+
+The fourth is **save/replay format**. Replay and deterministic test tooling are planned, but the exact format is not finalized.
+
+The fifth is **construction graph storage**. The concept is clear, but the actual storage/update/LOD format for large constructions remains unresolved.
+
+Other unresolved items include default UPS, Carbon OS APIs, retro platform feasibility, renderer IR payload layout, plugin loading on platforms without dynamic loading, and exact package dependency/version range syntax.
+
+External verification is needed for WiX/MSI, macOS packaging/notarization, Linux packaging, SDL, Wayland, Vulkan, DirectX SDK availability, QuickDraw/Carbon retro toolchains, and dependency licenses.
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+The biggest risk is treating prompt plans as if they were implemented code. They are not verified. Future assistants should always inspect the repo or ask the user before assuming implementation status.
+
+Another risk is reverting to an earlier roadmap. The current roadmap is ABIs/APIs first. Earlier Phase 2.5–7 prompts are useful historical artifacts but not the current sequence.
+
+A future assistant might also over-summarize and lose rejected options. That would cause repeated work: for example, re-proposing renderer-mandatory launcher UI, prefab-only buildings, or polar space coordinates.
+
+Another risk is ignoring the user’s preference for arbitrary construction. If a future assistant designs vehicles, buildings, and machines as separate one-off systems, it will conflict with this chat’s core direction.
+
+External facts are another risk. Installer frameworks, platform APIs, renderer APIs, and software versions require current verification. The chat’s packaging and backend prompts are architectural scaffolding, not verified current tool instructions.
+
+Finally, the project can suffer from scope explosion. The chat contains ambitious plans for environment, hydrology, geology, space, AI, economy, politics, multiplayer, and many platforms. The roadmap tries to manage this by building a playable core before deep systems.
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes the **meta-architecture** of the project. It explains how the engine, products, tools, platforms, renderers, mods, packages, and future game systems should relate to each other.
+
+Likely spec book chapters it should inform:
+
+* Project architecture overview
+* Domino engine specification
+* Dominium product architecture
+* Repository layout
+* Platform abstraction
+* Renderer abstraction
+* UI/product presentation
+* Package/instance/mod/pack system
+* Setup and distribution
+* Launcher architecture
+* Tools and SDKs
+* Numeric/determinism policy
+* World and coordinate systems
+* Construction architecture
+* Vehicle and seamless transition architecture
+* Space/orbit architecture
+* Future systems roadmap
+* Verification and implementation roadmap
+
+What should become formal requirements:
+
+* Domino/Dominium separation.
+* ABIs/APIs first roadmap.
+* Product contracts and capability matching.
+* Renderer IR.
+* Unified UI mode/backend system.
+* Integer/fixed-point numeric policy.
+* Package/instance system.
+* Arbitrary construction graph.
+* Keplerian on-rails space.
+* Setup wrappers over common setup core.
+* Common launcher views/actions/models.
+
+What should remain background until confirmed:
+
+* Exact schema format.
+* Script VM.
+* Default UPS.
+* Save/replay layout.
+* Construction graph storage.
+* External packaging/backend tool details.
+
+This chat likely overlaps with other chats on repository layout, data formats, package/mod systems, launcher, setup, world simulation, and construction. Future aggregation should preserve source provenance and avoid flattening contradictions.
+
+## 14. What I Should Remember
+
+* The current roadmap is **ABIs/APIs first**, then platforms, renderers, setup, launcher, tools, game.
+* Domino is the reusable engine. Dominium is the game/product layer.
+* Products should be described once and presented through multiple UI/backend combinations.
+* Platform is mandatory; renderer is optional for launcher/setup/tools; game requires gfx.
+* `DOM_UI_GUI` is a single mode with native/gfx backends.
+* Renderer uses a command-buffer IR. `softref` is the reference renderer.
+* Inventory counts are whole integers. Runtime simulation uses fixed-point types, mainly `Q4.12`, `Q16.16`, and `Q48.16`.
+* `Q4.12` is a compact storage codec, not the main runtime format.
+* World origin is `0,0,0` at center and sea level.
+* Space uses Cartesian positions plus Keplerian on-rails orbits.
+* Full N-body is not default.
+* Buildings, vehicles, machines, spacecraft, and portable structures are all unified constructions.
+* Prefabs/blueprints are templates or planned operations, not the primitive construction system.
+* Manual and queued work should share the job system.
+* Setup should feel native on each OS but use common setup logic.
+* Launcher should be common core plus CLI/TUI/GUI shells and extension hooks.
+* Tools and SDKs are first-class, including editors for world/save/game data/launcher/mods/packs.
+* Actual repository state is unverified.
+* External tooling facts must be checked before implementation.
+* Phase 7 still needs detailed prompt generation.
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Explain the current implementation roadmap in practical terms.”
+2. “Which Phase 1 prompt should I run first, and what should I check before running it?”
+3. “Turn Phase 1 into a step-by-step implementation checklist.”
+4. “Explain the Domino/Dominium split with examples.”
+5. “Explain the platform/renderer/UI/product contract architecture.”
+6. “Which earlier prompts are superseded by the ABIs-first roadmap?”
+7. “What should become formal requirements in the master spec book?”
+8. “What should remain unresolved until user confirmation?”
+9. “Generate detailed Phase 7 Codex prompts.”
+10. “Explain the construction graph architecture in more concrete terms.”
+11. “Explain seamless surface-to-space transitions.”
+12. “Create a verification checklist before applying the Codex prompts.”
+13. “Which external facts require current web verification?”
+14. “Which parts of this chat are unique and likely not duplicated elsewhere?”
+15. “Summarize this chat for the master Project Spec Book.”
+
+## 16. Final Plain-English Summary
+
+This chat was a major architecture-planning session for **Dominium** and its reusable engine layer, **Domino**. Its most important value is that it did not merely list features; it built a coherent implementation and abstraction strategy for a very large game ecosystem.
+
+The conversation started from a practical build-order concern: develop platforms and renderers, then use them to implement the launcher, setup, and game. But over time the project grew in scope and clarity. The user wanted portable, per-user, and system-wide installs; versioned game code; base/DLC/mod content; packs for graphics, sound, and music; instance management; launcher customisation; and support across many platforms and renderers. This required a much deeper foundation than a simple game executable.
+
+The reusable engine layer was named **Domino**. Domino is responsible for platform abstraction, rendering, audio, UI, input, core services, packages, instances, simulation control, canvas rendering, table/tree/view models, events, and plugin APIs. **Dominium** is the game/product layer built on Domino, containing setup, launcher, tools, game rules, content, and products.
+
+The final implementation order changed during the chat. The earlier plan of doing platforms/renderers first was superseded. The current plan is: first implement every ABI/API; second implement every platform; third implement every renderer; fourth build setup; fifth build launcher; sixth build tools and SDKs; seventh build the game. This is one of the most important things to preserve.
+
+A central product decision is that platform support is mandatory but renderer support is optional for launcher/setup/tools. A launcher should be able to run as CLI, TUI, native GUI, or GFX GUI. Renderer use is optional unless a custom canvas or preview is needed. The game client, however, requires graphics. UI is unified into `DOM_UI_NONE`, `DOM_UI_CLI`, `DOM_UI_TUI`, and `DOM_UI_GUI`, with backend flags for native and GFX implementations.
+
+Rendering is handled through a command-buffer IR consumed by multiple renderer backends. Planned renderers include software reference, modern APIs such as DirectX, Vulkan, and OpenGL, Apple APIs such as QuickDraw/Quartz/Metal, Windows GDI, and retro modes such as VGA, CGA, EGA, VESA, Hercules, and MDA. Each backend should expose capabilities and degrade or fail explicitly. The software reference renderer is intended to define canonical behaviour.
+
+The numeric and simulation architecture is deterministic. Gameplay economy and inventory use whole integer counts. Fixed-point types are used for physical and spatial values: `Q4.12`, `Q16.16`, and `Q48.16`. `Q4.12` is mainly a compact storage codec for bounded fields. `Q16.16` is the general runtime fixed-point type. `Q48.16` is used for large aggregate values like mass, volume, charge, and energy. The sim runs at arbitrary UPS independently of client FPS or vsync.
+
+The world model is a sparse 3D grid over a `2^24 m` toroidal surface, with origin `0,0,0` at the world center and sea level. The user wants realistic planetary surfaces with climate, weather, hydrology, atmosphere, geology, biomes, and other systems, but the architecture should use shared primitives like fields, substances, mixtures, reservoirs, and networks rather than one-off arrays.
+
+The construction model is also foundational. The user does not want buildings as prefabs. They want arbitrary construction: cut/fill terrain, mineshafts, open-cut mining, earthworks, sprawling factories, underground labs, skyscrapers, vehicles, ships, aircraft, spacecraft, stations, and portable structures. The design therefore unifies buildings, vehicles, machines, and structures as construction graphs made of parts and materials. Prefabs and blueprints are templates over these primitives. Blueprints are planned operations/diffs that compile into jobs. Manual player work and queued worker/robot/AI work should share the same job system.
+
+Space was designed to be realistic-feeling but computationally cheap. Authoritative space positions are Cartesian. Orbits use Keplerian on-rails elements with optional drifts and precession. Lagrange sites, rings, belts, radiation, gas clouds, asteroids, comets, moons, planets, black holes, and wormholes can be represented through sites, fields, graphs, and special rules. Full N-body physics is not the default. Seamless surface-to-space transitions should be achieved with reference frames, sim tiers, transition bands, streaming, and dual representations.
+
+The chat also planned setup, launcher, and tools. Setup has a shared core and OS-native wrappers: Windows MSI/EXE, macOS pkg/dmg/app, Linux deb/rpm/run/AppImage-like, and retro text installers. The launcher is a common core exposed through views, actions, tables, trees, and canvases; CLI/TUI/GUI shells all present the same model. Tools are first-class and include asset compiler, pack builder, replay inspector, test runner, world editor, save editor, game data editor, launcher editor, mod editor, pack tools, SDKs, and a GUI editor host.
+
+Many Codex prompts were generated: Phase 1 ABIs/APIs, platform backend templates, renderer backend templates, setup prompts, launcher prompts, tools prompts, and a Phase 7+ roadmap. Actual repo implementation remains unverified. Before doing anything, the repo should be inspected. The most important next action is to verify the actual repository state and then proceed with Phase 1, beginning with the Domino ABI/API prompt.
+
+# Reader Status
+
+* Chat title: Dominium Architecture IV
+* Report type: human-readable explanatory report
+* Main value of this chat: It defines the current high-level architecture, implementation roadmap, ABI/API strategy, product model, construction/world/space foundations, and Codex prompt plan for Dominium/DoMino.
+* Most important decision: Implement ABIs/APIs first, then platforms, renderers, setup, launcher, tools, and finally the game.
+* Most important unresolved issue: Actual repository state is unverified; schema/manifest/save/construction formats also remain undecided.
+* Most important next action: Verify the repository state before applying Phase 1 prompts.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: visible transcript had skipped sections; actual code state is unknown; external tooling/platform/renderer facts need verification; some earlier prompt groups were superseded by the later ABIs-first roadmap.

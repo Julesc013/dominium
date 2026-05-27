@@ -1,0 +1,846 @@
+GPT-5.5 Pro — Build 2026-05-25
+
+# Human-Readable Chat Report — Dominium Advanced Simulation and Infrastructure Architecture
+
+## 1. One-Page Orientation
+
+[FACT] This chat was about designing major architecture for the **Dominium/Domino deterministic engine**, with emphasis on advanced simulation, gameplay mechanics, user-buildable infrastructure, arbitrary placement, buildings, splines/corridors, signage, markings, and how all of that should eventually be implemented or merged into an existing refactor plan.
+
+The conversation began from a technical planning prompt for “Plan Part 6 — Advanced Simulation,” where the user asked for an architecture covering heat simulation, power grids, fluids, atmospheres, vehicles, structural loads, destruction, and mod-extensible physics. The engine was constrained from the start: **Domino Engine must be ISO C89**, deterministic, fixed-point where determinism matters, free of OS APIs, free of hardcoded game semantics, and portable across platforms. **Dominium**, the game/UI/tools layer, must stay within a portable **C++98 subset**. The user also emphasized strict layering, modularity, portability, deterministic semantics, and data-driven behavior.
+
+[FACT] The first major output was a high-level advanced simulation stack. It proposed simulation domains such as heat, electrical power, fluid networks, hydrology, atmospheres, vehicles, structural loads, and a mod-extensible physics framework. That architecture was not implemented in code. It was a design plan.
+
+The conversation then shifted from pure simulation to **gameplay and end-user features**. The central idea became that the engine should expose generic deterministic primitives, while Dominium and content define gameplay meaning. For example, the engine should not know that a machine “smelts ore” or that a particular sign is a road sign. Instead, those meanings should come from content, rules, prototypes, and deterministic commands. UI actions should emit commands; they should not directly mutate engine state. This matters because the whole project depends on replay, lockstep multiplayer, and deterministic simulation.
+
+The largest part of the chat focused on construction and infrastructure. The user wanted to know how to support overlapping lines and splines: dual-gauge rails, roads with footpaths, overhead electrification, undersea cables and pipelines, power lines alongside roads or rail, and similar real-world combinations. The working solution was to avoid treating these as independent splines fighting for space. Instead, the assistant proposed **corridor bundles**: a canonical alignment with content-defined cross-section slots. Attachments such as rails, lanes, cables, ducts, pipes, catenary, lighting, and sidewalks occupy slots over ranges along the corridor. This lets shared infrastructure exist as one coherent object rather than many overlapping lines.
+
+The design was then made more extensible and performant. The corridor system should have an editable authoring representation, but compile into deterministic runtime data such as microsegments, occupancy bitsets, connectivity graphs, spatial indices, and render/simulation extraction data. Cross-section packing rules could be content-defined and compiled into a small deterministic rule VM. Dirty flags, hot/cold data separation, deterministic rebuild budgets, and chunk-aligned indices were proposed to keep the system scalable.
+
+The user then expanded the ambition: users should be able to build “basically anything they see in real life,” including highways, interchanges, overpasses, subway systems, rail yards, substations, power plants, and dense industrial facilities. The answer was to make users edit high-level infrastructure concepts: **corridors, junctions, vertical layers, structure carriers, modules, facilities, buildings, anchors, and rules**. The user should not need to hand-place every micro-object. Complex things should be parametric and constraint-driven.
+
+The conversation then covered **signage and road markings**, first for roads and splines, then generalized to all buildings and arbitrary objects. This became the **DECOR** system: signs, markings, decals, props, lighting, and similar non-structural visual features. Automatic rules generate default signage and markings, while manual overrides allow users to pin, suppress, move, or edit them. The same idea extends to buildings, interiors, terrain, props, and rooms through **Host Surfaces + Anchor Frames**.
+
+A decisive late point was **arbitrary placement**. [FACT] The user asked whether buildings and structures could be placed at arbitrary locations, inclinations, rotations, and so on, or whether the system was stuck to grids. The answer established the intended direction: the engine should be **grid-agnostic**. Grids are optional UI snapping aids only. The engine should support arbitrary fixed-point placement, rotation, inclination, full 3D curves, local coordinate systems, and parametric host-relative anchors.
+
+Finally, the chat produced implementation-oriented artifacts: a staged Codex prompt plan and a prompt for an existing GPT-5.2 refactor chat so that these requirements could be merged into an already-existing engine refactor/optimization plan. Later, the chat generated a context transfer packet, downloadable report package, and an in-chat reader version. Those later artifacts preserved the conversation, but the substance of the chat is the architecture described above.
+
+[UNCERTAIN / UNVERIFIED] No repository files were inspected in this chat. No code was implemented. Proposed paths, module names, command names, file names, VM concepts, and data schemas are design proposals until checked against the actual codebase.
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began as an advanced simulation architecture plan
+
+[FACT] The user opened with a detailed starter prompt for “Plan Part 6 — Advanced Simulation.” The requested role was a senior simulation systems architect for the Dominium/Domino deterministic engine. The task was to define advanced simulation systems that integrate with the deterministic engine: heat, power, fluids, atmospheres, vehicles, structural loads, destruction, and a unified mod-extensible physics framework.
+
+This initial prompt was already highly constrained. The engine had to remain ISO C89, deterministic, fixed-point, data-driven, and free of OS APIs and game-specific semantics. The UI/tools side, Dominium, had to stay in a portable C++98 subset. The existing architecture assumed systems such as `dsys`, `dgfx`, deterministic world coordinates, TLV versioning, deterministic tick scheduling, replay, RES, ENV, BUILD, TRANS, STRUCT, JOB, AGENT, and multiplayer lockstep.
+
+The assistant responded with a top-level simulation stack. It proposed modules such as `dsim_core`, `dsim_math`, `dsim_heat`, `dsim_power`, `dsim_fluid`, `dsim_hydro`, `dsim_atmo`, `dsim_vehicle`, `dsim_struct`, and `dsim_mod`. It described fixed-point quantity types, deterministic tick order, and high-level solver ideas. This was a broad architectural foundation, not implementation.
+
+### The discussion shifted to gameplay mechanics
+
+The user then said they wanted to discuss how gameplay mechanics and end-user features are implemented “in the engine and game and such.” This was an important shift. The conversation moved from physical simulation domains to the boundary between engine primitives and gameplay meaning.
+
+The working answer was that gameplay should be built as **data + deterministic rules + commands** above generic engine primitives. The engine should know about things like structures, ports, networks, materials, graphs, resources, and simulation states, but it should not know specific game meanings such as “this recipe smelts iron” or “this research unlocks steel rails.” Dominium and content packs define those meanings. The UI emits commands. The deterministic rules layer validates and applies them through engine APIs.
+
+This preserved the user’s original constraints: no hardcoded semantics, deterministic replay, multiplayer lockstep, and mod extensibility.
+
+### Splines became corridors
+
+The next major turn came when the user asked about overlapping splines, lines, and runs. The examples were practical and real-world: dual-gauge rails, electric lines parallel to roads or rails, highway street lights, overhead or third-rail electrification, undersea cables and pipelines, footpaths and roads.
+
+The key working idea was that these should not be separate splines stacked on top of one another. That would lead to conflicts, unclear ownership, poor editing behavior, and difficult simulation extraction. Instead, the chat introduced **corridors**: a canonical alignment that can host many systems through cross-section slots.
+
+A corridor has a spine, segmentation, cross-section, slot occupancy, attachments, and clearance rules. A cross-section can define rail slots, road lanes, duct banks, catenary positions, sidewalks, barriers, drainage, and so on. Dual-gauge rail becomes a content-defined configuration of rail slots and rail offsets, not a hardcoded engine feature. This was the first major unifying idea for infrastructure.
+
+### Performance and extensibility were added
+
+The user then asked whether the corridor model could be made more extensible and performant. That prompted a refinement: the editable corridor should not be the same as the runtime representation. Users and tools manipulate high-level splines, attachments, and features. The engine compiles that into microsegments, indices, occupancy bitsets, connectivity edges, structural references, and render/sim extraction data.
+
+This introduced several lasting performance principles:
+
+* separate authoring data from compiled runtime data;
+* use deterministic microsegments for fast lookup and connectivity;
+* use chunk-aligned spatial indices;
+* use dirty flags and deterministic rebuild queues;
+* split hot data from cold data;
+* make cross-section compatibility content-driven through a small deterministic VM or equivalent rule system.
+
+[INFERENCE] The reason for this design was to let the system scale to large worlds with many roads, rails, utilities, and structures without turning every edit into a full rebuild or every overlap into expensive geometry operations.
+
+### The goal expanded to real-world infrastructure
+
+The user then asked how users could build “basically anything they see in real life,” including complex highways, interchanges, overpasses, subway systems, rail yards, substations, power plants, and so on. This expanded the design from splines to full construction gameplay.
+
+The answer was that real infrastructure is mostly combinations of alignments, junctions, vertical separations, modules, facilities, and standardized patterns. The proposed user-facing model was:
+
+1. sketch an alignment,
+2. classify it as a road, rail line, utility run, etc.,
+3. apply constraints such as slope, clearance, radius, or standard profile,
+4. refine control points and junctions,
+5. add details if desired.
+
+Complex nodes such as interchanges, rail yards, substations, and subway stations should be parametric junctions or facilities with ports and internal graphs. Bridges, tunnels, viaducts, cuttings, retaining walls, and similar features should be generated as **structural carriers** based on corridor and terrain constraints.
+
+This was a shift from “how do lines overlap?” to “how does the player build real infrastructure intuitively?”
+
+### Signage and road markings became a rule-driven DECOR system
+
+The user then asked about signage and road markings. The answer framed them as a **decal + prop + rule** system. Road markings are parametric decals. Signs are props. Automatic placement rules generate default signs and markings from road classes, junction contexts, lane topology, standards packs, speed zones, signals, and similar content-defined data.
+
+Manual placement is still allowed. The user can add, move, remove, pin, or suppress signs and markings. The design introduced **semantic keys** so autogenerated objects can be overridden without losing user edits during regeneration. For example, an automatically generated speed sign or lane arrow can be suppressed or pinned so it does not reappear or move unexpectedly.
+
+This mattered because the infrastructure system needed to be both realistic and editable. Fully manual signage would be tedious; fully automatic signage would frustrate users when they want custom control.
+
+### Placement generalized beyond splines
+
+The user then asked how to extend this system to buildings and arbitrary placement, not just splines. That led to the general **Host Surfaces + Anchor Frames** model.
+
+The idea was that anything placeable should attach to a host. A host can be terrain, a corridor, a structure, a room, or a prop. Hosts expose stable frames: surface panels, wall segments, roof edges, floor grids, sockets, doors, windows, room walls, lane stations, corridor offsets, terrain hit points, and so on. Placement is preferably parametric: object X is on host Y, anchor Z, at local coordinates `u,v` or station `s`, with offsets and facing rules. Freeform world placement still exists, but it is secondary and must be quantized.
+
+This generalized signage, markings, devices, decorations, props, and building details across the whole world.
+
+### The user asked what systems this should connect to
+
+The next step was integration. The user asked what other systems this should link into. The answer identified many: RES, ENV, BUILD, TRANS, STRUCT, SIM, POWER, FLUID/HYDRO, HEAT, ATMO, VEHICLE, JOB, AGENT, logistics, inventory, rendering, save/load, replay, multiplayer checksums, ownership/authority, permissions, construction zones, and localization.
+
+The important boundary was that DECOR should remain visual-only unless explicitly promoted to a STRUCT or TRANS device. A sign that only displays a texture is decor. A signal that affects train control or traffic AI is a device.
+
+### The architecture was consolidated
+
+The user then asked for the full building/structure/spline/etc. system “we’ve planned.” The answer consolidated the architecture into a layered model:
+
+* BUILD owns construction intent, jobs, staging, cost, and commands.
+* TRANS owns corridors, junctions, lanes, slots, attachments, and networked topology.
+* STRUCT owns buildings, volumes, enclosures, structural graphs, surface graphs, anchors, bridges, tunnels, and carriers.
+* DECOR owns signs, markings, decals, props, generated baselines, and manual overrides.
+* SIM owns deterministic physics and simulation state.
+* RES/CONTENT owns all semantics.
+
+This became the main architectural synthesis of the chat.
+
+### The grid question clarified a central requirement
+
+The user then asked whether arbitrary placement was possible or whether the system was stuck to grids. The answer established that the engine should be grid-agnostic. [FACT] The user’s question directly made arbitrary placement a major topic. [INFERENCE] The answer was accepted as the current design direction because the user then asked for a Codex prompt plan to implement changes necessary to achieve it.
+
+The conclusion was that grids are optional UI snapping tools, not engine constraints. Determinism comes from fixed-point math, quantized commands, stable IDs, ordered iteration, and parametric anchoring.
+
+### The conversation turned into implementation planning and preservation
+
+After the architecture was established, the user asked for a Codex prompt plan to implement any necessary changes. A nine-step plan was produced: coordinate/placement specs, deterministic pose/frame math, TRANS 3D corridors, STRUCT arbitrary orientation and anchors, DECOR host placement, deterministic command schemas, UI snapping refactor, performance hardening, and docs/migration notes.
+
+Then the user asked for a prompt to give an existing GPT-5.2 chat that already had an engine refactor/optimization plan. The goal was to make sure that other plan also covered the requirements developed here. A merge prompt was generated that instructed the other chat not to restart the plan, but to amend and validate it against arbitrary placement, unified spatial primitives, co-location, signage, buildings, and performance/determinism requirements.
+
+Finally, the chat shifted into archival mode: it produced a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat reader version. Those later outputs preserved the discussion for future aggregation.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Advanced deterministic simulation systems
+
+[FACT] The first technical topic was advanced simulation: heat, power, fluids, hydrology, atmospheres, vehicles, structural loads, destruction, and mod-extensible physics.
+
+This came up because the user explicitly asked for “Plan Part 6 — Advanced Simulation.” The goal was to design simulation systems that would fit into the deterministic engine rather than being bolted on later.
+
+The architecture proposed separate simulation domains. Heat simulation would handle conduction, convection, radiation, block/structure/enclosure temperatures, and heat sources/sinks. Power simulation would use deterministic multi-voltage graphs, load flow, line losses, transformers, faults, switchgear, and structure ports. Fluids were divided into hydrology for world-scale terrain fluids and fluid networks for pipes, ducts, tanks, pumps, valves, and reservoirs. Atmospheres would handle enclosed spaces, gas mixtures, pressure, humidity, temperature, vents, fans, leakage, and weather coupling. Vehicles would use deterministic kinematics, traction, torque curves, gearboxes, rail/road/spline constraints, and damage. Structural simulation would handle loads, foundations, stress, buckling, collapse, and damage.
+
+[INFERENCE] The conclusion was not a finalized implementation but a working architecture: each simulation domain should be deterministic, fixed-point, content-driven, versioned, replayable, and integrated through clear read/write boundaries.
+
+[UNCERTAIN / UNVERIFIED] Exact solvers, fixed-point formats, module paths, data schemas, and tick ordering remain to be verified and specified.
+
+### Topic 2 — Engine versus game responsibility
+
+The second topic was how gameplay mechanics and end-user features should live in the engine and game layers.
+
+[FACT] The user asked about gameplay mechanics and end-user features after the simulation plan. The answer established a strict separation: the engine defines deterministic generic systems; Dominium and content define actual gameplay meaning.
+
+The core idea was that player-facing actions become deterministic commands. A build placement, switch toggle, route assignment, or parameter change is serialized as a command, quantized, validated, and applied in a deterministic tick order. Gameplay systems then interpret engine state through content and rules.
+
+This matters because if the UI directly mutates state, or if the engine hardcodes gameplay semantics, replay and multiplayer determinism become fragile. It also matters for modding: new mechanics should come from content/rules, not engine forks.
+
+[UNCERTAIN / UNVERIFIED] The exact gameplay rules runtime was not specified. The command examples were conceptual.
+
+### Topic 3 — Corridors instead of overlapping splines
+
+The third and most influential topic was overlapping infrastructure.
+
+The user wanted realistic combinations: dual-gauge rail, roads with utilities, power alongside rail, third rail, overhead electrification, street lights, footpaths, undersea pipelines, and more. The problem was that a naive spline system would treat each thing as a separate line, causing ambiguous overlap, collision, ownership, rendering, and simulation issues.
+
+The proposed solution was **corridor bundles**. A corridor is the alignment. A cross-section defines slots. Attachments occupy slots over ranges. The system can then pack many related infrastructure types into one consistent spatial and topological object.
+
+This is important because it gives the engine a generic way to represent co-location without hardcoded cases. Dual gauge is not a special engine feature; it is an arrangement of rail slots. Catenary is an attachment in an overhead slot. A pipeline is an attachment in a buried or undersea slot. A road, footpath, median, shoulder, lane, barrier, and light row all become slots in a cross-section.
+
+[INFERENCE] This was one of the strongest architecture decisions because later topics repeatedly built on it.
+
+[UNCERTAIN / UNVERIFIED] The exact cross-section schema, attachment schema, and packing rules remain unresolved.
+
+### Topic 4 — Performance and extensibility of infrastructure
+
+Once corridors existed conceptually, the user asked whether the system could be more extensible and performant. This led to the authoring/runtime split.
+
+The editable data should remain human-friendly: splines, control points, attachments, junction parameters, features, modules, and rules. The runtime data should be compiled: microsegments, station frames, occupancy bitsets, connectivity graphs, spatial indices, and render/sim extraction structures.
+
+The proposed performance approach included:
+
+* deterministic microsegments,
+* chunk-aligned spatial indices,
+* dirty flags,
+* hot/cold data separation,
+* fixed rebuild budgets,
+* capability-based attachments,
+* content-defined packing rules.
+
+This matters because a world with thousands of roads, rail lines, pipes, cables, signs, lights, buildings, and facilities cannot run on ad hoc spline queries and full rebuilds after every edit.
+
+[UNCERTAIN / UNVERIFIED] Microsegment length, VM design, storage layout, budget values, and actual code integration remain open.
+
+### Topic 5 — Building complex real-world infrastructure
+
+The user then widened the goal: users should be able to build basically anything they see in real life. This included highways, interchanges, overpasses, subways, rail yards, substations, power plants, and more.
+
+The design shifted from “lines” to “infrastructure authoring.” Real infrastructure is not just geometry. It is made from alignments, standards, vertical separation, modules, junction patterns, facilities, carriers, and constraints.
+
+The proposed user workflow was intuitive and hierarchical: sketch the shape, classify it, constrain it, refine it, and then detail it. A highway interchange should be a parametric junction or collection of junctions, not thousands of hand-placed lane fragments. A rail yard should be generated from ladder/fan/yard patterns. A substation should be a modular facility with internal power graph bays, transformers, busbars, switchgear, and ports. A subway should use tunnels, portals, underground station boxes, levels, and flying junctions.
+
+This topic matters because it defines the game’s construction ambition. The engine must be flexible enough to represent real infrastructure, but the UI must not become a full CAD system.
+
+### Topic 6 — Signage, road markings, and automatic/manual detail
+
+The user asked how signage and road markings could be placed automatically or manually. The answer made them part of a rule-driven DECOR system.
+
+Automatic placement uses rules and standards packs. For example, a junction might generate stop lines, yield markings, lane arrows, speed signs, route signs, signal heads, gantries, or warning signs. Manual placement lets the player override those defaults. Semantic keys prevent generated signs from fighting manual edits.
+
+This topic matters because infrastructure without markings and signs looks incomplete, but manually placing everything would be tedious. The combination of generated baseline plus manual override gives both realism and control.
+
+[UNCERTAIN / UNVERIFIED] Actual standards packs, rule schema, semantic key format, localization, and AI interaction remain unresolved.
+
+### Topic 7 — General placement across buildings, terrain, interiors, and props
+
+The signage system initially attached to roads and lanes, but the user wanted it extended to buildings and arbitrary placement. This led to the host/anchor abstraction.
+
+A host can be terrain, a corridor, a structure, a room, or a prop. Hosts expose anchor frames. For a building, anchors might include facade panels, wall segments, windows, doors, roof edges, sockets, room walls, floors, ceilings, or machine mounts. For a corridor, anchors might be lane stations, shoulders, overhead frames, or utility slots. For terrain, anchors might be raycast hits, grid points, or slope-aligned frames.
+
+The placement itself is preferably parametric. It stores “this thing is attached to that host at that local coordinate,” rather than just “this thing is at world coordinate X.” This means if the host moves, rotates, resizes, or edits, the placement can follow deterministically.
+
+This topic connects directly to arbitrary placement and the no-grid requirement.
+
+### Topic 8 — System linkages
+
+The user asked what other systems the placement/building/decor system should link into. The answer mapped it to almost everything: RES, ENV, BUILD, TRANS, STRUCT, SIM, POWER, FLUID/HYDRO, HEAT, ATMO, STRUCTURAL, VEHICLE, JOB, AGENT, logistics, inventory, rendering, save/load, replay, multiplayer validation, ownership, authority, permissions, construction zones, and localization.
+
+The key principle was that not every system should depend on decor directly. Decorative signs and decals are cheap visual objects. If they affect simulation or gameplay, they must be promoted to devices with proper STRUCT/TRANS state and ports.
+
+### Topic 9 — Unified BUILD / TRANS / STRUCT / DECOR / SIM model
+
+After several focused discussions, the user asked for the whole system to be described. The resulting model was:
+
+* BUILD: construction intent, staging, jobs, costs, commands.
+* TRANS: corridors, junctions, lanes, tracks, utilities, cross-sections, attachments, connectivity.
+* STRUCT: buildings, volumes, enclosures, load-bearing graphs, surface/anchor graphs, structural carriers.
+* DECOR: visual signs, markings, decals, props, automatic rules, manual overrides.
+* SIM: deterministic physics and simulation domains.
+* RES/CONTENT: all semantics, prototypes, rules, standards, materials, and archetypes.
+
+This is probably the most important conceptual summary of the chat.
+
+### Topic 10 — Arbitrary placement and no grid lock
+
+The user directly asked whether things could be built at arbitrary location, inclination, rotation, etc., or whether the system was stuck to grids. The answer was that the engine should not be grid-bound.
+
+Grids can exist as optional snapping layers in the Dominium UI, but the authoritative engine representation should use continuous fixed-point world space and host-local parametric spaces. Buildings can be rotated. Corridors can curve in 3D. Decorations can attach to angled walls. Vehicles, roads, rails, tunnels, and utilities can exist on arbitrary alignments.
+
+This was a decisive requirement because it affects math, commands, UI, storage, rendering, simulation, and editing behavior.
+
+### Topic 11 — Codex and refactor prompts
+
+Once the architecture was clear, the user wanted implementation planning. The chat produced a nine-step Codex prompt plan covering specs, fixed-point pose/frame math, TRANS, STRUCT, DECOR, deterministic commands, UI snapping, performance hardening, and docs.
+
+Then it produced a prompt for another GPT-5.2 chat that already had a refactor/optimization plan. That prompt told the other chat to amend its existing plan instead of restarting, and to verify coverage of arbitrary placement, unified spatial primitives, co-location, signage, buildings, and determinism/performance.
+
+### Topic 12 — Context transfer and report packaging
+
+The final phase was preservation. The user asked for a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat report reader. These artifacts were about preserving the chat for future use and aggregation, not about new architecture decisions.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals the user stated
+
+[FACT] The user wanted an advanced simulation architecture for the deterministic engine. This was the initial request.
+
+[FACT] The user wanted to discuss how gameplay mechanics and end-user features should be implemented in the engine/game split.
+
+[FACT] The user wanted to support overlapping splines, lines, and runs realistically.
+
+[FACT] The user wanted the system to be extensible and performant.
+
+[FACT] The user wanted users to be able to build complex real-world infrastructure: highways, interchanges, overpasses, subways, rail yards, substations, power plants, and similar things.
+
+[FACT] The user wanted automatic and manual placement of signage and markings.
+
+[FACT] The user wanted the system extended to buildings and arbitrary placement, not just splines.
+
+[FACT] The user wanted to know what other systems the design should link into.
+
+[FACT] The user wanted the full planned building/structure/spline/etc. system summarized.
+
+[FACT] The user wanted to confirm whether arbitrary placement was possible or whether the system was grid-bound.
+
+[FACT] The user wanted a Codex prompt plan to implement necessary changes.
+
+[FACT] The user wanted a prompt for an existing GPT-5.2 refactor/optimization chat.
+
+[FACT] The user wanted a maximum-fidelity context transfer packet and later a downloadable report package.
+
+### Inferred goals
+
+[INFERENCE] The user is trying to build a coherent engine architecture that can scale from low-level deterministic simulation up to high-level player construction.
+
+[INFERENCE] The user wants to avoid early architectural mistakes that would make the game grid-bound, hardcoded, non-deterministic, or impossible to mod.
+
+[INFERENCE] The user wants future chats and Codex work to preserve continuity, not keep restarting or re-deciding the same core architecture.
+
+[INFERENCE] The user wants these reports to feed a future full Project Spec Book.
+
+### Goals that changed over time
+
+The chat started as a simulation architecture task. It then became a gameplay layering task. It then became an infrastructure representation task. It then became a construction UX and arbitrary placement task. Finally, it became an implementation/handoff/reporting task.
+
+The goal did not contradict itself; it expanded. Each new step exposed a deeper dependency. Simulation requires world structures. Gameplay requires deterministic commands. Infrastructure requires corridors. Corridors require arbitrary placement. Arbitrary placement requires fixed-point pose/frame math and host anchors. Implementation requires Codex/refactor prompts. Preservation requires report packages.
+
+### Goals that remain unresolved
+
+[UNCERTAIN / UNVERIFIED] The architecture has not been verified against the actual repository. The exact implementation details remain unresolved: Q formats, orientation math, command schemas, VM instruction set, microsegment length, carrier ownership, junction archetypes, facility modules, and DECOR/device promotion policy.
+
+---
+
+## 5. Decisions Made and Why
+
+A short overview:
+
+| Decision area                                             | Status                                          |
+| --------------------------------------------------------- | ----------------------------------------------- |
+| Engine language/platform constraints                      | User-stated hard constraints                    |
+| Engine/game semantic separation                           | Working design direction                        |
+| Corridor bundles over competing splines                   | Working design direction                        |
+| Authoring/runtime split                                   | Working design direction                        |
+| Real-world infrastructure via corridors/junctions/modules | Working design direction                        |
+| DECOR generated/manual system                             | Working design direction                        |
+| Host/anchor placement                                     | Working design direction                        |
+| No grid lock                                              | Core working requirement                        |
+| Codex/refactor prompts                                    | Produced artifacts, not executed implementation |
+
+### Decision: Domino Engine must remain ISO C89
+
+[FACT] This was explicitly stated by the user in the opening constraints. It is final unless the user later supersedes it.
+
+The rationale is portability and deterministic low-level control. It affects every future implementation prompt. Code generated for the engine must not use C99 features, C++ features, compiler extensions, platform APIs, or undefined behavior.
+
+This decision might only be revisited if the user deliberately changes the engine language constraint.
+
+### Decision: Dominium UI/tools must remain portable C++98
+
+[FACT] This was also explicitly stated by the user. It is a hard constraint.
+
+The rationale is similar: portability and compatibility. Dominium can be more expressive than the C engine, but it still must not depend on modern C++ features unless the constraint changes.
+
+### Decision: No floats where determinism matters
+
+[FACT] The user explicitly required no floats where determinism matters and instructed use of fixed-point Q formats.
+
+The rationale is deterministic replay and cross-platform behavior. Floating-point can vary across platforms, compilers, instruction sets, and optimization settings. The proposed architecture therefore uses fixed-point math for coordinates, pose, temperatures, pressures, energy, flow, voltage, and other simulation-relevant quantities.
+
+[UNCERTAIN / UNVERIFIED] Exact Q formats were not finalized.
+
+### Decision: No hardcoded game semantics in the engine
+
+[FACT] This was an explicit user constraint.
+
+The engine should not know what “iron,” “dual gauge,” “MUTCD,” “substation,” or “ore smelter” means in game terms. It may know generic structures such as prototypes, ports, slots, materials, physics properties, graphs, and commands. The meanings come from content and rules.
+
+This affects every subsystem. It is why roads, rails, signs, facilities, machines, and materials must be defined through RES/content rather than engine hardcode.
+
+### Decision: Gameplay uses deterministic commands and rules
+
+[INFERENCE] This was assistant-proposed and not contradicted; the user continued building on it.
+
+The decision is that UI actions should compile into commands, and gameplay rules should evaluate deterministically. This makes replay and lockstep multiplayer possible. It also makes UI/tools a presentation and command-emission layer rather than a direct state mutator.
+
+Alternatives considered implicitly: direct UI mutation or game-specific engine code. These were rejected because they violate determinism and layering.
+
+### Decision: Overlapping infrastructure uses corridors with slots
+
+[INFERENCE] This was assistant-proposed in response to the user’s overlap examples and became the working plan.
+
+The alternative was stacking independent splines. That was rejected because it would be hard to combine realistically. A corridor with cross-section slots makes co-location explicit. It lets one alignment host rails, lanes, sidewalks, ducts, cables, pipes, lights, catenary, barriers, drainage, and more.
+
+This affects TRANS, rendering, simulation extraction, editing, collision/clearance, structural loads, and user tools.
+
+### Decision: Corridor rules should be content-defined and extensible
+
+[INFERENCE] The proposed solution was a small deterministic packing VM or equivalent content-driven rule system.
+
+The rationale is mod extensibility. If cross-section compatibility is hardcoded, every new infrastructure type requires engine edits. If rules are content-defined, mods can add new profiles and slot arrangements.
+
+[UNCERTAIN / UNVERIFIED] The exact VM is unresolved.
+
+### Decision: Authoring and compiled runtime data should be separate
+
+[INFERENCE] This became a recurring design principle.
+
+Editable data should remain high-level and stable: splines, junctions, attachments, modules, anchors, and rules. Runtime data should be optimized and rebuildable: microsegments, occupancy, connectivity, tiles, and indices.
+
+This improves performance and determinism, but it requires careful cache/source-of-truth rules.
+
+### Decision: Complex infrastructure is built through high-level primitives
+
+[INFERENCE] This was the answer to the user’s “build anything in real life” question.
+
+The alternative is full CAD or hand-placing every object. That was rejected as impractical for gameplay. The chosen direction is parametric corridors, junctions, layers, modules, facilities, and carriers.
+
+This affects UI design as much as engine design.
+
+### Decision: Signage and markings are DECOR with generated baseline and manual overrides
+
+[INFERENCE] This was proposed and then generalized.
+
+Automatic generation reduces tedious manual work. Manual overrides preserve user control. Semantic keys prevent generated rules from fighting manual edits.
+
+This affects DECOR, UI tools, content packs, rendering, and possibly traffic/AI if objects are promoted to devices.
+
+### Decision: DECOR is visual-only unless promoted
+
+[INFERENCE] This boundary was introduced to avoid simulation and performance problems.
+
+If every sign, marking, light, and decal becomes simulation-authoritative, the system becomes expensive and tangled. Instead, most are visual. A signal, variable message sign, powered light, or control object becomes a STRUCT/TRANS device only when it affects gameplay or simulation.
+
+### Decision: Placement generalizes through Host Surfaces + Anchor Frames
+
+[INFERENCE] This was the response to extending beyond splines.
+
+The reason is stability. Host-relative placement survives movement, rotation, resizing, and editing better than raw world coordinates. Buildings, interiors, props, terrain, and corridors all expose anchors.
+
+This affects arbitrary placement, decorations, devices, interiors, buildings, and UI snapping.
+
+### Decision: Engine is grid-agnostic
+
+[INFERENCE] This was assistant-proposed in direct answer to the user’s question and then used as the basis for the implementation prompt plan. It should be treated as a central working requirement, though still not an implemented fact.
+
+Grids are optional UI aids. They do not define engine placement. This is crucial for realistic infrastructure, arbitrary rotations, slopes, tunnels, bridges, curved roads, angled buildings, and freeform layouts.
+
+This decision depends on fixed-point pose/frame math, quantized commands, stable anchors, and deterministic editing.
+
+### Decision: Implementation should be staged through Codex prompts
+
+[FACT] A nine-step Codex prompt plan was produced. It was not executed in this chat.
+
+The reason was to turn architecture into implementation without losing constraints. Each prompt isolates a major layer: specs, math, TRANS, STRUCT, DECOR, commands, UI, performance, docs.
+
+### Decision: Existing refactor plan should be amended, not restarted
+
+[FACT] The user asked for a prompt to give an existing GPT-5.2 refactor chat. The prompt explicitly told that chat not to restart or discard prior decisions.
+
+This matters because the architecture here must merge into existing work, not fork into a parallel plan.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Independent overlapping splines
+
+This idea was not developed as a serious final option, but it was the implied naive model behind the user’s question. It was superseded by corridors with slots.
+
+It was rejected because overlapping independent splines would not reliably represent shared rails, shared structures, clearance envelopes, co-located utilities, or deterministic editing. It might remain useful as an import or authoring input, but it should canonicalize into corridors.
+
+### Global grid-based construction
+
+The user explicitly questioned whether the system was stuck to grids. The design rejected global grid lock. Grids remain useful as snapping aids, but not as authoritative engine constraints.
+
+This rejection is strong for engine logic. It could be reconsidered only for optional UI modes, local building grids, or content-defined snapping.
+
+### Direct UI mutation of engine state
+
+This was rejected because it conflicts with deterministic replay and lockstep. UI tools should emit commands. The engine applies commands deterministically.
+
+### Hardcoded gameplay semantics
+
+This was rejected by the user’s initial constraints. The engine should not hardcode roads, rails, dual gauge, signs, recipes, or standards as game semantics. It can provide generic systems.
+
+### Tolerance-based solvers and unbounded convergence
+
+These were rejected for deterministic paths because they can vary by platform, iteration order, and runtime conditions. Fixed iteration counts, bounded budgets, and quantized thresholds are preferred.
+
+### Raw world-space placement as the primary model
+
+Raw world pose is not fully rejected. It is allowed as a fallback. But it is deprioritized because it does not survive host edits as well as parametric anchors. The preferred model is host-relative placement.
+
+### Render mesh as simulation source-of-truth
+
+This was rejected because meshes are poor authoritative data for deterministic simulation and editing. The source of truth should be parametric authoring data; meshes and tiles are compiled caches.
+
+### Hand-placing every micro-object
+
+This was rejected as the primary UX for real infrastructure. It may remain available for detail editing, but not for building highways, rail yards, substations, or plants at scale.
+
+### AC power and multi-phase fluids as immediate baselines
+
+The advanced simulation plan suggested simpler baselines first: deterministic DC-like load flow for power and simpler fluid network models before advanced AC or multi-phase complexity. These are deprioritized rather than permanently rejected.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The visible rationale throughout the chat was shaped by a few pressures.
+
+First, the engine must be deterministic. That requirement rules out casual use of floating point, unordered iteration, OS state, unbounded solvers, tolerance-driven convergence, and direct UI mutation. It pushes the architecture toward fixed-point math, stable IDs, deterministic command streams, TLV formats, checksums, and fixed tick ordering.
+
+Second, the engine must be data-driven and mod-extensible. That rules out hardcoded gameplay semantics. It also explains why rail gauges, road standards, signage rules, machine behavior, materials, fluids, conductors, and facility modules should come from content. The engine should provide generic mechanisms: slots, ports, graphs, anchors, prototypes, rules, commands, and simulation domains.
+
+Third, the system must let players build complex real-world infrastructure. That rules out both simplistic grids and full manual CAD. The chosen middle path is high-level parametric authoring: corridors, junctions, modules, layers, facilities, anchors, generated carriers, and manual overrides.
+
+Fourth, the system must be performant. A naive fully dynamic spline/mesh system would become expensive. That is why authoring data is separated from compiled runtime data. The player edits understandable objects; the engine runs on microsegments, indices, graphs, and tiles.
+
+Fifth, the user clearly wanted future continuity. The later part of the chat moved into Codex prompts, refactor integration, context transfer, downloadable packaging, and in-chat reading. That means the architecture is not just exploratory; it is meant to be carried forward into implementation planning and a future spec book.
+
+[INFERENCE] The user seemed to care most about not painting the project into a corner. The repeated themes were extensibility, determinism, strict layering, arbitrary placement, and preserving enough context that future assistants or tools do not restart from scratch.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+### First: verify the actual repository
+
+The most important practical next step is to inspect the current repository. This chat proposed module names and file paths, but did not verify them.
+
+Why it matters: implementing against invented paths or assumptions would create bad Codex prompts and possibly wrong code.
+
+Output: a repo-aware map of existing systems, names, files, constraints, and gaps.
+
+What could go wrong: assuming the planned architecture already exists.
+
+### Second: compare with the existing GPT-5.2 refactor plan
+
+The user said another chat already has an engine refactor/optimization plan. This chat generated a prompt to merge requirements into that plan.
+
+Why it matters: two independent refactor plans could conflict. The right process is a delta: what already satisfies these requirements, what is missing, what conflicts, and what needs clarification.
+
+Output: a merged plan or conflict register.
+
+What could go wrong: duplicating or forking architecture.
+
+### Third: audit grid assumptions
+
+Because arbitrary placement is now central, the existing code must be checked for hidden grid assumptions.
+
+Why it matters: a grid-bound engine would contradict the chat’s most important placement direction.
+
+Output: list of grid-coupled code paths and required changes.
+
+What could go wrong: UI snapping grids accidentally become engine constraints.
+
+### Fourth: write the placement and quantization spec
+
+This should define world space, corridor space, surface space, room space, structure-local space, quantization rules, command boundary behavior, stable ordering, and serialization.
+
+Why it matters: arbitrary placement cannot be deterministic unless all coordinates and orientations are quantized and represented consistently.
+
+Output: formal spec and headers or equivalent implementation contracts.
+
+### Fifth: choose deterministic pose/frame math
+
+This is a blocker for arbitrary rotation and inclination. The project must choose a fixed-point orientation representation: fixed-point quaternion, fixed-point basis, or yaw/pitch/roll with deterministic trig lookup.
+
+Why it matters: all arbitrary placement, corridors, structures, anchors, and decor depend on stable frame math.
+
+Output: deterministic math module with tests and golden outputs.
+
+What could go wrong: overflow, drift, platform-dependent normalization, or hidden float usage.
+
+### Sixth: define deterministic placement commands
+
+All player edits must become versioned commands. Placement commands for TRANS, STRUCT, DECOR, and derived parallel corridors need schemas and conflict rules.
+
+Why it matters: replay and multiplayer lockstep depend on command determinism.
+
+Output: TLV command schemas and validation rules.
+
+### Seventh: implement or specify TRANS, STRUCT, and DECOR changes
+
+TRANS needs 3D corridors, z-profiles, optional roll/cant, microsegments, slots, attachments, and junctions. STRUCT needs arbitrary orientation, local frames, surfaces, anchors, enclosures, and carriers. DECOR needs host placement, rules, overrides, semantic keys, and tiles.
+
+These are large tasks and should be staged.
+
+### Eighth: refactor Dominium UI snapping
+
+The UI should use a snap stack: anchors, sockets, corridor stationing, surface grids, and optional world grids. Snapping should produce quantized commands, not engine grid dependence.
+
+### Ninth: performance hardening
+
+After core models exist, implement dirty flags, compile budgets, hot/cold storage, spatial indices, and deterministic profiling counters.
+
+### Tenth: documentation and migration
+
+All invariants should be documented: no grid dependency, no floats in deterministic paths, no hardcoded semantics, stable IDs, command boundary quantization, source-vs-cache ownership, and DECOR/device promotion boundary.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit technical constraints
+
+[FACT] Domino Engine is ISO C89.
+
+[FACT] Dominium UI/tools are portable C++98.
+
+[FACT] No OS APIs inside engine code.
+
+[FACT] No floats where determinism matters; fixed-point Q formats should be used.
+
+[FACT] No platform-dependent behavior.
+
+[FACT] No hardcoded game semantics; all semantics should be data-driven.
+
+[FACT] TLV-versioned content formats are assumed.
+
+[FACT] Deterministic tick scheduler, replay, and lockstep multiplayer are assumed.
+
+### Explicit communication and preservation preferences
+
+[FACT] The user asked for deterministic, technical, concise tone, no fluff, and clarifying questions only when logically required.
+
+[FACT] The user asked later reports to preserve uncertainty labels: FACT, INFERENCE, UNCERTAIN / UNVERIFIED, and PROJECT-CONTEXT.
+
+[FACT] The user asked not to turn brainstorms into decisions or assistant suggestions into user decisions unless accepted.
+
+[FACT] The user asked to preserve rejected options, contradictions, artifacts, prompts, timelines, dependencies, risks, assumptions, and unresolved issues.
+
+### Inferred preferences
+
+[INFERENCE] The user prefers implementation-ready architecture, not vague conceptual language.
+
+[INFERENCE] The user values continuity across chats and wants future assistants to build from prior work rather than restart.
+
+[INFERENCE] The user prefers high-fidelity preservation over short summaries when handing off project state.
+
+### Things future assistants should avoid
+
+They should avoid claiming implementation happened, inventing repo paths, assuming exact Q formats, treating the architecture as final code, reintroducing grids, flattening subsystem boundaries, hardcoding semantics, using floats, using C99/C++11, ignoring the existing refactor plan, or merging this chat into a master spec without preserving uncertainty.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+This chat created many textual artifacts. They are important because they are the stepping stones of the architecture.
+
+The first artifact was the **advanced simulation architecture response**. It proposed simulation modules and solver boundaries. It should feed a future simulation architecture chapter, but it needs more detail before implementation.
+
+The second was the **gameplay mechanics architecture response**. It explained deterministic commands, gameplay rules, and engine/game separation. It should feed a command/replay/gameplay layering spec.
+
+The third was the **corridor bundle and slots response**. This is one of the most important artifacts. It established how overlapping infrastructure should be represented.
+
+The fourth was the **extensible performant corridor response**. It introduced compiled microsegments, a packing VM, dirty flags, hot/cold data, and spatial indices.
+
+The fifth was the **build-anything infrastructure response**. It explained how to build highways, interchanges, subways, yards, substations, and plants through corridors, junctions, layers, modules, and facilities.
+
+The sixth was the **signage and road markings response**. It proposed decals, props, rules, generated baseline, manual overrides, and semantic keys.
+
+The seventh was the **universal host/anchor placement response**. It generalized placement to buildings, interiors, terrain, rooms, and props.
+
+The eighth was the **system linkage response**. It mapped the architecture to other engine and game systems.
+
+The ninth was the **full BUILD/STRUCT/TRANS/DECOR system summary**. It consolidated the system into clear layers.
+
+The tenth was the **arbitrary placement / no grid lock response**. This is probably the most important single architectural commitment for placement.
+
+The eleventh was the **Codex prompt plan**. It contains nine staged implementation prompts. It should be preserved but not executed blindly; repo verification is needed first.
+
+The twelfth was the **existing GPT-5.2 refactor merge prompt**. It is useful if the user returns to the other refactor chat or provides its plan here.
+
+The thirteenth was the **maximum-fidelity context transfer packet**. It preserved the chat state.
+
+The fourteenth was the **downloadable final report package** and the later **in-chat report reader**. These are preservation artifacts, not new design decisions.
+
+[FACT] No code files were edited in this chat.
+[FACT] No repository files were inspected.
+[UNCERTAIN / UNVERIFIED] The generated package files exist in the chat environment, but future availability depends on the platform/session. The substance has been rendered in chat for preservation.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+The biggest unresolved issue is the actual repository state. The conversation designed architecture without inspecting files. Before implementation, the repo must be checked.
+
+The second unresolved issue is the existing GPT-5.2 refactor plan. The user said such a plan exists elsewhere, but its contents were not available in this chat. The merge prompt was created, but there is no evidence here that it was used or that the other plan was updated.
+
+The third unresolved issue is fixed-point units. Q16.16 and Q24.8 were mentioned as assumed or representative, but exact Q formats per quantity are not finalized. This matters for overflow, precision, serialization, and deterministic math.
+
+The fourth unresolved issue is orientation representation. Arbitrary rotation and inclination require a deterministic pose/frame system. The chat mentioned possible approaches but did not choose one.
+
+The fifth unresolved issue is existing grid dependency. The architecture says the engine should be grid-agnostic, but the current code may or may not be. That must be audited.
+
+The sixth unresolved issue is the corridor runtime detail: microsegment length, segmentation policy, spatial index structure, packing VM, slot schema, attachment schema, and dirty queue behavior.
+
+The seventh unresolved issue is STRUCT/TRANS ownership of carriers. Bridges, tunnels, viaducts, cuttings, and retaining walls are generated from corridors but are structural objects. The lifecycle boundary must be specified.
+
+The eighth unresolved issue is junction and facility schemas. Interchanges, rail yards, subway stations, substations, and power plants need parametric templates and internal graphs. The chat described the need but did not define schemas.
+
+The ninth unresolved issue is DECOR rules. Semantic keys, pin/suppress behavior, standards packs, generated/manual conflict resolution, localization, and whether signs affect AI all need specification.
+
+The tenth unresolved issue is replay/checksum handling. Source state should be authoritative; compiled caches should generally be rebuildable. Exact checksum and serialization contracts need design.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+A future assistant could mistake the architecture for implemented code. That would be the most serious error. This chat produced design plans, not repo changes.
+
+A future assistant could treat assistant suggestions as final user decisions. Some constraints are hard user requirements, but many details are assistant-proposed working designs. They should be preserved as current plan unless superseded, but not overstated as implemented facts.
+
+A future assistant could reintroduce global grid dependency because grids are convenient. That would undermine one of the most important outcomes of the chat. Grids should be UI snapping aids only.
+
+A future assistant could hardcode gameplay semantics into the engine. This would violate the user’s core architecture constraint and damage mod extensibility.
+
+A future assistant could ignore the authoring/runtime split and make compiled meshes or caches authoritative. That would create save/load, replay, and editing problems.
+
+A future assistant could let DECOR become simulation-authoritative by accident. The chat’s boundary was clear: decor is visual unless promoted to a device.
+
+A future assistant could write Codex prompts that use C99, modern C++, floats, OS APIs, unordered iteration, tolerance-based convergence, or unversioned data. Every implementation prompt must guard against those.
+
+A future assistant could merge this chat incorrectly with other chats by deduplicating uncertain ideas too aggressively. The correct approach is to preserve source labels, conflicts, and tentative status.
+
+A future assistant could forget rejected options and re-propose independent overlapping splines, global grids, direct UI mutation, or full CAD-style micro-placement. Those were already considered and rejected or deprioritized.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes a major architecture slice for the future Dominium Project Spec Book.
+
+It should inform chapters on:
+
+* deterministic engine constraints,
+* simulation domains,
+* gameplay command/rule layering,
+* BUILD/TRANS/STRUCT/DECOR/SIM boundaries,
+* corridor infrastructure,
+* arbitrary placement,
+* structures and anchors,
+* signage/markings/decor,
+* construction UI,
+* performance and compiled runtime representations,
+* replay/checksum/lockstep,
+* Codex implementation sequencing.
+
+The unique contribution is the way it ties together arbitrary placement, corridor bundles, real-world infrastructure authoring, buildings, decor, and deterministic simulation under one architecture. Other chats may cover engine refactoring, rendering, worldgen, agents, economy, or content systems separately. This chat should not be merged prematurely with those; it should be used as a source of requirements and design directions, with uncertainty preserved.
+
+Formal requirements candidates include:
+
+* engine grid-agnostic placement,
+* optional UI snapping only,
+* fixed-point deterministic pose/frame math,
+* command-based edits,
+* no hardcoded semantics,
+* corridor slots for co-located infrastructure,
+* generated/manual DECOR with overrides,
+* DECOR/device promotion boundary,
+* authoring data separate from compiled caches.
+
+Background context includes examples like dual-gauge rail, undersea pipelines, highway lighting, subway systems, and substations. These examples illustrate requirements but should not necessarily become hardcoded scope commitments without user confirmation.
+
+Items needing verification before becoming final spec include exact Q formats, orientation representation, repo paths, current refactor status, packing VM design, microsegment size, carrier ownership, command schemas, and checksum rules.
+
+---
+
+## 14. What I Should Remember
+
+* The chat started with advanced simulation but became a broader architecture discussion about how the engine should support realistic, deterministic, user-buildable infrastructure.
+
+* The hard constraints are not optional: C89 engine, C++98 UI/tools, fixed-point deterministic math, no OS APIs in engine, no platform-dependent behavior, TLV versioning, replay/lockstep, and no hardcoded game semantics.
+
+* The engine/game boundary is central. Domino provides deterministic generic systems. Dominium and content provide gameplay meaning, UI, tools, rules, standards, and official packs.
+
+* Overlapping splines should not be independent objects fighting for space. They should become corridor bundles with content-defined cross-section slots and attachments.
+
+* Real-world infrastructure should be built through high-level primitives: corridors, junctions, vertical layers, modules, facilities, structures, anchors, and generated carriers.
+
+* The runtime should be compiled and optimized: microsegments, spatial indices, occupancy bitsets, connectivity graphs, dirty flags, hot/cold data separation, and deterministic budgets.
+
+* Signage and markings belong in DECOR by default. They are generated by rules but can be manually pinned, suppressed, moved, or edited.
+
+* DECOR is visual-only unless promoted to a STRUCT/TRANS device.
+
+* Buildings, interiors, terrain, corridors, and props should all support placement through Host Surfaces + Anchor Frames.
+
+* The engine should be grid-agnostic. Grids are optional UI snapping aids only.
+
+* Determinism without grids depends on fixed-point pose/frame math, quantized commands, stable IDs, ordered iteration, and parametric anchoring.
+
+* The Codex prompt plan exists but was not executed. It must be adapted to the actual repo.
+
+* The existing GPT-5.2 refactor plan was not visible here. This chat produced a prompt to merge requirements into it, but the merge outcome is unknown.
+
+* The biggest unresolved technical choices are Q formats, orientation representation, grid audit, command schemas, packing VM, microsegment policy, carrier ownership, DECOR rules, and checksum/source-vs-cache rules.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Explain the BUILD / TRANS / STRUCT / DECOR / SIM separation in simpler terms.”
+2. “Which parts of this architecture are hard user requirements versus assistant-proposed design?”
+3. “Explain the no-grid arbitrary placement requirement and what it implies for engine code.”
+4. “Turn the Codex prompt plan into a practical implementation checklist.”
+5. “What should I verify in the repo before implementing anything from this chat?”
+6. “Explain how corridor slots solve overlapping infrastructure.”
+7. “How should signage and markings work across roads, buildings, and interiors?”
+8. “What should go into the future Project Spec Book from this chat?”
+9. “Which decisions are most likely to conflict with another refactor plan?”
+10. “What are the highest-risk mistakes a future assistant or Codex run could make?”
+11. “Draft a formal spec for arbitrary placement based only on this chat.”
+12. “Draft a formal spec for the corridor/cross-section/slot system.”
+13. “Draft a formal spec for DECOR and host anchors.”
+14. “Summarize this chat for a non-technical collaborator.”
+15. “Extract only the hard requirements from this chat.”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was a major architecture planning session for the Dominium/Domino deterministic engine. It began with advanced simulation and expanded into the broader question of how the engine should support complex, realistic, user-built infrastructure while remaining deterministic, data-driven, portable, and mod-extensible.
+
+The starting point was a strict technical foundation. Domino Engine must be ISO C89, deterministic, fixed-point where determinism matters, free of OS APIs, free of hardcoded game semantics, and safe for replay and multiplayer lockstep. Dominium, the UI/tools/game layer, must stay in a portable C++98 subset. These constraints shaped every later design choice. The engine should provide generic systems; content and Dominium should provide meaning.
+
+The first design area was advanced simulation. The chat sketched domains for heat, power, fluids, hydrology, atmospheres, vehicles, structural loads, destruction, and mod-extensible physics. These systems would use fixed-point deterministic math, stable tick ordering, content-defined parameters, TLV formats, serialization, replay, and checksum hooks. This was a high-level plan, not code.
+
+The next step was gameplay layering. The chat established that gameplay mechanics should be implemented as deterministic commands plus data-driven rules. The UI should not directly mutate engine state. Instead, player actions become quantized commands that the deterministic engine applies in stable order. Dominium and content define recipes, research, signs, standards, machines, facilities, and other game semantics. This protects replay, multiplayer lockstep, and modding.
+
+The central architecture work focused on infrastructure. The user wanted overlapping lines and splines to combine realistically: dual-gauge rails, roads with footpaths, utilities, electrification, street lights, pipelines, and undersea cables. The key design was to replace independent overlapping splines with **corridor bundles**. A corridor is a canonical alignment. A content-defined cross-section provides slots. Attachments occupy slots over station ranges. This lets many systems share one alignment without engine-specific hardcode.
+
+To make this scalable, the chat introduced an authoring/runtime split. Users and tools edit high-level splines, corridors, junctions, attachments, modules, and rules. The engine compiles those into microsegments, frames, occupancy bitsets, connectivity graphs, spatial indices, structural references, and decor/render tiles. Performance depends on dirty flags, hot/cold data separation, deterministic rebuild budgets, and chunk-aligned indices. Extensibility depends on content-defined rules, possibly through a small deterministic packing VM.
+
+The user then broadened the goal: the system should let players build basically anything they see in real life, including highways, interchanges, overpasses, subways, rail yards, substations, power plants, and industrial facilities. The answer was that players should edit high-level infrastructure primitives: corridors, junctions, vertical layers, modules, facilities, structures, anchors, and generated carriers. Complex infrastructure should be built through parametric templates and constraints, not by manually placing every micro-object.
+
+Signage and markings became the DECOR system. Road markings are parametric decals. Signs are props. Automatic rules generate default signs and markings from topology, standards, and context. Manual overrides let users pin, suppress, move, or edit generated items. The same concept later generalized beyond roads to buildings, interiors, terrain, props, and rooms. This became the Host Surfaces + Anchor Frames model, where every host exposes stable local frames for placement.
+
+A major late conclusion was that the engine must not be grid-bound. The user asked directly whether arbitrary location, inclination, rotation, and placement were possible. The answer established that the engine should be grid-agnostic. Grids are optional UI snapping aids only. Authoritative placement should use continuous fixed-point world space and local parametric spaces such as corridor stationing, surface `u,v`, structure-local frames, and room-local coordinates. Determinism comes from fixed-point math, quantized commands, stable IDs, ordered iteration, fixed iterations, and parametric anchors—not from grids.
+
+The conversation then moved into implementation planning. A nine-step Codex prompt plan was created: define coordinate/placement specs, implement deterministic pose/frame math, upgrade TRANS for 3D corridors, upgrade STRUCT for arbitrary orientation and anchors, implement DECOR host placement, define deterministic placement commands, refactor UI snapping, add performance hardening, and update docs/invariants/migration notes. Another prompt was created for an existing GPT-5.2 refactor chat so these requirements could be merged into that plan rather than forked.
+
+The main decisions to preserve are: strict language/determinism constraints; engine/game semantic separation; command-based UI actions; corridor bundles for co-located infrastructure; authoring data separate from compiled runtime caches; high-level infrastructure authoring through corridors/junctions/modules; DECOR as generated/manual visual detail; host-relative anchors for placement; no grid lock; and careful staged implementation.
+
+The main unresolved issues are practical and technical: actual repo structure, existing refactor plan contents, current grid assumptions, exact Q formats, orientation representation, command schemas, packing VM design, microsegment policy, carrier ownership, junction/facility schemas, DECOR semantic keys, promotion boundary, localization, and checksum/source-vs-cache rules.
+
+The next assistant should not assume any code exists. No repository files were inspected. No implementation happened in this chat. This chat is a design and planning artifact. Its value is that it establishes a coherent architecture direction for deterministic, arbitrary, realistic infrastructure construction in the Dominium/Domino engine.
+
+# Reader Status
+
+* Chat title: Dominium Advanced Simulation and Infrastructure Architecture
+* Report type: human-readable explanatory report
+* Main value of this chat: It connects deterministic simulation, gameplay layering, real-world infrastructure construction, arbitrary placement, corridors, structures, decor, and implementation planning into one coherent architecture direction.
+* Most important decision: The engine should be grid-agnostic; grids are optional UI snapping aids only, while deterministic arbitrary placement is achieved through fixed-point math, quantized commands, stable IDs, ordered iteration, and host-relative parametric anchoring.
+* Most important unresolved issue: The architecture has not been verified against the actual repository, and exact implementation choices such as Q formats, orientation representation, command schemas, and current grid assumptions remain unresolved.
+* Most important next action: Inspect the actual repo and existing refactor plan, then produce a delta showing what already satisfies this chat’s requirements, what conflicts, and what must be implemented.
+* Safe to use for later aggregation: with caveats
+* Main caveats: This chat produced architecture and prompts, not implemented code; many details are assistant-proposed working designs rather than explicit user-finalized decisions; proposed paths, module names, command names, schemas, and implementation details remain unverified.

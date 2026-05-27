@@ -1,0 +1,3376 @@
+{
+  "spec_sheet": {
+    "metadata": {
+      "chat_label": "Dominium Architecture III",
+      "date_anchor": "2026-05-27 Australia/Melbourne",
+      "source_scope": "This visible chat only, including its prior OC-1 inventory and Context Transfer Packet. Uploaded file contents are not verified.",
+      "apparent_coverage": "Full visible chat appears available; uploaded files require inspection.",
+      "confidence_1_to_5": 4,
+      "staleness_risk": "Medium-High for external compatibility claims; Low for internal user decisions.",
+      "safe_for_aggregation": "yes, with caveats",
+      "main_limitations": [
+        "Repo archive not inspected",
+        "Uploaded launcher summaries unverified",
+        "Codex prompts not confirmed applied",
+        "External OS/library claims need verification"
+      ]
+    },
+    "summary": {
+      "one_sentence": "This chat defines Dominium launcher architecture, scripts, render/platform backend strategy, software renderer, cameras/views, keybindings, support tiers, and handoff package state.",
+      "short_brief": "This chat, labelled **Dominium Architecture III**, focused on Dominium’s launcher, platform/render backend strategy, scripts, input bindings, support tiers, and handoff packaging. The user supplied the standing Dominium project contract: deterministic fixed-step simulation, strict C89/C++98-era constraints, no floats in `/engine/core` or `/engine/sim`, fixed tick phase ordering, deterministic serialization, renderer/audio/UI never mutating simulation, OS boundaries isolated under `/engine/platform`, and explicit CMake sources with no network fetches. Those constraints remain binding for every future implementation decision in this chat.\n\nThe central workstream was the **launcher**. The user first described a launcher UI with tabs **News, Changes, Mods, Instances, Accounts, Settings** and bottom selectors for account, instance, platform, renderer, graphical/headless, and client/server. The architecture then evolved: the launcher is not an in-process mode switcher; selected launcher settings execute separate client or server binaries. The launcher backend/core must be C89, while frontend code for each binary may use C++98. Client/server binaries may be single-system builds, with the launcher and scripts selecting the correct executable. The current desired launcher architecture is system-agnostic and modular: a C89 core for configuration, capabilities, state, view model, and launch-plan creation; platform-specific process adapters; and multiple frontend skins such as engine-rendered software UI, native Win32, CLI, or TUI.\n\nThe user also finalized user-facing entrypoints. The current primary commands are **`dominium`** to launch the launcher, **`setup`** to launch installer/repair/uninstaller, **`dom-client`** to dispatch a client binary, and **`dom-server`** to dispatch a",
+      "main_topics": [
+        "Deterministic Dominium core and repository contract",
+        "System-agnostic launcher architecture",
+        "Launcher backend/frontend language split",
+        "Launcher-to-client/server process execution",
+        "Unified user-facing entrypoint scripts",
+        "Setup / installer / repair / uninstaller wrapper",
+        "Platform backend taxonomy and capability model",
+        "Renderer backend taxonomy and capability model",
+        "Universal all-platform software renderer",
+        "Vector/full graphics render modes",
+        "Instant zoom and 2D/3D view switching",
+        "Arbitrary cameras, multi-view, overlays, and offscreen targets",
+        "Launcher UI tabs and bottom selectors",
+        "Input and keybinding specification",
+        "Platform support tiers",
+        "Capability matrix",
+        "Launcher build/test flow",
+        "Uploaded launcher code refactor",
+        "Documentation and Codex implementation prompts",
+        "Chat handoff and report packaging"
+      ],
+      "main_outputs": [
+        "Context transfer packet",
+        "Support tier table",
+        "Capability matrix draft",
+        "Codex implementation prompts",
+        "F1-F12 keymap",
+        "This downloadable package"
+      ],
+      "highest_priority_carry_forward": [
+        "Launcher executes separate binaries",
+        "C89 launcher core / C++98 frontends",
+        "Universal software renderer replaces vector_soft",
+        "Renderer modes vector/full everywhere",
+        "Final support tiers",
+        "Latest renderer list + DX12 uncertainty",
+        "Platform categories + X11/Wayland uncertainty",
+        "dominium/setup/dom-client/dom-server",
+        "Arbitrary cameras and view switching",
+        "Uploaded files require reinspection"
+      ]
+    },
+    "source_rules": {
+      "labels_used": [
+        "FACT",
+        "INFERENCE",
+        "UNCERTAIN / UNVERIFIED",
+        "PROJECT-CONTEXT"
+      ],
+      "conflict_rules": [
+        "Direct user statements outrank assistant suggestions",
+        "Later user refinements supersede earlier brainstorms",
+        "Tentative status must be preserved"
+      ],
+      "staleness_rules": [
+        "External compatibility facts require verification before use",
+        "Uploaded file summaries require inspection before code changes"
+      ]
+    },
+    "user_preferences": {
+      "explicit": [
+        {
+          "id": "PREF-01",
+          "preference": "Concise but complete responses.",
+          "area": "tone/length",
+          "strength": "strong",
+          "implication": "Avoid fluff but preserve actionable detail.",
+          "label": "FACT"
+        },
+        {
+          "id": "PREF-02",
+          "preference": "Cite paths in coding/design work.",
+          "area": "coding/evidence",
+          "strength": "strong",
+          "implication": "Use file paths and concrete repo locations.",
+          "label": "FACT"
+        },
+        {
+          "id": "PREF-03",
+          "preference": "Propose concrete next steps.",
+          "area": "planning",
+          "strength": "strong",
+          "implication": "End architecture with implementation steps when appropriate.",
+          "label": "FACT"
+        },
+        {
+          "id": "PREF-04",
+          "preference": "Ask clarification only when blocking.",
+          "area": "planning",
+          "strength": "strong",
+          "implication": "Proceed with best-effort when possible.",
+          "label": "FACT"
+        },
+        {
+          "id": "PREF-05",
+          "preference": "Prefer Codex-ready prompts when asked.",
+          "area": "coding workflow",
+          "strength": "strong",
+          "implication": "Generate complete implementation prompts.",
+          "label": "FACT"
+        },
+        {
+          "id": "PREF-06",
+          "preference": "Design for system-agnostic portability and modular extensibility.",
+          "area": "architecture",
+          "strength": "strong",
+          "implication": "Separate core from frontends/adapters.",
+          "label": "FACT"
+        },
+        {
+          "id": "PREF-07",
+          "preference": "Preserve uncertainty labels in handoffs.",
+          "area": "handoff",
+          "strength": "strong",
+          "implication": "Use FACT/INFERENCE/UNCERTAIN.",
+          "label": "FACT"
+        },
+        {
+          "id": "PREF-08",
+          "preference": "Do not invent or silently infer.",
+          "area": "reasoning",
+          "strength": "strong",
+          "implication": "Mark assumptions and unknowns.",
+          "label": "FACT"
+        },
+        {
+          "id": "PREF-09",
+          "preference": "Preserve rejected and superseded options.",
+          "area": "handoff",
+          "strength": "strong",
+          "implication": "Keep history and rationale.",
+          "label": "FACT"
+        },
+        {
+          "id": "PREF-10",
+          "preference": "Use tables for support/capability matrices.",
+          "area": "formatting",
+          "strength": "strong",
+          "implication": "Matrix-style docs are preferred.",
+          "label": "FACT"
+        },
+        {
+          "id": "PREF-11",
+          "preference": "Produce downloadable/shareable files when asked.",
+          "area": "artifact",
+          "strength": "strong",
+          "implication": "Create Markdown/YAML/ZIP package.",
+          "label": "FACT"
+        }
+      ],
+      "inferred": [],
+      "uncertain_or_not_established": [
+        "Launcher config format preference not established",
+        "Alias policy for old script names not established",
+        "DX12 status not established"
+      ]
+    },
+    "workstreams": [
+      {
+        "id": "WORKSTREAM-01",
+        "name": "Deterministic Dominium core and repository contract",
+        "label": "FACT",
+        "objective": "Preserve the deterministic fixed-step simulation model and repo layering while launcher/platform/render work proceeds.",
+        "current_state": "Project contract was explicitly supplied by the user in the chat: C89/C++98-era constraints, deterministic tick model, strict directories, no floats in core/sim, stable serialization.",
+        "desired_end_state": "All new launcher/render/platform/input code obeys deterministic and layering rules.",
+        "status": "active",
+        "priority": "P0",
+        "background": "Based on user-provided summaries of docs/DIRECTORY_CONTEXT.md, docs/SPEC_CORE.md, docs/DATA_FORMATS.md, docs/BUILDING.md, and docs/dev/dominium_new_root.txt.",
+        "decisions_made": [
+          "DECISION-01"
+        ],
+        "decisions_pending": [],
+        "tasks": [],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [],
+        "risks": [],
+        "artifacts": [],
+        "success_criteria": [
+          "All new launcher/render/platform/input code obeys deterministic and layering rules."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-02",
+        "name": "System-agnostic launcher architecture",
+        "label": "FACT",
+        "objective": "Design the launcher as portable, modular, extensible C89 core logic plus thin frontends.",
+        "current_state": "Architecture designed conceptually; implementation is not confirmed.",
+        "desired_end_state": "A C89 launch core/model/config/capability/launch-plan layer, platform process adapters, and multiple frontend skins over a shared view model.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User asked how to design the launcher from the ground up to be system agnostic, portable, modular, and extensible.",
+        "decisions_made": [],
+        "decisions_pending": [
+          "QUESTION-14"
+        ],
+        "tasks": [
+          "TASK-07",
+          "TASK-08"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [
+          "QUESTION-14"
+        ],
+        "risks": [
+          "RISK-08"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "A C89 launch core/model/config/capability/launch-plan layer, platform process adapters, and multiple frontend skins over a shared view model."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-03",
+        "name": "Launcher backend/frontend language split",
+        "label": "FACT",
+        "objective": "Keep backend launcher logic C89 and allow frontend code for each binary to use C++98.",
+        "current_state": "Explicit user decision.",
+        "desired_end_state": "C89 backend compiles independently of OS/UI; C++98 max frontends handle platform-specific shells.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User stated: “The backend launcher code should use C89, the front end code for each binary can use C++98.”",
+        "decisions_made": [
+          "DECISION-03",
+          "DECISION-04"
+        ],
+        "decisions_pending": [],
+        "tasks": [],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [],
+        "risks": [],
+        "artifacts": [],
+        "success_criteria": [
+          "C89 backend compiles independently of OS/UI; C++98 max frontends handle platform-specific shells."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-04",
+        "name": "Launcher-to-client/server process execution",
+        "label": "FACT",
+        "objective": "Launcher settings resolve to external client/server binary execution.",
+        "current_state": "Explicit user decision.",
+        "desired_end_state": "A DomLaunchPlan-like structure resolves role, account, instance, platform, renderer, headless mode, executable, args, environment, and working directory.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User clarified that settings selected in the launcher will be used to execute client or server binaries.",
+        "decisions_made": [
+          "DECISION-02",
+          "DECISION-05"
+        ],
+        "decisions_pending": [
+          "QUESTION-12"
+        ],
+        "tasks": [
+          "TASK-09"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [
+          "QUESTION-12"
+        ],
+        "risks": [],
+        "artifacts": [],
+        "success_criteria": [
+          "A DomLaunchPlan-like structure resolves role, account, instance, platform, renderer, headless mode, executable, args, environment, and working directory."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-05",
+        "name": "Unified user-facing entrypoint scripts",
+        "label": "FACT",
+        "objective": "Provide scripts/commands for dominium, setup, dom-client, and dom-server.",
+        "current_state": "Script templates and CMake configure/install plans were generated, but implementation is unverified.",
+        "desired_end_state": "Consistent commands across OSes dispatch to correct launcher/setup/client/server binaries.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User asked for unified scripts, later specifically adding “setup” and “dominium”.",
+        "decisions_made": [
+          "DECISION-05",
+          "DECISION-06",
+          "DECISION-07"
+        ],
+        "decisions_pending": [
+          "QUESTION-15"
+        ],
+        "tasks": [
+          "TASK-17",
+          "TASK-18"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [
+          "QUESTION-15"
+        ],
+        "risks": [
+          "RISK-13"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "Consistent commands across OSes dispatch to correct launcher/setup/client/server binaries."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-06",
+        "name": "Setup / installer / repair / uninstaller wrapper",
+        "label": "FACT",
+        "objective": "Implement setup entrypoint for install, repair, and uninstall modes.",
+        "current_state": "Script behavior was specified; real setup binaries may not exist yet.",
+        "desired_end_state": "setup [install|repair|uninstall] calls dom_setup-* with --mode=<mode>.",
+        "status": "active",
+        "priority": "P1",
+        "background": "User requested “setup” to launch installer/repair/uninstaller.",
+        "decisions_made": [
+          "DECISION-08",
+          "DECISION-23"
+        ],
+        "decisions_pending": [
+          "QUESTION-16"
+        ],
+        "tasks": [
+          "TASK-19"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [
+          "QUESTION-16"
+        ],
+        "risks": [],
+        "artifacts": [],
+        "success_criteria": [
+          "setup [install|repair|uninstall] calls dom_setup-* with --mode=<mode>."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-07",
+        "name": "Platform backend taxonomy and capability model",
+        "label": "FACT / UNCERTAIN",
+        "objective": "Normalize platform backend categories and encode allowed/conditional combinations.",
+        "current_state": "Latest user categories are POSIX, SDL1, SDL2, Native. Earlier chat also discussed win32, macosx, X11, Wayland, and POSIX headless.",
+        "desired_end_state": "A single documented platform taxonomy used by CMake, launcher capabilities, scripts, and docs.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User requested a capability matrix and said to remember POSIX, SDL1, SDL2, and native.",
+        "decisions_made": [
+          "DECISION-09",
+          "DECISION-20"
+        ],
+        "decisions_pending": [
+          "QUESTION-02",
+          "QUESTION-03",
+          "QUESTION-04"
+        ],
+        "tasks": [
+          "TASK-02"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [
+          "QUESTION-02",
+          "QUESTION-03",
+          "QUESTION-04"
+        ],
+        "risks": [
+          "RISK-04"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "A single documented platform taxonomy used by CMake, launcher capabilities, scripts, and docs."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "Yes"
+        ],
+        "confidence": "Medium"
+      },
+      {
+        "id": "WORKSTREAM-08",
+        "name": "Renderer backend taxonomy and capability model",
+        "label": "FACT / UNCERTAIN",
+        "objective": "Normalize render backends and expose vector/full graphics capability across all.",
+        "current_state": "Latest user renderer list is DX9.0c, DX11, GL1.1, GL2, VK1, software. DX12 appeared earlier but was omitted later.",
+        "desired_end_state": "Renderer enum/docs/CMake/scripts use the final list and mark DX12 as deferred/unconfirmed unless the user confirms it.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User requested capability matrix with these renderers.",
+        "decisions_made": [
+          "DECISION-19",
+          "DECISION-24"
+        ],
+        "decisions_pending": [
+          "QUESTION-01"
+        ],
+        "tasks": [
+          "TASK-03"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [
+          "QUESTION-01"
+        ],
+        "risks": [
+          "RISK-03"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "Renderer enum/docs/CMake/scripts use the final list and mark DX12 as deferred/unconfirmed unless the user confirms it."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "Yes"
+        ],
+        "confidence": "Medium"
+      },
+      {
+        "id": "WORKSTREAM-09",
+        "name": "Universal all-platform software renderer",
+        "label": "FACT",
+        "objective": "Replace vector_soft with one software renderer capable of vector and textured graphics on all platforms.",
+        "current_state": "User-finalized design goal; implementation unverified.",
+        "desired_end_state": "engine/render/software supports vector-only mode, full graphics mode, textured primitives, missing-texture placeholders, and platform present callbacks.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User explicitly asked to replace vector_soft with software renderer capable of vector and graphics using texture files.",
+        "decisions_made": [
+          "DECISION-10",
+          "DECISION-12"
+        ],
+        "decisions_pending": [],
+        "tasks": [
+          "TASK-13",
+          "TASK-14"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [],
+        "risks": [
+          "RISK-02",
+          "RISK-10"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "engine/render/software supports vector-only mode, full graphics mode, textured primitives, missing-texture placeholders, and platform present callbacks."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-10",
+        "name": "Vector/full graphics render modes",
+        "label": "FACT",
+        "objective": "Every renderer supports vector-only and graphics modes.",
+        "current_state": "Design accepted; not confirmed implemented.",
+        "desired_end_state": "Runtime view/render mode can switch between CAD/vector and full textured graphics without backend replacement.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User wanted vector and graphics modes on all renderers and missing-file fallback.",
+        "decisions_made": [
+          "DECISION-11"
+        ],
+        "decisions_pending": [],
+        "tasks": [
+          "TASK-14",
+          "TASK-15"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [],
+        "risks": [],
+        "artifacts": [],
+        "success_criteria": [
+          "Runtime view/render mode can switch between CAD/vector and full textured graphics without backend replacement."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-11",
+        "name": "Instant zoom and 2D/3D view switching",
+        "label": "FACT",
+        "objective": "Support seamless zoom at any scale and instant switching between top-down 2D and first-person 3D, each in vector or graphics.",
+        "current_state": "Architecture designed conceptually; implementation unverified.",
+        "desired_end_state": "View type and mode are runtime view state; command generation changes without renderer reinitialization.",
+        "status": "active",
+        "priority": "P1",
+        "background": "User explicitly requested instant zoom, vector/graphics toggle, and 2D/3D switching.",
+        "decisions_made": [
+          "DECISION-13",
+          "DECISION-14"
+        ],
+        "decisions_pending": [
+          "QUESTION-13"
+        ],
+        "tasks": [
+          "TASK-16"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [
+          "QUESTION-13"
+        ],
+        "risks": [
+          "RISK-09"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "View type and mode are runtime view state; command generation changes without renderer reinitialization."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-12",
+        "name": "Arbitrary cameras, multi-view, overlays, and offscreen targets",
+        "label": "FACT",
+        "objective": "Support free cam, maps, HUD cameras, CCTV, content creation cameras, overlays, windows, and offscreen views.",
+        "current_state": "Architecture proposed with camera/view/target registries.",
+        "desired_end_state": "Render core supports arbitrary camera IDs, view IDs, target IDs, and per-frame view instances.",
+        "status": "active",
+        "priority": "P1",
+        "background": "User explicitly requested arbitrary cameras for multiple use cases.",
+        "decisions_made": [
+          "DECISION-15"
+        ],
+        "decisions_pending": [],
+        "tasks": [
+          "TASK-16"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [],
+        "risks": [
+          "RISK-09"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "Render core supports arbitrary camera IDs, view IDs, target IDs, and per-frame view instances."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-13",
+        "name": "Launcher UI tabs and bottom selectors",
+        "label": "FACT",
+        "objective": "Define launcher UI structure.",
+        "current_state": "User specified UI; uploaded code may differ.",
+        "desired_end_state": "Tabs: News, Changes, Mods, Instances, Accounts, Settings. Bottom: Account, Instance, Platform, Renderer, Graphical/Headless, Client/Server.",
+        "status": "active",
+        "priority": "P1",
+        "background": "User’s first launcher-specific request.",
+        "decisions_made": [],
+        "decisions_pending": [],
+        "tasks": [
+          "TASK-08"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [],
+        "risks": [],
+        "artifacts": [],
+        "success_criteria": [
+          "Tabs: News, Changes, Mods, Instances, Accounts, Settings. Bottom: Account, Instance, Platform, Renderer, Graphical/Headless, Client/Server."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-14",
+        "name": "Input and keybinding specification",
+        "label": "FACT",
+        "objective": "Document and implement canonical F1–F12 and core controls.",
+        "current_state": "F-key map and Codex prompt generated; implementation unverified.",
+        "desired_end_state": "docs/SPEC_INPUT.md, default_bindings.json, action enum, and mapping layer consistent with launcher/game contexts.",
+        "status": "active",
+        "priority": "P1",
+        "background": "User asked what keybindings should be and then asked for Codex prompt.",
+        "decisions_made": [
+          "DECISION-21"
+        ],
+        "decisions_pending": [],
+        "tasks": [
+          "TASK-20",
+          "TASK-21"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [],
+        "risks": [
+          "RISK-14"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "docs/SPEC_INPUT.md, default_bindings.json, action enum, and mapping layer consistent with launcher/game contexts."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-15",
+        "name": "Platform support tiers",
+        "label": "FACT",
+        "objective": "Formalize Tier 1/2/3 OS support ranges.",
+        "current_state": "User finalized tier ranges.",
+        "desired_end_state": "Docs, build tooling, and capability matrix reflect final support tiers, with feasibility verified.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User asked for Linux tiers, then finalized all OS tiers.",
+        "decisions_made": [
+          "DECISION-16",
+          "DECISION-17",
+          "DECISION-18"
+        ],
+        "decisions_pending": [
+          "QUESTION-07",
+          "QUESTION-09",
+          "QUESTION-10",
+          "QUESTION-11"
+        ],
+        "tasks": [
+          "TASK-05",
+          "TASK-22"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [
+          "QUESTION-07",
+          "QUESTION-09",
+          "QUESTION-10",
+          "QUESTION-11"
+        ],
+        "risks": [
+          "RISK-12",
+          "RISK-17"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "Docs, build tooling, and capability matrix reflect final support tiers, with feasibility verified."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "Yes"
+        ],
+        "confidence": "High for user decision; Medium for feasibility"
+      },
+      {
+        "id": "WORKSTREAM-16",
+        "name": "Capability matrix",
+        "label": "FACT / UNCERTAIN",
+        "objective": "Map supported and conditional platform/renderer combinations per OS/tier.",
+        "current_state": "Draft matrix generated; external facts and taxonomy require verification.",
+        "desired_end_state": "Launcher filters invalid choices through static support matrix plus runtime probes.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User explicitly requested capability matrix.",
+        "decisions_made": [
+          "DECISION-19",
+          "DECISION-20"
+        ],
+        "decisions_pending": [
+          "QUESTION-08"
+        ],
+        "tasks": [
+          "TASK-02",
+          "TASK-06",
+          "TASK-23"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [
+          "QUESTION-08"
+        ],
+        "risks": [
+          "RISK-11",
+          "RISK-17"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "Launcher filters invalid choices through static support matrix plus runtime probes."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "Yes"
+        ],
+        "confidence": "Medium"
+      },
+      {
+        "id": "WORKSTREAM-17",
+        "name": "Launcher build/test flow",
+        "label": "FACT",
+        "objective": "Build and test launcher binaries and scripts.",
+        "current_state": "Build/test plan and Codex prompt generated.",
+        "desired_end_state": "CMake targets, scripts, setup stubs, direct/script smoke tests, spawn dry-run tests.",
+        "status": "active",
+        "priority": "P1",
+        "background": "User asked how to build and test launcher.",
+        "decisions_made": [],
+        "decisions_pending": [],
+        "tasks": [
+          "TASK-10",
+          "TASK-18",
+          "TASK-24"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [],
+        "risks": [],
+        "artifacts": [],
+        "success_criteria": [
+          "CMake targets, scripts, setup stubs, direct/script smoke tests, spawn dry-run tests."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-18",
+        "name": "Uploaded launcher code refactor",
+        "label": "FACT / UNCERTAIN",
+        "objective": "Reconcile uploaded launcher code with intended architecture.",
+        "current_state": "Files uploaded; prior assistant summary says native Win32 launcher and engine-rendered view are mixed; exact contents unverified.",
+        "desired_end_state": "Engine-based launcher canonical, Win32 native launcher as separate frontend/tool if retained.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User uploaded dom_launcher_view.c/.h, CMakeLists.txt, dom_launcher_main.c.",
+        "decisions_made": [
+          "DECISION-22"
+        ],
+        "decisions_pending": [
+          "QUESTION-05",
+          "QUESTION-06"
+        ],
+        "tasks": [
+          "TASK-01",
+          "TASK-10",
+          "TASK-11",
+          "TASK-12"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [
+          "QUESTION-05",
+          "QUESTION-06"
+        ],
+        "risks": [
+          "RISK-05",
+          "RISK-07"
+        ],
+        "artifacts": [
+          "ARTIFACT-01",
+          "ARTIFACT-02",
+          "ARTIFACT-03",
+          "ARTIFACT-04",
+          "ARTIFACT-05"
+        ],
+        "success_criteria": [
+          "Engine-based launcher canonical, Win32 native launcher as separate frontend/tool if retained."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "Yes"
+        ],
+        "confidence": "Medium"
+      },
+      {
+        "id": "WORKSTREAM-19",
+        "name": "Documentation and Codex implementation prompts",
+        "label": "FACT",
+        "objective": "Generate prompts and docs updates for implementation.",
+        "current_state": "Multiple prompts generated, but not confirmed applied.",
+        "desired_end_state": "Use consolidated final decisions to update docs/code, not stale prompt fragments.",
+        "status": "historical/active artifact",
+        "priority": "P1",
+        "background": "User repeatedly asked for Codex-ready prompts.",
+        "decisions_made": [],
+        "decisions_pending": [],
+        "tasks": [
+          "TASK-04"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [],
+        "risks": [
+          "RISK-06",
+          "RISK-15"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "Use consolidated final decisions to update docs/code, not stale prompt fragments."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      },
+      {
+        "id": "WORKSTREAM-20",
+        "name": "Chat handoff and report packaging",
+        "label": "FACT",
+        "objective": "Produce downloadable per-chat report package for future aggregation.",
+        "current_state": "This file package is being created from prior CTP and visible chat.",
+        "desired_end_state": "Markdown/YAML/ZIP package preserving state with labels and stable IDs.",
+        "status": "active",
+        "priority": "P0",
+        "background": "User asked to finish job by creating final downloadable package.",
+        "decisions_made": [],
+        "decisions_pending": [],
+        "tasks": [
+          "TASK-25"
+        ],
+        "constraints": [
+          "See Constraint Register"
+        ],
+        "dependencies": [
+          "See linked tasks/questions/artifacts"
+        ],
+        "timeline": "Immediate/early if P0, otherwise sequenced after blockers",
+        "blockers": [],
+        "risks": [
+          "RISK-01",
+          "RISK-16",
+          "RISK-18"
+        ],
+        "artifacts": [],
+        "success_criteria": [
+          "Markdown/YAML/ZIP package preserving state with labels and stable IDs."
+        ],
+        "next_action": "Resolve blockers or implement according to desired state",
+        "verification_needed": [
+          "No major external verification"
+        ],
+        "confidence": "High"
+      }
+    ],
+    "decisions": [
+      {
+        "id": "DECISION-01",
+        "decision": "Dominium deterministic core and layering contract remains binding.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User supplied project identity and docs summary.",
+        "rationale": "Preserve deterministic sim and architecture.",
+        "implications": "All code/docs must obey no-floats core/sim, C89/C++98 limits, and layering.",
+        "related_workstreams": [
+          "WORKSTREAM-01"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-02",
+        "decision": "Launcher settings execute separate client/server binaries.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User: settings selected in launcher will execute client or server binaries.",
+        "rationale": "Simplifies platform/render/client/server separation.",
+        "implications": "Requires launch plan and spawn API.",
+        "related_workstreams": [
+          "WORKSTREAM-04"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-03",
+        "decision": "Launcher backend/core must use C89.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User explicit statement.",
+        "rationale": "Portability and legacy support.",
+        "implications": "Launcher core cannot rely on C++.",
+        "related_workstreams": [
+          "WORKSTREAM-03"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-04",
+        "decision": "Launcher frontends may use C++98.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User explicit statement.",
+        "rationale": "Permits system-specific UI shell code while staying inside project era constraints.",
+        "implications": "Frontend code should not exceed C++98.",
+        "related_workstreams": [
+          "WORKSTREAM-03"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-05",
+        "decision": "Client/server binaries can be single-system builds.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User explicit statement.",
+        "rationale": "Avoids universal binary complexity.",
+        "implications": "Launcher/scripts choose correct binary.",
+        "related_workstreams": [
+          "WORKSTREAM-04",
+          "WORKSTREAM-05"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-06",
+        "decision": "Use unified entrypoints for launcher/client/server/setup.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User requested scripts.",
+        "rationale": "Consistent UX across OSes.",
+        "implications": "Packaging scripts needed.",
+        "related_workstreams": [
+          "WORKSTREAM-05"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-07",
+        "decision": "Use dominium as the main launcher command.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User requested “dominium” to launch launcher.",
+        "rationale": "Product-facing command name.",
+        "implications": "dom-launcher becomes optional alias only.",
+        "related_workstreams": [
+          "WORKSTREAM-05"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-08",
+        "decision": "Use setup as installer/repair/uninstaller command.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User requested “setup”.",
+        "rationale": "Simple lifecycle command.",
+        "implications": "setup dispatches install/repair/uninstall.",
+        "related_workstreams": [
+          "WORKSTREAM-06"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-09",
+        "decision": "Remove minimal/full backend split and use full single implementations.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User: remove minimal versions, use full single implementation.",
+        "rationale": "Avoid duplicated backend code.",
+        "implications": "Launcher and game share platform/render implementations.",
+        "related_workstreams": [
+          "WORKSTREAM-07"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-10",
+        "decision": "Replace vector_soft with a universal software renderer.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User explicitly requested software renderer instead of vector_soft.",
+        "rationale": "One fallback renderer handles vector and textures.",
+        "implications": "Public backend is software, not vector_soft.",
+        "related_workstreams": [
+          "WORKSTREAM-09"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-11",
+        "decision": "All renderers must support vector-only and graphics modes.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User explicit statement.",
+        "rationale": "CAD, performance, and missing file fallback.",
+        "implications": "Every backend must implement or emulate both modes.",
+        "related_workstreams": [
+          "WORKSTREAM-10"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-12",
+        "decision": "Software renderer must work on all platforms.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User explicit statement.",
+        "rationale": "Universal fallback.",
+        "implications": "Renderer must be OS-independent with platform present callbacks.",
+        "related_workstreams": [
+          "WORKSTREAM-09"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-13",
+        "decision": "Support instant seamless zoom to any scale.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User explicit request.",
+        "rationale": "CAD-style viewing.",
+        "implications": "Camera transforms must be view-layer state.",
+        "related_workstreams": [
+          "WORKSTREAM-11"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-14",
+        "decision": "Support instant switching between top-down 2D and first-person 3D.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User explicit request.",
+        "rationale": "View flexibility.",
+        "implications": "View type/mode should not require renderer reinit.",
+        "related_workstreams": [
+          "WORKSTREAM-11"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-15",
+        "decision": "Support arbitrary cameras for free cam, map, HUD, CCTV, content creation, windows, overlays.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User explicit request.",
+        "rationale": "Extensible UI/game/tooling.",
+        "implications": "Need camera/view/target registries.",
+        "related_workstreams": [
+          "WORKSTREAM-12"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-16",
+        "decision": "Use final Tier 1 support: Windows NT 2000 SP4-latest, Mac OS X 10.6-10.14, Linux 3.2-current.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User final tier list.",
+        "rationale": "Main support target.",
+        "implications": "Docs and matrix must include.",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-17",
+        "decision": "Use final Tier 2 support: Win98SE-Me, NT 2000 SP4-latest, Mac OS 9-9.2, Mac OS X 10.6-15.0, Linux 2.6.18-current.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User final tier list.",
+        "rationale": "Extended legacy support.",
+        "implications": "Docs and matrix must include.",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-18",
+        "decision": "Use final Tier 3 support: MS-DOS 3.3-6.2, Windows 3, Windows 95-Me, NT 2000 SP4-latest, Mac OS 8.5-9.2, Mac OS X 10.0-latest, Linux 2.4-current.",
+        "status": "final",
+        "label": "FACT",
+        "evidence_or_basis": "User final tier list.",
+        "rationale": "Retro/heritage support.",
+        "implications": "Docs and matrix must include with feasibility caveats.",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "uncertainty": "High"
+      },
+      {
+        "id": "DECISION-19",
+        "decision": "Latest renderer implementation set is DX9.0c, DX11, GL1.1, GL2, VK1, and software.",
+        "status": "final latest / with caveat",
+        "label": "FACT",
+        "evidence_or_basis": "User capability matrix request.",
+        "rationale": "Defines current renderer scope.",
+        "implications": "DX12 must not be assumed final.",
+        "related_workstreams": [
+          "WORKSTREAM-08",
+          "WORKSTREAM-16"
+        ],
+        "uncertainty": "Medium"
+      },
+      {
+        "id": "DECISION-20",
+        "decision": "Latest platform implementation categories are POSIX, SDL1, SDL2, and Native.",
+        "status": "final latest / unresolved taxonomy",
+        "label": "FACT / UNCERTAIN",
+        "evidence_or_basis": "User capability matrix request.",
+        "rationale": "Defines current platform scope.",
+        "implications": "X11/Wayland mapping must be resolved.",
+        "related_workstreams": [
+          "WORKSTREAM-07",
+          "WORKSTREAM-16"
+        ],
+        "uncertainty": "Medium"
+      },
+      {
+        "id": "DECISION-21",
+        "decision": "F1-F12 keybinding map is accepted enough to generate implementation prompt.",
+        "status": "accepted plan",
+        "label": "FACT",
+        "evidence_or_basis": "User asked for Codex prompt after keybinding proposal.",
+        "rationale": "Stabilizes input semantics.",
+        "implications": "Implement SPEC_INPUT/default bindings unless revised.",
+        "related_workstreams": [
+          "WORKSTREAM-14"
+        ],
+        "uncertainty": "Medium-High"
+      },
+      {
+        "id": "DECISION-22",
+        "decision": "Uploaded native Win32 launcher should likely become a separate frontend/tool, not the cross-platform core.",
+        "status": "tentative",
+        "label": "INFERENCE",
+        "evidence_or_basis": "Assistant recommendation after uploaded files; user did not explicitly finalize.",
+        "rationale": "Prevents Win32-only code from breaking non-Windows launcher builds.",
+        "implications": "Re-inspect files and confirm before refactor.",
+        "related_workstreams": [
+          "WORKSTREAM-18"
+        ],
+        "uncertainty": "Medium"
+      },
+      {
+        "id": "DECISION-23",
+        "decision": "Setup binaries may be stubs initially if real installer is absent.",
+        "status": "tentative",
+        "label": "INFERENCE",
+        "evidence_or_basis": "Generated Codex prompt.",
+        "rationale": "Allows scripts to test before real installer exists.",
+        "implications": "Must mark stubs clearly.",
+        "related_workstreams": [
+          "WORKSTREAM-06"
+        ],
+        "uncertainty": "Medium"
+      },
+      {
+        "id": "DECISION-24",
+        "decision": "DX12 is unresolved/deferred, not confirmed current scope.",
+        "status": "unclear",
+        "label": "UNCERTAIN / UNVERIFIED",
+        "evidence_or_basis": "Earlier assistant included DX12; latest user omitted it.",
+        "rationale": "Avoid wrong scope.",
+        "implications": "Ask user or mark deferred.",
+        "related_workstreams": [
+          "WORKSTREAM-08"
+        ],
+        "uncertainty": "High uncertainty"
+      }
+    ],
+    "tasks": [
+      {
+        "id": "TASK-01",
+        "task": "Inspect uploaded/repo files before implementation.",
+        "priority": "P0",
+        "urgency": "U0",
+        "owner": "new assistant/developer",
+        "dependencies": [
+          "ARTIFACT-01",
+          "ARTIFACT-02",
+          "ARTIFACT-03",
+          "ARTIFACT-04",
+          "ARTIFACT-05"
+        ],
+        "inputs_needed": "Uploaded files/repo access",
+        "expected_output": "Verified current code state",
+        "next_step": "Open launcher files and CMake; extract repo if possible.",
+        "related_workstreams": [
+          "WORKSTREAM-18"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-02",
+        "task": "Resolve final platform taxonomy.",
+        "priority": "P0",
+        "urgency": "U0",
+        "owner": "user/developer",
+        "dependencies": [
+          "WORKSTREAM-07"
+        ],
+        "inputs_needed": "Decision on POSIX/SDL/native/X11/Wayland",
+        "expected_output": "Canonical platform enum/model",
+        "next_step": "Ask/decide whether X11/Wayland are Native subtypes or explicit.",
+        "related_workstreams": [
+          "WORKSTREAM-07",
+          "WORKSTREAM-16"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED",
+        "confidence": "Medium"
+      },
+      {
+        "id": "TASK-03",
+        "task": "Resolve DX12 status.",
+        "priority": "P0",
+        "urgency": "U0",
+        "owner": "user/developer",
+        "dependencies": [
+          "WORKSTREAM-08"
+        ],
+        "inputs_needed": "User confirmation",
+        "expected_output": "Renderer list finalized",
+        "next_step": "Treat DX12 as deferred until confirmed.",
+        "related_workstreams": [
+          "WORKSTREAM-08"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED",
+        "confidence": "Medium"
+      },
+      {
+        "id": "TASK-04",
+        "task": "Update project docs with final launcher/platform/render/support/input decisions.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "inputs_needed": "This package and existing docs",
+        "expected_output": "Updated docs",
+        "next_step": "Patch docs/DIRECTORY_CONTEXT.md, docs/BUILDING.md, SPEC_LAUNCHER, SPEC_PLATFORM_SUPPORT, SPEC_INPUT.",
+        "related_workstreams": [
+          "WORKSTREAM-19"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-05",
+        "task": "Create docs/SPEC_PLATFORM_SUPPORT.md or equivalent.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "WORKSTREAM-15"
+        ],
+        "inputs_needed": "Final tier list",
+        "expected_output": "Support tier doc",
+        "next_step": "Add Tier 1/2/3 table and caveats.",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-06",
+        "task": "Create/verify capability matrix data and docs.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-02",
+          "TASK-03",
+          "VERIFY-01"
+        ],
+        "inputs_needed": "Renderer/platform taxonomy and verified external facts",
+        "expected_output": "Static+runtime capability filtering",
+        "next_step": "Encode matrix with Y/conditional/not supported.",
+        "related_workstreams": [
+          "WORKSTREAM-16"
+        ],
+        "label": "FACT / UNCERTAIN",
+        "confidence": "Medium"
+      },
+      {
+        "id": "TASK-07",
+        "task": "Implement launcher C89 core types/config/caps/launch plan.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-01",
+          "TASK-02"
+        ],
+        "inputs_needed": "Existing launcher code and design",
+        "expected_output": "game/launcher/core/*",
+        "next_step": "Add pure C89 core.",
+        "related_workstreams": [
+          "WORKSTREAM-02"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-08",
+        "task": "Implement launcher state and viewmodel.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-07"
+        ],
+        "inputs_needed": "Core config/caps",
+        "expected_output": "game/launcher/ui/*",
+        "next_step": "Add action handling and viewmodel.",
+        "related_workstreams": [
+          "WORKSTREAM-02",
+          "WORKSTREAM-13"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-09",
+        "task": "Implement platform process spawn API.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-07"
+        ],
+        "inputs_needed": "Launch plan and platform APIs",
+        "expected_output": "dom_platform_launch_spawn and adapters",
+        "next_step": "Add Win32/POSIX/macOS implementations.",
+        "related_workstreams": [
+          "WORKSTREAM-04"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-10",
+        "task": "Refactor launcher CMake and targets.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-01"
+        ],
+        "inputs_needed": "Current CMake",
+        "expected_output": "Separated targets",
+        "next_step": "Ensure Win32 code not built on non-Windows.",
+        "related_workstreams": [
+          "WORKSTREAM-17",
+          "WORKSTREAM-18"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-11",
+        "task": "Create engine-based launcher main.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-01",
+          "TASK-08"
+        ],
+        "inputs_needed": "Engine platform/render APIs",
+        "expected_output": "dom_launcher_engine_main.c",
+        "next_step": "Loop polls input, draws view, presents.",
+        "related_workstreams": [
+          "WORKSTREAM-18"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-12",
+        "task": "Preserve native Win32 launcher as separate target if desired.",
+        "priority": "P1",
+        "urgency": "U2",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-01",
+          "TASK-10"
+        ],
+        "inputs_needed": "dom_launcher_main.c",
+        "expected_output": "dom_launcher-win32-native",
+        "next_step": "Guard under WIN32 only.",
+        "related_workstreams": [
+          "WORKSTREAM-18"
+        ],
+        "label": "INFERENCE",
+        "confidence": "Medium"
+      },
+      {
+        "id": "TASK-13",
+        "task": "Implement universal software renderer.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "WORKSTREAM-09"
+        ],
+        "inputs_needed": "Render API/draw commands",
+        "expected_output": "engine/render/software",
+        "next_step": "Support vector/full and textures/placeholders.",
+        "related_workstreams": [
+          "WORKSTREAM-09"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-14",
+        "task": "Implement shared draw command core.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-13"
+        ],
+        "inputs_needed": "Draw command format",
+        "expected_output": "engine/render/core/dom_draw_common",
+        "next_step": "Normalize commands for all renderers.",
+        "related_workstreams": [
+          "WORKSTREAM-09",
+          "WORKSTREAM-10"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-15",
+        "task": "Add vector/full render mode to API and backends.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-13",
+          "TASK-14"
+        ],
+        "inputs_needed": "Render API",
+        "expected_output": "dom_render_mode support",
+        "next_step": "Mode controls vector vs full graphics.",
+        "related_workstreams": [
+          "WORKSTREAM-10"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-16",
+        "task": "Implement camera/view/target registries.",
+        "priority": "P1",
+        "urgency": "U2",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-14"
+        ],
+        "inputs_needed": "View/camera design",
+        "expected_output": "dom_camera/dom_view/dom_target",
+        "next_step": "Enable arbitrary cameras and views.",
+        "related_workstreams": [
+          "WORKSTREAM-11",
+          "WORKSTREAM-12"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-17",
+        "task": "Add packaging scripts.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "inputs_needed": "Binary naming",
+        "expected_output": "Script templates",
+        "next_step": "Add dominium, setup, dom-client, dom-server.",
+        "related_workstreams": [
+          "WORKSTREAM-05"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-18",
+        "task": "Add CMake configure/install rules for scripts.",
+        "priority": "P0",
+        "urgency": "U1",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-17"
+        ],
+        "inputs_needed": "CMake target names",
+        "expected_output": "Generated install scripts",
+        "next_step": "Use configure_file/install(PROGRAMS).",
+        "related_workstreams": [
+          "WORKSTREAM-05",
+          "WORKSTREAM-17"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-19",
+        "task": "Add setup binaries or stubs.",
+        "priority": "P1",
+        "urgency": "U2",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-17"
+        ],
+        "inputs_needed": "Installer path decision",
+        "expected_output": "dom_setup-*",
+        "next_step": "Stub if no installer exists.",
+        "related_workstreams": [
+          "WORKSTREAM-06"
+        ],
+        "label": "FACT",
+        "confidence": "Medium"
+      },
+      {
+        "id": "TASK-20",
+        "task": "Add input spec/default bindings/action enum.",
+        "priority": "P1",
+        "urgency": "U2",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "WORKSTREAM-14"
+        ],
+        "inputs_needed": "Keybinding map",
+        "expected_output": "SPEC_INPUT/default_bindings/actions",
+        "next_step": "Implement documented controls.",
+        "related_workstreams": [
+          "WORKSTREAM-14"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-21",
+        "task": "Extend or create input mapping layer.",
+        "priority": "P1",
+        "urgency": "U3",
+        "owner": "Codex/developer",
+        "dependencies": [
+          "TASK-20"
+        ],
+        "inputs_needed": "Existing input stack",
+        "expected_output": "Mapping layer",
+        "next_step": "Avoid duplicate systems; extend existing if present.",
+        "related_workstreams": [
+          "WORKSTREAM-14"
+        ],
+        "label": "FACT",
+        "confidence": "Medium"
+      },
+      {
+        "id": "TASK-22",
+        "task": "Verify Linux kernel/libc/toolchain/distro claims.",
+        "priority": "P1",
+        "urgency": "U1",
+        "owner": "developer/research",
+        "dependencies": [
+          "WORKSTREAM-15"
+        ],
+        "inputs_needed": "External docs/tests",
+        "expected_output": "Verified support docs",
+        "next_step": "Research before publishing.",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-23",
+        "task": "Verify DirectX/OpenGL/Vulkan/SDL/macOS/Mac OS support claims.",
+        "priority": "P1",
+        "urgency": "U1",
+        "owner": "developer/research",
+        "dependencies": [
+          "WORKSTREAM-16"
+        ],
+        "inputs_needed": "External docs/tests",
+        "expected_output": "Accurate matrix",
+        "next_step": "Research and test.",
+        "related_workstreams": [
+          "WORKSTREAM-16"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-24",
+        "task": "Smoke-test launcher/scripts.",
+        "priority": "P0",
+        "urgency": "U2",
+        "owner": "developer/tester",
+        "dependencies": [
+          "TASK-10",
+          "TASK-17",
+          "TASK-18"
+        ],
+        "inputs_needed": "Built targets",
+        "expected_output": "Test results",
+        "next_step": "Run direct and via scripts; test setup/client/server wrappers.",
+        "related_workstreams": [
+          "WORKSTREAM-17"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "TASK-25",
+        "task": "Create final per-chat package files and ZIP.",
+        "priority": "P0",
+        "urgency": "U0",
+        "owner": "assistant",
+        "dependencies": [
+          "WORKSTREAM-20"
+        ],
+        "inputs_needed": "Prior CTP and visible chat",
+        "expected_output": "Markdown/YAML/ZIP package",
+        "next_step": "This task.",
+        "related_workstreams": [
+          "WORKSTREAM-20"
+        ],
+        "label": "FACT",
+        "confidence": "High"
+      }
+    ],
+    "constraints": [
+      {
+        "id": "CONSTRAINT-01",
+        "constraint": "/engine/core and /engine/sim are C89 only.",
+        "type": "technical",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User project contract",
+        "implication": "No C++/C99 in deterministic core/sim.",
+        "violation_risk": "Using newer language features there.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-02",
+        "constraint": "Other engine modules are C++98 max unless explicitly allowed.",
+        "type": "technical",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User project contract",
+        "implication": "Avoid C++11+ APIs/features.",
+        "violation_risk": "Using modern C++ in engine modules.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-03",
+        "constraint": "No floats in /engine/core or /engine/sim.",
+        "type": "technical/determinism",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User project contract",
+        "implication": "Use integer/fixed point only in core sim.",
+        "violation_risk": "Any float/double use in core/sim.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-04",
+        "constraint": "Fixed tick phase order must be preserved.",
+        "type": "technical/determinism",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User project contract",
+        "implication": "Do not reorder INPUT→PRE-STATE→SIMULATION→NETWORKS→MERGE→POST-PROCESS→FINALIZE.",
+        "violation_risk": "Changing order.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-05",
+        "constraint": "Sim is single-threaded deterministic; background threads cannot mutate sim.",
+        "type": "technical/determinism",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User project contract",
+        "implication": "Keep async work non-sim or mediated deterministically.",
+        "violation_risk": "Threaded sim mutation.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-06",
+        "constraint": "Renderer/audio/UI never mutate sim state.",
+        "type": "technical/layering",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User project contract",
+        "implication": "Render/audio/UI consume state/commands only.",
+        "violation_risk": "Render-side sim writes.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-07",
+        "constraint": "OS headers only in appropriate platform/render/audio boundaries.",
+        "type": "technical/layering",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User project contract",
+        "implication": "Launcher core must be OS-free.",
+        "violation_risk": "Including windows.h in core/model.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-08",
+        "constraint": "CMake uses explicit sources and no network fetch.",
+        "type": "technical/build",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User project contract",
+        "implication": "No globbing or configure/build downloads.",
+        "violation_risk": "Network dependency fetch.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-09",
+        "constraint": "Launcher backend/core must be C89.",
+        "type": "technical",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User decision",
+        "implication": "Write launcher core in C89.",
+        "violation_risk": "Using C++ in launcher core.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-10",
+        "constraint": "Launcher frontends may use C++98, not newer by default.",
+        "type": "technical",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User decision",
+        "implication": "Frontend code can be C++98 max.",
+        "violation_risk": "C++11+ frontend code without approval.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-11",
+        "constraint": "Launcher launches separate binaries.",
+        "type": "architecture",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User decision",
+        "implication": "Implement spawn plan/API.",
+        "violation_risk": "In-process client/server switch.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-12",
+        "constraint": "Client/server binaries may be single-system.",
+        "type": "architecture",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User decision",
+        "implication": "Do not require universal binary.",
+        "violation_risk": "Assuming one client supports all systems.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-13",
+        "constraint": "Software renderer must work on all platforms.",
+        "type": "technical",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User decision",
+        "implication": "Universal fallback renderer.",
+        "violation_risk": "Platform-specific software renderer dependency.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-14",
+        "constraint": "Every renderer supports vector and graphics modes.",
+        "type": "technical",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User decision",
+        "implication": "Mode must be runtime-capable.",
+        "violation_risk": "Backend only supports textured path.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-15",
+        "constraint": "Every platform should be capable of renderer or headless.",
+        "type": "technical",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User decision",
+        "implication": "Platform init must support no-window/headless.",
+        "violation_risk": "Headless server opening a window.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-16",
+        "constraint": "Final OS support tiers must be preserved.",
+        "type": "product",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User final tier list",
+        "implication": "Docs/matrix use user-specified ranges.",
+        "violation_risk": "Dropping tier without user decision.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-17",
+        "constraint": "Direct user statements outrank assistant suggestions.",
+        "type": "handoff/evidence",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User current request",
+        "implication": "Do not promote unaccepted suggestions.",
+        "violation_risk": "Treating assistant idea as user decision.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-18",
+        "constraint": "External facts require verification before future use.",
+        "type": "evidence",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User current request",
+        "implication": "Mark OS/library claims stale.",
+        "violation_risk": "Publishing unverified compatibility.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-19",
+        "constraint": "Preserve rejected/superseded options and contradictions.",
+        "type": "handoff",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User current request",
+        "implication": "Record changes of direction.",
+        "violation_risk": "Repeating rejected designs.",
+        "label": "FACT",
+        "confidence": "High"
+      },
+      {
+        "id": "CONSTRAINT-20",
+        "constraint": "Final package must be self-contained and downloadable if tools allow.",
+        "type": "formatting",
+        "hard_or_soft": "hard",
+        "source_or_basis": "User current request",
+        "implication": "Create files/ZIP and links.",
+        "violation_risk": "Only inline summary when files can be made.",
+        "label": "FACT",
+        "confidence": "High"
+      }
+    ],
+    "open_questions": [
+      {
+        "id": "QUESTION-01",
+        "question": "Is DX12 in scope now, deferred, or dropped?",
+        "why_it_matters": "Affects renderer enum, CMake, scripts, docs.",
+        "known": "DX12 was discussed earlier. Latest user list omitted DX12.",
+        "unknown": "Final status.",
+        "resolution_path": "Ask user or treat deferred.",
+        "priority": "P0",
+        "related_workstreams": [
+          "WORKSTREAM-08"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-02",
+        "question": "Are X11 and Wayland explicit platforms or Native Linux subtypes?",
+        "why_it_matters": "Affects platform taxonomy and matrix.",
+        "known": "Earlier discussed explicitly; latest platform categories are POSIX/SDL1/SDL2/Native.",
+        "unknown": "Final mapping.",
+        "resolution_path": "User/developer taxonomy decision.",
+        "priority": "P0",
+        "related_workstreams": [
+          "WORKSTREAM-07"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-03",
+        "question": "Is POSIX headless-only?",
+        "why_it_matters": "Affects server/client capabilities.",
+        "known": "POSIX used for headless in generated scripts.",
+        "unknown": "Whether POSIX can render or only provide file/process/timers.",
+        "resolution_path": "Platform API decision.",
+        "priority": "P0",
+        "related_workstreams": [
+          "WORKSTREAM-07"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-04",
+        "question": "What exactly is Native per OS/tier?",
+        "why_it_matters": "Needed for support matrix.",
+        "known": "Native is final category.",
+        "unknown": "Mapping to Win32/Win16/Cocoa/Carbon/X11/Wayland/DOS.",
+        "resolution_path": "Document platform taxonomy.",
+        "priority": "P0",
+        "related_workstreams": [
+          "WORKSTREAM-07"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-05",
+        "question": "What is the actual current repo state?",
+        "why_it_matters": "Implementation must not assume prompts were applied.",
+        "known": "Files were uploaded.",
+        "unknown": "Exact contents and build state.",
+        "resolution_path": "Inspect repo/files.",
+        "priority": "P0",
+        "related_workstreams": [
+          "WORKSTREAM-18"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-06",
+        "question": "Are prior uploaded-file summaries accurate?",
+        "why_it_matters": "Refactor path depends on them.",
+        "known": "Prior assistant summarized them.",
+        "unknown": "Exact code.",
+        "resolution_path": "Reopen files.",
+        "priority": "P0",
+        "related_workstreams": [
+          "WORKSTREAM-18"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-07",
+        "question": "What libc/libstdc++ baselines accompany Linux kernel tiers?",
+        "why_it_matters": "Kernel ranges alone insufficient.",
+        "known": "User finalized kernel versions.",
+        "unknown": "libc/toolchain minima.",
+        "resolution_path": "External verification and toolchain decision.",
+        "priority": "P1",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-08",
+        "question": "Can SDL2 be supported on Win9x?",
+        "why_it_matters": "Tier 2/3 matrix.",
+        "known": "Likely conditional at best.",
+        "unknown": "Exact feasibility/shim.",
+        "resolution_path": "Research/test.",
+        "priority": "P1",
+        "related_workstreams": [
+          "WORKSTREAM-16"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-09",
+        "question": "How feasible are Mac OS 8.5/9.x targets?",
+        "why_it_matters": "Tier 2/3 support.",
+        "known": "User wants them.",
+        "unknown": "Toolchains/API/render strategy.",
+        "resolution_path": "Research/toolchain proof.",
+        "priority": "P1",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-10",
+        "question": "How feasible is Mac OS X 10.0-latest support?",
+        "why_it_matters": "Tier 3.",
+        "known": "User wants 10.0-latest.",
+        "unknown": "Deployment/API split.",
+        "resolution_path": "Research/test.",
+        "priority": "P1",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-11",
+        "question": "How to support Windows NT 2000 SP4-latest with modern toolchains?",
+        "why_it_matters": "All tiers include NT 2000+.",
+        "known": "User wants it.",
+        "unknown": "CRT/toolchain/API split.",
+        "resolution_path": "Research/test.",
+        "priority": "P1",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-12",
+        "question": "Will retro systems run servers?",
+        "why_it_matters": "Binary matrix.",
+        "known": "Servers discussed generally.",
+        "unknown": "DOS/Win3/Mac classic server support.",
+        "resolution_path": "Product decision.",
+        "priority": "P2",
+        "related_workstreams": [
+          "WORKSTREAM-04"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-13",
+        "question": "Is visual replay determinism required?",
+        "why_it_matters": "Render math choices.",
+        "known": "Sim determinism required.",
+        "unknown": "Visual determinism not established.",
+        "resolution_path": "Product decision.",
+        "priority": "P2",
+        "related_workstreams": [
+          "WORKSTREAM-11"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-14",
+        "question": "What launcher config file format should be used?",
+        "why_it_matters": "Core implementation.",
+        "known": "Config needed.",
+        "unknown": "JSON/custom/TOML.",
+        "resolution_path": "Design decision.",
+        "priority": "P1",
+        "related_workstreams": [
+          "WORKSTREAM-02"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "QUESTION-15",
+        "question": "Should dom-launcher/dom-setup remain aliases?",
+        "why_it_matters": "User-facing UX.",
+        "known": "dominium/setup are final primary names.",
+        "unknown": "Alias policy.",
+        "resolution_path": "User/developer decision.",
+        "priority": "P2",
+        "related_workstreams": [
+          "WORKSTREAM-05"
+        ],
+        "label": "INFERENCE"
+      },
+      {
+        "id": "QUESTION-16",
+        "question": "What installer technology should setup wrap?",
+        "why_it_matters": "Setup command.",
+        "known": "Wrapper contract known.",
+        "unknown": "Real installer backend.",
+        "resolution_path": "Packaging decision.",
+        "priority": "P2",
+        "related_workstreams": [
+          "WORKSTREAM-06"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      }
+    ],
+    "rejected_or_superseded_options": [
+      {
+        "id": "REJECTED-01",
+        "option": "In-process client/server switching from launcher.",
+        "status": "rejected",
+        "reason": "User clarified launcher executes binaries.",
+        "final_or_tentative": "final",
+        "reconsider_conditions": "Only reconsider if architecture changes.",
+        "related_workstreams": [
+          "WORKSTREAM-04"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "REJECTED-02",
+        "option": "One universal all-system client/server binary.",
+        "status": "deprioritised",
+        "reason": "User allowed single-system client/server binaries.",
+        "final_or_tentative": "final for current plan",
+        "reconsider_conditions": "Reconsider if backend plugin architecture is desired.",
+        "related_workstreams": [
+          "WORKSTREAM-04"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "REJECTED-03",
+        "option": "Minimal vs full backend split.",
+        "status": "rejected",
+        "reason": "User said remove minimal versions and use full single implementation.",
+        "final_or_tentative": "final",
+        "reconsider_conditions": "Reconsider only if legacy support requires special backend.",
+        "related_workstreams": [
+          "WORKSTREAM-07"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "REJECTED-04",
+        "option": "Separate public vector_soft renderer.",
+        "status": "superseded",
+        "reason": "User requested one software renderer.",
+        "final_or_tentative": "final",
+        "reconsider_conditions": "Could survive only as internal implementation detail.",
+        "related_workstreams": [
+          "WORKSTREAM-09"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "REJECTED-05",
+        "option": "Launcher requiring GPU renderer.",
+        "status": "deprioritised",
+        "reason": "Launcher should use software fallback.",
+        "final_or_tentative": "final",
+        "reconsider_conditions": "Optional future themed launcher only.",
+        "related_workstreams": [
+          "WORKSTREAM-09"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "REJECTED-06",
+        "option": "Native Win32 launcher as cross-platform canonical launcher.",
+        "status": "deprioritised",
+        "reason": "Win-only code cannot be cross-platform core.",
+        "final_or_tentative": "tentative",
+        "reconsider_conditions": "Could be official Windows frontend if user chooses.",
+        "related_workstreams": [
+          "WORKSTREAM-18"
+        ],
+        "label": "INFERENCE"
+      },
+      {
+        "id": "REJECTED-07",
+        "option": "dom-launcher as primary command.",
+        "status": "superseded",
+        "reason": "User later requested dominium.",
+        "final_or_tentative": "likely final",
+        "reconsider_conditions": "Keep as alias if desired.",
+        "related_workstreams": [
+          "WORKSTREAM-05"
+        ],
+        "label": "INFERENCE"
+      },
+      {
+        "id": "REJECTED-08",
+        "option": "dom-setup as primary command.",
+        "status": "superseded",
+        "reason": "User later requested setup.",
+        "final_or_tentative": "likely final",
+        "reconsider_conditions": "Keep as alias if desired.",
+        "related_workstreams": [
+          "WORKSTREAM-05"
+        ],
+        "label": "INFERENCE"
+      },
+      {
+        "id": "REJECTED-09",
+        "option": "Linux kernel 2.0/libc5 baseline.",
+        "status": "rejected/deprioritised",
+        "reason": "User chose Linux 2.4 for Tier 3.",
+        "final_or_tentative": "final for current tiers",
+        "reconsider_conditions": "Special retro-port beyond Tier 3.",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "REJECTED-10",
+        "option": "Mac OS X 10.0 in Tier 1/2.",
+        "status": "superseded",
+        "reason": "Final tiers place 10.0 only in Tier 3.",
+        "final_or_tentative": "final",
+        "reconsider_conditions": "If user changes tiers.",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "REJECTED-11",
+        "option": "Treat generated Codex prompts as implemented.",
+        "status": "rejected",
+        "reason": "No evidence of application.",
+        "final_or_tentative": "final",
+        "reconsider_conditions": "Inspect repo to verify implementation.",
+        "related_workstreams": [
+          "WORKSTREAM-19"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "REJECTED-12",
+        "option": "Treat external compatibility claims as verified.",
+        "status": "rejected",
+        "reason": "User requires stale/current facts be marked for verification.",
+        "final_or_tentative": "final",
+        "reconsider_conditions": "Verify with sources/tests.",
+        "related_workstreams": [
+          "WORKSTREAM-15",
+          "WORKSTREAM-16"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "REJECTED-13",
+        "option": "Assume prior assistant uploaded-file summaries are exact.",
+        "status": "rejected",
+        "reason": "Files need reinspection.",
+        "final_or_tentative": "final",
+        "reconsider_conditions": "Inspect files.",
+        "related_workstreams": [
+          "WORKSTREAM-18"
+        ],
+        "label": "FACT"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": "ARTIFACT-01",
+        "name_or_description": "/mnt/data/dominium.7z",
+        "type": "file",
+        "purpose": "Repo archive uploaded by user.",
+        "status": "Uploaded; prior assistant said .7z could not be opened.",
+        "origin": "User upload",
+        "carry_forward": "yes",
+        "notes": "Exact contents unverified.",
+        "label": "FACT / UNCERTAIN"
+      },
+      {
+        "id": "ARTIFACT-02",
+        "name_or_description": "/mnt/data/dom_launcher_view.c",
+        "type": "file/code",
+        "purpose": "Launcher engine-rendered view code.",
+        "status": "Uploaded; content summary unverified.",
+        "origin": "User upload",
+        "carry_forward": "yes",
+        "notes": "Reinspect before use.",
+        "label": "FACT / UNCERTAIN"
+      },
+      {
+        "id": "ARTIFACT-03",
+        "name_or_description": "/mnt/data/dom_launcher_view.h",
+        "type": "file/code",
+        "purpose": "Header for launcher view.",
+        "status": "Uploaded; content summary unverified.",
+        "origin": "User upload",
+        "carry_forward": "yes",
+        "notes": "Reinspect before use.",
+        "label": "FACT / UNCERTAIN"
+      },
+      {
+        "id": "ARTIFACT-04",
+        "name_or_description": "/mnt/data/CMakeLists.txt",
+        "type": "file/code",
+        "purpose": "Launcher build configuration.",
+        "status": "Uploaded; content summary unverified.",
+        "origin": "User upload",
+        "carry_forward": "yes",
+        "notes": "Reinspect before use.",
+        "label": "FACT / UNCERTAIN"
+      },
+      {
+        "id": "ARTIFACT-05",
+        "name_or_description": "/mnt/data/dom_launcher_main.c",
+        "type": "file/code",
+        "purpose": "Native launcher implementation, reportedly Win32.",
+        "status": "Uploaded; content summary unverified.",
+        "origin": "User upload",
+        "carry_forward": "yes",
+        "notes": "Reinspect before use.",
+        "label": "FACT / UNCERTAIN"
+      },
+      {
+        "id": "ARTIFACT-06",
+        "name_or_description": "docs/DIRECTORY_CONTEXT.md",
+        "type": "reference doc",
+        "purpose": "Canonical repo layout.",
+        "status": "Referenced by user.",
+        "origin": "User initial context",
+        "carry_forward": "yes",
+        "notes": "Not fully pasted, but summarized.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-07",
+        "name_or_description": "docs/SPEC_CORE.md",
+        "type": "reference doc",
+        "purpose": "Deterministic core spec.",
+        "status": "Referenced by user.",
+        "origin": "User initial context",
+        "carry_forward": "yes",
+        "notes": "Summarized in chat.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-08",
+        "name_or_description": "docs/DATA_FORMATS.md",
+        "type": "reference doc",
+        "purpose": "Serialization/data formats.",
+        "status": "Referenced by user.",
+        "origin": "User initial context",
+        "carry_forward": "yes",
+        "notes": "Summarized in chat.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-09",
+        "name_or_description": "docs/BUILDING.md",
+        "type": "reference doc",
+        "purpose": "Build/language contract.",
+        "status": "Referenced by user.",
+        "origin": "User initial context",
+        "carry_forward": "yes",
+        "notes": "Summarized in chat.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-10",
+        "name_or_description": "docs/dev/dominium_new_root.txt",
+        "type": "reference doc",
+        "purpose": "Annotated tree/responsibilities.",
+        "status": "Referenced by user.",
+        "origin": "User initial context",
+        "carry_forward": "yes",
+        "notes": "Not pasted in full.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-11",
+        "name_or_description": "docs/SPEC_LAUNCHER.md",
+        "type": "proposed doc",
+        "purpose": "Launcher architecture spec.",
+        "status": "Proposed, not confirmed created.",
+        "origin": "Assistant prompt",
+        "carry_forward": "yes",
+        "notes": "Use latest decisions.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-12",
+        "name_or_description": "docs/SPEC_ENTRYPOINTS.md",
+        "type": "proposed doc",
+        "purpose": "Entrypoint/script semantics.",
+        "status": "Proposed earlier; may be merged into launcher/build docs.",
+        "origin": "Assistant response",
+        "carry_forward": "maybe",
+        "notes": "Earlier dom-launcher names superseded.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-13",
+        "name_or_description": "docs/SPEC_INPUT.md",
+        "type": "proposed doc",
+        "purpose": "Input/keybinding spec.",
+        "status": "Prompt generated.",
+        "origin": "Assistant prompt",
+        "carry_forward": "yes",
+        "notes": "Should include F1-F12 map.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-14",
+        "name_or_description": "docs/SPEC_PLATFORM_SUPPORT.md",
+        "type": "proposed doc",
+        "purpose": "Support tiers and capability matrix.",
+        "status": "Proposed.",
+        "origin": "Assistant response",
+        "carry_forward": "yes",
+        "notes": "Needs verification caveats.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-15",
+        "name_or_description": "game/launcher/core/dom_launch_types.h",
+        "type": "proposed code",
+        "purpose": "Launcher core types.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "C89.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-16",
+        "name_or_description": "game/launcher/core/dom_launch_config.{h,c}",
+        "type": "proposed code",
+        "purpose": "Accounts/instances/profiles config.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "Format undecided.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-17",
+        "name_or_description": "game/launcher/core/dom_launch_caps.{h,c}",
+        "type": "proposed code",
+        "purpose": "Capability data.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "Uses platform/render matrix.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-18",
+        "name_or_description": "game/launcher/core/dom_launch_plan.{h,c}",
+        "type": "proposed code",
+        "purpose": "Launch plan builder.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "Pure C89 logic.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-19",
+        "name_or_description": "game/launcher/ui/dom_launcher_state.{h,c}",
+        "type": "proposed code",
+        "purpose": "Launcher state/action handling.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "C89.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-20",
+        "name_or_description": "game/launcher/ui/dom_launcher_viewmodel.{h,c}",
+        "type": "proposed code",
+        "purpose": "Frontend-neutral launcher viewmodel.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "Feeds native/vector/CLI UIs.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-21",
+        "name_or_description": "engine/platform/dom_platform_launch.h",
+        "type": "proposed code",
+        "purpose": "Platform-agnostic process spawn API.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "Implement per OS.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-22",
+        "name_or_description": "engine/render/dom_render_api.h",
+        "type": "proposed code",
+        "purpose": "Render API, modes, caps.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "Check existing API first.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-23",
+        "name_or_description": "engine/render/software/dom_render_software.{c,h}",
+        "type": "proposed code",
+        "purpose": "Universal software renderer.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "Replaces vector_soft.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-24",
+        "name_or_description": "engine/render/core/dom_draw_common.{h,c}",
+        "type": "proposed code",
+        "purpose": "Draw command format.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "Shared by renderers.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-25",
+        "name_or_description": "engine/render/core/dom_view.h/.c",
+        "type": "proposed code",
+        "purpose": "View/camera helpers.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "2D/3D view state.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-26",
+        "name_or_description": "engine/render/core/dom_camera.h / registry",
+        "type": "proposed code",
+        "purpose": "Arbitrary camera registry.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "Future camera system.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-27",
+        "name_or_description": "engine/render/core/dom_target.h/.c",
+        "type": "proposed code",
+        "purpose": "Render target/window/offscreen mapping.",
+        "status": "Proposed.",
+        "origin": "Assistant design",
+        "carry_forward": "yes",
+        "notes": "Needed for cameras/overlays/CCTV.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-28",
+        "name_or_description": "game/client/input/default_bindings.json",
+        "type": "proposed data",
+        "purpose": "Default keybindings.",
+        "status": "Prompt generated.",
+        "origin": "Assistant prompt",
+        "carry_forward": "yes",
+        "notes": "No comments in JSON.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-29",
+        "name_or_description": "game/client/input/dom_input_actions.h",
+        "type": "proposed code",
+        "purpose": "Input action enum.",
+        "status": "Prompt generated.",
+        "origin": "Assistant prompt",
+        "carry_forward": "yes",
+        "notes": "F1-F12 actions.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-30",
+        "name_or_description": "game/client/input/dom_input_mapping.{h,c}",
+        "type": "proposed code",
+        "purpose": "Input mapping layer.",
+        "status": "Prompt generated.",
+        "origin": "Assistant prompt",
+        "carry_forward": "yes",
+        "notes": "Extend existing if present.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-31",
+        "name_or_description": "packaging/scripts/dominium.sh.in and .cmd.in",
+        "type": "proposed script",
+        "purpose": "Launch launcher.",
+        "status": "Template generated.",
+        "origin": "Assistant prompt",
+        "carry_forward": "yes",
+        "notes": "Primary launcher command.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-32",
+        "name_or_description": "packaging/scripts/setup.sh.in and .cmd.in",
+        "type": "proposed script",
+        "purpose": "Setup wrapper.",
+        "status": "Template generated.",
+        "origin": "Assistant prompt",
+        "carry_forward": "yes",
+        "notes": "install/repair/uninstall.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-33",
+        "name_or_description": "packaging/scripts/dom-client.sh.in and .cmd.in",
+        "type": "proposed script",
+        "purpose": "Client dispatch wrapper.",
+        "status": "Template generated.",
+        "origin": "Assistant prompt",
+        "carry_forward": "yes",
+        "notes": "Renderer selection.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-34",
+        "name_or_description": "packaging/scripts/dom-server.sh.in and .cmd.in",
+        "type": "proposed script",
+        "purpose": "Server dispatch wrapper.",
+        "status": "Template generated.",
+        "origin": "Assistant prompt",
+        "carry_forward": "yes",
+        "notes": "Headless.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-35",
+        "name_or_description": "Codex prompt: docs/platform/render/scripts implementation",
+        "type": "prompt",
+        "purpose": "Instruct Codex to update docs and implement architecture.",
+        "status": "Generated.",
+        "origin": "Assistant response",
+        "carry_forward": "yes",
+        "notes": "Review for superseded details before use.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-36",
+        "name_or_description": "Codex prompt: launcher build/test/scripts",
+        "type": "prompt",
+        "purpose": "Implement CMake targets/scripts/stubs.",
+        "status": "Generated.",
+        "origin": "Assistant response",
+        "carry_forward": "yes",
+        "notes": "Review target names.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-37",
+        "name_or_description": "Codex prompt: input/keybindings",
+        "type": "prompt",
+        "purpose": "Implement input spec/default bindings.",
+        "status": "Generated.",
+        "origin": "Assistant response",
+        "carry_forward": "yes",
+        "notes": "Use latest keymap.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-38",
+        "name_or_description": "Codex prompt: uploaded launcher refactor",
+        "type": "prompt",
+        "purpose": "Refactor current launcher files.",
+        "status": "Generated.",
+        "origin": "Assistant response",
+        "carry_forward": "yes",
+        "notes": "File summaries unverified.",
+        "label": "FACT / UNCERTAIN"
+      },
+      {
+        "id": "ARTIFACT-39",
+        "name_or_description": "F1-F12 keybinding table",
+        "type": "table/output",
+        "purpose": "Canonical input reference.",
+        "status": "Generated.",
+        "origin": "Assistant response",
+        "carry_forward": "yes",
+        "notes": "Accepted enough for implementation prompt.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-40",
+        "name_or_description": "Support tier table",
+        "type": "table/output",
+        "purpose": "OS support policy.",
+        "status": "Generated from user final list.",
+        "origin": "Assistant response/user list",
+        "carry_forward": "yes",
+        "notes": "Needs feasibility verification.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-41",
+        "name_or_description": "Capability matrix draft",
+        "type": "table/output",
+        "purpose": "Renderer/platform filtering.",
+        "status": "Generated.",
+        "origin": "Assistant response",
+        "carry_forward": "yes",
+        "notes": "Needs verification and taxonomy cleanup.",
+        "label": "FACT / UNCERTAIN"
+      },
+      {
+        "id": "ARTIFACT-42",
+        "name_or_description": "OC-1 Discovery Inventory",
+        "type": "handoff output",
+        "purpose": "Inventory of chat state.",
+        "status": "Generated.",
+        "origin": "Assistant response",
+        "carry_forward": "yes",
+        "notes": "Basis for this package.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-43",
+        "name_or_description": "Context Transfer Packet",
+        "type": "handoff output",
+        "purpose": "Maximum-fidelity state transfer.",
+        "status": "Generated.",
+        "origin": "Assistant response",
+        "carry_forward": "yes",
+        "notes": "Basis for this package.",
+        "label": "FACT"
+      },
+      {
+        "id": "ARTIFACT-44",
+        "name_or_description": "This report package",
+        "type": "generated document package",
+        "purpose": "Final per-chat downloadable package.",
+        "status": "Created now.",
+        "origin": "Assistant file generation",
+        "carry_forward": "yes",
+        "notes": "Markdown/YAML/ZIP.",
+        "label": "FACT"
+      }
+    ],
+    "risks": [
+      {
+        "id": "RISK-01",
+        "risk": "Treating brainstorms or assistant suggestions as final user decisions.",
+        "consequence": "Wrong implementation/spec.",
+        "likelihood": "medium",
+        "severity": "high",
+        "mitigation": "Prioritize latest direct user statements.",
+        "related_workstreams": [
+          "WORKSTREAM-20"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "RISK-02",
+        "risk": "Resurrecting vector_soft as public renderer.",
+        "consequence": "Violates user decision and fragments fallback path.",
+        "likelihood": "medium",
+        "severity": "high",
+        "mitigation": "Use software renderer with vector/full modes.",
+        "related_workstreams": [
+          "WORKSTREAM-09"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "RISK-03",
+        "risk": "Including DX12 without confirmation.",
+        "consequence": "Scope and docs mismatch.",
+        "likelihood": "medium",
+        "severity": "medium",
+        "mitigation": "Mark DX12 unresolved/deferred.",
+        "related_workstreams": [
+          "WORKSTREAM-08"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "RISK-04",
+        "risk": "Ignoring X11/Wayland taxonomy ambiguity.",
+        "consequence": "Invalid platform model.",
+        "likelihood": "medium",
+        "severity": "high",
+        "mitigation": "Resolve Native/POSIX mapping.",
+        "related_workstreams": [
+          "WORKSTREAM-07"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "RISK-05",
+        "risk": "Assuming uploaded file summaries are accurate.",
+        "consequence": "Bad refactor.",
+        "likelihood": "medium",
+        "severity": "high",
+        "mitigation": "Inspect actual files.",
+        "related_workstreams": [
+          "WORKSTREAM-18"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "RISK-06",
+        "risk": "Assuming generated prompts were applied.",
+        "consequence": "Duplicate/conflicting work.",
+        "likelihood": "medium",
+        "severity": "high",
+        "mitigation": "Inspect repo state.",
+        "related_workstreams": [
+          "WORKSTREAM-19"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "RISK-07",
+        "risk": "Compiling Win32 native launcher on non-Windows.",
+        "consequence": "Build failure.",
+        "likelihood": "medium",
+        "severity": "high",
+        "mitigation": "Separate source lists/targets.",
+        "related_workstreams": [
+          "WORKSTREAM-18"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "RISK-08",
+        "risk": "Leaking OS APIs into launcher core.",
+        "consequence": "Portability break.",
+        "likelihood": "medium",
+        "severity": "high",
+        "mitigation": "Keep core C89/OS-free.",
+        "related_workstreams": [
+          "WORKSTREAM-02"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "RISK-09",
+        "risk": "Camera/view/render state mutating sim.",
+        "consequence": "Determinism violation.",
+        "likelihood": "low",
+        "severity": "critical",
+        "mitigation": "Keep view state client/render-side.",
+        "related_workstreams": [
+          "WORKSTREAM-11",
+          "WORKSTREAM-12"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "RISK-10",
+        "risk": "Software renderer delayed.",
+        "consequence": "Launcher/fallback blocked.",
+        "likelihood": "medium",
+        "severity": "high",
+        "mitigation": "Prioritize software renderer.",
+        "related_workstreams": [
+          "WORKSTREAM-09"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "RISK-11",
+        "risk": "Capability matrix overpromises support.",
+        "consequence": "User launches unsupported backends.",
+        "likelihood": "medium",
+        "severity": "high",
+        "mitigation": "Mark conditional and verify.",
+        "related_workstreams": [
+          "WORKSTREAM-16"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "RISK-12",
+        "risk": "Tier 3 consumes disproportionate effort.",
+        "consequence": "Schedule/resource drag.",
+        "likelihood": "medium",
+        "severity": "medium",
+        "mitigation": "Treat as separate retro toolchain track.",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "INFERENCE"
+      },
+      {
+        "id": "RISK-13",
+        "risk": "Scripts fail on old shells/CMD.",
+        "consequence": "Entrypoints unusable.",
+        "likelihood": "medium",
+        "severity": "medium",
+        "mitigation": "Test per tier and simplify scripts.",
+        "related_workstreams": [
+          "WORKSTREAM-05"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "RISK-14",
+        "risk": "Quick load/save semantics in multiplayer cause desync.",
+        "consequence": "Authority/desync issue.",
+        "likelihood": "low",
+        "severity": "high",
+        "mitigation": "Disable or route through server/admin.",
+        "related_workstreams": [
+          "WORKSTREAM-14"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "RISK-15",
+        "risk": "Docs diverge from code.",
+        "consequence": "Future confusion.",
+        "likelihood": "medium",
+        "severity": "high",
+        "mitigation": "Update docs and code together.",
+        "related_workstreams": [
+          "WORKSTREAM-19"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "RISK-16",
+        "risk": "Over-compressing handoff loses rejected options.",
+        "consequence": "Future assistant repeats old work.",
+        "likelihood": "medium",
+        "severity": "medium",
+        "mitigation": "Use registers and stable IDs.",
+        "related_workstreams": [
+          "WORKSTREAM-20"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "RISK-17",
+        "risk": "External platform/library facts stale.",
+        "consequence": "Incorrect support promises.",
+        "likelihood": "high",
+        "severity": "high",
+        "mitigation": "Verify before publication.",
+        "related_workstreams": [
+          "WORKSTREAM-15",
+          "WORKSTREAM-16"
+        ],
+        "label": "FACT"
+      },
+      {
+        "id": "RISK-18",
+        "risk": "Using hidden reasoning rather than visible rationale in handoff.",
+        "consequence": "Unusable/unsafe provenance.",
+        "likelihood": "low",
+        "severity": "medium",
+        "mitigation": "Only include visible rationale.",
+        "related_workstreams": [
+          "WORKSTREAM-20"
+        ],
+        "label": "FACT"
+      }
+    ],
+    "verification_queue": [
+      {
+        "id": "VERIFY-01",
+        "item": "Linux kernel 3.2 + modern toolchain/glibc baseline.",
+        "why_verification_needed": "Kernel-only support claim may be insufficient.",
+        "suggested_source_type": "Linux distro/toolchain docs and build tests.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-02",
+        "item": "Linux kernel 2.6.18 + libc/toolchain feasibility.",
+        "why_verification_needed": "Tier 2 support depends on old ABI.",
+        "suggested_source_type": "RHEL5/Debian/Ubuntu docs and test builds.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-03",
+        "item": "Linux kernel 2.4 feasibility.",
+        "why_verification_needed": "Tier 3 very old.",
+        "suggested_source_type": "Toolchain, libc, X11, SDL1 docs/tests.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-04",
+        "item": "Distro mappings for Tier 1.",
+        "why_verification_needed": "Assistant-proposed distro mappings may be stale.",
+        "suggested_source_type": "Distro release/kernel/glibc records.",
+        "priority": "Medium",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-05",
+        "item": "Distro mappings for Tier 2.",
+        "why_verification_needed": "Assistant-proposed distro mappings may be stale.",
+        "suggested_source_type": "Distro release/kernel/glibc records.",
+        "priority": "Medium",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-06",
+        "item": "Distro mappings for Tier 3.",
+        "why_verification_needed": "Very old distro data uncertain.",
+        "suggested_source_type": "Distro archives/docs.",
+        "priority": "Medium",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-07",
+        "item": "DX9.0c support on Windows 98SE-Me and NT 2000+.",
+        "why_verification_needed": "Renderer matrix depends on API/runtime reality.",
+        "suggested_source_type": "Microsoft DirectX docs/tests.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-16"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-08",
+        "item": "DX11 OS/runtime minimum.",
+        "why_verification_needed": "Must not expose on unsupported NT 2000/XP systems.",
+        "suggested_source_type": "Microsoft DirectX docs/tests.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-16"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-09",
+        "item": "Vulkan VK1 availability on Windows/Linux/macOS.",
+        "why_verification_needed": "Runtime driver/API support varies.",
+        "suggested_source_type": "Vulkan loader/driver/MoltenVK docs/tests.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-16"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-10",
+        "item": "MoltenVK support across macOS tiers.",
+        "why_verification_needed": "macOS VK1 depends on translation layer.",
+        "suggested_source_type": "MoltenVK docs/license/deployment tests.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-16"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-11",
+        "item": "OpenGL 1.1 and GL2 support by OS/tier.",
+        "why_verification_needed": "Renderer matrix depends on this.",
+        "suggested_source_type": "Apple/Microsoft/Mesa/vendor docs/tests.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-16"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-12",
+        "item": "Classic Mac OS 8.5/9.x graphics/toolchain feasibility.",
+        "why_verification_needed": "Tier 2/3 Mac support.",
+        "suggested_source_type": "CodeWarrior/Carbon/QuickDraw/OpenGL docs/tests.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-13",
+        "item": "SDL1 and SDL2 support on legacy Windows/Mac/Linux.",
+        "why_verification_needed": "Platform matrix depends on this.",
+        "suggested_source_type": "SDL docs/source compatibility/tests.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-07",
+          "WORKSTREAM-16"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-14",
+        "item": "Wayland support availability by Linux tier.",
+        "why_verification_needed": "Wayland is modern; older tiers likely X11 only.",
+        "suggested_source_type": "Wayland release/docs.",
+        "priority": "Medium",
+        "related_workstreams": [
+          "WORKSTREAM-07"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-15",
+        "item": "Windows NT 2000 SP4 to latest toolchain/runtime feasibility.",
+        "why_verification_needed": "All tiers include NT 2000+.",
+        "suggested_source_type": "Compiler/CRT/Win32 API docs/tests.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-15"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-16",
+        "item": "Shell script portability on old POSIX systems.",
+        "why_verification_needed": "readlink and shell features may differ.",
+        "suggested_source_type": "POSIX shell tests on target systems.",
+        "priority": "Medium",
+        "related_workstreams": [
+          "WORKSTREAM-05"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-17",
+        "item": "Windows CMD script parsing on supported Windows versions.",
+        "why_verification_needed": "Batch parser differs across versions.",
+        "suggested_source_type": "Windows test matrix.",
+        "priority": "Medium",
+        "related_workstreams": [
+          "WORKSTREAM-05"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-18",
+        "item": "Actual CMake target/library names.",
+        "why_verification_needed": "Prompt names may not match repo.",
+        "suggested_source_type": "Inspect repo CMake.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-17"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-19",
+        "item": "Existing input system and render API.",
+        "why_verification_needed": "Avoid duplicate systems.",
+        "suggested_source_type": "Inspect repo.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-14",
+          "WORKSTREAM-09"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      },
+      {
+        "id": "VERIFY-20",
+        "item": "Uploaded launcher file summaries.",
+        "why_verification_needed": "Prior summary unverified.",
+        "suggested_source_type": "Inspect files directly.",
+        "priority": "High",
+        "related_workstreams": [
+          "WORKSTREAM-18"
+        ],
+        "label": "UNCERTAIN / UNVERIFIED"
+      }
+    ],
+    "spec_book_notes": {
+      "likely_sections": [
+        "Launcher Architecture",
+        "Platform/Renderer Backends",
+        "Software Renderer",
+        "Camera/View System",
+        "Entrypoint Scripts",
+        "Input/Controls",
+        "Platform Support Tiers",
+        "Capability Matrix",
+        "Build/Test Procedures"
+      ],
+      "unique_contributions": [
+        "Process-spawning launcher model",
+        "C89 backend/C++98 frontend split",
+        "dominium/setup command decisions",
+        "Universal software renderer replacing vector_soft",
+        "Final support tiers",
+        "Camera/view flexibility requirements"
+      ],
+      "possible_duplicates_with_other_chats": [
+        "Deterministic core rules",
+        "Directory layout",
+        "Build contract",
+        "Data formats",
+        "Platform/render backend names"
+      ],
+      "conflicts_to_watch_for": [
+        "DX12 status",
+        "X11/Wayland taxonomy",
+        "vector_soft vs software",
+        "dom-launcher vs dominium",
+        "support tier differences"
+      ],
+      "formal_requirements_candidates": [
+        "Launcher executes binaries",
+        "C89 launcher core",
+        "Software renderer all platforms",
+        "All renderers vector/full",
+        "Final support tiers",
+        "dominium/setup scripts"
+      ],
+      "background_context_candidates": [
+        "Prior Codex prompts",
+        "Uploaded file summaries before verification"
+      ],
+      "needs_user_confirmation": [
+        "DX12 status",
+        "X11/Wayland/POSIX/Native taxonomy",
+        "Alias policy",
+        "Launcher config format"
+      ]
+    },
+    "final_recommendations": {
+      "next_action_if_continuing_this_chat": "Inspect uploaded/repo files, resolve platform taxonomy and DX12, then update docs and implement launcher core/scripts/software renderer in small verifiable steps.",
+      "next_action_for_aggregator": "Merge final decisions and registers, preserving uncertainty around DX12, platform taxonomy, external compatibility, and uploaded file summaries.",
+      "user_checks_required": [
+        "Confirm DX12 status",
+        "Confirm X11/Wayland/POSIX/Native taxonomy",
+        "Confirm alias policy for dom-launcher/dom-setup if desired"
+      ]
+    }
+  }
+}

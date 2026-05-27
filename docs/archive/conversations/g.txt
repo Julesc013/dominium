@@ -1,0 +1,465 @@
+GPT-5.5 Pro — build date not disclosed.
+
+# Human-Readable Chat Report — Dominium Architecture I
+
+## 1. One-Page Orientation
+
+**FACT:** This chat was mainly about turning the developing architecture of the **Dominium Game** into a form that could be carried forward into automated coding and later Project-level consolidation. It was not a normal design discussion by the end. It became a long-running specification-production session, where the user repeatedly asked for detailed Markdown documents and then for one `.txt` implementation-spec prompt per planned repository file.
+
+The central problem the user was trying to solve was context size. **FACT:** The user originally wanted Codex to read a transcript of the entire conversation and generate a complete “book of volumes” describing the whole project, then start coding. That plan changed. The user explicitly recognised that Codex could not reliably read the whole conversation at once. The new strategy became: create a modular set of files, each one dedicated to a specific source file, document, schema, script, or test. These files would tell Codex exactly how to implement that part of the project without needing to ingest the whole chat.
+
+The project itself, **Dominium**, is a deterministic, data-driven simulation game. **FACT:** The repository structure discussed in this chat includes `engine/`, `platform/`, `render/`, `audio/`, `systems/`, `game/`, `ui/`, `launcher/`, `mods/`, `tools/`, `data/`, `tests/`, and `scripts/`. The visible conversation generated detailed implementation-spec text for many files across those layers. The strongest visible design themes are determinism, replayability, strict layering, save/load stability, lockstep multiplayer compatibility, data-driven content, retro/modern platform support, UTF-8 localisation, and eventual automated implementation.
+
+A few decisions are especially important. **FACT:** The user decided to use **major.minor.patch semantic versioning** for all components/packages and for the complete game. **FACT:** The user decided that build numbers and build dates should **not** appear in filenames, but should exist in metadata with other useful provenance. **FACT:** The user decided to use **UTF-8 Unicode** as the internal text encoding, while also preserving retro display and filename fallbacks such as ASCII/ANSI/SFN where needed. **FACT:** The user decided to skip top-level `.txt` devspec files because original Markdown docs were already available in `/docs/...`.
+
+The chat produced a large number of generated specification outputs. **FACT:** Visible generated outputs include specs for engine modules such as math, memory, ECS, jobs, save/load, replay, net core, logging, config, serialization, and locale; platform abstraction specs for Win32, SDL2, X11, macOS, and headless; render specs for abstraction, 2D vectors, sprites, software rasterization, GL1, GL2, DX9, and fonts; audio specs for core, null, SDL, and OpenAL; systems specs for terrain, chunks, power, fluid, data networks, inventory, logistics, economy, climate, weather, hydrology, AI, and research; and the beginning of the game layer through `g_core.h`, `g_core.cpp`, and `g_world.h`.
+
+The final state of the conversation is not “ready to code.” It is closer to “large amount of architecture captured, but needs consolidation.” **FACT:** Several generated specs conflict with each other or use inconsistent APIs. The most important unresolved conflicts are duplicated versions of `dweather`, `dhydro`, and `dai_core`, inconsistent `dmem` and `dserialize` function names, and C89/C++98 targets that are contradicted by some generated C99 or modern C++ constructs. **INFERENCE:** Before actual Codex implementation, the safest next step is an API canonicalisation pass.
+
+The future relevance of this chat is high. It contains a massive amount of project state and implementation intent. A future assistant should not restart from scratch. It should understand that this chat’s work is best used either to continue generating specs in strict order, or to consolidate/correct what has already been generated. **FACT:** If continuing the original file-generation sequence, the next file after the visible stopping point is `game/g_world.cpp.txt`.
+
+---
+
+## 2. The Story of the Conversation
+
+### Early architectural specification work
+
+The visible transcript begins in the middle of an already long-running Dominium architecture effort. **FACT:** Many earlier messages are collapsed as skipped context, so the exact beginning of the chat is not fully visible. However, the visible sequence makes clear that the user and assistant had already been building a large “v3” project specification with many volumes and subvolumes. The user asked to proceed through later subvolumes, to fill in gaps, and to produce long-form Markdown specifications.
+
+During this stage, the work was still broadly about “the project spec.” The user wanted a comprehensive description of the game and its technical systems. The assistant produced large design documents, but many of those earlier contents are not visible in the retained transcript. This is important because the final report package marks those earlier outputs as referenced but not fully recovered.
+
+### Localisation, UTF-8, and versioning
+
+At one point, the user asked whether localisation or “nationalisation” had been covered and whether UTF-8 Unicode should be used. The answer led to a visible design direction: **FACT:** UTF-8 became the canonical internal encoding, while retro compatibility still mattered. The project needed modern builds that could display Unicode properly, but also needed fallbacks for older systems where Unicode, long filenames, or modern font rendering might not be available.
+
+The user also made a clear versioning decision. **FACT:** The user wanted **major.minor.patch semantic versioning** for all components/packages and for the complete game package. The user explicitly did **not** want build numbers or build dates in filenames. Instead, those details should live in metadata. This became part of the future build/package design.
+
+### From project spec to development plan
+
+After the broad specification work, the user started moving toward implementation readiness. The user asked for milestones, a development plan, and what else needed to be considered before automated programming with Codex. This shifted the chat from pure architecture into “how do we prepare the project so it can be coded.”
+
+The assistant and user discussed readiness for autocode. The user initially wanted Codex to read a transcript of the entire conversation and produce a complete “book of volumes” describing the project, then start coding. That idea was important because it revealed the user’s desire: the project needed enough context to be self-contained and executable by an automated coding agent.
+
+### The major change of direction: one file prompt per repo file
+
+The key change came when the user decided that Codex could not read the entire conversation at once. **FACT:** The user said they would copy and paste the transcript with timestamps and would not edit it manually, but because Codex could not read the whole context at once, they would not bother asking Codex to compile a full book directly from the whole chat.
+
+Instead, the user wanted a modular context strategy. They requested additional context Markdown explaining the purpose, requirements, and prohibitions of every directory and subdirectory. Then they requested regenerated context files such as `BUILDING.MD`, `DATA_FORMATS.MD`, `LANGUAGE_POLICY.MD`, `MILESTONES.MD`, `STYLE.MD`, and `SPEC_CORE.MD`. They also requested GitHub README-style docs, legal/policy docs, and cross-dependency documentation. Much of this earlier generated content is not visible, but its existence and purpose are clear from the visible requests.
+
+The user then gave the “big task”: create a set of `.txt` files, one for each file in the git directory, telling Codex how to implement it. These were not intended to be source files themselves. They were implementation-instruction files: requirements, prohibitions, dependencies, functions, declarations, and design constraints. This became the dominant workstream of the chat.
+
+### The file tree and strict order
+
+The user provided a large `devspec/` file tree. It included top-level docs, engine, platform, render, audio, systems, game, UI, launcher, mods, tools, data, tests, and scripts. Then the user changed one important thing: **FACT:** they decided to skip the top-level `.txt` files because the original Markdown docs already existed in `/docs/...`.
+
+After that, the conversation became a long “Proceed / Next / Go” sequence, where the assistant generated one file-spec at a time. The user repeatedly corrected the assistant to continue “according to our same order” when the assistant drifted or offered follow-up choices. That strict sequencing matters because it identifies the exact continuation point.
+
+### Large generated spec sequence
+
+The assistant generated a large number of file specs. The visible conversation includes many of them. The early engine specs visible in the final report include `dmath`, `dmem`, `decs`, `djob`, `dsave`, `dreplay`, `dnet_core`, `dlog`, `dcfg`, `dserialize`, and `dlocale`. Some files in the original engine list, notably `dcore` and `dtime`, are listed but not visible in the accessible transcript; they may have been generated in skipped context, but that is **UNCERTAIN / UNVERIFIED**.
+
+The platform specs included `dplat.h`, common platform helpers, Win32, SDL2, X11, macOS, and headless backends. However, files listed in the original tree such as `dplat_fs.c`, `dplat_input.c`, and `dplat_time.c` were not visibly generated before the conversation moved into render specs. That is another gap.
+
+Render and audio were generated more completely in the visible transcript. Render included abstraction, 2D vector drawing, 2D texture drawing, software renderer, GL1, GL2, DX9, and font rendering. Audio included core audio, null backend, SDL backend, and OpenAL backend.
+
+The systems layer was extensive. The assistant generated specs for terrain, chunks, power networks, fluid networks, data networks, inventory, logistics, economy, climate, weather, hydrology, AI, and research. However, the systems section is also where contradictions became most visible. **FACT:** `dweather`, `dhydro`, and `dai_core` were each generated more than once with different APIs and designs. This creates an unresolved canonicalisation problem.
+
+The game layer began with `g_core.h`, `g_core.cpp`, and `g_world.h`. The user then shifted to handoff/report work before `g_world.cpp` was produced. **FACT:** The next strict-order file is therefore `game/g_world.cpp.txt`.
+
+### Handoff and report package phase
+
+After the spec-generation work, the user changed the task again: the chat was being retired. The user asked for an OC-1 discovery inventory, then a maximum-fidelity Context Transfer Packet, then a downloadable package with Markdown/YAML reports, then an in-chat reader version of that package. Those handoff tasks did not continue project design; they preserved the state of the chat.
+
+The final generated package contains seven report files and a ZIP archive. The latest user request asks for a human-readable explanation rather than another machine-readable packet. This current report is therefore the narrative version: it explains what happened, what mattered, and what should be remembered.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Dominium as a deterministic simulation game
+
+**FACT:** The whole chat revolves around the Dominium Game project. Dominium is described through its architecture: a deterministic, cross-platform simulation game with industrial, economic, logistics, climate, terrain, AI, research, and modding systems. The user was not merely asking for isolated code snippets. They were building a full software architecture.
+
+The most important conclusion is that determinism is central. Systems are repeatedly specified to avoid hidden randomness, OS timers, platform dependence, uncontrolled floating point, and runtime allocation during simulation ticks. The visible rationale is that the project needs replay, save/load, and likely lockstep multiplayer compatibility. This requirement affects nearly every generated spec.
+
+What remains uncertain is the exact final scope of all simulation systems. Many systems were described in ambitious terms, but not all details are final or internally consistent. The systems layer especially needs canonicalisation before coding.
+
+### Topic 2 — Codex automation and context limits
+
+The Codex workflow is one of the most important topics. **FACT:** The user wanted to use Codex 5.1 Max to implement the project. Initially, the idea was that Codex would read a full transcript and generate a complete project book. That approach was later superseded because the user recognised that Codex could not read the whole context at once.
+
+The conclusion was to create one `.txt` implementation-spec prompt per repository file. Each prompt would tell Codex how to implement that file without needing the entire conversation. This became the main practical output of the chat.
+
+What remains uncertain is the current real-world status and capabilities of “Codex 5.1 Max.” That is an external tool fact and requires verification before future use.
+
+### Topic 3 — Project documentation and top-level Markdown files
+
+The user asked for README-style and documentation files, including context files such as `BUILDING.MD`, `DATA_FORMATS.MD`, `LANGUAGE_POLICY.MD`, `MILESTONES.MD`, `STYLE.MD`, and `SPEC_CORE.MD`. The user also requested legal/policy documents such as licence, EULA, TOS, warranty, privacy, safety, multiplayer policy, and server operator guidance.
+
+The key later decision was to skip top-level `.txt` devspec files because original Markdown files already existed in `/docs/...`. The visible chat does not show the full content of those docs. They should be preserved as referenced artifacts, but their exact content is **UNCERTAIN / UNVERIFIED**.
+
+### Topic 4 — UTF-8, localisation, and retro compatibility
+
+The user explicitly asked about localisation and whether UTF-8 Unicode should be used. The visible output and later specs established a clear direction: **FACT:** UTF-8 is canonical internally. At the same time, the project wants to preserve compatibility with retro platforms, so ASCII/ANSI/SFN fallbacks are part of the design.
+
+This affects `dlocale`, font rendering, platform path handling, data locale JSON files, mod APIs, UI, and documentation. The unresolved part is exactly how much retro support is actually feasible. Claims about old OSes, toolchains, SDL2, OpenGL, Direct3D, and macOS versions require external verification.
+
+### Topic 5 — Semantic versioning and build metadata
+
+The user made a concise but important versioning decision. **FACT:** all components/packages and the complete game should use major.minor.patch semantic versioning. **FACT:** build numbers and build dates should not be in filenames. **FACT:** build numbers, dates, and other useful provenance should exist in metadata.
+
+This is a formal packaging/build policy. It should feed into future build scripts, package manifests, release metadata, and possibly save/replay compatibility metadata.
+
+### Topic 6 — Repository structure and file-by-file specification
+
+The user provided a large planned file tree. It is one of the main artifacts of the chat. The file tree defined the order in which specs should be generated. The tree includes engine, platform, render, audio, systems, game, UI, launcher, mods, tools, data, tests, and scripts.
+
+A large portion of the chat consisted of producing specs for those files. Each spec was meant to tell Codex how to implement that file. The conclusion is that the repository architecture is broad but structured. The unresolved issue is that many later files remain pending.
+
+### Topic 7 — Engine, platform, render, and audio modules
+
+The visible chat includes generated specs for many foundational layers. Engine specs focus on deterministic math, memory, ECS, jobs, save/load, replay, net core, logging, config, serialization, and locale. Platform specs define `dplat` abstraction and several backends. Render specs define backends and helper layers. Audio specs define a deterministic mixer and backends.
+
+The main conclusion is that the project expects strong abstraction boundaries. Engine and systems should not directly use platform APIs. Rendering and audio are presentation layers and should not feed back into simulation state.
+
+The unresolved issue is API consistency. Generated specs for memory and serialization are inconsistent across files, and some platform/render specs contain outdated or unverified external assumptions.
+
+### Topic 8 — Systems simulation layer
+
+The systems layer is the deepest gameplay architecture topic. Specs were generated for terrain, chunks, power, fluid, data network, inventory, logistics, economy, climate, weather, hydrology, AI, and research. These systems are intended to be deterministic, modular, serializable, and mostly integer/fixed-point.
+
+The most important unresolved issue is duplication and contradiction. `dweather`, `dhydro`, and `dai_core` were generated in more than one form. The package does not choose a final version. A future assistant should not implement any of those blindly.
+
+### Topic 9 — Game layer and continuation point
+
+The visible chat reached the game layer. `g_core.h`, `g_core.cpp`, and `g_world.h` were generated. These define the high-level game container, universe/world metadata, and system accessors. However, the game layer is incomplete. The next file in strict order is `game/g_world.cpp.txt`.
+
+This is one of the most concrete carry-forward facts in the chat. If the user says “continue” in a new chat, this is where to resume unless the user redirects.
+
+### Topic 10 — Handoff, reports, and aggregation
+
+At the end of the conversation, the user switched from project-spec generation to preservation. They requested discovery inventory, a Context Transfer Packet, a downloadable report package, and then an in-chat reader version. The purpose was to retire the old chat without losing state.
+
+The final report package is meant for later cross-chat aggregation and eventual construction of a full Project Spec Book. It is not the full spec book itself.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals
+
+The user explicitly wanted to finish the Dominium specification enough to begin development. This mattered because the project had grown large enough that ad hoc conversation was no longer sufficient. The user needed structured artifacts.
+
+The user explicitly wanted Codex to help with implementation. This goal drove the conversation toward file-specific implementation prompts.
+
+The user explicitly wanted one `.txt` file per repository file. This was the practical solution to the context-size problem.
+
+The user explicitly wanted a high-fidelity chat retirement package. This became the final goal once the chat was being retired.
+
+### Inferred goals
+
+**INFERENCE:** The user wanted to avoid losing architectural decisions scattered through a long conversation. This is inferred from the repeated handoff and package requests.
+
+**INFERENCE:** The user wanted future assistants or Codex instances to continue without needing repeated explanations. This is inferred from the detailed transfer packet instructions.
+
+**INFERENCE:** The user wanted the project to become structured enough to support both automated coding and future human review.
+
+### Goals that changed over time
+
+The biggest changed goal was the Codex intake strategy. The earlier goal was to have Codex read the whole transcript and create a full book. The later goal was to make modular context files and per-file prompts.
+
+Another change was from generating project specs to preserving the chat. The final phase no longer aimed to produce Dominium source specs; it aimed to package this chat’s knowledge.
+
+### Goals that remain unresolved
+
+The user has not yet completed all planned per-file specs. The game layer, UI, launcher, mods, tools, data, tests, and scripts remain largely pending.
+
+The project has not yet reached actual coding readiness because the generated specs need reconciliation.
+
+---
+
+## 5. Decisions Made and Why
+
+### Quick decision overview
+
+| Decision                                    | Status              | Why it matters                                 |
+| ------------------------------------------- | ------------------- | ---------------------------------------------- |
+| Use UTF-8 internally                        | Final design intent | Enables localisation and consistent text data. |
+| Support retro fallbacks                     | Final design intent | Preserves compatibility goals.                 |
+| Use semantic versioning                     | Final               | Defines release/version policy.                |
+| Keep build numbers/dates out of filenames   | Final               | Keeps filenames clean and stable.              |
+| Store build provenance in metadata          | Final               | Preserves traceability.                        |
+| Use per-file `.txt` specs                   | Final workflow      | Solves Codex context limits.                   |
+| Skip top-level `.txt` files                 | Final for workflow  | Avoids duplicating `/docs/...`.                |
+| Maintain strict file order                  | Final workflow      | Prevents gaps and repeated work.               |
+| Treat determinism as core                   | Final architecture  | Enables save/replay/lockstep.                  |
+| Canonical weather/hydro/AI specs unresolved | Pending             | Blocks implementation.                         |
+
+### UTF-8 and retro fallback
+
+**FACT:** The user asked whether the project should use UTF-8 Unicode. The conclusion was yes: UTF-8 should be canonical internally. This decision made sense because the project needs localisation and international text support. But it was paired with retro compatibility concerns. Some target platforms may not support Unicode or long filenames, so the architecture includes fallback concepts like ASCII/ANSI conversion and short filename generation.
+
+This affects language policy, data files, platform file paths, UI text rendering, mods, and fonts. It might be revisited only if the project drops retro targets or changes localisation strategy.
+
+### Semantic versioning and build metadata
+
+The user made this decision directly. All components/packages and the complete game use major.minor.patch semantic versioning. Build numbers and dates do not go into filenames. They belong in metadata.
+
+This affects build scripts, packaging, CI, save metadata, replay metadata, and release processes. The rationale is straightforward: filenames remain clean while metadata preserves traceability.
+
+### Per-file `.txt` specs for Codex
+
+This is the central workflow decision. The alternative was a giant transcript/book approach. It was superseded because Codex cannot read the whole conversation at once. The per-file prompt strategy makes the project modular and automation-friendly.
+
+This decision affects everything going forward. A future assistant should not revert to asking the user to provide the entire old chat to Codex as one block unless the user explicitly changes the plan.
+
+### Skipping top-level `.txt` files
+
+The user decided to skip the top-level `.txt` files because original Markdown docs already exist in `/docs/...`. This decision is final for the current workflow, but it depends on those docs actually existing and being current. That is **UNCERTAIN / UNVERIFIED** because the docs were not inspected in this chat.
+
+### Determinism
+
+Determinism is not just a preference. It is a structural requirement repeated through the generated specs. It exists to support replay, save/load consistency, and deterministic lockstep multiplayer. It affects system design, memory allocation, math, serialization, networking, AI, economy, climate, weather, hydrology, and research.
+
+This decision should not be revisited casually. If a future module introduces nondeterminism, it must be isolated from simulation state.
+
+### Pending canonical decisions
+
+Some decisions are explicitly not made. The chat generated multiple versions of certain specs. A future assistant must not pretend those conflicts are resolved. In particular, `dweather`, `dhydro`, and `dai_core` need canonicalisation.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+The first major superseded idea was the full transcript/book plan. The user originally imagined Codex reading the entire conversation and creating a complete book of volumes. That idea was reasonable because the conversation had accumulated a lot of context, but it was superseded when the user recognised Codex’s context limitations. The replacement was per-file `.txt` specs.
+
+The second deprioritised idea was regenerating top-level `.txt` files. The original file tree included them, but the user later said top-level docs could be skipped because originals already existed in `/docs/...`. This should not be repeated unless those docs are missing or stale.
+
+The third rejected idea was putting build metadata in filenames. The user explicitly rejected this. Build metadata belongs in metadata, not filenames.
+
+Several technical paths were also rejected or deprioritised by the generated architecture. Direct OS/platform APIs in systems were prohibited. Runtime allocation in simulation ticks was prohibited. Floating point in most core simulation systems was rejected or at least strongly discouraged. Full CFD-style hydrology and complex high-level AI inside `dai_core` were deprioritised for v1. OS font lookup was rejected in favour of data-pack fonts. D3D9Ex/vendor-specific APIs were excluded from the DX9 backend.
+
+These rejected paths matter because future assistants might otherwise re-suggest them. They should be preserved to prevent repeated work.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The visible reasoning throughout the chat is practical: the user is trying to turn a large, fragile conversational architecture into stable implementation artifacts.
+
+The most important tradeoff was between completeness and context limits. A full book generated from the transcript would be conceptually cleaner, but Codex cannot reliably use that much context at once. Per-file specs are less elegant but more practical. They allow Codex to implement file-by-file.
+
+Another visible tradeoff was between modern capability and retro compatibility. UTF-8 is the right modern internal representation, but older targets need fallbacks. The result is a dual strategy: UTF-8 internally, fallback externally.
+
+The determinism rationale is also visible. A simulation game with save/replay/lockstep cannot tolerate nondeterministic system state. This explains fixed-point math, stable iteration order, no OS time in sim, no allocation in ticks, and strict serialization.
+
+The assistant-generated specs sometimes overreached or became inconsistent. The final report package therefore identifies not only what was generated, but also what needs correction. This is important: the generated specs are not final code. They are architecture drafts.
+
+The user seems to care most about preserving high-fidelity state, avoiding repeated explanation, and creating a path to automated implementation. **INFERENCE:** The user values a future workflow where another assistant or Codex can pick up the project without reading the entire old chat.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+### Continue file-spec generation
+
+If the user wants to continue the original workflow, the next action is simple: generate `game/g_world.cpp.txt`. This should continue in strict order through the rest of `game/`, then `ui/`, `launcher/`, `mods/`, `tools/`, `data/`, `tests/`, and `scripts/`.
+
+This matters because the file tree is the backbone of the Codex prompt strategy. What could go wrong is skipping ahead, regenerating already produced files, or ignoring the strict order.
+
+### Canonicalise before coding
+
+If the user wants to move toward actual implementation, the next action should not be coding immediately. It should be canonicalisation. The generated specs contain contradictions. A coding assistant would likely create incompatible modules if fed all drafts uncritically.
+
+The first canonicalisation targets should be:
+
+1. `dweather`
+2. `dhydro`
+3. `dai_core`
+4. `dmem`
+5. `dserialize`
+6. C89/C++98 compliance
+7. render/system type consistency
+
+The output should be a canonical API correction report or revised spec set.
+
+### Recover skipped content
+
+Because much earlier content is collapsed, important docs may be missing. The user should preserve or inspect `/docs/...`, the full transcript, or generated files if available. This matters especially for top-level docs, legal docs, cross-dependencies, and early engine files.
+
+### Verify external claims
+
+Before building or distributing, the project needs a verification pass for platform/library/tool/legal claims. Retro support and library support are especially risky.
+
+### Build the future Project Spec Book
+
+This chat should become one input into a future master spec book. It should not be merged blindly. It contributes file-spec generation history, architecture decisions, and artifact inventory. Other chats may overlap or contradict it.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints
+
+The user explicitly required that the final handoff/report preserve facts, decisions, preferences, rejected options, unresolved issues, artifacts, and rationale. The user required labels for FACT, INFERENCE, UNCERTAIN / UNVERIFIED, and PROJECT-CONTEXT. The user required that assistant suggestions not be treated as user decisions unless accepted.
+
+The user also explicitly required the date anchor 2026-05-27 Australia/Melbourne for the final package work.
+
+### Technical constraints
+
+The project’s generated specs repeatedly require deterministic simulation. Systems should avoid platform/UI/render/audio dependencies. Simulation hot paths should avoid dynamic allocation. Core systems prefer integer/fixed-point state. C modules are intended to be C89, and C++ modules are intended to be C++98, although generated drafts violate this in places.
+
+### Formatting and communication preferences
+
+The user prefers detailed, structured, high-fidelity outputs for handoff/spec work. However, in the current prompt, the user explicitly says not to produce another database export and instead wants a human-readable narrative briefing. That preference controls this response.
+
+### Evidence and verification constraints
+
+External-world claims require verification. That includes software versions, platform/library support, legal/policy validity, and tool capabilities.
+
+### Things future assistants should avoid
+
+Future assistants should avoid restarting the project from scratch, skipping strict order, treating draft specs as final, resolving contradictions silently, assuming skipped content, or asking the user to re-explain already preserved context.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+The most important artifacts are the generated implementation-spec prompts. These are not source code. They are Codex instruction files. They tell Codex how to implement each planned repository file.
+
+The visible generated specs cover a large portion of the repository. Engine specs include math, memory, ECS, jobs, save/load, replay, network core, logging, config, serialization, and locale. Platform specs include dplat abstraction and several backends. Render specs include renderer abstraction, 2D vector/texture helpers, software renderer, OpenGL, Direct3D 9, and font rendering. Audio specs include core, null, SDL, and OpenAL. Systems specs cover terrain, chunks, networks, inventory, logistics, economy, climate, weather, hydrology, AI, and research. Game specs began with core and world.
+
+The top-level docs and context MDs are important but mostly not visible. They include files like `BUILDING.MD`, `DATA_FORMATS.MD`, `LANGUAGE_POLICY.MD`, `MILESTONES.MD`, `STYLE.MD`, and `SPEC_CORE.MD`. The user also requested README, legal, safety, multiplayer, server operator, and cross-dependency docs. These should be preserved, but the content is not fully available in this visible chat.
+
+The final handoff package itself is also an artifact. It contains a full report, YAML spec sheet, aggregator packet, registers, reader brief, verification/audit report, and manifest. Those files were created to preserve the chat for later aggregation, but the substance of the package is the same state explained in this human-readable report.
+
+All artifacts should feed into the future Project Spec Book only after uncertainty and contradictions are handled. The file-spec prompts are especially important, but they require API cleanup before implementation.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+The most important unresolved issue is canonicalisation. `dweather`, `dhydro`, and `dai_core` each have duplicate conflicting specs. A future assistant needs to compare the versions and either select one or merge them carefully.
+
+The next unresolved issue is core API consistency. `dmem` and `dserialize` are used inconsistently across generated specs. This must be fixed before coding.
+
+Another issue is language standard compliance. Many specs claim C89 or C++98 but include constructs that do not belong to those standards. The project needs either a true C89/C++98 audit or a revised language policy.
+
+Several files are listed but not visibly generated. This includes early engine files such as `dcore` and `dtime`, plus platform files like `dplat_fs`, `dplat_input`, and `dplat_time`. They may exist in skipped context, but that is unverified.
+
+Top-level docs are also uncertain. The user said originals exist in `/docs/...`, but this chat did not inspect them.
+
+External verification is needed for old OS support, SDL2/OpenAL/OpenGL/DX9 compatibility, Codex capabilities, and legal/policy documents.
+
+The user may need to decide whether the next step is continuing file generation or starting a canonicalisation pass. Both are reasonable, but coding should not begin before canonicalisation.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+The biggest risk is overconfidence. A future assistant might see the large generated spec set and assume it is complete and consistent. It is not. It is extensive but draft-like.
+
+Another major risk is losing the continuation point. If the next assistant does not know that generation stopped after `g_world.h.txt`, it might skip `g_world.cpp.txt` or regenerate old work.
+
+A third risk is treating assistant-generated suggestions as final user decisions. The user explicitly warned against this. Only user-accepted or user-stated decisions should be treated as final.
+
+A fourth risk is ignoring stale external claims. Retro platform support and library support must be verified before becoming firm requirements.
+
+A fifth risk is merging this chat incorrectly with other chats. This chat is one source packet, not the whole project. Other chats may contain newer decisions or conflicting details. Aggregation must preserve provenance.
+
+The mitigation is simple: preserve labels, preserve uncertainty, run canonicalisation, and verify external facts before acting.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes the implementation-prep backbone. It documents the shift from broad project specification to Codex-ready per-file prompts. It preserves much of the repository tree and many generated implementation-spec prompts.
+
+For the future full Project Spec Book, this chat should feed chapters on:
+
+* repository architecture,
+* implementation workflow,
+* deterministic systems,
+* engine/platform/render/audio layers,
+* systems simulation design,
+* game layer beginnings,
+* versioning/build metadata,
+* localisation and retro support,
+* verification and risk management.
+
+The chat should not be treated as the final whole-project spec. It overlaps with earlier and later chats, especially around Spec v3 volumes, docs, legal text, and systems design. It may conflict with other chats if those chats contain newer decisions. The duplicate specs inside this chat are already proof that conflict handling is necessary.
+
+Some items should become formal requirements: UTF-8 internal text, semantic versioning, deterministic simulation, no build metadata in filenames, strict layer separation, and per-file Codex prompt workflow. Some items should remain background context until verified, especially platform compatibility and legal docs.
+
+---
+
+## 14. What I Should Remember
+
+* This chat became a **Codex implementation-prep session** for Dominium.
+* The main strategy is **one `.txt` implementation-spec prompt per repo file**.
+* The reason for that strategy is that Codex cannot read the entire full conversation at once.
+* The user decided to skip top-level `.txt` specs because `/docs/...` originals exist.
+* Internal text should be **UTF-8**, with retro fallback handling.
+* Versioning should be **major.minor.patch**.
+* Build numbers/dates should be in metadata, not filenames.
+* Determinism is foundational: replay, save/load, lockstep, stable ordering.
+* Generated specs are valuable but not automatically canonical.
+* `dweather`, `dhydro`, and `dai_core` have duplicate conflicting specs.
+* `dmem` and `dserialize` APIs are inconsistent across generated drafts.
+* C89/C++98 targets are stated but not consistently obeyed.
+* If continuing spec generation, the next file is `game/g_world.cpp.txt`.
+* If preparing for coding, the next step should be API canonicalisation.
+* External platform/tool/legal claims require verification.
+* The final report package is useful for aggregation but has caveats.
+* This chat is not the whole project; it is one source packet.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Explain the duplicate `dweather` specs and how to merge them.”
+2. “Explain the duplicate `dhydro` specs and how to merge them.”
+3. “Explain the duplicate `dai_core` specs and how to merge them.”
+4. “Create a canonicalisation plan before Codex coding.”
+5. “What file should be generated next if we continue strict order?”
+6. “List all visible generated specs versus pending specs.”
+7. “Audit the generated specs for C89/C++98 violations.”
+8. “Create a canonical `dmem` API from the generated specs.”
+9. “Create a canonical `dserialize` API from the generated specs.”
+10. “Which parts of this chat should become formal requirements in the master spec book?”
+11. “Which artifacts from this chat are unsafe to rely on without verification?”
+12. “Summarise this chat for an aggregator in 1,000 words.”
+13. “Turn the next actions into a practical checklist.”
+14. “What should I verify before using Codex?”
+15. “Proceed with `game/g_world.cpp.txt`.”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat, **Dominium Architecture I**, was a long architecture and specification-preparation session for the Dominium Game. The project described is a deterministic, data-driven simulation game with a broad repository structure: engine, platform, render, audio, systems, game, UI, launcher, mods, tools, data, tests, and scripts. The user’s main objective evolved from broad project specification toward implementation readiness.
+
+At first, the visible conversation refers to earlier work on a v3 specification book with many volumes and subvolumes. The user wanted to finish that spec so development could begin. As the chat progressed, the user began asking what was needed before automated coding with Codex. The initial idea was to have Codex read a transcript of the entire conversation, create a complete book of volumes describing the project, and then start coding. That idea was later superseded. The user recognised that Codex could not read the whole conversation at once, so the workflow changed to producing modular context: one `.txt` implementation-spec prompt for every file in the planned git directory.
+
+That shift is the core of the chat. The user supplied a large `devspec/` file tree, then decided to skip the top-level `.txt` files because original Markdown docs already exist in `/docs/...`. The assistant then generated many file-specific implementation specs in strict sequence. These specs were meant to tell Codex how to implement each file: dependencies, requirements, prohibitions, APIs, state structures, determinism rules, save/load rules, and implementation notes.
+
+The visible chat generated specs for a large part of the repository. Engine specs covered math, memory, ECS, jobs, save/load, replay, net core, logging, config, serialization, and locale. Platform specs covered dplat abstraction and multiple backends. Render specs covered the renderer abstraction, 2D vector and texture helpers, software rendering, OpenGL 1, OpenGL 2, Direct3D 9, and fonts. Audio specs covered core audio and null/SDL/OpenAL backends. Systems specs covered terrain, chunk streaming, power networks, fluid networks, data networks, inventory, logistics, economy, climate, weather, hydrology, AI, and research. Game specs began with `g_core.h`, `g_core.cpp`, and `g_world.h`.
+
+Several decisions must be preserved. The user decided to use UTF-8 internally and preserve retro fallbacks. The user decided to use major.minor.patch semantic versioning. The user decided build numbers and build dates should not be in filenames but should appear in metadata. The user decided to use per-file `.txt` specs as the Codex strategy. The architecture repeatedly requires deterministic simulation, strict layering, no hidden platform dependence, no dynamic allocation in simulation ticks, and mostly integer/fixed-point simulation state.
+
+The biggest unresolved issue is consistency. Some generated specs conflict with each other. `dweather`, `dhydro`, and `dai_core` were each generated more than once with different APIs. The memory and serialization APIs are inconsistent across generated files. The specs claim C89 or C++98 in many places but sometimes use C99 or modern C++ constructs. External platform and library claims also require verification. The project is therefore not ready for direct coding from all generated specs as-is.
+
+The final phase of the chat shifted to preservation. The user requested a discovery inventory, then a maximum-fidelity Context Transfer Packet, then a downloadable report package, and finally this in-chat readable explanation. These handoff artifacts exist to allow a future assistant or aggregator to continue without re-reading the entire chat.
+
+The most important next action depends on the user’s goal. If the user wants to continue generating specs, the next strict-order file is **`game/g_world.cpp.txt`**. If the user wants to move toward implementation, the next action should be **canonicalisation**: resolve duplicate specs, normalise `dmem` and `dserialize`, audit C89/C++98 compliance, and verify external support claims. A future assistant must not treat the generated drafts as final code, must not invent skipped context, and must preserve the explicit user decisions.
+
+# Reader Status
+
+* Chat title: Dominium Architecture I
+* Report type: human-readable explanatory report
+* Main value of this chat: It preserves the transition from broad Dominium specification work into a file-by-file Codex implementation-spec workflow, plus many generated specs and key architectural decisions.
+* Most important decision: Use one `.txt` implementation-spec file per repository file as the Codex automation strategy because Codex cannot read the whole conversation at once.
+* Most important unresolved issue: Duplicate and inconsistent generated specs/API drafts, especially `dweather`, `dhydro`, `dai_core`, `dmem`, and `dserialize`.
+* Most important next action: Either continue strict-order spec generation at `game/g_world.cpp.txt`, or run an API canonicalisation pass before coding.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: Visible chat is partial; some earlier artifacts are referenced but not recovered; assistant-generated specs contain contradictions; external platform/tool/legal facts require verification.

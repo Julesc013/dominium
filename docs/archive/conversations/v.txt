@@ -1,0 +1,712 @@
+GPT-5.5 Pro — 2026-05-27 16:08:00
+
+# Human-Readable Chat Report — Dominium XStack and Lab Galaxy Handoff
+
+## 1. One-Page Orientation
+
+This chat was mainly about turning a very large, complex Dominium development conversation into a stable, reusable handoff, while preserving the architectural decisions and operational context needed to continue work without re-explaining everything. The conversation sat at the intersection of three big themes: **Dominium / Domino as a deterministic universe simulation/game**, **XStack as a portable agentic development and governance suite**, and **the reported completion of a 13-prompt “Lab Galaxy” substrate in a later chat**.
+
+FACT: The user is building Dominium / Domino, a deterministic universe simulation/game project. The project doctrine throughout the chat emphasized determinism, replayability, process-only mutation, named RNG streams, law-governed authority, and a strict separation between **TruthModel**, **PerceivedModel**, and **RenderModel**. Domino is treated as the deterministic engine layer, while Dominium is the game/application layer. The system is intended to support long-term ambitions like galaxy-scale navigation, Sol and Earth detail, survival gameplay, modular realism packs, future multiplayer/SRZ scaling, and even speculative domains like biology, chemistry, psychology, magic, and social systems — but always through modular packs, solver tiers, budgets, and law/profile contracts rather than hardcoded one-off systems.
+
+FACT: A major emotional and practical driver of the conversation was the user’s frustration with agentic development failing on mechanical blockers. Earlier in the overall project, Codex runs had repeatedly stopped at entry gates, missing tool paths, RepoX/TestX/AuditX failures, or trivial automation issues. The user explicitly did not want future assistants to ask “Do you want me to fix this?” when the answer was obviously yes. That frustration led to a doctrine that mechanical failures should be repaired autonomously, while only genuinely semantic or architectural ambiguities should require escalation. This became the philosophical basis for UAEP-style prompt prefixes, ControlX, and the broader XStack governance layer.
+
+FACT: The chat also covered the maturation of XStack. XStack was framed as a portable development/governance suite, not part of the game runtime. Its systems included RepoX, TestX, AuditX, ControlX, PerformX, CompatX, SecureX, gate.py / `tools/xstack/run`, runner protocols, cache stores, Merkle hashing, FAST/STRICT/FULL validation profiles, run-meta isolation, snapshot mode, removability tests, and production hardening. The user repeatedly stressed that XStack should be removable with no impact on engine/game/client/server code. That is one of the most important architectural constraints preserved by this chat.
+
+FACT: Near the end, the user brought in a long transcript from a **new chat** where 13 prompts had reportedly been executed. Those prompts allegedly implemented a full “Lab Galaxy” deterministic substrate: canonical docs, schemas, pack system, registry compile, lockfiles, session boot, observation kernel, lab profiles, camera/time processes, astronomy and Earth packs, descriptor-driven tool UI, interest regions, macro capsules, budget/fidelity policies, SRZ scheduling, deterministic packaging, setup and launcher tools, and a sequence of thematic commits. However, the user explicitly said they were **not sure what was actually done** and wanted completion, accuracy, and consistency verified. This is crucial: the transcript’s claims are **user-reported evidence**, not independently verified repository truth.
+
+The main outcome of this chat was the creation of a maximum-fidelity context transfer packet and then a downloadable report package. After that, the user asked to inspect the package contents directly inside the chat, and then asked for this current human-readable narrative report. The future relevance of the chat is high: it preserves why XStack exists, what architectural invariants matter, what the 13-prompt Lab Galaxy run reportedly accomplished, what remains uncertain, and what must be verified before continuing.
+
+The most important thing a future assistant must understand is this: **do not proceed as if the 13-prompt transcript is fully true until the actual repository is audited**. The next correct action is to verify the repo state, commit history, tracked/ignored artifacts, XStack entrypoints, and prompt-by-prompt deliverables. Only after that should the project move on to feature work such as survival gameplay, Lab Galaxy UX refinement, or future domain packs.
+
+---
+
+## 2. The Story of the Conversation
+
+### The early context: a project too large to summarize casually
+
+This chat occurred after a long sequence of Dominium planning. The visible context shows that the user had already been discussing a very ambitious simulation/game architecture: a deterministic, law-governed universe engine, a game/client/server stack, procedural and real-data galaxy exploration, Sol and Earth detail, survival/hardcore modes, creative/lab/observer experiences, UI and UX systems, and a whole governance stack to support autonomous development.
+
+The user was not asking for a small summary. They needed continuity across a huge, technically dense body of work. The assistant therefore initially produced context-transfer material rather than normal answers. The user later refined the request into a specific “maximum-fidelity Context Transfer Packet” and then into a reusable downloadable report package.
+
+### The central problem: agentic development was failing operationally
+
+A major part of the visible conversation was not merely about game design. It was about the user’s frustration with Codex/agentic development. The user described repeated prompt queues being consumed by agents that stopped at entry gates or trivial blockers instead of fixing them. There was strong language, but the technical concern was clear: the user wanted to be able to queue long-running autonomous development prompts and come back to progress, not excuses.
+
+That problem drove much of the XStack discussion. The assistant and user discussed how to prevent future agents from treating old or bad prompts as literal stop conditions. This led to principles such as:
+
+* prompts are untrusted input,
+* mechanical failures should be remediated,
+* semantic ambiguity is the only valid escalation,
+* gate systems should pass on exit and not block entry unnecessarily,
+* verification should be fast, incremental, cached, and sharded,
+* and XStack must serve development rather than development serving XStack.
+
+### The XStack hardening phase
+
+The conversation then focused heavily on XStack. The user wanted RepoX, TestX, AuditX, ControlX, PerformX, CompatX, and SecureX to be robust, modular, extensible, and fast. The assistant helped plan or generate many prompts around this. The important architectural outcome was that XStack should behave like a compiler or incremental build system, not like a CI pipeline that reruns everything after every edit.
+
+Several performance issues were discussed:
+
+* `gate.py` was too slow.
+* STRICT checks were still effectively full scans.
+* RepoX cold start dominated runtime.
+* Run-meta and audit outputs could dirty the repository.
+* `testx_all` monoliths could become timeout traps.
+* Repeated gate calls from prompts needed to short-circuit or cache.
+
+The assistant and user converged on a model with FAST/STRICT/FULL profiles, Merkle hashing, dependency graphs, content-addressed caches, runner protocols, sharded tests, snapshot-only canonical reporting, and XStack removability. The user later reported implementation of production hardening phases, including cold STRICT around ~90 seconds, warm STRICT near-instant, and FULL around a few minutes. These were treated as good enough to freeze governance and return to product work.
+
+### The architecture and glossary phase
+
+The conversation also included a substantial glossary/dictionary effort. The user wanted definitions such as Assembly, Field, Process, Agent, Law, Determinism, Replay, Lens, Observation Kernel, Refusal Contract, Macro Capsule, Fidelity, Domain, Solver, Artifact Class, FAST/STRICT/FULL, RepoX/TestX/AuditX, and many more. The assistant recommended the glossary be **normative**, meaning it should define how terms must be used rather than merely describing current usage.
+
+Important deprecated terms were identified: `survival_mode`, `creative_mode`, `hardcore_mode`, `spectator_mode`, `debug_mode`, `godmode`, and `sandbox`. These terms were dangerous because they could reintroduce hardcoded mode thinking. The preferred architecture was profile-driven: `LawProfile`, `ExperienceProfile`, `ParameterBundle`, `BundleProfile`, and related schema/data contracts.
+
+The assistant also distinguished between the internal constitutional architecture and the README. The README should be accessible to laypeople and developers; the Constitution and glossary should live as deeper canonical docs. This mattered because the user wanted professional documentation without overwhelming the front door.
+
+### The 13-prompt Lab Galaxy transcript
+
+Later, the user reported that in a new chat they had run a sequence of 13 prompts. They pasted or uploaded a transcript. That transcript became a major source for the handoff package.
+
+The 13 prompts reportedly implemented, in order:
+
+1. A developer control substrate with docs, canon, contracts, skills, and AGENTS.md.
+2. Canonical schemas and deterministic validation.
+3. Pack system with typed contributions and dependency resolution.
+4. Registry compile, lockfile, and cache store.
+5. XStack runner with FAST/STRICT/FULL.
+6. Session boot path and BundleProfile selection.
+7. Truth/Perceived/Render separation and Observation Kernel.
+8. Lab profiles, camera assembly, navigation, and time control.
+9. Astronomy and Earth data packs.
+10. Descriptor-driven tool UI.
+11. Interest regions, macro capsules, budget and fidelity policies.
+12. SRZ v1 scheduling, intent envelopes, and hash anchors.
+13. Deterministic packaging, setup, launcher, and reproducible Lab Galaxy build.
+
+The transcript then reported that the agent committed changes in 10 thematic commits, including schemas/docs, packs, tooling, session runtime, packaging, tests, docs, and audit snapshots. It reported that the branch was clean and ahead by 10 commits, and that `tools/xstack/run.cmd fast` passed.
+
+But this chat did not verify the repository. That became one of the most important unresolved issues.
+
+### The handoff/report phase
+
+After the transcript appeared, the user asked for a maximum-fidelity Context Transfer Packet. The assistant produced one, with sections such as workstreams, decisions, tasks, constraints, open questions, risks, artifacts, and verification queue. Then the user asked to turn that into a downloadable report package. The assistant created Markdown/YAML files and a ZIP archive.
+
+Finally, the user asked not for another package, but for an in-chat reader version of the package. The assistant rendered a structured in-chat reader. The user then asked for this current response: a human-readable, intuitive narrative report.
+
+The final state of the conversation is therefore not “we are ready to code the next feature.” It is: **we have a large handoff/report package that captures the state, but the next real action is repository verification and consistency audit.**
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Dominium / Domino deterministic architecture
+
+This topic is the foundation. The project is about a deterministic universe simulation/game, not a conventional ad hoc game engine. The repeated architectural terms were Assemblies, Fields, Processes, Agents, and Law. These terms matter because they define how future mechanics should be built. Instead of direct mutation, everything should happen through Processes. Instead of mode branches, game differences should be expressed through LawProfiles, ExperienceProfiles, and ParameterBundles.
+
+The conclusion was that Dominium’s architecture must preserve determinism, replayability, epistemic boundaries, and modularity. This remains a binding direction, but actual repository implementation must still be verified.
+
+### Topic 2 — XStack as portable agentic development suite
+
+XStack became a central topic because the user needed reliable autonomous development. It was not just a testing layer; it was a development control substrate. RepoX enforces invariants, TestX proves behavior, AuditX detects drift, ControlX orchestrates, PerformX monitors budgets/performance, CompatX handles schema migration, SecureX handles trust/security, and gate/tools/xstack/run provide execution surfaces.
+
+The key conclusion was that XStack must be **portable and removable**. It should be possible to use XStack in other projects or remove it from Dominium without breaking runtime. This is still one of the biggest constraints and must be verified.
+
+### Topic 3 — Gate and verification performance
+
+The user repeatedly reported that gate checks were too slow and were destroying productivity. The conversation explored why: full scans, test monoliths, RepoX cold path, cache misses, file I/O, and repeated mechanical gate calls.
+
+The conclusion was to optimize verification structurally: FAST/STRICT/FULL profiles, impact graphs, Merkle trees, content-addressed cache, parallel runners, sharded tests, and run-meta isolation. The assistant warned against solving this merely by changing programming language. The visible rationale was that the bottleneck was work selection, not Python itself.
+
+Later, the user reported production-hardening metrics: warm checks nearly instant, cold STRICT around 90 seconds after RepoX scope fixes. That was treated as acceptable enough to freeze governance.
+
+### Topic 4 — Normative glossary and documentation
+
+The user wanted definitions locked down to avoid conceptual drift. The assistant recommended a normative glossary rather than a descriptive glossary. Terms like World, Universe, Lens, Authority, Fidelity, Realism, Macro Capsule, Observation Kernel, Refusal Contract, and Artifact Class were discussed.
+
+The conclusion was that docs should be layered: README for accessibility; architecture docs for technical explanation; canon/glossary/contracts for binding doctrine. The 13-prompt transcript reports that docs/canon and many architecture/contract docs were created, but this must be verified.
+
+### Topic 5 — Modes as profiles
+
+The chat repeatedly returned to modes: survival, hardcore, creative, lab, observer, spectator, editor, godmode, sandbox. The key decision was that “modes” should not exist as code branches. They should be human-facing labels for combinations of profiles and parameters.
+
+Survival, for example, should be an ExperienceProfile + LawProfile + ParameterBundle, not `survival_mode`. Hardcore should be a stricter law/parameter delta. Creative and Lab should be law/profile deltas. This conclusion affects all future gameplay work.
+
+### Topic 6 — Diegetic survival and future gameplay
+
+The user wanted actual survival-style gameplay, building, making, playing, and eventually hardcore and other modes. But they also wanted survival to avoid non-diegetic epistemic UI or HUD. The assistant framed this as lens-gated UI: diegetic lenses are allowed in survival; non-diegetic HUD/console/freecam are reserved for lab/debug/observer law profiles.
+
+The future survival vertical slice was discussed in detail: needs, hydration, energy, exposure, resources, gathering, crafting, shelter, death persistence, deterministic saves, and diegetic feedback. This is a future plan, not something established as complete in the 13-prompt transcript.
+
+### Topic 7 — Lab Galaxy substrate
+
+The later 13-prompt transcript reportedly implemented a deterministic Lab Galaxy substrate. This included galaxy/Sol/Earth packs, navigation, camera/time processes, UI descriptors, interest regions, SRZ-ready scheduling, and deterministic packaging.
+
+This is one of the most important outputs associated with this chat, but it is also one of the most uncertain because it is user-reported from another chat and not verified directly here. The user explicitly wanted it audited for completion and consistency.
+
+### Topic 8 — Future realism and pipe dreams
+
+The user asked broad questions about astronomically accurate skies, day/night, weather, climate, evolution, realistic trees, animals, diseases, anatomical injuries, arbitrary crafting, lag, graceful degradation, and modding. The assistant’s response was to treat realism as modular domain/model packs plus solver tiers and observation layers.
+
+The conclusion was not to implement all realism immediately. Instead, the architecture should support optional future packs and graceful degradation through budgets/fidelity, macro capsules, and interest regions.
+
+### Topic 9 — Report packaging and future aggregation
+
+The final phase was about preserving this chat for future use. The user first requested a maximum-fidelity Context Transfer Packet, then a downloadable report package, then an in-chat reader, and finally this human-readable narrative report. The goal was to make the chat reusable for future assistants and later master Project Spec Book construction.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals the user stated
+
+The user wanted to:
+
+* preserve the entire chat context for a new chat,
+* avoid re-explaining the project,
+* ensure the 13-prompt transcript is understood and later verified,
+* produce downloadable and readable report packages,
+* build a future master Project Spec Book,
+* keep XStack portable and removable,
+* make agentic development autonomous and reliable,
+* prevent future gate failures and prompt halts,
+* eventually return to actual game/engine/client work.
+
+These goals mattered because the project had grown too large for casual chat continuity. The user needed durable state transfer.
+
+### Inferred goals
+
+INFERENCE: The user also wanted to prevent future assistants from flattening nuance. They repeatedly asked for maximum fidelity, uncertainty labels, rejected options, contradictions, and rationale. This implies a strong preference for preserving complexity rather than oversimplifying.
+
+INFERENCE: The user likely wants to resume productive development after verifying the substrate. The next likely feature area is survival or Lab Galaxy refinement, but the user has not made a final decision in this visible chat.
+
+### Goals that changed over time
+
+The conversation shifted several times:
+
+1. From game/engine planning to governance rescue.
+2. From governance rescue to XStack production hardening.
+3. From hardening to documentation/glossary.
+4. From documentation to verifying a new 13-prompt substrate.
+5. From verification handoff to report packaging.
+6. From report packaging to human-readable explanation.
+
+This change of direction matters because a future assistant might mistakenly focus on governance again. The current report suggests governance should be treated as mostly complete unless verification reveals a defect.
+
+### Goals that remain unresolved
+
+The biggest unresolved goal is verifying the actual repository. The package says what was reported, but not what is proven. Another unresolved goal is deciding what comes next: survival, Lab Galaxy UX, distributed SRZ, or documentation polish.
+
+---
+
+## 5. Decisions Made and Why
+
+### Quick decision overview
+
+| Decision                                    | Status                           | Why it mattered                      |
+| ------------------------------------------- | -------------------------------- | ------------------------------------ |
+| Use profiles, not mode flags                | FACT / accepted                  | Prevents hardcoded gameplay branches |
+| Process-only mutation                       | FACT / accepted                  | Enables deterministic replay         |
+| Truth → Perceived → Render separation       | FACT / accepted                  | Prevents epistemic leakage           |
+| XStack must be removable                    | FACT / accepted                  | Keeps tools out of runtime           |
+| FAST/STRICT/FULL verification               | FACT / accepted                  | Avoids slow gates                    |
+| Run-meta isolation                          | FACT / accepted but audit needed | Keeps repo clean                     |
+| Survival should be diegetic-only by default | FACT / accepted conceptually     | Preserves survival epistemics        |
+| Realism via domain packs/solver tiers       | FACT / accepted conceptually     | Avoids impossible global micro-sim   |
+
+### Profiles instead of modes
+
+FACT: The decision to avoid hardcoded modes was accepted repeatedly. The user and assistant discussed survival, hardcore, creative, observer, lab, spectator, editor, godmode, and sandbox. The conclusion was that code should not contain `survival_mode`, `creative_mode`, or similar toggles. Instead, the system should use profiles and law/parameter bundles.
+
+This decision made sense because the user wanted modular, extensible behavior. Hardcoded modes would make future variations brittle. Profiles allow survival, hardcore, creative, and lab experiences to be composed rather than forked.
+
+This decision affects future gameplay, UI, multiplayer, and tooling. It should only be revisited if the entire profile/law architecture fails, which is not currently established.
+
+### Process-only mutation
+
+FACT: Process-only mutation was treated as a core invariant. This means UI, session tools, camera movement, time control, survival actions, and future systems should not directly mutate state. They should emit intents that become validated Processes.
+
+The rationale was deterministic replay. If mutation is scattered through arbitrary setters or UI callbacks, replay and audit become difficult or impossible. This decision affects every future feature and must be verified in code.
+
+### Truth / Perceived / Render separation
+
+FACT: The project adopted strict separation between the authoritative TruthModel, the PerceivedModel produced through observation/lens/law/authority filtering, and the RenderModel consumed by presentation code. Renderer must never access TruthModel directly.
+
+This was decided to avoid epistemic leakage. It also supports multiplayer fairness, survival immersion, debugging/lab modes, and future spectator/observer differences.
+
+### XStack removability
+
+FACT: The user explicitly said they wanted XStack to be a portable agentic development suite that could be removed with no impact on code/data/runtime. This decision is foundational. XStack can validate the repo, but runtime must not depend on it.
+
+The alternative — embedding XStack into game/engine runtime — was rejected because it would destroy portability and contaminate production code.
+
+### FAST/STRICT/FULL verification
+
+FACT: The user rejected verification that takes hours during local/agentic development. The solution was a stratified verification model: FAST for normal iteration, STRICT for structural checks, FULL/FULL_ALL for deeper or release-like checks. The visible rationale was that governance should behave like an incremental compiler, not a CI system.
+
+This decision depends on cache correctness, sharding, and run-meta isolation.
+
+### Run-meta isolation
+
+FACT: The chat established that normal verification should not dirty tracked files. Snapshot mode is the only appropriate writer to canonical tracked reports. However, the later transcript reports committed `docs/audit` artifacts, creating a possible contradiction. This is not resolved and must be audited.
+
+### Diegetic survival
+
+FACT: The user explicitly said survival-style gameplay should avoid non-diegetic epistemic UI or HUD. The decision was to handle this through lens/law gating: survival defaults allow diegetic lenses only, while lab/debug/observer can use non-diegetic tools.
+
+This affects future survival implementation. It is not yet a completed feature.
+
+### Realism through modular packs
+
+FACT: The user asked about many realism demands: accurate skies, day/night, weather, climate, trees, animals, diseases, anatomical injury, arbitrary crafting, and performance limits. The conclusion was that these should be supported by domain packs, solver tiers, affordance graphs, budget/fidelity policies, observation kernels, and refusal contracts. Global full-detail simulation everywhere was rejected.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Hardcoded modes
+
+This idea was rejected because it would create brittle code branches. It was considered only because normal games often use “Survival Mode,” “Creative Mode,” and similar labels. The final architecture allows those labels for users but not as code logic.
+
+This rejection is final.
+
+### Full verification on every prompt
+
+This was rejected after the user experienced huge delays. Full checks were too expensive and made autonomous development impractical. The replacement was FAST/STRICT/FULL with caching and sharding.
+
+This rejection is final for local agentic iteration, though full checks remain appropriate for release or explicit full-all validation.
+
+### Runtime dependence on XStack
+
+This was rejected because the user wants XStack to be portable and removable. XStack should validate and orchestrate development, but engine/game/client/server should not need it to run.
+
+This rejection is final unless the user fundamentally changes the product/tool boundary.
+
+### Dumping the Constitution into README
+
+This was rejected because README should be accessible. Deep doctrine belongs in canon/architecture docs. This is final for documentation UX.
+
+### Live-switch law profiles mid-session early
+
+This was deprioritised, not permanently rejected. The concern was deterministic complexity. The preferred early approach is a session restart boundary for changing experiences/laws.
+
+It could become relevant later once transition contracts mature.
+
+### Global full micro-simulation
+
+This was rejected because it is computationally impossible at galaxy/trillion-agent scale. The alternative is macro capsules, interest regions, solver tiers, and deterministic activation.
+
+This rejection is final as a global default.
+
+### Rewriting gate in a faster language
+
+This was considered when Python seemed slow. It was rejected/deprioritised because the real bottleneck was algorithmic: full scans, excessive work, poor caching, and RepoX scope explosion. Rewriting in Rust or C++ would not fix that without architecture changes.
+
+It could be reconsidered only if a true CPU-bound hotspot remains after correct incremental design.
+
+### Manually rewriting all old prompts
+
+This was rejected because it would be too much work and would not scale. The chosen strategy was to use prefix/control/reconciliation approaches to absorb bad prompts.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The visible reasoning in this chat revolved around controlling complexity without sacrificing ambition.
+
+The user wants an enormous system: a deterministic universe simulation that can scale from rocks and sticks to galaxy clusters, support real data, support survival gameplay, support alternate histories and future simulations, support educational/creative/lab modes, and remain moddable. The assistant’s recurring rationale was that such breadth only works if the architecture is modular and data-driven. Hardcoded systems would collapse under the ambition.
+
+The gate/XStack reasoning was similarly practical. The user wanted autonomous development, but the existing gate behavior wasted time. The assistant argued that making verification faster required reducing work, not merely changing programming language. The final rationale was to make XStack compiler-like: plan, scope, cache, shard, and avoid unnecessary full scans.
+
+The profile/law decision was driven by future extensibility. Survival, hardcore, creative, observer, lab, spectator, debug, and editor experiences can all exist, but they should be compositions of law, experience, parameters, bundles, lenses, and entitlements. This prevents future systems from fragmenting into branches.
+
+The Truth/Perceived/Render boundary was driven by epistemics. The user cares about survival immersion and realistic information access. If UI or rendering can read TruthModel directly, survival and multiplayer become dishonest. Therefore observation and lens gating are central.
+
+The run-meta and snapshot reasoning was about repo hygiene. A verification system that rewrites tracked files creates noise and false failures. The desired model is that normal verification is read-only, while explicit snapshot mode writes canonical reports.
+
+The main assumption behind all of this is that the repo can actually enforce these contracts. That remains unverified in this chat.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+### First next step: repository verification
+
+The best next step is to verify the actual repository state. This matters because the long 13-prompt transcript is not proof. The user explicitly does not know whether everything was truly implemented.
+
+The output should be a clear audit report showing:
+
+* git state,
+* commit history,
+* files added,
+* ignored/generated files,
+* XStack entrypoints,
+* prompt deliverable status,
+* fast/strict validation,
+* runtime/XStack coupling status.
+
+What could go wrong: the audit may reveal missing files, stale docs, contradictory gate systems, tracked run-meta, or overclaimed milestone status.
+
+### Second next step: prompt-by-prompt completion matrix
+
+Each of the 13 prompts had done criteria. The new assistant should compare those against actual repo files and command outputs.
+
+This should produce a matrix like:
+
+* Prompt 1: complete / partial / missing
+* Prompt 2: complete / partial / missing
+* …
+* Prompt 13: complete / partial / missing
+
+It should include evidence and gaps.
+
+### Third next step: XStack boundary audit
+
+Because the user cares about XStack portability, the new assistant should verify that runtime can build/run without `tools/xstack` and that engine/game/client/server do not import or depend on it.
+
+This should include static scans and any removability test present.
+
+### Fourth next step: tracking/ignore audit
+
+The conversation established run-meta isolation. But the transcript reports committed audit snapshots and run metadata. The next assistant should inspect `.gitignore`, `docs/audit`, and any artifact registry to decide what is canonical and what should be ignored.
+
+### Fifth next step: choose next feature direction
+
+Only after verification should the user decide whether to proceed to:
+
+* Survival Vertical Slice,
+* Lab Galaxy interactive UX refinement,
+* distributed SRZ,
+* more documentation,
+* or another domain pack.
+
+INFERENCE: Survival is likely the most user-valued next feature, but this should be confirmed.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints
+
+FACT: No hardcoded mode flags. Use profiles/law/parameters.
+
+FACT: All mutation through Processes.
+
+FACT: TruthModel, PerceivedModel, and RenderModel must remain separated.
+
+FACT: XStack must be removable and portable.
+
+FACT: Mechanical blockers should be remediated automatically.
+
+FACT: Verification must be fast, cached, sharded, and incremental.
+
+FACT: Survival should be diegetic-only by default.
+
+FACT: Packs should be data-only and integrated through registry compile and lockfiles.
+
+### Inferred constraints
+
+INFERENCE: The user wants governance frozen unless a real defect appears. The user repeatedly wanted to return to actual engine/game work and not remain in a governance loop.
+
+INFERENCE: The user values exhaustive handoffs and detailed context preservation because the project is too large for casual summaries.
+
+### Formatting and evidence preferences
+
+FACT: The user asked for FACT / INFERENCE / UNCERTAIN labels.
+
+FACT: The user wants careful, audit-ready reports and dislikes over-compression.
+
+PROJECT-CONTEXT: The user profile says they prefer epistemic accuracy, rigor, citations when facts matter, and long-term correctness.
+
+### Things future assistants should avoid
+
+* Do not ask the user to re-explain.
+* Do not assume transcript claims are repo truth.
+* Do not treat brainstorms as decisions.
+* Do not restart governance design without cause.
+* Do not add mode flags.
+* Do not let XStack leak into runtime.
+* Do not call headless test UI “fully interactive GUI.”
+* Do not implement survival HUD as non-diegetic by default.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+### Context transfer and report package
+
+The chat generated a maximum-fidelity Context Transfer Packet and then a downloadable report package. That package included:
+
+* full chat report,
+* YAML spec sheet,
+* aggregator packet,
+* registers,
+* reader brief,
+* verification/audit file,
+* manifest,
+* ZIP archive.
+
+These exist to preserve this old chat for a new assistant and for future master-spec aggregation. They should be preserved.
+
+### Uploaded transcript
+
+The user uploaded `transcript.txt`, which contains the long 13-prompt run and commit batching report. This is the most important evidence for what happened in the new chat, but it is not equivalent to repo verification.
+
+### XStack/gate artifacts
+
+Several XStack artifacts were discussed or created earlier:
+
+* `gate.py`,
+* `gate_fast.py`,
+* `tools/xstack/run`,
+* RepoX/TestX/AuditX/ControlX/PerformX/CompatX/SecureX,
+* XStack production reports,
+* cache/Merkle/runner planning docs,
+* run-meta isolation docs,
+* removability tests.
+
+These matter because they define how future autonomous development should work.
+
+### Canon/docs artifacts
+
+The chat discussed or reportedly created:
+
+* `AGENTS.md`,
+* `docs/canon/constitution_v1.md`,
+* `docs/canon/glossary_v1.md`,
+* `docs/contracts/*.md`,
+* `docs/architecture/*.md`,
+* `docs/roadmap/milestone_lab_galaxy.md`,
+* skill templates under `tools/xstack/skills`.
+
+These should feed into future spec-book construction.
+
+### Lab Galaxy artifacts
+
+The 13-prompt transcript reports:
+
+* schemas,
+* packs,
+* bundles,
+* registry compile tools,
+* lockfiles,
+* session boot tools,
+* observation kernel,
+* camera/time process runtime,
+* astronomy and Earth packs,
+* UI descriptors,
+* ROI/macro/policy systems,
+* SRZ scheduler/hash anchors,
+* setup/launcher/packaging.
+
+All of these require repo verification.
+
+### Commit artifacts
+
+The transcript reports 10 commits, including:
+
+* `2f1f1006` — `test_commit_message`
+* `1e6163a4` — schemas/docs
+* `fd721f0c` — packs/bundles
+* `2dfa65d8` — CompatX/registry compile
+* `5b4cf5b7` — XStack runner/subsystems
+* `74d750f2` — session lifecycle/runtime boundary stubs
+* `8b66c887` — setup/launcher/packaging
+* `f1ae59ec` — tests/fixtures
+* `7f04d2ae` — architecture docs
+* `3667fcf1` — audit snapshots/proof manifests
+
+These should be verified with `git log`. The first commit message appears poor and may need cleanup if not pushed.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+### Is the repo state actually clean and ahead by 10 commits?
+
+This matters because future work depends on whether the 13-prompt changes are committed, pushed, or still local. The transcript reports a clean branch ahead by 10 commits, but this chat did not verify it.
+
+Resolution: run `git status --short --branch` and `git log --oneline -n 15`.
+
+### Which XStack entrypoint is canonical?
+
+The older part of the chat hardened `scripts/dev/gate.py`; the later transcript implemented `tools/xstack/run`. It is unclear whether one wraps the other, whether both are maintained, or whether they diverged.
+
+Resolution: inspect docs and scripts; decide canonical command path.
+
+### Are docs/audit artifacts canonical or run-meta?
+
+Earlier policy said run-meta should not be tracked outside snapshot mode. The later transcript committed audit snapshots and run metadata. This may be fine if intentional, or it may violate the policy.
+
+Resolution: inspect `.gitignore`, `git ls-files docs/audit`, and artifact contract docs.
+
+### Did all 13 prompts truly complete?
+
+The transcript says yes, but this must be verified.
+
+Resolution: produce a deliverable matrix and run the relevant commands.
+
+### Is Lab Galaxy actually usable interactively?
+
+The transcript reports deterministic headless tests and UI descriptor systems, but explicitly says an actual interactive GUI session was not manually run for Prompt 10.
+
+Resolution: test actual client/UI path or document it as headless-only.
+
+### What should happen next: survival or refinement?
+
+The user likely wants survival and actual play, but the immediate next step should be verification. After that, the user should choose between survival vertical slice and Lab Galaxy interactive refinement.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+### Risk: treating transcript as truth
+
+The future assistant might assume the 13-prompt run is verified. This would be wrong. It is user-reported evidence and must be checked.
+
+Avoidance: always start with repo verification.
+
+### Risk: reintroducing governance churn
+
+The project spent a long time hardening XStack. Future assistants may be tempted to keep adding governance systems. Unless a concrete defect appears, this should be avoided.
+
+Avoidance: focus on actual feature/product work after audit.
+
+### Risk: XStack runtime contamination
+
+If runtime imports XStack, the portability goal fails.
+
+Avoidance: run removability tests and static import scans.
+
+### Risk: mode flags return
+
+Future gameplay work might introduce `survival_mode` or similar convenience flags.
+
+Avoidance: enforce profile/law/parameter composition.
+
+### Risk: overclaiming UI/gameplay
+
+The Lab Galaxy substrate may be headless and tool-driven, not a fully interactive playable client.
+
+Avoidance: use precise language: descriptor-driven UI and headless tests are not the same as finished GUI.
+
+### Risk: losing the user’s survival UI preference
+
+The user explicitly wants survival to avoid non-diegetic epistemic UI/HUD. Future assistants might default to typical game HUDs.
+
+Avoidance: make diegetic-only survival a hard constraint.
+
+### Risk: tracking generated outputs
+
+If run-meta gets committed, the repo may become noisy and confusing.
+
+Avoidance: audit tracked generated files and snapshot policy.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes several unique things to the larger Dominium project.
+
+First, it preserves the **why** behind XStack. The governance system was not created for fun; it was created because agentic development was failing operationally. This rationale should go into the broader project history or tooling philosophy.
+
+Second, it captures a detailed **XStack doctrine**: portable, removable, fast, sharded, deterministic, and not runtime-coupled. This should become part of a formal tooling chapter.
+
+Third, it records the reported **Lab Galaxy substrate** implementation. If verified, that material should feed a milestone chapter covering canonical docs, schemas, packs, registry compile, session boot, observation, lab camera/time controls, astronomy packs, UI tools, ROI/macro policies, SRZ, and deterministic packaging.
+
+Fourth, it preserves **survival and realism design constraints** that are not yet implemented but should shape future work. Survival must be diegetic-only by default. Realism must be modular and budgeted, not hardcoded or globally micro-simulated.
+
+Likely future spec-book chapters informed by this chat:
+
+* Project Philosophy and Determinism
+* Core Ontology
+* Profiles and Law
+* XStack Governance
+* Agentic Development Doctrine
+* Pack and Registry System
+* Lab Galaxy Milestone
+* Observation and UI Epistemics
+* SRZ and Hash Anchors
+* Packaging and Launcher
+* Survival Roadmap
+* Future Realism Domains
+
+Potential conflicts with other chats:
+
+* Different definitions of canon/glossary.
+* Different XStack layout.
+* Different gate commands.
+* Different stance on tracked audit artifacts.
+* Different next-feature priorities.
+
+Before merging into a master spec, the aggregator should preserve uncertainty and verify the actual repository.
+
+---
+
+## 14. What I Should Remember
+
+* This chat is primarily a **handoff and continuity preservation chat**, not just a design chat.
+* The core project is Dominium / Domino: deterministic simulation/game architecture.
+* The user deeply values autonomy, rigor, modularity, determinism, and long-term correctness.
+* XStack exists because previous agentic development failed at mechanical gates and wasted time.
+* XStack must remain portable/removable and must not contaminate runtime.
+* No hardcoded mode flags. Use profiles, law, parameters, bundles, lenses, entitlements.
+* All mutation should happen through Processes.
+* TruthModel, PerceivedModel, and RenderModel must remain separated.
+* The 13-prompt Lab Galaxy transcript is important but unverified.
+* The immediate next action is repository verification, not new feature work.
+* The likely next feature after verification is survival or Lab Galaxy UX refinement.
+* Survival must be diegetic-only by default: no non-diegetic HUD/freecam/console.
+* Future realism should be domain packs, solver tiers, macro/micro policies, budgets, and refusals.
+* The report package already exists; this response is the in-chat human-readable explanation of it.
+* The biggest unresolved issue is whether the transcript accurately reflects actual repo state.
+* The second biggest unresolved issue is whether old `gate.py` and new `tools/xstack/run` are reconciled.
+* The third biggest unresolved issue is whether audit/run-meta artifacts are tracked appropriately.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Generate a Codex prompt to audit the 13-prompt transcript against actual repo files.”
+2. “Make a command checklist to verify this package in the repo.”
+3. “Explain the difference between old gate.py and new tools/xstack/run risk.”
+4. “Which reported Lab Galaxy deliverables are most important to verify first?”
+5. “Turn the open questions into a prioritized action plan.”
+6. “Which parts of this chat should become formal requirements in the master spec?”
+7. “What does XStack removability mean in concrete technical terms?”
+8. “What should be checked to confirm run-meta is not tracked incorrectly?”
+9. “Prepare the next Survival Vertical Slice prompt, but only after assuming the audit passed.”
+10. “Summarize this chat for a non-technical stakeholder.”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was a large continuity and handoff conversation for the Dominium / Domino project. Dominium is being developed as a deterministic universe simulation/game platform, with Domino as the deterministic engine layer and Dominium as the game/application layer. The architecture repeatedly emphasized process-only mutation, deterministic replay, named RNG streams, fixed-point authoritative state, no omniscience, and strict separation between TruthModel, PerceivedModel, and RenderModel. These principles matter because the user wants the project to support extremely ambitious future gameplay and simulation domains without collapsing into hardcoded spaghetti.
+
+A major reason this chat exists is that prior autonomous development attempts were failing operationally. The user described repeatedly queueing prompts for Codex or other agents, only to have them stop at gate failures, missing tools, stale artifacts, or small mechanical blockers. This was unacceptable because the user wanted to wake up to real progress, not excuses. The visible conversation therefore developed a strong doctrine: prompts are untrusted input, mechanical blockers should be remediated automatically, and only true semantic ambiguity should require escalation. The user does not want future assistants to ask whether to fix obvious issues.
+
+This doctrine led to XStack, the portable agentic development/governance suite. XStack includes systems like RepoX, TestX, AuditX, ControlX, PerformX, CompatX, and SecureX. The chat spent a lot of time hardening XStack: making verification fast, incremental, cached, sharded, and deterministic; separating FAST, STRICT, and FULL profiles; preventing run-meta from dirtying tracked files; adding snapshot mode; ensuring XStack can be removed without breaking runtime; and avoiding governance creep. The key conclusion was that XStack should serve development, not dominate it. It should behave like a compiler, not like a CI system that reruns everything all the time.
+
+The chat also established important architectural decisions for the game itself. There should be no hardcoded mode flags. Survival, Hardcore, Creative, Observer, Lab, Spectator, Editor, and similar experiences should be represented by profiles, law profiles, parameter bundles, lenses, entitlements, and packs — not branches like `survival_mode`. All state changes should go through Processes. UI and rendering should never read TruthModel directly; they should consume PerceivedModel and RenderModel. Packs should be data-only, compiled into registries and lockfiles before runtime. Runtime should not dynamically merge raw packs.
+
+Another major thread was documentation and glossary work. The user wanted a normative glossary, not just a descriptive list of terms. Terms like Assembly, Field, Process, Agent, Law, Determinism, Lens, Observation Kernel, Refusal Contract, Macro Capsule, Fidelity, Domain, Solver, Artifact Class, FAST, STRICT, FULL, RepoX, TestX, and AuditX were treated as architectural terms. Deprecated terms such as `survival_mode`, `creative_mode`, `debug_mode`, `godmode`, and `sandbox` were identified as dangerous because they encourage hardcoded behavior. The assistant also argued that README should be an accessible front door, while deep doctrine should live in canon and architecture docs.
+
+Near the end, the user brought in a transcript from another chat where 13 prompts had reportedly been executed. Those prompts reportedly implemented a complete deterministic Lab Galaxy substrate: canonical docs and schemas, schema validation, pack system, registry compile, lockfiles, XStack runner, session boot, observation kernel, lab camera/time processes, astronomy/Earth packs, tool UI descriptors, interest regions, macro capsules, budget/fidelity policies, SRZ scheduling/hash anchors, deterministic packaging, setup and launcher tools, and 10 thematic commits. The transcript reports that `tools/xstack/run.cmd fast` passed and that the branch was clean and ahead by 10 commits. However, this chat did not verify the repository. The user explicitly said they were not sure what was actually done and wanted completion, accuracy, and consistency ensured. Therefore, all of those implementation claims must be treated as user-reported until checked.
+
+The chat then produced a maximum-fidelity Context Transfer Packet and a downloadable report package. The current response is a human-readable explanation of that package. The package’s practical recommendation is clear: before continuing with new feature work, the next assistant should verify the actual repository state, inspect commit history, run fast validation, audit the 13 prompts against actual files, reconcile `gate.py` with `tools/xstack/run`, check XStack removability, and inspect whether run-meta/audit artifacts are tracked correctly.
+
+The likely next product work after verification is a survival vertical slice or Lab Galaxy interactive refinement. Survival was discussed heavily: it should be diegetic-only by default, with no non-diegetic HUD, console, or freecam; it should include needs, hazards, resources, crafting, shelter, death persistence, and deterministic saves; and it should be implemented through law/profile/process systems rather than hardcoded survival logic. Future realism — astronomy, weather, climate, animals, diseases, injuries, chemistry, magic, and more — should be added through packs, solver tiers, affordance graphs, budgets, and fidelity policies, not by simulating everything everywhere at full detail.
+
+The main thing to preserve from this chat is not only the list of tasks. It is the philosophy: build modularly, verify deterministically, avoid hardcoded shortcuts, keep XStack removable, and never again let governance tooling become an obstacle to actual development. The next assistant should start with verification, not invention.
+
+# Reader Status
+
+* Chat title: Dominium XStack and Lab Galaxy Handoff
+* Report type: human-readable explanatory report
+* Main value of this chat: It preserves the rationale, decisions, risks, and next-step audit plan for Dominium/XStack and the reported 13-prompt Lab Galaxy substrate.
+* Most important decision: XStack must remain portable/removable and runtime must preserve deterministic, process-only, profile-driven architecture.
+* Most important unresolved issue: Whether the 13-prompt transcript accurately reflects the actual repository state and whether old `gate.py` and new `tools/xstack/run` are reconciled.
+* Most important next action: Run a repository verification and prompt-by-prompt completion/consistency audit before starting new feature work.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: Transcript implementation claims are user-reported and unverified; docs/audit tracking may contradict run-meta isolation policy; UI may be headless rather than fully interactive; survival is planned but not implemented.

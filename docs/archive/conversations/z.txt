@@ -1,0 +1,929 @@
+GPT-5.5 Pro — 2026-05-27 00:00:00 Australia/Melbourne; time UNVERIFIED
+
+# Human-Readable Chat Report — Dominium Content and GUI Rebuild Planning
+
+## 1. One-Page Orientation
+
+This chat was mainly about preserving and clarifying two major planning threads for the **Dominium / Domino** project: first, a canonical **content/data population** effort for the game universe, and second, a later and more active effort to **rebuild the project’s GUI and binary strategy from scratch**.
+
+The conversation began with a large prompt called **CONTENT0**, intended for Codex-style work on the project’s content layer. The user wanted to populate the game world correctly: universe structure, the Milky Way, Sol, Earth, planets, moons, regions, timelines, populations, civilizations, economies, institutions, technology, and start scenarios. The prompt was very strict: the work could touch only `data/`, `schema/`, and `docs/`, and it must not alter engine code, runtime logic, ECS, authority, time models, or gameplay systems. Its governing philosophy was that nothing should appear without origin. No population appears unless born; no city unless built; no resource unless extracted or produced; no civilization unless it emerged historically; no starting assets without justification. This was a core design principle, not a minor formatting preference.
+
+An assistant initially rewrote that prompt into a cleaner Codex-ready form. The user then corrected the process: **before generating prompts, the group needed to discuss the design.** That changed the status of the rewritten prompt. It became a useful draft, not an accepted final artifact. The later discussion identified several conceptual holes in CONTENT0 that would need resolving before any final prompt should drive repository changes: schema semantics, deterministic seed hierarchy, macro-to-micro refinement, timeline structure, human population baselines, civilization taxonomy, conservation domains, knowledge uncertainty/loss, start-condition exclusions, and documentation traceability.
+
+The content work then broadened into a larger ambition: the user wants a future default data pack that can define a **full universe efficiently**, with minimal storage and memory, while supporting several levels of definition: fully procedural universes, partially defined universes with procedural gaps, and fully defined architected universes. The default shipped pack should include the **Milky Way**, the most important celestial systems and sites in it, and especially the **Sol system**. Importance was not meant only in gameplay terms; the user explicitly mentioned visiting, harvesting, research, navigation, and related forms of significance. Sol should eventually contain important bodies, structures, satellites, belts, fields, and points.
+
+The second major part of the chat shifted to **GUIs and binaries**. The user asked whether the proposed GUI approach could work across Windows, macOS, Linux, Xcode, Visual Studio, .NET, Apple-native systems, native executables, libraries, DLLs, and multiple OS eras. The important conclusion was that the GUI architecture should not be built around one universal GUI toolkit and should not become a pile of separate GUI codebases per OS version. Instead, GUI layers should be thin, modular frontends over shared product backends.
+
+The user then made the central decision of this chat: **the GUIs should be redone from scratch**. Every product — setup, launcher, client, server, tools, and related executables — must always work through a **CLI**, is expected to work through a **TUI**, and may have multiple modular GUI frontends that attach to product backends and compile into native applications. This decision makes the unresolved **backend/UI contract** the next major design problem. The GUI shells must not own product logic; they should expose and adapt shared backend capabilities.
+
+The user proposed initial Windows and macOS GUI families. For Windows: Win32 ANSI for 32-bit Intel setup/client; Win32 Unicode for 64-bit Intel and ARM setup/client; WinForms .NET Framework for launcher/server; and WinUI 3 for modern launcher/server. For macOS: AppKit for setup/launcher/client/server and SwiftUI for future launcher/server. Linux and Android were left in scope but unresolved. Assistant responses added technical caveats: old .NET support cannot be assumed from a single newer .NET Framework target, and old macOS support likely requires old or frozen Apple toolchains. Those caveats remain **UNCERTAIN / UNVERIFIED** until checked against current official documentation and actual available build environments.
+
+The final part of the chat was about preserving all this work. The user requested a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat reader version, and now this plain-language report. The main future value of this chat is that it records the user’s latest strategic direction and the exact unresolved issues that must not be forgotten. A future assistant should not start coding immediately. It should first define the GUI/binary doctrine, backend/UI contract, product matrix, platform matrices, TUI doctrine, packaging model, build/toolchain matrix, and verification plan.
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began with CONTENT0: a strict content-layer prompt
+
+The conversation opened with a large prompt titled **“PROMPT CONTENT0 — CANONICAL GAME CONTENT & DATA POPULATION.”** The target was GPT-5.2 Codex, and the scope was explicitly limited to **data, schema extensions, and documentation**. The user framed the assistant as continuing the Dominium / Domino project, but only at the content layer.
+
+The prompt’s purpose was not merely to add game content. It was to ensure that the project’s world, civilizations, economy, history, and scenarios were populated correctly and causally. The user wanted a canonical foundation where nothing exists merely because it is convenient for gameplay. That idea matters because it shapes the whole simulation philosophy: the world should be historically and physically explainable, even if initially represented at macro scale.
+
+An assistant responded by turning the prompt into a cleaner, more formal Codex-ready version. That output was useful, but it was premature relative to the user’s actual desired process.
+
+### The user corrected the process: discuss before generating prompts
+
+The user then said: **“First, let's discuss this before we plan or generate any prompts.”**
+
+That was an important change of direction. It meant the assistant’s polished prompt should not be treated as final. The work needed conceptual discussion first. The assistant then analyzed CONTENT0 and identified several issues that could cause bad assumptions to become embedded if Codex acted too soon.
+
+The critique focused on things like:
+
+* whether schemas should be purely descriptive or allowed to imply behavior,
+* how deterministic seeds should be organized,
+* how macro content can later refine into micro content,
+* whether history should be a flat timeline or a causal topology,
+* what “zero or minimal humans” means,
+* how to model civilizations and institutions without taxonomy drift,
+* what “conservation” means in economic data,
+* whether knowledge systems should include uncertainty, false beliefs, or lost knowledge,
+* what start scenarios must explicitly exclude,
+* and how documentation should trace to data files.
+
+This stage established a pattern that continues throughout the chat: the user does not want impressive-looking prompts that hide unresolved design choices. The user wants the assumptions exposed before anything is formalized.
+
+### The content goal expanded into a full-universe/default-datapack ambition
+
+The user then described a larger goal: at the end of an “optimally large macro prompt plan,” they wanted a **full universe** defined efficiently with minimal storage and memory. This universe system should work across a spectrum:
+
+* fully procedural universes,
+* defined universes with procedural gaps,
+* and fully defined, architected universes.
+
+The default shipped data pack should contain the **Milky Way galaxy**. It should also contain important stars, systems, and celestial sites, with “importance” understood broadly: visiting, harvesting, research, navigation, and other uses. For the most important star systems, especially **Sol**, the project should define important bodies, celestial structures, satellites, belts, fields, and points.
+
+This shifted the content work from “populate required files” to “design a scalable content representation system.” It also made clear that procedural generation and defined data are not enemies in the user’s vision. The desired architecture must allow them to coexist.
+
+### The chat then shifted to GUI and binary compatibility
+
+The user next moved to GUI planning. They asked whether the GUI approach could work with Linux and macOS as well as Windows, whether Xcode could be used, whether Xcode limits the project, whether .NET could be a thin frontend, whether Apple offers a better equivalent, whether code should be compiled into executables or kept as libraries/DLLs, and whether Visual Studio and Xcode tooling could be used without losing compatibility.
+
+The assistant’s response framed the problem around architecture: the GUI must be subordinate to the core product architecture. The project should avoid binding product logic to one GUI stack. Xcode can be used for Apple-side shells, but it is not a cross-platform solution. .NET can be used as a thin frontend over custom code, especially through interop, but the chosen UI framework matters. Apple’s equivalent is AppKit/SwiftUI for native Apple shells. Linux is viable, but needs its own strategy. Static or dynamic linking are both possible; the right choice depends on deployment and modularity.
+
+The core idea was that the project should separate:
+
+* product logic,
+* backend/UI contract,
+* host integration,
+* visual design,
+* and packaging.
+
+### The user asked whether each OS or era needs its own GUI
+
+The user then asked whether each product should have a GUI per Windows, Linux, and macOS, and whether separate GUIs were needed for separate eras and designs.
+
+The assistant advised that the optimal model is usually not “one GUI per era.” Instead, it is:
+
+* one shared GUI architecture or doctrine,
+* host-specific integrations,
+* compatibility lanes,
+* and a small number of visual or interaction profiles.
+
+This matters because the project could otherwise explode into many codebases: one for every OS, architecture, version, and visual style. The proposed alternative was to separate codebase count from binary count and visual profile count. A project can produce multiple binaries without maintaining separate product architectures.
+
+### The user made the central GUI decision
+
+The user then made a strong decision: **“I’ve decided I want to redo the GUIs from scratch.”**
+
+They specified the desired structure:
+
+* every product always works with CLI,
+* every product is expected to work with TUI,
+* and every product can have multiple modular GUIs that attach to product backends to compile native applications.
+
+This was the most important decision in the GUI part of the chat. It changed the task from “can we make cross-platform GUIs?” to “how do we design a full multi-platform GUI and binary matrix without losing backend consistency?”
+
+The user then proposed specific frontend families.
+
+For Windows:
+
+* Win32 ANSI for 32-bit Intel setup and client,
+* Win32 Unicode for 64-bit Intel and ARM setup and client,
+* WinForms .NET 4.8 for 32/64-bit Intel launcher and server, with multitargeting/conditional compilation down to .NET 4.0 machines,
+* WinUI 3 for 64-bit Intel and ARM launcher and server, with graceful degradation to Windows 10 1809.
+
+For macOS:
+
+* AppKit for 64-bit Intel setup, launcher, client, and server, with multitargeting/conditional compilation down to macOS 10.9,
+* SwiftUI for 64-bit Intel and ARM future launcher and server, with graceful degradation to macOS 11.0.
+
+For Linux and Android, the user said the project would do something similar, but did not define exact stacks.
+
+The assistant agreed with the general direction, but added caveats. The most important were:
+
+* A single .NET Framework 4.8 binary should not be assumed to work on .NET 4.0 machines; true old-framework support requires distinct target/build lanes.
+* AppKit down to macOS 10.9 likely requires a frozen legacy Apple toolchain; current toolchains may not support that old a deployment target.
+* AppKit does not inherently need to be Intel-only; Apple silicon support may be possible.
+* Linux and Android should not simply copy Windows’ complexity.
+
+Those caveats were not final user decisions, but they are important warnings.
+
+### The final portion turned into state preservation
+
+After this, the user said the chat was being retired and requested a maximum-fidelity context transfer packet. The assistant produced a long state-transfer document with sections for bootstrap, user preferences, workstreams, decisions, tasks, constraints, open questions, rejected options, artifacts, rationale, risks, and a copy-paste prompt.
+
+The user then asked for an actual report package with downloadable Markdown/YAML files and a ZIP. The assistant created those files and provided links. Then the user asked to inspect the package inside the chat without downloading it. The assistant rendered an in-chat report reader, including workstreams, decisions, tasks, constraints, open questions, rejected options, artifacts, risks, verification queue, timeline, spec-book contribution, and carry-forward points.
+
+Finally, the user asked for this current response: not a machine-readable handoff, not a register dump, not another package, but a clear, human-readable report explaining the substance of the conversation.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — CONTENT0 and causal content population
+
+The first major topic was the CONTENT0 prompt. Its purpose was to populate canonical game content without changing runtime logic. This included universe structure, galaxies, star systems, planets and moons, Earth, surfaces and regions, histories, populations, civilizations, economies, institutions, knowledge, and scenarios.
+
+The most important concept was **causal provenance**. The user’s philosophy was that nothing should appear from nowhere. This is not just flavor. It affects how game data should be structured. A city needs construction history. A population needs birth or origin processes. A civilization needs historical emergence. Resources need extraction or production. Starts need historical justification.
+
+The conclusion was not “run the prompt now.” The conclusion was that CONTENT0 is a strong foundation but needs discussion before finalization. The assistant-generated rewrite is useful but not final. The unresolved issues need to be resolved before Codex or any implementation work touches the repository.
+
+What remains uncertain is how exactly to encode these ideas in schemas and data. For example, it is not yet decided how deterministic seed hierarchies work, how macro content refines into micro content, or how timeline causality should be represented.
+
+### Topic 2 — Full-universe representation and default Milky Way data pack
+
+The user then described a bigger ambition: a full universe that can be represented efficiently. The system should support different degrees of definition. Some universes may be mostly procedural. Some may have defined anchor points with procedural gaps. Some may eventually be fully defined and architected.
+
+The default shipped pack should include the **Milky Way** and important celestial systems and sites. Importance should not be narrowly defined. It should include visiting, harvesting, research, navigation, and likely other categories. The Sol system is mandatory and should be treated with special detail.
+
+The conclusion was that this is an important future content architecture workstream. However, the chat did not resolve the data model. It did not decide exactly how to store procedural gaps, how to rank celestial importance, or which star systems and sites belong in the first default pack.
+
+### Topic 3 — Cross-platform GUI feasibility
+
+The user then explored whether the GUI strategy could work across Windows, macOS, Linux, Xcode, Visual Studio, .NET, Apple-native frameworks, and compiled binaries/libraries.
+
+The important answer was architectural rather than merely technical. The project can use platform-native technologies, but only if they remain thin frontends. The core product behavior should not live in WinForms, SwiftUI, WinUI, AppKit, or any other UI framework. Those frameworks should adapt and expose backend capabilities.
+
+The discussion also established that Xcode is useful for Apple products but not a cross-platform solution, .NET can be a thin client layer but its UI frameworks have platform limits, Linux is viable but needs deliberate stack choices, and packaging can be static, dynamic, bundled, or library-based depending on product needs.
+
+The unresolved issue is the shared backend/UI contract. Without that, the GUI plan is only a list of technologies.
+
+### Topic 4 — GUI per platform versus GUI per era
+
+The user asked whether the project needs separate GUIs for Windows, Linux, and macOS, and whether separate GUIs are required for different eras and visual designs.
+
+The discussion distinguished several concepts that are easy to confuse:
+
+* separate codebases,
+* separate binaries,
+* separate frontend families,
+* separate visual profiles,
+* and separate compatibility lanes.
+
+The assistant recommended not creating separate GUI codebases for every OS version or era. Instead, the project should use a small set of compatibility lanes and visual profiles. This was an assistant recommendation, not a final user-ratified formal spec. However, it aligns with the user’s desire to support many hosts without an uncontrolled explosion of GUIs.
+
+This connects directly to future work because the project still needs a visual profile system and platform matrix.
+
+### Topic 5 — GUI rebuild from scratch
+
+This became the current main topic. The user explicitly decided to redo the GUIs from scratch. This is a **FACT** from the chat.
+
+The new GUI doctrine is:
+
+* CLI always works,
+* TUI is expected,
+* modular GUIs attach to product backends,
+* native applications can be compiled for different platforms and eras.
+
+The conversation did not yet define how those product backends are exposed. That remains the most important unresolved design issue.
+
+The conclusion is that future work should not start by coding a Win32, AppKit, or WinUI shell. It should start by defining the backend/UI contract, then the product matrix, then platform matrices, then packaging/build plans.
+
+### Topic 6 — Windows frontend families
+
+The user proposed a concrete Windows selection:
+
+* Win32 ANSI for 32-bit Intel setup/client,
+* Win32 Unicode for 64-bit Intel and ARM setup/client,
+* WinForms .NET Framework for launcher/server,
+* WinUI 3 for launcher/server.
+
+This gives Windows several lanes: legacy native, main native, managed compatibility, and modern Windows-native. The rationale is that different products have different needs. Setup and client need low-dependency/native options; launcher and server can use richer frameworks where appropriate.
+
+The assistant caveat was that old .NET support must not be faked. Supporting .NET 4.0-era machines is not the same as targeting .NET 4.8. This remains a technical verification item, not a fully resolved decision.
+
+### Topic 7 — macOS frontend families
+
+The user proposed AppKit and SwiftUI. AppKit would cover setup, launcher, client, and server, with an old macOS floor mentioned as 10.9. SwiftUI would cover future launcher/server use with modern Intel/ARM support and degradation to macOS 11.0.
+
+The assistant caveat was that old macOS support requires serious toolchain planning. A current Xcode version may not target macOS 10.9. AppKit also does not necessarily need to be Intel-only. These are important but not fully verified within this chat.
+
+The unresolved question is whether macOS 10.9 is a hard requirement or an aspirational compatibility goal.
+
+### Topic 8 — Linux and Android
+
+Linux and Android were included by the user but not planned in detail.
+
+For Linux, the main conclusion was that it should follow the same backend/thin-shell doctrine, but it probably should not copy the full Windows matrix. Linux has different fragmentation problems: display servers, distros, packaging formats, library versions, and toolkit ecosystems.
+
+For Android, the main conclusion was that it should be treated as a mobile host family, not as desktop UI scaled down. The project still needs to decide whether Android is a full client, launcher, admin console, companion app, or limited tool surface.
+
+### Topic 9 — State transfer and package generation
+
+The final topic was preserving the chat. The user asked for a maximum-fidelity context packet, then a downloadable package, then an in-chat reader, and finally this human-readable report.
+
+These outputs matter because the user intends to later combine multiple old-chat reports into a full Project Spec Book and Master Living State File. This chat’s report package should be preserved, but it should be used with caveats: it does not replace repository inspection, and it includes stale-prone external technical facts.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals stated by the user
+
+The first explicit goal was to populate Dominium’s canonical content layer correctly. The user wanted data and documentation for the universe, Milky Way, Sol, Earth, life, humanity, civilizations, economies, technologies, and start scenarios, without changing runtime code. This goal mattered because it defines the canonical world content and ensures simulation continuity.
+
+The second explicit goal was to design a full universe/default data pack that can be efficient and flexible across procedural and fully defined modes. This mattered because the project should not be locked into either handcrafted content or pure generation.
+
+The third explicit goal was to confirm whether the GUI strategy could work across Windows, macOS, Linux, Xcode, Visual Studio, .NET, Apple frameworks, and different binary/linking models. This mattered because the user was planning a broad multi-platform product family.
+
+The fourth and strongest explicit goal was to **redo the GUIs from scratch** with CLI mandatory, TUI expected, and modular GUI frontends attached to product backends. This became the active planning focus.
+
+The fifth explicit goal was to preserve the conversation in a reusable form for future chats and spec-book aggregation. That is why the transfer packet, package files, in-chat reader, and this human report were requested.
+
+### Inferred goals
+
+An important inferred goal is that the user wants long-term architectural durability rather than a quick GUI implementation. This is inferred from the repeated emphasis on compatibility, old OS versions, native applications, modular frontends, and future aggregation.
+
+Another inferred goal is that the user wants support claims to be real, not aspirational. This is inferred from the attention to Xcode, .NET, Windows versions, macOS versions, and build lanes.
+
+A third inferred goal is that the user wants future assistants to preserve uncertainty. The user repeatedly asked not to invent facts, not to silently infer, and not to treat brainstorms as decisions.
+
+### Goals that changed over time
+
+The chat began with a content-generation prompt. It then shifted toward discussing the content architecture. Later it shifted again to GUI and binary architecture, which became the main active direction. Finally, it shifted into preservation and explanation of the chat itself.
+
+The content goals were not abandoned. They became paused or deferred while GUI/binary planning took priority.
+
+### Goals that remain unresolved
+
+The key unresolved goals are:
+
+* finalizing CONTENT0 after discussion,
+* defining the full universe/procedural-gap data model,
+* defining the backend/UI contract,
+* deciding TUI parity,
+* finalizing Windows and macOS build lanes,
+* choosing Linux and Android strategies,
+* and inspecting the actual repository before implementation.
+
+---
+
+## 5. Decisions Made and Why
+
+### Overview of important decisions
+
+| Decision                                                            | Status                                 | Label     |
+| ------------------------------------------------------------------- | -------------------------------------- | --------- |
+| CONTENT0 is data/schema/docs-only and must not modify runtime logic | Final within content workstream        | FACT      |
+| Content must have causal provenance                                 | Final within content workstream        | FACT      |
+| Discuss before generating more prompts                              | Final process correction               | FACT      |
+| Default data pack should include Milky Way                          | User-stated direction                  | FACT      |
+| Sol must be specially defined                                       | User-stated direction                  | FACT      |
+| Redo GUIs from scratch                                              | User-stated decision                   | FACT      |
+| CLI must always work for every product                              | User-stated decision                   | FACT      |
+| TUI is expected for every product                                   | User-stated decision, scope unresolved | FACT      |
+| Multiple modular GUIs attach to product backends                    | User-stated decision                   | FACT      |
+| Windows frontend families proposed                                  | User-stated plan                       | FACT      |
+| macOS frontend families proposed                                    | User-stated plan                       | FACT      |
+| Linux and Android are in scope but unresolved                       | User-stated scope                      | FACT      |
+| Use compatibility lanes/profiles rather than per-era GUI explosion  | Assistant recommendation               | INFERENCE |
+| Stable C ABI as backend boundary                                    | Candidate only                         | INFERENCE |
+
+### CONTENT0 is data/schema/docs-only
+
+**FACT:** The user’s CONTENT0 prompt explicitly said the task may touch only `data/`, `schema/`, and `docs/`. It must not change engine code, runtime logic, ECS, domains, authority, or time models.
+
+This made sense because the task was about world/content population, not simulation mechanics. It prevents the content layer from becoming a backdoor for engine changes.
+
+This affects future work because any future CONTENT0 prompt must enforce file-scope restrictions. It may need schema extensions, but only descriptive ones. A future assistant should revisit this only if the user explicitly changes the scope.
+
+### Content must have causal provenance
+
+**FACT:** The user stated a binding content philosophy: no entity, population, city, resource, civilization, or start condition appears without an explicit origin or process.
+
+This decision is foundational. It means the content layer is not a list of convenient starting conditions; it is a historical and causal record. The rationale is to preserve simulation integrity and make macro content refinable later.
+
+This affects schemas, data files, documentation, scenarios, economies, population models, and technology progression. It might need revisiting only if the project later introduces explicitly fictional, arcade, or non-causal modes, which this chat did not establish.
+
+### Discuss before generating prompts
+
+**FACT:** The user explicitly said to discuss before planning or generating prompts.
+
+This was a correction after the assistant generated a polished CONTENT0 prompt too soon. The rationale was that a prompt can hide assumptions and cause Codex to act on unresolved design issues. This decision affects future assistants: they should not immediately generate large implementation prompts when conceptual design remains unsettled.
+
+### Default data pack includes Milky Way
+
+**FACT:** The user said the default data pack should contain the Milky Way galaxy.
+
+This establishes the Milky Way as a canonical default content target. The rationale is that the project’s shipped universe needs a real, meaningful galactic anchor rather than a purely generic generated galaxy.
+
+The exact scope remains unresolved. The decision does not yet specify which stars, systems, nebulae, routes, or sites are included.
+
+### Sol must be specially defined
+
+**FACT:** The user specifically included Sol among the most important systems and said important bodies, sites, structures, satellites, belts, fields, and points should be defined.
+
+This decision makes Sol a high-detail canonical system. The rationale is obvious within the project context: Sol contains Earth and humanity and is likely central to many starts. The unresolved question is how detailed the first pass should be.
+
+### Redo GUIs from scratch
+
+**FACT:** The user explicitly said they decided to redo the GUIs from scratch.
+
+This is the major active decision in the chat. It means future work should not assume old GUI code is the path forward. The rationale appears to be compatibility, modularity, native application support, and alignment with latest refactors.
+
+This affects every product surface: setup, launcher, client, server, tools, and possibly others.
+
+### CLI always works
+
+**FACT:** The user said every product will always work with CLI.
+
+This is a strong architectural requirement. It gives every product a baseline interface that works in headless, automated, remote, or minimal environments. It also implies that the CLI should not be a secondary afterthought; it should consume the same backend capabilities as other frontends.
+
+### TUI is expected
+
+**FACT:** The user said every product is expected to work with TUI.
+
+This is decided as a direction, but unresolved in scope. “Expected” does not yet define parity. It could mean full feature parity, operational/admin parity, fallback usability, or product-specific subsets. That needs clarification.
+
+### Modular GUIs attach to product backends
+
+**FACT:** The user said products will have multiple modular GUIs that attach to product backends to compile native applications.
+
+This decision is central. It means the GUI is a frontend layer, not the product itself. The rationale is to allow multiple platform-native or era-appropriate applications without duplicating logic.
+
+The main assumption is that product backends can expose a stable contract. That remains unresolved.
+
+### Windows and macOS frontend families
+
+**FACT:** The user listed specific Windows and macOS frontend families.
+
+These are not final build matrices yet. They are proposed lanes. Their rationale is to cover both legacy and modern systems with appropriate technologies. The caveat is that support claims must be backed by real toolchains, target frameworks, and tests.
+
+### Linux and Android are in scope but not decided
+
+**FACT:** The user said Linux and Android would do something similar. They did not specify exact frameworks.
+
+This matters because future assistants must not invent final Linux or Android decisions. Those strategies remain open.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Immediate prompt generation for CONTENT0
+
+The assistant initially generated a cleaned prompt. The user then superseded that process by saying discussion should happen first.
+
+This rejection is final as a process correction for this stage. Prompt generation can resume later, but only after unresolved conceptual issues are discussed.
+
+### Treating the assistant-cleaned CONTENT0 prompt as final
+
+The cleaned prompt remains useful as a draft, but it is not the accepted final prompt. Treating it as final would erase the user’s correction and could cause premature implementation.
+
+It may become relevant again as source material for a revised prompt.
+
+### One universal GUI framework as the whole solution
+
+This was not an explicit user rejection, but the direction moved away from it. The user wants multiple modular GUIs and native applications. One universal GUI toolkit would likely fail to satisfy all desired platform/era/native constraints.
+
+This rejection is tentative. If the project later reduces old-host or native requirements, a more unified framework could be reconsidered.
+
+### One separate GUI per OS version or era
+
+The assistant advised against a separate GUI codebase for every OS era because it would create a combinatorial explosion. The user did not explicitly reject the advice, but later decisions are compatible with compatibility lanes rather than per-version GUIs.
+
+This is not final in the sense that the user might still choose period-authentic GUIs later. But it is not the current best path.
+
+### GUI shells owning product logic
+
+This was rejected as an architecture pattern by implication. The user wants GUIs attached to product backends. If GUI shells own logic, they cease to be modular frontends and become separate products.
+
+This should be treated as a strong rejection.
+
+### A single .NET 4.8 WinForms binary supporting .NET 4.0 machines
+
+The assistant flagged this as technically unsafe. The correct idea is that old .NET support would require distinct target/build lanes. This remains **UNCERTAIN / UNVERIFIED** until verified against current docs and actual toolchains, but future assistants should not assume the optimistic version.
+
+### Current Xcode alone supporting macOS 10.9 AppKit targets
+
+The assistant flagged this as technically unsafe. True macOS 10.9 support likely requires old/frozen Apple tooling. This remains **UNCERTAIN / UNVERIFIED** and needs verification.
+
+### Treating Android as desktop scaled down
+
+The assistant warned against this. Android is a mobile host family and should be planned around mobile roles and UX. This is a recommendation, not a finalized user decision, but it is a useful guardrail.
+
+### Treating this chat as the whole project
+
+The user explicitly scoped the package and report to this chat only. Future aggregators should not treat this as a full Project Spec Book.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The most important visible rationale in this chat is **separation of concerns**.
+
+For content work, the separation is between simulation rules and content data. The user wants content population without engine changes. That preserves the integrity of the simulation model and prevents “content” from smuggling in mechanics.
+
+For GUI work, the separation is between product logic and presentation. The user wants CLI, TUI, and multiple GUIs to attach to product backends. That means product behavior should live behind a shared contract, not in Win32, WinForms, WinUI, AppKit, SwiftUI, or any Linux/Android frontend.
+
+Another visible rationale is **causality and provenance**. The content world should not be gamey in the sense of spawning assets for convenience. Everything should have a historical, physical, or social origin. That applies to stars and planets, populations and cities, resources and economies, civilizations and institutions.
+
+A third rationale is **long-term compatibility without uncontrolled complexity**. The user wants support across Windows, macOS, Linux, Android, different architectures, and multiple eras. But the discussion recognized that direct one-to-one GUI duplication across every host and era would create too many variants. This is why compatibility lanes, visual profiles, and modular shells became important.
+
+A fourth rationale is **auditability**. The user repeatedly asked for explicit uncertainty, stable IDs, source labels, rejected options, open questions, and verification items. The goal is not just to remember conclusions, but to know which conclusions are reliable and which are tentative.
+
+The main risks being managed were:
+
+* making unsupported technical claims,
+* locking unresolved ideas into prompts,
+* duplicating product logic across GUIs,
+* losing context when moving to a new chat,
+* and treating assistant suggestions as if they were user decisions.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+### First next step: define GUI/binary architecture doctrine
+
+The best immediate next step is to turn the GUI discussion into a doctrine. This should explain how products relate to CLI, TUI, GUI frontends, product backends, compatibility lanes, visual profiles, and packaging.
+
+This matters because without doctrine, platform-specific choices will be made in isolation. The output should be a clear architecture document, not code.
+
+What could go wrong: a future assistant might jump straight into Win32 or SwiftUI implementation and miss the shared backend requirement.
+
+### Second next step: define the backend/UI contract
+
+This is the central unresolved technical design issue. The project needs to decide how CLI, TUI, and GUI shells talk to product backends.
+
+Possibilities include:
+
+* in-process ABI,
+* IPC,
+* both,
+* or a layered model.
+
+A stable C ABI was suggested, but that is only an **INFERENCE / candidate**, not a user decision.
+
+The output should define command models, state models, event models, error handling, versioning, capability discovery, and possibly security boundaries.
+
+What could go wrong: frontends might develop their own logic, causing inconsistent behavior across platforms.
+
+### Third next step: define TUI parity
+
+The user said TUI is expected for every product, but not what that means. The project should define whether TUI is:
+
+* full parity,
+* admin/operations parity,
+* emergency fallback,
+* or product-specific.
+
+The output should be a per-product TUI scope model.
+
+What could go wrong: TUI could be forgotten, underbuilt, or overbuilt.
+
+### Fourth next step: build a product matrix
+
+The project should map setup, launcher, client, server, tools, and any other products to:
+
+* CLI,
+* TUI,
+* GUI families,
+* backend contract use,
+* packaging form,
+* build lanes,
+* and support level.
+
+This matters because different products have different needs. Setup should be low-dependency. Client may be performance-sensitive. Server should be headless-first. Launcher can be richer. Tools can vary.
+
+### Fifth next step: build Windows and macOS matrices
+
+Windows and macOS already have user-proposed frontend families. These should be normalized into explicit matrices with OS floors, architectures, runtime/framework versions, toolchains, package types, and verification flags.
+
+What could go wrong: support claims may be made without actual build/test lanes.
+
+### Sixth next step: decide Linux and Android strategies
+
+Linux and Android remain open. Linux needs a stack and packaging plan. Android needs a product role before a UI stack is chosen.
+
+What could go wrong: Linux could inherit too much Windows-style complexity, and Android could become an unfocused full-parity project without a reason.
+
+### Seventh next step: define packaging and build/toolchain strategy
+
+The project needs a packaging doctrine and CI/toolchain matrix. Every support claim should map to a buildable, testable artifact.
+
+This is where static vs dynamic linking, plugins, bundles, installers, portable builds, signing, notarization, and package formats should be decided.
+
+### Content next steps when content work resumes
+
+When returning to CONTENT0, the project should resolve the conceptual issues identified earlier. It should not generate a final Codex prompt until schema semantics, seed hierarchy, refinement, timeline topology, conservation scope, and documentation traceability are clarified.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints
+
+For CONTENT0:
+
+* Only `data/`, `schema/`, and `docs/` may be touched.
+* Engine/runtime logic must not change.
+* Simulation rules are fixed.
+* New schemas must be descriptive only.
+* All content needs provenance and construction/origin history.
+* Nothing may be fabricated “for gameplay.”
+
+For GUIs:
+
+* Every product must always work with CLI.
+* Every product is expected to work with TUI.
+* GUIs are modular frontends attached to product backends.
+* GUI shells must not become separate product architectures. This is an inference from the user’s modular-backend statement and assistant guidance, but it follows strongly.
+
+For reporting and preservation:
+
+* Do not invent facts.
+* Do not silently infer.
+* Label facts, inferences, and uncertainty.
+* Do not treat assistant suggestions as decisions.
+* Preserve rejected and superseded options.
+* Preserve uncertainty and contradictions.
+* Use this chat only unless outside context is labelled.
+
+### Inferred preferences
+
+The user appears to prefer durable architecture over quick implementation. This is inferred from the emphasis on compatibility, old and new platforms, backend contracts, and future spec aggregation.
+
+The user also appears to prefer evidence-backed technical corrections over agreeable confirmation. This is inferred from the repeated platform/toolchain feasibility questions and acceptance of caveats about .NET and Xcode.
+
+### Technical constraints
+
+Several technical constraints were discussed but require verification before use:
+
+* WinUI 3 / Windows App SDK floors.
+* .NET Framework target compatibility and Visual Studio support.
+* macOS deployment floors and Xcode versions.
+* Linux toolkit/platform/package support.
+* Android platform and UI options.
+* .NET Native AOT suitability.
+* .NET MAUI platform support.
+
+These should not be treated as permanently settled by this chat.
+
+### Things future assistants should avoid
+
+* Starting with code.
+* Generating final prompts too early.
+* Treating assistant drafts as accepted.
+* Claiming old-host support without real toolchains.
+* Inventing Linux or Android decisions.
+* Losing the distinction between content work and GUI work.
+* Merging this chat into a master spec without preserving caveats.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+### CONTENT0 prompt
+
+The most important original artifact is the user’s **CONTENT0 prompt**. It defines the canonical content-population workstream. It should be preserved because it contains the direct user-stated constraints and content philosophy.
+
+It should feed into a future content spec, but not as a final implementation prompt until the unresolved conceptual issues are resolved.
+
+### Assistant-cleaned CONTENT0 prompt
+
+The assistant produced a cleaned version of CONTENT0. It may be useful as a draft, but it was superseded by the user’s instruction to discuss before planning/generating prompts.
+
+It should be preserved as background, not as final instruction.
+
+### CONTENT0 critique
+
+The assistant’s critique identified major issues that should become an agenda before finalizing content prompts. This artifact is useful because it names likely failure modes.
+
+### User’s full-universe/default-Milky-Way statement
+
+This is a key planning artifact. It states that the default shipped data pack should include the Milky Way and important celestial systems/sites, especially Sol, while supporting procedural through fully defined universes.
+
+It should feed into future content architecture work.
+
+### GUI feasibility discussion
+
+The chat includes assistant responses about Xcode, Linux, .NET, Apple equivalents, libraries/DLLs, and GUI eras. These are useful background artifacts but contain technical facts that need verification before implementation.
+
+### User GUI rebuild decision and platform lists
+
+This is the most important GUI artifact. It contains the exact user-stated decision to redo GUIs from scratch and the proposed Windows/macOS frontend families.
+
+This should feed directly into future GUI/binary planning.
+
+### Transfer knowledge base, context packet, report package, and in-chat reader
+
+The chat produced several preservation artifacts:
+
+* a GUI/binary transfer knowledge base,
+* a maximum-fidelity context transfer packet,
+* a downloadable Markdown/YAML report package,
+* and an in-chat report reader.
+
+These are not project design artifacts in themselves, but they preserve project design state. They should be kept for future aggregation and spec-book construction.
+
+### External links and technical references
+
+The prior package included references to Microsoft and Apple documentation. These are useful but stale-prone. Future assistants should re-check current official sources before using them in implementation decisions.
+
+### Uploaded or repository files
+
+There was mention of possible uploaded repo/files in prior summaries, but this chat report explicitly treats actual repository inspection as **UNCERTAIN / UNVERIFIED**. No implementation should proceed from this report alone.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+### What is the backend/UI contract?
+
+This is the most important unresolved issue. The project needs to decide how CLI, TUI, and GUI frontends interact with product backends. The choice affects every product and platform.
+
+Known: the user wants modular GUIs attached to backends, CLI always, TUI expected.
+
+Unknown: whether the contract is ABI, IPC, both, or something else; how commands, state, events, errors, versioning, and capabilities work.
+
+Resolution: design candidate models and compare them against actual repo architecture.
+
+### What does “TUI expected” mean?
+
+Known: every product is expected to work with TUI.
+
+Unknown: parity level.
+
+Resolution: define TUI scope per product: full, admin, fallback, or limited.
+
+### What exact Windows versions and .NET floors matter?
+
+Known: the user proposed Win32 ANSI, Win32 Unicode, WinForms, and WinUI 3. The user mentioned .NET 4.8 down to .NET 4.0 machines.
+
+Unknown: whether .NET 4.0 support is a hard requirement, what Windows OS floors are intended, and what toolchains are acceptable.
+
+Resolution: user decision plus official documentation/toolchain verification.
+
+### Is macOS 10.9 a hard requirement?
+
+Known: the user named macOS 10.9 for AppKit.
+
+Unknown: whether this is mandatory or aspirational, and what old toolchain support is available.
+
+Resolution: user decision plus Xcode/SDK verification.
+
+### Should AppKit target Apple silicon too?
+
+Known: the user listed AppKit for 64-bit Intel. Assistant suggested AppKit need not be Intel-only.
+
+Unknown: final AppKit architecture policy.
+
+Resolution: decide whether AppKit should be Intel-only, universal, or split into legacy/modern lanes.
+
+### What is the Linux GUI strategy?
+
+Known: Linux is in scope.
+
+Unknown: toolkit/renderer, distro baseline, packaging formats, Wayland/X11 support, dependency strategy.
+
+Resolution: compare options and define Linux-specific lanes.
+
+### What is Android’s role?
+
+Known: Android is in scope.
+
+Unknown: whether Android is full client, launcher, admin console, companion app, or tools-only.
+
+Resolution: decide role before UI framework.
+
+### How should the universe support procedural gaps?
+
+Known: user wants a universe representation that can span procedural to fully defined.
+
+Unknown: schema/data model.
+
+Resolution: design content definition levels and refinement/provenance rules.
+
+### What makes a celestial site important?
+
+Known: importance includes visiting, harvesting, research, and navigation.
+
+Unknown: exact weighting and inclusion criteria.
+
+Resolution: define importance taxonomy.
+
+### What is actually in the repository?
+
+Known: this report did not inspect project files.
+
+Unknown: actual file tree, existing GUI code, backend architecture, build system.
+
+Resolution: inspect repo/files before implementation.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+### Treating assistant suggestions as final decisions
+
+This is one of the biggest risks. Some ideas in the chat, such as stable C ABI, visual profile families, and static-by-default packaging, were assistant recommendations. They are useful, but not final user decisions.
+
+Avoidance: always preserve labels and source hierarchy.
+
+### Starting implementation too early
+
+Future chats might jump into writing Win32, AppKit, WinUI, or SwiftUI code. That would be premature because the backend/UI contract is unresolved.
+
+Avoidance: define doctrine and matrices first.
+
+### Claiming compatibility without build lanes
+
+The project could claim support for old .NET, old Windows, or macOS 10.9 without actual toolchains and tests.
+
+Avoidance: require every support claim to map to a buildable, testable lane.
+
+### Losing the content/GUIs distinction
+
+CONTENT0 constraints apply to content work, not necessarily GUI rebuild work. Conversely, GUI architecture decisions do not solve content architecture.
+
+Avoidance: keep workstreams separate.
+
+### Over-compressing the chat
+
+If a future assistant reduces this chat to “user wants GUIs and content,” it loses the essential philosophy, constraints, and unresolved issues.
+
+Avoidance: preserve the narrative and decisions, not just headings.
+
+### Inventing Linux and Android details
+
+Linux and Android remain open. Future assistants might fill in Qt, GTK, Avalonia, Compose, MAUI, or other choices without user decision.
+
+Avoidance: present options and tradeoffs before deciding.
+
+### Relying on stale technical facts
+
+Platform/toolchain support changes.
+
+Avoidance: verify current official docs before implementation or formal spec-lock.
+
+### Assuming files were inspected
+
+The report package was created, but actual repo inspection was not performed.
+
+Avoidance: inspect the repository before making implementation claims.
+
+### Bad aggregation with other chats
+
+A future aggregator might merge tentative items into formal requirements or erase contradictions.
+
+Avoidance: preserve labels, uncertainty, and source-specific provenance.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes three kinds of value to the larger Dominium project.
+
+First, it contributes a **content doctrine**. The CONTENT0 prompt and discussion define a strict model for canonical world content: data-only, provenance-first, historically and physically grounded, macro-refinable, and not fabricated for gameplay convenience. This should inform future spec-book chapters on content architecture, world modeling, history, population, economy, and scenarios.
+
+Second, it contributes a **GUI/binary architecture direction**. The user’s decision to rebuild GUIs from scratch, with CLI mandatory, TUI expected, and modular GUI frontends over product backends, should become a major formal requirement in the future project spec. It directly affects setup, launcher, client, server, tools, build systems, packaging, and platform support.
+
+Third, it contributes an **aggregation method**. The chat itself produced a structured package and this narrative report, establishing how old chats can be preserved for later combination into a master Project Spec Book.
+
+Likely future spec-book sections informed by this chat include:
+
+* Content Layer Doctrine,
+* Canonical Universe and Default Datapack,
+* Milky Way and Sol System Content,
+* Product Surface Architecture,
+* CLI/TUI/GUI Strategy,
+* Platform Frontend Matrix,
+* Build and Packaging Strategy,
+* Verification and Support Policy,
+* Source/Decision Governance.
+
+Items that should become formal requirements include:
+
+* CLI always works.
+* TUI is expected.
+* GUIs attach to product backends.
+* CONTENT0 cannot modify runtime logic.
+* Content needs provenance.
+* Support claims require real build/test lanes.
+
+Items that should remain background until confirmed include:
+
+* stable C ABI,
+* exact visual profile names,
+* exact Linux stack,
+* exact Android role,
+* exact .NET floors,
+* exact macOS legacy support.
+
+The main conflict risk with other chats is that later discussions may have changed toolchain choices, product architecture, or platform priorities. If so, this chat’s decisions should be merged carefully, preserving chronology and source labels.
+
+---
+
+## 14. What I Should Remember
+
+* The chat started with **CONTENT0**, a strict content-layer prompt. It was about populating canonical universe/civilization/economy/history content through data, schema, and docs only.
+
+* The core CONTENT0 philosophy is **nothing appears from nowhere**. Every entity, population, city, resource, civilization, and start condition needs origin/provenance.
+
+* The assistant’s cleaned CONTENT0 prompt is **not final**. The user explicitly redirected the process to discussion before prompt generation.
+
+* The biggest unresolved CONTENT0 issues are schema semantics, deterministic seeds, macro refinement, timeline topology, human baseline, conservation scope, knowledge uncertainty/loss, and documentation traceability.
+
+* The user wants a future full-universe model that is efficient and supports procedural, partially defined, and fully defined universes.
+
+* The default data pack should contain the **Milky Way** and important celestial systems/sites, especially **Sol**.
+
+* The chat’s active direction became **GUI and binary rebuild**.
+
+* The user explicitly decided to **redo GUIs from scratch**.
+
+* Every product must always work with **CLI**.
+
+* Every product is expected to work with **TUI**, but the level of parity is unresolved.
+
+* Products may have multiple modular GUIs attached to shared product backends.
+
+* The main unresolved GUI architecture issue is the **backend/UI contract**.
+
+* Windows frontend families proposed: Win32 ANSI, Win32 Unicode, WinForms, WinUI 3.
+
+* macOS frontend families proposed: AppKit and SwiftUI.
+
+* Linux and Android are in scope but not designed.
+
+* Old .NET and old macOS support need real verification and build lanes.
+
+* Do not treat assistant suggestions as user decisions.
+
+* Do not start implementation before doctrine, contract, product matrix, platform matrix, and verification plan.
+
+* The generated handoff/report package exists and should be preserved for aggregation, but it does not replace repository inspection.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Draft the GUI/binary architecture doctrine in plain language.”
+2. “Define the backend/UI contract options and compare ABI, IPC, and hybrid models.”
+3. “Create a product matrix for setup, launcher, client, server, and tools.”
+4. “Clarify what TUI parity should mean for each product.”
+5. “Create the Windows frontend/build matrix from the proposed Windows lanes.”
+6. “Create the macOS frontend/build matrix and explain the macOS 10.9 issue.”
+7. “Compare Linux GUI stack options for this architecture.”
+8. “Define possible Android roles: full client, launcher, admin console, companion, or tools.”
+9. “Turn the CONTENT0 unresolved issues into a discussion agenda.”
+10. “What should become formal requirements in the future Project Spec Book?”
+11. “Which assistant suggestions from this chat are not yet user decisions?”
+12. “What must be verified before implementation?”
+13. “Explain the difference between compatibility lanes and visual profiles.”
+14. “How should the default Milky Way datapack choose important systems and sites?”
+15. “What should a future assistant absolutely not assume from this chat?”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was a planning and preservation conversation for the Dominium / Domino project. It began with the user providing a large prompt called **CONTENT0**, intended to populate canonical game content through data, schema extensions, and documentation only. The content scope was broad: universe structure, galaxies, star systems, planets, Earth, surfaces and regions, histories, populations, civilizations, economies, institutions, technology, and start scenarios. The prompt’s defining principle was that nothing should appear without cause. No entity exists unless created by an explicit process; no population unless born; no city unless built; no resource unless extracted or produced; no civilization unless historically emerged; no starting assets without justification. This is the project’s content philosophy: macro content can exist without micro simulation, but it must be refinable and grounded in provenance.
+
+An assistant initially turned CONTENT0 into a cleaned Codex-ready prompt. The user then corrected the process by saying the team should discuss before planning or generating prompts. That changed the status of the generated prompt: it became a draft, not a final instruction. The conversation then identified unresolved issues that must be handled before CONTENT0 can safely drive repository changes. These include schema semantics, deterministic seed hierarchy, macro-to-micro refinement, timeline causality, human population baselines, civilization taxonomy, conservation scope, uncertainty and loss in knowledge systems, start-scenario exclusions, and data-to-doc traceability.
+
+The content discussion expanded into a larger default-universe ambition. The user wants an efficient full-universe representation that can support pure procedural generation, partially defined universes with procedural gaps, and fully defined architected universes. The default shipped data pack should include the **Milky Way** and the most important stars, systems, and celestial sites, with importance covering visiting, harvesting, research, navigation, and related uses. The **Sol system** must be specially defined, including important bodies, structures, satellites, belts, fields, and points. That work remains unresolved but important.
+
+The conversation then shifted to GUI and binary strategy. The user wanted to know whether the approach could work across Windows, macOS, Linux, Xcode, Visual Studio, .NET, Apple-native systems, native executables, and libraries/DLLs. The important conclusion was that GUI frontends should be subordinate to shared product backends. Product logic should not live inside any particular UI framework. Xcode can help with Apple-side frontends, but it is not a cross-platform solution. .NET can be a thin frontend, but its UI stack choices matter. Linux is viable but needs its own strategy. Static and dynamic linking are both possible depending on packaging and modularity needs.
+
+The user then asked whether separate GUIs were needed per OS and per era. The assistant advised that the better model is not one GUI codebase per OS version or design era, but rather shared architecture, host integrations, compatibility lanes, and a small number of visual profiles. This was an assistant recommendation, not a formal user decision, but it shaped the later planning.
+
+The central decision of the chat came when the user said they wanted to **redo the GUIs from scratch**. This is the active direction. For every product — setup, launcher, client, server, tools, and related products — CLI must always work, TUI is expected, and multiple modular GUIs can attach to product backends to compile native applications. This makes the backend/UI contract the most important unresolved design issue. The project must decide how CLI, TUI, and GUI shells interact with product backends before it starts implementing frontends.
+
+The user proposed Windows frontend families: Win32 ANSI for 32-bit Intel setup/client, Win32 Unicode for 64-bit Intel and ARM setup/client, WinForms .NET Framework for launcher/server, and WinUI 3 for modern launcher/server. They also proposed macOS frontend families: AppKit for setup/launcher/client/server and SwiftUI for future launcher/server. Linux and Android were included but left open. The assistant flagged important technical caveats: old .NET support needs real target/build lanes, and macOS 10.9 support likely requires old or frozen Apple tooling. Those caveats remain verification items, not fully settled facts.
+
+The latter part of the chat focused on preserving all this work. The user requested a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat reader version, and finally this human-readable report. These artifacts exist to help future chats continue without re-explaining the whole conversation and to support later construction of a full Project Spec Book.
+
+The most important thing to remember is that this chat does not finish the design. It sets the direction and identifies the next work. The next assistant should not start coding. It should first define the GUI/binary doctrine, backend/UI contract, TUI parity, product matrix, Windows/macOS matrices, Linux and Android strategies, packaging doctrine, and build/toolchain verification plan. For content work, it should not finalize CONTENT0 until the unresolved conceptual issues are discussed. All assistant suggestions must remain separate from user decisions, and all stale technical facts must be verified before use.
+
+# Reader Status
+
+* Chat title: Dominium Content and GUI Rebuild Planning
+* Report type: human-readable explanatory report
+* Main value of this chat: It records the shift from canonical content-population planning into a major GUI/binary rebuild direction, while preserving the content philosophy and unresolved architecture issues.
+* Most important decision: The GUIs will be redone from scratch, with CLI always available, TUI expected, and modular GUIs attached to product backends.
+* Most important unresolved issue: The backend/UI contract that CLI, TUI, and GUI frontends will share.
+* Most important next action: Define the GUI/binary architecture doctrine and backend/UI contract before implementation.
+* Safe to use for later aggregation: with caveats
+* Main caveats: No repository inspection was performed; Linux and Android strategies are unresolved; TUI parity is unresolved; old .NET and macOS support require verification; assistant suggestions must not be treated as user decisions.

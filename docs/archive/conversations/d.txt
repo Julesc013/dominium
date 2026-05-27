@@ -1,0 +1,751 @@
+GPT-5.5 Pro — build date unavailable
+
+# Human-Readable Chat Report — Dominium Chronology & Celestial Systems
+
+## 1. One-Page Orientation
+
+This chat was mainly about designing a major subsystem for the Dominium Game project: how the game should represent celestial bodies, astronomical structures, time, calendars, dates, clocks, local standards, diegetic HUD knowledge, and large-scale chronology across Earth, the Sol system, the Milky Way, and the universe.
+
+The conversation began with a practical worldbuilding and simulation-design question: if the game logically simulates the universe, which celestial bodies and systems should be included without making the simulation bloated or redundant for gameplay? That initial question expanded into a much larger architecture. The user clarified that the game operates at multiple scales: planetary Earth, the Sol system, the Milky Way, and the universe. That scale ladder became the foundation for almost everything that followed.
+
+A central design theme emerged: not everything should be simulated at the same fidelity. The Sol system should be represented in great detail because the user explicitly said most playtime will happen there. The Milky Way should have a backbone of real, named systems and sites, plus procedural expansion. The universe should mostly be parametric or abstract, using large-scale structures like filaments, voids, horizons, and cosmic epochs rather than hand-simulating every galaxy. The underlying principle became: a celestial object or region should be explicit if it changes gameplay, navigation, physics, history, or player decisions; otherwise it should be procedural, statistical, or omitted.
+
+The chat then shifted into timekeeping and calendars. The user wanted “perfect” measurement and calendar systems for Earth-centric and Sol-centric civilizations. From there, the discussion expanded into a complete temporal ontology for the game. The core doctrine became: **time is real and continuous; calendars are interfaces**. The simulation should store authoritative, monotonic physical time, while calendars and clocks merely render that time for humans, societies, devices, or legal systems. Leap seconds should not exist inside the simulation core. Relativistic effects should be modeled as physics, not patched away. Proper time can matter for clocks, aging, and instruments, but it should not become the authoritative calendar basis.
+
+A major concrete decision was made for the custom Perfect Earth Calendar. The user corrected and refined the assistant’s earlier proposal. The final user-directed version uses existing English weekday names, Monday through Sunday. It uses existing English Gregorian month names, but begins the year in March, so the month order is March, April, May, June, July, August, September, October, November, December, Undecember, January, February. Each month has 28 days. Intercalary days are appended after February so the system avoids “January 0.” This was one of the most important locked decisions in the chat.
+
+The chat also defined calendars or time systems for Mars, Venus, Mercury, Jupiter’s moons, Saturn’s moons, Uranus’s moons, Neptune’s moons, Pluto, trans-Neptunian objects, the Sun, the Sol system, the Milky Way, and the universe. Many of these were assistant-proposed designs and should be treated as design material rather than final user-confirmed facts. The Earth calendar is far more settled than the non-Earth calendars.
+
+The user then connected the time/calendar system to gameplay. Each world or universe instance can start at a different date and time. The default world should use Gregorian January 1, 2000 AD as the date anchor, but the player should spawn at local sunrise wherever they start. At the beginning, the player should not see a time or date HUD because they have no clock, calendar, or timekeeping device. This is important because the HUD is meant to be diegetic and VR-friendly. Timekeeping should become knowledge, technology, and culture inside the game.
+
+The conversation ended by turning the whole chat into a reusable handoff/report package. The generated package included a full report, YAML spec sheet, aggregator packet, registers, reader brief, verification/audit file, manifest, and ZIP archive. Those files are useful artifacts, but the real value of the chat is the design substance: the time/celestial architecture and the rules for integrating it into Dominium’s broader systems.
+
+The future relevance is high. This chat should feed directly into a future Project Spec Book, especially sections on celestial simulation, time core, calendars, diegetic HUD, governance standards, world initialization, knowledge/fog-of-war, and save determinism. The biggest caveat is that the actual “Plan G: The Game” chat and codebase were not visible here. Any implementation plan must therefore verify the real project architecture before turning this design into code.
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began with celestial scope
+
+The first substantive question was about simulating the universe logically without including too many redundant celestial bodies for gameplay. The initial answer proposed broad classes: stars, planets, moons, minor bodies, clusters, nebulae, galactic structures, and cosmological background. That answer was broad and conceptual.
+
+The user then gave the key gameplay scale ladder: planetary Earth, Sol system, Milky Way, and universe. That changed the problem from “what kinds of things exist in space?” to “what should be represented at each gameplay scale?” The assistant responded with a tiered approach: detailed Sol system bodies, structural regions of the Milky Way, and a small set of explicit galaxies or galaxy classes at the universe scale.
+
+The user then asked for a canonical list of Milky Way systems, not just archetypes. The assistant generated a real-system backbone: nearby stars, exoplanet systems, massive stars, exotic objects, clusters, nebulae, galactic core objects, and halo/outskirts objects. This list became useful as design material but remains scientifically unverified. The report later flagged that some entries may be questionable or need correction before becoming data.
+
+The user then asked what celestial bodies and sites should be included within each Milky Way system. The assistant started to specify contents system by system, including stars, planets, debris disks, hazard zones, and notable features. This was not completed for hundreds of systems; it was more of a pattern for how system data should be structured.
+
+### The chat then connected astronomy to gameplay
+
+After defining bodies and systems, the user asked what gameplay features and mechanics could be tied to stellar, planetary, celestial, and biome features. This was an important design bridge. Instead of space objects being decorative, they became mechanics.
+
+Examples included binary systems causing navigation instability, red dwarfs producing flare hazards and tidal-locking gameplay, massive stars creating supernova countdowns, neutron stars acting as pulsar beacons with radiation cones, black holes enabling time dilation and extreme risk, gas giants creating atmospheric mining and radiation belt gameplay, and icy moons enabling subsurface-ocean exploration and life-detection mechanics.
+
+This reinforced the core celestial-content rule: locations should exist explicitly when they change player decisions.
+
+### Sol became the highest-fidelity region
+
+The user then asked what should be included within the Sol system and said they wanted to “pull out all the stops” because most playtime would happen there. That locked the Sol system as the primary high-detail region. The assistant expanded Sol to include the Sun’s layers, inner planets, Earth and the Moon, Mars and its moons, the asteroid belt and major asteroids, gas and ice giants, major moons, ring systems, the Kuiper Belt, Pluto/Charon, dwarf planets, scattered disk, Oort Cloud, Lagrange points, orbital zones, radiation zones, and logistics regions.
+
+This became the spatial foundation for later time/calendar decisions because every major body or region could potentially have its own local time, calendar, or operational standard.
+
+### The conversation shifted into measurement and calendars
+
+The user asked what the most perfect measurement and calendar systems would be for Earth-centric and Sol-centric civilizations. This shifted the discussion from spatial content into time architecture. The assistant proposed using SI units as the fundamental measurement base, continuous atomic time as the simulation basis, and separate civil/astronomical renderers for things like UTC, UT1, and Sol-system barycentric time.
+
+The important idea was not any single calendar but the separation of layers: physics time is authoritative; calendars are representations. That principle became the backbone of the entire chronology system.
+
+### Earth calendars were defined first
+
+The user then listed Earth calendars to support: Gregorian, Julian, Islamic, Hebrew, Chinese, Persian, Holocene, Metric, and a custom Perfect calendar. The assistant proposed a general Earth calendar layer and an initial “Harmonized Perennial Calendar” style design.
+
+Later, the user corrected the Perfect Earth Calendar in a specific way. This was one of the clearest user-authored design decisions in the chat. The user wanted existing weekday names, Monday through Sunday. The year should start with March at the beginning of spring. December should be the tenth month. The eleventh month should use a historically proposed name. January should be the twelfth month, and February should be the thirteenth month. All leap or non-calendar days should be appended to February, explicitly avoiding “January 0.”
+
+The assistant formalized this as the Perfect Earth Calendar, later called HPC-E. The final structure is clear, though the exact leap rule remains unresolved.
+
+### The calendar system expanded body by body
+
+The user then asked for the same treatment for Mars, Venus, Mercury, Jupiter and its moons, Saturn and its moons, Uranus, Neptune, Pluto, trans-Neptunian objects, Earth’s Moon, the Sun, the Sol system as a whole, and undefined/deep-space cases.
+
+The assistant generated many local calendars and time systems. These included scientific systems like Mars Sol Date, local mean solar time, rotation counts, orbital year counts, and system times. It also proposed engineered “perfect” calendars for different bodies or moons. For example, Mars got a 24-month 28-sol calendar, Venus got a rotation-independent habitat-oriented calendar, Mercury got an industrial calendar, and major moons received local calendars tied to tides, radiation, cryovolcanism, or administrative roles.
+
+This material is useful but less final than the Earth calendar. The user asked to apply the same approach broadly, but did not individually confirm every name or number. The final package correctly marks these as needing review.
+
+### The discussion moved upward to Sol, Milky Way, and universe calendars
+
+After body-specific calendars, the user asked to restate Sol-wide calendars and define calendars for the Milky Way and universe. The assistant defined Sol Coordinated Time and Sol Epoch Calendar, then Galactic Coordinated Time and Galactic Epoch Calendar, then Universal Coordinated Time and Universal Epoch Framework.
+
+The rationale was that ordinary months, days, and years lose meaning at larger scales. The galaxy and universe should use duration blocks, epochs, ages, and eras rather than pretending there is a meaningful “universal month” or “galactic weekday.”
+
+### Intercalary days, leap seconds, relativity, and cosmology were clarified
+
+The user asked whether intercalary days should be assigned dates for compatibility. The assistant recommended a dual approach: canonically, intercalary days remain outside weeks and months; for compatibility, they can be projected as February 29 and February 30 in HPC-E. That recommendation is not as user-authored as the month order, but it fits the user’s stated goals.
+
+The user then asked about leap seconds, relativistic effects, and cosmological effects over long periods. The assistant stated the core doctrine: leap seconds are display-only; coordinate time is authoritative; proper time is derived; relativity should be modeled, not patched; at cosmic scales, calendars collapse into epochs and durations.
+
+### The user added world-start, HUD, and governance requirements
+
+A major late-stage refinement was the user’s world instantiation rule. Each world or universe can start at a different date/time. By default, the game starts on Gregorian January 1, 2000 AD. The time should be local sunrise at whatever planet or local time zone/solar context the player spawns in. At the beginning, the HUD should show no time/date information because the player does not have clocks, calendars, or timekeeping devices. Players should be able to define their own time/date systems or choose from provided ones. Organizations, regions, jurisdictions, and individuals may designate standard systems.
+
+This transformed the calendar system from a background simulation feature into gameplay: timekeeping becomes knowledge, technology, law, culture, and fog-of-war.
+
+### The end of the chat became about preservation and handoff
+
+The user then asked how to make the whole system modular, extensible, and robust. The assistant proposed separating TimeCore, Chronology, Presentation/Diegesis, TimeStandards, NameSets, KnowledgeCapabilities, ephemerides, recurrence, serialization, and tests.
+
+The user asked to merge this with the broader “The Game” / Plan G chat. The assistant correctly noted that the actual other chat and codebase were not available here, so the merge had to remain conceptual. The user then asked for a prompt to give The Game chat, followed by an exclusive list of content that would be core/data/defaults, and then a celestial counterpart list. Finally, the user retired the chat and asked for a maximum-fidelity Context Transfer Packet. After that, the user asked to turn the packet into a downloadable report package, and then asked for an in-chat reader version of the package.
+
+The final state is that this chat became both a design discussion and a packaged source document for future aggregation.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Celestial content scope
+
+The first major topic was what celestial bodies, structures, and systems should exist in the game. The user wanted enough fidelity to support deep gameplay without adding redundant objects. This led to a tiered model.
+
+At the universe level, the discussion emphasized parametric structures: expansion, cosmic horizons, large-scale filaments, voids, and cosmic background. At the galaxy level, the Milky Way should have structural regions like spiral arms, inter-arm regions, halo, bar, core, and star-forming regions. At the Sol-system level, the game should include a far more detailed set of explicit objects, because the user expects most playtime there.
+
+The conclusion was not “simulate everything.” The conclusion was to classify content by relevance. Explicit objects are justified when they create gameplay, physics, navigation, history, strategy, or meaningful decisions. Otherwise, they should be procedural or statistical.
+
+What remains uncertain is the exact verified object list. The assistant generated a real Milky Way system list, but that list must be checked before becoming data.
+
+### Topic 2 — Gameplay mechanics tied to astronomy
+
+The second topic was how celestial features produce gameplay. The user asked what mechanics could be attached to system, stellar, planetary, and celestial features. This matters because otherwise space content becomes decorative.
+
+The discussion established examples: red dwarfs create radiation-hardening and tidal-locking gameplay; binary systems create orbital instability and navigation challenges; massive stars create time-pressure and evacuation mechanics; neutron stars create pulsar-navigation and radiation hazards; black holes create time dilation and extreme-risk physics; gas giants create atmospheric mining and radiation-belt management; icy moons create subsurface ocean exploration and life-detection mechanics.
+
+The conclusion was that every explicit celestial feature should change player decisions in at least one way. If it does not, it probably should not be explicit.
+
+### Topic 3 — Sol system as the primary play space
+
+The user made Sol the most important spatial system. This changed the level of detail expected. The Sol system was expanded to include the Sun’s physical layers, all major planets, key moons, asteroid populations, major dwarf planets, Kuiper Belt, scattered disk, Oort Cloud, Lagrange points, orbital regions, radiation zones, ring systems, and major surface/subsurface features.
+
+The reason is straightforward: if most playtime happens there, Sol cannot be a shallow starting area. It needs enough geography, hazards, resources, logistics, calendars, and local standards to sustain long-term gameplay.
+
+The unresolved issue is exact fidelity. The chat specified what should exist conceptually, but not the final data schema, map resolution, object attributes, or implementation priority.
+
+### Topic 4 — The core time philosophy
+
+The central time philosophy is that physical time and civil time must be separated. The simulation should not “run on calendars.” It should run on monotonic physical time. Calendars are renderers that label time for humans, societies, devices, and UI.
+
+This matters because the game spans planets, star systems, galaxies, and potentially cosmological timescales. Earth-like calendars cannot be made authoritative without breaking physics. Leap seconds, local days, proper time, and cultural months are all contextual.
+
+The conclusion was to use Atomic Continuous Time as the core, with coordinate frames like Barycentric Sol Time, Galactic Coordinate Time, and Cosmological Proper Time layered above or alongside it. Proper time is derived, not authoritative. Leap seconds are display-only.
+
+What remains unresolved is the exact mathematical implementation of these frames and how much relativistic fidelity should exist in phase one.
+
+### Topic 5 — Earth calendars and the Perfect Earth Calendar
+
+The user wanted several existing Earth calendars supported: Gregorian, Julian, Islamic, Hebrew, Chinese, Persian, Holocene, and Metric/French Revolutionary. These are calendar renderers.
+
+The most important Earth decision was the custom Perfect Earth Calendar. The user corrected the assistant’s earlier generic proposal and specified the actual naming and ordering scheme. The year begins in March, the months are all 28 days, the weekdays remain Monday through Sunday, and intercalary days go after February.
+
+The reason behind this calendar is to combine familiarity with regularity. It uses names people already recognize while making the calendar perpetual and arithmetically simple. December becomes the tenth month, restoring the numerical sense of “Dec-.” Undecember fills the extra eleventh slot. January and February move to the end of winter.
+
+The open issue is the leap rule. The structure is fixed, but the exact rule for when Leap Day occurs is not.
+
+### Topic 6 — Planetary and moon calendars
+
+The chat then extended the calendar idea to Mars, Venus, Mercury, the major moons of Jupiter/Saturn/Uranus/Neptune, Pluto, trans-Neptunian objects, and undefined/deep-space contexts. These calendars were meant to reflect physical realities: Mars has sols, Venus has extreme rotation, Mercury has spin-orbit resonance, Europa has tides, Titan has methane/hydrocarbon cycles, and so on.
+
+The conclusion was that inhabited or operationally important bodies may have local calendars or clocks, but those calendars should still be renderers over physical time. Gas giants and the Sun do not get ordinary civil calendars, because civilizations do not live on their surfaces. Habitats around them may define their own standards.
+
+The uncertainty is high relative to Earth. Many names and structures were assistant-generated and should be reviewed before implementation.
+
+### Topic 7 — Sol-wide, galactic, and universal time
+
+The user asked how to extend calendars beyond planets. The answer was that the larger the scale, the less ordinary calendar structure survives. Sol can have a system-wide civil time and epoch calendar. The Milky Way should use galactic coordinate time and epoch blocks. The universe should use cosmological time and large phases/ages/eras.
+
+The reason is that days, months, and years are local conveniences. They stop making sense at galaxy and universe scale. The final principle was that at large scales, duration replaces dates and epochs replace calendars.
+
+### Topic 8 — Intercalary days and compatibility
+
+The user asked whether intercalary days should be assigned dates for compatibility. This is a practical software problem. Many systems expect every day to have a date, but the point of a perpetual calendar is often to keep intercalary days outside weeks and months.
+
+The compromise was to maintain a strict canonical model where Year Day and Leap Day are special tokens outside weeks/months, while optionally projecting them as February 29 and February 30 for compatibility. That preserves the clean calendar internally while allowing external systems to handle dates.
+
+This remains partly tentative because the user did not explicitly confirm all compatibility details.
+
+### Topic 9 — World start, local sunrise, and diegetic time knowledge
+
+This topic was introduced by the user late in the chat and is one of the most important gameplay decisions. Each world can start at a different date/time. The default is Gregorian January 1, 2000 AD, but the player should begin at local sunrise wherever they spawn.
+
+The player initially has no time/date HUD because they do not possess clocks, calendars, or timekeeping devices. This means the simulation knows time, but the player does not. Timekeeping becomes diegetic knowledge.
+
+This connects to VR and realism. The HUD should not simply display omniscient information. A watch, sundial, wall clock, computer terminal, astronomical instrument, organization membership, or network access can reveal different time layers.
+
+Open issues include the exact sunrise algorithm, edge cases like polar night, and the exact capability system.
+
+### Topic 10 — Governance, jurisdictions, and time standards
+
+The user stated that organizations, regions, jurisdictions, and individuals may designate standard time/date systems. This means time is not just physics or UI; it is social, legal, and political.
+
+The assistant proposed a TimeStandard object: a data object binding calendar, clock, frame, intercalary policy, names, and scope. A possible resolution order was proposed: explicit contract/context, organization standard, jurisdiction standard, personal preference, fallback. That order is useful, but it was an assistant proposal, not a locked user decision.
+
+This topic matters because it ties calendars to contracts, laws, scheduling, bureaucracy, diplomacy, and conflict.
+
+### Topic 11 — Modularity and implementation architecture
+
+The user asked how to make the system modular, extensible, reliable, and robust. The proposed architecture separated TimeCore, Chronology, Presentation/Diegesis, TimeStandards, NameSets, KnowledgeCapabilities, ephemeris packs, recurrence, serialization, and tests.
+
+The key idea was to avoid hardcoding calendars and UI rules. The core should know time, not names. Calendars should render fields. NameSets should render strings. Knowledge systems should decide whether the player can see those strings. Governance systems should choose standards.
+
+The unresolved issue is implementation reality. The actual Plan G/The Game codebase was not visible here, so any implementation plan must be reconciled with real architecture.
+
+### Topic 12 — Handoff, report packaging, and future aggregation
+
+The final part of the chat became meta-work: preserving the conversation. The user asked for a Context Transfer Packet, then a downloadable package, then an in-chat reader version, and now this human-readable report.
+
+The reason is to avoid losing context across chats and to support a future Project Spec Book. This chat produced many artifacts: prompts, reports, registers, YAML, a ZIP package, and explanatory summaries. The artifacts matter, but the substance remains the design decisions described above.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals the user stated
+
+The user explicitly wanted to decide what celestial systems and bodies to include at different scales. The goal was to build a logical but gameplay-efficient representation of the universe.
+
+The user explicitly wanted the Sol system to be richly detailed because most playtime would occur there.
+
+The user explicitly wanted to design Earth, Mars, Venus, Mercury, moon, gas-giant-system, Pluto/TNO, Sol-wide, galactic, and universal calendar systems.
+
+The user explicitly wanted the Perfect Earth Calendar to use existing weekday names, reordered existing month names, Undecember, and February as the sink for intercalary days.
+
+The user explicitly wanted each world/universe instance to support different starting dates/times, with a default of Gregorian January 1, 2000 AD and local sunrise at player spawn.
+
+The user explicitly wanted the player to begin with no HUD time/date information because they have no clocks or calendars.
+
+The user explicitly wanted players, organizations, regions, jurisdictions, and individuals to be able to designate standard time systems.
+
+The user explicitly wanted the chat preserved as a reusable package and later rendered in-chat.
+
+### Inferred goals
+
+It is reasonable to infer that the user wants a future implementation path, likely through another assistant and eventually Codex, but does not want premature code before the broader project context is inspected.
+
+It is also reasonable to infer that the user wants a future Project Spec Book assembled from multiple old-chat reports, and that this chat should contribute the chronology/celestial/timekeeping chapters.
+
+The user appears to value systems that are logically coherent across scale, not just mechanically convenient.
+
+### Goals that changed over time
+
+The initial goal was narrow: list celestial bodies and systems. It expanded into spatial simulation, then gameplay mechanics, then Sol system detail, then measurement/timekeeping, then calendars, then governance and knowledge, then implementation architecture, then handoff packaging.
+
+The conversation moved from content selection to system architecture to preservation/documentation.
+
+### Goals unresolved
+
+Several goals remain incomplete:
+
+* The exact implementation in the real game architecture is not known.
+* The exact HPC-E leap rule is not chosen.
+* The scientific data for celestial bodies/systems is not verified.
+* Non-Earth calendar names and structures are not fully user-confirmed.
+* The sunrise algorithm and time-scale mapping are not finalized.
+* The knowledge capability model is conceptual but not specified in full.
+
+---
+
+## 5. Decisions Made and Why
+
+The following table gives the high-level decisions. The prose below explains the important ones in context.
+
+| Decision                                                                                       | Status                                     | Source strength           |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------ | ------------------------- |
+| The game operates at Earth, Sol, Milky Way, and universe scales.                               | Final                                      | FACT                      |
+| Sol system receives maximum detail.                                                            | Final                                      | FACT                      |
+| Celestial objects should be explicit only when gameplay-relevant.                              | Strong design principle                    | INFERENCE from discussion |
+| ACT is authoritative time; calendars are renderers.                                            | Final design doctrine                      | FACT                      |
+| Leap seconds are display-only.                                                                 | Final design doctrine                      | FACT                      |
+| Proper time is derived, not authoritative.                                                     | Final design doctrine                      | FACT                      |
+| Earth supports several existing calendars.                                                     | Final                                      | FACT                      |
+| HPC-E uses March through February, with Undecember and February intercalaries.                 | Final except leap rule                     | FACT                      |
+| Intercalary days are canonically outside weeks/months, with optional compatibility projection. | Mostly accepted design recommendation      | FACT / INFERENCE          |
+| Default world date is Gregorian Jan 1, 2000 AD.                                                | Final                                      | FACT                      |
+| Player spawns at local sunrise.                                                                | Final                                      | FACT                      |
+| Player begins with no time/date HUD.                                                           | Final                                      | FACT                      |
+| Players and institutions can define/adopt standards.                                           | Final                                      | FACT                      |
+| Gas giants and Sun do not have ordinary civil calendars.                                       | Strong assistant-proposed design principle | INFERENCE                 |
+| Galactic/universal scales use duration/epoch frameworks.                                       | Strong design principle                    | FACT / INFERENCE          |
+| Constants, ephemerides, and calendar algorithms must be versioned.                             | Strong architecture recommendation         | INFERENCE                 |
+
+### Time is continuous; calendars are interfaces
+
+This was the most important architectural decision. The reasoning was that the game spans too many scales for any local calendar to be authoritative. Earth days, Mars sols, Venus days, local time zones, and cosmic epochs are all ways of labelling time, not time itself.
+
+This decision affects everything: save files, physics, calendars, UI, schedules, contracts, and multiplayer-like consistency. It should only be revisited if the actual engine has an existing time architecture that forces compromise. Even then, the principle should be preserved as much as possible.
+
+### Sol system is the high-detail core
+
+The user directly stated that most playtime will happen in Sol. That makes Sol different from the Milky Way and universe layers. The Sol system should include detailed planets, moons, asteroid populations, rings, Lagrange points, orbital regions, hazards, and surface/subsurface features.
+
+The reasoning is content density. A player spending most time in Sol needs many distinct locations and mechanics. This affects worldbuilding, content data, travel, resource systems, calendars, governance, and science mechanics.
+
+### The Perfect Earth Calendar structure
+
+The final HPC-E is one of the clearest user-authored decisions. Earlier assistant proposals used generic month names or abstract naming. The user corrected this and specified the use of existing English names, March as the first month, Undecember as the eleventh month, January as twelfth, and February as thirteenth. Intercalary days go after February.
+
+This decision makes the calendar both familiar and regular. It preserves cultural recognizability while achieving perpetual structure. It also fixes the awkward “January 0” problem.
+
+The only major unresolved part is the leap rule.
+
+### Canonical intercalary days versus compatibility dates
+
+The assistant recommended that Year Day and Leap Day remain special canonical tokens outside weeks/months, while compatibility systems can display them as February 29 and February 30.
+
+This decision makes sense because it separates clean internal logic from messy external software expectations. However, it is less directly user-confirmed than the month order. Future work should ask whether compatibility projection should be default or optional.
+
+### Local sunrise start and no initial HUD
+
+The user explicitly wanted the game to start at local sunrise, not at an abstract global time, and wanted the player to have no HUD time/date information initially. This makes the start feel embodied and local. It also turns timekeeping into gameplay. A player sees shadows, light, fatigue, and environmental rhythms before they can quantify time.
+
+This affects UI, knowledge, inventory, devices, tutorials, and world initialization.
+
+### Time standards as governance objects
+
+The user explicitly stated that organizations, regions, jurisdictions, and individuals may designate time systems as standard. This means timekeeping is part of politics and law. The assistant proposed a TimeStandard object and conflict-resolution order. The object concept is strongly supported; the exact resolution order remains tentative.
+
+This affects contracts, schedules, laws, diplomacy, organizations, and local identity.
+
+### Large-scale calendars collapse into epochs
+
+For the Milky Way and universe, the assistant argued that ordinary calendar units lose meaning. The design therefore uses galactic and universal epoch frameworks. This is a conceptual decision: at larger scales, dates become durations and epochs.
+
+This should remain unless the project deliberately wants fictional cultural calendars at those scales for specific civilizations. Even then, those would be local cultural constructs, not universal truth.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Simulating everything explicitly
+
+The idea of representing every star, asteroid, comet, galaxy, or minor body explicitly was rejected because it creates massive data volume without proportional gameplay value. The design settled on explicit/procedural/parametric representation.
+
+This rejection is final as a default principle. It can be reconsidered only for specific objects that become gameplay-critical.
+
+### Only using Sol as a real named system
+
+An earlier narrower approach treated Sol as the only named real star system. That was superseded when the user asked for dozens to hundreds of real Milky Way systems. The final direction is to use a real-system backbone, plus procedural expansion.
+
+### Individual asteroids and comets by default
+
+Individual minor bodies were mostly deprioritized in favor of fields, populations, and major exemplars. Ceres, Vesta, Pallas, Hygiea, Pluto, Charon, and other major objects can be explicit, but countless small bodies should be statistical unless they matter.
+
+### Civil calendars for the Sun or gas giants
+
+The assistant proposed that the Sun and gas giants should not have ordinary civil calendars because civilizations do not live on their surfaces. They can have rotation counts, activity cycles, atmospheric clocks, magnetospheric periods, or habitat standards, but not planet-surface civil calendars.
+
+This is a strong design principle, though technically assistant-derived. It should be retained unless the project introduces specific floating habitats or artificial societies that define their own standards.
+
+### Leap seconds inside core time
+
+Leap seconds were rejected from the simulation core because they are irregular, Earth-specific, and discontinuous. They may appear only in a UTC display renderer.
+
+This is final.
+
+### Calendar-driven physics
+
+The idea that a calendar could affect physics was rejected. Calendars are renderers. Physics uses continuous time.
+
+This is final.
+
+### Proper time as civil calendar authority
+
+Proper time matters for local clocks, aging, and relativistic effects, but making it the basis of civil calendars would create frame-dependent disagreements and log problems. It was rejected as authoritative calendar time.
+
+This is final.
+
+### Universal or galactic weeks/months
+
+Ordinary weeks and months at galaxy or universe scale were rejected because they impose local human periodicity where it has no physical meaning. Galactic and universal systems use epochs and durations instead.
+
+### January 0
+
+The user explicitly rejected the idea of January 0 by saying February should absorb all leap or non-calendar days and avoid January 0 designation. This is final.
+
+### A 14th pseudo-month for intercalary days
+
+The assistant mentioned a pseudo-month as an option for compatibility but rejected it because it conflicts with the user’s February sink and creates more edge cases. This rejection is not as user-authored but is consistent with the user’s stated direction.
+
+### Free initial HUD clock
+
+The user explicitly rejected any initial time/date HUD by saying the player has no timekeeping devices or calendars at the beginning. This is final.
+
+### A single universal civil standard for all actors
+
+The user’s governance standard requirement rejects a single universal standard. Different actors can use different standards. This is final.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The visible reasoning throughout the chat was about balancing realism, gameplay, and implementation sanity.
+
+The celestial-content reasoning was about avoiding redundancy. A real universe contains too many objects to model explicitly. The solution is not to reduce scope blindly, but to represent different scales differently. Sol gets explicit detail. The Milky Way gets named anchors and procedural regions. The universe gets parametric structure. This preserves scale without drowning gameplay.
+
+The timekeeping reasoning was about separating truth from labels. A simulation that spans planets and galaxies cannot let an Earth calendar be authoritative. ACT solves that by becoming the single monotonic basis. Calendars then become views. This also makes saves, scheduling, and conversions more robust.
+
+The Perfect Earth Calendar reasoning was about combining familiarity and regularity. A purely abstract 13-month calendar would be mathematically clean but culturally alien. The user wanted existing English names, but reordered to align the year with spring and restore the numerical meaning of September through December. This makes the calendar easier to learn while still being regular.
+
+The intercalary-day reasoning was about preserving invariants while supporting compatibility. If Year Day and Leap Day become normal weekdays, the perpetual calendar breaks. If they have no date at all, software interoperability becomes harder. The dual strict/compatibility model solves both problems.
+
+The diegetic HUD reasoning was about epistemology: the engine may know the time, but the player should not automatically know it. Timekeeping becomes a learned or acquired capability. This makes calendars, clocks, standards, and devices part of gameplay rather than passive UI.
+
+The governance reasoning was that calendars are social systems. Different jurisdictions and organizations can impose different standards. This makes timekeeping part of law, culture, administration, and conflict.
+
+The modularity reasoning was that this subsystem is too broad to hardcode. The robust architecture separates the core time model from calendars, names, displays, devices, standards, ephemerides, and recurrence.
+
+The main assumptions were:
+
+* The game values deterministic simulation.
+* The Sol system is the main play space.
+* The future project architecture can support data-driven systems.
+* The user wants rigorous scope preservation before implementation.
+* The actual Plan G/codebase must be checked later.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+### Inspect the actual Plan G / The Game architecture
+
+This is the most important next step before implementation. The chat discussed how the system should integrate with engine/game systems, but the actual other chat and codebase were not visible here.
+
+This matters because the design may need to adapt to existing modules, languages, naming conventions, save systems, governance models, and UI systems.
+
+The output should be an integration-aware implementation plan.
+
+What could go wrong: a future assistant may assume the architecture invented here is real and generate an unusable Codex prompt.
+
+### Finalize the HPC-E leap rule
+
+The calendar structure is mostly locked, but the leap cadence is not. The project needs to decide whether HPC-E uses a Gregorian-like rule, a drift accumulator against tropical year, or another explicit rule.
+
+This matters because render/parse, recurrence, date conversion, tests, and compatibility projection all need exact leap behavior.
+
+The output should be a short formal leap rule with examples and test vectors.
+
+What could go wrong: implementing a vague “drift” rule without exact determinism.
+
+### Define the exact Jan 1, 2000 start mapping
+
+The user specified the civil date, but not the exact time scale. January 1, 2000 can mean different things depending on UTC, TAI, TT, local midnight, J2000 noon, or a game-defined epoch.
+
+This matters because deterministic world start and astronomy calculations depend on it.
+
+The output should define the exact default `t0_act`.
+
+What could go wrong: inconsistent start dates across systems.
+
+### Define local sunrise precisely
+
+The player starts at local sunrise, but sunrise needs a deterministic definition. Does it use solar center crossing horizon? upper limb? atmospheric refraction? terrain? body-specific atmosphere? What about polar night, tidally locked worlds, orbital habitats, Venus, or Mercury?
+
+The output should be a deterministic algorithm and fallback order.
+
+What could go wrong: undefined spawn time or inconsistent starts.
+
+### Verify celestial data
+
+The assistant-generated Milky Way list and some constants are not safe to hardcode. They need to be checked against authoritative astronomy sources.
+
+The output should be a corrected celestial registry and verification notes.
+
+What could go wrong: false astronomical data becomes canonical.
+
+### Define TimeStandard data objects
+
+The user’s standard-designation rule needs formal representation. A TimeStandard should bind calendar, clock, coordinate frame, intercalary policy, NameSet/localization, and scope.
+
+This matters for governance, law, contracts, organizations, and individuals.
+
+The output should be a schema and conflict-resolution rules aligned with the actual governance system.
+
+What could go wrong: hardcoded calendar preferences scattered across UI and law code.
+
+### Define KnowledgeCapabilities and device access
+
+The no-HUD rule requires a way to determine what time information the player can know. Capabilities should be granted by devices, documents, networks, organizations, observatories, or education.
+
+The output should be a capability graph and device mapping.
+
+What could go wrong: UI leaks hidden time/date information.
+
+### Build modular calendar/rendering infrastructure
+
+The calendar systems should be plugins or data-driven renderers, with NameSets separate from algorithms. This is necessary to support many calendars and custom player-defined systems.
+
+The output should be renderer interfaces, NameSet definitions, parsing rules, intercalary handling, recurrence rules, and tests.
+
+What could go wrong: hardcoded special cases become unmaintainable.
+
+### Create tests
+
+Tests should cover ACT monotonicity, calendar render/parse round-trips, HPC-E intercalary invariants, serialization, sunrise determinism, TimeStandard resolution, and knowledge gating.
+
+This matters because time/calendar bugs are subtle and persistent.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints from the user
+
+The user wants rigorous, structured, fact-aware assistance. The user specifically requested preservation of uncertainty labels and does not want assistant suggestions treated as user decisions.
+
+The user wants Sol to be high detail.
+
+The user wants the Perfect Earth Calendar to follow the exact naming/order pattern they specified.
+
+The user wants default world start date January 1, 2000 Gregorian and local sunrise spawn.
+
+The user wants no initial time/date HUD because the player lacks devices/calendars.
+
+The user wants players and institutions to be able to define or choose time systems.
+
+The user wants the final output of this old chat to be reusable without re-explaining.
+
+### Inferred constraints
+
+The user appears to want deterministic, modular systems suitable for later implementation. This is inferred from repeated requests for extensibility, robustness, integration, and Codex handoff.
+
+The user appears to want future Project Spec Book aggregation. This is inferred from the report-package and aggregator-packet workflow.
+
+### Technical non-negotiables from the design
+
+* ACT is authoritative.
+* Calendars are renderers.
+* Leap seconds are display-only.
+* Proper time is derived.
+* Save files should not store rendered dates.
+* Constants and ephemerides should be versioned.
+* Unknown data should remain unknown, not fabricated.
+* Calendar algorithms should be separate from name/localization layers.
+* Time displays should pass knowledge checks.
+
+### Things future assistants should avoid
+
+Future assistants should not invent Plan G details, assume codebase language constraints, hardcode unverified astronomy, treat all assistant-generated calendars as final, flatten tentative items into decisions, or reveal time/date in UI without in-world justification.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+Several types of artifacts were created in this chat.
+
+The first category is design outputs. These include the broad celestial category list, Sol/Milky Way/universe inclusion list, canonical Milky Way system list, system-by-system body/site breakdown, gameplay mechanics mapping, Sol system inclusion spec, Earth calendar spec, final HPC-E definition, planetary/moon calendar specs, full calendar inventory, naming layer, leap-second/relativity doctrine, world-initialization addendum, modularity plan, and celestial content inventory.
+
+These are not files in the codebase. They are design artifacts produced in the conversation. Some are current; some are superseded; some need verification.
+
+The second category is prompt artifacts. The chat generated a master prompt for a game-development chat, a suffix prompt with definitions/equations, and a handoff prompt for The Game chat. These were created so the user would not need to repeat the entire design elsewhere. They should be preserved but not blindly treated as final, because the later package and this report supersede them in clarity.
+
+The third category is report/package artifacts. The chat produced a maximum-fidelity Context Transfer Packet and then a downloadable report package with Markdown and YAML files. Later, it produced an in-chat reader version of that package. These artifacts are for preservation and aggregation.
+
+No user-uploaded source files were part of the original design discussion. No production code was written in this chat. No external links were central to the design. Some file paths and download links were generated for the package, but the substance is the design, not the files.
+
+The most important artifacts to preserve are:
+
+* the final HPC-E definition,
+* the time doctrine,
+* the world start/no-HUD addendum,
+* the modularity plan,
+* the celestial content inventory,
+* the final report package,
+* the aggregator/handoff material.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+The most important unresolved issue is the real Plan G/The Game architecture. This chat could not inspect it. Any implementation plan must first compare this design to the actual project.
+
+The second major unresolved issue is the exact HPC-E leap rule. The calendar structure is set, but the leap cadence is not. This must be decided before implementation.
+
+The third unresolved issue is the exact time-scale mapping for Gregorian January 1, 2000 AD. The user specified the civil date, but not the exact technical instant. This affects deterministic world start.
+
+The fourth unresolved issue is sunrise definition. “Local sunrise” must become an algorithm, including edge cases like polar night, no atmosphere, tidally locked worlds, orbital habitats, Venus, Mercury, and terrain horizons.
+
+The fifth unresolved issue is scientific verification. The assistant-generated celestial lists, constants, and planetary values should not be trusted without verification.
+
+The sixth unresolved issue is the final status of non-Earth calendars. Many were assistant-generated. The user asked to extend the same approach, but did not confirm every name, week length, or leap rule.
+
+The seventh unresolved issue is whether non-7-day cycles should be called weeks or work cycles. This affects player comprehension.
+
+The eighth unresolved issue is how governance conflicts over standards work mechanically. The idea is clear, but legal/contract integration depends on the actual game systems.
+
+The ninth unresolved issue is the exact capability system for time knowledge. The principle is clear; the capability graph is not.
+
+The tenth unresolved issue is phase-one implementation scope. The design is broad; implementation should be staged.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+The biggest risk is treating this chat as implementation-ready without checking the actual project. The assistant made some architecture suggestions, but the real codebase and Plan G chat were not visible. Future assistants must inspect the real context first.
+
+Another risk is hardcoding assistant-generated astronomy. Some entries may be wrong or misplaced. The package specifically flagged SN 1987A as a likely issue because it is commonly associated with the Large Magellanic Cloud rather than the Milky Way.
+
+A major design risk is allowing calendars to affect physics. That would violate the core doctrine and create save/replay problems.
+
+Another risk is persisting rendered dates instead of ACT/frame/version data. Rendered dates are views. They should not be saved as truth.
+
+The UI could also break the design by showing a universal time/date HUD at the start. This would contradict the user’s diegetic HUD requirement.
+
+Future assistants might also treat all non-Earth calendar names as final. They should not. Earth’s HPC-E is much more user-confirmed than the assistant-created moon and planetary calendars.
+
+Acronym collisions are another risk. For example, SCT was used for both Sol Coordinated Time and Saturn Coordinated Time. Internal IDs must be unique.
+
+The future Project Spec Book could also over-merge this chat with other reports, erasing uncertainty or contradictions. The aggregation process should preserve labels and source provenance.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat should feed several chapters of a future Project Spec Book.
+
+It should inform a chapter on celestial content and simulation fidelity, especially the explicit/procedural/parametric classification and the high-detail Sol system doctrine.
+
+It should inform a chapter on time core and coordinate frames, including ACT, BST, GCT, CPT, proper time, leap-second policy, and save determinism.
+
+It should inform a chapter on calendars and chronology, especially existing Earth calendars, HPC-E, planetary calendars, Sol-wide calendars, galactic/universal epoch frameworks, and calendar renderers.
+
+It should inform a chapter on world initialization, including default Jan 1 2000 and local sunrise spawn.
+
+It should inform a chapter on diegetic HUD and knowledge/fog-of-war, because time/date visibility becomes a capability rather than free UI.
+
+It should inform a chapter on governance and standards, because organizations, jurisdictions, regions, and individuals can designate standard time systems.
+
+It should inform implementation chapters on modularity, data-driven design, versioning, serialization, testing, and Codex prompts.
+
+What should become formal requirements:
+
+* ACT authoritative.
+* Calendars pure renderers.
+* Leap seconds display-only.
+* HPC-E final structure.
+* No initial time/date HUD.
+* Local sunrise spawn.
+* TimeStandard pluralism.
+* Sol high detail.
+* Versioned constants/ephemerides.
+* Explicit/procedural/parametric content classification.
+
+What should remain background until verified:
+
+* assistant-generated Milky Way list,
+* non-Earth calendar names,
+* exact constants,
+* implementation-language claims,
+* suggested module names,
+* exact TimeStandard resolution order.
+
+What likely overlaps with other chats:
+
+* governance,
+* jurisdictions,
+* fog-of-war,
+* HUD,
+* engine architecture,
+* world generation,
+* save systems,
+* Codex implementation workflow.
+
+---
+
+## 14. What I Should Remember
+
+* The whole chat is about making Dominium’s celestial and time systems coherent across Earth, Sol, the Milky Way, and the universe.
+
+* The most important doctrine is: **time is continuous and authoritative; calendars are interfaces**.
+
+* Sol is the high-detail region because most playtime is expected there.
+
+* Celestial content should be explicit only when it affects gameplay, physics, navigation, history, or decisions.
+
+* The Perfect Earth Calendar is user-defined and important: March starts the year; the month order ends with Undecember, January, February; weekdays are Monday through Sunday; intercalary days go after February.
+
+* January 0 is explicitly avoided.
+
+* The exact HPC-E leap rule is not finalized.
+
+* Leap seconds do not belong in simulation core.
+
+* Proper time is derived, not the basis for civil calendars.
+
+* The default world date is Gregorian January 1, 2000 AD, but spawn time is local sunrise.
+
+* The player begins with no time/date HUD because they have no timekeeping devices or calendars.
+
+* Timekeeping is gameplay knowledge, not automatic UI.
+
+* Organizations, jurisdictions, regions, and individuals can designate time standards.
+
+* Non-Earth calendars are useful design material but not all final decisions.
+
+* The actual Plan G/The Game architecture was not visible in this chat and must be checked before implementation.
+
+* The assistant-generated astronomy list needs verification.
+
+* This chat produced handoff/report artifacts for later aggregation, but the key value is the design substance.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Explain the Perfect Earth Calendar in implementation-ready prose.”
+2. “Which decisions in this chat were explicitly made by me?”
+3. “Which assistant proposals are useful but not final?”
+4. “What exact leap rules could work for HPC-E?”
+5. “How should local sunrise be defined technically?”
+6. “How should the no-HUD time knowledge system work in gameplay?”
+7. “How should TimeStandards interact with governance and jurisdictions?”
+8. “Which celestial bodies and structures are explicit versus procedural?”
+9. “What should be verified before this becomes a Project Spec Book chapter?”
+10. “Turn this chat’s future work into a phased roadmap.”
+11. “Summarize only the calendar system.”
+12. “Summarize only the celestial-content system.”
+13. “Summarize only the diegetic HUD/time-knowledge system.”
+14. “What might conflict with other Dominium chats?”
+15. “What should the next assistant do first with this report?”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat developed a large and important subsystem for the Dominium Game project. It began with a question about how to simulate the universe without filling the game with redundant celestial objects. The user wanted a logical universe representation, but one that serves gameplay. That led to a scale-based design: Earth as the planetary scale, Sol as the main system scale, the Milky Way as the galaxy scale, and the universe as the largest scale.
+
+The first major conclusion was that different scales require different levels of detail. Sol should be richly explicit because most playtime is expected there. The Milky Way should have real named systems and landmarks as a backbone, plus procedural expansion. The universe should mostly be parametric, using cosmic structures and horizons rather than hand-simulated galaxies. The guiding rule is that a celestial object should be explicit if it changes gameplay, physics, navigation, history, or decision-making. Otherwise, it should be procedural, statistical, or omitted.
+
+The chat then connected celestial features to gameplay. Binary systems create navigation and orbital instability. Red dwarfs create flare and tidal-locking problems. Massive stars create supernova timers and evacuation pressure. Neutron stars and pulsars become navigation beacons and radiation hazards. Black holes create extreme risk and time-dilation mechanics. Icy moons support subsurface-ocean exploration. Gas giants become orbital and atmospheric resource environments. This made the celestial scope mechanically meaningful rather than decorative.
+
+The conversation then shifted into timekeeping. The core doctrine became: **time is real; calendars are interfaces**. The game should use a continuous, monotonic physical time basis called Atomic Continuous Time. Larger coordinate frames such as Barycentric Sol Time, Galactic Coordinate Time, and Cosmological Proper Time can support broader scales. Calendars, dates, clock faces, local standards, and names should never drive physics. They only render time for humans, societies, devices, UI, law, or culture. Leap seconds are display-only. Proper time matters for local clocks and aging but is not the authoritative civil time.
+
+The most concrete calendar decision was the custom Perfect Earth Calendar. The user specified that it should use existing English weekday names, Monday through Sunday. It should use existing Gregorian month names but start the year in March. The final month order is March, April, May, June, July, August, September, October, November, December, Undecember, January, February. Every month has 28 days. Year Day and Leap Day are appended after February, avoiding January 0. Canonically, those intercalary days are outside normal weeks and months, though they may be projected as February 29 and February 30 for compatibility. The exact leap rule still needs to be chosen.
+
+The chat also explored calendars and time systems for Mars, Venus, Mercury, Luna, major moons, Pluto, trans-Neptunian objects, the Sun, Sol, the Milky Way, and the universe. These are less finalized than the Earth calendar. Many names and structures were assistant-generated and need user review. The broad principle is clear: local worlds can have local calendars; the Sun and gas giants have scientific/environmental cycles rather than civil calendars; galactic and universal scales use epoch/duration frameworks instead of ordinary calendars.
+
+A major gameplay refinement came when the user specified world initialization and HUD behavior. Each world or universe can start at a different date/time. By default, the civil date anchor is Gregorian January 1, 2000 AD, but the player should spawn at local sunrise wherever they begin. At the start, the player has no clock, calendar, date, or time HUD because they lack timekeeping devices. This makes timekeeping diegetic and compatible with VR. Time exists in the simulation, but the player does not automatically know it. Devices, documents, calendars, observatories, networks, organizations, jurisdictions, and custom systems can reveal different time layers.
+
+The user also stated that organizations, regions, jurisdictions, and individuals may designate standard time systems. This turns calendars into governance and culture. A future TimeStandard system should bind calendar, clock, frame, intercalary policy, names, and scope. Conflicts between standards are intended gameplay, not bugs.
+
+The chat ended by turning the discussion into reusable handoff material. It produced prompts, a context transfer packet, report files, registers, and an in-chat reader. These artifacts are useful, but the important thing to preserve is the design substance.
+
+The biggest unresolved issues are the actual Plan G/The Game architecture, the HPC-E leap rule, exact Jan 1 2000 time-scale mapping, exact sunrise definition, verification of astronomy lists and constants, final review of non-Earth calendar names, and integration with governance, knowledge, HUD, and save systems.
+
+The most important next action is to take this report into the actual The Game / Plan G context, verify the real architecture, and then produce a phased Codex implementation plan. The next assistant must not assume codebase details, must not treat assistant brainstorms as user decisions, and must not hardcode unverified astronomy or constants.
+
+# Reader Status
+
+* Chat title: Dominium Chronology & Celestial Systems
+* Report type: human-readable explanatory report
+* Main value of this chat: It defines the conceptual foundation for Dominium’s celestial scope, time core, calendar systems, diegetic time knowledge, world start rules, and governance time standards.
+* Most important decision: Time is continuous and authoritative while calendars are renderers; the Perfect Earth Calendar’s user-specified structure is also a key locked decision.
+* Most important unresolved issue: The actual Plan G/The Game architecture and exact implementation context were not visible, so integration must be verified before Codex implementation.
+* Most important next action: Reconcile this design with the real project architecture, then create a phased implementation/specification plan.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: assistant-generated astronomy, constants, non-Earth calendar names, implementation-language claims, and some leap/sunrise rules require verification before becoming formal requirements.

@@ -1,0 +1,2391 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium UI Editor + Tool Editor Planning
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: THIS CHAT ONLY; uploaded files and Project-level context are listed only where explicitly present in this
+      visible chat.
+    apparent_coverage: full visible chat; partial actual implementation state
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - uploaded files uninspected
+    - generated prompts not implementation evidence
+    - some assistant recommendations unconfirmed
+  summary:
+    one_sentence: This chat planned the Dominium DUI-based UI Editor and future Tool Editor ecosystem, including canonical
+      TLV tooling, CLI automation, launcher/setup capability tests, and IDE live-preview workflows.
+    short_brief: The user wants a Windows-first UI Editor to bootstrap a cross-platform/self-hosting Tool Editor for Dominium
+      tools, built on the existing DUI TLV system with native controls and deterministic automation.
+    main_topics:
+    - Existing Dominium DUI/TLV Runtime System
+    - Phase A Windows UI Editor
+    - Phase B Self-Hosting Tool Editor
+    - Canonical UI IR / TLV / JSON Toolchain
+    - Generic Backend Capability System
+    - Deterministic Layout Engine
+    - Splitter / Tabs / ScrollPanel Widgets
+    - Action/Event System and Codegen
+    - DUI Win32 Structural Runtime Fixes
+    - UI Discovery + Legacy Import/Export
+    - UI Editor CLI Headless Modes
+    - ops.json Deterministic Script Engine
+    - Launcher Minecraft-Style Logical Layout Capability Test
+    - Setup Minecraft-Style Logical Wizard Capability Test
+    - Hardening, Determinism, CI Capability Test
+    - IDE-Native Live Editing Workflows
+    main_outputs:
+    - Prompt plan 1-11
+    - Final UI Editor prompt
+    - UU1-UU6 prompts
+    - IDE live editing prompt
+    - Context Transfer Packet
+    - This report package
+    highest_priority_carry_forward:
+    - UI Editor first, Tool Editor second
+    - Existing DUI/TLV system is the foundation
+    - TLV canonical; JSON mirror read-only/default if small
+    - Native widgets are required; Minecraft-style means logical layout only
+    - UI Editor must have CLI and ops.json automation
+    - Do not assume prompts were executed
+    - Uploaded bundles were not inspected
+    - Generic capability system across all backends
+    - Stable action keys + registry codegen + gen/user split
+    - Tool Editor eventually self-hosts and edits all tools
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - direct user statements outrank assistant recommendations
+    - tentative items remain tentative
+    - do not assume prompt execution
+    staleness_rules:
+    - verify tool versions, APIs, IDEs, repo state, and uploaded files before use
+  user_preferences:
+    explicit:
+    - id: PREF-01
+      preference: Straightforward, critical, high-fidelity responses
+      label: FACT
+      source: User profile/instructions visible in chat
+      strength: strong
+      implication: Avoid filler and preserve rigor.
+      risk: Future assistant may over-soften or over-summarize.
+    - id: PREF-02
+      preference: Correct citations and fact checking where external facts are used
+      label: FACT
+      source: User profile
+      strength: strong
+      implication: Use sources for current/external claims.
+      risk: Unsupported factual claims reduce trust.
+    - id: PREF-03
+      preference: Few but detailed Codex prompts optimized for GPT-5.2/Codex
+      label: FACT
+      source: User requested prompt plan with few detailed prompts
+      strength: strong
+      implication: Generate large explicit implementation prompts, not many tiny ones.
+      risk: Fragmented prompt plan wastes effort.
+    - id: PREF-04
+      preference: Small batches of clarifying questions during requirements refinement
+      label: FACT
+      source: Initial user instructions
+      strength: strong
+      implication: Ask max ~10 high-impact questions when requirements are unclear.
+      risk: Asking too much at once slows work.
+    - id: PREF-05
+      preference: Use native OS controls and OEM-like native compatibility
+      label: FACT
+      source: Repeated user statements
+      strength: strong
+      implication: Do not propose Qt/WPF/owner-draw as default.
+      risk: Violates product goal.
+    - id: PREF-08
+      preference: Graphical skinning is not wanted for Minecraft-style test
+      label: FACT
+      source: User clarification
+      strength: strong
+      implication: Native controls only; layout analogy only.
+      risk: Wasted work on styling.
+    inferred:
+    - id: PREF-06
+      preference: Deterministic, auditable, source-control-friendly pipelines
+      label: INFERENCE
+      source: Repeated acceptance of canonical TLV, JSON mirror, tests, CI
+      strength: strong
+      implication: Stable IDs, stable outputs, no timestamps.
+      risk: Non-determinism makes future automation unreliable.
+    - id: PREF-07
+      preference: Temporary pragmatic bootstrap accepted if it leads to self-hosting system
+      label: INFERENCE
+      source: User accepted UI Editor first before Tool Editor
+      strength: medium
+      implication: Allow Phase A shortcuts if documented and temporary.
+      risk: Temporary architecture may fossilize.
+    uncertain_or_not_established:
+    - exact dependency license allowlist
+    - IDE live editing interpretation
+    - generated code commit policy
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Existing Dominium DUI/TLV Runtime System
+    label: FACT
+    objective: Preserve and extend the existing in-tree Dominium UI system rather than replacing it.
+    current_state: Existing DUI schema/state TLV system with win32, dgfx, and null backends was described by the user; actual
+      source contents are unverified in this package.
+    desired_end_state: DUI remains the shared runtime/editor UI substrate for launcher, setup, game, tools, and future Tool
+      Editor.
+    status: active
+    priority: high
+    confidence: 4/5
+    background: User identified current launcher GUI as DUI TLV with win32/comctl32, DGFX/DSYS, and null backends.
+    decisions_made:
+    - Use existing DUI as foundation; avoid external UI toolkit replacement.
+    decisions_pending:
+    - Verify actual file paths, TLV format, and loader APIs in repo.
+    tasks:
+    - Inspect repo/source bundle; map DUI targets and files.
+    constraints:
+    - Native controls on Win32; preserve launcher behavior; C/C++ compatibility.
+    dependencies:
+    - Existing DUI source files; CMake targets dominium-launcher and domino_core.
+    timeline: Pre-existing system; foundational dependency for all later prompts.
+    blockers:
+    - Repo state not inspected in this chat.
+    risks:
+    - Windows bias; legacy TLV import data loss; child HWND repaint flicker.
+    artifacts:
+    - launcher_ui_v1.tlv
+    - gen_launcher_ui_schema_v1.py
+    - dui_win32.c
+    - dui_dgfx.c
+    - dui_null.c
+    success_criteria:
+    - Existing launcher builds unchanged; canonical doc loading can be added with fallback.
+    next_action: Verify actual repo state before implementation.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    carry_forward_priority: critical
+  - id: WORKSTREAM-02
+    name: Phase A Windows UI Editor
+    label: FACT
+    objective: Create a minimal Windows-only UI authoring tool that can create and modify DUI TLV UIs and bootstrap the Tool
+      Editor.
+    current_state: Planned in detail through foundational and UU prompts; implementation status unverified.
+    desired_end_state: Windows NT/latest UI Editor with Win32 native preview, hierarchy tree, canvas, property inspector,
+      validation, save/load, import/export, CLI, ops.json automation, and codegen.
+    status: active
+    priority: critical
+    confidence: 4/5
+    background: User explicitly chose UI Editor first as Option 3, before full Tool Editor.
+    decisions_made:
+    - Windows 10/NT latest only initially; system-DPI only; 100% design scale; native Win32 preview; editor chrome may be
+      custom if needed.
+    decisions_pending:
+    - Exact feature cut if implementation complexity is too high; actual UI Editor code state.
+    tasks:
+    - Implement/review Prompts 1-8 and UU1-UU3.
+    constraints:
+    - C++98; no heavy external frameworks; deterministic TLV; no implicit legacy overwrite.
+    dependencies:
+    - UI IR, TLV I/O, validation, layout, widget support, action codegen, DUI win32 backend.
+    timeline: After core infrastructure prompts; before Tool Editor.
+    blockers:
+    - Foundational components may not exist yet.
+    risks:
+    - Scope creep; hit-testing/overlay complexity; relying on unsupported native controls.
+    artifacts:
+    - Final UI Editor implementation prompt
+    - UU1
+    - UU2
+    - UU3
+    success_criteria:
+    - Can create/open/save canonical docs; import existing launcher UI; apply ops scripts; codegen actions.
+    next_action: If not implemented, run foundational prompts and final UI Editor prompt; if implemented, run smoke tests.
+    verification_needed:
+    - VERIFY-03
+    carry_forward_priority: critical
+  - id: WORKSTREAM-03
+    name: Phase B Self-Hosting Tool Editor
+    label: FACT
+    objective: Build the full internal DUI authoring environment that can edit itself and all Dominium tools.
+    current_state: Planned as the second major phase; no implementation in this chat.
+    desired_end_state: Cross-platform, self-hosting Tool Editor that edits setup, launcher, game, other tools, and its own
+      UI through DUI documents.
+    status: active/future
+    priority: high
+    confidence: 4/5
+    background: User selected Tool Editor after UI Editor, based on first-class DUI authoring architecture.
+    decisions_made:
+    - Tool Editor eventually runs wherever compiled; early versions may be Windows-only.
+    decisions_pending:
+    - Whether Tool Editor v0 can use a minimal hardcoded docking substrate; platform backend implementation order.
+    tasks:
+    - Generate Tool Editor implementation prompts after UI Editor capability tests pass.
+    constraints:
+    - Native-compatible OEM-like appearance; cross-platform capability system; no permanent hardcoded limitations in desired
+      final state.
+    dependencies:
+    - UI Editor success; canonical UI docs; CLI; ops.json; backend capability system; future AppKit/GTK backends.
+    timeline: After UI Editor and launcher/setup tests.
+    blockers:
+    - UI Editor capability test not verified.
+    risks:
+    - Self-hosting too early may stall; cross-platform native fidelity difficult.
+    artifacts:
+    - Prompt 9 Tool Editor bootstrap
+    - Prompt plan references
+    success_criteria:
+    - Tool Editor loads its own DUI doc, edits other UI docs, eventually edits itself.
+    next_action: Wait for UI Editor capability test or ask user to proceed despite unknown implementation state.
+    verification_needed:
+    - VERIFY-04
+    carry_forward_priority: high
+  - id: WORKSTREAM-04
+    name: Canonical UI IR / TLV / JSON Toolchain
+    label: FACT
+    objective: Provide deterministic, safe, maintainable UI document infrastructure.
+    current_state: Designed in prompts; implementation status unverified.
+    desired_end_state: Canonical in-memory IR, TLV source of truth, deterministic JSON mirror, migrations, atomic saves, backups,
+      legacy import.
+    status: active
+    priority: critical
+    confidence: 4/5
+    background: User selected canonical edit model Option A1 after asking for recommendation.
+    decisions_made:
+    - TLV canonical; JSON mirror default if small; canonical IR rather than direct TLV patching; doc/state split logical.
+    decisions_pending:
+    - Exact TLV wire format; migration strategy for legacy launcher UI; mirror size threshold.
+    tasks:
+    - Implement/review Prompts 2-3.
+    constraints:
+    - C++98; no timestamps/random IDs in canonical docs; byte-stable output where possible.
+    dependencies:
+    - Existing TLV infrastructure; UI IR types; file I/O.
+    timeline: Before UI Editor can safely save/import docs.
+    blockers:
+    - Need actual TLV implementation details.
+    risks:
+    - Legacy import loss; canonical byte-identical roundtrip difficult if existing TLV differs.
+    artifacts:
+    - Prompt 2
+    - Prompt 3
+    - SPEC_UI_DOC_TLV.md planned
+    success_criteria:
+    - TLV roundtrip stable; JSON mirror stable; legacy launcher import emits explicit warnings.
+    next_action: Inspect actual TLV code and implement/verify canonical writer.
+    verification_needed:
+    - VERIFY-05
+    carry_forward_priority: critical
+  - id: WORKSTREAM-05
+    name: Generic Backend Capability System
+    label: FACT
+    objective: Define backend/tier capabilities for validation and cross-platform portability.
+    current_state: Planned in Prompt 4; user explicitly requested generic extensible system.
+    desired_end_state: Declarative backend capability descriptors and deterministic validation across win32, dgfx, null, future
+      appkit/gtk, and compatibility tiers.
+    status: active
+    priority: high
+    confidence: 4/5
+    background: User said “We should definitely design a modular and extensible generic capability system for all backends.”
+    decisions_made:
+    - Generic capability system across all backends, not just Win32.
+    decisions_pending:
+    - Exact capability tables and tier names; legacy Win32 tier boundaries.
+    tasks:
+    - Implement/review Prompt 4.
+    constraints:
+    - No platform-specific logic in validator; deterministic diagnostics.
+    dependencies:
+    - UI IR metadata and widget/property/event definitions.
+    timeline: Before canonical docs can be validated reliably for target platforms.
+    blockers:
+    - Feature support details need repo/backend inspection.
+    risks:
+    - Overly strict tables block useful docs; loose tables allow unsupported UI definitions.
+    artifacts:
+    - Prompt 4
+    success_criteria:
+    - Unsupported widgets/properties/events produce deterministic errors; emulated features warnings.
+    next_action: Implement or verify capability tables for win32_t0, win32_t1, dgfx_basic, null_basic.
+    verification_needed:
+    - VERIFY-06
+    carry_forward_priority: high
+  - id: WORKSTREAM-06
+    name: Deterministic Layout Engine
+    label: FACT
+    objective: Compute layout geometry consistently for editor preview and runtime backends.
+    current_state: Planned in Prompt 5.
+    desired_end_state: Backend-agnostic integer layout engine with absolute, anchor, dock, stack row/col, constraints, and
+      later grid.
+    status: active
+    priority: high
+    confidence: 4/5
+    background: User wanted combined absolute and layout/container authoring; assistant recommended strict precedence.
+    decisions_made:
+    - Precedence Dock > Anchors > Absolute in the plan; stack row/col in Phase A; grid later.
+    decisions_pending:
+    - Exact native metric integration; grid semantics later.
+    tasks:
+    - Implement/review Prompt 5.
+    constraints:
+    - C++98; pure deterministic logic; no Win32 calls in core; integer design pixels.
+    dependencies:
+    - UI IR.
+    timeline: Before preview/runtime parity and scripted layout tests.
+    blockers:
+    - Widget property semantics must be defined.
+    risks:
+    - Native controls impose sizes not known to backend-neutral engine.
+    artifacts:
+    - Prompt 5
+    success_criteria:
+    - Golden layout tests pass and outputs are byte-stable.
+    next_action: Implement golden layout fixtures and compare outputs across insertion orders.
+    verification_needed:
+    - VERIFY-07
+    carry_forward_priority: high
+  - id: WORKSTREAM-07
+    name: Splitter / Tabs / ScrollPanel Widgets
+    label: FACT
+    objective: Add first-class widgets needed to build complex editors and tool UIs.
+    current_state: Planned in Prompt 6; user confirmed these are required.
+    desired_end_state: SPLITTER, TABS/TAB_PAGE, and SCROLLPANEL supported in IR, TLV, layout, capability tables, and Win32
+      runtime where feasible.
+    status: active
+    priority: high
+    confidence: 4/5
+    background: User confirmed Splitter + Tabs + Scroll containers as first-class Phase A requirements.
+    decisions_made:
+    - Splitter, Tabs, ScrollPanel required; true OS controls where feasible; emulated fallback allowed when no OS control
+      exists.
+    decisions_pending:
+    - Exact Splitter implementation; scroll state location.
+    tasks:
+    - Implement/review Prompt 6.
+    constraints:
+    - Native Win32 controls where possible; capability flags for emulation; C89/C++98.
+    dependencies:
+    - UI IR/TLV/layout/DUI win32 backend.
+    timeline: Before UI Editor can build Tool Editor-like layouts and before launcher/setup tests.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: not established
+    verification_needed: []
+    carry_forward_priority: not established
+  - id: WORKSTREAM-08
+    name: Action/Event System and Codegen
+    label: FACT
+    objective: Generate stable C/C++ action wiring from UI document event bindings.
+    current_state: Planned in Prompt 7.
+    desired_end_state: Stable string action keys in TLV; registry-assigned numeric IDs; generated `_gen.*` and user-owned
+      `_user.*`; unified C-compatible event ABI.
+    status: active
+    priority: high
+    confidence: 4/5
+    background: User required both tools generate C++ stubs and wire them to stable IDs.
+    decisions_made:
+    - Stable string keys; registry-based numeric IDs; gen/user split; unified domui_event recommended and used in prompts.
+    decisions_pending:
+    - Exact file naming and commit policy for generated code.
+    tasks:
+    - Implement/review Prompt 7.
+    constraints:
+    - Generated code must not overwrite user edits; deterministic output; C ABI core.
+    dependencies:
+    - UI IR event bindings; runtime backend event emission.
+    timeline: Before launcher/setup/tool UI actions are useful.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: not established
+    verification_needed: []
+    carry_forward_priority: not established
+  - id: WORKSTREAM-09
+    name: DUI Win32 Structural Runtime Fixes
+    label: FACT
+    objective: Reduce flicker and make live preview/runtime relayout smoother using structural batching.
+    current_state: Planned in Prompt 10; explicit debugging deferred by user.
+    desired_end_state: Batch update API, coalesced WM_SIZE relayout, batched list/visibility changes, clip styles, optional
+      debug counters.
+    status: deferred/active later
+    priority: medium-high
+    confidence: 4/5
+    background: User described likely flicker vectors in DUI win32 backend.
+    decisions_made:
+    - Do not start with flicker debugging; structural batching can be implemented later as required mechanics.
+    decisions_pending:
+    - Exact timing and extent of repaint instrumentation.
+    tasks:
+    - Implement/review Prompt 10 after core UI Editor exists or if preview flickers.
+    constraints:
+    - Do not break existing launcher behavior; avoid blanket WS_EX_COMPOSITED.
+    dependencies:
+    - DUI win32 backend.
+    timeline: After initial UI Editor/toolchain, unless preview requires earlier.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: not established
+    verification_needed: []
+    carry_forward_priority: not established
+  - id: WORKSTREAM-10
+    name: UI Discovery + Legacy Import/Export
+    label: FACT
+    objective: Allow UI Editor to find existing tool UIs, import legacy files, and export canonical docs safely.
+    current_state: Planned in UU1.
+    desired_end_state: Open Tool UI dialog, Import Legacy UI workflow, Export Tool UI workflow, deterministic ui_index.json,
+      machine-readable import reports.
+    status: active
+    priority: high
+    confidence: 4/5
+    background: User asked UI Editor to import existing tools and modify their UIs.
+    decisions_made:
+    - Legacy files never overwritten implicitly; import produces canonical doc and report; export validates and codegens.
+    decisions_pending:
+    - Actual tool path inference and legacy importer mapping.
+    tasks:
+    - Execute/review UU1.
+    constraints:
+    - Deterministic index and reports; explicit overwrite warnings.
+    dependencies:
+    - UI Editor GUI, TLV loader/saver, legacy import, codegen.
+    timeline: After UI Editor core, before modifying launcher/setup.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: not established
+    verification_needed: []
+    carry_forward_priority: not established
+  - id: WORKSTREAM-11
+    name: UI Editor CLI Headless Modes
+    label: FACT
+    objective: Expose non-interactive UI toolchain commands for Codex and CI.
+    current_state: Planned in UU2.
+    desired_end_state: Headless validate, format, codegen, build-ui, scan-ui commands with deterministic report JSON.
+    status: active
+    priority: critical
+    confidence: 4/5
+    background: User specifically requested a CLI interface so Codex can automatically implement designs.
+    decisions_made:
+    - Headless flags must not create Win32 windows; reports deterministic; nonzero exit on failures.
+    decisions_pending:
+    - Exact report fields after implementation.
+    tasks:
+    - Execute/review UU2.
+    constraints:
+    - No GUI dependency in CLI path; stable output.
+    dependencies:
+    - UI Editor, validation, TLV I/O, codegen.
+    timeline: Before ops.json and launcher/setup automated redesign.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: not established
+    verification_needed: []
+    carry_forward_priority: not established
+  - id: WORKSTREAM-12
+    name: ops.json Deterministic Script Engine
+    label: FACT
+    objective: Provide a pure-data edit DSL for Codex to create and modify UI documents.
+    current_state: Planned in UU3.
+    desired_end_state: '`--headless-apply` supports create/delete/reparent/set layout/set prop/bind event/validate/save, with
+      ID/path selectors and deterministic reports.'
+    status: active
+    priority: critical
+    confidence: 4/5
+    background: Needed for Codex to implement launcher/setup designs automatically.
+    decisions_made:
+    - ops.json is deterministic pure data; default strict mode; idempotency via if_exists:"reuse".
+    decisions_pending:
+    - Parser implementation; whether --in-new is supported.
+    tasks:
+    - Execute/review UU3.
+    constraints:
+    - No code execution; no external JSON library unless already in-tree; deterministic operation order.
+    dependencies:
+    - CLI, UI IR operations, validation.
+    timeline: Before UU4 and UU5.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: not established
+    verification_needed: []
+    carry_forward_priority: not established
+  - id: WORKSTREAM-13
+    name: Launcher Minecraft-Style Logical Layout Capability Test
+    label: FACT
+    objective: Use UI Editor CLI and ops.json to generate a new canonical launcher UI doc using a Minecraft-like logical structure
+      with native Win32 controls.
+    current_state: Planned in UU4; screenshot bundles uploaded but unverified.
+    desired_end_state: Canonical launcher UI doc/script/registry/actions/build integration; launcher loads canonical doc with
+      legacy fallback.
+    status: active/future test
+    priority: high
+    confidence: 4/5
+    background: User wanted Codex to create launcher design similar to Minecraft screenshots; then clarified it means logical
+      layout only, native Win32 widgets.
+    decisions_made:
+    - Structure only, no graphical skinning; native Win32 controls only; legacy file not overwritten.
+    decisions_pending:
+    - Actual launcher loader integration path; generated artifact commit policy.
+    tasks:
+    - Execute/review UU4 after UU2-UU3.
+    constraints:
+    - No owner-draw/custom colors/fonts; deterministic outputs.
+    dependencies:
+    - UI CLI, ops engine, action codegen, launcher build.
+    timeline: After UI Editor CLI and ops engine.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: not established
+    verification_needed: []
+    carry_forward_priority: not established
+  - id: WORKSTREAM-14
+    name: Setup Minecraft-Style Logical Wizard Capability Test
+    label: FACT
+    objective: Use UI Editor CLI and ops.json to generate a new canonical setup wizard UI with native Win32 controls.
+    current_state: Planned in UU5; setup screenshot bundle uploaded but unverified.
+    desired_end_state: Canonical setup UI doc/script/registry/actions/build integration; setup loads canonical doc with fallback.
+    status: active/future test
+    priority: high
+    confidence: 4/5
+    background: Companion capability test for setup executable.
+    decisions_made:
+    - Wizard logical layout only; native controls; legacy not overwritten.
+    decisions_pending:
+    - Actual setup tool paths/targets; minimum wizard behavior.
+    tasks:
+    - Execute/review UU5 after UU2-UU3.
+    constraints:
+    - No custom styling; deterministic output.
+    dependencies:
+    - UI CLI, ops engine, setup build target.
+    timeline: After UI Editor CLI and ops engine.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: not established
+    verification_needed: []
+    carry_forward_priority: not established
+  - id: WORKSTREAM-15
+    name: Hardening, Determinism, CI Capability Test
+    label: FACT
+    objective: Make UI toolchain reproducible, auditable, and usable in CI/headless Codex workflows.
+    current_state: Planned in UU6 and foundational Prompt 11.
+    desired_end_state: CMake regen/validate/capability targets, deterministic tests for apply/codegen/index, documentation
+      and checklists.
+    status: active/future
+    priority: high
+    confidence: 4/5
+    background: User wants few detailed prompts and final package capable of later aggregation/spec book.
+    decisions_made:
+    - One-command capability target planned; deterministic outputs central.
+    decisions_pending:
+    - Generated code commit policy; exact CI integration.
+    tasks:
+    - Execute/review UU6.
+    constraints:
+    - No external deps; cross-platform configure safe; no GUI needed in headless modes.
+    dependencies:
+    - UU1-UU5.
+    timeline: After launcher/setup scripts.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: not established
+    verification_needed: []
+    carry_forward_priority: not established
+  - id: WORKSTREAM-16
+    name: IDE-Native Live Editing Workflows
+    label: FACT / INFERENCE
+    objective: Enable Visual Studio 2026, Xcode, and Linux development tools to live edit or preview Dominium tool UIs while
+      preserving canonical DUI TLV.
+    current_state: A Codex prompt was generated in a txt block; user acceptance of preview-host interpretation is not yet
+      verified.
+    desired_end_state: Platform preview hosts with IDE launch/build integration and hot reload, using canonical UI docs and
+      ops pipelines.
+    status: future/planned
+    priority: medium-high
+    confidence: 3/5
+    background: User requested VS2026 live edit for Windows, Xcode for macOS, and all Linux development tools for Linux UIs.
+    decisions_made:
+    - Assistant proposed Host-Native Preview Adapter approach; canonical TLV remains source.
+    decisions_pending:
+    - Whether user accepts preview-host approach as satisfying IDE GUI tool requirement; one-way designer import scope.
+    tasks:
+    - Clarify expectation, then implement/refine IDE prompt.
+    constraints:
+    - Do not replace DUI; no large mandatory shipped deps; platform backends may be missing.
+    dependencies:
+    - CLI, preview hosts, platform backends, file watchers.
+    timeline: After core UI Editor and canonical pipeline stabilize.
+    blockers: []
+    risks: []
+    artifacts: []
+    success_criteria: []
+    next_action: not established
+    verification_needed: []
+    carry_forward_priority: not established
+  decisions:
+  - id: DECISION-01
+    decision: Build Phase A UI Editor before Phase B Tool Editor
+    status: decided
+    evidence: User explicitly selected UI Editor first, Tool Editor second.
+    rationale: Fastest path to a working authoring tool and bootstrap path.
+    implications: Tool Editor prompts should wait until UI Editor capability is verified.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-02
+    decision: Phase A UI Editor is Windows NT/latest / Windows 10+ only
+    status: decided
+    evidence: User stated UI Editor only Windows 10 and later Windows NT latest.
+    rationale: Reduces initial platform scope.
+    implications: No macOS/Linux UI Editor host in Phase A.
+    related_workstreams:
+    - WORKSTREAM-02
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-03
+    decision: Phase A UI Editor uses system DPI and 100% design scale only
+    status: decided
+    evidence: User explicitly stated system DPI only and design at 100 only for UI Editor.
+    rationale: Simplifies editor canvas and preview.
+    implications: Per-monitor DPI and zoom deferred to Tool Editor.
+    related_workstreams:
+    - WORKSTREAM-02
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-04
+    decision: Tool Editor eventual target is broad cross-platform/self-hosting support
+    status: decided
+    evidence: User said Tool Editor should run on any system it is compiled for and eventually edit itself.
+    rationale: Long-term universal UI authoring.
+    implications: Requires capability system and future platform backends.
+    related_workstreams:
+    - WORKSTREAM-03
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-05
+    decision: Use true native OS controls for standard widgets
+    status: decided
+    evidence: User said true OS controls/native widgets and native/pixel-perfect across systems.
+    rationale: Native fidelity is core product requirement.
+    implications: Custom rendering limited to custom widgets/fallbacks.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    - WORKSTREAM-13
+    - WORKSTREAM-14
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-06
+    decision: C++98-compatible implementation is acceptable/required for editor/tooling prompts
+    status: decided
+    evidence: User said editors can be in C++98; prompts consistently preserve C++98.
+    rationale: Maximizes compatibility.
+    implications: Avoid C++11+ assumptions.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-07
+    decision: CMake remains primary build system; MSVC/Xcode allowed
+    status: decided
+    evidence: User said CMake primarily, but MSVC, Xcode etc allowed.
+    rationale: Supports repo consistency plus IDE integrations.
+    implications: Generated prompts use CMake and IDE projects/presets.
+    related_workstreams:
+    - WORKSTREAM-16
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-08
+    decision: Extend existing DUI rather than replacing it with external UI toolkit
+    status: decided
+    evidence: User described existing DUI; assistant proposed DUI-centric plan; user continued with it.
+    rationale: Avoids parallel UI system and aligns with all products.
+    implications: Prompts target DUI IR/TLV/backends.
+    related_workstreams:
+    - WORKSTREAM-01
+    confidence: 4/5
+    label: FACT
+  - id: DECISION-09
+    decision: Canonical edit model/IR writes TLV deterministically
+    status: decided
+    evidence: User selected Option A1 after recommendations.
+    rationale: Safer than patching TLV bytes.
+    implications: Need IR, canonical writer, migrations.
+    related_workstreams:
+    - WORKSTREAM-04
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-10
+    decision: TLV is canonical source of truth
+    status: decided
+    evidence: Assistant recommended; user accepted overall and no objection; later plans use this.
+    rationale: Runtime/editor stability and deterministic format.
+    implications: JSON is mirror only.
+    related_workstreams:
+    - WORKSTREAM-04
+    confidence: 4/5
+    label: FACT
+  - id: DECISION-11
+    decision: Deterministic JSON mirror enabled by default if small
+    status: decided
+    evidence: 'User: “On by default if the file sizes are small.”'
+    rationale: Supports diffs/review/debug.
+    implications: Need size guard; not hand-edited.
+    related_workstreams:
+    - WORKSTREAM-04
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-12
+    decision: Separate ui_doc.tlv from optional runtime ui_state.tlv
+    status: accepted recommendation
+    evidence: User said separation seems logical.
+    rationale: Prevents editor saves capturing runtime state.
+    implications: Need loader that can combine doc/state and legacy compatibility.
+    related_workstreams:
+    - WORKSTREAM-04
+    confidence: 4/5
+    label: FACT
+  - id: DECISION-13
+    decision: Generic backend capability system across all backends
+    status: decided
+    evidence: User explicitly said definitely design modular extensible generic capability system for all backends.
+    rationale: Prevents Windows-only schema bias.
+    implications: Validation needed before export/build.
+    related_workstreams:
+    - WORKSTREAM-05
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-14
+    decision: Stable widget IDs are monotonic u32 and never reused
+    status: planned recommendation
+    evidence: Assistant recommended and prompts adopted; user did not object.
+    rationale: Stable diffs and references.
+    implications: Implementation should avoid hash/rename-derived identity.
+    related_workstreams:
+    - WORKSTREAM-04
+    confidence: 4/5
+    label: INFERENCE
+  - id: DECISION-15
+    decision: Action bindings stored as stable strings and compiled to numeric IDs via registry
+    status: planned recommendation
+    evidence: Assistant recommended; prompts adopted; user did not object.
+    rationale: Readable authoring and stable runtime dispatch.
+    implications: Need per-document registry and collision-safe mapping.
+    related_workstreams:
+    - WORKSTREAM-08
+    confidence: 4/5
+    label: INFERENCE
+  - id: DECISION-16
+    decision: Unified C-compatible domui_event for actions
+    status: planned recommendation
+    evidence: User asked recommendation; assistant recommended; prompts use it.
+    rationale: Backend/tool compatibility.
+    implications: Not explicitly confirmed but carried forward.
+    related_workstreams:
+    - WORKSTREAM-08
+    confidence: 4/5
+    label: INFERENCE
+  - id: DECISION-17
+    decision: Splitter, Tabs, and Scroll containers are first-class Phase A widgets
+    status: decided
+    evidence: User answered yes.
+    rationale: Required for Tool Editor and complex layouts.
+    implications: Prompt 6 and UU4/UU5 depend on them.
+    related_workstreams:
+    - WORKSTREAM-07
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-18
+    decision: Layout precedence Dock > Anchors > Absolute
+    status: planned recommendation
+    evidence: Assistant recommended deterministic precedence; no objection.
+    rationale: Simplifies layout reasoning.
+    implications: Should be documented/tested.
+    related_workstreams:
+    - WORKSTREAM-06
+    confidence: 4/5
+    label: INFERENCE
+  - id: DECISION-19
+    decision: GRID can be deferred from Phase A; ABS/ANCHOR/DOCK/STACK/SPLITTER/TABS/SCROLL are enough initially
+    status: tentative
+    evidence: Assistant recommended smaller Phase A set; user allowed smaller set if Tool Editor can begin.
+    rationale: Keeps UI Editor scope manageable.
+    implications: May need user confirmation if full grid is requested.
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-02
+    confidence: 3/5
+    label: INFERENCE
+  - id: DECISION-20
+    decision: Flicker debugging deferred until after implementation
+    status: decided
+    evidence: 'User: “Let’s defer all of that debugging until after the implementation.”'
+    rationale: Avoid premature debugging.
+    implications: Structural batching can still be implemented later.
+    related_workstreams:
+    - WORKSTREAM-09
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-21
+    decision: Legacy UI files are never overwritten implicitly
+    status: planned requirement
+    evidence: Repeated in prompts and accepted plan; user wants import/modify existing tools safely.
+    rationale: Protects existing launcher/setup.
+    implications: Import/export must be explicit.
+    related_workstreams:
+    - WORKSTREAM-10
+    - WORKSTREAM-13
+    - WORKSTREAM-14
+    confidence: 4/5
+    label: FACT
+  - id: DECISION-22
+    decision: Minecraft-style launcher/setup means logical layout only, not graphical design
+    status: decided
+    evidence: User explicitly clarified.
+    rationale: Keeps capability test objective and native.
+    implications: No custom skinning/owner draw.
+    related_workstreams:
+    - WORKSTREAM-13
+    - WORKSTREAM-14
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-23
+    decision: Launcher/setup capability tests use native Win32 widgets only
+    status: decided
+    evidence: User explicitly stated native Win32 widgets only.
+    rationale: Ensures test reflects native runtime.
+    implications: No graphical style imitation.
+    related_workstreams:
+    - WORKSTREAM-13
+    - WORKSTREAM-14
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-24
+    decision: UI Editor must include CLI so Codex can implement designs automatically
+    status: decided
+    evidence: User explicitly requested CLI interface for Codex.
+    rationale: Requires headless modes and ops DSL.
+    implications: GUI-only editor insufficient.
+    related_workstreams:
+    - WORKSTREAM-11
+    - WORKSTREAM-12
+    confidence: 5/5
+    label: FACT
+  - id: DECISION-25
+    decision: IDE live editing should be supported through IDE integration and preview hosts while preserving canonical DUI
+    status: assistant proposal; unconfirmed
+    evidence: Assistant generated txt prompt with preview-host architecture after user requested VS/Xcode/Linux IDE live editing.
+    rationale: Realistic way to integrate IDEs without replacing DUI.
+    implications: Needs user confirmation before treating as final design.
+    related_workstreams:
+    - WORKSTREAM-16
+    confidence: 3/5
+    label: INFERENCE
+  tasks:
+  - id: TASK-01
+    task: Determine actual implementation status of all generated prompts
+    priority: critical
+    urgency: immediate
+    owner: future assistant / user / Codex
+    dependencies:
+    - Access to repo or Codex run results
+    inputs_needed:
+    - User confirmation or file inspection
+    expected_output: Known true state of repo/toolchain
+    next_step: Ask whether prompts were executed; otherwise inspect repo.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 4/5
+  - id: TASK-02
+    task: Inspect uploaded source.zip and repo tree if implementation work starts
+    priority: high
+    urgency: immediate if coding
+    owner: future assistant / Codex
+    dependencies:
+    - File availability
+    inputs_needed:
+    - /mnt/data/source.zip or repo checkout
+    expected_output: Verified file paths, targets, and code state
+    next_step: Extract and map files before changing code.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: 4/5
+  - id: TASK-03
+    task: Implement/review Prompt 1 repo scan and scaffolding
+    priority: high
+    urgency: if not done
+    owner: Codex
+    dependencies:
+    - Repo checkout
+    inputs_needed:
+    - Prompt 1
+    expected_output: New targets and REPO_MAP_UI_SYSTEM.md
+    next_step: Run Prompt 1 or verify equivalent commits.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 4/5
+  - id: TASK-04
+    task: Implement/review Prompt 2 canonical UI IR
+    priority: critical
+    urgency: before UI Editor
+    owner: Codex
+    dependencies:
+    - Prompt 1
+    inputs_needed:
+    - UI IR spec
+    expected_output: domino_ui_ir library and tests
+    next_step: Run Prompt 2 or verify.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: 4/5
+  - id: TASK-05
+    task: Implement/review Prompt 3 TLV/JSON/legacy import
+    priority: critical
+    urgency: before import/export
+    owner: Codex
+    dependencies:
+    - UI IR and TLV code
+    inputs_needed:
+    - Existing TLV files
+    expected_output: canonical TLV I/O and importer
+    next_step: Run Prompt 3 or verify.
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-10
+    label: FACT
+    confidence: 4/5
+  - id: TASK-06
+    task: Implement/review Prompt 4 capability system
+    priority: high
+    urgency: before validation/export
+    owner: Codex
+    dependencies:
+    - UI IR
+    inputs_needed:
+    - Backend capabilities
+    expected_output: validator and tests
+    next_step: Run Prompt 4 or verify.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: 4/5
+  - id: TASK-07
+    task: Implement/review Prompt 5 layout engine
+    priority: high
+    urgency: before preview/runtime parity
+    owner: Codex
+    dependencies:
+    - UI IR
+    inputs_needed:
+    - Layout rules
+    expected_output: deterministic layout engine
+    next_step: Run Prompt 5 or verify.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: 4/5
+  - id: TASK-08
+    task: Implement/review Prompt 6 Splitter/Tabs/Scroll widgets
+    priority: high
+    urgency: before Tool Editor/launcher/setup layouts
+    owner: Codex
+    dependencies:
+    - IR/TLV/layout/backend
+    inputs_needed:
+    - Widget semantics
+    expected_output: runtime support and tests
+    next_step: Run Prompt 6 or verify.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: 4/5
+  - id: TASK-09
+    task: Implement/review Prompt 7 action/event codegen
+    priority: high
+    urgency: before functional stubs
+    owner: Codex
+    dependencies:
+    - UI doc events
+    inputs_needed:
+    - Action registry rules
+    expected_output: domui_event, codegen, dispatch
+    next_step: Run Prompt 7 or verify.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: 4/5
+  - id: TASK-10
+    task: Implement/review final UI Editor GUI prompt
+    priority: critical
+    urgency: after foundational components
+    owner: Codex
+    dependencies:
+    - Prompts 1-7
+    inputs_needed:
+    - Final UI Editor prompt
+    expected_output: working dominium-ui-editor
+    next_step: Run final UI Editor prompt or verify.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 4/5
+  - id: TASK-11
+    task: Implement/review UU1 discovery/import/export
+    priority: high
+    urgency: after UI Editor core
+    owner: Codex
+    dependencies:
+    - UI Editor, legacy import
+    inputs_needed:
+    - UU1 prompt
+    expected_output: tool discovery/import/export workflows
+    next_step: Run UU1 or verify.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+    confidence: 4/5
+  - id: TASK-12
+    task: Implement/review UU2 CLI modes
+    priority: critical
+    urgency: before automation
+    owner: Codex
+    dependencies:
+    - UI Editor core
+    inputs_needed:
+    - UU2 prompt
+    expected_output: headless validate/format/codegen/build-ui
+    next_step: Run UU2 or verify.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: 4/5
+  - id: TASK-13
+    task: Implement/review UU3 ops.json engine
+    priority: critical
+    urgency: before design automation
+    owner: Codex
+    dependencies:
+    - CLI and IR ops
+    inputs_needed:
+    - UU3 prompt
+    expected_output: headless apply script engine
+    next_step: Run UU3 or verify.
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+    confidence: 4/5
+  - id: TASK-14
+    task: Implement/review UU4 launcher canonical UI script/test
+    priority: high
+    urgency: after UU2-UU3
+    owner: Codex
+    dependencies:
+    - Launcher build and CLI
+    inputs_needed:
+    - UU4 prompt
+    expected_output: minecraft_launcher_v1.ops.json and canonical launcher UI
+    next_step: Run UU4 or verify.
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+    confidence: 4/5
+  - id: TASK-15
+    task: Implement/review UU5 setup canonical UI script/test
+    priority: high
+    urgency: after UU2-UU3
+    owner: Codex
+    dependencies:
+    - Setup build and CLI
+    inputs_needed:
+    - UU5 prompt
+    expected_output: minecraft_setup_v1.ops.json and canonical setup UI
+    next_step: Run UU5 or verify.
+    related_workstreams:
+    - WORKSTREAM-14
+    label: FACT
+    confidence: 4/5
+  - id: TASK-16
+    task: Implement/review UU6 hardening and capability test
+    priority: high
+    urgency: after UU4-UU5
+    owner: Codex
+    dependencies:
+    - UU1-UU5 outputs
+    inputs_needed:
+    - UU6 prompt
+    expected_output: ui_capability_test and deterministic CI checks
+    next_step: Run UU6 or verify.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+    confidence: 4/5
+  - id: TASK-17
+    task: Clarify and implement/refine IDE live editing prompt
+    priority: medium-high
+    urgency: after UI CLI stable
+    owner: Codex / future assistant
+    dependencies:
+    - IDE prompt and platform backends
+    inputs_needed:
+    - User confirmation
+    expected_output: preview hosts and IDE integrations
+    next_step: Confirm preview-host approach then execute/refine.
+    related_workstreams:
+    - WORKSTREAM-16
+    label: INFERENCE
+    confidence: 4/5
+  - id: TASK-18
+    task: Inspect LauncherC.zip and SetupC.zip if layout fidelity matters
+    priority: medium
+    urgency: before final visual/layout tests
+    owner: future assistant
+    dependencies:
+    - Uploaded screenshots accessible
+    inputs_needed:
+    - /mnt/data/LauncherC.zip and /mnt/data/SetupC.zip
+    expected_output: Verified screenshot-derived layout notes
+    next_step: Extract and inspect images; revise layout specs if needed.
+    related_workstreams:
+    - WORKSTREAM-13
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4/5
+  - id: TASK-19
+    task: Generate Tool Editor implementation plan after capability tests pass
+    priority: high
+    urgency: after UI Editor validation
+    owner: future assistant
+    dependencies:
+    - UI Editor and launcher/setup test results
+    inputs_needed:
+    - Actual repo status
+    expected_output: Tool Editor prompt plan
+    next_step: Do not proceed blindly unless user requests.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 4/5
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Standard controls must use true native OS widgets where feasible
+    type: product/technical
+    hard_or_soft: hard
+    source_or_basis: User repeated native widget requirement
+    implication: Use Win32 common controls for Windows preview/runtime; future AppKit/GTK for native platforms.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-02
+    constraint: Custom rendering only for custom widgets or fallback cases
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User allowed custom rendering only when native cannot implement feature
+    implication: Avoid owner-draw for standard controls unless required.
+    violation_risk: medium
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-03
+    constraint: Pixel-perfect and host-system optimized UIs are a long-term requirement
+    type: product
+    hard_or_soft: hard
+    source_or_basis: Initial hard requirement
+    implication: Requires DPI handling, platform metrics, and per-platform overrides.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-04
+    constraint: UI Editor Phase A runs only on modern Windows NT / Windows 10+
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User decision
+    implication: Do not spend Phase A effort on macOS/Linux host editor.
+    violation_risk: low
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-05
+    constraint: UI Editor Phase A uses system DPI only and 100% design scale
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: User decision
+    implication: No per-monitor DPI or zoom in Phase A.
+    violation_risk: medium
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-06
+    constraint: Tool Editor eventual target is all supported compiled systems
+    type: scope/product
+    hard_or_soft: hard
+    source_or_basis: User broad platform statements
+    implication: Need backend capability system and future platform ports.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-07
+    constraint: Tool Editor supports design scales 25–400 percent
+    type: product
+    hard_or_soft: hard
+    source_or_basis: User listed exact scale set
+    implication: Later UI must implement zoom/scaling.
+    violation_risk: medium
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-08
+    constraint: C++98 compatibility for editor/tooling prompts
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User said editors can be in C++98; prompts enforce it
+    implication: Avoid modern C++ features.
+    violation_risk: medium
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-09
+    constraint: CMake remains primary build integration
+    type: build
+    hard_or_soft: hard
+    source_or_basis: User said CMake primarily
+    implication: Use CMake targets/custom commands/presets.
+    violation_risk: medium
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-10
+    constraint: MSVC/Xcode projects are allowed where useful
+    type: build
+    hard_or_soft: soft/allowed
+    source_or_basis: User allowed MSVC/Xcode
+    implication: IDE integration can add projects/presets without replacing CMake.
+    violation_risk: low
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-11
+    constraint: Offline operation and reasonable/license-compatible dependencies
+    type: dependency/legal
+    hard_or_soft: hard
+    source_or_basis: Initial hard requirement and later dependency discussion
+    implication: Avoid external runtime fetches; vendor only legal deps; use fetch scripts for non-distributable assets.
+    violation_risk: medium
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-12
+    constraint: TLV is canonical source of truth
+    type: data
+    hard_or_soft: hard
+    source_or_basis: Decision in plan
+    implication: Do not make JSON or IDE-native files authoritative.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-13
+    constraint: JSON mirror is read-only deterministic output
+    type: data
+    hard_or_soft: hard
+    source_or_basis: User accepted mirror if small
+    implication: Use for review/debug; do not hand-edit.
+    violation_risk: medium
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-14
+    constraint: Deterministic output required for TLV, JSON, reports, codegen, indexes
+    type: data/CI
+    hard_or_soft: hard
+    source_or_basis: Repeated plan requirement
+    implication: Stable ordering, no timestamps/random IDs, avoid absolute paths in compare outputs.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-15
+    constraint: Legacy UI files must not be overwritten implicitly
+    type: safety
+    hard_or_soft: hard
+    source_or_basis: Import/export plan and user import requirement
+    implication: Import to canonical paths; export only explicit.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-16
+    constraint: Generated code must not overwrite user edits
+    type: safety
+    hard_or_soft: hard
+    source_or_basis: Action/codegen plan
+    implication: Use gen/user split and append/create user stubs safely.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-17
+    constraint: Headless CLI must not initialize GUI
+    type: tooling
+    hard_or_soft: hard
+    source_or_basis: UU2 plan
+    implication: Supports Codex/CI and environments without GUI.
+    violation_risk: medium
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-18
+    constraint: ops.json is pure deterministic data and must not execute code
+    type: security/determinism
+    hard_or_soft: hard
+    source_or_basis: UU3 plan
+    implication: Strict parser, deterministic operation order.
+    violation_risk: medium
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-19
+    constraint: Minecraft-style launcher/setup is logical layout only
+    type: product
+    hard_or_soft: hard
+    source_or_basis: User explicit clarification
+    implication: No visual skinning; use native Win32 widgets only.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-20
+    constraint: Launcher/setup test uses native Win32 widgets only
+    type: technical/product
+    hard_or_soft: hard
+    source_or_basis: User explicit clarification
+    implication: No owner-draw/custom fonts/colors.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-21
+    constraint: Do not treat assistant recommendations as user decisions unless accepted
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: User asked in packet rules
+    implication: Keep labels accurate.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-22
+    constraint: Uploaded bundles are unverified until inspected
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: 'Visible context: files uploaded but not opened'
+    implication: Do not claim screenshot facts beyond accepted logical spec.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-23
+    constraint: GPL/LGPL policy not fully established
+    type: legal
+    hard_or_soft: soft/uncertain
+    source_or_basis: Assistant recommendation only
+    implication: Verify before adding dependencies.
+    violation_risk: medium
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4/5
+  - id: CONSTRAINT-24
+    constraint: Win7 supported; XP/lower only if no feature sacrifice
+    type: platform
+    hard_or_soft: hard/tentative edge
+    source_or_basis: User statement
+    implication: Use compatibility tiers, not Phase A editor support.
+    violation_risk: medium
+    label: FACT
+    confidence: 4/5
+  - id: CONSTRAINT-25
+    constraint: Future reports/spec aggregation must preserve uncertainty labels
+    type: process
+    hard_or_soft: hard
+    source_or_basis: User requested current package rules
+    implication: Use FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT.
+    violation_risk: high
+    label: FACT
+    confidence: 4/5
+  open_questions:
+  - id: QUESTION-01
+    question: Were any generated Codex prompts actually executed?
+    why_it_matters: Determines whether next step is implementation, verification, or further prompt generation.
+    known: Prompts were authored in chat.
+    unknown: Actual repo state and commits.
+    resolution_path: Ask user or inspect repository.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: What is inside /mnt/data/source.zip?
+    why_it_matters: It may contain repo snapshot or relevant files.
+    known: File was uploaded.
+    unknown: Contents uninspected.
+    resolution_path: Extract and inspect if available.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: What exactly is in LauncherC.zip and SetupC.zip?
+    why_it_matters: Could refine logical layout specs.
+    known: Files uploaded.
+    unknown: Screenshot contents uninspected.
+    resolution_path: Extract and inspect images.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-13
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: What is the actual TLV wire format and existing parser/writer API?
+    why_it_matters: Needed for canonical TLV I/O.
+    known: Existing DUI uses TLV.
+    unknown: Exact format unknown.
+    resolution_path: Repo scan/source inspection.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: Where is the setup executable/tool and how does its UI currently work?
+    why_it_matters: Needed for UU5 integration.
+    known: User wants setup UI redesigned.
+    unknown: Actual paths/target/UI system unknown.
+    resolution_path: Repo scan.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Does DUI already separate schema, instance, and runtime state?
+    why_it_matters: Affects doc/state split and migration.
+    known: User called current system schema/state TLV.
+    unknown: Exact separation unknown.
+    resolution_path: Inspect current TLV/generator/runtime.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: What exact dependency licenses are allowed?
+    why_it_matters: Needed if adding libraries.
+    known: User willing to mirror/source legal deps.
+    unknown: GPL/LGPL exact policy not confirmed.
+    resolution_path: Ask before adding dependencies.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: Should generated code be committed or regenerated during build only?
+    why_it_matters: Affects repo cleanliness and CI.
+    known: UU6 notes decision needed.
+    unknown: Repo convention unknown.
+    resolution_path: Inspect repo/user preference.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-08
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: How much hardcoded substrate is acceptable in Tool Editor v0?
+    why_it_matters: Affects Tool Editor scope and schedule.
+    known: User wants final Tool Editor free from hardcoded limitations; assistant recommended temporary substrate.
+    unknown: Whether temporary substrate accepted.
+    resolution_path: Clarify before Tool Editor implementation.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: Does the user accept preview-host strategy for IDE live editing?
+    why_it_matters: User asked to use IDE GUI tools; prompt used preview hosts not direct designer integration.
+    known: IDE prompt generated.
+    unknown: Acceptance/fit unknown.
+    resolution_path: Clarify with user before implementation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-16
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: Do AppKit/GTK backends already exist or need to be built from scratch?
+    why_it_matters: Required for macOS/Linux native preview/runtime.
+    known: Known backends from user are win32/dgfx/null.
+    unknown: AppKit/GTK availability unknown.
+    resolution_path: Repo scan.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-16
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: How should Win95/Win9x/classic Mac support be scoped?
+    why_it_matters: Impacts capability tiers and runtime architecture.
+    known: User wants broad future support; Phase A editor modern Windows only.
+    unknown: Runtime-only vs editor-host vs tool-host expectations.
+    resolution_path: Clarify before legacy-platform work.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-13
+    question: What exact launcher canonical loader path should be used?
+    why_it_matters: UU4 assumes tools/launcher path but repo may differ.
+    known: Launcher target exists by user statement.
+    unknown: Actual runtime working directory/resource path unknown.
+    resolution_path: Repo scan.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-13
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-14
+    question: Are Visual Studio 2026 and Xcode versions/environment available?
+    why_it_matters: IDE prompt targets them; current availability may vary.
+    known: User requested VS2026 and Xcode.
+    unknown: Actual installed tools not known.
+    resolution_path: User/environment verification.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-16
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Immediate native-per-OS editor frontends for all platforms
+    status: superseded
+    reason: Too high cost/fragmentation for initial path; user chose UI Editor first.
+    final_or_tentative: tentative
+    reconsider_conditions: Reconsider if native fidelity outranks speed after Phase A.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-02
+    option: Cross-platform editor shell as only initial strategy
+    status: superseded
+    reason: User chose Windows-first UI Editor plus later Tool Editor.
+    final_or_tentative: tentative
+    reconsider_conditions: Reconsider for later cross-platform Tool Editor chrome.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-03
+    option: Windows-only approach as final architecture
+    status: superseded
+    reason: User wants all systems/products eventually.
+    final_or_tentative: final for final state
+    reconsider_conditions: Never final unless project scope changes.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-04
+    option: Direct in-place TLV byte patching
+    status: rejected
+    reason: Unsafe, brittle, hard to migrate; user selected canonical IR model.
+    final_or_tentative: final
+    reconsider_conditions: Only emergency binary repair tool.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-05
+    option: JSON/YAML as hand-authored source of truth
+    status: rejected as canonical
+    reason: User saw no need for humans to manually edit because editor exists; TLV canonical chosen.
+    final_or_tentative: final unless changed
+    reconsider_conditions: Reconsider if human-editable workflows become essential.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-06
+    option: Manual editing of JSON mirror
+    status: rejected
+    reason: Mirror intended for diff/debug, not source.
+    final_or_tentative: final unless changed
+    reconsider_conditions: If editor/CLI unavailable and user explicitly asks.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-07
+    option: Premature flicker debugging before implementation
+    status: deferred
+    reason: User explicitly deferred debugging until after implementation.
+    final_or_tentative: tentative/deferred
+    reconsider_conditions: Reconsider if UI Editor preview is unusably flickery.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: REJECTED-08
+    option: Blanket WS_EX_COMPOSITED for flicker
+    status: rejected in prompts
+    reason: Assistant warned it can introduce lag/artifacts.
+    final_or_tentative: tentative
+    reconsider_conditions: Only gated and justified case.
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: REJECTED-09
+    option: Permanent hardcoded Tool Editor UI limitations
+    status: rejected as final state
+    reason: User wants Tool Editor eventually free of hardcoded limitations.
+    final_or_tentative: final for end state
+    reconsider_conditions: Temporary substrate may be reconsidered with explicit plan to remove.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-10
+    option: Graphical Minecraft skinning
+    status: rejected
+    reason: User clarified style means logical layout only.
+    final_or_tentative: final unless user changes request
+    reconsider_conditions: Reconsider only if custom visual design requested.
+    related_workstreams:
+    - WORKSTREAM-13
+    - WORKSTREAM-14
+    label: FACT
+  - id: REJECTED-11
+    option: Owner-draw/custom styling for launcher/setup capability test
+    status: rejected
+    reason: User said native Win32 widgets only.
+    final_or_tentative: final for capability test
+    reconsider_conditions: Could be future DGFX/custom theme work, not this test.
+    related_workstreams:
+    - WORKSTREAM-13
+    - WORKSTREAM-14
+    label: FACT
+  - id: REJECTED-12
+    option: Replacing DUI with Qt/wx/WPF or another external toolkit
+    status: rejected/deprioritized
+    reason: Contradicts in-tree DUI and native/offline direction.
+    final_or_tentative: final unless project pivots
+    reconsider_conditions: Reconsider only if user explicitly changes architecture.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: REJECTED-13
+    option: Treating VS/Xcode native designer files as canonical UI source
+    status: deprioritized in IDE prompt
+    reason: Assistant proposed preview/import bridge instead to preserve TLV canonical.
+    final_or_tentative: tentative
+    reconsider_conditions: Reconsider if user explicitly requires .rc/.xib/GtkBuilder roundtrip.
+    related_workstreams:
+    - WORKSTREAM-16
+    label: INFERENCE
+  - id: REJECTED-14
+    option: Assuming screenshot-derived layout without verification
+    status: rejected as evidence
+    reason: Files were uploaded but not inspected.
+    final_or_tentative: final evidence rule
+    reconsider_conditions: Inspect bundles before citing exact screenshot facts.
+    related_workstreams:
+    - WORKSTREAM-13
+    - WORKSTREAM-14
+    label: FACT
+  - id: REJECTED-15
+    option: Treating assistant recommendations as final user decisions automatically
+    status: rejected by user packet rules
+    reason: User required labels and not turning brainstorms into decisions.
+    final_or_tentative: final process rule
+    reconsider_conditions: Never.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    artifact: /mnt/data/source.zip
+    type: uploaded file
+    purpose: Possible repo/source bundle
+    status: uploaded; contents unverified
+    origin: User upload in this chat
+    carry_forward: 'yes'
+    notes: Inspect if needed before implementation.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-02
+    artifact: /mnt/data/SetupC.zip
+    type: uploaded file / screenshot bundle
+    purpose: Setup layout reference
+    status: uploaded; contents unverified
+    origin: User upload in this chat
+    carry_forward: 'yes'
+    notes: Assistant generated logical setup spec without inspecting contents.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-03
+    artifact: /mnt/data/LauncherC.zip
+    type: uploaded file / screenshot bundle
+    purpose: Launcher layout reference
+    status: uploaded; contents unverified
+    origin: User upload in this chat
+    carry_forward: 'yes'
+    notes: Assistant generated logical launcher spec without inspecting contents.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-04
+    artifact: launcher_ui_v1.tlv
+    type: existing repo file
+    purpose: Legacy/current launcher UI TLV
+    status: named by user; path unverified
+    origin: User statement
+    carry_forward: 'yes'
+    notes: Core legacy import target.
+    label: FACT
+  - id: ARTIFACT-05
+    artifact: gen_launcher_ui_schema_v1.py
+    type: existing repo file
+    purpose: Current launcher UI schema generator
+    status: named by user; path unverified
+    origin: User statement
+    carry_forward: 'yes'
+    notes: Inspect during repo map.
+    label: FACT
+  - id: ARTIFACT-06
+    artifact: dom_launcher_app.cpp
+    type: existing repo file
+    purpose: Launcher UI app/state handling
+    status: named by user; path unverified
+    origin: User statement
+    carry_forward: 'yes'
+    notes: Inspect during launcher integration.
+    label: FACT
+  - id: ARTIFACT-07
+    artifact: dom_launcher_actions.cpp
+    type: existing repo file
+    purpose: Launcher actions
+    status: named by user; path unverified
+    origin: User statement
+    carry_forward: 'yes'
+    notes: Inspect during codegen integration.
+    label: FACT
+  - id: ARTIFACT-08
+    artifact: dom_launcher_catalog.cpp
+    type: existing repo file
+    purpose: Launcher catalog
+    status: named by user; path unverified
+    origin: User statement
+    carry_forward: 'yes'
+    notes: Inspect during integration.
+    label: FACT
+  - id: ARTIFACT-09
+    artifact: dui_win32.c
+    type: existing repo file
+    purpose: Win32 DUI backend using child HWND/common controls
+    status: named by user; path unverified
+    origin: User statement
+    carry_forward: 'yes'
+    notes: Flicker/runtime integration target.
+    label: FACT
+  - id: ARTIFACT-10
+    artifact: dui_dgfx.c
+    type: existing repo file
+    purpose: DGFX DUI backend
+    status: named by user; path unverified
+    origin: User statement
+    carry_forward: 'yes'
+    notes: Future custom rendering backend.
+    label: FACT
+  - id: ARTIFACT-11
+    artifact: dui_null.c
+    type: existing repo file
+    purpose: Headless DUI backend
+    status: named by user; path unverified
+    origin: User statement
+    carry_forward: 'yes'
+    notes: Validation/headless tests.
+    label: FACT
+  - id: ARTIFACT-12
+    artifact: launch_gui.c
+    type: existing repo file
+    purpose: Immediate-mode DGFX GUI stub not built into launcher
+    status: named by user
+    origin: User statement
+    carry_forward: maybe
+    notes: Not current launcher path.
+    label: FACT
+  - id: ARTIFACT-13
+    artifact: Prompt Plan 1–11
+    type: prompt plan
+    purpose: Foundational implementation sequence
+    status: authored in chat
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Planning artifact, not implementation evidence.
+    label: FACT
+  - id: ARTIFACT-14
+    artifact: Prompt 1 — Repo scan + scaffolding
+    type: Codex prompt
+    purpose: Map repo and add empty targets/docs
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: No behavior changes.
+    label: FACT
+  - id: ARTIFACT-15
+    artifact: Prompt 2 — Canonical UI IR
+    type: Codex prompt
+    purpose: Implement IR/types/tests
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Foundation.
+    label: FACT
+  - id: ARTIFACT-16
+    artifact: Prompt 3 — TLV I/O + JSON + legacy import
+    type: Codex prompt
+    purpose: Canonical file I/O and importer
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Foundation.
+    label: FACT
+  - id: ARTIFACT-17
+    artifact: Prompt 4 — Capability system
+    type: Codex prompt
+    purpose: Backend-neutral validation
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Foundation.
+    label: FACT
+  - id: ARTIFACT-18
+    artifact: Prompt 5 — Layout engine
+    type: Codex prompt
+    purpose: Deterministic layout
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Foundation.
+    label: FACT
+  - id: ARTIFACT-19
+    artifact: Prompt 6 — Splitter/Tabs/Scroll
+    type: Codex prompt
+    purpose: Bootstrapping widgets
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Foundation.
+    label: FACT
+  - id: ARTIFACT-20
+    artifact: Prompt 7 — Action/codegen
+    type: Codex prompt
+    purpose: domui_event and action stubs
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Foundation.
+    label: FACT
+  - id: ARTIFACT-21
+    artifact: Prompt 8 — UI Editor MVP
+    type: Codex prompt
+    purpose: Phase A GUI authoring tool
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Foundation.
+    label: FACT
+  - id: ARTIFACT-22
+    artifact: Prompt 9 — Tool Editor bootstrap
+    type: Codex prompt
+    purpose: Initial Tool Editor host/doc
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Future Tool Editor.
+    label: FACT
+  - id: ARTIFACT-23
+    artifact: Prompt 10 — Runtime batch/flicker structure
+    type: Codex prompt
+    purpose: Win32 batching/coalesced relayout
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Deferred runtime improvement.
+    label: FACT
+  - id: ARTIFACT-24
+    artifact: Prompt 11 — Hardening
+    type: Codex prompt
+    purpose: Tests/docs/CI hooks
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Foundation hardening.
+    label: FACT
+  - id: ARTIFACT-25
+    artifact: Final UI Editor implementation prompt
+    type: Codex prompt
+    purpose: Actually implement dominium-ui-editor using built components
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Central prompt before UU plan.
+    label: FACT
+  - id: ARTIFACT-26
+    artifact: UU1 — UI Project Discovery + Import/Export
+    type: Codex prompt
+    purpose: Open Tool UI, import legacy, export canonical
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Extension phase.
+    label: FACT
+  - id: ARTIFACT-27
+    artifact: UU2 — UI Editor CLI
+    type: Codex prompt
+    purpose: validate/format/codegen/build-ui headless modes
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Automation phase.
+    label: FACT
+  - id: ARTIFACT-28
+    artifact: UU3 — ops.json Script Engine
+    type: Codex prompt
+    purpose: Headless apply and edit DSL
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Automation phase.
+    label: FACT
+  - id: ARTIFACT-29
+    artifact: Minecraft logical launcher/setup structural specification
+    type: spec output
+    purpose: Defines layout-only native-widget target for UU4/UU5
+    status: authored and user praised
+    origin: Assistant output based on unverified bundles plus user clarification
+    carry_forward: 'yes'
+    notes: Use as planning spec, not as verified screenshot evidence.
+    label: FACT / UNCERTAIN
+  - id: ARTIFACT-30
+    artifact: UU4 — Launcher UI via ops.json
+    type: Codex prompt
+    purpose: Generate canonical launcher UI and integrate build
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Capability test.
+    label: FACT
+  - id: ARTIFACT-31
+    artifact: UU5 — Setup UI via ops.json
+    type: Codex prompt
+    purpose: Generate canonical setup wizard UI and integrate build
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Capability test.
+    label: FACT
+  - id: ARTIFACT-32
+    artifact: UU6 — Hardening/CI capability test
+    type: Codex prompt
+    purpose: Regeneration/validation targets and determinism tests
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Capability test hardening.
+    label: FACT
+  - id: ARTIFACT-33
+    artifact: IDE live editing prompt in txt block
+    type: Codex prompt
+    purpose: VS2026/Xcode/Linux preview-host IDE integration
+    status: authored
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: Future work; acceptance of preview-host interpretation uncertain.
+    label: INFERENCE
+  - id: ARTIFACT-34
+    artifact: tools/ui_index/ui_index.json
+    type: planned generated file
+    purpose: Repository UI discovery index
+    status: planned, not verified
+    origin: UU1 prompt
+    carry_forward: 'yes'
+    notes: Should be deterministic and generated.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-35
+    artifact: tools/launcher/ui/scripts/minecraft_launcher_v1.ops.json
+    type: planned file
+    purpose: Launcher UI ops script
+    status: planned, not verified
+    origin: UU4 prompt
+    carry_forward: 'yes'
+    notes: Capability test input.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-36
+    artifact: tools/launcher/ui/doc/launcher_ui_doc.tlv/json
+    type: planned files
+    purpose: Canonical launcher UI doc/mirror
+    status: planned, not verified
+    origin: UU4 prompt
+    carry_forward: 'yes'
+    notes: Generated from ops.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-37
+    artifact: tools/setup/ui/scripts/minecraft_setup_v1.ops.json
+    type: planned file
+    purpose: Setup UI ops script
+    status: planned, not verified
+    origin: UU5 prompt
+    carry_forward: 'yes'
+    notes: Capability test input.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-38
+    artifact: tools/setup/ui/doc/setup_ui_doc.tlv/json
+    type: planned files
+    purpose: Canonical setup UI doc/mirror
+    status: planned, not verified
+    origin: UU5 prompt
+    carry_forward: 'yes'
+    notes: Generated from ops.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-39
+    artifact: Context Transfer Packet
+    type: report output
+    purpose: Maximum-fidelity handoff for retired chat
+    status: authored in chat before this package
+    origin: Assistant output
+    carry_forward: 'yes'
+    notes: This package normalizes and repairs it.
+    label: FACT
+  - id: ARTIFACT-40
+    artifact: This final report package
+    type: generated package
+    purpose: Downloadable/shareable per-chat handoff package
+    status: created by current response
+    origin: Current assistant
+    carry_forward: 'yes'
+    notes: Includes markdown/yaml/zip.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Assuming generated prompts were implemented
+    consequence: Future assistant may skip necessary work or trust nonexistent files.
+    likelihood: medium
+    severity: high
+    mitigation: Verify repo state or ask user before acting.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: RISK-02
+    risk: Treating screenshot bundle interpretation as verified
+    consequence: Layout specs may diverge from actual screenshots.
+    likelihood: medium
+    severity: medium
+    mitigation: Inspect uploaded images before fidelity-sensitive work.
+    related_workstreams:
+    - WORKSTREAM-13
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-03
+    risk: Misreading Minecraft-style as graphical skinning
+    consequence: Would produce forbidden owner-draw/custom style work.
+    likelihood: medium
+    severity: high
+    mitigation: Preserve “logical layout only, native controls only” constraint.
+    related_workstreams:
+    - WORKSTREAM-13
+    - WORKSTREAM-14
+    label: FACT
+  - id: RISK-04
+    risk: Overpromising pixel-perfect native parity across OS versions
+    consequence: Native controls vary by OS/theme/DPI.
+    likelihood: medium
+    severity: high
+    mitigation: Use capability tiers and per-platform overrides; validate constraints.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-05
+    risk: Windows bias leaking into canonical schema
+    consequence: Cross-platform Tool Editor/runtime could be compromised.
+    likelihood: medium
+    severity: high
+    mitigation: Implement generic capability system early.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-06
+    risk: Codegen overwrites user edits
+    consequence: Loss of developer work.
+    likelihood: low-medium
+    severity: high
+    mitigation: Use gen/user split and append-only user stubs.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: RISK-07
+    risk: Legacy import silently drops data
+    consequence: Existing launcher/setup UI behavior may be lost.
+    likelihood: medium
+    severity: high
+    mitigation: Generate import reports with warnings and ID maps.
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  - id: RISK-08
+    risk: Headless CLI opens GUI or depends on Win32 window init
+    consequence: Codex/CI automation fails.
+    likelihood: medium
+    severity: medium
+    mitigation: Separate CLI paths from GUI initialization.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: RISK-09
+    risk: Non-deterministic reports/artifacts
+    consequence: CI/goldens and git diffs become noisy.
+    likelihood: medium
+    severity: high
+    mitigation: Sort outputs, avoid timestamps/absolute paths.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: RISK-10
+    risk: Tool Editor self-hosting attempted too early
+    consequence: Schedule stalls on hard subsystem.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Validate UI Editor capability tests before Tool Editor.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-11
+    risk: Win95/Win9x compatibility mis-scoped
+    consequence: Could force unnecessary Phase A compromises or break future runtime goals.
+    likelihood: medium
+    severity: medium
+    mitigation: Treat as capability/runtime tier unless user says editor host.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-12
+    risk: IDE live editing expectation mismatch
+    consequence: Preview-host approach may not satisfy user’s desire for IDE GUI tools.
+    likelihood: medium
+    severity: medium-high
+    mitigation: Clarify before implementation.
+    related_workstreams:
+    - WORKSTREAM-16
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-13
+    risk: Dependency license policy misunderstood
+    consequence: Legal or redistribution risk.
+    likelihood: low-medium
+    severity: high
+    mitigation: Verify before adding non-permissive deps.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-14
+    risk: Mac/Linux native backends missing
+    consequence: Cross-platform preview/editor plans may be blocked.
+    likelihood: high
+    severity: medium
+    mitigation: Verify backend availability; use null validation fallback if needed.
+    related_workstreams:
+    - WORKSTREAM-16
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-15
+    risk: Future aggregation treats assistant recommendations as user decisions
+    consequence: Spec book may include unaccepted requirements.
+    likelihood: medium
+    severity: high
+    mitigation: Preserve labels and evidence.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: FACT
+  - id: RISK-16
+    risk: Over-compression of prompt artifacts
+    consequence: Future assistant may not recover implementation details.
+    likelihood: medium
+    severity: medium
+    mitigation: Use artifact ledger and regenerate exact prompts if needed from summaries.
+    related_workstreams:
+    - WORKSTREAM-15
+    label: INFERENCE
+  verification_queue:
+  - id: VERIFY-01
+    item: Inspect repo/source bundle to verify existing DUI files and paths
+    why_verification_needed: User named files but paths/contents are unverified.
+    suggested_source_type: Repo tree or /mnt/data/source.zip extraction
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Confirm current CMake target names and build layout
+    why_verification_needed: Prompts assume targets and folders.
+    suggested_source_type: CMake files/repo build
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Confirm whether UI Editor implementation exists
+    why_verification_needed: Generated prompts may not have been executed.
+    suggested_source_type: Repo commits/files or user confirmation
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Confirm Tool Editor scope before implementation
+    why_verification_needed: Hardcoded substrate issue unresolved.
+    suggested_source_type: User confirmation after UI Editor status
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Verify TLV wire format and legacy import feasibility
+    why_verification_needed: Canonical toolchain depends on actual TLV format.
+    suggested_source_type: Existing TLV code and files
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Verify backend capability details
+    why_verification_needed: Validation tables need real feature support.
+    suggested_source_type: Backend source inspection
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Run layout golden tests after implementation
+    why_verification_needed: Ensures determinism and correctness.
+    suggested_source_type: CTest/test output
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Confirm generated code commit policy
+    why_verification_needed: Affects UU6 and build reproducibility.
+    suggested_source_type: Repo conventions/user preference
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-08
+    - WORKSTREAM-15
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Inspect LauncherC.zip screenshots if exact layout fidelity is needed
+    why_verification_needed: Previous description unverified.
+    suggested_source_type: Image extraction/visual inspection
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-13
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: Inspect SetupC.zip screenshots if exact setup layout fidelity is needed
+    why_verification_needed: Previous description unverified.
+    suggested_source_type: Image extraction/visual inspection
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: Confirm setup executable target and UI integration point
+    why_verification_needed: UU5 assumes setup tool exists.
+    suggested_source_type: Repo scan
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-14
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Confirm preview-host approach for IDE live editing
+    why_verification_needed: User may expect deeper IDE designer integration.
+    suggested_source_type: User confirmation
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-16
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-13
+    item: Verify AppKit/GTK backend availability or plan
+    why_verification_needed: IDE/cross-platform tooling requires native backends or null fallback.
+    suggested_source_type: Repo scan
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-16
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-14
+    item: Clarify dependency license policy before adding third-party code
+    why_verification_needed: Assistant policy recommendations were not explicitly accepted.
+    suggested_source_type: User confirmation/legal review
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-15
+    item: Check all current external/tool version assumptions before use
+    why_verification_needed: Current software versions/API behavior can change.
+    suggested_source_type: Official docs/toolchain environment
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-16
+    label: UNCERTAIN / UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - DUI Architecture
+    - UI Editor
+    - Tool Editor
+    - UI Document Format
+    - Backend Capabilities
+    - Layout System
+    - Action/Event Codegen
+    - Launcher/Setup Capability Tests
+    - Build/CI/Determinism
+    - IDE Live Editing
+    unique_contributions:
+    - phase strategy
+    - prompt sets
+    - native logical Minecraft-style clarification
+    - IDE preview-host prompt
+    possible_duplicates_with_other_chats:
+    - launcher design
+    - setup design
+    - DUI runtime
+    - Tool Editor goals
+    - dependency constraints
+    conflicts_to_watch_for:
+    - new framework choices
+    - graphical styling requests
+    - JSON becoming canonical
+    - platform priority changes
+    formal_requirements_candidates:
+    - TLV canonical
+    - native controls
+    - headless CLI
+    - ops.json DSL
+    - capability validation
+    - legacy no-overwrite
+    - deterministic outputs
+    background_context_candidates:
+    - prompt artifacts
+    - tentative rollout ordering
+    - screenshot-inspired examples
+    needs_user_confirmation:
+    - IDE preview-host strategy
+    - generated code commit policy
+    - license allowlist
+    - Tool Editor v0 hardcoded substrate
+  final_recommendations:
+    next_action_if_continuing_this_chat: Verify actual repo/prompt implementation state before acting; otherwise continue
+      from the next requested prompt artifact.
+    next_action_for_aggregator: Merge registers by stable IDs and preserve labels; do not treat prompt artifacts as implementation.
+    user_checks_required:
+    - whether prompts were executed
+    - whether uploaded bundles should be inspected
+    - whether IDE preview-host approach is acceptable

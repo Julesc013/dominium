@@ -1,0 +1,836 @@
+GPT-5.5 Pro — Build 2026-05-25
+
+# Human-Readable Chat Report — Dominium Codex Platform Renderer API Plan
+
+Date anchor: **2026-05-27 Australia/Melbourne**
+
+## 1. One-Page Orientation
+
+This chat was mainly about turning the user’s Dominium/Domino engine work into a **high-quality Codex implementation plan**. The user wanted prompts for a coding agent, specifically “Codex CLI running GPT‑5.2” or VS Code Codex, to work inside an existing C/CMake/C++ repository and implement missing or unfinished **platforms, renderers, APIs, and integration smoke tests**. The repository path used throughout the prompts was:
+
+```text
+c:\Inbox\Git Repos\dominium
+```
+
+The central problem was not simply “write some code.” The user wanted a carefully sequenced prompt pack that could guide Codex through a large, risky engine refactor without breaking the repository between steps. The plan had to respect strict constraints: Windows Codex runtime, approval policy `NEVER`, full filesystem access, no dependency downloads unless explicitly approved, and a buildable repo at the end of every prompt. The user also wanted the final prompts to be efficient for GPT‑5.2 Codex: fewer, larger prompts rather than many tiny ones, because each Codex run can generate thousands of lines and take a long time.
+
+The chat began with a questionnaire requirement. The user explicitly told the assistant not to assume what “platforms, renderers, APIs, and done” meant. A questionnaire was asked and the user supplied detailed answers: Tier‑1 platforms such as Win32 and Win32 headless, Tier‑2 platforms such as Linux X11, Wayland, and macOS Cocoa, Tier‑1 renderers such as software and D3D9, and future renderers such as D3D11, GL2, Vulkan, Metal, and retro framebuffer backends. The user also explained that the repo has both `dsys_*` and `domino_sys_*` system surfaces, a `dgfx` renderer IR, C89/C++98 language constraints, and expected build targets such as `dominium_game`, `dominium-launcher`, `dominium-setup`, and `domino_numeric_test`.
+
+A compressed repository archive was uploaded as `/mnt/data/dominium.zip`. **UNCERTAIN / UNVERIFIED:** Although the user asked for it to be analyzed, the previous assistant-generated plans did not actually inspect the archive before producing the prompts. This became one of the most important caveats in the later handoff and report package. Future assistants must verify the repository state before relying on file-specific claims.
+
+The direction then changed. The user revealed they already had a pending **MASTER CODEX PROMPT PLAN** of prompts 1–14 covering deterministic engine-core work: invariants, packet ABI, scheduler, fields/events, LOD, arbitrary placement, TRANS, STRUCT, DECOR, agents, graph toolkit, domains/frames/propagators, knowledge/fog/comms, and determinism hardening. The later platform/render/API work was therefore redesigned to assume those prompts had already been implemented. **UNCERTAIN / UNVERIFIED:** whether those master prompts were actually implemented in the repo was not verified in this chat.
+
+The conversation then deepened into engine architecture. The user asked how to make the platform API and renderer API extensible, modular, reliable, deterministic, maintainable, and compatible with C89/C++98. The plan evolved toward a durable engine architecture: stable C ABI boundaries, POD structs, versioned vtables, `query_interface` extension slots, capability-driven backend selection, deterministic backend grades, and a strict separation between deterministic simulation and non-deterministic presentation systems like advanced graphics and audio.
+
+Later, the user expanded the horizon: Dominium should start with simple early graphics and audio, but eventually support AAA-quality graphics, spatial audio, environmental acoustics, proximity chat, AI, navigation, terrain, vehicles, economy, combat, weather, modding, tools, and launcher/setup systems. Those ideas were preserved as a **future roadmap**, not current implementation scope.
+
+The final practical result was a **9-prompt Codex pack**. Each prompt includes discovery commands, implementation tasks, acceptance criteria, verification commands, stop-and-ask conditions, and mandatory git commit discipline. The prompts cover: baseline C89/C++98 and ABI enforcement, capability registry and launcher profiles, CMake presets and null backends, Win32 platform completion, software/DX9 renderer completion, Tier‑2 backend gating, TLV-as-ABI and network handshakes, launcher/game GUI smoke tests, and final changelog/release tooling.
+
+The chat ended by generating a maximum-fidelity transfer packet, then a downloadable report package, then an in-chat reader version. The main thing to remember is this: **the active artifact is the final 9-prompt post-master Codex plan, but it is a plan, not evidence that the code exists. The repo must be inspected before execution.**
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began as a prompt-engineering task for Codex
+
+The user opened with a precise role assignment: the assistant was to act as a staff software architect, technical program manager, and prompt engineer. The task was to generate **ready-to-run prompts** for Codex CLI running GPT‑5.2 so that Codex could implement missing or unfinished platforms, renderers, and APIs in the existing Dominium repository.
+
+The user specified a serious operational context. Codex would run on Windows, inside:
+
+```text
+c:\Inbox\Git Repos\dominium
+```
+
+It would have full filesystem access, no need for approval prompts, and network enabled. But the user explicitly disallowed introducing dependencies that require downloads unless they approved them. The prompts also had to preserve buildability after each run. This was not a casual “give me ideas” request; it was a request for executable implementation instructions that could be handed to an autonomous code-editing agent.
+
+The first procedural rule was that the assistant had to ask a **minimal but complete questionnaire** before generating the prompt pack. The questionnaire had to cover platforms, renderers, APIs, definition of done, and repo/build context. The assistant did that.
+
+### The user defined the initial technical scope
+
+The user then supplied detailed answers. They identified Tier‑1 platforms as Win32, Win32 headless, and POSIX headless. Tier‑2 platforms included Linux X11, Linux Wayland, and macOS Cocoa. Tier‑3 included SDL wrappers, DOS, Win16, CP/M variants, Carbon, Classic Mac OS, Android, and Web/WASM. They also listed per-platform subsystem expectations: windowing, input, filesystem, threading, timers, sockets, process spawning, dynamic library loading, clipboard/IME, audio I/O, high-DPI, and so on.
+
+On rendering, the user defined Tier‑1 as software rendering and D3D9. Tier‑2 included D3D11, OpenGL 2.x, Metal, GDI, Quartz, and QuickDraw. Vulkan 1.0 and retro framebuffers were Tier‑3 or future/deferred. The user clarified that the renderer boundary is `dgfx IR`, with command buffers recorded then executed. They also explained which features were must-have, should-have, or not for v1. For example, swapchain/present and basic buffers were must-have; HDR, compute, render graph, MSAA, and bindless descriptors were not v1.
+
+The user also gave crucial build context: Domino core is C89/C90, Dominium is C++98, the canonical build uses CMake and Ninja, MSYS2 UCRT64 GCC appears in presets, MSVC and clang-cl are intended to be supported, and expected targets include `domino_core`, `dominium_common`, `dominium_game`, `dominium-launcher`, `dominium-setup`, `dominium-modcheck`, and `domino_numeric_test`.
+
+### The repo archive was uploaded, but remained unverified
+
+The user uploaded a compressed repository as `/mnt/data/dominium.zip` and instructed the assistant to analyze it to answer its own questions. This is one of the most important points in the history of the chat: **the generated plans proceeded without actually inspecting the archive contents**. The later handoff package explicitly marked this as a caveat. It means that repo-specific file paths and claims should be treated as user-provided or assistant-planned rather than independently verified.
+
+This is not a fatal problem for the prompt pack, because the prompts themselves repeatedly tell Codex to discover files with `rg`, `tree`, `type`, CMake commands, and target listing. But it is a major caveat for any future assistant: do not assume the actual repo matches every file path or API name unless checked.
+
+### The first platform/render prompt plan was superseded
+
+After the archive upload, an initial prompt plan was generated for platform and renderer work. It covered CMake platform/backend selection, Win32 and POSIX system backends, X11/Wayland/Cocoa gating, software/DX9/DX11/GL2/Metal/Vulkan renderers, sockets/dynlib, and integration. That plan was useful but did not remain active.
+
+The user then said they already had a set of pending prompts and pasted a **MASTER CODEX PROMPT PLAN**. This changed the sequence. The assistant was no longer planning from scratch; it had to generate a new plan that assumed this prior master plan had already been implemented.
+
+### The master prompts 1–14 became the assumed prerequisite
+
+The user’s master prompt plan was extensive. It covered deterministic simulation and engine-core architecture: invariants, packet ABI, scheduler, fields/events/messages, LOD, pose and anchors, TRANS corridors, STRUCT buildings and enclosures, DECOR signage and surface detail, agents/sensors/minds/actions, graph toolkit, domains/frames/propagators, knowledge/fog/visibility/comms, and determinism hardening.
+
+This prior plan established the deeper game-engine assumptions: no floating point in deterministic core, no grid assumptions, everything parametric and quantized, deterministic replayability, and no new gameplay semantics. The rest of the conversation treated this as the engine-core foundation.
+
+**UNCERTAIN / UNVERIFIED:** The conversation did not prove that these prompts were actually applied to the repository. They are an assumed prerequisite, not verified code state.
+
+### The conversation shifted to API extensibility and long-term architecture
+
+The user then asked how to make platform and renderer APIs extensible and modular enough to support advanced features later. The answer proposed a stable architecture: small core APIs, versioned vtables, optional extensions via `query_interface`, capability queries, backend registries, stable handles, explicit lifetimes, and a two-tier renderer model with both a portable IR and optional native command APIs.
+
+The user then asked how to make the plan reliable, deterministic, maintainable, and compatible with C89/C++98. This led to a stricter design: C ABI only across boundaries, POD structs, no C++ templates/STL/exceptions/RTTI across ABI boundaries, no adding functions directly to stable APIs without versioning or extension interfaces, deterministic capability-driven selection, and a software renderer as the D0 reference.
+
+These ideas became the architectural heart of the final plan.
+
+### Future AAA ambitions widened the roadmap
+
+The user then asked whether the plan would support starting on a GUI launcher and game while allowing future advanced graphics and audio: bloom, ray tracing, spatial audio, proximity chat, environmental acoustics, hearing and seeing distant industry, and evolving from old-school RuneScape-like presentation to Unreal Engine 5-like quality.
+
+The answer was that the architecture could support this if future features are planned as extension slots and content pipelines rather than hardcoded into the core. Renderer future slots included frame graph, materials, lighting, post-processing, shader packages, ray tracing extensions, HDR, motion vectors, and temporal history. Audio future slots included audio graph, spatialization, HRTF, environmental acoustics, acoustic proxies from STRUCT/TRANS, voice chat, jitter buffer, codec abstraction, and proximity/radio systems.
+
+The user then broadened the scope even more: AI, pathfinding, terrain, vehicles, economy, enemies, combat, realism, weather, download/setup, launchers/loading, tools/utilities, modding, scripting, and anything else needed for a future AAA-quality Dominium. These were discussed as long-term architectural workstreams, not current implementation prompts. The key idea was that every major subsystem should follow the same pattern: model layer, deterministic compiler layer, bounded runtime layer, and non-authoritative presentation layer.
+
+### The user injected mandatory constraints
+
+Later, the user pasted a large set of mandatory constraints. This hardened the plan substantially. The constraints included:
+
+* Domino core is ISO C89 only forever.
+* Dominium layer is C++98 only forever.
+* C99/C11/C++11+ are optional acceleration layers only.
+* Compatibility means source-tree and data compatibility, not one binary everywhere.
+* Runtime feature/backend selection is allowed, but runtime language-standard switching is rejected.
+* Stable ABI boundaries must use C ABI, POD structs, explicit function tables, and `u32 abi_version` plus `u32 struct_size` first.
+* Every evolvable subsystem must use a facade/backend model.
+* A central capability registry must drive deterministic selection.
+* Determinism grades D0/D1/D2 must be formalized.
+* Lockstep simulation requires D0.
+* Launcher profiles must select feature sets/backends, not language standards.
+* Serialization/assets/saves/replays must be treated as ABI.
+* Multiplayer handshake fields must include build ID, schema version, determinism profile, and content pack hashes.
+* CI/build tooling must include baseline and modern presets, null platform/null renderer, conformance tests, and embedded build metadata.
+* Explicit prohibitions include newer syntax in baseline-visible headers, UB-dependent optimizations, floats in deterministic core, unversioned data formats, C++ across ABI boundaries, and single fast path only.
+
+The assistant integrated these constraints into a more detailed plan. Then the user asked whether the plan covered everything and said they wanted the final product to be complete as far as platforms, renderers, APIs, and engine, including basic smoke tests in the game and launcher GUIs. The user also clarified a preference for fewer larger prompts.
+
+### The final active plan became a 9-prompt Codex pack
+
+The assistant responded by saying the plan did not yet guarantee “fully complete” enough state, because it needed concrete Tier‑1/Tier‑2 backend completion gates, GUI smoke tests, and one consolidated verification script. It then produced an optimized prompt pack.
+
+The user then requested that Codex submit git commits throughout with detailed summary and description, so a changelog could be produced later. The assistant generated Prompt 1 with commit discipline. The user repeatedly said “next,” and Prompts 2 through 9 were produced.
+
+This final 9-prompt pack is the main actionable result of the chat.
+
+### The chat then turned into preservation and packaging
+
+The user later asked for a maximum-fidelity Context Transfer Packet so a new chat could continue without losing context. The assistant produced a detailed transfer packet. The user then asked for a downloadable report package; the assistant created Markdown/YAML/report files and a ZIP. The user then asked to inspect that package inside the chat, and an in-chat reader version was produced. Finally, the user requested this plain-language human-readable report.
+
+So the final state is: the conversation produced a detailed active Codex implementation plan, a state-transfer packet, a report package, and now this human-readable explanatory report.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Codex prompt planning for Dominium/Domino
+
+The first and most concrete topic was generating prompts for Codex. The user did not ask for code directly; they asked for prompts that a coding agent could execute. This distinction mattered because the prompts had to include discovery commands, tasks, acceptance criteria, verification commands, and stop-and-ask conditions. They had to be self-contained enough that Codex could run them in the repository without relying on memory from this chat.
+
+The initial plan was broad: implement platforms, renderers, and APIs. As the chat developed, this became more specific: build a post-master prompt pack that assumes deterministic engine-core refactor prompts 1–14 are already complete, then finishes platform/render/API infrastructure and product smoke tests.
+
+The final conclusion was the 9-prompt pack. It is active and supersedes earlier platform/render/API prompt plans.
+
+Uncertainty remains about actual repo state. The prompts are designed to discover the repo state, but the chat itself did not inspect the archive.
+
+### Topic 2 — Platforms and platform subsystem expectations
+
+The user gave a detailed platform tier list. Tier‑1 included Win32 GUI, Win32 headless, and POSIX headless. Tier‑2 included Linux X11, Linux Wayland, and macOS Cocoa. Tier‑3 included SDL, DOS, Win16, CP/M, Carbon, Classic Mac OS, Android, and Web/WASM.
+
+The reason this came up was that the prompts could not implement “platforms” without knowing which platforms and which subsystems mattered. The user specified subsystems such as windowing, input, filesystem, threading, timers, sockets, processes, dynamic libraries, clipboard/IME, audio I/O, high-DPI, and more.
+
+The final active prompt pack narrowed runtime completion to Tier‑1 on Windows and compile-gated correctness for Tier‑2. This is a practical compromise because Codex runs on Windows. But it also creates a caveat: if “fully complete” later means fully running X11/Wayland/Cocoa/Metal/Vulkan, more prompts or native CI validation will be required.
+
+### Topic 3 — Renderers and renderer API direction
+
+Renderer discussion began with Tier‑1 software and D3D9. The software renderer was identified as the deterministic reference backend. D3D9 was chosen as the Windows runtime-present early backend. Tier‑2 renderers included D3D11, OpenGL 2.x, Metal, GDI, Quartz, and QuickDraw. Vulkan 1.0 and retro framebuffer systems were future or Tier‑3.
+
+The renderer API was described as `dgfx IR`, where commands are recorded into a buffer and executed. Later architectural discussion refined this into a two-tier model: a stable, portable IR layer for baseline/backward compatibility, and an optional native command API for advanced modern renderers.
+
+The conclusion was that the software renderer should be D0 bit-exact and used for deterministic reference tests, while DX9 can be a D2 presentation backend unless proven otherwise. Advanced renderer features such as frame graph, ray tracing, shader reflection, HDR, and pipeline cache should be optional extensions, not base API bloat.
+
+### Topic 4 — Stable APIs, ABI boundaries, and extensibility
+
+One of the most important topics was how to make platform and renderer APIs extensible without constantly breaking old code. The answer evolved into a strict ABI policy:
+
+* Public boundaries use C ABI.
+* Structs are POD.
+* No C++ types, templates, exceptions, RTTI, STL, or inline semantics across ABI boundaries.
+* Every interface starts with `u32 abi_version` and `u32 struct_size`.
+* Core APIs remain small.
+* Features grow through versioned vtables or optional extension interfaces.
+* Optional features are discovered through `query_interface`.
+
+This topic matters because the user wants Dominium to last for years and support everything from retro systems to future AAA features. Without a stable ABI and extension pattern, advanced backends would force complexity onto simple platforms, and old data/plugins could break.
+
+The final plan embeds these ideas in Prompt 1.
+
+### Topic 5 — Capability registry and deterministic backend selection
+
+Another major topic was how to choose backends. Instead of hardcoding platform/render decisions or scattering `#ifdef`s throughout logic, the plan uses a centralized capability registry.
+
+Backends declare required OS/ISA features, determinism grade, performance class, feature bits, and function pointers. The launcher and engine selection logic then choose implementations based on profiles such as `compat`, `baseline`, or `perf`, plus explicit flags like `--gfx=soft` or `--lockstep-strict=1`.
+
+This matters because it allows the same engine to run on minimal, compatibility, or performance-oriented configurations without changing correctness. It also makes backend selection inspectable, which helps debugging and reproducibility.
+
+Prompt 2 implements this.
+
+### Topic 6 — Determinism grades and lockstep safety
+
+The user explicitly required determinism grades:
+
+* D0: bit-exact.
+* D1: tick-exact.
+* D2: best-effort.
+
+The plan formalized that lockstep strict mode requires D0. No backend may silently downgrade determinism. Optimized paths need deterministic reference fallbacks.
+
+This matters because Dominium’s deterministic simulation and replay/networking goals could be destroyed by a platform-specific optimized path or renderer/audio behavior feeding back into simulation. The plan therefore separates deterministic control from non-deterministic presentation.
+
+The software renderer and null backends are intended as D0 references. DX9 is likely D2 unless proven otherwise, and should not be used as an authoritative lockstep dependency.
+
+### Topic 7 — TLV-as-ABI, saves, assets, replays, and net handshake
+
+The user required serialization formats to be treated as ABI. This means saves, assets, replays, configs, and network handshake payloads cannot be ad hoc or unversioned.
+
+The plan settled on one chunked/TLV container model with versioned chunks, skip-unknown behavior, deterministic ordering/hashing, and explicit migrations. Networking handshakes must include engine build ID, simulation schema ID/version, determinism profile, and content pack hashes. Mixed versions are rejected unless explicitly supported.
+
+This matters because long-term compatibility is one of the hardest parts of a game/engine that is expected to evolve for years. Prompt 7 implements this.
+
+### Topic 8 — Launcher and game GUI smoke tests
+
+The user wanted the end of the plan to be complete enough to start designing the launcher and game. The assistant noted that this required more than API architecture; it required executable GUI smoke tests. Prompt 8 therefore adds `--smoke-gui` to both launcher and game.
+
+The smoke tests are intentionally minimal: create a window, initialize DSYS and DGFX, draw rectangles or a basic HUD, pump input/events, print build ID/schema ID/selection audit, and exit cleanly. The point is not to create final UI; it is to prove that platform, renderer, backend selection, and product entry points are integrated.
+
+This became one of the final “done” gates, along with `scripts\build_codex_verify.bat`.
+
+### Topic 9 — Future AAA graphics, audio, and input
+
+The user wants early simple graphics/audio but eventual high-end features: bloom, ray tracing, spatial audio, proximity chat, environmental acoustics, wind, trees, tunnels, rooms, and distant industry.
+
+The plan’s answer was to reserve extension slots and data pipelines now rather than implement those features immediately. Future graphics should use frame graph, material/effect packages, lighting pipeline layers, post-processing chains, temporal data, and ray tracing extensions. Future audio should use an audio graph, spatial emitters, environmental propagation, acoustic proxies, voice pipeline abstraction, and proximity/radio systems.
+
+These are not current implementation tasks in the final 9-prompt pack. They are future spec-book material.
+
+### Topic 10 — Broader AAA engine readiness
+
+The user expanded beyond graphics/audio to AI, pathfinding, terrain, vehicles, economy, enemies, combat, realism, weather, setup/download, launchers/loading, tools/utilities, modding, and scripting.
+
+The answer framed these as future systems that should follow a common pattern: model layer, deterministic compiler layer, bounded scheduled runtime layer, and non-authoritative presentation layer. Examples included compiled navigation artifacts, terrain fields, vehicle tiers, deterministic economy graphs, combat event streams, weather fields, and modding/script domains.
+
+Again, these were brainstormed as future architecture slots, not current implementation commitments.
+
+### Topic 11 — Commit discipline and changelog generation
+
+Near the end of prompt planning, the user added a process requirement: Codex should make git commits throughout with detailed summary and description so a changelog can be created later. This requirement was added to all final prompts.
+
+Each prompt instructs Codex to configure local git identity, make multiple small commits, keep the tree clean after each commit, and use a message format with a `p<N>:` subject and body sections for What, Why, Impact, and Verification.
+
+Prompt 9 then adds changelog/release tooling.
+
+### Topic 12 — Handoff and report packaging
+
+The final phase of the chat was about preserving the conversation. The user asked for a maximum-fidelity Context Transfer Packet, then for a downloadable report package, then for an in-chat reader version, and now for a plain-language report.
+
+This matters because the conversation was long and contained multiple plans, superseded options, caveats, and active artifacts. The report package and this plain-language report exist to prevent future assistants from restarting, re-asking, or losing distinctions between decisions, brainstorms, and uncertainties.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals
+
+The user explicitly wanted to produce a set of ready-to-run prompts for Codex CLI / VS Code Codex running GPT‑5.2. The prompts had to implement missing or unfinished platforms, renderers, and APIs in the Dominium repository. This goal mattered because the work is too large and risky to do as one vague prompt; it needed sequencing, discovery, build verification, and stop-and-ask rules.
+
+The user also explicitly wanted the repo to remain buildable after every prompt. This shaped the entire prompt style: incremental changes, smoke tests, CMake verification, and no big broken intermediate states.
+
+A later explicit goal was to make the platform API and renderer API modular and extensible so advanced renderers/platforms could be added later. This led to the stable ABI, facade/backend, capability registry, and extension-interface decisions.
+
+Another explicit goal was to prepare for future AAA-quality Dominium: advanced graphics, audio, input, AI, pathfinding, vehicles, economy, combat, weather, tools, modding, and more. This goal did not become immediate implementation scope, but it shaped the architecture.
+
+Finally, the user explicitly wanted a durable handoff/report package and then a human-readable explanation of the chat.
+
+### Inferred goals
+
+The chat implies that the user wants to avoid architectural dead ends. They are trying to design an engine that can start simple but grow over years without massive rewrites. That is an inference, but it is strongly supported by repeated requests about extensibility, modularity, determinism, AAA features, and future spec-book construction.
+
+The user also seems to want future assistants to operate with high continuity and not lose subtle distinctions. This is inferred from the repeated requests for maximum-fidelity transfer, stable IDs, labels, uncertainty tracking, and report packaging.
+
+### Goals that changed over time
+
+The initial goal was “generate prompts for platforms, renderers, and APIs.” It then shifted to “generate prompts assuming my prior master engine prompts are already implemented.” It then expanded into “make the APIs extensible and future-proof.” It then hardened into “include mandatory language/ABI/determinism/TLV/capability constraints.” It then narrowed again into “produce fewer larger prompts for Codex, with commits, smoke tests, and final done gates.” Finally, it shifted into preservation: “make a handoff/report package and explain it.”
+
+### Goals that remain unresolved
+
+The biggest unresolved goal is whether the final 9-prompt pack is enough for the user’s phrase “fully complete” if that includes full runtime Tier‑2 backends. Prompt 6 only ensures Tier‑2 gating and compile correctness, because the Codex runtime is Windows. If the user later wants Linux X11/Wayland/macOS Cocoa/Metal/Vulkan runtime validation, additional platform-specific prompts and native CI/test environments will be needed.
+
+Another unresolved goal is whether the master engine prompts 1–14 are truly implemented. The later plan depends on them, but this chat did not verify the repo.
+
+---
+
+## 5. Decisions Made and Why
+
+A compact decision map:
+
+| Decision area              | What was decided                                          | Status                             |
+| -------------------------- | --------------------------------------------------------- | ---------------------------------- |
+| Language baseline          | Domino C89, Dominium C++98 forever                        | FACT / final                       |
+| Modern standards           | Optional acceleration only                                | FACT / final                       |
+| Runtime language switching | Rejected                                                  | FACT / final                       |
+| ABI boundaries             | C ABI, POD, function tables                               | FACT / final                       |
+| Interface layout           | `u32 abi_version`, `u32 struct_size` first                | FACT / final                       |
+| Architecture               | Facade + backend per evolving subsystem                   | FACT / final                       |
+| Backend selection          | Central capability registry                               | FACT / final                       |
+| Determinism                | D0/D1/D2, lockstep strict D0 only                         | FACT / final                       |
+| Serialization              | TLV-as-ABI with versioning/migrations                     | FACT / final                       |
+| Networking                 | Versioned handshake with build/schema/content/determinism | FACT / final                       |
+| Active plan                | Final 9-prompt post-master pack                           | FACT / final                       |
+| Tier‑2 scope               | Gated/compile-correct in current pack                     | FACT with caveat                   |
+| Future AAA features        | Roadmap/spec slots, not current implementation            | INFERENCE / current scope decision |
+
+### C89/C++98 as permanent baselines
+
+The user explicitly stated that Domino core must remain ISO C89 and Dominium layer must remain C++98. This was final and non-negotiable. The rationale is compatibility and longevity: the engine wants to support old toolchains, retro platforms, and stable source/data compatibility. This affects every public header, every ABI boundary, and CMake presets.
+
+Alternatives such as adopting C11 or C++11 as the baseline were not accepted. They may exist only as optional acceleration layers.
+
+This decision would only be revisited if the user explicitly reverses the core language policy.
+
+### Runtime language-standard switching was rejected
+
+The user clarified that compatibility is source-tree and data compatibility, not a runtime choice between C89 and C11. This prevents a confused architecture where launcher profiles might select language standards. The plan explicitly says profiles can select backends and features, not the language standard used to compile the engine.
+
+The rationale is that language standards are compile-time properties. Runtime selection makes sense for backend implementations, not for C89 versus C11.
+
+### Stable ABI boundaries use C ABI and POD structs
+
+The user required that all cross-module, cross-DLL, and plugin boundaries use C ABI only, POD structs only, and explicit function tables. No C++ types, templates, exceptions, RTTI, STL, or inline semantics can cross those boundaries.
+
+The reasoning is straightforward: cross-compiler and cross-language ABI stability is fragile. A C ABI with versioned POD structs is much safer and more portable.
+
+This affects DSYS, DGFX, plugin APIs, jobs, SIMD, IO streaming, and future extensions.
+
+### Every interface starts with `abi_version` and `struct_size`
+
+This was user-mandated. It gives every interface a way to negotiate version and size. That matters when old and new modules interact, because callers can know which fields/functions exist.
+
+This also makes API evolution mechanical: new versions or extensions can be added without silently corrupting ABI layout.
+
+### Facade + backend architecture was chosen
+
+For any subsystem that may evolve or optimize later, the plan requires a stable facade and one selected backend at runtime. The minimum subsystems include platform facets, renderers, jobs, SIMD/math kernels, and IO streaming.
+
+The rationale is that advanced features should not force simple or legacy platforms to implement everything. A CP/M or DOS backend can have a minimal stub/baseline implementation; Win32 or modern platforms can have optimized/threaded/SIMD backends. Callers talk to the facade.
+
+This decision supersedes a monolithic platform API as the long-term architecture.
+
+### Central capability registry was chosen
+
+Backends must declare their requirements and capabilities. A centralized registry then chooses backends based on launcher profiles, runtime detection, and deterministic selection rules.
+
+This decision was made because hardcoded selection does not scale. The user wants compatibility profiles, performance profiles, lockstep strictness, and future advanced features. A registry makes selection inspectable and reproducible.
+
+### Determinism grades were formalized
+
+The user defined D0, D1, and D2:
+
+* D0 means bit-exact.
+* D1 means tick-exact.
+* D2 means best-effort.
+
+Lockstep strict mode requires D0. This decision protects deterministic replay and multiplayer. It also lets presentation backends such as DX9 or future ray-tracing renderers exist without pretending they are authoritative deterministic systems.
+
+If a backend’s determinism cannot be proven, the safe default is D2.
+
+### Serialization became public ABI
+
+The user required saves, assets, replays, and config to be treated like ABI. The plan uses one chunked/TLV container format with versioned chunks, skip-unknown behavior, and explicit migrations.
+
+The rationale is long-term compatibility. Dominium is expected to evolve over years; unversioned formats would become technical debt and break old saves/mods/replays.
+
+### Networking handshake was versioned
+
+The user required handshake fields: engine build ID, simulation schema version, determinism profile, and content pack hashes. This prevents mismatched multiplayer sessions from proceeding silently.
+
+The default policy is to reject mixed versions unless explicitly supported.
+
+### The final active plan became the 9-prompt pack
+
+Several earlier prompt plans existed, but the user’s later preference for fewer larger prompts and git commit discipline produced the final 9-prompt pack. This is the active implementation plan. Earlier prompt packs are historical or superseded.
+
+### Tier‑2 backend completion was scoped as gating and compile correctness
+
+This is a decision with a caveat. Because Codex runs on Windows, the final prompt pack treats non-Windows Tier‑2 platforms as host-gated and compile-correct when built on their native hosts, not fully runtime-validated on Windows. This makes practical sense, but it may not satisfy a stronger interpretation of “fully complete” if the user later demands runtime Tier‑2 validation.
+
+This may need to be revisited.
+
+### Future AAA features were preserved as roadmap material
+
+The user discussed many future systems. The plan did not make them current implementation tasks. Instead, it preserved them as architecture slots and future spec-book candidates.
+
+This avoids scope explosion while keeping the engine future-proof.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Runtime C89/C11 switching
+
+This was explicitly rejected. It was considered only because the user wanted baseline and modern layers, but the user clarified that language standards are compile-time, not runtime-selectable. Runtime selection is allowed for feature profiles and backends only.
+
+This rejection is final unless the user reverses the language policy.
+
+### CMake dependency downloads
+
+The user prohibited adding dependencies that require downloads unless explicitly approved. This affects Vulkan, Wayland protocols, shader compilers, GLEW/GLAD, DXC, and any future audio/voice codecs. System-provided SDKs may be used when present, but the build system must not fetch dependencies.
+
+This rejection is final for current prompts.
+
+### C++ ABI boundaries
+
+The idea of exposing C++ types or templates across module boundaries was rejected by the stable ABI policy. It might be acceptable inside private implementation code, but not across public/plugin/module boundaries.
+
+This rejection is final for ABI surfaces.
+
+### Monolithic platform API
+
+A monolithic platform layer was superseded by platform facets. The old API may remain as a compatibility shim, but the long-term architecture is facet-based.
+
+This matters because filesystem, time, threading, networking, audio I/O, clipboard/text, windowing, and input can evolve independently.
+
+### Single fast path only
+
+The user explicitly prohibited “single fast path only” implementations. Every optimized path must have a deterministic reference fallback. This prevents the engine from depending on SIMD/threaded/platform-specific behavior for correctness.
+
+### Unversioned data formats
+
+Unversioned serialization was rejected. Every save/asset/replay/config format should use a versioned TLV container with skip-unknown behavior and migration paths.
+
+### Full Vulkan or D3D12 implementation in the current pack
+
+Vulkan and D3D12 were discussed as future/advanced renderers. Vulkan appears in the prompt pack only as a gated backend that compiles when system SDKs exist. D3D12 was explicitly treated as planned/future because it was not part of the current `dgfx` contract described in the chat.
+
+These are temporary deprioritisations. They can become future prompt phases.
+
+### Earlier prompt plans
+
+Several earlier assistant-generated prompt plans were superseded:
+
+* the first 14-prompt platform/render pack,
+* the post-engine prompts 15–24,
+* the revised prompts 15–28.
+
+They matter historically, but the active plan is the final 9-prompt pack.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The visible reasoning throughout the chat was shaped by a few recurring tradeoffs.
+
+First, the user wanted both **long-term compatibility** and **future advanced features**. Those goals conflict if advanced features are bolted directly into core APIs. The solution was to keep core APIs small and stable, and add advanced capabilities as extensions. This lets early/retro/simple backends exist alongside future high-end backends.
+
+Second, the user wanted **determinism** but also wanted high-end graphics and audio. Rendering and audio can be nondeterministic across hardware, drivers, and platforms. The plan therefore separates authoritative deterministic simulation from presentation. Renderer/audio output cannot feed back into simulation. The software renderer and null backends can provide deterministic references, while modern GPU/audio paths can be D2 presentation systems.
+
+Third, the user wanted **C89/C++98 compatibility** but also future performance. The plan therefore uses baseline implementations as correctness paths and modern/SIMD/threaded layers as optional accelerations. Correctness cannot depend on modern features.
+
+Fourth, the user wanted **Codex productivity** but not broken intermediate states. This led to fewer larger prompts, but each prompt still contains discovery commands, verification, stop-and-ask conditions, and commit discipline. The plan tries to balance Codex’s ability to generate large code changes with the need to preserve buildability.
+
+Fifth, the user wanted **future spec-book construction**. That means uncertainty and provenance matter. The chat repeatedly preserved labels such as FACT, INFERENCE, and UNCERTAIN / UNVERIFIED. This prevents future aggregation from treating assistant suggestions or brainstorms as binding decisions.
+
+The biggest visible risk being managed was architectural entropy: if platform/render/audio/input/networking/modding all grow in ad hoc ways, the engine will become unmaintainable. The chosen answer was mechanical discipline: vtables, extensions, capabilities, determinism grades, TLV formats, build matrices, smoke tests, and changelog-ready commits.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+### Immediate next step: verify the repository
+
+Before executing any prompt, the repo or archive must be inspected. This is necessary because the uploaded archive was not actually analyzed during prompt generation. The future assistant or Codex should run basic commands such as:
+
+```bat
+cd /d "c:\Inbox\Git Repos\dominium"
+git status --porcelain
+cmake -S . -B build\verify_initial -G Ninja -DCMAKE_BUILD_TYPE=Debug
+cmake --build build\verify_initial --target help
+rg -n "dsys_|domino_sys_|dgfx_" -S include source
+```
+
+This matters because the prompt pack assumes certain files, APIs, and targets, but those must be confirmed.
+
+What could go wrong: the repo may not match the assumptions, master prompts may not have been implemented, or target names may differ.
+
+### Then execute Prompt 1
+
+Prompt 1 introduces baseline enforcement, ABI templates, and DSYS/DGFX facades. It is foundational. It should produce docs and headers such as `SPEC_LANGUAGE_BASELINES.md`, `SPEC_ABI_TEMPLATES.md`, `SPEC_FACADES_BACKENDS.md`, and `include/domino/abi.h`.
+
+Before it can succeed, Codex must discover the existing public headers and system/render APIs. If both `dsys_*` and `domino_sys_*` are widely used, Codex may need to ask whether to preserve `domino_sys_*` as a legacy shim.
+
+What could go wrong: public headers may contain C99/C++11 constructs, and the header checker could produce many violations.
+
+### Execute Prompt 2
+
+Prompt 2 implements the capability registry, determinism grades, and launcher profiles. It gives the engine a deterministic way to select backends based on profile, flags, and hardware/OS capabilities.
+
+This matters because every later prompt depends on backend registration and selection.
+
+What could go wrong: existing backends may not have provable determinism grades. The safe answer is to mark uncertain backends D2.
+
+### Execute Prompt 3
+
+Prompt 3 adds CMake presets, generated config headers, null platform/null renderer, build metadata, and a verify script skeleton. This makes the build reproducible and gives CI/headless testing a deterministic fallback.
+
+What could go wrong: existing presets may conflict with the new names. Prompt 3 has a stop-and-ask condition for that.
+
+### Execute Prompt 4
+
+Prompt 4 completes Tier‑1 Win32 and Win32 headless system facets. It adds `domino_sys_smoke`, which tests system initialization, filesystem, time, dynlib, process, and window/event loop where appropriate.
+
+What could go wrong: path encoding, process capture, and networking scope may need decisions.
+
+### Execute Prompt 5
+
+Prompt 5 completes the software renderer as D0 reference and adds DX9 present/minimal primitive rendering. It also adds `dgfx_demo`.
+
+What could go wrong: the UI/render smoke path may need text rendering, or the IR may define more operations than Tier‑1 needs. The prompt explicitly asks for clarification if needed.
+
+### Execute Prompt 6
+
+Prompt 6 gates Tier‑2 platforms and renderers. It ensures incompatible selections fail clearly and optional deps are detected without downloads.
+
+What could go wrong: Wayland may require generated protocol code, Vulkan SDK may be missing, and Apple-only code cannot be validated on Windows.
+
+### Execute Prompt 7
+
+Prompt 7 implements TLV-as-ABI and network handshake versioning. It also adds migration and malformed-input tests.
+
+What could go wrong: existing save/replay/asset formats may be complex or undocumented.
+
+### Execute Prompt 8
+
+Prompt 8 is the product integration done gate. It adds launcher and game GUI smoke tests and finalizes `scripts\build_codex_verify.bat`.
+
+What could go wrong: executable target names may differ, or there may be no UI layer. The prompt allows immediate-mode DGFX drawing unless the user insists on a UI toolkit.
+
+### Execute Prompt 9
+
+Prompt 9 adds commit conventions, changelog generation, release notes process, and final polish.
+
+What could go wrong: the repo may already have a changelog format that should be preserved.
+
+### Future work after the 9 prompts
+
+After this foundation, future phases can target:
+
+* full runtime Tier‑2 platform validation,
+* advanced renderers such as D3D12/Vulkan/Metal,
+* frame graph/material/shader package systems,
+* audio graph/environmental acoustics/proximity chat,
+* advanced input/haptics,
+* AI/navigation/vehicles/economy/combat/weather,
+* modding/scripting/tools,
+* launcher/setup/patching/distribution systems.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit technical constraints
+
+The strongest constraints are language, ABI, determinism, and build-related:
+
+* Domino core must stay ISO C89.
+* Dominium layer must stay C++98.
+* Modern standards are optional only.
+* No runtime language-standard switching.
+* Public ABI boundaries use C ABI and POD structs.
+* Interface structs start with `u32 abi_version` and `u32 struct_size`.
+* No C++ types/templates/exceptions/RTTI/STL across ABI boundaries.
+* No floating point in deterministic core.
+* No UB-dependent optimizations.
+* No unversioned data formats.
+* No silent determinism downgrades.
+* Lockstep strict requires D0.
+* Serialization is ABI.
+* No CMake/dependency downloads unless approved.
+* Repo must remain buildable after every prompt.
+
+### Explicit process preferences
+
+The user prefers fewer larger prompts. This is not just a stylistic preference; it was motivated by how GPT‑5.2 Codex behaves in VS Code: it generates thousands of lines and takes time. The final plan therefore consolidated work into 9 large prompts.
+
+The user also requires Codex to make commits throughout, with detailed commit messages suitable for changelog generation. This was integrated into every final prompt.
+
+### Communication preferences
+
+The user’s visible preferences include directness, high-density explanations, rigorous uncertainty tracking, and not losing context. They repeatedly asked for maximum-fidelity transfer, report packaging, in-chat rendering, and now a human-readable narrative. Future assistants should not over-compress this chat or turn it into a bare database.
+
+### Evidence and verification requirements
+
+This chat repeatedly distinguishes between facts, inferences, and unverified claims. Any future assistant must verify repo state, target names, file paths, API surfaces, and external toolchain facts before acting.
+
+### Things to avoid
+
+Future assistants should avoid:
+
+* re-asking the initial questionnaire,
+* treating superseded prompt packs as active,
+* treating roadmap brainstorms as current implementation scope,
+* inventing file contents,
+* claiming the repo was inspected when it was not,
+* introducing downloads,
+* breaking C89/C++98 baseline,
+* weakening deterministic simulation guarantees,
+* ignoring git commit discipline,
+* producing another machine-readable handoff when the user asks for explanation.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+The most important artifact is the **final 9-prompt Codex pack**. These prompts are not ordinary notes; they are meant to be pasted into Codex one by one. Each one has context, goal, scope, discovery commands, tasks, acceptance criteria, verification, stop-and-ask conditions, and report-back instructions.
+
+The earlier **MASTER CODEX PROMPT PLAN 1–14** is also important. It is the prerequisite engine-core plan. It must be preserved because the final 9-prompt pack assumes it.
+
+The uploaded repository archive `/mnt/data/dominium.zip` is important but unverified. It should be preserved and inspected before implementation claims are made.
+
+The generated report package is important for future aggregation but is not the substance of the technical plan. It contains a full report, YAML spec sheet, aggregator packet, registers, reader brief, verification/audit, manifest, and ZIP. These were created to preserve the chat, not to define new technical requirements.
+
+The final 9 prompts produce planned future files inside the repo, such as:
+
+* `docs/SPEC_LANGUAGE_BASELINES.md`
+* `docs/SPEC_ABI_TEMPLATES.md`
+* `docs/SPEC_FACADES_BACKENDS.md`
+* `include/domino/abi.h`
+* `include/domino/config_base.h`
+* `docs/SPEC_CAPABILITY_REGISTRY.md`
+* `docs/SPEC_LAUNCHER_PROFILES.md`
+* `docs/SPEC_DETERMINISM_GRADES.md`
+* `docs/BUILD_MATRIX.md`
+* `scripts/build_codex_verify.bat`
+* `docs/SPEC_CONTAINER_TLV.md`
+* `docs/SPEC_NET_HANDSHAKE.md`
+* `docs/SPEC_SMOKE_TESTS.md`
+* `docs/COMMIT_CONVENTIONS.md`
+* `scripts/gen_changelog.bat`
+
+These files do not necessarily exist yet. They are expected outputs of the prompts.
+
+The important executable/test artifacts planned are:
+
+* `domino_sys_smoke`
+* `dgfx_demo`
+* launcher `--smoke-gui`
+* game `--smoke-gui`
+* soft renderer pixel hash test
+* TLV/handshake regression tests
+
+These should feed into the future Project Spec Book as implementation/process requirements, but only after repo verification and/or Codex execution.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+### Whether master prompts 1–14 are implemented
+
+This is the biggest sequencing uncertainty. The final 9-prompt pack assumes the master deterministic engine-core prompts are done. If they are not, Prompt 1 may still run, but later assumptions about scheduler, TLV, domains, TRANS/STRUCT/DECOR, etc. may not hold.
+
+Resolution: inspect repo state and commit history, or ask the user whether the master prompts have actually been executed.
+
+### Whether the uploaded repo archive matches the assumptions
+
+The archive was uploaded but not inspected. Any file path, target name, or API claim should be verified.
+
+Resolution: inspect `/mnt/data/dominium.zip` or the actual repo.
+
+### Which system API is authoritative
+
+The user said the repo has both `dsys_*` and legacy `domino_sys_*`. The final Prompt 1 allows a legacy shim but may need a policy decision if both surfaces are widely used.
+
+Resolution: search callsites and ask whether `domino_sys_*` remains as a stable shim or migrates to `dsys_*`.
+
+### Exact launcher/game target names
+
+The user listed expected targets, but actual CMake target names must be confirmed. Prompt 8 depends on this.
+
+Resolution: run `cmake --build <dir> --target help`.
+
+### UI and text rendering strategy
+
+Smoke GUIs can draw rectangles if text is unavailable, but if launcher/game UI requires text, a decision is needed: bitmap font, vector text, or UI toolkit.
+
+Resolution: inspect renderer/UI code; ask only if necessary.
+
+### Tier‑2 runtime completion
+
+The final pack gates Tier‑2 platforms/renderers and makes them compile-correct where dependencies exist. It does not guarantee full runtime validation on Linux/macOS from Windows Codex.
+
+Resolution: user should decide whether future native-host prompts are required.
+
+### Existing legacy formats
+
+Prompt 7 depends on knowing existing save/replay/asset/config formats. If they are undocumented or complex, migration scope may expand.
+
+Resolution: inventory formats before implementing TLV migration.
+
+### D3D12 future scope
+
+D3D12 was mentioned as planned but not part of the current `dgfx` contract. It remains future scope.
+
+Resolution: add a later advanced renderer phase if desired.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+A future assistant might treat the final 9-prompt pack as evidence that the repository has already been changed. That would be wrong. It is a plan.
+
+A future assistant might ignore the unverified repo archive caveat and claim file paths or APIs exist. That would be dangerous. The archive and repo must be inspected.
+
+A future assistant might revive superseded prompt packs. The earlier platform/render pack, the 15–24 plan, and the 15–28 plan are historical. The active plan is the final 9-prompt pack.
+
+A future assistant might treat future AAA brainstorms as current implementation requirements. That would cause scope explosion. They should be future spec-book material unless the user promotes them.
+
+A future assistant might conflate Tier‑2 compile-gated coverage with full runtime completion. Prompt 6 does not fully run and validate X11/Wayland/Cocoa/Metal/Vulkan on their native platforms.
+
+A future assistant might weaken C89/C++98 or ABI rules. These are user-mandated and central to the plan.
+
+A future assistant might forget the commit discipline. Every Codex prompt must produce multiple detailed commits.
+
+A future assistant might overcompress the chat and lose why decisions were made. The rationale matters: compatibility, determinism, extensibility, long-term maintenance, and future AAA growth without core rewrites.
+
+A future assistant might treat assistant suggestions as user decisions. The package labels some items as INFERENCE for exactly this reason.
+
+A future assistant might fail to preserve rejected options. That can lead to repeated work, such as proposing runtime C89/C11 switching or unversioned formats again.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes a **platform/render/API execution plan** and a set of architectural rules that likely belong in the future Project Spec Book.
+
+Formal requirements candidates include:
+
+* C89/C++98 baseline.
+* Optional modern acceleration layers only.
+* C ABI/POD/function-table boundaries.
+* `abi_version` and `struct_size` first in interfaces.
+* Facade/backend architecture.
+* Central capability registry.
+* D0/D1/D2 determinism grades.
+* Lockstep strict D0 rule.
+* TLV-as-ABI for saves/assets/replays/config.
+* Versioned multiplayer handshake.
+* No dependency downloads without approval.
+* Buildable-after-each-prompt workflow.
+* Product smoke tests for launcher and game.
+* Changelog-ready Codex commit discipline.
+
+Background context candidates include:
+
+* Future AAA graphics/audio/input/AI/navigation/economy/weather/tools/modding roadmap.
+* The history of superseded prompt plans.
+* The practical reason for fewer larger Codex prompts.
+
+Likely overlaps with other chats:
+
+* Determinism.
+* TRANS/STRUCT/DECOR.
+* TLV/file formats.
+* Modding/scripting.
+* AAA feature roadmap.
+* Build/toolchain policy.
+
+Potential conflicts with other chats:
+
+* If another chat changes language baseline.
+* If another chat proposes C++ ABI plugin interfaces.
+* If another chat requires runtime Tier‑2 completion immediately.
+* If another chat treats D3D12 as current scope.
+* If another chat introduces dependencies/downloads.
+
+Before merging this chat into a Project Spec Book, verify the repository state and distinguish current implementation scope from future roadmap.
+
+---
+
+## 14. What I Should Remember
+
+* The active outcome of this chat is the **final 9-prompt Codex pack**, not the earlier plans.
+* The final 9 prompts assume the user’s master deterministic engine prompts 1–14 are already done, but that is unverified.
+* The uploaded repo archive was not inspected, so repo-specific claims must be checked.
+* The core architecture is built around **C89/C++98**, stable **C ABI**, **POD vtables**, **facades/backends**, **capability registry**, and **determinism grades**.
+* Runtime selection is for features and backends only, never language standards.
+* Lockstep strict requires D0. Uncertain optimized backends should not claim D0.
+* Software renderer is the D0 reference; DX9 is Tier‑1 runtime presentation but likely D2.
+* Tier‑2 platform/render support in the current plan is mostly gated/compile-correct, not full native runtime validation.
+* Serialization is ABI. Saves, replays, assets, configs, and handshakes must be versioned TLV with skip-unknown and migrations.
+* Launcher and game GUI smoke tests are part of the “done” gate.
+* `scripts\build_codex_verify.bat` is the intended final one-command verification gate after Prompt 8.
+* Codex must make detailed commits throughout, with `p<N>:` subjects and What/Why/Impact/Verification bodies.
+* Future AAA features were preserved as roadmap/spec material, not current implementation scope.
+* Future assistants must not re-ask the original questionnaire or restart the plan.
+* Future assistants must not treat assistant brainstorms as final user decisions unless accepted.
+* The most important unresolved issue is whether repo state matches the assumptions.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Show me the final active 9-prompt pack in compact form.”
+2. “Explain Prompt 1 in detail and why it comes first.”
+3. “What should I verify in the repo before executing Prompt 1?”
+4. “Which decisions are user-mandated versus assistant-inferred?”
+5. “What does Tier‑2 compile-gated coverage mean, and what is missing for full runtime Tier‑2 completion?”
+6. “Summarize the C89/C++98 and ABI rules as future Project Spec Book requirements.”
+7. “Turn the final 9 prompts into an execution checklist for Codex.”
+8. “Which parts of this chat should go into the master Project Spec Book?”
+9. “Which artifacts are active, superseded, or historical?”
+10. “What are the biggest risks if a future assistant misunderstands this chat?”
+11. “Explain the future AAA roadmap but separate current scope from future scope.”
+12. “What exact verification commands should be run first in the repository?”
+13. “Which unresolved questions require the user to decide something?”
+14. “What would a Prompt 10 look like if we wanted full Tier‑2 runtime completion?”
+15. “What should an aggregator preserve from this chat and what should it avoid merging?”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was a long planning and preservation session for the Dominium/Domino game engine. The central purpose was to produce a high-quality Codex prompt pack that could guide GPT‑5.2 Codex, running in VS Code or Codex CLI, through major engine work inside the repository at `c:\Inbox\Git Repos\dominium`. The user wanted Codex to complete missing or unfinished platforms, renderers, APIs, and integration smoke tests without breaking the build between prompts.
+
+The work began with a questionnaire because the user explicitly did not want assumptions about what “platforms,” “renderers,” “APIs,” or “done” meant. The user then supplied detailed technical scope: Tier‑1 platforms such as Win32 and Win32 headless; Tier‑2 platforms such as Linux X11, Linux Wayland, and macOS Cocoa; Tier‑1 renderers such as software and D3D9; future renderers such as D3D11, GL2, Metal, Vulkan, and retro framebuffer paths; and expected repo/build context such as CMake, Ninja, C89/C++98, and existing targets. The user uploaded a repository archive, but an important caveat is that the archive was not actually inspected during prompt generation. This means future assistants must verify repository facts before relying on file paths, APIs, or target names.
+
+The direction changed when the user revealed an existing master prompt plan of 14 prompts for deterministic engine-core refactoring. That master plan covered simulation invariants, packet ABI, deterministic scheduler, fields/events/messages, LOD, arbitrary placement, TRANS, STRUCT, DECOR, agents, graph toolkit, domains/frames/propagators, knowledge/fog/comms, and determinism regression. The later platform/render/API plan assumes those master prompts are implemented, but this was not verified in the chat. That assumption is one of the main unresolved risks.
+
+The heart of the conversation became architecture. The user wanted platform and renderer APIs that could support simple early builds and much more advanced systems later. The plan therefore settled on stable C ABI boundaries, POD structs, versioned function tables, `query_interface` extension slots, capability-driven backend selection, and a central registry. The user later injected mandatory constraints that made these rules non-negotiable: Domino core must stay ISO C89, Dominium must stay C++98, modern standards can only be optional acceleration layers, runtime language-standard switching is rejected, every ABI interface begins with `u32 abi_version` and `u32 struct_size`, and no C++ types/templates/exceptions/RTTI/STL may cross ABI boundaries.
+
+Determinism was another core theme. The user required formal determinism grades: D0 bit-exact, D1 tick-exact, and D2 best-effort. Lockstep strict mode requires D0 only. This means optimized, threaded, GPU, or platform-specific paths cannot silently become authoritative unless proven deterministic. The software renderer is intended to be the D0 reference; DX9 can be used as a Tier‑1 presentation backend but is likely D2 unless proven otherwise. Renderer and audio output must not feed back into deterministic simulation.
+
+The user also wanted long-term data compatibility. The plan therefore treats serialization as ABI. Saves, assets, replays, launcher config, and network handshakes should use a common chunked/TLV container with versioned chunks, skip-unknown behavior, deterministic hashing/ordering, and explicit migrations. Multiplayer handshakes must include engine build ID, simulation schema version or ID, determinism profile, and content pack hashes, with mixed versions rejected unless explicitly supported.
+
+The active result is the final 9-prompt post-master Codex pack. Prompt 1 enforces C89/C++98 baselines and ABI/vtable/facade architecture. Prompt 2 implements capability registry, determinism grades, and launcher profiles. Prompt 3 adds CMake presets, null platform/renderer, build metadata, and a build matrix. Prompt 4 completes Win32 and Win32-headless system facets and adds `domino_sys_smoke`. Prompt 5 completes the software renderer reference, DX9 present path, and `dgfx_demo`. Prompt 6 gates Tier‑2 platforms/renderers for compile correctness. Prompt 7 implements TLV-as-ABI and network handshake versioning. Prompt 8 adds launcher/game GUI smoke tests and the final verify script. Prompt 9 adds changelog and release-note tooling. Each prompt requires Codex to make multiple detailed git commits with `p<N>:` prefixes and What/Why/Impact/Verification bodies.
+
+The chat also explored future AAA ambitions. The user wants Dominium to start simple, perhaps with old-school RuneScape-like graphics and audio, but eventually support high-end visuals and sound: bloom, ray tracing, spatial audio, environmental acoustics, proximity chat, distant industry, wind, trees, tunnels, and rooms. The scope later widened to AI, pathfinding, terrain, vehicles, economy, combat, weather, setup/download, tools, modding, and scripting. These ideas were preserved as roadmap and future spec-book material, not immediate implementation scope. The guiding principle is that future systems should use clean extension slots, compiled artifacts, bounded deterministic runtimes where relevant, and non-authoritative presentation layers.
+
+The most important unresolved issues are practical. The repository must be inspected. It must be verified whether the master prompts 1–14 were implemented. The authoritative system API (`dsys_*` versus legacy `domino_sys_*`) must be determined. Exact launcher/game target names must be confirmed. Existing save/replay/asset formats must be inventoried before TLV migration. It must also be clarified later whether compile-gated Tier‑2 support is enough or whether full runtime Tier‑2 completion is required.
+
+The main thing to preserve is not just the final prompts, but the reasoning behind them: long-term compatibility, deterministic correctness, modular backend growth, stable ABI, buildability after every prompt, and future AAA extensibility without rewriting the core. Future assistants should not restart the questionnaire, revive superseded prompt packs, treat brainstorms as decisions, or claim the repo was inspected when it was not. The best next action is to inspect the repository/archive, verify the prerequisite state, then execute or hand off Prompt 1 of the final 9-prompt pack.
+
+# Reader Status
+
+* Chat title: Dominium Codex Platform Renderer API Plan
+* Report type: human-readable explanatory report
+* Main value of this chat: It defines the active post-master Codex implementation plan and the architectural rules for completing Dominium’s platforms, renderers, APIs, smoke tests, ABI, determinism, and future extensibility.
+* Most important decision: The engine must use a C89/C++98-compatible, C ABI/POD, facade/backend architecture with central capability registry and enforced determinism grades.
+* Most important unresolved issue: The uploaded repository and assumed implementation of master prompts 1–14 were not verified in this chat.
+* Most important next action: Inspect the repository/archive and verify baseline build/API state before executing Prompt 1.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: Repo-specific claims are unverified; the final 9-prompt pack is a plan, not implemented code; Tier‑2 runtime completion remains a scope caveat; future AAA feature material is roadmap/spec-book context rather than current implementation scope.

@@ -1,0 +1,2979 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium World Architecture
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: THIS CHAT ONLY; includes previous Context Transfer Packet visible in this chat.
+    apparent_coverage: full visible-chat coverage with repo-unknown caveats
+    confidence_1_to_5: 4
+    staleness_risk: low for internal design, medium for toolchain/software assumptions
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - No actual repo files inspected
+    - Previous Codex prompt has known technical defects
+    - Several solver formulas remain unresolved
+  summary:
+    one_sentence: This chat designed the deterministic fixed-point world, save, environment, modding, and implementation architecture
+      for a Dominium-style game world.
+    short_brief: 'This chat was a sustained architecture-design session for the **Dominium World Architecture** workstream.
+      It defined how a future Dominium-style game world should represent space, terrain, saves, runtime memory, deterministic
+      simulation, environmental systems, tools, mods, and a Codex implementation plan. The most important output is not a
+      single feature spec but a coherent design philosophy: all authoritative simulation state should live in deterministic,
+      fixed-point, content-agnostic core structures, while chunks/segments are storage and cache boundaries only.
+
+
+      The final spatial model is a power-of-two hierarchy with named scales from Plank through Surface. The horizontal surface
+      is a toroidal 2^24 metre grid in X/Y, with X east and Y north. Z is not toroidal; the user confirmed one Page of vertical
+      space, 4096 m total, centered at sea level, meaning roughly 2 km down and 2 km up. Chunk size is 16×16×16 m, giving
+      256 vertical chunk layers. Runtime positions use an 8-bit Segment index plus local Q16.16 precision; save positions
+      use Q4.12 local-to-chunk. The packet identifies a critical correction to the prior Codex prompt: signed Q16.16 cannot
+      represent the full local segment range [0,65536), and signed Q4.12 cannot represent the full chunk-local range [0,16).
+      Future work should use unsigned local fixed types or an explicitly centered signed coordinate scheme.
+
+
+      The user imposed hard implementation constraints: no floats in the core or save files; C89 for the core; C++98 and ...'
+    main_topics:
+    - Spatial coordinate model and scale hierarchy
+    - Deterministic fixed-point C89 core
+    - Sparse save file architecture
+    - Runtime memory model, chunking, streaming, and continuity
+    - Continuous terrain, geometry, materials, and media
+    - FluidSpaces, hydrology, weather, climate, rooms, tanks
+    - Oil fields, gas pockets, pressure, ruptures, flooding, rivers
+    - Thermal, hydraulic, electrical, logic, and limited EM systems
+    - Mod/content system, registries, JSON/Lua, content.lock
+    - 'Whole-project modular architecture: engine, runtime, launcher, tools, mods'
+    - Codex implementation prompt and code generation plan
+    - Testing, verification, determinism, seam validation
+    - Documentation, reports, and future Project Spec Book
+    main_outputs:
+    - Context Transfer Packet
+    - Codex implementation prompt draft
+    - This final report package
+    highest_priority_carry_forward:
+    - Correct fixed-point signedness before coding
+    - Core/saves have no floats
+    - Surface is toroidal 2^24m X/Y and one Page Z
+    - Chunks are caches, not authorities
+    - Use content.lock and deterministic registries
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - User statements outrank assistant suggestions
+    - Later user statements supersede earlier suggestions
+    - Tentative designs remain tentative
+    staleness_rules:
+    - External-world facts/software/tool versions require verification before future use
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: Direct, dense, technical answers
+      basis: User profile/instructions
+      strength: strong
+      implication: Avoid filler and soft asks
+      risk: Loss of trust/efficiency
+      label: FACT
+    - id: PREFERENCE-02
+      preference: Rigor, second/third-order thinking, unbiased facts
+      basis: User profile
+      strength: strong
+      implication: Preserve tradeoffs, risks, rejected options
+      risk: Overconfident simplification
+      label: FACT
+    - id: PREFERENCE-03
+      preference: Start messages with model version and build date
+      basis: User instruction
+      strength: strong
+      implication: Include version line when responding
+      risk: Style mismatch
+      label: FACT
+    - id: PREFERENCE-04
+      preference: Preserve uncertainty and source labels
+      basis: Current request
+      strength: strong
+      implication: Use FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT
+      risk: False certainty in future spec
+      label: FACT
+    - id: PREFERENCE-05
+      preference: Do not make user re-explain decisions
+      basis: Context packet/final package requests
+      strength: strong
+      implication: Carry detailed handoff forward
+      risk: Repeated work
+      label: FACT
+    - id: PREFERENCE-06
+      preference: Architecture should be future-proof/modular/extensible
+      basis: Repeated user requests
+      strength: strong
+      implication: Design stable interfaces and versioning
+      risk: Short-term hacks
+      label: FACT
+    - id: PREFERENCE-07
+      preference: Codex should do implementation best, not necessarily in user-specified order
+      basis: 'User: does not care order, wants it done by Codex best'
+      strength: medium
+      implication: Allow staged plan and expert sequencing
+      risk: Overfitting to chronological order
+      label: FACT
+    - id: PREFERENCE-08
+      preference: Implementation should be optimized and detailed with forward planning
+      basis: User asked for maximum optimized detail
+      strength: strong
+      implication: Provide exact modules and constraints
+      risk: Under-specified code prompt
+      label: FACT
+    - id: PREFERENCE-09
+      preference: Avoid treating brainstorms as final decisions
+      basis: Current request
+      strength: strong
+      implication: Separate assistant suggestions from user acceptance
+      risk: Spec pollution
+      label: FACT
+    inferred: []
+    uncertain_or_not_established:
+    - Preferred build system
+    - Exact compiler targets
+    - Lua version
+    - Renderer API
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Spatial coordinate model and scale hierarchy
+    label: FACT
+    objective: Define the world’s spatial scale, axes, wrap behavior, chunk hierarchy, and origin convention.
+    current_state: User-confirmed toroidal horizontal SurfaceGrid of 2^24 m per axis, one vertical Page of 4096 m, 16 m cubic
+      chunks, and final scale names from Plank to Surface.
+    desired_end_state: A deterministic coordinate implementation with safe fixed-point conversion across Segment, Region,
+      Chunk, Block, and local coordinates.
+    status: active
+    priority: critical
+    background: The conversation began with 1 m cubes, subchunks/chunks/regions, then converged on a power-of-two scale hierarchy.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    - DECISION-08
+    - DECISION-17
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-02
+    - QUESTION-03
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    dependencies:
+    - Fixed-point type definitions
+    - C89 portability layer
+    - Save directory bit layout
+    timeline: Early/core substrate before geometry, save, or systems.
+    blockers:
+    - Signedness and C89 portability contradictions from earlier prompt need repair.
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-03
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    success_criteria:
+    - Exact wrap at 2^24 m with no seam bugs
+    - Z bounded to [-2048,+2048)
+    - Block/chunk/region conversion round-trips exactly
+    next_action: Correct fixed-point types and write addressing conversion tests.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-03
+    confidence: 5
+  - id: WORKSTREAM-02
+    name: Deterministic fixed-point C89 core
+    label: FACT
+    objective: Build the core simulation library using deterministic fixed-point arithmetic with no floats in core or saves.
+    current_state: Design established; implementation prompt produced but needs correction for C89 and fixed-point signedness.
+    desired_end_state: A C89-style core library with fixed-point math, RNG, ECS, world services, save/load, and no float/double
+      usage.
+    status: active
+    priority: critical
+    background: User explicitly required runtime Q16.16, save Q4.12, no floats in core/saves, C89 core, C++98 platform/renderer.
+    decisions_made:
+    - DECISION-04
+    - DECISION-05
+    - DECISION-06
+    - DECISION-07
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-04
+    tasks:
+    - TASK-01
+    - TASK-04
+    - TASK-05
+    - TASK-10
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-07
+    dependencies:
+    - Compiler support for 64-bit ints
+    - Portable typedef policy
+    - Unit scaling per physical quantity
+    timeline: First implementation layer.
+    blockers:
+    - Strict ISO C89 lacks standard fixed-width integers and inline functions.
+    risks:
+    - RISK-02
+    - RISK-04
+    - RISK-05
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-06
+    success_criteria:
+    - Core builds as a library
+    - No float/double symbols in engine source
+    - Determinism tests pass
+    next_action: Define portability header and fixed-point API before other modules.
+    verification_needed:
+    - VERIFY-02
+    - VERIFY-04
+    confidence: 5
+  - id: WORKSTREAM-03
+    name: Sparse save file architecture
+    label: FACT
+    objective: Persist only dynamic state and procedural deltas using a hierarchical universe save and TLV region/chunk files.
+    current_state: Architecture designed; exact binary details remain pending.
+    desired_end_state: Versioned, sparse, deterministic save files with content.lock, metadata, Region files, Chunk TLVs,
+      global environment/network files, and migration support.
+    status: active
+    priority: critical
+    background: User wanted directory names to encode address bits efficiently and saves to handle sparse/dense worlds.
+    decisions_made:
+    - DECISION-09
+    - DECISION-10
+    - DECISION-11
+    - DECISION-12
+    - DECISION-13
+    - DECISION-14
+    decisions_pending:
+    - QUESTION-05
+    - QUESTION-06
+    - QUESTION-07
+    tasks:
+    - TASK-06
+    - TASK-07
+    - TASK-11
+    constraints:
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-12
+    - CONSTRAINT-17
+    dependencies:
+    - World address mapping
+    - Content registry IDs
+    - Endian/alignment policy
+    timeline: Core v0; before durable saves.
+    blockers:
+    - No exact file format structs verified against repo/build system.
+    risks:
+    - RISK-06
+    - RISK-07
+    - RISK-08
+    artifacts:
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-07
+    success_criteria:
+    - Save/load round-trip exact
+    - Unknown TLV sections skipped safely
+    - Procedural-only chunks not saved
+    next_action: Write DATA_FORMATS.md and implement TLV reader/writer.
+    verification_needed:
+    - VERIFY-05
+    - VERIFY-06
+    confidence: 4
+  - id: WORKSTREAM-04
+    name: Runtime memory model, chunking, streaming, and continuity
+    label: FACT
+    objective: Keep active memory sparse and deterministic while chunks/segments never alter simulation truth.
+    current_state: 'Design conclusion: chunks are caches; state lives in global/topological systems.'
+    desired_end_state: Sparse SurfaceRuntime/ChunkRuntime with lazy terrain caches, vertical chunk bitsets, async mesh/IO
+      later, and deterministic streaming-independent results.
+    status: active
+    priority: high
+    background: User asked how to avoid loading/saving untouched vertical chunks and whether chunk/page/segment crossings
+      cost performance.
+    decisions_made:
+    - DECISION-15
+    - DECISION-16
+    - DECISION-18
+    decisions_pending:
+    - QUESTION-08
+    - QUESTION-09
+    tasks:
+    - TASK-08
+    - TASK-09
+    - TASK-15
+    constraints:
+    - CONSTRAINT-11
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    dependencies:
+    - Address conversions
+    - SurfaceRuntime data structure
+    - Chunk state machine
+    timeline: Core v0 with more optimization over time.
+    blockers:
+    - Exact hash table/allocator/job system not defined.
+    risks:
+    - RISK-09
+    - RISK-10
+    artifacts:
+    - ARTIFACT-02
+    - ARTIFACT-05
+    success_criteria:
+    - Streaming path does not alter world hash
+    - Untouched chunks not saved
+    - Procedural chunks evict cleanly
+    next_action: Implement sparse chunk table and seam tests.
+    verification_needed:
+    - VERIFY-07
+    - VERIFY-08
+    confidence: 5
+  - id: WORKSTREAM-05
+    name: Continuous terrain, geometry, materials, and media
+    label: FACT
+    objective: Represent smooth arbitrary terrain and abstract materials with continuous fields rather than block matter.
+    current_state: 'Core model established: geometry φ + material/media/phase fields + sampled chunk meshes.'
+    desired_end_state: A field-provider-based terrain/material system supporting caves, cliffs, volcanoes, floating solids,
+      voids, and arbitrary sub-meter geometry.
+    status: active
+    priority: high
+    background: User asked how smooth triangle terrain works with cubic grid and later stated ground/air are not blocks.
+    decisions_made:
+    - DECISION-19
+    - DECISION-20
+    - DECISION-21
+    - DECISION-22
+    decisions_pending:
+    - QUESTION-10
+    - QUESTION-11
+    tasks:
+    - TASK-12
+    - TASK-16
+    - TASK-20
+    constraints:
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    dependencies:
+    - Material registry
+    - Field providers
+    - Chunk meshing
+    timeline: Basic heightfield/φ in v0; advanced media/volumes later.
+    blockers:
+    - Exact φ scaling and meshing algorithm unresolved.
+    risks:
+    - RISK-11
+    - RISK-12
+    artifacts:
+    - ARTIFACT-08
+    success_criteria:
+    - Adjacent chunks sample identical φ at shared coordinates
+    - Material/media queries deterministic and chunk-independent
+    next_action: Implement minimal fixed-point φ provider and material registry.
+    verification_needed:
+    - VERIFY-09
+    - VERIFY-10
+    confidence: 5
+  - id: WORKSTREAM-06
+    name: FluidSpaces, hydrology, weather, climate, rooms, tanks
+    label: FACT
+    objective: Unify liquids, gases, vapours, weather, climate, rooms, tanks, basins, rivers, and atmosphere through FluidSpaces
+      and Connectors.
+    current_state: Architecture designed; solvers not nailed down.
+    desired_end_state: Deterministic fixed-point fluid/environment systems with global atmosphere/hydrology and local enclosed
+      compartment support.
+    status: active
+    priority: medium
+    background: User asked whether climate/weather can work inside rooms/buildings/tanks like water and whether all liquids/gases/climate/weather
+      can use this model.
+    decisions_made:
+    - DECISION-23
+    - DECISION-24
+    - DECISION-25
+    decisions_pending:
+    - QUESTION-12
+    - QUESTION-13
+    - QUESTION-14
+    tasks:
+    - TASK-17
+    - TASK-18
+    - TASK-21
+    constraints:
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    dependencies:
+    - Medium model
+    - Material species registry
+    - Solver formulas
+    - Save global_env/local_env sections
+    timeline: Post-v0/v1 system after core substrate.
+    blockers:
+    - Equation choices and fixed-point scaling pending.
+    risks:
+    - RISK-13
+    - RISK-14
+    artifacts:
+    - ARTIFACT-09
+    success_criteria:
+    - Room/tank/outdoor medium sampling uses same API
+    - Flooding/venting deterministic across chunk boundaries
+    next_action: Specify fixed-point FluidSpace state and connector equations.
+    verification_needed:
+    - VERIFY-11
+    - VERIFY-12
+    confidence: 4
+  - id: WORKSTREAM-07
+    name: Oil fields, gas pockets, pressure, ruptures, flooding, rivers
+    label: FACT
+    objective: Use the fluid/network/volume model to support oil reservoirs, gas pockets, pressure, ruptures, mineshaft flooding,
+      river flow, tank rupture, and flooding.
+    current_state: Design mapped onto existing primitives; implementation not started.
+    desired_end_state: Reservoirs and floods are deterministic state transitions and flows through FluidSpaces, Connectors,
+      Hydrology, and HydraulicNet.
+    status: active
+    priority: medium
+    background: Final design question asked explicitly about oil fields/pockets/pressure/ruptures/mineshaft flooding/flowing
+      rivers/tank ruptures.
+    decisions_made:
+    - DECISION-26
+    - DECISION-27
+    - DECISION-28
+    decisions_pending:
+    - QUESTION-15
+    - QUESTION-16
+    tasks:
+    - TASK-22
+    - TASK-23
+    constraints:
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - FluidSpaces
+    - Hydraulic networks
+    - Structural component model
+    - Materials for oil/gas/water
+    timeline: After FluidSpaces/hydraulic net exists.
+    blockers:
+    - Pressure/rupture formulas not specified.
+    risks:
+    - RISK-15
+    - RISK-16
+    artifacts:
+    - ARTIFACT-10
+    success_criteria:
+    - Rupture creates deterministic connector
+    - Reservoir pressure changes with mass/volume
+    - Flooding independent of chunk loading
+    next_action: Define reservoir FluidSpace schema and rupture event rules.
+    verification_needed:
+    - VERIFY-13
+    confidence: 4
+  - id: WORKSTREAM-08
+    name: Thermal, hydraulic, electrical, logic, and limited EM systems
+    label: FACT
+    objective: Apply Spaces/Connectors/Networks pattern to routed systems while avoiding full multiphysics simulation.
+    current_state: Scope boundaries and graph abstraction established.
+    desired_end_state: Separate deterministic graph/network modules for hydraulic, electrical, logic, and thermal systems,
+      linked to world objects and saved globally.
+    status: active
+    priority: medium
+    background: User asked how to extend philosophy to pipes/cables/heat/electromagnetic systems and where to limit scope.
+    decisions_made:
+    - DECISION-29
+    - DECISION-30
+    - DECISION-31
+    - DECISION-32
+    decisions_pending:
+    - QUESTION-17
+    tasks:
+    - TASK-24
+    constraints:
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Global network save
+    - Node/edge ID system
+    - Solver formulas
+    timeline: Post-v0, likely v1/v2 depending on gameplay needs.
+    blockers:
+    - Exact network component schema unresolved.
+    risks:
+    - RISK-17
+    artifacts:
+    - ARTIFACT-11
+    success_criteria:
+    - Network solve independent of chunk streaming
+    - No full EM/PDE in core
+    next_action: Stub network modules and global_networks.bin sections.
+    verification_needed:
+    - VERIFY-14
+    confidence: 4
+  - id: WORKSTREAM-09
+    name: Mod/content system, registries, JSON/Lua, content.lock
+    label: FACT
+    objective: Make official and modded content use deterministic registries and content packs without core hardcoding.
+    current_state: Design established; schemas and sandbox implementation pending.
+    desired_end_state: Content packs and mods define materials/recipes/fields/solvers through JSON/Lua; core loads deterministic
+      registries from content.lock.
+    status: active
+    priority: high
+    background: User asked how to keep deterministic core with separate JSON/Lua definitions and core agnostic to official/modded
+      content.
+    decisions_made:
+    - DECISION-33
+    - DECISION-34
+    - DECISION-35
+    decisions_pending:
+    - QUESTION-18
+    - QUESTION-19
+    tasks:
+    - TASK-13
+    - TASK-14
+    - TASK-25
+    constraints:
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    dependencies:
+    - Manifest schema
+    - Registry implementation
+    - Lua sandbox
+    timeline: Basic registries needed v0; Lua/plugins can follow later.
+    blockers:
+    - Lua version/sandbox not chosen.
+    risks:
+    - RISK-18
+    - RISK-19
+    artifacts:
+    - ARTIFACT-12
+    success_criteria:
+    - Same content.lock produces same numeric IDs and world state on all machines
+    next_action: Write content manifest and registry spec.
+    verification_needed:
+    - VERIFY-15
+    confidence: 4
+  - id: WORKSTREAM-10
+    name: 'Whole-project modular architecture: engine, runtime, launcher, tools, mods'
+    label: FACT
+    objective: Extend the deterministic modular philosophy to the entire repo and toolchain.
+    current_state: Directory/layering design proposed; actual repo not inspected.
+    desired_end_state: Engine static library, C++98 runtimes, metadata-only launcher, tools reusing engine IO, content/mod
+      SDK, versioned migrations.
+    status: active
+    priority: high
+    background: User asked how to extend philosophy to entire project including launcher/game/tools/mods.
+    decisions_made:
+    - DECISION-36
+    - DECISION-37
+    - DECISION-38
+    decisions_pending:
+    - QUESTION-20
+    - QUESTION-21
+    tasks:
+    - TASK-26
+    - TASK-27
+    - TASK-28
+    constraints:
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    dependencies:
+    - Actual repo structure
+    - Build system
+    - Target platforms
+    timeline: Repo-level planning before broad implementation.
+    blockers:
+    - No repository files inspected in chat.
+    risks:
+    - RISK-20
+    - RISK-21
+    artifacts:
+    - ARTIFACT-13
+    success_criteria:
+    - Launcher/tools/runtimes share engine APIs and file format code; no duplicate parsers
+    next_action: Inspect repo and adapt architecture without blind overwrites.
+    verification_needed:
+    - VERIFY-16
+    - VERIFY-17
+    confidence: 3
+  - id: WORKSTREAM-11
+    name: Codex implementation prompt and code generation plan
+    label: FACT
+    objective: Produce a Codex-ready prompt to implement/refactor repo according to the architecture.
+    current_state: A long prompt was generated but is known defective in fixed-point/C89 details and must be revised.
+    desired_end_state: A corrected, repo-aware Codex prompt or set of smaller implementation prompts.
+    status: active
+    priority: critical
+    background: User requested a Codex 5.1 max optimized prompt; assistant generated one.
+    decisions_made:
+    - DECISION-39
+    decisions_pending:
+    - QUESTION-22
+    tasks:
+    - TASK-01
+    - TASK-29
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-03
+    - CONSTRAINT-05
+    dependencies:
+    - This report
+    - Repo inspection
+    - Fixed-point corrections
+    timeline: Immediate next step if continuing implementation.
+    blockers:
+    - Previous prompt contains critical technical bugs.
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-22
+    artifacts:
+    - ARTIFACT-01
+    success_criteria:
+    - Corrected prompt no longer conflicts with user constraints and implementation can proceed safely
+    next_action: Audit/rewrite the Codex prompt using this report.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-18
+    confidence: 5
+  - id: WORKSTREAM-12
+    name: Testing, verification, determinism, seam validation
+    label: FACT
+    objective: Ensure world state is deterministic, seamless, and independent of chunk streaming.
+    current_state: Test strategy described; no tests created in chat.
+    desired_end_state: Automated tests for save/load hash equivalence, streaming-order independence, seam continuity, and
+      network continuity.
+    status: active
+    priority: high
+    background: User asked how to ensure segmentation/chunking patterns do not ruin continuity and determinism.
+    decisions_made:
+    - DECISION-40
+    - DECISION-41
+    decisions_pending:
+    - QUESTION-23
+    tasks:
+    - TASK-10
+    - TASK-30
+    constraints:
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    dependencies:
+    - Core implementation
+    - Hash/canonical serialization
+    - Streaming simulation
+    timeline: Begin with v0 and expand as systems are added.
+    blockers:
+    - No repo/test harness inspected.
+    risks:
+    - RISK-23
+    - RISK-24
+    artifacts:
+    - ARTIFACT-14
+    success_criteria:
+    - Same seed/content/input yields identical hashes across save/load and streaming patterns
+    next_action: Define canonical world-state hash and seam probe tests.
+    verification_needed:
+    - VERIFY-19
+    confidence: 4
+  - id: WORKSTREAM-13
+    name: Documentation, reports, and future Project Spec Book
+    label: FACT
+    objective: Preserve design state and create documents usable for future implementation and aggregation.
+    current_state: Context Transfer Packet created; this package now exports normalized report files.
+    desired_end_state: Markdown/YAML report package plus repo docs that feed into a future full Project Spec Book.
+    status: active
+    priority: high
+    background: User requested maximum-fidelity state transfer and then a final downloadable report package.
+    decisions_made:
+    - DECISION-42
+    decisions_pending: []
+    tasks:
+    - TASK-31
+    - TASK-32
+    constraints:
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    dependencies:
+    - Visible chat context
+    - Previous Context Transfer Packet
+    timeline: Current finalization task.
+    blockers: []
+    risks:
+    - RISK-25
+    - RISK-26
+    artifacts:
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    success_criteria:
+    - Files downloadable, self-contained, safe for aggregation with caveats
+    next_action: Save ZIP package and use it in a new chat or aggregator later.
+    verification_needed:
+    - VERIFY-20
+    confidence: 5
+  decisions:
+  - id: DECISION-01
+    decision: Use a toroidal 2^24m horizontal SurfaceGrid per axis
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly confirmed toroidal 2^24m surface.
+    rationale: Large seamless wrapped world; modulo X/Y.
+    implications: Large seamless wrapped world; modulo X/Y.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: low
+  - id: DECISION-02
+    decision: Use one vertical Page of 4096m for Z, 2km up and 2km down
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly confirmed 1 Page for Z.
+    rationale: Simplifies vertical storage; 256 vertical chunk layers.
+    implications: Simplifies vertical storage; 256 vertical chunk layers.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: low
+  - id: DECISION-03
+    decision: Use cubic chunks of 16×16×16m
+    status: final
+    label: FACT
+    evidence_or_basis: Repeated user framing and assistant confirmation.
+    rationale: Uniform meshing/streaming unit.
+    implications: Uniform meshing/streaming unit.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: low
+  - id: DECISION-04
+    decision: Use Q16.16 for runtime/transient working memory
+    status: final with type correction needed
+    label: FACT
+    evidence_or_basis: User stated runtime q16.16.
+    rationale: High precision moving objects; local math.
+    implications: High precision moving objects; local math.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: low
+  - id: DECISION-05
+    decision: Use Q4.12 save-local positions inside chunks
+    status: final with unsigned correction needed
+    label: FACT
+    evidence_or_basis: User stated save q4.12 in chunks.
+    rationale: 16-bit local coordinate with 1/4096m precision.
+    implications: 16-bit local coordinate with 1/4096m precision.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: low
+  - id: DECISION-06
+    decision: Use 8-bit Segment addressing
+    status: final
+    label: FACT
+    evidence_or_basis: User stated 8bit integer for segment addressing.
+    rationale: 8 bits × 2^16m = 2^24m.
+    implications: 8 bits × 2^16m = 2^24m.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: low
+  - id: DECISION-07
+    decision: Core and saves must not use floats
+    status: final
+    label: FACT
+    evidence_or_basis: User stated floats cannot be allowed in core or saves.
+    rationale: Determinism; fixed-point all core quantities.
+    implications: Determinism; fixed-point all core quantities.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: low
+  - id: DECISION-08
+    decision: Platform and renderer may use C++98 and floats
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly allowed C++98/floats for platform/renderer.
+    rationale: Renderer can convert core ints to floats one-way.
+    implications: Renderer can convert core ints to floats one-way.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: low
+  - id: DECISION-09
+    decision: Universe cosmic limits are 2^8 galaxies, 2^24 systems/galaxy, 2^16 planets/system
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly revised these limits.
+    rationale: 'Directory IDs: galaxy 8-bit, system 24-bit, planet 16-bit.'
+    implications: 'Directory IDs: galaxy 8-bit, system 24-bit, planet 16-bit.'
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: low
+  - id: DECISION-10
+    decision: Save one canonical surface per planet for now
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly stated only one canonical surface in save files.
+    rationale: No surface instance directory needed initially; internal arbitrary surfaces later.
+    implications: No surface instance directory needed initially; internal arbitrary surfaces later.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: low
+  - id: DECISION-11
+    decision: Use directory names to encode high addresses
+    status: final intent
+    label: FACT
+    evidence_or_basis: User asked to take advantage of directory names for addresses.
+    rationale: Reduces per-object storage; improves sparse addressing.
+    implications: Reduces per-object storage; improves sparse addressing.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: medium
+  - id: DECISION-12
+    decision: Use sparse Region files containing chunk blobs
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Assistant recommended; user continued from it.
+    rationale: Avoid file-per-chunk explosion while supporting sparse/dense worlds.
+    implications: Avoid file-per-chunk explosion while supporting sparse/dense worlds.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: medium
+  - id: DECISION-13
+    decision: Use TLV chunk sections for future-proof save data
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed and used throughout later design.
+    rationale: Unknown sections can be skipped; mod/core extension.
+    implications: Unknown sections can be skipped; mod/core extension.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: medium
+  - id: DECISION-14
+    decision: Save procedural defaults as seeds/recipes, not full state
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Repeated in assistant design; user built on it.
+    rationale: Saves only deltas/dynamic state.
+    implications: Saves only deltas/dynamic state.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: medium
+  - id: DECISION-15
+    decision: Chunks/segments are caches/storage partitions, not authorities
+    status: accepted design
+    label: FACT
+    evidence_or_basis: Central principle in implementation/determinism answer.
+    rationale: Prevents streaming from changing simulation results.
+    implications: Prevents streaming from changing simulation results.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: low
+  - id: DECISION-16
+    decision: Use sparse vertical chunk loading and avoid untouched chunk saves
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: User asked; assistant proposed sparse vertical chunks and states.
+    rationale: Memory/storage optimization.
+    implications: Memory/storage optimization.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: medium
+  - id: DECISION-17
+    decision: Origin (0,0,0) is block vertex/corner, not block center
+    status: accepted recommendation
+    label: INFERENCE
+    evidence_or_basis: Assistant recommended; no objection and later summaries used it.
+    rationale: Simplifies floor/bit/chunk mapping.
+    implications: Simplifies floor/bit/chunk mapping.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: medium
+  - id: DECISION-18
+    decision: Spawn offset is not required for performance
+    status: accepted recommendation
+    label: INFERENCE
+    evidence_or_basis: Assistant concluded boundary crossing cheap; no objection.
+    rationale: Spawn can be gameplay-driven.
+    implications: Spawn can be gameplay-driven.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: medium
+  - id: DECISION-19
+    decision: World geometry is a continuous signed field φ
+    status: accepted design
+    label: FACT
+    evidence_or_basis: Repeated after user asked about smooth world; user built on it.
+    rationale: Supports smooth terrain, cuts, fills, caves, arbitrary geometry.
+    implications: Supports smooth terrain, cuts, fills, caves, arbitrary geometry.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: low
+  - id: DECISION-20
+    decision: Ground and air are abstract media, not blocks
+    status: final
+    label: FACT
+    evidence_or_basis: User explicitly stated ground/air will not be made of blocks.
+    rationale: No block-based matter; fields/materials determine composition.
+    implications: No block-based matter; fields/materials determine composition.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: low
+  - id: DECISION-21
+    decision: Do not store separate full density fields per material
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Assistant rejected as storage explosion; user did not object.
+    rationale: Use material/phase/composition maps and sparse volumes.
+    implications: Use material/phase/composition maps and sparse volumes.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: medium
+  - id: DECISION-22
+    decision: Use SpatialVolumes as unified pockets/basins/voids/gas/magma/etc.
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed; later questions built on it.
+    rationale: Extensible local field effects.
+    implications: Extensible local field effects.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: medium
+  - id: DECISION-23
+    decision: Use FluidSpaces + Connectors for liquids, gases, weather, rooms, tanks
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed in response to user; user built onward.
+    rationale: Unified fluid/climate/interior model.
+    implications: Unified fluid/climate/interior model.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: medium
+  - id: DECISION-24
+    decision: Weather/climate can operate in rooms/buildings/tanks as local FluidSpaces
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Direct answer to user question; no objection.
+    rationale: Room air/HVAC and tanks share fluid abstraction.
+    implications: Room air/HVAC and tanks share fluid abstraction.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: medium
+  - id: DECISION-25
+    decision: Hydrology uses basins/heightfields/graphs, not water blocks
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Repeated assistant response; user continued.
+    rationale: Efficient rivers, oceans, lakes, canals.
+    implications: Efficient rivers, oceans, lakes, canals.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: medium
+  - id: DECISION-26
+    decision: Oil/gas reservoirs are SpatialVolumes linked to FluidSpaces
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Final oil/flooding answer.
+    rationale: Reservoirs are not voxel fluids.
+    implications: Reservoirs are not voxel fluids.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: medium
+  - id: DECISION-27
+    decision: Ruptures are deterministic structural failures that create connectors
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Final oil/flooding answer.
+    rationale: Tank/pipe/rock failures change graph topology.
+    implications: Tank/pipe/rock failures change graph topology.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: medium
+  - id: DECISION-28
+    decision: Flooding is flow through FluidSpaces/connectors/hydrology, not chunk fluid simulation
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Final oil/flooding answer.
+    rationale: Mineshaft flooding independent of chunk loading.
+    implications: Mineshaft flooding independent of chunk loading.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: medium
+  - id: DECISION-29
+    decision: Use graph-based hydraulic networks for pipes
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Pipes/cables/heat answer.
+    rationale: Avoids full fluid PDE in pipes.
+    implications: Avoids full fluid PDE in pipes.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: medium
+  - id: DECISION-30
+    decision: Use graph/circuit networks for electrical power and logic
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Pipes/cables/heat answer.
+    rationale: Avoids full EM simulation.
+    implications: Avoids full EM simulation.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: medium
+  - id: DECISION-31
+    decision: Use ThermalSpaces/thermal connectors for heat
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Pipes/cables/heat answer.
+    rationale: Lumped deterministic heat model.
+    implications: Lumped deterministic heat model.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: medium
+  - id: DECISION-32
+    decision: Do not simulate full EM/CFD/FEA globally
+    status: accepted scope limit
+    label: INFERENCE
+    evidence_or_basis: Assistant stated; no objection.
+    rationale: Keeps core tractable.
+    implications: Keeps core tractable.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: medium
+  - id: DECISION-33
+    decision: Use content.lock for exact content set and deterministic registries
+    status: accepted design
+    label: FACT
+    evidence_or_basis: User asked deterministic JSON/Lua; assistant proposed.
+    rationale: Official/modded content become data feeding core.
+    implications: Official/modded content become data feeding core.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: low
+  - id: DECISION-34
+    decision: Lua, if used, must be deterministic sandboxed
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed; no objection.
+    rationale: No OS/time/random/nondeterministic table iteration.
+    implications: No OS/time/random/nondeterministic table iteration.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: medium
+  - id: DECISION-35
+    decision: Core must be agnostic to official vs modded content
+    status: final intent
+    label: FACT
+    evidence_or_basis: User explicitly asked for this.
+    rationale: Registries/interfaces instead of hardcoded content.
+    implications: Registries/interfaces instead of hardcoded content.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: low
+  - id: DECISION-36
+    decision: 'Whole project should use strict layering: engine/runtime/launcher/tools/content/modsdk'
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Assistant proposed; user requested broad philosophy.
+    rationale: Future-proof modular repo.
+    implications: Future-proof modular repo.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: medium
+  - id: DECISION-37
+    decision: Launcher should orchestrate runtimes and read metadata, not simulate
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Whole-project architecture answer.
+    rationale: Separates UI/install from core.
+    implications: Separates UI/install from core.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: medium
+  - id: DECISION-38
+    decision: Tools should reuse engine IO and not hand-roll formats
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Whole-project architecture answer.
+    rationale: Avoids drift between tools and game.
+    implications: Avoids drift between tools and game.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: medium
+  - id: DECISION-39
+    decision: Codex prompt should implement/refactor relevant code/docs
+    status: requested artifact
+    label: FACT
+    evidence_or_basis: User explicitly requested Codex 5.1 optimized prompt.
+    rationale: Prompt produced but must be corrected.
+    implications: Prompt produced but must be corrected.
+    related_workstreams:
+    - WORKSTREAM-11
+    uncertainty: low
+  - id: DECISION-40
+    decision: Use fixed deterministic simulation order
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Implementation/determinism answer.
+    rationale: Avoids order-dependent divergences.
+    implications: Avoids order-dependent divergences.
+    related_workstreams:
+    - WORKSTREAM-12
+    uncertainty: medium
+  - id: DECISION-41
+    decision: Use tests for save/load, seam, streaming-order determinism
+    status: accepted design
+    label: INFERENCE
+    evidence_or_basis: Assistant recommended; no objection.
+    rationale: Detects core failure modes early.
+    implications: Detects core failure modes early.
+    related_workstreams:
+    - WORKSTREAM-12
+    uncertainty: medium
+  - id: DECISION-42
+    decision: Create final report package with Markdown/YAML/ZIP
+    status: final current task
+    label: FACT
+    evidence_or_basis: User requested this package.
+    rationale: Creates reusable handoff for aggregation/spec book.
+    implications: Creates reusable handoff for aggregation/spec book.
+    related_workstreams:
+    - WORKSTREAM-13
+    uncertainty: low
+  tasks:
+  - id: TASK-01
+    task: Audit and correct the previous Codex implementation prompt
+    priority: critical
+    urgency: immediate
+    owner: new chat / Codex
+    dependencies:
+    - ARTIFACT-01
+    inputs_needed:
+    - This report
+    expected_output: Corrected Codex prompt
+    next_step: Fix fixed-point, C89, region bits, rotation issues
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: 5
+  - id: TASK-02
+    task: Define canonical fixed-point typedefs
+    priority: critical
+    urgency: immediate
+    owner: Codex
+    dependencies:
+    - DECISION-04
+    - DECISION-05
+    inputs_needed:
+    - Compiler constraints
+    expected_output: Fixed-point header/spec
+    next_step: Use unsigned local UQ16.16/UQ4.12 or explicitly choose centred scheme
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5
+  - id: TASK-03
+    task: Implement SimPos↔address conversion and wrap tests
+    priority: critical
+    urgency: early
+    owner: Codex
+    dependencies:
+    - TASK-02
+    inputs_needed:
+    - Coordinate constants
+    expected_output: world_addr module and tests
+    next_step: Test segment, region, chunk, block, local round-trips
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-04
+    task: Create C89 portability layer
+    priority: critical
+    urgency: early
+    owner: Codex
+    dependencies: []
+    inputs_needed:
+    - Compiler targets
+    expected_output: core_types.h with fixed-width types
+    next_step: Resolve 64-bit support in C89-style code
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: 5
+  - id: TASK-05
+    task: Implement deterministic RNG and coordinate hash
+    priority: high
+    urgency: early
+    owner: Codex
+    dependencies:
+    - TASK-04
+    inputs_needed:
+    - Seed policy
+    expected_output: core_rng module
+    next_step: Use explicit RNG state plus stateless hashes
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-06
+    task: Specify and implement TLV save reader/writer
+    priority: high
+    urgency: early
+    owner: Codex
+    dependencies:
+    - TASK-04
+    inputs_needed:
+    - Endian/alignment policy
+    expected_output: save_tlv module
+    next_step: Write DATA_FORMATS.md first
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-07
+    task: Implement Region/Chunk sparse save files
+    priority: high
+    urgency: early
+    owner: Codex
+    dependencies:
+    - TASK-03
+    - TASK-06
+    inputs_needed:
+    - Region file layout
+    expected_output: save_region module
+    next_step: Use correct Segment/Region bit widths
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-08
+    task: Implement SurfaceRuntime and sparse ChunkRuntime cache
+    priority: high
+    urgency: early
+    owner: Codex
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - Allocator/hash policy
+    expected_output: world_surface/world_chunk modules
+    next_step: Keep chunks non-authoritative
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-09
+    task: Implement untouched/procedural/overridden chunk state logic
+    priority: medium
+    urgency: early
+    owner: Codex
+    dependencies:
+    - TASK-08
+    inputs_needed:
+    - Dirty flags/save policy
+    expected_output: chunk lifecycle rules
+    next_step: Do not save procedural caches
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-10
+    task: Add deterministic state hash/save-load test harness
+    priority: high
+    urgency: early
+    owner: Codex
+    dependencies:
+    - TASK-05
+    - TASK-06
+    inputs_needed:
+    - Canonical hash scheme
+    expected_output: test executable
+    next_step: Run N ticks, save/reload, compare
+    related_workstreams:
+    - WORKSTREAM-12
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-11
+    task: Define universe/galaxy/system/planet/surface metadata files
+    priority: high
+    urgency: early
+    owner: Codex
+    dependencies:
+    - TASK-06
+    inputs_needed:
+    - ID widths
+    expected_output: save_universe module/spec
+    next_step: Encode 8/24/16 cosmic IDs
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-12
+    task: Implement minimal fixed-point geom_sample
+    priority: high
+    urgency: early
+    owner: Codex
+    dependencies:
+    - TASK-02
+    - TASK-08
+    inputs_needed:
+    - Default recipe
+    expected_output: world_geom module
+    next_step: Start with simple deterministic heightfield
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-13
+    task: Implement MaterialRegistry and RecipeRegistry
+    priority: high
+    urgency: early
+    owner: Codex
+    dependencies:
+    - TASK-04
+    inputs_needed:
+    - Initial material/recipe schema
+    expected_output: registry modules
+    next_step: Use deterministic registration order
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-14
+    task: Design content.lock and manifest schema
+    priority: high
+    urgency: early
+    owner: Codex/user
+    dependencies:
+    - TASK-13
+    inputs_needed:
+    - Content pack requirements
+    expected_output: docs/spec and parser plan
+    next_step: Keep initial JSON minimal
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-15
+    task: Implement seam tests for chunk/region/segment boundaries
+    priority: high
+    urgency: early
+    owner: Codex
+    dependencies:
+    - TASK-03
+    - TASK-12
+    inputs_needed:
+    - Probe patterns
+    expected_output: automated seam tests
+    next_step: Sample both sides of boundaries
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-12
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-16
+    task: Choose v0 meshing algorithm and sample scaling
+    priority: medium
+    urgency: early
+    owner: user/Codex
+    dependencies:
+    - TASK-12
+    inputs_needed:
+    - Performance target
+    expected_output: meshing decision/spec
+    next_step: Likely start with marching cubes or simple debug mesh
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 3
+  - id: TASK-17
+    task: Specify FluidSpace fixed-point state model
+    priority: medium
+    urgency: v1
+    owner: Codex/user
+    dependencies:
+    - TASK-13
+    inputs_needed:
+    - Species/material list
+    expected_output: sys_fluidspace schema
+    next_step: Define mass/energy/volume units
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-18
+    task: Specify FluidConnector equations
+    priority: medium
+    urgency: v1
+    owner: Codex/user
+    dependencies:
+    - TASK-17
+    inputs_needed:
+    - Pressure/flow model
+    expected_output: connector solver spec
+    next_step: Pick simple deterministic orifice/pipe formulas
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 3
+  - id: TASK-19
+    task: Define global_env.bin and local_env TLV sections
+    priority: medium
+    urgency: v1
+    owner: Codex
+    dependencies:
+    - TASK-06
+    - TASK-17
+    inputs_needed:
+    - Environment state types
+    expected_output: save sections/spec
+    next_step: Store weather/hydro/fluidspace state
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-20
+    task: Implement SpatialVolume registry and dynamic volume TLV
+    priority: medium
+    urgency: v1
+    owner: Codex
+    dependencies:
+    - TASK-06
+    - TASK-13
+    inputs_needed:
+    - Volume types
+    expected_output: registry_volume and save section
+    next_step: Use for oil/gas/void/pockets/basins
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-21
+    task: Choose atmo/weather/hydrology solver resolutions
+    priority: medium
+    urgency: v1
+    owner: user/Codex
+    dependencies: []
+    inputs_needed:
+    - Performance goals
+    expected_output: solver resolution spec
+    next_step: Prototype before finalizing
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 3
+  - id: TASK-22
+    task: Design oil/gas reservoir schema
+    priority: medium
+    urgency: v1/v2
+    owner: Codex/user
+    dependencies:
+    - TASK-17
+    - TASK-20
+    inputs_needed:
+    - Material definitions
+    expected_output: reservoir volume + FluidSpace schema
+    next_step: Define pressure, saturation, composition
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-23
+    task: Design rupture/flooding event model
+    priority: medium
+    urgency: v1/v2
+    owner: Codex/user
+    dependencies:
+    - TASK-18
+    - TASK-22
+    inputs_needed:
+    - Structural component schema
+    expected_output: rupture state machine
+    next_step: Create connectors on deterministic failure
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-24
+    task: Stub network modules and global_networks.bin
+    priority: medium
+    urgency: v1/v2
+    owner: Codex
+    dependencies:
+    - TASK-06
+    - TASK-04
+    inputs_needed:
+    - Node/edge schema
+    expected_output: hydraulic/electric/logic modules
+    next_step: Use global topological state
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-25
+    task: Define deterministic Lua sandbox
+    priority: medium
+    urgency: later
+    owner: Codex/user
+    dependencies:
+    - TASK-14
+    inputs_needed:
+    - Lua version
+    expected_output: sandbox spec
+    next_step: Ban nondeterministic APIs
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 3
+  - id: TASK-26
+    task: Inspect actual git repo before applying file changes
+    priority: critical
+    urgency: before coding
+    owner: new chat/Codex
+    dependencies: []
+    inputs_needed:
+    - Repo contents
+    expected_output: repo-aware plan
+    next_step: Do not blindly overwrite
+    related_workstreams:
+    - WORKSTREAM-10
+    - WORKSTREAM-11
+    label: FACT
+    confidence: 5
+  - id: TASK-27
+    task: Set up repo directories/layering
+    priority: medium
+    urgency: after repo audit
+    owner: Codex
+    dependencies:
+    - TASK-26
+    inputs_needed:
+    - Build system
+    expected_output: engine/runtime/launcher/tools/docs layout
+    next_step: Adapt to existing repo
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-28
+    task: Create launcher/tools stubs
+    priority: low
+    urgency: later
+    owner: Codex
+    dependencies:
+    - TASK-27
+    inputs_needed:
+    - CLI/API contracts
+    expected_output: launcher/tool skeletons
+    next_step: Keep launcher metadata-only
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-29
+    task: Generate corrected Codex prompt/package from this report
+    priority: critical
+    urgency: immediate
+    owner: new chat
+    dependencies:
+    - ARTIFACT-01
+    - ARTIFACT-15
+    inputs_needed:
+    - User intent
+    expected_output: safe implementation prompt
+    next_step: Use corrected constraints
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+    confidence: 5
+  - id: TASK-30
+    task: Implement streaming-order independence tests
+    priority: high
+    urgency: after chunk core
+    owner: Codex
+    dependencies:
+    - TASK-10
+    - TASK-15
+    inputs_needed:
+    - Streaming simulator
+    expected_output: test suite
+    next_step: Compare hashes under different chunk loads
+    related_workstreams:
+    - WORKSTREAM-12
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-31
+    task: Save this report package and ZIP
+    priority: critical
+    urgency: now
+    owner: assistant
+    dependencies: []
+    inputs_needed:
+    - Visible chat context
+    expected_output: downloadable files
+    next_step: Create Markdown/YAML/ZIP
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+    confidence: 5
+  - id: TASK-32
+    task: Use reports from old chats to build future Project Spec Book
+    priority: medium
+    urgency: later
+    owner: user/future assistant
+    dependencies:
+    - ARTIFACT-15
+    inputs_needed:
+    - Other chat packages
+    expected_output: master spec book
+    next_step: Aggregate only after all packages provided
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+    confidence: 5
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: No floats in engine/core code
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User explicitly forbade floats in core.
+    implication: All core quantities fixed-point; tests should detect float use.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-02
+    constraint: No floats in save files
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User explicitly forbade floats in saves.
+    implication: All save values are integer/fixed; no JSON decimals for authoritative state.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-03
+    constraint: Core target is C89
+    type: language
+    hard_or_soft: hard
+    source_or_basis: User explicitly stated C89.
+    implication: Avoid C99 syntax; define portability layer for 64-bit types.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-04
+    constraint: Platform/renderer may use C++98 and floats
+    type: language
+    hard_or_soft: hard
+    source_or_basis: User explicitly allowed C++98/floats there.
+    implication: Renderer converts one-way from core; no feedback.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-05
+    constraint: Runtime position precision Q16.16
+    type: numeric
+    hard_or_soft: hard
+    source_or_basis: User explicitly set runtime q16.16.
+    implication: Define safe fixed types and conversions.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-06
+    constraint: Save-local precision Q4.12 in chunks
+    type: numeric
+    hard_or_soft: hard
+    source_or_basis: User explicitly set save q4.12 in chunks.
+    implication: Use unsigned 16-bit local chunk coordinates.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-07
+    constraint: Use 8-bit integer Segment addressing
+    type: numeric/spatial
+    hard_or_soft: hard
+    source_or_basis: User explicitly set 8-bit Segment addressing.
+    implication: Segment wrap modulo 256.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-08
+    constraint: Horizontal SurfaceGrid is toroidal 2^24m
+    type: spatial
+    hard_or_soft: hard
+    source_or_basis: User explicitly confirmed.
+    implication: X/Y modulo arithmetic; seam tests required.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-09
+    constraint: Z is one Page = 4096m total
+    type: spatial
+    hard_or_soft: hard
+    source_or_basis: User explicitly confirmed.
+    implication: No vertical wrap; 256 vertical chunks.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-10
+    constraint: One canonical surface per planet in save files for now
+    type: storage
+    hard_or_soft: hard
+    source_or_basis: User explicitly stated.
+    implication: No persistent arbitrary surface instance layer initially.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-11
+    constraint: Chunks must not be canonical simulation authorities
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: Determinism answer and accepted design.
+    implication: Chunks are caches/references only.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-12
+    constraint: Save procedural defaults as seeds/recipes plus deltas
+    type: storage
+    hard_or_soft: hard-ish
+    source_or_basis: Accepted design from assistant response.
+    implication: Do not save procedural-only chunks.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-13
+    constraint: Network/FluidSpace state must be topological/global, not chunk-owned
+    type: architecture
+    hard_or_soft: hard-ish
+    source_or_basis: Continuity/determinism design.
+    implication: Streaming cannot alter pressure/flows.
+    violation_risk: high
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-14
+    constraint: Boundary crossings must be O(1) and non-semantic
+    type: performance
+    hard_or_soft: soft/hard
+    source_or_basis: User worried about boundary performance; assistant resolved.
+    implication: No special gameplay state change at chunk/page/segment seams.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-15
+    constraint: Ground and air are not blocks
+    type: world model
+    hard_or_soft: hard
+    source_or_basis: User explicitly stated.
+    implication: Use fields/media, not voxel matter.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-16
+    constraint: Do not use full per-material 3D density fields
+    type: storage/performance
+    hard_or_soft: hard-ish
+    source_or_basis: Assistant rejected; user did not object.
+    implication: Use material IDs, composition, pockets, overlays.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-17
+    constraint: Use directory names to encode addresses efficiently
+    type: storage
+    hard_or_soft: hard-ish
+    source_or_basis: User requested.
+    implication: High bits in path/file names, local coords in records.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-18
+    constraint: All fluids/gases/climate should fit unified model where possible
+    type: architecture
+    hard_or_soft: soft/hard
+    source_or_basis: User asked can all liquids/gases/weather work this way; design accepted.
+    implication: Use FluidSpace/Connector abstractions.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-19
+    constraint: Avoid full global CFD/Navier–Stokes
+    type: scope/performance
+    hard_or_soft: hard-ish
+    source_or_basis: Assistant scoped; no objection.
+    implication: Use basins, graphs, compartments, coarse grids.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-20
+    constraint: Avoid full global EM/FEA/multiphysics simulation
+    type: scope/performance
+    hard_or_soft: hard-ish
+    source_or_basis: Assistant scoped; no objection.
+    implication: Use graph circuits and approximations.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-21
+    constraint: Electrical/logical systems should be separate graph systems
+    type: architecture
+    hard_or_soft: soft/hard
+    source_or_basis: Assistant recommendation.
+    implication: Keep concerns modular.
+    violation_risk: low
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-22
+    constraint: Core must be agnostic to official vs modded content
+    type: modding
+    hard_or_soft: hard
+    source_or_basis: User explicitly requested.
+    implication: Registries/content.lock/interfaces.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-23
+    constraint: Lua must be deterministic if used
+    type: modding/determinism
+    hard_or_soft: hard-ish
+    source_or_basis: Assistant recommendation; user did not object.
+    implication: Sandbox Lua; ban nondeterministic APIs.
+    violation_risk: high
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-24
+    constraint: Launcher must not duplicate/simulate engine state
+    type: project architecture
+    hard_or_soft: soft/hard
+    source_or_basis: Assistant design.
+    implication: Launcher reads metadata and launches runtime.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-25
+    constraint: Tools must reuse engine IO, not reimplement formats
+    type: project architecture
+    hard_or_soft: soft/hard
+    source_or_basis: Assistant design.
+    implication: Avoid parser drift.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-26
+    constraint: Fixed simulation tick and deterministic order
+    type: determinism
+    hard_or_soft: hard-ish
+    source_or_basis: Assistant design.
+    implication: System and entity order stable.
+    violation_risk: high
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-27
+    constraint: All randomness explicit and saved or stateless-coordinate
+    type: determinism
+    hard_or_soft: hard-ish
+    source_or_basis: Assistant design.
+    implication: No load-order RNG effects.
+    violation_risk: high
+    label: INFERENCE
+    confidence: 4
+  - id: CONSTRAINT-28
+    constraint: Report/package must be chat-specific only
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: Current user request.
+    implication: Do not summarize whole project beyond this chat scope.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-29
+    constraint: Important items must be labelled FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: Current user request.
+    implication: Use labels in final package.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  open_questions:
+  - id: QUESTION-01
+    question: How exactly to implement C89-compatible fixed-width and 64-bit types?
+    why_it_matters: Core needs 64-bit IDs/RNG/accumulators but strict C89 lacks standard types.
+    known: User requires C89 and 64-bit-like IDs were recommended.
+    unknown: Compiler targets and allowed extensions unknown.
+    resolution_path: Define portability header after repo/compiler inspection.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: Should SimPos X/Y local use unsigned UQ16.16 or signed centered Q16.16?
+    why_it_matters: Determines core coordinate representation and wrap math.
+    known: Segment+Q16.16 final; signed prior prompt invalid.
+    unknown: User has not explicitly chosen unsigned vs centered.
+    resolution_path: Recommend unsigned local X/Y; user/Codex confirm.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: How are exact Z bounds encoded?
+    why_it_matters: Z Page is [-2048,+2048), but fixed conversion/Chunk gz mapping needs exact convention.
+    known: One Page and 256 chunks known.
+    unknown: Inclusive/exclusive edges and out-of-range behavior.
+    resolution_path: Write/address tests.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: What fixed-point scales should be used for pressure, mass, energy, temperature, density?
+    why_it_matters: Fluid/network systems need deterministic integer units.
+    known: No floats in core; physical properties needed.
+    unknown: Units and scaling unknown.
+    resolution_path: Create numeric units spec before solvers.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: What endian, padding, and alignment policy should save files use?
+    why_it_matters: Binary compatibility depends on it.
+    known: TLV format chosen.
+    unknown: Exact canonical byte order undefined.
+    resolution_path: Define little-endian packed writer/reader likely.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Should save files compress chunk blobs?
+    why_it_matters: Storage/performance tradeoff.
+    known: Sparse saves planned.
+    unknown: Compression algorithm not chosen.
+    resolution_path: Prototype or defer to later.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: What exact directory path names should be final?
+    why_it_matters: Future aggregation/tools need stable paths.
+    known: High address bits should be in names; cosmic IDs final.
+    unknown: Region naming and widths need correction.
+    resolution_path: Define path grammar in DATA_FORMATS.md.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: What chunk cache sample resolution is final?
+    why_it_matters: Memory/performance for terrain caches.
+    known: Assistant recommended 32³ per 16m chunk.
+    unknown: User did not explicitly confirm.
+    resolution_path: Prototype/profile; start 32³ tentatively.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: What allocator/hash-table strategy should core use?
+    why_it_matters: C89 core needs deterministic memory behavior.
+    known: Sparse chunk table planned.
+    unknown: Allocator design unknown.
+    resolution_path: Implement simple fixed/open-addressed structures first.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: Which meshing algorithm starts v0?
+    why_it_matters: Affects smooth terrain and implementation complexity.
+    known: Marching cubes/dual contouring discussed.
+    unknown: No final choice.
+    resolution_path: Pick simplest debug mesher first or choose MC/DC.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: How is φ represented/scaled in fixed-point?
+    why_it_matters: All geometry sampling and meshing depend on field scale.
+    known: φ signed field chosen.
+    unknown: Scaling/saturation unknown.
+    resolution_path: Define φ fixed range and units.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: What weather solver and grid resolution?
+    why_it_matters: Climate/weather performance and determinism.
+    known: Coarse grid approach chosen.
+    unknown: Exact cell size/layers/formula unknown.
+    resolution_path: Design v1 solver spec.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-13
+    question: What hydrology model and resolution?
+    why_it_matters: Rivers/flooding/lakes depend on it.
+    known: Basins/graphs/heightfields chosen.
+    unknown: Equations/resolution unknown.
+    resolution_path: Design hydrology spec.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-14
+    question: How to decide FluidSpace membership for rooms/tanks/caves?
+    why_it_matters: Medium sampling and flooding need point-to-space mapping.
+    known: FluidSpaces as geometric/topological domains chosen.
+    unknown: Exact geometry/BVH/priority rules unknown.
+    resolution_path: Define containment and tie-break rules.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-15
+    question: What pressure/rupture equations and thresholds?
+    why_it_matters: Oil/gas/tank rupture gameplay depends on it.
+    known: Rupture as connector event chosen.
+    unknown: Formula/units not specified.
+    resolution_path: Design structural component model.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-16
+    question: How to model multi-phase oil/water/gas mixtures?
+    why_it_matters: Reservoirs/flooding may mix fluids.
+    known: FluidSpaces support mass by species conceptually.
+    unknown: Composition rules unknown.
+    resolution_path: Define species/material registry and mixing rules.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-17
+    question: What electrical/hydraulic/thermal network solver formulas?
+    why_it_matters: Network correctness/performance.
+    known: Graph-based networks chosen.
+    unknown: Solver math unresolved.
+    resolution_path: Pick simple deterministic solvers.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-18
+    question: What exact content pack manifest schema?
+    why_it_matters: Mod/content loading and content.lock need it.
+    known: Registries/content.lock chosen.
+    unknown: Schema not written.
+    resolution_path: Write minimal JSON schema.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-19
+    question: Which Lua version and sandbox implementation?
+    why_it_matters: Deterministic mod scripts depend on it.
+    known: Deterministic sandbox required if Lua used.
+    unknown: Lua dependency/API unknown.
+    resolution_path: Choose after platform goals.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-20
+    question: What existing repo/build system exists?
+    why_it_matters: Implementation prompt must not blindly overwrite.
+    known: No repo files inspected.
+    unknown: Repo state unknown.
+    resolution_path: Inspect repo first.
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-10
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-21
+    question: What platforms/compilers are targeted?
+    why_it_matters: C89/C++98 and 64-bit portability depend on this.
+    known: C89/C++98 desired.
+    unknown: Exact compilers unknown.
+    resolution_path: User/repo should define targets.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-22
+    question: Should Codex implement all at once or staged prompts?
+    why_it_matters: Large prompt may be too broad.
+    known: User wanted Codex best, no order preference.
+    unknown: Practical repo state unknown.
+    resolution_path: Recommend staged prompts after repo inspection.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-11
+    label: INFERENCE
+  - id: QUESTION-23
+    question: What canonical state hash includes/excludes?
+    why_it_matters: Determinism tests need exact hash inputs.
+    known: Need save/load/streaming tests.
+    unknown: Hash schema unknown.
+    resolution_path: Define canonical serialization/hash.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Store full Q24.8 for all entity/object runtime positions
+    status: superseded/rejected
+    reason: Runtime local Q16.16 plus segment addressing is more efficient.
+    final_or_tentative: Mostly final
+    reconsider_conditions: Reconsider only for external APIs/tools.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-02
+    option: Use 32-bit fractional precision
+    status: rejected
+    reason: Massive overprecision; storage/performance waste.
+    final_or_tentative: Final
+    reconsider_conditions: Almost never.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: REJECTED-03
+    option: Use 16-bit integer global world coordinates
+    status: rejected
+    reason: Too small for planet-scale surface.
+    final_or_tentative: Final
+    reconsider_conditions: Only for local spaces.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: REJECTED-04
+    option: Use Q4.8 save-local positions
+    status: superseded
+    reason: User later chose Q4.12.
+    final_or_tentative: Final unless user reverts
+    reconsider_conditions: If storage pressure outweighs precision.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-05
+    option: Use saved/static 1/256m precision as final
+    status: superseded
+    reason: Q4.12 gives 1/4096m precision inside chunks.
+    final_or_tentative: Final unless user reverts
+    reconsider_conditions: If simpler saves needed.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-06
+    option: Use country/state/continent naming
+    status: superseded
+    reason: User defined final scale names.
+    final_or_tentative: Final
+    reconsider_conditions: No need.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-07
+    option: Save arbitrary surface instances now
+    status: deprioritized
+    reason: User specified one canonical surface per planet in save files.
+    final_or_tentative: Tentative
+    reconsider_conditions: Future sharding/dimensions.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-08
+    option: 2^32 systems per galaxy
+    status: superseded
+    reason: User changed to 2^24 systems per galaxy.
+    final_or_tentative: Final for now
+    reconsider_conditions: If requirements change.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-09
+    option: 2^8 planets per system
+    status: superseded
+    reason: User changed to 2^16 planets per system.
+    final_or_tentative: Final for now
+    reconsider_conditions: If address/storage tradeoff changes.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-10
+    option: Full per-material 3D density fields
+    status: rejected
+    reason: Storage explosion; wrong abstraction.
+    final_or_tentative: Final
+    reconsider_conditions: Tiny local special sims only.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: REJECTED-11
+    option: Make ground/air out of blocks
+    status: rejected
+    reason: User explicitly said ground and air will be abstract materials, not blocks.
+    final_or_tentative: Final
+    reconsider_conditions: Logical placement blocks still exist.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-12
+    option: Full 3D voxel fluids for all water/air/oil
+    status: rejected
+    reason: Too expensive; use FluidSpaces, hydrology graphs, basins.
+    final_or_tentative: Final
+    reconsider_conditions: Small local CFD modules only.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: REJECTED-13
+    option: Global full Navier–Stokes simulation
+    status: rejected
+    reason: Out of scope/performance.
+    final_or_tentative: Final
+    reconsider_conditions: Special localized device simulation only.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: REJECTED-14
+    option: Global full electromagnetic simulation
+    status: rejected
+    reason: Out of scope; graph circuits/path-loss enough.
+    final_or_tentative: Final
+    reconsider_conditions: Special tools only.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: REJECTED-15
+    option: Chunks own canonical simulation state
+    status: rejected
+    reason: Breaks determinism/continuity under streaming.
+    final_or_tentative: Final
+    reconsider_conditions: Never for core.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-16
+    option: Save partial network state per chunk as authority
+    status: rejected
+    reason: Chunk loading could alter flows/pressure.
+    final_or_tentative: Final
+    reconsider_conditions: Chunk references/caches only.
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: REJECTED-17
+    option: Floats in core or saves
+    status: rejected
+    reason: User explicitly forbade.
+    final_or_tentative: Final
+    reconsider_conditions: Unless user reverses.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-18
+    option: Blindly run previous Codex prompt unchanged
+    status: rejected
+    reason: It contains fixed-point/C89/Region-bit errors.
+    final_or_tentative: Final
+    reconsider_conditions: Use only after repair.
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Previous Codex 5.1 max optimized implementation prompt
+    type: prompt
+    purpose: Implement/refactor repo architecture
+    status: produced but defective; must repair
+    origin: Assistant response in this chat
+    carry_forward: 'yes'
+    notes: Contains useful layout but critical fixed-point/C89 errors.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Scale hierarchy and coordinate decisions
+    type: design output
+    purpose: Spatial core reference
+    status: established
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: Final scale names from Plank to Surface.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: Save hierarchy design
+    type: design output
+    purpose: Persistence architecture
+    status: established conceptually
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: Needs exact binary format.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: TLV chunk section concept
+    type: format design
+    purpose: Future-proof save sections
+    status: established conceptually
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: Types 1–6 proposed; mod range >=1000 proposed.
+    label: INFERENCE
+  - id: ARTIFACT-05
+    name_or_description: Working memory model
+    type: design output
+    purpose: Runtime architecture
+    status: established conceptually
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: Chunks as caches; sparse vertical chunks.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: Fixed-point/C89 core plan
+    type: design output
+    purpose: Engine implementation basis
+    status: established but needs correction
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: C89/unsigned corrections required.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: Universe/galaxy/system/planet addressing plan
+    type: design output
+    purpose: Cosmic save addressing
+    status: established
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: 8/24/16 bit IDs.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Continuous terrain/material/media field model
+    type: design output
+    purpose: Terrain/media architecture
+    status: established
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: φ + material/phase fields, no blocks as matter.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: FluidSpace/Connector climate/hydrology model
+    type: design output
+    purpose: Unified fluids/weather/interiors
+    status: established conceptually
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: Solver details pending.
+    label: INFERENCE
+  - id: ARTIFACT-10
+    name_or_description: Oil/gas/rupture/flooding design
+    type: design output
+    purpose: Reservoir and flooding support
+    status: established conceptually
+    origin: Final assistant answer before CTP package request
+    carry_forward: 'yes'
+    notes: Use FluidSpaces, hydraulic nets, structural rupture.
+    label: INFERENCE
+  - id: ARTIFACT-11
+    name_or_description: Network systems scope model
+    type: design output
+    purpose: Pipes/cables/heat/electric/logic architecture
+    status: established conceptually
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: Graph systems, not full EM/CFD.
+    label: INFERENCE
+  - id: ARTIFACT-12
+    name_or_description: Mod/content lock and deterministic Lua design
+    type: design output
+    purpose: Content/modding architecture
+    status: established conceptually
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: Schemas pending.
+    label: INFERENCE
+  - id: ARTIFACT-13
+    name_or_description: Whole-project repo layering plan
+    type: design output
+    purpose: Project architecture
+    status: established conceptually
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: Actual repo unknown.
+    label: INFERENCE
+  - id: ARTIFACT-14
+    name_or_description: Determinism/seam testing plan
+    type: test plan
+    purpose: Prevent streaming/seam bugs
+    status: established conceptually
+    origin: Visible chat discussion
+    carry_forward: 'yes'
+    notes: Needs implementation.
+    label: INFERENCE
+  - id: ARTIFACT-15
+    name_or_description: Original maximum-fidelity Context Transfer Packet
+    type: handoff text
+    purpose: State transfer to future chat
+    status: produced
+    origin: Assistant response in visible chat
+    carry_forward: 'yes'
+    notes: Used as source for this package; included corrections.
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: Dominium_World_Architecture__01_full_chat_report.md
+    type: generated file
+    purpose: Main human-readable report
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: Dominium_World_Architecture__02_spec_sheet.yaml
+    type: generated file
+    purpose: Structured YAML for aggregation/spec book
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: Dominium_World_Architecture__03_aggregator_packet.md
+    type: generated file
+    purpose: Compact merge packet
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-19
+    name_or_description: Dominium_World_Architecture__04_registers.md
+    type: generated file
+    purpose: Standalone normalized registers
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-20
+    name_or_description: Dominium_World_Architecture__05_reader_brief.md
+    type: generated file
+    purpose: Short human brief
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-21
+    name_or_description: Dominium_World_Architecture__06_verification_and_audit.md
+    type: generated file
+    purpose: Audit/reliability record
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-22
+    name_or_description: Dominium_World_Architecture__manifest.md
+    type: generated file
+    purpose: Package manifest
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable file.
+    label: FACT
+  - id: ARTIFACT-23
+    name_or_description: Dominium_World_Architecture__handoff_package.zip
+    type: generated archive
+    purpose: Bundle of all package files
+    status: created now
+    origin: This response
+    carry_forward: 'yes'
+    notes: Downloadable archive.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Signed Q16.16 local X/Y bug
+    consequence: Cannot represent [0,65536); overflow/seams/corruption
+    likelihood: medium
+    severity: critical
+    mitigation: Use unsigned UQ16.16 or centred signed scheme
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-11
+    label: FACT
+  - id: RISK-02
+    risk: Signed Q4.12 save-local bug
+    consequence: Cannot represent full 16m chunk range
+    likelihood: medium
+    severity: critical
+    mitigation: Use unsigned UQ4.12
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-11
+    label: FACT
+  - id: RISK-03
+    risk: Region bit-width inconsistency
+    consequence: Wrong directory/file address decomposition
+    likelihood: medium
+    severity: high
+    mitigation: Correct Region-in-Segment to 8 bits
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-04
+    risk: C89 incompatibility in implementation prompt
+    consequence: Code may fail target constraints
+    likelihood: high
+    severity: high
+    mitigation: Use C89-style portability layer; avoid C99 constructs
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-11
+    label: FACT
+  - id: RISK-05
+    risk: 64-bit IDs in strict C89 unresolved
+    consequence: Portability failure or undefined type choices
+    likelihood: medium
+    severity: high
+    mitigation: Document compiler extension/typedef strategy
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-06
+    risk: Saving caches as authoritative state
+    consequence: Reload divergences and bloated saves
+    likelihood: medium
+    severity: high
+    mitigation: Only save deltas/dynamic state; mark caches disposable
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-07
+    risk: Too many files or poor save locality
+    consequence: Poor IO performance
+    likelihood: medium
+    severity: medium
+    mitigation: Use Region files containing many chunks; sparse directories
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-08
+    risk: Content/mod ID mismatch
+    consequence: World loads with wrong materials/recipes
+    likelihood: medium
+    severity: high
+    mitigation: Strict content.lock and migrations
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-09
+    risk: Chunk streaming changes simulation
+    consequence: Non-deterministic gameplay and seams
+    likelihood: medium
+    severity: critical
+    mitigation: Chunks are caches only; global/topological state
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-10
+    risk: Boundary crossing special cases introduce bugs
+    consequence: Performance spikes or state discontinuities
+    likelihood: medium
+    severity: high
+    mitigation: O(1) wrap and streaming-independent systems
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-11
+    risk: Terrain mesh seams
+    consequence: Visible cracks/collision gaps at chunk/region edges
+    likelihood: medium
+    severity: high
+    mitigation: Sample φ at global coordinates with boundary overlap
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-12
+    risk: Material/media queries become overcoupled
+    consequence: Hard to mod/extend systems
+    likelihood: medium
+    severity: medium
+    mitigation: Use registries and WorldServices
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-13
+    risk: Fluid/weather scope explosion
+    consequence: Core becomes unbuildable multiphysics engine
+    likelihood: medium
+    severity: high
+    mitigation: Use compartments/graphs/coarse grids; defer full physics
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-14
+    risk: Fixed-point fluid solver instability
+    consequence: Bad pressures/flows/flooding
+    likelihood: medium
+    severity: high
+    mitigation: Pick simple clamped formulas and tests
+    related_workstreams:
+    - WORKSTREAM-06
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-15
+    risk: Rupture model creates nondeterministic topology changes
+    consequence: Different clients diverge
+    likelihood: low/medium
+    severity: high
+    mitigation: Threshold deterministic events; stable ordering
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-16
+    risk: Oil/gas mixture complexity overwhelms v1
+    consequence: Implementation delay
+    likelihood: medium
+    severity: medium
+    mitigation: Start with simple species mass vectors
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+  - id: RISK-17
+    risk: Network solvers become too realistic/slow
+    consequence: Performance and complexity loss
+    likelihood: medium
+    severity: medium
+    mitigation: Use graph simplifications; no full EM
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: RISK-18
+    risk: Lua nondeterminism
+    consequence: Cross-machine divergence
+    likelihood: medium
+    severity: high
+    mitigation: Sandbox and deterministic APIs
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-19
+    risk: Mod schemas hardcoded or unstable
+    consequence: Mod ecosystem breaks saves
+    likelihood: medium
+    severity: medium
+    mitigation: Versioned manifests and registries
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-20
+    risk: Repo architecture assumptions wrong
+    consequence: Codex overwrites/misplaces files
+    likelihood: medium
+    severity: high
+    mitigation: Inspect repo before changes
+    related_workstreams:
+    - WORKSTREAM-10
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-21
+    risk: Launcher/tools duplicate file parsers
+    consequence: Format drift and bugs
+    likelihood: medium
+    severity: medium
+    mitigation: Tools link engine IO
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+  - id: RISK-22
+    risk: Previous Codex prompt used without audit
+    consequence: Implementation bakes in known design bugs
+    likelihood: medium
+    severity: critical
+    mitigation: Repair prompt first
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: RISK-23
+    risk: No deterministic test harness
+    consequence: Bugs discovered late
+    likelihood: medium
+    severity: high
+    mitigation: Add save/load/hash/seam tests early
+    related_workstreams:
+    - WORKSTREAM-12
+    label: INFERENCE
+  - id: RISK-24
+    risk: Threading breaks determinism
+    consequence: Race/order-dependent state
+    likelihood: medium
+    severity: high
+    mitigation: Single-thread sim; async only for pure caches initially
+    related_workstreams:
+    - WORKSTREAM-12
+    label: INFERENCE
+  - id: RISK-25
+    risk: Report over-compression loses design details
+    consequence: Future assistant repeats questions/mistakes
+    likelihood: low
+    severity: medium
+    mitigation: Use full package + registers
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+  - id: RISK-26
+    risk: Assistant suggestions mistaken as user decisions
+    consequence: Spec book becomes overconfident
+    likelihood: medium
+    severity: medium
+    mitigation: Use labels and source hierarchy
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Correct fixed-point signedness
+    why_verification_needed: Prior prompt used invalid signed ranges.
+    suggested_source_type: Code/spec audit
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-11
+    label: FACT
+  - id: VERIFY-02
+    item: C89 compatibility of code examples
+    why_verification_needed: Prior prompt used C99 constructs.
+    suggested_source_type: Compiler/build/lint review
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-11
+    label: FACT
+  - id: VERIFY-03
+    item: Region bit decomposition
+    why_verification_needed: Earlier output inconsistent about 4-bit vs 8-bit Region index inside Segment.
+    suggested_source_type: Math/spec review
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    label: FACT
+  - id: VERIFY-04
+    item: No float/double in engine/saves
+    why_verification_needed: User forbade floats in core/saves.
+    suggested_source_type: Static grep/lint/build policy
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: VERIFY-05
+    item: Endian/padding save format
+    why_verification_needed: Binary compatibility not specified.
+    suggested_source_type: Spec review
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Save path grammar
+    why_verification_needed: Directory names and bit widths need exact final spec.
+    suggested_source_type: Spec review
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Streaming independence
+    why_verification_needed: Chunks should not affect simulation truth.
+    suggested_source_type: Automated test
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-12
+    label: INFERENCE
+  - id: VERIFY-08
+    item: Untouched chunks not saved
+    why_verification_needed: Storage optimization promise needs test.
+    suggested_source_type: Save inspection test
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: VERIFY-09
+    item: φ seam continuity
+    why_verification_needed: Adjacent chunks must sample identical fields.
+    suggested_source_type: Boundary probe test
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-12
+    label: INFERENCE
+  - id: VERIFY-10
+    item: Material/media query determinism
+    why_verification_needed: Field and material providers must be deterministic.
+    suggested_source_type: Hash/probe test
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: VERIFY-11
+    item: FluidSpace solver determinism
+    why_verification_needed: Compartment/weather/hydro states must match across runs.
+    suggested_source_type: Sim hash test
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Weather/hydrology resolution performance
+    why_verification_needed: Grid sizes were only recommended, not confirmed.
+    suggested_source_type: Prototype/profile
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-13
+    item: Pressure/rupture formulas
+    why_verification_needed: Oil/tank/flood systems need stable equations.
+    suggested_source_type: Design/prototype
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-14
+    item: Network global-state storage
+    why_verification_needed: Networks must not be chunk-authoritative.
+    suggested_source_type: Save/load test
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: VERIFY-15
+    item: content.lock determinism
+    why_verification_needed: Registry IDs must match across machines/content order.
+    suggested_source_type: Content loader test
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: VERIFY-16
+    item: Actual repo structure
+    why_verification_needed: No repo files were inspected in chat.
+    suggested_source_type: Repo inspection
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-10
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-17
+    item: Build system/toolchain targets
+    why_verification_needed: C89/C++98 portability depends on target compilers.
+    suggested_source_type: Repo/user verification
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-18
+    item: Saved rotations are 8-bit
+    why_verification_needed: Prior prompt made this optional despite user statement.
+    suggested_source_type: Spec audit/user confirmation if exceptions desired
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-11
+    label: FACT
+  - id: VERIFY-19
+    item: Canonical state hash definition
+    why_verification_needed: Tests need exact included fields.
+    suggested_source_type: Test design
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-20
+    item: Package completeness
+    why_verification_needed: Current generated package should be checked by user before aggregation.
+    suggested_source_type: Manual review
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-13
+    label: FACT
+  spec_book_notes:
+    likely_sections:
+    - World coordinate model
+    - Deterministic fixed-point core
+    - Save format
+    - Runtime chunking
+    - Terrain/media fields
+    - Fluid/weather/hydrology
+    - Networks
+    - Modding/content
+    - Tools/launcher
+    - Testing
+    unique_contributions:
+    - Final scale names and dimensions
+    - No-float C89/C++98 split
+    - FluidSpaces/SpatialVolumes/Networks unification
+    - Oil/gas/flooding integration
+    - Critical correction list for Codex prompt
+    possible_duplicates_with_other_chats:
+    - Game engine architecture
+    - Save format
+    - Modding
+    - World generation
+    - ECS
+    conflicts_to_watch_for:
+    - Any later change to precision/world scale
+    - Any use of floats in core
+    - Different repo layout
+    - Different content/mod system
+    formal_requirements_candidates:
+    - No floats in core/saves
+    - Q16.16 runtime
+    - Q4.12 saves
+    - content.lock
+    - chunks as caches
+    background_context_candidates:
+    - Comparisons to existing games
+    - Rejected full CFD/EM rationale
+    needs_user_confirmation:
+    - C89 portability strategy
+    - Unsigned fixed correction
+    - Solver formulas
+    - Meshing algorithm
+  final_recommendations:
+    next_action_if_continuing_this_chat: Revise the Codex implementation prompt and inspect the repo before coding.
+    next_action_for_aggregator: Merge as the Dominium world architecture chat, preserving labels and contradictions.
+    user_checks_required:
+    - Confirm unsigned fixed-point correction
+    - Confirm C89 portability model
+    - Check generated package completeness

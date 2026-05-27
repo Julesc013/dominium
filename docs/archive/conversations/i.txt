@@ -1,0 +1,888 @@
+GPT-5.5 Pro • build date not exposed
+
+# Human-Readable Chat Report — Dominium Architecture III: Launcher, Platform, Renderer, and Handoff Architecture
+
+## 1. One-Page Orientation
+
+This chat was mainly about turning Dominium’s launcher from a vague “startup UI” into a coherent, portable, extensible subsystem that fits the wider deterministic simulation architecture. The user began with the idea of tackling the launcher first, then progressively refined the requirements until the conversation covered launcher architecture, platform and renderer backends, cross-platform entry scripts, software rendering, camera/view systems, input bindings, platform support tiers, capability matrices, and finally the preservation of this chat as a reusable handoff package.
+
+The most important background is that Dominium is not an ordinary modern game project. **FACT:** The user framed it as a deterministic, fixed-step simulation codebase with C89/C++98-era constraints. `/engine/core` and `/engine/sim` are C89, deterministic, platform-agnostic, and must not use floats. Rendering, audio, platform, UI, launcher, and tooling must not contaminate the deterministic sim. That shaped every architectural choice in the chat. The launcher could be flexible and platform-aware, but it could not blur boundaries or mutate core simulation state.
+
+The conversation began with a launcher UI idea: common tabs such as **News, Changes, Mods, Instances, Accounts, Settings**, and bottom selectors for account, instance, platform, renderer, graphical/headless mode, and client/server role. The initial goal was to decide what the launcher should look like and how it should relate to the rest of the game. The user then clarified a major point: **FACT:** launcher settings should be used to execute separate **client or server binaries**. That means the launcher is not an in-process mode switcher. It is a process-launching configuration frontend.
+
+From there, the design became more modular. **FACT:** The user decided that the launcher backend should use **C89**, while frontend code for each binary may use **C++98**. This led to the idea of a launcher split into a pure, system-agnostic C89 core plus one or more frontends. The core would know about accounts, instances, platforms, renderers, roles, capabilities, and launch plans. The frontends could be engine-rendered, native Win32, CLI/TUI, or other platform-specific skins, but they should not own the launcher’s business logic.
+
+The chat also resolved several naming and packaging questions. **FACT:** The final user-facing scripts are `dominium`, `setup`, `dom-client`, and `dom-server`. `dominium` launches the launcher. `setup` launches installer/repair/uninstaller functionality. `dom-client` and `dom-server` directly dispatch to the relevant game binaries. Earlier names such as `dom-launcher` and `dom-setup` were effectively superseded, although the conversation left open the possibility of aliases.
+
+A major render-design change happened mid-chat. The assistant initially discussed `vector_soft` as a minimal vector renderer. The user corrected this direction. **FACT:** The user wants a single universal **software renderer** that works on all platforms and can draw both vector graphics and texture-based graphics. This software renderer replaces `vector_soft` as the public fallback backend. **FACT:** Every renderer should support both vector-only mode and full graphics mode, so the game can switch instantly between CAD-style views and textured views, or fall back gracefully when texture files are missing.
+
+The view system then expanded beyond the launcher. **FACT:** The user wants instant zoom to any scale, instant switching between top-down 2D and first-person 3D, and arbitrary cameras for free cam, map viewing, content creation, HUD cameras, CCTV, overlays, windows, and offscreen targets. These are client/render-side concerns, not simulation concerns.
+
+The user also finalized broad platform support tiers. **FACT:** Tier 1 targets Windows NT 2000 SP4 to latest, Mac OS X 10.6 to 10.14, and Linux 3.2 to current. Tier 2 expands to Win98SE/Me, Mac OS 9, Mac OS X 10.6 to 15.0, Linux 2.6.18 to current, plus NT. Tier 3 extends to MS-DOS, Windows 3, Windows 95–Me, Mac OS 8.5–9.2, Mac OS X 10.0–latest, Linux 2.4–current, and NT. These are project goals, not verified build guarantees. External feasibility remains **UNCERTAIN / UNVERIFIED**.
+
+Finally, the chat itself became a handoff object. The user asked for discovery inventory, structured registers, a maximum-fidelity context transfer packet, a downloadable report package, and then an in-chat reader version. Those outputs exist as part of this chat’s artifacts. The main future relevance of this chat is that it defines the launcher/render/platform direction and records unresolved issues that must be clarified before implementation: especially DX12 status, the exact meaning of POSIX/SDL1/SDL2/Native, and whether X11/Wayland are explicit backends or subtypes.
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began with the Dominium architecture contract
+
+The user opened by establishing Dominium’s project identity and constraints. Dominium is a deterministic, fixed-step simulation game with a strict repository layout. The user described the responsibilities of `/engine`, `/game`, `/data`, `/mods`, `/tools`, `/tests`, `/external`, `/build`, `/packaging`, `/scripts`, and `/ports`. They also summarized key documents: `docs/DIRECTORY_CONTEXT.md`, `docs/SPEC_CORE.md`, `docs/DATA_FORMATS.md`, `docs/BUILDING.md`, and `docs/dev/dominium_new_root.txt`.
+
+This context matters because the rest of the conversation happened inside those constraints. The launcher could not become a dumping ground for OS-specific behavior, sim mutation, renderer decisions, or nondeterministic game-state changes. It had to fit the project’s deterministic layering.
+
+The user then uploaded `dominium.7z`, saying it was the git repository as of that moment. **FACT:** The prior assistant said it could not open `.7z` archives in that environment. That means the actual repository state remained unverified at that stage. This became important later, because many implementation ideas were discussed without confirmed access to the repo contents.
+
+### The first launcher concept: tabs and bottom selectors
+
+The user then said they were thinking of tackling the launcher. They wanted the launcher to be common across systems, with tabs:
+
+* News
+* Changes
+* Mods
+* Instances
+* Accounts
+* Settings
+
+They also wanted a bottom area with account and instance selection, platform and renderer selection, graphical/headless selection, and client/server selection.
+
+This first launcher concept was mostly UI-focused. The assistant responded with a proposed launcher state model, UI layout, and launch descriptor, but the more important development came in the next clarification.
+
+### The critical architecture clarification: launcher executes binaries
+
+The user clarified: **FACT:** “The settings selected in the launcher will be used to execute client or server binaries.”
+
+This changed the launcher’s role. It was not a shell that would instantiate a client or server inside the same process. It would construct a launch plan and execute a separate binary. That choice simplified several things:
+
+* Client and server builds can be separate.
+* Different platform/render combinations can be separate executables.
+* The launcher can remain a configuration/orchestration tool.
+* Runtime backend switching does not need to happen inside one universal binary.
+
+This led to discussion of a command-line/env contract and scripts.
+
+### Backend C89, frontend C++98, and single-system client/server binaries
+
+The user then specified another important constraint: **FACT:** the launcher backend should be C89, while frontend code for each binary can use C++98. The user also said client/server binaries can have single-system support.
+
+This produced the architecture pattern that remained the strongest launcher design by the end of the chat:
+
+* A **C89 launcher backend/core** owns logical decisions.
+* **C++98 frontends** can provide platform-specific UI and process handling.
+* **Client/server binaries** can be built for one system/platform/render combination.
+* The launcher and scripts dispatch to those binaries.
+
+This was a major step toward modularity.
+
+### Unified scripts and command names
+
+The conversation then moved into user-facing launch scripts. Earlier names included `dom-launcher`, `dom-client`, `dom-server`, and `dom-setup`. Later, the user explicitly requested `setup` to launch installer/repair/uninstaller behavior and `dominium` to launch the launcher.
+
+The final direction became:
+
+* `dominium` launches the OS-appropriate launcher.
+* `setup` launches installer/repair/uninstaller.
+* `dom-client` launches or dispatches client binaries.
+* `dom-server` launches or dispatches server binaries.
+
+The assistant generated script templates and Codex prompts for these. Those prompts should be treated as implementation artifacts, not proof that code was actually changed.
+
+### Minimal launchers were considered, then rejected
+
+The user then asked about using bare-minimum platforms and renderers for launchers. For example, a Windows launcher that could work from Windows 95 through Windows 11 using minimal platform/render code, while still allowing the actual game client to use richer backends.
+
+This led to exploration of “bootstrap” or minimal backends: DOS, Win9x, WinNT, Mac Classic, MacOSX, Linux X11, and minimal vector/software renderers. The user then asked what files would exist if multiple launchers per OS were needed.
+
+But this direction was later reversed. **FACT:** The user said: “Okay let's remove the minimal versions of stuff. We should just use the full single implementation.” That superseded the minimal/full split. The current interpretation is that the project should use one implementation per backend, shared by launcher and game where applicable. The launcher can still choose the conservative software renderer, but there should not be parallel “minimal” and “full” versions unless future legacy constraints force it.
+
+### `vector_soft` was replaced by a universal software renderer
+
+The conversation then refined the renderer design. The assistant had discussed `vector_soft`, but the user rejected the idea of having a separate vector-only renderer. **FACT:** The user asked whether instead Dominium could have “just software renderers” capable of vector graphics and graphics using texture files on all systems as a fallback.
+
+The conclusion was that the public fallback renderer should be `software`, not `vector_soft`. This software renderer should support both vector-only and full textured graphics. All other renderers should also support vector and graphics modes, so missing files or performance constraints do not break rendering.
+
+This is one of the most important design outcomes of the chat.
+
+### Render/view goals expanded: zoom, 2D/3D, arbitrary cameras
+
+After settling the renderer direction, the user expanded the visual requirements:
+
+1. Instant seamless zoom to any scale.
+2. Toggle between vector and graphics at any time.
+3. Instant switching between top-down 2D and first-person 3D.
+4. Support arbitrary cameras for free cam, map views, content creation, custom HUD cameras, CCTV, in-game cameras, overlays, and new windows.
+
+The assistant proposed view/camera abstractions, render targets, and draw-command pipelines. The key idea was that view type and render mode should be properties of views/cameras, not separate renderer backends. This keeps switching instant and avoids reinitializing render pipelines.
+
+These ideas were accepted as direction by continued user refinement, but implementation remains future work.
+
+### Platform and renderer backend list
+
+Later, the user returned to launcher platform/renderer binaries and scripts. The user said Dominium should at least support SDL1, SDL2, native platform support, POSIX, X11, Wayland, software, DX9, DX11, DX12, GL1, GL2, VK1, and so on. Later, when requesting the capability matrix, the user narrowed or restated the implementation list: **FACT:** “Remember, were implementing dx9.0c, dx11, gl1.1, gl2, vk1, and software; POSIX, sdl1, and sdl2 and native.”
+
+This created one of the main unresolved issues. DX12 was discussed earlier, but omitted from the latest renderer list. X11 and Wayland were discussed earlier, but the latest platform categories are POSIX, SDL1, SDL2, and Native. Therefore, the final status is:
+
+* DX9.0c, DX11, GL1.1, GL2, VK1, software are current renderer targets.
+* DX12 is **UNCERTAIN / UNVERIFIED** and should not be assumed.
+* POSIX, SDL1, SDL2, Native are current platform categories.
+* X11/Wayland placement is unresolved.
+
+### Input/keybindings and F1–F12
+
+The user asked what keybindings should be, especially F1 through F12. A canonical map was produced:
+
+* F1 Help
+* F2 Screenshot/frame capture
+* F3 Debug overlay
+* F4 View mode cycle
+* F5 Quick save
+* F6 Quick load
+* F7 Replay/time controls
+* F8 Mods/tools/editor
+* F9 World map
+* F10 Settings/system menu
+* F11 Fullscreen/UI-less mode
+* F12 Developer console
+
+The user then asked for a Codex prompt to implement and document this. That means the keybinding map was accepted enough to become implementation material, but it should still be documented as a default binding specification rather than an immutable law.
+
+### Uploaded launcher code and refactor direction
+
+The user uploaded:
+
+* `dom_launcher_view.c`
+* `dom_launcher_view.h`
+* `CMakeLists.txt`
+* `dom_launcher_main.c`
+
+The prior assistant summarized these files as containing two different launcher concepts: an engine-rendered launcher view and a native Win32 launcher. It also claimed the CMake file built the Win32 source for non-Windows targets. However, this report must preserve that as **UNCERTAIN / UNVERIFIED**, because the files were not re-inspected during final packaging.
+
+The proposed refactor direction was to split the launcher into:
+
+* A canonical engine-based cross-platform launcher using the shared core and software renderer.
+* A separate native Win32 launcher frontend/tool if desired.
+* A shared C89 core/model/viewmodel beneath both.
+
+### Support tiers and Linux versions
+
+The user then asked what Linux versions should be supported in each tier. After discussion, the user finalized support tiers:
+
+Tier 1:
+
+* Windows NT 2000 SP4 to latest
+* Mac OS X 10.6 to 10.14
+* Linux 3.2 to current
+
+Tier 2:
+
+* Windows 98 SE to Me
+* Windows NT 2000 SP4 to latest
+* Mac OS 9 to 9.2
+* Mac OS X 10.6 to 15.0
+* Linux 2.6.18 to current
+
+Tier 3:
+
+* MS-DOS 3.3 to 6.2
+* Windows 3
+* Windows 95 to Me
+* Windows NT 2000 SP4 to latest
+* Mac OS 8.5 to 9.2
+* Mac OS X 10.0 to latest
+* Linux 2.4 to current
+
+This is final as a user-stated product goal. Feasibility still requires verification.
+
+### Handoff and report packaging
+
+The final phase of the chat was meta-work: extracting this chat into handoff forms. The user asked for OC-1 discovery inventory, then OC-2 registers, then a maximum-fidelity Context Transfer Packet, then a downloadable report package, then an in-chat reader version, and now this human-readable explanatory report.
+
+Those outputs are important artifacts, but they are not the substance of the design. Their purpose is to preserve this chat’s decisions, uncertainty, and future work for later aggregation into a master Project Spec Book.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Dominium’s deterministic architecture as the constraint layer
+
+This topic came up immediately because the user opened the chat by providing Dominium’s core project identity. The project is deterministic, fixed-step, and C89/C++98 constrained. The user described the repository layout and the responsibilities of engine modules, game modules, data, mods, tools, tests, build scripts, and ports.
+
+The conclusion was not a new decision, but a reaffirmed baseline. Any launcher, renderer, platform, or input design must respect the deterministic sim. Renderer and UI can be flexible, but they cannot mutate sim state or introduce nondeterminism into core game logic. The launcher can perform OS-specific process launching, but that belongs outside the deterministic engine core.
+
+What remains uncertain is not the constraint itself, but how existing repository code currently enforces it. That requires code inspection.
+
+### Topic 2 — Launcher purpose and UI
+
+The launcher topic began with a UI concept: tabs for News, Changes, Mods, Instances, Accounts, and Settings, plus bottom selectors for account, instance, platform, renderer, graphical/headless, and client/server.
+
+The reason this came up was practical: the user wanted to tackle launcher work first. The launcher needs to manage startup configuration, instances, mods, accounts, and binary selection.
+
+The conclusion was that the launcher should not just be UI. It needs a backend model that understands accounts, instances, platform/render capabilities, roles, and launch plans. The tabs and selectors are frontend expressions of that model.
+
+Uncertainty remains around how the uploaded launcher code currently maps to this desired UI. The prior assistant said the uploaded native launcher had different tabs, including Console and missing Accounts, but this must be verified.
+
+### Topic 3 — Launcher as process launcher, not in-process switcher
+
+This was one of the most important topics. The user explicitly said launcher-selected settings will be used to execute client or server binaries. This converted the launcher from a possible in-process shell into a process launcher.
+
+The rationale is visible: separate binaries allow single-system builds and separate render/platform combinations. This fits the old-platform support strategy better than trying to make one universal runtime binary.
+
+The decision is final in the chat. It affects scripts, CMake targets, binary naming, launch-plan structs, and platform spawn APIs.
+
+### Topic 4 — C89 backend and C++98 frontends
+
+The user explicitly required launcher backend code to be C89 and frontend code for each binary to be C++98. This came up because the launcher must support many systems and eras, while still allowing platform-specific UI shells.
+
+The conclusion was a layered architecture:
+
+* C89 core/backend for logic.
+* C++98 frontends for UI/process shell where appropriate.
+* Platform adapters for spawn/filesystem/env.
+
+This matters because future assistants must not implement launcher logic directly in Win32 widgets, Cocoa classes, SDL callbacks, or modern C++ code.
+
+### Topic 5 — Unified scripts and command names
+
+The chat developed a user-facing command model. The final commands are:
+
+* `dominium`
+* `setup`
+* `dom-client`
+* `dom-server`
+
+The motivation was to hide the complexity of per-platform/per-renderer binaries behind stable command names. The `dominium` command launches the launcher. `setup` performs installation/repair/uninstall dispatch. `dom-client` and `dom-server` are direct command-line routes to game binaries.
+
+Uncertainty remains around aliases. Earlier names such as `dom-launcher` and `dom-setup` might be kept as aliases, but that was not finalized.
+
+### Topic 6 — Minimal backends versus full single implementation
+
+The chat explored minimal launcher backends for very old OS ranges: DOS, Win9x, WinNT, Mac Classic, MacOSX, Linux. The idea was to make launchers use only the bare minimum.
+
+The user later reversed this. The final decision was to remove minimal versions and use full single implementations. This means the architecture should not split platform/render backends into minimal and full variants unless future technical constraints force it.
+
+This is important because preserving the earlier minimal design would cause unnecessary duplication.
+
+### Topic 7 — Universal software renderer
+
+The renderer design changed significantly. Earlier, `vector_soft` was discussed as a launcher renderer. The user changed the direction: instead of a vector-only renderer, Dominium should have one universal software renderer that can draw vector graphics and texture-based graphics.
+
+The conclusion is that `software` is the all-platform fallback renderer. It should work for the launcher and game fallback. It should support vector-only mode and full graphics mode. Other renderers should also support both modes.
+
+This is a formal design direction, not just an assistant suggestion, because the user explicitly asked for it and continued building on it.
+
+### Topic 8 — Vector/graphics mode, zoom, 2D/3D, and cameras
+
+After the software renderer decision, the user expanded the rendering goals into a broader view/camera system. They want instant zoom to any scale, switching between vector and graphics at any time, and switching between top-down 2D and first-person 3D.
+
+Then they expanded further: arbitrary cameras should support free cam, map views, content creation, HUD cameras, CCTV, overlays, windows, and in-game camera integration.
+
+The conclusion was that view type and render mode should be properties of cameras/views, not separate renderers. The renderer should consume a common command stream, and the client/view layer should decide whether to emit vector, textured, 2D, or projected 3D commands.
+
+This remains a future implementation plan.
+
+### Topic 9 — Platform and renderer backend capability matrix
+
+The user asked for a capability matrix using renderers DX9.0c, DX11, GL1.1, GL2, VK1, and software, and platforms POSIX, SDL1, SDL2, and Native.
+
+The assistant produced a matrix discussing Windows, macOS, Linux, DirectX, GL, Vulkan, SDL, POSIX, and Native combinations. However, several of those claims are external-world facts and require verification.
+
+The major unresolved issue is taxonomy: how exactly POSIX, SDL1, SDL2, and Native map to Win32, Cocoa, Carbon, X11, Wayland, headless, and retro platforms.
+
+### Topic 10 — Platform support tiers
+
+The user finalized support tiers. This is one of the most concrete outputs of the chat. The tiers are product goals and should be preserved exactly.
+
+The motivation is to classify modern support, extended legacy support, and retro/heritage support. Tier 1 is the primary modern target; Tier 2 broadens older OS support; Tier 3 is extreme retro.
+
+The unresolved part is feasibility. Supporting Linux 2.4, Mac OS 8.5, Windows 3, and MS-DOS requires separate toolchain research. The chat did not verify that every target can be built.
+
+### Topic 11 — Input/keybindings
+
+The user asked what keybindings should be, especially F1 through F12. A canonical map was proposed and then converted into a Codex implementation prompt at the user’s request.
+
+This matters because it standardizes future UI/game/editor behavior. It also ties into the view-mode work: F4 became the view mode cycle key.
+
+The keymap should be treated as accepted direction, but future implementation may still need adjustment after testing.
+
+### Topic 12 — Uploaded files and code refactor
+
+The user uploaded current launcher files. The prior assistant summarized them and recommended refactoring into a canonical engine launcher plus separate native Win32 launcher.
+
+This topic is important but uncertain. The files exist, but their contents were not verified during the final packaging step. Future work must inspect them before acting.
+
+### Topic 13 — Handoff, reports, and aggregation
+
+The last part of the chat was about preserving this conversation itself. The user requested a discovery inventory, structured registers, context transfer packet, final downloadable package, in-chat reader, and now this human-readable report.
+
+The reason was to retire the old chat while preserving maximum useful state for a future consolidated project handoff or spec book.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals
+
+The user explicitly wanted to:
+
+* Build the Dominium launcher architecture.
+* Make the launcher work across systems.
+* Use common tabs and selectors.
+* Have launcher settings execute client/server binaries.
+* Use C89 for launcher backend and C++98 for frontends.
+* Provide unified scripts.
+* Support platform/render backend selection.
+* Replace `vector_soft` with universal `software`.
+* Support vector and graphics modes on all renderers.
+* Support instant zoom and 2D/3D switching.
+* Support arbitrary cameras.
+* Define keybindings.
+* Define platform support tiers.
+* Produce handoff reports and packages.
+
+These goals mattered because they set the architecture for the user-facing entrypoint and for a large part of the render/platform system.
+
+### Inferred goals
+
+**INFERENCE:** The user also appears to want a long-lived project architecture that can support both modern systems and retro systems without fracturing into unmaintainable one-off code paths. This is inferred from the repeated emphasis on portability, full single implementations, C89/C++98 constraints, and tiered OS support.
+
+**INFERENCE:** The user wants future assistants and Codex runs to operate from stable specs rather than ad hoc chat memory. This is inferred from repeated requests for Codex prompts, handoff packets, registers, and report packages.
+
+### Goals that changed over time
+
+The launcher backend goal changed from possibly using minimal bootstrap backends to using full single implementations. The renderer goal changed from a vector-only fallback idea to a universal software renderer with both vector and textured graphics. The entrypoint naming changed from `dom-launcher`/`dom-setup` toward `dominium`/`setup`.
+
+### Goals that remain unresolved
+
+The major unresolved goals are:
+
+* Finalize the platform taxonomy.
+* Decide DX12 status.
+* Verify external platform compatibility.
+* Inspect actual uploaded code.
+* Decide exact launcher config format.
+* Decide how much of Tier 3 is practical versus aspirational.
+
+---
+
+## 5. Decisions Made and Why
+
+### Short decision overview
+
+| Decision                                       | Status              | Why it matters                                   |
+| ---------------------------------------------- | ------------------- | ------------------------------------------------ |
+| Launcher executes separate binaries            | Final               | Defines process-spawning architecture            |
+| Launcher backend C89                           | Final               | Preserves portability                            |
+| Launcher frontends C++98                       | Final               | Allows system-specific UI within constraints     |
+| Client/server binaries can be single-system    | Final               | Enables platform/render binary matrix            |
+| `dominium` and `setup` scripts                 | Final               | Defines user-facing entrypoints                  |
+| Remove minimal/full backend split              | Final               | Avoids duplicated implementations                |
+| Replace `vector_soft` with `software`          | Final               | Creates universal fallback renderer              |
+| Every renderer supports vector/full modes      | Final               | Enables CAD/performance/missing-file fallback    |
+| Support instant zoom, 2D/3D, arbitrary cameras | Final design goal   | Drives render/view architecture                  |
+| Platform support tiers                         | Final as user goals | Drives support docs and build policy             |
+| DX12 status                                    | Unclear             | Earlier mentioned, later omitted                 |
+| X11/Wayland taxonomy                           | Unclear             | Earlier mentioned, later not in final categories |
+
+### Launcher executes binaries
+
+**FACT:** The user explicitly stated that launcher-selected settings will execute client or server binaries. This is final in this chat.
+
+This decision made sense because Dominium targets many platforms and renderers. A single runtime binary capable of every role/backend combination would be more complex. Separate binaries let the build system produce curated client/server variants, while the launcher and scripts select the appropriate one.
+
+This affects:
+
+* Launcher core.
+* Spawn API.
+* Scripts.
+* CMake targets.
+* Capability matrix.
+
+It would be revisited only if the project later wants runtime-loadable platform/render plugins or a universal binary model.
+
+### Launcher backend C89, frontends C++98
+
+**FACT:** The user explicitly required C89 backend code and C++98 frontend code.
+
+This decision fits the project’s retro/portable constraints. The backend should contain the durable logic: accounts, instances, launch profiles, capabilities, and launch plans. The frontend can render UI and handle platform events.
+
+This affects file layout. It implies future code like `game/launcher/core/*` should be `.c/.h`, while Win32/Cocoa/SDL frontends may be `.cpp` or `.mm` within C++98 constraints.
+
+### Single-system client/server binaries
+
+**FACT:** The user said client/server binaries can have single-system support. This was a practical concession. The launcher can be cross-platform in concept, but each game binary can target a specific platform/render combination.
+
+This affects binary naming and script dispatch. It also makes capability filtering more important, because the launcher must not offer binaries that do not exist or cannot run.
+
+### Unified scripts
+
+**FACT:** The final user-facing commands are `dominium`, `setup`, `dom-client`, and `dom-server`.
+
+This decision made sense because users should not need to remember binary names such as `dom_client-posix-sdl2-gl2`. Scripts provide stable entrypoints.
+
+`dominium` and `setup` supersede earlier `dom-launcher` and `dom-setup` naming. Whether those older names remain as aliases is unresolved.
+
+### Remove minimal/full backend split
+
+The assistant explored minimal bootstrap backends. **FACT:** The user later rejected this direction and said to use the full single implementation.
+
+This avoids maintaining parallel `win32_legacy` versus `win32_full`, or `macosx_minimal` versus `macosx_full`, unless future technical evidence proves such a split unavoidable.
+
+The assumption is that a single backend can be conservative enough for launcher use while still serving richer clients where appropriate. That assumption may break for extreme legacy targets, but the decision is final for now.
+
+### Universal software renderer
+
+**FACT:** The user explicitly requested a software renderer capable of both vector and graphics using texture files, working on all systems as backup.
+
+This replaces `vector_soft`. It matters because the launcher can use software rendering, the game can fall back to software rendering, and missing texture files can still produce useful vector/placeholders.
+
+This affects `engine/render/software`, render API design, draw command format, and platform present callbacks.
+
+### Vector/full modes on every renderer
+
+**FACT:** The user wants vector and graphics modes available on all renderers, so all can work with missing files and so the user can toggle modes for CAD-style viewing or performance.
+
+This means vector/full is not a separate backend choice. It is a runtime mode or view mode. Renderers must be able to draw vector primitives and either draw textured primitives or substitute placeholders.
+
+### Instant zoom, 2D/3D switching, arbitrary cameras
+
+**FACT:** The user asked for these features explicitly. The decision is a design goal, not a finished implementation.
+
+The visible rationale was flexibility: CAD-style viewing, better GPU performance, free cam, map modes, content creation, HUD cameras, CCTV, and in-game camera integration.
+
+This affects render core architecture. Camera and view state must be general, runtime-switchable, and client-side.
+
+### Platform support tiers
+
+**FACT:** The final tier table came directly from the user. These tiers are product targets.
+
+They make sense as a way to separate:
+
+* Tier 1: primary modern support.
+* Tier 2: extended legacy support.
+* Tier 3: retro/heritage support.
+
+However, feasibility is **UNCERTAIN / UNVERIFIED**. Supporting the tiers requires toolchain, API, runtime, and dependency research.
+
+### Renderer/platform final lists and uncertainty
+
+**FACT:** Latest renderer list: DX9.0c, DX11, GL1.1, GL2, VK1, software.
+**UNCERTAIN / UNVERIFIED:** DX12 appeared earlier, but the user omitted it from the later list. It should not be assumed final.
+
+**FACT:** Latest platform categories: POSIX, SDL1, SDL2, Native.
+**UNCERTAIN / UNVERIFIED:** X11 and Wayland were discussed earlier. Their final placement is unresolved.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### In-process launcher mode switching
+
+This idea was effectively rejected when the user clarified that launcher settings execute client/server binaries. It might have been simpler for a small project, but it conflicts with the multi-binary platform/render strategy. The rejection is final unless the project later changes direction.
+
+### Universal all-system client/server binaries
+
+The user allowed client/server binaries to be single-system. That deprioritised a universal game binary. This can be reconsidered only if the project later wants plugin-based platform/render backends.
+
+### Minimal versus full backend split
+
+The conversation explored minimal launcher backends for OS compatibility. The user later rejected this and chose full single implementations. This rejection is final for now, although extreme Tier 3 support might force specialized paths later.
+
+### `vector_soft` renderer
+
+`vector_soft` was superseded by `software`. This is final. Future assistants should not reintroduce `vector_soft` as a public renderer unless the user changes their mind.
+
+### GPU-dependent launcher
+
+The launcher should use the universal software renderer, not require GPU backends. A GPU-based launcher skin could exist later, but it is not the base design.
+
+### `dom-launcher` and `dom-setup` as primary commands
+
+These were superseded by `dominium` and `setup`. They could remain as aliases, but that is unresolved.
+
+### Linux kernel 2.0/libc5 support
+
+The assistant mentioned even older Linux possibilities, but the user finalized Tier 3 at Linux 2.4. Linux 2.0/libc5 is outside current support tiers unless explicitly revived as a special retro-port.
+
+### DX12 as a confirmed renderer
+
+DX12 was discussed earlier, but omitted in the user’s later “remember, we’re implementing” list. It is not safe to treat it as confirmed.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The conversation was shaped by a few repeated tradeoffs.
+
+First, portability versus maintainability. The user wants wide platform support, including modern, legacy, and retro systems. One response would be to create many special-case launchers and renderers. The user explicitly moved away from that. The rationale was to avoid duplicate minimal/full implementations and instead use full single implementations where possible, with a universal software renderer as fallback.
+
+Second, frontend flexibility versus backend purity. The user wants launcher code to work across systems, but also accepts that platform-specific frontends may need C++98. The chosen model separates pure C89 logic from system-specific UI skins. That gives portability without forcing every UI implementation to be identical.
+
+Third, visual flexibility versus sim determinism. The user wants cameras, 3D views, 2D views, vector modes, graphics modes, overlays, and CCTV. The visible reasoning was that these are client/render concerns. They should not affect the deterministic simulation. The solution is to keep camera/view/render mode state outside the sim.
+
+Fourth, user convenience versus binary complexity. Multiple binaries are inevitable if client/server builds are single-system and renderers differ. Scripts solve that. The user-facing command remains simple even if the internal binary matrix is large.
+
+Fifth, ambition versus verification. The support tiers are ambitious. The chat preserved them as product goals, but repeatedly marked external facts as needing verification. That distinction matters: “we want to support Linux 2.4” is a user decision; “this will build and run with our dependencies” is not established.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+The best next action is to inspect actual files and resolve the two taxonomy blockers.
+
+### 1. Inspect uploaded files and repo state
+
+This is first because implementation advice depends on the real code. The user uploaded `dom_launcher_view.c`, `dom_launcher_view.h`, `CMakeLists.txt`, `dom_launcher_main.c`, and earlier `dominium.7z`.
+
+The expected output is a verified map of current code:
+
+* What the launcher currently builds.
+* Whether the engine-rendered view exists.
+* Whether native Win32 code is isolated.
+* What CMake targets are defined.
+* Which APIs already exist.
+
+What could go wrong: acting on unverified assistant summaries could produce wrong refactors.
+
+### 2. Resolve platform taxonomy
+
+The project needs to decide how POSIX, SDL1, SDL2, Native, X11, and Wayland relate. This blocks documentation, CMake, scripts, and capability filtering.
+
+The expected output is a canonical platform enum/model. For example, Native might mean Win32 on Windows, Cocoa/Carbon on Mac, and X11/Wayland direct on Linux. POSIX might mean headless only. But these are not final until decided.
+
+### 3. Resolve DX12
+
+DX12 appeared earlier but was omitted from the latest renderer list. The next chat should ask whether DX12 is deferred, dropped, or still planned.
+
+### 4. Update documentation
+
+After the taxonomy decisions, docs should be updated:
+
+* Launcher spec.
+* Platform support spec.
+* Capability matrix.
+* Build docs.
+* Input spec.
+* Entry/script docs.
+
+### 5. Implement launcher core
+
+The launcher core should be C89 and include types, config, capabilities, launch plan construction, state/action handling, and viewmodel output. This core should be OS-free.
+
+### 6. Implement platform spawn API
+
+The launcher needs a platform-agnostic process spawn interface. The Win32, POSIX, and macOS implementations can live in platform-specific files.
+
+### 7. Implement universal software renderer and render modes
+
+The renderer stack needs a `software` backend that supports vector and textured graphics. The render API needs vector/full modes. The draw-command core should be shared by software and GPU renderers.
+
+### 8. Implement scripts and CMake rules
+
+Add `dominium`, `setup`, `dom-client`, and `dom-server` script templates. Configure and install them through CMake. Ensure binary names match actual targets.
+
+### 9. Implement input spec and default bindings
+
+The F1–F12 keymap should be documented and converted into default binding data. Existing input code should be inspected before adding new systems.
+
+### 10. Verify external platform claims
+
+Before publishing or relying on support tiers, verify:
+
+* Linux kernel/libc/toolchain compatibility.
+* SDL1/SDL2 support.
+* DirectX support.
+* OpenGL support.
+* Vulkan/MoltenVK support.
+* macOS/Mac OS/classic toolchain feasibility.
+* Windows NT/Win9x/Win3/DOS feasibility.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit technical constraints
+
+The hard technical constraints came from the user’s initial Dominium project context:
+
+* `/engine/core` and `/engine/sim` are C89.
+* No floats in core/sim.
+* Other engine modules are C++98 max unless allowed.
+* The sim is deterministic and fixed-step.
+* Render/audio/UI do not mutate sim.
+* OS headers are isolated.
+* CMake uses explicit sources and no network fetch.
+
+The launcher-specific hard constraints are:
+
+* Launcher backend/core is C89.
+* Frontends can be C++98.
+* Launcher launches separate binaries.
+* Software renderer must work on all platforms.
+* Every renderer supports vector and graphics.
+* Every platform should support renderer or headless mode.
+
+### Communication and formatting preferences
+
+The user explicitly wants:
+
+* Concise but complete answers.
+* Cited paths when coding.
+* Concrete next steps.
+* Clarifying questions only when blocking.
+* Codex-ready prompts when requested.
+* Strong preservation of uncertainty and rejected ideas in handoffs.
+
+### Evidence and accuracy constraints
+
+The user repeatedly demanded:
+
+* Do not invent facts.
+* Do not silently infer.
+* Label FACT / INFERENCE / UNCERTAIN / PROJECT-CONTEXT.
+* Treat external-world facts as stale unless verified.
+* Preserve contradictions and tentative status.
+
+### Things future assistants should avoid
+
+Future assistants should avoid:
+
+* Treating assistant suggestions as user decisions.
+* Treating generated Codex prompts as applied code.
+* Reintroducing `vector_soft`.
+* Assuming DX12 is confirmed.
+* Assuming X11/Wayland taxonomy is resolved.
+* Acting on uploaded-file summaries without inspecting files.
+* Overpromising support for old OSes without verification.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+The chat included both uploaded source files and generated handoff/report artifacts.
+
+The uploaded files matter because they represent actual launcher code or repo state. The files are:
+
+* `dominium.7z`: the user said this was the repo as of then. It was not inspected because the prior assistant said `.7z` could not be opened.
+* `dom_launcher_view.c` and `dom_launcher_view.h`: uploaded launcher view files. The prior assistant summarized them as an engine-rendered/vector-style launcher view using `DomRenderer`, but this remains unverified here.
+* `CMakeLists.txt`: uploaded launcher CMake file. The prior assistant summarized it as building the Win32 source for non-Windows too, but this remains unverified.
+* `dom_launcher_main.c`: uploaded launcher main file. The prior assistant summarized it as a native Win32 launcher with tabs, combos, a Play button, and process launching, but this remains unverified.
+
+The generated prompts are also important. They were created for Codex or a code assistant and covered:
+
+* Updating docs and implementing platform/render/scripts.
+* Building and testing the launcher.
+* Implementing scripts and CMake targets.
+* Implementing the input/keybinding spec.
+* Refactoring uploaded launcher code into engine launcher and native Win32 frontend.
+
+Those prompts should be preserved as design artifacts, but not treated as executed changes.
+
+The generated handoff/report artifacts included:
+
+* OC-1 discovery inventory.
+* Context Transfer Packet.
+* Final report package.
+* In-chat reader report.
+* This human-readable report.
+
+The most important docs proposed or referenced for future work are:
+
+* `docs/SPEC_LAUNCHER.md`
+* `docs/SPEC_PLATFORM_SUPPORT.md`
+* `docs/SPEC_INPUT.md`
+* `docs/SPEC_ENTRYPOINTS.md` or equivalent sections in build/launcher docs.
+
+The most important proposed code paths are:
+
+* `game/launcher/core/*`
+* `game/launcher/ui/*`
+* `engine/platform/dom_platform_launch.h`
+* `engine/render/software/*`
+* `engine/render/core/dom_draw_common.*`
+* `engine/render/core/dom_view.*`
+* `engine/render/core/dom_camera.*`
+* `engine/render/core/dom_target.*`
+* `packaging/scripts/*`
+* `game/client/input/*`
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+The most important unresolved issue is the platform taxonomy. The latest user categories are POSIX, SDL1, SDL2, and Native. Earlier discussion included X11 and Wayland explicitly. It remains unclear whether X11 and Wayland are direct Native Linux implementations, separate platform values, SDL2-supported window systems, or some combination. This must be resolved before writing final platform enums, CMake logic, scripts, or capability filters.
+
+The second major issue is DX12. It appeared earlier in the conversation when listing potential renderers, but the latest user instruction for the capability matrix listed DX9.0c, DX11, GL1.1, GL2, VK1, and software. The safest current interpretation is that DX12 is not confirmed and should be treated as deferred or unresolved.
+
+Another major unresolved issue is actual repo state. The files were uploaded, but the final packaging did not re-inspect them. Future work must open and inspect them before implementing refactors.
+
+External feasibility is also unresolved. The user finalized support tiers, but the chat did not verify that every target can practically be built. Linux 2.4, Mac OS 8.5, Windows 3, MS-DOS, Win95, and Mac OS X 10.0 require toolchain and API research. SDL, DirectX, OpenGL, Vulkan, and macOS support claims also require verification.
+
+The launcher config format remains undecided. The assistant discussed accounts, instances, profiles, configs, and JSON-like structures, but no final file format was chosen.
+
+It is also unclear whether retro systems should run dedicated servers or only launchers/clients, and whether visual replay determinism is required for camera/view/render behavior.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+A future assistant might treat the earlier minimal-backend discussion as current. That would be wrong. The user superseded it with full single implementations.
+
+A future assistant might reintroduce `vector_soft`. That would be wrong. The public fallback renderer should be `software`.
+
+A future assistant might include DX12 in the renderer list without asking. That would be risky because DX12 is unresolved.
+
+A future assistant might treat X11 and Wayland as settled. They are not. Their relationship to Native/POSIX/SDL needs clarification.
+
+A future assistant might trust the uploaded file summaries. That would be unsafe until the files are inspected directly.
+
+A future assistant might assume Codex prompts were applied. They were only generated.
+
+A future assistant might turn Tier 3 support goals into guaranteed feasibility. That would overclaim. The tiers are user goals; implementation feasibility must be verified.
+
+A future assistant might implement launcher logic inside a native Win32 UI. That would violate the modular C89 core idea. Native UI can be a frontend, but not the core.
+
+A future assistant might let camera/view/render state mutate sim. That would violate deterministic layering.
+
+A future assistant might over-compress this chat into “launcher stuff,” losing key decisions about software renderer, support tiers, scripts, and view architecture. The mitigation is to preserve the major workstreams and labels.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes several likely chapters or sections to a future Dominium Project Spec Book:
+
+1. **Launcher Architecture**
+
+   * C89 core.
+   * C++98 frontends.
+   * Launch plans.
+   * Process spawning.
+   * Tabs and selectors.
+   * Frontend-neutral viewmodel.
+
+2. **Entrypoints and Packaging**
+
+   * `dominium`
+   * `setup`
+   * `dom-client`
+   * `dom-server`
+
+3. **Platform and Renderer Backends**
+
+   * POSIX/SDL1/SDL2/Native taxonomy.
+   * DX9.0c, DX11, GL1.1, GL2, VK1, software.
+   * DX12 unresolved.
+
+4. **Software Renderer and Render Modes**
+
+   * Universal software renderer.
+   * Vector/full modes.
+   * Missing texture fallback.
+
+5. **Camera and View System**
+
+   * 2D/3D switching.
+   * Arbitrary cameras.
+   * Render targets and overlays.
+
+6. **Input Defaults**
+
+   * F1–F12 map.
+   * Launcher subset.
+
+7. **Platform Support Tiers**
+
+   * Tier 1/2/3 OS ranges.
+
+8. **Capability Matrix**
+
+   * Static support and runtime probing.
+
+This chat likely overlaps with other chats on deterministic engine architecture, repo layout, build constraints, rendering, platform support, and input. The aggregator should avoid duplicating those without checking for conflicts.
+
+The most important unresolved items before merging into a formal spec are DX12 status, platform taxonomy, and external support verification.
+
+---
+
+## 14. What I Should Remember
+
+* The launcher is a **process launcher**, not an in-process game shell.
+* Launcher core/backend should be **C89**.
+* Launcher frontends can be **C++98**.
+* Client/server binaries can be **single-system**.
+* The main user-facing command for the launcher is **`dominium`**.
+* The setup command is **`setup`**, with install/repair/uninstall behavior.
+* `dom-client` and `dom-server` are direct dispatch wrappers.
+* The public fallback renderer is **`software`**, not `vector_soft`.
+* The software renderer must support both vector and textured graphics.
+* Every renderer must support vector-only and full graphics modes.
+* The render/view system should support instant zoom, 2D/3D switching, and arbitrary cameras.
+* Platform support tiers were finalized, but feasibility is not verified.
+* Latest renderer list does not confirm DX12.
+* Latest platform categories do not resolve X11/Wayland.
+* Uploaded launcher files exist but need inspection.
+* Generated Codex prompts are artifacts, not proof of implementation.
+* External compatibility claims need verification before becoming final support promises.
+
+The immediate next actions are:
+
+1. Inspect uploaded files and actual repo state.
+2. Resolve platform taxonomy.
+3. Resolve DX12.
+4. Update docs.
+5. Implement launcher core, scripts, software renderer, and capability matrix in small verifiable steps.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Resolve the POSIX / SDL1 / SDL2 / Native / X11 / Wayland taxonomy.”
+2. “Should DX12 be included, deferred, or dropped?”
+3. “Turn the launcher architecture into a clean `docs/SPEC_LAUNCHER.md` draft.”
+4. “Turn the platform support tiers into a formal support spec.”
+5. “Explain the universal software renderer requirements.”
+6. “Design the C89 launcher core file structure.”
+7. “Design the launch plan and process spawn API.”
+8. “Compare the desired launcher UI with the uploaded launcher files.”
+9. “Turn the pending tasks into an implementation checklist for Codex.”
+10. “Create a capability matrix that clearly separates goals from verified support.”
+11. “Explain what must be verified before claiming Tier 2 or Tier 3 support.”
+12. “What should go into the future Project Spec Book from this chat?”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat, **Dominium Architecture III**, was primarily about designing the launcher and the systems around it for a deterministic, portable, retro-to-modern simulation game called Dominium. The user began by establishing strict project constraints: Dominium is a deterministic fixed-step simulation with C89/C++98-era boundaries. `/engine/core` and `/engine/sim` are C89, core sim cannot use floats, deterministic tick order and serialization are non-negotiable, and renderer/audio/UI/platform code must not mutate sim state.
+
+The first practical target was the launcher. The user wanted launcher tabs for News, Changes, Mods, Instances, Accounts, and Settings, plus bottom controls for account, instance, platform, renderer, graphical/headless, and client/server selection. The conversation quickly clarified that the launcher should not switch into client or server mode inside the same process. Instead, launcher selections should execute separate client or server binaries. That became a major architectural decision.
+
+The user then set the language split: launcher backend/core code should be C89, while frontends for each binary can use C++98. This led to the core launcher architecture: a system-agnostic C89 core that knows about launch types, accounts, instances, profiles, platform/render capabilities, state, viewmodel, and launch plans; platform-specific process adapters; and frontend skins such as an engine-rendered launcher, native Win32 launcher, CLI, or TUI. Client/server binaries can be single-system builds, and the launcher/scripts dispatch to the right binary.
+
+The user-facing scripts became another core outcome. The final commands are `dominium`, `setup`, `dom-client`, and `dom-server`. `dominium` launches the launcher. `setup` launches installer/repair/uninstaller behavior. `dom-client` and `dom-server` directly dispatch to client/server binaries. Earlier names like `dom-launcher` and `dom-setup` were superseded or left as possible aliases.
+
+A major render design change occurred. The earlier idea of a separate `vector_soft` renderer was superseded. The user wants one universal **software renderer** that works on all platforms and can draw both vector graphics and texture-based graphics. This renderer is the fallback for launcher and game. Every renderer should support vector-only and full graphics modes so the game can run in CAD-style view, full textured view, missing-file fallback, or performance mode. The latest renderer list is DX9.0c, DX11, GL1.1, GL2, VK1, and software. DX12 was discussed earlier but omitted later, so it remains unresolved.
+
+The view/camera design expanded considerably. The user wants instant seamless zoom at any scale, instant switching between top-down 2D and first-person 3D, and arbitrary cameras for free cam, map views, content creation, HUD cameras, CCTV, overlays, windows, and offscreen targets. These are client/render-side systems and must not affect deterministic sim state.
+
+The user also finalized platform support tiers. Tier 1 targets Windows NT 2000 SP4 to latest, Mac OS X 10.6 to 10.14, and Linux 3.2 to current. Tier 2 adds Windows 98 SE to Me, Mac OS 9 to 9.2, Mac OS X 10.6 to 15.0, and Linux 2.6.18 to current. Tier 3 includes MS-DOS 3.3 to 6.2, Windows 3, Windows 95 to Me, Windows NT 2000 SP4 to latest, Mac OS 8.5 to 9.2, Mac OS X 10.0 to latest, and Linux 2.4 to current. These are user-stated product goals, but feasibility must be externally verified.
+
+The chat also produced an F1–F12 keybinding plan: F1 Help, F2 Screenshot, F3 Debug, F4 View Mode, F5 Quick Save, F6 Quick Load, F7 Replay, F8 Tools/Mods/Editor, F9 World Map, F10 Settings, F11 Fullscreen/UI-less, F12 Developer Console. The launcher uses only a subset.
+
+The user uploaded launcher files, including `dom_launcher_view.c`, `dom_launcher_view.h`, `CMakeLists.txt`, and `dom_launcher_main.c`. A prior assistant summarized them as mixing an engine-rendered view and a native Win32 launcher, but that summary remains unverified. Future work must inspect the files directly.
+
+The most important unresolved issues are: whether DX12 is in scope; how POSIX, SDL1, SDL2, Native, X11, and Wayland should be represented; whether POSIX is headless-only; and whether the ambitious support tiers are feasible with real toolchains and dependencies.
+
+The next assistant should not re-open old debates blindly. It should preserve the final decisions, inspect the actual code, resolve the platform and DX12 questions, update docs, and then implement the launcher core, scripts, software renderer, render modes, capability matrix, and input spec in small verifiable steps.
+
+# Reader Status
+
+* Chat title: Dominium Architecture III — Launcher, Platform, Renderer, and Handoff Architecture
+* Report type: human-readable explanatory report
+* Main value of this chat: It defines Dominium’s launcher/process-launch model, software renderer direction, platform/render capability framework, support tiers, scripts, input defaults, and future architecture for cameras/views.
+* Most important decision: The launcher executes separate client/server binaries through a C89 core and C++98 frontends, rather than becoming an in-process mode switcher.
+* Most important unresolved issue: The final platform taxonomy — POSIX, SDL1, SDL2, Native, and how X11/Wayland fit — plus DX12 status.
+* Most important next action: Inspect the uploaded launcher files/repo state, then resolve platform taxonomy and DX12 before implementing docs/code.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: Uploaded source files were not re-inspected in this report; external OS/library/toolchain support claims require verification; DX12 status and X11/Wayland taxonomy remain unresolved.

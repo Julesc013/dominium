@@ -1,0 +1,643 @@
+GPT-5.5 Pro • 2026-05-27
+
+# Human-Readable Chat Report — Dominium Architecture II
+
+## 1. One-Page Orientation
+
+This chat was mainly about turning the **Dominium** game/engine from a broad, ambitious design into a coherent, Codex-ready architecture. The user had already explored many individual systems elsewhere or earlier in the same chat: railways, roadways, waterways, airways, spaceways, electrical networks, data networks, building systems, terrain, cut/fill, tunnels, bridges, arbitrary splines, deterministic simulation, cross-platform rendering, and retro-platform support. The purpose of this chat became to **unify those ideas into a small number of durable core systems**, then convert that architecture into documentation, directory contracts, Codex prompts, and finally a handoff package.
+
+The central design problem was complexity. Dominium is not a small game concept. The user wants a deterministic simulation engine that can eventually support everything from dusty bicycle lanes and miniature railways to orbital stations, drop pods, interplanetary logistics, arbitrary buildings, power networks, data networks, roads, rails, waterways, airways, and spaceways. If every domain were implemented separately, the project would collapse under its own complexity. The major architectural solution reached in this chat was to generalise everything into a few reusable primitives: **Frames + Lattices**, **Archetypes + Components**, **Graphs + Fields**, **Blueprints + Diffs**, and **Ticks + Messages + Jobs**. These primitives are intended to explain almost everything in the game: a building, a tunnel, a railway, a power grid, a data network, a worker task, a cargo tug, an orbital station, or a cut-and-fill earthwork.
+
+A second core theme was **determinism**. The user wants the engine to run deterministically across old and new platforms, from Windows 98, DOS, and macOS Classic through modern Windows, Linux, macOS, and future platforms. The simulation core must use integer or fixed-point math, avoid floating-point authoritative state, avoid nondeterministic threading, and run in strict tick phases. Rendering, audio, platform APIs, and UI must be separated from the simulation so they cannot affect game state. This led to an explicit platform/renderer split: platform backends handle windows, input, timers, files, and OS details; renderer backends handle DirectX/OpenGL/Vulkan/software drawing; the simulation knows neither.
+
+The user eventually narrowed the immediate implementation target into a concrete MVP. The MVP is not the whole dream; it is the first playable proof. It should have a fully complete core, one full-size Earth surface, minimal interactive prototypes of all systems, Lua for all data, DX9.0c, Win32 and/or SDL2, 2D vector top-down rendering, and 3D vector first-person rendering. Textures, sounds, music, multiplayer, the full Sol system, other renderers, other platforms, and full space simulation are explicitly later work.
+
+A large part of the chat became documentation production. The assistant generated directory trees, per-directory development specs, root documents, and updated versions of major project docs: `BUILDING.md`, `SPEC_CORE.md`, `DATA_FORMATS.md`, and `DIRECTORY_CONTEXT.md`. The user then provided the actual current directory structure and stated that **Codex 5.1 Max should work using only those files**. This changed the task from freeform architecture into strict codegen preparation. Later, prompts were generated for Codex: first to check document inconsistencies, then to generate CMake/build skeletons, core APIs, simulation/ECS shells, platform/rendering shells, client loops, Lua bindings, and deterministic tests.
+
+The last part of the chat was handoff extraction. The user asked for discovery inventory, structured registers, a context transfer packet, and then a downloadable package. The generated package captured the chat’s workstreams, decisions, tasks, constraints, open questions, artifacts, risks, and verification items. This current report is a plain-language explanation of that substance.
+
+The most important thing to remember is this: **Dominium Architecture II converted an enormous open-ended design into a deterministic, modular, MVP-oriented architecture and Codex preparation plan.** The future assistant should not restart from scratch, should not treat deferred systems as MVP tasks, and should not violate the core separations: simulation vs platform vs renderer, discrete sim truth vs vector authoring, and current docs vs unverified external assumptions.
+
+---
+
+## 2. The Story of the Conversation
+
+### Early system exploration
+
+The visible transcript begins after a long sequence of work on railways. The user had been asking about railway gauges, rail weights, ballast, sleepers, superelevation, traction forms, multigauge tracks, signalling, and how all of this could be made configurable for a game. The conversation then expanded from railways into a much broader infrastructure simulation. The user asked about electrical networks with AC/DC, voltages, frequencies, phases, and power factor; data networks with fibre, copper, wireless, telephony, and protocols; then roads, waterways, airways, and spaceways.
+
+The pattern was clear: the user did not want a narrow train game. They wanted a general-purpose infrastructure and world simulation where different physical and logistical systems could interact.
+
+### The building-system turning point
+
+The conversation then reached the “big one”: **building**. The user wanted arbitrary real-world structures in a world based on a 1×1×1 metre grid or possibly smaller subdivisions. They asked how to support arbitrary shapes and arbitrary locations, split levels, mezzanines, slopes, ramps, cliffs, cut-and-fill, walls, channels, canals, trenches, lakes, rivers, and a top-down level view.
+
+At this point, a major architectural question appeared: should Dominium use a voxel system or a vector system? The chat explored determinism and integer math, then vector splines and rasterization. The resulting design was not pure voxel and not pure vector. It became a hybrid: **vectors and splines are for authoring, layout, and visuals; discrete grids, cells, faces, edges, and microgrids are the simulation truth.**
+
+This matters because it prevented future implementation from chasing arbitrary continuous geometry in the deterministic core. The user wanted arbitrary shapes, but also deterministic integer math and old-platform support. The compromise was to allow rich authoring tools while baking runtime state into deterministic structures.
+
+### From many systems to unified primitives
+
+The user then asked how to generalise all these systems into a few unified systems for the core engine. This produced one of the chat’s most important outputs: the five-primitives model.
+
+The assistant described the whole game as combinations of:
+
+1. **Frames + Lattices** — spaces and coordinate systems.
+2. **Archetypes + Components** — objects and their data.
+3. **Graphs + Fields** — networks, flows, terrain, atmospheres, utilities.
+4. **Blueprints + Diffs** — construction and modification.
+5. **Ticks + Messages + Jobs** — behaviour and execution.
+
+This was the moment the architecture became coherent. Roads, rails, power grids, data networks, buildings, tunnels, bridges, ships, aircraft, orbital stations, factories, and workers could all be implemented as data and systems on top of these primitives instead of being special-case subsystems.
+
+### Surface, space, and orbital domains
+
+The user later clarified the world hierarchy. They gave a detailed spatial scale ladder from subnano through surface, defined one surface per planet as the base concept, set Earth/Sol/Milky Way as defaults, and raised the question of server sharding, mirrored surfaces, and multiple unique surfaces per planet. The conversation distinguished **physical domains** from **logical domains**. A surface is a high-resolution physical simulation domain. Space is not another giant continuous grid; it is a logical domain with orbit rails, orbital nodes, transfer paths, local docking bubbles, Lagrange points, asteroid belts, gas clouds, and environmental fields.
+
+The assistant recommended on-rails orbital mechanics rather than full n-body physics. This was not a casual suggestion; it followed the project’s determinism and gameplay needs. Full orbital physics would make simulation harder to debug and reproduce. On-rails orbits let Dominium support space gameplay while keeping state discrete, schedulable, and serializable.
+
+The user also wanted construction of orbital ships and stations, served by rockets, drop pods, and cargo tugs. The design response was that orbital stations, ships, yards, docking ports, cargo tugs, rockets, and drop pods should all be entities/components within the same architecture. Rockets and pods bridge surface and orbital domains through deterministic state-machine transitions.
+
+### Building, fixtures, tunnels, and corridors
+
+The user then refined the building model. They wanted blocks for structural or functional components, but walls between blocks on metre-grid edges, including orthogonal and diagonal walls/floors/roofs. Buildings would be rigid for now but should support destruction and collapse later.
+
+The chat then addressed a subtle but important problem: long tunnels, bridges, stations, and platforms. The user did not want doors hardcoded into every tunnel type, and did not want doors appearing automatically where not explicitly placed. The resulting design introduced **corridor archetypes**, **corridor instances**, **anchors/sockets**, and **fixtures**. A tunnel or bridge defines where fixtures can be placed, but doors, lights, signs, vents, signals, panels, platform screen doors, and utilities are separate fixture entities. They appear only when manually placed, generated by an explicit blueprint, or applied through a deliberate pattern tool.
+
+This solved both modularity and user control. Tunnel types do not contain special door code; door behaviour lives in door fixtures. Long empty tunnels can remain empty. Long tunnels with repeated utilities can use explicit pattern placement. Stations become compositions of platform corridors, building microgrids, portals, stairs, lifts, and fixtures.
+
+### Documentation and repository structuring
+
+The conversation then shifted from architecture to file organisation. A large directory tree was generated, then compared to an older “Directory Context and Contract.” The assistant reconciled the tree with the contract, producing a structure based around `/docs`, `/engine`, `/game`, `/data`, `/mods`, `/tools`, `/tests`, `/third_party`, `/build`, `/packaging`, `/scripts`, and `/ports`.
+
+The user requested one message per directory describing files and development specs. The assistant generated many directory-specific specs: engine core, sim, spatial, physics, pathfinding, ECS, net, render, platform, audio, UI, game client/server/launcher, data/base/DLC/packs/templates, mods, tools, tests, third_party, build, packaging, scripts, ports, and top-level documents. These specs are important artifacts because they define how future source files should be structured and what APIs they should expose.
+
+The user then asked for root documents such as `README.md`, `LICENCE.md`, `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `.gitignore`, `CMakeLists.txt`, `CHANGELOG.md`, `BUILDING.md`, and a version manifest. Many of these were generated in the chat.
+
+### Codex preparation and actual current tree
+
+Later, the user provided the actual current directory structure. It included root docs and a `/docs` folder with key spec files, context files, and many `docs/dev/dominium_new_*.txt` files. The user explicitly stated that **Codex 5.1 Max should work on the project using only the files listed there**. This was a major constraint. It meant earlier ideal trees and suggested files were no longer automatically authoritative; the actual listed tree became the Codex source universe.
+
+The user then provided the existing `BUILDING.md`, `SPEC_CORE.md`, `DATA_FORMATS.md`, and `DIRECTORY_CONTEXT.md` and asked for updates. The assistant generated V4 replacements for each, aligning them with the new architecture, MVP scope, and renderer/platform split.
+
+### Implementation prompts and Lua clarification
+
+The user asked what Codex should do next. The assistant produced a staged implementation plan: document consistency pass, CMake skeleton, core API skeletons, deterministic tick/ECS shell, Win32/DX9 platform/render shell, minimal client loop, then Lua/data binding and tests.
+
+When Codex asked clarifying questions about Lua, the assistant answered with a concrete plan: add `/engine/script`, vendor Lua 5.4.4, expose a limited sandboxed Lua API, disable OS/native access, and implement FNV-1a 64-bit hashing over canonical serialized authoritative simulation state.
+
+### Handoff packaging
+
+Finally, the user requested formal extraction and handoff. The assistant generated an OC-1 discovery inventory, then a full Context Transfer Packet, then a downloadable package with Markdown/YAML/register/brief/audit/manifest files. The user then asked to inspect the package in-chat, and the assistant produced an “In-Chat Report Reader.” This current response is a more human-readable narrative version of that content.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Deterministic simulation as the foundation
+
+The entire conversation is anchored by the requirement that Dominium must run deterministically. This means the same initial state and same inputs must produce the same state across machines, compilers, operating systems, and eventually retro and modern platforms.
+
+The chat discussed fixed tick phases, virtual lanes, merge order, command buffers, event queues, and deterministic serialization. The simulation must not depend on render FPS, wall-clock time, OS scheduler behaviour, GPU state, or floating-point quirks. This explains many later decisions: C89 core, integer/fixed-point math, no sim floats, no platform headers in simulation, and renderer as pure observer.
+
+The conclusion was not just “be deterministic” as an aspiration. It became a set of implementation constraints: fixed tick pipeline, no nondeterministic iteration, no random core behaviour except seeded deterministic RNG where explicitly allowed, no dynamic hot-path allocation, and canonical serialization for hashing and replay.
+
+What remains uncertain is the exact code-level API and component layouts. The chat produced specs and prompts, not final source code.
+
+### Topic 2 — Generalising all systems into reusable primitives
+
+The user asked how to avoid creating endless bespoke subsystems. The answer became the five-primitives model:
+
+* Frames + Lattices
+* Archetypes + Components
+* Graphs + Fields
+* Blueprints + Diffs
+* Ticks + Messages + Jobs
+
+This was one of the most important conceptual outputs. It provides the future assistant with a mental model for everything else. Railways are graph/corridor systems. Buildings are microgrid frames plus archetypes and fixtures. Terrain is base fields plus delta fields. Power, data, and fluids are graph/field systems. Construction is blueprints and jobs. Space travel is an orbital graph/domain system.
+
+The conclusion was that most game systems should be implemented as data and components on top of these primitives, not as isolated custom engines.
+
+### Topic 3 — Spatial hierarchy and world scale
+
+The user defined a precise base-16 spatial ladder:
+
+* Subnano = 1/65536 m
+* Submicro = 1/4096 m
+* Submini = 1/256 m
+* Subtile = 1/16 m
+* Tile = 1 m
+* Subchunk = 16 m
+* Chunk = 256 m
+* Subregion = 4096 m
+* Region = 65536 m
+* Subcontinent = 1,048,576 m
+* Continent = 16,777,216 m
+* Supercontinent = 268,435,456 m
+* Surface = 4,294,967,296 m
+
+This became the backbone of the spatial model. The user also specified that the world is not a continuous dense grid across the whole surface. Instead, chunks/subchunks/regions are logically stored as microgrids. This is essential because a full-size planetary surface cannot be stored densely.
+
+The default world is Earth in Sol in the Milky Way. The base game MVP is one surface, but the architecture should support galaxies, systems, planets, and future server/shard arrangements.
+
+### Topic 4 — Surface domains versus space domains
+
+The chat separated surface simulation from space simulation. A surface is a physical high-resolution domain with terrain, buildings, roads, rails, workers, utilities, and local movement. Space is a logical domain: orbit rails, transfer paths, docking nodes, Lagrange points, asteroid belts, gas clouds, electromagnetic fields, and local bubbles.
+
+The decision to use on-rails orbital mechanics mattered because it avoids the complexity of full n-body simulation. Instead of integrating every orbital body continuously, the game can use deterministic graph-like orbital states and transitions. This fits the rest of the engine: graphs, fields, frames, and state machines.
+
+Docking, landing, and takeoff were treated as transitions between domains. A rocket or drop pod does not exist simultaneously in full surface physics and full orbital simulation. It transitions through explicit states.
+
+### Topic 5 — Building system and physical structures
+
+The user wanted arbitrary structures but also deterministic integer math. The chat resolved this by making the simulation truth discrete: blocks/modules/cells/faces/edges. Blocks are structural or functional components. Walls, floors, roofs, and diagonal walls live on cell faces or edges. Devices and machines are placed as components/entities.
+
+This supports split levels, mezzanines, slopes, ramps, cliffs, tunnels, underground structures, and orbital structures without needing arbitrary continuous geometry as the simulation core.
+
+The user also wanted buildings rigid for now but future collapse/destruction support. The conclusion was to include future-proof structural fields but not implement collapse in the MVP.
+
+### Topic 6 — Terrain, cut/fill, and microgrids
+
+The user wanted cut/fill, underground structures, canals, trenches, lakes, rivers, and structures that obey logically defined unedited terrain. The answer was a three-layer terrain model:
+
+1. Immutable base terrain.
+2. Earthworks deltas and cavities.
+3. Structural microgrids.
+
+This means the terrain generated by the world remains knowable even after edits. Player modifications are stored separately as deltas or cavities. Buildings/tunnels/basements live in microgrids anchored to the surface, not by mutating terrain into building data.
+
+This is important for future hydrology, geology, stability, collapse, pathing, and undo/history.
+
+### Topic 7 — Vector splines, roads, rails, bridges, tunnels, and platforms
+
+The user wanted arbitrary vector splines for roads, rails, bridges, tunnels, and long stations. The chat’s conclusion was that splines are authoring tools. They are not the runtime sim truth. The engine evaluates alignments, samples them into deterministic chainpoints, classifies segments as cut/fill/bridge/tunnel/platform, and bakes them into linear microgrids and graphs.
+
+This lets the user draw smooth roads and rails, but the simulation deals with chainpoints, cells, nodes, edges, and known structures. Connections occur at nodes; if something connects in the middle of a segment, the system creates/splits a node.
+
+This was critical for deterministic pathing, collision, signalling, and construction.
+
+### Topic 8 — Fixtures, doors, portals, and sockets
+
+A subtle but important user requirement was: do not code doors into every tunnel type, and do not make doors appear where not explicitly placed. The chat solved this with anchors/sockets and fixtures.
+
+A corridor archetype can define where fixtures *can* attach. A door, light, signal, vent, utility cabinet, or platform screen door is a separate fixture entity. It appears only if manually placed, included in a blueprint, or generated by an explicit pattern. This prevents unwanted automatic behaviour and keeps types composable.
+
+This also supports portals between microgrids: a tunnel and a building can connect via an explicit portal prefab that edits openings, connects path graphs, and places door fixtures.
+
+### Topic 9 — Utility networks and data systems
+
+The chat discussed electrical systems with DC, AC phases, voltages, frequencies, power factor, and traction integration. It also discussed data networks with fibre, copper, wireless, categories, protocols, bandwidth, latency, and telephony-like behaviour.
+
+The architecture unified these under graph/field networks. Power is a graph with nodes, edges, generation, loads, voltages, phases, transformers, breakers, and deterministic balancing. Data is a graph with packets/signals moving at deterministic hop latency. Fluids use pressure/flow graph models. Thermal and atmosphere can be fields or graph-assisted fields.
+
+For the MVP, these should be minimal but interactable: likely a generator, consumer, cable, simple fluid source/sink, and data node/link prototypes.
+
+### Topic 10 — Transport systems
+
+Railways began as a major topic but later became part of the larger transport framework. Roads, waterways, airways, and spaceways were all discussed. The final architecture treats transport as graph/corridor/path systems. Rail and road use alignments and nodes. Water can use depth fields plus navigation graphs. Air can use flight corridors, runways, and holding patterns. Space uses orbital graphs.
+
+The MVP needs only minimal prototypes, not full transport realism. One straight segment with one deterministic vehicle may be enough to prove the system.
+
+### Topic 11 — Renderer/platform split and backend roadmap
+
+The user later clarified the platform/rendering plan. They want to first develop DX9 for Windows NT 2000 SP4 through Windows 11+, using native Win32 or SDL2, then later add DX11, GL1, GL2, Vulkan 1, and DX12. Windows 98 SE+ comes after, with DX9 or GL1 and native Win32 or SDL1. Modern Linux/macOS come later with POSIX or SDL2 and GL2 or Vulkan. macOS Classic, MS-DOS, Android, and others come later.
+
+The chat produced a platform/renderer addendum: platform backends handle OS/window/input/time/file; renderer backends handle DirectX/OpenGL/Vulkan/software drawing; the engine generates draw commands and never calls platform/graphics APIs directly. MVP rendering is vector-only.
+
+### Topic 12 — Repository, docs, and Codex preparation
+
+The user provided an actual file tree and said Codex should work only from those files. The chat then updated the main docs and generated Codex prompts. This is a practical implementation layer: the architecture was converted into documents and prompts suitable for a code-generation agent.
+
+The most important docs are `BUILDING.md`, `SPEC_CORE.md`, `DATA_FORMATS.md`, and `DIRECTORY_CONTEXT.md`, plus `docs/dev/dominium_new_addendum.txt`.
+
+### Topic 13 — Lua data and deterministic script binding
+
+The user wants Lua for all MVP data. When Codex asked where the binding should live and which Lua version to use, the assistant answered: add `/engine/script`, vendor Lua 5.4.4, expose a limited deterministic API, disable OS/native access, and hash full sim state via FNV-1a.
+
+This is an important implementation detail, but some of it remains unverified. Lua 5.4.4 portability to old compilers needs testing. The exact Lua data schemas still need definition. The docs also still have JSON-oriented format sections, so the Lua-vs-JSON policy needs reconciliation.
+
+### Topic 14 — Handoff, reports, and aggregation
+
+The final portion of the chat created a formal package of reports: full chat report, YAML spec sheet, aggregator packet, registers, reader brief, audit file, and manifest. These are not design decisions themselves, but they are important artifacts for later Project aggregation. The current response exists because the user wanted a human-readable explanation of the chat rather than more machine-readable outputs.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals the user stated
+
+The user explicitly wanted to design Dominium as a huge deterministic simulation/game engine. They wanted support for railways, electrical systems, data networks, roads, waterways, airways, spaceways, arbitrary buildings, terrain modification, orbital construction, and modular rendering/platform backends. Later, they wanted to consolidate these into a source of truth and prepare Codex for implementation.
+
+The most explicit immediate goal was the MVP:
+
+* Fully complete core.
+* One full-size Earth surface.
+* All systems interactable through minimal prototypes.
+* Lua for all data.
+* DX9.0c, SDL2, Win32.
+* 2D vector top-down.
+* 3D vector first-person.
+
+This goal mattered because it turned the project from abstract architecture into an implementation target.
+
+### Inferred goals
+
+INFERENCE: The user wants a structure that can survive long-term development without collapsing under complexity. This is inferred from repeated requests for unification, directory contracts, modularity, extensibility, and Codex prompts.
+
+INFERENCE: The user wants future assistants and Codex to operate from written source-of-truth documents, not conversational memory. This is inferred from the repeated generation of docs, reports, registers, handoff packets, and strict file lists.
+
+### Goals that changed over time
+
+The conversation began with domain-specific design, especially railways and infrastructure. It later shifted toward meta-architecture: how to unify systems, then how to document them, then how to instruct Codex. The goal changed from “design this system” to “make the whole project coherent and implementable.”
+
+The building-system goal also evolved. The user originally asked vector versus voxel. The final model became hybrid: discrete blocks/cells/faces/edges as sim truth, vector as authoring/generation/visual layer.
+
+### Goals still unresolved
+
+The biggest unresolved goals are practical:
+
+* Define the exact MVP ECS components.
+* Resolve Lua-for-data versus JSON docs.
+* Finalize render command and camera APIs.
+* Verify DX9/Windows 2000, SDL2, Lua/toolchain compatibility.
+* Confirm actual repo files and apply generated docs.
+
+---
+
+## 5. Decisions Made and Why
+
+### High-level decision table
+
+| Decision                                       | Status    | Why it mattered                                           |
+| ---------------------------------------------- | --------- | --------------------------------------------------------- |
+| Use meter + fixed-point substeps               | Final     | Defines coordinate model.                                 |
+| Strict simulation/render/platform separation   | Final     | Protects determinism.                                     |
+| Base-16 spatial ladder                         | Final     | Defines world scale and chunking.                         |
+| Sparse surfaces/microgrids                     | Final     | Makes full-size surfaces feasible.                        |
+| Earth/Sol/Milky Way defaults                   | Final     | Defines base local world.                                 |
+| One canonical surface plus instances/shards    | Final-ish | Supports servers/mirrors without losing default.          |
+| On-rails space                                 | Final-ish | Avoids n-body complexity.                                 |
+| Blocks/cells/faces/edges as building sim truth | Final     | Supports deterministic building and pathing.              |
+| Explicit fixtures for doors/devices            | Final     | Avoids hardcoded or unwanted doors.                       |
+| Splines bake into chainpoints                  | Final     | Supports vector authoring without continuous runtime sim. |
+| MVP vector-only, DX9/Win32/SDL2, Lua data      | Final     | Defines implementation target.                            |
+| Add `/engine/script`, Lua 5.4.4, sandbox       | Final-ish | Defines data/scripting implementation direction.          |
+| FNV-1a full-state hash                         | Final     | Defines first determinism test mechanism.                 |
+
+### Detailed decision explanations
+
+#### Meter + fixed-point substeps
+
+FACT: The user selected the meter-based option. This means one tile is one metre, with smaller subdivisions represented through fixed-point units. This made sense because the game is largely about buildings, infrastructure, vehicles, and terrain, where metre-scale cells are natural. Sub-metre detail remains possible without making the entire world millimetre-indexed.
+
+This affects spatial constants, coordinates, serialization, renderer transforms, and physics. It could only be revisited if the whole spatial hierarchy were reopened.
+
+#### Strict simulation/render/platform separation
+
+FACT: The user selected strict separation. Rendering and platform APIs cannot influence simulation. This decision was made because the user wants deterministic simulation across a wide range of systems, including old platforms. Graphics APIs, OS windows, timing, input polling, and GPU state are all platform-specific and nondeterministic from the simulation’s perspective.
+
+This affects the whole codebase. Platform code belongs in `/engine/platform`; graphics code belongs in `/engine/render`; simulation belongs in `/engine/core` and `/engine/sim`.
+
+#### Base-16 spatial hierarchy
+
+FACT: The user provided the full scale ladder. This was accepted as the spatial basis. Its base-16 structure aligns with fixed-point subdivisions and chunk hierarchy. It affects chunk sizes, region scales, world streaming, serialization, and coordinate conversion.
+
+#### Sparse microgrid surface storage
+
+FACT: The user said the whole surface should not be a continuous grid. Chunks/subchunks/regions are stored as logical microgrids. This is necessary because a full-size planetary surface cannot be held as a dense tile array. It also supports underground and overground structures.
+
+#### Earth/Sol/Milky Way defaults
+
+FACT: The user explicitly set Earth, Sol, and Milky Way as defaults for local single-player or multiplayer worlds. This gives the game a canonical baseline. It also matters because the user mentioned reserving Sol for official servers, meaning community servers need unique topology/identity to avoid collision.
+
+#### Canonical surface plus instances/shards
+
+FACT / INFERENCE: The user originally said one surface per planet but asked about sharding, multiple unique surfaces, and mirrored surfaces. The assistant proposed one canonical surface plus multiple surface instances. The user did not reject this and continued, so the package treats it as accepted design but with “final-ish” confidence.
+
+This allows sharded servers and mirrored/test surfaces without abandoning the simple one-surface default.
+
+#### On-rails space instead of n-body orbital mechanics
+
+FACT: The chat decided on rails-based orbital mechanics for the main design. The rationale was that full n-body physics is too complex and nondeterministic for the game’s needs. On-rails orbits, transfer nodes, and local bubbles give predictable gameplay.
+
+This affects future space implementation and prevents future assistants from trying to build a full orbital physics engine in the MVP.
+
+#### Blocks/modules as building simulation truth
+
+FACT: The building system settled on blocks/modules/cells/faces/edges. This was chosen because arbitrary vector structures are hard for deterministic collision, pathing, pressure, structure, and serialization. Blocks and face/edge walls give flexible buildings while preserving discrete simulation.
+
+This affects buildings, stations, tunnels, ships, orbital structures, and future collapse.
+
+#### Explicit fixtures
+
+FACT: The user explicitly did not want doors coded into each tunnel type or appearing automatically. The decision was to use anchors/sockets and explicit fixture placement. This affects corridors, stations, buildings, devices, UI tools, and blueprints.
+
+#### Splines baked into deterministic chainpoints
+
+FACT: Splines exist for authoring roads/rails/tunnels/bridges, but runtime uses sampled chainpoints and microgrids. This makes arbitrary curves compatible with deterministic sim and efficient pathing.
+
+#### MVP scope
+
+FACT: The user explicitly stated the MVP. This is a major decision because it constrains implementation. Many big systems are deferred. MVP is vector-only and data-driven by Lua, with minimal prototypes for all systems.
+
+#### `/engine/script`, Lua 5.4.4, sandbox
+
+FACT: This was answered in response to Codex’s clarifying questions. It is a concrete implementation direction, though Lua 5.4.4 portability remains unverified.
+
+#### FNV-1a full-state hash
+
+FACT: The state hash decision was made to support early determinism tests. It should hash canonical serialized authoritative state, not arbitrary memory or renderer state.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+The chat preserved several important “do not repeat this debate” outcomes.
+
+Pure vector simulation was rejected as the authoritative building/world model. It was considered because the user wanted arbitrary shapes, but it was rejected for runtime truth because continuous vector geometry is too hard to make deterministic, efficient, serializable, and retro-compatible. Vectors remain useful for authoring, visual skins, and generating discrete structures.
+
+Pure block-only design was also insufficient. The user wanted arbitrary splines and curved infrastructure. The final answer was hybrid: vector authoring, discrete runtime.
+
+Full n-body orbital mechanics was rejected for the main space model. It could perhaps return as an optional specialized system, but it is not the core and not MVP.
+
+Synchronous cross-surface simulation was rejected because it would undermine sharding and determinism. Cross-surface interactions should be asynchronous messages, trade, or scheduled transitions.
+
+Automatic doors in tunnels were rejected very clearly. Doors and devices must be explicitly placed fixtures.
+
+Runtime arbitrary spline math was rejected for simulation hot loops. Splines must bake into deterministic structures.
+
+Textures, sounds, music, multiplayer, Sol-space, other renderers, and retro/modern non-Windows platforms were all deprioritised for MVP. They remain future work, not abandoned.
+
+Collapse/destruction was also deprioritised. Buildings should be rigid now but should include enough data fields to support future structural failure.
+
+A separate `CODEGEN_ADDENDUM.md` file was rejected because the user said Codex should use only listed files. The addendum should live in `docs/dev/dominium_new_addendum.txt`.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+Several visible tradeoffs shaped the final architecture.
+
+The first tradeoff was **expressiveness versus determinism**. The user wanted arbitrary buildings, curves, tunnels, and infrastructure. Pure vector geometry maximizes expressiveness, but it creates difficult runtime problems. The solution was to keep expressive vector tools at authoring time while converting them into discrete data for simulation.
+
+The second tradeoff was **realism versus implementation control**. Full n-body orbital mechanics, fluid dynamics, structural collapse, and fully realistic electrical systems could all become extremely complex. The chat repeatedly steered toward deterministic approximations that preserve gameplay meaning: rails-based orbits, graph-based networks, simple pressure/flow, rigid buildings for MVP, and discrete job systems.
+
+The third tradeoff was **scope versus completeness**. The user wants all systems represented in MVP, but not as full systems. The phrase “all systems interactable, but minimal data prototypes” is important. It means the MVP should prove integration, not finish every domain.
+
+The fourth tradeoff was **future-proofing versus first implementation**. The architecture keeps future support for Windows 98, Linux, macOS, retro systems, space, textures, audio, and multiplayer. But first implementation focuses on Windows/DX9/vector/core. This prevents architecture dead ends without requiring all future systems now.
+
+The fifth tradeoff was **code generation speed versus correctness**. The chat repeatedly moved toward stricter docs, directory contracts, and prompts because Codex will otherwise invent structure. The user wanted the file universe constrained and explicit.
+
+The user seemed to care most about:
+
+* deterministic correctness,
+* modularity,
+* future extensibility,
+* avoiding repeated design churn,
+* preserving all important context,
+* and making Codex work from explicit, controlled source material.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+The immediate future work is not to design more systems. It is to turn the architecture into a buildable skeleton.
+
+The best order is:
+
+1. **Verify and apply V4 docs.**
+   This includes `BUILDING.md`, `SPEC_CORE.md`, `DATA_FORMATS.md`, `DIRECTORY_CONTEXT.md`, and the `dominium_new_addendum.txt` renderer/platform split. This matters because Codex needs a stable source of truth.
+
+2. **Run Codex consistency pass.**
+   Codex should inspect the listed files only and report/fix contradictions. This prevents implementation against stale docs.
+
+3. **Generate build skeleton.**
+   Root and per-directory CMake files should define targets, modes, backend flags, and stubs without real logic yet.
+
+4. **Implement core API skeletons.**
+   `engine/core` should define types, fixed-point, memory, logging, RNG, IDs, errors, and hash utilities.
+
+5. **Implement sim/ECS/event/job/world shell.**
+   This gives the engine a tick loop, entity system, and deterministic mutation path.
+
+6. **Implement Win32 + DX9 vector shell.**
+   The platform creates a window and input state; the renderer draws vector primitives. This proves the platform/render separation.
+
+7. **Wire the minimal client loop.**
+   The client initializes platform, renderer, sim, and a single Earth surface; runs tick/update; supports 2D and 3D vector cameras.
+
+8. **Add Lua data and script binding.**
+   Create `/engine/script`, vendor Lua, sandbox it, expose safe APIs, and load MVP prototypes.
+
+9. **Add deterministic hash and tests.**
+   Implement FNV-1a over canonical serialized authoritative state and run headless tick+hash tests.
+
+10. **Implement minimal prototypes.**
+    Place generator/consumer/cable, simple fluid/data nodes, worker/job, building placement, and one transport segment/vehicle.
+
+Blocked or verification-dependent work includes:
+
+* final render command/camera API,
+* Lua data schema,
+* exact ECS component fields,
+* DX9/Windows 2000 feasibility,
+* SDL2 compatibility,
+* Lua 5.4.4 portability,
+* legal licence validity.
+
+Post-MVP work includes:
+
+* multiplayer,
+* full Sol/space,
+* other renderers/platforms,
+* textures,
+* sound/music,
+* Windows 98,
+* Linux/macOS,
+* retro/Android/etc.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints
+
+The simulation must be deterministic. No authoritative floats. C89 for deterministic core. Platform code only in platform directories. Renderer code only in renderer directories. Renderer cannot mutate sim state. Codex must use only listed files. Unknown binary blocks must be skippable. No pointers serialized. Stable entity IDs are required. The MVP is vector-only and single-surface Earth. Lua data must be sandboxed.
+
+### Inferred constraints
+
+INFERENCE: The user strongly prefers staged implementation. This follows from asking “what should Codex do next” and accepting prompt sequences. INFERENCE: The user values long-term extensibility even when it complicates initial architecture.
+
+### Formatting and handoff preferences
+
+The user repeatedly requested maximum-fidelity reports, registers, handoff packets, and human-readable summaries. The user wants labelled uncertainty and does not want future assistants to invent missing context.
+
+### Things future assistants should avoid
+
+They should not:
+
+* restart architecture from scratch,
+* treat assistant suggestions as decisions unless accepted,
+* merge this chat with the whole project without provenance,
+* implement deferred systems in MVP,
+* rely on stale external facts,
+* introduce floats/OS/GPU APIs into sim,
+* hardcode doors into tunnels,
+* ignore the actual file tree,
+* or forget that Lua-vs-JSON remains unresolved.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+This chat created or referenced many artifacts. The most important are not the final report files themselves, but the underlying architecture and implementation artifacts.
+
+The V3 volumes are important because they preserve detailed deterministic architecture. They include determinism foundations, tick pipeline and parallelism, ECS architecture, messaging, jobs, serialization, spatial indexing, physics, prefabs, and mod injection. They should be preserved as background and deep reference.
+
+The unified summaries are important because they explain the whole architecture in a more digestible way. They include the five-primitives model and the full game macro-architecture.
+
+The directory tree and per-directory dev specs are important because they turn architecture into file responsibilities and APIs. However, they must be reconciled with the user’s later actual tree, because earlier ideal directory trees may not match the current repo.
+
+The root document drafts are useful but should be treated carefully. The user’s actual tree includes `LICENCE.md` but not necessarily `VERSION`, so generated root docs must be compared to disk before being treated as current.
+
+The V4 replacements for `BUILDING.md`, `SPEC_CORE.md`, `DATA_FORMATS.md`, and `DIRECTORY_CONTEXT.md` are extremely important. They are likely the most relevant generated docs for immediate Codex work.
+
+The Codex prompts are practical artifacts. They are the implementation bridge from architecture to code: consistency pass, CMake skeleton, core APIs, sim/ECS shell, Win32/DX9 shell, client loop, Lua binding, and test runner.
+
+The Lua clarification answer is also critical. It defines `/engine/script`, Lua 5.4.4, the sandboxed API, and FNV hashing.
+
+Finally, the generated handoff package is useful for aggregation and future continuity, but this human-readable report is intended to make its substance understandable without opening files.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+The most important unresolved issue is **actual repo state**. The chat generated many documents, but it is unknown whether they were applied to disk. Before Codex implements anything, the repo must be inspected.
+
+Another major unresolved issue is **Lua data versus JSON formats**. The user explicitly wants Lua for all MVP data, but generated `DATA_FORMATS.md` and data specs include JSON-style formats. This may be acceptable if JSON is long-term and Lua is MVP, but the docs must say that clearly.
+
+The **render command and camera API** are not final. Some sketches used world-space floats in render-only structs; data-format sections used integer draw commands. Since the simulation cannot use floats, the boundary must be clarified.
+
+The first platform path is also slightly ambiguous. The user said native Win32 or SDL2. The assistant recommended native Win32 first and SDL2 later, but the user did not explicitly confirm that exact ordering. It is probably a reasonable implementation plan, but it should be treated as a plan, not a user-final decision.
+
+External verification is needed for DX9 on Windows 2000 SP4 through Windows 11, SDL2 on Windows 2000, Lua 5.4.4 portability to older compilers, and legal enforceability of the restrictive licence.
+
+The exact MVP component set is also unresolved. The chat implies Transform, occupancy, power node, fluid node, data node, worker/agent, building/device, prefab IDs, inventory/job state, and possibly simple vehicle/path components, but exact fields are not final.
+
+Finally, “fully complete core” needs an acceptance checklist. The user wants all systems interactable, but minimal. The next assistant should not interpret that as “implement all final systems fully.”
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+The biggest risk is over-compression. If a future assistant reduces this chat to “make deterministic game engine,” it will lose the actual decisions that matter: base-16 spatial hierarchy, explicit fixtures, baked splines, platform/render separation, Lua data, DX9-first MVP, and deferred systems.
+
+Another risk is treating brainstorms as decisions. The chat contains many assistant suggestions, and not all were explicitly accepted. The safest rule is to prioritize direct user statements and treat assistant proposals as current only when the user continued the thread without objection or later built on them.
+
+A third risk is repeating rejected options: pure vector sim, full n-body space, auto doors, synchronous surfaces, runtime splines, MVP multiplayer, MVP textures/audio, or all renderers at once. These were rejected or deferred for reasons.
+
+A fourth risk is implementation leakage: Codex might put Win32 or DirectX code in game/sim files, or let Lua directly mutate state. That would violate the architecture.
+
+A fifth risk is stale external facts. The architecture assumes DX9.0c can target Windows 2000 SP4 through Windows 11, that SDL2 and Lua can be used in certain ways, and that old toolchains can work. These must be verified before relying on them.
+
+A sixth risk is file mismatch. The user’s actual tree differs from earlier generated ideal trees. Future assistants should use the user-provided actual tree and not invent missing files.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes the bridge between broad Dominium concept and implementable architecture. It should feed into many future Project Spec Book chapters:
+
+* Determinism and simulation kernel.
+* World and spatial hierarchy.
+* Surface/space domain model.
+* Building and terrain systems.
+* Corridor/spline infrastructure.
+* Utility and transport networks.
+* Renderer/platform abstraction.
+* MVP implementation plan.
+* Repository/directory contract.
+* Codex/codegen workflow.
+* Lua/data/modding architecture.
+* Serialization, replay, and deterministic testing.
+
+Unique contributions include the exact scale ladder, the MVP definition, the terrain/building/corridor hybrid model, the explicit fixture model, the renderer/platform addendum, and the Lua/hash clarification.
+
+Likely overlaps with other chats include railway details, electrical/data networks, roads/water/air/space, determinism volumes, and directory specs. An aggregator should preserve provenance and avoid silently merging contradictory versions.
+
+Items that should become formal requirements include no sim floats, strict layer separation, sparse surface storage, explicit fixtures, baked splines, vector-only MVP, Lua data sandboxing, and FNV full-state hash testing.
+
+Items that should remain background or future context include full orbital logistics, retro ports, other renderers, full collapse/destruction, and broad transport/rail details not needed for MVP.
+
+---
+
+## 14. What I Should Remember
+
+* Dominium Architecture II is the chat where the project became Codex-ready rather than merely conceptual.
+* The architecture is deterministic, integer/fixed-point, modular, and designed for old and modern platforms.
+* The MVP is specific: one Earth surface, all systems minimally interactable, Lua data, DX9/Win32/SDL2, 2D top-down vector, 3D first-person vector.
+* Platform and renderer are separate. OS/window/input belongs under platform. DirectX/OpenGL/Vulkan belongs under render. Simulation knows neither.
+* The simulation truth for buildings is discrete cells/blocks/faces/edges, not arbitrary vectors.
+* Vectors and splines are authoring/generation/visual aids that bake into chainpoints, graphs, and microgrids.
+* Terrain is base terrain plus earthworks deltas/cavities plus structural microgrids.
+* Doors/devices are explicit fixtures on anchors/sockets. They do not automatically appear in tunnel types.
+* Space is on rails with local bubbles, not full n-body.
+* Multiplayer, space/Sol, other renderers/platforms, textures, sounds, and music are later.
+* Codex should first reconcile docs, then generate build skeletons, core APIs, sim/ECS, Win32/DX9 vector shell, client loop, Lua binding, hashing/tests, and minimal prototypes.
+* `/engine/script`, Lua 5.4.4, sandboxed API, and FNV-1a full-state hash are important later implementation decisions.
+* Major unresolved issues are actual repo state, Lua-vs-JSON policy, render command/camera API, external compatibility, MVP component fields, and licence validity.
+* Do not trust external software/platform/legal claims without verification.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Turn this chat’s MVP into a concrete acceptance checklist.”
+2. “Write the exact Codex prompt for TASK-01 to TASK-05.”
+3. “Explain the Lua-vs-JSON contradiction and propose a clean resolution.”
+4. “Explain the renderer/platform/simulation split with examples of where files go.”
+5. “List every decision that affects the first code Codex should write.”
+6. “Which generated docs should I patch into the repo first?”
+7. “What should `DomDrawCmd` and the camera API look like for MVP?”
+8. “What is the smallest possible set of ECS components for the MVP?”
+9. “Which external facts must I verify before starting implementation?”
+10. “Summarize this chat specifically for the future Project Spec Book.”
+
+---
+
+## 16. Final Plain-English Summary
+
+Dominium Architecture II was the chat where a sprawling game/engine design was consolidated into a coherent deterministic architecture and prepared for Codex implementation. The project being designed is Dominium: a deterministic, modular, multi-scale simulation engine and game intended to support everything from buildings, roads, railways, utilities, workers, and terrain modification to orbital stations, cargo tugs, drop pods, and future multiplayer universes.
+
+The earliest visible parts of the chat continue from prior discussions about railway gauges, rail weights, traction, signalling, electrical systems, data networks, roadways, waterways, airways, and spaceways. The conversation then reached the central technical challenge: how to support arbitrary buildings, slopes, ramps, cliffs, cut/fill, tunnels, bridges, stations, and vector infrastructure while keeping the engine deterministic and integer-based. The answer became a hybrid model. The simulation truth is discrete: cells, blocks, faces, edges, components, graphs, fields, microgrids, chunks, and chainpoints. Vectors and splines exist for authoring, layout, generation, and visuals, but they bake into deterministic runtime structures.
+
+The chat established a small set of unifying primitives: Frames + Lattices, Archetypes + Components, Graphs + Fields, Blueprints + Diffs, and Ticks + Messages + Jobs. These primitives unify buildings, railways, roads, tunnels, bridges, utilities, data networks, workers, factories, terrain, water, air, and future space systems. This prevents every domain from becoming a unique subsystem.
+
+Several important decisions were made. The world uses metres as base units with fixed-point substeps. The spatial hierarchy runs from subnano through surface in powers of 16. Surfaces are not dense arrays but sparse logical microgrids/chunks. Earth, Sol, and the Milky Way are the default local world. One canonical surface per planet exists conceptually, but the architecture supports future multiple surface instances for sharding and mirroring. Cross-surface interactions are asynchronous only.
+
+The building system became block/module/cell/face/edge based. Walls, floors, roofs, and diagonal walls attach to faces or edges. Doors, lights, signals, vents, utility panels, and other devices are explicit fixtures attached to anchors or sockets. They do not automatically appear in tunnels. Terrain is split into immutable base terrain, earthworks deltas/cavities, and structural microgrids. This supports cut/fill, tunnels, canals, trenches, underground structures, and future collapse without corrupting worldgen terrain.
+
+Roads, rails, tunnels, bridges, and platforms are corridor systems. Users may draw vector splines, but the engine samples them into chainpoints and bakes them into linear microgrids and graph edges. This preserves arbitrary shapes while keeping simulation deterministic.
+
+Space was separated from surface simulation. The future space model uses on-rails orbital mechanics and local bubbles rather than full n-body physics. Docking, landing, and takeoff are deterministic state-machine transitions. Orbital ships, stations, yards, rockets, drop pods, and cargo tugs are future systems built on the same ECS/job/logistics framework.
+
+The immediate MVP was clearly defined by the user: a fully complete core, one full-size Earth surface, all systems interactable through minimal prototypes, Lua for all data, DX9.0c, SDL2, Win32, 2D vector top-down, and 3D vector first-person. Textures, sounds, music, multiplayer, the Sol system, other renderers, and other platforms are later.
+
+The chat also produced a large documentation and Codex preparation layer. Directory trees, per-directory dev specs, root docs, and V4 replacements for `BUILDING.md`, `SPEC_CORE.md`, `DATA_FORMATS.md`, and `DIRECTORY_CONTEXT.md` were generated. The user provided the actual current file tree and stated that Codex 5.1 Max should work only from those listed files. This is crucial: future assistants should not invent additional source-of-truth files.
+
+Codex prompts were created for the next implementation phases: reconcile docs, create CMake skeletons, define core APIs, implement sim/ECS/events/jobs shell, implement Win32/DX9 vector platform/render shell, wire a minimal client loop, add Lua/data binding, add FNV-1a state hashing, and create headless tests. When Codex asked for Lua specifics, the answer was to add `/engine/script`, vendor Lua 5.4.4, expose a sandboxed deterministic Lua API, disable OS/native access, and hash full authoritative sim state through canonical serialization with FNV-1a 64-bit.
+
+The unresolved issues are practical but important. The real repo files were not inspected here. It is unknown whether the V4 docs were applied. The Lua-vs-JSON data format relationship needs clarification. The final draw command and camera API must be settled before renderer implementation. DX9/Windows 2000, SDL2, Lua 5.4.4, old compilers, and the restrictive licence all require verification. The exact MVP ECS component set and first transport prototype remain to be chosen.
+
+The next assistant should preserve all of this, avoid restarting old debates, keep the MVP narrow, and use the generated docs/prompts as implementation guidance. The most important next action is to verify/apply the four V4 docs and run the Codex consistency pass before writing code.
+
+# Reader Status
+
+* Chat title: Dominium Architecture II
+* Report type: human-readable explanatory report
+* Main value of this chat: It converts the Dominium architecture into a deterministic, modular, MVP-focused, Codex-ready design with clear constraints, docs, and next-step prompts.
+* Most important decision: Strict deterministic simulation with complete separation between simulation, platform, and renderer layers.
+* Most important unresolved issue: Reconciling the actual repo/docs state, especially Lua-for-data versus JSON-oriented data formats and final render command/camera API, before Codex implements code.
+* Most important next action: Verify/apply the V4 docs and run the Codex consistency pass.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: Actual repo files were not inspected; early transcript context had skipped messages; external compatibility and legal claims require verification; some assistant proposals remain tentative unless directly accepted by the user.

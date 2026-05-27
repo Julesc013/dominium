@@ -1,0 +1,958 @@
+GPT-5.5 Pro • build 2026-05-25
+
+# Human-Readable Chat Report — Dominium + Domino Refactor Architecture
+
+Date anchor: 2026-05-27 Australia/Melbourne
+Source scope: this visible chat only, plus the previously generated in-chat handoff/report material from this same chat.
+Reliability note: Repository state, Codex execution, exact version numbers, and actual file modifications are **UNCERTAIN / UNVERIFIED** unless explicitly stated otherwise.
+
+---
+
+## 1. One-Page Orientation
+
+This chat was mainly about turning the Dominium + Domino project from a collection of partially overlapping architecture ideas into a coherent, refactorable, future-proof structure that could be implemented by Codex and then preserved for future ChatGPT conversations.
+
+At the highest level, the discussion separated two names and responsibilities. **Domino** is the engine. It lives under `source/domino`, provides deterministic simulation, platform abstraction, graphics rendering, input, audio, UI foundations, mod/package systems, and cross-platform support. **Dominium** is the product suite built on top of Domino. It lives under `source/dominium` and contains the user-facing products: Game, Launcher, Setup, and Tools.
+
+The chat began as a presentation-layer architecture thread: graphics, UI, UX, asset packs, sound packs, music packs, vector/raster rendering, theming, and how everything should sit on top of existing `dsys` and `dgfx` layers. That early discussion established a strong rule: no product UI or rendering path should bypass Domino’s platform and graphics abstraction layers. UI should eventually become a shared toolkit usable by the game, launcher, setup, and tools, with a vector-only fallback so the system remains functional even with no raster packs installed.
+
+The conversation then moved into products and binaries. At first, there was discussion of whether headless, CLI, TUI, and GUI modes could be merged into one application. That led to a more general product architecture. The user then clarified that they wanted separate products: Game, Launcher, Setup, and Tools. From there, the architecture settled into four product binaries, each using shared Domino systems, rather than one monolithic executable.
+
+A major decision was that **Game is one product**, not separate client/server/demo products. It should launch in different modes through flags: client, listen server, dedicated headless server, and demo/full. The assistant recommended one game binary with flags because it avoids client/server version skew, duplicate product metadata, and divergent runtime paths. The user accepted this direction by continuing the architecture around it. Demo was treated similarly: not a separate `/demo` product, but content and instance policy controlled by a demo base pack and `instance.json` flags.
+
+Another major thread was installation, distribution, and long-term version management. The user did not want every instance to store a full suite copy. The resulting model was `DOMINIUM_HOME`: a shared repository of product builds, mods, and packs, plus lightweight instances that reference exact versions. This supports many versions of Game, Launcher, Setup, Tools, mods, and packs installed side-by-side without overwriting each other. Setup imports builds non-destructively; instances select versions.
+
+Versioning was another central theme. The user wanted separate version numbers for core, launcher, game, setup, tools, and protocols. The final model is: Domino has a core version, each product has its own version, formats and protocols have their own integer versions/ranges, and **Suite version equals Game version**. The base official modpack should conventionally match the game version for clarity, but the assistant argued—and the conversation adopted—that this should not be a hard engine invariant. Compatibility ranges, not strict equality, should decide whether a base pack is valid.
+
+The user also provided a concrete existing repository tree. That tree showed `source/dominium/products/common`, `game`, `launcher`, `setup`, a separate `source/dominium/rules`, root `tools/dominium_modcheck`, existing `include/domino`, `include/dominium`, `data`, `docs`, and `scripts`. From that point the chat became implementation-oriented: generate Codex prompts to refactor the repository. The user explicitly chose the final source layout:
+
+```text
+source/
+  domino/
+  dominium/
+    common/
+    game/
+    launcher/
+    tools/
+    setup/
+```
+
+The `products` subdirectory should be removed. Rules should be moved under game. `dominium_modcheck` should become part of DominiumTools.
+
+Near the end, the chat produced several Codex prompts: a master refactor prompt, a post-refactor consistency prompt, a prompt to generate a future ChatGPT starter prompt, and a prompt to generate an extended starter prompt. Then it produced a maximum-fidelity context transfer packet and a downloadable report package. The final user request asked for a human-readable explanation rather than machine-oriented registers or YAML. This report is that explanation.
+
+The most important thing to remember is that this chat did not implement the refactor. It designed the architecture and generated prompts and handoff material. Any future assistant must verify actual repository state before assuming files were moved, prompts were applied, or code was updated.
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began as a presentation-system architecture thread
+
+The user opened with a long “new thread” prompt framing this as the **Graphics / UI / UX / Packs Architecture Thread** for Dominium + Domino. The explicit scope was visual and audio presentation: rendering architecture, UI framework, graphics packs, sound packs, music packs, theming, skinning, pack composition, overrides, fallbacks, and how all of that should map onto existing `dsys` and `dgfx`.
+
+The user’s premise was that `dsys` and `dgfx` already existed. `dsys` handled platform abstraction: windowing, time, filesystem, process spawning, events, keyboard/mouse input, and platform backends like Win32, DOS, POSIX, SDL, X11, Wayland, Cocoa, Carbon, CP/M, and null backends. `dgfx` was the graphics IR and canvas layer: clear, viewport, camera, pipeline, texture, sprites, lines, meshes, and text. All rendering had to go through `dgfx`.
+
+The initial assistant response built a layered architecture on that: `dsys`, `dgfx`, `ui_core`, `ui_style`, `ui_fonts`, `ui_events`, `ui_render`, `ui_packs`, and domain UIs. It proposed C headers, data formats, layout rules, vector and raster styles, UI events, pack metadata, fallback behavior, and implementation work orders.
+
+**FACT:** This early discussion created the future UI/packs design context.
+**UNCERTAIN / UNVERIFIED:** It did not establish that this system already exists in code.
+
+### The discussion shifted from UI architecture to application modes
+
+The user then asked whether headless, CLI, TUI, and GUI modes could be merged into one application that launches differently depending on whether it is launched from a desktop or terminal. The answer was yes: one binary could select mode automatically or through flags. That led to a larger question: what binaries should actually be compiled and shipped?
+
+At first, the assistant recommended a minimal binary approach: one main executable per platform with modes selected through flags, plus optional wrappers. But the user later clarified that they wanted **separate binaries per product**. That changed the architecture from “one application with many modes” to “four products, each with shared mode/backend infrastructure.”
+
+This change mattered because it defined the product boundary for the rest of the conversation. Instead of one executable doing everything, the suite would contain separate Game, Launcher, Setup, and Tools products.
+
+### The product model solidified
+
+The user said the repo would have `source/product/` with game, launcher, setup, tools, and asked what binaries should be compiled and what arguments/functions they support. The assistant proposed four products, later refined into:
+
+* DominiumGame
+* DominiumLauncher
+* DominiumSetup
+* DominiumTools
+
+The user then asked whether all these binaries should use the shared platform and renderer APIs instead of built-in ones, and whether Launcher, Setup, and Tools should support the same platform/renderer combinations as the Game. The answer established an important architectural rule:
+
+**FACT:** All products should use shared `dsys` and `dgfx`. No product-specific platform or renderer code path.
+
+There was nuance: Game should support the broadest backend matrix; Tools should support most of it; Launcher should support stable GUI/TUI combos; Setup should remain conservative and reliable, usually using soft rendering or TUI fallback.
+
+### Versioning and packaging became central
+
+The user asked what else needed to be nailed down before locking the architecture. This opened a major section on packaging, naming, executable names, and version schemes.
+
+The user wanted separate version numbers for Core, Launcher, Game, Setup, Tools, and protocols. The assistant proposed independent SemVer product versions, integer format/protocol versions, and `DomProductInfo`/introspection metadata so arbitrary mixes could degrade gracefully. The user corrected one important point: **Suite version should be the Game version**, not Core version. That became a final rule.
+
+Then the user clarified the base official modpack version: it should match the Game version for clarity, but not DLCs, user mods, or official/user packs. Later the user asked whether this arbitrary link between Game version and base data version was actually wise. The answer refined the rule:
+
+**FACT:** Official suite releases should conventionally ship base modpack version equal to Game/Suite version.
+**FACT:** Engine logic should not hardwire strict equality. Compatibility ranges should decide validity.
+
+This was an important correction because it avoided artificial version bumps and preserved flexibility for engine-only or data-only patches.
+
+### The install model became a repository-and-instance model
+
+The user then asked how to store multiple different versions of chosen products for many different instances without storing a whole suite each time. This produced the `DOMINIUM_HOME` model:
+
+```text
+DOMINIUM_HOME/
+  repo/
+    products/
+    mods/
+    packs/
+  instances/
+```
+
+This was one of the biggest architectural outcomes of the chat. Product builds, mods, and packs are stored once by version. Instances are lightweight manifests that reference specific product builds and content versions. Installing a suite imports missing builds/content into the repo without overwriting what is already there. Garbage collection removes only unreferenced items.
+
+This model is what allows many instances to use different game versions, mod sets, packs, and tool versions without duplicating entire suites.
+
+### OS families and architecture naming were clarified
+
+The user asked how to extend the model to Windows NT, Windows 9x, Windows 3.x, MS-DOS, Mac OS X, Mac OS Classic, Linux, Android, CP/M, Web, and others. The answer generalized the model by OS family and architecture tag. Then the user said they disliked the ambiguity of `x64`, which led to explicit architecture naming.
+
+Examples:
+
+* `x86-16`
+* `x86-32`
+* `x86-64`
+* `arm-32`
+* `arm-64`
+* `m68k-32`
+* `ppc-32`
+* `ppc-64`
+* `z80-8`
+* `wasm-32`
+
+This was paired with package names like:
+
+```text
+Dominium-Suite-<GAME_VERSION>-<OSFam>-<Arch>.<ext>
+```
+
+### Launcher became the central entry point
+
+The user explicitly added that the Launcher should be the main point of access to the whole suite. This expanded the Launcher from a simple starter program into the suite hub. It should discover product builds, instances, mods, packs, tools, and actions. It should launch Game and Tools through actions rather than hardcoded executable paths.
+
+This introduced the actions system. Product builds expose `actions.json`. Launcher reads the available actions and presents them to the user. Game can expose actions like “run client,” “run listen server,” and “run dedicated server.” Tools can expose “modcheck,” “world editor,” “pack editor,” and “save inspector.”
+
+### More products, tools, and demo were considered
+
+The user asked whether there should be more tools or products, whether Game demo should be separate, and how to integrate many tools into Launcher. The assistant recommended that most new functionality should be expressed as tools/actions rather than new top-level products. DominiumTools would be an aggregated product, starting with `dominium_modcheck` and later adding editors and inspectors.
+
+For demo, the recommendation was clear: no separate demo product. Demo should be a mode/content profile of Game, using a demo base pack and instance flags.
+
+### The source layout was finalized
+
+The user asked about directory structure and then made a specific correction: remove `products` under Dominium. The final source structure became:
+
+```text
+source/
+  domino/
+    core/
+    ...
+  dominium/
+    common/
+    game/
+    launcher/
+    tools/
+    setup/
+```
+
+This is a user-stated decision and one of the most important carry-forward points.
+
+The user then asked whether Domino should be installed separately from Dominium or bundled. The recommendation was to bundle/static-link Domino into Dominium products, not install Domino as a global runtime. Then the user asked whether the source should be `source/Domino` and `source/dominium` or `source/engine` and Dominium. The recommendation was `source/domino` and `source/dominium`, because Domino is a named engine with matching `include/domino` headers.
+
+### The existing repo tree was provided, and prompts were generated
+
+The user pasted a full Windows-style directory tree. It showed the existing state, including `source/dominium/products`, `source/dominium/rules`, `tools/dominium_modcheck`, `include/domino`, `include/dominium`, `data`, `docs`, `scripts`, and build outputs.
+
+The assistant then produced a master Codex refactor prompt that instructed Codex how to move files, add compat/platform headers, add product metadata and `--introspect-json`, unify Game modes, implement DOMINIUM_HOME, actions, setup import/GC, packaging naming, and docs updates.
+
+The user asked what Codex still did not know. The assistant audited missing topics. Then the user asked for phases from scratch; the assistant produced a phased roadmap. Then the user asked whether all phases could be merged into one big prompt; the assistant generated a larger combined refactoring prompt. Then the user requested a post-refactor consistency prompt; the assistant produced one.
+
+### The chat ended with continuity/report packaging work
+
+The user then shifted from architecture implementation to preservation. They asked for prompts that would cause Codex to generate starter prompts for future ChatGPT conversations, including an extended master starter prompt. Finally, they asked for a maximum-fidelity context transfer packet, then for a downloadable report package, then for an in-chat readable version of that package.
+
+The final phase of the chat was therefore about preserving and explaining the architecture so it could be used later without rereading the entire conversation.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Domino vs Dominium
+
+The first core distinction is between Domino and Dominium.
+
+**FACT:** Domino is the engine. It belongs under `source/domino` and `include/domino`. It includes the simulation, platform abstraction, graphics IR/backends, audio, input, mod/package systems, and UI foundations.
+
+**FACT:** Dominium is the product suite built on Domino. It belongs under `source/dominium` and contains products such as Game, Launcher, Setup, and Tools.
+
+This distinction mattered because many later decisions depended on it. If Domino were treated as a separate installed runtime, the project would risk version conflicts. If Domino were renamed to `engine`, the source tree would lose clarity and mismatch existing public include paths. If Dominium product logic stayed mixed into engine code, the architecture would become harder to maintain.
+
+The conclusion was that Domino remains a named engine in source and may later have a developer SDK, but it should not be a global runtime product installed beside Dominium for end users.
+
+What remains uncertain is the exact degree to which existing code currently respects that boundary. The user provided a repo tree, but this chat did not inspect or modify code directly.
+
+### Topic 2 — Source Layout Refactor
+
+The most concrete source refactor was flattening `source/dominium`.
+
+The existing tree had:
+
+```text
+source/dominium/products/common
+source/dominium/products/game
+source/dominium/products/launcher
+source/dominium/products/setup
+source/dominium/rules
+```
+
+The user explicitly stated that the final layout should remove the products subdirectory and place product directories directly under Dominium:
+
+```text
+source/dominium/common
+source/dominium/game
+source/dominium/launcher
+source/dominium/tools
+source/dominium/setup
+```
+
+The assistant recommended moving rules under `source/dominium/game/rules`, because rules are game/content-specific rather than a separate product. That specific move is an assistant recommendation incorporated into the Codex prompts. It is strongly aligned with the discussion, but it is more properly labelled **INFERENCE** unless the user later explicitly confirms it.
+
+This topic matters because it is the primary mechanical refactor Codex was expected to perform. It affects CMake, include paths, docs, tests, and build artifacts.
+
+### Topic 3 — Product Model and Binaries
+
+A major shift occurred from “one application with modes” to “separate products with shared infrastructure.” The final product set is:
+
+* DominiumGame
+* DominiumLauncher
+* DominiumSetup
+* DominiumTools
+
+**FACT:** The user wanted a separate set of binaries per product.
+
+Each product should use shared Domino systems. They should not contain their own platform/rendering implementations. The Game product handles runtime play/server modes. Launcher is the suite hub. Setup installs/imports/repairs/uninstalls. Tools aggregates modcheck and future tools.
+
+This product model prevents both extremes: it avoids a monolithic everything-binary, but also avoids uncontrolled proliferation of tiny products for client, server, demo, individual editors, etc.
+
+### Topic 4 — Game Client, Server, and Demo
+
+The user asked whether Game should have a client and server in separate binaries or startup flags. The recommendation was one Game product/binary with flags.
+
+The visible rationale was:
+
+* One binary avoids client/server version skew.
+* One binary keeps simulation paths unified.
+* One product simplifies metadata, packaging, and repo layout.
+* Dedicated server can still run headless through flags.
+* A later thin wrapper named `DominiumServer` could exist for convenience without being a distinct product.
+
+The game modes are:
+
+```text
+--mode=gui|tui|headless
+--server=off|listen|dedicated
+--instance=<id>
+--demo
+```
+
+Demo was treated similarly. Rather than a separate demo product, demo should be a content/profile state: demo base pack plus `flags.demo_mode` in the instance. This avoids separate save formats or divergent code paths.
+
+### Topic 5 — Launcher as Main Suite Access Point
+
+The user explicitly said the Launcher should be the main point of access to the entire suite. This changed the Launcher from a simple startup tool into the control hub.
+
+Launcher should manage:
+
+* instances,
+* product builds,
+* mods,
+* packs,
+* tools,
+* actions,
+* diagnostics,
+* possibly setup/update flows.
+
+The key design tool for this is the **actions system**. Instead of Launcher hardcoding how to start Game or Tools, product builds expose actions. Launcher discovers and displays those actions.
+
+This matters because the project is expected to grow. More tools and modes can be added by registering actions, not rewriting Launcher logic.
+
+### Topic 6 — Setup, Install Modes, and Non-Destructive Imports
+
+The user wanted all downloads portable by default, with options to install as portable, per-user, or system-wide. This led to the InstallRoot vs DOMINIUM_HOME distinction.
+
+InstallRoot is where a suite package unpacks. DOMINIUM_HOME is the shared repo/instance location. Setup imports product builds, mods, and packs from InstallRoot into DOMINIUM_HOME non-destructively. If something is already installed, Setup should not overwrite it.
+
+This solves the user’s stated problem: many instances should be able to use different versions without each storing a full suite. It also preserves old worlds and mod combinations.
+
+Unresolved details include exact default DOMINIUM_HOME paths per OS and exact implementation of import/GC.
+
+### Topic 7 — Versioning and Compatibility
+
+Versioning became one of the most important topics.
+
+The final model has:
+
+* Domino core version.
+* Game version.
+* Launcher version.
+* Setup version.
+* Tools version.
+* Suite version equal to Game version.
+* Separate format versions.
+* Separate protocol versions.
+* Independent mod/pack/DLC versions.
+
+Products expose metadata through `DomProductInfo` and `--introspect-json`. Compatibility is represented by `DomCompatProfile` and should produce outcomes like full, limited, read-only, or incompatible/refuse.
+
+This model exists so arbitrary product combinations can degrade gracefully. The system should never crash or corrupt data because of a version mismatch. It may refuse an unsafe operation.
+
+A key nuance is base data version. The official base modpack should match Game version in releases, but strict equality should not be hardwired into engine validity. Compatibility ranges should be authoritative.
+
+### Topic 8 — DOMINIUM_HOME Repo and Instances
+
+DOMINIUM_HOME was the answer to storing many versions and many instances without duplication.
+
+Its structure is:
+
+```text
+DOMINIUM_HOME/
+  repo/
+    products/
+    mods/
+    packs/
+  instances/
+```
+
+Product builds are stored by product, product version, core version, OS family, and architecture. Mods and packs are stored by ID/version. Instances reference those entries and carry their own saves/config/logs.
+
+This matters for long-term compatibility. A world created with Game 2.5 and certain mods can keep referencing those versions even after Game 2.6 is installed. Garbage collection can later remove unreferenced entries safely.
+
+Unresolved details include exact schemas, parser choice, tests, and actual code implementation.
+
+### Topic 9 — OS and Architecture Naming
+
+The user disliked `x64`. The architecture naming scheme was made explicit.
+
+The final tags include `x86-64`, `x86-32`, `arm-64`, `wasm-32`, `z80-8`, etc. Package names should use these tags.
+
+This matters because the project targets many OS families: Windows NT, Windows 9x, Windows 3.x, DOS, Mac OS X, Mac Classic, Linux, Android, CP/M, Web, and possibly more. Ambiguous names would become a problem in packaging and repo paths.
+
+### Topic 10 — UI, Graphics, and Packs
+
+The chat began with UI and graphics packs. That material remained important but became later-phase relative to the source refactor.
+
+The future UI system should:
+
+* be shared across Game, Launcher, Setup, and Tools,
+* render through dgfx/canvas,
+* avoid OS-native drawing,
+* have deterministic layout,
+* support vector UI baseline,
+* optionally layer raster skins,
+* support sound/music/font packs,
+* allow theme/profile selection,
+* fall back gracefully when assets are missing.
+
+The key unresolved point is implementation timing. The report preserves this architecture, but the initial Codex refactor was not supposed to rewrite the entire UI system immediately.
+
+### Topic 11 — Codex Prompts and Continuity
+
+The user wanted prompts that could be given to Codex. Several were generated:
+
+* master refactor prompt,
+* post-refactor consistency prompt,
+* prompt to generate a starter prompt,
+* prompt to generate an extended master starter prompt.
+
+Then the user requested a maximum-fidelity context transfer packet and a report package. Those became artifacts for future continuity.
+
+This topic matters because the work was not just architectural design; it was also about preserving the architecture in a form that Codex and future ChatGPT sessions could use.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals the user stated
+
+The user explicitly wanted to:
+
+1. Design the visual/audio presentation stack.
+2. Make rendering, UI, packs, themes, and assets modular and cross-platform.
+3. Merge or coordinate headless/CLI/TUI/GUI behavior.
+4. Decide which binaries/products to compile and ship.
+5. Support arbitrary valid platform/renderer combinations through shared APIs.
+6. Define package naming, architecture naming, and version systems.
+7. Support portable, per-user, and system-wide installs.
+8. Store multiple product/mod/pack versions without duplicating whole suites per instance.
+9. Make Launcher the main access point to the suite.
+10. Decide how Game client/server/demo should be represented.
+11. Define final source and disk layout.
+12. Produce Codex prompts to refactor and update the repo.
+13. Produce future-chat starter prompts.
+14. Produce context transfer/report package material.
+
+### Inferred goals
+
+The user appeared to be trying to avoid:
+
+* architecture drift,
+* duplicate code paths,
+* product/version sprawl,
+* future refactor pain,
+* loss of context across chats,
+* Codex receiving under-specified instructions,
+* future assistants repeating rejected ideas.
+
+This is an **INFERENCE**, but strongly supported by repeated requests for extensibility, robustness, modularity, and maximum-fidelity transfer.
+
+### Goals that changed over time
+
+The product/binary goal changed. Early discussion allowed one application with modes. Later, the user explicitly wanted separate binaries per product. The architecture adjusted accordingly.
+
+The base modpack goal also changed. Initially, matching base version to Game version sounded desirable. Later, the user asked whether making that arbitrary link was wise, and the outcome became more nuanced: match as release convention, not as hard invariant.
+
+The source layout goal became more specific. Initially, assistant proposed `source/dominium/product` or similar. Later the user explicitly chose no products subdirectory.
+
+### Goals that remain unresolved
+
+Actual implementation is unresolved. This chat generated architecture and prompts, not a verified changed codebase.
+
+Specific unresolved goals include:
+
+* exact DOMINIUM_HOME default paths,
+* exact parser choice for JSON/TOML,
+* actual product version numbers,
+* whether Codex applied prompts,
+* exact migration of root-level tools other than `dominium_modcheck`,
+* timing and scope of the full UI/packs rewrite.
+
+---
+
+## 5. Decisions Made and Why
+
+### Short decision overview
+
+| Decision                                                                     | Status                                        | Label     |
+| ---------------------------------------------------------------------------- | --------------------------------------------- | --------- |
+| Use `source/domino` and `source/dominium`.                                   | final                                         | FACT      |
+| Remove `source/dominium/products`.                                           | final                                         | FACT      |
+| Use four Dominium products: Game, Launcher, Setup, Tools.                    | final                                         | FACT      |
+| Game is one product with client/listen/dedicated/demo modes.                 | final architecture direction                  | FACT      |
+| Launcher is main suite access point.                                         | final                                         | FACT      |
+| Domino is bundled/linked into Dominium, not separately installed as runtime. | final recommendation accepted by continuation | FACT      |
+| Suite version equals Game version.                                           | final                                         | FACT      |
+| Base modpack matches Game version as convention, not hard invariant.         | final nuanced decision                        | FACT      |
+| DOMINIUM_HOME stores repo and instances.                                     | final architecture direction                  | FACT      |
+| Use explicit architecture tags, not `x64`.                                   | final                                         | FACT      |
+| Use actions for Launcher execution.                                          | final architecture direction                  | FACT      |
+| Defer full UI/packs rewrite beyond first structural refactor.                | recommended sequencing                        | INFERENCE |
+
+### Decision: keep Domino as `source/domino`
+
+The user asked whether the repo should have `source/Domino` and `source/dominium` or `source/engine` for Domino. The recommendation was to use `source/domino` and `source/dominium`.
+
+This was decided because Domino is a named engine with public headers under `include/domino`. Calling it `engine` would create ambiguity and require documentation to repeatedly explain that “engine” means Domino. It also preserves a clean mapping between include and source trees.
+
+This affects all future source layout and documentation. It should only be revisited if the engine itself is renamed.
+
+### Decision: do not install Domino as a separate runtime
+
+The user asked whether Domino should be bundled with Dominium or installed separately. The recommendation was to bundle/static-link Domino into Dominium products, not install a separate global runtime.
+
+The rationale was version safety. If multiple suites install different Domino core versions, a shared runtime can create DLL/ABI/version conflicts. Since product builds already declare which core version they were built against, the safest model is for each product build to contain or internally link its exact Domino core.
+
+A separate Domino SDK for developers remains possible. That is different from a player-facing runtime.
+
+### Decision: flatten `source/dominium`
+
+The user explicitly chose:
+
+```text
+source/dominium/
+  common/
+  game/
+  launcher/
+  tools/
+  setup/
+```
+
+This superseded earlier structures involving `source/dominium/products`. It is one of the clearest user decisions in the chat.
+
+The implication is large: CMake, includes, docs, tests, and build artifacts all need updating.
+
+### Decision: four Dominium products
+
+The user wanted separate product binaries rather than one combined app. The settled products are Game, Launcher, Setup, and Tools.
+
+This balances separation and control. It avoids one monolithic binary while also avoiding excessive product proliferation.
+
+### Decision: Game client/server/demo are modes, not products
+
+The user asked whether Game should have a client and server in separate binaries or startup flags. The recommendation was startup flags in one Game product.
+
+This decision made sense because the simulation path should remain unified. Separate client/server products would increase version compatibility burden. A dedicated server can still run headless. A wrapper can exist later, but not as a separate architecture product.
+
+Demo follows the same principle: it is content/instance policy, not a separate binary.
+
+### Decision: Launcher is the main access point
+
+The user explicitly stated that the Launcher should be the main point of access to the whole suite. This turned Launcher into the suite hub.
+
+The Launcher should not be a thin “start game” button. It should manage instances, product versions, tools, mods, packs, diagnostics, and actions.
+
+### Decision: actions-based launching
+
+The actions system was introduced to avoid hardcoded launcher behavior. Products expose `actions.json`; Launcher discovers and executes actions.
+
+This is extensible. A new tool or game mode can appear as an action without editing Launcher logic.
+
+### Decision: DOMINIUM_HOME repo/instances
+
+The user wanted many product versions and many instances without storing the whole suite repeatedly. The repo/instance model solves that.
+
+Product builds, mods, and packs live in a shared repo. Instances are lightweight selectors with config/saves/logs. Setup imports non-destructively.
+
+### Decision: independent versioning with Suite = Game
+
+The user wanted independent versions for core, launcher, game, setup, tools, and protocols. Later they explicitly stated Suite version should be Game version. That is final.
+
+This affects package names, manifests, introspection, compatibility checks, and docs.
+
+### Decision: base mod version convention
+
+The user wanted the base official modpack to match Game version for clarity, but later questioned whether making that a hard link was wise. The adopted logic is:
+
+* official Suite releases should ship Base version matching Game version,
+* engine validity should use compatibility ranges,
+* DLC/user mods/packs are independent.
+
+This is important because it prevents unnecessary version churn.
+
+### Decision: explicit architecture names
+
+The user disliked `x64`. The package/repo architecture tags use explicit names like `x86-64`, `arm-64`, `wasm-32`.
+
+This reduces ambiguity across many OS/arch targets.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### One monolithic binary
+
+Early discussion considered unifying headless, CLI, TUI, and GUI modes into one application. That idea was not wrong, but it was superseded when the user asked for separate product binaries. The final model keeps mode selection within each product, especially Game, but not a single binary for all products.
+
+### Separate client/server products
+
+Separate client and server binaries were considered because the Game has client and server roles. This was rejected as the default because it increases build and compatibility complexity. It may be reconsidered for a minimal dedicated-server distribution, but only as a wrapper or specialized build, not as the default architecture.
+
+### Separate demo product
+
+A separate demo product was rejected. It would duplicate Game behavior and complicate saves, mods, and compatibility. Demo should be content/profile gating through a demo base pack and instance flag.
+
+### Global Domino runtime install
+
+Installing Domino separately from Dominium was rejected. The visible reason was avoiding shared-runtime version conflicts. A future developer SDK is acceptable, but not a global player-facing runtime.
+
+### `source/engine`
+
+Using `source/engine` instead of `source/domino` was rejected because it hides the named engine identity and conflicts with `include/domino`.
+
+### Strict base version equality
+
+Hardwiring base mod version equal to Game version inside engine logic was rejected. It should be a release convention, not a loader invariant.
+
+### Ambiguous `x64`
+
+Using `x64` was rejected because the user disliked its ambiguity. Explicit tags should be used.
+
+### Full UI/packs rewrite in the first refactor
+
+This was deprioritised, not permanently rejected. The UI/packs architecture is large and should be handled after the structural source/product/versioning refactor is stable.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The strongest visible reasoning pattern in the chat was: avoid architecture that creates hidden coupling or version skew.
+
+This explains the rejection of a global Domino runtime. It also explains the rejection of separate client/server/demo products. If the project is intended to support old saves, old mods, old instances, and many platforms, then runtime behavior must be traceable to exact product builds and content versions. Static/internal linking and build metadata make that possible.
+
+Another recurring rationale was extensibility through data/metadata instead of hardcoding. The actions system is a clear example. Rather than teaching Launcher how to call every tool or game mode, product builds describe their actions. The repo/instance model is another example: instances are data that reference versions, not copied directories.
+
+The user also cared about future-proofing. Many decisions anticipate long-term project growth: multiple OS families, many architectures, many versions, many tools, many mods/packs, multiple UI styles, future aggregation of old chat reports, and future Codex implementation. That is why the assistant repeatedly recommended explicit schemas, version metadata, compatibility ranges, and source boundaries.
+
+A major tradeoff was between simplicity and flexibility. Matching base mod version to Game version is simple for users, but hardwiring equality is inflexible. The final compromise preserves the public mental model while allowing compatibility-based exceptions.
+
+Another tradeoff was between immediate implementation and future architecture. The UI/packs architecture was detailed, but later refactor prompts were deliberately more focused on source/product/versioning. The visible rationale was that implementing the entire UI/packs system during the same source refactor could make the Codex change too broad and risky.
+
+The user seemed to care most about not losing context, not repeating old decisions, making Codex prompts concrete, and keeping the architecture modular enough to evolve across many platforms and years.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+The immediate plan is not to redesign everything again. The immediate plan is to verify current repo state and then implement the structural refactor in a controlled way.
+
+### First major next step: verify whether Codex has run
+
+This matters because the chat produced prompts, but did not verify that they were applied. If Codex has not run, the next step is to run or refine the master refactor prompt. If Codex has run, the next step is the consistency pass.
+
+What could go wrong: a future assistant might assume the refactor already happened and give instructions based on the desired layout rather than the actual repo.
+
+### Next: apply or phase the source refactor
+
+This includes moving:
+
+* `source/dominium/products/common` → `source/dominium/common`
+* `source/dominium/products/game` → `source/dominium/game`
+* `source/dominium/products/launcher` → `source/dominium/launcher`
+* `source/dominium/products/setup` → `source/dominium/setup`
+* `source/dominium/rules` → `source/dominium/game/rules`
+* `tools/dominium_modcheck` → `source/dominium/tools/modcheck`
+
+Before this, the repo should be clean and buildable. After this, CMake and includes must be fixed.
+
+### Next: add compatibility/platform skeleton
+
+Add:
+
+* `include/domino/platform.h`
+* `include/domino/compat.h`
+* `source/domino/compat/compat_core.c`
+
+This gives later tasks a common vocabulary for OS, arch, product info, and compatibility.
+
+### Next: centralize versions and introspection
+
+Each product should expose:
+
+* product version,
+* core version,
+* suite version,
+* OS family,
+* arch,
+* compatibility profile.
+
+The CLI flag `--introspect-json` should exist for Game, Launcher, Setup, and Tools.
+
+### Next: unify Game modes
+
+Game must parse `--mode`, `--server`, `--instance`, and `--demo`. Existing client/server entrypoints should route through one mode selector.
+
+### Next: implement DOMINIUM_HOME foundations
+
+This includes:
+
+* path discovery,
+* repo product/mod/pack lookup,
+* instance load/save/list.
+
+This should happen before deep Launcher/Setup integration.
+
+### Next: implement actions
+
+Products expose actions. Launcher loads and runs them. This replaces hardcoded invocation logic.
+
+### Next: Setup import and GC
+
+Setup should import product builds and content into repo without overwrites and provide garbage collection for unused entries.
+
+### Later: UI/packs full architecture
+
+Once the source/product/repo foundation is stable, the UI/packs architecture can be implemented.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints
+
+* Domino engine should remain C89-compatible where applicable.
+* Do not change deterministic simulation semantics.
+* All product platform/rendering access should go through dsys/dgfx.
+* Do not install Domino as a separate player-facing runtime.
+* Do not use `source/dominium/products`.
+* Do not treat demo as a separate product.
+* Suite version equals Game version.
+* Downloads should be portable out of the box.
+* Install/import should not overwrite existing versions.
+* Use explicit architecture names, not `x64`.
+* Preserve FACT / INFERENCE / UNCERTAIN labels in transfer/report contexts.
+
+### Inferred constraints
+
+* Avoid broad Codex changes that combine too many concerns at once.
+* Defer full UI/packs implementation until the structural refactor is stable.
+* Prefer data-driven metadata over hardcoded paths and behavior.
+
+### User communication preferences visible here
+
+The user wants dense, direct, technically rigorous reporting. They repeatedly asked for maximum-fidelity preservation, not generic summaries. They prefer exact paths, concrete decisions, and preservation of rejected options.
+
+### Things future assistants should avoid
+
+* Re-suggesting `source/engine`.
+* Re-suggesting a global Domino runtime install.
+* Re-suggesting a separate demo product.
+* Treating assistant suggestions as user decisions without evidence.
+* Assuming Codex ran.
+* Losing the nuance around base mod version matching.
+* Turning the report into machine-readable dumps when the user asks for prose.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+The chat produced and referenced many artifacts. The most important ones are not ordinary project files but planning and prompt artifacts.
+
+### Existing repository tree
+
+The user pasted a full tree of the current repository. This was crucial because it grounded later Codex prompts in actual paths. It showed, among many other things:
+
+* `source/domino`
+* `source/dominium/products`
+* `source/dominium/rules`
+* `tools/dominium_modcheck`
+* `include/domino`
+* `include/dominium`
+* `data`
+* `docs`
+* `scripts/packaging`
+
+This tree should be preserved as historical input. It is not proof of current repo state after any future Codex work.
+
+### Master Codex refactor prompt
+
+This was a large prompt telling Codex to perform the main source/product/version/repo/actions refactor. It included concrete file moves, new headers, product introspection, game modes, DOMINIUM_HOME, actions, setup import/GC, content versioning, backend flags, packaging naming, and docs updates.
+
+It should be preserved because it can be reused or split into smaller prompts.
+
+### Post-refactor consistency prompt
+
+This prompt was designed to run after the major refactor. Its purpose is to search for stale references, fix docs, align version usage, verify product info, clean old path references, and audit consistency.
+
+This is important because a large refactor often leaves behind stale paths and docs.
+
+### Starter prompt generator prompts
+
+The chat generated two prompts for Codex:
+
+1. A prompt to generate a normal ChatGPT starter prompt.
+2. A prompt to generate an extended master starter prompt.
+
+These are continuity tools. They are not the project architecture itself, but they help future chats start with the right context.
+
+### Context Transfer Packet
+
+The user asked for maximum-fidelity state transfer. The assistant produced a structured packet with bootstrap brief, project inventory, registers, task lists, constraints, open questions, artifact ledger, risks, verification checklist, and bootstrap prompt.
+
+This packet became the source for the later report package.
+
+### Downloadable report package
+
+The assistant created Markdown/YAML/ZIP report files. The user later asked to inspect them in chat and then asked for this human-readable report. The package files exist as artifacts, but this current response is meant to explain the substance rather than focus on file links.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+### Did Codex apply any prompts?
+
+This is the most important unresolved issue. The chat generated prompts, but there is no evidence in the visible transcript that Codex applied them.
+
+To resolve it: inspect the repo or ask the user.
+
+### What are the actual current version numbers?
+
+The chat used examples like `2.5.0` and `3.2.1`, and the repo tree showed `data/versions/1.0.0`, but the final actual versions are unverified.
+
+To resolve it: inspect `include/dominium/version.h`, `source/dominium/common/dominium_version.c`, `.dominium_build_number`, and data manifests.
+
+### What parser should be used for repo/actions/instance metadata?
+
+The repo tree showed `json.cpp` and `manifest_io.c`, but TOML support was unclear.
+
+To resolve it: inspect existing parsing utilities and decide whether to use JSON, TOML, TLV, or existing manifest format.
+
+### Which root-level tools should become DominiumTools?
+
+The user and assistant agreed that `dominium_modcheck` should move into DominiumTools. But root-level tools like `domino_assetc`, `domino_pack`, `domino_replay`, and `domino_test` may be Domino developer tools rather than Dominium product tools.
+
+To resolve it: decide tool ownership case by case.
+
+### What are exact DOMINIUM_HOME defaults per OS?
+
+Examples were discussed, but not finalized.
+
+To resolve it: write a platform path policy or ask the user.
+
+### How soon should UI/packs be implemented?
+
+The architecture exists, but implementation timing is unresolved.
+
+To resolve it: decide whether UI/packs is a later phase or part of the next Codex run.
+
+### What is the exact product/backend capability matrix?
+
+The high-level policy exists, but exact allowed combinations by product are not final.
+
+To resolve it: write a spec table.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+A future assistant could assume the refactor has already happened. That would be wrong unless the user confirms it. The safest approach is to ask for or inspect current repo state.
+
+A future assistant could flatten the source tree incorrectly. The user explicitly wanted `common`, `game`, `launcher`, `tools`, `setup` under `source/dominium`. The `products` subdirectory should not remain in the desired final layout.
+
+A future assistant could treat Game demo or server as separate products. This would repeat rejected options.
+
+A future assistant could install Domino globally or create a runtime `Domino` directory. That conflicts with the accepted recommendation.
+
+A future assistant could hardwire base mod version equality. The correct model is release convention plus compatibility ranges.
+
+A future assistant could over-apply UI/packs architecture during the first refactor. The UI/packs system matters, but initial implementation should likely focus on structure, versioning, repo, and actions.
+
+A future assistant could confuse generated prompts with completed work. Prompts are artifacts, not implementation.
+
+A future assistant could treat assistant recommendations as user decisions. This report tries to label that, but future aggregation still needs caution.
+
+A future assistant could over-compress the chat and lose why decisions were made. The visible rationale is crucial: avoiding version skew, duplicate code paths, DLL hell, hardcoded behavior, and long-term inflexibility.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes the architectural skeleton for productization, source organization, versioning, distribution, and future automation.
+
+It should inform future spec book chapters on:
+
+* Project identity: Domino vs Dominium.
+* Source layout.
+* Product binaries and modes.
+* Launcher/action system.
+* Setup/install/repo import.
+* DOMINIUM_HOME and instances.
+* Versioning and compatibility.
+* Mods/packs/content versioning.
+* OS/architecture/package naming.
+* Backend selection.
+* UI/packs architecture.
+* Codex workflow and refactor strategy.
+
+Formal requirements candidates include:
+
+* Domino remains `source/domino`.
+* Dominium uses flattened source layout.
+* Game is one product with modes.
+* Launcher is main suite hub.
+* Suite version equals Game version.
+* Product builds expose introspection.
+* Setup imports non-destructively.
+* Instances reference repo versions.
+* Architecture names avoid `x64`.
+
+Background context includes early UI/packs brainstorms and early binary discussions that were later superseded.
+
+Potential overlap with other chats is likely around simulation, UI/packs, mod/package formats, and platform backends. Any future aggregator must preserve contradictions and not assume this chat is the only source of truth for those subsystems.
+
+---
+
+## 14. What I Should Remember
+
+* **Domino is the engine. Dominium is the product suite.** This is the backbone of the architecture.
+
+* **The final source layout removes `source/dominium/products`.** The chosen structure is `source/dominium/common`, `game`, `launcher`, `tools`, `setup`.
+
+* **Game is one product with modes.** Client, listen server, dedicated server, and demo/full are startup/content modes, not separate products.
+
+* **Launcher is the main suite access point.** It should manage instances, product builds, tools, mods, packs, and actions.
+
+* **Setup imports into DOMINIUM_HOME.** It should not overwrite existing versions, and installs should be portable by default.
+
+* **DOMINIUM_HOME is the runtime repository and instance root.** Product builds, mods, and packs are stored once. Instances reference versions.
+
+* **Suite version equals Game version.** Core, Launcher, Setup, Tools, protocols, formats, mods, and packs have their own versions.
+
+* **Base mod version matching Game is a release convention, not a hard engine rule.** Compatibility ranges decide validity.
+
+* **Avoid `x64`; use explicit architecture names like `x86-64`.**
+
+* **Actions are the way Launcher discovers and executes Game/Tools functions.** Avoid hardcoded launcher paths.
+
+* **Domino should not be a separate player-facing runtime.** Link/bundle it into products; SDK may exist later.
+
+* **The Codex prompts are artifacts, not proof of implementation.** Verify repo state.
+
+* **UI/packs architecture is important but likely later-phase.** Do not let it derail the initial source/product/refactor work.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Turn the final architecture into a smaller Phase 1 Codex prompt.”
+2. “Explain exactly how to move the current repo tree into the new `source/dominium` layout.”
+3. “List every CMake target likely affected by removing `source/dominium/products`.”
+4. “Draft `include/domino/compat.h` and `platform.h` from the decisions.”
+5. “Draft example `build.json`, `actions.json`, and `instance.json` files.”
+6. “Explain DOMINIUM_HOME in more intuitive terms.”
+7. “Which decisions in this chat are user-confirmed versus assistant-recommended?”
+8. “What should be verified before running Codex?”
+9. “Create a checklist for the post-refactor consistency pass.”
+10. “Which parts of this chat should become formal spec requirements?”
+11. “What are the risks of implementing all phases in one Codex prompt?”
+12. “Draft `SPEC_REPO.md` from this chat.”
+13. “Draft `SPEC_VERSIONING.md` from this chat.”
+14. “Draft `SPEC_ACTIONS.md` from this chat.”
+15. “Create a future-chat bootstrap prompt from this human-readable report.”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat developed the architecture and implementation plan for reorganizing the Dominium + Domino project into a more modular, extensible, and robust long-term structure.
+
+The central distinction is that **Domino is the engine** and **Dominium is the product suite**. Domino lives under `source/domino` and provides the deterministic simulation, platform abstraction, graphics IR/backends, audio, input, UI foundations, and mod/package systems. Dominium lives under `source/dominium` and contains the user-facing products built on Domino. The user explicitly rejected a generic `source/engine` directory and explicitly chose a final Dominium layout without a `products` subdirectory.
+
+The final source layout decision is one of the most important outcomes. Dominium should contain `common`, `game`, `launcher`, `tools`, and `setup` directly under `source/dominium`. Existing `source/dominium/products/common`, `game`, `launcher`, and `setup` should be moved into that flattened structure. Existing `source/dominium/rules` should be moved under game as `source/dominium/game/rules` according to the generated refactor plan. Existing `tools/dominium_modcheck` should become part of the DominiumTools product, likely under `source/dominium/tools/modcheck`.
+
+The product model settled on four products: Game, Launcher, Setup, and Tools. The user wanted separate product binaries, not one monolithic binary. However, Game itself should be one product with several modes. Client, listen server, dedicated server, and demo/full should be handled through startup flags and instance/content configuration, not separate products. The key flags discussed were `--mode=gui|tui|headless`, `--server=off|listen|dedicated`, `--instance=<id>`, and `--demo`. A thin server wrapper may exist later, but the architecture should not treat server as a separate product by default. Demo is likewise not a separate product; it should be represented by a demo base pack and `instance.json` flags.
+
+Launcher became the main suite entry point. It should not merely start the game. It should manage product builds, instances, mods, packs, tools, diagnostics, and actions. The actions system was introduced so Launcher can discover what products and tools can do without hardcoding executable paths. Product builds should expose `actions.json`, and Launcher should enumerate actions such as “run client,” “run dedicated server,” “modcheck,” “world editor,” or “pack editor.”
+
+Installation and storage were another major focus. The user did not want every instance to store a full suite. The answer was the `DOMINIUM_HOME` model: a shared repository of product builds, mods, and packs, plus lightweight instances that reference exact versions. The repo stores product builds under paths keyed by product version, core version, OS family, and architecture. Mods and packs are stored by ID and version. Instances have `instance.json`, config, saves, and logs. Setup imports suite contents into the repo non-destructively and should not overwrite existing installed versions. Garbage collection can later remove unused repo entries after scanning all instances.
+
+Versioning was carefully separated. Domino has a core version. Game, Launcher, Setup, and Tools each have independent product versions. Suite version equals Game version, as the user explicitly requested. Formats and protocols have separate version numbers and compatibility ranges. Products expose `DomProductInfo` through `--introspect-json`, using `DomCompatProfile` to describe supported core, save, pack, replay, network, launcher-game, and tools-game compatibility. Compatibility should degrade gracefully: full, limited, read-only, or incompatible/refuse. The goal is not “everything always works,” but rather “never crash or corrupt; refuse safely when needed.”
+
+The official base modpack should usually match the Game/Suite version for user clarity. But this should be a release convention, not a hard engine invariant. The user asked whether making that link arbitrary was wise, and the conclusion was that strict equality would create problems for engine-only or data-only patches. DLCs, user mods, official packs, and user packs should have independent versions and compatibility ranges.
+
+The chat also covered platform and architecture naming. The user disliked `x64`, so the architecture uses explicit tags such as `x86-64`, `x86-32`, `arm-64`, `wasm-32`, and `z80-8`. Package names should follow `Dominium-Suite-<GAME_VERSION>-<OSFam>-<Arch>.<ext>`.
+
+Early in the chat, a large UI/graphics/packs architecture was defined. It remains important but is mostly later-phase. The future UI stack should be shared by Game, Launcher, Setup, and Tools; should render through Domino’s dgfx/canvas; should avoid OS-native drawing; should support deterministic layout; and should always have a vector-only fallback even when no raster packs are installed.
+
+A concrete existing repo tree was pasted by the user. Based on that tree, several Codex prompts were generated: a master refactor prompt, a post-refactor consistency prompt, a prompt for Codex to generate a future starter prompt, and an extended starter prompt generator. Later, a maximum-fidelity context transfer packet and downloadable report package were produced. These are artifacts for continuity, but they do not prove the repo was changed.
+
+The most important unresolved issue is whether Codex has applied any of the prompts. Future work should begin by verifying current repo state. If the refactor has not been applied, the next best step is to run or phase the master refactor prompt. If it has been applied, the next step is a consistency pass: search stale paths, verify CMake, run tests, check product introspection, and update docs.
+
+The next assistant should preserve the architecture exactly: `source/domino`, flattened `source/dominium`, four products, one Game with modes, Launcher as hub, DOMINIUM_HOME repo/instances, action-driven execution, Suite version equals Game version, no global Domino runtime, no separate demo product, no ambiguous architecture names, and no assumption that generated prompts have already been executed.
+
+# Reader Status
+
+* Chat title: Dominium + Domino Refactor Architecture
+* Report type: human-readable explanatory report
+* Main value of this chat: It establishes the product/source/version/install architecture and Codex refactor plan for Dominium + Domino.
+* Most important decision: Flatten `source/dominium` into `common`, `game`, `launcher`, `tools`, and `setup`, while keeping Domino as `source/domino` and treating Game as one product with modes.
+* Most important unresolved issue: Whether Codex has applied any generated prompt and what the current repository state is.
+* Most important next action: Verify current repo state, then either run the master refactor prompt or generate a smaller Phase 1 Codex prompt for the source-layout and compatibility skeleton.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: This report summarizes this chat only; actual repo changes, exact current version numbers, parser availability, and UI/packs implementation status remain unverified.

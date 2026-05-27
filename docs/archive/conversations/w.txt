@@ -1,0 +1,856 @@
+GPT-5.5 Pro — 2026-05-27 00:00:00 Australia/Melbourne
+
+# Human-Readable Chat Report — Dominium TestX/RepoX Governance and Handoff Chat
+
+## 1. One-Page Orientation
+
+This chat was mainly about turning the Dominium / Domino project from a large, ambitious architecture into something that could survive implementation across many parallel chats, many products, many platforms, many toolchains, and many years of future changes. The conversation was not primarily about gameplay content, graphics, or a single feature. It was about **governance**: how the repository, build system, tests, versioning, applications, content packs, IDEs, demos, services, authority models, and future language transitions should be structured so the project does not collapse into unmaintainable drift.
+
+**FACT:** The user is building Dominium / Domino as a deterministic universe engine + game, not a conventional game project. The visible chat repeatedly framed the project as long-lived, simulation-first, deterministic, modular, and designed to survive across many operating systems, toolchains, renderers, products, and distribution models.
+
+The chat began with versioning and build governance. The user wanted a way for the repository and CMake system to handle global build numbers, manual semantic product versions, changelogs, protocol/API/ABI versions, platform builds, packaging, updates, and distribution artifacts. Early suggestions included a global build number that would increment on every build or after successful tests. That idea later changed substantially when a newer upstream canon introduced **BUILD-ID-0**, where global build numbers are only centrally allocated for release-grade artifacts, while local/dev/CI builds use Build Instance IDs. That change is one of the most important corrections in the whole chat.
+
+As the conversation developed, the scope widened. The user wanted prompts to send to other parallel chats: one working on engine/game/content systems and another working on applications, platforms, renderers, client/server/launcher/setup/tools. Those prompts established key boundaries: engine/game must be content-agnostic, packs must provide capabilities, applications must be thin orchestration shells, renderers must be plugins or runtime-selected backends, and headless/zero-asset operation must be first-class. The sister chats responded with acceptance, and the user brought those responses back here for integration.
+
+The chat then incorporated **TESTX**, an authoritative self-defending test and governance prompt from another chat. TESTX required deterministic testing, CLI-only execution, no wall-clock time, no uncontrolled RNG, no floating point in authoritative logic, assertion tiers, changelog governance, blocker tracking, and test-driven enforcement. This chat generated follow-up prompts to align engine/game/content and application/platform/render teams with TESTX. Later, the user brought back responses accepting those prompts.
+
+After TESTX, the chat expanded into **TESTX2** and **TESTX3**. TESTX2 addressed control systems such as DRM, anti-cheat, telemetry, and platform enforcement. The conclusion was that these systems must be optional, external, capability-gated, and non-interfering. They must not live in engine/game authoritative logic. TESTX3 addressed demos, authority, entitlements, services, storefronts, piracy containment, and tourist multiplayer. The central idea was: **do not sell bits; sell durable authority**. The same binaries and content can serve free/demo/full/service users, while authority profiles determine what actions persist, mutate state, or affect multiplayer worlds.
+
+Another large part of the chat concerned **REPOX**, a repository and tooling governance layer. The user wanted to use old WYSIWYG IDEs such as VC6, VC7.1, CodeWarrior, and era-pinned Xcodes, plus modern IDEs, without allowing those tools to corrupt the canonical CMake/TestX build graph. The decision was to treat IDE project files as generated, disposable **projections**, not authoritative project definitions. This protects the core repository while still allowing GUI design and legacy binary builds.
+
+Toward the end, the user supplied a newer upstream canon stating that architecture is closed, canon is locked, and future work is implementation, audit, optimisation, and maintenance only. That upstream canon superseded some earlier ideas, especially build-number rules. The final task of the chat was to produce a maximum-fidelity context transfer packet and then a downloadable report package. The current request asks for a human-readable explanation of that package and the conversation itself.
+
+The future relevance of this chat is high. It records how to avoid losing the project’s governance decisions. A future assistant must especially preserve: the BUILD-ID-0 correction, the RepoX IDE-projection model, the application-layer rules, the authority/demo/tourist model, the control-layer non-interference rule, the language/toolchain constraints, and the need to verify the actual repository before implementing any governance changes.
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began with build numbers, semantic versions, and CMake
+
+The first major problem was versioning. The user wanted the Git repository and CMake build system to support a global build number and semantic versions for individual products such as engine, game, client, server, launcher, setup, and tools. The user also asked what else could be integrated: automatic changelogs, OTA updates, protocol/API/ABI version numbers, automatic multi-platform builds, renderer/architecture matrices, packaging, compression, naming, and distributable artifacts.
+
+The early response framed this as a systems-software problem rather than a simple game build problem. It proposed:
+
+* per-product semantic versions;
+* a repo-global build identity;
+* protocol/API/ABI versioning independent of product SemVer;
+* build metadata embedded into binaries;
+* changelog automation;
+* reproducible packaging;
+* update manifests;
+* platform/renderer/architecture matrices.
+
+That was the initial design phase. At that point, the build-number idea was still broad and aggressive: a global build number incrementing frequently.
+
+### The discussion moved from “is this valid?” to “how do we make it modular?”
+
+The user then asked whether the implementation was industry-accepted and what could be improved. The response framed the approach as closer to game engines, operating systems, and long-lived infrastructure than typical game development. The important conclusion was that the design was not exotic, but it was unusually rigorous for games.
+
+Then the user asked what was still missing for modularity and how to support distributions and gameplay without assets. This led to the **content/packs** discussion. The project should support:
+
+* engine/game binaries that boot with zero assets;
+* no mandatory textures, audio, fonts, scenarios, or worlds;
+* procedural/symbolic/ASCII fallbacks;
+* all content via open-format packs;
+* packs as capability providers rather than mandatory asset bundles;
+* saves and replays that reference pack IDs and schema versions rather than raw file paths.
+
+This topic mattered because the project was trying to avoid the common game failure mode where binaries, content, saves, mods, and platform-specific assets become tangled.
+
+### The user then used this chat to coordinate parallel chats
+
+The user had another chat working on content and systems, and asked for a prompt to inform that chat of everything decided so far. A similar prompt was generated for the applications/platforms/renderers chat. These prompts established authoritative boundaries:
+
+* engine/game/content must be zero-asset and capability-driven;
+* applications must be thin shells;
+* renderers are plugins/backends;
+* headless operation is first-class;
+* build/versioning rules must not be bypassed;
+* no refactors should be required due to parallel work.
+
+The user pasted back responses from those chats. They accepted the specification and clarified some tensions. For example, the content/engine response accepted that existing content data could be redefined, but engine behavior remained authoritative. It also explicitly rejected mandatory base content packs, implicit Earth/Sol existence in engine, engine knowledge of graphics/audio formats, baked assets, and anything that fails headless/server/replay modes.
+
+At this stage, the project was not just being designed; it was being coordinated across multiple assistants.
+
+### TESTX arrived and changed the conversation into enforcement
+
+The next major shift came when the user pasted an authoritative prompt called **TESTX** from “The Game chat.” TESTX was a major governance layer: permanent verification, versioning, self-defending tests, deterministic execution, repository survey, test taxonomy, assertion tiers, comment density, blocker tracking, and changelog governance.
+
+This chat then generated new prompts, `EG-TESTX` and `AP-TESTX`, to send to engine/game/content and application/platform/render teams. Those prompts required response prompts from those teams. The user pasted back their responses. Both accepted TESTX canon and identified tensions.
+
+One important tension was build numbering. Earlier external guidance had suggested incrementing a build number on every configure/build. TESTX required the build number to be owned by the test system and incremented only after full test success. Later, this was superseded again by BUILD-ID-0.
+
+Another important tension was “no silent fallback” versus renderer fallback. The application/platform response resolved this by saying explicit renderer selection must fail if unavailable, while `auto` mode can fallback only with explicit logging. This distinction became important for testability and user transparency.
+
+### Control systems became TESTX2
+
+The user then brought in a scratchpad prompt about DRM, anti-cheat, copy protection, and adjacent control systems. The key claim was that these are not engine features. They are distributed control layers. The prompt placed DRM mainly in launcher/platform/cloud, anti-cheat mainly in server authority plus optional client instrumentation, copy protection in installer/launcher/platform, and explicitly excluded enforcement from engine/game logic.
+
+This chat endorsed that approach and suggested making control systems capability-gated, disabled by default, and subject to a non-interference invariant. The user then asked for a sequel mega-prompt, and **TESTX2** was generated. TESTX2 formalized:
+
+* control systems as optional external layers;
+* no DRM/anti-cheat/license checks/secrets in engine/game;
+* control capabilities as explicit capabilities;
+* non-interference with authoritative simulation;
+* discoverability and auditability;
+* hostile-environment tests;
+* revocation/access rules that do not corrupt history or replays.
+
+This mattered because the user wanted future support for such systems without enabling them by default or compromising core principles.
+
+### Demo, tourist mode, services, and piracy became TESTX3
+
+The user then explored the idea of a Steam demo or free download. The user did not want a separate demo product or separate code, but wanted demo restrictions to be hard to bypass. The response reframed the problem: the project is not selling binaries; it is selling authority. A free/demo user can have the same installation and see much of the world, but cannot gain durable value, persistent progression, economic impact, or multiplayer mutation rights without proper authority.
+
+The user liked the idea that free/demo players could join servers as **tourists**. This became a major concept: tourists can join real servers, see real players, explore real worlds, and experience the scale of the game, but cannot mutate authoritative state. Server authority enforces the restrictions, making client patching largely irrelevant for durable value.
+
+This led to **TESTX3**, which formalized:
+
+* authority and entitlements;
+* base/free, tourist, full-player, service-scoped, and admin authority profiles;
+* one distribution for demo/free/paid/service;
+* storefront neutrality across Steam, Epic, and website;
+* services inside products or products inside services;
+* piracy containment by denying durable value extraction, not by preventing copying;
+* save/replay/progression rules around authority scopes.
+
+This was an important philosophical and technical decision. It allowed the project to support free downloads, demos, paid upgrades, subscriptions, services, and anti-piracy containment without creating code forks or corrupting the deterministic core.
+
+### Repo structure, IDEs, and toolchains became REPOX
+
+The user then brought in a recommendation about using many old and new IDEs across Windows and Mac: VC6, VC7.1, VS2015, VS2026-style modern Visual Studio, CodeWarrior Classic, and era-pinned Xcodes. The goal was to support GUI design and binary builds across old systems without maintaining separate hand-edited projects in each IDE.
+
+The chat developed the **IDE as projection** model. CMake + TestX/RepoX own the build graph. IDE project files are generated views. Legacy IDEs can be used for WYSIWYG UI design and building binaries, but they must not own source lists, flags, dependencies, or architecture. The user pasted the current repository tree, which showed a large existing repo with `engine`, `game`, `client`, `server`, `launcher`, `setup`, `tools`, `docs`, `schema`, `legacy`, `cmake`, `scripts`, and many UI/codegen/testing structures.
+
+Based on the tree, the response concluded that the repo already had many ingredients: UI IR/codegen, setup/launcher tooling, tests, validation scripts, platform layers, packaging, and legacy/orphaned directories. What it lacked was an explicit projection layer and enforcement model. The proposed REPOX prompt introduced:
+
+* `/ide` as generated projection root;
+* classification of files as authoritative, generated/projection, or frozen packaging input;
+* CMake IDE projection scripts;
+* projection manifests;
+* IDE quarantine checks;
+* UI shell purity checks;
+* multi-architecture target declarations;
+* toolchain/OS/language matrix documentation.
+
+The user then supplied a detailed matrix for Windows, Mac, and Linux, including language modes and old/new architecture goals. REPOX was generated as a mega-prompt.
+
+### Old OS support and language transitions were clarified
+
+The user asked whether the system would allow old OS support to be dropped and languages updated while old binaries still receive game updates, backend code/data packs, protocol updates, and game-version updates. The answer was yes, with constraints. Because binaries, game logic, content packs, protocols, services, and authority are separated, stopping new binaries for an old OS does not automatically cut off old users. Old binaries can keep receiving compatible data/protocol/content updates as long as new required capabilities are not introduced without fallback/refusal.
+
+Then the user pasted another proposal about feature allowlists by component: engine C89, engine islands C++98 restricted, game C++98 now and C++17 later, client/server/launcher/setup/tools with different language allowances, and bans on exceptions/RTTI/static init side effects across boundaries. This was assessed as a natural **TESTX4** language/ABI governance layer. It was not confirmed as fully adopted canon in the chat, but it was treated as a strong recommendation.
+
+### The latest upstream canon superseded parts of earlier work
+
+Near the end, the user pasted a new authoritative block from another chat. This block stated:
+
+* architecture is closed;
+* canon is locked;
+* this chat exists for implementation/audit/optimisation/maintenance only;
+* core ontology is Assemblies, Fields, Processes, Agents, Law;
+* engine C89, game C++98;
+* APP-CANON0/1 and related app prompts govern the application layer;
+* CLEAN-2 and `CANON_INDEX.md` govern canon consolidation;
+* BUILD-ID-0 governs build/version/release identity.
+
+This was the biggest late-stage correction. It did not throw away the earlier work, but it changed the source hierarchy. Most importantly, it superseded earlier build-number ideas. Future work must now reconcile TESTX, TESTX2, TESTX3, and REPOX with BUILD-ID-0, CLEAN-2, and the APP canon.
+
+### The final phase was handoff and reporting
+
+The user asked for a maximum-fidelity context transfer packet. That packet was created. Then the user asked for a downloadable report package. That package was generated with a full report, YAML spec sheet, aggregator packet, registers, reader brief, verification/audit file, manifest, and ZIP. The user then asked for an in-chat reader version of that package, and now this request asks for a plain-English human report rather than a register dump.
+
+The final state of the conversation is that it produced a high-fidelity governance memory for this chat, but the actual repository still needs verification before changes are made.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Build Identity, Versioning, and Release Governance
+
+This topic came up first because the user wanted CMake and Git to manage build numbers, product semantic versions, changelogs, build artifacts, protocol/API/ABI versions, and distributable package naming.
+
+At first, the proposed idea was a global build number that would increment frequently. That model was later weakened by TESTX, which wanted build-number increments only after test success, and then superseded by the latest upstream **BUILD-ID-0** model. Under BUILD-ID-0, there is no universal local build-number increment for every build. Instead:
+
+* product SemVer is manual;
+* build kind is explicit;
+* GBN is release-grade and centrally allocated;
+* BII exists for dev/CI;
+* all release products share the same GBN;
+* no distributed artifact lacks GBN.
+
+This topic remains unresolved in implementation because the repo snapshot showed `.dominium_build_number` and `update_build_number.cmake`, but the chat did not inspect their contents. Those files may still implement older build-number behavior. That must be verified.
+
+### Topic 2 — Product and Layer Separation
+
+The chat repeatedly reinforced separation between:
+
+* engine;
+* game;
+* client;
+* server;
+* launcher;
+* setup;
+* tools;
+* renderers;
+* platforms;
+* content packs;
+* services/backend.
+
+This separation matters because it lets different parts evolve independently. It also supports old binaries continuing to receive compatible updates after old OS support is dropped. The latest upstream canon made this more explicit by saying engine is C89, game is C++98, apps may use newer toolchains, but applications must not impose requirements on engine/game.
+
+### Topic 3 — Content Packs and Zero-Asset Boot
+
+The user wanted support for distributions and gameplay without assets, plus open pack formats for graphics, music, sounds, mods, saves, scenarios, worlds, and similar content. The conclusion was that engine/game binaries must boot with zero assets. Content must be external and capability-based. Packs provide capabilities, not mandatory requirements. Derived/cooked data is cache, not source.
+
+This matters because it supports:
+
+* headless servers;
+* CI;
+* old binaries;
+* modular content;
+* open formats;
+* demo/free/tourist modes;
+* future archival and modding.
+
+The unresolved part is implementation verification. The repo has Sol/Earth content in `data` and `game/content`; the engine must not assume those exist.
+
+### Topic 4 — Parallel Chat Coordination
+
+The user used this chat as an integration hub. Prompts were generated for other chats, and their responses were brought back. This established that the project was not a single linear conversation; it was a coordinated multi-chat design/implementation effort.
+
+The key conclusion was that other teams accepted the constraints. But later upstream canon became more authoritative, so those earlier prompts and responses are historical evidence rather than the highest source.
+
+### Topic 5 — TESTX as Self-Defending Verification
+
+TESTX shifted the project from “design the architecture” to “make the architecture defend itself.” It emphasized deterministic tests, assertion tiers, no skipped tests, no hidden failures, no wall-clock time, no uncontrolled RNG, no floating point in authoritative logic, changelog governance, blockers, and CI.
+
+The unresolved part is how much of TESTX is actually implemented in the repo. The repo contains many tests and scripts, but this chat did not inspect them. A rules-to-checks audit is needed.
+
+### Topic 6 — Control Layers, DRM, Anti-Cheat, and Non-Interference
+
+The user asked about DRM, anti-cheat, copy protection, and control systems. The conclusion was that these are not engine/game features. They are external control layers. They may gate access or connectivity, but must not alter authoritative simulation.
+
+This matters because strong DRM or anti-cheat in engine/game would break determinism, replay, modding, testing, and trust. TESTX2 formalized the principle: optional, capability-gated, disabled by default, discoverable, non-interfering, and no secrets in engine/game.
+
+### Topic 7 — Demo, Tourist Mode, Services, and Piracy Containment
+
+The user wanted a free demo/download that did not require separate code and did not surprise players with an upfront fee after installation. The chat reframed the issue: the same package can serve all users, while authority and entitlements determine durable actions.
+
+Tourist mode became a centerpiece. Free users can join servers and explore, observe, and understand the game, but cannot mutate state or extract durable value. This supports honest demos and makes piracy less meaningful without adding invasive DRM.
+
+This remains conceptually accepted in the chat, but implementation is unverified.
+
+### Topic 8 — REPOX and IDE Projections
+
+The user wanted to use old graphical drag-and-drop IDEs to design GUI apps for old systems while preserving the canonical build system. The answer was to treat IDEs as generated projections. This allows WYSIWYG UI design in old IDEs without letting those IDEs own project structure.
+
+RepoX is important because the project targets many old and new systems. Without this discipline, project files and IDE state could corrupt the repo.
+
+### Topic 9 — Toolchain Matrix and Old OS Support
+
+The user supplied a strict matrix for Windows, Mac, and Linux. It recognized that OS compatibility depends on compiler, SDK, CRT, ABI, and runtime testing, not just language standard. The chat accepted the matrix and later clarified that VS2022 can host older toolsets for MVP builds, but true archival compatibility still needs real old toolchain environments.
+
+This topic connects directly to old-binary support. The project can stop producing new binaries for old OSes while still supporting old binaries through compatible data/protocol/service updates.
+
+### Topic 10 — Language Profiles and Future Transitions
+
+The user pasted a proposal for feature allowlists by layer: C89 engine core, restricted C++98 engine islands, C++98 game with possible C++17 later, apps/tools with more modern features, and hard bans on dangerous features at boundaries. The chat treated this as a proposed TESTX4 layer.
+
+This remains a recommendation/planned workstream, not confirmed implemented canon.
+
+### Topic 11 — Handoff, Reporting, and Aggregation
+
+The last part of the chat was about preserving the chat itself. The user requested a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat reader version, and finally this human-readable report. The reason was to prevent loss of context when retiring the chat and later combining many chat reports into a full Project Spec Book.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals the user stated
+
+**FACT:** The user wanted a repository and CMake setup that could manage build numbers, product semantic versions, changelogs, protocol/API/ABI versions, multi-platform builds, packaging, and distributable artifacts.
+
+**FACT:** The user wanted engine/game/content and application/platform/render chats to receive authoritative prompts so parallel development would not require refactoring.
+
+**FACT:** The user wanted support for asset-free distributions and open pack formats.
+
+**FACT:** The user wanted optional support for DRM/anti-cheat/copy-protection-like systems without enabling them by default or corrupting the core.
+
+**FACT:** The user wanted a free/demo distribution using the same package/executable, ideally taking advantage of Steam/Epic/website download and buy flows without surprising players.
+
+**FACT:** The user wanted tourists to join servers.
+
+**FACT:** The user wanted to prevent piracy without compromising core tenets.
+
+**FACT:** The user wanted to use old and new IDEs for GUI design/building without making them authoritative.
+
+**FACT:** The user wanted to support old OSes, old architectures, and future language transitions.
+
+**FACT:** The user wanted a maximum-fidelity handoff and later a readable package/report.
+
+### Inferred goals
+
+**INFERENCE:** The user was trying to prevent future architectural drift across many parallel chats and implementation agents.
+
+**INFERENCE:** The user wanted a governance system that can be enforced mechanically rather than remembered socially.
+
+**INFERENCE:** The user wanted old binaries and old users to remain useful even after active support moves on.
+
+**INFERENCE:** The user wanted to make future aggregation into a spec book easier.
+
+### Goals that changed over time
+
+The build-number goal changed the most. It began as “increment a global build number whenever building,” became “increment after tests,” and finally became BUILD-ID-0’s split between release-grade GBN and dev/ci BII.
+
+The architecture goal also changed from open-ended design to locked implementation. Early prompts were design-heavy; the latest upstream canon states architecture is closed.
+
+### Goals that remain unresolved
+
+The unresolved goals are mostly implementation and verification:
+
+* Does the repo already implement the latest canon?
+* Do old build-number files/scripts conflict with BUILD-ID-0?
+* Are docs consolidated under CANON_INDEX?
+* Are APP/UI binding rules enforced?
+* Are language/ABI rules enforced?
+* Are authority/tourist profiles implemented?
+* Are VS2022 toolsets installed?
+
+---
+
+## 5. Decisions Made and Why
+
+### Summary table
+
+| Decision area         | What was decided                                                  | Status                                         |
+| --------------------- | ----------------------------------------------------------------- | ---------------------------------------------- |
+| Architecture status   | Closed; implementation/audit only                                 | Final from upstream                            |
+| Ontology              | Assemblies, Fields, Processes, Agents, Law                        | Final from upstream                            |
+| Build identity        | BUILD-ID-0 supersedes earlier build-number plans                  | Final from upstream                            |
+| Engine/game languages | Engine C89, game C++98                                            | Final from upstream                            |
+| Applications          | CLI canonical; UI data; tools read-only; setup mutation authority | Final from upstream                            |
+| Content               | Capability-based, optional, zero-asset boot                       | Accepted                                       |
+| Control layers        | Optional, external, non-interfering                               | Accepted in chat                               |
+| Demo/free model       | Authority profile, not separate product/build                     | Accepted in chat                               |
+| Tourist mode          | Free users can join servers as non-mutating tourists              | Accepted in chat                               |
+| Piracy containment    | Prevent durable value extraction, not copying                     | Accepted in chat                               |
+| IDEs                  | Projections, not project truth                                    | Accepted in chat                               |
+| Toolchains            | Separate binaries per OS/toolchain/floor                          | Accepted from user matrix                      |
+| VS2022 MVP            | Practical host for v141/v141_xp builds, not archival replacement  | Assessment/recommendation                      |
+| TESTX4                | Recommended language-profile layer                                | Planned/recommended, not confirmed implemented |
+
+### Architecture is closed
+
+**FACT:** The latest upstream prompt explicitly says architecture is closed and canon is locked. This decision was not merely suggested by the assistant; it came from the user-pasted upstream canon. It means future chats should not redesign systems, add new primitives, or reinterpret constraints.
+
+The alternative was to keep iterating on architecture. That is now rejected unless the user explicitly reopens design. This affects every future assistant: they should audit, implement, optimize, or maintain, not re-litigate core structure.
+
+### Core ontology is fixed
+
+**FACT:** All systems must reduce to Assemblies, Fields, Processes, Agents, and Law. This matters because it prevents future feature proposals from inventing incompatible primitives. If a new subsystem cannot be expressed through that ontology, it is invalid under the latest canon.
+
+This could be revisited only if the user supplies a newer canon that changes the ontology.
+
+### BUILD-ID-0 replaces earlier build-number models
+
+This is one of the most important decisions. Early in the chat, a global build number was imagined as something that could increment on every build. TESTX modified that toward test-owned increments. The latest upstream canon replaced both with BUILD-ID-0.
+
+**FACT:** GBN is release-only and centrally allocated. BII is used for dev/ci. This decision avoids local/branch/fork collisions and gives release artifacts stronger provenance.
+
+This decision affects CMake, CI, release scripts, changelogs, artifact names, package manifests, and any old build-number scripts in the repo.
+
+### Engine C89 and game C++98
+
+**FACT:** Latest upstream canon states engine C89 and game C++98. This aligns with earlier toolchain support discussions. The visible rationale is legacy compatibility, stable public headers, and no C++ ABI leakage.
+
+The alternative would be to modernize everything uniformly. That was rejected by the toolchain/legacy support goals. Applications and tools may use newer languages, but they must not impose requirements on engine/game.
+
+### Applications are shells and UI is data
+
+**FACT:** Latest upstream canon says applications are orchestration shells; CLI is canonical; GUI/TUI are views over the same command graph; UI is data; tools are read-only by default; setup is only install mutation authority; launcher is reference app.
+
+This decision protects the simulation and install state from hidden mutation paths. It also makes WYSIWYG UI work safer because UI layout and bindings can be treated as data rather than logic.
+
+### Content is optional and capability-based
+
+**FACT:** Earlier sister-chat prompts/responses accepted zero-asset boot, optional packs, capability-based content resolution, and no hardcoded content. This was reinforced by latest upstream “no hardcoded content or magic defaults.”
+
+This decision was made to support headless servers, CI, open packs, mods, old binaries, and flexible distributions. It rejects mandatory base packs and implicit Earth/Sol assumptions in engine.
+
+### Control layers are external and non-interfering
+
+The DRM/anti-cheat scratchpad proposed that these systems belong outside engine/game. TESTX2 formalized that. The rationale was that control systems can break determinism and trust if embedded in core.
+
+This decision affects future DRM, anti-cheat, telemetry, moderation, licensing, and platform integrations. They can exist, but only as optional external capability-gated layers.
+
+### Demo/free/tourist/full are authority profiles
+
+The user accepted the idea that a demo should not be a separate codebase. The chat concluded that demo/free/full/service states should be authority profiles over the same binaries and content.
+
+This was chosen because it minimizes buyer friction, avoids code forks, supports honest demos, and makes piracy less meaningful. It depends on server-side authority for durable value.
+
+### IDEs are projections
+
+This decision came from the user’s desire to use old and new IDEs without managing separate project files manually. The conclusion was that IDE projects must be generated views, not source of truth.
+
+This decision affects repository layout, CMake, CI, `.gitignore`, project files, and GUI design workflows. It might be revisited only if an IDE cannot function without some committed packaging project, in which case that project must be explicitly grandfathered and documented.
+
+### Separate binaries per OS/toolchain/floor
+
+The user supplied a strict matrix. The decision is that compatibility is enforced by build discipline, not hope. One binary cannot honestly target all OSes. Compiler, SDK, CRT, ABI, and runtime floors define reality.
+
+This affects artifact naming, CMake presets, test matrices, VM strategy, and support policy.
+
+### TESTX4 and policy-as-data are recommended, not proven implemented
+
+The language-profile proposal was judged excellent, but this chat did not establish that it has been adopted as final upstream canon. It should be carried forward as a planned or recommended layer unless another chat confirms adoption.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Global build number incrementing on every build
+
+This was considered at the beginning because the user wanted every build to have a unique global identity. It was superseded because later canon separated release identity from local/dev/CI identity. BUILD-ID-0 is cleaner and avoids branch/fork/local conflicts.
+
+The rejection is final unless BUILD-ID-0 changes.
+
+### Demo as separate product/build
+
+This was considered implicitly through the Steam demo discussion. It was rejected because the user explicitly did not want separate code or a separate product. The authority-profile model is preferred.
+
+It could become relevant only as a storefront packaging workaround, but not as a separate codebase.
+
+### Strong client DRM or engine/game anti-cheat
+
+This was considered when discussing piracy and control systems. It was rejected because it would compromise determinism, testability, modding, trust, and replay. The project instead uses server authority and entitlements to deny durable value extraction.
+
+This rejection is final under current tenets.
+
+### Silent renderer fallback
+
+The application/platform response identified a tension between graceful fallback and no silent fallback. The resolution rejected silent fallback in tests and explicit requests. `--renderer=vulkan` must fail if Vulkan is unavailable. `--renderer=auto` may fallback only with explicit logging.
+
+### One binary for all OS floors
+
+This was rejected by the toolchain matrix. OS compatibility is not just language standard. SDK, CRT, ABI, loader behavior, and toolchain matter. Separate artifacts are required.
+
+### Collapsing Mac support into one Xcode
+
+Rejected because Apple removes SDKs and old OS targeting cannot be assumed from a modern Xcode.
+
+### Using modern VS/v143 for XP
+
+Rejected because VS2022/v143 cannot target XP. Older toolsets are needed. v141_xp is a practical MVP path, but archival support still needs older environments.
+
+### Treating IDE projects as source of truth
+
+Rejected by REPOX. IDE project files are projections or documented packaging inputs.
+
+### Hardcoding Earth/Sol or mandatory base content
+
+Rejected by zero-asset/capability canon. Earth/Sol may exist as content, but the engine must not require them.
+
+### Putting gameplay logic in applications or UI
+
+Rejected by APP canon. Apps are orchestration shells; UI is data.
+
+### Continuing architecture redesign
+
+Rejected by latest upstream canon. The architecture is closed.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The visible reasoning throughout the chat was about controlling complexity before it becomes irreversible. Dominium / Domino is large enough that ordinary game-project habits—ad hoc build scripts, hand-managed IDE projects, silent fallbacks, content baked into binaries, UI logic, and client trust—would create long-term failure.
+
+One major tradeoff was between convenience and longevity. For example, a single modern toolchain would be easier, but it would not honestly support old OSes. Separate toolchains and artifacts are more work, but they preserve mechanical truth. Similarly, letting IDEs manage projects would be convenient in the short term, but dangerous across decades. Treating IDEs as projections is more disciplined.
+
+Another tradeoff was between strong DRM and core integrity. The chat explicitly preferred preserving determinism and auditability over attempting impossible piracy prevention. The visible conclusion was that unauthorized users can copy bits, but they should not be able to gain durable value, affect multiplayer, or consume services without authority.
+
+The user appeared to care most about:
+
+* long-term correctness;
+* avoiding refactors;
+* rigorous testing;
+* modularity;
+* old and new platform support;
+* mechanical enforcement;
+* not losing context across chats;
+* avoiding hidden assumptions.
+
+A recurring risk being managed was “silent drift”: small local changes that gradually break canon. That is why TestX, RepoX, rules-to-checks, policy-as-data, UI binding validation, build identity rules, and IDE quarantine all became important.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+The immediate future work is not to write new engine features. It is to audit and reconcile the actual repository with the latest canon.
+
+### First: verify the repo
+
+The best first step is to inspect the repo for:
+
+* `CANON_INDEX.md`;
+* docs status headers;
+* `BUILD-ID-0` docs;
+* APP/SRZ/VALIDATE docs;
+* `.dominium_build_number`;
+* `update_build_number.cmake`;
+* `CMakePresets.json`;
+* CI workflows;
+* IDE project artifacts.
+
+This matters because the chat produced plans based on a pasted tree, not direct file inspection.
+
+### Second: reconcile build identity
+
+The build/versioning system must be checked against BUILD-ID-0. If old scripts allocate or increment a global number locally, they need to be disabled or migrated.
+
+The expected output is a clear implementation plan for:
+
+* manual SemVer;
+* GBN allocation for release-grade builds;
+* BII for dev/CI;
+* artifact stamping;
+* refusal of invalid distributed artifacts.
+
+### Third: audit canon docs
+
+CLEAN-2 requires `CANON_INDEX.md` and status headers. The repo’s docs are large. The expected output is a canon inventory showing which docs are canonical, derived, historical, or archived.
+
+### Fourth: inventory IDE artifacts
+
+RepoX needs to know which IDE/project files are accidental local state, which are packaging inputs, and which should become generated projections. The output should be a classification list and later a quarantine rule.
+
+### Fifth: audit APP/UI binding
+
+The repo already has UI IR/codegen infrastructure. The next step is to verify whether GUI/TUI truly bind to the CLI command graph and whether UI is data rather than logic.
+
+### Sixth: language and ABI audit
+
+If TESTX4 is adopted, the project needs scans for:
+
+* public header C89 parseability;
+* C++ ABI leakage;
+* C++17 feature use in game;
+* FP/STL/static init/exceptions/RTTI in deterministic paths.
+
+### Seventh: Windows MVP builds
+
+The user has Windows 10 + VS2022. The next step is to verify v141/v141_xp/SDK components and create isolated CMake presets for XP/Win7/Win8/Win10/Win11 builds.
+
+### Things that could go wrong
+
+* Acting before verifying repo state.
+* Accidentally reviving old build-number behavior.
+* Breaking runtime semantics during governance work.
+* Treating planned scripts as existing.
+* Using VS2022 floor builds without proper SDK/runtime tests.
+* Creating `/ide` structure before classifying existing IDE artifacts.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints
+
+The latest upstream canon is the strongest source:
+
+* architecture closed;
+* implementation/audit only;
+* no new primitives;
+* engine C89;
+* game C++98;
+* no C++ ABI leakage;
+* process-only mutation;
+* deterministic replay;
+* fixed-point authoritative logic;
+* no hardcoded content;
+* APP canon;
+* BUILD-ID-0;
+* CLEAN-2.
+
+The user also explicitly required the report style to preserve facts, inferences, uncertainties, rejected options, artifacts, timelines, risks, and visible rationale.
+
+### Inferred constraints
+
+It is inferred from the conversation that the user prefers:
+
+* mechanical enforcement over prose-only rules;
+* long-lived compatibility over short-term simplicity;
+* modularity over monolithic convenience;
+* auditability over speed;
+* high-fidelity summaries over short summaries.
+
+### Technical non-negotiables
+
+The key technical non-negotiables are:
+
+* C ABI/public-header discipline;
+* no cross-CRT mixing;
+* no STL/allocator-owned objects across DLLs;
+* separate artifacts per OS/toolchain/floor;
+* no silent compatibility mismatch;
+* no hidden UI/app logic;
+* no uncontrolled RNG/wall-clock/FP in authoritative logic.
+
+### Evidence and accuracy requirements
+
+External-world facts such as toolchain availability, SDK support, OS support, Steam/Epic behavior, and current software versions must be verified before action.
+
+### Things future assistants should avoid
+
+* Saying “the repo already does X” without inspecting it.
+* Treating assistant-generated prompts as final canon.
+* Repeating rejected ideas.
+* Over-compressing this chat.
+* Ignoring the latest upstream supersession.
+* Producing another machine-readable export when the user asks for prose.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+This chat created or discussed many artifacts. The most important are not the final generated files themselves, but the prompts and repo references they preserve.
+
+### TESTX prompt
+
+The original TESTX prompt came from the Game chat and was user-pasted as authoritative. It required self-defending testing and governance. It should be preserved, but its build-number sections need reconciliation with BUILD-ID-0.
+
+### EG-TESTX and AP-TESTX prompts
+
+These were generated to inform engine/game/content and application/platform/render chats. They are historical coordination artifacts. They show how the teams were asked to align with TestX.
+
+### Sister chat responses
+
+The user pasted responses accepting the prompts. These responses matter because they show parallel chats accepted constraints such as zero-asset boot, no mandatory base pack, no silent fallback, and build/version discipline.
+
+### TESTX2
+
+Generated in this chat to formalize optional control layers and non-interference. It should feed future security/control architecture but must be reconciled with current canon.
+
+### TESTX3
+
+Generated to formalize authority, demos, tourist mode, services, distribution, and piracy containment. It is important for business/distribution governance.
+
+### REPOX
+
+Generated to govern repository structure, IDE projections, toolchain matrix, and multi-architecture support. It needs revision under latest CLEAN-2/BUILD-ID-0 canon.
+
+### TESTX4 language proposal
+
+Pasted by the user from another chat. It was assessed as valuable, but remains recommended/planned unless confirmed elsewhere.
+
+### Latest upstream SYSTEM ROLE block
+
+This is the most important artifact. It supersedes conflicting earlier ideas and defines the current implementation-only posture.
+
+### Windows VS2022 MVP recommendation
+
+This recommendation is useful for immediate practical builds but requires verification of installed components and current toolchain facts.
+
+### Repo tree snapshot
+
+The user pasted a massive tree of the repository. It showed current project structure and many files, but the chat did not inspect file contents. It should be preserved as a snapshot, not treated as verified current state.
+
+### Final handoff/report package
+
+The chat generated a context transfer packet and then a report package. Those files are useful for aggregation, but this current report explains their substance in prose.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+### Does `CANON_INDEX.md` exist?
+
+This matters because latest canon says it is the single source of truth. The pasted tree did not clearly show it. A file search would resolve this.
+
+### Do docs have status headers?
+
+CLEAN-2 requires docs to be canonical, derived, or historical. Without this, old docs may be incorrectly treated as live.
+
+### Where are BUILD-ID-0 and APP/SRZ/VALIDATE docs?
+
+The upstream block names these canons, but exact file paths were not established in this chat.
+
+### What do `.dominium_build_number` and `update_build_number.cmake` do?
+
+These may implement superseded build-number behavior. They must be inspected before any build/version changes.
+
+### Are SemVer files present?
+
+Manual product SemVer is required, but the actual file layout is unverified.
+
+### What is the BII format?
+
+The canon says BII is always present, but exact implementation is not specified in this chat.
+
+### Which artifacts count as distributed?
+
+“No distributed artifact without GBN” is clear, but whether internal CI artifacts, local ZIPs, nightly builds, or test packages count needs precise policy.
+
+### Are IDE files tracked?
+
+The repo tree showed `.vs`, `.vscode`, VS projects, Xcode projects, WiX projects, and more. Which are tracked and which are local state must be verified.
+
+### Are APP/UI rules enforced?
+
+The repo has UI tooling, but this chat did not verify that GUI/TUI bind to CLI command graph or that tools are read-only by default.
+
+### Is authority/tourist mode implemented?
+
+The concept was accepted in chat, but code/docs status is unknown.
+
+### Are VS2022 components installed?
+
+The user installed VS2022, but v141/v141_xp/SDK availability is unverified.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+The largest risk is **source hierarchy confusion**. A future assistant might treat an earlier assistant-generated mega-prompt as more authoritative than the later upstream canon. That would be wrong.
+
+Another major risk is **build identity regression**. If old build-number scripts are kept, the repo may violate BUILD-ID-0 by allocating GBN locally.
+
+A third risk is **documentation drift**. If CLEAN-2 is not implemented, old docs could continue to influence code or future assistants.
+
+A fourth risk is **IDE corruption**. Without RepoX quarantine, old IDEs could generate or edit project files that become mistaken for source of truth.
+
+A fifth risk is **UI logic leakage**. WYSIWYG design and UI codegen are useful only if UI remains data and views. If logic enters UI, APP canon breaks.
+
+A sixth risk is **false compatibility**. VS2022-hosted old toolsets can help MVP builds, but compile success is not runtime support. Old OS VMs remain necessary.
+
+A seventh risk is **over-promoting planned ideas**. TESTX4 and policy-as-data are valuable, but unless another chat or the user confirms adoption, they remain recommended/planned.
+
+A final risk is **over-compression**. This chat contains many subtle supersessions and distinctions. A short summary could lose the most important changes.
+
+To avoid these risks, future chats should verify before implementing, preserve labels, cite the latest upstream canon, and treat the first task as audit rather than code changes.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes the **governance spine** for the project. It is not the only architecture chat, and it does not contain every simulation detail. Its unique value is in connecting many architecture decisions to enforceable repository, build, test, IDE, language, distribution, and handoff systems.
+
+It should inform future spec-book sections on:
+
+* canon management;
+* TestX/Validate enforcement;
+* build identity and release governance;
+* RepoX repository ownership;
+* IDE projection policy;
+* language and ABI profiles;
+* application-layer canon;
+* UI IR and binding;
+* content packs and zero-asset boot;
+* authority/entitlements/demo/tourist mode;
+* control layers and non-interference;
+* piracy containment;
+* old OS/toolchain support;
+* old-binary update policy.
+
+Formal requirements candidates include:
+
+* BUILD-ID-0 enforcement;
+* CANON_INDEX and docs status headers;
+* C89 engine/C++98 game boundary;
+* no C++ ABI leakage;
+* CLI canonical command graph;
+* UI as data;
+* tools read-only by default;
+* setup as install mutation authority;
+* IDE projection quarantine;
+* zero-asset boot;
+* no hardcoded content;
+* capability-based packs;
+* no secrets/DRM enforcement in engine/game.
+
+Background context should include the early build-number ideas and why they were superseded, the industry-acceptance discussion, and the Windows MVP build recommendation.
+
+Likely overlaps with other chats include APP-CANON, SRZ-0, T0–T24 architecture, content schemas, and authority systems. The aggregator should preserve contradictions rather than flatten them.
+
+---
+
+## 14. What I Should Remember
+
+* The latest upstream canon is the top source: architecture is closed, implementation/audit only.
+* The core ontology is Assemblies, Fields, Processes, Agents, and Law.
+* BUILD-ID-0 supersedes earlier build-number ideas. GBN is release-only and central; BII is for dev/CI.
+* Engine is C89; game is C++98; public headers must remain parseable forever.
+* Apps can modernize, but cannot impose requirements on engine/game.
+* CLI is canonical; GUI/TUI are views over the same command graph.
+* UI is data, never logic.
+* Setup is the only install mutation authority.
+* Tools are read-only by default.
+* Launcher is the reference application.
+* Content is optional, open-format, capability-based, and must support zero-asset boot.
+* Demo/free/full/service modes should use authority profiles, not separate code.
+* Tourists can join real servers as non-mutating observers/explorers.
+* Piracy containment means preventing durable value extraction, not preventing copying.
+* DRM/anti-cheat/control systems must not live in engine/game authoritative logic.
+* IDEs are projections. CMake + TestX/RepoX own the build graph.
+* Separate binaries are required per OS/toolchain/floor.
+* VS2022 + v141_xp is an MVP path, not archival replacement for VC7.1/VC6.
+* TESTX4/language profiles and policy-as-data are recommended/planned, not verified implemented.
+* The next work should be repo audit, not runtime redesign.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Explain BUILD-ID-0 in detail and how it changes our previous build-number plans.”
+2. “Create a repo audit checklist for verifying CANON_INDEX, BUILD-ID-0, APP canon, CMake, CI, and IDE artifacts.”
+3. “Explain RepoX in plain English and what parts are final versus planned.”
+4. “What are the exact risks if `.dominium_build_number` still drives builds?”
+5. “Explain the demo/tourist/authority model with examples.”
+6. “Explain how old binaries can keep receiving updates after old OS support is dropped.”
+7. “Which items from this chat should become formal requirements in the Project Spec Book?”
+8. “Which items are only recommendations and should not be treated as canon?”
+9. “Explain the Windows VS2022 MVP build plan and what must be verified.”
+10. “Make a checklist for implementing TESTX4 safely after a language audit.”
+11. “What does ‘UI is data, never logic’ mean for the current repo?”
+12. “Which rejected ideas are most likely to accidentally come back?”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was a long governance and continuity conversation for the Dominium / Domino project. It was not mainly about adding a gameplay feature. It was about making sure the project can survive implementation across many products, teams, chats, operating systems, toolchains, IDEs, distribution models, and future transitions without losing its core principles.
+
+At the start, the user wanted a Git/CMake/versioning system: global build number, manual semantic versions per product, automatic changelogs, protocol/API/ABI versioning, platform builds, packaging, and distributable naming. Early answers proposed a global build number that could increment frequently, but this later changed. The latest upstream canon introduced BUILD-ID-0, which is now the controlling model: product SemVer is manual; build kind is dev/ci/beta/rc/release/hotfix; GBN is centrally allocated and used only for beta/rc/release/hotfix; BII is always present for dev/ci; no distributed artifact may lack GBN; and local builds may not allocate GBN. This supersession is one of the most important facts from the chat.
+
+The conversation then broadened into modular content and asset-free operation. The project should boot with zero assets, use open-format content packs, resolve content through capabilities, and avoid mandatory base packs or hardcoded Earth/Sol assumptions in engine. This enables headless servers, CI, old-binary support, modding, archival use, and flexible distributions.
+
+The user used this chat to coordinate other chats. Prompts were generated for engine/game/content and application/platform/render teams. Those chats responded with acceptance. Later, TESTX arrived as an authoritative self-defending test/governance system. TESTX shifted the conversation from design to enforcement: deterministic tests, no wall clock, no uncontrolled RNG, no floating point in authoritative logic, assertion tiers, blocker tracking, and CI gates. Later upstream canon refined this further and locked architecture.
+
+Control systems became TESTX2. The chat concluded that DRM, anti-cheat, copy protection, telemetry, and similar systems must not be engine/game features. They may exist as optional external control layers, but must be capability-gated, disabled by default, discoverable, and non-interfering with authoritative simulation. Engine/game must not contain secrets or enforcement logic.
+
+Demo/free distribution became TESTX3. The user wanted one package, no separate demo code, and low buyer friction. The chat concluded that the project should sell authority, not bits. Free users can have the same installation and see much of the world, but durable value—persistent progression, economic impact, multiplayer mutation, service access—requires authority. Tourist mode became an important idea: free users can join real servers as non-mutating observers or explorers. Piracy containment is therefore about preventing durable value extraction, not preventing copying.
+
+RepoX emerged when the user wanted to use many old and new IDEs to design GUI apps and build binaries. The conclusion was that IDEs must be projections, not sources of truth. CMake plus TestX/RepoX own the build graph. IDE project files should be generated and disposable, ideally under `/ide`, with only documented packaging exceptions. This protects the repo while allowing VC6, VC7.1, VS2015, modern Visual Studio, CodeWarrior, Xcode, and Linux toolchains to coexist.
+
+The user also supplied a strict OS/toolchain/language matrix. Compatibility is not just language standard. Compiler, SDK, CRT, ABI, and runtime testing define reality. Separate binaries are required for separate OS/toolchain floors. The user later installed Windows 10 with VS2022 and received a practical MVP recommendation: use VS2022 as host with v141/v141_xp and pinned SDKs to build XP through Windows 11 test floors. This is useful for MVP, but not a replacement for true archival VC6/VC7.1 VMs.
+
+A later proposal introduced feature allowlists by component: engine C89, game C++98, public C ABI boundaries, restricted C++ use, no exceptions/RTTI/static init side effects across boundaries, no STL/FP in deterministic paths, and tools allowed to use modern C++17. This was treated as a strong TESTX4 recommendation, but not proven implemented.
+
+Near the end, the user pasted a new upstream canon stating that architecture is closed, canon is locked, and this work is now implementation/audit/maintenance only. It also introduced or confirmed APP-CANON, CLEAN-2, CANON_INDEX, BUILD-ID-0, SRZ-0, VALIDATE-0, engine C89, game C++98, and the ontology Assemblies/Fields/Processes/Agents/Law. That upstream canon is the highest source from this chat.
+
+The final work was about preserving the chat. A context transfer packet was generated, then a downloadable report package, then an in-chat reader version, and now this human-readable report.
+
+What remains to do is verification. The next assistant should inspect the actual repo for `CANON_INDEX.md`, docs status headers, BUILD-ID-0 docs and scripts, `.dominium_build_number`, `update_build_number.cmake`, `CMakePresets.json`, CI workflows, IDE artifacts, UI binding validation, language compliance, zero-asset boot tests, authority profiles, and VS2022 toolsets. The next step is audit, not redesign.
+
+# Reader Status
+
+* Chat title: Dominium TestX/RepoX Governance and Handoff Chat
+* Report type: human-readable explanatory report
+* Main value of this chat: It preserves the governance, build identity, RepoX, TestX, authority/demo, IDE/toolchain, and handoff decisions needed to continue the project without re-explaining the chat.
+* Most important decision: BUILD-ID-0 supersedes earlier build-number ideas; GBN is release-only and central, while BII is for dev/ci.
+* Most important unresolved issue: Actual repo state is unverified, especially canon docs, build/version scripts, CMake presets, CI, and IDE artifacts.
+* Most important next action: Perform a repo audit against latest upstream canon before modifying runtime behavior.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: This report is based on visible chat context and generated package contents, not direct repo inspection; external toolchain facts and actual implementation state require verification.

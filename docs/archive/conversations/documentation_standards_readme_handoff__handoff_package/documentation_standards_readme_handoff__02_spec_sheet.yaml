@@ -1,0 +1,2089 @@
+spec_sheet:
+  metadata:
+    chat_label: Documentation Standards and README Handoff
+    filesystem_safe_label: documentation_standards_readme_handoff
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This package covers this visible chat only. Project-level context is used only where explicitly labelled PROJECT-CONTEXT.
+    apparent_coverage: full for visible chat; partial for wider project
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - No repository was scanned in this chat.
+    - No actual project files were modified before this final package.
+    - Other setup, launcher, and game design chats are unavailable.
+    - Actual repo facts remain UNCERTAIN / UNVERIFIED.
+  summary:
+    one_sentence: This chat established documentation standards, README strategy, Codex prompts, and a documentation quality gate for a long-lived C/C++ systems project, but did not inspect or modify the repository.
+    short_brief: The chat produced strategy and prompts for source/header documentation, docs/ architecture, README landing page overhaul, a Python/CMake documentation ratio checker, standards-aligned Codex operation, and post-refactor documentation reconciliation.
+    main_topics:
+    - C/C++ documentation standards
+    - Header vs source vs docs/ documentation placement
+    - README as public landing page
+    - Documentation ratio quality gate
+    - Codex prompts for documentation work
+    - Post-refactor docs reconciliation
+    - Context transfer and report packaging
+    main_outputs:
+    - Multiple Codex prompts
+    - Documentation examples
+    - Documentation ratio gate specification
+    - Context Transfer Packet
+    - This final report package
+    highest_priority_carry_forward:
+    - No repo was scanned; verify actual repo before claims.
+    - Use current repository as authoritative after inspection.
+    - Headers hold API contracts; source files explain rationale.
+    - README should be landing page and docs hub.
+    - Latest next-action prompt is post-refactor docs/ and README reconciliation.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Direct user statements outrank assistant suggestions.
+    - Actual repository contents outrank all prompts and prior summaries once inspected.
+    - Assistant-generated prompts are artifacts, not executed work.
+    - Tentative decisions remain tentative unless user accepted them or repository confirms them.
+    staleness_rules:
+    - External-world facts and current tool/API/platform claims require verification before future use.
+    - Repo-specific facts are stale-risk until current repository is inspected.
+    - Refactor-related docs should be treated as suspect until reconciled against code.
+  user_preferences:
+    explicit:
+    - id: PREF-01
+      preference: Straightforward, critical, low-fluff communication.
+      source_category: explicit
+      source_basis: User profile/instructions in this chat context
+      strength: strong
+      implication: Future assistants should provide direct, precise answers without praise or soft filler.
+      risk: May produce over-soft or vague responses.
+      label: FACT
+    - id: PREF-02
+      preference: Correctly cited, rigorously checked facts.
+      source_category: explicit
+      source_basis: User profile says interest in correctly cited sources and rigorously tested facts.
+      strength: strong
+      implication: Use repo evidence for project facts; verify current external facts when needed.
+      risk: Future docs may overstate unverified claims.
+      label: FACT
+    - id: PREF-03
+      preference: Second- and third-order thinking.
+      source_category: explicit
+      source_basis: User profile.
+      strength: medium/strong
+      implication: Expose implications, risks, and downstream effects of documentation decisions.
+      risk: May miss maintainability consequences.
+      label: FACT
+    - id: PREF-05
+      preference: Mechanically enforced standards over social/process-only standards.
+      source_category: explicit in quality gate prompt
+      source_basis: User said documentation quality should be enforced mechanically, not socially.
+      strength: strong
+      implication: Prefer scripts/CI gates where appropriate.
+      risk: Future assistant may offer weak policy-only solution.
+      label: FACT
+    - id: PREF-06
+      preference: README must work for laypeople and technicians.
+      source_category: explicit
+      source_basis: User explicitly requested layman-understandable and technician-detailed README.
+      strength: strong
+      implication: Use layered explanations and avoid jargon without explanation.
+      risk: README may become too technical or too shallow.
+      label: FACT
+    - id: PREF-07
+      preference: Preserve tentative status and rejected options.
+      source_category: explicit in current packaging request
+      source_basis: User gave rules for context transfer and packaging.
+      strength: strong
+      implication: Do not collapse brainstorms into decisions.
+      risk: Future aggregation may encode false requirements.
+      label: FACT
+    - id: PREF-08
+      preference: No speculation or invented project facts.
+      source_category: explicit
+      source_basis: Repeated in user and generated prompts.
+      strength: strong
+      implication: Require repo scan before claims.
+      risk: Docs may hallucinate features/platforms.
+      label: FACT
+    - id: PREF-09
+      preference: Desire for future aggregation into a Project Spec Book.
+      source_category: explicit
+      source_basis: Current request says package should later combine into reports and source material for a Project Spec Book.
+      strength: strong
+      implication: Use stable IDs, registers, YAML, and provenance labels.
+      risk: Later merger will lose traceability.
+      label: FACT
+    - id: PREF-10
+      preference: Exact file/package outputs when requested.
+      source_category: explicit
+      source_basis: Current request enumerates files and ZIP behavior.
+      strength: strong
+      implication: Create actual files when tools are available.
+      risk: User may not be able to save/reuse package.
+      label: FACT
+    inferred:
+    - id: PREF-04
+      preference: Deterministic, implementation-ready prompts.
+      source_category: inferred from repeated requests
+      source_basis: User repeatedly asked for Codex prompts with exact constraints.
+      strength: strong
+      implication: Prompts should be copy-paste-ready and non-interactive.
+      risk: Vague prompts may cause Codex drift.
+      label: INFERENCE
+    uncertain_or_not_established:
+    - Exact preferred documentation generator not established.
+    - Exact README visual style not established.
+    - Exact Codex commit vs patch workflow not established.
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Per-file C/C++/assembly documentation standard
+    label: FACT / INFERENCE
+    objective: Define and later apply a consistent documentation standard for every non-trivial C, C++, header, and assembly file.
+    current_state: A standard was designed in conversation and encoded in Codex prompts. It has not been applied to a repository in this chat.
+    desired_end_state: Every non-trivial source/header/assembly file has structured documentation appropriate to its role; public contracts live in headers; implementation rationale lives in source files.
+    status: active, not executed in this chat
+    priority: high
+    background: The user asked what Codex should document for each file, including metadata, functions, definitions, dependencies, destructors, memory/registers, requirements, and prohibitions.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    - DECISION-17
+    decisions_pending: []
+    tasks:
+    - TASK-14
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    dependencies:
+    - Repository access
+    - Public/private API identification
+    - Existing comment conventions
+    timeline: After repository scan and after docs reconciliation if the user chooses to apply source/header comments.
+    blockers:
+    - Repository was not scanned in this chat.
+    risks:
+    - RISK-04
+    - RISK-05
+    - RISK-06
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-08
+    - ARTIFACT-11
+    success_criteria:
+    - Every non-trivial file has a structured header.
+    - Every public API symbol is documented once in headers.
+    - Runtime behavior remains unchanged.
+    next_action: Scan the repo, identify public APIs, then apply documentation rules only where needed.
+    verification_needed:
+    - VERIFY-10
+    - VERIFY-11
+    - VERIFY-13
+    confidence: '4'
+  - id: WORKSTREAM-02
+    name: External docs/ technical documentation structure
+    label: FACT / INFERENCE
+    objective: Establish or reconcile authoritative technical documentation under docs/.
+    current_state: Desired structure was specified. Actual docs were not inspected or changed in this chat.
+    desired_end_state: docs/ accurately describes architecture, dependencies, contracts, style, build topology, components, documentation standards, and material subsystem specs.
+    status: active, not executed in this chat
+    priority: highest
+    background: The user wanted durable documentation beyond per-file comments, especially after major setup/launcher/game refactors.
+    decisions_made:
+    - DECISION-01
+    - DECISION-05
+    - DECISION-13
+    - DECISION-14
+    decisions_pending: []
+    tasks:
+    - TASK-04
+    - TASK-06
+    - TASK-07
+    - TASK-08
+    - TASK-09
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    dependencies:
+    - Repository scan
+    - Existing docs inventory
+    - CMake target graph
+    - Component inventory
+    timeline: Immediate next major workstream if continuing this chat's work.
+    blockers:
+    - No repository inspection occurred in this chat.
+    - Other refactor chats are unavailable.
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-03
+    - RISK-10
+    artifacts:
+    - ARTIFACT-08
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    success_criteria:
+    - docs/ matches current code.
+    - No stale paths.
+    - No contradictions among README, ARCHITECTURE, DEPENDENCIES, and COMPONENTS.
+    next_action: Run a repo comprehension pass, then reconcile docs/ against code and CMake.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-03
+    - VERIFY-07
+    - VERIFY-08
+    confidence: '4'
+  - id: WORKSTREAM-03
+    name: Root README as public landing page and technical hub
+    label: FACT
+    objective: Rewrite or restructure root README.md so it works for lay users, technical readers, and future contributors.
+    current_state: A focused README prompt and a later integrated refactor-reconciliation prompt were generated. README was not modified in this chat.
+    desired_end_state: README.md stands alone as the project's temporary public landing page until a website exists and links into detailed docs.
+    status: active, not executed in this chat
+    priority: highest
+    background: The user explicitly requested a complete high- and low-level summary, industry/consumer-standard presentation, and at-a-glance usefulness.
+    decisions_made:
+    - DECISION-04
+    - DECISION-13
+    - DECISION-15
+    decisions_pending: []
+    tasks:
+    - TASK-05
+    constraints:
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-19
+    - CONSTRAINT-24
+    dependencies:
+    - Actual project name
+    - License
+    - Supported platforms
+    - Build outputs
+    - Current docs
+    timeline: Should be done after or during docs/ reconciliation so README links and claims are accurate.
+    blockers:
+    - Project facts were not verified from repo in this chat.
+    risks:
+    - RISK-02
+    - RISK-03
+    - RISK-11
+    artifacts:
+    - ARTIFACT-07
+    - ARTIFACT-12
+    success_criteria:
+    - A non-technical reader understands the project quickly.
+    - An engineer can assess architecture and where to read further.
+    - README contains no speculative or stale claims.
+    next_action: Inspect actual README, code, CMake, license, and docs; then rewrite against evidence.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-04
+    - VERIFY-05
+    - VERIFY-06
+    - VERIFY-09
+    confidence: '5'
+  - id: WORKSTREAM-04
+    name: Documentation ratio quality gate
+    label: FACT
+    objective: Add a compiler-agnostic CMake-integrated Python checker that measures comment density and enforces min/max ratios.
+    current_state: The user supplied a detailed specification; an implementation-ready Codex prompt was generated. No script or CMake changes were made in this chat.
+    desired_end_state: scripts/doc_ratio_check.py exists; CMake has doc_ratio_check; local builds warn; CI builds fail on violations; docs explain the standard.
+    status: active, separate implementation workstream
+    priority: high
+    background: The user wants documentation quality enforced mechanically rather than socially.
+    decisions_made:
+    - DECISION-06
+    - DECISION-07
+    - DECISION-08
+    - DECISION-09
+    - DECISION-10
+    - DECISION-11
+    - DECISION-12
+    decisions_pending: []
+    tasks:
+    - TASK-10
+    - TASK-11
+    - TASK-12
+    - TASK-13
+    constraints:
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    dependencies:
+    - Top-level CMakeLists.txt
+    - Actual source roots
+    - CI environment variables
+    - Python availability
+    timeline: Can be implemented independently after docs reconciliation or before source documentation pass.
+    blockers:
+    - Actual repo source roots and CI conventions unverified.
+    risks:
+    - RISK-07
+    - RISK-08
+    - RISK-09
+    - RISK-12
+    artifacts:
+    - ARTIFACT-09
+    - ARTIFACT-15
+    - ARTIFACT-16
+    success_criteria:
+    - Warns locally and exits 0.
+    - Fails in CI when ratios violate thresholds.
+    - Excludes generated/vendor/build code.
+    - Thresholds documented as drift detectors.
+    next_action: Use the implementation prompt only after verifying source roots and CMake structure.
+    verification_needed:
+    - VERIFY-12
+    - VERIFY-14
+    - VERIFY-15
+    - VERIFY-16
+    - VERIFY-17
+    confidence: '5'
+  - id: WORKSTREAM-05
+    name: Standards-aligned Codex prompt optimization
+    label: FACT
+    objective: Upgrade documentation-generation prompts to be stricter, deterministic, and aligned with C89/C90, C++98, assembly, Markdown, and Doxygen-compatible conventions.
+    current_state: 'A stricter prompt was generated. It contains one known typo: ''Determininism guarantees remembered'' / ''Determinism guarantees remembered'' should be corrected to ''Determinism guarantees'' before reuse.'
+    desired_end_state: A clean, standards-aligned Codex prompt controls documentation-only codebase passes without behavior changes.
+    status: active artifact, requires minor correction
+    priority: medium
+    background: The user asked to optimize a previous prompt and conform strictly to international code documentation standards for project languages and documentation formats.
+    decisions_made:
+    - DECISION-15
+    - DECISION-17
+    decisions_pending: []
+    tasks:
+    - TASK-15
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    dependencies:
+    - Existing repo style
+    - User choice to run source/header docs pass
+    timeline: Before any source/header documentation Codex run.
+    blockers:
+    - Known typo must be corrected.
+    risks:
+    - RISK-13
+    artifacts:
+    - ARTIFACT-11
+    success_criteria:
+    - Prompt is typo-free, deterministic, and does not invite semantic code changes.
+    next_action: Correct the known typo and reuse only with repo-aware constraints.
+    verification_needed:
+    - VERIFY-18
+    confidence: '4'
+  - id: WORKSTREAM-06
+    name: Post-refactor documentation reconciliation
+    label: FACT / UNCERTAIN
+    objective: Scan the current repository after heavy setup/launcher/game refactors and make docs/ plus README consistent with actual code.
+    current_state: A consolidated Codex prompt was generated. No repository scan occurred in this chat.
+    desired_end_state: All docs reflect current setup, launcher, engine, game, tool, and build structure, with no contradictions or stale references.
+    status: active, highest next-action candidate
+    priority: highest
+    background: The user stated the project had been heavily refactored in setup, launcher, and game design chats. Those chats are not visible here.
+    decisions_made:
+    - DECISION-13
+    - DECISION-14
+    - DECISION-15
+    decisions_pending: []
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    - TASK-04
+    - TASK-05
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-24
+    dependencies:
+    - Repository access
+    - Existing docs
+    - CMakeLists
+    - File tree
+    - Actual refactored components
+    timeline: Should be the first repo-facing action in a new chat.
+    blockers:
+    - Refactor chats unavailable; repo not inspected here.
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-03
+    - RISK-10
+    - RISK-11
+    artifacts:
+    - ARTIFACT-12
+    success_criteria:
+    - docs/ matches code.
+    - README works as public landing page.
+    - No runtime or build behavior changes.
+    next_action: Use Prompt A.5, but require Codex to treat repo evidence as authoritative and chat history as non-authoritative.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-03
+    - VERIFY-07
+    - VERIFY-08
+    - VERIFY-09
+    confidence: 4 for user intent; 2 for actual repo details
+  - id: WORKSTREAM-07
+    name: Reusable per-chat report package and aggregation handoff
+    label: FACT
+    objective: Convert the prior Context Transfer Packet into a downloadable, shareable report package for this individual chat.
+    current_state: This package is being generated from the previous Context Transfer Packet plus visible chat context.
+    desired_end_state: A set of Markdown/YAML files and a ZIP archive usable by humans, future assistants, aggregators, and future Project Spec Book construction.
+    status: active in current response; complete if files are successfully created
+    priority: highest for this response
+    background: The user explicitly requested final package files with stable IDs, registers, a spec sheet, an aggregator packet, a reader brief, verification/audit, and a manifest.
+    decisions_made:
+    - DECISION-16
+    decisions_pending: []
+    tasks:
+    - TASK-16
+    - TASK-17
+    constraints:
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    dependencies:
+    - Prior Context Transfer Packet
+    - Visible chat transcript
+    timeline: Immediate current task.
+    blockers:
+    - None if file generation succeeds.
+    risks:
+    - RISK-14
+    - RISK-15
+    artifacts:
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    success_criteria:
+    - All requested files exist.
+    - ZIP archive exists if possible.
+    - Final response provides download links and caveats.
+    next_action: Save package files and use them in a future aggregation workflow.
+    verification_needed:
+    - VERIFY-19
+    - VERIFY-20
+    confidence: '5'
+  decisions:
+  - id: DECISION-01
+    decision: Use both in-code documentation and external docs.
+    status: Accepted direction
+    label: FACT / INFERENCE
+    evidence_or_basis: Repeated assistant outputs; user continued to request prompts based on this model.
+    rationale: In-code contracts stay close to APIs; external docs cover architecture and policy.
+    implications: Prevents using only comments or only sister files.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    uncertainty: See label and confidence 4
+  - id: DECISION-02
+    decision: Headers are canonical for public API contracts.
+    status: Accepted direction
+    label: FACT / INFERENCE
+    evidence_or_basis: Repeated in generated prompts and not contradicted.
+    rationale: Callers consume headers; source duplication causes drift.
+    implications: Public functions/types should be documented in headers only.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: See label and confidence 4
+  - id: DECISION-03
+    decision: Source files document implementation rationale, invariants, and hazards, not public contracts.
+    status: Accepted direction
+    label: FACT / INFERENCE
+    evidence_or_basis: Repeated in best-practice and prompt outputs.
+    rationale: Keeps source comments high-signal and avoids duplicate contract text.
+    implications: Source comments should explain why, not restate what.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: See label and confidence 4
+  - id: DECISION-04
+    decision: README.md should be a public landing page and technical navigation hub.
+    status: User-directed
+    label: FACT
+    evidence_or_basis: User explicitly requested a complete high/low-level summary, industry/consumer standard, and lay/technical readability.
+    rationale: README is the public front door until a website exists.
+    implications: README must be accessible, accurate, non-marketing, and linked to docs.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: See label and confidence 5
+  - id: DECISION-05
+    decision: docs/ should hold architecture, dependencies, contracts, style, build overview, components, and subsystem specs.
+    status: Accepted direction
+    label: FACT / INFERENCE
+    evidence_or_basis: Generated prompts defined this docs structure; user did not reject it.
+    rationale: Cross-cutting information belongs outside individual source files.
+    implications: Create/update docs only after verifying repo reality.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: See label and confidence 4
+  - id: DECISION-06
+    decision: Documentation quality should be mechanically enforced.
+    status: User-directed
+    label: FACT
+    evidence_or_basis: User explicitly said documentation quality should be enforced mechanically, not socially.
+    rationale: Mechanisms reduce drift and make standards testable.
+    implications: Introduce documentation quality gate.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See label and confidence 5
+  - id: DECISION-07
+    decision: Use standalone Python 3 script for documentation ratio checking.
+    status: User-directed
+    label: FACT
+    evidence_or_basis: User specified Python 3 for portability and parsing ease.
+    rationale: Compiler-agnostic and portable across MSVC/GCC/Linux/Windows.
+    implications: Create scripts/doc_ratio_check.py.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See label and confidence 5
+  - id: DECISION-08
+    decision: Integrate documentation ratio checker through CMake custom target.
+    status: User-directed
+    label: FACT
+    evidence_or_basis: User specified CMake custom target and Python3 find_package.
+    rationale: Fits existing build system and avoids compiler-specific diagnostics.
+    implications: Modify top-level CMakeLists.txt.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See label and confidence 5
+  - id: DECISION-09
+    decision: Local builds warn; CI builds fail on documentation ratio violations.
+    status: User-directed
+    label: FACT
+    evidence_or_basis: User specified warnings locally and hard failures in CI.
+    rationale: Balances developer workflow and enforcement.
+    implications: Need robust CI detection through ENV{CI}.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See label and confidence 5
+  - id: DECISION-10
+    decision: Do not use compiler warnings, pragmas, clang-tools, AST parsing, or external linters for doc ratio enforcement.
+    status: User-directed
+    label: FACT
+    evidence_or_basis: Explicit non-goals and implementation strategy.
+    rationale: Avoids compiler/toolchain coupling and external dependencies.
+    implications: Use heuristic parser only.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See label and confidence 5
+  - id: DECISION-11
+    decision: 'Adopt documentation ratio thresholds: lines 20–40%, words 15–30%, chars 10–25%.'
+    status: User-directed
+    label: FACT
+    evidence_or_basis: User supplied exact thresholds.
+    rationale: Detects underdocumentation and overcommenting.
+    implications: Checker must enforce these unless user revises them.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See label and confidence 5
+  - id: DECISION-12
+    decision: Exclude generated, third-party, vendored, build, and external dependency code from documentation ratios.
+    status: User-directed
+    label: FACT
+    evidence_or_basis: User defined exclusions.
+    rationale: External/generated code should not affect project documentation health.
+    implications: Need path filters and tuning.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: See label and confidence 5
+  - id: DECISION-13
+    decision: Post-refactor docs/ and README pass must not change runtime or build behavior.
+    status: Prompt-defined direction
+    label: FACT
+    evidence_or_basis: Latest Codex prompt says files to modify are docs/** and README.md only.
+    rationale: Docs reconciliation should not destabilize code.
+    implications: Separate from quality-gate workstream, which does modify build files.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: See label and confidence 5
+  - id: DECISION-14
+    decision: Add COMPONENTS.md and BUILD_OVERVIEW.md if missing and supported by repo structure.
+    status: Assistant-added recommendation accepted by continuation
+    label: INFERENCE
+    evidence_or_basis: Latest prompt included these to handle setup/launcher/game separation.
+    rationale: Prevents README bloat and clarifies refactored component boundaries.
+    implications: Only create if consistent with actual repo.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    uncertainty: See label and confidence 4
+  - id: DECISION-15
+    decision: Codex prompts should be deterministic, explicit, non-interactive, and contain no placeholders/TODOs/speculation.
+    status: User-directed and repeated
+    label: FACT
+    evidence_or_basis: User requested implementation-ready prompts with no ambiguity; prompts repeated these rules.
+    rationale: Reduces risk of Codex inventing facts or leaving incomplete docs.
+    implications: Future prompts should remain self-contained.
+    related_workstreams:
+    - WORKSTREAM-05
+    - WORKSTREAM-06
+    uncertainty: See label and confidence 5
+  - id: DECISION-16
+    decision: Produce a reusable per-chat report package with stable IDs and downloadable files.
+    status: User-directed
+    label: FACT
+    evidence_or_basis: Current user request gives exact file list and ID pattern.
+    rationale: Enables future aggregation and spec-book construction.
+    implications: Create Markdown/YAML files and ZIP.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: See label and confidence 5
+  - id: DECISION-17
+    decision: File headers should not include authors, dates, or change logs.
+    status: Accepted direction
+    label: FACT / INFERENCE
+    evidence_or_basis: Repeated in documentation standard prompts.
+    rationale: Git tracks history; embedded historical metadata goes stale.
+    implications: File headers focus on responsibility, dependencies, invariants, and extension points.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: See label and confidence 4
+  tasks:
+  - id: TASK-01
+    task: Inspect the current repository after refactors.
+    priority: highest
+    urgency: immediate
+    owner: New chat / Codex
+    dependencies:
+    - Repo access
+    inputs_needed:
+    - File tree, CMakeLists, README, docs, source files
+    expected_output: Verified architecture and component inventory
+    next_step: Start here before writing repo-specific docs.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: see source label
+  - id: TASK-02
+    task: Identify top-level components and products.
+    priority: highest
+    urgency: immediate
+    owner: Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Actual directories and targets
+    expected_output: Component map including setup/launcher/engine/game if present
+    next_step: Do not assume component names without repo evidence.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: see source label
+  - id: TASK-03
+    task: Identify CMake build graph and primary targets.
+    priority: high
+    urgency: high
+    owner: Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - All CMakeLists.txt
+    expected_output: Build overview and target ownership map
+    next_step: Use CMake files as evidence.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: FACT
+    confidence: see source label
+  - id: TASK-04
+    task: Reconcile all docs/** files with current code.
+    priority: highest
+    urgency: high
+    owner: Codex
+    dependencies:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    inputs_needed:
+    - Existing docs and code
+    expected_output: Updated docs with stale claims removed
+    next_step: Use Prompt A.5 as base.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: FACT
+    confidence: see source label
+  - id: TASK-05
+    task: Overhaul README.md into public landing page and technical hub.
+    priority: highest
+    urgency: high
+    owner: Codex
+    dependencies:
+    - TASK-04 or concurrent evidence scan
+    inputs_needed:
+    - Current project facts, license, platforms, docs links
+    expected_output: Industry-standard README
+    next_step: Rewrite only with verifiable repo evidence.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-06
+    label: FACT
+    confidence: see source label
+  - id: TASK-06
+    task: Create or update docs/COMPONENTS.md if component structure supports it.
+    priority: high
+    urgency: high
+    owner: Codex
+    dependencies:
+    - TASK-02
+    inputs_needed:
+    - Component map
+    expected_output: Component overview doc
+    next_step: Only create for actual components.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: see source label
+  - id: TASK-07
+    task: Create or update docs/BUILD_OVERVIEW.md.
+    priority: high
+    urgency: medium
+    owner: Codex
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - CMake target graph
+    expected_output: High-level build topology doc
+    next_step: Avoid long command tutorial.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: see source label
+  - id: TASK-08
+    task: Update ARCHITECTURE, DEPENDENCIES, CONTRACTS, and STYLE docs.
+    priority: high
+    urgency: high
+    owner: Codex
+    dependencies:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    inputs_needed:
+    - Code organization and current docs
+    expected_output: Accurate core documentation set
+    next_step: Keep canonical facts in one place.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT / INFERENCE
+    confidence: see source label
+  - id: TASK-09
+    task: Create SPEC_<SUBSYSTEM>.md files only for material subsystems.
+    priority: medium
+    urgency: medium
+    owner: Codex
+    dependencies:
+    - TASK-01
+    - TASK-02
+    inputs_needed:
+    - Subsystem inventory
+    expected_output: Subsystem specs
+    next_step: Do not invent subsystems.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT / INFERENCE
+    confidence: see source label
+  - id: TASK-10
+    task: Implement scripts/doc_ratio_check.py.
+    priority: high
+    urgency: separate
+    owner: Codex
+    dependencies:
+    - Repo access
+    - source roots
+    inputs_needed:
+    - User spec from this chat
+    expected_output: Python comment-ratio checker
+    next_step: Use Prompt A.3.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: see source label
+  - id: TASK-11
+    task: Integrate doc_ratio_check into CMake.
+    priority: high
+    urgency: separate
+    owner: Codex
+    dependencies:
+    - TASK-10
+    - CMake structure
+    inputs_needed:
+    - Top-level CMakeLists.txt
+    expected_output: doc_ratio_check target and cache variables
+    next_step: Ensure local warn / CI fail behavior.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: see source label
+  - id: TASK-12
+    task: Document documentation ratio standard.
+    priority: high
+    urgency: separate
+    owner: Codex
+    dependencies:
+    - TASK-10
+    - TASK-11
+    inputs_needed:
+    - Thresholds and CMake variables
+    expected_output: docs/DOCUMENTATION_STANDARDS.md and README link
+    next_step: Explain drift detector purpose.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: see source label
+  - id: TASK-13
+    task: Verify documentation ratio checker behavior.
+    priority: medium
+    urgency: after implementation
+    owner: Codex
+    dependencies:
+    - TASK-10
+    - TASK-11
+    inputs_needed:
+    - Configured build and script invocations
+    expected_output: Evidence warn mode exits 0 and CI mode exits nonzero on violations
+    next_step: Do not weaken thresholds to pass.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: see source label
+  - id: TASK-14
+    task: Apply per-file source/header/assembly documentation standard.
+    priority: medium/high
+    urgency: later
+    owner: Codex
+    dependencies:
+    - TASK-01
+    - public API map
+    inputs_needed:
+    - Source/header files
+    expected_output: Structured comments without behavior changes
+    next_step: Use corrected Prompt A.4 or A.1.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / INFERENCE
+    confidence: see source label
+  - id: TASK-15
+    task: Correct typo in upgraded standards prompt before reuse.
+    priority: medium
+    urgency: before prompt reuse
+    owner: User/new chat
+    dependencies:
+    - Prompt A.4
+    inputs_needed: []
+    expected_output: Correct prompt text
+    next_step: Replace erroneous determinism line.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: see source label
+  - id: TASK-16
+    task: Aggregate this package with other old-chat packages later.
+    priority: medium
+    urgency: later
+    owner: User / aggregator chat
+    dependencies:
+    - Reports from other old chats
+    inputs_needed: []
+    expected_output: Master project spec and living state file
+    next_step: Use aggregator prompt from current user text or future equivalent.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: see source label
+  - id: TASK-17
+    task: Store the generated package files together.
+    priority: high
+    urgency: after creation
+    owner: User
+    dependencies:
+    - Created files and ZIP
+    inputs_needed: []
+    expected_output: Saved package folder/ZIP
+    next_step: Keep Markdown and YAML together for later aggregation.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+    confidence: see source label
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Do not change runtime behavior.
+    type: process
+    hard_or_soft: hard
+    source_or_basis: User and generated prompts
+    implication: Documentation passes must not alter logic, control flow, algorithms, APIs, or data layouts.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-02
+    constraint: Do not refactor code.
+    type: process
+    hard_or_soft: hard
+    source_or_basis: User and prompts
+    implication: No cleanup or restructuring during documentation tasks.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-03
+    constraint: Do not rename symbols, files, or targets during documentation-only work.
+    type: process
+    hard_or_soft: hard
+    source_or_basis: Prompts
+    implication: Preserve API/linkage and project layout.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-04
+    constraint: Do not reorder statements, declarations, logic, or includes.
+    type: process
+    hard_or_soft: hard
+    source_or_basis: Prompts
+    implication: Minimize semantic/build risk.
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-05
+    constraint: Do not introduce new dependencies during documentation-only pass.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: Prompts
+    implication: Avoid adding Doxygen/clang tools unless separately requested.
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-06
+    constraint: No speculation, roadmap, or invented features.
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: User/prompts
+    implication: Docs and README must describe current repo only.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-07
+    constraint: No TODOs or placeholders in generated docs/prompts.
+    type: quality
+    hard_or_soft: hard
+    source_or_basis: User/prompts
+    implication: Outputs must be complete or explicitly mark unknowns.
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-08
+    constraint: No marketing hype or aspirational language.
+    type: style
+    hard_or_soft: hard
+    source_or_basis: User/prompts
+    implication: README should be credible and neutral.
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-09
+    constraint: One canonical home per fact.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: Prompts
+    implication: Avoid contradictions and duplication.
+    violation_risk: high
+    label: FACT / INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-10
+    constraint: README is overview/navigation, not deep spec.
+    type: format
+    hard_or_soft: hard
+    source_or_basis: User/prompts
+    implication: Detailed architecture and build info should live in docs/.
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-11
+    constraint: C89/C90 and C++98 compatibility must be respected in documentation examples and assumptions.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User/prompts
+    implication: Avoid C99/C++11 assumptions in generated examples or standards.
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-12
+    constraint: Assembly documentation must include ABI/calling convention/register/stack details when assembly exists.
+    type: technical
+    hard_or_soft: conditional hard
+    source_or_basis: Prompts
+    implication: Assembly requires low-level contracts not needed for ordinary C/C++.
+    violation_risk: medium
+    label: FACT / INFERENCE
+    confidence: '4'
+  - id: CONSTRAINT-13
+    constraint: Documentation ratio checker must use Python 3 with no third-party imports.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User spec
+    implication: Keep portable and dependency-free.
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-14
+    constraint: Documentation ratio checker must be heuristic, not AST-level.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User non-goals
+    implication: No clang-tools or full parser.
+    violation_risk: low
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-15
+    constraint: Documentation ratio checker must count only // and /* ... */ comments.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User definition
+    implication: Do not count generated docs or Markdown as code comments.
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-16
+    constraint: Generated, third-party, vendored, build, and external dependency code must be excluded from documentation ratios.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User definition
+    implication: Avoid false enforcement on non-project code.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-17
+    constraint: Local documentation ratio violations warn and exit success.
+    type: build
+    hard_or_soft: hard
+    source_or_basis: User spec
+    implication: Developer builds should not fail locally.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-18
+    constraint: CI documentation ratio violations hard fail.
+    type: build
+    hard_or_soft: hard
+    source_or_basis: User spec
+    implication: CI blocks drift.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-19
+    constraint: Do not alter license text.
+    type: legal/documentation
+    hard_or_soft: hard
+    source_or_basis: README prompt
+    implication: README may link or state license but must not change terms.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-20
+    constraint: Quality gate must be compiler-agnostic.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User spec
+    implication: No MSVC/GCC diagnostic tricks.
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-21
+    constraint: CMake must find Python3 interpreter for quality gate.
+    type: technical
+    hard_or_soft: hard
+    source_or_basis: User spec
+    implication: Use find_package(Python3 COMPONENTS Interpreter).
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-22
+    constraint: Documentation ratio thresholds are fixed unless user revises them.
+    type: standard
+    hard_or_soft: hard
+    source_or_basis: User spec
+    implication: Lines 20–40%, words 15–30%, chars 10–25%.
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-23
+    constraint: Docs reconciliation modifies docs/** and README.md only.
+    type: process
+    hard_or_soft: hard
+    source_or_basis: Latest prompt
+    implication: Do not change source/build during that pass.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-24
+    constraint: Repo evidence outranks prior chat/prompt assumptions.
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: Current handoff rules
+    implication: Actual code is authoritative after scan.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-25
+    constraint: Final package must use stable IDs.
+    type: format
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: All registers use WORKSTREAM, DECISION, TASK, etc.
+    violation_risk: medium
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-26
+    constraint: Important items must be labelled FACT, INFERENCE, UNCERTAIN / UNVERIFIED, or PROJECT-CONTEXT.
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: Prevents unsupported facts from entering future spec.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-27
+    constraint: This package covers this chat only, not the whole project.
+    type: scope
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: Do not summarize unseen project context as fact.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  - id: CONSTRAINT-28
+    constraint: If files are not actually created, do not claim downloads exist.
+    type: artifact
+    hard_or_soft: hard
+    source_or_basis: Current user request
+    implication: Final response must match actual file creation.
+    violation_risk: high
+    label: FACT
+    confidence: '5'
+  open_questions:
+  - id: QUESTION-01
+    question: What is the exact project name used in the repository?
+    why_it_matters: README title, docs identity, and package cross-references require exact naming.
+    known: PROJECT-CONTEXT says wider project is Dominium Game.
+    unknown: Repository project() name and README title were not inspected.
+    resolution_path: Inspect CMakeLists.txt, README, repository metadata, and license.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: What are the actual top-level directories after refactor?
+    why_it_matters: Docs map and component docs must match current layout.
+    known: User mentioned setup, launcher, and game design refactors.
+    unknown: Actual directory tree is unknown.
+    resolution_path: Inspect repository tree.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: Which components are libraries and which are executables?
+    why_it_matters: Architecture and build overview depend on target types.
+    known: Project uses CMake.
+    unknown: Target graph unknown.
+    resolution_path: Inspect all CMakeLists.txt files.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: Which platforms are actually supported?
+    why_it_matters: README supported platform claims must be accurate.
+    known: Quality gate context mentioned MSVC Windows, GCC Linux, possibly MinGW.
+    unknown: Runtime/platform support unknown.
+    resolution_path: Inspect build files, platform code, CI configs, and docs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: What is the actual license?
+    why_it_matters: README license section must link/state correct license without changing terms.
+    known: License should not be altered.
+    unknown: License file/content unknown.
+    resolution_path: Inspect LICENSE or equivalent.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: What is the project maturity/status?
+    why_it_matters: README status section requires evidence.
+    known: No explicit stable/experimental status in visible chat.
+    unknown: Actual status unknown.
+    resolution_path: Inspect README, docs, release tags, issue tracker if available.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: Which docs files currently exist?
+    why_it_matters: Avoid duplication and preserve useful existing content.
+    known: Desired docs list exists.
+    unknown: Actual docs inventory unknown.
+    resolution_path: Inspect docs/.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: Which subsystem specs are warranted?
+    why_it_matters: Creating specs for non-existent subsystems invents architecture.
+    known: Specs should exist only for material subsystems.
+    unknown: Subsystem list unknown.
+    resolution_path: Inspect source layout and CMake targets.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: Are setup/, launcher/, engine/, game/, tools/, and tests real directories?
+    why_it_matters: Latest prompt assumes these as possible components but code must verify.
+    known: User said setup/launcher/game refactors occurred.
+    unknown: Actual names/locations unknown.
+    resolution_path: Inspect repo tree.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: Does the repo already use Doxygen-style comments or another convention?
+    why_it_matters: New docs should preserve style where possible.
+    known: Doxygen-compatible style was recommended.
+    unknown: Existing convention unknown.
+    resolution_path: Inspect headers and docs tooling.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: Are there assembly files?
+    why_it_matters: Assembly docs require special ABI/register treatment.
+    known: Scope includes assembly where present.
+    unknown: Existence unknown.
+    resolution_path: Search for .asm, .s, .S files.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: Are documentation ratio thresholds initially passable?
+    why_it_matters: CI gate might fail immediately.
+    known: Thresholds are specified.
+    unknown: Current ratios unknown.
+    resolution_path: Run checker in warn mode after implementation.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-13
+    question: What CI environment variables are available?
+    why_it_matters: Fail/warn mode detection relies on CI variable.
+    known: Proposed ENV{CI} detection.
+    unknown: CI provider/config unknown.
+    resolution_path: Inspect CI configs.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-14
+    question: What paths should be excluded from documentation ratios?
+    why_it_matters: Wrong exclusions distort quality metrics.
+    known: Default excludes were proposed.
+    unknown: Actual generated/vendor/build paths unknown.
+    resolution_path: Inspect repo and generated paths.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-15
+    question: Are there generated files inside source roots?
+    why_it_matters: Quality gate and doc pass must not touch/generated code.
+    known: Generated code excluded in principle.
+    unknown: Location unknown.
+    resolution_path: Inspect repo and build outputs.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-16
+    question: Should source/header docs be applied before or after docs/ reconciliation?
+    why_it_matters: Order affects consistency.
+    known: Latest next-action favors docs reconciliation first.
+    unknown: User has not explicitly ordered all workstreams.
+    resolution_path: User confirmation or project planning.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: QUESTION-17
+    question: Should Codex commit changes, or should it only produce patches?
+    why_it_matters: Generated prompts requested commits; execution environment may vary.
+    known: Prompts specify commit sequences.
+    unknown: User's actual Codex workflow unknown.
+    resolution_path: Ask user or adapt to tooling.
+    priority: medium
+    related_workstreams:
+    - ALL
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-18
+    question: Which claims from other setup/launcher/game design chats are authoritative?
+    why_it_matters: Current chat cannot see those details.
+    known: User said refactors occurred there.
+    unknown: Exact decisions from those chats unknown.
+    resolution_path: Use their future report packages or inspect repo.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Maintain all documentation only in separate sister files.
+    status: rejected as sole strategy
+    reason: Contracts drift when separated from APIs.
+    final_or_tentative: final as sole strategy
+    reconsider_conditions: Reconsider only for generated reference docs extracted from source comments.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / INFERENCE
+  - id: REJECTED-02
+    option: Maintain all documentation only in source/header comments.
+    status: rejected as sole strategy
+    reason: Architecture, dependency policies, and extension recipes need external docs.
+    final_or_tentative: final as sole strategy
+    reconsider_conditions: Never as complete solution; external docs still needed.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT / INFERENCE
+  - id: REJECTED-03
+    option: Duplicate full function documentation in both headers and source files.
+    status: rejected
+    reason: Creates contradictions and bloat.
+    final_or_tentative: final
+    reconsider_conditions: Only reconsider for source-only exported APIs with no header.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / INFERENCE
+  - id: REJECTED-04
+    option: Comment every line or narrate obvious control flow.
+    status: rejected
+    reason: Low-signal comments obscure code and inflate file size.
+    final_or_tentative: final
+    reconsider_conditions: Never for production docs; possible only for teaching material outside repo.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / INFERENCE
+  - id: REJECTED-05
+    option: Include authors, dates, or change logs in file headers.
+    status: rejected
+    reason: Git tracks history; embedded metadata goes stale.
+    final_or_tentative: final
+    reconsider_conditions: Reconsider only if legal/project policy requires it.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / INFERENCE
+  - id: REJECTED-06
+    option: Document register usage for ordinary C/C++ functions.
+    status: rejected
+    reason: Compiler manages registers; useful only for assembly/inline asm/ABI-sensitive code.
+    final_or_tentative: final
+    reconsider_conditions: Reconsider for assembly or inline asm.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / INFERENCE
+  - id: REJECTED-07
+    option: Use compiler warnings or pragmas for documentation enforcement.
+    status: rejected
+    reason: Not compiler-agnostic; violates user spec.
+    final_or_tentative: final
+    reconsider_conditions: Do not reconsider for this quality gate.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-08
+    option: Use clang-tools or AST-level parsing for documentation ratio checking.
+    status: rejected
+    reason: User declared it a non-goal and wanted no external linters.
+    final_or_tentative: final unless user revises constraints
+    reconsider_conditions: Reconsider only if user changes tooling requirements.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-09
+    option: Enforce documentation ratios inside third-party, vendored, generated, or build-artifact code.
+    status: rejected
+    reason: These files are not project-authored docs responsibility.
+    final_or_tentative: final
+    reconsider_conditions: Only reconsider if code becomes first-party.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-10
+    option: Have the doc-ratio checker auto-generate or modify comments.
+    status: rejected
+    reason: Checker is a measurement gate; auto-generation was a non-goal.
+    final_or_tentative: final
+    reconsider_conditions: Separate tool only if user requests later.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-11
+    option: Put long procedural build tutorials in README.
+    status: rejected
+    reason: README should be a high-level landing page; detailed build docs belong elsewhere.
+    final_or_tentative: final for README
+    reconsider_conditions: Use BUILD_OVERVIEW or build docs for commands.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT / INFERENCE
+  - id: REJECTED-12
+    option: Use marketing slogans or hype in README.
+    status: rejected
+    reason: User requested neutral, professional, industry-standard docs.
+    final_or_tentative: final
+    reconsider_conditions: Never unless user deliberately asks for marketing copy.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-13
+    option: Include speculative roadmap/features in README/docs.
+    status: rejected
+    reason: Docs must reflect existing code only.
+    final_or_tentative: final
+    reconsider_conditions: Only include if repo has authoritative roadmap and user approves.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-06
+    label: FACT
+  - id: REJECTED-14
+    option: Create subsystem specs for non-existent subsystems.
+    status: rejected
+    reason: Would invent architecture and mislead future maintainers.
+    final_or_tentative: final
+    reconsider_conditions: Create only when repo evidence supports a material subsystem.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT / INFERENCE
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Per-file documentation strategy answer
+    type: advisory output
+    purpose: Defined what to document and where.
+    status: generated, not executed
+    origin: Assistant response early in chat
+    carry_forward: 'yes'
+    notes: Conceptual basis for later prompts.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: C/C++ documentation best practices answer
+    type: advisory output
+    purpose: Defined inline/block/header/source documentation rules.
+    status: generated, not executed
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Best-practice rationale.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: dsys_file.h example
+    type: example code/documentation
+    purpose: Showed structured C header/API docs.
+    status: example only
+    origin: Assistant response
+    carry_forward: style reference only
+    notes: Not a repo file or project fact.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: dsys_file_posix.c example
+    type: example code/documentation
+    purpose: Showed implementation rationale comments.
+    status: example only
+    origin: Assistant response
+    carry_forward: style reference only
+    notes: Not a repo file.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: arena.hpp / arena.cpp examples
+    type: example code/documentation
+    purpose: Showed C++98 class/ownership/no-throw documentation.
+    status: example only
+    origin: Assistant response
+    carry_forward: style reference only
+    notes: Not repo files.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: Detail vs file-size guidance
+    type: advisory output
+    purpose: Introduced tiered documentation and bloat-control ideas.
+    status: generated, not executed
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Later formal ratios supersede advisory ranges.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: README landing page Codex prompt
+    type: prompt
+    purpose: Rewrite README as industry-standard landing page.
+    status: generated, not executed
+    origin: Assistant response
+    carry_forward: yes, but partly superseded by ARTIFACT-12
+    notes: Useful if only README is being modified.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Codex prompt to document every file
+    type: prompt
+    purpose: Full source/header/docs documentation pass.
+    status: generated, not executed
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Use after repo scan and typo-free standards alignment.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: Documentation ratio quality gate Codex prompt
+    type: prompt
+    purpose: Implement Python checker, CMake integration, and docs.
+    status: generated, not executed
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Primary artifact for WORKSTREAM-04.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: User-provided documentation ratio specification
+    type: specification
+    purpose: Defined mechanical documentation gate requirements and thresholds.
+    status: input, not implementation
+    origin: User message
+    carry_forward: 'yes'
+    notes: Highest authority for WORKSTREAM-04.
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: Upgraded international-standards documentation prompt
+    type: prompt
+    purpose: Stricter docs-only prompt aligned with C89/C90, C++98, assembly, Markdown.
+    status: generated, not executed; contains typo
+    origin: Assistant response
+    carry_forward: yes, after correction
+    notes: Correct determinism typo before reuse.
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Post-refactor docs reconciliation and README overhaul prompt
+    type: prompt
+    purpose: Scan repo, update docs/**, overhaul README, check consistency.
+    status: generated, not executed
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Most direct next-action prompt.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: docs/COMPONENTS.md
+    type: proposed file
+    purpose: Explain setup/launcher/engine/game components.
+    status: not created in this chat
+    origin: Prompt artifact
+    carry_forward: yes if repo supports it
+    notes: Do not create if components do not exist.
+    label: INFERENCE
+  - id: ARTIFACT-14
+    name_or_description: docs/BUILD_OVERVIEW.md
+    type: proposed file
+    purpose: High-level CMake/build topology without README bloat.
+    status: not created in this chat
+    origin: Prompt artifact
+    carry_forward: yes if repo supports it
+    notes: Should derive from actual CMake.
+    label: INFERENCE
+  - id: ARTIFACT-15
+    name_or_description: scripts/doc_ratio_check.py
+    type: proposed file
+    purpose: Standalone Python comment-ratio checker.
+    status: not created in this chat
+    origin: Prompt artifact
+    carry_forward: yes if implementing quality gate
+    notes: Must follow user CLI/threshold spec.
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: docs/DOCUMENTATION_STANDARDS.md
+    type: proposed file
+    purpose: Formal documentation ratio and standards explanation.
+    status: not created in this chat
+    origin: Prompt artifact
+    carry_forward: yes if implementing quality gate
+    notes: Should explain drift detector purpose.
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: Context Transfer Packet
+    type: handoff text
+    purpose: Maximum-fidelity transfer summary for this old chat.
+    status: generated in prior assistant response
+    origin: Current visible chat
+    carry_forward: 'yes'
+    notes: Used as source for this package.
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: Full chat report Markdown
+    type: generated file
+    purpose: Main human-readable report for this chat.
+    status: created by this response if file generation succeeds
+    origin: Current task
+    carry_forward: 'yes'
+    notes: File 1 in package.
+    label: FACT
+  - id: ARTIFACT-19
+    name_or_description: Spec sheet YAML
+    type: generated file
+    purpose: Structured data for future master spec book.
+    status: created by this response if file generation succeeds
+    origin: Current task
+    carry_forward: 'yes'
+    notes: File 2 in package.
+    label: FACT
+  - id: ARTIFACT-20
+    name_or_description: Aggregator packet Markdown
+    type: generated file
+    purpose: Compact packet for cross-chat aggregation.
+    status: created by this response if file generation succeeds
+    origin: Current task
+    carry_forward: 'yes'
+    notes: File 3 in package.
+    label: FACT
+  - id: ARTIFACT-21
+    name_or_description: Registers Markdown
+    type: generated file
+    purpose: Standalone stable-ID tables.
+    status: created by this response if file generation succeeds
+    origin: Current task
+    carry_forward: 'yes'
+    notes: File 4 in package.
+    label: FACT
+  - id: ARTIFACT-22
+    name_or_description: Reader brief Markdown
+    type: generated file
+    purpose: Short human-readable summary.
+    status: created by this response if file generation succeeds
+    origin: Current task
+    carry_forward: 'yes'
+    notes: File 5 in package.
+    label: FACT
+  - id: ARTIFACT-23
+    name_or_description: Verification and audit Markdown
+    type: generated file
+    purpose: Reliability assessment and manual verification checklist.
+    status: created by this response if file generation succeeds
+    origin: Current task
+    carry_forward: 'yes'
+    notes: File 6 in package.
+    label: FACT
+  - id: ARTIFACT-24
+    name_or_description: Manifest Markdown and ZIP archive
+    type: generated file/archive
+    purpose: Package index and downloadable bundle.
+    status: created by this response if file generation succeeds
+    origin: Current task
+    carry_forward: 'yes'
+    notes: File 7 plus ZIP.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Future assistant assumes repository was scanned in this chat.
+    consequence: False repo claims and bad docs.
+    likelihood: medium
+    severity: high
+    mitigation: State repeatedly that no repo scan occurred; require repo inspection first.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-02
+    risk: Future README overclaims features/platforms/maturity.
+    consequence: Public credibility loss and misleading users.
+    likelihood: medium
+    severity: high
+    mitigation: Use only repo evidence; mark unknowns.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-03
+    risk: Docs preserve stale pre-refactor architecture.
+    consequence: Contributors follow wrong component boundaries.
+    likelihood: medium
+    severity: high
+    mitigation: Reconcile every docs statement against code and CMake.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-04
+    risk: Source documentation bloats files with obvious narration.
+    consequence: Reduced readability and maintainability.
+    likelihood: medium
+    severity: medium
+    mitigation: Keep source comments to rationale/hazards; use header contracts.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / INFERENCE
+  - id: RISK-05
+    risk: Header/source contract duplication creates drift.
+    consequence: Contradictory API behavior after changes.
+    likelihood: medium
+    severity: high
+    mitigation: Header is canonical; source does not restate contracts.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT / INFERENCE
+  - id: RISK-06
+    risk: Codex changes code while adding documentation.
+    consequence: Runtime/build regression.
+    likelihood: medium
+    severity: high
+    mitigation: Use hard no-refactor/no-logic-change constraints and inspect diffs.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-07
+    risk: Documentation ratio gate fails CI immediately.
+    consequence: Build blockage before code is documented enough.
+    likelihood: medium
+    severity: medium/high
+    mitigation: Run warn mode first; document escape hatch; do not silently weaken thresholds.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT / INFERENCE
+  - id: RISK-08
+    risk: Heuristic parser miscounts comments in edge cases.
+    consequence: False warnings or failures.
+    likelihood: medium
+    severity: medium
+    mitigation: Document limitations; keep parser simple; tune only if observed.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-09
+    risk: Path exclusions miss generated/vendor code.
+    consequence: Ratios distorted by non-project files.
+    likelihood: medium
+    severity: medium
+    mitigation: Inspect repo and tune DOC_RATIO_EXCLUDES.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: RISK-10
+    risk: Other setup/launcher/game chat decisions are unavailable.
+    consequence: This chat lacks exact refactor details.
+    likelihood: high
+    severity: medium/high
+    mitigation: Use repo evidence and/or later packages from those chats.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-11
+    risk: README becomes too technical or too shallow.
+    consequence: Fails either lay users or engineers.
+    likelihood: medium
+    severity: medium
+    mitigation: 'Layer sections: plain overview, architecture, docs map.'
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-12
+    risk: Documentation ratios incentivize low-quality filler comments.
+    consequence: Numerical compliance without real maintainability.
+    likelihood: medium
+    severity: medium
+    mitigation: Document ratios as drift detector; retain qualitative standards.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT / INFERENCE
+  - id: RISK-13
+    risk: Known typo in standards prompt causes prompt-quality issue.
+    consequence: Minor confusion in Codex run.
+    likelihood: low
+    severity: low/medium
+    mitigation: Correct before reuse.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-14
+    risk: Package over-compresses prompt artifacts.
+    consequence: Future assistant loses exact wording that matters.
+    likelihood: low
+    severity: medium
+    mitigation: Include full prompt bank or clear artifact references.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: RISK-15
+    risk: Future aggregator treats assistant suggestions as user decisions.
+    consequence: False master spec requirements.
+    likelihood: medium
+    severity: high
+    mitigation: Use labels and status fields; preserve tentative status.
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Actual project name.
+    why_verification_needed: Needed for README/docs identity.
+    suggested_source_type: Inspect CMake project(), README title, repo metadata.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Actual top-level directory tree.
+    why_verification_needed: Needed for docs map and component docs.
+    suggested_source_type: Inspect repository tree.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Actual CMake target graph.
+    why_verification_needed: Needed for build overview and dependency docs.
+    suggested_source_type: Inspect all CMakeLists.txt files.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: License file and terms.
+    why_verification_needed: README must link/state license accurately.
+    suggested_source_type: Inspect LICENSE or equivalent.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Supported platforms.
+    why_verification_needed: Avoid overclaiming README/platform docs.
+    suggested_source_type: Inspect platform code, CMake, CI, docs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Project maturity/status.
+    why_verification_needed: README status must be evidence-based.
+    suggested_source_type: Inspect docs, releases, issue tracker if available.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Existing docs inventory.
+    why_verification_needed: Avoid duplicate or conflicting docs.
+    suggested_source_type: Inspect docs/.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Existing docs stale references.
+    why_verification_needed: Identify outdated paths/components after refactor.
+    suggested_source_type: Search docs for old names and paths.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Existing README content.
+    why_verification_needed: Preserve accurate useful content while overhauling.
+    suggested_source_type: Read README.md.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: Public/private API boundary.
+    why_verification_needed: Needed before documenting every public symbol.
+    suggested_source_type: Inspect include directories, export macros, build targets.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: Existing documentation/comment style.
+    why_verification_needed: New comments should preserve project conventions.
+    suggested_source_type: Inspect representative headers/sources.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Source roots for doc-ratio checker.
+    why_verification_needed: Defaults src/include may be wrong.
+    suggested_source_type: Inspect repo tree and CMake source lists.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-13
+    item: Assembly file existence and conventions.
+    why_verification_needed: Assembly docs only apply if files exist.
+    suggested_source_type: Search .asm/.s/.S files.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-14
+    item: Generated/vendor/build path exclusions.
+    why_verification_needed: Needed for ratio gate correctness.
+    suggested_source_type: Inspect repo directories and generated output paths.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-15
+    item: CI environment conventions.
+    why_verification_needed: Needed for local warn / CI fail detection.
+    suggested_source_type: Inspect CI config files.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-16
+    item: Initial documentation ratios.
+    why_verification_needed: Determines whether CI gate will fail immediately.
+    suggested_source_type: Run checker in warn mode after implementation.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-17
+    item: Python availability in build environments.
+    why_verification_needed: CMake gate depends on Python3 interpreter.
+    suggested_source_type: Check developer/CI toolchains.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-18
+    item: Corrected standards prompt before reuse.
+    why_verification_needed: Known typo exists in generated prompt.
+    suggested_source_type: Manually edit Prompt A.4 line.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: VERIFY-19
+    item: Created package files exist and open.
+    why_verification_needed: Needed for this response's artifact claim.
+    suggested_source_type: Check /mnt/data package outputs.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: VERIFY-20
+    item: ZIP contains all requested files.
+    why_verification_needed: Needed for downloadable package integrity.
+    suggested_source_type: Inspect ZIP manifest/listing.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  spec_book_notes:
+    likely_sections:
+    - Documentation Philosophy and Standards
+    - Repository Documentation Architecture
+    - README/Public Documentation
+    - CMake Quality Gates
+    - Codex Automation Rules
+    - Post-Refactor Documentation Synchronization
+    unique_contributions:
+    - Header/source/docs hierarchy
+    - Documentation ratio gate thresholds and behavior
+    - README as temporary website/landing page
+    - Post-refactor docs reconciliation prompt
+    - Stable prompt artifacts
+    possible_duplicates_with_other_chats:
+    - Setup/launcher/game architecture
+    - Build system details
+    - Supported platforms
+    - Project purpose and maturity
+    conflicts_to_watch_for:
+    - Different component names in other chats
+    - Later repo state superseding assumptions
+    - Existing docs structure diverging from proposed docs list
+    formal_requirements_candidates:
+    - No speculative documentation
+    - Headers as API contract authority
+    - Source comments limited to rationale/hazards
+    - README as landing page and docs hub
+    - Local warn / CI fail documentation quality gate
+    background_context_candidates:
+    - Example dsys_file and arena snippets
+    - Advisory comment-balance guidance
+    - Assistant prompt drafts
+    needs_user_confirmation:
+    - Order of docs reconciliation vs source/header comment insertion
+    - Whether to implement quality gate immediately
+    - Whether Codex should commit changes or produce patches
+  final_recommendations:
+    next_action_if_continuing_this_chat: Inspect the current repository, then run docs/ and README reconciliation using the latest post-refactor prompt.
+    next_action_for_aggregator: Merge this as the documentation governance/reporting package, preserving all labels and unverified status.
+    user_checks_required:
+    - Confirm next implementation workstream.
+    - Provide repo or current file tree.
+    - Confirm whether quality gate should be implemented now or later.

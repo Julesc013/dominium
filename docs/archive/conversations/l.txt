@@ -1,0 +1,593 @@
+GPT-5.5 Pro • build 2026-05-25
+
+# Human-Readable Chat Report — Dominium + Domino Codex Planning and Handoff
+
+## 1. One-Page Orientation
+
+This chat was mainly about preserving and developing the implementation plan for the **Dominium + Domino** project. **FACT:** The user began by giving an extended master prompt that defined the architecture, philosophy, constraints, and product model for Dominium and Domino. In that project model, **Domino** is the deterministic, fixed-point, ISO C89 engine layer, and **Dominium** is the C++98 product suite built on top of it. The product suite includes the game, launcher, setup tool, and development tools such as modcheck and future editors. The chat’s early work was to turn that broad architecture into a practical forward plan and then into self-contained Codex prompts that could be used to implement the project incrementally.
+
+The most important problem this chat tried to solve was **scope control**. The user’s initial architecture covered a very large target: deterministic simulation, many platform backends, many renderers, retro targets, GUI/TUI/CLI product shells, packs, mods, setup, replay, networking, hydrology, climate, AI/jobs, power/fluid/logic networks, and compatibility rules. The assistant recommended not trying to build everything at once. The central implementation idea became a **Milestone-0 vertical slice**: prove the architecture with the smallest useful chain first. That chain was launcher → repository/manifest → game product → deterministic headless simulation → checksum/save file. Everything else would be layered on afterward.
+
+From that recommendation, the chat produced a sequence of **six Codex prompts**. These prompts were not merely rough suggestions; they were written as copy-paste implementation instructions for Codex. They covered: creating canonical docs, setting up the repo/CMake skeleton, implementing fixed-point numeric types and deterministic RNG, adding the DOMINIUM_HOME repo model and product manifests, building a minimal deterministic sim with TLV save/load, and wiring launcher-to-game process spawning through dsys. **FACT:** These prompts were generated in the chat. **UNCERTAIN / UNVERIFIED:** The chat does not establish that the prompts were actually executed against the repository.
+
+After the Milestone-0 sequence, the user widened the planning again, asking for prompts covering the product interfaces: **CLI**, **TUI**, and **GUI** for launcher, game, setup, and tools, using common components. The assistant generated three more prompts for those layers. Then the user asked for another sequence: shared input system, shared state machines, cross-platform IME; then multi-window GUI, dgfx pipelines, GPU backend detection; and finally pack system integration. The first two of those three prompts were generated. **FACT:** The third prompt, for pack system integration including sound/music/texture/shader packs, GUI theme packs, vector icons, and asset streaming, was requested but not generated before the conversation moved on.
+
+A separate major thread concerned how product executables should behave when launched. The user wanted each product binary to act as a CLI tool when called from a terminal, but default to GUI when double-clicked from a desktop explorer, then fall back to TUI, then CLI if earlier modes failed. The assistant explored edge cases, recommended a policy, and then produced a large Codex prompt for a **unified startup/mode dispatcher**. The recommended policy was: explicit `--mode=` flags win; terminal invocation defaults to CLI; no-terminal/double-click invocation tries GUI → TUI → CLI; and game server/headless flags force headless behavior. This became one of the most important design outputs of the chat. However, the later report identified a risk: the generated startup prompt’s proposed C module could cause linker or layering problems if it directly references every product’s C++ entrypoint from `domino_core`.
+
+The chat also included a platform/render/API questionnaire. The user pasted a questionnaire and an answer allegedly produced by Codex in the repo, then asked the assistant to fill in missing data from the repo/docs. A previous answer claimed to have inspected `dominium.zip`, but the final handoff treated that inspection claim as **UNCERTAIN / UNVERIFIED** because the visible chat did not prove the repo was actually inspected. This matters because future work must not rely on repo-specific claims without checking the current uploaded repo or checkout.
+
+Finally, the user retired the chat and asked for a maximum-fidelity context transfer packet. That packet was produced, then turned into a downloadable report package, then rendered back into chat as a readable index. The present report is different: it is not a machine-oriented handoff. It explains the substance of the conversation in plain language so the user can understand and preserve the reasoning without re-reading the entire chat.
+
+The most important things to remember are: the project’s strict architecture constraints, the Milestone-0 prompt sequence, the later shared CLI/TUI/GUI/input/render prompt sequences, the missing pack-system prompt, the unified startup policy, the unresolved repo-verification issue, and the need to treat generated prompts as plans rather than proof of implementation.
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began with a full architecture charter
+
+The user opened with an extensive master prompt defining the role and expectations for the assistant in the Dominium + Domino project. The assistant was to act as a senior engine architect, be deterministic, technical, concise, and respect portability, layering, compatibility, and language constraints. **FACT:** The user specified that Domino should use ISO C89, while Dominium UI/product code could use a portable C++98 subset. This was not a minor coding-style preference; it shaped every later prompt and risk analysis.
+
+The initial user prompt established the identity of the project. Domino was described as a deterministic, fixed-point engine with stable ABI semantics across a very large platform/architecture matrix, including modern systems like Windows, Linux, macOS, Web/WASM, and Android, plus retro targets such as DOS, Win16, CP/M, classic Mac, and old graphics hardware. Dominium was defined as a product suite built on Domino, containing a game, launcher, setup/installer, and tools.
+
+From the start, the project was framed as a long-lived engine and product ecosystem, not a short-lived prototype. The user emphasized stable formats, backward/forward compatibility, versioned compatibility profiles, mod/pack/tool compatibility, deterministic replay/networking, and strict layering. This gave the rest of the conversation a very clear direction: every plan had to preserve determinism, portability, and compatibility.
+
+### The first planning phase turned the architecture into a roadmap
+
+The user then asked for a plan going forward. The assistant produced a phased plan covering specification consolidation, directory/CMake layout, dsys, dgfx, UI core, DOMINIUM_HOME metadata, launcher v0, game v0, tools, packs, retro backends, replay/networking, and documentation/examples.
+
+That plan was broad and comprehensive, but the user then asked for recommendations. The assistant gave a more critical assessment: the architecture was sound in ambition, but too large to implement all at once. The recommendation was to narrow the first working target. This is where the “Milestone-0 vertical slice” idea became central. The assistant recommended starting with one backend, one primary development platform, headless and minimal GUI only later, and a small chain proving launcher → repo → game → deterministic sim → save.
+
+**INFERENCE:** The user accepted this direction in practice, because the next request was to generate Codex prompts to implement each step fully. The user did not explicitly say, “I formally approve the Milestone-0 plan,” but they proceeded to ask for prompts based on it.
+
+### The six Codex prompts became the first implementation package
+
+The user asked for six Codex prompts and reminded the assistant about supported numeric formats: `U8`, `I8`, `U16`, `I16`, `Q4.12`, `U32`, `I32`, `q16.16`, `Q24.8`, `u64`, `i64`, `q48.16`, and similar formats. That correction mattered because it broadened the numeric core beyond only Q16.16/Q24.8.
+
+The assistant then generated six long prompts:
+
+1. **Prompt 1** created `SPEC_IDENTITY.md` and `SPEC_PRODUCTS.md`, documentation only.
+2. **Prompt 2** created the canonical repo layout, CMake skeleton, core headers, and product stubs.
+3. **Prompt 3** implemented deterministic numeric core types, fixed-point operations, RNG, and a numeric test harness.
+4. **Prompt 4** added the DOMINIUM_HOME repo model, product manifest loading, and launcher enumeration.
+5. **Prompt 5** added a minimal deterministic sim, headless game loop, checksum, and TLV save/load.
+6. **Prompt 6** added dsys process spawning and made the launcher run the game.
+
+These prompts were written as implementation tasks for Codex. They included file paths, APIs, CMake changes, example code, and output expectations. The purpose was to allow Codex to operate with enough context even in a separate session.
+
+The assistant’s later package flagged important risks in these prompts. For example, the numeric prompt used `long long` for 64-bit types even though strict ISO C89 does not include `long long`. The TLV prompt allowed native-endian binary output “for now,” which conflicts with the long-term cross-platform save compatibility goal. These were not necessarily fatal for a prototype, but they were marked as things that must be repaired before treating the implementation as stable.
+
+### The next phase expanded from Milestone 0 into product-wide UI layers
+
+After the first six prompts, the user asked for three more prompts to complete CLI, TUI, and GUI features for launcher, game, setup, and tools using common components. This expanded the implementation plan beyond the headless vertical slice.
+
+The assistant generated:
+
+* a universal CLI prompt,
+* a universal TUI prompt,
+* and a universal GUI prompt.
+
+The CLI prompt put command parsing and dispatch into `domino/cli`. The TUI prompt added dsys terminal abstraction and text widgets. The GUI prompt added dgfx-based GUI primitives, widgets, layout, rendering, and vector-first styling. All three were framed around the same architecture rule: products should not duplicate logic and should not bypass Domino.
+
+The user then asked for another sequence of three prompts. The first would cover shared input, shared state machines, and cross-platform IME. The second would cover multi-window GUI, dgfx pipelines, and GPU backend detection. The third would cover pack system integration, including sound, music, texture, shader packs, GUI themes, vector icons, and asset streaming.
+
+The assistant generated the first two prompts. The third was never produced because the conversation changed direction. That missing third prompt remains an important unresolved item.
+
+### The conversation shifted to executable startup behavior
+
+The user then described a concrete UX goal: product executables should use CLI when called in the terminal, but when double-clicked in a desktop explorer they should default to GUI, then fall back to TUI, then CLI if needed.
+
+The assistant first explained a possible policy. Then the user asked what else needed consideration before writing a Codex prompt. This led to a useful design-risk discussion: explicit modes versus AUTO mode, structural GUI failure versus logical GUI error, TUI/CLI boundaries, Windows console subsystem behavior, macOS app bundles, desktop shortcuts, headless environments, logging, deterministic isolation, and per-product quirks.
+
+The user then asked for recommendations. The assistant recommended a clean startup policy: explicit flags first, no environment/config override in v1, terminal detection through dsys, generic AUTO behavior, product-specific headless handling for the game, build-time GUI/TUI capabilities, and structural error codes for fallback. The user accepted this enough to request a “one big Codex prompt” to implement it.
+
+The assistant generated the unified startup/mode dispatcher prompt. Later, in the final handoff, the assistant flagged a serious implementation risk: the generated prompt suggested putting product dispatchers in a C file inside `domino_core` that referenced product-specific C++ entrypoints. Depending on how targets are linked, that can cause unresolved symbols or bad architectural dependencies. This does not invalidate the startup policy, but it means the prompt should be repaired before use.
+
+### The user asked about platform/render/API knowledge and repo state
+
+Near the end, the user asked whether the assistant was aware of detailed knowledge of platforms, renderers, and APIs, and mentioned an uploaded `dominium.zip` as an up-to-date copy of the repo. The user pasted a detailed questionnaire and a previous Codex-generated answer that had many placeholders filled.
+
+The user asked the assistant to fill in missing data from the repo and docs. The assistant answered with a detailed platform/render/API/build-context response and claimed to have inspected `dominium.zip`.
+
+However, the later context transfer packet treated that inspection claim as **UNCERTAIN / UNVERIFIED**. This was careful and correct: within the visible chat, there was no reliable tool trace proving the repo had actually been inspected. Therefore, future assistants must verify `dominium.zip` or the active checkout before relying on the platform/render/API answer.
+
+### The final phase became context preservation
+
+The user then retired the chat and requested a maximum-fidelity context transfer packet. The assistant produced one, structured around projects, decisions, tasks, constraints, risks, open questions, artifacts, timeline, and next actions. The user then asked for a final downloadable report package. The assistant created seven files plus a ZIP archive. The user then asked to read and inspect that package inside the chat without downloading it. The assistant rendered an in-chat reader version with IDs, tables, and summaries.
+
+The current request is a refinement of that: the user does not want another machine-readable handoff or register dump. The user wants a plain-language human briefing. That is what this report provides.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — The Dominium + Domino architecture
+
+The core topic was the architecture of the Dominium + Domino project. **FACT:** The user defined Domino as a deterministic, fixed-point, C89 engine layer and Dominium as a C++98 product suite. This matters because every implementation decision had to respect those boundaries.
+
+The project architecture includes a large platform matrix, a platform abstraction layer called `dsys`, a rendering IR called `dgfx`, a software renderer baseline, optional GPU and retro backends, a shared UI model, a content/mod/pack layer, stable save/replay/network formats, and a DOMINIUM_HOME repository structure.
+
+The conclusions were clear: future code must not bypass dsys or dgfx, deterministic sim must not use host floating-point, product code should not directly call OS APIs, and old content must not silently break. These are not just preferences; they are the governing rules of the project.
+
+What remains uncertain is how much of this architecture already exists in the current repo and how much is still planned. The chat produced prompts and plans, but it did not prove execution.
+
+### Topic 2 — Scope control and the Milestone-0 vertical slice
+
+The second major topic was how to start implementing such a broad architecture without getting stuck. The assistant recommended narrowing the first implementation to a minimal vertical slice.
+
+The reasoning was practical. If the project tries to implement retro platforms, GPU backends, hydrology, AI, packs, GUI/TUI, networking, and setup all at once, the architecture may never stabilize. A small vertical slice proves the most important boundaries early: Domino core, dsys, repo manifests, launcher, game, deterministic sim, and save output.
+
+The conclusion was that the first implementation should focus on a simple deterministic chain, not on full feature breadth. That led directly to the six Codex prompts.
+
+The unresolved issue is whether those prompts were ever run and whether the generated code, if any, conforms to the project’s strict C89/C++98 and determinism requirements.
+
+### Topic 3 — Numeric formats and deterministic simulation
+
+Numeric formats came up explicitly when the user reminded the assistant that the project supports several integer and fixed-point formats, including `Q4.12`, `q16.16`, `Q24.8`, and `q48.16`. This changed the prompt design by requiring the numeric core to include more than one fixed-point type.
+
+The numeric core was central because deterministic simulation depends on it. The generated prompt specified fixed-point types, deterministic RNG, saturating arithmetic, and a numeric test harness.
+
+The unresolved complication is C89 portability. Standard C89 does not provide `long long`, but `u64`, `i64`, and `q48_16` require 64-bit representation. Future work must decide whether to allow compiler extensions, emulate 64-bit values for strict retro targets, or define platform tiers with conditional support.
+
+### Topic 4 — DOMINIUM_HOME, manifests, and product discovery
+
+The DOMINIUM_HOME repository model was a major architectural piece. It defines where product builds, mods, packs, and instances live. The launcher is supposed to discover products and actions rather than hard-code paths.
+
+Prompt 4 translated this into a minimal repo manifest system. It proposed product manifests, compatibility profile fields, and a launcher path that loads a primary game product. This was important because the launcher→game relationship is central to Dominium as a product suite.
+
+The unresolved issue is that the prompt’s minimal manifest parser and hardcoded platform path are only a starting point. A real implementation must generalize product discovery, avoid duplicated path logic, and preserve compatibility/versioning rules.
+
+### Topic 5 — CLI, TUI, and GUI product layers
+
+The user wanted launcher, game, setup, and tools to support CLI, TUI, and GUI through common components. This topic came up after the Milestone-0 prompts.
+
+The main conclusion was that CLI, TUI, and GUI should not be implemented separately inside each product. Instead, Domino should provide shared infrastructure: a CLI command registry, a TUI widget/layout/input system through dsys terminal, and a GUI widget/layout/rendering system through dgfx.
+
+This topic connects directly to the startup dispatcher later. If every product has shared CLI/TUI/GUI entrypoints, startup mode selection can route to those modes consistently.
+
+The unresolved issue is whether the prompts are too broad and whether the existing repo already has overlapping modules. Future work should inspect the repo before applying these prompts.
+
+### Topic 6 — Shared input, state machines, and IME
+
+The user requested a prompt for shared input system, state machines, and cross-platform IME. The assistant generated one.
+
+This topic matters because GUI/TUI text and input behavior must be portable and deterministic. The proposed input system normalizes raw dsys events into deterministic Domino input events. The state machine framework gives products a common way to manage screens and workflows. The IME layer abstracts platform-specific text composition.
+
+What remains uncertain is how much of this already exists in the repo and how realistic cross-platform IME is for early implementation. IME is often platform-specific and complex, so the generated prompt should probably be applied carefully or split.
+
+### Topic 7 — Multi-window GUI, dgfx pipelines, and GPU backend detection
+
+The user requested a prompt for multi-window GUI, render pipelines, and backend detection. The assistant generated it.
+
+This topic extends the rendering architecture. It proposed logical GUI windows backed by dsys window handles, dgfx pipelines/passes/targets, basic materials, and backend detection with software fallback. The rationale was to support richer GUI products while preserving the dgfx boundary.
+
+The unresolved issue is API alignment. The prompt proposed new APIs, but the actual repo’s dgfx API may already differ. The final report therefore recommends verifying current render headers and backend code before applying the prompt.
+
+### Topic 8 — Pack system integration
+
+The user requested a third prompt for pack system integration, including sound packs, music packs, texture packs, shader packs, GUI theme packs, vector icon system, and asset streaming. This prompt was not generated.
+
+This is important because packs are central to Dominium’s content architecture. The user’s master prompt required vector fallback, raster skins, sound/music packs, asset formats, pack discovery/versioning/dependencies, overrides, and fallback rules.
+
+The unresolved work is to generate this prompt, ideally after inspecting actual content/pack docs and source files. The prompt should probably be staged, because pack integration touches content loading, dependency resolution, audio, rendering, shader compilation, GUI themes, vector icons, and streaming.
+
+### Topic 9 — Startup behavior for product executables
+
+The startup behavior discussion was one of the most concrete design threads. The user wanted one executable per product that behaves differently depending on how it is launched: terminal means CLI; double-click means GUI first, then TUI, then CLI.
+
+The assistant recommended a mode policy and generated a Codex prompt. The recommended design used `dsys_running_in_terminal()`, `d_app_mode`, `d_app_params`, capability masks, and per-product mode wrappers.
+
+This topic remains important but unresolved in implementation. The policy is strong, but the implementation prompt needs repair to avoid linking problems. The safer approach is to keep the generic mode-selection algorithm independent of product-specific symbols, likely through callback tables or product-local dispatchers.
+
+### Topic 10 — Platform/render/API questionnaire
+
+The user wanted detailed answers about target platforms, platform subsystems, renderers, engine APIs, completion criteria, build context, and repo state.
+
+The assistant produced a detailed answer, but the final handoff treated repo-specific claims as unverified. That is the right caution. This topic matters for future planning and spec-book construction, but it cannot be treated as authoritative until the actual repo is inspected.
+
+### Topic 11 — Handoff, report package, and in-chat reader
+
+The final topic was continuity preservation. The user first requested a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat reader version, and now this human-readable report.
+
+This topic matters because the chat contained many plans, prompts, decisions, risks, and unresolved issues. Without careful preservation, a future assistant could repeat old work, treat tentative suggestions as decisions, or lose the missing prompt and startup-dispatcher caveat.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals the user stated
+
+The user explicitly wanted to build and plan the Dominium + Domino architecture under strict technical constraints. The user wanted forward planning, implementation prompts for Codex, common CLI/TUI/GUI systems, shared input/state/IME, multi-window GUI/render pipeline/backend detection, pack system integration, startup behavior for executables, platform/render/API questionnaire answers, and finally a maximum-fidelity handoff/report package.
+
+Each of these goals had a practical purpose. The Codex prompts were intended to move from architecture into implementation. The common UI/system prompts were intended to avoid duplicated pipelines. The startup policy was intended to improve product UX. The final handoff/report work was intended to preserve state across retired chats.
+
+### Inferred goals
+
+**INFERENCE:** The user was also trying to avoid repeatedly re-explaining the project. The increasingly detailed handoff/report requests show a desire to build a reusable continuity system for a long-running project.
+
+**INFERENCE:** The user wanted future assistants and Codex sessions to operate from stable, self-contained prompts rather than improvising from partial memory.
+
+**INFERENCE:** The user wanted the chat’s outputs to eventually contribute to a full Project Spec Book.
+
+### Goals that changed over time
+
+The conversation moved through several phases:
+
+1. broad architecture,
+2. forward plan,
+3. narrowed implementation prompts,
+4. expanded shared systems prompts,
+5. startup UX design,
+6. repo/platform questionnaire,
+7. context transfer and report packaging,
+8. in-chat reading/explanation.
+
+The goal did not contradict itself; it evolved from planning and implementation toward preservation and aggregation.
+
+### Goals that remain unresolved
+
+The most important unresolved goals are:
+
+* verify actual repo state,
+* determine which prompts were executed,
+* generate the missing pack-system prompt,
+* repair the startup dispatcher prompt,
+* verify platform/render/API questionnaire claims,
+* decide how to handle strict C89 64-bit fixed-point support,
+* define endian-stable TLV behavior if not already done.
+
+---
+
+## 5. Decisions Made and Why
+
+### Summary of major decisions
+
+The most important decisions were:
+
+* Domino is ISO C89.
+* Dominium product/UI code is C++98.
+* Platform access goes through dsys.
+* Rendering goes through dgfx.
+* The software renderer is mandatory.
+* Vector-only fallback must always work.
+* DOMINIUM_HOME is the repository model.
+* Compatibility and old content preservation are mandatory.
+* The first implementation should be a narrow Milestone-0 vertical slice.
+* CLI/TUI/GUI should be common across products.
+* Terminal invocation defaults to CLI; desktop/no-terminal launch defaults to GUI→TUI→CLI.
+* Explicit mode flags override startup heuristics.
+* Game headless/server flags force headless.
+
+### Core architecture decisions
+
+The user’s master prompt established the strongest decisions. Domino must be C89 because the project aims at very broad portability, including retro systems. Dominium can use C++98 because product-level UI and application code benefit from some object structure, but still need portability. The dsys and dgfx boundaries exist to prevent platform and renderer differences from leaking into engine/product logic.
+
+These decisions are final unless the user changes the project’s foundation. They affect every future implementation prompt. A future assistant should not casually suggest C++17, OS-native product drawing, or direct platform APIs inside product code.
+
+### Determinism and numeric decisions
+
+The user required deterministic fixed-point behavior. Numeric formats were explicitly expanded by the user. The assistant incorporated those into Prompt 1 and Prompt 3.
+
+The rationale is straightforward: deterministic simulation, save/load, replay, and networking require stable numeric behavior across architectures. Floating-point differences across compilers, CPUs, and platforms are unacceptable in deterministic sim.
+
+The unresolved part is how to implement `u64`, `i64`, and `q48_16` under ISO C89. This decision is not yet fully resolved. It affects the numeric core, serialization, and retro targets.
+
+### Milestone-0 decision
+
+The assistant recommended narrowing implementation to a vertical slice. This was a recommendation, not an explicit user decree. But the user then asked for six Codex prompts implementing the steps, so the recommendation became an operational direction.
+
+This decision made sense because it reduces risk. A working launcher→game→sim→save pipeline proves the core architecture earlier than broad backend/platform work would. It also creates concrete tests and checksums.
+
+This could be revisited after the vertical slice works. At that point, the project can expand to UI, packs, retro platforms, GPU backends, and networking.
+
+### Shared CLI/TUI/GUI decision
+
+The user explicitly asked for CLI, TUI, and GUI features for launcher, game, setup, and tools using common components. The assistant generated prompts consistent with that.
+
+The rationale is that all products should use common infrastructure rather than each inventing its own command parser, text UI, or GUI pipeline. This reduces bugs and preserves consistency.
+
+This affects product architecture, startup dispatch, input/state systems, and UI rendering.
+
+### Startup policy decision
+
+The user’s startup goal was explicit: terminal invocation should use CLI; double-click should use GUI, then TUI, then CLI if necessary. The assistant recommended additional details: explicit flags win, no env/config override in v1, game server/headless flags force headless, and fallback only happens for structural unsupported errors.
+
+The base startup behavior is a user decision. The finer details are assistant recommendations unless later confirmed. They are good recommendations because they make startup predictable and avoid hiding real GUI/TUI errors.
+
+This decision should be revisited only if packaging realities force changes, especially on Windows and macOS.
+
+### Report package decision
+
+The user explicitly requested a maximum-fidelity transfer packet and then a downloadable report package. Those were produced. This decision matters because it shifts the chat from active planning into preserved state for later continuation and aggregation.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+The most important rejected idea was trying to build the entire architecture at once. It was not rejected because it was wrong; it was rejected because it was too broad for the first implementation pass. The assistant recommended focusing on a Milestone-0 vertical slice first. This rejection is temporary. After the vertical slice works, broader platform/render/sim systems become relevant again.
+
+Starting with complex systems such as hydrology, AI/jobs, ECS, networking, or full worldgen was also deprioritized. The rationale was that these systems depend on deterministic numeric, RNG, tick, save/load, and replay foundations. Building them before the foundations would create hidden instability.
+
+A huge up-front dsys/dgfx abstraction was also deprioritized. The assistant recommended growing those APIs through real use cases. This avoids architecture becoming abstract but untested.
+
+For startup behavior, environment/config mode overrides were deferred. The assistant recommended not adding `DOMINIUM_MODE` or config-based mode preferences in v1 because they complicate precedence and reproducibility. This is not a permanent rejection. It can be reconsidered after the config/instance system is stable.
+
+The idea of falling back from GUI/TUI to another mode on any error was rejected in the recommendation. Only structural unsupported errors should trigger fallback. If the GUI launches successfully but encounters a real content/config error, hiding that by dropping to TUI or CLI would make debugging harder.
+
+Including headless as part of AUTO startup fallback was also rejected. Headless is a game/server mode, not a user interface fallback. It should be explicit or triggered by server flags.
+
+Duplicated product-specific CLI/TUI/GUI pipelines were rejected because they conflict with the user’s shared-common-components goal.
+
+OS-native product drawing was rejected by the master architecture because all rendering must go through dgfx.
+
+C++11+ and floating-point deterministic sim were rejected by the user’s constraints.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The visible reasoning throughout the chat was guided by a few recurring tradeoffs.
+
+The first tradeoff was **scope versus progress**. The architecture is intentionally ambitious, but trying to implement all of it immediately would create high failure risk. The recommendation to build Milestone 0 first was a way to preserve ambition while creating an executable foundation.
+
+The second tradeoff was **portability versus convenience**. C89 and C++98 are less convenient than modern languages, but they support the project’s broad platform ambitions. This affects everything from numeric typedefs to startup code and CMake.
+
+The third tradeoff was **determinism versus platform-native behavior**. Direct OS APIs, floating-point simulation, wall-clock timing, and renderer-dependent logic can all introduce variation. The project avoids this by routing through abstractions and isolating deterministic simulation from UI/render/platform details.
+
+The fourth tradeoff was **generic architecture versus concrete vertical slices**. dsys, dgfx, UI, input, packs, and startup systems need to be general, but they should be proven by simple working paths. This is why the prompts often start with stubs or one platform/backend.
+
+The fifth tradeoff was **user experience versus scriptability**. The startup policy balances both. Terminal invocation should be scriptable CLI. Desktop launch should be GUI-friendly. Explicit flags preserve control.
+
+The sixth tradeoff was **continuity versus overcompression**. The later report package preserved a lot of detail because losing a prompt, caveat, or unresolved issue would cause future rework. The current report translates that structured package into prose so it is easier to understand.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+The most immediate future work is not to write more architecture blindly. It is to verify the repo. The user mentioned `dominium.zip` as an up-to-date copy, but the prior repo-inspection claim is unverified. Before using repo-specific platform/render/API claims or applying prompts, a future assistant should inspect the actual repo files.
+
+The next step depends on which branch the user wants to continue.
+
+If continuing the **Milestone-0 implementation branch**, the next actions are:
+
+1. Verify whether prompts 1–6 were executed.
+2. Build the golden target set.
+3. Run numeric and headless sim tests.
+4. Audit C89/C++98 compliance.
+5. Fix TLV endian issues if needed.
+6. Verify launcher-to-game spawning.
+
+This matters because it turns planning into a real working base.
+
+If continuing the **prompt-generation branch**, the next obvious action is to generate the missing pack-system prompt. That prompt should cover pack manifests, dependencies, deterministic load order, sound/music/texture/shader packs, GUI themes, vector icons, asset streaming, and compatibility rules. But if it is meant to modify existing repo files, pack/content docs should be inspected first.
+
+If continuing the **startup behavior branch**, the next action is to repair the startup dispatcher prompt. The policy is useful, but the implementation design should avoid direct `domino_core` references to every product’s C++ wrappers. A callback-table design or product-local dispatcher is safer.
+
+If continuing the **spec-book branch**, the next action is to extract formal requirements from this chat and compare them with other chat reports. The formal requirements should include C89/C++98, dsys/dgfx boundaries, deterministic fixed-point sim, vector fallback, compatibility preservation, and the startup mode policy. Assistant recommendations should remain labelled unless confirmed by the user.
+
+If continuing the **platform/render/API questionnaire branch**, the next action is to inspect the actual repo and produce a verified answer with file references. The current answer is useful but not authoritative.
+
+Things that could go wrong include applying prompts to mismatched repo APIs, violating C89/C++98, treating generated prompts as already implemented, relying on unverified platform claims, or implementing startup dispatch in a way that breaks linking.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit technical constraints
+
+The non-negotiable technical constraints come primarily from the user’s master prompt:
+
+* Domino is ISO C89.
+* Dominium product/UI code is portable C++98 where needed.
+* Deterministic sim uses fixed-point/integer math.
+* Supported numeric formats include the explicitly mentioned integer and fixed-point formats.
+* No host floating point in deterministic simulation.
+* Platform calls go through dsys.
+* Rendering goes through dgfx.
+* Software renderer baseline must exist.
+* Vector-only fallback must work.
+* Old saves, mods, packs, tools, and instances must not silently break.
+* GUI/TUI/CLI should share logic and not duplicate product behavior.
+
+### Explicit communication/reporting preferences
+
+The user repeatedly requested maximum-fidelity transfer, stable labels, no invention, no silent inference, preservation of tentative status, rejected options, artifacts, and risks. The user also requested plain-language narrative in the final report, not YAML or register dumps.
+
+### Inferred preferences
+
+The user appears to value continuity, self-contained prompts, careful architecture, and critical risk analysis. This is inferred from repeated requests for Codex prompts, transfer packets, report packages, and questions about what else must be considered before implementation.
+
+### Things future assistants should avoid
+
+Future assistants should avoid:
+
+* proposing modern-language shortcuts,
+* bypassing dsys/dgfx,
+* treating assistant suggestions as final user decisions,
+* applying prompts before verifying repo state,
+* hiding uncertainty,
+* summarizing away important unresolved issues,
+* repeating rejected paths,
+* losing the missing pack-system prompt,
+* ignoring the startup dispatcher linker risk.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+The most important artifacts are not code files actually confirmed in the repo; they are prompts, plans, and reports generated inside the chat.
+
+The **Extended Master Starter Prompt** is the most important source artifact. It defined the project architecture and constraints.
+
+The **forward plan** converted the architecture into phases. It is useful as roadmap context but should not override later narrowed recommendations.
+
+The **six Milestone-0 Codex prompts** are central. They describe how to create specs, skeleton code, numeric core, repo manifests, sim/TLV, and launcher process spawn. They should be preserved because they are the clearest implementation path produced in the chat. But they should also be audited before use.
+
+The **universal CLI/TUI/GUI prompts** define the common product interface systems. They are important for future product consistency.
+
+The **shared input/state/IME prompt** and **multi-window/dgfx/backend prompt** extend the common systems. They should be preserved, but likely need repo alignment.
+
+The **missing pack-system prompt** is important precisely because it does not exist yet. The user requested it, so future work should not forget it.
+
+The **unified startup dispatcher prompt** is important but risky. Its policy is valuable; its implementation design needs repair.
+
+The **platform/render/API questionnaire answer** is useful background but must be verified.
+
+The **context transfer packet** and **final report package** were created to preserve this chat. The package included a full report, YAML spec sheet, aggregator packet, registers, reader brief, verification/audit file, manifest, and ZIP. The current report uses those materials but explains the substance rather than focusing on file mechanics.
+
+All these artifacts should feed into a future Project Spec Book selectively. Formal requirements should come from user-stated constraints and confirmed decisions, not from every assistant suggestion.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+The first unresolved issue is the actual repo state. The user said `dominium.zip` was current, but the visible chat does not verify its contents. This matters because future prompts must target real files, not imagined ones. The resolution is simple: inspect the uploaded/current repo before implementing.
+
+The second unresolved issue is prompt execution status. The chat generated many prompts, but it does not establish whether Codex ran them. A future assistant must check for the expected files and code before assuming progress.
+
+The third unresolved issue is C89-compatible 64-bit support. The user requires `u64`, `i64`, and `q48_16`, but strict ISO C89 does not standardize 64-bit integer types. This requires a deliberate portability policy.
+
+The fourth unresolved issue is binary serialization. Prompt 5 allowed native-endian TLV as a temporary simplification, but cross-platform save compatibility likely requires explicit endian encoding. This should be resolved early.
+
+The fifth unresolved issue is startup dispatcher architecture. The startup policy is clear, but the generated prompt may create linker problems. It should be redesigned before implementation.
+
+The sixth unresolved issue is Windows and macOS launch packaging. Terminal detection and double-click behavior depend on subsystem/bundle choices. This was discussed but not settled.
+
+The seventh unresolved issue is the missing pack-system prompt. It remains a requested but unproduced artifact.
+
+The eighth unresolved issue is which platform/render/API details are verified. The questionnaire answer should not be treated as authoritative until the repo/docs are checked.
+
+The ninth unresolved issue is whether broad prompts should be applied as-is or split. The common CLI/TUI/GUI/input/render prompts may be too large for safe Codex execution without repo inspection.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+A future assistant could mistakenly assume the generated prompts were executed. That would cause confusion, duplicated work, or incorrect implementation steps. The fix is to inspect the repo first.
+
+A future assistant could trust the platform/render/API questionnaire answer as verified. The report explicitly says that answer is unverified. The fix is to inspect `dominium.zip` or the active checkout.
+
+A future assistant could apply the startup dispatcher prompt as-is and create linker failures. The fix is to redesign it using callbacks or product-local dispatch.
+
+A future assistant could ignore strict C89/C++98 and introduce modern constructs. This would violate the project’s portability rules.
+
+A future assistant could implement fixed-point using non-portable 64-bit assumptions. This would be a problem especially for retro targets.
+
+A future assistant could leave TLV native-endian and later discover saves are not portable. This would violate compatibility expectations.
+
+A future assistant could overcompress the chat and lose the missing pack-system prompt, the startup risk, or the unverified repo caveat.
+
+A future assistant could merge assistant recommendations into a master spec as if they were user decisions. The fix is to preserve labels: FACT, INFERENCE, UNCERTAIN / UNVERIFIED.
+
+A future assistant could repeat rejected paths, such as trying to implement all systems at once or adding OS-native product drawing.
+
+A future assistant could focus on file packaging rather than the substance. The current report intentionally avoids that by explaining the conversation.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes a large amount of material to a future Project Spec Book.
+
+It should inform chapters on:
+
+* architecture overview,
+* language and determinism policy,
+* numeric formats,
+* dsys platform abstraction,
+* dgfx rendering abstraction,
+* product model,
+* repository and DOMINIUM_HOME,
+* compatibility/versioning,
+* startup/mode policy,
+* implementation milestones,
+* CLI/TUI/GUI systems,
+* input/state/IME,
+* renderer/backend evolution,
+* pack/content systems,
+* risk and verification policy.
+
+The strongest formal requirements are those directly stated by the user: C89/C++98, dsys/dgfx boundaries, fixed-point deterministic sim, vector fallback, compatibility preservation, product suite structure, and repository model.
+
+The generated prompts should mostly remain implementation-plan artifacts unless they are later executed and validated. They are valuable, but not all of their code details should become formal spec.
+
+The questionnaire answer should remain background until verified.
+
+The startup policy should become a formal requirement in broad terms because it came from a direct user request. The exact implementation mechanism should not become spec until repaired and validated.
+
+This chat likely overlaps with other chats about architecture, platform matrix, renderer backends, packs, and build systems. A future aggregator must preserve contradictions and not flatten them.
+
+---
+
+## 14. What I Should Remember
+
+* The project is **Dominium + Domino**: Domino is the deterministic C89 engine; Dominium is the C++98 product suite.
+* The most important architecture boundaries are **dsys** for platform services and **dgfx** for rendering.
+* The engine must preserve deterministic fixed-point simulation and old content compatibility.
+* The first implementation path was intentionally narrowed to a **Milestone-0 vertical slice**.
+* Six Codex prompts were generated for that vertical slice, but execution is unknown.
+* Three common product interface prompts were generated: CLI, TUI, GUI.
+* Two later prompts were generated: input/state/IME and multi-window/dgfx/backend detection.
+* The pack-system prompt was requested but not generated. This is a key missing item.
+* The startup policy is important: terminal means CLI; double-click/no-terminal means GUI→TUI→CLI; explicit flags override; game server/headless flags force headless.
+* The startup prompt needs repair because it may create linker/circular dependency problems.
+* Repo-specific platform/render/API claims are unverified until `dominium.zip` or the current repo is inspected.
+* Strict C89 creates a real issue for `u64/i64/q48_16`.
+* Native-endian TLV is a temporary simplification and likely must be replaced with endian-stable serialization.
+* Future assistants must preserve uncertainty labels and not convert recommendations into decisions.
+* The generated report package exists, but the substance matters more than the files.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+The best follow-up questions are:
+
+1. “Repair the startup dispatcher prompt so it avoids linker/circular dependency problems.”
+2. “Generate the missing pack-system integration prompt.”
+3. “List all generated Codex prompts in order and explain which one to run first.”
+4. “Which parts of the platform/render/API answer are unverified?”
+5. “What should I inspect first in `dominium.zip`?”
+6. “Turn the Milestone-0 plan into a checklist.”
+7. “Extract only the formal spec requirements from this chat.”
+8. “Which assistant recommendations should not become spec yet?”
+9. “Explain the C89/q48_16 problem and possible solutions.”
+10. “Rewrite the TLV save prompt to use explicit endian-stable serialization.”
+11. “Which future work should be split into smaller Codex prompts?”
+12. “What should a master Project Spec Book take from this chat?”
+13. “What risks should Codex be warned about before touching the repo?”
+14. “Summarize the startup behavior policy in implementation-ready form.”
+15. “Generate a repo-verification checklist for this project.”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was a planning, prompting, architecture, and preservation session for the Dominium + Domino project. The user began by defining a strict architecture: Domino is the deterministic, fixed-point, ISO C89 engine layer, while Dominium is the C++98 product suite built on top of it. All platform interaction must go through dsys, all rendering must go through dgfx, deterministic simulation must avoid host floating-point, software rendering and vector-only fallback must always work, and old saves, packs, mods, tools, and instances must not silently break. These are the most important project rules established in the chat.
+
+The first major goal was to create a forward plan. The assistant produced a broad roadmap, then recommended narrowing the first implementation into a Milestone-0 vertical slice. That recommendation mattered because the project scope is enormous: many platforms, many renderers, retro targets, GUI/TUI/CLI, packs, mods, replay, networking, hydrology, climate, AI, and more. Trying to build everything at once would likely stall. The chosen first slice was to prove the core chain: launcher → repository/manifest → game → deterministic headless simulation → checksum/save.
+
+From there, the user asked for six Codex prompts. The assistant generated prompts for: canonical docs, repo/CMake skeleton, deterministic numeric core, DOMINIUM_HOME/product manifest support, minimal deterministic sim with TLV save/load, and launcher-to-game process spawning through dsys. These prompts are major artifacts. They should be preserved, but they should not be treated as executed code unless the repo proves they were run. The prompts also contain risks: strict C89 conflicts with `long long`-style 64-bit implementation, and native-endian TLV is not good enough for long-term cross-platform save compatibility.
+
+The user then expanded the planning to common product interfaces. Three prompts were generated for shared CLI, TUI, and GUI systems across launcher, game, setup, and tools. Then the user requested prompts for shared input/state/IME, multi-window GUI/dgfx pipelines/GPU backend detection, and pack system integration. The first two were generated. The third, pack-system integration, remains missing. It should cover sound, music, texture, shader packs, GUI theme packs, vector icon system, and asset streaming.
+
+Another major topic was executable startup behavior. The user wanted products to use CLI when launched from a terminal, but when double-clicked from a desktop explorer to try GUI, then TUI, then CLI. The assistant recommended a clear policy: explicit `--mode=` flags win; no environment/config override in v1; terminal detection uses dsys; terminal defaults to CLI; no-terminal launch uses GUI→TUI→CLI; game server/headless flags force headless and bypass GUI/TUI. A large Codex prompt was generated for this. However, a later report identified a serious implementation risk: putting product-specific C++ entrypoint references inside a C file in `domino_core` may break linking. Before implementation, the prompt should be repaired using a callback-table or product-local dispatcher approach.
+
+The user also asked about detailed platforms, renderers, and APIs, referencing `dominium.zip` as the current repo. A previous answer claimed to inspect the repo and filled out the questionnaire. The final package correctly marked those repo-specific claims as unverified because the visible chat does not prove repo inspection. Before acting on platform tiers, renderer backends, target lists, CMake details, or existing files, a future assistant must inspect the actual repo.
+
+The final stage of the chat was about preserving continuity. The user requested a maximum-fidelity context transfer packet, then a downloadable report package, then an in-chat reader. Those outputs preserved workstreams, decisions, tasks, constraints, risks, artifacts, open questions, and verification items. The current report turns that structured material into a plain-language narrative.
+
+The most important next actions are: verify the current repo state; determine which prompts were executed; build and test the golden targets; audit the numeric core for C89 and determinism; define endian-stable TLV serialization; repair the startup dispatcher prompt; and generate the missing pack-system prompt if continuing the prompt sequence.
+
+The most important unresolved issues are repo verification, prompt execution status, strict C89 64-bit fixed-point support, TLV endian stability, startup dispatcher architecture, Windows/macOS launch packaging, and pack/shader/audio asset strategy. The most important thing future assistants must remember is not to confuse plans with implementation, not to erase uncertainty, and not to violate the project’s strict determinism and layering rules.
+
+# Reader Status
+
+* Chat title: Dominium + Domino Codex Planning and Handoff
+* Report type: human-readable explanatory report
+* Main value of this chat: It converts the Dominium + Domino architecture into staged implementation prompts, startup policy, risk analysis, and continuity material for future work.
+* Most important decision: The project must preserve strict Domino C89 / Dominium C++98 / dsys / dgfx / deterministic fixed-point architecture while beginning with a narrow Milestone-0 vertical slice.
+* Most important unresolved issue: Actual repo state and prompt execution status must be verified before any repo-specific implementation proceeds.
+* Most important next action: Inspect the current repo or `dominium.zip`, then either repair the startup dispatcher prompt or generate the missing pack-system integration prompt.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: Generated prompts are not proof of implementation; repo-specific claims remain unverified; some assistant recommendations are tentative; strict C89 conflicts and TLV endian issues need explicit resolution.

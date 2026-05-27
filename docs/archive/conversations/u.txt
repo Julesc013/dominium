@@ -1,0 +1,857 @@
+GPT-5.5 Pro — 2026-05-27 17:05:46
+
+# Human-Readable Chat Report — Dominium Launcher Application-Layer Handoff
+
+## 1. One-Page Orientation
+
+This chat was mainly about turning the **Dominium Launcher** from a broad architectural idea into a properly bounded, enforceable, application-layer product inside the larger **Dominium / Domino** project. The conversation began with a practical launcher question: whether the latest post-Plan 8 system could support a **single cross-platform launcher** with a **common codebase**, **native OS elements**, and **little or no renderer**, similar in spirit to older fast, native-feeling Minecraft launchers. From there, the discussion grew into a much larger effort to define where launcher code belongs, what it is allowed to do, how it interacts with setup, engine, game, tools, packs, UI, CMake, VS2026, RepoX, TestX, and future documentation.
+
+The user’s underlying goal was not just “make a launcher.” The goal was to prevent the launcher from becoming an architectural dumping ground. The launcher needed to be modular, extensible, native-feeling where appropriate, shared across platforms where possible, and deeply integrated with installed-state manifests, mods, packs, profiles, compatibility checks, launch flows, diagnostics, and future UI systems. At the same time, it had to respect hard project boundaries: the engine must remain pure, setup must remain the only installation/mutation authority, and applications must never contain gameplay logic or mutate authoritative simulation state.
+
+Early in the conversation, some ideas were explored that later became obsolete. For example, there was an early suggestion that Visual Studio and Xcode projects could be hand-authored as canonical shells. That was later superseded by the user’s applied Codex prompts, which made **CMake the authoritative build system** and required Visual Studio projects to be generated through CMake presets. There was also an early standalone `dominium-launcher/` directory tree with `core/source`, `adapters`, `schemas`, and `cli`. That was later replaced by a product-first monorepo structure where `launcher/` is one top-level product alongside `engine/`, `game/`, `client/`, `server/`, `setup/`, `tools/`, `libs/`, and `schema/`.
+
+The most important shift in the chat was the move from **launcher architecture brainstorming** to **locked application-layer implementation rules**. The user eventually supplied authoritative project context stating that architecture is closed, canon is locked, and this chat should only support implementation, audit, optimisation, maintenance, and documentation. That changed the mode of work: future assistants should not redesign the launcher, engine, game, simulation, SRZ, RepoX, TestX, or versioning systems. They should verify the current repo, harden the launcher code and docs, and proceed only within the established boundaries.
+
+The main outcome was a clear launcher model: the launcher is a **first-class product** under `launcher/`, not part of `engine/`. Its canonical structure is:
+
+```text
+launcher/
+├─ core/
+│  ├─ discover/
+│  ├─ profile/
+│  └─ invoke/
+├─ ui/
+├─ platform/
+│  ├─ win/{win9x,winnt}
+│  ├─ linux/
+│  ├─ bsd/
+│  └─ mac/{classic,osx}
+├─ tests/
+└─ CMakeLists.txt
+```
+
+The launcher’s `core` handles discovery, profiles, compatibility, and invocation. Its `ui` layer owns interaction semantics, command graphs, view models, and UI IR bindings. Its `platform` layer contains thin OS-specific glue. The launcher may depend on `libs/`, engine public APIs, `schema/`, and neutral contracts under `libs/contracts/include/dom_contracts`. It must not depend on setup internals, engine internals, tools internals, or game internals.
+
+The future relevance of this chat is high. It preserves the transition from old assumptions to the current canonical state. It also produced a later handoff/report package, but the substance is this: before future launcher planning, the repo must be verified and the launcher code/docs must be brought up to spec. The best next step is to run the sanity/build/test gates and then apply or audit the generated **“Dominium Launcher: Spec Completion, Gap Closure, and Documentation Hardening”** prompt.
+
+Someone reading this report should understand one central thing: this chat is not about inventing new launcher features anymore. It is about preserving boundaries, making the launcher implementation explicit, and ensuring future work happens on top of verified code rather than vague architectural memory.
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began with a practical launcher question
+
+The user started by asking whether the latest system, after Plan 8, could support a common launcher for all operating systems with one shared codebase, native OS elements, and minimal rendering. The user attached several screenshots of older Minecraft launchers as visual examples and referenced a Plan 8 prompt file and a repo archive.
+
+The important starting tension was this: the user wanted a launcher that felt native and fast across platforms, but also wanted one common codebase. The early answer distinguished between two different kinds of “common codebase.” A common **functional core** is realistic. A common **native widget implementation** is not, because native UI controls differ across Win32, Cocoa, GTK, classic Mac, and other platforms.
+
+This distinction became a foundation for the rest of the chat.
+
+### The first launcher architecture idea: common core plus platform shells
+
+The discussion moved into how to make the desired launcher real. The early proposed approach was to separate launcher behavior from presentation. The launcher core would own logic such as profiles, manifests, install discovery, pack selection, validation, and launch planning. Platform-specific UI code would be thin and would render native widgets or terminal interfaces.
+
+There was also an early suggestion to create a `DUI` facade, a Dominium UI abstraction, to support native widgets and fallback rendering. This idea was useful as a conceptual stepping stone but was not ultimately locked as a final requirement in the form originally suggested. Later application-layer canon emphasized **UI IR**, **command graphs**, and **binding validation** rather than a specific `DUI` facade design.
+
+### The conversation widened to modularity, packs, mods, and extensibility
+
+The user then asked how to make the entire system more modular and extensible, especially with existing systems, mods, and packs. The answer proposed a data-first approach: facades, registries, versioned contracts, TLV/schema-based manifests, declarative settings, pack tasks, and rare executable plugins only when unavoidable.
+
+This phase mattered because it framed the launcher not as a menu program but as a **control plane** for installed products, packs, profiles, compatibility, and launch contracts. However, later canon tightened the permitted communication routes: cross-product communication must go through `schema/` and `libs/contracts`, not arbitrary plugin conventions.
+
+### The user introduced a formal launcher master prompt
+
+The user pasted a large launcher-system prompt that scoped the work specifically to the launcher. It said the launcher is not setup, not engine internals, and not tools. It defined launcher responsibilities: discovering installed products, reading installed-state manifests, validating integrity, selecting versions/profiles, launching engine/tools, exposing repair/verify entry points, and supporting Steam/Epic wrapper use. It also required CLI/headless support and platform adapters for Windows NT, Windows 9x, macOS, classic Mac, Linux, Steam, and Epic.
+
+The response executed Phase 1 of that prompt and described the launcher core as a deterministic control-plane library. This included modules like manifest parsing, discovery, catalog building, profile policy, integrity checks, resolution, launch planning, execution, and audit logging. It also defined host service vtables, opaque handles, deterministic ordering rules, error models, and safety assumptions.
+
+That Phase 1 answer remains useful, but only after being rebased into the later canonical repo structure.
+
+### The IDE strategy changed over time
+
+The user asked where to create Visual Studio and Xcode apps after opening the repo as a folder in Visual Studio 2026. The initial answer said to create thin IDE-native app shells under platform adapter directories. The next question asked whether the projects should be manually created or generated from existing launcher code via batch script. The answer recommended both: manual canonical projects plus generated convenience projects.
+
+This later became one of the clearest examples of a superseded path. The user subsequently pasted applied Codex prompts that explicitly required CMake to generate the Visual Studio solution/projects and stated that hand-written `.vcxproj` files must not be the authoritative build. Therefore, all earlier “manual IDE projects as canonical” advice is no longer current.
+
+### The directory structure went through several revisions
+
+The user asked for a full box-drawing directory tree for the launcher. The response produced a standalone `dominium-launcher/` style tree with `core/include`, `core/source`, adapters, schemas, tests, and tools.
+
+Then the user asked whether CLI and TUI code should be moved into adapters. The answer said yes, but with a strict boundary: CLI/TUI presentation belongs in adapters, while shared behavior belongs in a common command/interaction layer. The user then clarified an important decision: “The CLI, tui, and GUI core functionality will be implemented in the one common core.” The assistant refined this: the shared part should be **interaction semantics and state**, not rendering or OS input.
+
+Later, the user objected that `source` subdirectories inside top-level source directories felt counterintuitive and asked about future tools and components beyond launcher, setup, and game. This led to the product-first model: top-level directories should represent long-lived products, not layers.
+
+That product-first direction was then finalized by a later user prompt defining the canonical repo structure.
+
+### The canonical repository structure became locked
+
+The user supplied an authoritative prompt stating that the repo had undergone a major structural refactor and the filesystem was now canonical. This was a turning point.
+
+The locked top-level products became:
+
+```text
+engine/
+game/
+client/
+server/
+launcher/
+setup/
+tools/
+libs/
+schema/
+sdk/
+docs/
+ci/
+legacy/
+```
+
+The launcher’s canonical location became:
+
+```text
+launcher/
+├─ core/
+│  ├─ discover/
+│  ├─ profile/
+│  └─ invoke/
+├─ ui/
+├─ platform/
+│  ├─ win/{win9x,winnt}
+│  ├─ linux/
+│  ├─ bsd/
+│  └─ mac/{classic,osx}
+├─ tests/
+└─ CMakeLists.txt
+```
+
+This prompt also locked dependency rules: launcher may depend on `libs/`, engine public API, game metadata/launch contracts only, schema, and contracts. It may not depend on setup internals, engine internals, or tools internals.
+
+The response then updated the launcher plan accordingly. It removed any assumption that launcher code lives in engine and described the launcher as a first-class product.
+
+### Two Codex prompts were applied and became part of the context
+
+The user later pasted two large Codex prompts that had already been applied.
+
+The first was a one-pass refactor/repair prompt for VS2026, CMake, Codex, and boundary enforcement. It required CMakePresets, target normalization, setup and launcher CLI stubs, tools builds, smoke tests, docs, and CI-safe gates.
+
+The second was a final purity and contract-ownership repair prompt. It required engine purity, moved cross-product contracts to `libs/contracts/include/dom_contracts`, evicted non-engine content from `engine/`, and hardened sanity scripts.
+
+These prompts matter because they superseded earlier advice. They also created a new practical priority: verify that the applied prompts actually succeeded.
+
+### The chat shifted into application-layer canon
+
+Near the end, the user supplied a broader application-layer system role and then a latest canon prompt from another chat. These stated that architecture is closed, canon is locked, and applications are only orchestration shells. They also introduced or reinforced APP-CANON0/1, APP-AUTO-0, APP-UI-BIND-0, BUILD-ID-0, RepoX/TestX, UI IR, command graph, accessibility, localisation, SRZ awareness, and release governance.
+
+This changed the correct future behavior. The next assistant must not redesign. It must implement, audit, maintain, document, verify, and harden.
+
+### The final phase was handoff packaging
+
+The user asked for a maximum-fidelity Context Transfer Packet. That packet was produced. Then the user asked for a final downloadable report package, which was created. Then the user asked to inspect that package in-chat, and an in-chat reader version was produced.
+
+Now the user asks for something different: not another machine-readable report, not another register dump, but a careful, human-readable narrative explanation of the whole chat. That is this report.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Cross-platform launcher with native OS elements
+
+The first topic was whether Dominium could have a launcher like older Minecraft launchers: fast, native-feeling, common across platforms, and not dependent on a heavy renderer.
+
+**FACT:** The user wanted one common launcher codebase, native OS elements, and minimal rendering.
+
+The key conclusion was that there are two separate goals hidden inside “one common launcher.” The **launcher logic** can be common across platforms. That includes discovery, validation, profiles, packs, manifests, version checks, launch plans, diagnostics, and audit logs. But native UI controls are not themselves cross-platform. A Win32 button, Cocoa button, GTK button, and classic Mac control are different things. Therefore, a native-looking launcher requires thin platform-specific UI adapters.
+
+The future connection is straightforward: keep the launcher core common, but allow platform-specific native shells under `launcher/platform/...`. Do not put business logic in those shells.
+
+### Topic 2 — Launcher as a control plane
+
+The launcher was repeatedly framed as a **control plane**, not a store, package manager, DRM system, background service, or simulation component.
+
+This means launcher code should mostly answer questions like:
+
+* What is installed?
+* What versions are compatible?
+* Which profile is selected?
+* Which packs are enabled?
+* What command should be run?
+* What environment should be passed?
+* Why did a launch fail?
+* What does the audit log say?
+
+It should not install files, mutate installed payloads, decide game rules, repair silently, or hide errors.
+
+This matters because a launcher can easily become an unsafe dumping ground. This chat repeatedly pushed it back into a narrow, inspectable orchestration role.
+
+### Topic 3 — Setup and launcher separation
+
+A central boundary was the separation between setup and launcher.
+
+**FACT:** Setup is the only install mutation authority.
+
+Setup installs, updates, verifies, repairs, rolls back, writes installed-state manifests, and owns file ownership. Launcher reads setup-produced manifests and may invoke setup through explicit contracts, but it does not perform setup’s work.
+
+This boundary was discussed early in terms of launcher responsibilities, then hardened later by the canonical repo and applied prompts. It remains one of the most important constraints to preserve.
+
+### Topic 4 — Common CLI/TUI/GUI semantics
+
+The user clarified that CLI, TUI, and GUI core functionality should be implemented in one common core. The important nuance is that “core functionality” does not mean rendering. It means shared commands, intents, state transitions, output models, and workflows.
+
+The final application canon later phrased this as: **CLI is canonical; GUI/TUI are views over the same command graph.**
+
+This matters because it prevents platform-specific drift. If CLI has `verify`, GUI must not implement a different hidden version of `verify`. If GUI has a pack enable flow, it should map to the same command/intent as CLI and TUI.
+
+### Topic 5 — UI as data, not logic
+
+The later application canon established that UI must be defined via UI IR or a declarative layer. UI should not contain business logic.
+
+This means UI files and widgets should describe controls, layouts, bindings, accessibility tags, localisation keys, and command connections. They should not decide profiles, mutate state, repair installs, choose packs, or infer simulation rules.
+
+The future work implied by this is a command graph, UI IR schema, binding validator, and tests ensuring CLI/TUI/GUI parity.
+
+### Topic 6 — Repository structure and product ownership
+
+The conversation moved from a standalone launcher tree to a product-first monorepo. This was a major evolution.
+
+The final structure treats `engine`, `game`, `client`, `server`, `launcher`, `setup`, `tools`, `libs`, and `schema` as top-level products or shared foundations. Launcher is not under engine. Setup is not under launcher. Shared contracts are not hidden in game or engine internals.
+
+This matters because filesystem layout becomes an enforcement tool. If code lives in the wrong product directory, it is a sign of boundary confusion.
+
+### Topic 7 — Engine purity
+
+Engine purity became a non-negotiable rule.
+
+The engine must not include launcher, setup, tools, or `dom_contracts`. It must export only engine public API under `engine/include/domino`. Earlier contamination examples included `engine/include/dsu`, `engine/include/dui`, `engine/launcher_core_launcher`, `engine/setup_core_setup`, `engine/source`, and `engine/external/xxhash`.
+
+The final purity prompt required those to be moved or quarantined. However, actual repo success remains unverified in this chat.
+
+### Topic 8 — Neutral contracts and schemas
+
+The chat established that cross-product contracts belong in a neutral layer, not in engine or game internals.
+
+That layer is:
+
+```text
+libs/contracts/include/dom_contracts/
+```
+
+Schemas live under:
+
+```text
+schema/
+```
+
+The launcher should use these channels for installed-state, product manifests, launch contracts, setup invocation contracts, build identity, and other cross-product information.
+
+This prevents hidden dependency cycles and protects engine purity.
+
+### Topic 9 — CMake and VS2026 workflow
+
+The early conversation explored Visual Studio and Xcode project placement. Later, applied Codex prompts changed the decision: CMake is authoritative. Visual Studio 2026 should use Open Folder and CMakePresets. Generated VS projects are acceptable because they derive from the target graph; hand-authored `.vcxproj` files are not authoritative.
+
+This matters because build files enforce product boundaries. If everyone edits local IDE projects manually, boundary enforcement becomes unreliable.
+
+### Topic 10 — RepoX, TestX, and BUILD-ID-0
+
+The latest canon introduced strict release governance. RepoX is the source of truth for build numbers, commit history, changelogs, canon-clean tags, and compatibility data. TestX must enforce validation. BUILD-ID-0 locks version formatting and rules around Global Build Numbers and Build Instance IDs.
+
+Launcher must display generated changelogs, warn about incompatibilities, and refuse mismatches loudly. It must not manually edit changelogs or invent compatibility defaults.
+
+### Topic 11 — Handoff and report packaging
+
+The final part of the chat was about preserving this old chat’s content. The user asked first for a maximum-fidelity transfer packet, then a downloadable report package, then an in-chat reader, and now this human-readable narrative.
+
+This matters because the user is preparing to aggregate multiple old chat reports into a future full Project Spec Book. This chat contributes a launcher/application-layer handoff, not a whole-project spec.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals the user stated
+
+The first explicit goal was to determine whether the system could support a common, native-feeling launcher across operating systems. The user wanted a launcher with one common codebase, native OS elements, and minimal or no rendering.
+
+Another explicit goal was to make the system more modular and extensible, integrated with existing systems, mods, and packs.
+
+The user then wanted concrete repository structure guidance: where to put Visual Studio and Xcode projects, whether to generate them, how to lay out directories, and how to move old code.
+
+Later, the explicit goal changed to **updating and hardening the launcher plan to match the new canonical repository structure**. The user made clear that prior decisions should not be discarded, but must be realigned.
+
+After the Codex prompts were applied, the explicit goal became: generate a prompt to get launcher code and docs up to spec before regenerating future plans.
+
+Finally, the explicit goal became continuity preservation: produce a transfer packet, report package, in-chat reader, and now this human-readable narrative.
+
+### Inferred goals
+
+**INFERENCE:** The user was trying to prevent architectural drift. The repeated emphasis on boundaries, product ownership, CMake enforcement, and canon suggests that the user wanted future assistants and Codex runs to stop re-opening settled decisions.
+
+**INFERENCE:** The user wanted implementation plans that can be executed mechanically. The prompts repeatedly included phases, commit policies, verification commands, stop conditions, and concrete output files.
+
+**INFERENCE:** The user wanted a future Project Spec Book. This became explicit in the handoff/package requests, but the pattern of preserving reports from old chats suggests a larger consolidation effort.
+
+### Goals that changed over time
+
+The chat began as a launcher feasibility/design discussion. It became a repository-structure and boundary-enforcement discussion. It then became an application-layer canon and implementation-readiness discussion. Finally, it became a documentation/handoff extraction task.
+
+The important change is that the conversation moved from “What architecture should we use?” to “Architecture is locked; how do we verify and harden the implementation?”
+
+### Goals that remain unresolved
+
+The largest unresolved goal is verifying the actual repo. The user stated that two Codex prompts were applied, but this chat did not independently verify the filesystem, build, tests, scripts, or launcher docs.
+
+Another unresolved goal is confirming whether the launcher hardening prompt has been applied.
+
+A third unresolved goal is confirming whether command graph, UI IR, binding validation, zero-pack tests, RepoX changelog display, and BUILD-ID mismatch refusal are implemented.
+
+---
+
+## 5. Decisions Made and Why
+
+The decisions below are not all equal. Some are user-locked canon. Some are assistant recommendations that were later accepted indirectly by the user’s framing. Some are superseded. I will label them carefully.
+
+### Overview of the most important decisions
+
+| Decision                                                     | Status                       | Main effect                                                        |
+| ------------------------------------------------------------ | ---------------------------- | ------------------------------------------------------------------ |
+| Architecture is closed; canon is locked.                     | FACT / final                 | Future work is implementation/audit only.                          |
+| Launcher is a first-class product under `launcher/`.         | FACT / final                 | Launcher is not part of engine.                                    |
+| Engine purity is non-negotiable.                             | FACT / final                 | No launcher/setup/tools/contracts in engine.                       |
+| Setup is sole install mutation authority.                    | FACT / final                 | Launcher cannot install or repair directly.                        |
+| CMake is authoritative for VS2026.                           | FACT / final                 | Manual IDE project advice is superseded.                           |
+| CLI is canonical; GUI/TUI are views over same command graph. | FACT / final project-context | UI parity is mandatory.                                            |
+| UI is data via UI IR, not logic.                             | FACT / final project-context | UI binding validation and localisation/accessibility are required. |
+| Cross-product contracts live in `libs/contracts`.            | FACT / final                 | Shared contracts are neutral, not engine/game internals.           |
+| Launcher code/docs must be hardened before future planning.  | FACT / active                | Next step is verification and closure work.                        |
+
+### Launcher is a first-class product, not an engine subcomponent
+
+**FACT:** The user explicitly locked the canonical top-level products and placed launcher under `launcher/`.
+
+This decision was made because earlier layouts risked mixing launcher and engine concerns. If launcher code lives in engine, engine purity collapses. The launcher needs to orchestrate installed products, profiles, packs, and launch flows, but it does not define engine behavior.
+
+This decision affects file placement, CMake targets, include paths, tests, docs, and future prompts. Any future assistant that suggests placing launcher code under `engine/` is contradicting the locked direction.
+
+This decision should only be revisited if the user explicitly changes the canonical repo structure.
+
+### Engine purity is non-negotiable
+
+**FACT:** The user gave explicit engine purity rules and later pasted a Codex prompt devoted to final purity repair.
+
+The engine must be reusable and independent. It cannot include setup, launcher, tools, or `dom_contracts`. Its public headers are engine-only and live under `engine/include/domino`.
+
+The rationale is long-term maintainability. The engine is foundational. If application-layer code leaks into it, every product becomes tangled.
+
+This decision depends on CMake and script enforcement. It remains operationally unverified until the current repo is checked.
+
+### Setup is the only install mutation authority
+
+**FACT:** The user repeatedly stated that setup handles installation, updates, repair, rollback, and installed-state manifests.
+
+The launcher may expose repair or verify entry points in the sense that it can invoke setup through a contract, but it must not perform install mutation itself. This separation protects auditability and prevents hidden mutation.
+
+This decision affects launcher UI wording, CLI behavior, diagnostics, and failure handling. A launcher button labelled “Repair” may be acceptable only if it invokes setup through a declared contract and does not repair internally.
+
+### CMake is authoritative for VS2026
+
+Early in the chat, manual Visual Studio and Xcode project shells were suggested. Later, the applied Codex prompt explicitly required CMake-generated Visual Studio projects and CMakePresets for VS2026.
+
+**FACT:** The later prompt supersedes the earlier advice.
+
+This decision makes sense because CMake target graphs can enforce include/link boundaries. Hand-authored IDE projects can drift or hide dependencies.
+
+This affects future UI work: Visual Studio designers may be used later for platform frontend files, but the build graph remains CMake.
+
+### CLI/TUI/GUI share one command graph
+
+**FACT:** The user stated that CLI, TUI, and GUI core functionality will be implemented in one common core. Later project-context canon states CLI is canonical and GUI/TUI are views over the same command graph.
+
+The rationale is parity and determinism. If each frontend implements its own behavior, commands drift. The CLI is easiest to test and script, so it becomes canonical.
+
+This affects all future UI work. GUI buttons and TUI menu items should bind to commands/intents from the shared graph, not implement logic directly.
+
+### UI is data via UI IR
+
+**FACT:** The later application canon states UI must be defined via UI IR/declarative layer and must not embed business logic.
+
+This decision supports accessibility, localisation, portability, and validation. It also allows native frontends, terminal frontends, and future tools to share semantics.
+
+The exact UI IR file format and filenames are not locked by this chat unless present in the repo. Some filenames suggested earlier should be treated as implementation suggestions, not canon.
+
+### Neutral contracts under `libs/contracts`
+
+**FACT:** The second applied Codex prompt introduced `libs/contracts/include/dom_contracts`.
+
+The rationale is ownership clarity. If a contract is used by launcher, setup, tools, and game, it should not belong to engine or game internals.
+
+This decision affects any shared API or data structure. If launcher and setup both need it, it likely belongs in `schema/` or `dom_contracts`, not in either product’s private headers.
+
+### Launcher hardening before future planning
+
+**FACT:** The user asked for a prompt to get launcher code and docs up to spec before regenerating further plans.
+
+This decision reflects the state of the project: after major refactors and applied prompts, the next risk is planning on assumptions. The correct move is to audit, document, verify, and harden the current launcher implementation.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Manual Visual Studio/Xcode projects as authoritative
+
+This idea was considered because the user asked where to create Visual Studio and Xcode apps and whether to create them manually or generate them. The initial answer recommended manually authored canonical IDE projects plus generated convenience projects.
+
+It was superseded by the applied Codex prompt requiring CMake-generated Visual Studio projects as the authoritative build. The rejection is final under current canon. Native IDE designers may still be used later, but not as independent build authorities.
+
+### Standalone `dominium-launcher/` tree
+
+A full standalone tree was produced with `core/include`, `core/source`, adapters, CLI, schemas, tests, tools, and build directories. It was useful at the time because the user wanted a concrete tree to move files into.
+
+It was later superseded by the product-first repo structure. The old tree is historical only. Future work should use `launcher/` under the canonical monorepo.
+
+### Generic `source/` directories
+
+The user explicitly objected that source subdirectories within source directories felt counterintuitive. The later product-first structure removed generic `source/` directories in favor of product and module directories.
+
+This rejection should be preserved because future assistants might otherwise recreate `core/source` or `source/source`.
+
+### Launcher inside engine
+
+This was never accepted by the user, but it was a risk from historical contamination. The final canon rejects it completely.
+
+Launcher belongs in `launcher/`. Engine must be pure.
+
+### Platform adapters owning business logic
+
+At one point, CLI/TUI code was discussed as potentially living in adapters. The refined conclusion was that platform adapters may handle presentation, argv acquisition, terminal control, window loops, and OS glue. They must not own command semantics, profile resolution, pack logic, or launch decisions.
+
+This distinction matters because putting CLI code in adapters can be correct only if shared behavior remains in the common interaction/command layer.
+
+### Launcher directly repairing installs
+
+The launcher may expose repair flows, but direct mutation or repair belongs to setup. This option is rejected because it violates setup authority and auditability.
+
+### Manual changelog editing
+
+Later RepoX canon rejects manual changelogs. Changelogs come from commits/RepoX metadata. Launcher displays them; it does not invent them.
+
+### UI logic in widgets
+
+The UI may display and collect user intent, but business logic belongs in launcher core and command graph bindings. Widget event handlers should not decide rules, profiles, or repairs.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+A few visible reasoning patterns shaped the chat.
+
+The first was the distinction between **shared behavior** and **shared presentation**. The user wanted one launcher codebase and native UI elements. The answer was not “yes” or “no,” but “yes for behavior, no for native widgets unless you use thin per-platform adapters.” That distinction became the basis for the later command graph and UI IR model.
+
+The second was the value of **filesystem structure as enforcement**. The user did not want vague architecture. They wanted a directory structure that makes wrong code placement obvious. This is why the conversation shifted from abstract modules to canonical top-level products.
+
+The third was **boundary ownership**. Engine, setup, launcher, tools, game, libs, and schema each need clear ownership. If contracts are shared, they need a neutral home. If setup owns installation, launcher must not mutate installs. If engine is reusable, application contracts cannot leak into it.
+
+The fourth was **mechanical verification over trust**. The applied prompts created scripts, CMake target rules, CTest smoke tests, and docs requirements. The future assistant should not merely say “this is the architecture.” It should run the verification gates.
+
+The fifth was **canon over assistant creativity**. By the end, the user explicitly told the assistant that architecture is closed and canon is locked. This means future work should not be speculative. It should implement, audit, optimise, and document within the locked structure.
+
+The biggest managed risks were:
+
+* engine contamination,
+* launcher becoming an installer,
+* UI drift between CLI/TUI/GUI,
+* manual release metadata drift,
+* stale or unverified repository assumptions,
+* old assistant suggestions being mistaken for final decisions.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+### First next step: verify the current repo
+
+Before any new launcher planning, the current repository must be verified. The user said two Codex prompts were applied, but this chat did not inspect the repo after application.
+
+The verification sequence is:
+
+```text
+scripts/verify_tree_sanity.bat
+python scripts/verify_includes_sanity.py
+cmake --preset vs2026-x64-debug
+cmake --build --preset vs2026-x64-debug
+ctest --preset vs2026-x64-debug
+launcher --help
+setup --help
+```
+
+This matters because all future work depends on whether the applied prompts actually succeeded. If these fail, the next step is repair, not feature planning.
+
+What could go wrong: scripts may be outdated, build presets may fail, launcher/setup stubs may not run, or include scans may reveal boundary violations.
+
+### Second next step: determine whether launcher hardening has already run
+
+A prompt was generated called **“Dominium Launcher: Spec Completion, Gap Closure, and Documentation Hardening.”** It was designed to bring launcher code and docs up to spec without redesigning or adding features.
+
+It is unclear whether it has been applied.
+
+To resolve this, inspect whether files such as `docs/LAUNCHER_AUDIT.md`, `launcher/docs/ARCHITECTURE.md`, `launcher/docs/BOUNDARIES.md`, `launcher/docs/INTERACTION_MODEL.md`, `launcher/docs/CONTRACT_USAGE.md`, `launcher/docs/DETERMINISM.md`, and `launcher/docs/BUILDING.md` exist and match the described purpose.
+
+### Third next step: execute or audit the launcher hardening prompt
+
+If the hardening prompt has not been applied, it should be executed. Its job is to document and finish what already exists, not redesign APIs or add features.
+
+Expected outputs include:
+
+* launcher architecture docs,
+* boundary docs,
+* README files for `discover`, `profile`, and `invoke`,
+* interaction model docs,
+* platform adapter docs,
+* contract/schema usage docs,
+* determinism docs,
+* developer workflow docs,
+* final launcher status docs.
+
+What could go wrong: a Codex run might treat documentation gaps as license to redesign. The prompt explicitly forbids that.
+
+### Fourth next step: verify command graph and UI IR
+
+Application canon requires CLI canonicality, GUI/TUI parity, UI IR, accessibility, localisation, and binding validation.
+
+The repo should be checked for:
+
+* a launcher command graph,
+* CLI help derived from that graph,
+* GUI/TUI bindings to the same commands,
+* UI IR schema,
+* a binding validator,
+* tests for keyboard navigation/accessibility metadata,
+* externalized strings,
+* raw-key fallback when locale packs are missing.
+
+What could go wrong: assistant-suggested filenames might be mistaken for canon. The requirement is canon; exact filenames depend on the repo unless explicitly locked later.
+
+### Fifth next step: verify RepoX and BUILD-ID behavior
+
+Launcher must display generated changelogs, build metadata, channels, and compatibility warnings. It must refuse mismatches loudly.
+
+This depends on RepoX outputs and BUILD-ID-0 implementation.
+
+What could go wrong: build identity might exist in docs but not in code, or launcher might warn but not refuse where refusal is required.
+
+### Sixth next step: preserve and later aggregate this chat report
+
+This chat produced a handoff package and now this narrative report. It should be preserved as one old-chat source for a future Project Spec Book. It should not be treated as the whole project spec.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit constraints from the chat
+
+Architecture is closed. Canon is locked. Future work is implementation, audit, optimisation, documentation, and maintenance only.
+
+Applications are content-agnostic orchestration shells. They do not contain gameplay logic, mutate authoritative state, invent defaults, hide errors, or bypass law, authority, epistemics, RepoX, or TestX.
+
+Launcher is a first-class product under `launcher/`. Engine is pure. Setup is the only installation mutation authority. Cross-product contracts belong in `libs/contracts`. Schemas belong in `schema`.
+
+CMake is the authoritative build system for VS2026. No hand-authored Visual Studio project is authoritative.
+
+CLI is canonical. GUI/TUI are views over the same command graph. UI is data via UI IR. Accessibility and localisation are mandatory.
+
+### Explicit user communication preferences
+
+The user values epistemic accuracy, decision utility, long-term correctness, visible uncertainty labels, and preservation of rejected/superseded paths. The user does not want vague or overly compressed summaries when transferring context.
+
+The user also asked for responses to begin with model/date/time prefix.
+
+### Inferred preferences
+
+**INFERENCE:** The user prefers mechanical enforcement over policy-by-convention. This is inferred from repeated emphasis on CMake, CI, scripts, RepoX, TestX, validation, and canonical filesystem layout.
+
+**INFERENCE:** The user prefers Codex prompts that are executable: phased, scoped, commit-oriented, with stop conditions and verification commands.
+
+### Things future assistants should avoid
+
+Future assistants should avoid:
+
+* proposing new architecture,
+* moving launcher back into engine,
+* reviving manual IDE project authority,
+* assuming applied prompts succeeded without verification,
+* treating assistant suggestions as canon,
+* treating project-level context as if it was independently verified in this chat,
+* ignoring uncertainty,
+* turning UI into business logic,
+* letting launcher mutate installs,
+* hardcoding content assumptions or locale strings.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+### Uploaded repo and Plan 8 files
+
+The user uploaded `dominium.zip`, described as a copy of the repo as of Plan 8 prompt 3 completion, and `PLAN-8-CODEX-PROMPTS.txt`, described as containing Plan 8 structure and changes.
+
+**UNCERTAIN / UNVERIFIED:** This report does not verify their contents. Later canon supersedes them where there is conflict.
+
+### Minecraft launcher reference images
+
+The user uploaded several images of older Minecraft launchers. They were used as UX inspiration: fast, native-feeling, cross-platform launcher behavior.
+
+They should be preserved as design inspiration only. They do not establish a specific toolkit or architecture.
+
+### Launcher master prompt
+
+The user pasted a large launcher-system master prompt. It defined launcher responsibilities, CLI/headless support, platform adapters, launch transaction model, testing, docs, and phased work.
+
+It is historically important but has been rebased by later canonical repo structure and app-layer canon.
+
+### Setup master prompt
+
+A setup-system prompt was generated for a separate setup chat. It mirrored the launcher structure but scoped to installer/setup. It matters because it preserved setup/launcher separation.
+
+Later applied prompts may supersede parts of it.
+
+### Old current directory tree
+
+The user provided a directory tree with `adapters`, `core`, `schemas`, and `tests`, including many outdated launcher files. This was used to diagnose redundancy and boundary problems.
+
+It should be preserved as migration history, not as current truth.
+
+### Canonical repo update prompt
+
+This is one of the most important artifacts. It locked the current product-first structure, engine purity rules, launcher location, dependency rules, and include ownership.
+
+This should feed directly into any future spec book.
+
+### Two applied Codex prompts
+
+The first handled one-pass refactor, build repair, VS2026 CMake readiness, setup/launcher/tools stubs, smoke tests, and docs.
+
+The second handled final engine purity, contract ownership, `libs/contracts`, and enforcement scripts.
+
+They are essential context, but their results are unverified until repo checks are run.
+
+### Launcher hardening prompt
+
+This prompt was generated to get launcher code and docs up to spec. It is the likely next action if not already applied.
+
+It should be preserved because it is a concrete, scoped execution plan.
+
+### Application-layer and latest canon prompts
+
+The user pasted broader project context stating that architecture is closed and applications are orchestration shells. This context is authoritative for this chat but should be labelled `PROJECT-CONTEXT` in future aggregation.
+
+### Handoff/report package
+
+This chat produced a Context Transfer Packet, a downloadable report package, and an in-chat reader. Those outputs preserve the chat for later aggregation, but this current human-readable report is intended to explain the substance rather than the packaging.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+### Did the applied Codex prompts actually succeed?
+
+This is the most important unresolved issue. The user said the prompts were applied, but this chat did not inspect the current repo.
+
+Known: the prompts were pasted and described as applied.
+Unknown: whether scripts pass, builds pass, tests pass, and boundaries are clean.
+Resolution: run the verification commands.
+
+### Has the launcher hardening prompt been applied?
+
+Known: the prompt was generated.
+Unknown: whether it was run.
+Resolution: inspect docs and commits.
+
+### Does the launcher have a canonical command graph?
+
+Known: application canon requires CLI canonicality and GUI/TUI parity.
+Unknown: whether the implementation exists.
+Resolution: inspect `launcher/ui`, CLI help generation, and tests.
+
+### Does UI IR and binding validation exist?
+
+Known: UI IR and binding validation are required.
+Unknown: exact implementation and filenames.
+Resolution: inspect `schema/`, `tools/`, TestX/RepoX integration.
+
+### Does the launcher run with zero content packs and missing locale packs?
+
+Known: application canon requires zero-pack operation and raw-key fallback.
+Unknown: whether tests exist or pass.
+Resolution: run or create smoke tests.
+
+### Does launcher implement RepoX and BUILD-ID-0 behavior?
+
+Known: launcher must display changelogs/build metadata and refuse mismatches.
+Unknown: whether code/tests enforce this.
+Resolution: inspect version/diagnostics modules and tests.
+
+### Are any shared headers still ambiguously owned?
+
+Known: earlier prompts anticipated this risk.
+Unknown: current header inventory.
+Resolution: run include sanity script and inspect offenders.
+
+### Are uploaded Plan 8/repo files still needed?
+
+Known: they were uploaded and mattered early.
+Unknown: whether any details are still needed after later canon.
+Resolution: only reopen them if resolving Plan 8 history or contradictions.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+A future assistant could mistakenly restart architecture. That would be wrong because the user explicitly locked canon and limited future work to implementation and maintenance.
+
+A future assistant could follow old advice about manual VS/Xcode projects. That would conflict with the later CMake-authoritative prompts.
+
+A future assistant could treat early standalone launcher directory trees as current. That would conflict with the canonical product-first repo.
+
+A future assistant could assume applied Codex prompts succeeded. That would be unsafe. They must be verified.
+
+A future assistant could treat assistant-suggested filenames for UI IR or command graph as canon. The concept is canon; exact filenames are not established unless the repo/user confirms them.
+
+A future assistant could allow launcher to repair installs directly. That would violate setup authority.
+
+A future assistant could put shared contracts into engine or game internals. That would violate neutral contract ownership.
+
+A future assistant could let GUI/TUI implement hidden behavior separate from CLI. That would violate command graph parity.
+
+A future assistant could omit rejected options. That would cause old paths to be repeated.
+
+A future aggregator could merge this chat incorrectly with other chats by treating project-context canon as uniquely created here. The right approach is to preserve provenance: some content is from this chat’s visible discussion, while broader canon was pasted from other chats.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes a detailed transition record for the **launcher and application layer**. Its unique value is not that it designs the entire Dominium project. Its value is that it shows how launcher thinking evolved into enforceable application-layer boundaries.
+
+It should inform these future spec-book sections:
+
+* Launcher Product Specification
+* Application-Layer Architecture
+* Setup/Launcher Boundary
+* Engine Purity and Product Ownership
+* Contracts and Schemas
+* CLI/TUI/GUI Command Model
+* UI IR, Accessibility, and Localisation
+* CMake/VS2026 Build Workflow
+* RepoX/TestX/BUILD-ID Governance
+* Legacy/Superseded Architecture Decisions
+
+Formal requirements candidates include:
+
+* Launcher lives under `launcher/`.
+* Engine must not include launcher/setup/tools/contracts.
+* Setup is the only install mutation authority.
+* Cross-product contracts live in `libs/contracts`.
+* Launcher uses schema/contracts/public APIs only.
+* CMake is authoritative.
+* CLI is canonical.
+* GUI/TUI bind to same command graph.
+* UI is data via UI IR.
+* Apps run with zero packs.
+* RepoX changelogs/build metadata are used.
+* Version mismatches refuse loudly.
+
+Background context includes:
+
+* Minecraft launcher images.
+* Plan 8 historical state.
+* Old directory tree.
+* Early standalone launcher tree.
+* Early DUI/native facade discussion.
+
+Potential overlaps with other chats include APP-CANON0/1, APP-AUTO-0, APP-UI-BIND-0, BUILD-ID-0, CLEAN-2, RepoX/TestX, setup architecture, engine purity, and CMake refactor work.
+
+The largest conflict risk is that other chats may contain older architecture or layout assumptions. The later canon in this chat should override earlier assistant suggestions, but not necessarily override later user statements from other chats if those are newer and explicit.
+
+---
+
+## 14. What I Should Remember
+
+* The launcher is now a first-class product under `launcher/`, not part of the engine.
+
+* The canonical launcher structure is `core/discover`, `core/profile`, `core/invoke`, `ui`, `platform`, and `tests`.
+
+* The launcher is a control plane. It discovers, validates, profiles, diagnoses, and invokes. It does not install, repair directly, mutate authoritative state, or contain gameplay logic.
+
+* Setup is the only install mutation authority. Launcher/setup communication goes through schemas, manifests, and contracts.
+
+* Engine purity is non-negotiable. Engine must not contain launcher/setup/tools/contracts.
+
+* Cross-product contracts belong in `libs/contracts/include/dom_contracts`; canonical formats belong in `schema/`.
+
+* CMake is authoritative for VS2026. Earlier manual IDE-project advice is superseded.
+
+* CLI is canonical. GUI/TUI are views over the same command graph.
+
+* UI is data via UI IR. UI code must not contain business logic. Accessibility and localisation are mandatory.
+
+* RepoX/TestX/BUILD-ID-0 govern changelogs, metadata, compatibility, and version refusal behavior.
+
+* Two Codex prompts were applied according to the user, but their results are unverified in this chat.
+
+* The next action is verification, then launcher code/docs hardening, not new planning.
+
+* The generated launcher hardening prompt is important and should be executed or audited if not already done.
+
+* Preserve rejected options so future assistants do not repeat them.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Turn the launcher hardening prompt into an execution checklist.”
+2. “Explain the setup/launcher boundary with concrete examples.”
+3. “Which older ideas in this chat are superseded and must not be reused?”
+4. “What exact repo checks should I run before continuing launcher work?”
+5. “Explain the command graph and UI IR model in plain language.”
+6. “What should go into the future Project Spec Book from this chat?”
+7. “What should be verified before treating this chat as reliable?”
+8. “Write a Codex prompt to verify the repo state without changing code.”
+9. “Compare the early launcher architecture with the final canonical launcher structure.”
+10. “Summarize the decisions that affect CMake and VS2026.”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was about getting the Dominium Launcher into the right architectural place inside the larger Dominium / Domino project. It began with a practical question: could the post-Plan 8 system support a cross-platform launcher with one common codebase, native OS elements, and little or no renderer, similar to older Minecraft launchers? The answer evolved into a broader launcher/application-layer plan.
+
+The first key insight was that “one common launcher” has to be split into two ideas. One common **functional core** is realistic and desirable. That core can handle installed-state discovery, manifest parsing, profiles, packs, version checks, launch planning, diagnostics, and audit logs. But native UI elements are platform-specific. Therefore, the launcher can have shared behavior while using thin platform-specific presentation shells for Win32, macOS, Linux, classic systems, and other targets.
+
+The conversation then expanded into modularity, extensibility, mods, packs, CLI/TUI/GUI parity, setup separation, repository layout, build systems, and future documentation. Early ideas included a standalone launcher directory tree, manual Visual Studio/Xcode projects, and a possible DUI-style UI facade. Those ideas were useful stepping stones, but later user-provided canon superseded several of them. The final direction is product-first: launcher is a top-level product under `launcher/`, not part of `engine/`.
+
+The canonical launcher structure became `launcher/core/discover`, `launcher/core/profile`, `launcher/core/invoke`, `launcher/ui`, `launcher/platform`, and `launcher/tests`. The core handles business/control-plane logic. The UI layer handles shared interaction semantics, command graph, view models, and UI IR bindings. The platform layer handles OS glue and native presentation only. It must not contain profile resolution, pack logic, install mutation, or hidden command semantics.
+
+The most important boundary is engine purity. The engine must remain reusable and independent. It must not contain launcher, setup, tools, or application contracts. Its public headers belong under `engine/include/domino`. Cross-product contracts belong in `libs/contracts/include/dom_contracts`, and canonical data formats belong in `schema/`. This prevents shared APIs from polluting engine or game internals.
+
+The second most important boundary is setup versus launcher. Setup is the only authority for installation, updating, verification, repair, rollback, and installed-state manifests. Launcher may display errors, validate state, and invoke setup through explicit contracts, but it must not install or repair files directly. This preserves auditability and prevents hidden mutation.
+
+The build story also changed. Earlier advice about hand-authored Visual Studio/Xcode projects was superseded by applied Codex prompts that made CMake authoritative. Visual Studio 2026 should use CMakePresets/Open Folder, and generated VS projects derive from the CMake target graph. This matters because CMake target include/link rules enforce product boundaries.
+
+The broader application-layer canon later locked the context: architecture is closed, canon is locked, and applications are orchestration shells. Applications must be content-agnostic, rule-agnostic, authority-agnostic, and must not mutate authoritative state or contain gameplay logic. CLI is canonical. GUI/TUI are views over the same command graph. UI is data via UI IR, not business logic. Accessibility and localisation are mandatory. RepoX/TestX/BUILD-ID-0 govern changelogs, validation, build identity, compatibility, and mismatch refusal.
+
+Two major Codex prompts were pasted as already applied: one for CMake/VS2026/build repair and one for engine purity/contract ownership. This chat did not independently verify that those prompts succeeded. Therefore, the most important unresolved issue is current repo truth. The next assistant must first run sanity scripts, CMake configure/build, CTest, and `launcher --help`/`setup --help`.
+
+The next substantive action is to execute or audit the generated **“Dominium Launcher: Spec Completion, Gap Closure, and Documentation Hardening”** prompt. That prompt should make the launcher code/docs explicit: architecture, boundaries, core module READMEs, interaction model, platform adapter docs, contract/schema usage, determinism, build workflow, and final status. It should not redesign APIs or add features.
+
+The things to preserve from this chat are the final launcher boundaries, the product-first repo structure, setup-only install mutation, engine purity, neutral contracts, CMake authority, CLI command graph, UI IR requirement, accessibility/localisation rules, RepoX/TestX/BUILD-ID governance, and the warning that applied prompts remain unverified until the repo is checked.
+
+The main risk is that a future assistant will treat earlier brainstorming as final or skip verification. The safe path is: verify repo state, harden launcher docs/code, then regenerate future plans from the verified implementation.
+
+# Reader Status
+
+* Chat title: Dominium Launcher Application-Layer Handoff
+* Report type: human-readable explanatory report
+* Main value of this chat: It records the transition from launcher architecture brainstorming to locked application-layer, repository, build, and boundary rules for the Dominium Launcher.
+* Most important decision: Launcher is a first-class product under `launcher/`, with engine purity, setup-only install mutation, neutral contracts, CMake authority, and shared CLI/TUI/GUI command semantics.
+* Most important unresolved issue: Whether the applied Codex prompts and launcher hardening work have actually succeeded in the current repo.
+* Most important next action: Run the repo verification gates, then execute or audit the launcher code/docs hardening prompt.
+* Safe to use for later aggregation: with caveats
+* Main caveats: Current repo state, uploaded Plan 8/repo contents, applied Codex prompt results, UI command graph/UI IR implementation, RepoX/BUILD-ID implementation, and zero-pack tests remain unverified in this chat.

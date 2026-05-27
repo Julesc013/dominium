@@ -1,0 +1,1681 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium Development Routes
+    filesystem_safe_label: dominium_development_routes
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: This chat only; Project-level context labelled PROJECT-CONTEXT where used.
+    apparent_coverage: Full for visible transcript; partial/unclear for wider Dominium project.
+    confidence_1_to_5: 4
+    staleness_risk: low for chat-state facts; medium for external technical claims if reused
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - Substantive project discussion is short.
+    - Most technical content is prior assistant proposal, not user-confirmed decision.
+    - No codebase, files, engine, genre, timeline, or implementation state visible.
+    - External claims about game-development practice were not verified.
+  summary:
+    one_sentence: This chat proposed a kernel-first deterministic simulation route for Dominium and then packaged that proposal
+      into a reusable chat-specific handoff archive.
+    short_brief: The visible chat contains a Dominium development-route question, a prior assistant roadmap recommending Route
+      C — Kernel-First Deterministic Simulation, a maximum-fidelity Context Transfer Packet, and the current final packaging
+      request. Treat all technical recommendations as proposal-level until user-confirmed.
+    main_topics:
+    - Dominium technical development route
+    - Component sequencing
+    - Deterministic simulation kernel proposal
+    - Context transfer and report packaging
+    - Future aggregation into Project Spec Book
+    main_outputs:
+    - Route A/B/C framework
+    - Layer stack [0]–[8]
+    - Phase order proposal
+    - Feature completion rule
+    - Context Transfer Packet
+    - Final report package files
+    highest_priority_carry_forward:
+    - Route C is only an assistant proposal.
+    - The exact ordering principle should be preserved.
+    - No tech stack, files, genre, or timeline are established.
+    - Next useful output is Dominium Technical Roadmap v0.1 with assumptions labelled.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - User statements outrank assistant suggestions.
+    - Prior assistant outputs are continuity material, not accepted decisions.
+    - Contradictions must be preserved until resolved.
+    - Do not merge this chat with other chats without provenance.
+    staleness_rules:
+    - External-world facts, APIs, versions, prices, laws, schedules, and current tools require verification before future
+      use.
+    - This package is dated using 2026-05-27 Australia/Melbourne.
+    - Project scope assumptions require user verification.
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: High-fidelity preservation over normal summary.
+      source_basis: User requested a maximum-fidelity Context Transfer Packet and then a final report package.
+      strength: Strong
+      implication: Future assistants should preserve details, IDs, and uncertainty rather than compress aggressively.
+      risk: Loss of decisions, caveats, or unresolved issues.
+      label: FACT
+    - id: PREFERENCE-02
+      preference: Epistemic labels on important items.
+      source_basis: User explicitly required FACT / INFERENCE / UNCERTAIN / PROJECT-CONTEXT labels.
+      strength: Strong
+      implication: Do not blur direct transcript facts with inferred project direction.
+      risk: False project memory.
+      label: FACT
+    - id: PREFERENCE-03
+      preference: Downloadable, reusable artifacts when possible.
+      source_basis: User requested actual files and ZIP if tools are available.
+      strength: Strong
+      implication: Prefer generated files over pasted-only content for packaging tasks.
+      risk: User cannot archive or aggregate efficiently.
+      label: FACT
+    - id: PREFERENCE-04
+      preference: Structured tables, stable IDs, and consistent terminology.
+      source_basis: User specified ID patterns and file structures.
+      strength: Strong
+      implication: Use normalized registers for future aggregation.
+      risk: Later merge becomes unreliable.
+      label: FACT
+    inferred:
+    - preference: Prefers reusable, aggregation-ready records
+      basis: Current packaging prompt
+      label: INFERENCE
+    - preference: Prefers direct technical continuity over normal summary
+      basis: Transfer packet and package request
+      label: INFERENCE
+    uncertain_or_not_established:
+    - Preferred engine
+    - Preferred programming language
+    - Preferred project timeline
+    - Preferred prototype depth
+    - Preferred strictness of deterministic architecture
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Dominium technical development route and component ordering
+    label: FACT for existence of discussion; assistant proposals inside are proposal-level
+    objective: Determine usual technical/feature development routes for games like Dominium and identify components to work
+      on in order.
+    current_state: A prior assistant proposed a kernel-first deterministic simulation route and a layered phase order. The
+      user has not visibly accepted or rejected the proposal.
+    desired_end_state: A confirmed Dominium technical roadmap with components, dependencies, phase gates, acceptance tests,
+      and unresolved decisions clearly marked.
+    status: active / proposal-stage
+    priority: high
+    background: The user asked what development routes are usual for games like Dominium and what components should be worked
+      on in order.
+    decisions_made:
+    - DECISION-03
+    - DECISION-04
+    - DECISION-05
+    - DECISION-06
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-02
+    - QUESTION-03
+    - QUESTION-04
+    - QUESTION-05
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    - TASK-04
+    - TASK-05
+    - TASK-06
+    - TASK-07
+    - TASK-08
+    - TASK-09
+    - TASK-10
+    - TASK-11
+    - TASK-12
+    - TASK-13
+    - TASK-14
+    - TASK-15
+    - TASK-16
+    - TASK-17
+    constraints:
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    dependencies:
+    - Confirmed scope and genre
+    - Route acceptance or replacement
+    - Platform and engine/language decision
+    - Minimum deterministic simulation definition
+    timeline: No calendar timeline was established. Prior assistant proposed phase sequence 0–8.
+    blockers:
+    - Genre/core loop unknown
+    - Tech stack unknown
+    - Simulation scope unknown
+    - No visible repo, files, or prototype
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-03
+    - RISK-04
+    - RISK-05
+    - RISK-06
+    - RISK-07
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    success_criteria:
+    - User-confirmed route or alternative
+    - Phase-gated roadmap
+    - Minimal deterministic simulation slice
+    - Acceptance tests for early components
+    next_action: Create Dominium Technical Roadmap v0.1 from the proposal, explicitly marking assumptions and open questions.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-03
+    - VERIFY-04
+    - VERIFY-05
+    confidence: 4/5 that this was the main substantive topic; 2/5 that proposed architecture is accepted.
+  - id: WORKSTREAM-02
+    name: Chat-specific context transfer and reusable handoff packaging
+    label: FACT
+    objective: Convert the existing maximum-fidelity Context Transfer Packet and visible chat context into a downloadable,
+      reusable per-chat report package.
+    current_state: This response creates Markdown/YAML reports and a ZIP archive for later reuse.
+    desired_end_state: A self-contained package with full report, YAML spec sheet, aggregator packet, registers, reader brief,
+      verification/audit file, manifest, and ZIP.
+    status: active in this response; completed once files are created
+    priority: high
+    background: The user explicitly requested a final downloadable/shareable/reusable report package after a previous Context
+      Transfer Packet.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-07
+    - DECISION-08
+    decisions_pending: []
+    tasks:
+    - TASK-18
+    - TASK-19
+    - TASK-20
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    dependencies:
+    - Visible chat transcript
+    - Previously generated Context Transfer Packet
+    - File-generation capability
+    timeline: Requested after the Context Transfer Packet; date anchor fixed at 2026-05-27 Australia/Melbourne.
+    blockers:
+    - No blocker after file-generation tool availability confirmed
+    risks:
+    - RISK-08
+    - RISK-09
+    - RISK-10
+    - RISK-11
+    - RISK-12
+    - RISK-13
+    artifacts:
+    - ARTIFACT-03
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    success_criteria:
+    - All requested files created
+    - ZIP created
+    - Stable IDs used
+    - Caveats and uncertainty preserved
+    - Download links provided
+    next_action: Download and store the package in a per-chat folder.
+    verification_needed:
+    - VERIFY-08
+    - VERIFY-09
+    confidence: 5/5
+  - id: WORKSTREAM-03
+    name: Future aggregation into full Project Spec Book and Master Living State File
+    label: FACT for user-requested future process; PROJECT-CONTEXT for wider project relationship
+    objective: Later combine multiple old-chat report packages into a full Project Spec Book and Master Living State File.
+    current_state: The current prompt included a later aggregator prompt and described desired aggregation behavior. No aggregation
+      has occurred in this chat.
+    desired_end_state: A future central aggregation chat ingests all packages, preserves provenance, deduplicates carefully,
+      records conflicts, and produces a master spec/living state file.
+    status: future / not started in this chat
+    priority: medium
+    background: The user described this report package as source material for a future full Project Spec Book and supplied
+      a later aggregator prompt.
+    decisions_made:
+    - DECISION-09
+    decisions_pending: []
+    tasks:
+    - TASK-21
+    constraints:
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    dependencies:
+    - Completed per-chat packages from other chats
+    - Aggregator prompt
+    - User declaration that all packages are provided
+    timeline: Future; no date established beyond date anchor.
+    blockers:
+    - Other old-chat packages not present in this chat
+    risks:
+    - RISK-14
+    - RISK-15
+    - RISK-16
+    artifacts:
+    - ARTIFACT-16
+    success_criteria:
+    - Packages ingested one at a time
+    - Contradictions preserved
+    - No premature merging
+    - Master registers and spec produced only after user says all packages are provided
+    next_action: When aggregating later, provide this package plus other old-chat packages to a central aggregation chat.
+    verification_needed:
+    - VERIFY-10
+    confidence: 5/5 that user requested it; unknown whether other packages exist.
+  decisions:
+  - id: DECISION-01
+    decision: Infer chat label as 'Dominium Development Routes'.
+    status: Implemented for this package
+    label: INFERENCE
+    evidence_or_basis: User did not provide a chat label; main visible topic was Dominium development routes and component
+      order.
+    rationale: A short filesystem-safe label was required for filenames.
+    implications: All files use prefix dominium_development_routes.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: Low; label could be renamed by user.
+  - id: DECISION-02
+    decision: Use date anchor '2026-05-27 Australia/Melbourne'.
+    status: Confirmed requirement
+    label: FACT
+    evidence_or_basis: User explicitly instructed to use that date anchor unless a more specific date existed.
+    rationale: Creates stable temporal reference for future aggregation.
+    implications: All reports use this date anchor; no current external facts are assumed.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: None within this chat.
+  - id: DECISION-03
+    decision: Route C — Kernel-First Deterministic Simulation was recommended for Dominium by prior assistant.
+    status: Assistant proposal, not user-confirmed
+    label: FACT about prior output; UNCERTAIN as project decision
+    evidence_or_basis: Prior assistant said Dominium should follow Route C.
+    rationale: Proposed to support determinism, scale, replay, tooling, and moddability.
+    implications: Would make simulation primitives and kernel the first technical work.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: User acceptance not visible.
+  - id: DECISION-04
+    decision: Use layer order [0] Mathematical & Temporal Primitives through [8] Distribution, Modding, Multiplayer.
+    status: Assistant proposal, not user-confirmed
+    label: FACT about prior output; UNCERTAIN as project decision
+    evidence_or_basis: Prior assistant supplied this exact layer stack.
+    rationale: Strict dependency layering prevents UI/content from contaminating simulation core.
+    implications: Roadmap should be phase-gated and dependency-aware.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: May be revised after real scope is known.
+  - id: DECISION-05
+    decision: 'Use principle: ''Simulation precedes representation. State precedes UI. Determinism precedes performance. Data
+      precedes content.'''
+    status: Assistant proposal, not user-confirmed
+    label: FACT about prior output; UNCERTAIN as project decision
+    evidence_or_basis: Prior assistant wrote this principle explicitly.
+    rationale: Intended to preserve testability, replayability, and long-term maintainability.
+    implications: Future assistant should preserve this as proposal-level carry-forward.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: Not yet endorsed by user.
+  - id: DECISION-06
+    decision: 'Feature completion rule proposed: deterministic, serializable, reproducible, inspectable, moddable.'
+    status: Assistant proposal, not user-confirmed
+    label: FACT about prior output; UNCERTAIN as project decision
+    evidence_or_basis: Prior assistant listed these five completion conditions.
+    rationale: Raises quality bar for complex simulation features.
+    implications: Could become acceptance criteria after user confirmation.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: Moddability may not be a confirmed product goal.
+  - id: DECISION-07
+    decision: Limit this package to this chat only.
+    status: Confirmed requirement
+    label: FACT
+    evidence_or_basis: User explicitly said output is for THIS CHAT ONLY.
+    rationale: Prevents accidental whole-project summarization.
+    implications: Project-level information must be labelled PROJECT-CONTEXT if used.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: None.
+  - id: DECISION-08
+    decision: Create downloadable Markdown/YAML package and ZIP when file generation is available.
+    status: Implemented in this response
+    label: FACT
+    evidence_or_basis: User explicitly requested files if file-generation/download tool is available.
+    rationale: Enables saving, sharing, reuse, and aggregation.
+    implications: Seven files and ZIP are created.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: None after files are created.
+  - id: DECISION-09
+    decision: Future aggregation should ingest per-chat packages, preserve provenance, and wait for 'ALL PACKAGES PROVIDED'
+      before producing master outputs.
+    status: User-supplied future process; not executed here
+    label: FACT
+    evidence_or_basis: User supplied a later aggregator prompt with these instructions.
+    rationale: Avoids premature merging across incomplete old-chat inputs.
+    implications: Aggregator packet and YAML should be source-friendly.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: Execution depends on future chat.
+  tasks:
+  - id: TASK-01
+    task: Confirm whether Route C is accepted as Dominium's provisional development route.
+    priority: High
+    urgency: High
+    owner: User + future assistant
+    dependencies:
+    - ARTIFACT-02
+    - DECISION-03
+    inputs_needed:
+    - User confirmation or correction
+    expected_output: Accepted/rejected/revised development route
+    next_step: Ask only if needed; otherwise proceed as provisional and label it unresolved.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 5/5 that task remains open.
+  - id: TASK-02
+    task: Define Dominium's genre and core player loop.
+    priority: High
+    urgency: High
+    owner: User / design lead
+    dependencies: []
+    inputs_needed:
+    - Player actions
+    - time scale
+    - win/loss or open-ended model
+    - core loop
+    expected_output: Core design statement
+    next_step: Draft assumptions list and request correction only where needed.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 5/5 open.
+  - id: TASK-03
+    task: Define minimum deterministic simulation slice.
+    priority: High
+    urgency: High
+    owner: Future assistant / developer
+    dependencies:
+    - TASK-01
+    - TASK-02
+    inputs_needed:
+    - Core loop
+    - simulation scope
+    expected_output: MDS v0.1 specification
+    next_step: Specify the smallest world simulation proving the architecture.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4/5 useful next task.
+  - id: TASK-04
+    task: Define time model.
+    priority: High
+    urgency: High
+    owner: Developer
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - Tick granularity
+    - calendar needs
+    - scheduling semantics
+    expected_output: Time primitive spec
+    next_step: Choose provisional tick/calendar model.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4/5.
+  - id: TASK-05
+    task: Define deterministic numeric model.
+    priority: High
+    urgency: High
+    owner: Developer
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - Range/precision requirements
+    - platform targets
+    expected_output: Fixed-point or controlled numeric determinism spec
+    next_step: Determine strictness of no-floating-point rule.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4/5.
+  - id: TASK-06
+    task: Define RNG determinism contract.
+    priority: High
+    urgency: High
+    owner: Developer
+    dependencies:
+    - TASK-04
+    inputs_needed:
+    - Seed strategy
+    - stream partitioning needs
+    expected_output: RNG stream and reproducibility spec
+    next_step: Define seed, stream, and event-order rules.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4/5.
+  - id: TASK-07
+    task: Define entity identity and lifetime model.
+    priority: High
+    urgency: Medium
+    owner: Developer
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - Entity categories
+    - creation/deletion semantics
+    expected_output: Entity ID/lifetime spec
+    next_step: Draft durable ID and tombstone/reuse rules.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4/5.
+  - id: TASK-08
+    task: Define event queue and state mutation rules.
+    priority: High
+    urgency: Medium
+    owner: Developer
+    dependencies:
+    - TASK-04
+    - TASK-07
+    inputs_needed:
+    - Ordering rules
+    - conflict resolution
+    - command model
+    expected_output: Kernel mutation spec
+    next_step: Draft deterministic event ordering and command application rules.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4/5.
+  - id: TASK-09
+    task: Define serialization primitives and versioning.
+    priority: High
+    urgency: Medium
+    owner: Developer
+    dependencies:
+    - TASK-07
+    - TASK-08
+    inputs_needed:
+    - State schema
+    - save/load needs
+    expected_output: Serialization/version compatibility spec
+    next_step: Decide schema and version migration strategy.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4/5.
+  - id: TASK-10
+    task: Build headless deterministic kernel prototype.
+    priority: High
+    urgency: Medium
+    owner: Developer
+    dependencies:
+    - TASK-04
+    - TASK-05
+    - TASK-06
+    - TASK-08
+    - TASK-09
+    inputs_needed:
+    - Language/engine decision
+    - kernel specs
+    expected_output: Runnable headless simulation kernel
+    next_step: Implement minimal seed/input/replay loop.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4/5.
+  - id: TASK-11
+    task: Build replay verification tests.
+    priority: High
+    urgency: Medium
+    owner: Developer
+    dependencies:
+    - TASK-10
+    inputs_needed:
+    - Input traces
+    - state hashing method
+    expected_output: Determinism test suite
+    next_step: Compare tick hashes across runs.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4/5.
+  - id: TASK-12
+    task: Define world state graph.
+    priority: High
+    urgency: Medium
+    owner: Developer / designer
+    dependencies:
+    - TASK-07
+    - TASK-08
+    inputs_needed:
+    - Spatial model
+    - ownership
+    - causality requirements
+    expected_output: World model spec
+    next_step: Draft cells/regions/entities/relationships model.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4/5.
+  - id: TASK-13
+    task: Define and build minimal debug inspector.
+    priority: Medium
+    urgency: Medium
+    owner: Developer
+    dependencies:
+    - TASK-10
+    - TASK-12
+    inputs_needed:
+    - State schema
+    - inspection needs
+    expected_output: CLI/text or basic visual state inspector
+    next_step: Start with command-line inspection and invariant reports.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 4/5.
+  - id: TASK-14
+    task: Confirm core system order and scope.
+    priority: Medium
+    urgency: Medium
+    owner: User / future assistant
+    dependencies:
+    - TASK-02
+    - TASK-12
+    inputs_needed:
+    - Actual Dominium mechanics
+    expected_output: Confirmed system dependency graph
+    next_step: Validate resource → population → economy → governance → conflict → environment order.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4/5.
+  - id: TASK-15
+    task: Define content schema after systems stabilize.
+    priority: Medium
+    urgency: Low initially
+    owner: Developer / designer
+    dependencies:
+    - TASK-14
+    inputs_needed:
+    - Rule packs
+    - data-driven needs
+    expected_output: Content schema v0.1
+    next_step: Delay until core systems exist unless prototype content is throwaway.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 3/5.
+  - id: TASK-16
+    task: Define presentation architecture after headless prototype.
+    priority: Medium
+    urgency: Low initially
+    owner: Developer
+    dependencies:
+    - TASK-10
+    - TASK-13
+    inputs_needed:
+    - Simulation API
+    - UI needs
+    expected_output: Read-only presentation layer spec
+    next_step: Define command/event boundary between UI and simulation.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+    confidence: 3/5.
+  - id: TASK-17
+    task: Define modding and multiplayer only after replay/schema foundations are clearer.
+    priority: Low/Medium
+    urgency: Low initially
+    owner: Developer
+    dependencies:
+    - TASK-09
+    - TASK-11
+    - TASK-15
+    inputs_needed:
+    - Actual product goals for mods/multiplayer
+    expected_output: Mod loading and network model decisions
+    next_step: Verify whether mods or multiplayer are real goals.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 3/5.
+  - id: TASK-18
+    task: Create final report package files.
+    priority: High
+    urgency: Immediate
+    owner: Current assistant
+    dependencies:
+    - Prior Context Transfer Packet
+    - Visible chat context
+    inputs_needed:
+    - User's current packaging prompt
+    expected_output: Seven requested files plus ZIP
+    next_step: Completed by this response.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: 5/5.
+  - id: TASK-19
+    task: Store this package in its own per-chat folder.
+    priority: High
+    urgency: After download
+    owner: User
+    dependencies:
+    - TASK-18
+    inputs_needed:
+    - Downloaded files or ZIP
+    expected_output: Durable local/archive copy
+    next_step: Save the ZIP and Markdown/YAML files together.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    label: INFERENCE
+    confidence: 5/5.
+  - id: TASK-20
+    task: Manually verify caveats before using report as authoritative.
+    priority: High
+    urgency: Before acting on technical roadmap
+    owner: User / future assistant
+    dependencies:
+    - TASK-18
+    inputs_needed:
+    - This report
+    - Project reality
+    expected_output: Verified corrections or confirmations
+    next_step: Check Route C acceptance, scope, tech stack, and missing files.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-01
+    label: FACT from user process requirement + INFERENCE for content
+    confidence: 5/5.
+  - id: TASK-21
+    task: Use aggregator prompt later after collecting all old-chat packages.
+    priority: Medium
+    urgency: Future
+    owner: User / future aggregation assistant
+    dependencies:
+    - Other chat packages
+    inputs_needed:
+    - All per-chat report packages
+    expected_output: Full Project Spec Book and Master Living State File
+    next_step: Provide packages one at a time, then say ALL PACKAGES PROVIDED.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: 5/5.
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Do not invent facts.
+    type: Evidence/process
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: Unknowns must remain marked unknown.
+    violation_risk: High
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-02
+    constraint: Do not silently infer.
+    type: Evidence/process
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: Inferences must be labelled.
+    violation_risk: High
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-03
+    constraint: Use labels FACT, INFERENCE, UNCERTAIN / UNVERIFIED, PROJECT-CONTEXT.
+    type: Evidence/process
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: Important items require explicit epistemic status.
+    violation_risk: High
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-04
+    constraint: Do not treat assistant suggestions as user decisions unless accepted.
+    type: Evidence/process
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: Route C and phase order remain proposal-level.
+    violation_risk: High
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-05
+    constraint: Output is for this chat only.
+    type: Scope
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: Do not summarize entire project; label project context.
+    violation_risk: High
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-06
+    constraint: Preserve rejected, superseded, and deprioritized options.
+    type: Continuity
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: Route A/B and technical warnings must be included.
+    violation_risk: Medium
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-07
+    constraint: Preserve visible rationale and assumptions without revealing hidden chain-of-thought.
+    type: Safety/process
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: Explain why choices were proposed using visible text only.
+    violation_risk: Medium
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-08
+    constraint: Use structured headings, tables, stable IDs, and consistent terminology.
+    type: Formatting
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: All registers use requested ID pattern.
+    violation_risk: Medium
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-09
+    constraint: Simulation precedes representation.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Build simulation before polished UI/rendering.
+    violation_risk: Medium
+    label: FACT about prior output; UNCERTAIN as requirement
+    confidence: 5/5 prior output; acceptance uncertain
+  - id: CONSTRAINT-10
+    constraint: State precedes UI.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Define state model before user interface.
+    violation_risk: Medium
+    label: FACT about prior output; UNCERTAIN as requirement
+    confidence: 5/5 prior output; acceptance uncertain
+  - id: CONSTRAINT-11
+    constraint: Determinism precedes performance.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Correct replayable behavior should come before optimization.
+    violation_risk: Medium
+    label: FACT about prior output; UNCERTAIN as requirement
+    confidence: 5/5 prior output; acceptance uncertain
+  - id: CONSTRAINT-12
+    constraint: Data precedes content.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Schemas and data model should precede large content production.
+    violation_risk: Medium
+    label: FACT about prior output; UNCERTAIN as requirement
+    confidence: 5/5 prior output; acceptance uncertain
+  - id: CONSTRAINT-13
+    constraint: No rendering in deterministic kernel.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Keep rendering layer separate from simulation loop.
+    violation_risk: Medium
+    label: UNCERTAIN / UNVERIFIED as project rule
+    confidence: 4/5
+  - id: CONSTRAINT-14
+    constraint: No UI in deterministic kernel.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: User input should become commands/events rather than direct kernel UI calls.
+    violation_risk: Medium
+    label: UNCERTAIN / UNVERIFIED as project rule
+    confidence: 4/5
+  - id: CONSTRAINT-15
+    constraint: No floating point in deterministic core.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Use fixed-point or tightly controlled deterministic math if strict determinism is required.
+    violation_risk: Medium
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 3/5 project fit unknown
+  - id: CONSTRAINT-16
+    constraint: No OS calls in deterministic core.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Avoid nondeterministic time/filesystem/threading inputs inside simulation logic.
+    violation_risk: Medium
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4/5
+  - id: CONSTRAINT-17
+    constraint: Presentation reads state and does not mutate simulation directly.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Mutation should pass through command/event API.
+    violation_risk: Medium
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4/5
+  - id: CONSTRAINT-18
+    constraint: Each core system should run headless.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Systems can be tested without graphics.
+    violation_risk: Medium
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4/5
+  - id: CONSTRAINT-19
+    constraint: Each core system should serialize.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Save/load compatibility becomes early requirement.
+    violation_risk: Medium
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4/5
+  - id: CONSTRAINT-20
+    constraint: Each core system should replay identically.
+    type: Technical proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Replay acts as correctness test.
+    violation_risk: Medium
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4/5
+  - id: CONSTRAINT-21
+    constraint: A complete feature should be deterministic, serializable, reproducible, inspectable, and moddable.
+    type: Technical quality gate proposal
+    hard_or_soft: Soft/proposed until user confirms
+    source_or_basis: Prior assistant output
+    implication: Acceptance criteria become stricter than normal feature completion.
+    violation_risk: Medium
+    label: UNCERTAIN / UNVERIFIED as project rule
+    confidence: 3/5; moddability unconfirmed
+  - id: CONSTRAINT-22
+    constraint: If file generation is available, create actual downloadable files and preferably a ZIP.
+    type: Output/export
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: Do not only paste content if files can be created.
+    violation_risk: High
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-23
+    constraint: Use exact requested file names with filesystem-safe chat label prefix.
+    type: Output/export
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: Files must follow naming pattern.
+    violation_risk: Medium
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-24
+    constraint: External-world facts, versions, prices, APIs, laws, schedules, products, or current events require verification
+      before future use.
+    type: Evidence/staleness
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: This package should not assert current ecosystem facts without verification.
+    violation_risk: High
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-25
+    constraint: Future outputs should be self-contained enough that the original chat is not required unless a gap is marked.
+    type: Continuity
+    hard_or_soft: Hard
+    source_or_basis: User packaging prompt
+    implication: Reports must include enough context and caveats for reuse.
+    violation_risk: Medium
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-26
+    constraint: Future aggregator must preserve source provenance and not merge similar items unless evidence supports merging.
+    type: Aggregation
+    hard_or_soft: Hard for future aggregator prompt
+    source_or_basis: User-supplied aggregator prompt
+    implication: Cross-chat IDs and labels should remain traceable.
+    violation_risk: High
+    label: FACT
+    confidence: 5/5
+  - id: CONSTRAINT-27
+    constraint: Future aggregator should not produce master outputs until user says 'ALL PACKAGES PROVIDED'.
+    type: Aggregation
+    hard_or_soft: Hard for future aggregator prompt
+    source_or_basis: User-supplied aggregator prompt
+    implication: Avoid premature master spec generation.
+    violation_risk: High
+    label: FACT
+    confidence: 5/5
+  open_questions:
+  - id: QUESTION-01
+    question: Is Route C — Kernel-First Deterministic Simulation accepted as the Dominium route?
+    why_it_matters: Determines ordering of all early work.
+    known: Prior assistant recommended it.
+    unknown: User acceptance or revision.
+    resolution_path: User confirmation or future roadmap proceeds provisionally with label.
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: What exactly is Dominium's genre?
+    why_it_matters: Architecture and feature order depend on genre and gameplay loop.
+    known: It is discussed as a game named Dominium.
+    unknown: 4X, grand strategy, city-builder, colony sim, RTS, hybrid, or other.
+    resolution_path: User/design statement.
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: What is the core player loop?
+    why_it_matters: Defines UI needs, simulation cadence, and MVP scope.
+    known: Not specified.
+    unknown: Player actions, feedback loop, goals, session structure.
+    resolution_path: Design brief or user answer.
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: What are target platforms?
+    why_it_matters: Affects engine/language, determinism, UI, performance, distribution.
+    known: Not specified.
+    unknown: PC, web, mobile, console, server, cross-platform.
+    resolution_path: User confirmation.
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: What engine or programming language will be used?
+    why_it_matters: Implementation plan depends on tech stack.
+    known: Not specified.
+    unknown: Custom engine, Godot, Unity, Unreal, Rust, C++, C#, etc.
+    resolution_path: Technical decision after requirements.
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Is strict deterministic replay required, and at what level?
+    why_it_matters: Full cross-platform determinism is costly and shapes every core decision.
+    known: Prior assistant proposed strict replay/determinism.
+    unknown: Same-machine vs cross-platform vs multiplayer-grade determinism.
+    resolution_path: User/technical requirement decision.
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: Is multiplayer planned?
+    why_it_matters: Network model affects replay/sync architecture.
+    known: Prior assistant mentioned multiplayer only as later phase.
+    unknown: Actual product requirement.
+    resolution_path: User/product decision.
+    priority: Medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: Is modding a core goal?
+    why_it_matters: Modding affects schemas, loading, validation, and data boundaries.
+    known: Prior assistant proposed first-class mods.
+    unknown: User priority and scope.
+    resolution_path: User/product decision.
+    priority: Medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: What is the intended simulation scale?
+    why_it_matters: Determines data structures, tick rate, performance, and architecture depth.
+    known: Not specified.
+    unknown: Entities, agents, regions, time horizon, update frequency.
+    resolution_path: Simulation target specification.
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: What does 'world' mean in Dominium?
+    why_it_matters: World model/state graph cannot be designed without domain semantics.
+    known: Prior assistant listed cells, regions, ownership, jurisdiction, causality.
+    unknown: Actual spatial and political/economic model.
+    resolution_path: Design spec.
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: What are Dominium's primary systems?
+    why_it_matters: System ordering depends on actual mechanics.
+    known: Prior assistant proposed resources, population, economy, governance, conflict, environment.
+    unknown: Whether those are actual Dominium systems.
+    resolution_path: User/design confirmation.
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: What is prototype v0.1 success?
+    why_it_matters: Prevents overbuilding and defines acceptance tests.
+    known: Not specified.
+    unknown: Minimum testable or playable milestone.
+    resolution_path: MVP definition.
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-13
+    question: Are there existing files, repositories, or design documents?
+    why_it_matters: This package may be incomplete if external artifacts exist.
+    known: No files were visible in this chat.
+    unknown: Whether external project docs exist elsewhere.
+    resolution_path: User upload/repo/doc reference.
+    priority: Medium
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-14
+    question: What team size and timeline apply?
+    why_it_matters: Determines realism of engine/kernel/tooling roadmap.
+    known: Not specified.
+    unknown: Solo, team, academic, commercial, deadline.
+    resolution_path: User confirmation.
+    priority: Medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-15
+    question: How should other old-chat reports be merged later?
+    why_it_matters: This report is intended for future aggregation.
+    known: User supplied an aggregator prompt.
+    unknown: Actual number and content of future packages.
+    resolution_path: Future aggregation process.
+    priority: Medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT + UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Route A — Content-First
+    status: Rejected/deprioritized by prior assistant, not user-confirmed
+    reason: Prior assistant said it can create technical debt, fragile mods, and engine rewrites despite fast feedback.
+    final_or_tentative: Tentative
+    reconsider_conditions: Reconsider if Dominium is a small prototype, design-discovery project, or short-scope game.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT about prior output; UNCERTAIN as final rejection
+  - id: REJECTED-02
+    option: Route B — Engine-First
+    status: Rejected/deprioritized by prior assistant, not user-confirmed
+    reason: Prior assistant said it has high upfront cost and slow iteration, with risk of weak emergent depth unless well-resourced.
+    final_or_tentative: Tentative
+    reconsider_conditions: Reconsider if the team has engine expertise, funding, long timeline, or reusable engine goals.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT about prior output; UNCERTAIN as final rejection
+  - id: REJECTED-03
+    option: Early UI before tools
+    status: Warned against by prior assistant
+    reason: Prior assistant listed it as a common failure point for simulation-heavy games.
+    final_or_tentative: Tentative
+    reconsider_conditions: Reconsider for limited UX validation prototypes with throwaway code.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT about prior output; UNCERTAIN as project rule
+  - id: REJECTED-04
+    option: Economy tuned before conservation laws
+    status: Warned against by prior assistant
+    reason: Prior assistant argued economy should come after resource/conservation foundations.
+    final_or_tentative: Tentative
+    reconsider_conditions: Reconsider if economy is intentionally abstract and not conservation-based.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT about prior output; UNCERTAIN as project rule
+  - id: REJECTED-05
+    option: Multiplayer before replay
+    status: Warned against by prior assistant
+    reason: Prior assistant treated replay as prerequisite for sync/lockstep/rollback.
+    final_or_tentative: Tentative but strong recommendation
+    reconsider_conditions: Reconsider only if multiplayer interaction is the primary prototype risk.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT about prior output; UNCERTAIN as project rule
+  - id: REJECTED-06
+    option: Content before schema freeze
+    status: Warned against by prior assistant
+    reason: Prior assistant said content before stable schema causes churn.
+    final_or_tentative: Tentative
+    reconsider_conditions: Reconsider if early content is explicitly disposable.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT about prior output; UNCERTAIN as project rule
+  - id: REJECTED-07
+    option: Performance before correctness
+    status: Warned against by prior assistant
+    reason: Prior assistant said determinism/correctness should precede optimization.
+    final_or_tentative: Tentative
+    reconsider_conditions: Reconsider only when performance feasibility itself is the key unknown.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT about prior output; UNCERTAIN as project rule
+  - id: REJECTED-08
+    option: Presentation mutating simulation state directly
+    status: Rejected by prior assistant proposal
+    reason: Would undermine deterministic replay and clean state mutation rules.
+    final_or_tentative: Tentative
+    reconsider_conditions: Reconsider for throwaway prototypes only.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT about prior output; UNCERTAIN as project rule
+  - id: REJECTED-09
+    option: Floating point in deterministic core
+    status: Rejected by prior assistant proposal
+    reason: Prior assistant prohibited floating point in deterministic core to avoid determinism issues.
+    final_or_tentative: Tentative
+    reconsider_conditions: Reconsider if determinism requirements are weaker or floating point is tightly controlled.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT about prior output; UNCERTAIN as project rule
+  - id: REJECTED-10
+    option: Mods as late afterthought
+    status: Rejected implicitly by prior assistant proposal
+    reason: Prior assistant said mods should be first-class and content should be data-driven.
+    final_or_tentative: Tentative
+    reconsider_conditions: Reconsider if modding is not a product goal.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT about prior output; UNCERTAIN as product rule
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: User's initial Dominium development-route question
+    type: Prompt
+    purpose: Asked for usual development routes and specific component order.
+    status: Preserved in report
+    origin: Visible chat
+    carry_forward: 'Yes'
+    notes: 'Exact wording: ''What are the usual development routes for games like Dominium technically and feature wise? What
+      specific components should we work on and in which order?'''
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Prior assistant Dominium roadmap answer
+    type: Output/framework
+    purpose: Proposed Route A/B/C, recommended Route C, provided layered architecture and phase order.
+    status: Preserved as proposal-level material
+    origin: Visible chat
+    carry_forward: 'Yes'
+    notes: Must not be treated as user-confirmed decision.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: Maximum-fidelity Context Transfer Packet
+    type: Output/handoff
+    purpose: Preserved conversation state for a new assistant.
+    status: Existing packet consumed and normalized
+    origin: Visible chat previous assistant response
+    carry_forward: 'Yes'
+    notes: This final package repairs and normalizes it.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: Route A/B/C framework
+    type: Conceptual framework
+    purpose: Contrasted development strategies for Dominium-like games.
+    status: Preserved
+    origin: Prior assistant output
+    carry_forward: 'Yes'
+    notes: Route C proposed; Route A/B deprioritized by prior assistant.
+    label: FACT about prior output
+  - id: ARTIFACT-05
+    name_or_description: Layer stack [0]–[8]
+    type: Architecture outline
+    purpose: Described dependency hierarchy from primitives to distribution/modding/multiplayer.
+    status: Preserved as proposal
+    origin: Prior assistant output
+    carry_forward: 'Yes'
+    notes: Should be verified against actual project scope.
+    label: FACT about prior output; UNCERTAIN as decision
+  - id: ARTIFACT-06
+    name_or_description: Feature completion rule
+    type: Quality gate proposal
+    purpose: Defined completed feature as deterministic, serializable, reproducible, inspectable, moddable.
+    status: Preserved as proposal
+    origin: Prior assistant output
+    carry_forward: 'Yes'
+    notes: Moddability unconfirmed as requirement.
+    label: FACT about prior output; UNCERTAIN as decision
+  - id: ARTIFACT-07
+    name_or_description: Current packaging prompt
+    type: Prompt/process specification
+    purpose: Specified final package files, structure, ID patterns, and export requirements.
+    status: Implemented
+    origin: Visible chat current user message
+    carry_forward: 'Yes'
+    notes: Serves as process precedent for other old chats.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: dominium_development_routes__01_full_chat_report.md
+    type: Generated Markdown report
+    purpose: Main human-readable report for this chat.
+    status: Created in this response
+    origin: Current assistant
+    carry_forward: 'Yes'
+    notes: Primary file for human review.
+    label: FACT after creation
+  - id: ARTIFACT-09
+    name_or_description: dominium_development_routes__02_spec_sheet.yaml
+    type: Generated YAML spec sheet
+    purpose: Structured data suitable for later master spec construction.
+    status: Created in this response
+    origin: Current assistant
+    carry_forward: 'Yes'
+    notes: Use for machine/aggregator processing.
+    label: FACT after creation
+  - id: ARTIFACT-10
+    name_or_description: dominium_development_routes__03_aggregator_packet.md
+    type: Generated Markdown packet
+    purpose: Compact cross-chat aggregation input.
+    status: Created in this response
+    origin: Current assistant
+    carry_forward: 'Yes'
+    notes: Use in future central aggregation chat.
+    label: FACT after creation
+  - id: ARTIFACT-11
+    name_or_description: dominium_development_routes__04_registers.md
+    type: Generated Markdown registers
+    purpose: Standalone normalized tables.
+    status: Created in this response
+    origin: Current assistant
+    carry_forward: 'Yes'
+    notes: Stable IDs for merge.
+    label: FACT after creation
+  - id: ARTIFACT-12
+    name_or_description: dominium_development_routes__05_reader_brief.md
+    type: Generated Markdown brief
+    purpose: Short human-readable version.
+    status: Created in this response
+    origin: Current assistant
+    carry_forward: 'Yes'
+    notes: Use for quick orientation.
+    label: FACT after creation
+  - id: ARTIFACT-13
+    name_or_description: dominium_development_routes__06_verification_and_audit.md
+    type: Generated Markdown audit
+    purpose: Quality-control record and verification checklist.
+    status: Created in this response
+    origin: Current assistant
+    carry_forward: 'Yes'
+    notes: Use before trusting the roadmap.
+    label: FACT after creation
+  - id: ARTIFACT-14
+    name_or_description: dominium_development_routes__manifest.md
+    type: Generated Markdown manifest
+    purpose: File list, item counts, storage guidance, package status.
+    status: Created in this response
+    origin: Current assistant
+    carry_forward: 'Yes'
+    notes: Index for the package.
+    label: FACT after creation
+  - id: ARTIFACT-15
+    name_or_description: dominium_development_routes__handoff_package.zip
+    type: Generated ZIP archive
+    purpose: Convenient bundle containing all report files.
+    status: Created in this response
+    origin: Current assistant
+    carry_forward: 'Yes'
+    notes: Preferred download for storage.
+    label: FACT after creation
+  - id: ARTIFACT-16
+    name_or_description: Later aggregator prompt supplied by user
+    type: Prompt
+    purpose: Instructions for combining multiple old-chat report packages into a Project Spec Book and Master Living State
+      File.
+    status: Preserved in reports
+    origin: Visible chat current user message
+    carry_forward: 'Yes'
+    notes: Not executed in this chat.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Treating assistant proposals as user decisions
+    consequence: Future roadmap may falsely lock in Route C or strict determinism.
+    likelihood: High
+    severity: High
+    mitigation: Keep proposal status labels and ask/verify before formalizing.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT/INFERENCE
+  - id: RISK-02
+    risk: Over-assuming Dominium genre
+    consequence: Wrong architecture or feature order.
+    likelihood: High
+    severity: High
+    mitigation: Keep genre unknown; require core-loop definition.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: RISK-03
+    risk: Overbuilding deterministic infrastructure
+    consequence: Slow progress if the game scope is smaller than assumed.
+    likelihood: Medium
+    severity: Medium
+    mitigation: Define minimum deterministic simulation slice before building deep tooling.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: RISK-04
+    risk: Underbuilding simulation foundations
+    consequence: Technical debt if Dominium is genuinely simulation-heavy.
+    likelihood: Medium
+    severity: High
+    mitigation: Confirm scope and determinism needs early.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: RISK-05
+    risk: Premature engine/language recommendation
+    consequence: Tech stack mismatch with goals and constraints.
+    likelihood: Medium
+    severity: High
+    mitigation: Delay stack choice until platforms, scope, and determinism requirements are known.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: RISK-06
+    risk: Ignoring replay/determinism cost
+    consequence: Hard-to-debug desyncs or impossible multiplayer/replay later.
+    likelihood: Medium
+    severity: High
+    mitigation: Define exact determinism target and build replay tests early if accepted.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: RISK-07
+    risk: UI or content contaminates simulation logic
+    consequence: Reduced testability, replayability, and maintainability.
+    likelihood: Medium
+    severity: High
+    mitigation: Use command/event boundary and headless simulation tests.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: INFERENCE
+  - id: RISK-08
+    risk: Summarization loss during chat retirement
+    consequence: Future assistant misses rationale, caveats, rejected options, or tasks.
+    likelihood: Medium
+    severity: High
+    mitigation: Use this package with full report, registers, and YAML.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT/INFERENCE
+  - id: RISK-09
+    risk: Over-compression of prior Context Transfer Packet
+    consequence: Lost nuance from proposal-level status.
+    likelihood: Medium
+    severity: Medium
+    mitigation: This package includes audit, labels, and stable IDs.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-10
+    risk: Missing artifacts outside visible chat
+    consequence: Package may omit files/design docs not visible here.
+    likelihood: Medium
+    severity: Medium
+    mitigation: Verify whether external docs/repos exist before relying on report.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-11
+    risk: Stale external-world facts
+    consequence: Future technical choices based on outdated engine/tool/API claims.
+    likelihood: Medium
+    severity: Medium
+    mitigation: Verify all external facts before use; this report avoids current external claims.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-01
+    label: FACT/INFERENCE
+  - id: RISK-12
+    risk: Malformed or difficult-to-merge package
+    consequence: Future aggregation becomes unreliable.
+    likelihood: Low
+    severity: Medium
+    mitigation: Use requested filenames, stable IDs, and YAML schema.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-13
+    risk: Misunderstanding user preferences
+    consequence: Future assistant may add fluff, omit citations, or ask unnecessary questions.
+    likelihood: Medium
+    severity: Medium
+    mitigation: Preserve preference register and source hierarchy.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT/INFERENCE
+  - id: RISK-14
+    risk: Premature cross-chat merging
+    consequence: Contradictions erased or unsupported master spec decisions created.
+    likelihood: Medium
+    severity: High
+    mitigation: Aggregator must preserve provenance and wait for ALL PACKAGES PROVIDED.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT/INFERENCE
+  - id: RISK-15
+    risk: Duplicate but not identical concepts across chats
+    consequence: Aggregator may merge items with different statuses or assumptions.
+    likelihood: Medium
+    severity: Medium
+    mitigation: Use stable IDs per package and conflict/deduplication registers.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-16
+    risk: Project-level context contaminates chat-specific report
+    consequence: Report may imply facts not established in this chat.
+    likelihood: Medium
+    severity: Medium
+    mitigation: Label Project context and keep scope limited to this chat.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-02
+    label: FACT/INFERENCE
+  verification_queue:
+  - id: VERIFY-01
+    item: Confirm Dominium is intended to be simulation-heavy.
+    why_verification_needed: Kernel-first route depends on this assumption.
+    suggested_source_type: User confirmation or design document
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Confirm or revise Route C recommendation.
+    why_verification_needed: All proposed phase ordering depends on route selection.
+    suggested_source_type: User decision
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Confirm determinism target.
+    why_verification_needed: Same-run, cross-platform, replay, and multiplayer-grade determinism imply different costs.
+    suggested_source_type: Technical requirements discussion
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Confirm genre and core player loop.
+    why_verification_needed: Feature order and MVP cannot be defined without them.
+    suggested_source_type: Design brief or user answer
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Confirm engine/language/platform constraints.
+    why_verification_needed: Implementation plan cannot be precise without tech stack constraints.
+    suggested_source_type: Technical decision / project constraints
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Confirm whether modding is a core goal.
+    why_verification_needed: The prior feature completion rule includes moddability, but user did not confirm it.
+    suggested_source_type: Product/design requirement
+    priority: Medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Confirm whether multiplayer is planned.
+    why_verification_needed: Replay/sync priorities and network model depend on it.
+    suggested_source_type: Product/design requirement
+    priority: Medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Check package files open correctly after download.
+    why_verification_needed: Generated files must be usable outside chat.
+    suggested_source_type: Manual file open / checksum if desired
+    priority: High
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT/INFERENCE
+  - id: VERIFY-09
+    item: Check whether this chat had external files not visible in transcript.
+    why_verification_needed: Artifact ledger says none visible; hidden/external docs may exist.
+    suggested_source_type: User review of project files/repo/uploads
+    priority: Medium
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: Confirm all packages are collected before running aggregator prompt.
+    why_verification_needed: Aggregator prompt requires waiting until all packages are provided.
+    suggested_source_type: User confirmation in future aggregation chat
+    priority: Medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT/INFERENCE
+  - id: VERIFY-11
+    item: Verify external game-development claims before using them as evidence.
+    why_verification_needed: Prior assistant gave unsourced claims about development routes; current facts may need citations.
+    suggested_source_type: Current official docs, postmortems, talks, technical articles
+    priority: Medium
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT from user requirement
+  spec_book_notes:
+    likely_sections:
+    - Architecture Principles
+    - Development Route
+    - Simulation Kernel
+    - World Model
+    - Persistence/Replay/Sync
+    - Tooling
+    - Presentation Boundary
+    - Content/Data/Modding
+    - Risk Register
+    - Open Questions
+    unique_contributions:
+    - Route A/B/C framework
+    - Kernel-first deterministic simulation recommendation
+    - Layer stack [0]–[8]
+    - Feature completion rule
+    - Failure-point warnings
+    possible_duplicates_with_other_chats:
+    - Dominium genre/core loop
+    - Engine/language decisions
+    - Simulation systems
+    - Modding and multiplayer
+    - Prototype roadmap
+    conflicts_to_watch_for:
+    - Other chats may prefer prototype-first development.
+    - Other chats may reject strict determinism.
+    - Other chats may define different system order.
+    - Other chats may establish an engine/language not visible here.
+    formal_requirements_candidates:
+    - Headless deterministic simulation kernel
+    - Replay/save-load quality gates
+    - Read-only presentation boundary
+    - Data-driven content
+    background_context_candidates:
+    - Route comparison rationale
+    - Prior assistant warnings
+    - Provisional phase order
+    needs_user_confirmation:
+    - Route C acceptance
+    - Genre/core loop
+    - Determinism target
+    - Modding requirement
+    - Multiplayer requirement
+    - Tech stack
+    - Existing files/codebase
+  final_recommendations:
+    next_action_if_continuing_this_chat: Produce Dominium Technical Roadmap v0.1 with phases, dependencies, acceptance tests,
+      risks, and labelled assumptions.
+    next_action_for_aggregator: Ingest this package as one chat-specific source; preserve IDs and do not merge Route C into
+      formal requirements without corroboration.
+    user_checks_required:
+    - Confirm route acceptance.
+    - Confirm genre/core loop.
+    - Confirm determinism/replay/modding/multiplayer goals.
+    - Confirm existing files or repositories.
+    - Check generated files open correctly.

@@ -1,0 +1,3528 @@
+spec_sheet:
+  metadata:
+    chat_label: dominium_testx_repox_governance_handoff
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: THIS CHAT ONLY; no direct repo inspection; user-pasted repo tree treated as visible chat context
+    apparent_coverage: full visible-context coverage with caveats
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes with caveats
+    main_limitations:
+    - No direct file inspection performed during package generation
+    - Exact full text of generated mega-prompts summarized rather than reproduced line-for-line
+    - External toolchain facts require verification
+    - Implementation status of proposed systems is unverified
+  summary:
+    one_sentence: This chat established and reconciled Dominium / Domino governance around TestX, RepoX, build identity, IDE
+      projections, language/toolchain constraints, demos/authority, and final context handoff.
+    short_brief: 'The chat focused on preserving and enforcing a closed architecture for Dominium / Domino: deterministic
+      engine/game, modular content, application shells, repository/toolchain governance, authority-based demo/free distribution,
+      and future-proof language/ABI rules. The latest upstream canon supersedes earlier assistant-generated details, especially
+      build numbering via BUILD-ID-0.'
+    main_topics:
+    - Dominium / Domino core engine and game
+    - Content system, packs, and zero-asset boot
+    - Application layer canon
+    - Renderers, platforms, and headless operation
+    - TESTX / VALIDATE verification system
+    - TESTX2 control layers and non-interference
+    - TESTX3 authority, demo, tourist, services, and piracy containment
+    - REPOX repository ownership and IDE projections
+    - Toolchain and legacy OS matrix
+    - TESTX4 language profiles and ABI discipline
+    - Policy-as-data and rules-to-checks automation
+    - Windows MVP build/test plan with VS2022
+    main_outputs:
+    - Context Transfer Packet
+    - TESTX2 plan/prompt
+    - TESTX3 plan/prompt
+    - REPOX prompt
+    - TESTX4 recommendation
+    - Windows MVP build assessment
+    highest_priority_carry_forward:
+    - Latest upstream canon supersedes earlier assistant-generated prompts where conflicts exist.
+    - 'BUILD-ID-0: GBN release-only, BII dev/ci, manual product SemVer.'
+    - Architecture closed; implementation/audit only.
+    - 'Core ontology: Assemblies, Fields, Processes, Agents, Law.'
+    - Engine C89, Game C++98, public headers parseable forever, no C++ ABI leakage.
+    - Applications are shells; CLI canonical; UI is data, never logic.
+    - Setup is only install mutation authority; tools read-only by default.
+    - IDEs are projections; CMake/TestX/RepoX own graph.
+    - Content is optional, open-format, capability-provided; zero-asset boot.
+    - Demo/free/tourist model uses authority profiles, not code forks.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Latest upstream canon pasted by user supersedes earlier assistant drafts.
+    - Direct user statements outrank assistant suggestions.
+    - Assistant brainstorms are not decisions unless accepted by user or upstream canon.
+    staleness_rules:
+    - Toolchain, SDK, IDE, OS, and external software claims require verification before action.
+    - Repo file existence and contents require direct inspection.
+  user_preferences:
+    explicit:
+    - ID: PREFERENCE-01
+      Preference: Preserve maximum fidelity rather than over-compressing
+      Source / basis: Current report-package request and earlier Context Transfer Packet request
+      Strength: strong explicit
+      Implication: Use registers, IDs, and caveat labels.
+      Risk if misunderstood: Loss of decisions, contradictions, prompts, and future actions.
+      Label: FACT
+    - ID: PREFERENCE-02
+      Preference: Label facts, inferences, uncertainties, and project context
+      Source / basis: Current user request
+      Strength: strong explicit
+      Implication: Do not silently infer or promote brainstorms to decisions.
+      Risk if misunderstood: False canon and bad aggregation.
+      Label: FACT
+    - ID: PREFERENCE-03
+      Preference: Prioritise correctness, long-term utility, and auditability over tone/engagement
+      Source / basis: User profile/instructions visible in chat
+      Strength: strong explicit
+      Implication: Use precise caveats and failure modes.
+      Risk if misunderstood: Overconfident or flattering answers.
+      Label: FACT
+    - ID: PREFERENCE-04
+      Preference: Create downloadable files where possible
+      Source / basis: Current request
+      Strength: strong explicit
+      Implication: Use file-generation tool and provide links.
+      Risk if misunderstood: User forced to copy manual output.
+      Label: FACT
+    - ID: PREFERENCE-05
+      Preference: Future assistants should not make the user re-explain context
+      Source / basis: Context Transfer Packet request
+      Strength: strong explicit
+      Implication: Reports must be self-contained.
+      Risk if misunderstood: Repeated planning cycles and lost continuity.
+      Label: FACT
+    - ID: PREFERENCE-06
+      Preference: Treat direct user statements above assistant suggestions
+      Source / basis: Current request
+      Strength: strong explicit
+      Implication: Assistant-generated prompts are not final unless accepted or upstream canon confirms.
+      Risk if misunderstood: Brainstorms become false requirements.
+      Label: FACT
+    - ID: PREFERENCE-07
+      Preference: Use structured headings, tables, stable IDs, consistent terminology
+      Source / basis: Current request
+      Strength: strong explicit
+      Implication: Normalize registers for future aggregation.
+      Risk if misunderstood: Aggregator cannot merge reports reliably.
+      Label: FACT
+    - ID: PREFERENCE-08
+      Preference: Web/current facts should be verified when used for action
+      Source / basis: Current request and system/developer factuality rules
+      Strength: strong explicit
+      Implication: Toolchain/version claims must be rechecked before implementation.
+      Risk if misunderstood: Stale VS/SDK/OS decisions.
+      Label: FACT
+    inferred:
+    - id: PREFERENCE-09
+      preference: Prefer mechanically enforceable governance over prose-only rules
+    - id: PREFERENCE-10
+      preference: Prefer long-lived compatibility and graceful retirement
+    uncertain_or_not_established:
+    - Exact UI aesthetics
+    - Exact pricing model
+    - Exact old-binary support duration
+    - Exact GBN allocator mechanism
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Dominium / Domino core engine and game
+    label: FACT
+    objective: Maintain and implement the deterministic universe engine and game under locked canon.
+    current_state: Repo snapshot shows engine/ and game/ with extensive modules, headers, tests, content, rules, and docs.
+      Latest upstream canon says architecture is closed and implementation/audit only.
+    desired_end_state: Deterministic, replayable, fixed-point, process-only mutation simulation with strong epistemics and
+      no hardcoded content.
+    status: active
+    priority: critical
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    - DECISION-04
+    decisions_pending: []
+    tasks: []
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed: []
+    confidence: high from chat; repo details unverified
+  - id: WORKSTREAM-02
+    name: Content system, packs, and zero-asset boot
+    label: FACT
+    objective: Keep content external, modular, capability-resolved, open-format, and optional.
+    current_state: Repo snapshot includes data/, game/content, engine content/pkg/mod modules, pack/coredata tools, and content
+      specs.
+    desired_end_state: Engine/game boot with zero assets; packs provide capabilities; missing capabilities produce explicit
+      fallback/refusal.
+    status: active
+    priority: critical
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made:
+    - DECISION-15
+    decisions_pending:
+    - QUESTION-16
+    tasks:
+    - TASK-18
+    - TASK-19
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed:
+    - VERIFY-16
+    - VERIFY-17
+    confidence: high conceptually; implementation unverified
+  - id: WORKSTREAM-03
+    name: Application layer canon
+    label: FACT
+    objective: Implement client/server/launcher/setup/tools as orchestration shells governed by APP-CANON0/1, APP-AUTO-0,
+      APP-UI-BIND-0.
+    current_state: Repo snapshot has client/, server/, launcher/, setup/, tools/ with CLI/GUI/TUI and UI systems. Latest upstream
+      says CLI is canonical and launcher reference app.
+    desired_end_state: GUI/TUI are views over one command graph; UI is data; setup alone mutates installs; tools read-only
+      by default.
+    status: active
+    priority: critical
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made:
+    - DECISION-10
+    - DECISION-11
+    - DECISION-12
+    - DECISION-13
+    - DECISION-14
+    decisions_pending:
+    - QUESTION-17
+    - QUESTION-18
+    tasks:
+    - TASK-09
+    - TASK-10
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks:
+    - RISK-05
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed:
+    - VERIFY-18
+    - VERIFY-19
+    confidence: high canon; actual enforcement unknown
+  - id: WORKSTREAM-04
+    name: Renderers, platforms, and headless operation
+    label: FACT
+    objective: Keep render/platform support modular, runtime-capability-driven, and non-authoritative.
+    current_state: Repo snapshot has render backends and platform layers. Prior AP response accepted no-silent-fallback and
+      headless-first model.
+    desired_end_state: Null/software/real renderers; explicit selection refuses when unavailable; auto fallback logs; server/headless
+      no GUI/GPU/audio dependency.
+    status: active
+    priority: high
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made: []
+    decisions_pending: []
+    tasks:
+    - TASK-17
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks: []
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed:
+    - VERIFY-22
+    confidence: medium-high
+  - id: WORKSTREAM-05
+    name: TESTX / VALIDATE verification system
+    label: FACT
+    objective: Make canon mechanically enforced by tests, assertions, CI, and blocker tracking.
+    current_state: Original TESTX was user-pasted; repo snapshot includes many tests and validation scripts. Later BUILD-ID-0
+      supersedes older build-number semantics.
+    desired_end_state: Every canon rule maps to checks; CLI-only deterministic tests; no skipped tests; loud failures; version
+      stamping follows BUILD-ID-0.
+    status: active, requires revision
+    priority: critical
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made:
+    - DECISION-06
+    - DECISION-07
+    - DECISION-08
+    - DECISION-09
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-02
+    - QUESTION-03
+    - QUESTION-04
+    - QUESTION-05
+    - QUESTION-06
+    - QUESTION-07
+    - QUESTION-08
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-03
+    - TASK-04
+    - TASK-05
+    - TASK-23
+    - TASK-25
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-03
+    - RISK-12
+    - RISK-13
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-03
+    - VERIFY-04
+    - VERIFY-05
+    - VERIFY-06
+    - VERIFY-08
+    confidence: high
+  - id: WORKSTREAM-06
+    name: TESTX2 control layers and non-interference
+    label: FACT
+    objective: Support optional DRM/anti-cheat/telemetry/entitlement control layers without corrupting core.
+    current_state: Generated as a mega-prompt in this chat; not confirmed implemented in repo.
+    desired_end_state: Control capabilities disabled by default; engine/game have no DRM/secrets/enforcement; control gates
+      access/connectivity only; tests prove non-interference.
+    status: planned / derived
+    priority: medium-high
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made:
+    - DECISION-19
+    - DECISION-20
+    decisions_pending: []
+    tasks:
+    - TASK-21
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks:
+    - RISK-07
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed:
+    - VERIFY-21
+    confidence: medium
+  - id: WORKSTREAM-07
+    name: TESTX3 authority, demo, tourist, services, and piracy containment
+    label: FACT
+    objective: Use authority/entitlement profiles rather than separate binaries for demo/free/paid/service models.
+    current_state: Generated as a mega-prompt and accepted conceptually in this chat; later upstream canon preserves authority
+      framing but exact docs unknown.
+    desired_end_state: One distribution; demo/free base authority; tourist multiplayer; buy grants authority; piracy yields
+      no durable value.
+    status: planned / derived
+    priority: high
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made:
+    - DECISION-16
+    - DECISION-17
+    - DECISION-18
+    decisions_pending:
+    - QUESTION-19
+    tasks:
+    - TASK-20
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks:
+    - RISK-06
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed:
+    - VERIFY-20
+    confidence: medium-high
+  - id: WORKSTREAM-08
+    name: REPOX repository ownership and IDE projections
+    label: FACT
+    objective: Prevent IDE/toolchain/project-file sprawl from corrupting canonical build/source ownership.
+    current_state: Generated REPOX prompt; repo snapshot includes root .vs/.vscode and scattered VS/Xcode/WiX projects, but
+      no visible top-level /ide.
+    desired_end_state: CMake + TestX/RepoX own graph; IDE files are generated projections under /ide except documented packaging
+      inputs; quarantine enforced.
+    status: active/planned
+    priority: critical
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made:
+    - DECISION-21
+    - DECISION-22
+    decisions_pending:
+    - QUESTION-09
+    - QUESTION-10
+    tasks:
+    - TASK-06
+    - TASK-07
+    - TASK-08
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks:
+    - RISK-04
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed:
+    - VERIFY-09
+    - VERIFY-10
+    confidence: high conceptually; implementation unknown
+  - id: WORKSTREAM-09
+    name: Toolchain and legacy OS matrix
+    label: FACT
+    objective: Support old and new OS/compiler/language floors honestly with separate artifacts.
+    current_state: User supplied Windows/Mac/Linux IDE/language matrix and global warnings; later VS2022 MVP advice added
+      practical floor builds.
+    desired_end_state: Separate OS/toolchain/SDK/arch artifacts; legacy tiers frozen once validated; no binary ABI lies.
+    status: active/planned
+    priority: high
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made:
+    - DECISION-23
+    - DECISION-24
+    - DECISION-27
+    decisions_pending:
+    - QUESTION-20
+    tasks:
+    - TASK-24
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks:
+    - RISK-08
+    - RISK-09
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed: []
+    confidence: high for user decision; current tool availability unverified
+  - id: WORKSTREAM-10
+    name: TESTX4 language profiles and ABI discipline
+    label: INFERENCE
+    objective: Codify feature allowlists by layer and mechanically enforce language/ABI rules.
+    current_state: User pasted random-chat proposal; assistant assessed it as the missing language-level constitution. Not
+      yet top-level authoritative unless user adopts.
+    desired_end_state: SPEC_LANGUAGE_PROFILES / TESTX4 docs; no exceptions/RTTI/static init side effects across boundaries;
+      no STL/FP in deterministic paths; per-file language transitions.
+    status: recommended/planned
+    priority: high
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made:
+    - DECISION-05
+    decisions_pending:
+    - QUESTION-13
+    - QUESTION-14
+    - QUESTION-15
+    tasks:
+    - TASK-12
+    - TASK-13
+    - TASK-14
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks:
+    - RISK-15
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed:
+    - VERIFY-13
+    - VERIFY-14
+    - VERIFY-15
+    confidence: medium-high
+  - id: WORKSTREAM-11
+    name: Policy-as-data and rules-to-checks automation
+    label: INFERENCE
+    objective: Make rules executable and future-proof using machine-readable policies and a unified runner.
+    current_state: Assistant proposed RULES_TO_CHECKS_MATRIX.md, /policies/rules JSON files, validate_repo_policy.py. Not
+      confirmed implemented.
+    desired_end_state: Every rule has an enforcement mapping; gaps are labelled guidance; CI runs policy checks.
+    status: recommended/planned
+    priority: high
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made:
+    - DECISION-26
+    decisions_pending: []
+    tasks:
+    - TASK-11
+    - TASK-22
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks:
+    - RISK-11
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed:
+    - VERIFY-23
+    - VERIFY-24
+    confidence: medium
+  - id: WORKSTREAM-12
+    name: Windows MVP build/test plan with VS2022
+    label: FACT
+    objective: Use Windows 10 + VS2022 host to test practical MVP Windows floors while planning older VMs later.
+    current_state: User installed Windows 10 with VS2022; other chat suggested v141/v141_xp/SDK matrix; assistant endorsed
+      for MVP with caveats.
+    desired_end_state: CMake presets and VMs for XP/Win7/Win8/Win10/Win11 floors; later archival VC6/VC7.1 VMs.
+    status: active next-step candidate
+    priority: high
+    background: Derived from visible chat context and prior Context Transfer Packet.
+    decisions_made:
+    - DECISION-25
+    decisions_pending:
+    - QUESTION-11
+    - QUESTION-12
+    tasks:
+    - TASK-15
+    - TASK-16
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    - CONSTRAINT-21
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    - CONSTRAINT-24
+    - CONSTRAINT-25
+    - CONSTRAINT-26
+    - CONSTRAINT-27
+    - CONSTRAINT-28
+    - CONSTRAINT-29
+    - CONSTRAINT-30
+    - CONSTRAINT-31
+    - CONSTRAINT-32
+    - CONSTRAINT-33
+    - CONSTRAINT-34
+    - CONSTRAINT-35
+    dependencies:
+    - actual repo audit
+    - canon docs
+    - CI and CMake state
+    timeline: Audit before implementation; do not change runtime semantics during governance work.
+    blockers:
+    - actual implementation state unverified
+    risks:
+    - RISK-10
+    - RISK-14
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    - ARTIFACT-09
+    - ARTIFACT-10
+    - ARTIFACT-11
+    - ARTIFACT-12
+    - ARTIFACT-13
+    - ARTIFACT-14
+    - ARTIFACT-15
+    - ARTIFACT-16
+    - ARTIFACT-17
+    - ARTIFACT-18
+    - ARTIFACT-19
+    - ARTIFACT-20
+    - ARTIFACT-21
+    - ARTIFACT-22
+    - ARTIFACT-23
+    - ARTIFACT-24
+    - ARTIFACT-25
+    - ARTIFACT-26
+    - ARTIFACT-27
+    - ARTIFACT-28
+    - ARTIFACT-29
+    - ARTIFACT-30
+    - ARTIFACT-31
+    - ARTIFACT-32
+    - ARTIFACT-33
+    - ARTIFACT-34
+    - ARTIFACT-35
+    - ARTIFACT-36
+    - ARTIFACT-37
+    success_criteria:
+    - rules documented
+    - checks mapped
+    - canon preserved
+    next_action: verify actual files relevant to this workstream
+    verification_needed:
+    - VERIFY-07
+    - VERIFY-11
+    - VERIFY-12
+    - VERIFY-25
+    confidence: medium-high
+  decisions:
+  - id: DECISION-01
+    decision: Architecture is closed and canon locked
+    status: final
+    label: FACT
+    evidence_or_basis: Latest upstream system-role block
+    rationale: Prevents redesign; new chat implements/audits only.
+    implications: All future prompts must not reopen settled architecture.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: high
+  - id: DECISION-02
+    decision: Core ontology is Assemblies, Fields, Processes, Agents, Law
+    status: final
+    label: FACT
+    evidence_or_basis: Latest upstream block
+    rationale: All systems reduce to canonical primitives.
+    implications: New concepts outside ontology invalid unless canon changes.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: high
+  - id: DECISION-03
+    decision: Engine baseline language is C89
+    status: final
+    label: FACT
+    evidence_or_basis: Latest upstream block
+    rationale: Legacy portability and ABI stability.
+    implications: Engine feature use constrained; public C ABI reinforced.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: high
+  - id: DECISION-04
+    decision: Game baseline language is C++98
+    status: final
+    label: FACT
+    evidence_or_basis: Latest upstream block
+    rationale: Supports legacy toolchain floor while allowing game ergonomics.
+    implications: C++17 may apply to apps/tools but not impose on game.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: high
+  - id: DECISION-05
+    decision: Public headers remain parseable forever with no C++ ABI leakage
+    status: final
+    label: FACT
+    evidence_or_basis: Latest upstream block and language-profile proposal
+    rationale: Cross-toolchain/module stability.
+    implications: Need header audits and C ABI boundaries.
+    related_workstreams:
+    - WORKSTREAM-10
+    uncertainty: high
+  - id: DECISION-06
+    decision: BUILD-ID-0 supersedes previous build-number rules
+    status: final
+    label: FACT
+    evidence_or_basis: Latest upstream block
+    rationale: Separates release identity from dev/CI traceability.
+    implications: Remove every-build GBN increments; use GBN/BII.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: high
+  - id: DECISION-07
+    decision: GBN is centrally allocated only for beta/rc/release/hotfix
+    status: final
+    label: FACT
+    evidence_or_basis: Latest upstream block
+    rationale: Avoids local/branch/fork global number conflicts.
+    implications: Release gates needed; no local GBN allocation.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: high
+  - id: DECISION-08
+    decision: BII is always present for dev/ci builds
+    status: final
+    label: FACT
+    evidence_or_basis: Latest upstream block
+    rationale: Traceability without consuming GBN.
+    implications: Need BII stamping implementation.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: medium-high
+  - id: DECISION-09
+    decision: Protocol/schema/API/ABI versions are orthogonal and mismatches refuse loudly
+    status: final
+    label: FACT
+    evidence_or_basis: Multiple prompts plus upstream block
+    rationale: Compatibility cannot be hidden inside SemVer.
+    implications: Need negotiation/refusal tests.
+    related_workstreams:
+    - WORKSTREAM-05
+    uncertainty: high
+  - id: DECISION-10
+    decision: Applications are orchestration shells; CLI is canonical
+    status: final
+    label: FACT
+    evidence_or_basis: Latest APP canon block
+    rationale: GUI/TUI must not diverge from command graph.
+    implications: UI binding validation required.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: high
+  - id: DECISION-11
+    decision: UI is data and never logic
+    status: final
+    label: FACT
+    evidence_or_basis: Latest APP canon block
+    rationale: Prevents UI code from mutating simulation or install state.
+    implications: UI IR and codegen enforce view-only behavior.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: high
+  - id: DECISION-12
+    decision: Tools are read-only by default
+    status: final
+    label: FACT
+    evidence_or_basis: Latest APP canon block
+    rationale: Prevents tooling from becoming hidden mutation authority.
+    implications: Tools need explicit authority for writes.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: high
+  - id: DECISION-13
+    decision: Setup is the only mutation authority for installs
+    status: final
+    label: FACT
+    evidence_or_basis: Latest APP canon block
+    rationale: Keeps install state changes controlled and auditable.
+    implications: Launcher/tools must route install mutations through setup.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: high
+  - id: DECISION-14
+    decision: Launcher is reference application
+    status: final
+    label: FACT
+    evidence_or_basis: Latest APP canon block
+    rationale: Unifies app patterns and prelaunch orchestration.
+    implications: Launcher CLI/command graph should be reference behavior.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: high
+  - id: DECISION-15
+    decision: Content must be capability-based and optional
+    status: accepted
+    label: FACT
+    evidence_or_basis: Engine/game content response and upstream no magic defaults
+    rationale: Allows zero-asset boot and modular packs.
+    implications: Packs cannot be mandatory requirements.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: high
+  - id: DECISION-16
+    decision: Demo/free mode is an authority profile, not a separate product/build
+    status: accepted in chat
+    label: FACT
+    evidence_or_basis: User wanted no separate code/product; assistant proposed; no later contradiction
+    rationale: Avoids code forks and buyer friction.
+    implications: Same package can serve demo and full users.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: medium-high
+  - id: DECISION-17
+    decision: Tourist role should allow free users to join servers as non-mutating observers/explorers
+    status: accepted in chat
+    label: FACT
+    evidence_or_basis: User said tourist server access sounded cool; assistant elaborated
+    rationale: Strong demo with server-enforced limits.
+    implications: Need authority/capability tests.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: medium-high
+  - id: DECISION-18
+    decision: Piracy containment means preventing durable value extraction, not preventing copying
+    status: accepted in chat
+    label: FACT
+    evidence_or_basis: User asked; assistant explained limitation of all-form piracy prevention
+    rationale: Preserves core tenets and avoids DRM rot.
+    implications: Durable value must be server/entitlement-authorized.
+    related_workstreams:
+    - WORKSTREAM-07
+    uncertainty: medium-high
+  - id: DECISION-19
+    decision: Control systems are optional external capability-gated layers
+    status: accepted in chat
+    label: FACT
+    evidence_or_basis: Scratchpad prompt endorsed and TESTX2 generated
+    rationale: Keeps DRM/anti-cheat/telemetry out of deterministic core.
+    implications: Control non-interference tests needed.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: medium-high
+  - id: DECISION-20
+    decision: No DRM/anti-cheat enforcement/secrets in engine/game
+    status: accepted in chat
+    label: FACT
+    evidence_or_basis: Scratchpad prompt and TESTX2
+    rationale: Prevents determinism and audit corruption.
+    implications: Secrets only launcher/platform/cloud/backend.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: medium-high
+  - id: DECISION-21
+    decision: IDEs are projections, not project truth
+    status: accepted in chat
+    label: FACT
+    evidence_or_basis: REPOX prompt and user goal
+    rationale: Avoids IDE corruption and multi-era project drift.
+    implications: CMake/TestX/RepoX own graph.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: high
+  - id: DECISION-22
+    decision: Future IDE project files should live under /ide unless grandfathered packaging input
+    status: planned
+    label: INFERENCE
+    evidence_or_basis: REPOX prompt; current tree shows no /ide
+    rationale: Creates quarantine root for generated projections.
+    implications: Need audit before moving/classifying.
+    related_workstreams:
+    - WORKSTREAM-08
+    uncertainty: medium
+  - id: DECISION-23
+    decision: Separate binaries per OS/toolchain/floor
+    status: accepted
+    label: FACT
+    evidence_or_basis: User toolchain matrix and warnings
+    rationale: ABI/CRT/SDK reality forbids one binary for all.
+    implications: CMake artifacts must encode floor/toolchain.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: high
+  - id: DECISION-24
+    decision: Legacy tiers are frozen once validated
+    status: accepted
+    label: FACT
+    evidence_or_basis: User toolchain matrix
+    rationale: Prevents accidental modernization breaking old users.
+    implications: Old binaries can continue via data/protocol support.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: high
+  - id: DECISION-25
+    decision: VS2022-hosted v141_xp is acceptable for Windows MVP, not archival replacement
+    status: assessment
+    label: INFERENCE
+    evidence_or_basis: Other-chat recommendation and assistant response
+    rationale: Practical immediate testing while preserving archival plan.
+    implications: Later VC6/VC7.1 VMs still needed.
+    related_workstreams:
+    - WORKSTREAM-12
+    uncertainty: medium-high
+  - id: DECISION-26
+    decision: Rules should map to executable checks
+    status: recommended
+    label: INFERENCE
+    evidence_or_basis: Assistant plan after user asked for tests for every rule
+    rationale: Makes canon enforceable and aggregatable.
+    implications: Need RULES_TO_CHECKS_MATRIX.md.
+    related_workstreams:
+    - WORKSTREAM-11
+    uncertainty: medium
+  - id: DECISION-27
+    decision: Old OS support can be dropped without forcing old users to update if protocols/data remain compatible
+    status: accepted concept
+    label: INFERENCE
+    evidence_or_basis: User asked; assistant answered based on separation
+    rationale: Supports graceful retirement.
+    implications: Do not introduce required unsupported capabilities.
+    related_workstreams:
+    - WORKSTREAM-09
+    uncertainty: medium-high
+  tasks:
+  - id: TASK-01
+    task: Verify actual repo state against latest upstream canon
+    priority: critical
+    urgency: immediate
+    owner: New implementation chat
+    dependencies:
+    - Repo access
+    inputs_needed:
+    - CANON_INDEX.md, docs, version scripts, CMake, CI
+    expected_output: Audit report, no changes
+    next_step: Inspect root and docs first
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: see label
+  - id: TASK-02
+    task: Find or create CANON_INDEX.md
+    priority: critical
+    urgency: high
+    owner: Repo/canon maintainer
+    dependencies:
+    - CLEAN-2
+    inputs_needed:
+    - Docs inventory
+    expected_output: Single canon entrypoint
+    next_step: Search repo before creating
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: see label
+  - id: TASK-03
+    task: Audit docs for status headers
+    priority: critical
+    urgency: high
+    owner: Repo/canon maintainer
+    dependencies:
+    - CLEAN-2
+    inputs_needed:
+    - All docs
+    expected_output: CANONICAL/DERIVED/HISTORICAL status report
+    next_step: Scan docs/ tree
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: see label
+  - id: TASK-04
+    task: Reconcile build/version scripts to BUILD-ID-0
+    priority: critical
+    urgency: high
+    owner: Build/Test maintainer
+    dependencies:
+    - BUILD-ID-0
+    inputs_needed:
+    - Existing build scripts/version files
+    expected_output: GBN/BII implementation plan
+    next_step: Inspect .dominium_build_number and update_build_number.cmake
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: see label
+  - id: TASK-05
+    task: Disable or migrate every-build GBN allocation
+    priority: critical
+    urgency: high
+    owner: Build/Test maintainer
+    dependencies:
+    - TASK-04
+    inputs_needed:
+    - Old build-number logic
+    expected_output: No local GBN mutation
+    next_step: Patch scripts after audit
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+    confidence: see label
+  - id: TASK-06
+    task: Inventory IDE/project artifacts
+    priority: high
+    urgency: high
+    owner: RepoX maintainer
+    dependencies:
+    - Repo access
+    inputs_needed:
+    - File list/git tracking
+    expected_output: Projection vs grandfathered packaging classification
+    next_step: Search for .sln/.vcxproj/.pbxproj/.xcodeproj/.mcp/.vs
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+    confidence: see label
+  - id: TASK-07
+    task: Implement /ide projection root if absent
+    priority: high
+    urgency: medium
+    owner: RepoX maintainer
+    dependencies:
+    - TASK-06
+    inputs_needed:
+    - Projection policy
+    expected_output: /ide README and structure
+    next_step: Create after classification
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-08
+    task: Add verify_ide_quarantine.py
+    priority: high
+    urgency: medium
+    owner: RepoX maintainer
+    dependencies:
+    - TASK-06/07
+    inputs_needed:
+    - Whitelist and rules
+    expected_output: CI check preventing IDE pollution
+    next_step: Draft script and tests
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-09
+    task: Audit APP-CANON docs and UI binding implementation
+    priority: high
+    urgency: high
+    owner: App/tooling maintainer
+    dependencies:
+    - APP canon
+    inputs_needed:
+    - UI IR/codegen docs/tests
+    expected_output: Gap report
+    next_step: Search APP-CANON and UI binding refs
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: see label
+  - id: TASK-10
+    task: Enforce tools read-only by default
+    priority: high
+    urgency: medium
+    owner: Tools maintainer
+    dependencies:
+    - APP canon
+    inputs_needed:
+    - Tool APIs/tests
+    expected_output: Contract tests or policy checks
+    next_step: Audit tool mutation paths
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+    confidence: see label
+  - id: TASK-11
+    task: Create or verify RULES_TO_CHECKS_MATRIX.md
+    priority: critical
+    urgency: high
+    owner: TestX/RepoX maintainer
+    dependencies:
+    - Rule inventory
+    inputs_needed:
+    - Canon docs/scripts/tests
+    expected_output: Matrix mapping rules to checks
+    next_step: Begin Phase 0 rule audit
+    related_workstreams:
+    - WORKSTREAM-11
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-12
+    task: Draft SPEC_LANGUAGE_PROFILES / TESTX4 doc
+    priority: high
+    urgency: medium
+    owner: Language governance maintainer
+    dependencies:
+    - Language proposal and upstream constraints
+    inputs_needed:
+    - Actual language usage audit
+    expected_output: Language/ABI rules doc
+    next_step: Audit before hard enforcement
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-13
+    task: Implement public-header parseability checks
+    priority: high
+    urgency: medium
+    owner: TESTX4 maintainer
+    dependencies:
+    - TASK-12
+    inputs_needed:
+    - Public headers
+    expected_output: Try-compile/scanner checks
+    next_step: Start with engine/include, game/include, libs/contracts/include
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-14
+    task: Audit no FP/STL/static init in deterministic paths
+    priority: high
+    urgency: medium
+    owner: TESTX4 maintainer
+    dependencies:
+    - TASK-12
+    inputs_needed:
+    - Source tree
+    expected_output: Violation/blocker report
+    next_step: Define authoritative dirs, then scan
+    related_workstreams:
+    - WORKSTREAM-10
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-15
+    task: Create Windows MVP CMake floor presets
+    priority: high
+    urgency: medium
+    owner: Build maintainer
+    dependencies:
+    - VS2022 components
+    inputs_needed:
+    - Toolsets/SDKs
+    expected_output: XP/Win7/Win8/Win10/Win11 presets
+    next_step: Verify installed components first
+    related_workstreams:
+    - WORKSTREAM-12
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-16
+    task: Set up Windows/Linux VMs for runtime floor tests
+    priority: medium-high
+    urgency: medium
+    owner: User/build maintainer
+    dependencies:
+    - ISOs/toolchains
+    inputs_needed:
+    - VM images
+    expected_output: Runtime matrix
+    next_step: Start XP SP3 and Win7 SP1
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+    confidence: see label
+  - id: TASK-17
+    task: Add no-silent-fallback renderer/backend tests
+    priority: medium-high
+    urgency: medium
+    owner: Render/app maintainer
+    dependencies:
+    - Renderer caps
+    inputs_needed:
+    - Test harness
+    expected_output: Explicit selection refusal tests
+    next_step: Locate existing render caps tests
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+    confidence: see label
+  - id: TASK-18
+    task: Add zero-asset boot tests if absent
+    priority: high
+    urgency: medium
+    owner: Engine/game maintainer
+    dependencies:
+    - Content/capability system
+    inputs_needed:
+    - Test fixtures
+    expected_output: Boot without packs/assets test
+    next_step: Audit existing smoke tests
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: see label
+  - id: TASK-19
+    task: Audit hardcoded Earth/Sol/base-pack assumptions
+    priority: high
+    urgency: medium
+    owner: Content/game maintainer
+    dependencies:
+    - Content system
+    inputs_needed:
+    - Search patterns
+    expected_output: Violation report
+    next_step: Search engine/game for Sol/Earth hardcoded paths
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+    confidence: see label
+  - id: TASK-20
+    task: Add authority/tourist/base_free tests when implementation exists
+    priority: medium-high
+    urgency: medium
+    owner: Server/auth maintainer
+    dependencies:
+    - Authority system
+    inputs_needed:
+    - Profiles/capabilities
+    expected_output: Tourist non-mutation tests
+    next_step: Find authority profile implementation
+    related_workstreams:
+    - WORKSTREAM-07
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-21
+    task: Add no-secrets-in-engine/game scanner
+    priority: medium-high
+    urgency: medium
+    owner: Security/build maintainer
+    dependencies:
+    - TESTX2
+    inputs_needed:
+    - Secret patterns/allowlists
+    expected_output: CI check
+    next_step: Implement after control docs located
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-22
+    task: Add policy-as-data skeleton
+    priority: medium
+    urgency: medium
+    owner: RepoX/TestX maintainer
+    dependencies:
+    - TASK-11
+    inputs_needed:
+    - Policy schema
+    expected_output: /policies/rules + runner skeleton
+    next_step: After matrix drafted
+    related_workstreams:
+    - WORKSTREAM-11
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-23
+    task: Add build provenance manifest
+    priority: medium
+    urgency: low-medium
+    owner: Build maintainer
+    dependencies:
+    - BUILD-ID-0
+    inputs_needed:
+    - Compiler/SDK metadata
+    expected_output: build_manifest.json per artifact
+    next_step: After version system fixed
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-24
+    task: Define support levels for old OS/arch tiers
+    priority: medium
+    urgency: medium
+    owner: RepoX/build maintainer
+    dependencies:
+    - Toolchain matrix
+    inputs_needed:
+    - User support policy
+    expected_output: Buildable/CI-covered/release-supported doc
+    next_step: After toolchain audit
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+    confidence: see label
+  - id: TASK-25
+    task: Produce revised TESTX/REPOX/APPX prompts aligned with latest canon
+    priority: medium-high
+    urgency: medium
+    owner: Prompt/governance maintainer
+    dependencies:
+    - Audit findings
+    inputs_needed:
+    - Existing prompts/latest upstream
+    expected_output: Updated implementation prompts
+    next_step: Do after verification, not before
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: see label
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: Architecture is closed; no redesign/reinterpretation
+    type: governance
+    hard_or_soft: hard
+    source_or_basis: Latest upstream block
+    implication: Implementation/audit only
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-02
+    constraint: All systems reduce to Assemblies, Fields, Processes, Agents, Law
+    type: ontology
+    hard_or_soft: hard
+    source_or_basis: Latest upstream block
+    implication: No new primitives unless canon changes
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-03
+    constraint: Process-only mutation
+    type: simulation
+    hard_or_soft: hard
+    source_or_basis: Latest upstream block
+    implication: State changes must be represented as processes
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-04
+    constraint: Deterministic replayable simulation
+    type: simulation/test
+    hard_or_soft: hard
+    source_or_basis: TESTX/upstream
+    implication: No nondeterministic authoritative behavior
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-05
+    constraint: Fixed-point authoritative logic; no FP in authoritative paths
+    type: numeric
+    hard_or_soft: hard
+    source_or_basis: TESTX/upstream
+    implication: Use fixed/integer math for sim state
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-06
+    constraint: Named RNG streams only
+    type: determinism
+    hard_or_soft: hard
+    source_or_basis: Latest upstream block
+    implication: No ad-hoc RNG
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-07
+    constraint: Strong epistemics and fog-of-war everywhere
+    type: game/sim
+    hard_or_soft: hard
+    source_or_basis: Latest upstream block
+    implication: No omniscient UI/tool defaults
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-08
+    constraint: No hardcoded content or magic defaults
+    type: content
+    hard_or_soft: hard
+    source_or_basis: Latest upstream block
+    implication: Zero-asset boot and capability resolution
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-09
+    constraint: Engine C89
+    type: language
+    hard_or_soft: hard
+    source_or_basis: Latest upstream block
+    implication: No C99/C11 assumptions in engine baseline
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-10
+    constraint: Game C++98
+    type: language
+    hard_or_soft: hard
+    source_or_basis: Latest upstream block
+    implication: No C++17 requirements imposed on game baseline
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-11
+    constraint: Public headers parseable forever and no C++ ABI leakage
+    type: ABI
+    hard_or_soft: hard
+    source_or_basis: Latest upstream block
+    implication: C ABI/stable public headers
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-12
+    constraint: Apps may use newer toolchains but must not impose on engine/game
+    type: layering
+    hard_or_soft: hard
+    source_or_basis: Latest upstream block
+    implication: Modern app features stay behind boundaries
+    violation_risk: Medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-13
+    constraint: CLI is canonical
+    type: application
+    hard_or_soft: hard
+    source_or_basis: APP canon
+    implication: GUI/TUI bind to command graph
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-14
+    constraint: UI is data, never logic
+    type: application/UI
+    hard_or_soft: hard
+    source_or_basis: APP canon
+    implication: UI IR/codegen not gameplay
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-15
+    constraint: Tools read-only by default
+    type: tools
+    hard_or_soft: hard
+    source_or_basis: APP canon
+    implication: Writes require explicit authority
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-16
+    constraint: Setup only install mutation authority
+    type: setup
+    hard_or_soft: hard
+    source_or_basis: APP canon
+    implication: Install mutations route through setup
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-17
+    constraint: Launcher reference application
+    type: application
+    hard_or_soft: hard
+    source_or_basis: APP canon
+    implication: Launcher behavior guides app patterns
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-18
+    constraint: Product SemVer manual
+    type: versioning
+    hard_or_soft: hard
+    source_or_basis: BUILD-ID-0
+    implication: No automatic SemVer bumps
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-19
+    constraint: GBN central/release-only and shared by release products
+    type: versioning/release
+    hard_or_soft: hard
+    source_or_basis: BUILD-ID-0
+    implication: No local GBN allocation
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-20
+    constraint: BII always present for dev/ci
+    type: versioning
+    hard_or_soft: hard
+    source_or_basis: BUILD-ID-0
+    implication: Every build traceable without GBN
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-21
+    constraint: No distributed artifact without GBN
+    type: release
+    hard_or_soft: hard
+    source_or_basis: BUILD-ID-0
+    implication: Release/distribution gates required
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-22
+    constraint: Protocol/schema/API/ABI versions orthogonal and mismatches refuse loudly
+    type: compatibility
+    hard_or_soft: hard
+    source_or_basis: BUILD-ID-0/upstream
+    implication: No silent compatibility coercion
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-23
+    constraint: IDEs are non-authoritative projections
+    type: repo
+    hard_or_soft: hard
+    source_or_basis: REPOX plan
+    implication: CMake/TestX own graph
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-24
+    constraint: Do not open repo root in legacy IDEs
+    type: workflow
+    hard_or_soft: hard
+    source_or_basis: REPOX plan
+    implication: Prevent project pollution
+    violation_risk: Medium-high
+    label: INFERENCE
+    confidence: medium
+  - id: CONSTRAINT-25
+    constraint: Separate binaries per OS/toolchain/floor
+    type: build
+    hard_or_soft: hard
+    source_or_basis: User toolchain matrix
+    implication: No one-binary-for-all
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-26
+    constraint: Never mix CRTs across module boundaries
+    type: ABI/build
+    hard_or_soft: hard
+    source_or_basis: User toolchain matrix
+    implication: Avoid heap/runtime crashes
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-27
+    constraint: Never pass STL/allocator-owned objects across DLL boundaries
+    type: ABI
+    hard_or_soft: hard
+    source_or_basis: User toolchain matrix
+    implication: Use C ABI/handles
+    violation_risk: High
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-28
+    constraint: Legacy tiers frozen once validated
+    type: support
+    hard_or_soft: hard
+    source_or_basis: User toolchain matrix
+    implication: Avoid accidental capability creep
+    violation_risk: Medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-29
+    constraint: Control systems disabled by default and non-interfering
+    type: control/security
+    hard_or_soft: hard
+    source_or_basis: TESTX2 plan
+    implication: No DRM/anti-cheat effect on sim
+    violation_risk: High
+    label: FACT
+    confidence: medium-high
+  - id: CONSTRAINT-30
+    constraint: No secrets in engine/game
+    type: security
+    hard_or_soft: hard
+    source_or_basis: TESTX2 plan
+    implication: Secrets only external layers
+    violation_risk: High
+    label: FACT
+    confidence: medium-high
+  - id: CONSTRAINT-31
+    constraint: Explicit renderer/backend request fails if unavailable; auto fallback must log
+    type: render/app
+    hard_or_soft: hard in tests
+    source_or_basis: AP response
+    implication: No silent fallback
+    violation_risk: Medium-high
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-32
+    constraint: Demo/free/paid/services use authority profiles, not code forks
+    type: distribution/business
+    hard_or_soft: hard if adopted
+    source_or_basis: TESTX3 plan/user acceptance
+    implication: One distribution model
+    violation_risk: Medium
+    label: FACT
+    confidence: medium-high
+  - id: CONSTRAINT-33
+    constraint: Old binaries may receive updates only within declared capabilities/protocol compatibility
+    type: support
+    hard_or_soft: hard by implication
+    source_or_basis: Old OS support discussion
+    implication: No required unsupported capabilities
+    violation_risk: Medium-high
+    label: INFERENCE
+    confidence: medium-high
+  - id: CONSTRAINT-34
+    constraint: External-world software/toolchain facts require future verification
+    type: evidence
+    hard_or_soft: hard
+    source_or_basis: User/system factuality preference
+    implication: Verify SDK/tool availability before acting
+    violation_risk: Medium
+    label: FACT
+    confidence: high
+  - id: CONSTRAINT-35
+    constraint: Do not treat brainstorms as user decisions unless accepted
+    type: process
+    hard_or_soft: hard
+    source_or_basis: User request for report package
+    implication: Preserve tentative status
+    violation_risk: Medium-high
+    label: FACT
+    confidence: high
+  open_questions:
+  - id: QUESTION-01
+    question: Does CANON_INDEX.md exist, and where?
+    why_it_matters: Latest canon says it is single source of truth.
+    known: Name required by upstream.
+    unknown: Repo snapshot did not show it.
+    resolution_path: File search
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-02
+    question: Which docs are CANONICAL / DERIVED / HISTORICAL?
+    why_it_matters: CLEAN-2 and RepoX enforcement depend on status headers.
+    known: Docs tree is large.
+    unknown: Actual headers unknown.
+    resolution_path: Scan docs headers
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: Where are BUILD-ID-0, CLEAN-2, APP-CANON0/1, APP-AUTO-0, APP-UI-BIND-0, SRZ-0, VALIDATE-0 documented?
+    why_it_matters: Need exact canon citations and enforcement inputs.
+    known: Names provided by upstream.
+    unknown: Paths/content unknown.
+    resolution_path: Search docs/schema
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: Does .dominium_build_number conflict with BUILD-ID-0?
+    why_it_matters: Old build-number artifacts may violate new release-only GBN.
+    known: File exists in tree.
+    unknown: Contents/usage unknown.
+    resolution_path: Inspect file and references
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: What does update_build_number.cmake do?
+    why_it_matters: Could implement superseded every-build increment.
+    known: File exists under setup/packages/scripts.
+    unknown: Behavior unknown.
+    resolution_path: Inspect script
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-06
+    question: Are product SemVer files present and where?
+    why_it_matters: Manual product versioning required.
+    known: Versions discussed, but tree did not show obvious version dir.
+    unknown: Actual files unknown.
+    resolution_path: Search *.version and version/
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: What is the exact BII format?
+    why_it_matters: Needed for dev/ci stamping.
+    known: BII always present.
+    unknown: No exact scheme supplied.
+    resolution_path: Find BUILD-ID-0 or define under canon
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: What counts as a distributed artifact?
+    why_it_matters: No distributed artifact without GBN.
+    known: Rule exists.
+    unknown: CI artifacts vs local zips vs store uploads unclear.
+    resolution_path: Canon clarification
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: Which IDE files are tracked and which are accidental local state?
+    why_it_matters: RepoX quarantine must not break packaging.
+    known: Tree shows .vs/.vscode and VS/Xcode packaging files.
+    unknown: Git tracking unknown.
+    resolution_path: git ls-files/search
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: Does /ide already exist?
+    why_it_matters: REPOX projection root planned.
+    known: Tree did not show it.
+    unknown: Repo may have changed.
+    resolution_path: File search
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: What CMake presets already exist?
+    why_it_matters: Need avoid duplicating and implement Windows MVP floors.
+    known: CMakePresets.json exists.
+    unknown: Contents unknown.
+    resolution_path: Inspect file
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-12
+    question: Are VS2022 v141/v141_xp/SDK components installed?
+    why_it_matters: MVP build plan depends on them.
+    known: User installed VS2022.
+    unknown: Components unknown.
+    resolution_path: VS Installer/CMake configure
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-13
+    question: Are public headers C89 parseable?
+    why_it_matters: Latest canon requires it.
+    known: Headers exist.
+    unknown: Compliance unknown.
+    resolution_path: Try-compile audit
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-14
+    question: Does game code already use C++17 features?
+    why_it_matters: Game baseline C++98.
+    known: Many .cpp files exist.
+    unknown: Feature usage unknown.
+    resolution_path: Language scan/compiler tests
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-15
+    question: Are deterministic paths using FP, STL, static init, exceptions, RTTI?
+    why_it_matters: TESTX4 enforcement depends on facts.
+    known: Proposal bans them.
+    unknown: Actual violations unknown.
+    resolution_path: Static scans
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-16
+    question: Do zero-asset boot tests already exist?
+    why_it_matters: No hardcoded content/magic defaults.
+    known: Smoke tests exist.
+    unknown: Specific zero-asset coverage unknown.
+    resolution_path: Inspect tests
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-17
+    question: Is UI binding validation automatic?
+    why_it_matters: APP-UI-BIND requires it.
+    known: UI IR/codegen exists.
+    unknown: Automation unknown.
+    resolution_path: Inspect scripts/tests/CI
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-18
+    question: Are tools actually read-only by default?
+    why_it_matters: APP canon requires it.
+    known: Many editor tools exist.
+    unknown: Authority/mutation behavior unknown.
+    resolution_path: Audit tool APIs/tests
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-19
+    question: Is tourist/base_free/full_player authority implemented or only planned?
+    why_it_matters: Demo/piracy model depends on authority profiles.
+    known: Concept accepted in chat.
+    unknown: Code/docs unknown.
+    resolution_path: Search authority/profile docs/code
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-20
+    question: How long should old binaries receive protocol/content support after dropping OS builds?
+    why_it_matters: User wants no forced updates ideally.
+    known: Architecture supports it.
+    unknown: Support policy/window unknown.
+    resolution_path: User/canon decision
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-09
+    label: UNCERTAIN / UNVERIFIED
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Increment global build number on every configure/build
+    status: superseded
+    reason: BUILD-ID-0 makes GBN release-only and centrally allocated.
+    final_or_tentative: final
+    reconsider_conditions: Only if BUILD-ID-0 changes
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-02
+    option: Increment version/build.txt after all tests for all builds
+    status: superseded
+    reason: BUILD-ID-0 splits GBN and BII.
+    final_or_tentative: final
+    reconsider_conditions: Only with canon change
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: REJECTED-03
+    option: Treat demo as separate product or code fork
+    status: rejected
+    reason: User wanted no separate product/code; authority-profile model chosen.
+    final_or_tentative: final unless platform forces packaging workaround
+    reconsider_conditions: If storefront requires separate depot while same binaries retained
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: REJECTED-04
+    option: Use strong client/core DRM to prevent piracy
+    status: rejected
+    reason: Violates determinism/openness and cannot prevent all piracy.
+    final_or_tentative: final
+    reconsider_conditions: Only as optional external control layer, not core
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: REJECTED-05
+    option: Put DRM or anti-cheat enforcement in engine/game
+    status: rejected
+    reason: Scratchpad and TESTX2 placed enforcement outside core.
+    final_or_tentative: final
+    reconsider_conditions: Never unless canon changes
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: REJECTED-06
+    option: Silent renderer/backend fallback
+    status: rejected in tests
+    reason: AP response required explicit failure for explicit requests.
+    final_or_tentative: final for tests
+    reconsider_conditions: User-facing auto fallback with explicit logging is allowed
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-07
+    option: One binary for all OS floors
+    status: rejected
+    reason: Toolchain matrix says compiler/SDK/CRT define ABI reality.
+    final_or_tentative: final
+    reconsider_conditions: Never
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: REJECTED-08
+    option: Collapse Mac support into one Xcode
+    status: rejected
+    reason: Apple removes SDKs; era-pinned Xcodes needed.
+    final_or_tentative: final
+    reconsider_conditions: Only if verified toolchain proves otherwise
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: REJECTED-09
+    option: Use modern VS/v143 for XP/early floors
+    status: rejected
+    reason: VS2022/v143 cannot target XP; old toolsets required.
+    final_or_tentative: final
+    reconsider_conditions: Never for those OS floors
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+  - id: REJECTED-10
+    option: Extend VC6 into XP/Vista tier
+    status: rejected by matrix
+    reason: User matrix says VC7.1 is XP/Vista bridge and do not extend VC6.
+    final_or_tentative: final for archival
+    reconsider_conditions: MVP v141_xp is separate practical bridge
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: REJECTED-11
+    option: Treat IDE projects as source of truth
+    status: rejected
+    reason: REPOX says IDEs are projections.
+    final_or_tentative: final
+    reconsider_conditions: Never
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: REJECTED-12
+    option: Open repo root in legacy IDEs
+    status: rejected
+    reason: Risks IDE metadata/source-list corruption.
+    final_or_tentative: final
+    reconsider_conditions: Never
+    related_workstreams:
+    - WORKSTREAM-08
+    label: INFERENCE
+  - id: REJECTED-13
+    option: Hardcode Earth/Sol/base content into engine
+    status: rejected
+    reason: No hardcoded content/magic defaults and zero-asset boot.
+    final_or_tentative: final
+    reconsider_conditions: Never
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-14
+    option: Mandatory base content pack
+    status: rejected
+    reason: Packs provide capabilities and cannot be requirements.
+    final_or_tentative: final
+    reconsider_conditions: Never
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-15
+    option: Put gameplay logic in applications or UI
+    status: rejected
+    reason: APP canon says apps orchestration shells and UI data not logic.
+    final_or_tentative: final
+    reconsider_conditions: Never
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-16
+    option: Tools mutate by default
+    status: rejected
+    reason: APP canon says tools read-only by default.
+    final_or_tentative: final
+    reconsider_conditions: Never
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-17
+    option: Add new ontology primitives
+    status: rejected by latest canon
+    reason: Core ontology is non-negotiable.
+    final_or_tentative: final unless architecture reopens
+    reconsider_conditions: Only if user/canon explicitly changes
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-18
+    option: Continue architectural redesign in implementation chat
+    status: rejected by latest canon
+    reason: Architecture closed/canon locked.
+    final_or_tentative: final
+    reconsider_conditions: Only if user opens design phase
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Original Context Transfer Packet
+    type: report/output
+    purpose: Maximum-fidelity handoff from retired chat
+    status: produced in previous assistant response
+    origin: This chat
+    carry_forward: 'yes'
+    notes: Basis for this package
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: TESTX original prompt
+    type: mega-prompt
+    purpose: Self-defending verification/test/version governance
+    status: authoritative but versioning superseded by BUILD-ID-0
+    origin: User pasted from Game chat
+    carry_forward: 'yes'
+    notes: Revise, do not discard
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: EG-TESTX prompt
+    type: forwarding prompt
+    purpose: Inform Engine/Game chat of TESTX-aligned constraints
+    status: historical/derived
+    origin: Assistant generated
+    carry_forward: concepts only
+    notes: Use as evidence of alignment, not top canon
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: AP-TESTX prompt
+    type: forwarding prompt
+    purpose: Inform Application/Platform/Render chat
+    status: historical/derived
+    origin: Assistant generated
+    carry_forward: concepts only
+    notes: Use as evidence of alignment
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: EG response prompt
+    type: response
+    purpose: Engine/game acceptance and tensions
+    status: historical evidence
+    origin: User pasted
+    carry_forward: 'yes'
+    notes: Contains docs/build/no-FP/comment-density tension resolutions
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: AP response prompt
+    type: response
+    purpose: App/platform/render acceptance and tensions
+    status: historical evidence
+    origin: User pasted
+    carry_forward: 'yes'
+    notes: Contains no-silent-fallback resolution
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: TESTX2 mega prompt
+    type: mega-prompt
+    purpose: Control layers/non-interference/governance
+    status: derived/planned
+    origin: Assistant generated
+    carry_forward: yes if reconciled
+    notes: Not proven implemented
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: TESTX3 mega prompt
+    type: mega-prompt
+    purpose: Authority/demo/services/piracy containment
+    status: derived/planned
+    origin: Assistant generated
+    carry_forward: yes if reconciled
+    notes: Not proven implemented
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: REPOX mega prompt
+    type: mega-prompt
+    purpose: Repository/IDE/toolchain/multi-arch governance
+    status: derived/planned; needs BUILD-ID/CLEAN-2 revision
+    origin: Assistant generated
+    carry_forward: 'yes'
+    notes: Core of RepoX plan
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: TESTX4 language-profile proposal
+    type: proposal
+    purpose: Feature allowlists and transition playbook
+    status: recommended; not confirmed top-level canon
+    origin: User pasted from other chat
+    carry_forward: 'yes'
+    notes: Should be audited before enforcement
+    label: FACT
+  - id: ARTIFACT-11
+    name_or_description: Latest upstream SYSTEM ROLE block
+    type: authoritative prompt
+    purpose: Top-of-tree implementation/maintenance canon
+    status: authoritative in this chat
+    origin: User pasted
+    carry_forward: yes highest priority
+    notes: Supersedes conflicts
+    label: FACT
+  - id: ARTIFACT-12
+    name_or_description: Windows VS2022 MVP recommendation
+    type: recommendation
+    purpose: Practical XP→11 build floors from Windows 10 host
+    status: useful but verify externally
+    origin: User pasted from other chat
+    carry_forward: 'yes'
+    notes: External tool facts require verification
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: .dominium_build_number
+    type: repo file
+    purpose: Possible old build number state
+    status: exists in user tree; contents unknown
+    origin: User tree
+    carry_forward: yes verify
+    notes: May conflict with BUILD-ID-0
+    label: FACT
+  - id: ARTIFACT-14
+    name_or_description: CMakeLists.txt
+    type: repo file
+    purpose: Root build graph
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: Canonical build input
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: CMakePresets.json
+    type: repo file
+    purpose: Build presets
+    status: exists; contents unknown
+    origin: User tree
+    carry_forward: yes inspect
+    notes: Needed for floor/IDE presets
+    label: FACT
+  - id: ARTIFACT-16
+    name_or_description: .github/workflows/ci.yml
+    type: repo file
+    purpose: CI workflow
+    status: exists; contents unknown
+    origin: User tree
+    carry_forward: yes inspect
+    notes: Needed for TestX/RepoX gates
+    label: FACT
+  - id: ARTIFACT-17
+    name_or_description: docs/arch/
+    type: repo directory
+    purpose: Architecture docs
+    status: exists with many files
+    origin: User tree
+    carry_forward: 'yes'
+    notes: Needs CLEAN-2/status audit
+    label: FACT
+  - id: ARTIFACT-18
+    name_or_description: docs/policies/
+    type: repo directory
+    purpose: Policy docs
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: Potential source for determinism/perf/language policies
+    label: FACT
+  - id: ARTIFACT-19
+    name_or_description: docs/specs/
+    type: repo directory
+    purpose: Spec docs
+    status: exists with large set
+    origin: User tree
+    carry_forward: 'yes'
+    notes: Needs status/canon audit
+    label: FACT
+  - id: ARTIFACT-20
+    name_or_description: schema/
+    type: repo directory
+    purpose: Schema governance and domain schemas
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: Protocol/schema validation source
+    label: FACT
+  - id: ARTIFACT-21
+    name_or_description: engine/
+    type: repo directory
+    purpose: Engine code/tests/render/platform
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: C89/ABI/determinism audit target
+    label: FACT
+  - id: ARTIFACT-22
+    name_or_description: game/
+    type: repo directory
+    purpose: Game logic/content/rules/tests
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: C++98 and sim rules audit target
+    label: FACT
+  - id: ARTIFACT-23
+    name_or_description: client/
+    type: repo directory
+    purpose: Client product
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: APP canon target
+    label: FACT
+  - id: ARTIFACT-24
+    name_or_description: server/
+    type: repo directory
+    purpose: Server product
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: Authority/SRZ/headless target
+    label: FACT
+  - id: ARTIFACT-25
+    name_or_description: launcher/
+    type: repo directory
+    purpose: Launcher product
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: Reference application target
+    label: FACT
+  - id: ARTIFACT-26
+    name_or_description: setup/
+    type: repo directory
+    purpose: Setup/installer product
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: Install mutation authority target
+    label: FACT
+  - id: ARTIFACT-27
+    name_or_description: tools/
+    type: repo directory
+    purpose: Tools/editors/codegen/validation
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: Read-only default/UI tooling target
+    label: FACT
+  - id: ARTIFACT-28
+    name_or_description: tools/ui_shared and UI IR/codegen dirs
+    type: repo dirs
+    purpose: UI IR/codegen substrate
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: APP-UI-BIND relevant
+    label: FACT
+  - id: ARTIFACT-29
+    name_or_description: tools/launcher/ui doc/gen/user pattern
+    type: repo dirs/files
+    purpose: Launcher UI generation
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: Preserve gen/user model
+    label: FACT
+  - id: ARTIFACT-30
+    name_or_description: tools/setup/ui doc/gen/user pattern
+    type: repo dirs/files
+    purpose: Setup UI generation
+    status: exists
+    origin: User tree
+    carry_forward: 'yes'
+    notes: Preserve gen/user model
+    label: FACT
+  - id: ARTIFACT-31
+    name_or_description: scripts/verify_cmake_no_global_includes.py
+    type: script
+    purpose: CMake/include enforcement
+    status: exists
+    origin: User tree
+    carry_forward: yes extend
+    notes: Possible policy runner integration
+    label: FACT
+  - id: ARTIFACT-32
+    name_or_description: scripts/verify_includes_sanity.py
+    type: script
+    purpose: Include sanity enforcement
+    status: exists
+    origin: User tree
+    carry_forward: yes extend
+    notes: Possible TESTX4 integration
+    label: FACT
+  - id: ARTIFACT-33
+    name_or_description: scripts/verify_tree_sanity.bat
+    type: script
+    purpose: Tree sanity checks
+    status: exists
+    origin: User tree
+    carry_forward: yes extend
+    notes: RepoX quarantine integration
+    label: FACT
+  - id: ARTIFACT-34
+    name_or_description: setup/packages/scripts/update_build_number.cmake
+    type: script
+    purpose: Build number updating
+    status: exists; behavior unknown
+    origin: User tree
+    carry_forward: yes verify
+    notes: Critical BUILD-ID-0 audit item
+    label: FACT
+  - id: ARTIFACT-35
+    name_or_description: Proposed /ide directory
+    type: planned artifact
+    purpose: IDE projection root
+    status: not shown in tree; planned
+    origin: REPOX prompt
+    carry_forward: carry if approved
+    notes: Add only after audit
+    label: INFERENCE
+  - id: ARTIFACT-36
+    name_or_description: Proposed RULES_TO_CHECKS_MATRIX.md
+    type: planned doc
+    purpose: Map every rule to enforcement
+    status: not shown; recommended
+    origin: Assistant plan
+    carry_forward: 'yes'
+    notes: High-priority governance artifact
+    label: INFERENCE
+  - id: ARTIFACT-37
+    name_or_description: Proposed /policies/rules/*.json
+    type: planned files
+    purpose: Policy-as-data
+    status: not shown; recommended
+    origin: Assistant plan
+    carry_forward: 'yes'
+    notes: Implement after matrix
+    label: INFERENCE
+  risks:
+  - id: RISK-01
+    risk: New assistant treats old generated prompts as higher authority than latest upstream
+    consequence: Could revive obsolete build rules or redesign
+    likelihood: medium
+    severity: high
+    mitigation: Use source hierarchy; latest upstream wins
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-02
+    risk: Old build-number scripts allocate GBN locally
+    consequence: Violates BUILD-ID-0 and corrupts release identity
+    likelihood: medium
+    severity: critical
+    mitigation: Audit .dominium_build_number and update_build_number.cmake
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-03
+    risk: Docs remain unconsolidated
+    consequence: Live code may reference historical docs; contradictions persist
+    likelihood: high
+    severity: high
+    mitigation: Implement CLEAN-2 and CANON_INDEX.md
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-04
+    risk: IDE artifacts become source of truth
+    consequence: Build graph drifts and legacy IDEs corrupt repo
+    likelihood: medium
+    severity: high
+    mitigation: RepoX quarantine and /ide projections
+    related_workstreams:
+    - WORKSTREAM-08
+    label: FACT
+  - id: RISK-05
+    risk: UI designer output contains logic
+    consequence: GUI/TUI bypass command graph or mutate state
+    likelihood: medium
+    severity: high
+    mitigation: APP-UI-BIND validation and UI shell purity checks
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: RISK-06
+    risk: Demo/free model becomes a code fork
+    consequence: Maintenance burden and buyer confusion
+    likelihood: low-medium
+    severity: medium-high
+    mitigation: Keep demo as authority profile
+    related_workstreams:
+    - WORKSTREAM-07
+    label: FACT
+  - id: RISK-07
+    risk: DRM/anti-cheat creeps into engine/game
+    consequence: Breaks determinism/replay/openness
+    likelihood: low-medium
+    severity: high
+    mitigation: TESTX2 no-secrets/non-interference checks
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-08
+    risk: Required new capability cuts off old binaries unintentionally
+    consequence: Dropped OS users lose updates or servers unexpectedly
+    likelihood: medium
+    severity: high
+    mitigation: Capability negotiation and degradation policy
+    related_workstreams:
+    - WORKSTREAM-09
+    label: INFERENCE
+  - id: RISK-09
+    risk: Modern C++/SDK features leak into legacy targets
+    consequence: Old OS builds silently fail at runtime
+    likelihood: medium
+    severity: high
+    mitigation: TESTX4 language profiles and floor presets
+    related_workstreams:
+    - WORKSTREAM-09
+    label: FACT
+  - id: RISK-10
+    risk: VS2022 v141_xp mistaken for archival VC7.1
+    consequence: False confidence in long-term XP/Vista bridge
+    likelihood: medium
+    severity: medium
+    mitigation: Label as MVP only; maintain VM archival plan
+    related_workstreams:
+    - WORKSTREAM-12
+    label: INFERENCE
+  - id: RISK-11
+    risk: Rules remain prose-only
+    consequence: Future contributors bypass canon accidentally
+    likelihood: high
+    severity: high
+    mitigation: RULES_TO_CHECKS_MATRIX and policy runner
+    related_workstreams:
+    - WORKSTREAM-11
+    label: INFERENCE
+  - id: RISK-12
+    risk: Over-refactoring during governance implementation
+    consequence: Runtime semantics change despite maintenance-only canon
+    likelihood: medium
+    severity: high
+    mitigation: Audit/docs/scripts first; no runtime behavior changes
+    related_workstreams:
+    - WORKSTREAM-05
+    label: FACT
+  - id: RISK-13
+    risk: Over-compression loses prompt details
+    consequence: Future aggregation omits important constraints
+    likelihood: medium
+    severity: medium
+    mitigation: Use report package plus original saved prompts where possible
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-14
+    risk: Assistant guesses external tool facts
+    consequence: Bad VS/SDK/OS support decisions
+    likelihood: medium
+    severity: medium-high
+    mitigation: Verify current toolchain facts before use
+    related_workstreams:
+    - WORKSTREAM-12
+    label: FACT
+  - id: RISK-15
+    risk: Treating tentative TESTX4/policy-as-data ideas as already implemented
+    consequence: False assumptions in next chat
+    likelihood: medium
+    severity: medium
+    mitigation: Label as recommended/planned until verified
+    related_workstreams:
+    - WORKSTREAM-10
+    label: FACT
+  verification_queue:
+  - id: VERIFY-01
+    item: Locate CANON_INDEX.md
+    why_verification_needed: Required by CLEAN-2 single source of truth
+    suggested_source_type: File search/repo inspection
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: Audit docs status headers
+    why_verification_needed: Required to distinguish canonical/derived/historical
+    suggested_source_type: Script/manual scan of docs
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: Find CLEAN-2/BUILD-ID-0/APP/SRZ/VALIDATE docs
+    why_verification_needed: Need exact canon citations
+    suggested_source_type: Repo search
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: Inspect .dominium_build_number
+    why_verification_needed: Possible superseded build-number artifact
+    suggested_source_type: File contents/reference search
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: Inspect update_build_number.cmake
+    why_verification_needed: Could violate BUILD-ID-0
+    suggested_source_type: Read script
+    priority: critical
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-06
+    item: Search for product version files
+    why_verification_needed: Manual SemVer implementation
+    suggested_source_type: File search
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Inspect CMakePresets.json
+    why_verification_needed: Need existing presets and add floor/projection safely
+    suggested_source_type: File inspection
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-08
+    item: Inspect CI workflow
+    why_verification_needed: Need know existing gates
+    suggested_source_type: Read .github/workflows/ci.yml
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Run IDE artifact inventory
+    why_verification_needed: RepoX quarantine requires classification
+    suggested_source_type: File search and git tracking
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-10
+    item: Check whether /ide exists
+    why_verification_needed: Projection root state
+    suggested_source_type: File search
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-08
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-11
+    item: Verify VS2022 components/toolsets/SDKs
+    why_verification_needed: Windows MVP plan depends on actual install
+    suggested_source_type: VS Installer/CMake configure
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-12
+    item: Runtime-test XP/Win7/Win8/Win10/Win11 floors in VMs
+    why_verification_needed: Compile success is insufficient
+    suggested_source_type: VM smoke tests
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-13
+    item: Audit public header C89 parseability
+    why_verification_needed: Required by upstream
+    suggested_source_type: try-compile/scanner
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-14
+    item: Audit game C++98 compliance
+    why_verification_needed: Required by upstream
+    suggested_source_type: compiler/scanner
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-15
+    item: Scan deterministic dirs for FP/STL/static init/exceptions/RTTI
+    why_verification_needed: Required by TESTX4 proposal
+    suggested_source_type: Static scans
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-10
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-16
+    item: Find zero-asset boot tests
+    why_verification_needed: No hardcoded content/magic defaults
+    suggested_source_type: Test inventory
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-17
+    item: Search hardcoded Sol/Earth/base-pack assumptions
+    why_verification_needed: User had content data but engine must not assume it
+    suggested_source_type: Source search
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-18
+    item: Check APP UI binding validation
+    why_verification_needed: APP-UI-BIND required
+    suggested_source_type: Test/script inspection
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-19
+    item: Check tool read-only default enforcement
+    why_verification_needed: APP canon required
+    suggested_source_type: Tool API/test audit
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-20
+    item: Locate authority profiles implementation/docs
+    why_verification_needed: Needed for tourist/demo/piracy model
+    suggested_source_type: Repo search
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-07
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-21
+    item: Verify no secrets in engine/game
+    why_verification_needed: TESTX2 security constraint
+    suggested_source_type: Secret scanner/manual audit
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-06
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-22
+    item: Verify renderer no-silent-fallback tests
+    why_verification_needed: AP response accepted rule
+    suggested_source_type: Test inventory
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-23
+    item: Verify rules-to-checks matrix existence
+    why_verification_needed: Policy automation plan depends on it
+    suggested_source_type: File search
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-24
+    item: Verify policy-as-data files or runner existence
+    why_verification_needed: Avoid duplicating if already present
+    suggested_source_type: File search
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-11
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-25
+    item: Verify external toolchain facts before future use
+    why_verification_needed: Software versions/installers change over time
+    suggested_source_type: Official docs/installed tools
+    priority: high before action
+    related_workstreams:
+    - WORKSTREAM-12
+    label: UNCERTAIN / UNVERIFIED
+  spec_book_notes:
+    likely_sections:
+    - Governance and Canon Management
+    - TestX / Validate Enforcement
+    - Build Identity and Release Governance
+    - RepoX Repository Ownership and IDE Projections
+    - Language Profiles and ABI Stability
+    - Toolchain and OS Floor Matrix
+    - Application Layer Canon
+    - Content Packs and Zero-Asset Boot
+    - Authority/Entitlements/Demo/Tourist Mode
+    unique_contributions:
+    - Supersession of earlier build-number plan by BUILD-ID-0
+    - IDE projection strategy
+    - Windows VS2022 MVP floor plan
+    - Integration of demo/tourist/piracy containment with authority model
+    possible_duplicates_with_other_chats:
+    - Core ontology
+    - T0-T24 architecture
+    - SRZ-0
+    - APP-CANON details
+    - content schemas
+    conflicts_to_watch_for:
+    - Old build number rules vs BUILD-ID-0
+    - Assistant-generated prompts vs latest upstream canon
+    - VS2026 future matrix vs VS2022 MVP host
+    formal_requirements_candidates:
+    - CANON_INDEX status enforcement
+    - GBN/BII stamping
+    - UI binding validation
+    - IDE quarantine
+    - public C ABI/header parseability
+    - rules-to-checks matrix
+    background_context_candidates:
+    - Earlier industry acceptance discussion
+    - Initial BUILD file idea
+    - Specific generated prompt wording
+    needs_user_confirmation:
+    - Whether to formalize TESTX4 now
+    - Exact old-binary support duration
+    - GBN allocator mechanism
+    - Whether to create /ide immediately
+  final_recommendations:
+    next_action_if_continuing_this_chat: Perform a repository audit focused on canon index, BUILD-ID-0 scripts/files, CMakePresets,
+      CI, IDE artifacts, APP/UI binding, and language compliance.
+    next_action_for_aggregator: Merge this as the governance/build/repo/toolchain/authority handoff; preserve conflict labels
+      and latest-upstream precedence.
+    user_checks_required:
+    - Confirm latest upstream canon remains current
+    - Confirm whether TESTX4 should be adopted
+    - Confirm current repo branch/state before implementation

@@ -1,0 +1,1715 @@
+spec_sheet:
+  metadata:
+    chat_label: Dominium README Ports Determinism
+    date_anchor: 2026-05-27 Australia/Melbourne
+    source_scope: THIS CHAT ONLY; no external files directly inspected. Project context used only as labelled if applicable.
+    apparent_coverage: full visible chat coverage, repository state unverified
+    confidence_1_to_5: 4
+    staleness_risk: medium
+    safe_for_aggregation: yes, with caveats
+    main_limitations:
+    - Actual repository README.md was not inspected.
+    - Spec files were referenced but not inspected.
+    - Metadata-only /ports may not fully satisfy the user's wording.
+    - OS/2 intro mention conflicts with Section 9 normative matrix omission.
+  summary:
+    one_sentence: This chat refined the Dominium/Domino README around determinism, platform/ports unification, capability-based
+      degradation, data-format stability, and Codex prompt workflow.
+    short_brief: The user iteratively revised a README for a deterministic simulation game/engine using assistant-generated
+      Codex prompts. The key outcome is a final README baseline where all platforms share one source hierarchy and ports cannot
+      become separate systems; reduced functionality degrades through capability descriptors without changing canonical behavior.
+    main_topics:
+    - README architecture
+    - Unified ports
+    - Determinism
+    - Data formats
+    - Codex prompts
+    - Spec-first project structure
+    main_outputs:
+    - Initial critique
+    - Three Codex prompts
+    - Final README snapshot
+    - Maximum-fidelity context transfer packet
+    - This report package
+    highest_priority_carry_forward:
+    - User rejected separate port directory/system architecture.
+    - All platforms must share one source hierarchy.
+    - Reduced functionality must gracefully degrade and not flow upstream.
+    - Verify metadata-only /ports interpretation.
+    - Resolve OS/2 platform-matrix inconsistency.
+  source_rules:
+    labels_used:
+    - FACT
+    - INFERENCE
+    - UNCERTAIN / UNVERIFIED
+    - PROJECT-CONTEXT
+    conflict_rules:
+    - Direct user statements outrank assistant suggestions.
+    - Final pasted README is the textual baseline unless actual repository files differ.
+    - README is descriptive; /docs/spec files are intended to be normative.
+    - Preserve contradictions instead of silently resolving them.
+    staleness_rules:
+    - Repository state must be verified before edits.
+    - Software/platform/API/current-event claims require verification before external use.
+  user_preferences:
+    explicit:
+    - id: PREFERENCE-01
+      preference: Direct, critical technical review.
+      source_basis: Explicit user profile/instructions plus interaction pattern.
+      strength: high
+      implication: Future assistants should identify contradictions and risks without padding.
+      risk_if_misunderstood: 'Risk: false reassurance or missed flaws.'
+      label: FACT
+    - id: PREFERENCE-02
+      preference: Codex-ready prompts for implementation.
+      source_basis: Observed user requests for prompts and Codex workflow.
+      strength: high
+      implication: Provide copy-paste prompts with exact edits when asked.
+      risk_if_misunderstood: 'Risk: abstract advice wastes effort.'
+      label: FACT
+    - id: PREFERENCE-03
+      preference: Rigor and fact/inference separation.
+      source_basis: Explicit in user profile and transfer/package requests.
+      strength: high
+      implication: Label FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT.
+      risk_if_misunderstood: 'Risk: tentative suggestions become false decisions.'
+      label: FACT
+    - id: PREFERENCE-05
+      preference: Preserve rejected and superseded options.
+      source_basis: Explicit in context-transfer/package requests.
+      strength: high
+      implication: Include rejected register and avoid reintroducing old options.
+      risk_if_misunderstood: 'Risk: repeated architectural regressions.'
+      label: FACT
+    - id: PREFERENCE-06
+      preference: No unnecessary clarifying questions when best-effort action is possible.
+      source_basis: Explicit system/user preference context.
+      strength: medium
+      implication: Proceed with caveats when information is enough.
+      risk_if_misunderstood: 'Risk: interaction slows or repeats known context.'
+      label: FACT
+    inferred:
+    - id: PREFERENCE-04
+      preference: Minimal, surgical edits unless broader rewrite requested.
+      source_basis: Observed prompt style and user workflow.
+      strength: medium-high
+      implication: Preserve headings/section numbers/tone by default.
+      risk_if_misunderstood: 'Risk: Codex or assistant causes drift.'
+      label: INFERENCE
+    - id: PREFERENCE-07
+      preference: Strong concern for deterministic, long-term, spec-first architecture.
+      source_basis: Visible from README and user corrections.
+      strength: high
+      implication: Evaluate changes against determinism, portability, and spec stability.
+      risk_if_misunderstood: 'Risk: superficial README edits miss architecture consequences.'
+      label: INFERENCE
+    uncertain_or_not_established:
+    - Preferred branch/commit workflow is not established.
+    - Whether /ports should exist at all is not established.
+    - Exact spec filenames beyond DIRECTORY_CONTRACT.md and MILESTONES.md are not established.
+  workstreams:
+  - id: WORKSTREAM-01
+    name: Dominium / Domino README Architecture
+    label: FACT
+    objective: Maintain the root README as a high-level, contract-like description of the Dominium/Domino project without
+      making it the normative source over /docs/spec.
+    current_state: Final README was pasted in chat and is coherent, but actual repository state is unverified.
+    desired_end_state: A stable README that orients contributors while normative specs define enforceable contracts.
+    status: active
+    priority: high
+    background: The user pasted an initial README, requested critique, then used Codex prompts to revise it.
+    decisions_made:
+    - DECISION-01
+    - DECISION-02
+    - DECISION-03
+    - DECISION-13
+    decisions_pending:
+    - QUESTION-01
+    - QUESTION-02
+    - QUESTION-05
+    tasks:
+    - TASK-01
+    - TASK-02
+    - TASK-04
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-12
+    - CONSTRAINT-21
+    dependencies:
+    - Actual repository README.md
+    - /docs/spec/DIRECTORY_CONTRACT.md
+    - /docs/spec/MILESTONES.md
+    timeline: Entire workstream occurred in this chat through iterative paste-review-prompt-review cycles.
+    blockers:
+    - Repository file not directly inspected.
+    - Spec files not inspected.
+    risks:
+    - RISK-01
+    - RISK-02
+    - RISK-07
+    artifacts:
+    - ARTIFACT-01
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-04
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-07
+    - ARTIFACT-08
+    success_criteria:
+    - README has no internal contradictions.
+    - README preserves user decisions.
+    - README remains aligned with normative specs.
+    next_action: Verify actual repository README.md against the final pasted README, then patch remaining contradictions.
+    verification_needed:
+    - VERIFY-01
+    - VERIFY-02
+    - VERIFY-05
+    confidence: 5
+  - id: WORKSTREAM-02
+    name: Unified Ports and Capability-Based Degradation
+    label: FACT
+    objective: Ensure all ports/platforms use one source hierarchy, with platform differences expressed through capability
+      descriptors, compile-time flags, and thin shims only.
+    current_state: Final README states that /ports contains metadata/build configs/capability descriptors only and no engine/runtime
+      source code.
+    desired_end_state: No port-specific implementation trees; degraded features disable locally without flowing upstream into
+      canonical engine/runtime behavior.
+    status: active
+    priority: high
+    background: The user explicitly rejected ports being stored in a separate directory or system.
+    decisions_made:
+    - DECISION-14
+    - DECISION-15
+    - DECISION-16
+    - DECISION-17
+    decisions_pending:
+    - QUESTION-02
+    - QUESTION-03
+    - QUESTION-04
+    tasks:
+    - TASK-03
+    - TASK-05
+    - TASK-06
+    - TASK-07
+    constraints:
+    - CONSTRAINT-12
+    - CONSTRAINT-13
+    - CONSTRAINT-14
+    - CONSTRAINT-15
+    - CONSTRAINT-16
+    dependencies:
+    - Directory contract spec
+    - Capability descriptor spec
+    - Build system enforcement
+    timeline: Created after the user's explicit correction about ports and graceful degradation.
+    blockers:
+    - Unverified whether metadata-only /ports fully satisfies user intent.
+    risks:
+    - RISK-02
+    - RISK-03
+    - RISK-04
+    - RISK-05
+    artifacts:
+    - ARTIFACT-05
+    - ARTIFACT-06
+    - ARTIFACT-08
+    success_criteria:
+    - No engine/runtime source under /ports.
+    - No alternate platform implementation trees.
+    - Capability system handles reduced functionality.
+    next_action: Confirm /ports semantics if directory work begins; then formalize in DIRECTORY_CONTRACT.md and capability-system
+      spec.
+    verification_needed:
+    - VERIFY-04
+    - VERIFY-06
+    - VERIFY-07
+    confidence: 4
+  - id: WORKSTREAM-03
+    name: Determinism Contract Refinement
+    label: FACT
+    objective: Define deterministic behavior boundaries for simulation, serialization, RNG, tick phases, parallel commits,
+      networking, plugins, and build metadata.
+    current_state: Final README has clarified no-float boundaries, RNG phase discipline, deterministic parallel commit, lockstep-first
+      networking, and build metadata isolation.
+    desired_end_state: A formal determinism spec and tests ensuring bit-identical simulation across supported targets for
+      the same executable, content, inputs, and timeline.
+    status: active
+    priority: high
+    background: Initial README had strong determinism goals but needed narrower float boundaries and stronger ordering guarantees.
+    decisions_made:
+    - DECISION-05
+    - DECISION-06
+    - DECISION-07
+    - DECISION-08
+    - DECISION-09
+    - DECISION-10
+    - DECISION-11
+    - DECISION-12
+    - DECISION-18
+    - DECISION-19
+    decisions_pending:
+    - QUESTION-06
+    - QUESTION-07
+    - QUESTION-08
+    - QUESTION-05
+    tasks:
+    - TASK-08
+    - TASK-10
+    constraints:
+    - CONSTRAINT-01
+    - CONSTRAINT-02
+    - CONSTRAINT-03
+    - CONSTRAINT-04
+    - CONSTRAINT-05
+    - CONSTRAINT-06
+    - CONSTRAINT-07
+    - CONSTRAINT-08
+    - CONSTRAINT-09
+    - CONSTRAINT-10
+    - CONSTRAINT-11
+    dependencies:
+    - DETERMINISM.md spec
+    - Replay hash algorithm
+    - RNG stream format
+    - CI tests
+    timeline: Most changes were added in the first Codex prompt and cleanup prompt.
+    blockers:
+    - No implementation or spec files were inspected.
+    risks:
+    - RISK-06
+    - RISK-08
+    - RISK-09
+    artifacts:
+    - ARTIFACT-02
+    - ARTIFACT-03
+    - ARTIFACT-08
+    success_criteria:
+    - Same inputs/content produce same state hashes across targets.
+    - Debug/render/UI cannot perturb engine state.
+    - Rollback/prediction converges to lockstep.
+    next_action: Create or update a formal determinism spec from the README rules.
+    verification_needed:
+    - VERIFY-08
+    - VERIFY-09
+    - VERIFY-10
+    confidence: 5
+  - id: WORKSTREAM-04
+    name: Data Formats, Saves, and Content Lock Contract
+    label: FACT
+    objective: Define stable, explicit, deterministic engine-controlled formats for saves, regions, chunks, content locks,
+      and replay metadata.
+    current_state: Final README includes immutable on-disk versions, explicit field sizes, canonical little-endian representation,
+      no serialized pointers, and fatal content.lock mismatch behavior.
+    desired_end_state: Formal data-format specs and migration policy that prevent silent reinterpretation and cross-platform
+      layout drift.
+    status: active
+    priority: high
+    background: Initial README included TLV design; assistant suggested adding stronger versioning and packing constraints.
+    decisions_made:
+    - DECISION-20
+    - DECISION-21
+    - DECISION-22
+    - DECISION-23
+    decisions_pending:
+    - QUESTION-09
+    - QUESTION-10
+    - QUESTION-11
+    tasks:
+    - TASK-09
+    - TASK-11
+    constraints:
+    - CONSTRAINT-17
+    - CONSTRAINT-18
+    - CONSTRAINT-19
+    - CONSTRAINT-20
+    dependencies:
+    - Format specs
+    - Migration tooling
+    - Content hash algorithm
+    timeline: Added through the first Codex prompt and retained through final README.
+    blockers:
+    - Actual binary layout specs not provided.
+    risks:
+    - RISK-10
+    - RISK-11
+    artifacts:
+    - ARTIFACT-02
+    - ARTIFACT-08
+    - ARTIFACT-12
+    success_criteria:
+    - Existing format versions remain immutable.
+    - Big-endian/legacy targets can read/write canonical formats.
+    - Content mismatches are detected before simulation.
+    next_action: Draft data format/versioning spec and content-lock verification spec.
+    verification_needed:
+    - VERIFY-11
+    - VERIFY-12
+    confidence: 5
+  - id: WORKSTREAM-05
+    name: Future Normative Spec Files
+    label: INFERENCE
+    objective: Translate README-level descriptions into enforceable specs under /docs/spec.
+    current_state: README references DIRECTORY_CONTRACT.md and MILESTONES.md, but no spec file contents were inspected in
+      this chat.
+    desired_end_state: Directory, determinism, capability, data-format, plugin, and build specs align with README decisions.
+    status: active-inferred
+    priority: medium-high
+    background: README repeatedly says specs are normative and behavioral/format changes require spec updates.
+    decisions_made:
+    - DECISION-02
+    decisions_pending:
+    - QUESTION-03
+    - QUESTION-04
+    - QUESTION-09
+    tasks:
+    - TASK-05
+    - TASK-06
+    - TASK-08
+    - TASK-09
+    constraints:
+    - CONSTRAINT-21
+    dependencies:
+    - Existing docs/spec files
+    - User confirmation on /ports semantics
+    timeline: Logical next phase after README stabilization.
+    blockers:
+    - Actual specs not reviewed.
+    risks:
+    - RISK-12
+    artifacts:
+    - ARTIFACT-13
+    - ARTIFACT-14
+    success_criteria:
+    - Every README-level architectural claim has a normative spec home.
+    next_action: If continuing beyond README, start with DIRECTORY_CONTRACT.md and capability-system spec.
+    verification_needed:
+    - VERIFY-02
+    - VERIFY-03
+    confidence: 3
+  - id: WORKSTREAM-06
+    name: Codex Prompt Workflow
+    label: FACT
+    objective: Use precise copy-paste prompts to make mechanical repository edits through Codex while minimizing unintended
+      rewrites.
+    current_state: Three major Codex prompts were produced and used; Codex once introduced a duplicate top block, which was
+      corrected by a cleanup prompt.
+    desired_end_state: Future prompts remain surgical, preserve user decisions, forbid duplicate sections, and explicitly
+      protect ports/determinism semantics.
+    status: active
+    priority: medium
+    background: The user asks the assistant for Codex prompts, runs Codex externally, then pastes outputs back for review.
+    decisions_made:
+    - DECISION-24
+    decisions_pending: []
+    tasks:
+    - TASK-12
+    constraints:
+    - CONSTRAINT-22
+    - CONSTRAINT-23
+    dependencies:
+    - Latest README baseline
+    - User's intended next edit
+    timeline: Used throughout the visible chat.
+    blockers:
+    - No repo diff available.
+    risks:
+    - RISK-01
+    - RISK-13
+    artifacts:
+    - ARTIFACT-03
+    - ARTIFACT-05
+    - ARTIFACT-07
+    success_criteria:
+    - Codex output matches requested scope.
+    - Rejected options are not reintroduced.
+    - No duplicated sections.
+    next_action: For any new edit, generate a targeted prompt with explicit no-change boundaries.
+    verification_needed:
+    - VERIFY-13
+    confidence: 5
+  decisions:
+  - id: DECISION-01
+    decision: Domino is the deterministic simulation engine core; Dominium is the official game/runtime/tooling layer.
+    status: decided
+    label: FACT
+    evidence_or_basis: README intro
+    rationale: Separates kernel from game/tooling layer.
+    implications: Allows one compatible implementation atop Domino; other uses remain possible.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none noted
+  - id: DECISION-02
+    decision: README is descriptive; files under /docs/spec are normative.
+    status: decided
+    label: FACT
+    evidence_or_basis: README Section 3 and final note
+    rationale: Prevents README from being sole enforceable contract.
+    implications: Specs must be updated to bind behavior and formats.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-05
+    uncertainty: none noted
+  - id: DECISION-03
+    decision: Full Domino engine targets 286-class-and-newer systems; earlier 8-bit systems may host only limited tooling/frontends.
+    status: decided
+    label: FACT
+    evidence_or_basis: README Section 1.3
+    rationale: Resolves CP/M vs full-engine contradiction.
+    implications: CP/M-80 cannot host complete world simulation.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none noted
+  - id: DECISION-04
+    decision: Undefined embedded future target was removed from README.
+    status: decided
+    label: FACT
+    evidence_or_basis: Cleanup prompt and final README
+    rationale: Avoids overpromising unsupported embedded scope.
+    implications: Future systems are WASM/Web and consoles via ABI frontends.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none noted
+  - id: DECISION-05
+    decision: No floating point is allowed in code mutating canonical simulation state or engine-controlled serialized formats.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 2.1
+    rationale: Preserves deterministic simulation and formats.
+    implications: Engine-facing simulation paths must use integer/fixed-point math.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none noted
+  - id: DECISION-06
+    decision: No float/double in /engine or engine-controlled on-disk formats.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 2.1
+    rationale: Hardens engine determinism.
+    implications: CI/code review should reject floats in these areas.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none noted
+  - id: DECISION-07
+    decision: Tools, renderers, and non-authoritative analysis may use floats if float-derived values never feed back into
+      engine state/formats.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 2.1
+    rationale: Avoids overconstraining non-authoritative layers.
+    implications: Requires clear dataflow boundaries.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none noted
+  - id: DECISION-08
+    decision: RNG streams only advance during deterministic tick phases; debug/UI/rendering cannot advance engine RNG.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 2.1
+    rationale: Prevents non-sim layers perturbing state.
+    implications: RNG stream access must be controlled.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none noted
+  - id: DECISION-09
+    decision: The global simulation tick has immutable phases.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 2.2
+    rationale: Stable phase order is a determinism foundation.
+    implications: No system can reorder or bypass phases.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none noted
+  - id: DECISION-10
+    decision: Future-tick scheduling must go through Pre-State queueing.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 2.2
+    rationale: Avoids ad hoc timers and future mutations.
+    implications: Systems need a canonical queue mechanism.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none noted
+  - id: DECISION-11
+    decision: Parallel execution must use disjoint state subsets and deterministic commit order.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 2.2
+    rationale: Allows parallelism without nondeterministic state changes.
+    implications: Commit order should be globally stable, e.g. sort-by-ID.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none noted
+  - id: DECISION-12
+    decision: Canonical network model is deterministic lockstep; rollback/prediction must converge to pure lockstep.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 5.1
+    rationale: Clarifies rollback as runtime optimization, not alternate truth.
+    implications: Network protocol/spec must treat lockstep as reference.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none noted
+  - id: DECISION-13
+    decision: One vertical Page per Surface in Dominium 1.x; extra shells/deep volumes/orbital shells use separate Surfaces
+      or logical spaces.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 2.3
+    rationale: Bounds vertical addressing.
+    implications: Prevents silent extension of Z range.
+    related_workstreams:
+    - WORKSTREAM-01
+    uncertainty: none noted
+  - id: DECISION-14
+    decision: All platforms build from the same unified source hierarchy.
+    status: decided
+    label: FACT
+    evidence_or_basis: User port statement; README 2.5, 4.2, 9, 11
+    rationale: User rejected separate port systems.
+    implications: No per-platform forks or alternate source trees.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none noted
+  - id: DECISION-15
+    decision: /ports contains only optional platform metadata, build configurations, and capability descriptors; no code or
+      behavior.
+    status: current README state
+    label: UNCERTAIN / UNVERIFIED
+    evidence_or_basis: README 3 and 4.2
+    rationale: Assistant/Codex interpretation of user's no-separate-ports preference.
+    implications: Directory contract must forbid engine/runtime source there.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: requires confirmation
+  - id: DECISION-16
+    decision: Reduced functionality degrades gracefully through capability system without altering engine behavior.
+    status: decided
+    label: FACT
+    evidence_or_basis: User statement; README 2.4, 2.5, 4.2, 9
+    rationale: Prevents low-end platform limitations from changing canonical semantics.
+    implications: Capability descriptors become critical architecture.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none noted
+  - id: DECISION-17
+    decision: Ports cannot fork, override, or reimplement engine/runtime systems.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 2.4, 2.5, 4.2, 11
+    rationale: Preserves unified codebase and determinism.
+    implications: CI/specs should prohibit divergent platform systems.
+    related_workstreams:
+    - WORKSTREAM-02
+    uncertainty: none noted
+  - id: DECISION-18
+    decision: Build numbers and timestamps are diagnostic only and cannot affect simulation or engine-controlled formats.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 4.1
+    rationale: Prevents build metadata from breaking reproducibility.
+    implications: Build system must keep diagnostics out of canonical state/files.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none noted
+  - id: DECISION-19
+    decision: Binary plugins are bound by the same determinism constraints as the core.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 6
+    rationale: Prevents plugin nondeterminism.
+    implications: Plugin ABI/sandbox must forbid time/RNG/threads/floats affecting sim.
+    related_workstreams:
+    - WORKSTREAM-03
+    uncertainty: none noted
+  - id: DECISION-20
+    decision: Existing on-disk versions are immutable contracts; changes require new version and migration path.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 7
+    rationale: Supports long-term archival stability.
+    implications: No silent reinterpretation of old data.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: none noted
+  - id: DECISION-21
+    decision: No reliance on platform-specific struct packing pragmas in canonical format definitions.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 7
+    rationale: Prevents compiler/platform layout drift.
+    implications: Disk layouts must be explicit field-size layouts.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: none noted
+  - id: DECISION-22
+    decision: content.lock mismatch is fatal until reconciled.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 7.1
+    rationale: Ensures deterministic registry reconstruction.
+    implications: Loader must reject mismatched active content sets.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: none noted
+  - id: DECISION-23
+    decision: Terrain caches/microgrids are non-canonical; canonical geometry is procedural phi plus edits, volumes, fluid/thermal/network
+      state.
+    status: decided
+    label: FACT
+    evidence_or_basis: README 2.3 and 7.1
+    rationale: Prevents derived caches from defining world state.
+    implications: Caches can be rebuilt deterministically.
+    related_workstreams:
+    - WORKSTREAM-04
+    uncertainty: none noted
+  - id: DECISION-24
+    decision: Codex prompts should be surgical, copy-pasteable, and explicit about what must not change.
+    status: decided in workflow
+    label: INFERENCE
+    evidence_or_basis: Repeated prompt style and cleanup after Codex duplication
+    rationale: Minimizes unintended rewrites.
+    implications: Future prompts should include no-duplication and preserve-semantics clauses.
+    related_workstreams:
+    - WORKSTREAM-06
+    uncertainty: requires confirmation
+  tasks:
+  - id: TASK-01
+    task: Verify actual repository README.md against final pasted README.
+    priority: high
+    urgency: medium
+    owner: User/Codex/new assistant if repo is provided
+    dependencies:
+    - ARTIFACT-08
+    inputs_needed:
+    - Repository access or pasted current README
+    expected_output: Confirmation or diff of README state.
+    next_step: Compare repo file with final pasted snapshot.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: 5
+  - id: TASK-02
+    task: Resolve OS/2 intro vs Section 9 normative matrix inconsistency.
+    priority: high
+    urgency: medium
+    owner: User/Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Decision whether OS/2 is supported/limited/descriptive
+    expected_output: Small README patch adding OS/2 to Section 9 or removing/qualifying it in intro.
+    next_step: Generate a surgical Codex prompt.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+    confidence: 5
+  - id: TASK-03
+    task: Confirm whether metadata-only /ports is acceptable or whether no /ports directory should exist.
+    priority: high
+    urgency: medium
+    owner: User
+    dependencies: []
+    inputs_needed:
+    - User confirmation
+    expected_output: Clear repository-layout decision.
+    next_step: Ask only if directory/spec work depends on it.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4
+  - id: TASK-04
+    task: Tighten Section 11 strict float shorthand if desired.
+    priority: medium
+    urgency: low
+    owner: Codex
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - Final README
+    expected_output: Change 'No floats in simulation or core IO' to precise /engine wording.
+    next_step: Optional Codex prompt.
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-05
+    task: Create/update /docs/spec/DIRECTORY_CONTRACT.md to enforce unified structure and metadata-only /ports if retained.
+    priority: high
+    urgency: medium
+    owner: Codex/dev
+    dependencies:
+    - TASK-03
+    inputs_needed:
+    - Existing DIRECTORY_CONTRACT.md if present
+    expected_output: Normative directory contract.
+    next_step: Prompt Codex after /ports semantics are confirmed.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-06
+    task: Create capability-system spec.
+    priority: high
+    urgency: medium
+    owner: Codex/dev
+    dependencies:
+    - TASK-03
+    - TASK-05
+    inputs_needed:
+    - Desired descriptor schema
+    expected_output: Specification for capability tables/descriptors and graceful degradation.
+    next_step: Draft /docs/spec/CAPABILITY_SYSTEM.md or equivalent.
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-07
+    task: Add CI/build guard preventing engine/runtime source under /ports if metadata-only /ports is retained.
+    priority: medium
+    urgency: low
+    owner: Codex/dev
+    dependencies:
+    - TASK-05
+    inputs_needed:
+    - Allowed file types under /ports
+    expected_output: Automated enforcement check.
+    next_step: Define allowed extensions and forbidden source patterns.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-08
+    task: Create formal determinism spec.
+    priority: high
+    urgency: medium
+    owner: Codex/dev
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - README 2.1/2.2/5.1/11
+    expected_output: DETERMINISM.md or equivalent.
+    next_step: Generate prompt from README rules.
+    related_workstreams:
+    - WORKSTREAM-03
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-09
+    task: Create formal data format/versioning spec.
+    priority: high
+    urgency: medium
+    owner: Codex/dev
+    dependencies:
+    - TASK-01
+    inputs_needed:
+    - README Section 7 and any existing format docs
+    expected_output: Disk layout, TLV, versioning, migration policy spec.
+    next_step: Generate prompt.
+    related_workstreams:
+    - WORKSTREAM-04
+    - WORKSTREAM-05
+    label: INFERENCE
+    confidence: 4
+  - id: TASK-10
+    task: Define replay hash and RNG algorithms/specification.
+    priority: medium
+    urgency: medium
+    owner: Codex/dev
+    dependencies:
+    - TASK-08
+    inputs_needed:
+    - Desired algorithms or existing implementation
+    expected_output: State hash/RNG stream spec.
+    next_step: Add to determinism spec.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-11
+    task: Define content.lock verification and reconciliation process.
+    priority: medium
+    urgency: medium
+    owner: Codex/dev
+    dependencies:
+    - TASK-09
+    inputs_needed:
+    - Content registry/hash design
+    expected_output: Loader behavior and reconciliation spec.
+    next_step: Add to data/content spec.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+    confidence: 3
+  - id: TASK-12
+    task: For future Codex edits, include explicit no-duplication and preserve-semantics clauses.
+    priority: medium
+    urgency: ongoing
+    owner: Assistant/new chat
+    dependencies:
+    - ARTIFACT-07
+    inputs_needed:
+    - Next edit objective
+    expected_output: Scoped Codex prompt.
+    next_step: Apply prompt style from this chat.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+    confidence: 5
+  constraints:
+  - id: CONSTRAINT-01
+    constraint: No floating point in code that mutates canonical simulation state or engine-controlled serialized formats.
+    type: determinism
+    hard_or_soft: hard
+    source_or_basis: README 2.1
+    implication: Use integer/fixed-point in authoritative paths.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-02
+    constraint: No float/double in /engine or engine-controlled on-disk formats.
+    type: code/format
+    hard_or_soft: hard
+    source_or_basis: README 2.1
+    implication: Engine code and canonical formats must be float-free.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-03
+    constraint: Tools/renderers/non-authoritative analysis may use floats only if results never feed back into engine state
+      or engine-controlled formats.
+    type: boundary
+    hard_or_soft: hard
+    source_or_basis: README 2.1
+    implication: Requires strict dataflow separation.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-04
+    constraint: World surfaces are 2^24 m x 2^24 m toroidal squares.
+    type: world model
+    hard_or_soft: hard
+    source_or_basis: README 2.1/2.3
+    implication: World addressing must match fixed dimensions.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-05
+    constraint: Each Surface owns exactly one vertical Page in Dominium 1.x.
+    type: world model
+    hard_or_soft: hard
+    source_or_basis: README 2.3
+    implication: Do not extend Z range; use separate surfaces/logical spaces.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-06
+    constraint: Simulation tick phases are immutable.
+    type: simulation order
+    hard_or_soft: hard
+    source_or_basis: README 2.2
+    implication: No system can reorder/bypass phases.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-07
+    constraint: RNG streams advance only during deterministic tick phases.
+    type: RNG
+    hard_or_soft: hard
+    source_or_basis: README 2.1
+    implication: Debug/UI/render cannot perturb RNG state.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-08
+    constraint: Parallel execution must commit in globally deterministic order.
+    type: parallelism
+    hard_or_soft: hard
+    source_or_basis: README 2.2
+    implication: Sort/serialize commits deterministically.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-09
+    constraint: Canonical network model is deterministic lockstep.
+    type: networking
+    hard_or_soft: hard
+    source_or_basis: README 5.1
+    implication: Rollback/prediction must converge to lockstep.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-10
+    constraint: Build numbers/timestamps are diagnostic only and never affect simulation or engine-controlled formats.
+    type: build determinism
+    hard_or_soft: hard
+    source_or_basis: README 4.1
+    implication: Keep build metadata out of authoritative state/files.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-11
+    constraint: Binary plugins follow core determinism constraints.
+    type: plugin
+    hard_or_soft: hard
+    source_or_basis: README 6
+    implication: Plugin ABI must forbid nondeterministic effects.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-12
+    constraint: All platforms build from one unified source hierarchy.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User statement; README 2.5/4.2/9/11
+    implication: No platform forks.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-13
+    constraint: /ports contains no engine/runtime source code or behavior if retained.
+    type: repository layout
+    hard_or_soft: hard
+    source_or_basis: README 3/4.2
+    implication: Only metadata/build configs/capability descriptors.
+    violation_risk: high
+    label: UNCERTAIN / UNVERIFIED
+    confidence: 4
+  - id: CONSTRAINT-14
+    constraint: Reduced functionality degrades gracefully through capability system and does not flow upstream.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: User statement; README
+    implication: Low-end limitations must not change canonical semantics.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-15
+    constraint: Ports cannot fork, override, or reimplement engine/runtime systems.
+    type: architecture
+    hard_or_soft: hard
+    source_or_basis: README 2.4/2.5/11
+    implication: Platform-specific behavior must remain at shims/capabilities.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-16
+    constraint: All platforms adhere to same engine ABI and file formats.
+    type: ABI/format
+    hard_or_soft: hard
+    source_or_basis: README 2.5
+    implication: No per-platform file/ABI divergence.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-17
+    constraint: Engine-controlled formats are little-endian canonical.
+    type: format
+    hard_or_soft: hard
+    source_or_basis: README 7
+    implication: Platforms convert as needed.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-18
+    constraint: Existing on-disk versions are immutable contracts.
+    type: format versioning
+    hard_or_soft: hard
+    source_or_basis: README 7
+    implication: Changes require new versions and migration path.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-19
+    constraint: No platform-specific struct packing pragmas in canonical format definitions.
+    type: format layout
+    hard_or_soft: hard
+    source_or_basis: README 7
+    implication: Use explicit field-size disk layouts.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-20
+    constraint: content.lock active content set must match exactly or loading is fatal until reconciled.
+    type: content determinism
+    hard_or_soft: hard
+    source_or_basis: README 7.1
+    implication: No silent mod/content mismatch.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-21
+    constraint: Behavioral or format changes require spec updates before or alongside code.
+    type: documentation/spec
+    hard_or_soft: hard
+    source_or_basis: README 11
+    implication: Specs must stay aligned with implementation.
+    violation_risk: medium
+    label: FACT
+    confidence: 5
+  - id: CONSTRAINT-22
+    constraint: Future Codex prompts should preserve headings, section numbers, tone, and explicit no-change boundaries unless
+      user requests otherwise.
+    type: workflow
+    hard_or_soft: soft
+    source_or_basis: Prompt style in chat
+    implication: Prevents broad unintended rewrites.
+    violation_risk: medium
+    label: INFERENCE
+    confidence: 5
+  - id: CONSTRAINT-23
+    constraint: Future reports must label FACT/INFERENCE/UNCERTAIN/PROJECT-CONTEXT and preserve rejected options.
+    type: reporting
+    hard_or_soft: hard
+    source_or_basis: User final package request
+    implication: Prevents state-transfer corruption.
+    violation_risk: high
+    label: FACT
+    confidence: 5
+  open_questions:
+  - id: QUESTION-01
+    question: Should OS/2 strata via shims be added to Section 9’s normative platform matrix or removed/qualified from the
+      intro?
+    why_it_matters: Section 9 says it is normative; intro lists OS/2 while Section 9 omits it.
+    known: Intro includes OS/2 strata via shims; Section 9 lists platforms without OS/2.
+    unknown: Whether OS/2 is intended supported, limited, or merely descriptive.
+    resolution_path: User decision or repository target list.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: QUESTION-02
+    question: Does the user accept metadata-only /ports, or want no /ports directory at all?
+    why_it_matters: User said ports should not be stored in a separate directory or system.
+    known: Final README retains /ports as metadata-only and says no code/behavior lives there.
+    unknown: Whether that fully matches user intent.
+    resolution_path: User clarification before directory contract work.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-03
+    question: Where should platform shims physically live if /ports has no code?
+    why_it_matters: Directory contract needs exact locations.
+    known: README says platform-specific behavior is in /runtime, /launcher, /tools and shims are configured via /ports metadata.
+    unknown: Precise subdirectories and boundaries.
+    resolution_path: DIRECTORY_CONTRACT.md design.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-04
+    question: What is the capability descriptor schema?
+    why_it_matters: Graceful degradation depends on it.
+    known: README mentions capability tables/descriptors.
+    unknown: Fields, file format, compile-time vs runtime handling, validation.
+    resolution_path: Capability-system spec.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-05
+    question: Should Section 11 strict prohibition 'No floats in simulation or core IO' be tightened to /engine-specific wording?
+    why_it_matters: Avoids ambiguity with Section 2.1 float carveout.
+    known: Section 2.1 is precise; Section 11 has older shorthand.
+    unknown: Whether user wants this wording patch.
+    resolution_path: Optional README cleanup.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-01
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: QUESTION-06
+    question: What exact state-hash algorithm is intended?
+    why_it_matters: Replay/desync validation needs precise hash.
+    known: README says engine can recompute state hashes per tick.
+    unknown: Algorithm, fields included, endian/order details.
+    resolution_path: Determinism spec.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-07
+    question: What exact RNG algorithms and stream formats are intended?
+    why_it_matters: RNG reproducibility depends on algorithm and serialization.
+    known: README mentions stateless coordinate hashing and named RNG streams.
+    unknown: Algorithms, seed derivation, state layout.
+    resolution_path: Determinism/RNG spec.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-08
+    question: How is rollback implemented while lockstep remains canonical?
+    why_it_matters: Networking/runtime architecture needs details.
+    known: README says rollback/prediction must converge to pure lockstep.
+    unknown: Protocol and reconciliation details.
+    resolution_path: Network spec.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-09
+    question: What exact TLV and binary layout definitions are intended?
+    why_it_matters: Data format specs need exact fields and encodings.
+    known: README describes region/chunk headers and sections conceptually.
+    unknown: Concrete field widths, alignment, endian conversion.
+    resolution_path: Format spec.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-10
+    question: What CRC/content hash algorithms are intended?
+    why_it_matters: Integrity and content.lock verification depend on them.
+    known: README mentions optional CRCs and id/version/hash.
+    unknown: Algorithms and canonical input bytes.
+    resolution_path: Format/content spec.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: UNCERTAIN / UNVERIFIED
+  - id: QUESTION-11
+    question: Should 'Packed C structs' wording be revised to avoid conflict with no packing pragmas?
+    why_it_matters: Could confuse implementers.
+    known: README says packed C structs with explicit sizes and also no platform-specific struct packing pragmas.
+    unknown: 'Preferred wording: canonical packed layouts vs compiler-packed structs.'
+    resolution_path: Optional README/spec wording patch.
+    priority: low-medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  rejected_or_superseded_options:
+  - id: REJECTED-01
+    option: Ports as separate directory trees or separate systems.
+    status: rejected
+    reason: User explicitly rejected ports stored in separate directory/system.
+    final_or_tentative: final unless user reverses
+    reconsider_conditions: Only if user explicitly changes architecture.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-02
+    option: /ports/<target>/ containing retro build flows or source code.
+    status: superseded/rejected
+    reason: Unified source hierarchy and metadata-only /ports replaced it.
+    final_or_tentative: final in README subject to /ports clarification
+    reconsider_conditions: If user rejects /ports entirely, replace metadata-only directory too.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-03
+    option: Per-platform alternate engine implementations.
+    status: rejected
+    reason: Violates unified codebase and determinism.
+    final_or_tentative: final
+    reconsider_conditions: Never for canonical engine.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-04
+    option: Reduced platform functionality changing upstream behavior.
+    status: rejected
+    reason: User said reduced functionality should gracefully degrade and not flow upstream.
+    final_or_tentative: final
+    reconsider_conditions: Never for canonical behavior.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: FACT
+  - id: REJECTED-05
+    option: CP/M-80 hosting complete world simulation.
+    status: rejected
+    reason: README clarifies full engine targets 286+ and CP/M is limited tooling/frontends.
+    final_or_tentative: final
+    reconsider_conditions: Only if future noncanonical experiments are defined.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-06
+    option: Undefined embedded target in intro.
+    status: superseded
+    reason: Removed by cleanup prompt and final README.
+    final_or_tentative: final for current README
+    reconsider_conditions: Reintroduce only with precise definition.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-07
+    option: Blanket no-floats language without authoritative-boundary carveout.
+    status: superseded
+    reason: Section 2.1 now allows floats in tools/renderers if no feedback.
+    final_or_tentative: final unless user chooses stricter policy
+    reconsider_conditions: If tools become authoritative writers, revisit boundary.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-08
+    option: Vague 'Network layer manages deterministic lockstep/rollback'.
+    status: superseded
+    reason: Replaced by lockstep-first canonical wording.
+    final_or_tentative: final
+    reconsider_conditions: If networking architecture changes.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-09
+    option: Multiple independent platform/backend lists across README sections.
+    status: superseded
+    reason: Section 9 became normative matrix.
+    final_or_tentative: final
+    reconsider_conditions: If generated docs can sync lists automatically.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: REJECTED-10
+    option: Build number or timestamp affecting simulation/engine formats.
+    status: rejected
+    reason: README says diagnostic only.
+    final_or_tentative: final
+    reconsider_conditions: Never for canonical state/formats.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-11
+    option: Silent reinterpretation of existing disk format versions.
+    status: rejected
+    reason: Immutable disk-version contract.
+    final_or_tentative: final
+    reconsider_conditions: Never.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: FACT
+  - id: REJECTED-12
+    option: Binary plugins using system time/RNG/threads/floats affecting simulation.
+    status: rejected
+    reason: Plugin determinism rules.
+    final_or_tentative: final
+    reconsider_conditions: Never for deterministic plugins.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: FACT
+  - id: REJECTED-13
+    option: Duplicate top-level repository-includes block.
+    status: rejected/superseded
+    reason: Codex introduced it; cleanup prompt removed it.
+    final_or_tentative: final
+    reconsider_conditions: Never intentionally duplicate.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  artifacts:
+  - id: ARTIFACT-01
+    name_or_description: Initial README pasted by user
+    type: pasted document
+    purpose: Baseline for critique and first prompt
+    status: superseded
+    origin: User first message
+    carry_forward: yes, historical
+    notes: Contained original architecture and initial contradictions.
+    label: FACT
+  - id: ARTIFACT-02
+    name_or_description: Assistant critique of initial README
+    type: review output
+    purpose: Identify structural issues and proposed fixes
+    status: superseded but rationale-active
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Included CP/M/286, float scope, platform drift, plugin determinism, build metadata, format versioning.
+    label: FACT
+  - id: ARTIFACT-03
+    name_or_description: First Codex prompt for mechanical README fixes
+    type: prompt
+    purpose: Apply initial surgical README fixes
+    status: used
+    origin: Assistant response to user request
+    carry_forward: 'yes'
+    notes: Preserved in previous context packet appendix.
+    label: FACT
+  - id: ARTIFACT-04
+    name_or_description: Codex output after first prompt
+    type: pasted README
+    purpose: Intermediate README with most fixes applied
+    status: superseded
+    origin: User pasted
+    carry_forward: yes, historical
+    notes: Reviewed as mostly correct.
+    label: FACT
+  - id: ARTIFACT-05
+    name_or_description: User port architecture requirement
+    type: user statement
+    purpose: Major design correction
+    status: active
+    origin: User message
+    carry_forward: yes, highest priority
+    notes: Exact wording preserved in report.
+    label: FACT
+  - id: ARTIFACT-06
+    name_or_description: 'Second Codex prompt: Integrate Ports Into Unified Structure'
+    type: prompt
+    purpose: Encode unified source hierarchy and capability degradation
+    status: used
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Preserved in packet appendix.
+    label: FACT
+  - id: ARTIFACT-07
+    name_or_description: Cleanup Codex prompt after duplicate block
+    type: prompt
+    purpose: Remove duplication, remove embedded, lockstep-first, align contributing bullet
+    status: used
+    origin: Assistant response
+    carry_forward: 'yes'
+    notes: Preserved in packet appendix.
+    label: FACT
+  - id: ARTIFACT-08
+    name_or_description: Final README pasted by user
+    type: pasted document
+    purpose: Current textual baseline
+    status: active but repo-unverified
+    origin: User last README paste
+    carry_forward: yes, primary artifact
+    notes: Should be compared to actual README.md.
+    label: FACT
+  - id: ARTIFACT-09
+    name_or_description: Previous maximum-fidelity Context Transfer Packet
+    type: handoff document
+    purpose: State transfer for new chat
+    status: source for this package
+    origin: Assistant response before current request
+    carry_forward: 'yes'
+    notes: This package normalizes and repairs it.
+    label: FACT
+  - id: ARTIFACT-10
+    name_or_description: README root file
+    type: repository file reference
+    purpose: Actual target file
+    status: unverified
+    origin: Referenced by prompts and user workflow
+    carry_forward: 'yes'
+    notes: No direct file access in chat.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-11
+    name_or_description: /docs/spec/DIRECTORY_CONTRACT.md
+    type: referenced spec file
+    purpose: Normative directory contract
+    status: unverified
+    origin: README reference
+    carry_forward: 'yes'
+    notes: Should encode /ports and unified source hierarchy.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-12
+    name_or_description: content.lock
+    type: referenced save artifact
+    purpose: Locks exact content/mod versions and hashes
+    status: design artifact
+    origin: README Section 7.1
+    carry_forward: 'yes'
+    notes: Mismatch fatal until reconciled.
+    label: FACT
+  - id: ARTIFACT-13
+    name_or_description: /docs/spec/MILESTONES.md
+    type: referenced spec/status file
+    purpose: Tracks implementation status
+    status: unverified
+    origin: README reference
+    carry_forward: 'yes'
+    notes: No contents reviewed.
+    label: UNCERTAIN / UNVERIFIED
+  - id: ARTIFACT-14
+    name_or_description: .dominium_build_number and build/generated/dom_build_version.h
+    type: referenced build artifacts
+    purpose: Diagnostic build versioning
+    status: unverified
+    origin: README Section 4.1
+    carry_forward: 'yes'
+    notes: Must not affect simulation/formats.
+    label: FACT
+  - id: ARTIFACT-15
+    name_or_description: This final report package
+    type: generated package
+    purpose: Downloadable per-chat archival package
+    status: created in current turn
+    origin: Assistant file generation
+    carry_forward: 'yes'
+    notes: Markdown/YAML/ZIP files.
+    label: FACT
+  risks:
+  - id: RISK-01
+    risk: Codex may introduce duplicated sections or broad rewrites again.
+    consequence: Loss of coherence and hidden contradictions.
+    likelihood: medium
+    severity: medium
+    mitigation: Prompts must explicitly forbid duplication and out-of-scope edits.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  - id: RISK-02
+    risk: OS/2 intro mention conflicts with normative Section 9 matrix omission.
+    consequence: Platform support ambiguity.
+    likelihood: high
+    severity: medium
+    mitigation: Patch README or confirm OS/2 status.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-03
+    risk: Metadata-only /ports may not satisfy user's 'no separate directory' intent.
+    consequence: Future directory contract may encode wrong structure.
+    likelihood: medium
+    severity: high
+    mitigation: Confirm with user before directory spec work.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: RISK-04
+    risk: Future contributor interprets /ports as source-code location.
+    consequence: Port forks could reappear.
+    likelihood: medium
+    severity: high
+    mitigation: Directory contract and CI should forbid source/behavior under /ports.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-05
+    risk: Capability degradation could become behavior by proxy if descriptors are too powerful.
+    consequence: Platform limitations may flow upstream indirectly.
+    likelihood: medium
+    severity: high
+    mitigation: Keep descriptors declarative and non-semantic; define strict schema.
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: RISK-06
+    risk: Future assistant overcompresses determinism to 'no floats anywhere'.
+    consequence: Unnecessary constraints on renderers/tools.
+    likelihood: medium
+    severity: medium
+    mitigation: Preserve Section 2.1 boundary exactly.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-07
+    risk: Future assistant treats README as normative over specs.
+    consequence: Spec drift and false authority.
+    likelihood: medium
+    severity: medium
+    mitigation: Preserve README descriptive/spec normative hierarchy.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: RISK-08
+    risk: Build metadata accidentally leaks into engine-controlled files or hashes.
+    consequence: Breaks reproducibility.
+    likelihood: low-medium
+    severity: high
+    mitigation: Audit build system and generated files.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-09
+    risk: Debug/UI/rendering accidentally advance RNG streams.
+    consequence: Invisible desyncs.
+    likelihood: medium
+    severity: high
+    mitigation: Restrict engine RNG API to deterministic tick phases.
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: RISK-10
+    risk: Packed C struct wording may lead to compiler-packing reliance.
+    consequence: Cross-platform disk layout bugs.
+    likelihood: medium
+    severity: medium
+    mitigation: Clarify canonical layout independent of compiler pragmas.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-11
+    risk: content.lock reconciliation process undefined.
+    consequence: Users may be blocked without recovery path or implement ad hoc bypasses.
+    likelihood: medium
+    severity: medium
+    mitigation: Define reconciliation tooling and policy.
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: RISK-12
+    risk: README-level decisions not transferred into normative specs.
+    consequence: Future code may implement inconsistent behavior.
+    likelihood: medium
+    severity: high
+    mitigation: Create/update specs after README stabilizes.
+    related_workstreams:
+    - WORKSTREAM-05
+    label: INFERENCE
+  - id: RISK-13
+    risk: Future Codex prompt may reintroduce rejected options due to missing context.
+    consequence: Repeated work and architecture regression.
+    likelihood: medium
+    severity: medium
+    mitigation: Use this package as bootstrap and include rejected options in prompts.
+    related_workstreams:
+    - WORKSTREAM-06
+    label: INFERENCE
+  - id: RISK-14
+    risk: State-transfer report may be treated as proof of repository state.
+    consequence: New assistant may assume changes were committed.
+    likelihood: medium
+    severity: medium
+    mitigation: Verify actual files before editing or relying on repo state.
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  verification_queue:
+  - id: VERIFY-01
+    item: Actual repository README.md matches final pasted README.
+    why_verification_needed: Final pasted text may not be committed or may have changed.
+    suggested_source_type: Repository file/diff.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-02
+    item: /docs/spec/DIRECTORY_CONTRACT.md exists and matches README source-tree rules.
+    why_verification_needed: README says it is authoritative; contents not inspected.
+    suggested_source_type: Repository file.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-03
+    item: /docs/spec/MILESTONES.md exists and matches status claims.
+    why_verification_needed: README references it for concrete implementation status.
+    suggested_source_type: Repository file.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-05
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-04
+    item: User accepts metadata-only /ports rather than no /ports directory.
+    why_verification_needed: User's wording may reject any separate ports directory.
+    suggested_source_type: User confirmation.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-05
+    item: OS/2 platform status.
+    why_verification_needed: Intro and Section 9 conflict.
+    suggested_source_type: User decision or platform target list.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-01
+    label: FACT
+  - id: VERIFY-06
+    item: No engine/runtime source files live under /ports if retained.
+    why_verification_needed: Needed to enforce metadata-only semantics.
+    suggested_source_type: Repository tree/CI.
+    priority: high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-07
+    item: Capability descriptors are declarative and cannot alter canonical behavior.
+    why_verification_needed: Prevents degradation flowing upstream.
+    suggested_source_type: Spec/build review.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-02
+    label: INFERENCE
+  - id: VERIFY-08
+    item: Build numbers/timestamps cannot enter engine-controlled formats or simulation state.
+    why_verification_needed: README demands diagnostic-only metadata.
+    suggested_source_type: Build scripts/generated file review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-03
+    label: UNCERTAIN / UNVERIFIED
+  - id: VERIFY-09
+    item: Tools/renderers cannot feed float-derived values into engine state/formats.
+    why_verification_needed: Section 2.1 boundary requires enforcement.
+    suggested_source_type: Code review/dataflow/spec.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: VERIFY-10
+    item: RNG streams are inaccessible to debug/UI/render layers outside deterministic phases.
+    why_verification_needed: Prevent desyncs.
+    suggested_source_type: API/spec review.
+    priority: medium-high
+    related_workstreams:
+    - WORKSTREAM-03
+    label: INFERENCE
+  - id: VERIFY-11
+    item: Data format specs avoid compiler packing dependence.
+    why_verification_needed: README bans platform-specific packing pragmas.
+    suggested_source_type: Format spec and C implementation review.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: VERIFY-12
+    item: content.lock exact-match and reconciliation behavior are specified.
+    why_verification_needed: Avoid ad hoc user-friendly bypasses.
+    suggested_source_type: Content/loader spec.
+    priority: medium
+    related_workstreams:
+    - WORKSTREAM-04
+    label: INFERENCE
+  - id: VERIFY-13
+    item: Future Codex output contains no duplicate sections and preserves unified-ports semantics.
+    why_verification_needed: Codex previously introduced duplicate block.
+    suggested_source_type: Manual diff/review.
+    priority: ongoing
+    related_workstreams:
+    - WORKSTREAM-06
+    label: FACT
+  spec_book_notes:
+    likely_sections:
+    - Architecture Overview
+    - Determinism Contract
+    - Platform and Portability Model
+    - Repository Directory Contract
+    - Capability System
+    - Data Format and Save Contract
+    - Modding and Plugin Contract
+    - Build and Release Model
+    - Contributor Rules
+    unique_contributions:
+    - Explicit rejection of separate port systems
+    - Capability-based graceful degradation requirement
+    - Narrowed no-float boundary
+    - Lockstep-first networking wording
+    possible_duplicates_with_other_chats:
+    - World scale hierarchy
+    - Determinism model
+    - Platform matrix
+    - Modding rules
+    - Repository layout
+    conflicts_to_watch_for:
+    - Any later per-platform source tree proposal
+    - Any later full CP/M simulation claim
+    - Any later /ports source-code plan
+    - OS/2 support inconsistency
+    formal_requirements_candidates:
+    - All FACT decisions and hard constraints, especially DECISION-14 through DECISION-17
+    background_context_candidates:
+    - Codex workflow and historical prompt outputs
+    needs_user_confirmation:
+    - Whether metadata-only /ports is acceptable
+    - Whether OS/2 belongs in the normative platform matrix
+  final_recommendations:
+    next_action_if_continuing_this_chat: Verify repository README, fix OS/2 matrix inconsistency, and confirm /ports semantics
+      before directory spec work.
+    next_action_for_aggregator: Merge workstreams and registers while preserving uncertainties around /ports and OS/2.
+    user_checks_required:
+    - Confirm /ports interpretation
+    - Confirm OS/2 platform status
+    - Verify actual repository files

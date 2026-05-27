@@ -1,0 +1,786 @@
+GPT-5.5 Pro — Build 2026-05-25
+
+# Human-Readable Chat Report — Dominium/Domino Architecture and Codex Prompt Roadmap
+
+## 1. One-Page Orientation
+
+FACT: This chat was mainly about turning the user’s Dominium/Domino game-engine vision into a coherent, modular, deterministic architecture and then into a long sequence of implementation prompts for Codex or another coding agent. It began with a large project-defining prompt from the user. That prompt established Domino as the low-level deterministic engine and Dominium as the game/product suite built on top of it. Domino is constrained to ISO C89, fixed-point math, strict platform abstraction, stable ABI, deterministic replay/network semantics, and broad portability from retro platforms through modern systems. Dominium is constrained to a portable C++98 subset and must remain a thin product layer rather than reimplementing engine systems.
+
+FACT: The conversation then expanded from one subsystem—resources, items, recipes, entities, and extraction mechanics—into almost the entire engine and product ecosystem. We discussed how resource fields should work, how players should build factories, how conveyors and robotic manipulators should be modeled realistically without high CPU cost, how packaging and containers should reduce item simulation load, how arbitrary buildings and machine placement should work, how interior spaces should interact with rain, wind, gases, heat, pressure, pollution, radiation, and hydrology, how blueprints and reusable designs should be stored and shared, and how all of this should integrate with worldgen, save/load, mods, tools, launcher/setup, and future advanced simulation.
+
+FACT: The central architectural theme that emerged was: **the engine must remain generic and data-driven**. Domino should not know about actual “iron ore,” “drills,” “belts,” “factories,” or other game-specific content. Instead, the engine should know generic concepts such as materials, items, containers, processes, deposits, structures, splines, ports, jobs, agents, zones, fields, models, IDs, tags, and TLV blobs. The actual game content belongs in packs, mods, blueprints, and TLV-defined data. This became one of the strongest carry-forward rules in the chat, especially after the user explicitly reminded that “our engine and core know nothing about the actual data definitions.”
+
+FACT: A second central theme was extensibility without reckless abstraction. The conversation settled on a repeated pattern: each major subsystem should have a **core**, **models**, **data prototypes**, **runtime instances**, **registries**, and **TLV serialization**. This lets future systems such as hydrology, advanced fluids, power grids, heat, atmospheric simulation, vehicles, research, policies, multiplayer, and authoring tools plug in without rewriting the engine core. INFERENCE: This pattern was mainly assistant-proposed, but the user continued building on it and asked for it to be extended across the whole engine and product suite, so it is a strong working design, though still worth confirming before it becomes formal specification language.
+
+FACT: The chat produced a long implementation roadmap in the form of Codex prompts. First, the user asked for a plan to implement the architecture. Then the prompt was split into fewer than ten major prompts. After that, the user repeatedly said “Next,” and prompts were generated sequentially. These covered core registries, content/protos, world/resources/environment/buildings/transport/structures/vehicles/jobs, ECS/net/replay/view/UI, Dominium common, game, launcher/setup/tools, GUI smoke testing, base pack schemas, a data-driven demo, GUI gameplay flow, determinism validation, advanced environment systems, logistics splines, production/jobs/economy, research/orgs/policies, multiplayer, and the full toolchain/editor suite.
+
+FACT: The final direction of the chat was a branch into a future conversation focused on **Path D: advanced simulation**. A standalone new-chat starter prompt was generated for heat, power grids, fluids, atmospheric simulation, vehicle physics, structural loads, destruction, and mod-extensible deterministic physics. After that, the user asked for a maximum-fidelity context transfer packet, then for a downloadable report package, then for an in-chat reader version of that package. This response is a human-readable explanation of the same material.
+
+UNCERTAIN / UNVERIFIED: No repository code was inspected or modified in this chat. The prompts and architecture are plans and artifacts, not proof that implementation exists. The actual repository state, build system, existing code quality, GUI backend availability, TLV schemas, and whether any prompts have been applied remain unverified.
+
+The most important thing to remember is this: **this chat is the architectural and implementation-roadmap backbone for Dominium/Domino, but it is not an implementation log**. It should be preserved as a design/specification source and as a prompt library, while actual code and current facts must be verified separately.
+
+---
+
+## 2. The Story of the Conversation
+
+### The chat began with a master architecture prompt
+
+FACT: The user opened by pasting an “Extended Master Starter Prompt — Dominium + Domino.” That prompt established the role of the assistant as a senior engine architect and defined the main project philosophy. Domino was described as a deterministic, fixed-point, C89 engine portable across old and modern OS/architecture combinations. Dominium was described as the product suite built on top of Domino.
+
+The starter prompt was unusually broad. It covered the engine’s core runtime, platform abstraction (`dsys`), rendering abstraction (`dgfx`), software renderer baseline, GPU/retro backends, UI framework, audio/input/mod/pkg systems, simulation systems, ECS, replay/serialization, hydrology, climate, physics, jobs, research, networks, content packs, tooling, setup/launcher/game products, repository layout, compatibility profiles, and save/mod versioning. It also fixed important principles: deterministic tick scheduling, no platform divergence, strict layering, no OS-native drawing, vector-first UI fallback, and never breaking old saves/packs/mods/tools.
+
+This mattered because the chat did not begin as a small feature question. It began with the user asking the assistant to operate inside a large already-defined engine philosophy.
+
+### The first concrete topic was resources, items, recipes, and extraction
+
+FACT: The user then asked to “look at what entities and items and recipes and resource mechanics we will have in our engine” and pasted a resource-system design from another chat. That design proposed splitting resources into four layers: resource core, resource models, content prototypes, and interaction systems. The key idea was that the core should know only channels and value slots, while models interpret things like ore strata, reservoirs, vegetation, and aquifers.
+
+The assistant accepted that design as a baseline and expanded it into a broader content taxonomy: materials, items, deposits, processes, extraction profiles, jobs, structures, machines, vehicles, tools, and logistics. The assistant proposed starter material categories, item families, deposit types, process chains, extraction profiles, and structure/machine categories. This was not final game content; it was a way of showing how actual content could sit on top of the generic resource system.
+
+This phase introduced one of the chat’s most durable ideas: **engine systems should operate on generic IDs, tags, models, and TLV parameters, not hardcoded content families.**
+
+### The conversation moved from resource extraction into factory construction
+
+FACT: The user asked, succinctly, how a player would build a complete machine workshop. The assistant described a progression: extract raw materials, process them into industrial materials, produce mechanical components, produce electrical components, establish power distribution, establish logistics, assemble machine frames and machines, add measurement/control tooling, then scale horizontally and vertically.
+
+This was important because it converted the abstract resource/item/process architecture into a gameplay loop. It showed that the machine workshop should emerge from the same data-driven process/structure system rather than from a special “crafting mode” or magic building mechanic.
+
+### The logistics model became more realistic and less tile-based
+
+FACT: The user then said they wanted inserters and belts, but “much more realistic” and with “WAY less processing power.” They wanted conveyors/inserters to make sense in real-world use cases, and suggested inserters might be more generic robot arms. They also wanted belts constructed as splines like roads and rails.
+
+The assistant responded by proposing that belts should be spline-based continuous transport entities, not grids of tile entities. Belts would move item packets or containers rather than every individual item. Inserters would become generic robotic manipulators: programmable, job-driven, with deterministic kinematics. This rejected a Factorio-style design where every belt tile and inserter constantly ticks.
+
+The user then expanded that idea. They wanted splines with arbitrary endpoints and midpoints, because roads, rails, belts, and machines should start/end anywhere. They noted that early machines may not have belt ports and would need robotic arms to bridge them, while late machines may have high-throughput assembly-line ports. They also wanted chutes, slides, ladders, elevators, escalators, conveyors, pipes, and tubes.
+
+This led to the generalized spline model: one spline system for arbitrary path-like infrastructure, with content-defined profiles for speed, gauge, capacity, media, grade limits, and behavior. It also led to packaging and containers as a fundamental performance strategy.
+
+### Packaging and containers became part of the physics/logistics model
+
+FACT: The user explicitly wanted packaging into crates, bags, pallets, containers, jars, cans, boxes, etc. The stated purpose was to reduce the number of physical items simulated while preserving realistic packing/unpacking mechanics and obeying mass, volume, density, and other physical constraints.
+
+The assistant proposed container prototypes and runtime container state. Containers can be bulk single-material, mixed bulk, or slot-based. Packing/unpacking is expressed as processes, not special-case magic. Transport systems carry containers and packets as aggregated units. This became a central performance and realism design: late-game logistics should move pallets, crates, drums, sacks, and containers rather than thousands of loose items.
+
+### Building systems, placement, vehicles, gravity, and destruction expanded the scope
+
+FACT: The user then asked how to support arbitrary structures and Sims-style building design. They asked whether machines could be placed inside buildings, whether off-grid placement was possible, whether machines could be any shape or rotation, whether vehicles/weapons could be constructed and then spawned as single objects, whether gravity/destruction should be supported, and whether items should ever be dropped into the world.
+
+The assistant proposed a hybrid building system. Buildings would have a local building grid or shell, with walls, floors, roofs, windows, doors, stairs, and rooms. The whole building could be placed in world space with arbitrary origin and yaw. Machines could be placed off-grid, snapped by default for usability, with arbitrary yaw but fixed pitch/roll for sanity. Rendering could show arbitrary shapes, while simulation uses simplified collision geometry.
+
+For vehicles and weapons, the assistant proposed a two-stage design: the player designs a module graph or blueprint, then the engine compiles it into a single runtime prototype with aggregated mass, inertia, drag, hitboxes, module state, ports, mounts, and cargo/fuel/power layouts. This avoids simulating every bolt or component at runtime.
+
+The assistant also recommended supporting gravity, but in a constrained way: dynamic entities obey gravity, structures are static unless damaged/destroyed, and destruction uses coarse modules/cells rather than full structural engineering. Dropped items are supported as aggregate piles/containers, not thousands of individual world entities.
+
+### Environment, hydrology, atmosphere, lithology, and interiors became integrated
+
+FACT: The user then asked how hydrology, atmology, lithology, light, rain, wind, temperature, pressure, pollution, magnetic fields, radiation, gases, and similar phenomena should work with buildings and enclosed spaces. They also asked how to support blueprints/templates and how to build realistically on sloped terrain without ugly foundation blocks or forced leveling.
+
+The assistant proposed an environment-zone graph. Buildings and terrain generate zones or volumes. Portals, doors, vents, windows, cracks, materials, roofs, floors, and walls become boundary conditions for air, heat, light, water, gases, radiation, pollution, and other environmental fields. Hydrology couples terrain water/groundwater with interior flooding through portals and material permeability. Lithology affects seepage, thermal conductivity, background radiation, support, and erosion.
+
+For blueprints, the assistant proposed a universal blueprint system covering buildings, vehicles, weapons, subassemblies, spline profiles, and machine configurations. For sloped terrain, the assistant proposed automatic foundations: shallow footings, stepped floors, piles/stilts, terracing, retaining walls, cut/fill, bridges, tunnels, and profile-driven road/rail/belt construction. The user’s goal was to avoid crude block foundations while keeping structures realistic.
+
+### The architecture was then made more modular and generalized
+
+FACT: The user asked whether the whole system could be made more extensible and modular. The assistant proposed applying the same pattern everywhere: core + registry + models + data. This produced the repeated architecture model used later in prompts: each subsystem has a core API, model family/vtables, data prototypes, runtime instances, registries, TLV schemas, and save/load hooks.
+
+This was extended from resources into environment, buildings, transport, blueprints, save serialization, worldgen, UI, launcher/setup/tools, event buses, policies, and mod/plugin surfaces. The assistant warned against excessive abstraction but argued that certain unifying registries and model families were useful because the project aims for long-term modding and multi-decade compatibility.
+
+### The discussion broadened to the entire engine and product suite
+
+FACT: The user asked to summarize the entire system and then asked for the hierarchy of data definitions/types and how to implement actual items/functions/features. The assistant produced major architectural summaries: IDs, protos, models, instances, systems; resource/env/build/trans/items/struct/vehicle/blueprints/jobs/worldgen/save.
+
+The user then asked to extend this to the entire engine, and then to the entire engine plus game, launcher, setup, tools, and mods system. The assistant mapped modules across Domino and Dominium. Domino included core, system, render, input, audio, sim, world, res, env, build, trans, struct, vehicle, job, net, replay, content, view, UI, and serialization. Dominium included common/session, game, launcher, setup, and tools.
+
+This was the point where the conversation stopped being about a game feature and became a full product/engine architecture.
+
+### The user then asked for implementation prompts
+
+FACT: The user asked for a plan for a prompt to Codex to implement all the changes and document them. Then the user asked how to split it into multiple prompts under ten. The assistant split the work into seven major prompts. The user then repeatedly said “Next,” and the assistant generated Prompts 1 through 7 in detail.
+
+Those first seven prompts covered:
+
+1. Core infrastructure and registries.
+2. Content and proto layer.
+3. World/resources/environment/buildings/transport/structures/vehicles/jobs.
+4. Sim/ECS/net/replay/view/UI.
+5. Dominium common/session/instance/compat.
+6. Dominium game product.
+7. Launcher/setup/tools/docs.
+
+### The user corrected the testing and data-definition approach
+
+FACT: After the first seven prompts, the user said they wanted a minimal GUI and did not want to test only in CLI. They also reminded that the engine and core know nothing about actual data definitions and that those need to stay in base/mods/packs.
+
+This changed the direction. The assistant generated a Prompt 8+ plan, then a full Prompt 8 for a minimal GUI vertical slice. Prompt 8 focused on a soft renderer, `d_system`, `d_gfx`, `d_view`, `d_ui`, and minimal Game/Launcher GUI rendering. Prompt 9 defined base pack structure and content schemas. Prompt 10 defined a fully data-driven playable demo slice. Prompt 11 added GUI gameplay flow, camera, HUD, and blueprint placement. Prompt 12 added determinism, validation, world hashing, debug panels, and safety checks.
+
+This correction is one of the most important points in the chat: **the project must be GUI-testable and content-driven from the start.**
+
+### The prompt series continued into advanced systems
+
+FACT: The user continued with “Next” and “Proceed,” and prompts 13 through 18 were generated.
+
+Prompt 13 covered world-scale physical systems: hydrology, atmosphere, lithosphere, interior volumes, environmental fields, and debug visualization. Prompt 14 covered logistics splines, construction, placement, packaging, and building on terrain. Prompt 15 covered production chains, jobs/AI, factory orchestration, and basic economy. Prompt 16 covered research, organizations, macro-economy, and policies. Prompt 17 covered deterministic multiplayer/netcode, sessions, TLV command protocol, replay, and launcher integration. Prompt 18 covered the full toolchain and editor ecosystem.
+
+FACT: The user then said they would branch out into another conversation and focus on “D.” The assistant interpreted D as the advanced simulation path and generated a new-chat starter prompt focused on heat, power grids, fluids, atmosphere, vehicles, structural loads, destruction, and mod-extensible physics.
+
+### The final part of the chat became preservation and reporting
+
+FACT: The user then asked for a maximum-fidelity Context Transfer Packet. The assistant produced a structured transfer packet with registers and a bootstrap prompt. The user then asked for a downloadable report package. The assistant created seven downloadable files and a ZIP. Then the user asked to inspect the package directly in chat, and an in-chat report reader was produced. Finally, the user asked for this human-readable explanatory report.
+
+The final state of the conversation is therefore: the architecture and implementation-roadmap discussion has been preserved, but the actual next work is elsewhere—especially the Path D advanced simulation conversation.
+
+---
+
+## 3. Main Topics We Discussed
+
+### Topic 1 — Domino and Dominium as Separate Layers
+
+FACT: The chat established a strong split between Domino and Dominium. Domino is the low-level deterministic engine. Dominium is the product suite built on top. Domino must be C89, portable, deterministic, and generic. Dominium can be C++98 and handles product orchestration, UI screens, launchers, setup, and tools.
+
+This mattered because the user wants a long-lived engine that can support many products, platforms, mods, and content packs without becoming tied to one game implementation. The layering also prevents platform-specific code, renderer-specific code, and game-specific semantics from leaking into simulation.
+
+The conclusion was clear: Domino provides systems and abstractions; Dominium provides user-facing products; content packs provide actual gameplay definitions.
+
+Uncertainty remains about actual repository code and build system, but the layering itself is a strong established principle.
+
+### Topic 2 — Data-Driven Content and TLV
+
+FACT: The user explicitly reminded that engine/core should know nothing about actual data definitions. This became a hard rule. All real materials, items, machines, recipes, resources, blueprints, transport profiles, policies, techs, and related definitions should live in packs/mods, likely serialized as TLV.
+
+The conversation repeatedly reinforced that the engine should operate on IDs, tags, registries, model IDs, and TLV parameter blobs. Content definitions are loaded from packs and mods. The engine executes generic algorithms against that data.
+
+This matters because the project is intended to be mod-friendly and backward-compatible. Hardcoding “iron ore,” “drill,” “belt,” or similar concepts in engine code would make old content harder to preserve and would make mods less powerful.
+
+Unresolved issues include exact TLV schema field tags, exact registry implementation, base pack structure, and whether engine comments/docs may use examples with domain words.
+
+### Topic 3 — Resource Mechanics and DRES
+
+FACT: The user provided a resource-system proposal from another chat. It split resource logic into resource core, resource models, content prototypes, and interaction systems. That became the baseline for `dres`.
+
+The resource core should store channels and values per chunk without knowing what they mean. Resource models interpret value slots and behavior. Deposit prototypes bind data to models. Machines/tools/jobs interact through sampling and delta APIs, not by mutating fields directly.
+
+This matters because resources can include ores, reservoirs, vegetation, aquifers, geothermal fields, or future exotic systems without rewriting the core.
+
+The main uncertainty is implementation: the prompts define it, but no code was verified.
+
+### Topic 4 — Items, Recipes, Processes, and Machine Workshops
+
+FACT: The chat developed a generic process system where recipes, extraction, assembly, packing, refining, and other transformations are all `d_proto_process` data. The machine workshop example showed how a player would progress from extraction to processed materials, components, power, logistics, control systems, and machine assembly.
+
+The conclusion was that a complete machine workshop should emerge from generic structures, processes, ports, inventories, containers, and logistics—not special-case crafting code.
+
+This matters because it ties gameplay progression to the same data-driven architecture used by resources and content packs.
+
+Unresolved details include exact process IO schemas, machine runtime state, and the relationship between autonomous machines and agent-operated jobs.
+
+### Topic 5 — Realistic Low-CPU Logistics
+
+FACT: The user wanted belts and inserters but more realistic and less CPU-intensive. The assistant proposed replacing tile-based item movement with spline-based transport and aggregated packets/containers.
+
+Conveyors, rails, roads, pipes, tubes, cables, chutes, slides, elevators, and escalators were all folded into a generic spline/profile system. Inserters were generalized into robot manipulators with deterministic job-driven pick/place behavior.
+
+This matters because logistics can become enormous in a factory game. Simulating every tile and every item is expensive. Splines and containers reduce the simulation to infrastructure objects and aggregated movers.
+
+Rejected options here include Factorio-style tile/tick belts and per-item bulk simulation.
+
+### Topic 6 — Packaging and Containers
+
+FACT: The user wanted crates, bags, pallets, containers, jars, cans, boxes, and similar packaging to reduce physical item simulation while respecting physical laws. The assistant proposed container prototypes, runtime container states, packing/unpacking processes, and mass/volume/density checks.
+
+The conclusion was that containers are not just cosmetic. They are a core performance and realism mechanism. Late-game logistics should move packaged aggregates, not endless loose units.
+
+Unresolved: exact nesting policy, allowed packing modes, and how far to model real packing constraints.
+
+### Topic 7 — Buildings, Placement, Sloped Terrain, and Interior Spaces
+
+FACT: The user wanted arbitrary structures, Sims-style building design, machines inside buildings, off-grid placement, arbitrary rotations/elevations/angles, and realistic construction on sloped terrain without ugly foundation blocks.
+
+The assistant proposed local building shells, rotated world placement, off-grid machine anchors with snapping, arbitrary yaw, simplified collision, and automatic foundations such as piles, steps, retaining walls, cut/fill, bridges, and tunnels. Interior spaces would generate environment zones.
+
+This matters because the game is not meant to be purely grid/tile-based. It should feel physically plausible and allow player-designed structures.
+
+Uncertainty remains about freeform geometry versus grid shell as the long-term building representation.
+
+### Topic 8 — Hydrology, Atmosphere, Lithology, and Enclosed Environment Simulation
+
+FACT: The user asked how to compute rain, wind, temperature, pressure, pollution, gases, magnetic field, radiation, and hydrology for enclosed spaces. The answer proposed a zone/field approach rather than full per-voxel CFD.
+
+Buildings, vehicles, caves, and terrain regions generate volumes/zones. Portals and material boundaries connect those zones. Environmental models update pressure, gases, heat, light, pollution, water, radiation, and similar fields.
+
+This matters because the user wants physically meaningful buildings and environments without impossible compute costs.
+
+This became one of the foundations of Path D advanced simulation.
+
+### Topic 9 — Vehicles and Weapons
+
+FACT: The user asked how to construct vehicles and weapons and then place/spawn them as single objects rather than structures made of many parts. The assistant proposed design-time module graphs compiled into runtime prototypes.
+
+This allows complex player design while keeping runtime simulation cheap. A vehicle can have modules for chassis, engine, wheels, tracks, armor, weapons, containers, and power systems, but at runtime it is a single rigid or constrained body with aggregate stats and module damage state.
+
+This matters for performance and deterministic simulation.
+
+Advanced vehicle physics remains a Path D topic.
+
+### Topic 10 — Gravity, Destruction, and Dropped Items
+
+FACT: The user asked whether to support gravity, destructible vehicles/structures, and dropped items. The assistant recommended yes, but constrained.
+
+Gravity should affect dynamic entities, not all static structures. Destruction should operate at module/cell/coarse element granularity. Dropped items should be aggregate piles or container entities, not one entity per item.
+
+This matters because it balances realism and performance.
+
+The exact destruction and structural-load models remain unresolved and part of Path D.
+
+### Topic 11 — Worldgen and Save/Load Integration
+
+FACT: The user asked how the new systems fit with existing worldgen and save designs. The assistant mapped buildings, splines, zones, resource fields, vehicles, containers, and blueprints into worldgen providers and TLV save sections.
+
+A key principle was that derived data such as meshes, navmeshes, and zone topology can be recomputed, while core runtime state is saved. Splines crossing chunks need graph-level storage and per-chunk indices. Blueprints live in the repo; instances reference them.
+
+This matters because modular systems must stream and persist correctly.
+
+Unverified: actual save file format and current repo serialization code.
+
+### Topic 12 — Extensibility and Modularity
+
+FACT: The user asked whether the system could be made more extensible and modular without crossing diminishing returns. The assistant proposed universal subsystem descriptors, dynamic registries, model families, TLV schema registries, worldgen DAGs, subsystem-scoped serialization, event buses, and policies.
+
+The point was to support future systems without constantly changing core structs. The user accepted this direction by asking for it to be extended to the whole engine/product stack.
+
+Potential risk: over-abstraction. The assistant repeatedly noted that the goal is future-proofing without reflection-heavy or VM-everything architecture.
+
+### Topic 13 — Codex Prompt Roadmap
+
+FACT: A large part of the chat became the generation of Codex implementation prompts. The user first asked for one plan, then asked for fewer than ten prompts, then requested detailed prompts sequentially.
+
+Prompts 1–18 are one of the main artifacts of this chat. They are not implementation. They are a staged roadmap for implementing the architecture.
+
+The most important caveat is that actual repo state is unknown.
+
+### Topic 14 — GUI-First Development
+
+FACT: The user explicitly said they did not want to test only in CLI and wanted a minimal GUI. The assistant responded with a GUI-first prompt sequence: soft renderer, dsys windowing/blit, dview, dui, DomGameApp, DomLauncherApp, menu, HUD, and visual demo.
+
+This matters because future assistants might otherwise default to headless tests. Headless remains useful, but the user wants GUI validation early.
+
+### Topic 15 — Determinism, Validation, and Debugging
+
+FACT: Prompt 12 introduced world-state hashing, replay determinism assertions, content validation, subsystem validators, debug UI panels, save verification, launcher verification, and dev mode.
+
+This matters because the project’s entire multiplayer/replay/platform promise depends on determinism being testable, not just asserted.
+
+Unverified: actual hash design and validators have not been implemented in this chat.
+
+### Topic 16 — Advanced Simulation Path D
+
+FACT: The final future direction chosen by the user was Path D: advanced simulation. The assistant generated a new-chat starter prompt focused on heat, power grids, fluids, atmosphere, vehicle physics, structural loads, destruction, and mod-extensible physics.
+
+This is the main future workstream after the current chat.
+
+### Topic 17 — Toolchain and Editors
+
+FACT: Prompt 18 proposed a full authoring toolchain: world editor, blueprint/factory editor, tech editor, policy editor, process editor, transport editor, structure/item/vehicle editors, pack editor, mod builder, save inspector, replay viewer, and net inspector.
+
+This matters because the project’s data-driven/mod-heavy approach needs good tooling to be practical.
+
+### Topic 18 — Handoff and Report Packaging
+
+FACT: The last part of the chat was about preserving the work. A maximum-fidelity transfer packet was generated, then a final downloadable report package, then an in-chat reader. This current response is a human-oriented narrative version.
+
+This matters because the project is large enough that continuity loss is a major risk.
+
+---
+
+## 4. What We Were Trying to Achieve
+
+### Explicit goals
+
+FACT: The user explicitly wanted to design the entities, items, recipes, and resource mechanics of the engine. That goal expanded into a full engine/product architecture.
+
+FACT: The user wanted the system to be modular and extensible.
+
+FACT: The user wanted realistic but low-processing-power conveyors, inserters, packaging, and logistics.
+
+FACT: The user wanted arbitrary splines, arbitrary structure design, off-grid placement, realistic buildings, and sloped terrain support.
+
+FACT: The user wanted buildings and enclosed spaces to interact with hydrology, atmosphere, lithology, temperature, gases, light, rain, wind, pressure, pollution, magnetic field, and radiation.
+
+FACT: The user wanted reusable blueprints/templates for vehicles, weapons, buildings, subassemblies, splines, machines, and construction parameters.
+
+FACT: The user wanted generated Codex prompts to implement the architecture and documentation.
+
+FACT: The user wanted minimal GUI validation, not CLI-only testing.
+
+FACT: The user wanted a new chat focusing on advanced simulation.
+
+FACT: The user wanted durable context transfer and report packaging.
+
+### Inferred goals
+
+INFERENCE: The user is trying to avoid architectural dead ends before implementation.
+
+INFERENCE: The user wants an engine that can grow for years or decades without old content breaking.
+
+INFERENCE: The user wants enough modularity for heavy modding and future simulation expansion.
+
+INFERENCE: The user wants future assistants/Codex to be self-sufficient and not require re-explaining context.
+
+### Goals that changed over time
+
+The early goal was about resource mechanics, items, and recipes. It expanded into workshop construction, logistics, buildings, environment, worldgen/save integration, engine-wide architecture, product suite architecture, implementation prompts, GUI-first vertical slice, and finally advanced simulation.
+
+The user did not abandon the earlier goals; they were folded into a larger roadmap.
+
+### Goals still unresolved
+
+UNCERTAIN / UNVERIFIED: Actual implementation remains unresolved. The prompts are ready, but no code was verified.
+
+UNCERTAIN / UNVERIFIED: Path D advanced simulation still needs architecture, numeric scaling, solver choices, tick dependencies, and implementation prompts.
+
+UNCERTAIN / UNVERIFIED: Exact TLV schema field tags and data pack formats require canonicalization.
+
+---
+
+## 5. Decisions Made and Why
+
+### Decision overview
+
+The most important decisions were:
+
+1. Domino remains C89 and deterministic.
+2. Dominium remains C++98 and thin.
+3. Engine/core do not contain actual gameplay data.
+4. Content lives in packs/mods/TLV.
+5. Every subsystem should use stable registries, models, prototypes, instances, and versioned serialization.
+6. Logistics should use splines, packets, containers, and robotic manipulators rather than tile-tick per-item systems.
+7. Buildings should support flexible player design, interior zones, and realistic terrain/foundation handling.
+8. Vehicles/weapons should compile from designs into runtime-cheap objects.
+9. GUI-first validation is required.
+10. Path D advanced simulation is the next new-chat focus.
+
+### Domino is C89; Dominium is C++98
+
+FACT: This came directly from the user’s project prompt. It is final unless the user changes the project philosophy. The rationale is portability: Domino must target old and modern platforms, including retro systems where modern C/C++ assumptions are unsafe. C89 also forces a stable, simple ABI. Dominium can use C++98 because it is the product layer, but it still must remain portable and thin.
+
+This affects every implementation prompt. Codex must not use C99 mixed declarations, VLAs, C++11, exceptions, RTTI, or platform-specific convenience APIs unless explicitly allowed.
+
+### Determinism and fixed-point math are non-negotiable
+
+FACT: The starter prompt emphasized deterministic fixed-point simulation across platforms and architectures. This is final. It exists because the project wants replay, deterministic networking, and stable behavior across old and modern hardware.
+
+The alternative—using platform-dependent floats, wall-clock randomness, or nondeterministic solvers—would break replay/network guarantees. Advanced simulation must therefore use fixed-point solvers and controlled tick order.
+
+### Engine/core must not know actual data definitions
+
+FACT: The user explicitly reinforced this after the first seven prompts. This is one of the clearest decisions in the chat. The engine should not have hardcoded “iron,” “drill,” “belt,” etc. Actual definitions belong in packs, mods, and TLV content.
+
+This affects the resource system, process runner, transport system, vehicles, research, policies, and advanced simulation. The engine may know generic concepts like “material,” “fluid,” “container,” “spline,” “process,” “field,” “volume,” or “structure,” but not game-specific instances.
+
+This decision could be revisited only if the user deliberately chooses to build a non-generic game-specific engine, which is contrary to the entire conversation.
+
+### The repeated subsystem pattern was adopted as the working architecture
+
+INFERENCE: The exact phrase “Core + Model + Proto + Instance + Registry + TLV” came from assistant synthesis, not directly from the user. However, the user repeatedly asked to extend the architecture to the whole engine and then into Codex prompts, so this became the working design.
+
+The rationale is that it gives each subsystem a stable core while letting behavior and content vary. It also supports mods, backward compatibility, and future physical models.
+
+This decision should be treated as strong but still user-confirmable before being canonized word-for-word in a formal spec.
+
+### Logistics should be spline-based and aggregate-based
+
+FACT: The user explicitly wanted belts as splines and wanted arbitrary endpoints/midpoints. The assistant’s conclusion was that all transport paths should share a spline primitive and use transport profiles. Containers and packets reduce item simulation load.
+
+This decision rejects tile-grid belt systems as the main architecture. It also supports arbitrary roads, rails, conveyors, pipes, tubes, chutes, escalators, etc.
+
+It might be revisited only for a specialized content pack or local visualization, not as the core transport simulation.
+
+### Inserters should be generic robotic manipulators
+
+FACT: The user suggested inserters could be generic robot arms programmed for many tasks. The assistant developed that into job-driven deterministic manipulators.
+
+The rationale is realism and extensibility. A robot arm can move items between belts, machines, crates, pallets, shelves, assembly stations, and more. It avoids tile-locked behavior.
+
+This remains a design direction, though exact kinematics and programming UI are unresolved.
+
+### Containers and packaging are fundamental
+
+FACT: The user explicitly asked for crates, bags, pallets, containers, jars, cans, and boxes to reduce physical item simulation while obeying mass/volume/density. The assistant integrated this into logistics and process systems.
+
+The rationale is both realism and performance. The project should not simulate thousands of loose items when real logistics would package them.
+
+The unresolved part is how deeply nested containers may be and how detailed packing constraints should become.
+
+### Buildings should be flexible but simulation-friendly
+
+FACT: The user wanted Sims-style building design and realistic sloped terrain. The assistant proposed a hybrid: a building-local grid/shell, arbitrary world placement/yaw, interior zones, auto-generated foundations, and simplified collision.
+
+This decision is partly an assistant proposal accepted by continuation. It is practical because fully freeform CAD-like buildings from day one would be hard for pathfinding, environment zones, and structural checks. The local grid can later be replaced or supplemented by geometry metamodels.
+
+It could be revisited if the user wants freeform construction earlier.
+
+### Vehicles/weapons compile into single runtime objects
+
+FACT: The user explicitly asked how to construct vehicles/weapons and place/spawn them as single objects. The assistant proposed design-time blueprints compiled into aggregate runtime prototypes.
+
+The rationale is performance and determinism. The player can design detailed module graphs, but the runtime object is a single body with aggregate state and module damage.
+
+This remains important for Path D vehicle physics.
+
+### GUI-first development was required
+
+FACT: The user explicitly said they did not want CLI-only testing and wanted a minimal GUI. This changed the prompt sequence. Prompt 8 was generated to prove the rendering path, and later prompts built GUI demo flow and debug panels.
+
+This matters because future assistants should not suggest only headless or CLI tests as the first validation path.
+
+### Path D became the next focus
+
+FACT: The user said they would branch into another conversation and focus on D. The assistant generated an advanced simulation starter prompt. This is the current next direction.
+
+The assumption is that “D” refers to the advanced simulation path previously listed: heat, power, fluids, atmosphere, vehicles, structural loads, destruction, and physics frameworks. That interpretation was accepted by continuation in the generated prompt, but if the user meant another D, they would need to correct it.
+
+---
+
+## 6. Ideas Considered but Rejected, Superseded, or Deprioritised
+
+### Factorio-style tile/tick belts
+
+This was rejected because the user wanted more realistic conveyors and lower processing cost. A per-tile, per-item simulation would produce excessive entity/tick load and push gameplay toward puzzle-like belt mechanics rather than realistic logistics. The replacement is spline-based transport with packets and containers.
+
+This rejection is effectively final for the core engine. A content pack could still emulate tile belts visually or locally, but the main transport substrate should be spline-based.
+
+### Simulating every individual item
+
+The user’s packaging request made clear that most items should be aggregated into containers. Per-item simulation is too expensive and unrealistic at large industrial scale. The chosen model is to simulate containers, piles, packets, and inventories, with loose world items being exceptional.
+
+This rejection is final for bulk logistics. Individual item entities may still exist for small visible cases or debugging.
+
+### Hardcoded resource families in the engine
+
+The pasted dres proposal explicitly rejected core knowledge of ore, oil, trees, mining drills, or wells. The chat carried that forward. Resource semantics belong in resource models and content prototypes, not the resource core.
+
+This is final because it supports modding and future resources.
+
+### Machines checking specific resource names
+
+Similarly, machines should not ask “is this iron ore?” or “is this oil?” They should use profiles, tags, ports, process definitions, and model APIs. This prevents machine code from becoming a hardcoded web of resource-specific branches.
+
+This is final.
+
+### OS-native drawing
+
+The starter prompt rejected OS-native drawing. All UI and rendering must go through `dgfx`, DVIEW, and DUI. This is final.
+
+### CLI-only testing
+
+The user explicitly rejected relying only on CLI. Headless and CLI remain necessary for servers, automation, and tools, but the user wants a minimal GUI smoke test early.
+
+This is final as a workflow preference.
+
+### General rigid-body physics for everything
+
+The assistant deprioritized a full general rigid-body simulation for every object because it would be expensive and difficult to make deterministic across all targets. Instead, dynamic physics is constrained to vehicles, characters, movable props, debris, and other selected entities. Structures are static unless damaged.
+
+This is tentative. Path D may refine it.
+
+### Full per-voxel CFD for atmosphere/hydrology
+
+The assistant deprioritized full 3D CFD because it would be too expensive. The selected direction is coarse hydrology cells, environment fields, zones, volumes, and network solvers. This is a practical compromise.
+
+This could be reconsidered only for local high-fidelity simulations or tools.
+
+### Forced flat foundations or ugly foundation blocks
+
+The user explicitly did not want this. The proposed alternative is realistic automatic foundations, piles, stepped floors, cut/fill, and retaining walls.
+
+This rejection is strong.
+
+### Runtime simulation of every vehicle part
+
+The user wanted vehicles/weapons to spawn as single objects. The detailed module graph should exist at design/build time, but runtime should be aggregated. This is final for performance.
+
+### One giant Codex prompt
+
+The user asked to split into fewer than ten. The one-prompt approach was superseded by seven prompts, then extended with prompts 8–18.
+
+### Blindly preserving stale existing code
+
+The user warned existing major components may be out of date. Future Codex prompts must inspect and reconcile code rather than duplicate or blindly preserve stale implementations.
+
+---
+
+## 7. Important Reasoning and Rationale
+
+The strongest visible reasoning in the chat is that every architectural choice had to balance four pressures: determinism, performance, realism, and extensibility.
+
+For determinism, fixed-point math and stable tick ordering are essential. This is why the chat avoided platform-dependent physics, wall-clock randomness, uncontrolled scripting, and raw binary network structs. It also motivated world hashes, replay validation, and deterministic content/tool outputs.
+
+For performance, the chat repeatedly avoided per-object/per-item/per-tile simulation when aggregate models would work. Belts became splines with packets. Items became containers. Vehicles became compiled runtime objects. Environment became zone/field graphs instead of CFD. Dropped items became piles. Buildings use simplified collision and derived caches.
+
+For realism, the user pushed against arcade-style simplifications. Conveyors should behave like real infrastructure, not tile puzzles. Buildings should sit realistically on slopes. Packaging should obey mass and volume. Machines should have ports, robotic manipulators, and assembly-line throughputs. Environmental systems should account for rain, wind, pressure, gases, temperature, pollution, and flooding.
+
+For extensibility, the chat avoided special-case engine code. Content packs define actual things. Subsystems register models. TLV schemas support versioning. Blueprints compile to protos or instances. Worldgen providers are modular. Tools generate content. This is why the architecture became broad: the user is building not just a game, but an engine and product ecosystem.
+
+The biggest tradeoff is complexity. The assistant repeatedly tried to keep advanced systems coarse and modular rather than over-specified. The user explicitly asked for extensibility without crossing diminishing returns. That means future work should prefer minimal stable interfaces and testable vertical slices over huge theoretical frameworks.
+
+---
+
+## 8. Plans, Future Work, and Next Steps
+
+### Immediate next step: continue in a new Path D chat
+
+FACT: The user said they would branch into another conversation and focus on D. The best next step is to start that new chat with the advanced simulation bootstrap prompt and ask for the top-level architecture.
+
+This matters because Path D is the next unresolved major branch. It should not start by writing code. It should first define subsystem boundaries, solver types, fixed-point ranges, tick order, coupling, validation, and data schemas.
+
+Expected output: a complete advanced simulation architecture for heat, power grids, fluids, atmosphere, vehicles, structural loads, destruction, and mod-extensible physics.
+
+What could go wrong: the new chat might overfocus on one solver, ignore engine constraints, hardcode semantics, or duplicate existing Prompt 13 rather than reconciling it.
+
+### Before implementation: inspect the repository
+
+UNCERTAIN / UNVERIFIED: No actual code was inspected. Before applying any Codex prompt, the repository must be examined. Existing code may be stale or incompatible. The build system is unknown. GUI backend availability is unknown.
+
+Expected output: a repo state report: existing directories, build system, current core/content/render/sim code, obsolete modules, missing headers, compile status.
+
+What could go wrong: applying prompts blindly may create duplicate systems and break builds.
+
+### Core implementation path if continuing Codex work
+
+The recommended order remains:
+
+1. Core infrastructure and registries.
+2. GUI smoke path.
+3. Content/base pack.
+4. Data-driven minimal demo.
+5. GUI gameplay flow.
+6. Determinism validation.
+7. Advanced simulation / logistics / production / research / net / tools depending on priority.
+
+This order exists because later systems need the core registry/TLV/content/render foundations.
+
+### Spec-book aggregation
+
+The chat has already produced a report package. If the user later aggregates multiple old chat reports, this chat should contribute the main architectural and prompt-roadmap material. The aggregator should preserve source labels and avoid treating assistant proposals as final where user acceptance is only implicit.
+
+### Verification work
+
+Important verification work remains:
+
+* Repo state.
+* Build system.
+* GUI backend.
+* Content/TLV code.
+* TLV schema tags.
+* Fixed-point scales for advanced solvers.
+* Determinism hash design.
+* Domain-leakage audit.
+* Retro platform feasibility.
+
+---
+
+## 9. Constraints, Preferences, and Non-Negotiables
+
+### Explicit technical constraints
+
+FACT: Domino is ISO C89. Dominium is portable C++98. Deterministic fixed-point simulation is required. All platform-specific operations must go through `dsys`. All drawing must go through `dgfx`. Rendering has a software baseline and vector fallback. Old saves/packs/mods/tools must not be broken. Content must be versioned and registry/TLV-driven.
+
+### Explicit user preferences
+
+FACT: The user prefers direct, technical, concise, rigorous answers. They prefer facts and sources when external claims are involved. They do not want filler, hype, or motivational padding. They explicitly asked for GUI-first testing. They asked for maximum-fidelity transfer/reporting and stable IDs in the package phase.
+
+### Inferred preferences
+
+INFERENCE: The user values long-term architectural correctness over quick prototypes. They prefer large, detailed Codex-ready prompts. They want future chats to continue without re-explaining context. They care about avoiding repeated bad design paths.
+
+### Things future assistants should avoid
+
+Future assistants should avoid assuming code exists, hardcoding game content into engine, using modern language features in constrained layers, suggesting CLI-only validation, flattening tentative ideas into final decisions, ignoring rejected options, or merging this chat with other chats without preserving uncertainty.
+
+---
+
+## 10. Files, Artifacts, Outputs, and Prompts Mentioned or Created
+
+FACT: The chat produced many artifacts. The most important are not code files but prompts, reports, and architectural outputs.
+
+The first major artifact was the user’s master starter prompt. It is the governing project context. It should feed into any future Project Spec Book as a source of formal requirements.
+
+The second was the pasted dres proposal from another chat. It became the baseline for resource systems. It is important because it clearly separates resource core, models, content prototypes, and interactions.
+
+The chat then produced several architectural summaries: the entire system summary, hierarchy of data definitions/types, engine-wide hierarchy, full product stack hierarchy, and extensibility refinement. These are useful as human-readable architecture sources.
+
+The largest artifact set is the Codex prompt roadmap:
+
+* Prompt 1: core infrastructure and registries.
+* Prompt 2: content/proto layer.
+* Prompt 3: world/resources/environment/buildings/transport/structures/vehicles/jobs.
+* Prompt 4: sim/ECS/net/replay/view/UI.
+* Prompt 5: Dominium common/session.
+* Prompt 6: game product.
+* Prompt 7: launcher/setup/tools.
+* Prompt 8: minimal GUI vertical slice.
+* Prompt 9: base pack and TLV schemas.
+* Prompt 10: data-driven playable demo.
+* Prompt 11: GUI gameplay loop.
+* Prompt 12: determinism and validation.
+* Prompt 13: world-scale physical systems.
+* Prompt 14: logistics splines/construction/packaging.
+* Prompt 15: production chains/jobs/economy.
+* Prompt 16: research/orgs/economy/policies.
+* Prompt 17: multiplayer/netcode.
+* Prompt 18: toolchain/editors.
+
+These prompts should be preserved as work orders. They should not be treated as implemented.
+
+Another important artifact is the standalone advanced simulation starter prompt for a new chat. It is the likely next thing the user will use.
+
+Finally, the chat produced a context transfer packet, a final report package, and an in-chat reader. Those artifacts are about preservation and aggregation, not engine design itself.
+
+---
+
+## 11. Open Questions and Unresolved Issues
+
+The most important unresolved issue is actual repository state. It is unknown whether any of the generated prompts have been applied or whether existing code conflicts with them. This must be resolved by inspection.
+
+The second unresolved issue is the exact advanced simulation architecture for Path D. The starter prompt exists, but actual solver design is not done. Fixed-point formats, solver fidelity, tick ordering, cross-system coupling, and validation strategies remain open.
+
+The third unresolved issue is exact content/TLV schema canonicalization. Prompts included examples, but the final field tags and schema evolution rules need a formal `DATA_FORMATS` document.
+
+The fourth unresolved issue is GUI backend availability. The user wants GUI-first validation, but actual backend support is not verified.
+
+The fifth unresolved issue is the strictness of domain-neutrality. Runtime engine code clearly must not hardcode actual game data. It is less clear whether comments/docs inside engine may use illustrative domain examples. The safer approach is to keep engine code and public API generic and put examples in content/docs.
+
+Other unresolved issues include container nesting limits, pathfinding complexity, plugin ABI versus deterministic DSL priority, advanced vehicle physics fidelity, retro-platform memory budgets, and toolchain sequencing.
+
+---
+
+## 12. Risks, Failure Modes, and Things Future Chats Might Get Wrong
+
+A future assistant might assume the prompts were implemented. That would be wrong. The prompts are plans.
+
+A future assistant might hardcode “iron,” “ore,” “drill,” “belt,” or similar definitions into Domino. That would violate one of the strongest rules in the chat.
+
+A future assistant might treat assistant-proposed architecture as final user decision. Some of it is strong working design, but not all of it was explicitly user-decided.
+
+A future assistant might overcompress the chat and lose the sequence of why GUI-first and data-driven content became critical. That would lead to wrong implementation priorities.
+
+A future assistant might re-suggest tile belts, per-item simulation, flat foundation blocks, or full voxel fluids. Those were already rejected or deprioritized.
+
+A future assistant might ignore old-platform constraints and propose modern-only APIs, floating-point solvers, dynamic reflection-heavy systems, or platform-specific UI.
+
+A future assistant might merge this chat into a master spec without preserving uncertainty. That would turn prompts, ideas, and examples into false requirements.
+
+A future assistant might start Path D implementation before defining solver ranges and tick dependencies. That would create unstable cross-coupled systems.
+
+The way to avoid these failures is to preserve labels, inspect the repo, enforce data/code separation, design advanced simulation carefully, and keep implementation prompts tied to actual verified code state.
+
+---
+
+## 13. What This Chat Contributes to the Larger Project
+
+This chat contributes a foundational architecture and roadmap. It should feed into many future Project Spec Book chapters:
+
+* Engine Philosophy and Constraints.
+* Domino/Core Architecture.
+* Dominium Product Suite.
+* Content Packs, Mods, TLV, and Compatibility.
+* Resource System.
+* Environment and Advanced Simulation.
+* Building and Construction.
+* Logistics and Transport.
+* Packaging and Containers.
+* Structures and Processes.
+* Vehicles and Weapons.
+* Jobs, AI, Economy, Research, Policies.
+* Multiplayer and Replay.
+* UI/Renderer.
+* Tools and Editors.
+* Implementation Roadmap.
+
+The strongest formal requirements candidates are C89/C++98, determinism, fixed-point math, dsys/dgfx layering, no engine content semantics, versioned TLV content, stable registries, GUI-first validation, and backward compatibility.
+
+The main background context is the exact prompt sequence and many example systems. These are useful but should not be blindly treated as final spec.
+
+Likely overlaps with other chats include engine architecture, resource systems, content formats, UI, and advanced simulation. The aggregator should preserve provenance and merge cautiously.
+
+Possible conflicts with other chats may arise if another chat chose a different repository layout, language standard, content format, scripting approach, or physics fidelity.
+
+---
+
+## 14. What I Should Remember
+
+* The chat’s core value is the architecture and implementation roadmap, not verified code.
+* Domino is the deterministic C89 engine. Dominium is the C++98 product layer.
+* The engine must remain generic and content-agnostic.
+* Actual materials/items/machines/recipes/resources belong in packs/mods/TLV.
+* The repeated architectural pattern is core + model + proto + instance + registry + TLV.
+* GUI-first validation became an explicit user requirement.
+* Belts/conveyors/logistics should be spline-based and aggregate-based, not tile/per-item tick systems.
+* Inserters are better understood as generic robotic manipulators.
+* Packaging and containers are core to performance and realism.
+* Buildings should support player design, interior zones, off-grid placement, and realistic terrain foundations.
+* Vehicles/weapons should be designed modularly but compiled into runtime-cheap objects.
+* Hydrology/atmosphere/lithology/interiors should use zone/field/network models, not full brute-force CFD.
+* Prompts 1–18 are reusable work orders.
+* Prompt 13 and the Path D starter prompt are especially relevant to the next chat.
+* No generated prompt should be treated as implementation.
+* Before coding, inspect the actual repo.
+* The most important unresolved work is Path D advanced simulation architecture.
+* The biggest risks are domain leakage, nondeterminism, stale code, over-abstraction, and treating tentative ideas as final.
+
+---
+
+## 15. Best Questions I Can Ask Next in This Chat
+
+1. “Explain Path D advanced simulation using only this chat’s context.”
+2. “Which parts of Prompt 13 should be reused in the Path D chat?”
+3. “Which decisions are definitely user-established versus assistant-inferred?”
+4. “What should become formal requirements in the Project Spec Book?”
+5. “What should remain background context rather than spec?”
+6. “What are the highest-risk assumptions before implementation?”
+7. “Turn the first seven Codex prompts into a short implementation checklist.”
+8. “Explain the no-engine-content rule with examples.”
+9. “What did we reject, and why?”
+10. “What should I verify before applying Prompt 8?”
+11. “How should a future aggregator merge this chat with other reports?”
+12. “Summarize the entire prompt sequence 1–18 in one page.”
+13. “What should the new Path D assistant do first?”
+14. “Which unresolved questions need user decisions?”
+15. “Which artifacts from this chat are essential to preserve?”
+
+---
+
+## 16. Final Plain-English Summary
+
+This chat was a major architecture and planning conversation for the Dominium/Domino project. It began with the user supplying a comprehensive master prompt defining Domino as a deterministic fixed-point C89 engine and Dominium as a C++98 product suite built on top. That initial context established the project’s strict constraints: deterministic simulation, stable ABI, portability across retro and modern targets, no platform-specific behavior in simulation, platform abstraction through `dsys`, rendering through `dgfx`, vector-first UI fallback, versioned TLV content/save formats, and preservation of old saves, packs, mods, and tools.
+
+The first concrete topic was resource mechanics. The user pasted a modular resource-system proposal from another chat, and that became the baseline for `dres`: a resource core that only stores generic channels and values; resource models that interpret those values; content prototypes for deposits/materials/items/processes; and interaction systems such as machines, tools, jobs, and logistics. From there, the discussion expanded into materials, items, recipes, deposits, extraction profiles, jobs, and structures.
+
+The conversation then shifted from abstract resources to gameplay and simulation systems. The user asked how a player would build a complete machine workshop. The answer framed the workshop as a chain: extraction, processing, components, power, logistics, control, and assembly. The user then pushed for realistic, low-CPU conveyors and inserters. This produced one of the most important design directions: transport should be spline-based and packet/container-based, not tile-by-tile per-item simulation. Inserters became generalized robotic manipulators rather than fixed tile devices. The user then expanded transport to arbitrary endpoints, midpoints, roads, rails, pipes, tubes, chutes, slides, ladders, elevators, escalators, and other infrastructure, all unified under a generic spline/profile system.
+
+Packaging became a core performance design. The user wanted crates, bags, pallets, containers, jars, cans, boxes, and similar packaging so the engine would not need to simulate every item individually. The proposed system uses container prototypes and runtime container states, with mass, volume, density, and packing constraints derived from content data. Packing/unpacking is represented as generic processes.
+
+The conversation then broadened into buildings, construction, vehicles, gravity, destruction, and dropped items. The user wanted Sims-style arbitrary buildings, machines inside buildings, off-grid placement, arbitrary rotations/elevations, and realistic sloped terrain construction without ugly flat foundations. The proposed design used local building shells, arbitrary world placement/yaw, simplified simulation geometry, interior zones, and automatic foundations such as piles, stepped floors, cut/fill, retaining walls, bridges, and tunnels. Vehicles and weapons were designed as player-authored module graphs that compile into single runtime objects with aggregate physical stats and module state. Gravity and destruction were supported in constrained ways, and dropped items became aggregate piles or containers.
+
+The user then asked how hydrology, atmosphere, lithology, rain, wind, temperature, pressure, pollution, gases, radiation, magnetic fields, and light interact with buildings and enclosed spaces. The answer proposed a zone/field model: buildings, vehicles, caves, and terrain generate volumes; portals and materials connect them; and environmental models update pressure, temperature, gases, humidity, light, pollution, water, radiation, and related fields. This later became the foundation for Path D advanced simulation.
+
+The chat then expanded into the whole engine and product suite. The repeated architectural pattern became **Core + Model + Proto + Instance + Registry + TLV**. Every subsystem should have a core API, pluggable model family, data-only prototypes, runtime instances, registries, and versioned TLV save/load. This pattern was extended across resources, environment, buildings, transport, vehicles, jobs, networking, replay, content, UI, tools, and products.
+
+A large portion of the chat generated Codex implementation prompts. First there was a plan, then a split into seven prompts, then detailed prompts 1–7. Later, after the user clarified that testing should be GUI-first and actual data must stay in packs/mods, prompts 8–12 added a minimal GUI path, base pack schema, data-driven demo, GUI gameplay loop, and determinism/validation. Prompts 13–18 then covered advanced physical systems, logistics/construction/packaging, production/jobs/economy, research/orgs/policies, multiplayer/netcode, and toolchain/editors.
+
+The user eventually said they would branch into a new conversation focused on “D,” which was interpreted as advanced simulation. A standalone new-chat starter prompt was generated for heat, electrical power grids, fluids, hydrology, atmospheric simulation, vehicle physics, structural loads, destruction, and mod-extensible deterministic physics.
+
+The most important decisions from the chat are: Domino remains C89; Dominium remains C++98; simulation is deterministic and fixed-point; platform/rendering access is abstracted through `dsys` and `dgfx`; engine/core must not know real gameplay definitions; all actual data lives in packs/mods/TLV; GUI-first validation is required; logistics should be spline/packet/container based; buildings should support realistic flexible construction; vehicles/weapons should compile into runtime-cheap objects; and Path D advanced simulation is the next major focus.
+
+The biggest unresolved issue is that none of this verifies actual repository state. The prompts are work orders, not implemented code. Before implementation, the repo must be inspected. Existing code may be outdated. The build system, GUI backend, content/TLV code, exact schemas, and advanced simulation numeric models remain unverified. The next assistant must not assume code exists or treat assistant-proposed designs as final user decisions without checking the labels and context.
+
+# Reader Status
+
+* Chat title: Dominium/Domino Architecture and Codex Prompt Roadmap
+* Report type: human-readable explanatory report
+* Main value of this chat: It preserves the architecture, rationale, constraints, rejected options, Codex prompt roadmap, and next-chat direction for the Dominium/Domino project.
+* Most important decision: Engine/core must remain deterministic, generic, and content-agnostic; actual game definitions belong in packs/mods/TLV.
+* Most important unresolved issue: Actual repository/code state is unverified, and Path D advanced simulation architecture still needs to be designed.
+* Most important next action: Start the Path D advanced simulation chat using the generated bootstrap prompt, or inspect the repo before applying any Codex prompts.
+* Safe to use for later aggregation: yes, with caveats
+* Main caveats: No code was inspected or modified; generated prompts are not implementation evidence; some architecture is assistant-proposed and should remain labeled as such until confirmed; exact TLV schemas, build system, GUI backend, and advanced simulation solver details remain uncertain.
