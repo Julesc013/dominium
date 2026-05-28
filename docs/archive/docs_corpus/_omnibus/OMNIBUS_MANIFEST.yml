@@ -1,0 +1,61 @@
+title: "Dominium Docs Corpus Omnibus"
+subtitle: "All-in-One Derived Documentation Corpus, Archive, Conversation, Reconciliation, and Source Index"
+date: "2026-05-29"
+status: "DERIVED"
+authority_class: "advisory_synthesis"
+source_root: "docs/"
+conversation_corpus_root: "docs/archive/conversations/"
+promotion_status: "not_promoted"
+output_mode: "single_pdf"
+renderer_used: "pdflatex_source_based"
+source_documents_counted: 5116
+source_documents_included_full_text: 147
+source_documents_summarized: 4967
+source_documents_manifest_only: 77
+source_documents_excluded: 0
+conversation_reader_mode: "reader_index_plus_by_chat_source_index"
+outputs:
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_v0.pdf
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_Index_v0.pdf
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_Build_Report_v0.md
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_Validation_Report_v0.md
+part_order:
+  - docs/archive/docs_corpus/_omnibus/parts/00_front_matter.md
+  - docs/archive/docs_corpus/_omnibus/parts/01_existing_reader_book.md
+  - docs/archive/docs_corpus/_omnibus/parts/02_existing_reference_appendix.md
+  - docs/archive/docs_corpus/_omnibus/parts/03_docs_corpus_intake.md
+  - docs/archive/docs_corpus/_omnibus/parts/04_docs_corpus_audit.md
+  - docs/archive/docs_corpus/_omnibus/parts/05_archive_archaeology.md
+  - docs/archive/docs_corpus/_omnibus/parts/06_reconciliation.md
+  - docs/archive/docs_corpus/_omnibus/parts/07_docs_corpus_wiki.md
+  - docs/archive/docs_corpus/_omnibus/parts/08_conversation_corpus_results.md
+  - docs/archive/docs_corpus/_omnibus/parts/09_current_high_authority_docs.md
+  - docs/archive/docs_corpus/_omnibus/parts/10_source_document_compendium.md
+source_files_included_full_text_count: 147
+source_files_summarized_count: 4967
+source_files_manifest_only_count: 77
+exclusion_rules:
+  binary: "metadata only"
+  zip_pdf_docx_epub_png: "metadata only"
+  docs_archive_docs_corpus_recursive_source: "excluded except explicit generated reports/book source"
+  very_large_or_manifest_only_text: "summarized/indexed"
+protected_paths:
+  - docs/canon/
+  - docs/architecture/
+  - docs/reference/contracts/
+  - contracts/
+  - schema/
+  - engine/
+  - game/
+  - runtime/
+  - apps/
+  - release/
+  - updates/
+  - security/
+  - .aide/queue/current.toml
+validation_commands:
+  - py -3 -c "import json; json.load(open('docs/archive/docs_corpus/_intake/DOCS_CORPUS_MANIFEST.json', encoding='utf-8'))"
+  - py -3 tools/docs_corpus/validate_omnibus_pdf.py --repo-root .
+  - py -3 -m unittest discover tests/tools/docs_corpus
+  - git diff --check
+fallback_mode: "none"
