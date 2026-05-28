@@ -1,0 +1,637 @@
+\documentclass[9pt,a4paper]{book}
+\usepackage[a4paper,margin=17mm,includeheadfoot,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\IfFileExists{glyphtounicode.tex}{\input{glyphtounicode}\ifdefined\pdfgentounicode\pdfgentounicode=1\fi}{}
+\usepackage{array,longtable,tabularx,graphicx}
+\newcommand{\toprule}{\hline}
+\newcommand{\midrule}{\hline}
+\newcommand{\bottomrule}{\hline}
+\usepackage{color}
+\newcommand{\uline}[1]{\underline{#1}}
+\newcommand{\href}[2]{\underline{#2} {\footnotesize\texttt{\detokenize{#1}}}}
+\newcommand{\url}[1]{{\footnotesize\texttt{\detokenize{#1}}}}
+\definecolor{DomBlue}{rgb}{0.12,0.37,0.60}
+\definecolor{DomGreen}{rgb}{0.16,0.48,0.35}
+\definecolor{DomAmber}{rgb}{0.60,0.42,0.09}
+\definecolor{DomRed}{rgb}{0.65,0.22,0.22}
+\definecolor{DomViolet}{rgb}{0.39,0.33,0.65}
+\definecolor{DomSlate}{rgb}{0.30,0.34,0.42}
+\definecolor{DomMuted}{rgb}{0.40,0.40,0.40}
+\definecolor{DomCalloutBg}{rgb}{0.96,0.97,0.99}
+\definecolor{DomCodeBg}{rgb}{0.95,0.96,0.97}
+\setcounter{tocdepth}{2}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.42em}
+\linespread{1.06}
+\newcommand{\sourcepath}[1]{\par\smallskip\noindent{\footnotesize\color{DomMuted}\textsf{Source: }\texttt{#1}}\par\smallskip}
+\newcommand{\vonecallout}[3]{\par\medskip\noindent\begingroup\setlength{\fboxsep}{7pt}\colorbox{DomCalloutBg}{\parbox{0.94\linewidth}{\textbf{\textcolor{#1}{#2}}\par #3}}\endgroup\par\medskip}
+\newcommand{\vonecode}[1]{\par\smallskip\noindent\begingroup\setlength{\fboxsep}{7pt}\colorbox{DomCodeBg}{\parbox{0.94\linewidth}{\footnotesize\ttfamily #1}}\endgroup\par\smallskip}
+
+\begin{document}
+\frontmatter
+\begin{titlepage}
+\centering
+\vspace*{1.8cm}
+{\Huge\bfseries Dominium Documentation Corpus Book v0 - Reference Appendix\par}
+\vspace{0.7cm}
+{\Large Dense Registers and Source Indexes\par}
+\vspace{1.1cm}
+{\large Version: 1\par}
+{\large Authority Class: advisory\_synthesis\par}
+{\large Promotion Status: not\_promoted\par}
+\vfill
+{\large 2026-05-29\par}
+\end{titlepage}
+\tableofcontents
+\mainmatter
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Appendix A -\allowbreak{} Docs Corpus Manifest Summary}
+
+
+
+\chapter{Summary}
+
+\begin{itemize}
+\item Task ID: \texttt{DOCS-\allowbreak{}CORPUS-\allowbreak{}MEGA-\allowbreak{}01}
+\item Source root: \texttt{docs/\allowbreak{}}
+\item Generated date: 2026-\allowbreak{}05-\allowbreak{}28
+\item Repository branch: \texttt{main}
+\item Repository commit: \texttt{8a1674f4c}
+\item Files represented: 5116
+\item Directories represented: 279
+\item Total size: 445.\allowbreak{}13 MB
+\item Markdown files: 4671
+\item JSON files: 208
+\item YAML files: 50
+\item ZIP files: 32
+\item Non-\allowbreak{}text files: 68
+\end{itemize}
+
+\chapter{Directory Families}
+
+\begin{center}
+{\small\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Family} & \textbf{Count} \\
+\midrule
+archive & 2460 \\
+conversation\_\allowbreak{}corpus & 761 \\
+other & 493 \\
+architecture & 324 \\
+domains & 203 \\
+development & 201 \\
+repo & 196 \\
+runtime & 97 \\
+release & 95 \\
+governance & 77 \\
+planning & 77 \\
+apps & 41 \\
+content & 38 \\
+testing & 22 \\
+modding & 12 \\
+reference\_\allowbreak{}contracts & 9 \\
+audit & 8 \\
+canon & 2 \\
+\bottomrule
+\end{tabularx}
+}
+\end{center}
+
+
+\chapter{Authority Classes}
+
+\begin{center}
+{\small\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Authority Class} & \textbf{Count} \\
+\midrule
+archive\_\allowbreak{}stale & 2295 \\
+conversation\_\allowbreak{}advisory & 606 \\
+unknown\_\allowbreak{}or\_\allowbreak{}unclassified & 592 \\
+development\_\allowbreak{}guidance & 339 \\
+architecture\_\allowbreak{}current & 324 \\
+domain\_\allowbreak{}guidance & 253 \\
+repo\_\allowbreak{}current & 196 \\
+archive\_\allowbreak{}historical & 165 \\
+derived\_\allowbreak{}synthesis & 155 \\
+release\_\allowbreak{}current & 95 \\
+planning\_\allowbreak{}current & 77 \\
+contract\_\allowbreak{}or\_\allowbreak{}schema\_\allowbreak{}reference & 9 \\
+audit\_\allowbreak{}evidence & 8 \\
+canonical & 2 \\
+\bottomrule
+\end{tabularx}
+}
+\end{center}
+
+
+\chapter{Authority Risk}
+
+\begin{center}
+{\small\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Risk} & \textbf{Count} \\
+\midrule
+low & 3241 \\
+medium & 1257 \\
+unknown & 592 \\
+quarantine\_\allowbreak{}required & 15 \\
+high & 11 \\
+\bottomrule
+\end{tabularx}
+}
+\end{center}
+
+
+\chapter{Source Rule}
+
+Every git-\allowbreak{}tracked file under \texttt{docs/\allowbreak{}} is represented except generated files under \texttt{docs/\allowbreak{}archive/\allowbreak{}docs\_\allowbreak{}corpus/\allowbreak{}}, which are deliberately excluded to avoid recursive self-\allowbreak{}publication.\allowbreak{}
+
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Appendix B -\allowbreak{} Authority and Supersession Registers}
+
+See the full generated reports:
+
+
+\begin{itemize}
+\item \texttt{\_\allowbreak{}audit/\allowbreak{}DOCS\_\allowbreak{}AUTHORITY\_\allowbreak{}MAP\_\allowbreak{}v0.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}audit/\allowbreak{}DOCS\_\allowbreak{}SUPERSESSION\_\allowbreak{}MAP\_\allowbreak{}v0.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}audit/\allowbreak{}DOCS\_\allowbreak{}BINDING\_\allowbreak{}SOURCE\_\allowbreak{}MAP\_\allowbreak{}v0.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}audit/\allowbreak{}DOCS\_\allowbreak{}BOOK\_\allowbreak{}INCLUSION\_\allowbreak{}PLAN\_\allowbreak{}v0.\allowbreak{}md}
+\end{itemize}
+
+\chapter{Authority Counts}
+
+\begin{center}
+{\small\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Authority Class} & \textbf{Count} \\
+\midrule
+archive\_\allowbreak{}stale & 2295 \\
+conversation\_\allowbreak{}advisory & 606 \\
+unknown\_\allowbreak{}or\_\allowbreak{}unclassified & 592 \\
+development\_\allowbreak{}guidance & 339 \\
+architecture\_\allowbreak{}current & 324 \\
+domain\_\allowbreak{}guidance & 253 \\
+repo\_\allowbreak{}current & 196 \\
+archive\_\allowbreak{}historical & 165 \\
+derived\_\allowbreak{}synthesis & 155 \\
+release\_\allowbreak{}current & 95 \\
+planning\_\allowbreak{}current & 77 \\
+contract\_\allowbreak{}or\_\allowbreak{}schema\_\allowbreak{}reference & 9 \\
+audit\_\allowbreak{}evidence & 8 \\
+canonical & 2 \\
+\bottomrule
+\end{tabularx}
+}
+\end{center}
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Appendix C -\allowbreak{} Archive Family Listing}
+
+\begin{center}
+{\small\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Archive Family} & \textbf{Count} \\
+\midrule
+archive/\allowbreak{}refactor & 1379 \\
+archive/\allowbreak{}audit & 960 \\
+archive/\allowbreak{}conversations & 761 \\
+other/\allowbreak{}archive\_\allowbreak{}unknown & 40 \\
+archive/\allowbreak{}restructure & 23 \\
+archive/\allowbreak{}blueprint & 22 \\
+archive/\allowbreak{}impact & 20 \\
+archive/\allowbreak{}post-\allowbreak{}canon & 5 \\
+archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs & 3 \\
+archive/\allowbreak{}omega & 2 \\
+archive/\allowbreak{}prompts & 2 \\
+archive/\allowbreak{}repox & 2 \\
+archive/\allowbreak{}platform & 1 \\
+archive/\allowbreak{}specs & 1 \\
+\bottomrule
+\end{tabularx}
+}
+\end{center}
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Appendix D -\allowbreak{} Contradiction, Staleness, Promotion, and Decision Registers}
+
+The full registers are generated as Markdown reports under \texttt{\_\allowbreak{}audit/\allowbreak{}} and \texttt{\_\allowbreak{}reconciliation/\allowbreak{}}.\allowbreak{}
+
+
+\begin{itemize}
+\item Contradiction/\allowbreak{}drift findings: 136
+\item Staleness/\allowbreak{}verification candidates: 3303
+\item Promotion queue candidates: 484
+\end{itemize}
+
+\chapter{Sample Findings}
+
+\begin{description}
+\item[Row 1] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0001; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}ARCH\_\allowbreak{}AUDIT\_\allowbreak{}CONSTITUTION.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 2] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0002; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}ARTIFACT\_\allowbreak{}MANIFEST\_\allowbreak{}BASELINE.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 3] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0003; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}FORKING\_\allowbreak{}PROVIDES\_\allowbreak{}BASELINE.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 4] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0004; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}INSTALL\_\allowbreak{}MANIFEST\_\allowbreak{}BASELINE.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 5] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0005; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}INSTANCE\_\allowbreak{}MANIFEST\_\allowbreak{}BASELINE.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 6] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0006; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}INSTITUTIONAL\_\allowbreak{}COMMS\_\allowbreak{}BASELINE.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 7] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0007; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}MACROCAPSULE\_\allowbreak{}BEHAVIOR\_\allowbreak{}BASELINE.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 8] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0008; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}SAVE\_\allowbreak{}MANIFEST\_\allowbreak{}BASELINE.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 9] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0009; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}SIG7\_\allowbreak{}RETRO\_\allowbreak{}AUDIT.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 10] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0010; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}SUPERVISOR\_\allowbreak{}HARDENING\_\allowbreak{}FINAL.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 11] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0011; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}SUPERVISOR\_\allowbreak{}SURFACE\_\allowbreak{}MAP.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 12] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0012; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}SYSTEM\_\allowbreak{}TIER\_\allowbreak{}ROI\_\allowbreak{}BASELINE.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 13] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0013; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}restructure/\allowbreak{}FUTURE\_\allowbreak{}LAYOUT\_\allowbreak{}PROPOSAL.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 14] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0014; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}restructure/\allowbreak{}RESTRUCTURE\_\allowbreak{}RISKS.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 15] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0015; Class: archive\_\allowbreak{}vs\_\allowbreak{}current; Sources: docs/\allowbreak{}archive/\allowbreak{}restructure/\allowbreak{}SHIM\_\allowbreak{}POLICY.\allowbreak{}md; Severity: medium; Disposition: quarantine\_\allowbreak{}for\_\allowbreak{}review
+\item[Row 16] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0016; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}repo/\allowbreak{}repox/\allowbreak{}APRX\_\allowbreak{}INTEGRATION\_\allowbreak{}HOOKS.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}repox/\allowbreak{}APRX\_\allowbreak{}INTEGRATION\_\allowbreak{}HOOKS.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 17] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0017; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}architecture/\allowbreak{}ARCHITECTURE.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}\_\allowbreak{}wiki/\allowbreak{}topics/\allowbreak{}architecture.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 18] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0018; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}testing/\allowbreak{}ci/\allowbreak{}CI\_\allowbreak{}ENFORCEMENT\_\allowbreak{}MATRIX.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}CI\_\allowbreak{}ENFORCEMENT\_\allowbreak{}MATRIX.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 19] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0019; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}reference/\allowbreak{}specs/\allowbreak{}CIV0\_\allowbreak{}POPULATION\_\allowbreak{}GENESIS.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}CIV0\_\allowbreak{}POPULATION\_\allowbreak{}GENESIS.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 20] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0020; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}reference/\allowbreak{}specs/\allowbreak{}CIV0a\_\allowbreak{}SURVIVAL\_\allowbreak{}LOOP.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}CIV0a\_\allowbreak{}SURVIVAL\_\allowbreak{}LOOP.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 21] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0021; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}reference/\allowbreak{}specs/\allowbreak{}CIV1\_\allowbreak{}CITIES\_\allowbreak{}INFRA.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}CIV1\_\allowbreak{}CITIES\_\allowbreak{}INFRA.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 22] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0022; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}reference/\allowbreak{}specs/\allowbreak{}CIV2\_\allowbreak{}GOVERNANCE.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}CIV2\_\allowbreak{}GOVERNANCE.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 23] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0023; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}reference/\allowbreak{}specs/\allowbreak{}CIV3\_\allowbreak{}KNOWLEDGE\_\allowbreak{}TECH.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}CIV3\_\allowbreak{}KNOWLEDGE\_\allowbreak{}TECH.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 24] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0024; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}reference/\allowbreak{}specs/\allowbreak{}CIV4\_\allowbreak{}SCALE\_\allowbreak{}AND\_\allowbreak{}LOGISTICS.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}CIV4\_\allowbreak{}SCALE\_\allowbreak{}AND\_\allowbreak{}LOGISTICS.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 25] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0025; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}development/\allowbreak{}CONTRIBUTING.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}CONTRIBUTING.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 26] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0026; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}testing/\allowbreak{}ci/\allowbreak{}DETERMINISM\_\allowbreak{}TEST\_\allowbreak{}MATRIX.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}DETERMINISM\_\allowbreak{}TEST\_\allowbreak{}MATRIX.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 27] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0027; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}architecture/\allowbreak{}INVARIANTS.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}architecture/\allowbreak{}INVARIANTS.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 28] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0028; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}development/\allowbreak{}guides/\allowbreak{}OFFLINE\_\allowbreak{}AND\_\allowbreak{}LOCAL\_\allowbreak{}MP.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}OFFLINE\_\allowbreak{}AND\_\allowbreak{}LOCAL\_\allowbreak{}MP.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 29] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0029; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}governance/\allowbreak{}policies/\allowbreak{}PERF\_\allowbreak{}BUDGETS.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}PERF\_\allowbreak{}BUDGETS.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 30] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0030; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}release/\allowbreak{}mvp/\allowbreak{}PRODUCT\_\allowbreak{}BOOT\_\allowbreak{}MATRIX.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}convergence\_\allowbreak{}steps/\allowbreak{}product\_\allowbreak{}boot\_\allowbreak{}matrix.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 31] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0031; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}README.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}README.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 32] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0032; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}reference/\allowbreak{}schema/\allowbreak{}SCHEMA\_\allowbreak{}CANON\_\allowbreak{}ALIGNMENT.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}SCHEMA\_\allowbreak{}CANON\_\allowbreak{}ALIGNMENT.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 33] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0033; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}governance/\allowbreak{}policies/\allowbreak{}VALIDATION\_\allowbreak{}AND\_\allowbreak{}GOVERNANCE.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs/\allowbreak{}VALIDATION\_\allowbreak{}AND\_\allowbreak{}GOVERNANCE.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 34] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0034; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}audit/\allowbreak{}VALIDATION\_\allowbreak{}INVENTORY.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}VALIDATION\_\allowbreak{}INVENTORY.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 35] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0035; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}audit/\allowbreak{}VALIDATION\_\allowbreak{}REPORT\_\allowbreak{}FAST.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}VALIDATION\_\allowbreak{}REPORT\_\allowbreak{}FAST.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 36] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0036; Class: duplicate\_\allowbreak{}shadow; Sources: docs/\allowbreak{}audit/\allowbreak{}VALIDATION\_\allowbreak{}UNIFY\_\allowbreak{}FINAL.\allowbreak{}md, docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}VALIDATION\_\allowbreak{}UNIFY\_\allowbreak{}FINAL.\allowbreak{}md; Severity: low; Disposition: review\_\allowbreak{}shadow\_\allowbreak{}before\_\allowbreak{}promotion
+\item[Row 37] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0037; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}audit/\allowbreak{}ULTRA\_\allowbreak{}REPO\_\allowbreak{}AUDIT\_\allowbreak{}BUILD\_\allowbreak{}RUN\_\allowbreak{}TEST\_\allowbreak{}MATRIX.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 38] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0038; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing/\allowbreak{}Dominium\_\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing\_\allowbreak{}Architecture\_\allowbreak{}\_\allowbreak{}00\_\allowbreak{}manifest.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 39] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0039; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing/\allowbreak{}Dominium\_\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing\_\allowbreak{}Architecture\_\allowbreak{}\_\allowbreak{}01\_\allowbreak{}human\_\allowbreak{}readable\_\allowbreak{}report.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 40] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0040; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing/\allowbreak{}Dominium\_\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing\_\allowbreak{}Architecture\_\allowbreak{}\_\allowbreak{}02\_\allowbreak{}context\_\allowbreak{}transfer\_\allowbreak{}packet.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 41] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0041; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing/\allowbreak{}Dominium\_\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing\_\allowbreak{}Architecture\_\allowbreak{}\_\allowbreak{}04\_\allowbreak{}registers.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 42] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0042; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing/\allowbreak{}Dominium\_\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing\_\allowbreak{}Architecture\_\allowbreak{}\_\allowbreak{}05\_\allowbreak{}aggregator\_\allowbreak{}packet.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 43] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0043; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing/\allowbreak{}Dominium\_\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing\_\allowbreak{}Architecture\_\allowbreak{}\_\allowbreak{}06\_\allowbreak{}reader\_\allowbreak{}brief.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 44] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0044; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing/\allowbreak{}Dominium\_\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing\_\allowbreak{}Architecture\_\allowbreak{}\_\allowbreak{}07\_\allowbreak{}verification\_\allowbreak{}and\_\allowbreak{}audit.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 45] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0045; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing/\allowbreak{}Dominium\_\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing\_\allowbreak{}Architecture\_\allowbreak{}\_\allowbreak{}08\_\allowbreak{}future\_\allowbreak{}chat\_\allowbreak{}bootstrap\_\allowbreak{}prompt.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 46] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0046; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing/\allowbreak{}Dominium\_\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing\_\allowbreak{}Architecture\_\allowbreak{}\_\allowbreak{}09\_\allowbreak{}in\_\allowbreak{}chat\_\allowbreak{}reader.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 47] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0047; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing/\allowbreak{}Dominium\_\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing\_\allowbreak{}Architecture\_\allowbreak{}\_\allowbreak{}10\_\allowbreak{}accompanying\_\allowbreak{}human\_\allowbreak{}readable\_\allowbreak{}detailed\_\allowbreak{}summary\_\allowbreak{}report.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 48] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0048; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing/\allowbreak{}Dominium\_\allowbreak{}Build\_\allowbreak{}and\_\allowbreak{}Future\_\allowbreak{}Proofing\_\allowbreak{}Architecture\_\allowbreak{}\_\allowbreak{}11\_\allowbreak{}bundle\_\allowbreak{}integrity\_\allowbreak{}check.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 49] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0049; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems/\allowbreak{}Dominium\_\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems\_\allowbreak{}\_\allowbreak{}01\_\allowbreak{}full\_\allowbreak{}chat\_\allowbreak{}report.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 50] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0050; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems/\allowbreak{}Dominium\_\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems\_\allowbreak{}\_\allowbreak{}03\_\allowbreak{}aggregator\_\allowbreak{}packet.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 51] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0051; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems/\allowbreak{}Dominium\_\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems\_\allowbreak{}\_\allowbreak{}04\_\allowbreak{}registers.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 52] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0052; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems/\allowbreak{}Dominium\_\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems\_\allowbreak{}\_\allowbreak{}05\_\allowbreak{}reader\_\allowbreak{}brief.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 53] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0053; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems/\allowbreak{}Dominium\_\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems\_\allowbreak{}\_\allowbreak{}06\_\allowbreak{}verification\_\allowbreak{}and\_\allowbreak{}audit.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 54] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0054; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems/\allowbreak{}Dominium\_\allowbreak{}Chronology\_\allowbreak{}Celestial\_\allowbreak{}Systems\_\allowbreak{}\_\allowbreak{}manifest.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 55] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0055; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I\_\allowbreak{}\_\allowbreak{}01\_\allowbreak{}full\_\allowbreak{}chat\_\allowbreak{}report.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 56] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0056; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I\_\allowbreak{}\_\allowbreak{}03\_\allowbreak{}aggregator\_\allowbreak{}packet.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 57] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0057; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I\_\allowbreak{}\_\allowbreak{}04\_\allowbreak{}registers.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 58] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0058; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I\_\allowbreak{}\_\allowbreak{}05\_\allowbreak{}reader\_\allowbreak{}brief.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 59] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0059; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I\_\allowbreak{}\_\allowbreak{}06\_\allowbreak{}verification\_\allowbreak{}and\_\allowbreak{}audit.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 60] Finding ID: DOC-\allowbreak{}CONTRA-\allowbreak{}0060; Class: unclear\_\allowbreak{}same\_\allowbreak{}tier\_\allowbreak{}conflict; Sources: docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I/\allowbreak{}Dominium\_\allowbreak{}Architecture\_\allowbreak{}I\_\allowbreak{}\_\allowbreak{}manifest.\allowbreak{}md; Severity: low; Disposition: candidate\_\allowbreak{}for\_\allowbreak{}docs\_\allowbreak{}hygiene\_\allowbreak{}review
+\item[Row 61] Finding ID: .\allowbreak{}.\allowbreak{}.\allowbreak{}; Class: .\allowbreak{}.\allowbreak{}.\allowbreak{}; Sources: .\allowbreak{}.\allowbreak{}.\allowbreak{}; Severity: .\allowbreak{}.\allowbreak{}.\allowbreak{}; Disposition: .\allowbreak{}.\allowbreak{}.\allowbreak{}
+\end{description}
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Appendix E -\allowbreak{} Source Path Index}
+
+The complete source index is available in \texttt{\_\allowbreak{}intake/\allowbreak{}DOCS\_\allowbreak{}SOURCE\_\allowbreak{}INDEX\_\allowbreak{}v0.\allowbreak{}md} and in the searchable HTML output.\allowbreak{} The reader/\allowbreak{}reference PDFs summarize this index to preserve readable layout.\allowbreak{}
+
+
+\chapter{Source Index Sample}
+
+\begin{description}
+\item[Row 1] Path: docs/\allowbreak{}.\allowbreak{}gitignore; Family: other; Authority Class: unknown\_\allowbreak{}or\_\allowbreak{}unclassified; Book Role: manifest\_\allowbreak{}only; Size: 84 B
+\item[Row 2] Path: docs/\allowbreak{}README.\allowbreak{}md; Family: other; Authority Class: unknown\_\allowbreak{}or\_\allowbreak{}unclassified; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}74 KB
+\item[Row 3] Path: docs/\allowbreak{}apps/\allowbreak{}ARTIFACT\_\allowbreak{}IDENTITY.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}32 KB
+\item[Row 4] Path: docs/\allowbreak{}apps/\allowbreak{}CLIENT\_\allowbreak{}IDE\_\allowbreak{}START\_\allowbreak{}POINTS.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 851 B
+\item[Row 5] Path: docs/\allowbreak{}apps/\allowbreak{}CLIENT\_\allowbreak{}READONLY\_\allowbreak{}INTEGRATION.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}20 KB
+\item[Row 6] Path: docs/\allowbreak{}apps/\allowbreak{}CLIENT\_\allowbreak{}RENDERER\_\allowbreak{}UI.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 683 B
+\item[Row 7] Path: docs/\allowbreak{}apps/\allowbreak{}CLIENT\_\allowbreak{}UI\_\allowbreak{}LAYER.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 852 B
+\item[Row 8] Path: docs/\allowbreak{}apps/\allowbreak{}CLI\_\allowbreak{}CONTRACTS.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 5.\allowbreak{}19 KB
+\item[Row 9] Path: docs/\allowbreak{}apps/\allowbreak{}COMMAND\_\allowbreak{}GRAPH\_\allowbreak{}CAMERA\_\allowbreak{}AND\_\allowbreak{}BLUEPRINT.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}79 KB
+\item[Row 10] Path: docs/\allowbreak{}apps/\allowbreak{}COMPATIBILITY\_\allowbreak{}ENFORCEMENT.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 992 B
+\item[Row 11] Path: docs/\allowbreak{}apps/\allowbreak{}ENGINE\_\allowbreak{}GAME\_\allowbreak{}DIAGNOSTICS.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 790 B
+\item[Row 12] Path: docs/\allowbreak{}apps/\allowbreak{}GUI\_\allowbreak{}MODE.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}01 KB
+\item[Row 13] Path: docs/\allowbreak{}apps/\allowbreak{}HEADLESS\_\allowbreak{}AND\_\allowbreak{}ZERO\_\allowbreak{}PACK.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}02 KB
+\item[Row 14] Path: docs/\allowbreak{}apps/\allowbreak{}IDE\_\allowbreak{}WORKFLOW.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}24 KB
+\item[Row 15] Path: docs/\allowbreak{}apps/\allowbreak{}NATIVE\_\allowbreak{}UI\_\allowbreak{}POLICY.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 775 B
+\item[Row 16] Path: docs/\allowbreak{}apps/\allowbreak{}OBSERVABILITY\_\allowbreak{}PIPELINES.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}30 KB
+\item[Row 17] Path: docs/\allowbreak{}apps/\allowbreak{}PRODUCT\_\allowbreak{}BOUNDARIES.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}63 KB
+\item[Row 18] Path: docs/\allowbreak{}apps/\allowbreak{}README.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 2.\allowbreak{}19 KB
+\item[Row 19] Path: docs/\allowbreak{}apps/\allowbreak{}READONLY\_\allowbreak{}ADAPTER.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}25 KB
+\item[Row 20] Path: docs/\allowbreak{}apps/\allowbreak{}RUNTIME\_\allowbreak{}LOOP.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}16 KB
+\item[Row 21] Path: docs/\allowbreak{}apps/\allowbreak{}TESTX\_\allowbreak{}COMPLIANCE.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}47 KB
+\item[Row 22] Path: docs/\allowbreak{}apps/\allowbreak{}TESTX\_\allowbreak{}INVENTORY.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 4.\allowbreak{}61 KB
+\item[Row 23] Path: docs/\allowbreak{}apps/\allowbreak{}TIMING\_\allowbreak{}AND\_\allowbreak{}CLOCKS.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}61 KB
+\item[Row 24] Path: docs/\allowbreak{}apps/\allowbreak{}TOOLS\_\allowbreak{}OBSERVABILITY.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 880 B
+\item[Row 25] Path: docs/\allowbreak{}apps/\allowbreak{}TOOLS\_\allowbreak{}UI\_\allowbreak{}POLICY.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 627 B
+\item[Row 26] Path: docs/\allowbreak{}apps/\allowbreak{}TUI\_\allowbreak{}MODE.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}11 KB
+\item[Row 27] Path: docs/\allowbreak{}apps/\allowbreak{}UI\_\allowbreak{}MODES.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}07 KB
+\item[Row 28] Path: docs/\allowbreak{}apps/\allowbreak{}client/\allowbreak{}CLIENT\_\allowbreak{}COMMAND\_\allowbreak{}GRAPH.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}28 KB
+\item[Row 29] Path: docs/\allowbreak{}apps/\allowbreak{}client/\allowbreak{}CLIENT\_\allowbreak{}FLOW.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}40 KB
+\item[Row 30] Path: docs/\allowbreak{}apps/\allowbreak{}client/\allowbreak{}CLIENT\_\allowbreak{}LIFECYCLE\_\allowbreak{}PIPELINE.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 3.\allowbreak{}05 KB
+\item[Row 31] Path: docs/\allowbreak{}apps/\allowbreak{}client/\allowbreak{}CLIENT\_\allowbreak{}SETTINGS.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}17 KB
+\item[Row 32] Path: docs/\allowbreak{}apps/\allowbreak{}client/\allowbreak{}CLIENT\_\allowbreak{}UI\_\allowbreak{}AND\_\allowbreak{}FLOW.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}08 KB
+\item[Row 33] Path: docs/\allowbreak{}apps/\allowbreak{}client/\allowbreak{}CLI\_\allowbreak{}TUI\_\allowbreak{}GUI\_\allowbreak{}PARITY.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}61 KB
+\item[Row 34] Path: docs/\allowbreak{}apps/\allowbreak{}client/\allowbreak{}SERVER\_\allowbreak{}DISCOVERY.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 999 B
+\item[Row 35] Path: docs/\allowbreak{}apps/\allowbreak{}client/\allowbreak{}SESSION\_\allowbreak{}READY\_\allowbreak{}AND\_\allowbreak{}RUNNING.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}83 KB
+\item[Row 36] Path: docs/\allowbreak{}apps/\allowbreak{}client/\allowbreak{}SESSION\_\allowbreak{}SPEC\_\allowbreak{}AND\_\allowbreak{}AUTHORITY\_\allowbreak{}CONTEXT.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 991 B
+\item[Row 37] Path: docs/\allowbreak{}apps/\allowbreak{}client/\allowbreak{}SESSION\_\allowbreak{}TRANSITION\_\allowbreak{}WORKSPACE.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}61 KB
+\item[Row 38] Path: docs/\allowbreak{}apps/\allowbreak{}client/\allowbreak{}WORLD\_\allowbreak{}MANAGER.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}12 KB
+\item[Row 39] Path: docs/\allowbreak{}apps/\allowbreak{}launcher/\allowbreak{}LAUNCHER\_\allowbreak{}SETTINGS.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}12 KB
+\item[Row 40] Path: docs/\allowbreak{}apps/\allowbreak{}server/\allowbreak{}LOCAL\_\allowbreak{}SINGLEPLAYER\_\allowbreak{}MODEL.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 2.\allowbreak{}92 KB
+\item[Row 41] Path: docs/\allowbreak{}apps/\allowbreak{}server/\allowbreak{}SERVER\_\allowbreak{}MVP\_\allowbreak{}BASELINE.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 2.\allowbreak{}94 KB
+\item[Row 42] Path: docs/\allowbreak{}apps/\allowbreak{}server/\allowbreak{}SERVER\_\allowbreak{}SETTINGS.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 703 B
+\item[Row 43] Path: docs/\allowbreak{}apps/\allowbreak{}setup/\allowbreak{}SETUP\_\allowbreak{}SETTINGS.\allowbreak{}md; Family: apps; Authority Class: development\_\allowbreak{}guidance; Book Role: summarized\_\allowbreak{}reader; Size: 1.\allowbreak{}07 KB
+\item[Row 44] Path: docs/\allowbreak{}architecture/\allowbreak{}ADAPTER\_\allowbreak{}PATTERN.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}41 KB
+\item[Row 45] Path: docs/\allowbreak{}architecture/\allowbreak{}ADOPTION\_\allowbreak{}PROTOCOL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}37 KB
+\item[Row 46] Path: docs/\allowbreak{}architecture/\allowbreak{}AI\_\allowbreak{}AND\_\allowbreak{}DELEGATED\_\allowbreak{}AUTONOMY\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}43 KB
+\item[Row 47] Path: docs/\allowbreak{}architecture/\allowbreak{}AI\_\allowbreak{}BUDGET\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}03 KB
+\item[Row 48] Path: docs/\allowbreak{}architecture/\allowbreak{}AI\_\allowbreak{}INTENT\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}09 KB
+\item[Row 49] Path: docs/\allowbreak{}architecture/\allowbreak{}ANTI\_\allowbreak{}CHEAT\_\allowbreak{}AND\_\allowbreak{}INTEGRITY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}38 KB
+\item[Row 50] Path: docs/\allowbreak{}architecture/\allowbreak{}ANTI\_\allowbreak{}CHEAT\_\allowbreak{}AS\_\allowbreak{}LAW.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}82 KB
+\item[Row 51] Path: docs/\allowbreak{}architecture/\allowbreak{}ANTI\_\allowbreak{}ENTROPY\_\allowbreak{}RULES.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}16 KB
+\item[Row 52] Path: docs/\allowbreak{}architecture/\allowbreak{}APPLICATION\_\allowbreak{}CONTRACTS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}25 KB
+\item[Row 53] Path: docs/\allowbreak{}architecture/\allowbreak{}APP\_\allowbreak{}AUTOMATION\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 821 B
+\item[Row 54] Path: docs/\allowbreak{}architecture/\allowbreak{}APP\_\allowbreak{}CANON0.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}31 KB
+\item[Row 55] Path: docs/\allowbreak{}architecture/\allowbreak{}APP\_\allowbreak{}CANON1.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}07 KB
+\item[Row 56] Path: docs/\allowbreak{}architecture/\allowbreak{}ARCH0\_\allowbreak{}CONSTITUTION.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 8.\allowbreak{}46 KB
+\item[Row 57] Path: docs/\allowbreak{}architecture/\allowbreak{}ARCHITECTURE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}12 KB
+\item[Row 58] Path: docs/\allowbreak{}architecture/\allowbreak{}ARCHITECTURE\_\allowbreak{}GRAPH\_\allowbreak{}SPEC\_\allowbreak{}v1.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}46 KB
+\item[Row 59] Path: docs/\allowbreak{}architecture/\allowbreak{}ARCHITECTURE\_\allowbreak{}LAYERS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}18 KB
+\item[Row 60] Path: docs/\allowbreak{}architecture/\allowbreak{}ARCHIVAL\_\allowbreak{}AND\_\allowbreak{}PERMANENCE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}62 KB
+\item[Row 61] Path: docs/\allowbreak{}architecture/\allowbreak{}ARCHIVE\_\allowbreak{}MANIFEST.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}20 KB
+\item[Row 62] Path: docs/\allowbreak{}architecture/\allowbreak{}ARCH\_\allowbreak{}BUILD\_\allowbreak{}ENFORCEMENT.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 5.\allowbreak{}74 KB
+\item[Row 63] Path: docs/\allowbreak{}architecture/\allowbreak{}ARCH\_\allowbreak{}CHANGE\_\allowbreak{}PROCESS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}75 KB
+\item[Row 64] Path: docs/\allowbreak{}architecture/\allowbreak{}ARCH\_\allowbreak{}ENFORCEMENT.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 9.\allowbreak{}75 KB
+\item[Row 65] Path: docs/\allowbreak{}architecture/\allowbreak{}ARCH\_\allowbreak{}REPO\_\allowbreak{}LAYOUT.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 5.\allowbreak{}55 KB
+\item[Row 66] Path: docs/\allowbreak{}architecture/\allowbreak{}ARCH\_\allowbreak{}SPEC\_\allowbreak{}OWNERSHIP.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}48 KB
+\item[Row 67] Path: docs/\allowbreak{}architecture/\allowbreak{}ARTIFACT\_\allowbreak{}LIFECYCLE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}31 KB
+\item[Row 68] Path: docs/\allowbreak{}architecture/\allowbreak{}ARTIFACT\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}12 KB
+\item[Row 69] Path: docs/\allowbreak{}architecture/\allowbreak{}AUDITABILITY\_\allowbreak{}AND\_\allowbreak{}DISCLOSURE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}18 KB
+\item[Row 70] Path: docs/\allowbreak{}architecture/\allowbreak{}AUTHORITY\_\allowbreak{}AND\_\allowbreak{}ENTITLEMENTS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}83 KB
+\item[Row 71] Path: docs/\allowbreak{}architecture/\allowbreak{}AUTHORITY\_\allowbreak{}AND\_\allowbreak{}OMNIPOTENCE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}78 KB
+\item[Row 72] Path: docs/\allowbreak{}architecture/\allowbreak{}AUTHORITY\_\allowbreak{}IN\_\allowbreak{}REALITY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}32 KB
+\item[Row 73] Path: docs/\allowbreak{}architecture/\allowbreak{}AUTHORITY\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}29 KB
+\item[Row 74] Path: docs/\allowbreak{}architecture/\allowbreak{}BEHAVIORAL\_\allowbreak{}COMPONENTS\_\allowbreak{}STANDARD.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}34 KB
+\item[Row 75] Path: docs/\allowbreak{}architecture/\allowbreak{}BOUNDARY\_\allowbreak{}ENFORCEMENT.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}03 KB
+\item[Row 76] Path: docs/\allowbreak{}architecture/\allowbreak{}BUDGET\_\allowbreak{}POLICY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}34 KB
+\item[Row 77] Path: docs/\allowbreak{}architecture/\allowbreak{}BUGREPORT\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}02 KB
+\item[Row 78] Path: docs/\allowbreak{}architecture/\allowbreak{}BUILD\_\allowbreak{}IDENTITY\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}88 KB
+\item[Row 79] Path: docs/\allowbreak{}architecture/\allowbreak{}BUNDLE\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}48 KB
+\item[Row 80] Path: docs/\allowbreak{}architecture/\allowbreak{}CANONICAL\_\allowbreak{}SYSTEM\_\allowbreak{}MAP.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 8.\allowbreak{}44 KB
+\item[Row 81] Path: docs/\allowbreak{}architecture/\allowbreak{}CANON\_\allowbreak{}CUT\_\allowbreak{}LINE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}67 KB
+\item[Row 82] Path: docs/\allowbreak{}architecture/\allowbreak{}CANON\_\allowbreak{}INDEX.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 110.\allowbreak{}59 KB
+\item[Row 83] Path: docs/\allowbreak{}architecture/\allowbreak{}CAPABILITY\_\allowbreak{}BASELINES.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 926 B
+\item[Row 84] Path: docs/\allowbreak{}architecture/\allowbreak{}CAPABILITY\_\allowbreak{}ONLY\_\allowbreak{}CANON.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}16 KB
+\item[Row 85] Path: docs/\allowbreak{}architecture/\allowbreak{}CHANGELOG\_\allowbreak{}ARCH.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}86 KB
+\item[Row 86] Path: docs/\allowbreak{}architecture/\allowbreak{}CHANGE\_\allowbreak{}PROTOCOL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}71 KB
+\item[Row 87] Path: docs/\allowbreak{}architecture/\allowbreak{}CHEATS\_\allowbreak{}ARE\_\allowbreak{}JUST\_\allowbreak{}LAWS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}22 KB
+\item[Row 88] Path: docs/\allowbreak{}architecture/\allowbreak{}CHECKPOINTING\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}09 KB
+\item[Row 89] Path: docs/\allowbreak{}architecture/\allowbreak{}CHECKPOINTS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}64 KB
+\item[Row 90] Path: docs/\allowbreak{}architecture/\allowbreak{}CIVILIZATION\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}40 KB
+\item[Row 91] Path: docs/\allowbreak{}architecture/\allowbreak{}CODE\_\allowbreak{}DATA\_\allowbreak{}BOUNDARY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}38 KB
+\item[Row 92] Path: docs/\allowbreak{}architecture/\allowbreak{}CODE\_\allowbreak{}KNOWLEDGE\_\allowbreak{}BOUNDARY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}24 KB
+\item[Row 93] Path: docs/\allowbreak{}architecture/\allowbreak{}COLLAPSE\_\allowbreak{}AND\_\allowbreak{}DECAY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}80 KB
+\item[Row 94] Path: docs/\allowbreak{}architecture/\allowbreak{}COLLAPSE\_\allowbreak{}EXPAND\_\allowbreak{}CONTRACT.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}21 KB
+\item[Row 95] Path: docs/\allowbreak{}architecture/\allowbreak{}COLLAPSE\_\allowbreak{}EXPAND\_\allowbreak{}SOLVERS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}58 KB
+\item[Row 96] Path: docs/\allowbreak{}architecture/\allowbreak{}COMPATIBILITY\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}48 KB
+\item[Row 97] Path: docs/\allowbreak{}architecture/\allowbreak{}COMPLEXITY\_\allowbreak{}AND\_\allowbreak{}SCALE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}67 KB
+\item[Row 98] Path: docs/\allowbreak{}architecture/\allowbreak{}COMPONENTS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}05 KB
+\item[Row 99] Path: docs/\allowbreak{}architecture/\allowbreak{}CONFLICT\_\allowbreak{}AND\_\allowbreak{}WAR\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}78 KB
+\item[Row 100] Path: docs/\allowbreak{}architecture/\allowbreak{}CONSTANT\_\allowbreak{}COST\_\allowbreak{}GUARANTEE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}48 KB
+\item[Row 101] Path: docs/\allowbreak{}architecture/\allowbreak{}CONTENT\_\allowbreak{}AND\_\allowbreak{}STORAGE\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}85 KB
+\item[Row 102] Path: docs/\allowbreak{}architecture/\allowbreak{}CONTRACTS\_\allowbreak{}INDEX.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 13.\allowbreak{}05 KB
+\item[Row 103] Path: docs/\allowbreak{}architecture/\allowbreak{}CONTROL\_\allowbreak{}LAYERS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}74 KB
+\item[Row 104] Path: docs/\allowbreak{}architecture/\allowbreak{}CORE\_\allowbreak{}ABSTRACTIONS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 4.\allowbreak{}91 KB
+\item[Row 105] Path: docs/\allowbreak{}architecture/\allowbreak{}CRASH\_\allowbreak{}RECOVERY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}51 KB
+\item[Row 106] Path: docs/\allowbreak{}architecture/\allowbreak{}CROSS\_\allowbreak{}SHARD\_\allowbreak{}LOG.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}94 KB
+\item[Row 107] Path: docs/\allowbreak{}architecture/\allowbreak{}C\_\allowbreak{}COMPATIBLE\_\allowbreak{}ABI\_\allowbreak{}BOUNDARY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}39 KB
+\item[Row 108] Path: docs/\allowbreak{}architecture/\allowbreak{}DEATH\_\allowbreak{}AND\_\allowbreak{}CONTINUITY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}19 KB
+\item[Row 109] Path: docs/\allowbreak{}architecture/\allowbreak{}DECAY\_\allowbreak{}EROSION\_\allowbreak{}REGEN.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}03 KB
+\item[Row 110] Path: docs/\allowbreak{}architecture/\allowbreak{}DEMO\_\allowbreak{}AND\_\allowbreak{}TOURIST\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}51 KB
+\item[Row 111] Path: docs/\allowbreak{}architecture/\allowbreak{}DEPRECATION\_\allowbreak{}AND\_\allowbreak{}QUARANTINE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}49 KB
+\item[Row 112] Path: docs/\allowbreak{}architecture/\allowbreak{}DEPRECATION\_\allowbreak{}LIFECYCLE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}48 KB
+\item[Row 113] Path: docs/\allowbreak{}architecture/\allowbreak{}DETERMINISTIC\_\allowbreak{}ORDERING\_\allowbreak{}POLICY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 4.\allowbreak{}23 KB
+\item[Row 114] Path: docs/\allowbreak{}architecture/\allowbreak{}DETERMINISTIC\_\allowbreak{}REDUCTION\_\allowbreak{}RULES.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}28 KB
+\item[Row 115] Path: docs/\allowbreak{}architecture/\allowbreak{}DEV\_\allowbreak{}OPS\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 896 B
+\item[Row 116] Path: docs/\allowbreak{}architecture/\allowbreak{}DIRECTORY\_\allowbreak{}CONTEXT.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 4.\allowbreak{}92 KB
+\item[Row 117] Path: docs/\allowbreak{}architecture/\allowbreak{}DIRECTORY\_\allowbreak{}STRUCTURE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}61 KB
+\item[Row 118] Path: docs/\allowbreak{}architecture/\allowbreak{}DISTRIBUTED\_\allowbreak{}SIMULATION\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}64 KB
+\item[Row 119] Path: docs/\allowbreak{}architecture/\allowbreak{}DISTRIBUTED\_\allowbreak{}TIME\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}41 KB
+\item[Row 120] Path: docs/\allowbreak{}architecture/\allowbreak{}DISTRIBUTION\_\allowbreak{}AND\_\allowbreak{}STOREFRONTS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}22 KB
+\item[Row 121] Path: docs/\allowbreak{}architecture/\allowbreak{}DISTRIBUTION\_\allowbreak{}LAYOUT.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 805 B
+\item[Row 122] Path: docs/\allowbreak{}architecture/\allowbreak{}DISTRIBUTION\_\allowbreak{}PROFILES.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}63 KB
+\item[Row 123] Path: docs/\allowbreak{}architecture/\allowbreak{}DOMAIN\_\allowbreak{}JURISDICTIONS\_\allowbreak{}AND\_\allowbreak{}LAW.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}94 KB
+\item[Row 124] Path: docs/\allowbreak{}architecture/\allowbreak{}DOMAIN\_\allowbreak{}SHARDING\_\allowbreak{}AND\_\allowbreak{}STREAMING.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}09 KB
+\item[Row 125] Path: docs/\allowbreak{}architecture/\allowbreak{}DOMAIN\_\allowbreak{}VOLUMES.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}75 KB
+\item[Row 126] Path: docs/\allowbreak{}architecture/\allowbreak{}DUPLICATION\_\allowbreak{}DETECTION\_\allowbreak{}RULES.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}54 KB
+\item[Row 127] Path: docs/\allowbreak{}architecture/\allowbreak{}ECONOMIC\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}84 KB
+\item[Row 128] Path: docs/\allowbreak{}architecture/\allowbreak{}ECONOMY\_\allowbreak{}AND\_\allowbreak{}LOGISTICS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}29 KB
+\item[Row 129] Path: docs/\allowbreak{}architecture/\allowbreak{}ENERGY\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}47 KB
+\item[Row 130] Path: docs/\allowbreak{}architecture/\allowbreak{}ENFORCEMENT\_\allowbreak{}ESCALATION.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}30 KB
+\item[Row 131] Path: docs/\allowbreak{}architecture/\allowbreak{}EPISTEMICS\_\allowbreak{}AND\_\allowbreak{}SCALED\_\allowbreak{}MMO.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}57 KB
+\item[Row 132] Path: docs/\allowbreak{}architecture/\allowbreak{}EPISTEMICS\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}61 KB
+\item[Row 133] Path: docs/\allowbreak{}architecture/\allowbreak{}EXECUTION\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}90 KB
+\item[Row 134] Path: docs/\allowbreak{}architecture/\allowbreak{}EXECUTION\_\allowbreak{}REORDERING\_\allowbreak{}POLICY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 4.\allowbreak{}21 KB
+\item[Row 135] Path: docs/\allowbreak{}architecture/\allowbreak{}EXECUTION\_\allowbreak{}SUBSTRATE\_\allowbreak{}AUDIT.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}37 KB
+\item[Row 136] Path: docs/\allowbreak{}architecture/\allowbreak{}EXISTENCE\_\allowbreak{}AND\_\allowbreak{}REALITY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}22 KB
+\item[Row 137] Path: docs/\allowbreak{}architecture/\allowbreak{}EXISTENCE\_\allowbreak{}LIFECYCLE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}78 KB
+\item[Row 138] Path: docs/\allowbreak{}architecture/\allowbreak{}EXOTIC\_\allowbreak{}TRAVEL\_\allowbreak{}AND\_\allowbreak{}REALITY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}41 KB
+\item[Row 139] Path: docs/\allowbreak{}architecture/\allowbreak{}EXPLORATION\_\allowbreak{}METRICS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}29 KB
+\item[Row 140] Path: docs/\allowbreak{}architecture/\allowbreak{}EXPLORATION\_\allowbreak{}SCALING\_\allowbreak{}PROOF.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}17 KB
+\item[Row 141] Path: docs/\allowbreak{}architecture/\allowbreak{}EXTEND\_\allowbreak{}VS\_\allowbreak{}CREATE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}08 KB
+\item[Row 142] Path: docs/\allowbreak{}architecture/\allowbreak{}EXTENSION\_\allowbreak{}MAP.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}17 KB
+\item[Row 143] Path: docs/\allowbreak{}architecture/\allowbreak{}EXTENSION\_\allowbreak{}RULES.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}07 KB
+\item[Row 144] Path: docs/\allowbreak{}architecture/\allowbreak{}FABRICATION\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}61 KB
+\item[Row 145] Path: docs/\allowbreak{}architecture/\allowbreak{}FLOAT\_\allowbreak{}POLICY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}01 KB
+\item[Row 146] Path: docs/\allowbreak{}architecture/\allowbreak{}FLOWSYSTEM\_\allowbreak{}STANDARD.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}75 KB
+\item[Row 147] Path: docs/\allowbreak{}architecture/\allowbreak{}FLUIDS\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}83 KB
+\item[Row 148] Path: docs/\allowbreak{}architecture/\allowbreak{}FORKING\_\allowbreak{}AND\_\allowbreak{}PROVIDES\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}68 KB
+\item[Row 149] Path: docs/\allowbreak{}architecture/\allowbreak{}FROZEN\_\allowbreak{}CONTRACT\_\allowbreak{}HASHES.\allowbreak{}json; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 8.\allowbreak{}25 KB
+\item[Row 150] Path: docs/\allowbreak{}architecture/\allowbreak{}FUTURE\_\allowbreak{}COMPATIBILITY\_\allowbreak{}AND\_\allowbreak{}ARCH.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}62 KB
+\item[Row 151] Path: docs/\allowbreak{}architecture/\allowbreak{}FUTURE\_\allowbreak{}PROOFING.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}29 KB
+\item[Row 152] Path: docs/\allowbreak{}architecture/\allowbreak{}GENERATED\_\allowbreak{}CODE\_\allowbreak{}POLICY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}51 KB
+\item[Row 153] Path: docs/\allowbreak{}architecture/\allowbreak{}GLOBAL\_\allowbreak{}ID\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}71 KB
+\item[Row 154] Path: docs/\allowbreak{}architecture/\allowbreak{}GLOSSARY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}19 KB
+\item[Row 155] Path: docs/\allowbreak{}architecture/\allowbreak{}GOVERNANCE\_\allowbreak{}AND\_\allowbreak{}INSTITUTIONS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}21 KB
+\item[Row 156] Path: docs/\allowbreak{}architecture/\allowbreak{}GUI\_\allowbreak{}BASELINE.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}73 KB
+\item[Row 157] Path: docs/\allowbreak{}architecture/\allowbreak{}HARDWARE\_\allowbreak{}EVOLUTION\_\allowbreak{}STRATEGY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}38 KB
+\item[Row 158] Path: docs/\allowbreak{}architecture/\allowbreak{}HAZARDS\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}38 KB
+\item[Row 159] Path: docs/\allowbreak{}architecture/\allowbreak{}HISTORY\_\allowbreak{}AND\_\allowbreak{}CIVILIZATION\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}03 KB
+\item[Row 160] Path: docs/\allowbreak{}architecture/\allowbreak{}IDENTITY\_\allowbreak{}ACROSS\_\allowbreak{}TIME.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}88 KB
+\item[Row 161] Path: docs/\allowbreak{}architecture/\allowbreak{}IDE\_\allowbreak{}AND\_\allowbreak{}TOOLCHAIN\_\allowbreak{}POLICY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}18 KB
+\item[Row 162] Path: docs/\allowbreak{}architecture/\allowbreak{}IDE\_\allowbreak{}PROJECTIONS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 921 B
+\item[Row 163] Path: docs/\allowbreak{}architecture/\allowbreak{}ID\_\allowbreak{}AND\_\allowbreak{}NAMESPACE\_\allowbreak{}RULES.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}38 KB
+\item[Row 164] Path: docs/\allowbreak{}architecture/\allowbreak{}INDEXING\_\allowbreak{}POLICY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 642 B
+\item[Row 165] Path: docs/\allowbreak{}architecture/\allowbreak{}INFORMATION\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}15 KB
+\item[Row 166] Path: docs/\allowbreak{}architecture/\allowbreak{}INSTALLER\_\allowbreak{}CONTRACT.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 789 B
+\item[Row 167] Path: docs/\allowbreak{}architecture/\allowbreak{}INSTALL\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}28 KB
+\item[Row 168] Path: docs/\allowbreak{}architecture/\allowbreak{}INSTANCE\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}73 KB
+\item[Row 169] Path: docs/\allowbreak{}architecture/\allowbreak{}INSTITUTIONS\_\allowbreak{}AND\_\allowbreak{}GOVERNANCE\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}64 KB
+\item[Row 170] Path: docs/\allowbreak{}architecture/\allowbreak{}INTEREST\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}74 KB
+\item[Row 171] Path: docs/\allowbreak{}architecture/\allowbreak{}INVARIANTS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 16.\allowbreak{}77 KB
+\item[Row 172] Path: docs/\allowbreak{}architecture/\allowbreak{}INVARIANTS\_\allowbreak{}AND\_\allowbreak{}TOLERANCES.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}82 KB
+\item[Row 173] Path: docs/\allowbreak{}architecture/\allowbreak{}INVARIANT\_\allowbreak{}REGISTRY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 10.\allowbreak{}75 KB
+\item[Row 174] Path: docs/\allowbreak{}architecture/\allowbreak{}JOIN\_\allowbreak{}RESYNC\_\allowbreak{}CONTRACT.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 2.\allowbreak{}29 KB
+\item[Row 175] Path: docs/\allowbreak{}architecture/\allowbreak{}KNOWLEDGE\_\allowbreak{}AND\_\allowbreak{}SKILLS\_\allowbreak{}MODEL.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 3.\allowbreak{}08 KB
+\item[Row 176] Path: docs/\allowbreak{}architecture/\allowbreak{}KNOWN\_\allowbreak{}BLOCKERS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 749 B
+\item[Row 177] Path: docs/\allowbreak{}architecture/\allowbreak{}KNOWN\_\allowbreak{}WARNINGS.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 877 B
+\item[Row 178] Path: docs/\allowbreak{}architecture/\allowbreak{}LANGUAGE\_\allowbreak{}STRATEGY.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 1.\allowbreak{}35 KB
+\item[Row 179] Path: docs/\allowbreak{}architecture/\allowbreak{}LAUNCHER\_\allowbreak{}CONTRACT.\allowbreak{}md; Family: architecture; Authority Class: architecture\_\allowbreak{}current; Book Role: main\_\allowbreak{}reader; Size: 888 B
+\item[Omitted] 72 additional rows omitted from PDF table rendering; see source Markdown or HTML/\allowbreak{}reference source.\allowbreak{}
+\end{description}
+\end{document}

@@ -1,0 +1,53 @@
+title: "Dominium Docs Corpus Omnibus"
+subtitle: "Styled Reader, Reference, Archive, Conversation, and Reconciliation Guide"
+version: 1
+date: "2026-05-29"
+status: "DERIVED"
+authority_class: "advisory_synthesis"
+source_root: "docs/"
+conversation_corpus_root: "docs/archive/conversations/"
+promotion_status: "not_promoted"
+renderer: "pdflatex"
+style_profile: "readability_v1"
+outputs:
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_Reader_v1.pdf
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_Reference_v1.pdf
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_AllInOne_v1.pdf
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_HTML_v1/index.html
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_Mobile_v1.html
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_Style_Report_v1.md
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_Build_Report_v1.md
+  - docs/archive/docs_corpus/_exports/Dominium_Docs_Corpus_Omnibus_Validation_Report_v1.md
+content_coverage:
+  docs_files_represented: 5116
+  full_text_count: 147
+  summarized_count: 4967
+  manifest_only_count: 77
+  excluded_count: 0
+metadata_compaction:
+  repeated_status_blocks: "suppressed after front matter"
+  source_paths: "rendered as compact provenance lines"
+table_handling:
+  reader_pdf: "small booktabs tables; long/wide tables summarized as row cards"
+  reference_pdf: "higher row caps with same readable fallback"
+hyperlinks:
+  pdf: "underlined link labels with visible targets; clickable PDF links unavailable in this local LaTeX install"
+  html: "native links and responsive anchors"
+protected_paths:
+  - docs/canon/
+  - docs/architecture/
+  - docs/reference/contracts/
+  - contracts/
+  - schema/
+  - engine/
+  - game/
+  - runtime/
+  - apps/
+  - release/
+  - updates/
+  - security/
+  - .aide/queue/current.toml
+validation_commands:
+  - py -3 tools/docs_corpus/validate_omnibus_v1.py --repo-root .
+  - py -3 -m unittest discover tests/tools/docs_corpus
+  - git diff --check

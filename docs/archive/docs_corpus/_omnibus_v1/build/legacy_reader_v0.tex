@@ -1,0 +1,577 @@
+\documentclass[10.5pt,a4paper]{book}
+\usepackage[a4paper,margin=20mm,includeheadfoot,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\IfFileExists{glyphtounicode.tex}{\input{glyphtounicode}\ifdefined\pdfgentounicode\pdfgentounicode=1\fi}{}
+\usepackage{array,longtable,tabularx,graphicx}
+\newcommand{\toprule}{\hline}
+\newcommand{\midrule}{\hline}
+\newcommand{\bottomrule}{\hline}
+\usepackage{color}
+\newcommand{\uline}[1]{\underline{#1}}
+\newcommand{\href}[2]{\underline{#2} {\footnotesize\texttt{\detokenize{#1}}}}
+\newcommand{\url}[1]{{\footnotesize\texttt{\detokenize{#1}}}}
+\definecolor{DomBlue}{rgb}{0.12,0.37,0.60}
+\definecolor{DomGreen}{rgb}{0.16,0.48,0.35}
+\definecolor{DomAmber}{rgb}{0.60,0.42,0.09}
+\definecolor{DomRed}{rgb}{0.65,0.22,0.22}
+\definecolor{DomViolet}{rgb}{0.39,0.33,0.65}
+\definecolor{DomSlate}{rgb}{0.30,0.34,0.42}
+\definecolor{DomMuted}{rgb}{0.40,0.40,0.40}
+\definecolor{DomCalloutBg}{rgb}{0.96,0.97,0.99}
+\definecolor{DomCodeBg}{rgb}{0.95,0.96,0.97}
+\setcounter{tocdepth}{2}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.42em}
+\linespread{1.06}
+\newcommand{\sourcepath}[1]{\par\smallskip\noindent{\footnotesize\color{DomMuted}\textsf{Source: }\texttt{#1}}\par\smallskip}
+\newcommand{\vonecallout}[3]{\par\medskip\noindent\begingroup\setlength{\fboxsep}{7pt}\colorbox{DomCalloutBg}{\parbox{0.94\linewidth}{\textbf{\textcolor{#1}{#2}}\par #3}}\endgroup\par\medskip}
+\newcommand{\vonecode}[1]{\par\smallskip\noindent\begingroup\setlength{\fboxsep}{7pt}\colorbox{DomCodeBg}{\parbox{0.94\linewidth}{\footnotesize\ttfamily #1}}\endgroup\par\smallskip}
+
+\begin{document}
+\frontmatter
+\begin{titlepage}
+\centering
+\vspace*{1.8cm}
+{\Huge\bfseries Dominium Documentation Corpus Book v0\par}
+\vspace{0.7cm}
+{\Large Current Docs, Archive Archaeology, Conversation Synthesis, and Reconciliation Guide\par}
+\vspace{1.1cm}
+{\large Version: 1\par}
+{\large Authority Class: advisory\_synthesis\par}
+{\large Promotion Status: not\_promoted\par}
+\vfill
+{\large 2026-05-29\par}
+\end{titlepage}
+\tableofcontents
+\mainmatter
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Front Matter}
+
+\part{Dominium Documentation Corpus Book v0}
+
+\chapter{Current Docs, Archive Archaeology, Conversation Synthesis, and Reconciliation Guide}
+
+Publication date: 2026-\allowbreak{}05-\allowbreak{}28
+
+
+\chapter{Authority and Non-\allowbreak{}Promotion Notice}
+
+This book is DERIVED and advisory.\allowbreak{} It is not canon.\allowbreak{} It does not promote archive or conversation-\allowbreak{}derived claims into current repo authority.\allowbreak{} Canon impact, contract/\allowbreak{}schema impact, implementation impact, release impact, and queue impact are unchanged.\allowbreak{}
+
+
+\chapter{How to Read This Book}
+
+Read current authority first, then use archive and conversation material as provenance.\allowbreak{} Use contradiction, staleness, decision, and promotion registers as review queues rather than as decisions.\allowbreak{}
+
+
+\chapter{Source Hierarchy}
+
+\begin{enumerate}
+\item \texttt{docs/\allowbreak{}canon/\allowbreak{}constitution\_\allowbreak{}v1.\allowbreak{}md}
+\item \texttt{docs/\allowbreak{}canon/\allowbreak{}glossary\_\allowbreak{}v1.\allowbreak{}md}
+\item \texttt{AGENTS.\allowbreak{}md}
+\item Scope-\allowbreak{}specific canonical planning, semantic, schema, contract, release, and policy artifacts
+\item Operational registries, projections, manifests, and generated evidence with intact provenance
+\item Chat summaries, remembered transcript claims, and uncommitted planning notes
+\end{enumerate}
+
+\chapter{Corpus Snapshot}
+
+\begin{itemize}
+\item Files represented: 5116
+\item Directories represented: 279
+\item Markdown files: 4671
+\item Archive/\allowbreak{}conversation files: 3221
+\end{itemize}
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Current Project Orientation}
+
+This chapter orients the reader around current repo authority and the derived current project picture.\allowbreak{}
+
+
+\chapter{Start With Current Authority}
+
+Use \texttt{README.\allowbreak{}md}, \texttt{docs/\allowbreak{}README.\allowbreak{}md}, \texttt{AGENTS.\allowbreak{}md}, canon, glossary, current queue state, and foundation docs before relying on archive or conversation material.\allowbreak{}
+
+
+\chapter{Current Project Picture}
+
+See \texttt{\_\allowbreak{}reconciliation/\allowbreak{}DOCS\_\allowbreak{}CURRENT\_\allowbreak{}PROJECT\_\allowbreak{}PICTURE\_\allowbreak{}v0.\allowbreak{}md} for the generated reader map.\allowbreak{} The short version is: Dominium has a strong authority model; historical materials are useful but non-\allowbreak{}binding; broad feature scopes remain blocked until a stronger current queue source opens them.\allowbreak{}
+
+
+\chapter{Current Queue Boundaries}
+
+Broad Workbench UI, runtime module loading, provider runtime, package runtime, gameplay, renderer implementation, native GUI, and release publication remain blocked review areas.\allowbreak{}
+
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Current Canon, Architecture, and Contracts}
+
+This chapter summarizes high-\allowbreak{}authority and authority-\allowbreak{}sensitive docs families.\allowbreak{}
+
+
+\chapter{Counts}
+
+\begin{itemize}
+\item Canon files: 2
+\item Architecture files: 324
+\item Reference contract docs: 9
+\item Planning docs: 77
+\end{itemize}
+
+\chapter{Rule}
+
+This book maps these docs but does not rewrite them.\allowbreak{} Canon/\allowbreak{}glossary and contract/\allowbreak{}schema authorities retain their normal precedence.\allowbreak{}
+
+
+\chapter{Alignment Surface}
+
+See \texttt{\_\allowbreak{}reconciliation/\allowbreak{}DOCS\_\allowbreak{}CANON\_\allowbreak{}ARCHITECTURE\_\allowbreak{}ALIGNMENT\_\allowbreak{}v0.\allowbreak{}md}, \texttt{\_\allowbreak{}audit/\allowbreak{}DOCS\_\allowbreak{}AUTHORITY\_\allowbreak{}MAP\_\allowbreak{}v0.\allowbreak{}md}, and \texttt{\_\allowbreak{}audit/\allowbreak{}DOCS\_\allowbreak{}BINDING\_\allowbreak{}SOURCE\_\allowbreak{}MAP\_\allowbreak{}v0.\allowbreak{}md}.\allowbreak{}
+
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Product, Runtime, Tooling, and Domains}
+
+This chapter groups current guidance and domain docs.\allowbreak{}
+
+
+\chapter{Counts}
+
+\begin{itemize}
+\item Runtime docs: 97
+\item App docs: 41
+\item Development docs: 201
+\item Testing docs: 22
+\item Domain docs: 203
+\item Content/\allowbreak{}modding docs: 50
+\end{itemize}
+
+\chapter{Interpretation}
+
+These docs are useful for orientation, but feature implementation still depends on current queue scope and stronger authority where applicable.\allowbreak{}
+
+
+\chapter{Reading Paths}
+
+See \texttt{\_\allowbreak{}wiki/\allowbreak{}reading\_\allowbreak{}paths.\allowbreak{}md} and topic pages under \texttt{\_\allowbreak{}wiki/\allowbreak{}topics/\allowbreak{}}.\allowbreak{}
+
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Archive Archaeology}
+
+Archive archaeology explains historical material without promoting it.\allowbreak{}
+
+
+\chapter{Archive Family Counts}
+
+\begin{center}
+{\small\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Archive Family} & \textbf{Count} \\
+\midrule
+archive/\allowbreak{}refactor & 1379 \\
+archive/\allowbreak{}audit & 960 \\
+archive/\allowbreak{}conversations & 761 \\
+other/\allowbreak{}archive\_\allowbreak{}unknown & 40 \\
+archive/\allowbreak{}restructure & 23 \\
+archive/\allowbreak{}blueprint & 22 \\
+archive/\allowbreak{}impact & 20 \\
+archive/\allowbreak{}post-\allowbreak{}canon & 5 \\
+archive/\allowbreak{}stray\_\allowbreak{}root\_\allowbreak{}docs & 3 \\
+archive/\allowbreak{}omega & 2 \\
+archive/\allowbreak{}prompts & 2 \\
+archive/\allowbreak{}repox & 2 \\
+archive/\allowbreak{}platform & 1 \\
+archive/\allowbreak{}specs & 1 \\
+\bottomrule
+\end{tabularx}
+}
+\end{center}
+
+\chapter{Use}
+
+Use archive material for provenance, stale-\allowbreak{}claim detection, duplicate-\allowbreak{}shadow review, and possible later promotion candidates.\allowbreak{} Do not use it as current authority.\allowbreak{}
+
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Conversation Corpus Integration}
+
+The completed conversation corpus is represented as an advisory sub-\allowbreak{}corpus.\allowbreak{}
+
+
+\begin{itemize}
+\item Conversation corpus files: 761
+\item Existing conversation book: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}\_\allowbreak{}exports/\allowbreak{}Dominium\_\allowbreak{}Conversation\_\allowbreak{}Corpus\_\allowbreak{}Book\_\allowbreak{}v0.\allowbreak{}pdf}
+\item Current role: design-\allowbreak{}intent and review substrate
+\item Promotion status: not promoted
+\end{itemize}
+
+See \texttt{\_\allowbreak{}archive/\allowbreak{}DOCS\_\allowbreak{}CONVERSATION\_\allowbreak{}CORPUS\_\allowbreak{}INTEGRATION\_\allowbreak{}v0.\allowbreak{}md}.\allowbreak{}
+
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Cross-\allowbreak{}Corpus Reconciliation}
+
+Cross-\allowbreak{}corpus reconciliation compares current docs, archive docs, conversation-\allowbreak{}derived outputs, and current repo authority.\allowbreak{}
+
+
+\chapter{Finding Counts}
+
+\begin{itemize}
+\item Drift/\allowbreak{}contradiction review findings: 136
+\item Duplicate shadows: 21
+\end{itemize}
+
+\chapter{Required Topics Covered}
+
+\begin{center}
+{\small\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Topic} & \textbf{Classification} \\
+\midrule
+Project identity and purpose & current\_\allowbreak{}repo\_\allowbreak{}truth \\
+Canon and glossary authority & current\_\allowbreak{}repo\_\allowbreak{}truth \\
+Engine/\allowbreak{}game/\allowbreak{}runtime/\allowbreak{}product boundaries & consistent\_\allowbreak{}but\_\allowbreak{}review\_\allowbreak{}required \\
+Determinism, replay, and provenance & current\_\allowbreak{}repo\_\allowbreak{}truth \\
+Process-\allowbreak{}only mutation & current\_\allowbreak{}repo\_\allowbreak{}truth \\
+Law, authority, refusal, and capability model & current\_\allowbreak{}repo\_\allowbreak{}truth\_\allowbreak{}with\_\allowbreak{}review\_\allowbreak{}needed \\
+Pack-\allowbreak{}driven integration & current\_\allowbreak{}repo\_\allowbreak{}truth \\
+Profiles over runtime mode flags & current\_\allowbreak{}repo\_\allowbreak{}truth \\
+Workbench/\allowbreak{}AIDE/\allowbreak{}Codex/\allowbreak{}tooling role & blocked\_\allowbreak{}scope\_\allowbreak{}sensitive \\
+Conversation corpus role & conversation\_\allowbreak{}advisory\_\allowbreak{}only \\
+Release/\allowbreak{}setup/\allowbreak{}launcher/\allowbreak{}platform state & blocked\_\allowbreak{}scope\_\allowbreak{}sensitive \\
+Renderer/\allowbreak{}UI/\allowbreak{}native GUI scope & blocked\_\allowbreak{}by\_\allowbreak{}current\_\allowbreak{}queue \\
+Provider/\allowbreak{}package runtime scope & blocked\_\allowbreak{}by\_\allowbreak{}current\_\allowbreak{}queue \\
+Gameplay/\allowbreak{}domain feature scope & blocked\_\allowbreak{}by\_\allowbreak{}current\_\allowbreak{}queue \\
+Timekeeping and 2038 resilience & conversation\_\allowbreak{}advisory\_\allowbreak{}or\_\allowbreak{}docs\_\allowbreak{}candidate \\
+World, reality, civilization, and worldgen domains & authority\_\allowbreak{}sensitive \\
+Contracts, schema, and reference docs & contract\_\allowbreak{}or\_\allowbreak{}schema\_\allowbreak{}authority \\
+Testing, validation, FAST, and full-\allowbreak{}gate debt & current\_\allowbreak{}repo\_\allowbreak{}truth\_\allowbreak{}with\_\allowbreak{}debt\_\allowbreak{}tracking \\
+Current queue blocked areas & current\_\allowbreak{}repo\_\allowbreak{}truth \\
+\bottomrule
+\end{tabularx}
+}
+\end{center}
+
+
+\chapter{Where To Inspect Detail}
+
+\begin{itemize}
+\item \texttt{\_\allowbreak{}reconciliation/\allowbreak{}DOCS\_\allowbreak{}REPO\_\allowbreak{}TRUTH\_\allowbreak{}CROSSWALK\_\allowbreak{}v0.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}audit/\allowbreak{}DOCS\_\allowbreak{}DRIFT\_\allowbreak{}MATRIX\_\allowbreak{}v0.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}audit/\allowbreak{}DOCS\_\allowbreak{}CONTRADICTION\_\allowbreak{}MATRIX\_\allowbreak{}v0.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}audit/\allowbreak{}DOCS\_\allowbreak{}STALENESS\_\allowbreak{}AND\_\allowbreak{}VERIFICATION\_\allowbreak{}v0.\allowbreak{}md}
+\end{itemize}
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Decisions and Promotion Roadmap}
+
+Decision and promotion surfaces are review queues.\allowbreak{}
+
+
+\chapter{Counts}
+
+\begin{itemize}
+\item Generated contradiction/\allowbreak{}drift findings: 136
+\item Metadata/\allowbreak{}header hygiene candidates: 463
+\item Duplicate shadow review candidates: 21
+\end{itemize}
+
+\chapter{Defaults}
+
+\begin{itemize}
+\item Defer blocked queue scopes.\allowbreak{}
+\item Keep archive/\allowbreak{}conversation claims not promoted.\allowbreak{}
+\item Use later narrow docs-\allowbreak{}only promotion tasks for any live-\allowbreak{}doc changes.\allowbreak{}
+\end{itemize}
+
+See \texttt{\_\allowbreak{}reconciliation/\allowbreak{}DOCS\_\allowbreak{}DECISION\_\allowbreak{}DOCKET\_\allowbreak{}v0.\allowbreak{}md} and \texttt{\_\allowbreak{}reconciliation/\allowbreak{}DOCS\_\allowbreak{}PROMOTION\_\allowbreak{}QUEUE\_\allowbreak{}v0.\allowbreak{}md}.\allowbreak{}
+
+
+
+Status: DERIVED
+
+Last Reviewed: 2026-\allowbreak{}05-\allowbreak{}28
+
+Supersedes: none
+
+Superseded By: none
+
+Stability: provisional
+
+Authority Class: advisory\_\allowbreak{}synthesis
+
+Source Root: \texttt{docs/\allowbreak{}}
+
+Conversation Corpus Root: \texttt{docs/\allowbreak{}archive/\allowbreak{}conversations/\allowbreak{}}
+
+Promotion Status: not\_\allowbreak{}promoted
+
+Canon impact: unchanged
+
+Contract/\allowbreak{}schema impact: unchanged
+
+Implementation impact: unchanged
+
+Release impact: unchanged
+
+Queue impact: unchanged
+
+
+\part{Navigation and Reading Paths}
+
+Use the docs-\allowbreak{}corpus wiki for daily navigation.\allowbreak{}
+
+
+\chapter{Key Pages}
+
+\begin{itemize}
+\item \texttt{\_\allowbreak{}wiki/\allowbreak{}index.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}wiki/\allowbreak{}reading\_\allowbreak{}paths.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}wiki/\allowbreak{}current\_\allowbreak{}authority.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}wiki/\allowbreak{}archive\_\allowbreak{}archaeology.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}wiki/\allowbreak{}conversation\_\allowbreak{}corpus.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}wiki/\allowbreak{}decisions.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}wiki/\allowbreak{}promotion\_\allowbreak{}candidates.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}wiki/\allowbreak{}contradictions.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}wiki/\allowbreak{}staleness\_\allowbreak{}and\_\allowbreak{}verification.\allowbreak{}md}
+\item \texttt{\_\allowbreak{}wiki/\allowbreak{}source\_\allowbreak{}index.\allowbreak{}md}
+\end{itemize}
+\end{document}

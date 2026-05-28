@@ -1,0 +1,1051 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dominium Docs Corpus Omnibus</title>
+  <style>
+html { color-scheme: light; }
+body { margin: 0; background: #f5f7fa; color: #20242a; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.58; }
+.topbar {  z-index: 4; display: flex; justify-content: space-between; gap: 1rem; align-items: center; padding: .7rem 1rem; background: #18324a; color: white; box-shadow: 0 1px 6px rgba(0,0,0,.15); }
+.topbar a { color: #d7ecff; }
+.topbar span { margin-left: .75rem; color: #c6d4df; font-size: .9rem; }
+.document { max-width: 820px; margin: 0 auto; padding: 2rem 1.1rem 5rem; background: white; }
+.title-page { border-bottom: 1px solid #d9dee7; padding: 3rem 0 2rem; margin-bottom: 2rem; }
+h1, h2, h3, h4 { line-height: 1.22; color: #172536; }
+h1 { font-size: clamp(2rem, 5vw, 3.2rem); margin-top: 2rem; }
+h2 { font-size: clamp(1.55rem, 3.4vw, 2.25rem); border-top: 1px solid #e5e9f0; padding-top: 1.6rem; }
+h3 { font-size: 1.3rem; margin-top: 1.8rem; }
+p, li { font-size: 1rem; }
+a { color: #1f5f99; text-underline-offset: .16em; }
+code { background: #f0f3f7; padding: .1rem .28rem; border-radius: 4px; font-size: .92em; overflow-wrap: anywhere; }
+pre { background: #f0f3f7; padding: 1rem; border-radius: 6px; overflow: auto; border-left: 4px solid #9fb7ce; }
+blockquote { border-left: 4px solid #9fb7ce; padding-left: 1rem; color: #44505f; }
+.callout { border-left: 5px solid #4c566a; background: #f7f9fc; padding: .8rem 1rem; margin: 1rem 0; border-radius: 6px; }
+.callout.authority, .callout.source { border-color: #1f5f99; }
+.callout.not-promoted, .callout.current-truth { border-color: #287a5a; }
+.callout.blocked, .callout.contradiction { border-color: #a63a3a; }
+.callout.verify, .callout.archive { border-color: #9a6a17; }
+.callout.conversation, .callout.decision { border-color: #6554a6; }
+.table-wrap { overflow-x: auto; margin: 1rem 0; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { border-bottom: 1px solid #e1e6ee; padding: .45rem .55rem; vertical-align: top; }
+th { background: #eef3f8; text-align: left; }
+ul, ol { padding-left: 1.35rem; }
+@media (max-width: 720px) { .document { padding: 1rem .85rem 4rem; } .topbar { position: static; align-items: flex-start; flex-direction: column; } table { font-size: .86rem; } }
+
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div><strong>Dominium Docs Corpus Omnibus</strong><span>Version 1 - DERIVED / advisory</span></div>
+    <a href="#contents">Contents</a>
+  </header>
+  <main class="document mobile">
+    <section class="title-page">
+      <h1>Dominium Docs Corpus Omnibus</h1>
+      <p>Styled Reader, Reference, Archive, Conversation, and Reconciliation Guide</p>
+      <p><strong>Version:</strong> 1</p>
+      <p><strong>Promotion Status:</strong> not_promoted</p>
+    </section>
+    <h1 id="dominium-docs-corpus-omnibus">Dominium Docs Corpus Omnibus</h1>
+<h2 id="styled-reader-reference-archive-conversation-and-reconciliation-guide">Styled Reader, Reference, Archive, Conversation, and Reconciliation Guide</h2>
+<p>Version: 1</p>
+<h2 id="authority-and-non-promotion-notice">Authority and Non-Promotion Notice</h2>
+<aside class="callout not-promoted"><strong>Not Promoted</strong><p>This styled v1 reader is DERIVED and advisory. It is not canon, does not open blocked work, and does not promote archive or conversation-derived claims into current repo truth.</p></aside>
+<h2 id="how-to-read-this-edition">How to Read This Edition</h2>
+<aside class="callout authority"><strong>Authority</strong><p>Use this Reader PDF for orientation and fast recall. Use the Reference PDF for dense registers and full source indexes. Use the HTML edition for search, links, and smaller screens.</p></aside>
+<h2 id="corpus-snapshot">Corpus Snapshot</h2>
+<aside class="callout source"><strong>Source</strong><p>Represented docs files: <strong>5116</strong>. Full-text reader/reference selections: <strong>147</strong>. Summarized/indexed files: <strong>4967</strong>. Manifest-only or binary files: <strong>77</strong>.</p></aside>
+<h2 id="current-project-picture">Current Project Picture</h2>
+<aside class="callout source"><strong>Source</strong><p><code>DERIVED</code> <code>advisory_synthesis</code> <code>not_promoted</code> - Source: <code>docs/archive/docs_corpus/_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md</code> - included</p></aside>
+<h2 id="docs-current-project-picture">Docs Current Project Picture</h2>
+<p>Dominium&#x27;s current documentation picture is authority layered. Canon, glossary, <code>AGENTS.md</code>, contract/schema law, current queue state, and validated repo artifacts are the highest-confidence sources. Archive and conversation material can explain how earlier ideas developed, but it cannot become current truth through this docs-corpus task.</p>
+<h3 id="current-orientation">Current Orientation</h3>
+<ul>
+<li>Project orientation: <code>README.md</code></li>
+<li>Documentation taxonomy: <code>docs/README.md</code></li>
+<li>Canon: <code>docs/canon/constitution_v1.md</code></li>
+<li>Glossary: <code>docs/canon/glossary_v1.md</code></li>
+<li>Agent governance: <code>AGENTS.md</code></li>
+<li>Queue state: <code>.aide/queue/current.toml</code></li>
+<li>Foundation status: <code>docs/repo/FOUNDATION_LOCK.md</code></li>
+</ul>
+<h3 id="corpus-scale">Corpus Scale</h3>
+<ul>
+<li>Files represented: 5116</li>
+<li>Markdown files: 4671</li>
+<li>Archive/conversation files: 3221</li>
+</ul>
+<h3 id="what-is-safe-to-do-with-this-output">What Is Safe To Do With This Output</h3>
+<ul>
+<li>Read the docs corpus as a map.</li>
+<li>Use archive material for provenance and review.</li>
+<li>Use generated contradictions and promotion queues to plan later tasks.</li>
+<li>Start later live-doc patches only through explicit narrow promotion tasks.</li>
+</ul>
+<h3 id="what-this-output-does-not-do">What This Output Does Not Do</h3>
+<ul>
+<li>It does not promote archive claims.</li>
+<li>It does not rewrite canon, contracts, schema, implementation, release, or queue state.</li>
+<li>It does not open blocked renderer, gameplay, provider runtime, package runtime, broad Workbench UI, native GUI, or release publication work.</li>
+</ul>
+<h2 id="current-repo-truth-crosswalk">Current Repo Truth Crosswalk</h2>
+<aside class="callout source"><strong>Source</strong><p><code>DERIVED</code> <code>advisory_synthesis</code> <code>not_promoted</code> - Source: <code>docs/archive/docs_corpus/_reconciliation/DOCS_REPO_TRUTH_CROSSWALK_v0.md</code> - included</p></aside>
+<h2 id="docs-repo-truth-crosswalk">Docs Repo Truth Crosswalk</h2>
+<p>This crosswalk starts with current repo authority and uses archive/conversation material only as supporting historical context.</p>
+<div class="table-wrap"><table>
+<tr><th>Topic ID</th><th>Topic</th><th>Source Paths</th><th>Classification</th><th>Disposition</th></tr>
+<tr><td>project_identity</td><td>Project identity and purpose</td><td>README.md; docs/README.md</td><td>current_repo_truth</td><td>Use current repo orientation first; archive and conversations may only explain history.</td></tr>
+<tr><td>canon_glossary_authority</td><td>Canon and glossary authority</td><td>docs/canon/constitution_v1.md; docs/canon/glossary_v1.md; AGENTS.md</td><td>current_repo_truth</td><td>Canon, glossary, and AGENTS outrank archive and generated outputs.</td></tr>
+<tr><td>engine_game_runtime_product_boundaries</td><td>Engine/game/runtime/product boundaries</td><td>README.md; docs/architecture; docs/archive/conversations/_reconciliation</td><td>consistent_but_review_required</td><td>Boundary claims need current-doc support before promotion.</td></tr>
+<tr><td>determinism_replay_provenance</td><td>Determinism, replay, and provenance</td><td>AGENTS.md; docs/canon/constitution_v1.md; docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md</td><td>current_repo_truth</td><td>Determinism and provenance constraints are binding where scoped by canon and governance.</td></tr>
+<tr><td>process_only_mutation</td><td>Process-only mutation</td><td>AGENTS.md; docs/canon/constitution_v1.md</td><td>current_repo_truth</td><td>Authoritative truth mutation must occur through lawful deterministic Process execution.</td></tr>
+<tr><td>law_authority_refusal_capabilities</td><td>Law, authority, refusal, and capability model</td><td>AGENTS.md; docs/canon/constitution_v1.md; docs/reference/contracts</td><td>current_repo_truth_with_review_needed</td><td>Current law and contracts govern; archive claims are advisory only.</td></tr>
+<tr><td>pack_driven_integration</td><td>Pack-driven integration</td><td>AGENTS.md; docs/canon/constitution_v1.md</td><td>current_repo_truth</td><td>Optional content and capabilities must remain pack- and registry-driven.</td></tr>
+<tr><td>profiles_over_modes</td><td>Profiles over runtime mode flags</td><td>AGENTS.md; docs/canon/constitution_v1.md</td><td>current_repo_truth</td><td>Hardcoded runtime mode branches remain prohibited.</td></tr>
+<tr><td>workbench_aide_codex_tooling</td><td>Workbench/AIDE/Codex/tooling role</td><td>AGENTS.md; .aide/queue/current.toml; docs/archive/conversations/_synthesis</td><td>blocked_scope_sensitive</td><td>Tooling is active, but broad Workbench UI and native GUI work remain blocked by the queue.</td></tr>
+<tr><td>conversation_corpus_role</td><td>Conversation corpus role</td><td>docs/archive/conversations/README.md; docs/archive/conversations/_exports</td><td>conversation_advisory_only</td><td>Conversation material is derived historical evidence, not current truth.</td></tr>
+<tr><td>release_setup_launcher_platform</td><td>Release/setup/launcher/platform state</td><td>.aide/queue/current.toml; docs/release; docs/archive/conversations/_promotion</td><td>blocked_scope_sensitive</td><td>Release publication remains blocked unless a stronger current queue source opens it.</td></tr>
+<tr><td>renderer_ui_native_gui_scope</td><td>Renderer/UI/native GUI scope</td><td>.aide/queue/current.toml; docs/archive/conversations/_reconciliation</td><td>blocked_by_current_queue</td><td>Renderer implementation and native GUI work remain blocked.</td></tr>
+<tr><td>provider_package_runtime_scope</td><td>Provider/package runtime scope</td><td>.aide/queue/current.toml; docs/archive/conversations/_promotion</td><td>blocked_by_current_queue</td><td>Provider runtime, package runtime, and runtime module loading remain blocked.</td></tr>
+<tr><td>gameplay_domain_feature_scope</td><td>Gameplay/domain feature scope</td><td>.aide/queue/current.toml; docs/archive/conversations/_synthesis</td><td>blocked_by_current_queue</td><td>Gameplay and broad domain feature implementation remain blocked.</td></tr>
+<tr><td>timekeeping_2038</td><td>Timekeeping and 2038 resilience</td><td>docs/archive/conversations/_wiki/topics/timekeeping.md; docs/archive/conversations/_synthesis</td><td>conversation_advisory_or_docs_candidate</td><td>Conversation/archive support exists where present; current-doc promotion requires review.</td></tr>
+<tr><td>world_reality_civilization_worldgen</td><td>World, reality, civilization, and worldgen domains</td><td>docs/archive/conversations/_synthesis</td><td>authority_sensitive</td><td>Semantic-domain work must respect specs/reality over data/reality and current queue limits.</td></tr>
+<tr><td>contracts_schema_reference_docs</td><td>Contracts, schema, and reference docs</td><td>docs/reference/contracts; contracts</td><td>contract_or_schema_authority</td><td>Docs may summarize, but contract/schema law remains source authority.</td></tr>
+<tr><td>testing_validation_fast</td><td>Testing, validation, FAST, and full-gate debt</td><td>AGENTS.md; docs/testing; tools/validators</td><td>current_repo_truth_with_debt_tracking</td><td>FAST is the minimum validation floor unless explicitly exempt.</td></tr>
+<tr><td>current_queue_blocked_areas</td><td>Current queue blocked areas</td><td>.aide/queue/current.toml; docs/repo/FOUNDATION_LOCK.md</td><td>current_repo_truth</td><td>Blocked broad feature areas remain blocked.</td></tr>
+</table></div>
+<h2 id="canon-and-architecture-alignment">Canon and Architecture Alignment</h2>
+<aside class="callout source"><strong>Source</strong><p><code>DERIVED</code> <code>advisory_synthesis</code> <code>not_promoted</code> - Source: <code>docs/archive/docs_corpus/_reconciliation/DOCS_CANON_ARCHITECTURE_ALIGNMENT_v0.md</code> - excerpted</p></aside>
+<h2 id="docs-canon-architecture-alignment">Docs Canon Architecture Alignment</h2>
+<p>This report maps high-authority documentation families without changing them.</p>
+<h3 id="counts">Counts</h3>
+<ul>
+<li>Canon files: 2</li>
+<li>Architecture files: 324</li>
+<li>Reference contract docs: 9</li>
+</ul>
+<h3 id="canon-files">Canon Files</h3>
+<div class="table-wrap"><table>
+<tr><th>Path</th><th>Status</th><th>Stability</th><th>Binding Sources</th></tr>
+<tr><td>docs/canon/constitution_v1.md</td><td>CANONICAL</td><td>stable</td><td></td></tr>
+<tr><td>docs/canon/glossary_v1.md</td><td>CANONICAL</td><td>stable</td><td></td></tr>
+</table></div>
+<h3 id="architecture-files">Architecture Files</h3>
+<div class="table-wrap"><table>
+<tr><th>Path</th><th>Status</th><th>Freshness</th><th>Risk</th></tr>
+<tr><td>docs/architecture/ADAPTER_PATTERN.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ADOPTION_PROTOCOL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/AI_BUDGET_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/AI_INTENT_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ANTI_CHEAT_AND_INTEGRITY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ANTI_CHEAT_AS_LAW.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ANTI_ENTROPY_RULES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/APPLICATION_CONTRACTS.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/APP_AUTOMATION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/APP_CANON0.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/APP_CANON1.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARCH0_CONSTITUTION.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARCHITECTURE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARCHITECTURE_LAYERS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARCHIVAL_AND_PERMANENCE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARCHIVE_MANIFEST.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARCH_BUILD_ENFORCEMENT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARCH_CHANGE_PROCESS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARCH_ENFORCEMENT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARCH_REPO_LAYOUT.md</td><td>CANONICAL</td><td>superseded</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARCH_SPEC_OWNERSHIP.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARTIFACT_LIFECYCLE.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ARTIFACT_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/AUDITABILITY_AND_DISCLOSURE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/AUTHORITY_AND_ENTITLEMENTS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/AUTHORITY_AND_OMNIPOTENCE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/AUTHORITY_IN_REALITY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/AUTHORITY_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/BOUNDARY_ENFORCEMENT.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/BUDGET_POLICY.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/BUGREPORT_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/BUILD_IDENTITY_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/BUNDLE_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CANONICAL_SYSTEM_MAP.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CANON_CUT_LINE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CANON_INDEX.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CAPABILITY_BASELINES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CAPABILITY_ONLY_CANON.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CHANGELOG_ARCH.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CHANGE_PROTOCOL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CHEATS_ARE_JUST_LAWS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CHECKPOINTING_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CHECKPOINTS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CIVILIZATION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CODE_DATA_BOUNDARY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CODE_KNOWLEDGE_BOUNDARY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/COLLAPSE_AND_DECAY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/COLLAPSE_EXPAND_CONTRACT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/COLLAPSE_EXPAND_SOLVERS.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/COMPATIBILITY_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/COMPLEXITY_AND_SCALE.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/COMPONENTS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CONFLICT_AND_WAR_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CONSTANT_COST_GUARANTEE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CONTENT_AND_STORAGE_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CONTRACTS_INDEX.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CONTROL_LAYERS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CORE_ABSTRACTIONS.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CRASH_RECOVERY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/CROSS_SHARD_LOG.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/C_COMPATIBLE_ABI_BOUNDARY.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DEATH_AND_CONTINUITY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DECAY_EROSION_REGEN.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DEMO_AND_TOURIST_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DEPRECATION_AND_QUARANTINE.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DEPRECATION_LIFECYCLE.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DETERMINISTIC_ORDERING_POLICY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DETERMINISTIC_REDUCTION_RULES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DEV_OPS_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DIRECTORY_CONTEXT.md</td><td>DERIVED</td><td>superseded</td><td>medium</td></tr>
+<tr><td>docs/architecture/DIRECTORY_STRUCTURE.md</td><td>DERIVED</td><td>superseded</td><td>medium</td></tr>
+<tr><td>docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DISTRIBUTED_TIME_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DISTRIBUTION_AND_STOREFRONTS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DISTRIBUTION_LAYOUT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DISTRIBUTION_PROFILES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DOMAIN_JURISDICTIONS_AND_LAW.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DOMAIN_SHARDING_AND_STREAMING.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DOMAIN_VOLUMES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/DUPLICATION_DETECTION_RULES.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ECONOMIC_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ECONOMY_AND_LOGISTICS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ENERGY_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ENFORCEMENT_ESCALATION.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EPISTEMICS_AND_SCALED_MMO.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EPISTEMICS_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EXECUTION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EXECUTION_REORDERING_POLICY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EXECUTION_SUBSTRATE_AUDIT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EXISTENCE_AND_REALITY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EXISTENCE_LIFECYCLE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EXOTIC_TRAVEL_AND_REALITY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EXPLORATION_METRICS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EXPLORATION_SCALING_PROOF.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EXTEND_VS_CREATE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EXTENSION_MAP.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/EXTENSION_RULES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/FABRICATION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/FLOAT_POLICY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/FLOWSYSTEM_STANDARD.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/FLUIDS_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/FORKING_AND_PROVIDES_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/FROZEN_CONTRACT_HASHES.json</td><td></td><td>unclear</td><td>medium</td></tr>
+<tr><td>docs/architecture/FUTURE_COMPATIBILITY_AND_ARCH.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/FUTURE_PROOFING.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/GENERATED_CODE_POLICY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/GLOBAL_ID_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/GLOSSARY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/GOVERNANCE_AND_INSTITUTIONS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/GUI_BASELINE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/HARDWARE_EVOLUTION_STRATEGY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/HAZARDS_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/HISTORY_AND_CIVILIZATION_MODEL.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/IDENTITY_ACROSS_TIME.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/IDE_AND_TOOLCHAIN_POLICY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/IDE_PROJECTIONS.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ID_AND_NAMESPACE_RULES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/INDEXING_POLICY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/INFORMATION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/INSTALLER_CONTRACT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/INSTALL_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/INSTANCE_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/INSTITUTIONS_AND_GOVERNANCE_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/INTEREST_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/INVARIANTS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/INVARIANTS_AND_TOLERANCES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/INVARIANT_REGISTRY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/JOIN_RESYNC_CONTRACT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/KNOWLEDGE_AND_SKILLS_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/KNOWN_BLOCKERS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/KNOWN_WARNINGS.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/LANGUAGE_STRATEGY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/LAUNCHER_CONTRACT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/LAW_AND_META_LAW.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/LAW_ENFORCEMENT_POINTS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/LEGACY_SUPPORT_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/LEGACY_SUPPORT_STRATEGY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/LIFE_AND_POPULATION.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/LIVE_EVOLUTION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/LOCKFILES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/LOCKLIST.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/LOCKLIST_OVERRIDES.json</td><td></td><td>unclear</td><td>medium</td></tr>
+<tr><td>docs/architecture/MACRO_TIME_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/MIGRATION_TEMPLATE.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/MMO_COMPATIBILITY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/MMO_SAFETY_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/MODES_AS_PROFILES.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/MODPACK_FORMAT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/MODULE_BOUNDARIES_v1.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/MODULE_INDEX_v1.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/MOD_ECOSYSTEM_RULES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/MOVEMENT_AS_LOGISTICS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/NAMESPACING_RULES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/NETWORKGRAPH_STANDARD.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/NON_INTERFERENCE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/NO_MAGIC_TELEPORTS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/NO_TELEPORTATION_EXCEPT_BY_CONTRACT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/OPS_TRANSACTION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/OVERVIEW_ARCHITECTURE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/PACK_FORMAT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/PERFORMANCE_METRICS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/PERFORMANCE_PROOF.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/PIRACY_CONTAINMENT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/PLATFORM_RESPONSIBILITY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/POST_CLEAN_2_STATUS.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/PROCESS_ONLY_MUTATION.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/PRODUCT_SHELL_CONTRACT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/PROJECTION_LIFECYCLE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/PROJECT_EXECUTION_BASELINE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/QUANTITY_BUNDLES.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REALITY_FLOW.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REALITY_LAYER.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REALITY_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REDUCTION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REFINEMENT_CONTRACTS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REFRACTOR_STAGE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REFUSAL_AND_EXPLANATION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REFUSAL_SEMANTICS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REGISTRY_PATTERN.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/RENDERER_RESPONSIBILITY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REPLAY_AND_TIME_ASYMMETRY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REPLAY_FORMAT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REPORT_GAME_ARCH_DECISIONS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REPOSITORY_STRUCTURE_v1.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REPOX_AUTOMATION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REPO_INTENT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REPO_NAV.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/RETRO_CONSISTENCY_AUDIT_FRAMEWORK.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/RISK_AND_LIABILITY_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/RNG_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ROLLING_UPDATES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/ROOT_ARCHITECTURE.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SANDBOX_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SAVE_FORMAT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SAVE_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SAVE_PIPELINE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SCALE_AND_COMPLEXITY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SCALING_COMPATIBILITY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SCALING_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SCHEMA_CHANGE_NOTES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SCHEMA_STABILITY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SEMANTIC_STABILITY_LOCK.json</td><td></td><td>unclear</td><td>medium</td></tr>
+<tr><td>docs/architecture/SEMANTIC_STABILITY_POLICY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SERVICES_AND_PRODUCTS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SETUP_TRANSACTION_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SHARD_LIFECYCLE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SHIM_SUNSET_PLAN.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SIGNAL_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SKU_MATRIX.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SLICE_0_CONTRACT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SLICE_1_CONTRACT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SLICE_2_CONTRACT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SOURCE_POCKET_POLICY_v1.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SPACE_AND_BOUNDS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SPACE_TIME_EXISTENCE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SPECTATOR_AND_AUDIT_MODES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SPECTATOR_TO_GODMODE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SRZ_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/STANDARDS_AND_META_SYSTEMS_MODEL.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/STRUCTURAL_STABILITY_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SYSTEM_TOPOLOGY_MAP.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/SYS_CAPS_AND_EXEC_POLICY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TERMINOLOGY_GLOSSARY.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TERRAIN_COORDINATES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TERRAIN_FIELDS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TERRAIN_MACRO_CAPSULE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TERRAIN_OVERLAYS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TERRAIN_PROVIDER_CHAIN.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TERRAIN_TRUTH_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/THERMAL_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/THREAT_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TIMELINE_FORKS_AND_HISTORY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TIME_DILATION_WITHOUT_TIME_WARP.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TIME_PERCEPTION_VS_SIMULATION.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TOOLS_AS_CAPABILITIES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TRANSITION_PLAYBOOK.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TRAVEL_AND_MOVEMENT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TRAVEL_CAPACITY_AND_COST.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/TRUST_AND_LEGITIMACY_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/UI_BINDING_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/UNIT_SYSTEM_POLICY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/UNKNOWN_UNKNOWNS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/UPDATE_MODEL.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/UPGRADE_AND_CONVERSION.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/VALIDATION_RULES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/VISITABILITY_AND_REFINEMENT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/VISITABILITY_CONSISTENCY.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/WHAT_THIS_IS.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/WHAT_THIS_IS_NOT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/WHY_ECONOMIES_DONT_FAKE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/WHY_NPCS_DONT_POP.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/WORKSPACES.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/WORLDDEFINITION.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/WORLDDEFINITION_CONTRACT.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/api_abi_canon.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/app_composition_model.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/artifact_identity_law.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/astronomy_catalogs.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/barebones_client_shell.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/camera_and_navigation.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/capability_refusal_law.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/command_result_view_slice.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/command_view_event_refusal.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/composition_resolver_law.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/coordinate_model.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/dependency_direction_law.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/deterministic_packaging.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/deterministic_parallelism.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/diagnostics_and_evidence.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/document_patch_transaction.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/document_patch_transaction_runtime.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/domino_framework_boundary.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/fidelity_policy.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/hash_anchors.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/interest_regions.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/lens_system.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/lockfile.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/lockfile_law.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/macro_capsules.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/mod_pack_trust_model.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/module_composition_law.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/native_architecture_policy.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/observation_kernel.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/pack_mount_model.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/pack_system.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/package_mount_slice.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/portability_matrix.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/project_graph_impact_model.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/project_graph_service.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/provider_conformance_law.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/provider_model.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/provider_selection_model.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/public_surface_registry.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/registry_compile.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/replacement_protocol.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/replay_proof_law.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/replay_proof_slice.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/schema_protocol_evolution.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/service_conformance_law.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/session_lifecycle.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/setup_and_launcher.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/site_registry.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/srz_contract.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/system/EXPLICIT_STATE_VECTOR_RULE.md</td><td>CANONICAL</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/system/INTERFACE_AND_INVARIANT_RULES.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/system/MACROCAPSULE_BEHAVIOR_MODEL.md</td><td>DERIVED</td><td>current</td><td>medium</td></tr>
+<tr><td>docs/architecture/system/SYSTEM_CERTIFICATION_MODEL.md</td><td>DE</td></tr>
+</table></div>
+<aside class="callout verify"><strong>Verify</strong><p>This section is excerpted for readability. See the source path for the full report.</p></aside>
+<h2 id="archive-archaeology">Archive Archaeology</h2>
+<aside class="callout source"><strong>Source</strong><p><code>DERIVED</code> <code>advisory_synthesis</code> <code>not_promoted</code> - Source: <code>docs/archive/docs_corpus/_archive/DOCS_ARCHIVE_ATLAS_v0.md</code> - included</p></aside>
+<h2 id="docs-archive-atlas">Docs Archive Atlas</h2>
+<p><code>docs/archive/**</code> is historical/provenance material. It can inform future review, but it does not override current repo authority.</p>
+<h3 id="archive-family-counts">Archive Family Counts</h3>
+<div class="table-wrap"><table>
+<tr><th>Archive Family</th><th>Count</th></tr>
+<tr><td>archive/refactor</td><td>1379</td></tr>
+<tr><td>archive/audit</td><td>960</td></tr>
+<tr><td>archive/conversations</td><td>761</td></tr>
+<tr><td>other/archive_unknown</td><td>40</td></tr>
+<tr><td>archive/restructure</td><td>23</td></tr>
+<tr><td>archive/blueprint</td><td>22</td></tr>
+<tr><td>archive/impact</td><td>20</td></tr>
+<tr><td>archive/post-canon</td><td>5</td></tr>
+<tr><td>archive/stray_root_docs</td><td>3</td></tr>
+<tr><td>archive/omega</td><td>2</td></tr>
+<tr><td>archive/prompts</td><td>2</td></tr>
+<tr><td>archive/repox</td><td>2</td></tr>
+<tr><td>archive/platform</td><td>1</td></tr>
+<tr><td>archive/specs</td><td>1</td></tr>
+</table></div>
+<h3 id="interpretation">Interpretation</h3>
+<ul>
+<li><code>archive/conversations</code> is the completed advisory conversation corpus.</li>
+<li>Blueprint, prompt, refactor, restructure, post-canon, and spec archives preserve historical design or migration context.</li>
+<li>Archive material may become a promotion candidate only through a later explicit review task.</li>
+</ul>
+<h2 id="conversation-corpus-integration">Conversation Corpus Integration</h2>
+<aside class="callout source"><strong>Source</strong><p><code>DERIVED</code> <code>advisory_synthesis</code> <code>not_promoted</code> - Source: <code>docs/archive/docs_corpus/_archive/DOCS_CONVERSATION_CORPUS_INTEGRATION_v0.md</code> - included</p></aside>
+<h2 id="docs-conversation-corpus-integration">Docs Conversation Corpus Integration</h2>
+<p>The conversation corpus is treated as a derived advisory sub-corpus inside the full docs corpus.</p>
+<h3 id="scope">Scope</h3>
+<ul>
+<li>Conversation files represented: 761</li>
+<li>Generated conversation reports represented: 131</li>
+<li>Conversation export files represented: 10</li>
+</ul>
+<h3 id="interpretation">Interpretation</h3>
+<ul>
+<li>Advisory: yes</li>
+<li>Current authority: no</li>
+<li>Promotion status: not promoted</li>
+<li>Use: design intent, review backlog, decision and promotion candidates</li>
+<li>Non-use: canon, contract/schema, implementation, release, or queue override</li>
+</ul>
+<h3 id="key-existing-surfaces">Key Existing Surfaces</h3>
+<div class="table-wrap"><table>
+<tr><th>Surface</th><th>Role</th></tr>
+<tr><td>docs/archive/conversations/_synthesis/**</td><td>derived synthesis and project picture</td></tr>
+<tr><td>docs/archive/conversations/_decision/**</td><td>decision docket</td></tr>
+<tr><td>docs/archive/conversations/_promotion/**</td><td>promotion review backlog</td></tr>
+<tr><td>docs/archive/conversations/_reconciliation/**</td><td>conversation-vs-repo crosswalk</td></tr>
+<tr><td>docs/archive/conversations/_audit/**</td><td>contradictions, staleness, uncertainty</td></tr>
+<tr><td>docs/archive/conversations/_exports/**</td><td>conversation book bundle</td></tr>
+</table></div>
+<h2 id="decision-docket-summary">Decision Docket Summary</h2>
+<aside class="callout source"><strong>Source</strong><p><code>DERIVED</code> <code>advisory_synthesis</code> <code>not_promoted</code> - Source: <code>docs/archive/docs_corpus/_reconciliation/DOCS_DECISION_DOCKET_v0.md</code> - included</p></aside>
+<h2 id="docs-decision-docket">Docs Decision Docket</h2>
+<p>Decision items are review prompts. The default disposition is defer unless a later explicit task opens the scope.</p>
+<div class="table-wrap"><table>
+<tr><th>Decision ID</th><th>Source/Finding</th><th>Question</th><th>Decision Type</th><th>Risk</th><th>Recommended Default</th></tr>
+<tr><td>DOC-DECIDE-0001</td><td>DOC-CONTRA-0001</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0002</td><td>DOC-CONTRA-0002</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0003</td><td>DOC-CONTRA-0003</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0004</td><td>DOC-CONTRA-0004</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0005</td><td>DOC-CONTRA-0005</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0006</td><td>DOC-CONTRA-0006</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0007</td><td>DOC-CONTRA-0007</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0008</td><td>DOC-CONTRA-0008</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0009</td><td>DOC-CONTRA-0009</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0010</td><td>DOC-CONTRA-0010</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0011</td><td>DOC-CONTRA-0011</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0012</td><td>DOC-CONTRA-0012</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0013</td><td>DOC-CONTRA-0013</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0014</td><td>DOC-CONTRA-0014</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0015</td><td>DOC-CONTRA-0015</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td><td>repo_authority_decision</td><td>medium</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0016</td><td>DOC-CONTRA-0016</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0017</td><td>DOC-CONTRA-0017</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0018</td><td>DOC-CONTRA-0018</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0019</td><td>DOC-CONTRA-0019</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0020</td><td>DOC-CONTRA-0020</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0021</td><td>DOC-CONTRA-0021</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0022</td><td>DOC-CONTRA-0022</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0023</td><td>DOC-CONTRA-0023</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0024</td><td>DOC-CONTRA-0024</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0025</td><td>DOC-CONTRA-0025</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0026</td><td>DOC-CONTRA-0026</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0027</td><td>DOC-CONTRA-0027</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0028</td><td>DOC-CONTRA-0028</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0029</td><td>DOC-CONTRA-0029</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0030</td><td>DOC-CONTRA-0030</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0031</td><td>DOC-CONTRA-0031</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0032</td><td>DOC-CONTRA-0032</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0033</td><td>DOC-CONTRA-0033</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0034</td><td>DOC-CONTRA-0034</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0035</td><td>DOC-CONTRA-0035</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0036</td><td>DOC-CONTRA-0036</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td><td>future_docs_hygiene_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0037</td><td>DOC-CONTRA-0037</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0038</td><td>DOC-CONTRA-0038</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0039</td><td>DOC-CONTRA-0039</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0040</td><td>DOC-CONTRA-0040</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0041</td><td>DOC-CONTRA-0041</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0042</td><td>DOC-CONTRA-0042</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0043</td><td>DOC-CONTRA-0043</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0044</td><td>DOC-CONTRA-0044</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0045</td><td>DOC-CONTRA-0045</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0046</td><td>DOC-CONTRA-0046</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0047</td><td>DOC-CONTRA-0047</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0048</td><td>DOC-CONTRA-0048</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0049</td><td>DOC-CONTRA-0049</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0050</td><td>DOC-CONTRA-0050</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0051</td><td>DOC-CONTRA-0051</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0052</td><td>DOC-CONTRA-0052</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0053</td><td>DOC-CONTRA-0053</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0054</td><td>DOC-CONTRA-0054</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0055</td><td>DOC-CONTRA-0055</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0056</td><td>DOC-CONTRA-0056</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0057</td><td>DOC-CONTRA-0057</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0058</td><td>DOC-CONTRA-0058</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0059</td><td>DOC-CONTRA-0059</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0060</td><td>DOC-CONTRA-0060</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0061</td><td>DOC-CONTRA-0061</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0062</td><td>DOC-CONTRA-0062</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0063</td><td>DOC-CONTRA-0063</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0064</td><td>DOC-CONTRA-0064</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0065</td><td>DOC-CONTRA-0065</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0066</td><td>DOC-CONTRA-0066</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0067</td><td>DOC-CONTRA-0067</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0068</td><td>DOC-CONTRA-0068</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0069</td><td>DOC-CONTRA-0069</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0070</td><td>DOC-CONTRA-0070</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0071</td><td>DOC-CONTRA-0071</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0072</td><td>DOC-CONTRA-0072</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0073</td><td>DOC-CONTRA-0073</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0074</td><td>DOC-CONTRA-0074</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0075</td><td>DOC-CONTRA-0075</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0076</td><td>DOC-CONTRA-0076</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0077</td><td>DOC-CONTRA-0077</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0078</td><td>DOC-CONTRA-0078</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0079</td><td>DOC-CONTRA-0079</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-0080</td><td>DOC-CONTRA-0080</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td><td>repo_authority_decision</td><td>low</td><td>defer_until_targeted_review</td></tr>
+<tr><td>DOC-DECIDE-BLOCK-0001</td><td>queue</td><td>Should broad Workbench UI remain closed until a later queue phase explicitly opens it?</td><td>future_queue_decision</td><td>high</td><td>defer</td></tr>
+<tr><td>DOC-DECIDE-BLOCK-0002</td><td>queue</td><td>Should renderer implementation remain blocked?</td><td>future_queue_decision</td><td>high</td><td>defer</td></tr>
+<tr><td>DOC-DECIDE-BLOCK-0003</td><td>queue</td><td>Should provider/package runtime work remain blocked?</td><td>future_queue_decision</td><td>high</td><td>defer</td></tr>
+<tr><td>DOC-DECIDE-BLOCK-0004</td><td>queue</td><td>Should release publication remain blocked?</td><td>future_queue_decision</td><td>high</td><td>defer</td></tr>
+</table></div>
+<h2 id="promotion-roadmap-summary">Promotion Roadmap Summary</h2>
+<aside class="callout source"><strong>Source</strong><p><code>DERIVED</code> <code>advisory_synthesis</code> <code>not_promoted</code> - Source: <code>docs/archive/docs_corpus/_reconciliation/DOCS_PROMOTION_QUEUE_v0.md</code> - excerpted</p></aside>
+<h2 id="docs-promotion-queue">Docs Promotion Queue</h2>
+<p>This queue records later review candidates. It does not apply any live-doc patch.</p>
+<div class="table-wrap"><table>
+<tr><th>Promotion ID</th><th>Source Path(s)</th><th>Type</th><th>Recommended Next Action</th><th>Promotion Status</th></tr>
+<tr><td>DOC-PROMOTE-0001</td><td>docs/archive/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0002</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__00_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0003</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__01_human_readable_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0004</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__02_context_transfer_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0005</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__04_registers.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0006</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__05_aggregator_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0007</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__06_reader_brief.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0008</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__07_verification_and_audit.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0009</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__08_future_chat_bootstrap_prompt.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0010</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__09_in_chat_reader.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0011</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__10_accompanying_human_readable_detailed_summary_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0012</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__11_bundle_integrity_check.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0013</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__01_full_chat_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0014</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__03_aggregator_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0015</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__04_registers.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0016</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__05_reader_brief.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0017</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__06_verification_and_audit.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0018</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0019</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__01_full_chat_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0020</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__03_aggregator_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0021</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__04_registers.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0022</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__05_reader_brief.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0023</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__06_verification_and_audit.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0024</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0025</td><td>docs/archive/conversations/Dominium_Architecture_II/Dominium_Architecture_II__01_full_chat_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0026</td><td>docs/archive/conversations/Dominium_Architecture_II/Dominium_Architecture_II__03_aggregator_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0027</td><td>docs/archive/conversations/Dominium_Architecture_II/Dominium_Architecture_II__04_registers.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0028</td><td>docs/archive/conversations/Dominium_Architecture_II/Dominium_Architecture_II__05_reader_brief.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0029</td><td>docs/archive/conversations/Dominium_Architecture_II/Dominium_Architecture_II__06_verification_and_audit.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0030</td><td>docs/archive/conversations/Dominium_Architecture_II/Dominium_Architecture_II__manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0031</td><td>docs/archive/conversations/Dominium_Architecture_III/Dominium_Architecture_III__01_full_chat_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0032</td><td>docs/archive/conversations/Dominium_Architecture_III/Dominium_Architecture_III__03_aggregator_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0033</td><td>docs/archive/conversations/Dominium_Architecture_III/Dominium_Architecture_III__04_registers.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0034</td><td>docs/archive/conversations/Dominium_Architecture_III/Dominium_Architecture_III__05_reader_brief.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0035</td><td>docs/archive/conversations/Dominium_Architecture_III/Dominium_Architecture_III__06_verification_and_audit.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0036</td><td>docs/archive/conversations/Dominium_Architecture_III/Dominium_Architecture_III__manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0037</td><td>docs/archive/conversations/Dominium_Architecture_IV/Dominium_Architecture_IV__01_full_chat_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0038</td><td>docs/archive/conversations/Dominium_Architecture_IV/Dominium_Architecture_IV__03_aggregator_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0039</td><td>docs/archive/conversations/Dominium_Architecture_IV/Dominium_Architecture_IV__04_registers.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0040</td><td>docs/archive/conversations/Dominium_Architecture_IV/Dominium_Architecture_IV__05_reader_brief.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0041</td><td>docs/archive/conversations/Dominium_Architecture_IV/Dominium_Architecture_IV__06_verification_and_audit.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0042</td><td>docs/archive/conversations/Dominium_Architecture_IV/Dominium_Architecture_IV__manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0043</td><td>docs/archive/conversations/Dominium_Complete_Conversation/00_final_manifest/Dominium_Complete_Conversation_ALL_FILES_FINAL__00_readme_and_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0044</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__00_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0045</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__01_human_readable_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0046</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__02_context_transfer_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0047</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__04_registers.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0048</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__05_aggregator_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0049</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__06_reader_brief.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0050</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__07_verification_and_audit.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0051</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__08_future_chat_bootstrap_prompt.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0052</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__09_in_chat_reader.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0053</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Entire_Conversation_Accompanying_Report__00_complete_bundle_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0054</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Entire_Conversation_Accompanying_Report__10_accompanying_detailed_summary_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0055</td><td>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Entire_Conversation_Accompanying_Report__README_FIRST.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0056</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__00_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0057</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__01_human_readable_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0058</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__02_context_transfer_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0059</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__04_registers.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0060</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__05_aggregator_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0061</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__06_reader_brief.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0062</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__07_verification_and_audit.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0063</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__08_future_chat_bootstrap_prompt.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0064</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__09_in_chat_reader.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0065</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__10_accompanying_detailed_summary_and_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0066</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__10_accompanying_full_conversation_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0067</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__10_accompanying_human_readable_conversation_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0068</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__10_accompanying_human_readable_detailed_summary_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0069</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__11_complete_bundle_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0070</td><td>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__12_bundle_verification.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0071</td><td>docs/archive/conversations/Dominium_Complete_Conversation/dominium_related_file/Dominium_Conversation_Complete_Companion_Report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0072</td><td>docs/archive/conversations/Dominium_Complete_Conversation/existing_companion_report_package/Dominium_Complete_Conversation_Companion_Report__01_accompanying_human_readable_detailed_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0073</td><td>docs/archive/conversations/Dominium_Complete_Conversation/existing_companion_report_package/Dominium_Complete_Conversation_Companion_Report__bundle_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0074</td><td>docs/archive/conversations/Dominium_Complete_Conversation/existing_companion_report_package/Dominium_Complete_Conversation_Companion_Report__human_readable_detailed_summary.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0075</td><td>docs/archive/conversations/Dominium_Complete_Conversation/existing_complete_preservation_package/Dominium_Complete_Conversation_Preservation__00_consolidated_package_index.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0076</td><td>docs/archive/conversations/Dominium_Complete_Conversation/existing_complete_preservation_package/Dominium_Complete_Conversation_Preservation__10_accompanying_human_readable_detailed_summary_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0077</td><td>docs/archive/conversations/Dominium_Complete_Conversation/existing_consolidated_package_artifact/Dominium_Conversation_Consolidated_File_Manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0078</td><td>docs/archive/conversations/Dominium_Complete_Conversation/existing_consolidated_package_artifact/Dominium_Conversation_Package_Verification_Report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0079</td><td>docs/archive/conversations/Dominium_Complete_Conversation/new_companion_report_and_bundle/Dominium_Conversation_Complete_Accompanying_Report__10_accompanying_human_readable_summary_and_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0080</td><td>docs/archive/conversations/Dominium_Complete_Conversation/new_companion_report_and_bundle/Dominium_Conversation_Complete_Accompanying_Report__11_combined_bundle_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0081</td><td>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__00_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0082</td><td>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__01_human_readable_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0083</td><td>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__02_context_transfer_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0084</td><td>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__04_registers.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0085</td><td>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__05_aggregator_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0086</td><td>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__06_reader_brief.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0087</td><td>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__07_verification_and_audit.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0088</td><td>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__08_future_chat_bootstrap_prompt.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0089</td><td>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__09_in_chat_reader.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0090</td><td>docs/archive/conversations/Domino_Dominium_Workbench/dominium_workbench_full_conversation_companion__bundle_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0091</td><td>docs/archive/conversations/Domino_Dominium_Workbench/dominium_workbench_full_conversation_companion__human_readable_detailed_summary_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0092</td><td>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__00_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0093</td><td>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__01_human_readable_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0094</td><td>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__02_context_transfer_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0095</td><td>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__04_registers.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0096</td><td>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__05_aggregator_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0097</td><td>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__06_reader_brief.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0098</td><td>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__07_verification_and_audit.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0099</td><td>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__08_future_chat_bootstrap_prompt.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0100</td><td>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__09_in_chat_reader.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0101</td><td>docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__00_manifest.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0102</td><td>docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__01_human_readable_report.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0103</td><td>docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__02_context_transfer_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0104</td><td>docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__04_registers.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0105</td><td>docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__05_aggregator_packet.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0106</td><td>docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__06_reader_brief.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0107</td><td>docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__07_verification_and_audit.md</td><td>docs_hygiene_candidate</td><td>Add or review status/header metadata in a later allowed docs-only task.</td><td>not_promoted</td></tr>
+<tr><td>DOC-PROMOTE-0108</td><td>docs/archive/conversations/Foundation_Workbenc</td></tr>
+</table></div>
+<aside class="callout verify"><strong>Verify</strong><p>This section is excerpted for readability. See the source path for the full report.</p></aside>
+<h2 id="contradictions-and-drift">Contradictions and Drift</h2>
+<aside class="callout source"><strong>Source</strong><p><code>DERIVED</code> <code>advisory_synthesis</code> <code>not_promoted</code> - Source: <code>docs/archive/docs_corpus/_audit/DOCS_CONTRADICTION_MATRIX_v0.md</code> - excerpted</p></aside>
+<h2 id="docs-contradiction-matrix">Docs Contradiction Matrix</h2>
+<p>Contradiction classes include current-doc vs canon, archive vs current, conversation vs current, planning vs queue, generated evidence vs source, duplicate shadows, stale external claims, and unclear same-tier conflicts. Findings below are deterministic review signals, not adjudications.</p>
+<div class="table-wrap"><table>
+<tr><th>Finding ID</th><th>Class</th><th>Sources</th><th>Authority Source</th><th>Claim</th><th>Severity</th><th>Disposition</th><th>User Review Question</th></tr>
+<tr><td>DOC-CONTRA-0001</td><td>archive_vs_current</td><td>docs/archive/audit/ARCH_AUDIT_CONSTITUTION.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0002</td><td>archive_vs_current</td><td>docs/archive/audit/ARTIFACT_MANIFEST_BASELINE.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0003</td><td>archive_vs_current</td><td>docs/archive/audit/FORKING_PROVIDES_BASELINE.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0004</td><td>archive_vs_current</td><td>docs/archive/audit/INSTALL_MANIFEST_BASELINE.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0005</td><td>archive_vs_current</td><td>docs/archive/audit/INSTANCE_MANIFEST_BASELINE.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0006</td><td>archive_vs_current</td><td>docs/archive/audit/INSTITUTIONAL_COMMS_BASELINE.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0007</td><td>archive_vs_current</td><td>docs/archive/audit/MACROCAPSULE_BEHAVIOR_BASELINE.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0008</td><td>archive_vs_current</td><td>docs/archive/audit/SAVE_MANIFEST_BASELINE.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0009</td><td>archive_vs_current</td><td>docs/archive/audit/SIG7_RETRO_AUDIT.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0010</td><td>archive_vs_current</td><td>docs/archive/audit/SUPERVISOR_HARDENING_FINAL.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0011</td><td>archive_vs_current</td><td>docs/archive/audit/SUPERVISOR_SURFACE_MAP.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0012</td><td>archive_vs_current</td><td>docs/archive/audit/SYSTEM_TIER_ROI_BASELINE.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0013</td><td>archive_vs_current</td><td>docs/archive/restructure/FUTURE_LAYOUT_PROPOSAL.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0014</td><td>archive_vs_current</td><td>docs/archive/restructure/RESTRUCTURE_RISKS.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0015</td><td>archive_vs_current</td><td>docs/archive/restructure/SHIM_POLICY.md</td><td>AGENTS.md; docs/planning/AUTHORITY_ORDER.md</td><td>Archive path has status <code>CANONICAL</code>.</td><td>medium</td><td>quarantine_for_review</td><td>Should this archive artifact remain historical or be superseded by a current doc cross-reference?</td></tr>
+<tr><td>DOC-CONTRA-0016</td><td>duplicate_shadow</td><td>docs/repo/repox/APRX_INTEGRATION_HOOKS.md, docs/archive/repox/APRX_INTEGRATION_HOOKS.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>aprx_integration_hooks.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0017</td><td>duplicate_shadow</td><td>docs/architecture/ARCHITECTURE.md, docs/archive/conversations/_wiki/topics/architecture.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>architecture.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0018</td><td>duplicate_shadow</td><td>docs/testing/ci/CI_ENFORCEMENT_MATRIX.md, docs/archive/stray_root_docs/CI_ENFORCEMENT_MATRIX.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>ci_enforcement_matrix.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0019</td><td>duplicate_shadow</td><td>docs/reference/specs/CIV0_POPULATION_GENESIS.md, docs/archive/stray_root_docs/CIV0_POPULATION_GENESIS.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>civ0_population_genesis.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0020</td><td>duplicate_shadow</td><td>docs/reference/specs/CIV0a_SURVIVAL_LOOP.md, docs/archive/stray_root_docs/CIV0a_SURVIVAL_LOOP.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>civ0a_survival_loop.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0021</td><td>duplicate_shadow</td><td>docs/reference/specs/CIV1_CITIES_INFRA.md, docs/archive/stray_root_docs/CIV1_CITIES_INFRA.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>civ1_cities_infra.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0022</td><td>duplicate_shadow</td><td>docs/reference/specs/CIV2_GOVERNANCE.md, docs/archive/stray_root_docs/CIV2_GOVERNANCE.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>civ2_governance.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0023</td><td>duplicate_shadow</td><td>docs/reference/specs/CIV3_KNOWLEDGE_TECH.md, docs/archive/stray_root_docs/CIV3_KNOWLEDGE_TECH.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>civ3_knowledge_tech.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0024</td><td>duplicate_shadow</td><td>docs/reference/specs/CIV4_SCALE_AND_LOGISTICS.md, docs/archive/stray_root_docs/CIV4_SCALE_AND_LOGISTICS.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>civ4_scale_and_logistics.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0025</td><td>duplicate_shadow</td><td>docs/development/CONTRIBUTING.md, docs/archive/stray_root_docs/CONTRIBUTING.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>contributing.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0026</td><td>duplicate_shadow</td><td>docs/testing/ci/DETERMINISM_TEST_MATRIX.md, docs/archive/stray_root_docs/DETERMINISM_TEST_MATRIX.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>determinism_test_matrix.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0027</td><td>duplicate_shadow</td><td>docs/architecture/INVARIANTS.md, docs/archive/architecture/INVARIANTS.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>invariants.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0028</td><td>duplicate_shadow</td><td>docs/development/guides/OFFLINE_AND_LOCAL_MP.md, docs/archive/stray_root_docs/OFFLINE_AND_LOCAL_MP.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>offline_and_local_mp.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0029</td><td>duplicate_shadow</td><td>docs/governance/policies/PERF_BUDGETS.md, docs/archive/stray_root_docs/PERF_BUDGETS.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>perf_budgets.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0030</td><td>duplicate_shadow</td><td>docs/release/mvp/PRODUCT_BOOT_MATRIX.md, docs/archive/audit/convergence_steps/product_boot_matrix.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>product_boot_matrix.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0031</td><td>duplicate_shadow</td><td>docs/README.md, docs/archive/README.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>readme.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0032</td><td>duplicate_shadow</td><td>docs/reference/schema/SCHEMA_CANON_ALIGNMENT.md, docs/archive/audit/SCHEMA_CANON_ALIGNMENT.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>schema_canon_alignment.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0033</td><td>duplicate_shadow</td><td>docs/governance/policies/VALIDATION_AND_GOVERNANCE.md, docs/archive/stray_root_docs/VALIDATION_AND_GOVERNANCE.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>validation_and_governance.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0034</td><td>duplicate_shadow</td><td>docs/audit/VALIDATION_INVENTORY.md, docs/archive/audit/VALIDATION_INVENTORY.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>validation_inventory.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0035</td><td>duplicate_shadow</td><td>docs/audit/VALIDATION_REPORT_FAST.md, docs/archive/audit/VALIDATION_REPORT_FAST.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>validation_report_fast.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0036</td><td>duplicate_shadow</td><td>docs/audit/VALIDATION_UNIFY_FINAL.md, docs/archive/audit/VALIDATION_UNIFY_FINAL.md</td><td>current docs outrank archive in their scope; archive remains historical</td><td>Archive and current docs share filename <code>validation_unify_final.md</code>.</td><td>low</td><td>review_shadow_before_promotion</td><td>Does the archive version contain useful historical context that should be summarized elsewhere?</td></tr>
+<tr><td>DOC-CONTRA-0037</td><td>unclear_same_tier_conflict</td><td>docs/archive/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0038</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__00_manifest.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0039</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__01_human_readable_report.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0040</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__02_context_transfer_packet.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0041</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__04_registers.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0042</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__05_aggregator_packet.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0043</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__06_reader_brief.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0044</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__07_verification_and_audit.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0045</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__08_future_chat_bootstrap_prompt.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0046</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__09_in_chat_reader.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0047</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__10_accompanying_human_readable_detailed_summary_report.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0048</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__11_bundle_integrity_check.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0049</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__01_full_chat_report.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0050</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__03_aggregator_packet.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0051</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__04_registers.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0052</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__05_reader_brief.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0053</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__06_verification_and_audit.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0054</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__manifest.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0055</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__01_full_chat_report.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0056</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__03_aggregator_packet.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0057</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__04_registers.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0058</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__05_reader_brief.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0059</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__06_verification_and_audit.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0060</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__manifest.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0061</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Dominium_Architecture_II/Dominium_Architecture_II__01_full_chat_report.md</td><td>metadata header audit</td><td>Markdown file lacks a Status header, making authority/freshness less explicit.</td><td>low</td><td>candidate_for_docs_hygiene_review</td><td>Should this doc get an explicit authority/status header in a later docs-only promotion wave?</td></tr>
+<tr><td>DOC-CONTRA-0062</td><td>unclear_same_tier_conflict</td><td>docs/archive/conversations/Dominium_Architecture_II/Dominium_Archi</td></tr>
+</table></div>
+<aside class="callout verify"><strong>Verify</strong><p>This section is excerpted for readability. See the source path for the full report.</p></aside>
+<h2 id="staleness-and-verification">Staleness and Verification</h2>
+<aside class="callout source"><strong>Source</strong><p><code>DERIVED</code> <code>advisory_synthesis</code> <code>not_promoted</code> - Source: <code>docs/archive/docs_corpus/_audit/DOCS_STALENESS_AND_VERIFICATION_v0.md</code> - excerpted</p></aside>
+<h2 id="docs-staleness-and-verification">Docs Staleness and Verification</h2>
+<p>This register identifies material that should be verified before use as current guidance.</p>
+<div class="table-wrap"><table>
+<tr><th>Path</th><th>Family</th><th>Freshness</th><th>Status</th><th>Last Reviewed</th><th>Disposition</th></tr>
+<tr><td>docs/.gitignore</td><td>other</td><td>unclear</td><td></td><td></td><td>verify_before_current_use</td></tr>
+<tr><td>docs/apps/UI_MODES.md</td><td>apps</td><td>superseded</td><td>DERIVED</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/architecture/ARCH_REPO_LAYOUT.md</td><td>architecture</td><td>superseded</td><td>CANONICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/architecture/DIRECTORY_CONTEXT.md</td><td>architecture</td><td>superseded</td><td>DERIVED</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/architecture/DIRECTORY_STRUCTURE.md</td><td>architecture</td><td>superseded</td><td>DERIVED</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/architecture/FROZEN_CONTRACT_HASHES.json</td><td>architecture</td><td>unclear</td><td></td><td></td><td>verify_before_current_use</td></tr>
+<tr><td>docs/architecture/LOCKLIST_OVERRIDES.json</td><td>architecture</td><td>unclear</td><td></td><td></td><td>verify_before_current_use</td></tr>
+<tr><td>docs/architecture/SEMANTIC_STABILITY_LOCK.json</td><td>architecture</td><td>unclear</td><td></td><td></td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/README.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/STATUS_NOW.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-15</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/SURVIVAL_SLICE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-13</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/app/APR1_RUNTIME_AUDIT.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/app/APR1_TESTX_COMPLIANCE.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/app/APR2_TESTX_COMPLIANCE.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/app/APR3_TESTX_COMPLIANCE.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/app/APR3_UI_MODE_AUDIT.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/app/APR4_TESTX_COMPLIANCE.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/architecture/ARCH_GLOSSARY.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-13</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/architecture/COMPATIBILITY_PHILOSOPHY.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/architecture/DISTRIBUTED_SIM_MODEL.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/architecture/INVARIANTS.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/architecture/MENTAL_MODEL.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/architecture/NON_GOALS.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/architecture/TERMINOLOGY.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/architecture/VISITABILITY_AND_REALITY.md</td><td>archive</td><td>superseded</td><td>HISTORICAL</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ACTION_SURFACE_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/AG1_MVP_VALIDATION.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/AG2_MVP_COMPLETION.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ANTI_CHEAT_FRAMEWORK_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/APPSHELL0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/APPSHELL1_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/APPSHELL2_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/APPSHELL3_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/APPSHELL4_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/APPSHELL6_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/APPSHELL_BOOTSTRAP_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/APPSHELL_COMMANDS_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/APPSHELL_IPC_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/APPSHELL_LOGGING_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/APPSHELL_TUI_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCHITECTURE_GRAPH_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-26</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCHITECTURE_HEALTH.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCHITECTURE_HEALTH_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCHIVE_OFFLINE0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-25</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCHIVE_POLICY0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCHIVE_POLICY_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_AUDIT0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-12</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_AUDIT1_FINAL_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_AUDIT2_CONSTITUTION.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_AUDIT2_FINAL.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-05-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_AUDIT2_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-05-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_AUDIT2_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_AUDIT_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_AUDIT_CONSTITUTION.md</td><td>archive</td><td>provisional</td><td>CANONICAL</td><td>2026-03-12</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_AUDIT_FIX_PLAN.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_AUDIT_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-05-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_GRAPH_BOOTSTRAP.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-26</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_MATRIX0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARCH_MATRIX_FINAL.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/ARTIFACT_MANIFEST_BASELINE.md</td><td>archive</td><td>provisional</td><td>CANONICAL</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/AUDITX_BASELINE_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/AUDITX_OVERHAUL_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BASELINE_UNIVERSE0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-05-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BASELINE_UNIVERSE_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-05-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BASELINE_UNIVERSE_VERIFY.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-05-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BEHAVIORAL_COMPONENTS_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-28</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BINARY_BUILD_MATRIX.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-08</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BODY_COLLISION_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BOM_AG_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-27</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BOUNDARY_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-08</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BOUNDARY_BLOCKERS_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BR0_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-07</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BR0_COMPLETION_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-07</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BR0_PUBLIC_HEADER_FAILS.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-07</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BR0_RERUN_SEQUENCE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-07</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BR0_STUB_RESOLUTION.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-07</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/BUILD_PRESET_AND_WORKFLOW_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-09</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CAMERA_VIEW_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CANON_CONFORMANCE_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-15</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CANON_MAP.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CAPABILITY_REGISTRY_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CAP_NEG1_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-10</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CAP_NEG2_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-10</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CAP_NEG3_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-10</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CAP_NEG4_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CAP_NEGOTIATION_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-10</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CAP_NEG_FINAL_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CHEM1_COUPLING_VALIDATION.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CHEM1_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CHEM2_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CHEM3_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CHEM4_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CHEMISTRY_FINAL_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CHEM_DEGRADATION_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CIVILISATION_SUBSTRATE_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-26</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CI_RUN_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-30</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CLEAN_ROOM_win64.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CODE_DATA_SEPARATION_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-08</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COHORT_REFINEMENT_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-26</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COMBUSTION_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COMMITMENTS_AND_REENACTMENT_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-27</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COMPARTMENT_FLOWS_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-28</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COMPAT_SEM1_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-10</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COMPAT_SEM2_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-10</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COMPAT_SEM3_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-10</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COMPILE0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COMPILED_MODEL_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-06</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COMPONENT_GRAPH0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COMPONENT_GRAPH_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COMPUTE_BUDGET_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONCURRENCY0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONCURRENCY_CONTRACT_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONCURRENCY_SCAN_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-05-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONFIDENCE_STATEMENT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-08</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONSERVATION_LEDGER_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-26</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONSISTENCY_AUDIT_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-08</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONSISTENCY_MATRIX.json</td><td>archive</td><td>provisional</td><td></td><td></td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONSOLIDATION_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-13</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONSTITUTIVE_MODEL_CONSTITUTION_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONSTITUTIVE_MODEL_ENGINE_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONSTRUCTION_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-27</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONTENT_STORE_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONTROL_IR_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONTROL_NEGOTIATION_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONTROL_PLANE_CONSTITUTION_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-28</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONTROL_PLANE_ENFORCEMENT_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONTROL_PLANE_ENGINE_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-28</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONTROL_PLANE_FINAL_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONTROL_SUBSTRATE_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CONVERGENCE_FINAL.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-13</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CORE_ABSTRACTIONS_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-28</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/COUPLE0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-15</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CTRL0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-28</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CTRL10_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CTRL1_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-28</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CTRL2_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CTRL3_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CTRL4_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CTRL5_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CTRL6_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CTRL7_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CTRL8_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CTRL9_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/CURRENT_STATE_DETAILED_REPORT_2026-03-31.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-31</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DATA_FORMAT_COMPAT_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DECAY_MAINTENANCE_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-27</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DEGRADE_LADDER_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-10</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DEMOGRAPHY_OPTIONALITY_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-26</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DEPRECATION_FRAMEWORK_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DETERMINISM_AND_PERFORMANCE_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-09</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DETERMINISM_ENVELOPE_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-15</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DEVELOPER_ACCELERATION_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-15</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIAG0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-11</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIEGETIC_FIRST_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIEGETIC_INSTRUMENTS_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DISASTER_SUITE_BASELINE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-05-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DISASTER_SUITE_RUN.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-05-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DISASTER_TEST0_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-05-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST1_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-13</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST2_FINAL.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST2_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST3_FINAL.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST4_FINAL.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST5_UX_POLISH_FINAL.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST5_UX_SMOKE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST6_FINAL.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST6_INTEROP_contract_mismatch_read_only.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST6_INTEROP_contract_mismatch_strict.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST6_INTEROP_minor_protocol_drift.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST6_INTEROP_pack_lock_mismatch.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST6_INTEROP_same_build_identical_rebuild.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST6_INTEROP_same_build_same_build.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST6_INTEROP_same_version_cross_platform.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-13</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST_CONTENT_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-13</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST_EXECUTION_PRECHECK.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-26</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST_FINAL_DRYRUN.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-26</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST_PLATFORM_MATRIX_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST_REFINE1_RETRO_AUDIT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST_TREE_ASSEMBLY_FINAL.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-13</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DIST_VERIFY_win64.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-14</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DOCS_AUDIT_PROMPT0.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-01</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DOC_CANON_ALIGNMENT_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-08</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DOC_DRIFT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-07</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DOC_DRIFT_MATRIX.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DOC_GAPS.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DOC_INDEX.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DOMAIN_FOUNDATION_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-02-15</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DOMAIN_REGISTRY_REPORT.json</td><td>archive</td><td>provisional</td><td></td><td></td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archive/audit/DOMAIN_REGISTRY_REPORT.md</td><td>archive</td><td>provisional</td><td>DERIVED</td><td>2026-03-16</td><td>verify_before_current_use</td></tr>
+<tr><td>docs/archiv</td></tr>
+</table></div>
+<aside class="callout verify"><strong>Verify</strong><p>This section is excerpted for readability. See the source path for the full report.</p></aside>
+<h2 id="reading-paths">Reading Paths</h2>
+<aside class="callout source"><strong>Source</strong><p><code>DERIVED</code> <code>advisory_synthesis</code> <code>not_promoted</code> - Source: <code>docs/archive/docs_corpus/_wiki/reading_paths.md</code> - included</p></aside>
+<h2 id="reading-paths">Reading Paths</h2>
+<div class="table-wrap"><table>
+<tr><th>Reading Path</th><th>Start With</th></tr>
+<tr><td>Start Here</td><td><code>_book/chapters/00_front_matter.md</code>, then <code>_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md</code>.</td></tr>
+<tr><td>Current Authority Reader</td><td><code>_audit/DOCS_AUTHORITY_MAP_v0.md</code> and <code>_reconciliation/DOCS_REPO_TRUTH_CROSSWALK_v0.md</code>.</td></tr>
+<tr><td>Canon and Architecture Reader</td><td><code>_reconciliation/DOCS_CANON_ARCHITECTURE_ALIGNMENT_v0.md</code>.</td></tr>
+<tr><td>Runtime/Product Reader</td><td><code>_wiki/topics/runtime_product_tooling.md</code>.</td></tr>
+<tr><td>Workbench/AIDE/Codex Reader</td><td><code>_wiki/topics/workbench_aide_codex.md</code>.</td></tr>
+<tr><td>Release/Setup/Launcher Reader</td><td><code>_wiki/topics/release_setup_launcher.md</code>.</td></tr>
+<tr><td>World/Simulation/Domain Reader</td><td><code>_wiki/topics/world_simulation_domain.md</code>.</td></tr>
+<tr><td>Archive Archaeology Reader</td><td><code>_archive/DOCS_ARCHIVE_ATLAS_v0.md</code>.</td></tr>
+<tr><td>Conversation Corpus Reader</td><td><code>_archive/DOCS_CONVERSATION_CORPUS_INTEGRATION_v0.md</code>.</td></tr>
+<tr><td>Decision Review Reader</td><td><code>_reconciliation/DOCS_DECISION_DOCKET_v0.md</code>.</td></tr>
+<tr><td>Promotion Review Reader</td><td><code>_reconciliation/DOCS_PROMOTION_QUEUE_v0.md</code>.</td></tr>
+<tr><td>Contradiction/Staleness Reader</td><td><code>_audit/DOCS_CONTRADICTION_MATRIX_v0.md</code> and <code>_audit/DOCS_STALENESS_AND_VERIFICATION_v0.md</code>.</td></tr>
+<tr><td>Source Provenance Reader</td><td><code>_intake/DOCS_SOURCE_INDEX_v0.md</code>.</td></tr>
+</table></div>
+<h1 id="compact-indexes">Compact Indexes</h1>
+<aside class="callout source"><strong>Source</strong><p>These compact indexes preserve source coverage without turning the reader edition into a filesystem dump.</p></aside>
+<h2 id="authority-class-summary">Authority Class Summary</h2>
+<div class="table-wrap"><table>
+<tr><th>Authority Class</th><th>Count</th></tr>
+<tr><td>architecture_current</td><td>324</td></tr>
+<tr><td>archive_historical</td><td>165</td></tr>
+<tr><td>archive_stale</td><td>2295</td></tr>
+<tr><td>audit_evidence</td><td>8</td></tr>
+<tr><td>canonical</td><td>2</td></tr>
+<tr><td>contract_or_schema_reference</td><td>9</td></tr>
+<tr><td>conversation_advisory</td><td>606</td></tr>
+<tr><td>derived_synthesis</td><td>155</td></tr>
+<tr><td>development_guidance</td><td>339</td></tr>
+<tr><td>domain_guidance</td><td>253</td></tr>
+<tr><td>planning_current</td><td>77</td></tr>
+<tr><td>release_current</td><td>95</td></tr>
+<tr><td>repo_current</td><td>196</td></tr>
+<tr><td>unknown_or_unclassified</td><td>592</td></tr>
+</table></div>
+<h2 id="book-role-summary">Book Role Summary</h2>
+<div class="table-wrap"><table>
+<tr><th>Book Role</th><th>Count</th></tr>
+<tr><td>excluded_binary_or_archive</td><td>52</td></tr>
+<tr><td>main_reader</td><td>608</td></tr>
+<tr><td>manifest_only</td><td>57</td></tr>
+<tr><td>reference_appendix</td><td>2275</td></tr>
+<tr><td>searchable_html_only</td><td>314</td></tr>
+<tr><td>summarized_reader</td><td>1810</td></tr>
+</table></div>
+<h2 id="high-authority-source-paths">High-Authority Source Paths</h2>
+<ul>
+<li><code>README.md</code></li>
+<li><code>docs/README.md</code></li>
+<li><code>AGENTS.md</code></li>
+<li><code>docs/canon/constitution_v1.md</code></li>
+<li><code>docs/canon/glossary_v1.md</code></li>
+<li><code>docs/repo/FOUNDATION_LOCK.md</code></li>
+<li><code>docs/architecture/WHAT_THIS_IS.md</code></li>
+<li><code>docs/architecture/WHAT_THIS_IS_NOT.md</code></li>
+<li><code>docs/architecture/INVARIANTS.md</code></li>
+<li><code>docs/architecture/CANONICAL_SYSTEM_MAP.md</code></li>
+<li><code>docs/architecture/CONTRACTS_INDEX.md</code></li>
+<li><code>docs/architecture/CANON_INDEX.md</code></li>
+</ul>
+  </main>
+</body>
+</html>

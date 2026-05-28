@@ -1,0 +1,1970 @@
+Dominium Docs Corpus Omnibus
+Reader Edition
+
+Version: 1
+Authority Class: advisory_synthesis
+Promotion Status: not_promoted
+
+2026-05-29
+
+Contents
+1 Dominium Docs Corpus Omnibus
+
+1
+
+1.1
+
+Styled Reader, Reference, Archive, Conversation, and Reconciliation Guide . . . . . . . . . . . .
+
+1
+
+1.2
+
+Authority and Non-Promotion Notice . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1
+
+1.3
+
+How to Read This Edition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1
+
+1.4
+
+Corpus Snapshot . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1
+
+1.5
+
+Current Project Picture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1
+
+1.6
+
+Docs Current Project Picture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2
+
+1.6.1
+
+Current Orientation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2
+
+1.6.2
+
+Corpus Scale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2
+
+1.6.3
+
+What Is Safe To Do With This Output . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2
+
+1.6.4
+
+What This Output Does Not Do . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2
+
+1.7
+
+Current Repo Truth Crosswalk . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2
+
+1.8
+
+Docs Repo Truth Crosswalk . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3
+
+1.9
+
+Canon and Architecture Alignment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5
+
+1.10 Docs Canon Architecture Alignment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5
+
+1.10.1 Counts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5
+
+1.10.2 Canon Files . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5
+
+1.10.3 Architecture Files . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5
+
+1.11 Archive Archaeology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+1.12 Docs Archive Atlas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+1.12.1 Archive Family Counts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+1.12.2 Interpretation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+9
+
+1.13 Conversation Corpus Integration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+9
+
+1.14 Docs Conversation Corpus Integration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+9
+
+1.14.1 Scope . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+9
+
+1.14.2 Interpretation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+9
+
+1.14.3 Key Existing Surfaces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+9
+
+1.15 Decision Docket Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+1.16 Docs Decision Docket . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+1.17 Promotion Roadmap Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+1.18 Docs Promotion Queue
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+ii
+
+CONTENTS
+
+iii
+
+1.19 Contradictions and Drift . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+1.20 Docs Contradiction Matrix . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+1.21 Staleness and Verification . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+1.22 Docs Staleness and Verification . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+1.23 Reading Paths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+1.24 Reading Paths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+2 Compact Indexes
+
+30
+
+2.1
+
+Authority Class Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+
+2.2
+
+Book Role Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+
+2.3
+
+High-Authority Source Paths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+
+iv
+
+CONTENTS
+
+Chapter 1
+
+Dominium Docs Corpus Omnibus
+1.1
+
+Styled Reader, Reference, Archive, Conversation, and Reconciliation Guide
+
+Version: 1
+
+1.2
+
+Authority and Non-Promotion Notice
+
+Not Promoted
+This styled v1 reader is DERIVED and advisory. It is not canon, does not open blocked work, and does
+not promote archive or conversation-derived claims into current repo truth.
+
+1.3
+
+How to Read This Edition
+
+Authority
+Use this Reader PDF for orientation and fast recall. Use the Reference PDF for dense registers and full
+source indexes. Use the HTML edition for search, links, and smaller screens.
+
+1.4
+
+Corpus Snapshot
+
+Source
+Represented docs files: 5116. Full-text reader/reference selections: 147. Summarized/indexed files:
+4967. Manifest-only or binary files: 77.
+
+1.5
+
+Current Project Picture
+
+Source
+DERIVED
+advisory_synthesis
+not_promoted
+Source:
+reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md - included
+1
+
+docs/archive/docs_corpus/_
+
+2
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+
+1.6
+
+Docs Current Project Picture
+
+Dominium’s current documentation picture is authority layered. Canon, glossary, AGENTS.md, contract/schema
+law, current queue state, and validated repo artifacts are the highest-confidence sources. Archive and conversation material can explain how earlier ideas developed, but it cannot become current truth through this docscorpus task.
+
+1.6.1
+
+Current Orientation
+
+• Project orientation: README.md
+• Documentation taxonomy: docs/README.md
+• Canon: docs/canon/constitution_v1.md
+• Glossary: docs/canon/glossary_v1.md
+• Agent governance: AGENTS.md
+• Queue state: .aide/queue/current.toml
+• Foundation status: docs/repo/FOUNDATION_LOCK.md
+
+1.6.2
+
+Corpus Scale
+
+• Files represented: 5116
+• Markdown files: 4671
+• Archive/conversation files: 3221
+
+1.6.3
+
+What Is Safe To Do With This Output
+
+• Read the docs corpus as a map.
+• Use archive material for provenance and review.
+• Use generated contradictions and promotion queues to plan later tasks.
+• Start later live-doc patches only through explicit narrow promotion tasks.
+
+1.6.4
+
+What This Output Does Not Do
+
+• It does not promote archive claims.
+• It does not rewrite canon, contracts, schema, implementation, release, or queue state.
+• It does not open blocked renderer, gameplay, provider runtime, package runtime, broad Workbench UI,
+native GUI, or release publication work.
+
+1.7
+
+Current Repo Truth Crosswalk
+
+Source
+DERIVED
+advisory_synthesis
+not_promoted
+Source:
+reconciliation/DOCS_REPO_TRUTH_CROSSWALK_v0.md - included
+
+docs/archive/docs_corpus/_
+
+1.8. DOCS REPO TRUTH CROSSWALK
+
+1.8
+
+3
+
+Docs Repo Truth Crosswalk
+
+This crosswalk starts with current repo authority and uses archive/conversation material only as supporting
+historical context.
+
+4
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+
+Topic ID
+
+Topic
+
+Source Paths
+
+Classification
+
+Disposition
+
+project_identity
+
+Project identity and
+purpose
+
+README.md; docs/
+README.md
+
+current_repo_truth
+
+Use current repo
+orientation first;
+archive and
+conversations may
+only explain history.
+
+canon_glossary_
+authority
+
+Canon and glossary
+authority
+
+docs/canon/
+constitution_v1.md;
+docs/canon/
+glossary_v1.md;
+AGENTS.md
+
+current_repo_truth
+
+Canon, glossary, and
+AGENTS outrank
+archive and
+generated outputs.
+
+engine_game_
+runtime_product_
+boundaries
+
+Engine/game/
+runtime/product
+boundaries
+
+README.md; docs/
+architecture; docs/
+archive/
+conversations/_
+reconciliation
+
+consistent_but_
+review_required
+
+Boundary claims
+need current-doc
+support before
+promotion.
+
+determinism_
+replay_provenance
+
+Determinism, replay,
+and provenance
+
+AGENTS.md; docs/
+canon/constitution_
+v1.md; docs/
+planning/
+SNAPSHOT_
+INTAKE_
+PROTOCOL.md
+
+current_repo_truth
+
+Determinism and
+provenance
+constraints are
+binding where scoped
+by canon and
+governance.
+
+process_only_
+mutation
+
+Process-only
+mutation
+
+AGENTS.md; docs/
+canon/constitution_
+v1.md
+
+current_repo_truth
+
+Authoritative truth
+mutation must occur
+through lawful
+deterministic Process
+execution.
+
+law_authority_
+refusal_capabilities
+
+Law, authority,
+refusal, and
+capability model
+
+AGENTS.md; docs/
+canon/constitution_
+v1.md; docs/
+reference/contracts
+
+current_repo_
+truth_with_review_
+needed
+
+Current law and
+contracts govern;
+archive claims are
+advisory only.
+
+pack_driven_
+integration
+
+Pack-driven
+integration
+
+AGENTS.md; docs/
+canon/constitution_
+v1.md
+
+current_repo_truth
+
+Optional content and
+capabilities must
+remain pack- and
+registry-driven.
+
+profiles_over_modes
+
+Profiles over runtime
+mode flags
+
+AGENTS.md; docs/
+canon/constitution_
+v1.md
+
+current_repo_truth
+
+Hardcoded runtime
+mode branches
+remain prohibited.
+
+workbench_aide_
+codex_tooling
+
+Workbench/AIDE/
+Codex/tooling role
+
+AGENTS.md; .aide/
+queue/current.toml;
+docs/archive/
+conversations/_
+synthesis
+
+blocked_scope_
+sensitive
+
+Tooling is active, but
+broad Workbench UI
+and native GUI work
+remain blocked by
+the queue.
+
+conversation_
+corpus_role
+
+Conversation corpus
+role
+
+docs/archive/
+conversations/
+README.md; docs/
+archive/
+conversations/_
+exports
+
+conversation_
+advisory_only
+
+Conversation
+material is derived
+historical evidence,
+not current truth.
+
+release_setup_
+launcher_platform
+
+Release/setup/
+launcher/platform
+state
+
+.aide/queue/current.
+toml; docs/release;
+docs/archive/
+conversations/_
+promotion
+
+blocked_scope_
+sensitive
+
+Release publication
+remains blocked
+unless a stronger
+current queue source
+opens it.
+
+renderer_ui_native_
+gui_scope
+
+Renderer/UI/native
+GUI scope
+
+.aide/queue/current.
+toml; docs/archive/
+conversations/_
+reconciliation
+
+blocked_by_
+current_queue
+
+Renderer
+implementation and
+native GUI work
+remain blocked.
+
+provider_package_
+runtime_scope
+
+Provider/package
+runtime scope
+
+.aide/queue/current.
+toml; docs/archive/
+conversations/_
+
+blocked_by_
+current_queue
+
+Provider runtime,
+package runtime, and
+runtime module
+
+1.9. CANON AND ARCHITECTURE ALIGNMENT
+
+1.9
+
+5
+
+Canon and Architecture Alignment
+
+Source
+DERIVED
+advisory_synthesis
+not_promoted
+Source:
+docs/archive/docs_corpus/_
+reconciliation/DOCS_CANON_ARCHITECTURE_ALIGNMENT_v0.md - excerpted
+
+1.10
+
+Docs Canon Architecture Alignment
+
+This report maps high-authority documentation families without changing them.
+
+1.10.1
+
+Counts
+
+• Canon files: 2
+• Architecture files: 324
+• Reference contract docs: 9
+
+1.10.2
+
+Canon Files
+
+Path
+
+Status
+
+Stability
+
+docs/canon/constitution_
+v1.md
+
+CANONICAL
+
+stable
+
+docs/canon/glossary_v1.
+md
+
+CANONICAL
+
+stable
+
+1.10.3
+
+Binding Sources
+
+Architecture Files
+
+Row 1 Path: docs/architecture/ADAPTER_PATTERN.md; Status: DERIVED; Freshness: current; Risk:
+medium
+Row 2 Path: docs/architecture/ADOPTION_PROTOCOL.md; Status: CANONICAL; Freshness: current;
+Risk: medium
+Row 3 Path: docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md; Status: DERIVED;
+Freshness: current; Risk: medium
+Row 4 Path: docs/architecture/AI_BUDGET_MODEL.md; Status: CANONICAL; Freshness: current; Risk:
+medium
+Row 5 Path: docs/architecture/AI_INTENT_MODEL.md; Status: CANONICAL; Freshness: current; Risk:
+medium
+Row 6 Path: docs/architecture/ANTI_CHEAT_AND_INTEGRITY.md; Status: CANONICAL; Freshness:
+current; Risk: medium
+Row 7 Path: docs/architecture/ANTI_CHEAT_AS_LAW.md; Status: CANONICAL; Freshness: current;
+Risk: medium
+Row 8 Path: docs/architecture/ANTI_ENTROPY_RULES.md; Status: CANONICAL; Freshness: current;
+Risk: medium
+
+6
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+
+Row 9 Path: docs/architecture/APPLICATION_CONTRACTS.md; Status: DERIVED; Freshness: current;
+Risk: medium
+Row 10 Path: docs/architecture/APP_AUTOMATION_MODEL.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 11 Path: docs/architecture/APP_CANON0.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 12 Path: docs/architecture/APP_CANON1.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 13 Path: docs/architecture/ARCH0_CONSTITUTION.md; Status: CANONICAL; Freshness: current;
+Risk: medium
+Row 14 Path: docs/architecture/ARCHITECTURE.md; Status: CANONICAL; Freshness: current; Risk:
+medium
+Row 15 Path: docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md; Status: DERIVED; Freshness:
+current; Risk: medium
+Row 16 Path: docs/architecture/ARCHITECTURE_LAYERS.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 17 Path: docs/architecture/ARCHIVAL_AND_PERMANENCE.md; Status: CANONICAL; Freshness:
+current; Risk: medium
+Row 18 Path: docs/architecture/ARCHIVE_MANIFEST.md; Status: CANONICAL; Freshness: current;
+Risk: medium
+Row 19 Path: docs/architecture/ARCH_BUILD_ENFORCEMENT.md; Status: CANONICAL; Freshness:
+current; Risk: medium
+Row 20 Path: docs/architecture/ARCH_CHANGE_PROCESS.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 21 Path: docs/architecture/ARCH_ENFORCEMENT.md; Status: CANONICAL; Freshness: current;
+Risk: medium
+Row 22 Path: docs/architecture/ARCH_REPO_LAYOUT.md; Status: CANONICAL; Freshness: superseded; Risk: medium
+Row 23 Path: docs/architecture/ARCH_SPEC_OWNERSHIP.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 24 Path: docs/architecture/ARTIFACT_LIFECYCLE.md; Status: DERIVED; Freshness: current; Risk:
+medium
+Row 25 Path: docs/architecture/ARTIFACT_MODEL.md; Status: CANONICAL; Freshness: current; Risk:
+medium
+Row 26 Path: docs/architecture/AUDITABILITY_AND_DISCLOSURE.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 27 Path: docs/architecture/AUTHORITY_AND_ENTITLEMENTS.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 28 Path: docs/architecture/AUTHORITY_AND_OMNIPOTENCE.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 29 Path: docs/architecture/AUTHORITY_IN_REALITY.md; Status: CANONICAL; Freshness: current; Risk: medium
+
+1.10. DOCS CANON ARCHITECTURE ALIGNMENT
+
+7
+
+Row 30 Path: docs/architecture/AUTHORITY_MODEL.md; Status: CANONICAL; Freshness: current;
+Risk: medium
+Row 31 Path: docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md; Status: DERIVED;
+Freshness: current; Risk: medium
+Row 32 Path: docs/architecture/BOUNDARY_ENFORCEMENT.md; Status: DERIVED; Freshness: current; Risk: medium
+Row 33 Path: docs/architecture/BUDGET_POLICY.md; Status: DERIVED; Freshness: current; Risk: medium
+Row 34 Path: docs/architecture/BUGREPORT_MODEL.md; Status: CANONICAL; Freshness: current;
+Risk: medium
+Row 35 Path: docs/architecture/BUILD_IDENTITY_MODEL.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 36 Path: docs/architecture/BUNDLE_MODEL.md; Status: CANONICAL; Freshness: current; Risk:
+medium
+Row 37 Path: docs/architecture/CANONICAL_SYSTEM_MAP.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 38 Path: docs/architecture/CANON_CUT_LINE.md; Status: CANONICAL; Freshness: current; Risk:
+medium
+Row 39 Path: docs/architecture/CANON_INDEX.md; Status: CANONICAL; Freshness: current; Risk:
+medium
+Row 40 Path: docs/architecture/CAPABILITY_BASELINES.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 41 Path: docs/architecture/CAPABILITY_ONLY_CANON.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 42 Path: docs/architecture/CHANGELOG_ARCH.md; Status: CANONICAL; Freshness: current; Risk:
+medium
+Row 43 Path: docs/architecture/CHANGE_PROTOCOL.md; Status: CANONICAL; Freshness: current;
+Risk: medium
+Row 44 Path: docs/architecture/CHEATS_ARE_JUST_LAWS.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 45 Path: docs/architecture/CHECKPOINTING_MODEL.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 46 Path: docs/architecture/CHECKPOINTS.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 47 Path: docs/architecture/CIVILIZATION_MODEL.md; Status: CANONICAL; Freshness: current;
+Risk: medium
+Row 48 Path: docs/architecture/CODE_DATA_BOUNDARY.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 49 Path: docs/architecture/CODE_KNOWLEDGE_BOUNDARY.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 50 Path: docs/architecture/COLLAPSE_AND_DECAY.md; Status: CANONICAL; Freshness: current; Risk: medium
+
+8
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+
+Row 51 Path: docs/architecture/COLLAPSE_EXPAND_CONTRACT.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 52 Path: docs/architecture/COLLAPSE_EXPAND_SOLVERS.md; Status: DERIVED; Freshness: current; Risk: medium
+Row 53 Path: docs/architecture/COMPATIBILITY_MODEL.md; Status: CANONICAL; Freshness: current; Risk: medium
+Row 54 Path: docs/architecture/COMPLEXITY_AND_SCALE.md; Status: DERIVED; Freshness: current;
+Risk: medium
+Omitted 257 additional rows omitted from PDF table rendering; see source Markdown or HTML/reference
+source.
+
+Verify
+This section is excerpted for readability. See the source path for the full report.
+
+1.11
+
+Archive Archaeology
+
+Source
+DERIVED advisory_synthesis not_promoted - Source: docs/archive/docs_corpus/_archive/DOCS_
+ARCHIVE_ATLAS_v0.md - included
+
+1.12
+
+Docs Archive Atlas
+
+docs/archive/** is historical/provenance material. It can inform future review, but it does not override current
+repo authority.
+
+1.12.1
+
+Archive Family Counts
+
+Archive Family
+
+Count
+
+archive/refactor
+
+1379
+
+archive/audit
+
+960
+
+archive/conversations
+
+761
+
+other/archive_unknown
+
+40
+
+archive/restructure
+
+23
+
+archive/blueprint
+
+22
+
+archive/impact
+
+20
+
+archive/post-canon
+
+5
+
+archive/stray_root_docs
+
+3
+
+archive/omega
+
+2
+
+archive/prompts
+
+2
+
+archive/repox
+
+2
+
+archive/platform
+
+1
+
+archive/specs
+
+1
+
+1.13. CONVERSATION CORPUS INTEGRATION
+
+1.12.2
+
+9
+
+Interpretation
+
+• archive/conversations is the completed advisory conversation corpus.
+• Blueprint, prompt, refactor, restructure, post-canon, and spec archives preserve historical design or migration context.
+• Archive material may become a promotion candidate only through a later explicit review task.
+
+1.13
+
+Conversation Corpus Integration
+
+Source
+DERIVED advisory_synthesis not_promoted - Source: docs/archive/docs_corpus/_archive/DOCS_
+CONVERSATION_CORPUS_INTEGRATION_v0.md - included
+
+1.14
+
+Docs Conversation Corpus Integration
+
+The conversation corpus is treated as a derived advisory sub-corpus inside the full docs corpus.
+
+1.14.1
+
+Scope
+
+• Conversation files represented: 761
+• Generated conversation reports represented: 131
+• Conversation export files represented: 10
+
+1.14.2
+
+Interpretation
+
+• Advisory: yes
+• Current authority: no
+• Promotion status: not promoted
+• Use: design intent, review backlog, decision and promotion candidates
+• Non-use: canon, contract/schema, implementation, release, or queue override
+
+1.14.3
+
+Key Existing Surfaces
+
+Surface
+
+Role
+
+docs/archive/conversations/_synthesis/**
+
+derived synthesis and project picture
+
+docs/archive/conversations/_decision/**
+
+decision docket
+
+docs/archive/conversations/_promotion/**
+
+promotion review backlog
+
+docs/archive/conversations/_reconciliation/**
+
+conversation-vs-repo crosswalk
+
+docs/archive/conversations/_audit/**
+
+contradictions, staleness, uncertainty
+
+docs/archive/conversations/_exports/**
+
+conversation book bundle
+
+10
+
+1.15
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+
+Decision Docket Summary
+
+Source
+DERIVED
+advisory_synthesis
+not_promoted
+Source:
+reconciliation/DOCS_DECISION_DOCKET_v0.md - included
+
+1.16
+
+docs/archive/docs_corpus/_
+
+Docs Decision Docket
+
+Decision items are review prompts. The default disposition is defer unless a later explicit task opens the scope.
+Row 1 Decision ID: DOC-DECIDE-0001; Source/Finding: DOC-CONTRA-0001; Question: Should this archive
+artifact remain historical or be superseded by a current doc cross-reference?; Decision Type: repo_
+authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 2 Decision ID: DOC-DECIDE-0002; Source/Finding: DOC-CONTRA-0002; Question: Should this archive
+artifact remain historical or be superseded by a current doc cross-reference?; Decision Type: repo_
+authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 3 Decision ID: DOC-DECIDE-0003; Source/Finding: DOC-CONTRA-0003; Question: Should this archive
+artifact remain historical or be superseded by a current doc cross-reference?; Decision Type: repo_
+authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 4 Decision ID: DOC-DECIDE-0004; Source/Finding: DOC-CONTRA-0004; Question: Should this archive
+artifact remain historical or be superseded by a current doc cross-reference?; Decision Type: repo_
+authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 5 Decision ID: DOC-DECIDE-0005; Source/Finding: DOC-CONTRA-0005; Question: Should this archive
+artifact remain historical or be superseded by a current doc cross-reference?; Decision Type: repo_
+authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 6 Decision ID: DOC-DECIDE-0006; Source/Finding: DOC-CONTRA-0006; Question: Should this archive
+artifact remain historical or be superseded by a current doc cross-reference?; Decision Type: repo_
+authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 7 Decision ID: DOC-DECIDE-0007; Source/Finding: DOC-CONTRA-0007; Question: Should this archive
+artifact remain historical or be superseded by a current doc cross-reference?; Decision Type: repo_
+authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 8 Decision ID: DOC-DECIDE-0008; Source/Finding: DOC-CONTRA-0008; Question: Should this archive
+artifact remain historical or be superseded by a current doc cross-reference?; Decision Type: repo_
+authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 9 Decision ID: DOC-DECIDE-0009; Source/Finding: DOC-CONTRA-0009; Question: Should this archive
+artifact remain historical or be superseded by a current doc cross-reference?; Decision Type: repo_
+authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 10 Decision ID: DOC-DECIDE-0010; Source/Finding: DOC-CONTRA-0010; Question: Should this
+archive artifact remain historical or be superseded by a current doc cross-reference?; Decision Type:
+repo_authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 11 Decision ID: DOC-DECIDE-0011; Source/Finding: DOC-CONTRA-0011; Question: Should this
+archive artifact remain historical or be superseded by a current doc cross-reference?; Decision Type:
+repo_authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+
+1.16. DOCS DECISION DOCKET
+
+11
+
+Row 12 Decision ID: DOC-DECIDE-0012; Source/Finding: DOC-CONTRA-0012; Question: Should this
+archive artifact remain historical or be superseded by a current doc cross-reference?; Decision Type:
+repo_authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 13 Decision ID: DOC-DECIDE-0013; Source/Finding: DOC-CONTRA-0013; Question: Should this
+archive artifact remain historical or be superseded by a current doc cross-reference?; Decision Type:
+repo_authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 14 Decision ID: DOC-DECIDE-0014; Source/Finding: DOC-CONTRA-0014; Question: Should this
+archive artifact remain historical or be superseded by a current doc cross-reference?; Decision Type:
+repo_authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 15 Decision ID: DOC-DECIDE-0015; Source/Finding: DOC-CONTRA-0015; Question: Should this
+archive artifact remain historical or be superseded by a current doc cross-reference?; Decision Type:
+repo_authority_decision; Risk: medium; Recommended Default: defer_until_targeted_review
+Row 16 Decision ID: DOC-DECIDE-0016; Source/Finding: DOC-CONTRA-0016; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 17 Decision ID: DOC-DECIDE-0017; Source/Finding: DOC-CONTRA-0017; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 18 Decision ID: DOC-DECIDE-0018; Source/Finding: DOC-CONTRA-0018; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 19 Decision ID: DOC-DECIDE-0019; Source/Finding: DOC-CONTRA-0019; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 20 Decision ID: DOC-DECIDE-0020; Source/Finding: DOC-CONTRA-0020; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 21 Decision ID: DOC-DECIDE-0021; Source/Finding: DOC-CONTRA-0021; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 22 Decision ID: DOC-DECIDE-0022; Source/Finding: DOC-CONTRA-0022; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 23 Decision ID: DOC-DECIDE-0023; Source/Finding: DOC-CONTRA-0023; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 24 Decision ID: DOC-DECIDE-0024; Source/Finding: DOC-CONTRA-0024; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 25 Decision ID: DOC-DECIDE-0025; Source/Finding: DOC-CONTRA-0025; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 26 Decision ID: DOC-DECIDE-0026; Source/Finding: DOC-CONTRA-0026; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+
+12
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+
+Row 27 Decision ID: DOC-DECIDE-0027; Source/Finding: DOC-CONTRA-0027; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 28 Decision ID: DOC-DECIDE-0028; Source/Finding: DOC-CONTRA-0028; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 29 Decision ID: DOC-DECIDE-0029; Source/Finding: DOC-CONTRA-0029; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 30 Decision ID: DOC-DECIDE-0030; Source/Finding: DOC-CONTRA-0030; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 31 Decision ID: DOC-DECIDE-0031; Source/Finding: DOC-CONTRA-0031; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 32 Decision ID: DOC-DECIDE-0032; Source/Finding: DOC-CONTRA-0032; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 33 Decision ID: DOC-DECIDE-0033; Source/Finding: DOC-CONTRA-0033; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 34 Decision ID: DOC-DECIDE-0034; Source/Finding: DOC-CONTRA-0034; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 35 Decision ID: DOC-DECIDE-0035; Source/Finding: DOC-CONTRA-0035; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 36 Decision ID: DOC-DECIDE-0036; Source/Finding: DOC-CONTRA-0036; Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?; Decision Type: future_
+docs_hygiene_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 37 Decision ID: DOC-DECIDE-0037; Source/Finding: DOC-CONTRA-0037; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 38 Decision ID: DOC-DECIDE-0038; Source/Finding: DOC-CONTRA-0038; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 39 Decision ID: DOC-DECIDE-0039; Source/Finding: DOC-CONTRA-0039; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 40 Decision ID: DOC-DECIDE-0040; Source/Finding: DOC-CONTRA-0040; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 41 Decision ID: DOC-DECIDE-0041; Source/Finding: DOC-CONTRA-0041; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+
+1.16. DOCS DECISION DOCKET
+
+13
+
+Row 42 Decision ID: DOC-DECIDE-0042; Source/Finding: DOC-CONTRA-0042; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 43 Decision ID: DOC-DECIDE-0043; Source/Finding: DOC-CONTRA-0043; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 44 Decision ID: DOC-DECIDE-0044; Source/Finding: DOC-CONTRA-0044; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 45 Decision ID: DOC-DECIDE-0045; Source/Finding: DOC-CONTRA-0045; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 46 Decision ID: DOC-DECIDE-0046; Source/Finding: DOC-CONTRA-0046; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 47 Decision ID: DOC-DECIDE-0047; Source/Finding: DOC-CONTRA-0047; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 48 Decision ID: DOC-DECIDE-0048; Source/Finding: DOC-CONTRA-0048; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 49 Decision ID: DOC-DECIDE-0049; Source/Finding: DOC-CONTRA-0049; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 50 Decision ID: DOC-DECIDE-0050; Source/Finding: DOC-CONTRA-0050; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 51 Decision ID: DOC-DECIDE-0051; Source/Finding: DOC-CONTRA-0051; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 52 Decision ID: DOC-DECIDE-0052; Source/Finding: DOC-CONTRA-0052; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 53 Decision ID: DOC-DECIDE-0053; Source/Finding: DOC-CONTRA-0053; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Row 54 Decision ID: DOC-DECIDE-0054; Source/Finding: DOC-CONTRA-0054; Question: Should this doc
+get an explicit authority/status header in a later docs-only promotion wave?; Decision Type: repo_
+authority_decision; Risk: low; Recommended Default: defer_until_targeted_review
+Omitted 30 additional rows omitted from PDF table rendering; see source Markdown or HTML/reference
+source.
+
+14
+
+1.17
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+
+Promotion Roadmap Summary
+
+Source
+DERIVED
+advisory_synthesis
+not_promoted
+Source:
+reconciliation/DOCS_PROMOTION_QUEUE_v0.md - excerpted
+
+1.18
+
+docs/archive/docs_corpus/_
+
+Docs Promotion Queue
+
+This queue records later review candidates. It does not apply any live-doc patch.
+Row 1 Promotion ID: DOC-PROMOTE-0001; Source Path(s): docs/archive/audit/ULTRA_REPO_AUDIT_
+BUILD_RUN_TEST_MATRIX.md; Type: docs_hygiene_candidate; Recommended Next Action: Add
+or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 2 Promotion ID: DOC-PROMOTE-0002; Source Path(s): docs/archive/conversations/Build_and_Future_
+Proofing/Dominium_Build_and_Future_Proofing_Architecture__00_manifest.md; Type: docs_hygiene_
+candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docsonly task.; Promotion Status: not_promoted
+Row 3 Promotion ID: DOC-PROMOTE-0003; Source Path(s): docs/archive/conversations/Build_and_Future_
+Proofing/Dominium_Build_and_Future_Proofing_Architecture__01_human_readable_report.md; Type:
+docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later
+allowed docs-only task.; Promotion Status: not_promoted
+Row 4 Promotion ID: DOC-PROMOTE-0004; Source Path(s): docs/archive/conversations/Build_and_Future_
+Proofing/Dominium_Build_and_Future_Proofing_Architecture__02_context_transfer_packet.md; Type:
+docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later
+allowed docs-only task.; Promotion Status: not_promoted
+Row 5 Promotion ID: DOC-PROMOTE-0005; Source Path(s): docs/archive/conversations/Build_and_Future_
+Proofing/Dominium_Build_and_Future_Proofing_Architecture__04_registers.md; Type: docs_hygiene_
+candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docsonly task.; Promotion Status: not_promoted
+Row 6 Promotion ID: DOC-PROMOTE-0006; Source Path(s): docs/archive/conversations/Build_and_Future_
+Proofing/Dominium_Build_and_Future_Proofing_Architecture__05_aggregator_packet.md; Type: docs_
+hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed
+docs-only task.; Promotion Status: not_promoted
+Row 7 Promotion ID: DOC-PROMOTE-0007; Source Path(s): docs/archive/conversations/Build_and_Future_
+Proofing/Dominium_Build_and_Future_Proofing_Architecture__06_reader_brief.md; Type: docs_
+hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 8 Promotion ID: DOC-PROMOTE-0008; Source Path(s): docs/archive/conversations/Build_and_Future_
+Proofing/Dominium_Build_and_Future_Proofing_Architecture__07_verification_and_audit.md; Type:
+docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later
+allowed docs-only task.; Promotion Status: not_promoted
+Row 9 Promotion ID: DOC-PROMOTE-0009; Source Path(s): docs/archive/conversations/Build_and_Future_
+Proofing/Dominium_Build_and_Future_Proofing_Architecture__08_future_chat_bootstrap_prompt.
+md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata
+in a later allowed docs-only task.; Promotion Status: not_promoted
+
+1.18. DOCS PROMOTION QUEUE
+
+15
+
+Row 10 Promotion ID: DOC-PROMOTE-0010; Source Path(s): docs/archive/conversations/Build_and_Future_
+Proofing/Dominium_Build_and_Future_Proofing_Architecture__09_in_chat_reader.md; Type: docs_
+hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed
+docs-only task.; Promotion Status: not_promoted
+Row 11 Promotion ID: DOC-PROMOTE-0011; Source Path(s): docs/archive/conversations/Build_and_Future_
+Proofing/Dominium_Build_and_Future_Proofing_Architecture__10_accompanying_human_readable_
+detailed_summary_report.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 12 Promotion ID: DOC-PROMOTE-0012; Source Path(s): docs/archive/conversations/Build_and_Future_
+Proofing/Dominium_Build_and_Future_Proofing_Architecture__11_bundle_integrity_check.md; Type:
+docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later
+allowed docs-only task.; Promotion Status: not_promoted
+Row 13 Promotion ID: DOC-PROMOTE-0013; Source Path(s): docs/archive/conversations/Chronology_
+Celestial_Systems/Dominium_Chronology_Celestial_Systems__01_full_chat_report.md; Type: docs_
+hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed
+docs-only task.; Promotion Status: not_promoted
+Row 14 Promotion ID: DOC-PROMOTE-0014; Source Path(s): docs/archive/conversations/Chronology_
+Celestial_Systems/Dominium_Chronology_Celestial_Systems__03_aggregator_packet.md; Type: docs_
+hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed
+docs-only task.; Promotion Status: not_promoted
+Row 15 Promotion ID: DOC-PROMOTE-0015; Source Path(s): docs/archive/conversations/Chronology_
+Celestial_Systems/Dominium_Chronology_Celestial_Systems__04_registers.md; Type: docs_hygiene_
+candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docsonly task.; Promotion Status: not_promoted
+Row 16 Promotion ID: DOC-PROMOTE-0016; Source Path(s): docs/archive/conversations/Chronology_
+Celestial_Systems/Dominium_Chronology_Celestial_Systems__05_reader_brief.md; Type: docs_hygiene_
+candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docsonly task.; Promotion Status: not_promoted
+Row 17 Promotion ID: DOC-PROMOTE-0017; Source Path(s): docs/archive/conversations/Chronology_
+Celestial_Systems/Dominium_Chronology_Celestial_Systems__06_verification_and_audit.md; Type:
+docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later
+allowed docs-only task.; Promotion Status: not_promoted
+Row 18 Promotion ID: DOC-PROMOTE-0018; Source Path(s): docs/archive/conversations/Chronology_
+Celestial_Systems/Dominium_Chronology_Celestial_Systems__manifest.md; Type: docs_hygiene_candidate;
+Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.;
+Promotion Status: not_promoted
+Row 19 Promotion ID: DOC-PROMOTE-0019; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+I/Dominium_Architecture_I__01_full_chat_report.md; Type: docs_hygiene_candidate; Recommended
+Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status:
+not_promoted
+Row 20 Promotion ID: DOC-PROMOTE-0020; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+I/Dominium_Architecture_I__03_aggregator_packet.md; Type: docs_hygiene_candidate; Recommended
+Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status:
+not_promoted
+Row 21 Promotion ID: DOC-PROMOTE-0021; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+I/Dominium_Architecture_I__04_registers.md; Type: docs_hygiene_candidate; Recommended Next
+
+16
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status:
+not_promoted
+
+Row 22 Promotion ID: DOC-PROMOTE-0022; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+I/Dominium_Architecture_I__05_reader_brief.md; Type: docs_hygiene_candidate; Recommended Next
+Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_
+promoted
+Row 23 Promotion ID: DOC-PROMOTE-0023; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+I/Dominium_Architecture_I__06_verification_and_audit.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 24 Promotion ID: DOC-PROMOTE-0024; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+I/Dominium_Architecture_I__manifest.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_
+promoted
+Row 25 Promotion ID: DOC-PROMOTE-0025; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+II/Dominium_Architecture_II__01_full_chat_report.md; Type: docs_hygiene_candidate; Recommended
+Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status:
+not_promoted
+Row 26 Promotion ID: DOC-PROMOTE-0026; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+II/Dominium_Architecture_II__03_aggregator_packet.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion
+Status: not_promoted
+Row 27 Promotion ID: DOC-PROMOTE-0027; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+II/Dominium_Architecture_II__04_registers.md; Type: docs_hygiene_candidate; Recommended Next
+Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_
+promoted
+Row 28 Promotion ID: DOC-PROMOTE-0028; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+II/Dominium_Architecture_II__05_reader_brief.md; Type: docs_hygiene_candidate; Recommended
+Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status:
+not_promoted
+Row 29 Promotion ID: DOC-PROMOTE-0029; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+II/Dominium_Architecture_II__06_verification_and_audit.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 30 Promotion ID: DOC-PROMOTE-0030; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+II/Dominium_Architecture_II__manifest.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_
+promoted
+Row 31 Promotion ID: DOC-PROMOTE-0031; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+III/Dominium_Architecture_III__01_full_chat_report.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion
+Status: not_promoted
+Row 32 Promotion ID: DOC-PROMOTE-0032; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+III/Dominium_Architecture_III__03_aggregator_packet.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion
+Status: not_promoted
+
+1.18. DOCS PROMOTION QUEUE
+
+17
+
+Row 33 Promotion ID: DOC-PROMOTE-0033; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+III/Dominium_Architecture_III__04_registers.md; Type: docs_hygiene_candidate; Recommended Next
+Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_
+promoted
+Row 34 Promotion ID: DOC-PROMOTE-0034; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+III/Dominium_Architecture_III__05_reader_brief.md; Type: docs_hygiene_candidate; Recommended
+Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status:
+not_promoted
+Row 35 Promotion ID: DOC-PROMOTE-0035; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+III/Dominium_Architecture_III__06_verification_and_audit.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 36 Promotion ID: DOC-PROMOTE-0036; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+III/Dominium_Architecture_III__manifest.md; Type: docs_hygiene_candidate; Recommended Next
+Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status:
+not_promoted
+Row 37 Promotion ID: DOC-PROMOTE-0037; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+IV/Dominium_Architecture_IV__01_full_chat_report.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion
+Status: not_promoted
+Row 38 Promotion ID: DOC-PROMOTE-0038; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+IV/Dominium_Architecture_IV__03_aggregator_packet.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion
+Status: not_promoted
+Row 39 Promotion ID: DOC-PROMOTE-0039; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+IV/Dominium_Architecture_IV__04_registers.md; Type: docs_hygiene_candidate; Recommended Next
+Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_
+promoted
+Row 40 Promotion ID: DOC-PROMOTE-0040; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+IV/Dominium_Architecture_IV__05_reader_brief.md; Type: docs_hygiene_candidate; Recommended
+Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status:
+not_promoted
+Row 41 Promotion ID: DOC-PROMOTE-0041; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+IV/Dominium_Architecture_IV__06_verification_and_audit.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 42 Promotion ID: DOC-PROMOTE-0042; Source Path(s): docs/archive/conversations/Dominium_Architecture_
+IV/Dominium_Architecture_IV__manifest.md; Type: docs_hygiene_candidate; Recommended Next
+Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status:
+not_promoted
+Row 43 Promotion ID: DOC-PROMOTE-0043; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/00_final_manifest/Dominium_Complete_Conversation_ALL_FILES_FINAL__00_readme_
+and_manifest.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/
+header metadata in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 44 Promotion ID: DOC-PROMOTE-0044; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__00_manifest.md; Type: docs_
+
+18
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed
+docs-only task.; Promotion Status: not_promoted
+
+Row 45 Promotion ID: DOC-PROMOTE-0045; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__01_human_readable_report.
+md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata
+in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 46 Promotion ID: DOC-PROMOTE-0046; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__02_context_transfer_packet.
+md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata
+in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 47 Promotion ID: DOC-PROMOTE-0047; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__04_registers.md; Type: docs_
+hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed
+docs-only task.; Promotion Status: not_promoted
+Row 48 Promotion ID: DOC-PROMOTE-0048; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__05_aggregator_packet.md;
+Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in
+a later allowed docs-only task.; Promotion Status: not_promoted
+Row 49 Promotion ID: DOC-PROMOTE-0049; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__06_reader_brief.md; Type:
+docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later
+allowed docs-only task.; Promotion Status: not_promoted
+Row 50 Promotion ID: DOC-PROMOTE-0050; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__07_verification_and_audit.
+md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata
+in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 51 Promotion ID: DOC-PROMOTE-0051; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__08_future_chat_bootstrap_
+prompt.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header
+metadata in a later allowed docs-only task.; Promotion Status: not_promoted
+Row 52 Promotion ID: DOC-PROMOTE-0052; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__09_in_chat_reader.md;
+Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in
+a later allowed docs-only task.; Promotion Status: not_promoted
+Row 53 Promotion ID: DOC-PROMOTE-0053; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/Accompanying_Report/Dominium_Entire_Conversation_Accompanying_Report__00_complete_
+bundle_manifest.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/
+header metadata in a later allowed docs-only task.; Promotion Status: not_promoted
+
+Row 54 Promotion ID: DOC-PROMOTE-0054; Source Path(s): docs/archive/conversations/Dominium_Complete_
+Conversation/Accompanying_Report/Dominium_Entire_Conversation_Accompanying_Report__10_accompanying
+detailed_summary_report.md; Type: docs_hygiene_candidate; Recommended Next Action: Add or review status/header metadata in a later allowed docs-only task.; Promotion Status: not_promoted
+Omitted 54 additional rows omitted from PDF table rendering; see source Markdown or HTML/reference
+source.
+
+1.19. CONTRADICTIONS AND DRIFT
+
+19
+
+Verify
+This section is excerpted for readability. See the source path for the full report.
+
+1.19
+
+Contradictions and Drift
+
+Source
+DERIVED advisory_synthesis not_promoted - Source: docs/archive/docs_corpus/_audit/DOCS_
+CONTRADICTION_MATRIX_v0.md - excerpted
+
+1.20
+
+Docs Contradiction Matrix
+
+Contradiction classes include current-doc vs canon, archive vs current, conversation vs current, planning vs
+queue, generated evidence vs source, duplicate shadows, stale external claims, and unclear same-tier conflicts.
+Findings below are deterministic review signals, not adjudications.
+Row 1 Finding ID: DOC-CONTRA-0001; Class: archive_vs_current; Sources: docs/archive/audit/ARCH_
+AUDIT_CONSTITUTION.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.
+md; Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review;
+User Review Question: Should this archive artifact remain historical or be superseded by a current doc
+cross-reference?
+Row 2 Finding ID: DOC-CONTRA-0002; Class: archive_vs_current; Sources: docs/archive/audit/ARTIFACT_
+MANIFEST_BASELINE.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.
+md; Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review;
+User Review Question: Should this archive artifact remain historical or be superseded by a current doc
+cross-reference?
+Row 3 Finding ID: DOC-CONTRA-0003; Class: archive_vs_current; Sources: docs/archive/audit/FORKING_
+PROVIDES_BASELINE.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.
+md; Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review;
+User Review Question: Should this archive artifact remain historical or be superseded by a current doc
+cross-reference?
+Row 4 Finding ID: DOC-CONTRA-0004; Class: archive_vs_current; Sources: docs/archive/audit/INSTALL_
+MANIFEST_BASELINE.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.
+md; Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review;
+User Review Question: Should this archive artifact remain historical or be superseded by a current doc
+cross-reference?
+Row 5 Finding ID: DOC-CONTRA-0005; Class: archive_vs_current; Sources: docs/archive/audit/INSTANCE_
+MANIFEST_BASELINE.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.
+md; Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review;
+User Review Question: Should this archive artifact remain historical or be superseded by a current doc
+cross-reference?
+Row 6 Finding ID: DOC-CONTRA-0006; Class: archive_vs_current; Sources: docs/archive/audit/INSTITUTIONAL_
+COMMS_BASELINE.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.md;
+Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review; User
+Review Question: Should this archive artifact remain historical or be superseded by a current doc crossreference?
+
+20
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+
+Row 7 Finding ID: DOC-CONTRA-0007; Class: archive_vs_current; Sources: docs/archive/audit/MACROCAPSULE_
+BEHAVIOR_BASELINE.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.
+md; Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review;
+User Review Question: Should this archive artifact remain historical or be superseded by a current doc
+cross-reference?
+Row 8 Finding ID: DOC-CONTRA-0008; Class: archive_vs_current; Sources: docs/archive/audit/SAVE_
+MANIFEST_BASELINE.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.
+md; Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review;
+User Review Question: Should this archive artifact remain historical or be superseded by a current doc
+cross-reference?
+Row 9 Finding ID: DOC-CONTRA-0009; Class: archive_vs_current; Sources: docs/archive/audit/SIG7_
+RETRO_AUDIT.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.md; Claim:
+Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review; User Review Question: Should this archive artifact remain historical or be superseded by a current doc crossreference?
+Row 10 Finding ID: DOC-CONTRA-0010; Class: archive_vs_current; Sources: docs/archive/audit/SUPERVISOR_
+HARDENING_FINAL.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.
+md; Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review;
+User Review Question: Should this archive artifact remain historical or be superseded by a current doc
+cross-reference?
+Row 11 Finding ID: DOC-CONTRA-0011; Class: archive_vs_current; Sources: docs/archive/audit/SUPERVISOR_
+SURFACE_MAP.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.md; Claim:
+Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review; User Review Question: Should this archive artifact remain historical or be superseded by a current doc crossreference?
+Row 12 Finding ID: DOC-CONTRA-0012; Class: archive_vs_current; Sources: docs/archive/audit/SYSTEM_
+TIER_ROI_BASELINE.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.
+md; Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review;
+User Review Question: Should this archive artifact remain historical or be superseded by a current doc
+cross-reference?
+Row 13 Finding ID: DOC-CONTRA-0013; Class: archive_vs_current; Sources: docs/archive/restructure/
+FUTURE_LAYOUT_PROPOSAL.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_
+ORDER.md; Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_
+for_review; User Review Question: Should this archive artifact remain historical or be superseded by a
+current doc cross-reference?
+Row 14 Finding ID: DOC-CONTRA-0014; Class: archive_vs_current; Sources: docs/archive/restructure/
+RESTRUCTURE_RISKS.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.
+md; Claim: Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review;
+User Review Question: Should this archive artifact remain historical or be superseded by a current doc
+cross-reference?
+Row 15 Finding ID: DOC-CONTRA-0015; Class: archive_vs_current; Sources: docs/archive/restructure/
+SHIM_POLICY.md; Authority Source: AGENTS.md; docs/planning/AUTHORITY_ORDER.md; Claim:
+Archive path has status CANONICAL.; Severity: medium; Disposition: quarantine_for_review; User Review Question: Should this archive artifact remain historical or be superseded by a current doc crossreference?
+Row 16 Finding ID: DOC-CONTRA-0016; Class: duplicate_shadow; Sources: docs/repo/repox/APRX_
+INTEGRATION_HOOKS.md, docs/archive/repox/APRX_INTEGRATION_HOOKS.md; Authority Source:
+
+1.20. DOCS CONTRADICTION MATRIX
+
+21
+
+current docs outrank archive in their scope; archive remains historical; Claim: Archive and current
+docs share filename aprx_integration_hooks.md.; Severity: low; Disposition: review_shadow_before_
+promotion; User Review Question: Does the archive version contain useful historical context that should
+be summarized elsewhere?
+Row 17 Finding ID: DOC-CONTRA-0017; Class: duplicate_shadow; Sources: docs/architecture/ARCHITECTURE.
+md, docs/archive/conversations/_wiki/topics/architecture.md; Authority Source: current docs outrank
+archive in their scope; archive remains historical; Claim: Archive and current docs share filename architecture.
+md.; Severity: low; Disposition: review_shadow_before_promotion; User Review Question: Does the
+archive version contain useful historical context that should be summarized elsewhere?
+Row 18 Finding ID: DOC-CONTRA-0018; Class: duplicate_shadow; Sources: docs/testing/ci/CI_ENFORCEMENT_
+MATRIX.md, docs/archive/stray_root_docs/CI_ENFORCEMENT_MATRIX.md; Authority Source:
+current docs outrank archive in their scope; archive remains historical; Claim: Archive and current
+docs share filename ci_enforcement_matrix.md.; Severity: low; Disposition: review_shadow_before_
+promotion; User Review Question: Does the archive version contain useful historical context that should
+be summarized elsewhere?
+Row 19 Finding ID: DOC-CONTRA-0019; Class: duplicate_shadow; Sources: docs/reference/specs/CIV0_
+POPULATION_GENESIS.md, docs/archive/stray_root_docs/CIV0_POPULATION_GENESIS.md; Authority Source: current docs outrank archive in their scope; archive remains historical; Claim: Archive and
+current docs share filename civ0_population_genesis.md.; Severity: low; Disposition: review_shadow_
+before_promotion; User Review Question: Does the archive version contain useful historical context that
+should be summarized elsewhere?
+Row 20 Finding ID: DOC-CONTRA-0020; Class: duplicate_shadow; Sources: docs/reference/specs/CIV0a_
+SURVIVAL_LOOP.md, docs/archive/stray_root_docs/CIV0a_SURVIVAL_LOOP.md; Authority Source:
+current docs outrank archive in their scope; archive remains historical; Claim: Archive and current
+docs share filename civ0a_survival_loop.md.; Severity: low; Disposition: review_shadow_before_
+promotion; User Review Question: Does the archive version contain useful historical context that should
+be summarized elsewhere?
+Row 21 Finding ID: DOC-CONTRA-0021; Class: duplicate_shadow; Sources: docs/reference/specs/CIV1_
+CITIES_INFRA.md, docs/archive/stray_root_docs/CIV1_CITIES_INFRA.md; Authority Source: current docs outrank archive in their scope; archive remains historical; Claim: Archive and current docs share
+filename civ1_cities_infra.md.; Severity: low; Disposition: review_shadow_before_promotion; User
+Review Question: Does the archive version contain useful historical context that should be summarized
+elsewhere?
+Row 22 Finding ID: DOC-CONTRA-0022; Class: duplicate_shadow; Sources: docs/reference/specs/CIV2_
+GOVERNANCE.md, docs/archive/stray_root_docs/CIV2_GOVERNANCE.md; Authority Source: current docs outrank archive in their scope; archive remains historical; Claim: Archive and current docs share
+filename civ2_governance.md.; Severity: low; Disposition: review_shadow_before_promotion; User Review Question: Does the archive version contain useful historical context that should be summarized
+elsewhere?
+Row 23 Finding ID: DOC-CONTRA-0023; Class: duplicate_shadow; Sources: docs/reference/specs/CIV3_
+KNOWLEDGE_TECH.md, docs/archive/stray_root_docs/CIV3_KNOWLEDGE_TECH.md; Authority Source: current docs outrank archive in their scope; archive remains historical; Claim: Archive and
+current docs share filename civ3_knowledge_tech.md.; Severity: low; Disposition: review_shadow_
+before_promotion; User Review Question: Does the archive version contain useful historical context that
+should be summarized elsewhere?
+Row 24 Finding ID: DOC-CONTRA-0024; Class: duplicate_shadow; Sources: docs/reference/specs/CIV4_
+SCALE_AND_LOGISTICS.md, docs/archive/stray_root_docs/CIV4_SCALE_AND_LOGISTICS.md;
+Authority Source: current docs outrank archive in their scope; archive remains historical; Claim: Archive
+
+22
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+and current docs share filename civ4_scale_and_logistics.md.; Severity: low; Disposition: review_
+shadow_before_promotion; User Review Question: Does the archive version contain useful historical
+context that should be summarized elsewhere?
+
+Row 25 Finding ID: DOC-CONTRA-0025; Class: duplicate_shadow; Sources: docs/development/CONTRIBUTING.
+md, docs/archive/stray_root_docs/CONTRIBUTING.md; Authority Source: current docs outrank archive
+in their scope; archive remains historical; Claim: Archive and current docs share filename contributing.
+md.; Severity: low; Disposition: review_shadow_before_promotion; User Review Question: Does the
+archive version contain useful historical context that should be summarized elsewhere?
+Row 26 Finding ID: DOC-CONTRA-0026; Class: duplicate_shadow; Sources: docs/testing/ci/DETERMINISM_
+TEST_MATRIX.md, docs/archive/stray_root_docs/DETERMINISM_TEST_MATRIX.md; Authority
+Source: current docs outrank archive in their scope; archive remains historical; Claim: Archive and current docs share filename determinism_test_matrix.md.; Severity: low; Disposition: review_shadow_
+before_promotion; User Review Question: Does the archive version contain useful historical context that
+should be summarized elsewhere?
+Row 27 Finding ID: DOC-CONTRA-0027; Class: duplicate_shadow; Sources: docs/architecture/INVARIANTS.
+md, docs/archive/architecture/INVARIANTS.md; Authority Source: current docs outrank archive in
+their scope; archive remains historical; Claim: Archive and current docs share filename invariants.md.;
+Severity: low; Disposition: review_shadow_before_promotion; User Review Question: Does the archive
+version contain useful historical context that should be summarized elsewhere?
+Row 28 Finding ID: DOC-CONTRA-0028; Class: duplicate_shadow; Sources: docs/development/guides/
+OFFLINE_AND_LOCAL_MP.md, docs/archive/stray_root_docs/OFFLINE_AND_LOCAL_MP.md;
+Authority Source: current docs outrank archive in their scope; archive remains historical; Claim: Archive
+and current docs share filename offline_and_local_mp.md.; Severity: low; Disposition: review_shadow_
+before_promotion; User Review Question: Does the archive version contain useful historical context that
+should be summarized elsewhere?
+Row 29 Finding ID: DOC-CONTRA-0029; Class: duplicate_shadow; Sources: docs/governance/policies/
+PERF_BUDGETS.md, docs/archive/stray_root_docs/PERF_BUDGETS.md; Authority Source: current docs outrank archive in their scope; archive remains historical; Claim: Archive and current docs
+share filename perf_budgets.md.; Severity: low; Disposition: review_shadow_before_promotion; User
+Review Question: Does the archive version contain useful historical context that should be summarized
+elsewhere?
+Row 30 Finding ID: DOC-CONTRA-0030; Class: duplicate_shadow; Sources: docs/release/mvp/PRODUCT_
+BOOT_MATRIX.md, docs/archive/audit/convergence_steps/product_boot_matrix.md; Authority Source:
+current docs outrank archive in their scope; archive remains historical; Claim: Archive and current
+docs share filename product_boot_matrix.md.; Severity: low; Disposition: review_shadow_before_
+promotion; User Review Question: Does the archive version contain useful historical context that should
+be summarized elsewhere?
+Row 31 Finding ID: DOC-CONTRA-0031; Class: duplicate_shadow; Sources: docs/README.md, docs/
+archive/README.md; Authority Source: current docs outrank archive in their scope; archive remains historical; Claim: Archive and current docs share filename readme.md.; Severity: low; Disposition: review_
+shadow_before_promotion; User Review Question: Does the archive version contain useful historical
+context that should be summarized elsewhere?
+Row 32 Finding ID: DOC-CONTRA-0032; Class: duplicate_shadow; Sources: docs/reference/schema/SCHEMA_
+CANON_ALIGNMENT.md, docs/archive/audit/SCHEMA_CANON_ALIGNMENT.md; Authority Source:
+current docs outrank archive in their scope; archive remains historical; Claim: Archive and current
+docs share filename schema_canon_alignment.md.; Severity: low; Disposition: review_shadow_before_
+promotion; User Review Question: Does the archive version contain useful historical context that should
+be summarized elsewhere?
+
+1.20. DOCS CONTRADICTION MATRIX
+
+23
+
+Row 33 Finding ID: DOC-CONTRA-0033; Class: duplicate_shadow; Sources: docs/governance/policies/
+VALIDATION_AND_GOVERNANCE.md, docs/archive/stray_root_docs/VALIDATION_AND_GOVERNANCE.
+md; Authority Source: current docs outrank archive in their scope; archive remains historical; Claim:
+Archive and current docs share filename validation_and_governance.md.; Severity: low; Disposition:
+review_shadow_before_promotion; User Review Question: Does the archive version contain useful historical context that should be summarized elsewhere?
+Row 34 Finding ID: DOC-CONTRA-0034; Class: duplicate_shadow; Sources: docs/audit/VALIDATION_
+INVENTORY.md, docs/archive/audit/VALIDATION_INVENTORY.md; Authority Source: current docs
+outrank archive in their scope; archive remains historical; Claim: Archive and current docs share filename
+validation_inventory.md.; Severity: low; Disposition: review_shadow_before_promotion; User Review Question: Does the archive version contain useful historical context that should be summarized
+elsewhere?
+Row 35 Finding ID: DOC-CONTRA-0035; Class: duplicate_shadow; Sources: docs/audit/VALIDATION_
+REPORT_FAST.md, docs/archive/audit/VALIDATION_REPORT_FAST.md; Authority Source: current docs outrank archive in their scope; archive remains historical; Claim: Archive and current docs share
+filename validation_report_fast.md.; Severity: low; Disposition: review_shadow_before_promotion;
+User Review Question: Does the archive version contain useful historical context that should be summarized elsewhere?
+Row 36 Finding ID: DOC-CONTRA-0036; Class: duplicate_shadow; Sources: docs/audit/VALIDATION_
+UNIFY_FINAL.md, docs/archive/audit/VALIDATION_UNIFY_FINAL.md; Authority Source: current
+docs outrank archive in their scope; archive remains historical; Claim: Archive and current docs share
+filename validation_unify_final.md.; Severity: low; Disposition: review_shadow_before_promotion;
+User Review Question: Does the archive version contain useful historical context that should be summarized elsewhere?
+Row 37 Finding ID: DOC-CONTRA-0037; Class: unclear_same_tier_conflict; Sources: docs/archive/audit/
+ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/freshness less explicit.; Severity: low;
+Disposition: candidate_for_docs_hygiene_review; User Review Question: Should this doc get an explicit
+authority/status header in a later docs-only promotion wave?
+Row 38 Finding ID: DOC-CONTRA-0038; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__00_manifest.md;
+Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User Review
+Question: Should this doc get an explicit authority/status header in a later docs-only promotion wave?
+Row 39 Finding ID: DOC-CONTRA-0039; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__01_human_readable_
+report.md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making
+authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User
+Review Question: Should this doc get an explicit authority/status header in a later docs-only promotion
+wave?
+Row 40 Finding ID: DOC-CONTRA-0040; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__02_context_transfer_
+packet.md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making
+authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User
+Review Question: Should this doc get an explicit authority/status header in a later docs-only promotion
+wave?
+Row 41 Finding ID: DOC-CONTRA-0041; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__04_registers.md;
+
+24
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User Review
+Question: Should this doc get an explicit authority/status header in a later docs-only promotion wave?
+
+Row 42 Finding ID: DOC-CONTRA-0042; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__05_aggregator_
+packet.md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making
+authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User
+Review Question: Should this doc get an explicit authority/status header in a later docs-only promotion
+wave?
+Row 43 Finding ID: DOC-CONTRA-0043; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__06_reader_brief.
+md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User
+Review Question: Should this doc get an explicit authority/status header in a later docs-only promotion
+wave?
+Row 44 Finding ID: DOC-CONTRA-0044; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__07_verification_
+and_audit.md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header,
+making authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_
+review; User Review Question: Should this doc get an explicit authority/status header in a later docsonly promotion wave?
+Row 45 Finding ID: DOC-CONTRA-0045; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__08_future_chat_
+bootstrap_prompt.md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_
+hygiene_review; User Review Question: Should this doc get an explicit authority/status header in a later
+docs-only promotion wave?
+Row 46 Finding ID: DOC-CONTRA-0046; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__09_in_chat_reader.
+md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User
+Review Question: Should this doc get an explicit authority/status header in a later docs-only promotion
+wave?
+Row 47 Finding ID: DOC-CONTRA-0047; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__10_accompanying_
+human_readable_detailed_summary_report.md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/freshness less explicit.; Severity: low; Disposition:
+candidate_for_docs_hygiene_review; User Review Question: Should this doc get an explicit authority/
+status header in a later docs-only promotion wave?
+Row 48 Finding ID: DOC-CONTRA-0048; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__11_bundle_integrity_
+check.md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making
+authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User
+Review Question: Should this doc get an explicit authority/status header in a later docs-only promotion
+wave?
+Row 49 Finding ID: DOC-CONTRA-0049; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__01_full_chat_report.md;
+
+1.21. STALENESS AND VERIFICATION
+
+25
+
+Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User Review
+Question: Should this doc get an explicit authority/status header in a later docs-only promotion wave?
+Row 50 Finding ID: DOC-CONTRA-0050; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__03_aggregator_packet.md;
+Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User Review
+Question: Should this doc get an explicit authority/status header in a later docs-only promotion wave?
+Row 51 Finding ID: DOC-CONTRA-0051; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__04_registers.md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/
+freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User Review
+Question: Should this doc get an explicit authority/status header in a later docs-only promotion wave?
+Row 52 Finding ID: DOC-CONTRA-0052; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__05_reader_brief.md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/
+freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User Review
+Question: Should this doc get an explicit authority/status header in a later docs-only promotion wave?
+Row 53 Finding ID: DOC-CONTRA-0053; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__06_verification_and_audit.
+md; Authority Source: metadata header audit; Claim: Markdown file lacks a Status header, making authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User
+Review Question: Should this doc get an explicit authority/status header in a later docs-only promotion
+wave?
+Row 54 Finding ID: DOC-CONTRA-0054; Class: unclear_same_tier_conflict; Sources: docs/archive/conversations/
+Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__manifest.md; Authority Source:
+metadata header audit; Claim: Markdown file lacks a Status header, making authority/freshness less explicit.; Severity: low; Disposition: candidate_for_docs_hygiene_review; User Review Question: Should
+this doc get an explicit authority/status header in a later docs-only promotion wave?
+Omitted 8 additional rows omitted from PDF table rendering; see source Markdown or HTML/reference
+source.
+
+Verify
+This section is excerpted for readability. See the source path for the full report.
+
+1.21
+
+Staleness and Verification
+
+Source
+DERIVED advisory_synthesis not_promoted - Source: docs/archive/docs_corpus/_audit/DOCS_
+STALENESS_AND_VERIFICATION_v0.md - excerpted
+
+1.22
+
+Docs Staleness and Verification
+
+This register identifies material that should be verified before use as current guidance.
+
+26
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+
+Row 1 Path: docs/.gitignore; Family: other; Freshness: unclear; Disposition: verify_before_current_use
+Row 2 Path: docs/apps/UI_MODES.md; Family: apps; Freshness: superseded; Status: DERIVED; Last
+Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 3 Path: docs/architecture/ARCH_REPO_LAYOUT.md; Family: architecture; Freshness: superseded;
+Status: CANONICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 4 Path: docs/architecture/DIRECTORY_CONTEXT.md; Family: architecture; Freshness: superseded;
+Status: DERIVED; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 5 Path: docs/architecture/DIRECTORY_STRUCTURE.md; Family: architecture; Freshness: superseded; Status: DERIVED; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 6 Path: docs/architecture/FROZEN_CONTRACT_HASHES.json; Family: architecture; Freshness: unclear; Disposition: verify_before_current_use
+Row 7 Path: docs/architecture/LOCKLIST_OVERRIDES.json; Family: architecture; Freshness: unclear;
+Disposition: verify_before_current_use
+Row 8 Path: docs/architecture/SEMANTIC_STABILITY_LOCK.json; Family: architecture; Freshness: unclear; Disposition: verify_before_current_use
+Row 9 Path: docs/archive/README.md; Family: archive; Freshness: superseded; Status: HISTORICAL;
+Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 10 Path: docs/archive/STATUS_NOW.md; Family: archive; Freshness: provisional; Status: DERIVED;
+Last Reviewed: 2026-02-15; Disposition: verify_before_current_use
+Row 11 Path: docs/archive/SURVIVAL_SLICE.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-02-13; Disposition: verify_before_current_use
+Row 12 Path: docs/archive/app/APR1_RUNTIME_AUDIT.md; Family: archive; Freshness: superseded;
+Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 13 Path: docs/archive/app/APR1_TESTX_COMPLIANCE.md; Family: archive; Freshness: superseded; Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 14 Path: docs/archive/app/APR2_TESTX_COMPLIANCE.md; Family: archive; Freshness: superseded; Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 15 Path: docs/archive/app/APR3_TESTX_COMPLIANCE.md; Family: archive; Freshness: superseded; Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 16 Path: docs/archive/app/APR3_UI_MODE_AUDIT.md; Family: archive; Freshness: superseded;
+Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 17 Path: docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md; Family: archive;
+Freshness: superseded; Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_
+current_use
+Row 18 Path: docs/archive/app/APR4_TESTX_COMPLIANCE.md; Family: archive; Freshness: superseded; Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 19 Path: docs/archive/architecture/ARCH_GLOSSARY.md; Family: archive; Freshness: superseded;
+Status: HISTORICAL; Last Reviewed: 2026-02-13; Disposition: verify_before_current_use
+Row 20 Path: docs/archive/architecture/COMPATIBILITY_PHILOSOPHY.md; Family: archive; Freshness: superseded; Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_
+use
+
+1.22. DOCS STALENESS AND VERIFICATION
+
+27
+
+Row 21 Path: docs/archive/architecture/DISTRIBUTED_SIM_MODEL.md; Family: archive; Freshness:
+superseded; Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_
+use
+Row 22 Path: docs/archive/architecture/INVARIANTS.md; Family: archive; Freshness: superseded; Status:
+HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 23 Path: docs/archive/architecture/MENTAL_MODEL.md; Family: archive; Freshness: superseded;
+Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 24 Path: docs/archive/architecture/NON_GOALS.md; Family: archive; Freshness: superseded; Status:
+HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 25 Path: docs/archive/architecture/TERMINOLOGY.md; Family: archive; Freshness: superseded; Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 26 Path: docs/archive/architecture/VISITABILITY_AND_REALITY.md; Family: archive; Freshness:
+superseded; Status: HISTORICAL; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 27 Path: docs/archive/audit/ACTION_SURFACE_BASELINE.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-16; Disposition: verify_before_current_use
+Row 28 Path: docs/archive/audit/AG1_MVP_VALIDATION.md; Family: archive; Freshness: provisional;
+Status: DERIVED; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 29 Path: docs/archive/audit/AG2_MVP_COMPLETION.md; Family: archive; Freshness: provisional;
+Status: DERIVED; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 30 Path: docs/archive/audit/ANTI_CHEAT_FRAMEWORK_BASELINE.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-16; Disposition: verify_before_current_
+use
+Row 31 Path: docs/archive/audit/APPSHELL0_RETRO_AUDIT.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-11; Disposition: verify_before_current_use
+Row 32 Path: docs/archive/audit/APPSHELL1_RETRO_AUDIT.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-11; Disposition: verify_before_current_use
+Row 33 Path: docs/archive/audit/APPSHELL2_RETRO_AUDIT.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-11; Disposition: verify_before_current_use
+Row 34 Path: docs/archive/audit/APPSHELL3_RETRO_AUDIT.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-11; Disposition: verify_before_current_use
+Row 35 Path: docs/archive/audit/APPSHELL4_RETRO_AUDIT.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-11; Disposition: verify_before_current_use
+Row 36 Path: docs/archive/audit/APPSHELL6_RETRO_AUDIT.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-11; Disposition: verify_before_current_use
+Row 37 Path: docs/archive/audit/APPSHELL_BOOTSTRAP_BASELINE.md; Family: archive; Freshness:
+provisional; Status: DERIVED; Last Reviewed: 2026-03-11; Disposition: verify_before_current_use
+Row 38 Path: docs/archive/audit/APPSHELL_COMMANDS_BASELINE.md; Family: archive; Freshness:
+provisional; Status: DERIVED; Last Reviewed: 2026-03-11; Disposition: verify_before_current_use
+Row 39 Path: docs/archive/audit/APPSHELL_IPC_BASELINE.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-11; Disposition: verify_before_current_use
+Row 40 Path: docs/archive/audit/APPSHELL_LOGGING_BASELINE.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-11; Disposition: verify_before_current_use
+
+28
+
+CHAPTER 1. DOMINIUM DOCS CORPUS OMNIBUS
+
+Row 41 Path: docs/archive/audit/APPSHELL_TUI_BASELINE.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-11; Disposition: verify_before_current_use
+Row 42 Path: docs/archive/audit/ARCHITECTURE_GRAPH_REPORT.md; Family: archive; Freshness:
+provisional; Status: DERIVED; Last Reviewed: 2026-03-26; Disposition: verify_before_current_use
+Row 43 Path: docs/archive/audit/ARCHITECTURE_HEALTH.md; Family: archive; Freshness: provisional;
+Status: DERIVED; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 44 Path: docs/archive/audit/ARCHITECTURE_HEALTH_REPORT.md; Family: archive; Freshness:
+provisional; Status: DERIVED; Last Reviewed: 2026-02-01; Disposition: verify_before_current_use
+Row 45 Path: docs/archive/audit/ARCHIVE_OFFLINE0_RETRO_AUDIT.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-25; Disposition: verify_before_current_
+use
+Row 46 Path: docs/archive/audit/ARCHIVE_POLICY0_RETRO_AUDIT.md; Family: archive; Freshness:
+provisional; Status: DERIVED; Last Reviewed: 2026-03-14; Disposition: verify_before_current_use
+Row 47 Path: docs/archive/audit/ARCHIVE_POLICY_BASELINE.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-14; Disposition: verify_before_current_use
+Row 48 Path: docs/archive/audit/ARCH_AUDIT0_RETRO_AUDIT.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-12; Disposition: verify_before_current_use
+Row 49 Path: docs/archive/audit/ARCH_AUDIT1_FINAL_REPORT.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-16; Disposition: verify_before_current_use
+Row 50 Path: docs/archive/audit/ARCH_AUDIT2_CONSTITUTION.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-14; Disposition: verify_before_current_use
+Row 51 Path: docs/archive/audit/ARCH_AUDIT2_FINAL.md; Family: archive; Freshness: provisional;
+Status: DERIVED; Last Reviewed: 2026-05-16; Disposition: verify_before_current_use
+Row 52 Path: docs/archive/audit/ARCH_AUDIT2_REPORT.md; Family: archive; Freshness: provisional;
+Status: DERIVED; Last Reviewed: 2026-05-16; Disposition: verify_before_current_use
+Row 53 Path: docs/archive/audit/ARCH_AUDIT2_RETRO_AUDIT.md; Family: archive; Freshness: provisional; Status: DERIVED; Last Reviewed: 2026-03-14; Disposition: verify_before_current_use
+Row 54 Path: docs/archive/audit/ARCH_AUDIT_BASELINE.md; Family: archive; Freshness: provisional;
+Status: DERIVED; Last Reviewed: 2026-03-16; Disposition: verify_before_current_use
+Omitted 139 additional rows omitted from PDF table rendering; see source Markdown or HTML/reference
+source.
+
+Verify
+This section is excerpted for readability. See the source path for the full report.
+
+1.23
+
+Reading Paths
+
+Source
+DERIVED advisory_synthesis not_promoted - Source: docs/archive/docs_corpus/_wiki/reading_
+paths.md - included
+
+1.24. READING PATHS
+
+1.24
+
+29
+
+Reading Paths
+
+Reading Path
+
+Start With
+
+Start Here
+
+_book/chapters/00_front_matter.md, then _
+reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md.
+
+Current Authority Reader
+
+_audit/DOCS_AUTHORITY_MAP_v0.md and _
+reconciliation/DOCS_REPO_TRUTH_CROSSWALK_v0.md.
+
+Canon and Architecture Reader
+
+_reconciliation/DOCS_CANON_ARCHITECTURE_
+ALIGNMENT_v0.md.
+
+Runtime/Product Reader
+
+_wiki/topics/runtime_product_tooling.md.
+
+Workbench/AIDE/Codex Reader
+
+_wiki/topics/workbench_aide_codex.md.
+
+Release/Setup/Launcher Reader
+
+_wiki/topics/release_setup_launcher.md.
+
+World/Simulation/Domain Reader
+
+_wiki/topics/world_simulation_domain.md.
+
+Archive Archaeology Reader
+
+_archive/DOCS_ARCHIVE_ATLAS_v0.md.
+
+Conversation Corpus Reader
+
+_archive/DOCS_CONVERSATION_CORPUS_INTEGRATION_v0.
+md.
+
+Decision Review Reader
+
+_reconciliation/DOCS_DECISION_DOCKET_v0.md.
+
+Promotion Review Reader
+
+_reconciliation/DOCS_PROMOTION_QUEUE_v0.md.
+
+Contradiction/Staleness Reader
+
+_audit/DOCS_CONTRADICTION_MATRIX_v0.md and _audit/
+DOCS_STALENESS_AND_VERIFICATION_v0.md.
+
+Source Provenance Reader
+
+_intake/DOCS_SOURCE_INDEX_v0.md.
+
+Chapter 2
+
+Compact Indexes
+Source
+These compact indexes preserve source coverage without turning the reader edition into a filesystem
+dump.
+
+2.1
+
+Authority Class Summary
+
+Authority Class
+
+Count
+
+architecture_current
+
+324
+
+archive_historical
+
+165
+
+archive_stale
+
+2295
+
+audit_evidence
+
+8
+
+canonical
+
+2
+
+contract_or_schema_reference
+
+9
+
+conversation_advisory
+
+606
+
+derived_synthesis
+
+155
+
+development_guidance
+
+339
+
+domain_guidance
+
+253
+
+planning_current
+
+77
+
+release_current
+
+95
+
+repo_current
+
+196
+
+unknown_or_unclassified
+
+592
+
+2.2
+
+Book Role Summary
+
+Book Role
+
+Count
+
+excluded_binary_or_archive
+
+52
+
+main_reader
+
+608
+
+manifest_only
+
+57
+
+reference_appendix
+
+2275
+
+searchable_html_only
+
+314
+
+summarized_reader
+
+1810
+
+30
+
+2.3. HIGH-AUTHORITY SOURCE PATHS
+
+2.3
+
+High-Authority Source Paths
+
+• README.md
+• docs/README.md
+• AGENTS.md
+• docs/canon/constitution_v1.md
+• docs/canon/glossary_v1.md
+• docs/repo/FOUNDATION_LOCK.md
+• docs/architecture/WHAT_THIS_IS.md
+• docs/architecture/WHAT_THIS_IS_NOT.md
+• docs/architecture/INVARIANTS.md
+• docs/architecture/CANONICAL_SYSTEM_MAP.md
+• docs/architecture/CONTRACTS_INDEX.md
+• docs/architecture/CANON_INDEX.md
+
+31
+
+

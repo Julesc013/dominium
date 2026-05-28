@@ -1,0 +1,28 @@
+html { color-scheme: light; }
+body { margin: 0; background: #f5f7fa; color: #20242a; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.58; }
+.topbar { position: sticky; top: 0; z-index: 4; display: flex; justify-content: space-between; gap: 1rem; align-items: center; padding: .7rem 1rem; background: #18324a; color: white; box-shadow: 0 1px 6px rgba(0,0,0,.15); }
+.topbar a { color: #d7ecff; }
+.topbar span { margin-left: .75rem; color: #c6d4df; font-size: .9rem; }
+.document { max-width: 1040px; margin: 0 auto; padding: 2rem 1.1rem 5rem; background: white; }
+.title-page { border-bottom: 1px solid #d9dee7; padding: 3rem 0 2rem; margin-bottom: 2rem; }
+h1, h2, h3, h4 { line-height: 1.22; color: #172536; }
+h1 { font-size: clamp(2rem, 5vw, 3.2rem); margin-top: 2rem; }
+h2 { font-size: clamp(1.55rem, 3.4vw, 2.25rem); border-top: 1px solid #e5e9f0; padding-top: 1.6rem; }
+h3 { font-size: 1.3rem; margin-top: 1.8rem; }
+p, li { font-size: 1rem; }
+a { color: #1f5f99; text-underline-offset: .16em; }
+code { background: #f0f3f7; padding: .1rem .28rem; border-radius: 4px; font-size: .92em; overflow-wrap: anywhere; }
+pre { background: #f0f3f7; padding: 1rem; border-radius: 6px; overflow: auto; border-left: 4px solid #9fb7ce; }
+blockquote { border-left: 4px solid #9fb7ce; padding-left: 1rem; color: #44505f; }
+.callout { border-left: 5px solid #4c566a; background: #f7f9fc; padding: .8rem 1rem; margin: 1rem 0; border-radius: 6px; }
+.callout.authority, .callout.source { border-color: #1f5f99; }
+.callout.not-promoted, .callout.current-truth { border-color: #287a5a; }
+.callout.blocked, .callout.contradiction { border-color: #a63a3a; }
+.callout.verify, .callout.archive { border-color: #9a6a17; }
+.callout.conversation, .callout.decision { border-color: #6554a6; }
+.table-wrap { overflow-x: auto; margin: 1rem 0; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { border-bottom: 1px solid #e1e6ee; padding: .45rem .55rem; vertical-align: top; }
+th { background: #eef3f8; text-align: left; }
+ul, ol { padding-left: 1.35rem; }
+@media (max-width: 720px) { .document { padding: 1rem .85rem 4rem; } .topbar { position: static; align-items: flex-start; flex-direction: column; } table { font-size: .86rem; } }

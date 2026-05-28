@@ -1,0 +1,31 @@
+\documentclass[10.5pt,a4paper,openany]{book}
+\usepackage[a4paper,margin=20mm,includeheadfoot,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\IfFileExists{glyphtounicode.tex}{\input{glyphtounicode}\ifdefined\pdfgentounicode\pdfgentounicode=1\fi}{}
+\usepackage{array,longtable,tabularx,graphicx}
+\newcommand{\toprule}{\hline}
+\newcommand{\midrule}{\hline}
+\newcommand{\bottomrule}{\hline}
+\usepackage{color}
+\newcommand{\uline}[1]{\underline{#1}}
+\newcommand{\href}[2]{\underline{#2} {\footnotesize\texttt{\detokenize{#1}}}}
+\newcommand{\url}[1]{{\footnotesize\texttt{\detokenize{#1}}}}
+\definecolor{DomBlue}{rgb}{0.12,0.37,0.60}
+\definecolor{DomGreen}{rgb}{0.16,0.48,0.35}
+\definecolor{DomAmber}{rgb}{0.60,0.42,0.09}
+\definecolor{DomRed}{rgb}{0.65,0.22,0.22}
+\definecolor{DomViolet}{rgb}{0.39,0.33,0.65}
+\definecolor{DomSlate}{rgb}{0.30,0.34,0.42}
+\definecolor{DomMuted}{rgb}{0.40,0.40,0.40}
+\definecolor{DomCalloutBg}{rgb}{0.96,0.97,0.99}
+\definecolor{DomCodeBg}{rgb}{0.95,0.96,0.97}
+\setcounter{tocdepth}{2}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.42em}
+\linespread{1.06}
+\newcommand{\sourcepath}[1]{\par\smallskip\noindent{\footnotesize\color{DomMuted}\textsf{Source: }\texttt{#1}}\par\smallskip}
+\newcommand{\vonecallout}[3]{\par\medskip\noindent\begingroup\setlength{\fboxsep}{7pt}\colorbox{DomCalloutBg}{\parbox{0.94\linewidth}{\textbf{\textcolor{#1}{#2}}\par #3}}\endgroup\par\medskip}
+\newcommand{\vonecode}[1]{\par\smallskip\noindent\begingroup\setlength{\fboxsep}{7pt}\colorbox{DomCodeBg}{\parbox{0.94\linewidth}{\footnotesize\ttfamily #1}}\endgroup\par\smallskip}
