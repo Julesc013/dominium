@@ -57,6 +57,20 @@ class HumanReadableBookTests(unittest.TestCase):
         self.assertEqual(metadata["Status"], "DERIVED")
         self.assertTrue(body.startswith("# Title"))
 
+    def test_appendix_table_rendering_uses_row_cards(self):
+        rendered = human.table_block_to_cards([
+            "| Topic | Status |",
+            "| --- | --- |",
+            "| Authority | Advisory |",
+        ])
+        self.assertIn("row cards", rendered)
+        self.assertIn("**Topic:** Authority", rendered)
+        self.assertIn("**Status:** Advisory", rendered)
+
+    def test_appendix_safe_markdown_closes_unbalanced_fences(self):
+        rendered = human.appendix_safe_markdown("Intro\n```text\nunfinished\n")
+        self.assertTrue(rendered.rstrip().endswith("```"))
+
 
 if __name__ == "__main__":
     unittest.main()

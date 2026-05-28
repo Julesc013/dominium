@@ -47,6 +47,13 @@ SOURCE_READER_HTML_DIR = "Dominium_Human_Source_Reader_v1.html"
 BUILD_REPORT = "Dominium_Human_Readable_Book_v1_Build_Report.md"
 VALIDATION_REPORT = "Dominium_Human_Readable_Book_v1_Validation_Report.md"
 
+FULL_APPENDIX_MD = "Dominium_Human_Readable_Book_With_Full_Source_Appendix_v1.md"
+FULL_APPENDIX_PDF = "Dominium_Human_Readable_Book_With_Full_Source_Appendix_v1.pdf"
+FULL_APPENDIX_HTML_DIR = "Dominium_Human_Readable_Book_With_Full_Source_Appendix_v1.html"
+FULL_APPENDIX_DOCX = "Dominium_Human_Readable_Book_With_Full_Source_Appendix_v1.docx"
+FULL_APPENDIX_BUILD_REPORT = "Dominium_Human_Readable_Book_With_Full_Source_Appendix_v1_Build_Report.md"
+FULL_APPENDIX_VALIDATION_REPORT = "Dominium_Human_Readable_Book_With_Full_Source_Appendix_v1_Validation_Report.md"
+
 PROTECTED_PREFIXES = docs_corpus.PROTECTED_PREFIXES
 
 REPORT_STATUS_BLOCK = f"""Status: DERIVED
@@ -570,6 +577,63 @@ def render_source_section(repo_root: Path, item: SourceItem) -> str:
     return f"## {title}\n\n{source_intro(item)}\nThis source is represented by metadata only in the human source reader.\n"
 
 
+def table_block_to_cards(table_lines: Sequence[str]) -> str:
+    rows = [line.strip().strip("|").split("|") for line in table_lines if line.strip().startswith("|")]
+    clean_rows = [[cell.strip() for cell in row] for row in rows]
+    clean_rows = [row for row in clean_rows if not all(re.fullmatch(r":?-{3,}:?", cell or "") for cell in row)]
+    if not clean_rows:
+        return ""
+    header = clean_rows[0]
+    lines = ["**Table rendered as row cards for appendix readability:**"]
+    for index, row in enumerate(clean_rows[1:], start=1):
+        pairs = []
+        for col, value in zip(header, row):
+            if value:
+                pairs.append(f"**{col or 'Column'}:** {value}")
+        lines.append(f"- **Row {index}:** " + "; ".join(pairs))
+    return "\n".join(lines)
+
+
+def appendix_safe_markdown(text: str) -> str:
+    """Normalize original prose docs for the full appendix renderer."""
+
+    out: List[str] = []
+    lines = text.splitlines()
+    index = 0
+    in_code = False
+    code_fence = "```"
+    while index < len(lines):
+        line = lines[index]
+        stripped = line.strip()
+        fence_match = re.match(r"^(`{3,}|~{3,})", stripped)
+        if fence_match:
+            fence = fence_match.group(1)
+            if in_code and stripped.startswith(code_fence):
+                in_code = False
+            elif not in_code:
+                in_code = True
+                code_fence = fence
+            out.append(line)
+            index += 1
+            continue
+        if not in_code and stripped.startswith("|"):
+            table_lines = [line]
+            index += 1
+            while index < len(lines) and lines[index].strip().startswith("|"):
+                table_lines.append(lines[index])
+                index += 1
+            out.append(table_block_to_cards(table_lines))
+            continue
+        if not in_code and re.fullmatch(r"[=]{6,}", stripped):
+            out.append("---")
+        else:
+            out.append(line)
+        index += 1
+    if in_code:
+        out.append(code_fence)
+    return "\n".join(out).strip() + "\n"
+
+
 def write_source_reader(repo_root: Path, items: List[SourceItem]) -> None:
     selected = [item for item in items if item.disposition in {"human_full_text", "human_excerpt", "human_summarize"}]
     priority_order = {path: index for index, path in enumerate(HIGH_AUTHORITY_SOURCES + SYNTHESIS_SOURCES)}
@@ -1074,6 +1138,36 @@ def build_source_reader_pdf_markdown(repo_root: Path, items: List[SourceItem]) -
     return "\n\n".join(chunks)
 
 
+def build_full_source_appendix(repo_root: Path, items: List[SourceItem]) -> str:
+    full = [item for item in items if item.disposition == "human_full_text"]
+    priority = {path: index for index, path in enumerate(HIGH_AUTHORITY_SOURCES + SYNTHESIS_SOURCES)}
+    full.sort(key=lambda item: (priority.get(item.path, 10_000), item.path))
+    contents = [
+        "# Separate Appendix - Full Source Documents",
+        "",
+        "> [!SOURCE] This appendix is intentionally separate from the compact main appendices. It includes the full text of every document referenced by Appendix A in the compact human-readable book, formatted as book sections with compact provenance notes.",
+        "",
+        "## Full Source Appendix Contents",
+        "",
+    ]
+    for index, item in enumerate(full, start=1):
+        contents.append(f"- **{index}. {item.title}** - `{item.path}`")
+    sections = ["\n".join(contents)]
+    for index, item in enumerate(full, start=1):
+        text = read_text(repo_root / item.path)
+        metadata, body = compact_metadata(text)
+        safe = appendix_safe_markdown(body)
+        sections.append(
+            f"""## Source {index:03d}: {item.title}
+
+> [!SOURCE] `{item.disposition}` `{item.authority_class}` Source: `{item.path}`. Reason: {item.reason}.
+
+{demote_headings(safe, 2)}
+"""
+        )
+    return "\n\n".join(sections)
+
+
 def write_book_indexes(repo_root: Path, items: List[SourceItem], chapter_sources: Dict[str, List[str]]) -> None:
     index_dir = repo_root / HUMAN_BOOK_ROOT / "indexes"
     index_dir.mkdir(parents=True, exist_ok=True)
@@ -1246,7 +1340,11 @@ def render_docx(repo_root: Path, markdown_text: str, target_name: str) -> Path:
 
 
 def pdf_output_name(kind: str) -> str:
-    return {"main": MAIN_PDF, "source_reader": SOURCE_READER_PDF}[kind]
+    return {
+        "main": MAIN_PDF,
+        "source_reader": SOURCE_READER_PDF,
+        "full_appendix_variant": FULL_APPENDIX_PDF,
+    }[kind]
 
 
 def render_pdf(repo_root: Path, markdown: str, kind: str, title: str, subtitle: str, profile: str, timeout: int) -> PdfInfo:
@@ -1350,6 +1448,48 @@ The builder selected prose-first sources for full text, summary, or excerpt use.
 """
 
 
+def render_full_appendix_build_report(state: BuildState) -> str:
+    counts = disposition_counts(state.sources)
+    output_rows = []
+    for key in ["full_appendix_pdf", "full_appendix_html", "full_appendix_docx"]:
+        info = state.outputs.get(key)
+        if info:
+            output_rows.append((key, rel(info.path, state.repo_root), info.created, info.pages or "", info.size, info.renderer))
+    return REPORT_STATUS_BLOCK + f"""
+# Dominium Human-Readable Book Full Source Appendix Variant Build Report
+
+## Build
+
+- Title: {TITLE} With Full Source Appendix
+- Version: {VERSION}
+- Date: {REVIEW_DATE}
+- Repository branch: `{state.branch}`
+- Repository commit at generation time: `{state.commit}`
+- Renderer: {state.renderer or styled.select_engine() or 'none'}
+- Source roots: `docs/`, `docs/archive/conversations/`
+
+## Variant Shape
+
+This variant keeps the synthesized human-readable book first. After all compact appendices, it adds a separate full-source appendix with its own contents page and formatted full text for every `human_full_text` source referenced by Appendix A.
+
+## Source Counts
+
+- Full source appendix documents: {counts['human_full_text']}
+- Summarized documents still represented outside this appendix: {counts['human_summarize']}
+- Machine/index-only documents kept out of the appendix: {counts['machine_index_only']}
+
+## Outputs
+
+{styled.v0.md_table(["Output", "Path", "Created", "Pages", "Size Bytes", "Renderer"], output_rows)}
+
+## Caveats
+
+- This is a long-form appendix variant. Use the compact book for normal reading.
+- Pipe tables inside source documents are rendered as row-card lists for PDF stability and readability.
+- HTML is the primary clickable navigation surface.
+"""
+
+
 def render_validation_report(state: BuildState, pending: bool = False) -> str:
     if pending:
         return REPORT_STATUS_BLOCK + "\n# Dominium Human-Readable Book Validation Report\n\nValidation pending.\n"
@@ -1361,6 +1501,50 @@ def render_validation_report(state: BuildState, pending: bool = False) -> str:
             pdf_rows.append((key, rel(info.path, state.repo_root), info.created, info.pages or "", info.text_extraction, info.glyph_check, "; ".join(info.qa_images)))
     return REPORT_STATUS_BLOCK + f"""
 # Dominium Human-Readable Book Validation Report
+
+## Status
+
+- Result: {result}
+
+## Command Results
+
+{styled.v0.md_table(["Command", "Result", "Code"], command_rows)}
+
+## PDF QA
+
+{styled.v0.md_table(["Output", "Path", "Created", "Pages", "Text Extraction", "Glyph Check", "QA Images"], pdf_rows)}
+
+## Errors
+
+{chr(10).join(f"- {item}" for item in state.errors) if state.errors else "None."}
+
+## Warnings
+
+{chr(10).join(f"- {item}" for item in state.warnings) if state.warnings else "None."}
+
+## Impact Statements
+
+- Canon impact: unchanged
+- Contract/schema impact: unchanged
+- Implementation impact: unchanged
+- Release impact: unchanged
+- Queue impact: unchanged
+- Archive/conversation claim promotion: none
+- Protected path changes: none detected
+"""
+
+
+def render_full_appendix_validation_report(state: BuildState, pending: bool = False) -> str:
+    if pending:
+        return REPORT_STATUS_BLOCK + "\n# Dominium Human-Readable Book Full Source Appendix Variant Validation Report\n\nValidation pending.\n"
+    result = "PASS" if not state.errors and not state.warnings else "PASS_WITH_WARNINGS" if not state.errors else "FAIL"
+    command_rows = [(item["command"], item["result"], item["code"]) for item in state.command_results]
+    pdf_rows = []
+    for key, info in state.outputs.items():
+        if key == "full_appendix_pdf":
+            pdf_rows.append((key, rel(info.path, state.repo_root), info.created, info.pages or "", info.text_extraction, info.glyph_check, "; ".join(info.qa_images)))
+    return REPORT_STATUS_BLOCK + f"""
+# Dominium Human-Readable Book Full Source Appendix Variant Validation Report
 
 ## Status
 
@@ -1426,6 +1610,30 @@ def validate_outputs(state: BuildState) -> None:
         state.errors.extend(f"protected path changed: {path}" for path in protected)
 
 
+def validate_full_appendix_variant(state: BuildState) -> None:
+    commands = [
+        ["py", "-3", "-c", "text=open('docs/archive/docs_corpus/_human_book/Dominium_Human_Readable_Book_With_Full_Source_Appendix_v1.md', encoding='utf-8').read(); assert 'Separate Appendix - Full Source Documents' in text and 'Full Source Appendix Contents' in text; print('full appendix variant source ok')"],
+        ["py", "-3", "-c", "text=open('docs/archive/docs_corpus/_human_book/appendices/FULL_SOURCE_APPENDIX_v1.md', encoding='utf-8').read(); assert 'Source 001:' in text and 'Full Source Appendix Contents' in text; print('separate appendix source ok')"],
+        ["py", "-3", "tools/docs_corpus/validate_human_readable_book.py", "--repo-root", "."],
+        ["py", "-3", "tools/docs_corpus/validate_docs_corpus_outputs.py", "--repo-root", "."],
+        ["py", "-3", "tools/conversations/validate_conversation_outputs.py", "--repo-root", "."],
+        ["py", "-3", "-m", "unittest", "discover", "tests/tools/docs_corpus"],
+        ["git", "diff", "--check"],
+        ["git", "diff", "--cached", "--check"],
+        ["py", "-3", ".aide/scripts/aide_lite.py", "doctor"],
+        ["py", "-3", ".aide/scripts/aide_lite.py", "validate"],
+        ["py", "-3", "tools/validators/suite/tool_run_validation.py", "--repo-root", ".", "--profile", "FAST"],
+    ]
+    for cmd in commands:
+        code, output = run_command(cmd, state.repo_root, timeout=1800)
+        state.command_results.append({"command": " ".join(cmd), "code": code, "result": "PASS" if code == 0 else "FAIL"})
+        if code != 0:
+            state.errors.append(f"command failed: {' '.join(cmd)}\n{output[-1600:]}")
+    protected = protected_changes(state.repo_root)
+    if protected:
+        state.errors.extend(f"protected path changed: {path}" for path in protected)
+
+
 def create_state(repo_root: Path) -> BuildState:
     records = load_manifest(repo_root)
     sources = select_sources(repo_root, records)
@@ -1465,12 +1673,42 @@ def build_book_phase(state: BuildState, pending_validation: bool = True) -> None
     write_text(state.repo_root / EXPORTS_ROOT / VALIDATION_REPORT, render_validation_report(state, pending=pending_validation))
 
 
+def build_full_appendix_variant_phase(state: BuildState, pending_validation: bool = True) -> None:
+    book_md, _ = write_book_sources(state.repo_root, state.sources)
+    full_appendix = build_full_source_appendix(state.repo_root, state.sources)
+    variant_md = book_md.rstrip() + "\n\n" + full_appendix
+    write_text(state.repo_root / HUMAN_BOOK_ROOT / FULL_APPENDIX_MD, variant_md)
+    appendix_dir = state.repo_root / HUMAN_BOOK_ROOT / "appendices"
+    appendix_dir.mkdir(parents=True, exist_ok=True)
+    write_text(appendix_dir / "FULL_SOURCE_APPENDIX_v1.md", full_appendix)
+    html_path = write_html_output(state.repo_root, variant_md, FULL_APPENDIX_HTML_DIR, f"{TITLE} With Full Source Appendix")
+    docx_path = render_docx(state.repo_root, variant_md, FULL_APPENDIX_DOCX)
+    state.outputs["full_appendix_pdf"] = render_pdf(
+        state.repo_root,
+        variant_md,
+        "full_appendix_variant",
+        f"{TITLE} With Full Source Appendix",
+        "Synthesized Book Plus Separate Full-Text Source Appendix",
+        "reference",
+        timeout=3600,
+    )
+    state.outputs["full_appendix_html"] = PdfInfo(path=html_path, created=html_path.exists(), size=html_path.stat().st_size if html_path.exists() else 0, renderer="built_in_html")
+    state.outputs["full_appendix_docx"] = PdfInfo(path=docx_path, created=docx_path.exists(), size=docx_path.stat().st_size if docx_path.exists() else 0, renderer="built_in_ooxml")
+    renderers = [info.renderer for info in state.outputs.values() if info.renderer]
+    if renderers:
+        state.renderer = ",".join(dict.fromkeys(renderers))
+    write_text(state.repo_root / EXPORTS_ROOT / FULL_APPENDIX_BUILD_REPORT, render_full_appendix_build_report(state))
+    write_text(state.repo_root / EXPORTS_ROOT / FULL_APPENDIX_VALIDATION_REPORT, render_full_appendix_validation_report(state, pending=pending_validation))
+
+
 def build(repo_root: Path, phase: str, run_validation: bool) -> int:
     state = create_state(repo_root)
-    if phase in {"source", "all", "book"}:
+    if phase in {"source", "all", "book", "full-appendix"}:
         build_source_phase(state)
     if phase in {"book", "all"}:
         build_book_phase(state, pending_validation=not run_validation)
+    if phase == "full-appendix":
+        build_full_appendix_variant_phase(state, pending_validation=not run_validation)
     if phase == "validate":
         # Rehydrate known output paths for validation reporting.
         for key, filename in {"main_pdf": MAIN_PDF, "source_reader_pdf": SOURCE_READER_PDF}.items():
@@ -1483,8 +1721,12 @@ def build(repo_root: Path, phase: str, run_validation: bool) -> int:
         }.items():
             state.outputs[key] = PdfInfo(path=path, created=path.exists(), size=path.stat().st_size if path.exists() else 0, renderer="existing")
     if run_validation or phase == "validate":
-        validate_outputs(state)
-        write_text(repo_root / EXPORTS_ROOT / VALIDATION_REPORT, render_validation_report(state, pending=False))
+        if phase == "full-appendix":
+            validate_full_appendix_variant(state)
+            write_text(repo_root / EXPORTS_ROOT / FULL_APPENDIX_VALIDATION_REPORT, render_full_appendix_validation_report(state, pending=False))
+        else:
+            validate_outputs(state)
+            write_text(repo_root / EXPORTS_ROOT / VALIDATION_REPORT, render_validation_report(state, pending=False))
     if state.errors:
         print(f"{TASK_ID} FAIL")
         return 1
@@ -1495,7 +1737,7 @@ def build(repo_root: Path, phase: str, run_validation: bool) -> int:
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo-root", default=".")
-    parser.add_argument("--phase", choices=["source", "book", "all", "validate"], default="all")
+    parser.add_argument("--phase", choices=["source", "book", "all", "validate", "full-appendix"], default="all")
     parser.add_argument("--no-validation", action="store_true")
     args = parser.parse_args(argv)
     return build(Path(args.repo_root).resolve(), args.phase, run_validation=not args.no_validation)
