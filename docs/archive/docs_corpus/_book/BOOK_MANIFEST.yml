@@ -1,0 +1,121 @@
+title: "Dominium Documentation Corpus Book v0"
+subtitle: "Current Docs, Archive Archaeology, Conversation Synthesis, and Reconciliation Guide"
+date: "2026-05-28"
+version: "v0"
+status: "DERIVED"
+authority_class: "advisory_synthesis"
+source_root: "docs/"
+conversation_corpus_root: "docs/archive/conversations/"
+promotion_status: "not_promoted"
+renderer_selected: "built_in_html_docx_epub_plus_pdflatex_pdf"
+source_exclusion_note: "docs/archive/docs_corpus/ is excluded from source inventory to avoid recursive self-publication."
+outputs:
+    - _exports/Dominium_Docs_Corpus_Reader_v0.pdf
+    - _exports/Dominium_Docs_Corpus_Reader_v0.html/index.html
+    - _exports/Dominium_Docs_Corpus_Reader_v0.docx
+    - _exports/Dominium_Docs_Corpus_Reader_v0.epub
+    - _exports/Dominium_Docs_Corpus_Reference_Appendix_v0.pdf
+    - _exports/Dominium_Docs_Corpus_Build_Report_v0.md
+    - _exports/Dominium_Docs_Corpus_Validation_Report_v0.md
+source_reports_included:
+    - _intake/DOCS_CORPUS_MANIFEST.json
+    - _intake/DOCS_CORPUS_MANIFEST.md
+    - _intake/DOCS_SOURCE_INDEX_v0.md
+    - _intake/DOCS_FILE_COUNTS_v0.md
+    - _intake/DOCS_TREE_SUMMARY_v0.md
+    - _intake/DOCS_LARGE_FILES_AND_NON_MARKDOWN_v0.md
+    - _audit/DOCS_STATUS_HEADER_AUDIT_v0.md
+    - _audit/DOCS_AUTHORITY_CLASSIFICATION_DRAFT_v0.md
+    - _audit/DOCS_AUTHORITY_MAP_v0.md
+    - _audit/DOCS_SUPERSESSION_MAP_v0.md
+    - _audit/DOCS_BINDING_SOURCE_MAP_v0.md
+    - _audit/DOCS_ARCHIVE_CLASSIFICATION_v0.md
+    - _audit/DOCS_BOOK_INCLUSION_PLAN_v0.md
+    - _audit/DOCS_DRIFT_MATRIX_v0.md
+    - _audit/DOCS_CONTRADICTION_MATRIX_v0.md
+    - _audit/DOCS_STALENESS_AND_VERIFICATION_v0.md
+    - _audit/DOCS_DUPLICATE_SHADOWS_v0.md
+    - _audit/DOCS_COVERAGE_GAPS_v0.md
+    - _archive/DOCS_ARCHIVE_ATLAS_v0.md
+    - _archive/DOCS_ARCHIVE_FAMILIES_v0.md
+    - _archive/DOCS_ARCHIVE_STALE_OR_USEFUL_v0.md
+    - _archive/DOCS_ARCHIVE_TO_CURRENT_CROSSWALK_v0.md
+    - _archive/DOCS_CONVERSATION_CORPUS_INTEGRATION_v0.md
+    - _reconciliation/DOCS_REPO_TRUTH_CROSSWALK_v0.md
+    - _reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md
+    - _reconciliation/DOCS_CANON_ARCHITECTURE_ALIGNMENT_v0.md
+    - _reconciliation/DOCS_ARCHIVE_CONVERSATION_ALIGNMENT_v0.md
+    - _reconciliation/DOCS_PROMOTION_QUEUE_v0.md
+    - _reconciliation/DOCS_DECISION_DOCKET_v0.md
+    - _reconciliation/DOCS_BLOCKED_SCOPE_ALIGNMENT_v0.md
+    - _wiki/index.md
+    - _wiki/current_authority.md
+    - _wiki/archive_archaeology.md
+    - _wiki/conversation_corpus.md
+    - _wiki/decisions.md
+    - _wiki/promotion_candidates.md
+    - _wiki/contradictions.md
+    - _wiki/staleness_and_verification.md
+    - _wiki/source_index.md
+    - _wiki/reading_paths.md
+    - _book/README.md
+    - _book/BOOK_MANIFEST.yml
+    - _book/index.md
+    - _book/chapters/00_front_matter.md
+    - _book/chapters/01_current_project_orientation.md
+    - _book/chapters/02_current_canon_architecture_contracts.md
+    - _book/chapters/03_product_runtime_tooling_domains.md
+    - _book/chapters/04_archive_archaeology.md
+    - _book/chapters/05_conversation_corpus_integration.md
+    - _book/chapters/06_cross_corpus_reconciliation.md
+    - _book/chapters/07_decisions_promotion_roadmap.md
+    - _book/chapters/08_navigation_reading_paths.md
+    - _book/appendices/A_docs_corpus_manifest_summary.md
+    - _book/appendices/B_authority_and_supersession_registers.md
+    - _book/appendices/C_archive_family_listing.md
+    - _book/appendices/D_contradiction_staleness_promotion_decision_registers.md
+    - _book/appendices/E_source_path_index.md
+source_reports_excluded:
+  - path: "docs/archive/docs_corpus/**"
+    reason: "generated docs-corpus output root excluded from source corpus"
+chapter_order:
+  - chapters/00_front_matter.md
+  - chapters/01_current_project_orientation.md
+  - chapters/02_current_canon_architecture_contracts.md
+  - chapters/03_product_runtime_tooling_domains.md
+  - chapters/04_archive_archaeology.md
+  - chapters/05_conversation_corpus_integration.md
+  - chapters/06_cross_corpus_reconciliation.md
+  - chapters/07_decisions_promotion_roadmap.md
+  - chapters/08_navigation_reading_paths.md
+appendix_order:
+  - appendices/A_docs_corpus_manifest_summary.md
+  - appendices/B_authority_and_supersession_registers.md
+  - appendices/C_archive_family_listing.md
+  - appendices/D_contradiction_staleness_promotion_decision_registers.md
+  - appendices/E_source_path_index.md
+quality_rules:
+  require_status_notice: true
+  preserve_source_paths: true
+  no_live_doc_promotion: true
+  summarize_dense_tables_in_reader: true
+  include_all_files_in_manifest: true
+protected_paths:
+    - docs/canon/
+    - docs/architecture/
+    - docs/reference/contracts/
+    - contracts/
+    - schema/
+    - engine/
+    - game/
+    - runtime/
+    - apps/
+    - release/
+    - updates/
+    - security/
+    - .aide/queue/current.toml
+validation_commands:
+  - py -3 -c "import json; json.load(open('docs/archive/docs_corpus/_intake/DOCS_CORPUS_MANIFEST.json', encoding='utf-8'))"
+  - py -3 tools/docs_corpus/validate_docs_corpus_outputs.py --repo-root .
+  - py -3 -m unittest discover tests/tools/docs_corpus
+  - git diff --check

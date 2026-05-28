@@ -1,0 +1,434 @@
+Dominium Documentation Corpus Book v0
+Current Docs, Archive Archaeology, Conversation Synthesis, and
+Reconciliation Guide
+
+Status: DERIVED
+Authority Class: advisory_synthesis
+Promotion Status: not_promoted
+
+2026-05-28
+
+Contents
+
+1
+
+Status: DERIVED
+Last Reviewed: 2026-05-28
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Authority Class: advisory_synthesis
+Source Root: `docs/`
+Conversation Corpus Root: `docs/archive/conversations/`
+Promotion Status: not_promoted
+Canon impact: unchanged
+Contract/schema impact: unchanged
+Implementation impact: unchanged
+Release impact: unchanged
+Queue impact: unchanged
+
+2
+
+Chapter 1
+Front Matter
+
+3
+
+Chapter 2
+Dominium Documentation Corpus
+Book v0
+
+2.1
+
+Current Docs, Archive Archaeology, Conversation
+Synthesis, and Reconciliation Guide
+
+Publication date: 2026-05-28
+2.2
+
+Authority and Non-Promotion Notice
+
+This book is DERIVED and advisory. It is not canon. It does not promote archive or
+conversation-derived claims into current repo authority. Canon impact, contract/schema
+impact, implementation impact, release impact, and queue impact are unchanged.
+2.3
+
+How to Read This Book
+
+Read current authority rst, then use archive and conversation material as provenance. Use
+contradiction, staleness, decision, and promotion registers as review queues rather than as
+decisions.
+2.4
+
+1.
+2.
+3.
+4.
+5.
+6.
+
+Source Hierarchy
+
+`docs/canon/constitution_v1.md`
+`docs/canon/glossary_v1.md`
+`AGENTS.md`
+Scope-specic canonical planning, semantic, schema, contract, release, and policy artifacts
+Operational registries, projections, manifests, and generated evidence with intact provenance
+Chat summaries, remembered transcript claims, and uncommitted planning notes
+
+2.5
+
+Corpus Snapshot
+
+• Files represented: 5116
+• Directories represented: 279
+• Markdown les: 4671
+• Archive/conversation les: 3221
+
+4
+
+Status: DERIVED
+Last Reviewed: 2026-05-28
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Authority Class: advisory_synthesis
+Source Root: `docs/`
+Conversation Corpus Root: `docs/archive/conversations/`
+Promotion Status: not_promoted
+Canon impact: unchanged
+Contract/schema impact: unchanged
+Implementation impact: unchanged
+Release impact: unchanged
+Queue impact: unchanged
+
+5
+
+Chapter 3
+Current Project Orientation
+
+This chapter orients the reader around current repo authority and the derived current project
+picture.
+3.1
+
+Start With Current Authority
+
+Use `README.md`, `docs/README.md`, `AGENTS.md`, canon, glossary, current queue
+state, and foundation docs before relying on archive or conversation material.
+3.2
+
+Current Project Picture
+
+See `_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md` for the generated
+reader map. The short version is: Dominium has a strong authority model; historical materials
+are useful but non-binding; broad feature scopes remain blocked until a stronger current queue
+source opens them.
+3.3
+
+Current Queue Boundaries
+
+Broad Workbench UI, runtime module loading, provider runtime, package runtime, gameplay,
+renderer implementation, native GUI, and release publication remain blocked review areas.
+Status: DERIVED
+Last Reviewed: 2026-05-28
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Authority Class: advisory_synthesis
+Source Root: `docs/`
+Conversation Corpus Root: `docs/archive/conversations/`
+Promotion Status: not_promoted
+Canon impact: unchanged
+Contract/schema impact: unchanged
+Implementation impact: unchanged
+Release impact: unchanged
+Queue impact: unchanged
+
+6
+
+Chapter 4
+Current Canon, Architecture, and
+Contracts
+
+This chapter summarizes high-authority and authority-sensitive docs families.
+4.1
+
+Counts
+
+• Canon les: 2
+• Architecture les: 324
+• Reference contract docs: 9
+• Planning docs: 77
+4.2
+
+Rule
+
+This book maps these docs but does not rewrite them. Canon/glossary and contract/schema
+authorities retain their normal precedence.
+4.3
+
+Alignment Surface
+
+See `_reconciliation/DOCS_CANON_ARCHITECTURE_ALIGNMENT_v0.md`, `_audit/
+DOCS_AUTHORITY_MAP_v0.md`, and `_audit/DOCS_BINDING_SOURCE_MAP_v0.
+md`.
+Status: DERIVED
+Last Reviewed: 2026-05-28
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Authority Class: advisory_synthesis
+Source Root: `docs/`
+Conversation Corpus Root: `docs/archive/conversations/`
+Promotion Status: not_promoted
+Canon impact: unchanged
+Contract/schema impact: unchanged
+Implementation impact: unchanged
+Release impact: unchanged
+Queue impact: unchanged
+7
+
+Chapter 5
+Product, Runtime, Tooling, and
+Domains
+
+This chapter groups current guidance and domain docs.
+5.1
+
+Counts
+
+• Runtime docs: 97
+• App docs: 41
+• Development docs: 201
+• Testing docs: 22
+• Domain docs: 203
+• Content/modding docs: 50
+5.2
+
+Interpretation
+
+These docs are useful for orientation, but feature implementation still depends on current
+queue scope and stronger authority where applicable.
+5.3
+
+Reading Paths
+
+See `_wiki/reading_paths.md` and topic pages under `_wiki/topics/`.
+Status: DERIVED
+Last Reviewed: 2026-05-28
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Authority Class: advisory_synthesis
+Source Root: `docs/`
+Conversation Corpus Root: `docs/archive/conversations/`
+Promotion Status: not_promoted
+Canon impact: unchanged
+Contract/schema impact: unchanged
+Implementation impact: unchanged
+Release impact: unchanged
+8
+
+Queue impact: unchanged
+
+9
+
+Chapter 6
+Archive Archaeology
+
+Archive archaeology explains historical material without promoting it.
+6.1
+
+Archive Family Counts
+
+Archive Family | Count
+archive/refactor | 1379
+archive/audit | 960
+archive/conversations | 761
+other/archive_unknown | 40
+archive/restructure | 23
+archive/blueprint | 22
+archive/impact | 20
+archive/post-canon | 5
+archive/stray_root_docs | 3
+archive/omega | 2
+archive/prompts | 2
+archive/repox | 2
+archive/platform | 1
+archive/specs | 1
+6.2
+
+Use
+
+Use archive material for provenance, stale-claim detection, duplicate-shadow review, and
+possible later promotion candidates. Do not use it as current authority.
+Status: DERIVED
+Last Reviewed: 2026-05-28
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Authority Class: advisory_synthesis
+Source Root: `docs/`
+Conversation Corpus Root: `docs/archive/conversations/`
+Promotion Status: not_promoted
+Canon impact: unchanged
+Contract/schema impact: unchanged
+Implementation impact: unchanged
+Release impact: unchanged
+Queue impact: unchanged
+
+10
+
+Chapter 7
+Conversation Corpus Integration
+
+The completed conversation corpus is represented as an advisory sub-corpus.
+• Conversation corpus les: 761
+• Existing conversation book: `docs/archive/conversations/_exports/
+
+Dominium_Conversation_Corpus_Book_v0.pdf`
+
+• Current role: design-intent and review substrate
+• Promotion status: not promoted
+
+See `_archive/DOCS_CONVERSATION_CORPUS_INTEGRATION_v0.md`.
+Status: DERIVED
+Last Reviewed: 2026-05-28
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Authority Class: advisory_synthesis
+Source Root: `docs/`
+Conversation Corpus Root: `docs/archive/conversations/`
+Promotion Status: not_promoted
+Canon impact: unchanged
+Contract/schema impact: unchanged
+Implementation impact: unchanged
+Release impact: unchanged
+Queue impact: unchanged
+
+11
+
+Chapter 8
+Cross-Corpus Reconciliation
+
+Cross-corpus reconciliation compares current docs, archive docs, conversation-derived outputs,
+and current repo authority.
+8.1
+
+Finding Counts
+
+• Drift/contradiction review ndings: 136
+• Duplicate shadows: 21
+8.2
+
+Required Topics Covered
+
+Topic | Classification
+Project identity and purpose | current_repo_truth
+Canon and glossary authority | current_repo_truth
+Engine/game/runtime/product boundaries | consistent_but_review_required
+Determinism, replay, and provenance | current_repo_truth
+Process-only mutation | current_repo_truth
+Law, authority, refusal, and capability model | current_repo_truth_with_review_needed
+Pack-driven integration | current_repo_truth
+Profiles over runtime mode flags | current_repo_truth
+Workbench/AIDE/Codex/tooling role | blocked_scope_sensitive
+Conversation corpus role | conversation_advisory_only
+Release/setup/launcher/platform state | blocked_scope_sensitive
+Renderer/UI/native GUI scope | blocked_by_current_queue
+Provider/package runtime scope | blocked_by_current_queue
+Gameplay/domain feature scope | blocked_by_current_queue
+Timekeeping and 2038 resilience | conversation_advisory_or_docs_candidate
+World, reality, civilization, and worldgen domains | authority_sensitive
+Contracts, schema, and reference docs | contract_or_schema_authority
+Testing, validation, FAST, and full-gate debt | current_repo_truth_with_debt_tracking
+Current queue blocked areas | current_repo_truth
+8.3
+
+Where To Inspect Detail
+
+• `_reconciliation/DOCS_REPO_TRUTH_CROSSWALK_v0.md`
+• `_audit/DOCS_DRIFT_MATRIX_v0.md`
+• `_audit/DOCS_CONTRADICTION_MATRIX_v0.md`
+• `_audit/DOCS_STALENESS_AND_VERIFICATION_v0.md`
+
+12
+
+Status: DERIVED
+Last Reviewed: 2026-05-28
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Authority Class: advisory_synthesis
+Source Root: `docs/`
+Conversation Corpus Root: `docs/archive/conversations/`
+Promotion Status: not_promoted
+Canon impact: unchanged
+Contract/schema impact: unchanged
+Implementation impact: unchanged
+Release impact: unchanged
+Queue impact: unchanged
+
+13
+
+Chapter 9
+Decisions and Promotion Roadmap
+
+Decision and promotion surfaces are review queues.
+9.1
+
+Counts
+
+• Generated contradiction/drift ndings: 136
+• Metadata/header hygiene candidates: 463
+• Duplicate shadow review candidates: 21
+9.2
+
+Defaults
+
+• Defer blocked queue scopes.
+• Keep archive/conversation claims not promoted.
+• Use later narrow docs-only promotion tasks for any live-doc changes.
+
+See `_reconciliation/DOCS_DECISION_DOCKET_v0.md` and `_reconciliation/
+DOCS_PROMOTION_QUEUE_v0.md`.
+Status: DERIVED
+Last Reviewed: 2026-05-28
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Authority Class: advisory_synthesis
+Source Root: `docs/`
+Conversation Corpus Root: `docs/archive/conversations/`
+Promotion Status: not_promoted
+Canon impact: unchanged
+Contract/schema impact: unchanged
+Implementation impact: unchanged
+Release impact: unchanged
+Queue impact: unchanged
+
+14
+
+Chapter 10
+Navigation and Reading Paths
+
+Use the docs-corpus wiki for daily navigation.
+10.1
+
+Key Pages
+
+• `_wiki/index.md`
+• `_wiki/reading_paths.md`
+• `_wiki/current_authority.md`
+• `_wiki/archive_archaeology.md`
+• `_wiki/conversation_corpus.md`
+• `_wiki/decisions.md`
+• `_wiki/promotion_candidates.md`
+• `_wiki/contradictions.md`
+• `_wiki/staleness_and_verication.md`
+• `_wiki/source_index.md`
+
+15
+
+

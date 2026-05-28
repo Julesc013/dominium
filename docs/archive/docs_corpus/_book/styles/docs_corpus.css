@@ -1,0 +1,8 @@
+body { font-family: system-ui, -apple-system, Segoe UI, sans-serif; line-height: 1.5; max-width: 1180px; margin: 0 auto; padding: 2rem; color: #20242a; }
+nav { border: 1px solid #c8ccd2; padding: 1rem; margin: 1rem 0 2rem; background: #f7f8fa; }
+code, pre { font-family: Consolas, monospace; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.92rem; }
+th, td { border: 1px solid #d5d9df; padding: 0.4rem; vertical-align: top; }
+th { background: #edf0f4; }
+.authority-note { border-left: 4px solid #57606a; padding: 0.75rem 1rem; background: #f6f8fa; }
+.search { margin: 1rem 0; }
