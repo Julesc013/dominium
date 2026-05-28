@@ -1,0 +1,40 @@
+title: "Dominium Human-Readable Project Book"
+subtitle: "A Synthesized Reader for Current Docs, Archive Context, and Conversation Evidence"
+version: 1
+date: "2026-05-29"
+status: "DERIVED"
+authority_class: "advisory_synthesis"
+source_root: "docs/"
+conversation_corpus_root: "docs/archive/conversations/"
+promotion_status: "not_promoted"
+outputs:
+  - "docs/archive/docs_corpus/_exports/Dominium_Human_Readable_Book_v1.pdf"
+  - "docs/archive/docs_corpus/_exports/Dominium_Human_Readable_Book_v1.html/index.html"
+  - "docs/archive/docs_corpus/_exports/Dominium_Human_Readable_Book_v1.docx"
+  - "docs/archive/docs_corpus/_exports/Dominium_Human_Source_Reader_v1.pdf"
+selection_counts:
+  binary_or_non_text: 68
+  human_full_text: 189
+  human_summarize: 3978
+  machine_index_only: 268
+  reference_only: 620
+protected_paths:
+  - docs/canon/
+  - docs/architecture/
+  - docs/reference/contracts/
+  - contracts/
+  - schema/
+  - engine/
+  - game/
+  - runtime/
+  - apps/
+  - release/
+  - updates/
+  - security/
+  - .aide/queue/current.toml
+validation_commands:
+  - py -3 tools/docs_corpus/validate_human_readable_book.py --repo-root .
+  - py -3 tools/docs_corpus/validate_docs_corpus_outputs.py --repo-root .
+  - py -3 tools/conversations/validate_conversation_outputs.py --repo-root .
+  - py -3 -m unittest discover tests/tools/docs_corpus
+  - git diff --check

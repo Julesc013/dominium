@@ -399,9 +399,8 @@ def source_tag(item: SourceItem) -> str:
 
 
 def repo_link(path: str) -> str:
-    prefix = "../../../../../"
     label = path.replace("\\", "/")
-    return f"[`{label}`]({prefix}{label})"
+    return f"`{label}`"
 
 
 def write_source_manifest(repo_root: Path, items: List[SourceItem]) -> None:
@@ -619,6 +618,7 @@ def write_v0_failure_modes(repo_root: Path) -> None:
         if code == 0 and extract.exists():
             text = extract.read_text(encoding="utf-8", errors="replace")
             glyph_note = "broken/control glyphs detected" if styled.has_bad_glyphs(text) or "\ufffd" in text else "no control glyphs detected by smoke check"
+        extract.unlink(missing_ok=True)
     report = REPORT_STATUS_BLOCK + f"""
 # V0 Failure Modes
 
@@ -649,20 +649,37 @@ The main human-readable book must be a synthesis. It may cite source paths and u
 
 
 def chapter(title: str, number: int, focus: str, current: str, archive: str, unresolved: str, sources: Sequence[str]) -> str:
-    source_links = "; ".join(repo_link(path) for path in sources)
+    source_links = "\n".join(f"- {repo_link(path)}" for path in sources)
     return f"""## {number}. {title}
 
 {focus}
 
+This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.
+
 **Current repo-backed picture.** {current}
+
+The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.
 
 **Historical and advisory context.** {archive}
 
+That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.
+
 **What remains unresolved.** {unresolved}
+
+**What not to assume.** Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.
+
+**Review questions.**
+
+- Which parts of this topic are already current repo truth?
+- Which parts are merely consistent with current docs but not formalized?
+- Which parts are blocked by queue state or need explicit human decision?
+- Which source paths should be inspected before any later docs-only promotion?
 
 **How to use this chapter.** Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.
 
-Source trail: {source_links}
+**Source trail:**
+
+{source_links}
 """
 
 
@@ -687,6 +704,8 @@ This is a readable project book. It explains the project in coherent prose, draw
 ## What This Book Is Not
 
 This book does not promote archive claims. It does not apply promotion candidates. It does not open blocked Workbench UI, renderer, gameplay, provider runtime, package runtime, native GUI, or release publication work. It does not resolve contradictions by convenience.
+
+It also does not print raw JSON, raw YAML, hash manifests, validation logs, or giant file registers as chapter content. Those materials remain available through the source manifest, reference reports, and source-reader HTML where they are easier to audit.
 
 ## Source Hierarchy
 
@@ -1004,6 +1023,57 @@ def write_book_sources(repo_root: Path, items: List[SourceItem]) -> Tuple[str, D
     return book_md, chapter_sources
 
 
+def build_source_reader_pdf_markdown(repo_root: Path, items: List[SourceItem]) -> str:
+    """Create a compact PDF-safe source reader.
+
+    The full original source compilation remains in Markdown and HTML. This PDF
+    edition avoids fragile raw preservation files that can break LaTeX while
+    still giving a readable guide to the same selected human source set.
+    """
+
+    counts = disposition_counts(items)
+    full = [item for item in items if item.disposition == "human_full_text"]
+    summarized = [item for item in items if item.disposition == "human_summarize"]
+    priority = {path: index for index, path in enumerate(HIGH_AUTHORITY_SOURCES + SYNTHESIS_SOURCES)}
+    priority_full = sorted([item for item in full if item.path in priority], key=lambda item: priority[item.path])
+    reader_artifacts = [item for item in full if item.path not in priority][:120]
+
+    chunks = [
+        f"# {TITLE} Source Reader",
+        "",
+        BOOK_NOTICE,
+        "> [!SOURCE] This is the PDF-safe source reader. The full original human source compilation is `docs/archive/docs_corpus/_human_source/HUMAN_SOURCE_COMPILATION.md` and the searchable source-reader HTML output.",
+        "",
+        "## Source Coverage",
+        "",
+        f"- Full-text human-readable sources selected: {counts['human_full_text']}",
+        f"- Summarized prose sources selected: {counts['human_summarize']}",
+        f"- Reference-only sources: {counts['reference_only']}",
+        f"- Machine/index-only sources excluded from prose flow: {counts['machine_index_only']}",
+        f"- Binary/non-text sources represented by metadata: {counts['binary_or_non_text']}",
+        "",
+        "## Priority Full-Text Sources",
+        "",
+    ]
+    for item in priority_full:
+        chunks.append(render_source_section(repo_root, item))
+
+    chunks.append("## Conversation Reader And Archive Prose Sources\n")
+    chunks.append(
+        "The following reader-oriented conversation and archive sources are included in the full source compilation. They are summarized here for PDF stability and listed with source trails so the originals remain easy to find.\n"
+    )
+    for item in reader_artifacts:
+        chunks.append(f"### {item.title}\n\n{source_intro(item)}\nSummary: {first_paragraphs(read_text(repo_root / item.path), max_paragraphs=2, max_chars=900)}\n")
+
+    chunks.append("## Summarized Current And Archive Docs\n")
+    chunks.append("These documents are part of the human-readable source set but are intentionally summarized rather than printed in sequence.\n")
+    for item in summarized[:300]:
+        chunks.append(f"- `{item.path}` - {item.title}.")
+    if len(summarized) > 300:
+        chunks.append(f"- ... {len(summarized) - 300} more summarized sources are listed in `HUMAN_SOURCE_INDEX.md`.")
+    return "\n\n".join(chunks)
+
+
 def write_book_indexes(repo_root: Path, items: List[SourceItem], chapter_sources: Dict[str, List[str]]) -> None:
     index_dir = repo_root / HUMAN_BOOK_ROOT / "indexes"
     index_dir.mkdir(parents=True, exist_ok=True)
@@ -1093,6 +1163,22 @@ def html_document(title: str, body: str, css: str) -> str:
 """
 
 
+def link_source_paths_in_html(body: str) -> str:
+    def repl(match: re.Match[str]) -> str:
+        path = html.unescape(match.group(1))
+        if not (
+            path == "README.md"
+            or path == "AGENTS.md"
+            or path.startswith("docs/")
+            or path.startswith(".aide/")
+        ):
+            return match.group(0)
+        href = "../../../../../" + path
+        return f'<a class="source-link" href="{html.escape(href, quote=True)}"><code>{html.escape(path)}</code></a>'
+
+    return re.sub(r"<code>([^<]+)</code>", repl, body)
+
+
 def human_css() -> str:
     return """
 :root { --ink:#18202a; --muted:#5d6877; --line:#d8dee8; --soft:#f5f7fb; --accent:#1f5f99; --warn:#865700; }
@@ -1109,6 +1195,7 @@ blockquote { margin:1.2rem 0; padding:1rem 1.1rem; border-left:5px solid var(--a
 code { background:#f0f3f7; padding:.08rem .25rem; border-radius:.25rem; font-size:.92em; }
 pre { overflow:auto; padding:1rem; background:#101820; color:#f5f7fb; border-radius:.5rem; }
 a { color:var(--accent); text-decoration: underline; text-underline-offset:.18em; }
+a.source-link code { color:var(--accent); }
 table { border-collapse: collapse; width:100%; margin:1rem 0; font-size:.94rem; }
 th, td { border:1px solid var(--line); padding:.45rem .55rem; vertical-align:top; }
 th { background:var(--soft); }
@@ -1120,7 +1207,7 @@ ul, ol { padding-left:1.5rem; }
 def write_html_output(repo_root: Path, markdown: str, dirname: str, title: str) -> Path:
     html_dir = repo_root / EXPORTS_ROOT / dirname
     html_dir.mkdir(parents=True, exist_ok=True)
-    body = styled.markdown_to_html(markdown)
+    body = link_source_paths_in_html(styled.markdown_to_html(markdown))
     doc = html_document(title, body, human_css())
     path = html_dir / "index.html"
     write_text(path, doc)
@@ -1361,12 +1448,13 @@ def build_source_phase(state: BuildState) -> None:
 
 def build_book_phase(state: BuildState, pending_validation: bool = True) -> None:
     source_compilation = read_text(state.repo_root / HUMAN_SOURCE_ROOT / "HUMAN_SOURCE_COMPILATION.md")
+    source_reader_pdf_md = build_source_reader_pdf_markdown(state.repo_root, state.sources)
     book_md, _ = write_book_sources(state.repo_root, state.sources)
     main_html = write_html_output(state.repo_root, book_md, MAIN_HTML_DIR, TITLE)
     source_html = write_html_output(state.repo_root, source_compilation, SOURCE_READER_HTML_DIR, f"{TITLE} Source Reader")
     docx_path = render_docx(state.repo_root, book_md, MAIN_DOCX)
     state.outputs["main_pdf"] = render_pdf(state.repo_root, book_md, "main", TITLE, SUBTITLE, "reader", timeout=1500)
-    state.outputs["source_reader_pdf"] = render_pdf(state.repo_root, source_compilation, "source_reader", f"{TITLE} Source Reader", "Curated Human-Readable Source Compilation", "reference", timeout=2400)
+    state.outputs["source_reader_pdf"] = render_pdf(state.repo_root, source_reader_pdf_md, "source_reader", f"{TITLE} Source Reader", "PDF-Safe Curated Human-Readable Source Guide", "reference", timeout=1800)
     state.outputs["main_html"] = PdfInfo(path=main_html, created=main_html.exists(), size=main_html.stat().st_size if main_html.exists() else 0, renderer="built_in_html")
     state.outputs["source_reader_html"] = PdfInfo(path=source_html, created=source_html.exists(), size=source_html.stat().st_size if source_html.exists() else 0, renderer="built_in_html")
     state.outputs["docx"] = PdfInfo(path=docx_path, created=docx_path.exists(), size=docx_path.stat().st_size if docx_path.exists() else 0, renderer="built_in_ooxml")

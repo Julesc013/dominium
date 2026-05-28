@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dominium Human-Readable Project Book</title>
+  <style>
+:root { --ink:#18202a; --muted:#5d6877; --line:#d8dee8; --soft:#f5f7fb; --accent:#1f5f99; --warn:#865700; }
+* { box-sizing: border-box; }
+body { margin:0; color:var(--ink); font: 17px/1.62 system-ui, -apple-system, Segoe UI, sans-serif; background:#fff; }
+main { max-width: 880px; margin: 0 auto; padding: 3.5rem 1.25rem 6rem; }
+.top { position: sticky; top:0; display:flex; gap:1rem; padding:.7rem 1rem; background:rgba(255,255,255,.94); border-bottom:1px solid var(--line); backdrop-filter: blur(8px); z-index:5; }
+.top a { color:var(--accent); font-weight:700; text-decoration: underline; text-underline-offset: .18em; }
+h1 { font-size: clamp(2.2rem, 5vw, 4.4rem); line-height:1.05; margin:1rem 0 1.25rem; }
+h2 { margin-top:3rem; padding-top:1rem; border-top:3px solid var(--line); font-size:1.7rem; line-height:1.22; }
+h3 { margin-top:2rem; color:#26384e; }
+p { margin:.85rem 0; }
+blockquote { margin:1.2rem 0; padding:1rem 1.1rem; border-left:5px solid var(--accent); background:var(--soft); border-radius:.35rem; }
+code { background:#f0f3f7; padding:.08rem .25rem; border-radius:.25rem; font-size:.92em; }
+pre { overflow:auto; padding:1rem; background:#101820; color:#f5f7fb; border-radius:.5rem; }
+a { color:var(--accent); text-decoration: underline; text-underline-offset:.18em; }
+a.source-link code { color:var(--accent); }
+table { border-collapse: collapse; width:100%; margin:1rem 0; font-size:.94rem; }
+th, td { border:1px solid var(--line); padding:.45rem .55rem; vertical-align:top; }
+th { background:var(--soft); }
+ul, ol { padding-left:1.5rem; }
+@media (max-width: 700px) { body { font-size:16px; } main { padding:2rem 1rem 5rem; } table { display:block; overflow-x:auto; } }
+</style>
+</head>
+<body>
+  <nav class="top"><a href="#top">Top</a><a href="#contents">Contents</a><a href="#appendices">Appendices</a></nav>
+  <main id="top">
+    <h1 id="dominium-human-readable-project-book">Dominium Human-Readable Project Book</h1>
+<p>Version: 1</p>
+<p>Authority Class: advisory_synthesis</p>
+<p>Source Root: <a class="source-link" href="../../../../../docs/"><code>docs/</code></a></p>
+<p>Conversation Corpus Root: <a class="source-link" href="../../../../../docs/archive/conversations/"><code>docs/archive/conversations/</code></a></p>
+<p>Promotion Status: not_promoted</p>
+<p>Canon impact: unchanged</p>
+<p>Contract/schema impact: unchanged</p>
+<p>Implementation impact: unchanged</p>
+<p>Release impact: unchanged</p>
+<p>Queue impact: unchanged</p>
+<aside class="callout authority"><strong>Authority</strong><p>This book is <strong>DERIVED</strong> and advisory. It is a human-readable synthesis of current docs, archive context, and conversation evidence. It is not canon, not a contract, not schema law, not release authority, and not queue state.</p></aside>
+<h2 id="how-to-read-this-book">How To Read This Book</h2>
+<p>Start with Part I if you need the project in one sitting. Use Parts II through IV when you need architecture, simulation, tooling, and archive context. Use Part V to plan review work. Source trails at the end of each chapter point to the documents that support the synthesis.</p>
+<h2 id="what-this-book-is">What This Book Is</h2>
+<p>This is a readable project book. It explains the project in coherent prose, draws current repo truth from the strongest authority surfaces, and uses archive and conversation material as historical evidence.</p>
+<h2 id="what-this-book-is-not">What This Book Is Not</h2>
+<p>This book does not promote archive claims. It does not apply promotion candidates. It does not open blocked Workbench UI, renderer, gameplay, provider runtime, package runtime, native GUI, or release publication work. It does not resolve contradictions by convenience.</p>
+<p>It also does not print raw JSON, raw YAML, hash manifests, validation logs, or giant file registers as chapter content. Those materials remain available through the source manifest, reference reports, and source-reader HTML where they are easier to audit.</p>
+<h2 id="source-hierarchy">Source Hierarchy</h2>
+<ol>
+<li><a class="source-link" href="../../../../../docs/canon/constitution_v1.md"><code>docs/canon/constitution_v1.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/canon/glossary_v1.md"><code>docs/canon/glossary_v1.md</code></a></li>
+<li><a class="source-link" href="../../../../../AGENTS.md"><code>AGENTS.md</code></a></li>
+<li>Scope-specific current planning, schema, contract, release, policy, and queue artifacts</li>
+<li>Operational registries, projections, mirrors, manifests, and generated evidence</li>
+<li>Archive material and conversation-derived synthesis</li>
+</ol>
+<h2 id="reading-paths">Reading Paths</h2>
+<ul>
+<li><strong>Fast orientation:</strong> chapters 1, 3, 4, 16, and 20.</li>
+<li><strong>Architecture review:</strong> chapters 5 through 9.</li>
+<li><strong>Simulation/world review:</strong> chapters 10 through 12.</li>
+<li><strong>Tooling and governance review:</strong> chapters 13 through 15.</li>
+<li><strong>Decision/promotion review:</strong> chapters 17 through 20.</li>
+</ul>
+<h2 id="status-labels">Status Labels</h2>
+<ul>
+<li><strong>Current repo truth:</strong> supported by current canon, glossary, AGENTS, contracts, queue, or live docs.</li>
+<li><strong>Archive/historical:</strong> useful for provenance but not current authority.</li>
+<li><strong>Conversation advisory:</strong> design intent from archived conversations, not promoted truth.</li>
+<li><strong>Blocked by queue:</strong> related implementation scope remains closed.</li>
+<li><strong>Needs decision:</strong> cannot be resolved by generated synthesis.</li>
+</ul>
+<h1 id="part-i-the-project-in-one-sitting">Part I - The Project In One Sitting</h1>
+<h2 id="1-what-dominium-is">1. What Dominium Is</h2>
+<p>Dominium is best understood as a deterministic, contract-governed simulation game and operating environment built on the Domino deterministic substrate. The project is not just a game executable; it is a set of lawful simulation, validation, content, evidence, and product surfaces that have to agree about truth.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> The README identifies Dominium as the official game/product/domain layer on top of Domino. The canon and glossary provide binding meaning, while AGENTS defines how repo work must respect that authority. The current queue keeps broad implementation work constrained.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> The archive and conversations expand the picture into a long-horizon product ecosystem: Workbench, setup/launcher, content packs, portability, release identity, provider boundaries, and repo-governed assistant workflows. Those materials explain intent but do not override current repo truth.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> The exact product boundary between long-term vision and current allowed implementation remains queue-gated. Future work must distinguish &#x27;what the project intends&#x27; from &#x27;what the current queue permits&#x27;.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../README.md"><code>README.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/canon/constitution_v1.md"><code>docs/canon/constitution_v1.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/canon/glossary_v1.md"><code>docs/canon/glossary_v1.md</code></a></li>
+<li><a class="source-link" href="../../../../../AGENTS.md"><code>AGENTS.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/CURRENT_PROJECT_ATLAS_v0.md"><code>docs/archive/conversations/_synthesis/CURRENT_PROJECT_ATLAS_v0.md</code></a></li>
+</ul>
+<h2 id="2-why-this-project-exists">2. Why This Project Exists</h2>
+<p>The recurring project ambition is to make invention, production, logistics, economics, settlement, trust, communication, and institutional power emerge from lawful simulation rather than from one-off scripts or renderer-owned state.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current docs emphasize deterministic execution, process-only mutation, explicit refusal, pack-driven integration, and validation evidence. These are not aesthetic preferences; they are the controls that keep a large simulation explainable and replayable.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> Conversation material repeatedly pushes the same ambition outward: world scale, tooling, release discipline, long-term portability, and operator interfaces that make the system inspectable. The archive is valuable because it preserves why those themes mattered.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> The project still needs adjudication on which historical design intents become current docs, which remain history, and which are blocked until later queue phases.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../README.md"><code>README.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md"><code>docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md"><code>docs/archive/docs_corpus/_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md</code></a></li>
+</ul>
+<h2 id="3-the-core-mental-model">3. The Core Mental Model</h2>
+<p>The clearest mental model is the command/result spine: intent becomes command, capability/refusal law checks it, a deterministic service or process produces a result, diagnostics and evidence make it inspectable, and product shells project the outcome.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current repo truth separates authoritative truth, perceived/observed views, and rendering. UI and rendering are presentation. Authoritative mutation happens only through lawful deterministic process execution.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> Archived conversations apply the same model to Workbench, renderer, setup, provider, and content discussions. They often differ in vocabulary, but the direction is consistent: products should project truth, not invent hidden state.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> Some old conversations imply future UI/editor powers that are not currently open. Those should be read as design intent and decision backlog, not implementation authorization.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../README.md"><code>README.md</code></a></li>
+<li><a class="source-link" href="../../../../../AGENTS.md"><code>AGENTS.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/architecture/INVARIANTS.md"><code>docs/architecture/INVARIANTS.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md"><code>docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md</code></a></li>
+</ul>
+<h2 id="4-what-is-current-repo-truth-vs-historical-context">4. What Is Current Repo Truth Vs Historical Context</h2>
+<p>The most important reading rule is authority ordering. Repo artifacts outrank chat memory. Canon and glossary outrank lower-level prose. Current queue state controls what work is allowed now.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> AGENTS and the planning authority docs make this explicit. Generated outputs are evidence unless promoted by a stronger source. Archive and conversation material can orient review, but it cannot silently become doctrine.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> The docs corpus and conversation corpus are useful precisely because they preserve history without contaminating current authority. They create review queues, contradiction maps, and source trails.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> The remaining work is human adjudication: decide what to preserve as history, what to promote through narrow docs tasks, what conflicts with authority, and what needs future queue opening.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../AGENTS.md"><code>AGENTS.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/planning/AUTHORITY_ORDER.md"><code>docs/planning/AUTHORITY_ORDER.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md"><code>docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md"><code>docs/archive/docs_corpus/_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md</code></a></li>
+</ul>
+<h1 id="part-ii-current-architecture">Part II - Current Architecture</h1>
+<h2 id="5-the-system-stack">5. The System Stack</h2>
+<p>The project stack separates Domino substrate, Dominium domain/product meaning, runtime/product shells, Workbench/operator surfaces, contracts/schema law, content packs, and documentation/governance.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current sources keep these roles distinct. The engine substrate owns deterministic mechanics; the game/domain layer owns official interpretation; apps compose products; contracts and schema define compatibility surfaces; docs and queue state govern allowed work.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> Conversation archives reinforce this layered picture but sometimes discuss future experiences as if they already exist. The book keeps those statements advisory.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> The current stack map needs future promotion only where current docs are thin, not where archive language merely repeats unsupported future ambition.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../README.md"><code>README.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/architecture/CANONICAL_SYSTEM_MAP.md"><code>docs/architecture/CANONICAL_SYSTEM_MAP.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/architecture/CONTRACTS_INDEX.md"><code>docs/architecture/CONTRACTS_INDEX.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/FULL_PROJECT_PICTURE_v0.md"><code>docs/archive/conversations/_synthesis/FULL_PROJECT_PICTURE_v0.md</code></a></li>
+</ul>
+<h2 id="6-authority-law-capability-and-refusal">6. Authority, Law, Capability, And Refusal</h2>
+<p>Authority in Dominium is not convenience power. Authority permits or frames attempts; law decides whether an attempt is accepted, refused, transformed, or degraded in a deterministic and auditable way.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> AGENTS inherits the constitutional floor: process-only mutation, explicit refusal, no silent migrations, no hidden fallback magic, profiles over mode flags, and pack-driven integration. These rules protect replayability and semantic ownership.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> The archive adds many examples of why this matters: Workbench must not become a hidden truth owner, providers must not silently substitute incompatible behavior, and generated assistant outputs must not become doctrine by accident.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> Future promotion needs careful language around capability, refusal, and operator tools so that convenience workflows do not collapse authority boundaries.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../AGENTS.md"><code>AGENTS.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/canon/constitution_v1.md"><code>docs/canon/constitution_v1.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/canon/glossary_v1.md"><code>docs/canon/glossary_v1.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md"><code>docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md</code></a></li>
+</ul>
+<h2 id="7-determinism-replay-provenance-and-validation">7. Determinism, Replay, Provenance, And Validation</h2>
+<p>Determinism is the project&#x27;s engineering spine. Identical canonical inputs should produce identical authoritative outputs, and evidence must make that fact reviewable.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current governance requires named RNG streams, deterministic ordering, deterministic reductions, replay-hash equivalence where applicable, and validation before success is claimed. Validation reports are evidence, not replacement authority.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> Conversation material extends this concern into long-term portability, world scale, release trust, and tool-assisted inspection. It treats evidence as a first-class product surface.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> Full validation depth and release/trust proof remain visible debt outside narrow docs publication tasks. Generated books should report validation honestly and avoid implying runtime progress.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../README.md"><code>README.md</code></a></li>
+<li><a class="source-link" href="../../../../../AGENTS.md"><code>AGENTS.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/architecture/INVARIANTS.md"><code>docs/architecture/INVARIANTS.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/repo/FOUNDATION_LOCK.md"><code>docs/repo/FOUNDATION_LOCK.md</code></a></li>
+</ul>
+<h2 id="8-content-packs-modding-and-compatibility">8. Content, Packs, Modding, And Compatibility</h2>
+<p>Content and optional capability are meant to be declared, validated, and integrated through packs, registries, contracts, and compatibility law rather than hardcoded hidden branches.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current doctrine requires explicit refusal or degradation when packs are missing. Contract and schema identity must be respected, and silent compatibility reinterpretation is forbidden.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> The archive contains a wide design space around providers, content packs, modding, authored data, and future runtime packaging. That material is useful but queue-sensitive.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> Provider runtime and package runtime remain blocked by current queue. Any promotion touching those areas should stay docs-only until the queue opens implementation scope.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../AGENTS.md"><code>AGENTS.md</code></a></li>
+<li><a class="source-link" href="../../../../../README.md"><code>README.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_promotion/PROMOTION_WAVE_1_CANDIDATES_v0.md"><code>docs/archive/conversations/_promotion/PROMOTION_WAVE_1_CANDIDATES_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_reconciliation/DOCS_BLOCKED_SCOPE_ALIGNMENT_v0.md"><code>docs/archive/docs_corpus/_reconciliation/DOCS_BLOCKED_SCOPE_ALIGNMENT_v0.md</code></a></li>
+</ul>
+<h2 id="9-runtime-product-shells-ui-renderer-and-platform">9. Runtime, Product Shells, UI, Renderer, And Platform</h2>
+<p>Product shells should project command/result/refusal/diagnostic/evidence truth. Rendering is presentation. UI is an operator or player surface. Neither should mutate authoritative truth directly.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current queue state blocks broad Workbench UI, renderer implementation, native GUI, gameplay, provider runtime, package runtime, runtime module loading, and release publication. That queue fact is part of current truth.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> Archived conversations are rich with renderer, platform, Workbench, setup, and product-shell ideas. They are valuable as future design backlog, but they cannot authorize implementation now.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> The next safe work in this area is review, clarification, and narrow docs-only promotion candidate preparation, not broad feature execution.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../README.md"><code>README.md</code></a></li>
+<li><a class="source-link" href="../../../../../.aide/queue/current.toml"><code>.aide/queue/current.toml</code></a></li>
+<li><a class="source-link" href="../../../../../docs/repo/FOUNDATION_LOCK.md"><code>docs/repo/FOUNDATION_LOCK.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/CURRENT_PROJECT_ATLAS_v0.md"><code>docs/archive/conversations/_synthesis/CURRENT_PROJECT_ATLAS_v0.md</code></a></li>
+</ul>
+<h1 id="part-iii-simulation-and-world-model">Part III - Simulation And World Model</h1>
+<h2 id="10-reality-existence-space-time-and-scale">10. Reality, Existence, Space, Time, And Scale</h2>
+<p>The long-horizon world model is ambitious: existence, spatial refinement, visitability, timekeeping, chronology, scale, and simulation domains recur across the docs and conversations.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current authority supports the separation of truth, perception, and render, plus deterministic process execution. It does not automatically promote every archived world-scale concept into current implementation scope.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> Conversation synthesis adds the richest picture: worlds, planets, celestial systems, universe explorer ideas, real-world defaults, macro/micro transitions, and 2038 resilience concerns.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> Each domain claim needs review against current contracts, code, and queue state before becoming current docs. The strongest near-term value is vocabulary and roadmap clarification.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md"><code>docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/FULL_PROJECT_PICTURE_v0.md"><code>docs/archive/conversations/_synthesis/FULL_PROJECT_PICTURE_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md"><code>docs/archive/docs_corpus/_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md</code></a></li>
+</ul>
+<h2 id="11-civilization-economy-logistics-institutions-and-signals">11. Civilization, Economy, Logistics, Institutions, And Signals</h2>
+<p>Dominium&#x27;s product identity repeatedly points toward systems where production, logistics, economics, settlement, trust, communication, institutions, and power emerge from lawful simulation.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> The README directly names invention, production, logistics, economics, settlement, trust, communication, and institutional power. That makes these themes current identity, even where detailed gameplay remains blocked.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> The archive expands these themes into civilization simulation, infrastructure, economy, governance, signals, and long-term world dynamics. Those are design signals rather than permission to implement gameplay.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> The unresolved question is sequencing: which social and economic concepts need canon vocabulary, which need architecture docs, and which must wait for gameplay scope to open.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../README.md"><code>README.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md"><code>docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_decision/DECISION_SUMMARY_v0.md"><code>docs/archive/conversations/_decision/DECISION_SUMMARY_v0.md</code></a></li>
+</ul>
+<h2 id="12-worldgen-astronomy-planetary-systems-and-domains">12. Worldgen, Astronomy, Planetary Systems, And Domains</h2>
+<p>World generation and planetary/celestial systems appear as recurring domain ambitions. The material matters because scale and chronology affect determinism, storage, rendering, and simulation law.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current repo truth requires deterministic ordering, explicit constraints, and clear contract boundaries. A worldgen idea is not current authority unless supported by current docs or later promotion.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> Conversation material includes chronology, celestial alignment, universe-scale thinking, planetary systems, and domain-specific packs. It is a strong source of historical design intent.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> Future review should separate vocabulary, deterministic model requirements, data/pack boundaries, and implementation plans. Those are different promotion tracks.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md"><code>docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/WHAT_NEEDS_DECISION_v0.md"><code>docs/archive/conversations/_synthesis/WHAT_NEEDS_DECISION_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_audit/DOCS_STALENESS_AND_VERIFICATION_v0.md"><code>docs/archive/docs_corpus/_audit/DOCS_STALENESS_AND_VERIFICATION_v0.md</code></a></li>
+</ul>
+<h1 id="part-iv-tools-workbench-aide-codex-and-governance">Part IV - Tools, Workbench, AIDE, Codex, And Governance</h1>
+<h2 id="13-workbench-as-a-governed-operator-surface">13. Workbench As A Governed Operator Surface</h2>
+<p>Workbench should be read as an operator, validation, evidence, inspection, and later editing surface. It is not an authority layer.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> The README says Workbench consumes the same contracts and services as other products. Current queue blocks broad Workbench UI, so even aligned Workbench ideas remain future-scoped.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> The conversation corpus strongly values Workbench because it makes a large deterministic system inspectable. That design intent is useful, but it must be reconciled with queue limits.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> Near-term Workbench work should remain narrow, validation-oriented, and contract-aware unless a later reviewed queue opens broad UI scope.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../README.md"><code>README.md</code></a></li>
+<li><a class="source-link" href="../../../../../.aide/queue/current.toml"><code>.aide/queue/current.toml</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/CURRENT_PROJECT_ATLAS_v0.md"><code>docs/archive/conversations/_synthesis/CURRENT_PROJECT_ATLAS_v0.md</code></a></li>
+</ul>
+<h2 id="14-aide-and-codex-as-repo-control-plane-harnesses">14. AIDE And Codex As Repo Control-Plane Harnesses</h2>
+<p>AIDE and Codex are useful because they can inventory, generate, validate, package, and patch bounded repo artifacts. They are dangerous if treated as semantic authority.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> AGENTS defines the role clearly: agents must consult doctrine, preserve authority ordering, avoid replacing repo truth with chat memory, and validate honestly. Generated outputs are evidence unless promoted by stronger authority.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> The archive shows AIDE/Codex as future control-plane and workflow helpers. That is compatible with current governance only when bounded by queue state, validation, and review gates.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> Future automation should improve reviewability rather than bypass review. This book itself is evidence and orientation, not authority.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../AGENTS.md"><code>AGENTS.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/planning/AUTHORITY_ORDER.md"><code>docs/planning/AUTHORITY_ORDER.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md"><code>docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md</code></a></li>
+</ul>
+<h2 id="15-documentation-archive-and-conversation-corpus">15. Documentation, Archive, And Conversation Corpus</h2>
+<p>The docs corpus is now a navigable source map. The conversation corpus is a historical design-intent layer. The archive preserves context that would be unsafe to merge directly into canon.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current docs taxonomy and AGENTS both support the distinction: archive material may inform future work, but current repo artifacts outrank generated summaries and chat claims.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> The conversation pipeline created readers, wiki pages, audit reports, decision dockets, promotion queues, and synthesis books. Those are valuable review surfaces.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> The next step is selective adjudication, not bulk promotion. Every future doc patch should name source claims, target docs, authority support, non-goals, and validation.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../docs/README.md"><code>docs/README.md</code></a></li>
+<li><a class="source-link" href="../../../../../AGENTS.md"><code>AGENTS.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/READ_THIS_FIRST_v0.md"><code>docs/archive/conversations/_synthesis/READ_THIS_FIRST_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_archive/DOCS_CONVERSATION_CORPUS_INTEGRATION_v0.md"><code>docs/archive/docs_corpus/_archive/DOCS_CONVERSATION_CORPUS_INTEGRATION_v0.md</code></a></li>
+</ul>
+<h1 id="part-v-what-we-know-what-we-do-not-know-and-what-comes-next">Part V - What We Know, What We Do Not Know, And What Comes Next</h1>
+<h2 id="16-current-confirmed-picture">16. Current Confirmed Picture</h2>
+<p>The strongest confirmed picture is layered and conservative: Dominium is the official simulation/product/domain layer on Domino; Domino is the deterministic substrate; truth mutation is process-only; products project command/result/evidence surfaces; archive material is advisory.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> This picture is supported by README, canon, glossary, AGENTS, current queue state, and docs-corpus reconciliation. It is stronger than any single archive conversation.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> Historical sources add breadth: world scale, Workbench aspirations, release identity, provider/content boundaries, setup, launcher, and long-term platform goals.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> The confirmed picture is not the same as a complete roadmap. Many details remain in decision, promotion, blocked-scope, or verification queues.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../README.md"><code>README.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/canon/constitution_v1.md"><code>docs/canon/constitution_v1.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/canon/glossary_v1.md"><code>docs/canon/glossary_v1.md</code></a></li>
+<li><a class="source-link" href="../../../../../AGENTS.md"><code>AGENTS.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md"><code>docs/archive/docs_corpus/_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md</code></a></li>
+</ul>
+<h2 id="17-major-open-decisions">17. Major Open Decisions</h2>
+<p>The decision backlog is now a review surface. It should be read as a set of human questions, future queue decisions, and repo-authority decisions rather than as accepted answers.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current reconciliation separates user decisions, future queue decisions, deferred items, blocked-scope decisions, and evidence gaps. That separation prevents old conversations from silently becoming live doctrine.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> The most important categories are architecture/boundaries, Workbench/AIDE/Codex/tooling, renderer/UI/platform, provider/content/packs, world/time/civilization simulation, release/setup/launcher, and documentation/canon/spec structure.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> Unresolved decisions should default to defer unless there is current authority support and a narrow task that can patch documentation without widening scope.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_reconciliation/DOCS_DECISION_DOCKET_v0.md"><code>docs/archive/docs_corpus/_reconciliation/DOCS_DECISION_DOCKET_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_decision/DECISION_SUMMARY_v0.md"><code>docs/archive/conversations/_decision/DECISION_SUMMARY_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_decision/DECISION_DOCKET_v0.md"><code>docs/archive/conversations/_decision/DECISION_DOCKET_v0.md</code></a></li>
+</ul>
+<h2 id="18-contradictions-stale-material-and-archive-drift">18. Contradictions, Stale Material, And Archive Drift</h2>
+<p>Contradictions are not defects in the book; they are review triggers. A mature corpus should show where old claims disagree with current authority, current queue state, or other archive material.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current audit reports identify stale claims, duplicate shadows, authority conflicts, and coverage gaps. The correct response is quarantine and review, not convenient synthesis.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> Conversation material is especially prone to drift because it was produced across many sessions and goals. The value of the audit layer is that it prevents drift from hiding inside polished prose.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> Future review should prioritize contradictions that touch canon, contracts, schema, queue scope, release meaning, or implementation authority.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_audit/DOCS_CONTRADICTION_MATRIX_v0.md"><code>docs/archive/docs_corpus/_audit/DOCS_CONTRADICTION_MATRIX_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_audit/DOCS_STALENESS_AND_VERIFICATION_v0.md"><code>docs/archive/docs_corpus/_audit/DOCS_STALENESS_AND_VERIFICATION_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_synthesis/CONTRADICTIONS_TO_RECONCILE_v0.md"><code>docs/archive/conversations/_synthesis/CONTRADICTIONS_TO_RECONCILE_v0.md</code></a></li>
+</ul>
+<h2 id="19-promotion-candidates-and-safe-next-steps">19. Promotion Candidates And Safe Next Steps</h2>
+<p>Promotion candidates are leads, not instructions. A candidate becomes useful only when a later task names the exact source claim, target doc, authority compatibility, validation, and review disposition.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Current promotion surfaces include docs-corpus candidates and conversation-derived candidates. Many are metadata/header hygiene rather than substantive doctrine. Some are blocked by queue or require user decision.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> The safest near-term promotions are narrow docs-only clarifications that do not alter canon, contracts, schema, implementation, release, or queue state. Anything broader needs explicit human review.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> The next practical step is to triage the promotion queue into hygiene, genuine clarification, archive-only preservation, blocked, noisy, and user-decision groups.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_reconciliation/DOCS_PROMOTION_QUEUE_v0.md"><code>docs/archive/docs_corpus/_reconciliation/DOCS_PROMOTION_QUEUE_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_promotion/PROMOTION_WAVE_1_CANDIDATES_v0.md"><code>docs/archive/conversations/_promotion/PROMOTION_WAVE_1_CANDIDATES_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_promotion/PROMOTION_TRIAGE_v0.md"><code>docs/archive/conversations/_promotion/PROMOTION_TRIAGE_v0.md</code></a></li>
+</ul>
+<h2 id="20-recommended-reading-and-review-roadmap">20. Recommended Reading And Review Roadmap</h2>
+<p>Use the HTML book for navigation and search. Use the PDF for sequential reading. Use the source reader when you need original prose. Use manifests and registers only when auditing.</p>
+<p>This chapter is part of the synthesized reader, not a source-file transcript. It is written to preserve the meaning that recurs across current docs, archive material, and conversation synthesis while keeping the authority boundary visible.</p>
+<p><strong>Current repo-backed picture.</strong> Start with the current authority packet, then the current project picture, then the conversation atlas, then the decision docket and promotion queue. Do not start with raw manifests.</p>
+<p>The practical consequence is that this topic should be read through the current authority model first. If a current source and an archive source appear to disagree, the archive source becomes review evidence rather than a shortcut around current doctrine.</p>
+<p><strong>Historical and advisory context.</strong> Review should proceed from comprehension to decision to promotion. Live-doc changes should remain narrow and traceable, with validation evidence and no silent authority changes.</p>
+<p>That historical context is still useful. It shows why the topic kept returning, which boundaries people were worried about, and what kind of future work the project repeatedly imagined. The book preserves that context so it can be reviewed instead of rediscovered or silently re-invented.</p>
+<p><strong>What remains unresolved.</strong> This book should be reviewed as a human artifact. The next iteration should incorporate reader feedback, improve topic indexing, and only then prepare a small docs-only promotion wave.</p>
+<p><strong>What not to assume.</strong> Do not treat historical breadth as current permission. Do not infer implementation readiness from a polished description. Do not treat this book, the source reader, or any generated corpus report as a promotion into canon, contracts, schema, implementation, release state, or queue state.</p>
+<p><strong>Review questions.</strong></p>
+<ul>
+<li>Which parts of this topic are already current repo truth?</li>
+<li>Which parts are merely consistent with current docs but not formalized?</li>
+<li>Which parts are blocked by queue state or need explicit human decision?</li>
+<li>Which source paths should be inspected before any later docs-only promotion?</li>
+</ul>
+<p><strong>How to use this chapter.</strong> Read this chapter as orientation, not as promotion. If later work wants to change canon, contracts, architecture, schema, implementation, release state, or queue state, it needs a separate scoped promotion task with explicit validation.</p>
+<p><strong>Source trail:</strong></p>
+<ul>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_human_source/HUMAN_SOURCE_INDEX.md"><code>docs/archive/docs_corpus/_human_source/HUMAN_SOURCE_INDEX.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md"><code>docs/archive/docs_corpus/_reconciliation/DOCS_CURRENT_PROJECT_PICTURE_v0.md</code></a></li>
+<li><a class="source-link" href="../../../../../docs/archive/docs_corpus/_reconciliation/DOCS_PROMOTION_QUEUE_v0.md"><code>docs/archive/docs_corpus/_reconciliation/DOCS_PROMOTION_QUEUE_v0.md</code></a></li>
+</ul>
+<h1 id="appendices">Appendices</h1>
+<h2 id="appendix-a-source-documents-used">Appendix A - Source Documents Used</h2>
+<p>Human-readable full-text documents: 189.</p>
+<ul>
+<li><a class="source-link" href="../../../../../AGENTS.md"><code>AGENTS.md</code></a> - Dominium Agent Governance</li>
+<li><a class="source-link" href="../../../../../README.md"><code>README.md</code></a> - Dominium / Domino</li>
+<li><a class="source-link" href="../../../../../docs/README.md"><code>docs/README.md</code></a> - Dominium Documentation</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CANONICAL_SYSTEM_MAP.md"><code>docs/architecture/CANONICAL_SYSTEM_MAP.md</code></a> - Canonical System Map (canon0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CONTRACTS_INDEX.md"><code>docs/architecture/CONTRACTS_INDEX.md</code></a> - Contracts Index (const0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/INVARIANTS.md"><code>docs/architecture/INVARIANTS.md</code></a> - Invariants (canon0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/WHAT_THIS_IS.md"><code>docs/architecture/WHAT_THIS_IS.md</code></a> - What This Project Is (canon0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/WHAT_THIS_IS_NOT.md"><code>docs/architecture/WHAT_THIS_IS_NOT.md</code></a> - What This Project Is Not (canon0)</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__01_human_readable_report.md"><code>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Build And Future Proofing Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__06_reader_brief.md"><code>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__06_reader_brief.md</code></a> - Reader Brief Dominium Build And Future Proofing Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__09_in_chat_reader.md"><code>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Build And Future Proofing Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__10_accompanying_human_readable_detailed_summary_report.md"><code>docs/archive/conversations/Build_and_Future_Proofing/Dominium_Build_and_Future_Proofing_Architecture__10_accompanying_human_readable_detailed_summary_report.md</code></a> - Accompanying Human Readable Detailed Conversation Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__05_reader_brief.md"><code>docs/archive/conversations/Chronology_Celestial_Systems/Dominium_Chronology_Celestial_Systems__05_reader_brief.md</code></a> - Reader Brief Dominium Chronology &amp; Celestial Systems</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__05_reader_brief.md"><code>docs/archive/conversations/Dominium_Architecture_I/Dominium_Architecture_I__05_reader_brief.md</code></a> - Reader Brief Dominium Architecture I</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Architecture_II/Dominium_Architecture_II__05_reader_brief.md"><code>docs/archive/conversations/Dominium_Architecture_II/Dominium_Architecture_II__05_reader_brief.md</code></a> - Reader Brief Dominium Architecture Ii</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Architecture_III/Dominium_Architecture_III__05_reader_brief.md"><code>docs/archive/conversations/Dominium_Architecture_III/Dominium_Architecture_III__05_reader_brief.md</code></a> - Reader Brief Dominium Architecture Iii</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Architecture_IV/Dominium_Architecture_IV__05_reader_brief.md"><code>docs/archive/conversations/Dominium_Architecture_IV/Dominium_Architecture_IV__05_reader_brief.md</code></a> - Reader Brief Dominium Architecture Iv</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__01_human_readable_report.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Canon, Repository Alignment, And Portability Doctrine</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__06_reader_brief.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__06_reader_brief.md</code></a> - Reader Brief Dominium Canon, Repository Alignment, And Portability Doctrine</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__07_verification_and_audit.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__07_verification_and_audit.md</code></a> - Self Audit And Revision Dominium Canon, Repository Alignment, And Portability Doctrine</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__08_future_chat_bootstrap_prompt.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__08_future_chat_bootstrap_prompt.md</code></a> - Future Chat Bootstrap Prompt</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__09_in_chat_reader.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Canon_Portability_Audit__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Canon, Repository Alignment, And Portability Doctrine</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Entire_Conversation_Accompanying_Report__10_accompanying_detailed_summary_report.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Entire_Conversation_Accompanying_Report__10_accompanying_detailed_summary_report.md</code></a> - Accompanying Human Readable Detailed Summary And Report Dominium Canon, Repository Alignment, And Portability Doctrine</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Entire_Conversation_Accompanying_Report__README_FIRST.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Entire_Conversation_Accompanying_Report__README_FIRST.md</code></a> - Readme First Dominium Conversation Complete Bundle</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Entire_Conversation_Accompanying_Report__source_uploaded_preservation_prompt.txt"><code>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Dominium_Entire_Conversation_Accompanying_Report__source_uploaded_preservation_prompt.txt</code></a> - Complete Chat Preservation Report [chat Label]</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Pasted text.txt"><code>docs/archive/conversations/Dominium_Complete_Conversation/Accompanying_Report/Pasted text.txt</code></a> - Complete Chat Preservation Report [chat Label]</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__01_human_readable_report.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Deterministic Solar System Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__06_reader_brief.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__06_reader_brief.md</code></a> - Reader Brief Dominium Deterministic Solar System Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__09_in_chat_reader.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Deterministic Solar System Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__10_accompanying_detailed_summary_and_report.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__10_accompanying_detailed_summary_and_report.md</code></a> - Accompanying Detailed Human Readable Summary And Report Dominium Deterministic Solar System Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__10_accompanying_human_readable_detailed_summary_report.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/deterministic_solar_system_handoff_file/Dominium_Deterministic_Solar_System_Architecture__10_accompanying_human_readable_detailed_summary_report.md</code></a> - Accompanying Human Readable Detailed Summary And Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/existing_companion_report_package/Dominium_Complete_Conversation_Companion_Report__human_readable_detailed_summary.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/existing_companion_report_package/Dominium_Complete_Conversation_Companion_Report__human_readable_detailed_summary.md</code></a> - Dominium / Domino Complete Conversation Companion Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/existing_complete_preservation_package/Dominium_Complete_Conversation_Preservation__10_accompanying_human_readable_detailed_summary_report.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/existing_complete_preservation_package/Dominium_Complete_Conversation_Preservation__10_accompanying_human_readable_detailed_summary_report.md</code></a> - Accompanying Human Readable Detailed Summary And Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__01_human_readable_report.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Robotic Seed Civilisation Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__06_reader_brief.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__06_reader_brief.md</code></a> - Reader Brief Dominium Robotic Seed Civilisation Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__09_in_chat_reader.md"><code>docs/archive/conversations/Dominium_Complete_Conversation/robotic_seed_civilisation_handoff_file/Dominium_Robotic_Seed_Civilisation_Architecture__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Robotic Seed Civilisation Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Domino_Dominium_Workbench/dominium_workbench_full_conversation_companion__human_readable_detailed_summary_report.md"><code>docs/archive/conversations/Domino_Dominium_Workbench/dominium_workbench_full_conversation_companion__human_readable_detailed_summary_report.md</code></a> - Dominium Workbench Full Conversation Companion Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__01_human_readable_report.md"><code>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Workbench, Presentation Spine, And Universe Explorer Planning</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__06_reader_brief.md"><code>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__06_reader_brief.md</code></a> - Reader Brief Dominium Workbench, Presentation Spine, And Universe Explorer Planning</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__09_in_chat_reader.md"><code>docs/archive/conversations/Domino_Dominium_Workbench/prior_preservation_files/dominium_workbench_presentation_spine_universe_explorer_planning__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Workbench, Presentation Spine, And Universe Explorer Planning</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__01_human_readable_report.md"><code>docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Foundation Lock, Workbench Spine, And Parallel Codex Handoff</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__06_reader_brief.md"><code>docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__06_reader_brief.md</code></a> - Reader Brief Dominium Foundation Lock, Workbench Spine, And Parallel Codex Handoff</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__09_in_chat_reader.md"><code>docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Foundation Lock, Workbench Spine, And Parallel Codex Handoff</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__10_accompanying_detailed_summary_report.md"><code>docs/archive/conversations/Foundation_Workbench_Codex/Dominium_Foundation_Workbench_Parallel_Codex_Preservation__10_accompanying_detailed_summary_report.md</code></a> - Accompanying Human Readable Detailed Summary And Continuity Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Framework_Open_Source_Provider/Domino_Framework_Open_Source_Provider_Architecture__01_human_readable_report.md"><code>docs/archive/conversations/Framework_Open_Source_Provider/Domino_Framework_Open_Source_Provider_Architecture__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Domino Framework And Open Source Provider Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Framework_Open_Source_Provider/Domino_Framework_Open_Source_Provider_Architecture__06_reader_brief.md"><code>docs/archive/conversations/Framework_Open_Source_Provider/Domino_Framework_Open_Source_Provider_Architecture__06_reader_brief.md</code></a> - Reader Brief Domino Framework And Open Source Provider Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Framework_Open_Source_Provider/Domino_Framework_Open_Source_Provider_Architecture__09_in_chat_reader.md"><code>docs/archive/conversations/Framework_Open_Source_Provider/Domino_Framework_Open_Source_Provider_Architecture__09_in_chat_reader.md</code></a> - In Chat Reader Domino Framework And Open Source Provider Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Language_Platform_Architecture/Dominium_Language_Platform_Architecture_Baseline__01_human_readable_report.md"><code>docs/archive/conversations/Language_Platform_Architecture/Dominium_Language_Platform_Architecture_Baseline__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Language, Platform, And Architecture Baseline</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Language_Platform_Architecture/Dominium_Language_Platform_Architecture_Baseline__06_reader_brief.md"><code>docs/archive/conversations/Language_Platform_Architecture/Dominium_Language_Platform_Architecture_Baseline__06_reader_brief.md</code></a> - Reader Brief Dominium Language, Platform, And Architecture Baseline</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Language_Platform_Architecture/Dominium_Language_Platform_Architecture_Baseline__09_in_chat_reader.md"><code>docs/archive/conversations/Language_Platform_Architecture/Dominium_Language_Platform_Architecture_Baseline__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Language, Platform, And Architecture Baseline</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Launcher_Setup_Architecture/Dominium_Launcher_Setup_Architecture__05_reader_brief.md"><code>docs/archive/conversations/Launcher_Setup_Architecture/Dominium_Launcher_Setup_Architecture__05_reader_brief.md</code></a> - Reader Brief Dominium Launcher Setup Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Modularity_AIDE_Refactorability/Dominium_Modularity_AIDE_Refactorability_Architecture__01_human_readable_report.md"><code>docs/archive/conversations/Modularity_AIDE_Refactorability/Dominium_Modularity_AIDE_Refactorability_Architecture__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Modularity, AIDE Refactorability, And Future Proof Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Modularity_AIDE_Refactorability/Dominium_Modularity_AIDE_Refactorability_Architecture__06_reader_brief.md"><code>docs/archive/conversations/Modularity_AIDE_Refactorability/Dominium_Modularity_AIDE_Refactorability_Architecture__06_reader_brief.md</code></a> - Reader Brief Dominium Modularity, AIDE Refactorability, And Future Proof Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Modularity_AIDE_Refactorability/Dominium_Modularity_AIDE_Refactorability_Architecture__09_in_chat_reader.md"><code>docs/archive/conversations/Modularity_AIDE_Refactorability/Dominium_Modularity_AIDE_Refactorability_Architecture__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Modularity, AIDE Refactorability, And Future Proof Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/OS_Interface_Repo_Architecture/Dominium_OS_Interface_Repo_Architecture__01_human_readable_report.md"><code>docs/archive/conversations/OS_Interface_Repo_Architecture/Dominium_OS_Interface_Repo_Architecture__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Os Like Architecture, Repository Convergence, And Interface Operating Layer</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/OS_Interface_Repo_Architecture/Dominium_OS_Interface_Repo_Architecture__06_reader_brief.md"><code>docs/archive/conversations/OS_Interface_Repo_Architecture/Dominium_OS_Interface_Repo_Architecture__06_reader_brief.md</code></a> - Reader Brief Dominium Os Like Architecture, Repository Convergence, And Interface Operating Layer</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/OS_Interface_Repo_Architecture/Dominium_OS_Interface_Repo_Architecture__09_in_chat_reader.md"><code>docs/archive/conversations/OS_Interface_Repo_Architecture/Dominium_OS_Interface_Repo_Architecture__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Os Like Architecture, Repository Convergence, And Interface Operating Layer</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/OS_Interface_Repo_Architecture/Dominium_OS_Interface_Repo_Architecture__10_accompanying_detailed_summary_report.md"><code>docs/archive/conversations/OS_Interface_Repo_Architecture/Dominium_OS_Interface_Repo_Architecture__10_accompanying_detailed_summary_report.md</code></a> - Accompanying Human Readable Detailed Summary And Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Portability_Assurance_Future_Proof/Domino_Dominium_Portability_Assurance_Future_Proof_Architecture__01_human_readable_report.md"><code>docs/archive/conversations/Portability_Assurance_Future_Proof/Domino_Dominium_Portability_Assurance_Future_Proof_Architecture__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Domino/dominium Portability, Assurance, And Future Proof Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Portability_Assurance_Future_Proof/Domino_Dominium_Portability_Assurance_Future_Proof_Architecture__06_reader_brief.md"><code>docs/archive/conversations/Portability_Assurance_Future_Proof/Domino_Dominium_Portability_Assurance_Future_Proof_Architecture__06_reader_brief.md</code></a> - Reader Brief Domino/dominium Portability, Assurance, And Future Proof Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Portability_Assurance_Future_Proof/Domino_Dominium_Portability_Assurance_Future_Proof_Architecture__09_in_chat_reader.md"><code>docs/archive/conversations/Portability_Assurance_Future_Proof/Domino_Dominium_Portability_Assurance_Future_Proof_Architecture__09_in_chat_reader.md</code></a> - In Chat Reader Domino/dominium Portability, Assurance, And Future Proof Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Portability_Assurance_Future_Proof/Domino_Dominium_Portability_Assurance_Future_Proof_Architecture__10_accompanying_detailed_summary_report.md"><code>docs/archive/conversations/Portability_Assurance_Future_Proof/Domino_Dominium_Portability_Assurance_Future_Proof_Architecture__10_accompanying_detailed_summary_report.md</code></a> - Accompanying Human Readable Detailed Summary And Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Refactor_Architecture/Dominium_Domino_Refactor_Architecture__05_reader_brief.md"><code>docs/archive/conversations/Refactor_Architecture/Dominium_Domino_Refactor_Architecture__05_reader_brief.md</code></a> - Reader Brief Dominium + Domino Refactor Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Refactor_Control_Plane/AIDE_XStack_Dominium_Refactor_Control_Plane__01_human_readable_report.md"><code>docs/archive/conversations/Refactor_Control_Plane/AIDE_XStack_Dominium_Refactor_Control_Plane__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Aide, Xstack, And Dominium Refactor Control Plane</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Refactor_Control_Plane/AIDE_XStack_Dominium_Refactor_Control_Plane__06_reader_brief.md"><code>docs/archive/conversations/Refactor_Control_Plane/AIDE_XStack_Dominium_Refactor_Control_Plane__06_reader_brief.md</code></a> - Reader Brief AIDE Xstack Dominium Refactor Control Plane</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Refactor_Control_Plane/AIDE_XStack_Dominium_Refactor_Control_Plane__09_in_chat_reader.md"><code>docs/archive/conversations/Refactor_Control_Plane/AIDE_XStack_Dominium_Refactor_Control_Plane__09_in_chat_reader.md</code></a> - In Chat Reader AIDE Xstack Dominium Refactor Control Plane</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Release_Identity_and_Versioning/Dominium_XStack_Release_Identity_and_Versioning__01_human_readable_report.md"><code>docs/archive/conversations/Release_Identity_and_Versioning/Dominium_XStack_Release_Identity_and_Versioning__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Xstack Release Identity And Versioning</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Release_Identity_and_Versioning/Dominium_XStack_Release_Identity_and_Versioning__06_reader_brief.md"><code>docs/archive/conversations/Release_Identity_and_Versioning/Dominium_XStack_Release_Identity_and_Versioning__06_reader_brief.md</code></a> - Reader Brief Dominium Xstack Release Identity And Versioning</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Release_Identity_and_Versioning/Dominium_XStack_Release_Identity_and_Versioning__09_in_chat_reader.md"><code>docs/archive/conversations/Release_Identity_and_Versioning/Dominium_XStack_Release_Identity_and_Versioning__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Xstack Release Identity And Versioning</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Timekeeping_and_2038_Resilience/Dominium_Timekeeping_and_2038_Resilience__01_human_readable_report.md"><code>docs/archive/conversations/Timekeeping_and_2038_Resilience/Dominium_Timekeeping_and_2038_Resilience__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Timekeeping And 2038 Resilience</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Timekeeping_and_2038_Resilience/Dominium_Timekeeping_and_2038_Resilience__06_reader_brief.md"><code>docs/archive/conversations/Timekeeping_and_2038_Resilience/Dominium_Timekeeping_and_2038_Resilience__06_reader_brief.md</code></a> - Reader Brief Dominium Timekeeping And 2038 Resilience</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Timekeeping_and_2038_Resilience/Dominium_Timekeeping_and_2038_Resilience__09_in_chat_reader.md"><code>docs/archive/conversations/Timekeeping_and_2038_Resilience/Dominium_Timekeeping_and_2038_Resilience__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Timekeeping And 2038 Resilience</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Timekeeping_and_2038_Resilience/Dominium_Timekeeping_and_2038_Resilience__10_accompanying_detailed_summary_report.md"><code>docs/archive/conversations/Timekeeping_and_2038_Resilience/Dominium_Timekeeping_and_2038_Resilience__10_accompanying_detailed_summary_report.md</code></a> - Accompanying Human Readable Detailed Summary And Report Dominium Timekeeping And 2038 Resilience</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/UE6_Domino_Deterministic_Universe/Dominium_UE6_Domino_Deterministic_Universe__01_human_readable_report.md"><code>docs/archive/conversations/UE6_Domino_Deterministic_Universe/Dominium_UE6_Domino_Deterministic_Universe__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Ue6, Domino, And Deterministic Universe Feasibility</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/UE6_Domino_Deterministic_Universe/Dominium_UE6_Domino_Deterministic_Universe__06_reader_brief.md"><code>docs/archive/conversations/UE6_Domino_Deterministic_Universe/Dominium_UE6_Domino_Deterministic_Universe__06_reader_brief.md</code></a> - Reader Brief Dominium Ue6, Domino, And Deterministic Universe Feasibility</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/UE6_Domino_Deterministic_Universe/Dominium_UE6_Domino_Deterministic_Universe__09_in_chat_reader.md"><code>docs/archive/conversations/UE6_Domino_Deterministic_Universe/Dominium_UE6_Domino_Deterministic_Universe__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Ue6, Domino, And Deterministic Universe Feasibility</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/UE6_Domino_Deterministic_Universe/Dominium_UE6_Domino_Deterministic_Universe__10_accompanying_human_readable_detailed_summary_and_report.md"><code>docs/archive/conversations/UE6_Domino_Deterministic_Universe/Dominium_UE6_Domino_Deterministic_Universe__10_accompanying_human_readable_detailed_summary_and_report.md</code></a> - Accompanying Human Readable Detailed Summary And Report Dominium Ue6, Domino, And Deterministic Universe Feasibility</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Universe_Explorer_Planning/Dominium_Universe_Explorer_Planning_Handoff__01_human_readable_report.md"><code>docs/archive/conversations/Universe_Explorer_Planning/Dominium_Universe_Explorer_Planning_Handoff__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Universe Explorer Planning And Repo Handoff</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Universe_Explorer_Planning/Dominium_Universe_Explorer_Planning_Handoff__06_reader_brief.md"><code>docs/archive/conversations/Universe_Explorer_Planning/Dominium_Universe_Explorer_Planning_Handoff__06_reader_brief.md</code></a> - Reader Brief Dominium Universe Explorer Planning And Repo Handoff</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Universe_Explorer_Planning/Dominium_Universe_Explorer_Planning_Handoff__09_in_chat_reader.md"><code>docs/archive/conversations/Universe_Explorer_Planning/Dominium_Universe_Explorer_Planning_Handoff__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Universe Explorer Planning And Repo Handoff</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Universe_Explorer_Planning/Dominium_Universe_Explorer_Planning_Handoff__10_accompanying_human_readable_detailed_summary.md"><code>docs/archive/conversations/Universe_Explorer_Planning/Dominium_Universe_Explorer_Planning_Handoff__10_accompanying_human_readable_detailed_summary.md</code></a> - Accompanying Human Readable Detailed Summary And Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Workbench_AIDE_Product_Spine/Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__01_human_readable_report.md"><code>docs/archive/conversations/Workbench_AIDE_Product_Spine/Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__01_human_readable_report.md</code></a> - Complete Chat Preservation Report Dominium Architecture, Workbench, Aide, And Product Spine Planning</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Workbench_AIDE_Product_Spine/Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__06_reader_brief.md"><code>docs/archive/conversations/Workbench_AIDE_Product_Spine/Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__06_reader_brief.md</code></a> - Reader Brief Dominium Architecture, Workbench, Aide, And Product Spine Planning</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Workbench_AIDE_Product_Spine/Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__09_in_chat_reader.md"><code>docs/archive/conversations/Workbench_AIDE_Product_Spine/Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__09_in_chat_reader.md</code></a> - In Chat Reader Dominium Architecture, Workbench, Aide, And Product Spine Planning</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/Workbench_AIDE_Product_Spine/Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__10_accompanying_detailed_summary.md"><code>docs/archive/conversations/Workbench_AIDE_Product_Spine/Dominium_Architecture_Workbench_AIDE_Product_Spine_Planning__10_accompanying_detailed_summary.md</code></a> - Accompanying Human Readable Detailed Summary And Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/World_Architecture/Dominium_World_Architecture__05_reader_brief.md"><code>docs/archive/conversations/World_Architecture/Dominium_World_Architecture__05_reader_brief.md</code></a> - Reader Brief Dominium World Architecture</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_decision/DECISION_SUMMARY_v0.md"><code>docs/archive/conversations/_decision/DECISION_SUMMARY_v0.md</code></a> - Decision Summary V0</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_promotion/PROMOTION_WAVE_1_CANDIDATES_v0.md"><code>docs/archive/conversations/_promotion/PROMOTION_WAVE_1_CANDIDATES_v0.md</code></a> - Promotion Wave 1 Candidates V0</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/advanced_simulation_infrastructure.md"><code>docs/archive/conversations/_reader/by_chat/advanced_simulation_infrastructure.md</code></a> - Dominium Advanced Simulation And Infrastructure Architecture Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/app_runtime_platform_renderers.md"><code>docs/archive/conversations/_reader/by_chat/app_runtime_platform_renderers.md</code></a> - Dominium App0 Runtime, Platform, And Renderer Architecture Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/app_testx_codehygiene.md"><code>docs/archive/conversations/_reader/by_chat/app_testx_codehygiene.md</code></a> - Dominium Architecture, Application Layer, Testx, And Codehygiene Planning Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/architecture_codex_prompts.md"><code>docs/archive/conversations/_reader/by_chat/architecture_codex_prompts.md</code></a> - Dominium/domino Architecture And Codex Prompt Roadmap Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/architecture_ui_providers.md"><code>docs/archive/conversations/_reader/by_chat/architecture_ui_providers.md</code></a> - Dominium Architecture, Ui, Providers, And Robot Os Strategy Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/build_and_future_proofing.md"><code>docs/archive/conversations/_reader/by_chat/build_and_future_proofing.md</code></a> - Dominium Build And Future Proofing Architecture Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/canonical_structure_and_framework.md"><code>docs/archive/conversations/_reader/by_chat/canonical_structure_and_framework.md</code></a> - Dominium Canonical Architecture, Repository Foundation, And Provider Model Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/chronology_celestial_systems.md"><code>docs/archive/conversations/_reader/by_chat/chronology_celestial_systems.md</code></a> - Dominium Chronology &amp; Celestial Systems Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/development_routes.md"><code>docs/archive/conversations/_reader/by_chat/development_routes.md</code></a> - Dominium Development Routes And Continuity Preservation Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/documentation_standards_readme.md"><code>docs/archive/conversations/_reader/by_chat/documentation_standards_readme.md</code></a> - Documentation Standards, Readme Strategy, And Handoff Packaging Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/dominium_architecture_i.md"><code>docs/archive/conversations/_reader/by_chat/dominium_architecture_i.md</code></a> - Dominium Architecture I Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/dominium_architecture_ii.md"><code>docs/archive/conversations/_reader/by_chat/dominium_architecture_ii.md</code></a> - Dominium Architecture Ii Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/dominium_architecture_iii.md"><code>docs/archive/conversations/_reader/by_chat/dominium_architecture_iii.md</code></a> - Dominium Architecture Iii: Launcher, Platform, Renderer, And Handoff Architecture Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/dominium_architecture_iv.md"><code>docs/archive/conversations/_reader/by_chat/dominium_architecture_iv.md</code></a> - Dominium Architecture Iv Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/dominium_complete_conversation.md"><code>docs/archive/conversations/_reader/by_chat/dominium_complete_conversation.md</code></a> - Dominium Canon, Repository Alignment, And Portability Doctrine Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/dominium_domino_codex_planning.md"><code>docs/archive/conversations/_reader/by_chat/dominium_domino_codex_planning.md</code></a> - Dominium + Domino Codex Planning And Handoff Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/dominium_full_conversation.md"><code>docs/archive/conversations/_reader/by_chat/dominium_full_conversation.md</code></a> - Dominium Workbench, Aide, Presentation Architecture, Provider Strategy, Product Spine Planning, And Preservation Companion Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/dominium_setup.md"><code>docs/archive/conversations/_reader/by_chat/dominium_setup.md</code></a> - Dominium Setup Architecture And Handoff Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/domino_dominium_workbench.md"><code>docs/archive/conversations/_reader/by_chat/domino_dominium_workbench.md</code></a> - Domino Dominium Workbench Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/domino_engine_refactor_prompts.md"><code>docs/archive/conversations/_reader/by_chat/domino_engine_refactor_prompts.md</code></a> - Dominium/domino Engine Refactor Planning Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/engine_baseline_architecture.md"><code>docs/archive/conversations/_reader/by_chat/engine_baseline_architecture.md</code></a> - Domino/dominium Engine Baseline, Architecture, And Feasibility Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/foundation_workbench_codex.md"><code>docs/archive/conversations/_reader/by_chat/foundation_workbench_codex.md</code></a> - Dominium Foundation Lock, Workbench Spine, And Parallel Codex Handoff Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/framework_open_source_provider.md"><code>docs/archive/conversations/_reader/by_chat/framework_open_source_provider.md</code></a> - Domino Framework And Open Source Provider Architecture Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/gui_binary_content.md"><code>docs/archive/conversations/_reader/by_chat/gui_binary_content.md</code></a> - Dominium Content And GUI Rebuild Planning Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/language_platform_architecture.md"><code>docs/archive/conversations/_reader/by_chat/language_platform_architecture.md</code></a> - Dominium Language, Platform, And Architecture Baseline Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/launcher_app_layer.md"><code>docs/archive/conversations/_reader/by_chat/launcher_app_layer.md</code></a> - Dominium Launcher Application Layer Handoff Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/launcher_setup_architecture.md"><code>docs/archive/conversations/_reader/by_chat/launcher_setup_architecture.md</code></a> - Dominium Launcher And Setup Architecture Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/modularity_aide_refactorability.md"><code>docs/archive/conversations/_reader/by_chat/modularity_aide_refactorability.md</code></a> - Dominium Modularity, AIDE Refactorability, And Future Proof Architecture Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/omega_xi_pi_architecture_future.md"><code>docs/archive/conversations/_reader/by_chat/omega_xi_pi_architecture_future.md</code></a> - Dominium Omega/xi/pi Architecture &amp; Future Proofing Planning Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/os_interface_repo_architecture.md"><code>docs/archive/conversations/_reader/by_chat/os_interface_repo_architecture.md</code></a> - Dominium Os Like Architecture, Repository Convergence, And Interface Operating Layer Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/platform_renderer_api_plan.md"><code>docs/archive/conversations/_reader/by_chat/platform_renderer_api_plan.md</code></a> - Dominium Codex Platform Renderer API Plan Conversation Reader</li>
+<li><a class="source-link" href="../../../../../docs/archive/conversations/_reader/by_chat/platform_support.md"><code>docs/archive/conversations/_reader/by_chat/platform_support.md</code></a> - Dominium Platform Support Planning Conversation Reader</li>
+<li>... 69 more entries in <code>HUMAN_SOURCE_MANIFEST.yml</code>.</li>
+</ul>
+<h2 id="appendix-b-documents-summarized-but-not-printed">Appendix B - Documents Summarized But Not Printed</h2>
+<p>Summarized documents: 3978.</p>
+<ul>
+<li><a class="source-link" href="../../../../../docs/apps/ARTIFACT_IDENTITY.md"><code>docs/apps/ARTIFACT_IDENTITY.md</code></a> - Artifact Identity</li>
+<li><a class="source-link" href="../../../../../docs/apps/CLIENT_IDE_START_POINTS.md"><code>docs/apps/CLIENT_IDE_START_POINTS.md</code></a> - Client Ide Start Points</li>
+<li><a class="source-link" href="../../../../../docs/apps/CLIENT_READONLY_INTEGRATION.md"><code>docs/apps/CLIENT_READONLY_INTEGRATION.md</code></a> - Client Read Only Integration</li>
+<li><a class="source-link" href="../../../../../docs/apps/CLIENT_RENDERER_UI.md"><code>docs/apps/CLIENT_RENDERER_UI.md</code></a> - Client Renderer UI</li>
+<li><a class="source-link" href="../../../../../docs/apps/CLIENT_UI_LAYER.md"><code>docs/apps/CLIENT_UI_LAYER.md</code></a> - Client UI Layer</li>
+<li><a class="source-link" href="../../../../../docs/apps/CLI_CONTRACTS.md"><code>docs/apps/CLI_CONTRACTS.md</code></a> - CLI Contracts</li>
+<li><a class="source-link" href="../../../../../docs/apps/COMMAND_GRAPH_CAMERA_AND_BLUEPRINT.md"><code>docs/apps/COMMAND_GRAPH_CAMERA_AND_BLUEPRINT.md</code></a> - Command Graph: Camera And Blueprint</li>
+<li><a class="source-link" href="../../../../../docs/apps/COMPATIBILITY_ENFORCEMENT.md"><code>docs/apps/COMPATIBILITY_ENFORCEMENT.md</code></a> - Compatibility Enforcement</li>
+<li><a class="source-link" href="../../../../../docs/apps/ENGINE_GAME_DIAGNOSTICS.md"><code>docs/apps/ENGINE_GAME_DIAGNOSTICS.md</code></a> - Engine/game Diagnostics</li>
+<li><a class="source-link" href="../../../../../docs/apps/GUI_MODE.md"><code>docs/apps/GUI_MODE.md</code></a> - GUI Mode</li>
+<li><a class="source-link" href="../../../../../docs/apps/HEADLESS_AND_ZERO_PACK.md"><code>docs/apps/HEADLESS_AND_ZERO_PACK.md</code></a> - Headless And Zero Pack Boot</li>
+<li><a class="source-link" href="../../../../../docs/apps/IDE_WORKFLOW.md"><code>docs/apps/IDE_WORKFLOW.md</code></a> - Ide Workflow</li>
+<li><a class="source-link" href="../../../../../docs/apps/NATIVE_UI_POLICY.md"><code>docs/apps/NATIVE_UI_POLICY.md</code></a> - Native UI Policy</li>
+<li><a class="source-link" href="../../../../../docs/apps/OBSERVABILITY_PIPELINES.md"><code>docs/apps/OBSERVABILITY_PIPELINES.md</code></a> - Observability Pipelines</li>
+<li><a class="source-link" href="../../../../../docs/apps/PRODUCT_BOUNDARIES.md"><code>docs/apps/PRODUCT_BOUNDARIES.md</code></a> - Product Boundaries</li>
+<li><a class="source-link" href="../../../../../docs/apps/README.md"><code>docs/apps/README.md</code></a> - Application DOCS Index</li>
+<li><a class="source-link" href="../../../../../docs/apps/READONLY_ADAPTER.md"><code>docs/apps/READONLY_ADAPTER.md</code></a> - Read Only Adapter</li>
+<li><a class="source-link" href="../../../../../docs/apps/RUNTIME_LOOP.md"><code>docs/apps/RUNTIME_LOOP.md</code></a> - Runtime Loop Contract</li>
+<li><a class="source-link" href="../../../../../docs/apps/TESTX_COMPLIANCE.md"><code>docs/apps/TESTX_COMPLIANCE.md</code></a> - Testx Compliance (apr0)</li>
+<li><a class="source-link" href="../../../../../docs/apps/TIMING_AND_CLOCKS.md"><code>docs/apps/TIMING_AND_CLOCKS.md</code></a> - Timing And Clock Domains</li>
+<li><a class="source-link" href="../../../../../docs/apps/TOOLS_OBSERVABILITY.md"><code>docs/apps/TOOLS_OBSERVABILITY.md</code></a> - Tools Observability</li>
+<li><a class="source-link" href="../../../../../docs/apps/TOOLS_UI_POLICY.md"><code>docs/apps/TOOLS_UI_POLICY.md</code></a> - Tools UI Policy</li>
+<li><a class="source-link" href="../../../../../docs/apps/TUI_MODE.md"><code>docs/apps/TUI_MODE.md</code></a> - TUI Mode</li>
+<li><a class="source-link" href="../../../../../docs/apps/UI_MODES.md"><code>docs/apps/UI_MODES.md</code></a> - UI Modes</li>
+<li><a class="source-link" href="../../../../../docs/apps/client/CLIENT_COMMAND_GRAPH.md"><code>docs/apps/client/CLIENT_COMMAND_GRAPH.md</code></a> - Client Command Graph</li>
+<li><a class="source-link" href="../../../../../docs/apps/client/CLIENT_FLOW.md"><code>docs/apps/client/CLIENT_FLOW.md</code></a> - Client Flow</li>
+<li><a class="source-link" href="../../../../../docs/apps/client/CLIENT_LIFECYCLE_PIPELINE.md"><code>docs/apps/client/CLIENT_LIFECYCLE_PIPELINE.md</code></a> - Client Lifecycle Pipeline</li>
+<li><a class="source-link" href="../../../../../docs/apps/client/CLIENT_SETTINGS.md"><code>docs/apps/client/CLIENT_SETTINGS.md</code></a> - Client Settings</li>
+<li><a class="source-link" href="../../../../../docs/apps/client/CLIENT_UI_AND_FLOW.md"><code>docs/apps/client/CLIENT_UI_AND_FLOW.md</code></a> - Client UI And Flow</li>
+<li><a class="source-link" href="../../../../../docs/apps/client/CLI_TUI_GUI_PARITY.md"><code>docs/apps/client/CLI_TUI_GUI_PARITY.md</code></a> - CLI TUI GUI Parity</li>
+<li><a class="source-link" href="../../../../../docs/apps/client/SERVER_DISCOVERY.md"><code>docs/apps/client/SERVER_DISCOVERY.md</code></a> - Server Discovery</li>
+<li><a class="source-link" href="../../../../../docs/apps/client/SESSION_READY_AND_RUNNING.md"><code>docs/apps/client/SESSION_READY_AND_RUNNING.md</code></a> - Session Ready And Running</li>
+<li><a class="source-link" href="../../../../../docs/apps/client/SESSION_SPEC_AND_AUTHORITY_CONTEXT.md"><code>docs/apps/client/SESSION_SPEC_AND_AUTHORITY_CONTEXT.md</code></a> - Sessionspec And Authoritycontext</li>
+<li><a class="source-link" href="../../../../../docs/apps/client/SESSION_TRANSITION_WORKSPACE.md"><code>docs/apps/client/SESSION_TRANSITION_WORKSPACE.md</code></a> - Session Transition Workspace</li>
+<li><a class="source-link" href="../../../../../docs/apps/client/WORLD_MANAGER.md"><code>docs/apps/client/WORLD_MANAGER.md</code></a> - World Manager</li>
+<li><a class="source-link" href="../../../../../docs/apps/launcher/LAUNCHER_SETTINGS.md"><code>docs/apps/launcher/LAUNCHER_SETTINGS.md</code></a> - Launcher Settings</li>
+<li><a class="source-link" href="../../../../../docs/apps/server/LOCAL_SINGLEPLAYER_MODEL.md"><code>docs/apps/server/LOCAL_SINGLEPLAYER_MODEL.md</code></a> - Local Singleplayer Model</li>
+<li><a class="source-link" href="../../../../../docs/apps/server/SERVER_MVP_BASELINE.md"><code>docs/apps/server/SERVER_MVP_BASELINE.md</code></a> - Server Mvp Baseline</li>
+<li><a class="source-link" href="../../../../../docs/apps/server/SERVER_SETTINGS.md"><code>docs/apps/server/SERVER_SETTINGS.md</code></a> - Server Settings</li>
+<li><a class="source-link" href="../../../../../docs/apps/setup/SETUP_SETTINGS.md"><code>docs/apps/setup/SETUP_SETTINGS.md</code></a> - Setup Settings</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ADAPTER_PATTERN.md"><code>docs/architecture/ADAPTER_PATTERN.md</code></a> - Adapter Pattern</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ADOPTION_PROTOCOL.md"><code>docs/architecture/ADOPTION_PROTOCOL.md</code></a> - Adopt0 Adoption Protocol</li>
+<li><a class="source-link" href="../../../../../docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md"><code>docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md</code></a> - Ai And Delegated Autonomy Model (aia0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/AI_BUDGET_MODEL.md"><code>docs/architecture/AI_BUDGET_MODEL.md</code></a> - Ai Budget Model (ai0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/AI_INTENT_MODEL.md"><code>docs/architecture/AI_INTENT_MODEL.md</code></a> - Ai Intent Model (ai0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ANTI_CHEAT_AS_LAW.md"><code>docs/architecture/ANTI_CHEAT_AS_LAW.md</code></a> - Anti Cheat As Law (omni0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ANTI_ENTROPY_RULES.md"><code>docs/architecture/ANTI_ENTROPY_RULES.md</code></a> - Anti Entropy Rules (entropy0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/APPLICATION_CONTRACTS.md"><code>docs/architecture/APPLICATION_CONTRACTS.md</code></a> - Application Contracts (summary)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/APP_AUTOMATION_MODEL.md"><code>docs/architecture/APP_AUTOMATION_MODEL.md</code></a> - Application Automation Model (app Auto 0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/APP_CANON0.md"><code>docs/architecture/APP_CANON0.md</code></a> - Application Layer Canon (app Canon0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/APP_CANON1.md"><code>docs/architecture/APP_CANON1.md</code></a> - Application Layer Canon (app Canon1)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARCH0_CONSTITUTION.md"><code>docs/architecture/ARCH0_CONSTITUTION.md</code></a> - Arch0 Constitution</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARCHITECTURE.md"><code>docs/architecture/ARCHITECTURE.md</code></a> - Architecture (high Level)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md"><code>docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md</code></a> - Architecture Graph Spec V1</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARCHITECTURE_LAYERS.md"><code>docs/architecture/ARCHITECTURE_LAYERS.md</code></a> - Architecture Layers</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARCHIVAL_AND_PERMANENCE.md"><code>docs/architecture/ARCHIVAL_AND_PERMANENCE.md</code></a> - Archival And Permanence (exist2)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARCH_BUILD_ENFORCEMENT.md"><code>docs/architecture/ARCH_BUILD_ENFORCEMENT.md</code></a> - Arch Build Enforcement Build And Boundary Lockdown (enf2)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARCH_CHANGE_PROCESS.md"><code>docs/architecture/ARCH_CHANGE_PROCESS.md</code></a> - Architectural Change Process (future0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARCH_ENFORCEMENT.md"><code>docs/architecture/ARCH_ENFORCEMENT.md</code></a> - Architecture Enforcement Law (enf0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARCH_REPO_LAYOUT.md"><code>docs/architecture/ARCH_REPO_LAYOUT.md</code></a> - Arch Repo Layout Canonical Repository Layout And Ownership</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARCH_SPEC_OWNERSHIP.md"><code>docs/architecture/ARCH_SPEC_OWNERSHIP.md</code></a> - Arch Spec Ownership Spec Responsibility Model</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARTIFACT_LIFECYCLE.md"><code>docs/architecture/ARTIFACT_LIFECYCLE.md</code></a> - Artifact Lifecycle</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ARTIFACT_MODEL.md"><code>docs/architecture/ARTIFACT_MODEL.md</code></a> - Artifact Model (lib 4)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/AUDITABILITY_AND_DISCLOSURE.md"><code>docs/architecture/AUDITABILITY_AND_DISCLOSURE.md</code></a> - Auditability And Disclosure (testx2)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/AUTHORITY_AND_ENTITLEMENTS.md"><code>docs/architecture/AUTHORITY_AND_ENTITLEMENTS.md</code></a> - Authority And Entitlements (testx3)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/AUTHORITY_AND_OMNIPOTENCE.md"><code>docs/architecture/AUTHORITY_AND_OMNIPOTENCE.md</code></a> - Authority And Omnipotence (omni0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/AUTHORITY_IN_REALITY.md"><code>docs/architecture/AUTHORITY_IN_REALITY.md</code></a> - Authority In Reality (reality0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/AUTHORITY_MODEL.md"><code>docs/architecture/AUTHORITY_MODEL.md</code></a> - Authority Model (canon0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md"><code>docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md</code></a> - Behavioral Components Standard</li>
+<li><a class="source-link" href="../../../../../docs/architecture/BOUNDARY_ENFORCEMENT.md"><code>docs/architecture/BOUNDARY_ENFORCEMENT.md</code></a> - Boundary Enforcement</li>
+<li><a class="source-link" href="../../../../../docs/architecture/BUDGET_POLICY.md"><code>docs/architecture/BUDGET_POLICY.md</code></a> - Budget Policy V1</li>
+<li><a class="source-link" href="../../../../../docs/architecture/BUGREPORT_MODEL.md"><code>docs/architecture/BUGREPORT_MODEL.md</code></a> - Bugreport Bundle Model (bug 0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/BUILD_IDENTITY_MODEL.md"><code>docs/architecture/BUILD_IDENTITY_MODEL.md</code></a> - Build Identity Model (build ID 0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CANON_CUT_LINE.md"><code>docs/architecture/CANON_CUT_LINE.md</code></a> - Canon Cut Line (cons 0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CANON_INDEX.md"><code>docs/architecture/CANON_INDEX.md</code></a> - Canon Index (clean 2)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CAPABILITY_BASELINES.md"><code>docs/architecture/CAPABILITY_BASELINES.md</code></a> - Capability Baselines (capbase0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CAPABILITY_ONLY_CANON.md"><code>docs/architecture/CAPABILITY_ONLY_CANON.md</code></a> - Capability Only Canon</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CHANGELOG_ARCH.md"><code>docs/architecture/CHANGELOG_ARCH.md</code></a> - Architecture Changelog (clean1)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CHANGE_PROTOCOL.md"><code>docs/architecture/CHANGE_PROTOCOL.md</code></a> - Change Protocol (arch0 Binding)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CHEATS_ARE_JUST_LAWS.md"><code>docs/architecture/CHEATS_ARE_JUST_LAWS.md</code></a> - Cheats Are Just Laws (omni1)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CHECKPOINTING_MODEL.md"><code>docs/architecture/CHECKPOINTING_MODEL.md</code></a> - Checkpointing Model (mmo 2)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CHECKPOINTS.md"><code>docs/architecture/CHECKPOINTS.md</code></a> - Acceptance Checkpoints (chk0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CIVILIZATION_MODEL.md"><code>docs/architecture/CIVILIZATION_MODEL.md</code></a> - Civilization Model (civ0+)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CODE_DATA_BOUNDARY.md"><code>docs/architecture/CODE_DATA_BOUNDARY.md</code></a> - Code/data Boundary (codehygiene X)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CODE_KNOWLEDGE_BOUNDARY.md"><code>docs/architecture/CODE_KNOWLEDGE_BOUNDARY.md</code></a> - Code Knowledge Boundary (codeknow0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/COLLAPSE_AND_DECAY.md"><code>docs/architecture/COLLAPSE_AND_DECAY.md</code></a> - Collapse And Decay (civ0+)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/COLLAPSE_EXPAND_CONTRACT.md"><code>docs/architecture/COLLAPSE_EXPAND_CONTRACT.md</code></a> - Collapse/expand Contract (scale0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/COLLAPSE_EXPAND_SOLVERS.md"><code>docs/architecture/COLLAPSE_EXPAND_SOLVERS.md</code></a> - Collapse Expand Solvers</li>
+<li><a class="source-link" href="../../../../../docs/architecture/COMPATIBILITY_MODEL.md"><code>docs/architecture/COMPATIBILITY_MODEL.md</code></a> - Compatibility Model (ops1)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/COMPLEXITY_AND_SCALE.md"><code>docs/architecture/COMPLEXITY_AND_SCALE.md</code></a> - Complexity And Scale</li>
+<li><a class="source-link" href="../../../../../docs/architecture/COMPONENTS.md"><code>docs/architecture/COMPONENTS.md</code></a> - Components</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CONFLICT_AND_WAR_MODEL.md"><code>docs/architecture/CONFLICT_AND_WAR_MODEL.md</code></a> - Conflict And War Model (war0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CONSTANT_COST_GUARANTEE.md"><code>docs/architecture/CONSTANT_COST_GUARANTEE.md</code></a> - Constant Cost Guarantee (scale3)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CONTENT_AND_STORAGE_MODEL.md"><code>docs/architecture/CONTENT_AND_STORAGE_MODEL.md</code></a> - Content And Storage Model (stor0 / Lib 0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CONTROL_LAYERS.md"><code>docs/architecture/CONTROL_LAYERS.md</code></a> - Control Layers (testx2)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CORE_ABSTRACTIONS.md"><code>docs/architecture/CORE_ABSTRACTIONS.md</code></a> - Core Abstractions</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CRASH_RECOVERY.md"><code>docs/architecture/CRASH_RECOVERY.md</code></a> - Crash Recovery (mmo 2)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/CROSS_SHARD_LOG.md"><code>docs/architecture/CROSS_SHARD_LOG.md</code></a> - Cross Shard Log (mmo0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/C_COMPATIBLE_ABI_BOUNDARY.md"><code>docs/architecture/C_COMPATIBLE_ABI_BOUNDARY.md</code></a> - C Compatible Abi Boundary</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DEATH_AND_CONTINUITY.md"><code>docs/architecture/DEATH_AND_CONTINUITY.md</code></a> - Death And Continuity (life0+)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DECAY_EROSION_REGEN.md"><code>docs/architecture/DECAY_EROSION_REGEN.md</code></a> - Decay, Erosion, Regeneration (terrain0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DEMO_AND_TOURIST_MODEL.md"><code>docs/architecture/DEMO_AND_TOURIST_MODEL.md</code></a> - Demo And Tourist Model (testx3)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DEPRECATION_AND_QUARANTINE.md"><code>docs/architecture/DEPRECATION_AND_QUARANTINE.md</code></a> - Deprecation And Quarantine</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DEPRECATION_LIFECYCLE.md"><code>docs/architecture/DEPRECATION_LIFECYCLE.md</code></a> - Deprecation Lifecycle</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DETERMINISTIC_ORDERING_POLICY.md"><code>docs/architecture/DETERMINISTIC_ORDERING_POLICY.md</code></a> - Deterministic Ordering Policy (order0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DETERMINISTIC_REDUCTION_RULES.md"><code>docs/architecture/DETERMINISTIC_REDUCTION_RULES.md</code></a> - Deterministic Reduction Rules (exec0b)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DEV_OPS_MODEL.md"><code>docs/architecture/DEV_OPS_MODEL.md</code></a> - Dev/ops Model (dev Ops 0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DIRECTORY_CONTEXT.md"><code>docs/architecture/DIRECTORY_CONTEXT.md</code></a> - Dominium Directory Context (authoritative)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DIRECTORY_STRUCTURE.md"><code>docs/architecture/DIRECTORY_STRUCTURE.md</code></a> - Directory Structure (fs0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md"><code>docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md</code></a> - Distributed Simulation Model (mmo Srz)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DISTRIBUTED_TIME_MODEL.md"><code>docs/architecture/DISTRIBUTED_TIME_MODEL.md</code></a> - Distributed Time Model (mmo0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DISTRIBUTION_AND_STOREFRONTS.md"><code>docs/architecture/DISTRIBUTION_AND_STOREFRONTS.md</code></a> - Distribution And Storefronts (testx3)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DISTRIBUTION_LAYOUT.md"><code>docs/architecture/DISTRIBUTION_LAYOUT.md</code></a> - Distribution Layout (dist0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DISTRIBUTION_PROFILES.md"><code>docs/architecture/DISTRIBUTION_PROFILES.md</code></a> - Distribution Profiles (testx2)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DOMAIN_JURISDICTIONS_AND_LAW.md"><code>docs/architecture/DOMAIN_JURISDICTIONS_AND_LAW.md</code></a> - Domain Jurisdictions And Law (domain2)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DOMAIN_SHARDING_AND_STREAMING.md"><code>docs/architecture/DOMAIN_SHARDING_AND_STREAMING.md</code></a> - Domain Sharding And Streaming (domain3)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DOMAIN_VOLUMES.md"><code>docs/architecture/DOMAIN_VOLUMES.md</code></a> - Domain Volumes (domain0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/DUPLICATION_DETECTION_RULES.md"><code>docs/architecture/DUPLICATION_DETECTION_RULES.md</code></a> - Duplication Detection Rules</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ECONOMIC_MODEL.md"><code>docs/architecture/ECONOMIC_MODEL.md</code></a> - Economic Model (econ0)</li>
+<li><a class="source-link" href="../../../../../docs/architecture/ECONOMY_AND_LOGISTICS.md"><code>docs/architecture/ECONOMY_AND_LOGISTICS.md</code></a> - Economy And Logistics (civ0+)</li>
+<li>... 3858 more entries in <code>HUMAN_SOURCE_MANIFEST.yml</code>.</li>
+</ul>
+<h2 id="appendix-c-machine-readable-and-reference-material-excluded-from-the-main-book">Appendix C - Machine-Readable And Reference Material Excluded From The Main Book</h2>
+<p>Machine/index-only documents: 268. Reference-only documents: 620. These files remain represented in the source manifest and reference outputs.</p>
+<ul>
+<li><a class="source-link" href="../../../../../docs/.gitignore"><code>docs/.gitignore</code></a> - Generated Draft Changelog (see Scripts\gen Changelog.bat).</li>
+<li><a class="source-link" href="../../../../../docs/architecture/FROZEN_CONTRACT_HASHES.json"><code>docs/architecture/FROZEN_CONTRACT_HASHES.json</code></a> - Frozen Contract Hashes</li>
+<li><a class="source-link" href="../../../../../docs/architecture/LOCKLIST_OVERRIDES.json"><code>docs/architecture/LOCKLIST_OVERRIDES.json</code></a> - Locklist Overrides</li>
+<li><a class="source-link" href="../../../../../docs/architecture/SEMANTIC_STABILITY_LOCK.json"><code>docs/architecture/SEMANTIC_STABILITY_LOCK.json</code></a> - Semantic Stability Lock</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/CONSISTENCY_MATRIX.json"><code>docs/archive/audit/CONSISTENCY_MATRIX.json</code></a> - Consistency Matrix</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/DOMAIN_REGISTRY_REPORT.json"><code>docs/archive/audit/DOMAIN_REGISTRY_REPORT.json</code></a> - Domain Registry Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FAST_COMPACTION_SANITY.json"><code>docs/archive/audit/GR3_FAST_COMPACTION_SANITY.json</code></a> - Gr3 FAST Compaction Sanity</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FAST_COMPACTION_STATE.json"><code>docs/archive/audit/GR3_FAST_COMPACTION_STATE.json</code></a> - Gr3 FAST Compaction State</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FAST_REFERENCE_SUITE.json"><code>docs/archive/audit/GR3_FAST_REFERENCE_SUITE.json</code></a> - Gr3 FAST Reference Suite</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_CHEM_SCENARIO.json"><code>docs/archive/audit/GR3_FULL_CHEM_SCENARIO.json</code></a> - Gr3 Full Chem Scenario</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_CHEM_STRESS.json"><code>docs/archive/audit/GR3_FULL_CHEM_STRESS.json</code></a> - Gr3 Full Chem Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_ELEC_SCENARIO.json"><code>docs/archive/audit/GR3_FULL_ELEC_SCENARIO.json</code></a> - Gr3 Full Elec Scenario</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_ELEC_STRESS.json"><code>docs/archive/audit/GR3_FULL_ELEC_STRESS.json</code></a> - Gr3 Full Elec Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_FLUID_SCENARIO.json"><code>docs/archive/audit/GR3_FULL_FLUID_SCENARIO.json</code></a> - Gr3 Full Fluid Scenario</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_FLUID_STRESS.json"><code>docs/archive/audit/GR3_FULL_FLUID_STRESS.json</code></a> - Gr3 Full Fluid Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_POLL_SCENARIO.json"><code>docs/archive/audit/GR3_FULL_POLL_SCENARIO.json</code></a> - Gr3 Full Poll Scenario</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_POLL_STRESS.json"><code>docs/archive/audit/GR3_FULL_POLL_STRESS.json</code></a> - Gr3 Full Poll Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_PROC_COMPACTION_VERIFY.json"><code>docs/archive/audit/GR3_FULL_PROC_COMPACTION_VERIFY.json</code></a> - Gr3 Full Proc Compaction Verify</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_PROC_REPLAY.json"><code>docs/archive/audit/GR3_FULL_PROC_REPLAY.json</code></a> - Gr3 Full Proc Replay</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_PROC_SCENARIO.json"><code>docs/archive/audit/GR3_FULL_PROC_SCENARIO.json</code></a> - Gr3 Full Proc Scenario</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_PROC_STATE.json"><code>docs/archive/audit/GR3_FULL_PROC_STATE.json</code></a> - Gr3 Full Proc State</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_PROC_STATE_COMPACTED.json"><code>docs/archive/audit/GR3_FULL_PROC_STATE_COMPACTED.json</code></a> - Gr3 Full Proc State Compacted</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_PROC_STRESS.json"><code>docs/archive/audit/GR3_FULL_PROC_STRESS.json</code></a> - Gr3 Full Proc Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_PROV_STRESS.json"><code>docs/archive/audit/GR3_FULL_PROV_STRESS.json</code></a> - Gr3 Full Prov Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_REFERENCE_SUITE.json"><code>docs/archive/audit/GR3_FULL_REFERENCE_SUITE.json</code></a> - Gr3 Full Reference Suite</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_SIG_SCENARIO.json"><code>docs/archive/audit/GR3_FULL_SIG_SCENARIO.json</code></a> - Gr3 Full Sig Scenario</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_SIG_SCENARIO_RUN.json"><code>docs/archive/audit/GR3_FULL_SIG_SCENARIO_RUN.json</code></a> - Gr3 Full Sig Scenario Run</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_SIG_STRESS.json"><code>docs/archive/audit/GR3_FULL_SIG_STRESS.json</code></a> - Gr3 Full Sig Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_SYS_CROSS_SHARD_STRESS_MANIFEST.json"><code>docs/archive/audit/GR3_FULL_SYS_CROSS_SHARD_STRESS_MANIFEST.json</code></a> - Gr3 Full Sys Cross Shard Stress Manifest</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_SYS_REPLAY.json"><code>docs/archive/audit/GR3_FULL_SYS_REPLAY.json</code></a> - Gr3 Full Sys Replay</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_SYS_SCENARIO.json"><code>docs/archive/audit/GR3_FULL_SYS_SCENARIO.json</code></a> - Gr3 Full Sys Scenario</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_SYS_SCENARIO_RUN.json"><code>docs/archive/audit/GR3_FULL_SYS_SCENARIO_RUN.json</code></a> - Gr3 Full Sys Scenario Run</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_SYS_STRESS_MANIFEST.json"><code>docs/archive/audit/GR3_FULL_SYS_STRESS_MANIFEST.json</code></a> - Gr3 Full Sys Stress Manifest</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_THERM_SCENARIO.json"><code>docs/archive/audit/GR3_FULL_THERM_SCENARIO.json</code></a> - Gr3 Full Therm Scenario</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/GR3_FULL_THERM_STRESS.json"><code>docs/archive/audit/GR3_FULL_THERM_STRESS.json</code></a> - Gr3 Full Therm Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/HANDSHAKE_COMPAT_MATRIX.json"><code>docs/archive/audit/HANDSHAKE_COMPAT_MATRIX.json</code></a> - Handshake Compat Matrix</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/INVENTORY.json"><code>docs/archive/audit/INVENTORY.json</code></a> - Inventory</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/INVENTORY_MACHINE.json"><code>docs/archive/audit/INVENTORY_MACHINE.json</code></a> - Inventory Machine</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/LOGIC10_REFERENCE_RESULTS.json"><code>docs/archive/audit/LOGIC10_REFERENCE_RESULTS.json</code></a> - Logic10 Reference Results</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/LOGIC10_STRESS_RESULTS.json"><code>docs/archive/audit/LOGIC10_STRESS_RESULTS.json</code></a> - Logic10 Stress Results</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/LOGIC5_TIMING_STRESS.json"><code>docs/archive/audit/LOGIC5_TIMING_STRESS.json</code></a> - Logic5 Timing Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/LOGIC6_COMPILE_STRESS.json"><code>docs/archive/audit/LOGIC6_COMPILE_STRESS.json</code></a> - Logic6 Compile Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/LOGIC7_DEBUG_STRESS.json"><code>docs/archive/audit/LOGIC7_DEBUG_STRESS.json</code></a> - Logic7 Debug Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/LOGIC8_FAULT_STRESS.json"><code>docs/archive/audit/LOGIC8_FAULT_STRESS.json</code></a> - Logic8 Fault Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/LOGIC9_PROTOCOL_STRESS.json"><code>docs/archive/audit/LOGIC9_PROTOCOL_STRESS.json</code></a> - Logic9 Protocol Stress</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/REPO_STRUCTURE_AUDIT.json"><code>docs/archive/audit/REPO_STRUCTURE_AUDIT.json</code></a> - Repo Structure Audit</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/SEMANTIC_IMPACT_GLOBAL.json"><code>docs/archive/audit/SEMANTIC_IMPACT_GLOBAL.json</code></a> - Semantic Impact Global</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/STUB_REPORT.json"><code>docs/archive/audit/STUB_REPORT.json</code></a> - Stub Report</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/TOPOLOGY_MAP.json"><code>docs/archive/audit/TOPOLOGY_MAP.json</code></a> - Topology Map</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/auditx/FINDINGS.json"><code>docs/archive/audit/auditx/FINDINGS.json</code></a> - Findings</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/auditx/INVARIANT_MAP.json"><code>docs/archive/audit/auditx/INVARIANT_MAP.json</code></a> - Invariant Map</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/auditx/PROMOTION_CANDIDATES.json"><code>docs/archive/audit/auditx/PROMOTION_CANDIDATES.json</code></a> - Promotion Candidates</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/auditx/RUN_META.json"><code>docs/archive/audit/auditx/RUN_META.json</code></a> - Run Meta</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/auditx/TRENDS.json"><code>docs/archive/audit/auditx/TRENDS.json</code></a> - Trends</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/compat/COMPAT_BASELINE.json"><code>docs/archive/audit/compat/COMPAT_BASELINE.json</code></a> - Compat Baseline</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/compute_budget_stress_results.json"><code>docs/archive/audit/compute_budget_stress_results.json</code></a> - Compute Budget Stress Results</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/identity_fingerprint.json"><code>docs/archive/audit/identity_fingerprint.json</code></a> - Identity Fingerprint</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/perf/multiplayer_profile_trace.json"><code>docs/archive/audit/perf/multiplayer_profile_trace.json</code></a> - Multiplayer Profile Trace</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/performance/PERFORMX_BASELINE.json"><code>docs/archive/audit/performance/PERFORMX_BASELINE.json</code></a> - Performx Baseline</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/performance/PERFORMX_REGRESSIONS.json"><code>docs/archive/audit/performance/PERFORMX_REGRESSIONS.json</code></a> - Performx Regressions</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/performance/PERFORMX_RESULTS.json"><code>docs/archive/audit/performance/PERFORMX_RESULTS.json</code></a> - Performx Results</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/performance/RUN_META.json"><code>docs/archive/audit/performance/RUN_META.json</code></a> - Run Meta</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/proof_manifest.json"><code>docs/archive/audit/proof_manifest.json</code></a> - Proof Manifest</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/anb-omega-empty-path/20260211T215035Z_precheck_ok/actions_taken.json"><code>docs/archive/audit/remediation/anb-omega-empty-path/20260211T215035Z_precheck_ok/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/anb-omega-empty-path/20260211T215035Z_precheck_ok/failure.json"><code>docs/archive/audit/remediation/anb-omega-empty-path/20260211T215035Z_precheck_ok/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/anb-omega-empty-path/20260211T215035Z_precheck_ok/prevention_links.json"><code>docs/archive/audit/remediation/anb-omega-empty-path/20260211T215035Z_precheck_ok/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/anb-omega-empty-path/20260211T215035Z_precheck_ok/verification.json"><code>docs/archive/audit/remediation/anb-omega-empty-path/20260211T215035Z_precheck_ok/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/anb-omega-empty-path/20260211T220047Z_precheck_OTHER/actions_taken.json"><code>docs/archive/audit/remediation/anb-omega-empty-path/20260211T220047Z_precheck_OTHER/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/anb-omega-empty-path/20260211T220047Z_precheck_OTHER/failure.json"><code>docs/archive/audit/remediation/anb-omega-empty-path/20260211T220047Z_precheck_OTHER/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/anb-omega-empty-path/20260211T220047Z_precheck_OTHER/prevention_links.json"><code>docs/archive/audit/remediation/anb-omega-empty-path/20260211T220047Z_precheck_OTHER/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/anb-omega-empty-path/20260211T220047Z_precheck_OTHER/verification.json"><code>docs/archive/audit/remediation/anb-omega-empty-path/20260211T220047Z_precheck_OTHER/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T080631Z_verify_DERIVED_ARTIFACT_STALE/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260211T080631Z_verify_DERIVED_ARTIFACT_STALE/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T080631Z_verify_DERIVED_ARTIFACT_STALE/failure.json"><code>docs/archive/audit/remediation/vs2026/20260211T080631Z_verify_DERIVED_ARTIFACT_STALE/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T080631Z_verify_DERIVED_ARTIFACT_STALE/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260211T080631Z_verify_DERIVED_ARTIFACT_STALE/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T080631Z_verify_DERIVED_ARTIFACT_STALE/verification.json"><code>docs/archive/audit/remediation/vs2026/20260211T080631Z_verify_DERIVED_ARTIFACT_STALE/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T080838Z_verify_OTHER/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260211T080838Z_verify_OTHER/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T080838Z_verify_OTHER/failure.json"><code>docs/archive/audit/remediation/vs2026/20260211T080838Z_verify_OTHER/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T080838Z_verify_OTHER/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260211T080838Z_verify_OTHER/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T080838Z_verify_OTHER/verification.json"><code>docs/archive/audit/remediation/vs2026/20260211T080838Z_verify_OTHER/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T081813Z_verify_ok/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260211T081813Z_verify_ok/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T081813Z_verify_ok/failure.json"><code>docs/archive/audit/remediation/vs2026/20260211T081813Z_verify_ok/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T081813Z_verify_ok/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260211T081813Z_verify_ok/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T081813Z_verify_ok/verification.json"><code>docs/archive/audit/remediation/vs2026/20260211T081813Z_verify_ok/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T083343Z_verify_DERIVED_ARTIFACT_STALE/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260211T083343Z_verify_DERIVED_ARTIFACT_STALE/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T083343Z_verify_DERIVED_ARTIFACT_STALE/failure.json"><code>docs/archive/audit/remediation/vs2026/20260211T083343Z_verify_DERIVED_ARTIFACT_STALE/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T083343Z_verify_DERIVED_ARTIFACT_STALE/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260211T083343Z_verify_DERIVED_ARTIFACT_STALE/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T083343Z_verify_DERIVED_ARTIFACT_STALE/verification.json"><code>docs/archive/audit/remediation/vs2026/20260211T083343Z_verify_DERIVED_ARTIFACT_STALE/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T090841Z_verify_OTHER/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260211T090841Z_verify_OTHER/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T090841Z_verify_OTHER/failure.json"><code>docs/archive/audit/remediation/vs2026/20260211T090841Z_verify_OTHER/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T090841Z_verify_OTHER/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260211T090841Z_verify_OTHER/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T090841Z_verify_OTHER/verification.json"><code>docs/archive/audit/remediation/vs2026/20260211T090841Z_verify_OTHER/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T111036Z_verify_OTHER/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260211T111036Z_verify_OTHER/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T111036Z_verify_OTHER/failure.json"><code>docs/archive/audit/remediation/vs2026/20260211T111036Z_verify_OTHER/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T111036Z_verify_OTHER/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260211T111036Z_verify_OTHER/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T111036Z_verify_OTHER/verification.json"><code>docs/archive/audit/remediation/vs2026/20260211T111036Z_verify_OTHER/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T121513Z_verify_ok/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260211T121513Z_verify_ok/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T121513Z_verify_ok/failure.json"><code>docs/archive/audit/remediation/vs2026/20260211T121513Z_verify_ok/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T121513Z_verify_ok/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260211T121513Z_verify_ok/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T121513Z_verify_ok/verification.json"><code>docs/archive/audit/remediation/vs2026/20260211T121513Z_verify_ok/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T130308Z_verify_ok/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260211T130308Z_verify_ok/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T130308Z_verify_ok/failure.json"><code>docs/archive/audit/remediation/vs2026/20260211T130308Z_verify_ok/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T130308Z_verify_ok/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260211T130308Z_verify_ok/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T130308Z_verify_ok/verification.json"><code>docs/archive/audit/remediation/vs2026/20260211T130308Z_verify_ok/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T163146Z_verify_OTHER/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260211T163146Z_verify_OTHER/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T163146Z_verify_OTHER/failure.json"><code>docs/archive/audit/remediation/vs2026/20260211T163146Z_verify_OTHER/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T163146Z_verify_OTHER/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260211T163146Z_verify_OTHER/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T163146Z_verify_OTHER/verification.json"><code>docs/archive/audit/remediation/vs2026/20260211T163146Z_verify_OTHER/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T233128Z_verify_ok/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260211T233128Z_verify_ok/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T233128Z_verify_ok/failure.json"><code>docs/archive/audit/remediation/vs2026/20260211T233128Z_verify_ok/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T233128Z_verify_ok/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260211T233128Z_verify_ok/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260211T233128Z_verify_ok/verification.json"><code>docs/archive/audit/remediation/vs2026/20260211T233128Z_verify_ok/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260212T143108Z_verify_ok/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260212T143108Z_verify_ok/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260212T143108Z_verify_ok/failure.json"><code>docs/archive/audit/remediation/vs2026/20260212T143108Z_verify_ok/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260212T143108Z_verify_ok/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260212T143108Z_verify_ok/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260212T143108Z_verify_ok/verification.json"><code>docs/archive/audit/remediation/vs2026/20260212T143108Z_verify_ok/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/actions_taken.json</code></a> - Actions Taken</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/failure.json"><code>docs/archive/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/failure.json</code></a> - Failure</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/prevention_links.json"><code>docs/archive/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/prevention_links.json</code></a> - Prevention Links</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/verification.json"><code>docs/archive/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/verification.json</code></a> - Verification</li>
+<li><a class="source-link" href="../../../../../docs/archive/audit/remediation/vs2026/20260213T054938Z_exitcheck_OTHER/actions_taken.json"><code>docs/archive/audit/remediation/vs2026/20260213T054938Z_exitcheck_OTHER/actions_taken.json</code></a> - Actions Taken</li>
+<li>... 768 more entries in <code>HUMAN_SOURCE_MANIFEST.yml</code>.</li>
+</ul>
+<h2 id="appendix-d-decision-index">Appendix D - Decision Index</h2>
+<ul>
+<li>Architecture and boundaries.</li>
+<li>Workbench, AIDE, Codex, and tooling.</li>
+<li>Renderer, UI, platform, and native GUI.</li>
+<li>Provider, content, packs, and compatibility.</li>
+<li>World, time, civilization, and simulation domains.</li>
+<li>Release, setup, launcher, and publication.</li>
+<li>Documentation, canon, spec structure, and archive promotion.</li>
+</ul>
+<p>See <a class="source-link" href="../../../../../docs/archive/docs_corpus/_reconciliation/DOCS_DECISION_DOCKET_v0.md"><code>docs/archive/docs_corpus/_reconciliation/DOCS_DECISION_DOCKET_v0.md</code></a> and <a class="source-link" href="../../../../../docs/archive/conversations/_decision/DECISION_DOCKET_v0.md"><code>docs/archive/conversations/_decision/DECISION_DOCKET_v0.md</code></a>.</p>
+<h2 id="appendix-e-source-path-index">Appendix E - Source Path Index</h2>
+<p>The full source path index is <a class="source-link" href="../../../../../docs/archive/docs_corpus/_human_source/HUMAN_SOURCE_INDEX.md"><code>docs/archive/docs_corpus/_human_source/HUMAN_SOURCE_INDEX.md</code></a>. This appendix intentionally avoids reproducing thousands of paths in the main book.</p>
+<h2 id="appendix-f-glossary-and-abbreviations">Appendix F - Glossary And Abbreviations</h2>
+<ul>
+<li><strong>AIDE:</strong> repo/control-plane harness and context/validation helper.</li>
+<li><strong>Archive:</strong> historical/provenance docs that do not override current authority.</li>
+<li><strong>Canon:</strong> binding constitutional project meaning.</li>
+<li><strong>Conversation advisory:</strong> derived historical conversation evidence.</li>
+<li><strong>Domino:</strong> deterministic reusable substrate.</li>
+<li><strong>Dominium:</strong> official game/product/domain layer.</li>
+<li><strong>Process-only mutation:</strong> authoritative truth changes only through lawful deterministic processes.</li>
+<li><strong>Queue:</strong> current scope gate for allowed work.</li>
+</ul>
+  </main>
+</body>
+</html>
