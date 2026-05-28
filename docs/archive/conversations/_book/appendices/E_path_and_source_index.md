@@ -1,0 +1,157 @@
+# Appendix E - Path and Source Index
+
+# Path and Source Index
+
+## Included Source Files
+
+- `docs/archive/conversations/_audit/CONTRADICTION_MATRIX.md`
+- `docs/archive/conversations/_audit/COVERAGE_GAPS.md`
+- `docs/archive/conversations/_audit/DOC_DRIFT_REPORT.md`
+- `docs/archive/conversations/_audit/INTAKE_ACCEPTANCE_REVIEW.md`
+- `docs/archive/conversations/_audit/STALENESS_AND_VERIFICATION.md`
+- `docs/archive/conversations/_audit/UNCERTAINTY_REGISTER.md`
+- `docs/archive/conversations/_decision/DECISION_DOCKET_v0.md`
+- `docs/archive/conversations/_decision/DECISION_OPTIONS_MATRIX_v0.md`
+- `docs/archive/conversations/_decision/DECISION_SUMMARY_v0.md`
+- `docs/archive/conversations/_decision/DEFERRED_DECISIONS_v0.md`
+- `docs/archive/conversations/_intake/CORPUS_MANIFEST.md`
+- `docs/archive/conversations/_intake/PACKAGE_COMPLETENESS.md`
+- `docs/archive/conversations/_intake/SOURCE_PROVENANCE.md`
+- `docs/archive/conversations/_promotion/PROMOTION_NOT_READY_v0.md`
+- `docs/archive/conversations/_promotion/PROMOTION_QUEUE.md`
+- `docs/archive/conversations/_promotion/PROMOTION_REVIEW_BOARD_v0.md`
+- `docs/archive/conversations/_promotion/PROMOTION_TARGET_MAP_v0.md`
+- `docs/archive/conversations/_promotion/PROMOTION_TRIAGE_v0.md`
+- `docs/archive/conversations/_promotion/PROMOTION_WAVE_1_CANDIDATES_v0.md`
+- `docs/archive/conversations/_reader/conversation_reader_index.md`
+- `docs/archive/conversations/_reconciliation/BLOCKED_SCOPE_ALIGNMENT_v0.md`
+- `docs/archive/conversations/_reconciliation/CLAIM_REVIEW_MATRIX_v0.md`
+- `docs/archive/conversations/_reconciliation/CURRENT_CANON_ALIGNMENT_v0.md`
+- `docs/archive/conversations/_reconciliation/REPO_AUTHORITY_CROSSWALK_v0.md`
+- `docs/archive/conversations/_synthesis/CONTRADICTIONS_TO_RECONCILE_v0.md`
+- `docs/archive/conversations/_synthesis/CURRENT_PROJECT_ATLAS_v0.md`
+- `docs/archive/conversations/_synthesis/EXECUTIVE_BRIEF_v0.md`
+- `docs/archive/conversations/_synthesis/FULL_PROJECT_PICTURE_v0.md`
+- `docs/archive/conversations/_synthesis/PROJECT_SYNTHESIS_BOOK_v0.md`
+- `docs/archive/conversations/_synthesis/READ_THIS_FIRST_v0.md`
+- `docs/archive/conversations/_wiki/artifacts/index.md`
+- `docs/archive/conversations/_wiki/decisions/index.md`
+- `docs/archive/conversations/_wiki/index.md`
+- `docs/archive/conversations/_wiki/open_questions/index.md`
+- `docs/archive/conversations/_wiki/risks/index.md`
+- `docs/archive/conversations/_wiki/tasks/index.md`
+- `docs/archive/conversations/_wiki/topics/index.md`
+- `docs/archive/conversations/_wiki/workstreams/index.md`
+
+## Excluded From Reader Edition
+
+- `docs/archive/conversations/_audit/DUPLICATE_TOPICS.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_audit/LINK_INTEGRITY_REVIEW.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_audit/PROMOTION_QUEUE_QUALITY_REVIEW.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_audit/READER_QUALITY_REVIEW.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_intake/corpus_manifest.json` - machine-readable manifest parsed for source indexes
+- `docs/archive/conversations/_intake/SHA256SUMS.txt` - too dense for reader edition; retained as source hash file
+- `docs/archive/conversations/_promotion/CANDIDATE_PATCH_PLAN.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_promotion/NEEDS_USER_DECISION_v0.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_promotion/NON_PROMOTED_CONTEXT.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_promotion/REJECTED_NOISE_v0.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_promotion/REJECTED_OR_QUARANTINED_CLAIMS.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_promotion/REVIEW_DECISIONS.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_promotion/TOP_PROMOTION_CANDIDATES_v0.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_reader/by_chat/advanced_simulation_infrastructure.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/app_runtime_platform_renderers.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/app_testx_codehygiene.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/architecture_codex_prompts.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/architecture_ui_providers.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/build_and_future_proofing.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/canonical_structure_and_framework.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/chronology_celestial_systems.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/development_routes.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/documentation_standards_readme.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/dominium_architecture_i.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/dominium_architecture_ii.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/dominium_architecture_iii.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/dominium_architecture_iv.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/dominium_complete_conversation.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/dominium_domino_codex_planning.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/dominium_full_conversation.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/dominium_setup.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/domino_dominium_workbench.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/domino_engine_refactor_prompts.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/engine_baseline_architecture.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/foundation_workbench_codex.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/framework_open_source_provider.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/gui_binary_content.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/language_platform_architecture.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/launcher_app_layer.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/launcher_setup_architecture.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/modularity_aide_refactorability.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/omega_xi_pi_architecture_future.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/os_interface_repo_architecture.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/platform_renderer_api_plan.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/platform_support.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/portability_assurance_future_proof.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/readme_ports_determinism.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/refactor_architecture.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/refactor_control_plane.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/release_identity_and_versioning.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/testx_repox_governance.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/timekeeping_and_2038_resilience.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/ue6_domino_deterministic_universe.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/ui_editor_tool_editor_planning.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/universe_explorer_planning.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/workbench_aide_product_spine.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/world_architecture.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_reader/by_chat/xstack_lab_galaxy.md` - included as per-conversation digest and retained as full HTML/source reference
+- `docs/archive/conversations/_synthesis/WHAT_NEEDS_DECISION_v0.md` - duplicate, dense, or lower-priority generated surface; retained in source tree
+- `docs/archive/conversations/_wiki/topics/architecture.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/content.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/contracts_schema.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/determinism.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/governance.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/platform.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/release.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/setup_launcher.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/simulation.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/timekeeping.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/tooling.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/ui.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/workbench.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/worldgen.md` - topic detail covered by navigation digest; full source retained
+- `docs/archive/conversations/_wiki/topics/xstack_aide.md` - topic detail covered by navigation digest; full source retained
+
+## Generated Book Files
+
+- `docs/archive/conversations/_book/appendices/A_source_corpus_manifest.md`
+- `docs/archive/conversations/_book/appendices/B_full_claim_review_matrix.md`
+- `docs/archive/conversations/_book/appendices/C_full_promotion_register.md`
+- `docs/archive/conversations/_book/appendices/D_full_contradiction_register.md`
+- `docs/archive/conversations/_book/appendices/E_path_and_source_index.md`
+- `docs/archive/conversations/_book/BOOK_MANIFEST.yml`
+- `docs/archive/conversations/_book/build/book_source.md`
+- `docs/archive/conversations/_book/build/latex/reader_book.tex`
+- `docs/archive/conversations/_book/build/latex/reference_appendix.tex`
+- `docs/archive/conversations/_book/build/pandoc_prerequisites.md`
+- `docs/archive/conversations/_book/chapters/00_front_matter.md`
+- `docs/archive/conversations/_book/chapters/01_orientation.md`
+- `docs/archive/conversations/_book/chapters/02_project_synthesis.md`
+- `docs/archive/conversations/_book/chapters/03_authority_and_reconciliation.md`
+- `docs/archive/conversations/_book/chapters/04_decision_docket.md`
+- `docs/archive/conversations/_book/chapters/05_promotion_review.md`
+- `docs/archive/conversations/_book/chapters/06_contradictions_staleness_verification.md`
+- `docs/archive/conversations/_book/chapters/07_wiki_navigation_digest.md`
+- `docs/archive/conversations/_book/chapters/08_conversation_reader_digest.md`
+- `docs/archive/conversations/_book/index.md`
+- `docs/archive/conversations/_book/qa/main_001_title_page.png`
+- `docs/archive/conversations/_book/qa/main_001_title_page.txt`
+- `docs/archive/conversations/_book/qa/main_002_toc_page.png`
+- `docs/archive/conversations/_book/qa/main_002_toc_page.txt`
+- `docs/archive/conversations/_book/qa/main_060_normal_chapter_page.png`
+- `docs/archive/conversations/_book/qa/main_060_normal_chapter_page.txt`
+- `docs/archive/conversations/_book/qa/main_547_dense_appendix_page.png`
+- `docs/archive/conversations/_book/qa/main_547_dense_appendix_page.txt`
+- `docs/archive/conversations/_book/qa/main_792_index_or_back_matter_page.png`
+- `docs/archive/conversations/_book/qa/main_792_index_or_back_matter_page.txt`
+- `docs/archive/conversations/_book/qa/PDF_QA_SUMMARY.md`
+- `docs/archive/conversations/_book/README.md`
+- `docs/archive/conversations/_book/styles/book.css`

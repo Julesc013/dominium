@@ -1,0 +1,38 @@
+Chapter 5
+
+Authority and Reconciliation
+SOURCE PATH: docs/archive/conversations/ reconciliation/REPO
+AUTHORITY CROSSWALK v0.md
+
+5.1
+
+Repo Authority Crosswalk v0
+
+This crosswalk compares the derived synthesis to current authority surfaces.
+It does not promote any conversation claim.
+Dense table content is summarized in this PDF rendering. See the
+Markdown source and HTML book for the full table.
+
+5.1.1
+
+Classification Counts
+
+• blocked by current queue: 10
+• consistent with repo but not formalized: 41
+• insufficient evidence: 46
+• needs user decision: 12
+• rejected noise: 19
+• stale or superseded: 7
+SOURCE PATH: docs/archive/conversations/ reconciliation/CURRENT
+CANON ALIGNMENT v0.md
+
+5.2
+
+Current Canon Alignment v0
+
+This review identifies broad areas where the conversation-derived synthesis
+appears aligned with current canon, and where caution remains.
+
+59
+
+

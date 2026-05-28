@@ -219,7 +219,8 @@ def write_text_if_changed(path: Path, content: str) -> bool:
         old = path.read_text(encoding="utf-8")
     if old == content:
         return False
-    path.write_text(content, encoding="utf-8", newline="\n")
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(content)
     return True
 
 

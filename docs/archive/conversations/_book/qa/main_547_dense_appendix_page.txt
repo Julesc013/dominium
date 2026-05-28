@@ -1,0 +1,32 @@
+• Current authority conflict: none detected by triage
+• Queue risk: none detected
+• Validation required: preserve as archive evidence; no live target validation
+• Recommended next action: hold or review
+• Claim: This chat was about preserving and re-grounding Dominium’s
+architecture around a very old constitutional contract, then checking
+whether the current GitHub repository still follows that contract, and
+finally broadening the question into a platform-engineering doctrine
+for portability, modularity, extensibility, reuse, future-proofing, and
+long-term compatibility.
+PROMOTE-0044 - contract candidate
+• Source conversation: Dominium Complete Conversation
+• Proposed target path: contracts/** or docs/reference/contracts/** after authority review
+• Current authority support: not yet verified against target docs
+• Current authority conflict: none detected by triage
+• Queue risk: none detected
+• Validation required: authority review plus targeted schema/contract
+parser and FAST
+• Recommended next action: hold or review
+• Claim: The glossary bound terms such as Authority, Law, Process,
+Lens, SessionSpec, UniverseIdentity, Macro Capsule, SRZ, RepoX,
+TestX, AuditX, CompatX, SecureX, and related terms. It matters
+because future assistants must not use sloppy synonyms like ”mode”
+where the canon requires ExperienceProfile or LawProfile. This topic
+directly supports modularity because stable vocabulary is part of stable architecture.
+PROMOTE-0045 - insufficient evidence
+• Source conversation: Dominium Complete Conversation
+• Proposed target path: none
+• Current authority support: not yet verified against target docs
+546
+
+

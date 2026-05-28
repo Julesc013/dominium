@@ -1,0 +1,39 @@
+• docs/archive/conversations/ reader/by chat/app testx codehygiene.md
+- included as per-conversation digest and retained as full HTML/source
+reference
+• docs/archive/conversations/ reader/by chat/architecture codex prompts.md
+- included as per-conversation digest and retained as full HTML/source
+reference
+• docs/archive/conversations/ reader/by chat/architecture ui providers.md
+- included as per-conversation digest and retained as full HTML/source
+reference
+• docs/archive/conversations/ reader/by chat/build and future proofing.md
+- included as per-conversation digest and retained as full HTML/source
+reference
+• docs/archive/conversations/ reader/by chat/canonical structure and framework.md
+- included as per-conversation digest and retained as full HTML/source
+reference
+• docs/archive/conversations/ reader/by chat/chronology celestial systems.md
+- included as per-conversation digest and retained as full HTML/source
+reference
+• docs/archive/conversations/ reader/by chat/development routes.md included as per-conversation digest and retained as full HTML/source
+reference
+• docs/archive/conversations/ reader/by chat/documentation standards readme.md
+- included as per-conversation digest and retained as full HTML/source
+reference
+• docs/archive/conversations/ reader/by chat/dominium architecture i.md
+- included as per-conversation digest and retained as full HTML/source
+reference
+• docs/archive/conversations/ reader/by chat/dominium architecture ii.md
+- included as per-conversation digest and retained as full HTML/source
+reference
+• docs/archive/conversations/ reader/by chat/dominium architecture iii.md
+- included as per-conversation digest and retained as full HTML/source
+reference
+• docs/archive/conversations/ reader/by chat/dominium architecture iv.md
+- included as per-conversation digest and retained as full HTML/source
+reference
+
+791
+
+
