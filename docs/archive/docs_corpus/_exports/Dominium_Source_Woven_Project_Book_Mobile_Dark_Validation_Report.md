@@ -19,10 +19,10 @@ Queue impact: unchanged
 
 - Result: PASS
 - PDF exists: True
-- Page count: 1186
+- Page count: 730
 - Text extraction: PASS
 - Glyph check: PASS
-- QA images: docs/archive/docs_corpus/_source_woven_book/qa/source_woven_mobile_dark_page_1.png, docs/archive/docs_corpus/_source_woven_book/qa/source_woven_mobile_dark_page_2.png, docs/archive/docs_corpus/_source_woven_book/qa/source_woven_mobile_dark_page_6.png, docs/archive/docs_corpus/_source_woven_book/qa/source_woven_mobile_dark_page_593.png, docs/archive/docs_corpus/_source_woven_book/qa/source_woven_mobile_dark_page_1186.png
+- QA images: docs/archive/docs_corpus/_source_woven_book/qa/source_woven_mobile_dark_page_1.png, docs/archive/docs_corpus/_source_woven_book/qa/source_woven_mobile_dark_page_2.png, docs/archive/docs_corpus/_source_woven_book/qa/source_woven_mobile_dark_page_6.png, docs/archive/docs_corpus/_source_woven_book/qa/source_woven_mobile_dark_page_365.png, docs/archive/docs_corpus/_source_woven_book/qa/source_woven_mobile_dark_page_730.png
 
 ## Commands
 

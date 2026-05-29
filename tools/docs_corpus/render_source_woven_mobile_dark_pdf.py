@@ -86,6 +86,40 @@ def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8", errors="replace").replace("\r\n", "\n").replace("\r", "\n")
 
 
+def prepare_mobile_markdown(markdown: str) -> str:
+    """Flatten the source heading hierarchy for a phone-sized contents page."""
+    lines = markdown.splitlines()
+    prepared: List[str] = []
+    skipped_title = False
+    for line in lines:
+        if not skipped_title and line.strip() == f"# {TITLE}":
+            skipped_title = True
+            continue
+        skipped_title = True
+        match = re.match(r"^(#{2,6})(\s+.+)$", line)
+        if match:
+            prepared.append("#" * (len(match.group(1)) - 1) + match.group(2))
+        else:
+            prepared.append(line)
+    return "\n".join(prepared).strip() + "\n"
+
+
+def mobile_part_dividers(latex: str) -> str:
+    def replace(match: re.Match[str]) -> str:
+        title = match.group(1)
+        return (
+            "\\cleardoublepage\n"
+            f"\\addcontentsline{{toc}}{{chapter}}{{{title}}}\n"
+            f"\\markboth{{{title}}}{{{title}}}\n"
+            "{\\centering\\vspace*{1.3cm}"
+            f"{{\\Huge\\bfseries {title}\\par}}"
+            "\\vspace{1.0cm}\\par}\n"
+            "\\clearpage"
+        )
+
+    return re.sub(r"\\chapter\{(Part [IVX]+ - [^}]+|Appendices)\}", replace, latex)
+
+
 def mobile_dark_latex_document(markdown: str, engine: str) -> str:
     font_block = (
         r"""\usepackage{fontspec}
@@ -99,11 +133,11 @@ def mobile_dark_latex_document(markdown: str, engine: str) -> str:
 \usepackage{lmodern}
 """
     )
-    body = styled.markdown_to_latex(markdown, reference=True)
+    body = mobile_part_dividers(styled.markdown_to_latex(prepare_mobile_markdown(markdown), reference=True))
     title = styled.latex_escape(TITLE)
     subtitle = styled.latex_escape(SUBTITLE)
-    return rf"""\documentclass[12pt,openany]{{book}}
-\usepackage[paperwidth=108mm,paperheight=192mm,margin=8mm,includeheadfoot,headheight=13pt]{{geometry}}
+    return rf"""\documentclass[11pt,openany]{{book}}
+\usepackage[paperwidth=108mm,paperheight=192mm,top=5.5mm,bottom=6mm,left=5mm,right=5mm,includeheadfoot,headheight=11pt,headsep=4pt,footskip=10pt]{{geometry}}
 {font_block}
 \IfFileExists{{glyphtounicode.tex}}{{\input{{glyphtounicode}}\ifdefined\pdfgentounicode\pdfgentounicode=1\fi}}{{}}
 \usepackage{{array,longtable,tabularx,graphicx,color}}
@@ -123,6 +157,8 @@ def mobile_dark_latex_document(markdown: str, engine: str) -> str:
 \def\normalcolor{{\color{{MobileDarkText}}}}
 \def\ps@plain{{\let\@mkboth\@gobbletwo\let\@oddhead\@empty\let\@evenhead\@empty\def\@oddfoot{{\hfil\color{{MobileDarkMuted}}\thepage\hfil}}\let\@evenfoot\@oddfoot}}
 \def\ps@headings{{\def\@oddhead{{\color{{MobileDarkMuted}}\small\hfil\rightmark}}\def\@evenhead{{\color{{MobileDarkMuted}}\small\leftmark\hfil}}\def\@oddfoot{{\hfil\color{{MobileDarkMuted}}\thepage\hfil}}\let\@evenfoot\@oddfoot\let\@mkboth\markboth}}
+\def\@makechapterhead#1{{\vspace*{{0.45cm}}{{\parindent0pt\raggedright\color{{MobileDarkText}}\Large\bfseries Chapter \thechapter\par\nobreak\vspace{{0.22cm}}\LARGE\bfseries #1\par\nobreak\vspace{{0.45cm}}}}}}
+\def\@makeschapterhead#1{{\vspace*{{0.45cm}}{{\parindent0pt\raggedright\color{{MobileDarkText}}\LARGE\bfseries #1\par\nobreak\vspace{{0.45cm}}}}}}
 \makeatother
 \newcommand{{\toprule}}{{\hline}}
 \newcommand{{\midrule}}{{\hline}}
@@ -130,19 +166,26 @@ def mobile_dark_latex_document(markdown: str, engine: str) -> str:
 \newcommand{{\uline}}[1]{{\underline{{#1}}}}
 \newcommand{{\href}}[2]{{\underline{{#2}} {{\scriptsize\texttt{{\detokenize{{#1}}}}}}}}
 \newcommand{{\url}}[1]{{{{\scriptsize\texttt{{\detokenize{{#1}}}}}}}}
-\setcounter{{tocdepth}}{{1}}
+\setcounter{{tocdepth}}{{0}}
 \setlength{{\parindent}}{{0pt}}
-\setlength{{\parskip}}{{0.62em}}
-\linespread{{1.18}}
+\setlength{{\parskip}}{{0.44em}}
+\linespread{{1.05}}
+\raggedright
+\pretolerance=10000
+\tolerance=10000
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\emergencystretch=2.2em
+\sloppy
 \newcommand{{\sourcepath}}[1]{{\par\smallskip\noindent{{\scriptsize\color{{MobileDarkMuted}}\textsf{{Source: }}\texttt{{#1}}}}\par\smallskip}}
-\newcommand{{\vonecallout}}[3]{{\par\medskip\noindent\begingroup\setlength{{\fboxsep}}{{7pt}}\colorbox{{DomCalloutBg}}{{\parbox{{0.91\linewidth}}{{\textbf{{\textcolor{{#1}}{{#2}}}}\par\color{{MobileDarkText}} #3}}}}\endgroup\par\medskip}}
-\newcommand{{\vonecode}}[1]{{\par\smallskip\noindent\begingroup\setlength{{\fboxsep}}{{7pt}}\colorbox{{DomCodeBg}}{{\parbox{{0.91\linewidth}}{{\scriptsize\ttfamily\color{{MobileDarkText}} #1}}}}\endgroup\par\smallskip}}
+\newcommand{{\vonecallout}}[3]{{\par\medskip\noindent\begingroup\setlength{{\fboxsep}}{{6pt}}\colorbox{{DomCalloutBg}}{{\parbox{{0.94\linewidth}}{{\raggedright\textbf{{\textcolor{{#1}}{{#2}}}}\par\color{{MobileDarkText}} #3}}}}\endgroup\par\medskip}}
+\newcommand{{\vonecode}}[1]{{\par\smallskip\noindent\begingroup\setlength{{\fboxsep}}{{6pt}}\colorbox{{DomCodeBg}}{{\parbox{{0.94\linewidth}}{{\raggedright\scriptsize\ttfamily\color{{MobileDarkText}} #1}}}}\endgroup\par\smallskip}}
 \begin{{document}}
 \pagecolor{{MobileDarkBg}}
 \color{{MobileDarkText}}
 \normalcolor
-\pagestyle{{headings}}
-\fontsize{{13.6pt}}{{20pt}}\selectfont
+\pagestyle{{plain}}
+\fontsize{{11.4pt}}{{16.2pt}}\selectfont
 \frontmatter
 \begin{{titlepage}}
 \centering
@@ -157,7 +200,7 @@ def mobile_dark_latex_document(markdown: str, engine: str) -> str:
 \vfill
 {{\large {REVIEW_DATE}\par}}
 \end{{titlepage}}
-\tableofcontents
+{{\fontsize{{10.4pt}}{{15.0pt}}\selectfont\raggedright\tableofcontents\par}}
 \mainmatter
 {body}
 \end{{document}}
@@ -207,6 +250,8 @@ def qa_pdf(repo_root: Path, pdf_path: Path, renderer: str) -> PdfInfo:
         else:
             result.text_extraction = "FAIL"
     if result.created and shutil.which("pdftoppm") and result.pages:
+        for stale in qa.glob("source_woven_mobile_dark_page_*.png"):
+            stale.unlink()
         for page in sorted({1, 2, 6, max(1, result.pages // 2), result.pages}):
             prefix = qa / f"source_woven_mobile_dark_page_{page}"
             code, _ = run_command(["pdftoppm", "-f", str(page), "-l", str(page), "-png", "-r", "120", str(pdf_path), str(prefix)], repo_root, timeout=240)
@@ -235,9 +280,13 @@ def write_reports(repo_root: Path, info: PdfInfo, commands: List[Tuple[str, int]
 - Pages: {info.pages or ''}
 - Size bytes: {info.size}
 - Renderer: {info.renderer}
-- Page geometry: 108mm x 192mm
-- Body text: 13.6pt on 20pt leading
+- Page geometry: 108mm x 192mm with 5mm side margins
+- Body text: 11.4pt on 16.2pt leading
 - Colors: white text on near-black background
+- Layout: ragged-right text with hyphenation suppressed
+- TOC: chapter-only mobile contents with compact wrapped entries
+- Chapter openings: compact headings for phone-sized pages
+- Running headers: disabled to avoid clipped long appendix titles on small pages
 
 ## Caveats
 

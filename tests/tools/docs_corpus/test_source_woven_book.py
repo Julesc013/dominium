@@ -54,8 +54,26 @@ class SourceWovenBookTests(unittest.TestCase):
         self.assertIn("\\pagecolor{MobileDarkBg}", latex)
         self.assertIn("\\color{MobileDarkText}", latex)
         self.assertIn("paperwidth=108mm", latex)
+        self.assertIn("left=5mm", latex)
+        self.assertIn("\\setcounter{tocdepth}{0}", latex)
+        self.assertIn("\\raggedright", latex)
+        self.assertIn("\\hyphenpenalty=10000", latex)
+        self.assertIn("\\fontsize{11.4pt}{16.2pt}", latex)
+        self.assertIn("\\pagestyle{plain}", latex)
         self.assertEqual(mobile_dark.PDF_NAME, "Dominium_Source_Woven_Project_Book_Mobile_Dark.pdf")
         self.assertNotRegex(mobile_dark.TITLE.lower(), r"\\bv[23]\\b")
+
+    def test_mobile_dark_markdown_promotes_chapters_for_clean_toc(self):
+        prepared = mobile_dark.prepare_mobile_markdown(
+            "# Dominium Source-Woven Project Book\n\n"
+            "# Part I - The Project\n\n"
+            "## 1. Dominium in One View\n\n"
+            "### Source Notes\n"
+        )
+        self.assertNotIn("# Dominium Source-Woven Project Book", prepared)
+        self.assertIn("# Part I - The Project", prepared)
+        self.assertIn("# 1. Dominium in One View", prepared)
+        self.assertIn("## Source Notes", prepared)
 
 
 if __name__ == "__main__":
