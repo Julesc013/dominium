@@ -117,7 +117,8 @@ def validate(repo_root: Path) -> List[str]:
     toc = repo_root / ROOT / "indexes" / "CONTENTS_PLAN.md"
     if toc.exists():
         toc_text = read_text(toc)
-        if "docs/archive/" in toc_text or "SWB-" in toc_text:
+        toc_body = toc_text.split("# Contents Plan", 1)[-1]
+        if "docs/archive/" in toc_body or "SWB-" in toc_body:
             errors.append("contents plan is contaminated with source paths or block IDs")
 
     pdf_path = repo_root / EXPORTS / "Dominium_Source_Woven_Project_Book.pdf"

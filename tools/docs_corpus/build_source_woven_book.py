@@ -548,7 +548,10 @@ def load_state(repo_root: Path) -> BuildState:
 def map_blocks_to_chapters(blocks: Sequence[SourceBlock]) -> Dict[int, List[SourceBlock]]:
     by_chapter: Dict[int, List[SourceBlock]] = defaultdict(list)
     for block in blocks:
-        by_chapter[block.primary_chapter].append(block)
+        chapters = block.candidate_chapters or [block.primary_chapter]
+        for chapter in chapters:
+            if chapter in CHAPTER_BY_NUMBER:
+                by_chapter[chapter].append(block)
     for number, items in by_chapter.items():
         items.sort(key=lambda block: (block.include_mode != "main", authority_rank(block), type_rank(block), block.source_path, block.block_id))
     return by_chapter
@@ -609,6 +612,28 @@ def write_manifest_and_reports(repo_root: Path, state: BuildState) -> None:
         *[f'  - "{prefix}"' for prefix in docs_corpus.PROTECTED_PREFIXES],
     ]
     write_text(repo_root / ROOT / "SOURCE_WOVEN_BOOK_MANIFEST.yml", "\n".join(manifest))
+
+    readme = f"""{STATUS_BLOCK}
+# Dominium Source-Woven Project Book
+
+This directory contains the source-woven book line for `{TASK_ID}`.
+
+The purpose of this book is different from the evidence-card and authored-summary books. It extracts semantic blocks from human-readable current docs, archive reports, and conversation corpus material, then places those original source passages into topic chapters with light editorial bridges.
+
+Generated outputs are DERIVED and advisory. They do not promote archive or conversation claims, do not modify current source docs, and do not change canon, contracts, schema, implementation, release, or queue state.
+
+Key files:
+
+- `SOURCE_WOVEN_BOOK_MANIFEST.yml`
+- `SOURCE_BLOCKS.yml`
+- `SOURCE_BLOCKS.md`
+- `CHAPTER_BLOCK_MAP.yml`
+- `CHAPTER_BLOCK_MAP.md`
+- `Dominium_Source_Woven_Project_Book.md`
+- `indexes/`
+- `qa/`
+"""
+    write_text(repo_root / ROOT / "README.md", readme)
 
     family_lines = "\n".join(f"- {family}: {count}" for family, count in family_counts.most_common(30))
     selection = f"""{STATUS_BLOCK}
@@ -783,30 +808,35 @@ def choose_chapter_blocks(chapter: ChapterDef, blocks: Sequence[SourceBlock]) ->
     synthesis = [block for block in usable if authority_rank(block) == 2]
     conversation = [block for block in usable if block.source_path.startswith("docs/archive/conversations/")]
     archive = [block for block in usable if block.source_path.startswith("docs/archive/") and not block.source_path.startswith("docs/archive/conversations/")]
-    other = [block for block in usable if block not in current and block not in synthesis and block not in conversation and block not in archive]
+    grouped_ids = {block.block_id for block in current + synthesis + conversation + archive}
+    other = [block for block in usable if block.block_id not in grouped_ids]
 
     def take(source: List[SourceBlock], limit: int, selected: List[SourceBlock]) -> None:
         seen_sources = Counter(block.source_path for block in selected)
+        selected_ids = {block.block_id for block in selected}
+        added = 0
         for block in source:
-            if block in selected:
+            if block.block_id in selected_ids:
                 continue
             if seen_sources[block.source_path] >= 3:
                 continue
             selected.append(block)
+            selected_ids.add(block.block_id)
             seen_sources[block.source_path] += 1
-            if len([item for item in selected if item in source]) >= limit:
+            added += 1
+            if added >= limit:
                 break
 
     selected: List[SourceBlock] = []
-    take(current, 7, selected)
-    take(synthesis, 5, selected)
-    take(conversation, 18, selected)
-    take(archive, 7, selected)
-    take(other, 5, selected)
-    if len(selected) < 24:
-        take(usable, 28 - len(selected), selected)
+    take(current, 14, selected)
+    take(synthesis, 10, selected)
+    take(conversation, 52, selected)
+    take(archive, 22, selected)
+    take(other, 12, selected)
+    if len(selected) < 84:
+        take(usable, 92 - len(selected), selected)
     selected.sort(key=lambda block: (authority_rank(block), type_rank(block), block.source_path, block.block_id))
-    return selected[:38]
+    return selected[:104]
 
 
 def quote_block(block: SourceBlock) -> str:
@@ -821,7 +851,8 @@ def chapter_markdown(chapter: ChapterDef, blocks: Sequence[SourceBlock]) -> str:
     selected = choose_chapter_blocks(chapter, blocks)
     current = [block for block in selected if authority_rank(block) <= 1]
     archive = [block for block in selected if block.source_path.startswith("docs/archive/")]
-    remaining = [block for block in selected if block not in current and block not in archive]
+    grouped_ids = {block.block_id for block in current + archive}
+    remaining = [block for block in selected if block.block_id not in grouped_ids]
 
     parts = [f"## {chapter.number}. {chapter.title}", "", chapter.opening, "", chapter.current_bridge, ""]
     for block in current[:8]:

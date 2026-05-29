@@ -1,0 +1,186 @@
+## 2. Why the Project Exists
+
+The project exists to make complex worlds emerge from lawful process rather than from ad hoc scripting.
+
+Current orientation material describes a project built around refusal, evidence, and deterministic process.
+
+> - Use `.aide/context/latest-task-packet.md` as the default compact AIDE task brief when a task explicitly opts into AIDE Lite context.
+> - Keep target-specific project state in `.aide/memory/`; do not copy source AIDE memory, queue history, generated context, reports, route decisions, cache-key reports, Gateway/provider status reports, `.aide.local/`, raw prompts, raw responses, or secrets.
+> - Generate target-local context with `py -3 .aide/scripts/aide_lite.py snapshot`, `index`, `context`, and `pack`; keep Dominium doctrine referenced by path instead of pasted into prompt memory.
+> - Provider/model/network calls and Gateway forwarding remain forbidden unless a future reviewed Dominium task explicitly enables them.
+>
+> [Source: Dominium Agent Governance]
+
+> - Truth is authoritative state.
+> - Perception is a law/authority/lens-filtered projection.
+> - Rendering is presentational only and MUST NOT mutate truth or enforce authority decisions.
+>
+> [Source: Dominium Constitutional Architecture & Execution Contract V1]
+
+> - Canonical commit key: `(phase_id, task_id, sub_index)`.
+> - Ordering decisions MUST be independent of hash-map iteration, pointer order, or thread completion order.
+>
+> [Source: Dominium Constitutional Architecture & Execution Contract V1]
+
+> Foundation Lock is the repository decision gate that determines whether Dominium can leave the Foundation Lock queue and begin a first narrow governed product slice.
+>
+> [Source: Foundation Lock]
+
+> Future Series: Sigma-1, Sigma-2, Sigma-3, Sigma-4, Sigma-5, Phi, Upsilon, Zeta
+> Replacement Target: none; later mirrors and machine-readable governance surfaces must derive from this file rather than compete with it
+> Binding Sources: `the referenced source`, `the referenced source`, `the referenced source`, `the referenced source`, `the referenced source`, `the referenced source`, `the referenced source`
+>
+> [Source: Dominium Agent Governance]
+
+> - generated mirrors or vendor-specific instruction surfaces
+> - the natural-language task bridge
+> - the XStack task catalog
+> - MCP exposure contracts
+> - the final hardened agent safety policy
+>
+> [Source: Dominium Agent Governance]
+
+> Dominium is a deterministic, contract-governed simulation game and operating
+> environment built on the Domino deterministic substrate.
+>
+> [Source: Dominium / Domino]
+
+> The project is about invention, production, logistics, economics, settlement,
+> trust, communication, and institutional power emerging from lawful simulation
+> rather than scripted outcomes. Commands, processes, packs, capabilities,
+> diagnostics, evidence, and replay proof are first-class surfaces. Invalid action
+> must refuse explicitly; hidden fallback behavior is not part of the model.
+>
+> [Source: Dominium / Domino]
+
+Conversation material supplies the larger product and simulation desire behind that machinery.
+
+> 1. Keep this synthesis advisory and archive-scoped.
+> 2. Build a claim review matrix against canon, glossary, AGENTS, current queue, contracts, schema law, and targeted current docs.
+> 3. Triage promotion candidates into serious, historical, stale, noisy, rejected, and needs-user-decision groups.
+> 4. Patch live docs only through narrow promotion tasks with named source claims and validation.
+>
+> [Source: Dominium Conversation Corpus Synthesis Book V0]
+
+> Domino is the deterministic substrate. Dominium is the official game, product, and domain layer. Workbench is a governed validation and inspection environment. Setup and launcher compose product instances. Tools validate, generate, audit, and migrate. Contracts and schema law define public identity and compatibility meaning.
+>
+> [Source: Full Project Picture V0]
+
+> - `architecture` (45 conversations): system boundaries, product shape, the referenced source, and repository structure. Sources: Dominium Advanced Simulation and Infrastructure Architecture, Dominium APP0 Runtime, Platform, and Renderer Architecture, Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning, Dominium/Domino Architecture and Codex Prompt Roadmap, Dominium Architecture, UI, Providers, and Robot OS Strategy.
+> - `content` (45 conversations): packs, mods, authored payload, GUI/content boundaries, and provider/content separation. Sources: Dominium Advanced Simulation and Infrastructure Architecture, Dominium APP0 Runtime, Platform, and Renderer Architecture, Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning, Dominium/Domino Architecture and Codex Prompt Roadmap, Dominium Architecture, UI, Providers, and Robot OS Strategy.
+> - `ui` (45 conversations): presentation, tools, editor concepts, perceived model surfaces, and command/result display. Sources: Dominium Advanced Simulation and Infrastructure Architecture, Dominium APP0 Runtime, Platform, and Renderer Architecture, Dominium Architecture, Application Layer, TestX, and CodeHygiene Planning, Dominium/Domino Architecture and Codex Prompt Roadmap, Dominium Architecture, UI, Providers, and Robot OS Strategy.
+> - `governance` (44 conversations): authority order, canon, contracts, refusal, review gates, and agent operation. Sources: Dominium Advanced Simulation and Infrastructure Architecture, Dominium APP0 Runtime, Platform, and Renderer Architecture, [Dominium Architecture, Application Layer, TestX, and CodeHygiene.
+>
+> [Source: Full Project Picture V0]
+
+> - README.md describes Dominium as a deterministic, contract-governed simulation game and operating environment built on the Domino deterministic substrate.
+> - the referenced source binds determinism, process-only mutation, law-gated authority, no runtime mode flags, pack-driven integration, explicit refusal, and truth/perceived/render separation.
+> - the referenced source defines vocabulary such as Engine, Client, AuthorityContext, Domain, Derived artifact, and Contract.
+> - AGENTS.md and the referenced source keep archived conversations below canon, glossary, governance, contracts, current queue, and validated repo artifacts.
+> - .aide/queue/current.toml currently blocks broad feature work including: `broad_workbench_ui`, `gameplay`, `native_gui`, `package_runtime`, `provider_runtime`, `release_publication`, `renderer_implementation`, `runtime_module_loader`.
+>
+> [Source: Dominium Conversation Corpus Synthesis Book V0]
+
+> Dominium's current documentation picture is authority layered. Canon, glossary, `AGENTS.md`, contract/schema law, current queue state, and validated repo artifacts are the highest-confidence sources. Archive and conversation material can explain how earlier ideas developed, but it cannot become current truth through this docs-corpus task.
+>
+> [Source: DOCS Current Project Picture]
+
+> Open for derived archive work: reading, synthesis, crosswalks, contradiction review, promotion triage, and narrow docs-only planning. Blocked by current queue: broad Workbench UI, runtime module loader, provider runtime, package runtime, gameplay, renderer implementation, native GUI, and release publication.
+>
+> [Source: Full Project Picture V0]
+
+> The raw queue contains `135` generated candidates in PROMOTION_QUEUE.md. Acceptance review found the queue useful but noisy. It should be triaged before any candidate patch work.
+>
+> [Source: Dominium Conversation Corpus Synthesis Book V0]
+
+> - It does not promote archive claims.
+> - It does not rewrite canon, contracts, schema, implementation, release, or queue state.
+> - It does not open blocked renderer, gameplay, provider runtime, package runtime, broad Workbench UI, native GUI, or release publication work.
+>
+> [Source: DOCS Current Project Picture]
+
+> | Blocked Scope | Authority Source | Matching Docs Paths | Examples | Disposition |
+> | --- | --- | --- | --- | --- |
+> | broad_workbench_ui | .aide/queue/current.toml | 1 | the referenced source | blocked_by_current_queue |
+> | runtime_module_loader | .aide/queue/current.toml | 0 |  | blocked_by_current_queue |
+>
+> [Source: DOCS Blocked Scope Alignment]
+
+> | DOC-DECIDE-BLOCK-0001 | queue | Should broad Workbench UI remain closed until a later queue phase explicitly opens it? | future_queue_decision | high | defer |
+> | DOC-DECIDE-BLOCK-0002 | queue | Should renderer implementation remain blocked? | future_queue_decision | high | defer |
+> | DOC-DECIDE-BLOCK-0003 | queue | Should provider/package runtime work remain blocked? | future_queue_decision | high | defer |
+> | DOC-DECIDE-BLOCK-0004 | queue | Should release publication remain blocked? | future_queue_decision | high | defer |
+>
+> [Source: DOCS Decision Docket]
+
+> Plain-language limitation: this package is reliable as a preservation of the current visible chat. It should not be treated as a complete archive of every Dominium discussion in other chats. Where the report uses project or repository context, it is labelled as such. The most important caveat is that many items are recommendations, not final user decisions.
+>
+> [Source: Complete Chat Preservation Report Dominium Build And Future Proofing Architecture]
+
+> This topic came up because the user needed Dominium to build across many Windows floors and historical toolchains without accidental capability drift. The chat discussed VS2022 as a host for older toolsets, v141/v141_xp, Windows SDK pinning, XP and Win7 runtime proof, and later archival toolchains such as VC7.1 or VC6. The visible conclusion was that per-floor binaries are mandatory and that support cannot be claimed from compilation alone. Runtime testing on real or VM floors remains required.
+>
+> [Source: Complete Chat Preservation Report Dominium Build And Future Proofing Architecture]
+
+> The major build-system conclusion was that `CMakePresets.json` should not carry every human, host, IDE, renderer, OS floor, and release concern directly. The proposed design is contract-driven: define build tuples, detect machine capabilities, generate local user presets, then run CMake. This makes presets projections of contract truth rather than the authority itself.
+>
+> [Source: Complete Chat Preservation Report Dominium Build And Future Proofing Architecture]
+
+> 1. User's canon: C89 engine, C++98 game, determinism, per-floor artifacts, no CRT mixing, no silent API creep.
+> 2. Build complexity comes from many machines and historical toolchains.
+> 3. More hand-written presets are not the optimal solution.
+> 4. Build truth should live in tuple contracts.
+> 5. Local machine probes should generate local `CMakeUserPresets.json`.
+> 6. CMake remains build authority.
+> 7. AIDE should probe/explain/generate/verify/record evidence.
+> 8. XStack orchestrates; RepoX/TestX enforce/prove.
+> 9. Dist/package manifests should preserve artifact identity.
+> 10. Dominium should be treated as an engine platform, not a one-off game.
+> 11. Freeze contracts, not implementations.
+> 12. The current top-level repo spine is close to right.
+> 13. Deeper boundaries and naming still need cleanup.
+> 14. Public surface registry is a key missing mechanism.
+> 15. Replacement protocol is a key missing mechanism.
+> 16. Dependency-edge enforcement is needed.
+> 17. ABI/header conformance tests are needed.
+> 18. Schema/protocol compatibility fixtures are needed.
+> 19. Many recommendations are not yet accepted decisions.
+> 20. Verify live repo state before implementation.
+>
+> [Source: Reader Brief Dominium Build And Future Proofing Architecture]
+
+> * Completeness rating: 4/5 for visible chat.
+> * Reliability rating: 4/5 for visible chat; lower for implied older context.
+> * Human-readability rating: 4/5.
+> * Aggregation-readiness rating: 4/5 with caveats.
+> * Main uncertainty sources: inaccessible older full transcript, evolving repo state, unaccepted recommendations, potentially stale external toolchain facts.
+> * Manual review before merge: Yes. The user should mark which recommendations become canon.
+>
+> [Source: Verification And Audit Dominium Build And Future Proofing Architecture]
+
+> 1. context loaded,
+> 2. top active priorities,
+> 3. key constraints,
+> 4. open questions,
+> 5. contradictions or uncertainties,
+> 6. recommended next action.
+>
+> [Source: Future Chat Bootstrap Prompt Dominium Build And Future Proofing Architecture]
+
+> - Which recommendations are decisions versus advice?
+> - Write the implementation prompt for public surface registry.
+> - Write the implementation prompt for tuple-driven build contracts.
+> - Verify the current repo state and compare against this report.
+> - Convert this chat into spec-book requirements only.
+> - Build an aggregator packet from multiple chat reports.
+>
+> [Source: In Chat Reader Dominium Build And Future Proofing Architecture]
+
+> C89/C++98 canon, deterministic/no hidden behavior, per-floor artifacts, no CRT mixing, tuple-driven builds, public surface registry, replacement protocol, schema compatibility harness, and the warning that recommendations are not accepted canon yet.
+>
+> [Source: In Chat Reader Dominium Build And Future Proofing Architecture]
+
+The woven passages above come from 51 source documents and 98 selected semantic blocks. Full paths and block identifiers are kept in the source map so the chapter can remain readable.
+
+The tension is between long-horizon intent and the present queue.
+
+Where this leaves us: the ambition is preserved, but future feature work still needs a smaller lawful task.
