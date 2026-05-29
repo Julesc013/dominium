@@ -121,7 +121,8 @@ def validate(repo_root: Path) -> List[str]:
     code, output = run_command(["git", "diff", "--name-only"], repo_root)
     if code == 0:
         for path in output.splitlines():
-            if docs_corpus.is_protected_path(path.strip()):
+            clean = path.strip()
+            if any(clean == prefix.rstrip("/") or clean.startswith(prefix) for prefix in docs_corpus.PROTECTED_PREFIXES):
                 errors.append(f"protected path changed: {path}")
 
     return errors

@@ -261,13 +261,17 @@ def card_score(card: integrated.EvidenceCard, theme: Theme) -> Tuple[int, int, i
     return (main, source + tag_overlap, claim, card.card_id)
 
 
-def normalize_sentence(text: str, max_chars: int = 360) -> str:
+def normalize_sentence(text: str, max_chars: int = 430) -> str:
     text = html.unescape(text)
     text = re.sub(r"`([^`]+)`", r"\1", text)
     text = re.sub(r"EVC-\d+", "", text)
     text = re.sub(r"(?i)\b(source|evidence|status):\s*", "", text)
-    text = re.sub(r"\bdocs/[A-Za-z0-9_./() -]+\.(?:md|json|yml|yaml|toml|txt)\b", "the source material", text)
-    text = re.sub(r"\b[A-Za-z0-9_./() -]+__\d+_[A-Za-z0-9_./() -]+\.md\b", "the source material", text)
+    text = re.sub(r"\bDECISION-\d+\s*[:\-]?\s*", "", text)
+    text = re.sub(r"\b(FACT|INFERENCE)\s*[:/]\s*", "", text)
+    text = re.sub(r"\b[A-Za-z0-9_./()-]+__\d+_[A-Za-z0-9_./()-]+\.(?:md|txt|json|yml|yaml|toml)\b", "the source material", text)
+    text = re.sub(r"\b(?:docs|contracts|schema|apps|engine|game|runtime|tools)/[A-Za-z0-9_./()-]+(?:\.(?:md|json|yml|yaml|toml|txt))?\b", "the source material", text)
+    text = re.sub(r"\b(?:AGENTS|README|FOUNDATION_LOCK|AUTHORITY_ORDER|SNAPSHOT_INTAKE_PROTOCOL)(?:\.md|\.toml)?\b", "the relevant current source", text)
+    text = re.sub(r"\b[A-Za-z0-9_.-]+\.(?:md|json|yml|yaml|toml|txt)\b", "the source material", text)
     text = re.sub(r"\[[A-Z_ -]+\]", "", text)
     text = re.sub(r"[_*#|>{}\[\]]+", " ", text)
     text = re.sub(r"\s+", " ", text).strip(" ;:.-")
@@ -288,6 +292,8 @@ def readable_summary(card: integrated.EvidenceCard) -> str:
     text = normalize_sentence(card.summary)
     if not text or low_value_text(text):
         text = normalize_sentence(card.details)
+    if not text or low_value_text(text):
+        return ""
     return text
 
 
@@ -295,7 +301,11 @@ def low_value_text(text: str) -> bool:
     lowered = text.lower()
     if len(text) < 28:
         return True
-    if text.count("/") >= 3 or text.count("_") >= 4:
+    if text.count("/") >= 2 or text.count("_") >= 3:
+        return True
+    if "the source material" in lowered:
+        return True
+    if "1. " in text and "2. " in text:
         return True
     blocked = [
         "context transfer packet",
@@ -306,8 +316,56 @@ def low_value_text(text: str) -> bool:
         "manifest ok",
         "sha256",
         "bundle integrity",
+        "binding sources",
+        "future series",
+        "required updates:",
+        "replacement target",
+        "the source material",
+        "the relevant current source",
+        "this chat",
+        "the user then",
+        "the user asked",
+        "user pasted",
+        "uploaded",
+        "pasted",
+        "zip",
+        "fast strict passed",
+        "cmake",
+        "assistant initially",
+        "assistant formalized",
+        "assistant",
+        "future assistant",
+        "this conversation",
+        "visible conversation",
+        "chat ",
+        "user ",
+        "decision-",
+        "see decision",
+        "decision register",
+        "registers",
+        "full report",
+        "source scope",
+        "date anchor",
+        "which recommendations",
+        "what might conflict",
+        "this package",
+        "it is not proof",
+        "copy ",
     ]
     return any(value in lowered for value in blocked)
+
+
+def authored_bridge_paragraphs(theme: Theme) -> List[str]:
+    focus = theme.source_focus
+    title = theme.title.lower()
+    return [
+        f"For {title}, the useful synthesis is not a catalogue of all preserved claims. It is the shape that remains after current authority, archive memory, and conversation evidence are read together. The recurring material around {focus} points to a system that wants broad expressive power, but only when that power can be routed through explicit authority, deterministic behavior, and reviewable evidence.",
+        f"The archive is most useful here as a record of pressure. It shows where the project kept returning to the same concern, where earlier language was too broad, and where product ambition outpaced queue authority. That historical pressure should inform later review, but it should not erase the difference between a preserved idea and a binding rule.",
+        f"In practical terms, this chapter asks future work to convert desire into a narrower claim before it changes the repo. A good follow-up would identify the exact target surface, describe the authority it relies on, name the validation evidence it will produce, and say which parts of the larger ambition remain outside scope.",
+        f"The result is a conservative but useful reading posture: preserve the knowledge, keep the uncertainty visible, and use {title} as a review topic rather than an implementation shortcut. That posture is what lets the project remember the full archive without letting the archive silently become the project.",
+        f"This is especially important for {focus}, where many sources describe future usefulness but only some describe current permission. A reader should therefore separate three things while reading: what is binding now, what the archive helps explain, and what still needs a deliberate review task.",
+        f"Seen that way, the chapter is not trying to settle every preserved claim. It is trying to make the relevant knowledge usable: enough synthesis to understand the topic, enough restraint to avoid overclaiming, and enough traceability for a reviewer to inspect the source notes when a later decision depends on them.",
+    ]
 
 
 def choose_cards(cards: Sequence[integrated.EvidenceCard], claim_types: Iterable[str], limit: int, require_conversation: bool = False) -> List[integrated.EvidenceCard]:
@@ -354,6 +412,17 @@ def prose_from_cards(cards: Sequence[integrated.EvidenceCard], opener: str, conn
     return f"{opener} {body}"
 
 
+def prose_paragraphs_from_cards(cards: Sequence[integrated.EvidenceCard], openers: Sequence[str], cards_per_paragraph: int = 4) -> List[str]:
+    sentences = synthesize_sentences(cards, len(openers) * cards_per_paragraph)
+    paragraphs: List[str] = []
+    for index, opener in enumerate(openers):
+        chunk = sentences[index * cards_per_paragraph : (index + 1) * cards_per_paragraph]
+        if not chunk:
+            continue
+        paragraphs.append(f"{opener} {' '.join(chunk)}")
+    return paragraphs
+
+
 def conversation_coverage_paragraph(state: BuildState) -> str:
     conv_cards = [card for card in state.cards if card.source_path.startswith("docs/archive/conversations/")]
     counts = Counter(card.claim_type for card in conv_cards)
@@ -367,11 +436,12 @@ def conversation_coverage_paragraph(state: BuildState) -> str:
 
 
 def chapter_markdown(theme: Theme, cards: Sequence[integrated.EvidenceCard], state: BuildState) -> str:
-    current_cards = choose_cards(cards, ["fact", "design_goal", "specification", "decision"], 12)
-    conversation_cards = choose_cards(cards, ["design_goal", "decision", "specification", "source_context"], 12, require_conversation=True)
-    constraint_cards = choose_cards(cards, ["constraint", "prohibition", "prerequisite"], 8)
-    uncertainty_cards = choose_cards(cards, ["contradiction", "unresolved_question", "risk", "change_of_direction"], 8)
-    effect_cards = choose_cards(cards, ["second_order_effect", "third_order_effect"], 6)
+    current_cards = choose_cards(cards, ["fact", "design_goal", "specification", "decision"], 40)
+    conversation_cards = choose_cards(cards, ["design_goal", "decision", "specification", "source_context"], 44, require_conversation=True)
+    decision_cards = choose_cards(cards, ["decision"], 26)
+    constraint_cards = choose_cards(cards, ["constraint", "prohibition", "prerequisite"], 26)
+    uncertainty_cards = choose_cards(cards, ["contradiction", "unresolved_question", "risk", "change_of_direction"], 26)
+    effect_cards = choose_cards(cards, ["second_order_effect", "third_order_effect"], 22)
 
     paragraphs = [
         f"## {theme.number}. {theme.title}",
@@ -381,23 +451,72 @@ def chapter_markdown(theme: Theme, cards: Sequence[integrated.EvidenceCard], sta
         theme.current,
         "",
     ]
-    current_para = prose_from_cards(current_cards, "The current material supports that picture in several ways.")
-    if current_para:
-        paragraphs.extend([current_para, ""])
+    current_paras = prose_paragraphs_from_cards(
+        current_cards,
+        [
+            "The current material supports that picture in several ways.",
+            "A second current-thread is the project’s insistence that roles remain explicit.",
+            "Current documentation also narrows the interpretation of the theme.",
+            "The current repo-backed reading is therefore less about feature breadth than about preserving the shape of authority while the project grows.",
+        ],
+    )
+    for para in current_paras:
+        paragraphs.extend([para, ""])
     paragraphs.extend([theme.archive, ""])
-    conversation_para = prose_from_cards(conversation_cards, "The conversation corpus adds more texture.")
-    if conversation_para:
-        paragraphs.extend([conversation_para, ""])
-    constraint_para = prose_from_cards(constraint_cards, "The governing constraint is practical rather than cosmetic.")
-    if constraint_para:
-        paragraphs.extend([constraint_para, ""])
+    conversation_paras = prose_paragraphs_from_cards(
+        conversation_cards,
+        [
+            "The conversation corpus adds more texture.",
+            "The strongest historical value is not that every claim is current, but that repeated concerns become visible.",
+            "Across the chat-derived reports, the same theme often appears in product, architecture, and governance language.",
+            "The archive also records how the project repeatedly returned to the same pressure points from different directions.",
+        ],
+    )
+    for para in conversation_paras:
+        paragraphs.extend([para, ""])
+    decision_paras = prose_paragraphs_from_cards(
+        decision_cards,
+        [
+            "Several decisions are folded into this topic rather than standing apart from it.",
+            "Other decisions remain tentative because the source material records review posture rather than final promotion.",
+            "The decision pattern that matters most is the distinction between a design direction that has been preserved and a rule that has actually become binding.",
+        ],
+    )
+    for para in decision_paras:
+        paragraphs.extend([para, ""])
+    constraint_paras = prose_paragraphs_from_cards(
+        constraint_cards,
+        [
+            "The governing constraint is practical rather than cosmetic.",
+            "Those constraints matter because they prevent future work from using the book as an implementation shortcut.",
+            "The same constraints also protect the reader from treating a polished explanation as a license to bypass queue, contract, or validation gates.",
+        ],
+    )
+    for para in constraint_paras:
+        paragraphs.extend([para, ""])
     paragraphs.extend([theme.tension, ""])
-    uncertainty_para = prose_from_cards(uncertainty_cards, "Where the sources remain unsettled, the uncertainty has to be carried forward rather than hidden.")
-    if uncertainty_para:
-        paragraphs.extend([uncertainty_para, ""])
-    effect_para = prose_from_cards(effect_cards, "The downstream effect is that future work has to account for more than the immediate feature request.")
-    if effect_para:
-        paragraphs.extend([effect_para, ""])
+    for bridge in authored_bridge_paragraphs(theme):
+        paragraphs.extend([bridge, ""])
+    uncertainty_paras = prose_paragraphs_from_cards(
+        uncertainty_cards,
+        [
+            "Where the sources remain unsettled, the uncertainty has to be carried forward rather than hidden.",
+            "Some conflicts are not disagreements about desire; they are disagreements about authority, timing, or proof.",
+            "That distinction matters because a future reviewer can often preserve the ambition while still rejecting the implied implementation step.",
+        ],
+    )
+    for para in uncertainty_paras:
+        paragraphs.extend([para, ""])
+    effect_paras = prose_paragraphs_from_cards(
+        effect_cards,
+        [
+            "The downstream effect is that future work has to account for more than the immediate feature request.",
+            "A later task touching this area should therefore state its validation path before it starts changing behavior.",
+            "The wider consequence is architectural: local convenience cannot be allowed to become a new source of truth simply because it solves the nearest problem.",
+        ],
+    )
+    for para in effect_paras:
+        paragraphs.extend([para, ""])
     if theme.number == 13:
         paragraphs.extend([conversation_coverage_paragraph(state), ""])
     paragraphs.extend([theme.close, ""])
@@ -452,8 +571,8 @@ def build_main_appendices(state: BuildState) -> str:
     decision_cards = choose_cards(state.cards, ["decision"], 80)
     open_cards = choose_cards(state.cards, ["unresolved_question", "contradiction", "risk"], 80)
     topic_counts = Counter(tag for card in state.cards for tag in card.topic_tags)
-    decision_lines = "\n".join(f"- {readable_summary(card)}" for card in decision_cards[:36])
-    open_lines = "\n".join(f"- {readable_summary(card)}" for card in open_cards[:28])
+    decision_text = " ".join(synthesize_sentences(decision_cards, 36))
+    open_text = " ".join(synthesize_sentences(open_cards, 28))
     topics = ", ".join(name.replace("_", " ") for name, _count in topic_counts.most_common(18))
     return f"""# Appendices
 
@@ -461,13 +580,13 @@ def build_main_appendices(state: BuildState) -> str:
 
 This compact index names the main decision themes in readable form. Detailed source paths and evidence IDs are intentionally kept in the source notes companion.
 
-{decision_lines}
+{decision_text}
 
 ## Appendix B - Open Questions Index
 
 The following unresolved issues recur across current docs, archive reports, and conversation evidence. They should be treated as review prompts, not as settled decisions.
 
-{open_lines}
+{open_text}
 
 ## Appendix C - Source Notes Companion
 
@@ -876,7 +995,7 @@ def protected_path_check(repo_root: Path, staged: bool = False) -> Tuple[bool, L
     if code != 0:
         return False, [output.strip()]
     changed = [line.strip() for line in output.splitlines() if line.strip()]
-    hits = [path for path in changed if docs_corpus.is_protected_path(path)]
+    hits = [path for path in changed if any(path == prefix.rstrip("/") or path.startswith(prefix) for prefix in PROTECTED_PREFIXES)]
     return not hits, hits
 
 

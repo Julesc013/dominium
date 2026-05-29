@@ -1,0 +1,59 @@
+## 4. Current Authority and Historical Context
+
+The documentation corpus is not flat. It has authority layers, and the book only makes sense if those layers are kept visible.
+
+Current repo truth starts with canon, glossary, agent governance, active planning and contracts, queue state, and validated repo artifacts.
+
+The current material supports that picture in several ways. Run 'AIDE-WORKFLOW-LAW-01' next if the queue remains reconciled after. Travel scheduling, replay, and law decisions become nondeterministic. Rendering is presentational only and MUST NOT mutate truth or enforce authority decisions. Foundation Lock is the repository decision gate that determines whether Dominium can leave the Foundation Lock queue and begin a first narrow governed product slice.
+
+A second current-thread is the project’s insistence that roles remain explicit. Dependency direction is authoritative and must not be inverted. Law admission gates sit before scheduling, before execution, and before commit. Domain volumes define where reality exists and which laws apply. Domain queries are deterministic, budgeted, and SDF-based. Scope: hard invariants for all systems, documentation, and data.
+
+Current documentation also narrows the interpretation of the theme. Reachability lies, bypassed costs, and broken domain law. Invariant: No authority without capability and law. Invariant: Authority gates actions only, never visibility (AUTH3-AUTH-001). Invariant: Demo is an authority profile, not a build (AUTH3-DEMO-003).
+
+The current repo-backed reading is therefore less about feature breadth than about preserving the shape of authority while the project grows. Invariant: Authority upgrades/downgrades do not mutate state (AUTH3-UPGRADE-007). Invariant: Saves are tagged by authority scope (AUTH3-SAVE-008). Dominium/Domino is a deterministic world runtime and law-governed simulation OS. A law-governed simulation OS where authority is data-defined.
+
+The archive and conversation corpus preserve useful design memory, old plans, contradictions, and proposed future directions.
+
+The conversation corpus adds more texture. Any claim touching canon, glossary, authority order, contracts, schema law, current queue, release, implementation, or blocked scope. The conversations strongly prefer a rich Workbench and eventual editor/operator surfaces. Current authority is narrower: broad Workbench UI, renderer implementation, and native GUI remain blocked. Therefore synthesis may describe intent, but follow-up. Do not patch canon, contracts, schema, implementation, release, or queue files from this atlas. This atlas is a reader map. It is not canon and does not promote archived conversation claims.
+
+The strongest historical value is not that every claim is current, but that repeated concerns become visible. This map combines current repo orientation with conversation-derived design intent. When they differ, current repo authority wins. This reader page is derived from archived conversation material. It cannot override canon, contracts, schema law, current queue state, live repo structure, or validated repo artifacts. HPC-E Year Day and Leap Day are appended after February; canonical mode is undated and compatibility mode may use Feb 29/30. Support canonical surface plus multiple surface instances for shards/mirrors.
+
+Across the chat-derived reports, the same theme often appears in product, architecture, and governance language. The most important repo-supported decision is that Dominium authority must remain logical ACT, not wall-clock. The strongest recommendations are to freeze ACT units/serialization, audit DSYS timers, and keep civil time as projection-only. There was also an early suggestion to create a 'DUI' facade, a Dominium UI abstraction, to support native widgets and fallback rendering. This idea was useful as a conceptual stepping stone but was not ultimately locked as a final requirement in the form. Ask: "What decisions are final?", "What is still uncertain?", "What is the next prompt?", "Which rejected options should we avoid?", "What should go into the master spec book?". Reader Brief - Dominium Canon, Repository Alignment, and Portability Doctrine.
+
+The archive also records how the project repeatedly returned to the same pressure points from different directions. SELF-AUDIT AND REVISION - Dominium Canon, Repository Alignment, and Portability Doctrine. Separated repo docs, schemas, code, and tests in maturity claims. Reliability rating: 4/5 with explicit caveats. How should public API/ABI boundaries be written?
+
+Several decisions are folded into this topic rather than standing apart from it. Travel scheduling, replay, and law decisions become nondeterministic. Rendering is presentational only and MUST NOT mutate truth or enforce authority decisions. Foundation Lock is the repository decision gate that determines whether Dominium can leave the Foundation Lock queue and begin a first narrow governed product slice. HPC-E Year Day and Leap Day are appended after February; canonical mode is undated and compatibility mode may use Feb 29/30.
+
+Other decisions remain tentative because the source material records review posture rather than final promotion. Support canonical surface plus multiple surface instances for shards/mirrors. The most important repo-supported decision is that Dominium authority must remain logical ACT, not wall-clock. The strongest recommendations are to freeze ACT units/serialization, audit DSYS timers, and keep civil time as projection-only. There was also an early suggestion to create a 'DUI' facade, a Dominium UI abstraction, to support native widgets and fallback rendering. This idea was useful as a conceptual stepping stone but was not ultimately locked as a final requirement in the form. Ask: "What decisions are final?", "What is still uncertain?", "What is the next prompt?", "Which rejected options should we avoid?", "What should go into the master spec book?".
+
+The decision pattern that matters most is the distinction between a design direction that has been preserved and a rule that has actually become binding. Domain permissions + existence/refinement - visitability decision. Non-canonical command accepted as legacy path. From law decisions and recorded in audit logs. Parallel execution is a backend choice, not a gameplay decision. Different.
+
+The governing constraint is practical rather than cosmetic. Scope: single-source dependency map and forbidden edges for Dominium/Domino. Scope: canonical statement of identity and intent. An Assembly capable of submitting Intents under AuthorityContext and LawProfile constraints. Foundation Lock does not mean full CTest is green, every compatibility corpus exists, every provider is implemented, every runtime trust rule is enforced, Workbench UI exists, or broad feature work is open.
+
+Those constraints matter because they prevent future work from using the book as an implementation shortcut. Keep Queue B hardening planned but not a substitute for the blocker repair. Responsibilities and forbidden dependencies (quick map). Executables do not embed content; packs are external and optional. Global iteration and implicit background simulation are forbidden.
+
+The same constraints also protect the reader from treating a polished explanation as a license to bypass queue, contract, or validation gates. "Convenient" implicit behavior is not allowed. Client and renderer project data and issue intents; they do not author authoritative outcomes. A term or pattern forbidden for use in code identifiers. 'FOUNDATION-CLOSEOUT-01' was blocked because dependency-direction strict reported '358' violations and '38' warnings.
+
+The risk is accidental promotion: a generated report, old chat, or polished book can sound authoritative even when it is only evidence.
+
+For current authority and historical context, the useful synthesis is not a catalogue of all preserved claims. It is the shape that remains after current authority, archive memory, and conversation evidence are read together. The recurring material around authority order, archive status, non-promotion points to a system that wants broad expressive power, but only when that power can be routed through explicit authority, deterministic behavior, and reviewable evidence.
+
+The archive is most useful here as a record of pressure. It shows where the project kept returning to the same concern, where earlier language was too broad, and where product ambition outpaced queue authority. That historical pressure should inform later review, but it should not erase the difference between a preserved idea and a binding rule.
+
+In practical terms, this chapter asks future work to convert desire into a narrower claim before it changes the repo. A good follow-up would identify the exact target surface, describe the authority it relies on, name the validation evidence it will produce, and say which parts of the larger ambition remain outside scope.
+
+The result is a conservative but useful reading posture: preserve the knowledge, keep the uncertainty visible, and use current authority and historical context as a review topic rather than an implementation shortcut. That posture is what lets the project remember the full archive without letting the archive silently become the project.
+
+This is especially important for authority order, archive status, non-promotion, where many sources describe future usefulness but only some describe current permission. A reader should therefore separate three things while reading: what is binding now, what the archive helps explain, and what still needs a deliberate review task.
+
+Seen that way, the chapter is not trying to settle every preserved claim. It is trying to make the relevant knowledge usable: enough synthesis to understand the topic, enough restraint to avoid overclaiming, and enough traceability for a reviewer to inspect the source notes when a later decision depends on them.
+
+Where the sources remain unsettled, the uncertainty has to be carried forward rather than hidden. Refusal and defer semantics are part of determinism and replay guarantees. Inconsistent clients, shard drift, and audit failure. Constitutional conflicts are resolved by this document, not by prompt convenience. This is the full canonical glossary v1.0.0. If terminology conflicts with local or legacy docs, this glossary wins.
+
+Some conflicts are not disagreements about desire; they are disagreements about authority, timing, or proof. Speculative future feature not yet implemented. Continue documentation and evidence updates that keep remaining warnings and full-gate debt visible. 'archive/': historical, superseded, quarantined, or provenance-retained. Full agent gameplay loops, MMO distributed authority runtime, embodiment, and narrative/campaign systems were described as deferred in repo status docs.
+
+That distinction matters because a future reviewer can often preserve the ambition while still rejecting the implied implementation step. The following were not finished or intentionally deferred. Use negative architecture rules to prevent drift. Source rules: labels used: "FACT", "INFERENCE", "UNCERTAIN / UNVERIFIED", "PROJECT-CONTEXT" conflict rules. Players spawn into manufactured robot bodies. Possible forms include bipeds, quadrupeds, spiders, tank-like frames, drones, heavy industrial bodies, aquatic bodies, and aerial bodies. The exact launch list is deferred.
+
+The downstream effect is that future work has to account for more than the immediate feature request. This affects the client, server, launcher, setup, and tools. The client can display and interact; the server can host authority; the launcher can start sessions; setup can install and verify; tools can inspect and audit. But none of them should invent.
+
+This book therefore uses historical material as context and asks future tasks to promote only through explicit scoped review.
