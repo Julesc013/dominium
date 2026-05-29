@@ -10,6 +10,7 @@ if str(TOOLS) not in sys.path:
 
 import build_human_readable_book as human  # noqa: E402
 import build_source_woven_book as woven  # noqa: E402
+import render_authored_mobile_dark_pdf as authored_mobile_dark  # noqa: E402
 import render_source_woven_mobile_dark_pdf as mobile_dark  # noqa: E402
 
 
@@ -74,6 +75,12 @@ class SourceWovenBookTests(unittest.TestCase):
         self.assertIn("# Part I - The Project", prepared)
         self.assertIn("# 1. Dominium in One View", prepared)
         self.assertIn("## Source Notes", prepared)
+
+    def test_authored_mobile_dark_targets_dominium_project_book(self):
+        self.assertEqual(authored_mobile_dark.TITLE, "Dominium Project Book")
+        self.assertEqual(authored_mobile_dark.PDF_NAME, "Dominium_Project_Book_Mobile_Dark.pdf")
+        self.assertIn("_authored_book", authored_mobile_dark.SOURCE.as_posix())
+        self.assertEqual(authored_mobile_dark.QA_PREFIX, "authored_project_book_mobile_dark")
 
 
 if __name__ == "__main__":

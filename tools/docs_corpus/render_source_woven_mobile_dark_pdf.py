@@ -25,6 +25,9 @@ QA_ROOT = ROOT / "qa"
 PDF_NAME = "Dominium_Source_Woven_Project_Book_Mobile_Dark.pdf"
 BUILD_REPORT = "Dominium_Source_Woven_Project_Book_Mobile_Dark_Build_Report.md"
 VALIDATION_REPORT = "Dominium_Source_Woven_Project_Book_Mobile_Dark_Validation_Report.md"
+SUBJECT_LABEL = "source-woven book"
+QA_PREFIX = "source_woven_mobile_dark"
+TEX_NAME = "source_woven_mobile_dark"
 
 
 STATUS_BLOCK = f"""Status: DERIVED
@@ -216,7 +219,7 @@ def render_pdf(repo_root: Path) -> PdfInfo:
         return result
     BUILD_ROOT_ABS = repo_root / BUILD_ROOT
     BUILD_ROOT_ABS.mkdir(parents=True, exist_ok=True)
-    tex = BUILD_ROOT_ABS / "source_woven_mobile_dark.tex"
+    tex = BUILD_ROOT_ABS / f"{TEX_NAME}.tex"
     source_text = read_text(repo_root / SOURCE)
     write_text(tex, mobile_dark_latex_document(source_text, engine))
     for _ in range(2):
@@ -241,7 +244,7 @@ def qa_pdf(repo_root: Path, pdf_path: Path, renderer: str) -> PdfInfo:
         if code == 0 and match:
             result.pages = int(match.group(1))
     if result.created and shutil.which("pdftotext"):
-        extract = qa / "source_woven_mobile_dark_extract.txt"
+        extract = qa / f"{QA_PREFIX}_extract.txt"
         code, _ = run_command(["pdftotext", str(pdf_path), str(extract)], repo_root, timeout=900)
         if code == 0 and extract.exists() and extract.stat().st_size > 0:
             result.text_extraction = "PASS"
@@ -250,12 +253,12 @@ def qa_pdf(repo_root: Path, pdf_path: Path, renderer: str) -> PdfInfo:
         else:
             result.text_extraction = "FAIL"
     if result.created and shutil.which("pdftoppm") and result.pages:
-        for stale in qa.glob("source_woven_mobile_dark_page_*.png"):
+        for stale in qa.glob(f"{QA_PREFIX}_page_*.png"):
             stale.unlink()
         for page in sorted({1, 2, 6, max(1, result.pages // 2), result.pages}):
-            prefix = qa / f"source_woven_mobile_dark_page_{page}"
+            prefix = qa / f"{QA_PREFIX}_page_{page}"
             code, _ = run_command(["pdftoppm", "-f", str(page), "-l", str(page), "-png", "-r", "120", str(pdf_path), str(prefix)], repo_root, timeout=240)
-            final = qa / f"source_woven_mobile_dark_page_{page}.png"
+            final = qa / f"{QA_PREFIX}_page_{page}.png"
             rendered_candidates = sorted(qa.glob(f"{prefix.name}-*.png"))
             rendered = rendered_candidates[0] if rendered_candidates else qa / f"{prefix.name}-{page}.png"
             if code == 0 and rendered.exists():
@@ -290,9 +293,9 @@ def write_reports(repo_root: Path, info: PdfInfo, commands: List[Tuple[str, int]
 
 ## Caveats
 
-- This is a mobile reading variant of the source-woven book, not a new source of truth.
+- This is a mobile reading variant of the {SUBJECT_LABEL}, not a new source of truth.
 - The content is unchanged except for PDF styling and page geometry.
-- Source paths and block IDs retain the same placement as the source-woven book.
+- Source notes, source paths, and any source identifiers retain their source-book placement.
 """
     validation_report = f"""{STATUS_BLOCK}
 # Mobile Dark PDF Validation Report
