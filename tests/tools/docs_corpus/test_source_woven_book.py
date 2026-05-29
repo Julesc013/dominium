@@ -10,6 +10,7 @@ if str(TOOLS) not in sys.path:
 
 import build_human_readable_book as human  # noqa: E402
 import build_source_woven_book as woven  # noqa: E402
+import render_source_woven_mobile_dark_pdf as mobile_dark  # noqa: E402
 
 
 class SourceWovenBookTests(unittest.TestCase):
@@ -47,6 +48,14 @@ class SourceWovenBookTests(unittest.TestCase):
         )
         chapters = woven.candidate_chapters(["renderer"], item)
         self.assertEqual(chapters[0], 11)
+
+    def test_mobile_dark_pdf_style_uses_dark_page_and_clean_title(self):
+        latex = mobile_dark.mobile_dark_latex_document("# Sample\n\nReadable body text.", "pdflatex")
+        self.assertIn("\\pagecolor{MobileDarkBg}", latex)
+        self.assertIn("\\color{MobileDarkText}", latex)
+        self.assertIn("paperwidth=108mm", latex)
+        self.assertEqual(mobile_dark.PDF_NAME, "Dominium_Source_Woven_Project_Book_Mobile_Dark.pdf")
+        self.assertNotRegex(mobile_dark.TITLE.lower(), r"\\bv[23]\\b")
 
 
 if __name__ == "__main__":
