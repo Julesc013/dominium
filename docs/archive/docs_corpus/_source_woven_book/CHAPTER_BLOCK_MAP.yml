@@ -1,0 +1,421 @@
+title: "Dominium Source-Woven Chapter Block Map"
+date: "2026-05-30"
+status: "DERIVED"
+authority_class: "advisory_synthesis"
+chapters:
+  - chapter: 1
+    title: "Dominium in One View"
+    part: "Part I - The Project"
+    tags:
+      - "identity"
+      - "runtime"
+      - "authority"
+    total_blocks: 24014
+    main_or_excerpt_blocks: 16057
+    selected_block_ids:
+      - "SWB-00036"
+      - "SWB-23672"
+      - "SWB-23678"
+      - "SWB-37181"
+      - "SWB-00001"
+      - "SWB-00004"
+      - "SWB-00045"
+      - "SWB-13986"
+      - "SWB-15946"
+      - "SWB-13949"
+      - "SWB-13951"
+      - "SWB-13987"
+      - "SWB-15950"
+      - "SWB-13952"
+      - "SWB-13985"
+      - "SWB-15951"
+      - "SWB-15953"
+      - "SWB-15949"
+      - "SWB-15956"
+      - "SWB-09469"
+      - "SWB-09471"
+      - "SWB-09481"
+      - "SWB-09489"
+      - "SWB-09494"
+      - "SWB-09496"
+      - "SWB-09497"
+      - "SWB-09512"
+      - "SWB-09513"
+      - "SWB-09524"
+      - "SWB-09536"
+      - "SWB-09539"
+      - "SWB-02456"
+  - chapter: 2
+    title: "Why the Project Exists"
+    part: "Part I - The Project"
+    tags:
+      - "identity"
+      - "world"
+      - "civilization"
+    total_blocks: 2081
+    main_or_excerpt_blocks: 1865
+    selected_block_ids:
+      - "SWB-00600"
+      - "SWB-00606"
+      - "SWB-01911"
+      - "SWB-26890"
+      - "SWB-27181"
+      - "SWB-27466"
+      - "SWB-27553"
+      - "SWB-12924"
+      - "SWB-13113"
+      - "SWB-13232"
+      - "SWB-13235"
+      - "SWB-13393"
+      - "SWB-14767"
+      - "SWB-13996"
+      - "SWB-14774"
+      - "SWB-13080"
+      - "SWB-14801"
+      - "SWB-02688"
+      - "SWB-03900"
+      - "SWB-03907"
+      - "SWB-04602"
+      - "SWB-04693"
+      - "SWB-05133"
+      - "SWB-05230"
+  - chapter: 3
+    title: "The Core Mental Model"
+    part: "Part I - The Project"
+    tags:
+      - "determinism"
+      - "authority"
+      - "world"
+    total_blocks: 2177
+    main_or_excerpt_blocks: 1939
+    selected_block_ids:
+      - "SWB-00607"
+      - "SWB-00755"
+      - "SWB-00838"
+      - "SWB-01795"
+      - "SWB-01973"
+      - "SWB-02242"
+      - "SWB-02251"
+      - "SWB-15952"
+      - "SWB-11690"
+      - "SWB-12960"
+      - "SWB-13058"
+      - "SWB-13111"
+      - "SWB-13116"
+      - "SWB-13231"
+      - "SWB-12773"
+      - "SWB-11688"
+      - "SWB-12803"
+      - "SWB-13088"
+      - "SWB-02627"
+      - "SWB-03149"
+      - "SWB-03174"
+      - "SWB-03176"
+      - "SWB-03197"
+      - "SWB-03199"
+  - chapter: 4
+    title: "Current Truth and Historical Evidence"
+    part: "Part I - The Project"
+    tags:
+      - "authority"
+      - "docs"
+      - "blocked"
+    total_blocks: 8000
+    main_or_excerpt_blocks: 3620
+    selected_block_ids:
+      - "SWB-37182"
+      - "SWB-37187"
+      - "SWB-37188"
+      - "SWB-00598"
+      - "SWB-00599"
+      - "SWB-00196"
+      - "SWB-00560"
+      - "SWB-15945"
+      - "SWB-15947"
+      - "SWB-15955"
+      - "SWB-12730"
+      - "SWB-12782"
+      - "SWB-12797"
+      - "SWB-12927"
+      - "SWB-13097"
+      - "SWB-13099"
+      - "SWB-13107"
+      - "SWB-13162"
+      - "SWB-13237"
+      - "SWB-13239"
+      - "SWB-13242"
+      - "SWB-13398"
+      - "SWB-14766"
+      - "SWB-14773"
+      - "SWB-14788"
+      - "SWB-14789"
+      - "SWB-14795"
+      - "SWB-12799"
+      - "SWB-02337"
+      - "SWB-02577"
+      - "SWB-03152"
+      - "SWB-03154"
+  - chapter: 5
+    title: "The System Stack"
+    part: "Part II - Architecture"
+    tags:
+      - "runtime"
+      - "contracts"
+      - "identity"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 6
+    title: "Domino, Dominium, Runtime, Products, and Tools"
+    part: "Part II - Architecture"
+    tags:
+      - "runtime"
+      - "product"
+      - "tooling"
+      - "identity"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 7
+    title: "Law, Capability, Refusal, and Evidence"
+    part: "Part II - Architecture"
+    tags:
+      - "authority"
+      - "contracts"
+      - "determinism"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 8
+    title: "Determinism, Replay, and Provenance"
+    part: "Part II - Architecture"
+    tags:
+      - "determinism"
+      - "contracts"
+      - "tooling"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 9
+    title: "Contracts, Schemas, Packs, and Compatibility"
+    part: "Part II - Architecture"
+    tags:
+      - "contracts"
+      - "packs"
+      - "release"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 10
+    title: "Client, Server, Launcher, Setup, and Workbench"
+    part: "Part III - Product and Operator Surfaces"
+    tags:
+      - "product"
+      - "workbench"
+      - "runtime"
+    total_blocks: 1931
+    main_or_excerpt_blocks: 1489
+    selected_block_ids:
+      - "SWB-24911"
+      - "SWB-25742"
+      - "SWB-34306"
+      - "SWB-34308"
+      - "SWB-34337"
+      - "SWB-34344"
+      - "SWB-34380"
+      - "SWB-10616"
+      - "SWB-10617"
+      - "SWB-10627"
+      - "SWB-10695"
+      - "SWB-10708"
+      - "SWB-10716"
+      - "SWB-10766"
+      - "SWB-10770"
+      - "SWB-10771"
+      - "SWB-10772"
+      - "SWB-10783"
+      - "SWB-10793"
+      - "SWB-10797"
+      - "SWB-10864"
+      - "SWB-10869"
+      - "SWB-10876"
+      - "SWB-11196"
+      - "SWB-11201"
+      - "SWB-15964"
+      - "SWB-15965"
+      - "SWB-15967"
+  - chapter: 11
+    title: "UI, Renderer, Native GUI, and Presentation Boundaries"
+    part: "Part III - Product and Operator Surfaces"
+    tags:
+      - "renderer"
+      - "product"
+      - "blocked"
+    total_blocks: 2871
+    main_or_excerpt_blocks: 2368
+    selected_block_ids:
+      - "SWB-24223"
+      - "SWB-24224"
+      - "SWB-24228"
+      - "SWB-24331"
+      - "SWB-24413"
+      - "SWB-24423"
+      - "SWB-24498"
+      - "SWB-09328"
+      - "SWB-09344"
+      - "SWB-09345"
+      - "SWB-09392"
+      - "SWB-09396"
+      - "SWB-09399"
+      - "SWB-09403"
+      - "SWB-09404"
+      - "SWB-09405"
+      - "SWB-09411"
+      - "SWB-09440"
+      - "SWB-12813"
+      - "SWB-12817"
+      - "SWB-12820"
+      - "SWB-13272"
+      - "SWB-13277"
+      - "SWB-13279"
+      - "SWB-13322"
+      - "SWB-04479"
+      - "SWB-05163"
+      - "SWB-05166"
+      - "SWB-05168"
+      - "SWB-23438"
+      - "SWB-23439"
+      - "SWB-02394"
+  - chapter: 12
+    title: "AIDE, Codex, Automation, and Repo Governance"
+    part: "Part III - Product and Operator Surfaces"
+    tags:
+      - "tooling"
+      - "authority"
+      - "docs"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 13
+    title: "Documentation, Archive, and Conversation Corpus"
+    part: "Part III - Product and Operator Surfaces"
+    tags:
+      - "docs"
+      - "authority"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 14
+    title: "Reality, Space, Time, Scale, and Existence"
+    part: "Part IV - Simulation and World Model"
+    tags:
+      - "world"
+      - "determinism"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 15
+    title: "World Generation, Celestial Systems, and Domains"
+    part: "Part IV - Simulation and World Model"
+    tags:
+      - "world"
+      - "packs"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 16
+    title: "Civilization, Economy, Logistics, and Institutions"
+    part: "Part IV - Simulation and World Model"
+    tags:
+      - "civilization"
+      - "world"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 17
+    title: "Content, Providers, Modding, and Data-Driven Extension"
+    part: "Part IV - Simulation and World Model"
+    tags:
+      - "packs"
+      - "contracts"
+      - "blocked"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 18
+    title: "What Is Settled"
+    part: "Part V - Decisions and Roadmap"
+    tags:
+      - "authority"
+      - "decision"
+      - "docs"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 19
+    title: "What Is Still Open"
+    part: "Part V - Decisions and Roadmap"
+    tags:
+      - "decision"
+      - "docs"
+      - "blocked"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 20
+    title: "What Is Blocked"
+    part: "Part V - Decisions and Roadmap"
+    tags:
+      - "blocked"
+      - "renderer"
+      - "release"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 21
+    title: "Contradictions and Drift"
+    part: "Part V - Decisions and Roadmap"
+    tags:
+      - "docs"
+      - "authority"
+      - "blocked"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 22
+    title: "Prerequisites and Sequencing"
+    part: "Part V - Decisions and Roadmap"
+    tags:
+      - "blocked"
+      - "tooling"
+      - "release"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []
+  - chapter: 23
+    title: "Recommended Next Steps"
+    part: "Part V - Decisions and Roadmap"
+    tags:
+      - "docs"
+      - "decision"
+      - "blocked"
+    total_blocks: 0
+    main_or_excerpt_blocks: 0
+    selected_block_ids:
+      []

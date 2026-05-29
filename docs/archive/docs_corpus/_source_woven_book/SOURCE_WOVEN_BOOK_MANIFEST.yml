@@ -1,0 +1,31 @@
+title: "Dominium Source-Woven Project Book"
+subtitle: "A human-readable compilation of current docs, archive context, and conversation source passages"
+date: "2026-05-30"
+status: "DERIVED"
+authority_class: "advisory_synthesis"
+source_root: "docs/"
+conversation_corpus_root: "docs/archive/conversations/"
+promotion_status: "not_promoted"
+outputs:
+  main_pdf: "docs/archive/docs_corpus/_exports/Dominium_Source_Woven_Project_Book.pdf"
+  html: "docs/archive/docs_corpus/_exports/Dominium_Source_Woven_Project_Book.html/index.html"
+  docx: "docs/archive/docs_corpus/_exports/Dominium_Source_Woven_Project_Book.docx"
+  source_map_pdf: "docs/archive/docs_corpus/_exports/Dominium_Source_Woven_Project_Book_Source_Map.pdf"
+selection_counts:
+  human_full_text: 189
+  human_summarize: 3978
+  reference_only: 405
+protected_paths:
+  - "docs/canon/"
+  - "docs/architecture/"
+  - "docs/reference/contracts/"
+  - "contracts/"
+  - "schema/"
+  - "engine/"
+  - "game/"
+  - "runtime/"
+  - "apps/"
+  - "release/"
+  - "updates/"
+  - "security/"
+  - ".aide/queue/current.toml"
