@@ -1,0 +1,237 @@
+Status: DERIVED
+Last Reviewed: 2026-05-29
+Supersedes: docs/archive/docs_corpus/_integrated_book_v2/**
+Superseded By: none
+Stability: provisional
+Authority Class: advisory_synthesis
+Source Root: `docs/`
+Conversation Corpus Root: `docs/archive/conversations/`
+Promotion Status: not_promoted
+Canon impact: unchanged
+Contract/schema impact: unchanged
+Implementation impact: unchanged
+Release impact: unchanged
+Queue impact: unchanged
+
+# Decision Index
+
+- Domain permissions + existence/refinement - visitability decision.
+- Travel scheduling, replay, and law decisions become nondeterministic.
+- The final uploaded prompt asked for this preservation package. The key thing to preserve is that most architecture proposals are recommendations, not accepted user decisions yet. The next best action is to decide which recommendations become canon, then.
+- Which recommendations are decisions versus advice?
+- Chat label: Dominium Build and Future-Proofing Architecture Date anchor: 2026-05-27 Australia/Melbourne Scope: This report covers the visible conversation and the preservation task that produced the accompanying handoff files. It does not.
+- DECISION-06: Calendars are pure renderers and never affect physics.
+- DECISION-12: HPC-E Year Day and Leap Day are appended after February; canonical mode is undated and compatibility mode may use Feb 29/30. FACT / INFERENCE.
+- This chat was a long architecture/specification-generation session for the Dominium Game project. It focused on turning a broad v3 game architecture into concrete, file-by-file '.txt' implementation specs for Codex automation. The user decided that Codex.
+- The visible chat generated many implementation-spec prompts across engine, platform, render, audio, systems, and the start of game. It also preserved important decisions: UTF-8 internal text, retro fallbacks, semantic versioning, build metadata policy.
+- DECISION-03: Adopt base-16 spatial ladder from subnano to surface.
+- DECISION-04: Store surfaces as sparse microgrids/chunks, not continuous dense arrays.
+- DECISION-06: Support canonical surface plus multiple surface instances for shards/mirrors.
+- The user finalized platform support tiers: Tier 1 is Windows NT 2000 SP4-latest, Mac OS X 10.6-10.14, Linux 3.2-current; Tier 2 extends to Windows 98 SE-Me, Mac OS 9-9.2, Mac OS X 10.6-15.0, Linux 2.6.18-current; Tier 3 covers MS-DOS 3.3-6.2, Windows 3.
+- Final support tiers are user-defined and must be preserved.
+- Preserve final Tier 1/2/3 OS support ranges.
+- See Decision Register in full report. Highest priority: DECISION-03, DECISION-05, DECISION-07, DECISION-08, DECISION-12, DECISION-19, DECISION-28.
+- DECISION-01: The old v1 contract/glossary were accepted as the baseline for this chat because the user supplied them as the old ground truth and asked later questions against them.
+- Kept assistant portability doctrine as recommendation/inference unless clearly accepted.
+- 1. context loaded, 2. top active priorities, 3. key constraints, 4. open questions, 5. contradictions or uncertainties, 6. recommended next action.
+- '04 registers': workstreams, decisions, tasks, risks, verification queue.
+- 18. What are the biggest ways a future assistant might misunderstand this conversation? 19. Which refactors are dangerous before build/test proof? 20. Which items are still assistant suggestions rather than user decisions?
+- 1. 'the source material' - direct narrative explanation of the whole conversation. 2. 'the source material' - prior full preservation.
+- This was recommended by the assistant, not explicitly accepted by the user. It follows from the user's deterministic, persistent, sparse, MMO-scale requirements. The alternative would be to make Unreal or a normal scene graph the source of truth, but.
+- See DECISION-01 through DECISION-13. Strongest user-stated decisions: science-bounded procedural planets, robotic mothership premise, robot bodies, nanobot construction, automation over worker NPCs, mothership-limited fabrication, machine process.
+- Which decisions are confirmed versus recommendations?
+- Review decisions with uncertainty labels, then formalise the vertical slice.
+- A later assistant response refined the architecture around three roles: Domino as deterministic simulation, Unreal as renderer/client/tooling, and Dominium as game rules. It also drew a feasibility boundary: millions of users can exist across a logical.
+- The first major conclusion was architectural. The assistant recommended that Dominium should not be built as one giant live Unreal scene. Instead, Domino should be a deterministic simulation/data engine , and Unreal or another graphics engine should.
+- The key technical conclusion was that the world cannot be treated as a normal game-engine level full of live actors. The world must be a deterministic simulation and data system first. Domino should store the true universe as seeds, rules, fields, sparse.
+- This report should be read as a summary of the whole visible conversation, not as a final design specification. Some items were clearly stated by the user and are marked as FACT. Some were assistant-proposed architecture or design synthesis and are.
+- Future chats might incorrectly treat every brainstorm item as a final decision, especially assistant recommendations. They might over-focus on Unreal and ignore Domino's need for deterministic data/simulation. They might reintroduce worker NPC labour.
+- See Decision Register. The strongest user-stated decisions are DECISION-02, DECISION-04, DECISION-05, DECISION-06, DECISION-08, and DECISION-09. DECISION-11 and DECISION-12 are assistant recommendations pending user ratification.
+- A second major theme was unification of presentation surfaces. The user wanted CLI, TUI, rendered GUI, and OS-native GUI to share code and semantics. The decision emerged that these should not be four separate systems. Instead, all products should expose.
+- This chat is a major planning pivot. It began with a Windows UI Editor/Tool Editor design and ended with a broader Dominium Workbench Platform architecture. The old editor plan is superseded as a final product. Its useful pieces should be recycled into.
+- This package preserves a chat that pivoted from a Windows UI Editor plan to a modular Dominium Workbench Platform architecture. It captures decisions, tasks, risks, artifacts, open questions, and spec-book integration guidance.
+- 04 Registers: workstreams, decisions, tasks, risks, artifacts.
+- What was the biggest decision in this chat?
+- A major operational shift occurred near the end of the chat: instead of queueing all prompts sequentially, the user decided to run many tasks in parallel through multiple Codex chats and git worktrees. The assistant defined strict parallel-worker rules.
+- A recurring theme was urgency. The user repeatedly expressed that the directory and root-structure cleanup had taken too long, and at points threatened to manually drag/drop folders if the assistant and Codex process failed to produce real progress. That.
+- The second major theme was the raylib ecosystem. The user liked raylib and asked whether its subprojects could be used: raylib itself, 'rlgl', 'rlsw', 'raymath', 'raygui', 'raudio', texture/model/font systems, and examples. The conclusion was yes, but.
+- This chat developed a framework/provider strategy for Dominium. The user wanted to accelerate development with open-source code while preserving portability, modularity, extensibility, determinism, and future replaceability. The final architecture is.
+- See Decision Register. Most important: framework/provider architecture, raylib as first provider suite, service-first layout, profiles for provider selection, Lua/SDL2 as first-wave providers, and sparse deterministic delegated simulation as design doctrine.
+- '04 registers.md': decisions, tasks, risks, questions, artifacts, verification items.
+- This chat was a design-decision and architecture-baseline discussion for Dominium, focused on language standards, platform floors, binary architecture, portability strategy, and the project's long-term modular structure. The user began by asking whether.
+- This chat decided Dominium's modern language/platform architecture. The key outcome is C17 + C++17, 64-bit, little-endian, C-compatible ABI, deterministic fixed-width data, and provider/capability modularity.
+- The best next action is to verify live repo state, then implement AIDE-STRUCTURE-00 and AIDE-ARCH-00 as non-invasive control-plane and architecture-constitution tasks. Do not start broad moves until contracts and inventories exist. Do not trust pasted.
+- See DECISION-01 through DECISION-10 in the registers. The clearest user-accepted decisions are AIDE adoption and recycling existing material.
+- Ask: "Which decisions are accepted versus recommendations?", "Draft the AIDE-STRUCTURE-00 Codex prompt", "Design root constitution.toml", "What repo facts must be verified?", "How should old XStack-style tools be recycled?", or "Turn this into Project.
+- The future relevance of this chat is high. It contributes the conceptual bridge between repository convergence and product architecture. It also clarifies that the desired MVP should not be a shallow gameplay demo, but a proof spine: boot product.
+- This preservation package explains the chat, records decisions, tasks, artifacts, risks, and open questions, and exports a structured spec/aggregation packet for future merging.
+- The user asked for a single downloadable bundle containing all the files plus an accompanying human-readable detailed report of the conversation: what was discussed, what was decided, what was deferred, what was produced, and what still needs follow-up.
+- The final user action uploaded a preservation-package prompt. This response turns the visible chat into a human-readable report, registers, context packet, spec sheet, aggregator packet, audit, and downloadable ZIP. The main caveat is that many technical.
+- Additional points: DDAP/DIL is proposed; repo not inspected; conformance tests prove modularity; data compatibility must be formalized; generated output needs validation; future aggregation must preserve recommendation-vs-decision labels.
+- 1. Read the human-readable report. 2. Review the decision register and mark accepted/rejected/needs revision. 3. Inspect the actual repo. 4. Draft public API and data evolution policies. 5. Choose one conformance-test pilot.
+- This report is reliable for explaining what was discussed in the visible chat. It is not proof that the real repository has the recommended structure, not proof that the user formally accepted every recommendation, and not a substitute for verifying the.
+- This chat was a detailed architecture and refactor planning session for the Dominium + Domino project. The central result is a stable separation between Domino , the deterministic engine under 'source/domino', and Dominium , the product suite under.
+- Do not keep 'source/dominium/products' in the final layout.
+- See DECISION-01 through DECISION-22 in the registers. Highest impact: DECISION-01, DECISION-02, DECISION-03, DECISION-06, DECISION-08, DECISION-11, DECISION-13, DECISION-14, DECISION-18, DECISION-19.
+- The most important decisions were DECISION-03 through DECISION-10. The user accepted that XStack should remain Dominium's strict profile, not the public general system. AIDE should become the portable repo-native operating layer. AIDE's first product.
+- '04 registers.md': workstreams, decisions, tasks, constraints, artifacts, risks, verification.
+- The uploaded instruction file defines this as a maximum-fidelity preservation, explanation, handoff, audit, spec-prep, and export task for the current chat. The extraction below is grounded in the visible conversation context and the uploaded prompt. The.
+- See Decision Register in file 04.
+- The conversation then moved from the general 2038 problem into representation design. The user clarified that they did not need millions of years of date support, only roughly 10,000 years into the future and past. This turned the problem into a.
+- The most important repo-supported decision is that Dominium authority must remain logical ACT, not wall-clock. The strongest recommendations are to freeze ACT units/serialization, audit DSYS timers, and keep civil time as projection-only.
+- Which repo files supported the Dominium conclusion?
+- 1. Save the ZIP. 2. Confirm which recommendations are accepted as requirements. 3. Audit DSYS timer backends. 4. Audit ACT serialization. 5. Draft canonical Dominium time architecture documentation.
+- The answer distinguished system width from time representation. The important conclusion was that 2038 is caused by signed 32-bit time counters reaching their maximum representable value. The risk appears where signed 32-bit Unix-style timestamps are.
+- The first answer established the central architectural position of this chat: Dominium should not wait for UE6 or treat UE6 as the whole game platform. The recommended path was to build using current Unreal technology where useful, structure the project.
+- Main decision candidates: custom deterministic core; Unreal as frontend only; server-authoritative MMO state; sparse procedural planets; single universe via partitioning; Domino as future adapter.
+- The chat concluded that Dominium's requirements exceed what UE5, UE6, Domino, or any single commercial engine can provide out of the box. The game should be architected as a custom deterministic simulation and persistent world backend, with Unreal as a.
+- 1. Confirm whether the architecture recommendations should become project decisions. 2. Define Domino's role. 3. Verify UE5/UE6 facts. 4. Specify the deterministic MVP. 5. Prototype fixed-tick replay and state hashes.
+- Main caveats: Partial transcript access; UE5/UE6 facts need verification; assistant recommendations need user confirmation before becoming final project decisions.
+- The package also preserves assistant recommendations, but it does not treat every recommendation as a final user decision. The user clearly asked strategic questions and requested preservation. They did not explicitly ratify every architecture detail as.
+- Finally, the user pasted a newer repo-status summary saying the structure was now clean enough to stop broad structure refactors: canonical structure passed with warnings, fast strict and smoke proof passed, full CTest remained blocked by stale full-gate.
+- 1. treating the Universe Explorer as a normal renderer/free-camera task; 2. ignoring the current queue and trying to implement broad Workbench UI or gameplay; 3. restarting broad repo structure cleanup; 4. treating assistant recommendations as accepted.
+- This report is not a perfect raw transcript substitute. It reconstructs the working state from the visible conversation, user-pasted transcripts, assistant outputs, repo-state checks performed in this chat, and the final uploaded preservation.
+- This preservation package explains the conversation, records the current task state, preserves decisions and rejected options, and prepares the chat for aggregation into a master Project Spec Book.
+- The conclusion was not to globally simulate everything. Instead, the architecture should support deterministic lazy historical evaluation.
+- What disposition should be chosen for this unresolved claim: The user then asked whether arbitrary placement was possible or whether the system was stuck to grids. The answer established that the engine should be grid-agnostic. The...?
+- What disposition should be chosen for this unresolved claim: This chat was about preserving and re-grounding Dominium's architecture around a very old constitutional contract, then checking whether the current GitHub repository still foll...?
+- None in this docket. Current generated decisions are user decisions, queue decisions, or deferrals.
+- 'DECISION-0001': What disposition should be chosen for this unresolved claim: The user then asked whether arbitrary placement was possible or whether the system was stuck to grids. The answer established that the engine should be grid-agnostic. The...?
+- 'DECISION-0003': What disposition should be chosen for this unresolved claim: Future work must define the client's allowed dependency surface and whether it can access any simulation-adjacent prediction layer.?
+- 'DECISION-0006': Should this conversation-derived claim become a future review item, remain historical, or be deferred: The assistant formalized this as the Perfect Earth Calendar, later called HPC-E. The final structure is clear, though the exact leap.
+- 'DECISION-0007': What disposition should be chosen for this unresolved claim: Before relying on this chat as project authority, a future assistant or human reviewer must confirm whether Dominium is actually intended to be simulation-heavy, whether strict...?
+- 'DECISION-0009': What disposition should be chosen for this unresolved claim: This chat was about preserving and re-grounding Dominium's architecture around a very old constitutional contract, then checking whether the current GitHub repository still foll...?
+- The conclusion was not a finalized implementation but a working architecture: each simulation domain should be deterministic, fixed-point, content-driven, versioned, replayable, and integrated through clear read/write boundaries.
+- The user also made a clear versioning decision. FACT: The user wanted major.minor.patch semantic versioning for all components/packages and for the complete game package. The user explicitly did not want build numbers or build dates in.
+- This context matters because the rest of the conversation happened inside those constraints. The launcher could not become a dumping ground for OS-specific behavior, sim mutation, renderer decisions, or nondeterministic game-state changes. It had to fit.
+- The user then redirected the entire plan. They argued that native OS widget GUI tools already exist through Visual Studio, Xcode, etc. The project needed a cross-platform rendered tool environment that uses the same CLI, TUI, and rendered GUI systems as.
+- The user later asked where to create Visual Studio and Xcode apps after opening the repo as a folder. The assistant advised that Visual Studio and Xcode projects should be generated through CMake, not hand-authored or treated as authoritative source.
+- The user pasted the final README after those cleanup changes. At that point, the README had the current active form: deterministic constraints clarified, ports unified under one source hierarchy, '/ports' metadata-only if retained, Section 9 normative.
+- The user then asked whether arbitrary placement was possible or whether the system was stuck to grids. The answer established that the engine should be grid-agnostic. The user's question directly made arbitrary placement a major topic.
+- The idea is attractive because it supports broad distribution and long-term extensibility. But it is not a final decision. Dynamic plugins introduce ABI, packaging, security, and platform restrictions. Static registration may be simpler. A hybrid may be.
+- A large set of prompts was then generated to lock down architecture, determinism, performance, schema governance, rendering, epistemic UI, sharding, interest sets, and fidelity projection. This became the Phase 1 hardening layer. Additional audit prompts.
+- The final state of the conversation is therefore: the architecture and implementation-roadmap discussion has been preserved, but the actual next work is elsewhere-especially the Path D advanced simulation conversation.
+- This chat was a strategic architecture and design convergence session for Dominium/Domino. It began from a transferred knowledge base about rebuilding Dominium's GUI and binary strategy, then evolved into a broad platform-specification discussion.
+- The final uploaded prompt asked for this preservation package. The key thing to preserve is that most architecture proposals are recommendations, not accepted user decisions yet. The next best action is to decide which recommendations become canon, then.
+- This produced a pattern: generate a large Codex/AIDE task, the user ran it or reported a result, then the assistant evaluated what was truly fixed versus what was only validator/document churn. The user eventually demanded a one-shot "actual final.
+- A central design theme emerged: not everything should be simulated at the same fidelity. The Sol system should be represented in great detail because the user explicitly said most playtime will happen there. The Milky Way should have a backbone of real.
+- The first answer was assertive. It stated that Dominium must follow Route C and described the route as the only viable one for Dominium. Later parts of the chat corrected the status of that claim. FACT: the assistant made that recommendation. UNCERTAIN /.
+- The most important conclusion is that determinism is central. Systems are repeatedly specified to avoid hidden randomness, OS timers, platform dependence, uncontrolled floating point, and runtime allocation during simulation ticks. The visible rationale.
+- This chat was mainly about turning the Dominium game/engine from a broad, ambitious design into a coherent, Codex-ready architecture. The user had already explored many individual systems elsewhere or earlier in the same chat: railways, roadways.
+- The prior assistant summarized these files as containing two different launcher concepts: an engine-rendered launcher view and a native Win32 launcher. It also claimed the CMake file built the Win32 source for non-Windows targets. However, this report.
+- A central decision was to separate the project into two conceptual layers. Domino is the reusable engine layer: platform abstraction, renderer abstraction, audio, UI, core services, package/instance management, simulation control, events, plugins.
+- DECISION-01: The old v1 contract/glossary were accepted as the baseline for this chat because the user supplied them as the old ground truth and asked later questions against them.
+- The user then asked for recommendations. The assistant recommended a clean startup policy: explicit flags first, no environment/config override in v1, terminal detection through dsys, generic AUTO behavior, product-specific headless handling for the.
+- The discussion then moved into AIDE. The user wanted to automate as much as possible through Codex and AIDE. We developed a task operating model: AIDE creates WorkUnits, tracks attempts, blockers, evidence, repairs, resumes, checkpoints, and promotion.
+- The final part of the conversation dealt with repo status and task queue. The user pasted status reports indicating that 'PRESENTATION-CONTRACT-01' completed with warnings, and then chose to generate six maintenance prompts before replanning.
+- The visible conclusion was that the engine has real deterministic substrate pieces, but these must be hardened through small playable slices and proof/replay tests. Determinism is not only a mathematical preference; it enables multiplayer authority.
+- The second major theme was the raylib ecosystem. The user liked raylib and asked whether its subprojects could be used: raylib itself, 'rlgl', 'rlsw', 'raymath', 'raygui', 'raudio', texture/model/font systems, and examples. The conclusion was yes, but.
+- An assistant initially rewrote that prompt into a cleaner Codex-ready form. The user then corrected the process: before generating prompts, the group needed to discuss the design. That changed the status of the rewritten prompt. It became a useful.
+- This chat was a design-decision and architecture-baseline discussion for Dominium, focused on language standards, platform floors, binary architecture, portability strategy, and the project's long-term modular structure. The user began by asking whether.
+- There was also an early suggestion to create a 'DUI' facade, a Dominium UI abstraction, to support native widgets and fallback rendering. This idea was useful as a conceptual stepping stone but was not ultimately locked as a final requirement in the form.
+- A major early conclusion was that Dominium should use one codebase but multiple binaries . The assistant proposed, and the user continued from, the idea that setup, launcher, and game should be separate executables rather than one monolithic.
+- The conversation implies a goal of turning Dominium into a long-lived product-line platform rather than a single-game repository. It also implies a desire for auditability: decisions should be grounded, visible, mechanically enforceable, and later.
+- The final strategic direction before this preservation request was to run a ?-series: snapshot intake, reality extraction, blueprint reconciliation, foundation readiness, and final prompt synthesis. This is needed because plans must now be mapped onto.
+- This chat was about rethinking Dominium from a conventional game project into a much broader, more modular, deterministic, extensible software environment. The user repeatedly asked whether the current plan was the best possible version, and the.
+- The central problem was not simply "write some code." The user wanted a carefully sequenced prompt pack that could guide Codex through a large, risky engine refactor without breaking the repository between steps. The plan had to respect strict.
+- That early answer was generated by the assistant, not stated by the user as a final decision. It matters because it introduced a very broad portability ambition, but it was later superseded by more practical platform planning. It should now be treated as.
+- Known: Assistant recommended DDAP; user has not explicitly accepted it.
+- This chat was mainly about refining the root 'README.md' for the Dominium / Domino project and then preserving the resulting decisions in a form that could survive into later chats. The project, as described in the README, is a deterministic.
+- The user then shifted from architecture implementation to preservation. They asked for prompts that would cause Codex to generate starter prompts for future ChatGPT conversations, including an extended master starter prompt. Finally, they asked for a.
+- A major middle phase focused on XStack. XStack began as a Dominium-specific governance stack grown out of TestX, then expanded into RepoX, AuditX, and other concepts. We initially explored making XStack a general portable metaharness, but that proved too.
+- The conversation then moved into how this might fit XStack. The model shifted from "better public version number" to "layered identity model." The assistant recommended preserving per-product versions, a global build number, build IDs, compatibility.
+- The user then asked whether the implementation was industry-accepted and what could be improved. The response framed the approach as closer to game engines, operating systems, and long-lived infrastructure than typical game development. The important.
+- The conversation then moved from the general 2038 problem into representation design. The user clarified that they did not need millions of years of date support, only roughly 10,000 years into the future and past. This turned the problem into a.
+- The first answer established the central architectural position of this chat: Dominium should not wait for UE6 or treat UE6 as the whole game platform. The recommended path was to build using current Unreal technology where useful, structure the project.
+- The tension here is that the user wants the final Tool Editor to avoid hardcoded limitations. The assistant recommended allowing a minimal hardcoded docking substrate in the earliest Tool Editor version if necessary, but this remains tentative. The user.
+- The final plan accepted the newer repo structure is clean enough to stop giant structure prompts. Remaining cleanup should be targeted: stale full-gate tests, pack layout canon, residual taxonomy, AIDE state classification, public header ABI.
+- The future relevance of this chat is high. It should feed directly into the future project spec book and into a corrected implementation prompt. But it should not be treated as final implementation detail everywhere. Many high-level decisions are.
+- The decision to avoid hardcoded modes was accepted repeatedly. The user and assistant discussed survival, hardcore, creative, observer, lab, spectator, editor, godmode, and sandbox. The conclusion was that code should not contain 'survival mode'.
+- Safe now: archive reading, decision review, promotion review, reconciliation crosswalks, docs-only microtask preparation, and validators.
+- The strongest recurring conversation-level decisions are advisory: keep simulation truth deterministic, separate rendering from authority, keep Workbench a projection/inspection/control surface rather than truth owner, preserve source provenance, and.
+- Use DEFERRED DECISIONS v0.md (../ decision/DEFERRED DECISIONS v0.md) to avoid accidentally opening blocked scope.
+- The hard user-stated decisions are DECISION-01 through DECISION-05. The strongest design commitments are DECISION-08, DECISION-10, DECISION-13, DECISION-15, DECISION-16, and DECISION-17. See the registers file for exact statuses and labels.
+- How are 'DOMINIUM RUN ROOT' and 'DOMINIUM HOME' finalized?
+- The final UI/UX synthesis connects directly to that premise. The interface should feel like a robot operating system. The player boots into an OS, connects to a universe, downloads consciousness into a fabricated robot body, and disconnects into.
+- 04 registers: workstreams, decisions, tasks, constraints, questions, artifacts, risks, verification, timeline, spec contributions.
+- By the end, user reports indicated that several actual cleanup commits landed. Important reported commits included provider-structure work, actual final structure cleanup, full-gate legacy path routing, and Domino framework boundary definition. The.
+- Ask: "What decisions are final?", "What is still uncertain?", "What is the next prompt?", "Which rejected options should we avoid?", "What should go into the master spec book?".
+- Generated: 2026-05-27 21:03:35 AEST Scope: This conversation's accessible content, the prior generated handoff package, visible user status reports, and uploaded/mounted summaries. Purpose: A human-readable companion report that explains what.
+- Generated: 2026-05-27 21:03:35 AEST Scope: This conversation's accessible content, the prior generated handoff package, visible user status reports, and uploaded/mounted summaries. Purpose: A human-readable companion report that explains what.
+- The crucial caveat is that the user did not visibly accept the proposed route. Treat it as a strong assistant proposal, not as a confirmed project decision. The chat then shifted into continuity preservation: the user requested a maximum-fidelity Context.
+- Python 3 and CMake are the chosen quality-gate implementation route.
+- DECISION-03 - All platform interaction must go through dsys. (FACT).
+- Finally, the chat considered third-party acceleration. The user pasted advice about raylib, rlgl, rlsw, raygui, raudio, SDL2, and Lua. The accepted doctrine was service-first and provider-backed: use these aggressively as seed providers, but fence their.
+- 1. Old UI Editor / Tool Editor are superseded as final products. 2. Their useful pieces become Workbench modules and services. 3. Workbench is a production environment over the system, not authority. 4. CLI, TUI, rendered GUI, native GUI, headless.
+- This package preserves the chat's substance, decisions, tasks, constraints, artifacts, risks, open questions, and future handoff material. The main report is human-readable. Registers and YAML are for aggregation.
+- The user accepted that the old UI Editor/Tool Editor were good general ideas but bad final products. The new direction became a cross-platform rendered Workbench that uses the same runtime, renderer, UI, command, pack, and diagnostics systems as the.
+- Verify actual repository state, then execute or audit the generated "Dominium Setup: Final Spec Alignment, Gap Closure, and Hardening Pass" prompt.
+- Limitations in plain language: this report reconstructs the conversation from the visible transcript and from repository files that were fetched during the chat. It does not prove that the local commands the user reported were actually run, because those.
+- The key accepted decision is Milestone 0 first. The key architectural direction is contract-driven deterministic substrate with game/product layers on top.
+- Read '01 human readable report.md' first for context. Use '04 registers.md' for structured tasks and decisions. Use '05 aggregator packet.md' for merging with other old-chat reports. Use '03 spec sheet.yaml' for machine-assisted aggregation.
+- The second and current main thread was GUI and binary planning. The user decided to redo GUIs from scratch. Every product should always work through CLI, is expected to work through TUI, and may have multiple modular GUIs attached to product backends to.
+- This preservation package captures the substance of the chat: what was discussed, why it mattered, what was decided, what remains pending, what is uncertain, and how a future chat should continue.
+- 1. Preserve all uncertainty labels. 2. Do not restart Omega/Xi/Pi unless the user explicitly asks. 3. Treat user-reported repo status as user-reported fact, not independently verified truth. 4. Verify live repo reality before exact implementation plans.
+- This chat built a continuity-safe implementation plan for the Dominium/Domino engine. The user wanted ready-to-run prompts for Codex CLI / VS Code Codex running GPT-5.2 on Windows at 'c:\Inbox\Git Repos\dominium', with no interactive approvals and no.
+- This chat was about platform support planning for Dominium. It started with broad questions about what systems and operating systems Dominium could support, then expanded into a large device-family inventory covering PlayStation, Xbox, Nintendo, PC.
+- See DECISION-01 through DECISION-27 in the registers. Highest priority: DECISION-01, DECISION-06, DECISION-10, DECISION-21, DECISION-23.
+- Use: design intent, review backlog, decision and promotion candidates.
+- Decision items are review prompts. The default disposition is defer unless a later explicit task opens the scope.
+- Rendering is presentational only and MUST NOT mutate truth or enforce authority decisions.
+- Foundation Lock is the repository decision gate that determines whether Dominium can leave the Foundation Lock queue and begin a first narrow governed product slice.
+- Renderer selection follows the standard policy: explicit selection fails loudly when unavailable, and auto selection logs the chosen backend.
+- '--format' is accepted only for 'inspect' and 'validate'.
+- Non-canonical command accepted as legacy path.
+- Logs must record control decisions and reasons.
+- From law decisions and recorded in audit logs.
+- 'manifest relpath' is the final tie-breaker and MUST be relative to the.
+- The final world MUST be identical regardless of physical execution order,.
+- Parallel execution is a backend choice, not a gameplay decision. Different.
+- Produce audit records for provenance and law decisions.
+- Authoritative writes are committed only after a law gate decision at commit.
+- Record law decisions, effects, and rationale.
+- If a component is not applicable for a given subsystem, it MUST be encoded into the provided base seed so that the final derived seed still matches the canonical rule.
+- The descriptor does not own the implementation of those services. Runtime services remain governed by service/provider law. Pack activation remains governed by package and trust law. Module enablement remains governed by module law and the composition.
+- ROI expand/collapse decisions therefore depend on deterministic tick order, not wall-clock cadence.
+- No wall-clock input is used in anti-cheat decisions.
+- Required policy: primary plus secondary mirror, with offline cold storage recommended.
+- Future Series: DOC-CONVERGENCE Replacement Target: Final release/distribution audit baseline governed by ARCH-AUDIT-2.
+- Future Series: DOC-CONVERGENCE Replacement Target: Final release/distribution audit baseline governed by ARCH-AUDIT-2.
+- Future Series: DOC-CONVERGENCE Replacement Target: Final release/distribution audit baseline governed by ARCH-AUDIT-2.
+- Date: 2026-03-05 Scope: CHEM-4 phases 0-9 completion (stress envelope, deterministic degradation, conservation verification, proof/replay, regression lock, enforcement, TestX, final baseline).
+- Date: 2026-03-05 Scope: CHEM-3 phases 11-12 completion (TestX coverage, gate validation, final baseline report).
+- Date: 2026-03-05 Scope: CHEM-1 phases 7-10 completion (proof/replay, enforcement, tests, final baseline report).
+- Requests compute units per capsule eval and emits compute decision/consumption outputs.
+- 'control decision log' schema shape unchanged ('extensions' open-map used for IR metadata).
+- Decision logs are emitted per control resolution under.
+- This baseline hardens the control plane as the sole interaction gateway and locks regression behavior for control decisions, fidelity arbitration, and replay-safe execution.
+- Date: 2026-03-01 Scope: CTRL-10 final hardening envelope before MOB series Stability: provisional Future Series: DOC-CONVERGENCE Replacement Target: canon-aligned documentation set for convergence and release preparation.
+- 3. Replace control-plane inline downgrade logic with kernel invocation. 4. Replace MAT-9 fidelity fallback with kernel negotiation result (no inline downgrade policy). 5. Replace MAT-7 budget truncate decision path with kernel arbitration output (engine.
+- Future Series: DIST Replacement Target: DIST-2 finalized distribution verification baseline and DIST-3 clean-room distribution runbook.
+- Future Series: DIST Replacement Target: release UX polish final report regenerated from DIST-5 tooling.
+- Future Series: OMEGA Replacement Target: successful Omega-11 precheck record and final mock release signoff.
+- Future Series: OMEGA Replacement Target: Omega-11 execution ledger and final mock signoff.
+- 'the source material' contains TODOs for save format and UI placeholders.
+- 1. 'appshell product bootstrap' bucket='product entrypoint' score='945' duplicates: '3' definitions across '3' modules build targets/products: 'none' / 'none' docs refs: 'the source material, the source material'.
+- Omega-5 must not alter install-profile resolution, trust policy, migration decisions, or yanked-selection behavior.
+- 1. Add deterministic electrical degradation policy function (ordered steps, decision-log rows). 2. Add ELEC-5 stress generator/harness/replay tools. 3. Extend 'process.elec.network tick' with.
+- All degradation decisions are logged with deterministic decision IDs.
+- Chosen provider capabilities flow into CAP-NEG and may drive explicit degrade/refuse outcomes.
+- Route non-Euclidean distance/neighbor decisions outside the local solver through GEO APIs.
+- Replay verification compared a selected marker's stored replay hash directly against the final full-state replay hash.
+- Proof hash chains present (emission, field, exposure, compliance, decision/degrade).
+- Date: 2026-03-05 Scope: CHEM-2 phases 8-11 completion (proof/replay, enforcement, TestX, final gate report).
+- Explicit refusal path accepted for intentional stubs.
+- There is no equivalent deterministic replay surface yet for LIB save-open policy decisions, and no envelope report tying provider resolution, pack verification, save open, and bundle verification together.
+- Conclusion: LOGIC wiring must specialize 'NetworkGraph', not replace it.
+- Conclusion: LOGIC-4 should evaluate these data-defined models directly and must not introduce engine-owned special gate objects.
+- Stress summaries expose 'recommended speed cap permille' for downstream speed capping via Effects.
+- 'process signal send' now executes deterministic dispatch pipeline: 1. validate channel and artifact contract 2. resolve address via address engine 3. create canonical queue entries 4. enqueue by deterministic ordering 5. emit decision-log entry payload.
+- Release index, component graph, and install plan canonicalizers assume current semantics without emitting a migration decision record.
+- Migrate vs read-only vs refuse decisions are centralized in 'src/compat/migration lifecycle.py'.
+- Conclusion: capability declarations can be introduced through manifest data and validated without runtime code edits.
+- Final composite hash anchor is identical.
+- Canonical release comparison used host-meta-normalized hashes only; no platform-specific degrade decision entered the truth-facing artifact set.
+- Expected Result: 'replaying from the baseline seed reproduces the same final anchor as reload'.
+- 'session begin' binds the connection to the chosen contract bundle hash and pack lock hash.
+- Future Series: OMEGA Replacement Target: Omega-11 DIST-7 execution ledger and final mock release signoff.

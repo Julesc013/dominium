@@ -1,0 +1,34 @@
+title: "Dominium Project Book"
+subtitle: "A human-readable synthesis of the current docs, archive context, and conversation evidence"
+date: "2026-05-29"
+status: "DERIVED"
+authority_class: "advisory_synthesis"
+promotion_status: "not_promoted"
+source_root: "docs/"
+conversation_corpus_root: "docs/archive/conversations/"
+task_id: "DOMINIUM-AUTHORED-PROSE-BOOK-01"
+outputs:
+  - "docs/archive/docs_corpus/_exports/Dominium_Project_Book.pdf"
+  - "docs/archive/docs_corpus/_exports/Dominium_Project_Book.html/index.html"
+  - "docs/archive/docs_corpus/_exports/Dominium_Project_Book.docx"
+  - "docs/archive/docs_corpus/_exports/Dominium_Project_Book_Source_Notes.pdf"
+quality_rules:
+  no_visible_evidence_ids: true
+  no_banned_headings: true
+  source_paths_in_source_notes: true
+  no_version_in_visible_title: true
+  prose_first: true
+protected_paths:
+  - "docs/canon/"
+  - "docs/architecture/"
+  - "docs/reference/contracts/"
+  - "contracts/"
+  - "schema/"
+  - "engine/"
+  - "game/"
+  - "runtime/"
+  - "apps/"
+  - "release/"
+  - "updates/"
+  - "security/"
+  - ".aide/queue/current.toml"
