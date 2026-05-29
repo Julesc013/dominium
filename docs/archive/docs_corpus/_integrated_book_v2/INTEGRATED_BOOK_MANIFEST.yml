@@ -32,13 +32,13 @@ outputs:
 claim_type_counts:
   fact: 271
   design_goal: 122
-  specification: 2404
-  decision: 1637
+  specification: 2405
+  decision: 1635
   prohibition: 136
   prerequisite: 107
   constraint: 411
   contradiction: 40
-  unresolved_question: 65
+  unresolved_question: 66
   risk: 63
   change_of_direction: 68
   second_order_effect: 10

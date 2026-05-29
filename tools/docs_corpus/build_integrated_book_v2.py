@@ -129,7 +129,7 @@ TYPE_KEYWORDS = {
 }
 
 TAG_KEYWORDS = {
-    "identity": ["dominium", "domino", "project", "game", "operating environment", "product identity"],
+    "identity": ["dominium", "domino", "official game", "operating environment", "product identity", "domain layer"],
     "authority": ["authority", "law", "canon", "glossary", "refusal", "capability", "governance", "agent"],
     "determinism": ["determinism", "deterministic", "replay", "rng", "hash", "provenance", "validation", "evidence"],
     "contracts": ["contract", "schema", "abi", "api", "compatibility", "migration", "public surface", "version"],
@@ -213,7 +213,7 @@ class BuildState:
 
 
 CHAPTERS = [
-    ChapterDef(1, "Part I - The Project", "What Dominium Is", ["identity", "runtime", "authority"], "Dominium is the official game and domain layer built on Domino's deterministic substrate; it is also a governed product environment rather than a single renderer-owned executable.", "Current sources define Dominium by layered responsibility: Domino supplies reusable deterministic mechanisms, Dominium supplies official meaning, and product shells project results without owning truth.", "The archived conversations add ambition: a broad simulation ecosystem, operator tooling, and long-horizon product surfaces. Their value is design intent, not current permission.", "Future writing should keep the identity distinction crisp: substrate, product, domain, and tooling are related but not interchangeable."),
+    ChapterDef(1, "Part I - The Project", "What Dominium Is", ["identity", "runtime"], "Dominium is the official game and domain layer built on Domino's deterministic substrate; it is also a governed product environment rather than a single renderer-owned executable.", "Current sources define Dominium by layered responsibility: Domino supplies reusable deterministic mechanisms, Dominium supplies official meaning, and product shells project results without owning truth.", "The archived conversations add ambition: a broad simulation ecosystem, operator tooling, and long-horizon product surfaces. Their value is design intent, not current permission.", "Future writing should keep the identity distinction crisp: substrate, product, domain, and tooling are related but not interchangeable."),
     ChapterDef(2, "Part I - The Project", "Why Dominium Exists", ["identity", "civilization", "world"], "The project exists to make invention, production, logistics, economics, settlement, trust, communication, and institutions emerge from lawful simulation.", "The README and canon tie the ambition to deterministic process, explicit refusal, and evidence rather than scripted outcomes.", "Conversation evidence shows the ambition widening into world scale, governance, tooling, release identity, and authoring workflows.", "Next work should distinguish the durable motivation from feature scope that remains blocked."),
     ChapterDef(3, "Part I - The Project", "The Core Simulation Philosophy", ["determinism", "world", "authority"], "The simulation philosophy is that truth is lawful, perception is filtered, rendering is presentation, and mutation must pass through deterministic process.", "Canon and architecture docs make truth/perceived/render separation and process-only mutation the floor.", "The corpus repeatedly applies that floor to Workbench, UI, providers, content packs, and future world simulation.", "Every future feature description should explain where truth lives, how observation is derived, and how refusal is surfaced."),
     ChapterDef(4, "Part I - The Project", "Current Authority Model", ["authority", "docs", "blocked"], "Authority is layered: canon and glossary outrank AGENTS, which outranks lower planning, generated outputs, archive material, and conversation evidence.", "Authority order and snapshot intake protocol define how conflicts must be resolved without convenience-based promotion.", "The docs and conversation corpora are useful because they make history reviewable while preserving the authority boundary.", "Near-term work should use the book as a map, then promote only through explicit scoped tasks."),
@@ -292,8 +292,13 @@ def slug(value: str) -> str:
 def clean_inline(text: str, limit: int = 420) -> str:
     text = re.sub(r"\s+", " ", text.replace("`", "'")).strip()
     text = re.sub(r"^[-*]\s+", "", text)
+    text = re.sub(r"^(Claim|FACT|NOTE)\s*:\s*", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"^'DECISION-[0-9]+'\s*'[^']*':\s*", "", text)
     if len(text) > limit:
-        text = text[: limit - 1].rstrip() + "."
+        clipped = text[: limit - 4].rstrip()
+        if " " in clipped:
+            clipped = clipped.rsplit(" ", 1)[0]
+        text = clipped.rstrip(".,;:") + "..."
     return docs_corpus.ascii_text(text)
 
 
@@ -302,6 +307,10 @@ def source_type(item: human.SourceItem) -> str:
         return "current_high_authority"
     if item.path in human.SYNTHESIS_SOURCES:
         return "derived_synthesis"
+    if item.disposition == "human_summarize" and item.path.startswith("docs/archive/"):
+        return "summarized_archive"
+    if item.disposition == "human_summarize":
+        return "summarized_current_docs"
     if item.path.startswith("docs/archive/conversations/"):
         return "conversation_advisory"
     if item.path.startswith("docs/archive/"):
@@ -389,6 +398,43 @@ def classify_claim_type(text: str) -> str:
     return best
 
 
+def low_readability_evidence(text: str) -> bool:
+    lowered = text.lower()
+    low_value_patterns = [
+        "after this task, i can",
+        "read and understand this entire old chat",
+        "what decisions were made and why",
+        "source_uploaded_preservation_prompt",
+        "pasted text.txt",
+        "complete chat preservation report [chat label]",
+        "04 registers:",
+        "representative sources:",
+        "which decisions are confirmed versus recommendations",
+        "review decisions with uncertainty labels",
+    ]
+    if any(pattern in lowered for pattern in low_value_patterns):
+        return True
+    code_tokens = [
+        "/*",
+        "*/",
+        " dom_",
+        "std::",
+        "#include",
+        "void ",
+        "struct ",
+        "typedef",
+        "return ",
+        "```",
+        "{ \"",
+        "};",
+        "->",
+    ]
+    if any(token in lowered for token in code_tokens):
+        return True
+    punctuation = sum(1 for char in text if char in "{}();=<>")
+    return punctuation > max(10, len(text) // 18)
+
+
 def topic_tags_for(text: str, item: human.SourceItem) -> List[str]:
     combined = f"{item.path} {item.title} {text}".lower()
     tags = [tag for tag, words in TAG_KEYWORDS.items() if keyword_score(combined, words) > 0]
@@ -434,7 +480,11 @@ def assign_chapters(tags: Sequence[str], item: human.SourceItem, text: str) -> L
     return [number for number, _ in scores[:4]]
 
 
-def should_main(claim_type: str, item: human.SourceItem, tags: Sequence[str]) -> bool:
+def should_main(claim_type: str, item: human.SourceItem, tags: Sequence[str], text: str) -> bool:
+    if low_readability_evidence(text):
+        return False
+    if item.disposition == "human_summarize" and item.path not in human.HIGH_AUTHORITY_SOURCES and item.path not in human.SYNTHESIS_SOURCES:
+        return False
     if item.path in human.HIGH_AUTHORITY_SOURCES or item.path in human.SYNTHESIS_SOURCES:
         return True
     if claim_type in {"decision", "specification", "constraint", "prohibition", "contradiction", "unresolved_question", "prerequisite"}:
@@ -466,8 +516,8 @@ def card_from_unit(card_id: str, item: human.SourceItem, unit: str, index: int) 
         confidence="high" if item.path in human.HIGH_AUTHORITY_SOURCES else "medium" if item.disposition == "human_full_text" else "review",
         needs_user_decision=any(token in lowered for token in ["needs user", "user decision", "decide", "open question"]),
         needs_future_queue=any(token in lowered for token in ["blocked", "future queue", "not authorized", "broad feature"]),
-        should_be_in_main_book=should_main(claim_type, item, tags),
-        should_be_in_reference_only=not should_main(claim_type, item, tags),
+        should_be_in_main_book=should_main(claim_type, item, tags, unit),
+        should_be_in_reference_only=not should_main(claim_type, item, tags, unit),
         notes=f"source unit {index}",
     )
 
@@ -525,20 +575,42 @@ def build_evidence_cards(repo_root: Path, sources: List[human.SourceItem]) -> Li
     return cards
 
 
+def chapter_by_number(number: int) -> ChapterDef:
+    return next(chapter for chapter in CHAPTERS if chapter.number == number)
+
+
 def map_cards(cards: List[EvidenceCard]) -> Dict[int, List[EvidenceCard]]:
     mapped: Dict[int, List[EvidenceCard]] = defaultdict(list)
     for card in cards:
         for chapter in card.applies_to_chapters:
             mapped[chapter].append(card)
     for chapter, items in mapped.items():
-        items.sort(key=card_rank)
+        chapter_def = chapter_by_number(chapter)
+        items.sort(key=lambda card, chapter_def=chapter_def: card_rank_for_chapter(card, chapter_def))
     return dict(mapped)
 
 
 def card_rank(card: EvidenceCard) -> Tuple[int, int, str]:
-    authority = 0 if card.source_type == "current_high_authority" else 1 if card.source_type == "current_docs" else 2 if card.source_type == "derived_synthesis" else 3
+    authority = 0 if card.source_type == "current_high_authority" else 1 if card.source_type == "derived_synthesis" else 2 if card.source_type == "current_docs" else 4 if card.source_type.startswith("summarized") else 3
     main = 0 if card.should_be_in_main_book else 1
     return (main, CLAIM_PRIORITY.get(card.claim_type, 99), authority, card.source_path, card.card_id)
+
+
+def card_rank_for_chapter(card: EvidenceCard, chapter: ChapterDef) -> Tuple[int, int, int, int, str, str]:
+    source_priority = 5
+    if card.source_type == "current_high_authority":
+        source_priority = 0
+    elif card.source_type == "derived_synthesis":
+        source_priority = 1
+    elif card.source_type == "conversation_advisory":
+        source_priority = 2
+    elif card.source_type == "current_docs":
+        source_priority = 3
+    elif card.source_type.startswith("summarized"):
+        source_priority = 6
+    tag_overlap = -len(set(card.topic_tags) & set(chapter.tags))
+    main = 0 if card.should_be_in_main_book else 1
+    return (main, source_priority, CLAIM_PRIORITY.get(card.claim_type, 99), tag_overlap, card.source_path, card.card_id)
 
 
 def yaml_scalar(value: object) -> str:
@@ -787,15 +859,17 @@ def paragraph_from_cards(cards: Sequence[EvidenceCard], prefix: str, max_items: 
     selected = list(cards[:max_items])
     if not selected:
         return ""
-    pieces = [card.summary.rstrip(".") for card in selected]
-    if len(pieces) == 1:
-        return f"{prefix} {pieces[0]}."
-    return f"{prefix} " + "; ".join(pieces[:-1]) + f"; and {pieces[-1]}."
+    usable = [(card, card.summary.rstrip(".")) for card in selected if not low_readability_evidence(card.summary)]
+    pieces = [piece for _card, piece in usable]
+    if not pieces:
+        return ""
+    sentences = " ".join(f"{piece} ({card.card_id})." for card, piece in usable[:4])
+    return f"{prefix}: {sentences}"
 
 
 def bullet_cards(cards: Sequence[EvidenceCard], max_items: int = 10) -> str:
     if not cards:
-        return "- No strong evidence card was selected for this category; see the chapter source trail and evidence map.\n"
+        return ""
     lines = []
     for card in cards[:max_items]:
         status = card.archive_or_conversation_status
@@ -818,15 +892,22 @@ def unique_sources(cards: Sequence[EvidenceCard], limit: int = 16) -> List[str]:
 
 
 def chapter_section(chapter: ChapterDef, cards: Sequence[EvidenceCard]) -> str:
-    cards = sorted(cards, key=card_rank)
-    current = [card for card in cards if card.source_type in {"current_high_authority", "current_docs"}][:12]
-    historical = [card for card in cards if card.source_type in {"conversation_advisory", "archive_historical", "derived_synthesis"}][:14]
-    decisions = [card for card in cards if card.claim_type == "decision"][:10]
-    specs = [card for card in cards if card.claim_type == "specification"][:10]
-    constraints = [card for card in cards if card.claim_type in {"constraint", "prohibition", "prerequisite"}][:12]
-    open_cards = [card for card in cards if card.claim_type in {"contradiction", "unresolved_question", "risk", "change_of_direction"}][:12]
-    effects = [card for card in cards if card.claim_type in {"second_order_effect", "third_order_effect", "design_goal"}][:12]
+    cards = sorted(cards, key=lambda card: card_rank_for_chapter(card, chapter))
+    narrative_cards = [card for card in cards if card.should_be_in_main_book]
+    current = [card for card in narrative_cards if card.source_type in {"current_high_authority", "current_docs", "derived_synthesis"}][:12]
+    historical = [card for card in narrative_cards if card.source_type in {"conversation_advisory", "archive_historical", "derived_synthesis"}][:14]
+    decisions = [card for card in narrative_cards if card.claim_type == "decision"][:10]
+    specs = [card for card in narrative_cards if card.claim_type == "specification"][:10]
+    constraints = [card for card in narrative_cards if card.claim_type in {"constraint", "prohibition", "prerequisite"}][:12]
+    open_cards = [card for card in narrative_cards if card.claim_type in {"contradiction", "unresolved_question", "risk", "change_of_direction"}][:12]
+    effects = [card for card in narrative_cards if card.claim_type in {"second_order_effect", "third_order_effect", "design_goal"}][:12]
     sources = unique_sources(cards, 18)
+    evidence_paragraphs = [
+        paragraph_from_cards(current, "The current repo-backed evidence emphasizes", 5),
+        paragraph_from_cards(historical, "The archive and conversation corpus add", 5),
+        paragraph_from_cards(effects, "The downstream implication is that", 4),
+    ]
+    evidence_paragraphs = [paragraph for paragraph in evidence_paragraphs if paragraph]
 
     chunks = [
         f"## {chapter.number}. {chapter.title}",
@@ -837,27 +918,20 @@ def chapter_section(chapter: ChapterDef, cards: Sequence[EvidenceCard]) -> str:
         "",
         "> [!CURRENT_TRUTH] Current repo truth comes first in this chapter. Archive and conversation evidence is used to explain design intent, recurring concerns, and review candidates without promoting it.",
         "",
-        "### Integrated Evidence",
-        "",
-        paragraph_from_cards(current, "The current repo-backed evidence emphasizes", 5),
-        paragraph_from_cards(historical, "The archive and conversation corpus add", 5),
-        paragraph_from_cards(effects, "The downstream implication is that", 4),
-        "",
-        "### Decisions Already Visible",
-        "",
-        bullet_cards(decisions or current[:6], 8),
-        "### Specifications and Requirements",
-        "",
-        bullet_cards(specs or current[6:12], 8),
-        "### Constraints, Prohibitions, and Prerequisites",
-        "",
-        bullet_cards(constraints, 10),
-        "### Contradictions, Risks, and Open Ends",
-        "",
-        bullet_cards(open_cards, 10),
-        "### Second- and Third-Order Effects",
-        "",
-        bullet_cards(effects, 10),
+    ]
+    if evidence_paragraphs:
+        chunks.extend(["### Integrated Evidence", "", *evidence_paragraphs, ""])
+    sections = [
+        ("Decisions Already Visible", bullet_cards(decisions, 8)),
+        ("Specifications and Requirements", bullet_cards(specs, 8)),
+        ("Constraints, Prohibitions, and Prerequisites", bullet_cards(constraints, 10)),
+        ("Contradictions, Risks, and Open Ends", bullet_cards(open_cards, 10)),
+        ("Second- and Third-Order Effects", bullet_cards(effects, 10)),
+    ]
+    for heading, body in sections:
+        if body:
+            chunks.extend([f"### {heading}", "", body])
+    chunks.extend([
         "### Implications for Next Work",
         "",
         chapter.next_work,
@@ -866,7 +940,7 @@ def chapter_section(chapter: ChapterDef, cards: Sequence[EvidenceCard]) -> str:
         "",
         "### Source Trail",
         "",
-    ]
+    ])
     chunks.extend(f"- `{path}`" for path in sources)
     return "\n".join(part for part in chunks if part is not None).strip() + "\n"
 
@@ -1149,8 +1223,10 @@ def render_docx(repo_root: Path, markdown_text: str, target_name: str) -> Path:
 
 def latex_document(title: str, subtitle: str, body: str, engine: str, profile: str) -> str:
     style = styled.latex_style(engine, profile)
+    toc_depth = 1 if profile == "reader" else 2
     return rf"""{style}
 \begin{{document}}
+\setcounter{{tocdepth}}{{{toc_depth}}}
 \frontmatter
 \begin{{titlepage}}
 \centering
