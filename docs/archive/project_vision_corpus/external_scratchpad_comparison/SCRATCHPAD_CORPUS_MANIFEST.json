@@ -1,0 +1,220 @@
+{
+  "date": "2026-06-03",
+  "repo_corpus_root": "dominium/docs/archive/project_vision_corpus",
+  "repo_counts": {
+    "duplicate_source_groups": 43,
+    "human_sources": 221,
+    "semantic_blocks": 2086,
+    "themes": 17,
+    "zip_packages": 30
+  },
+  "repo_only_source_basenames": 95,
+  "repo_only_zip_names": 30,
+  "scratchpad_corpus_root": "C:/Projects/Dominium/dominium/tmp/project_vision_corpus",
+  "scratchpad_counts": {
+    "extracted_files": 1168,
+    "human_candidates": 306,
+    "human_sources": 160,
+    "semantic_blocks": 2500,
+    "themes": 17,
+    "top_level_entries": 56,
+    "zip_packages": 47
+  },
+  "scratchpad_files": [
+    {
+      "path": "books/README.md",
+      "sha256": "cf0bc6dd987ff2860f4951a8762efc626fda4ef879119de4af04cc1dc5886717",
+      "size": 250
+    },
+    {
+      "path": "build_reports/PROJECT_VISION_CORPUS_BUILD_REPORT.md",
+      "sha256": "98e5b6cf2c089d1c2babb077fc01c3cef3a54a273a409820de1ba982f91ab161",
+      "size": 1339
+    },
+    {
+      "path": "build_reports/PROJECT_VISION_CORPUS_VALIDATION_REPORT.md",
+      "sha256": "18577fd8c637b25a201c97942f11650f466572e3673b3bdaefdf0f78ac84d8a0",
+      "size": 1127
+    },
+    {
+      "path": "raw_manifest/DUPLICATE_PACKAGE_REPORT.md",
+      "sha256": "43a382a356d1881c7331c3f4464157018e4bb8359354f498ec777fa38f3bf46f",
+      "size": 675
+    },
+    {
+      "path": "raw_manifest/PACKAGE_COMPLETENESS.md",
+      "sha256": "134a636909064a372fe6ebc42b49d1d3981e274aa25296d53fc07da07267b40f",
+      "size": 8622
+    },
+    {
+      "path": "raw_manifest/ZIP_MANIFEST.json",
+      "sha256": "e9de12723107f8e57ececbd26b7ac9013b4e9046c6c39175ff415010735637ca",
+      "size": 24681
+    },
+    {
+      "path": "raw_manifest/ZIP_MANIFEST.md",
+      "sha256": "a0f9289da22783e373ecb47bb1f4c55652f01c7b7a93a0666e1365b6910b9c7a",
+      "size": 5290
+    },
+    {
+      "path": "README.md",
+      "sha256": "540fa32493282bc6e5b6b137f98fbf8fecbd38e588a259340046b5fa903f591b",
+      "size": 1231
+    },
+    {
+      "path": "review/CLAIMS_REQUIRING_VERIFICATION.md",
+      "sha256": "a4dd47b898d254300bc4a60c7df2acd24fad0df9b2e60f133656fe79ad226fed",
+      "size": 840
+    },
+    {
+      "path": "review/FUTURE_QUEUE_DECISIONS.md",
+      "sha256": "1033ffba971328f206d6fdbee0e972915dea9853684cb6b7846e966b676127df",
+      "size": 830
+    },
+    {
+      "path": "review/REJECTED_OR_SUPERSEDED_IDEAS.md",
+      "sha256": "fab4963149c848c4b28bdd316b9781e3820cc012b6c1d30defb83c6e53f66758",
+      "size": 966
+    },
+    {
+      "path": "review/RISK_REGISTER.md",
+      "sha256": "0310ddbb49d7724bee50093baba19ece10904f726612ef6d846d6ca6f53cdc4b",
+      "size": 1192
+    },
+    {
+      "path": "review/USER_DECISION_LIST.md",
+      "sha256": "0f52cc7a018c0c172aeef4310942a37eac95bfb368f69b19bdcadbf28e5e0dd7",
+      "size": 1001
+    },
+    {
+      "path": "source_blocks/SOURCE_BLOCK_DEDUPLICATION_REPORT.md",
+      "sha256": "c7ab4b76f32baf9b009fc27677b01da11c81d97bb1ab16a33dd8033a49792fbc",
+      "size": 1130
+    },
+    {
+      "path": "source_blocks/SOURCE_BLOCK_INDEX.md",
+      "sha256": "62b0f018f0ca33a0f6de044419b3ee4a6b538db819713909449ffd3e56c16da8",
+      "size": 1023593
+    },
+    {
+      "path": "source_blocks/SOURCE_BLOCKS.md",
+      "sha256": "9498b3748000628df186c256ee901245b59e98d6fd1e8261645f635a41f614d7",
+      "size": 1272197
+    },
+    {
+      "path": "source_blocks/SOURCE_BLOCKS.yml",
+      "sha256": "40ebc5a98b62b6ecc35883a1173b3b0e81d2fe6894c2852030aa8666cba2834f",
+      "size": 8670981
+    },
+    {
+      "path": "source_selection/HUMAN_READABLE_SOURCE_SELECTION.md",
+      "sha256": "8171bf608b41d1c67bb50376d0c240b7eb9d8f4d893c5e290d8fdd873ff8156a",
+      "size": 38917
+    },
+    {
+      "path": "source_selection/MACHINE_MATERIAL_EXCLUDED.md",
+      "sha256": "b262332475399b569aa63c12154fd24165122bb315eae23d9efae13afc9d85fa",
+      "size": 123542
+    },
+    {
+      "path": "source_selection/SOURCE_PRIORITY_LIST.md",
+      "sha256": "093659a807b03d836b41dbf46c0593268e40900d809359d822a603bd3a09bf9a",
+      "size": 38486
+    },
+    {
+      "path": "synthesis/CONTRADICTIONS_AND_DRIFT.md",
+      "sha256": "204d155ba75a778ee05ea046a1f6c766ce95bad1ec2b367c2a18d067d0b74357",
+      "size": 2756
+    },
+    {
+      "path": "synthesis/CURRENT_PROJECT_REALITY.md",
+      "sha256": "06125184c48cbd6e92cd36223eedd16fbe14cf405a922b97ffa32b94adbd9e99",
+      "size": 3715
+    },
+    {
+      "path": "synthesis/DECISION_DOCKET.md",
+      "sha256": "77ec1b756ea86eb0caa6e994b6cfa92f32bf7b18faf8be7a994cf7f40a0f9b3b",
+      "size": 3336
+    },
+    {
+      "path": "synthesis/DESIGN_PRINCIPLES.md",
+      "sha256": "1fd7e2abd4b50f3b14c64cbc6e16ca41c1ea70b05534f4ff1551cdfaca00848c",
+      "size": 3230
+    },
+    {
+      "path": "synthesis/LONG_HORIZON_DESIGN_INTENT.md",
+      "sha256": "1665f58f37d35b9c0dc0e917451d6cdcaacb942987ed2687abe81f666949c3ab",
+      "size": 1932
+    },
+    {
+      "path": "synthesis/OPEN_QUESTIONS.md",
+      "sha256": "267f18ddb5caf1c77ed6638768610d68edac5f65b0231cc61233f138397ac6d9",
+      "size": 2789
+    },
+    {
+      "path": "synthesis/ROADMAP_AND_SEQUENCE.md",
+      "sha256": "1d1549be541c0f067cec6d5db35c267b2cfc751a4fb71ae8c4ece130fa71879b",
+      "size": 3096
+    },
+    {
+      "path": "synthesis/SOURCE_BLOCK_LIBRARY.md",
+      "sha256": "86b1d49937ab68f0890e6336d77ab378ab5f5dd2532c7b63b3c15ecc71a445ea",
+      "size": 1252
+    },
+    {
+      "path": "synthesis/ULTIMATE_PROJECT_VISION_DRAFT.md",
+      "sha256": "3ae3f71cde78c17fce6f46436f93048edf554bad2a8319908df924a2a40f7e9d",
+      "size": 9457
+    },
+    {
+      "path": "synthesis/WHAT_TO_DO_NEXT.md",
+      "sha256": "0d07b0c8571e32d2023f8d74db43255422fa47164c001d2eec11d03b284703da",
+      "size": 1665
+    },
+    {
+      "path": "themes/ARCHITECTURE_AND_SYSTEM_MODEL.md",
+      "sha256": "ebde3f76ed72b3e300a0a29c29dda3ba06d7042c92878c2dabc092279f4ae29d",
+      "size": 8931
+    },
+    {
+      "path": "themes/GOVERNANCE_AND_PROCESS.md",
+      "sha256": "acdf4db7fda6b11e8cb07c57b11cbf0a0cad0b07c671191e8450a61051502bf7",
+      "size": 8432
+    },
+    {
+      "path": "themes/PRODUCT_AND_TOOLING.md",
+      "sha256": "f7618dbe554ca17b96d59fa95b7c29b895a8a8dcd21cb074e8659537adb70da7",
+      "size": 8069
+    },
+    {
+      "path": "themes/PROJECT_IDENTITY.md",
+      "sha256": "18aeba982a850ba639e9df9c35c73355327613b79240458d3c86cb45aa748f72",
+      "size": 8320
+    },
+    {
+      "path": "themes/ROADMAP_AND_SEQUENCE.md",
+      "sha256": "42c98057cf9c1e33527f10689807c524c73e4c9791c47c1e617a53561aadf26f",
+      "size": 7630
+    },
+    {
+      "path": "themes/THEME_BLOCK_MAP.yml",
+      "sha256": "ca04a2f482273d3cac216c075c3c47eda16739f7ba46c3c54e5dc0b367bd7e81",
+      "size": 101678
+    },
+    {
+      "path": "themes/THEME_MAP.md",
+      "sha256": "374bee066f8fdd918cbf0298018d374de69755a01c56ec0eff11431fc0c9ece0",
+      "size": 1447
+    },
+    {
+      "path": "themes/WORLD_AND_SIMULATION.md",
+      "sha256": "4205d882d83f9d1c17f98e1b779a948648766a2fca5b564b17feb7c00c502b8c",
+      "size": 8415
+    }
+  ],
+  "scratchpad_only_source_basenames": 40,
+  "scratchpad_only_zip_names": 47,
+  "source_basename_overlap": 120,
+  "task_id": "PROJECT-VISION-CORPUS-SCRATCHPAD-COMPARE-01",
+  "zip_overlap": 0
+}
