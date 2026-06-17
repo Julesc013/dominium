@@ -1,11 +1,3 @@
-Status: AUTHORITATIVE LEGAL TERMS
-Last Reviewed: 2026-06-17
-Supersedes: legacy restricted source viewing license draft
-Superseded By: none
-Stability: controlled
-Future Series: LEGAL
-Applies To: this repository unless a more specific license file or notice expressly applies
-
 # DOMINIUM RESTRICTED SOURCE LICENSE
 ## Version 1.0
 
