@@ -12,6 +12,14 @@ The project is about invention, production, logistics, economics, settlement,
 trust, communication, and institutional power emerging from lawful simulation
 instead of scripted outcomes.
 
+Dominium is **source-available and restricted-use**. It is **not open source**
+under OSI-style open source terms. Source visibility is provided for limited
+personal evaluation, review, security research, compatibility evaluation, and
+approved contribution only. Redistribution, unauthorised forks, modified
+releases, commercial use, public hosting, independent servers, competing
+projects, and derivative works are not permitted without prior express written
+permission from the Project Owner.
+
 ## Current Status
 
 Dominium is **not release-ready** and should not be read as a playable public
@@ -26,7 +34,15 @@ see `docs/ROADMAP.md`.
 This README is the public front door. It orients readers, but it is not the
 highest authority.
 
-Authority starts here:
+Legal authority is separate and controls legal permissions and restrictions:
+
+1. `LICENSE.md`
+2. `CONTRIBUTOR_LICENSE_AGREEMENT.md`
+3. `TRADEMARKS.md`
+4. `FAN_CONTENT_POLICY.md`
+5. `THIRD_PARTY_NOTICES.md`
+
+Project and technical authority starts here:
 
 1. `docs/canon/constitution_v1.md`
 2. `docs/canon/glossary_v1.md`
@@ -37,7 +53,9 @@ Authority starts here:
 7. Archive and old planning material, for provenance only
 
 Repo artifacts outrank chat memory, generated echoes, convenience summaries,
-and old planning notes.
+and old planning notes. Project canon, architecture docs, contracts, queue state,
+issues, pull requests, generated summaries, and informal discussion do not grant
+legal permissions or override the legal files.
 
 ## What This Is
 
@@ -67,6 +85,9 @@ Dominium is not currently:
 - a place where generated output becomes source truth by convenience
 - a mod platform that accepts arbitrary executable pack code
 - a public promise that all planned systems are implemented today
+- an open source project
+- permission to publish or monetise independent forks, builds, servers, packs,
+  tools, engines, games, or derivative works
 
 Full CTest and broader release/trust proof remain visible debt outside the
 normal fast strict development gate.
@@ -230,8 +251,9 @@ binding new work to transitional, projected, or quarantined roots.
 | Understand the architecture | `docs/ARCHITECTURE.md`, `docs/architecture/CANONICAL_SYSTEM_MAP.md`, `docs/architecture/CANON_INDEX.md` |
 | See planned sequencing | `docs/ROADMAP.md`, `.aide/queue/current.toml` |
 | Build locally | `docs/development/guides/BUILDING.md` |
-| Contribute | `CONTRIBUTING.md`, `AGENTS.md` |
+| Contribute | `CONTRIBUTING.md`, `CONTRIBUTOR_LICENSE_AGREEMENT.md`, `AGENTS.md` |
 | Understand packs and modding | `MODDING.md`, `content/README.md`, `content/packs/README.md`, `contracts/package/packs/README.md` |
+| Understand legal permissions | `LICENSE.md`, `CONTRIBUTOR_LICENSE_AGREEMENT.md`, `TRADEMARKS.md`, `FAN_CONTENT_POLICY.md`, `THIRD_PARTY_NOTICES.md` |
 | Operate as an agent | `AGENTS.md`, `.aide/context/latest-task-packet.md` |
 
 ## Contracts And Public Surfaces
@@ -272,7 +294,12 @@ Start with:
 - `contracts/capability/README.md`
 
 Early pack tiers remain data-first. Arbitrary executable code in packs is not
-part of the current trust model.
+part of the current trust model. Modding policy does not grant permission to
+publish, distribute, host, commercialise, monetise, or maintain independent
+forks, modified builds, servers, tools, packs, engines, games, products, or
+derivative works. Legal permissions remain governed by `LICENSE.md`,
+`TRADEMARKS.md`, `FAN_CONTENT_POLICY.md`, and any written permission from the
+Project Owner.
 
 ## Contributing
 
@@ -292,17 +319,28 @@ Non-Goals:
 
 For ordinary bounded work:
 
-1. Read the relevant canon, contract, and ownership documents.
+1. Read the relevant legal, canon, contract, and ownership documents.
 2. Keep edits in the owning root.
 3. Update contracts/schemas when behavior or compatibility meaning changes.
 4. Run targeted validation plus whitespace/diff checks.
 5. Run fast strict when scope warrants it or when claiming gate status.
 6. Report what was run and what was not run.
 
-See `CONTRIBUTING.md` for contributor workflow notes, but resolve conflicts
-against canon, glossary, AGENTS, and active contracts.
+All contributions are governed by `CONTRIBUTOR_LICENSE_AGREEMENT.md`. Submitting
+a pull request, patch, issue attachment, documentation change, content, schema,
+contract, test, fixture, tool, asset, generated output, or other material does
+not grant permission to publish, distribute, monetise, host, or maintain an
+independent fork or derivative version of Dominium.
+
+See `CONTRIBUTING.md` for contributor workflow notes, but resolve legal
+conflicts against the legal files and technical/project conflicts against canon,
+glossary, AGENTS, and active contracts.
 
 ## License And Security
 
 - License: `LICENSE.md`
+- Contributor terms: `CONTRIBUTOR_LICENSE_AGREEMENT.md`
+- Trademark and project identity policy: `TRADEMARKS.md`
+- Fan and community content policy: `FAN_CONTENT_POLICY.md`
+- Third-party notice index: `THIRD_PARTY_NOTICES.md`
 - Security policy: `SECURITY.md`
