@@ -1,162 +1,217 @@
 Status: DERIVED
-Last Reviewed: 2026-05-21
-Supersedes: none
+Last Reviewed: 2026-06-17
+Supersedes: legacy top-level `CONTRIBUTING.md` workflow summary
 Superseded By: none
 Stability: provisional
-Future Series: DOC-ARCHIVE
-Replacement Target: legacy reference surface retained without current binding authority
+Future Series: PUBLIC-DOCS
+Replacement Target: long-lived contributor entrypoint derived from canon, AGENTS, contracts, status, and build docs
 
 # Contributing to Dominium
 
-This document is the contributor entrypoint for code, data, schema, and governance changes in this repository.
+This document is the public contributor entrypoint for code, documentation,
+content, contract, schema, tooling, and governance changes in this repository.
 
-For constitutional architecture rules, start with `docs/architecture/ARCH0_CONSTITUTION.md` and `docs/architecture/CANON_INDEX.md`.
+It is derived. If this file conflicts with `docs/canon/constitution_v1.md`,
+`docs/canon/glossary_v1.md`, `AGENTS.md`, active contracts, `.aide/queue/current.toml`,
+or reviewed audits, the higher-authority artifact wins.
+
+## Before You Start
+
+Dominium is not a conventional "just patch the code" repository. Most useful
+changes sit inside a governed architecture model:
+
+- canon defines non-negotiable invariants
+- contracts and registries define public law
+- code implements lawful behavior
+- tests, validators, diagnostics, evidence, and audits prove claims
+- public docs explain the current state without overclaiming
+
+Read first:
+
+1. `README.md`
+2. `docs/STATUS.md`
+3. `docs/ARCHITECTURE.md`
+4. `AGENTS.md`
+5. the relevant contract, registry, architecture, test, or content files for
+your change
+
+## Current Public Boundary
+
+The current status does not authorize broad feature work. The queue keeps broad
+Workbench UI, runtime module loading, provider runtime, package runtime,
+gameplay, renderer implementation, native GUI, and release publication blocked
+until reviewed phases explicitly open them.
+
+Contributions should therefore be narrow, evidence-backed, and aligned with the
+current queue or with a clearly scoped documentation/content/validation target.
+
+## Task Shape
+
+Use this shape when proposing or executing work:
+
+```text
+Task:
+Goal:
+Touched Paths:
+Relevant Invariants:
+Contracts/Schemas:
+Validation Level: FAST | STRICT | FULL
+Expected Artifacts:
+Non-Goals:
+```
+
+This is the same operating shape used by `AGENTS.md`. It keeps scope explicit
+and prevents accidental architecture drift.
 
 ## Repository Structure
 
-Primary directories:
+Primary roots:
 
-- `engine/` - deterministic simulation substrate (C17 mainline with C-compatible public ABI)
-- `game/` - gameplay/meaning layer (C++17)
-- `client/`, `server/`, `launcher/`, `setup/`, `tools/` - product executables
-- `schema/` - schema contracts
-- `data/` - registries, packs, and canonical data
-- `repo/repox/` - static governance rules
-- `tests/` - TestX suites and invariants
-- `scripts/dev/gate.py` - FAST/STRICT/FULL gate entrypoint
-- `tools/xstack/core/` - planner, impact graph, scheduler, cache
+| Root | Meaning |
+|---|---|
+| `apps/` | Thin product entrypoints and product composition. |
+| `engine/` | Domino deterministic substrate and public engine-facing surfaces. |
+| `game/` | Dominium domain rules, process emission, and game interpretation. |
+| `runtime/` | Shell, platform, view, diagnostics, storage, input, audio, network, and host integration. |
+| `contracts/` | Machine-readable, version-pinned, compatibility-sensitive law. |
+| `content/` | Authored packs, profiles, datasets, fixtures, assets, templates, and source payloads. |
+| `docs/` | Canon, architecture, development, reference, planning, release, repo, and archive documentation. |
+| `tests/` | Contract, invariant, smoke, integration, fixture, and proof suites. |
+| `tools/` | Validation, codegen, migration, packaging, audit, release, and developer tooling. |
+| `.aide/` | Queue, context, memory, scripts, and AIDE-local repo operation surfaces. |
+| `archive/` | Historical, superseded, quarantined, or provenance-retained material. |
 
-## Workflow for Code Changes
+Do not infer ownership from similarly named roots. Follow `AGENTS.md`, layout
+contracts, and scope-specific artifacts before binding work to transitional,
+projected, or quarantined paths.
 
-1. Identify the owning contract in `docs/architecture/` and `docs/governance/`.
-2. Update schema/registry contracts first when behavior shape changes.
-3. Keep ownership boundaries intact (Client presentation-only, Setup install mutator, Server authority path).
-4. Add or update tests in `tests/invariant/` and `tests/integration/`.
-5. Run gate profiles (below) before committing.
+## Workflow For Code Changes
 
-## Build and Verify
+1. Identify the governing canon, contract, registry, schema, and owning root.
+2. Confirm the change is authorized by the current queue or by explicit task
+scope.
+3. Update contracts/registries before or with behavior changes when public shape,
+compatibility, diagnostics, refusal semantics, commands, modules, providers, or
+artifact identity changes.
+4. Preserve determinism, process-only mutation, truth/perceived/render
+separation, profile-driven composition, explicit refusals, and pack-driven
+integration.
+5. Add or update relevant tests, validators, fixtures, or audit material.
+6. Update docs in the same change when behavior or public meaning changes.
+7. Report what validation was run and what was not run.
 
-Configure/build verify lane:
+## Workflow For Documentation Changes
 
-```bash
+Documentation changes are still governed work. They must not promote planned or
+blocked features into implemented claims.
+
+When changing public docs:
+
+1. Check `docs/STATUS.md` and `.aide/queue/current.toml`.
+2. Keep `README.md` as the public front door.
+3. Put current truth boundaries in `docs/STATUS.md`.
+4. Put future sequencing in `docs/ROADMAP.md`.
+5. Put architecture explanation in `docs/ARCHITECTURE.md`.
+6. Put product meaning in `DOMINIUM.md`.
+7. Do not edit canon merely to make public prose easier.
+
+## Build And Verify
+
+Normal public verification path:
+
+```powershell
 cmake --preset verify
-cmake --build --preset verify
+cmake --build --preset verify --target ALL_BUILD
+py -3 tools/test/run_fast_strict.py --repo-root .
 ```
 
-Run gate profiles:
+AIDE local health checks:
 
-```bash
-python scripts/dev/gate.py verify --repo-root .
-python scripts/dev/gate.py strict --repo-root .
-python scripts/dev/gate.py full --repo-root .
+```powershell
+py -3 .aide/scripts/aide_lite.py doctor
+py -3 .aide/scripts/aide_lite.py validate
 ```
 
-Profile behavior is defined in `contracts/registry/gate_policy.json` and documented in `docs/governance/GATE_THROUGHPUT_POLICY.md`.
+Targeted validators for common contract surfaces:
 
-## FAST / STRICT / FULL Expectations
+```powershell
+py -3 tools/validators/repo/check_dependency_directions.py --repo-root . --strict
+py -3 tools/validators/contracts/check_command_surface.py --repo-root . --strict
+py -3 tools/validators/contracts/check_module_descriptors.py --repo-root . --strict
+py -3 tools/validators/contracts/check_diagnostics_registry.py --repo-root . --strict
+```
 
-- `verify` -> FAST (incremental impacted checks)
-- `strict` -> STRICT (deeper structural + impacted runtime checks)
-- `full` -> FULL (sharded comprehensive lane)
+Fast strict is the normal development gate. Extended, release, and full proof
+tiers are separate gates defined by `contracts/testing/test_tiers.contract.toml`.
+Do not claim full certification from a green fast strict result.
 
-XStack planning and impact analysis:
+## Language And ABI Constraints
 
-- `tools/xstack/core/impact_graph.py`
-- `tools/xstack/core/plan.py`
-- `contracts/registry/testx_groups.json`
-- `contracts/registry/auditx_groups.json`
+- C code uses C17.
+- C++ code uses C++17.
+- Stable public binary-facing surfaces remain C-compatible.
+- Do not expose C++ classes, STL types, exceptions, RTTI, allocator objects, or
+compiler object layout across stable ABI boundaries.
+
+See:
+
+- `docs/development/LANGUAGE_BASELINE.md`
+- `docs/development/C17_USAGE_POLICY.md`
+- `docs/development/CPP17_USAGE_POLICY.md`
+- `contracts/abi/c_api.contract.toml`
+- `contracts/abi/language_boundary.contract.toml`
 
 ## Determinism Requirements
 
-All accepted changes must preserve deterministic behavior:
+All accepted implementation changes must preserve deterministic behavior:
 
-- no wall-clock/random side effects in canonical paths
-- stable ordering for canonical artifacts
-- explicit refusal codes for invalid transitions
-- deterministic hashing for plans/artifacts where applicable
+- no wall-clock or anonymous random side effects in authoritative paths
+- stable ordering for canonical artifacts and execution outcomes
+- named RNG streams for authoritative randomness
+- explicit refusal codes for invalid, unsupported, or incompatible transitions
+- deterministic migration, replay, hashing, and evidence behavior where the
+relevant contract requires it
 
-Relevant references:
+## Content And Pack Contributions
 
-- `docs/governance/TESTX_ARCHITECTURE.md`
-- `docs/governance/AUDITX_MODEL.md`
-- `docs/governance/XSTACK_INCREMENTAL_MODEL.md`
+Content is authored data, not runtime law. Packs and modding are data-first and
+contract-governed.
 
-## Code Style and Language Constraints
+Start with:
 
-- C code: **C17**, extensions off
-- C++ code: **C++17**, extensions off
-- Public ABI remains C-compatible; do not expose C++ ABI across stable boundaries.
-- Keep compatibility with configured toolchain constraints in `CMakePresets.json`
+- `MODDING.md`
+- `content/README.md`
+- `content/packs/README.md`
+- `contracts/package/packs/README.md`
+- `contracts/capability/README.md`
 
-Use existing style and naming conventions in touched modules; avoid introducing new formatting regimes in isolated edits.
-
-## Updating Schemas
-
-When changing or adding schemas:
-
-1. Add/modify schema under `schema/`.
-2. Update linked registries under `data/registries/`.
-3. Keep identifiers stable; never silently repurpose IDs.
-4. Update governance/tests if schema shape changes affect enforcement.
-
-Primary references:
-
-- `schema/SCHEMA_VERSIONING.md`
-- `schema/SCHEMA_VALIDATION.md`
-- `docs/reference/schema/SCHEMA_EVOLUTION.md`
-
-## Updating Registries
-
-For registry changes:
-
-1. Edit the target file in `data/registries/`.
-2. Preserve schema IDs, registry IDs, and deterministic ordering.
-3. Run gate verify/strict to ensure RepoX/TestX coverage.
-4. Update docs when introducing new canonical keys or IDs.
-
-## Adding Domain Packs (Data-First)
-
-Domain additions are pack-driven, not hardcoded mode logic.
-
-Typical flow:
-
-1. Create/update pack content under `content/packs/<category>/<pack_id>/`.
-2. Provide/update `pack_manifest.json` and `pack.manifest`.
-3. Register new process/material/scenario/worldgen entries in relevant registries (for example `contracts/registry/process_registry.json` or `contracts/registry/worldgen_module_registry.json`).
-4. Ensure capabilities and law constraints are explicit in profile/law registries.
-5. Add TestX coverage for new refusal/selection behavior.
-
-## Writing Tests
-
-Use existing suites:
-
-- Invariants: `tests/invariant/`
-- Integration: `tests/integration/`
-- Grouped execution: `scripts/dev/run_xstack_group_tests.py`
-
-If your change affects XStack routing, update:
-
-- `contracts/registry/testx_groups.json`
-- `contracts/registry/auditx_groups.json`
-
-and corresponding tests:
-
-- `tests/invariant/test_testx_group_mapping.py`
-- `tests/invariant/test_auditx_group_mapping.py`
-
-## Updating Documentation and Architectural Artifacts
-
-When changing contracts or behavior:
-
-1. Update docs in `docs/` in the same change.
-2. Keep terms aligned with `docs/reference/GLOSSARY.md`.
-3. Cross-link to schema/registry paths, not vague concepts.
-4. Regenerate derived audit docs only when the underlying run actually changed.
+Do not introduce arbitrary executable pack code or hidden fallback behavior.
+Missing optional content must degrade or refuse explicitly.
 
 ## Pull Request Checklist
 
-- [ ] Scope matches architecture ownership boundaries
-- [ ] Schema/registry updates included where required
-- [ ] Determinism assumptions documented and tested
-- [ ] FAST and STRICT gate profiles pass locally
-- [ ] Documentation updated with accurate paths/IDs
+Before submitting or merging work, check:
+
+- [ ] Scope matches the current task, queue, or explicit issue.
+- [ ] Relevant invariants are named.
+- [ ] Contract/schema/registry impact is stated.
+- [ ] Determinism impact is stated.
+- [ ] Public docs were updated if public behavior or meaning changed.
+- [ ] New claims are evidenced by code, contract, tests, queue state, or audit.
+- [ ] Planned or blocked features are not described as implemented.
+- [ ] Appropriate validators/tests were run, or non-runs are reported.
+- [ ] Generated outputs are treated as evidence unless explicitly promoted.
+
+## Protected Areas
+
+Extra review discipline is required for changes touching:
+
+- `docs/canon/**`
+- `AGENTS.md`
+- `docs/planning/**`
+- `contracts/**` when public law or compatibility meaning changes
+- release, publication, trust, security, licensing, or public policy surfaces
+- ownership-sensitive or quarantined roots described by `AGENTS.md`
+
+Protected does not mean untouchable. It means scope, authority, and provenance
+must be explicit.
