@@ -1,0 +1,23 @@
+# Dominium ownership review gates.
+# GitHub branch protection must require CODEOWNERS review for this file to be enforced.
+
+# Default repository ownership.
+* @Julesc013
+
+# Legal and public policy surfaces.
+/LICENSE.md @Julesc013
+/CONTRIBUTOR_LICENSE_AGREEMENT.md @Julesc013
+/TRADEMARKS.md @Julesc013
+/FAN_CONTENT_POLICY.md @Julesc013
+/THIRD_PARTY_NOTICES.md @Julesc013
+/SECURITY.md @Julesc013
+/MODDING.md @Julesc013
+/CONTRIBUTING.md @Julesc013
+/.github/pull_request_template.md @Julesc013
+/.github/CODEOWNERS @Julesc013
+
+# Canon, governance, contracts, and public authority surfaces.
+/AGENTS.md @Julesc013
+/docs/canon/ @Julesc013
+/docs/planning/ @Julesc013
+/contracts/ @Julesc013
