@@ -4,7 +4,7 @@ Supersedes: legacy top-level `MODDING.md` FUTURE0 summary
 Superseded By: none
 Stability: provisional
 Future Series: PUBLIC-DOCS
-Replacement Target: long-lived public modding overview derived from canon, contracts, content docs, and current trust model
+Replacement Target: long-lived public modding overview derived from canon, contracts, content docs, current trust model, and legal policy
 
 # Dominium Modding And Packs
 
@@ -18,7 +18,13 @@ They do not currently provide arbitrary executable runtime code.
 This file is derived. If it conflicts with `docs/canon/constitution_v1.md`,
 `docs/canon/glossary_v1.md`, `AGENTS.md`, active contracts, pack registries,
 `.aide/queue/current.toml`, or reviewed audits, the higher-authority artifact
-wins.
+wins for project, technical, canon, architecture, validation, and governance
+meaning.
+
+Legal files control legal permissions and restrictions. This file does not grant
+permission to publish, distribute, monetise, host, or maintain independent forks,
+modified builds, servers, packs, tools, engines, games, products, or derivative
+works.
 
 ## Current Public Boundary
 
@@ -32,6 +38,31 @@ wins.
 | Mods changing engine/runtime authority semantics | Not allowed. |
 | Mods bypassing law, audit, or capability gates | Not allowed. |
 | Broad package runtime | Blocked until a reviewed phase opens it. |
+| Public mod distribution or monetisation | Not authorised without written permission from the Project Owner. |
+
+## Legal Boundary
+
+`LICENSE.md`, `CONTRIBUTOR_LICENSE_AGREEMENT.md`, `TRADEMARKS.md`,
+`FAN_CONTENT_POLICY.md`, and `THIRD_PARTY_NOTICES.md` govern legal permissions,
+identity use, contribution rights, fan/community content, and third-party
+material.
+
+This modding policy describes the intended technical and trust model for packs.
+It does not, by itself, allow anyone to:
+
+- publish or distribute mods, packs, patched builds, forks, launchers, tools, or
+  servers;
+- monetise Dominium-related content, services, hosting, marketplaces, videos,
+  streams, guides, or derivative works;
+- use Dominium or Domino names, marks, logos, or project identity as if a mod,
+  pack, server, or tool is official;
+- modify engine code or authoritative runtime code outside the official
+  contribution process;
+- bypass repository license restrictions.
+
+Any public pack, mod, server, tool, marketplace, or derivative work requires
+prior express written permission unless a future authoritative legal policy
+expressly opens that use.
 
 ## Core Rule
 
@@ -50,7 +81,8 @@ pack data
 
 ## What Packs May Add
 
-Subject to active contracts and registries, packs may add or declare:
+Subject to active contracts, registries, and legal permission, packs may add or
+declare:
 
 - authored content records
 - profiles, parameter bundles, and law/profile data
@@ -77,6 +109,8 @@ Packs and mods may not:
 contracts
 - declare themselves public surfaces merely because files exist
 - include arbitrary executable runtime code under the current trust model
+- publish, distribute, monetise, or host Dominium-derived material without legal
+  permission
 
 ## Compatibility Contract
 
@@ -102,19 +136,24 @@ Public docs should use this language:
 | Runtime authority | "Mods do not alter authoritative runtime semantics." | "Mods can patch the engine or replace law." |
 | Current maturity | "Pack and modding policy exists as a governed surface under active development." | "The complete public mod platform is released." |
 | Package runtime | "Package runtime remains blocked until later reviewed phases." | "Runtime packages are broadly available now." |
+| Legal permission | "Public distribution or monetisation requires written permission." | "Anyone can publish or sell Dominium mods." |
 
 ## Where To Start
 
 Read these in order:
 
 1. `README.md`
-2. `docs/STATUS.md`
-3. this file
-4. `content/README.md`
-5. `content/packs/README.md`
-6. `contracts/package/packs/README.md`
-7. `contracts/capability/README.md`
-8. relevant schema, registry, and contract files for the specific pack type
+2. `LICENSE.md`
+3. `CONTRIBUTOR_LICENSE_AGREEMENT.md`
+4. `TRADEMARKS.md`
+5. `FAN_CONTENT_POLICY.md`
+6. `docs/STATUS.md`
+7. this file
+8. `content/README.md`
+9. `content/packs/README.md`
+10. `contracts/package/packs/README.md`
+11. `contracts/capability/README.md`
+12. relevant schema, registry, and contract files for the specific pack type
 
 Architecture and policy references:
 
@@ -137,6 +176,8 @@ meaning changes.
 changes.
 5. Do not claim released mod-platform capability unless current status and
 release/trust proof support that claim.
+6. Follow `CONTRIBUTOR_LICENSE_AGREEMENT.md` for every pack, content, asset,
+   schema, fixture, or documentation contribution.
 
 ## Maintenance Rule
 
@@ -148,3 +189,6 @@ When modding policy changes:
 authorization, or sequencing changed.
 4. Keep arbitrary executable pack code out of public claims unless a future
 reviewed trust model explicitly opens it.
+5. Keep legal permissions aligned with `LICENSE.md`, `TRADEMARKS.md`,
+   `FAN_CONTENT_POLICY.md`, `THIRD_PARTY_NOTICES.md`, and any written permission
+   from the Project Owner.
