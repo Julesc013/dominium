@@ -1,3 +1,11 @@
+Status: AUTHORITATIVE LEGAL TERMS
+Last Reviewed: 2026-06-17
+Supersedes: legacy restricted source viewing license draft
+Superseded By: none
+Stability: controlled
+Future Series: LEGAL
+Applies To: this repository unless a more specific license file or notice expressly applies
+
 # DOMINIUM RESTRICTED SOURCE LICENSE
 ## Version 1.0
 
@@ -79,7 +87,6 @@ Except with the Project Owner's prior express written permission, You may not:
 11. imply affiliation with, endorsement by, sponsorship by, or official status from Dominium, Domino, Jules Carboni, or the Project Owner;
 12. bypass, disable, falsify, or remove law, contract, capability, refusal, diagnostic, audit, provenance, compatibility, security, or trust controls;
 13. use the Software in a way that violates applicable law or third-party rights.
-14. use the Software for any purposes prohibited by Australian law, including, without limitation, the development, design, manufacture or production of missiles, or nuclear, chemical or biological weapons.
 
 ---
 
