@@ -4,7 +4,7 @@ Supersedes: legacy top-level `CONTRIBUTING.md` workflow summary
 Superseded By: none
 Stability: provisional
 Future Series: PUBLIC-DOCS
-Replacement Target: long-lived contributor entrypoint derived from canon, AGENTS, contracts, status, and build docs
+Replacement Target: long-lived contributor entrypoint derived from canon, AGENTS, contracts, status, build docs, and legal contribution terms
 
 # Contributing to Dominium
 
@@ -13,7 +13,13 @@ content, contract, schema, tooling, and governance changes in this repository.
 
 It is derived. If this file conflicts with `docs/canon/constitution_v1.md`,
 `docs/canon/glossary_v1.md`, `AGENTS.md`, active contracts, `.aide/queue/current.toml`,
-or reviewed audits, the higher-authority artifact wins.
+or reviewed audits, the higher-authority artifact wins for project, technical,
+canon, architecture, validation, and governance meaning.
+
+Legal files control legal permissions and restrictions. `LICENSE.md`,
+`CONTRIBUTOR_LICENSE_AGREEMENT.md`, `TRADEMARKS.md`, `FAN_CONTENT_POLICY.md`,
+and `THIRD_PARTY_NOTICES.md` are not overridden by canon, contracts, queue state,
+architecture docs, generated summaries, issue comments, or pull request comments.
 
 ## Before You Start
 
@@ -29,11 +35,43 @@ changes sit inside a governed architecture model:
 Read first:
 
 1. `README.md`
-2. `docs/STATUS.md`
-3. `docs/ARCHITECTURE.md`
-4. `AGENTS.md`
-5. the relevant contract, registry, architecture, test, or content files for
+2. `LICENSE.md`
+3. `CONTRIBUTOR_LICENSE_AGREEMENT.md`
+4. `docs/STATUS.md`
+5. `docs/ARCHITECTURE.md`
+6. `AGENTS.md`
+7. the relevant contract, registry, architecture, test, or content files for
 your change
+
+## Legal Terms For Contributors
+
+Dominium is source-available and restricted-use. It is not an open source project
+under OSI-style open source terms.
+
+By submitting any pull request, patch, issue attachment, documentation change,
+content, schema, contract, test, fixture, tool, asset, generated output, or other
+material for possible inclusion in Dominium, you agree to
+`CONTRIBUTOR_LICENSE_AGREEMENT.md`.
+
+Do not submit a contribution unless:
+
+1. you have read and agree to `CONTRIBUTOR_LICENSE_AGREEMENT.md`;
+2. you created the contribution or have all rights needed to submit it;
+3. your employer, client, school, or other organisation does not own or restrict
+   the contribution, or has authorised submission under the CLA;
+4. all third-party material is clearly identified with source, license, and
+   compatibility information;
+5. any generated, AI-assisted, copied, adapted, or tool-produced material is
+   clearly identified where required and can be assigned or licensed under the
+   CLA;
+6. you understand that accepted contributions may be assigned or exclusively
+   licensed to the Project Owner and may be used, modified, commercialised,
+   withheld, removed, or relicensed by the Project Owner.
+
+Submitting a contribution does not grant you permission to publish, distribute,
+maintain, monetise, host, or promote an independent fork, modified version,
+server, pack, tool, engine, game, product, or derivative work. Your use of the
+repository remains governed by `LICENSE.md`.
 
 ## Current Public Boundary
 
@@ -188,10 +226,20 @@ Start with:
 Do not introduce arbitrary executable pack code or hidden fallback behavior.
 Missing optional content must degrade or refuse explicitly.
 
+Pack/content contributions are still contributions under
+`CONTRIBUTOR_LICENSE_AGREEMENT.md`. Do not submit third-party assets, data,
+fonts, audio, images, models, generated output, or copied material without clear
+provenance and compatible rights.
+
 ## Pull Request Checklist
 
 Before submitting or merging work, check:
 
+- [ ] I have read and agree to `CONTRIBUTOR_LICENSE_AGREEMENT.md`.
+- [ ] I have the right to submit this contribution under the CLA.
+- [ ] This contribution does not include third-party code, assets, data, or generated output unless clearly identified.
+- [ ] I understand accepted contributions may be used, modified, commercialised, withheld, removed, assigned, exclusively licensed, or relicensed by the Project Owner.
+- [ ] I understand this contribution does not grant me permission to publish, distribute, monetise, host, or maintain an independent fork or derivative version of Dominium.
 - [ ] Scope matches the current task, queue, or explicit issue.
 - [ ] Relevant invariants are named.
 - [ ] Contract/schema/registry impact is stated.
