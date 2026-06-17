@@ -79,6 +79,7 @@ Except with the Project Owner's prior express written permission, You may not:
 11. imply affiliation with, endorsement by, sponsorship by, or official status from Dominium, Domino, Jules Carboni, or the Project Owner;
 12. bypass, disable, falsify, or remove law, contract, capability, refusal, diagnostic, audit, provenance, compatibility, security, or trust controls;
 13. use the Software in a way that violates applicable law or third-party rights.
+14. use the Software for any purposes prohibited by Australian law, including, without limitation, the development, design, manufacture, or production of nuclear, missile, or chemical or biological weapons.
 
 ---
 
