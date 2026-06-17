@@ -18,32 +18,6 @@ Dominium is **not release-ready** and should not be read as a playable public
 game today. The repository has passed its Foundation Lock with warnings and is
 currently advancing through narrow governed product-spine slices.
 
-Current public snapshot:
-
-| Area | Status | Notes |
-|---|---|---|
-| Foundation Lock | `PASS_WITH_WARNINGS` | Governance spine, contracts, validation layers, and narrow-slice authorization exist. |
-| Current queue state | `post_presentation_contract_pass_with_warnings` | `.aide/queue/current.toml` is the current operational pointer. |
-| Current task | `PRESENTATION-CONTRACT-01` | Recorded as `PASS_WITH_WARNINGS`. |
-| Next task | `PROJECTION-CONFORMANCE-01` | Current recommended next work. |
-| Alternate next task | `WORKBENCH-SHELL-READONLY-01` | Read-only Workbench shell direction only. |
-| Secondary follow-up | `UNIVERSE-EXPLORER-CONTRACT-01` | Contract work, not broad gameplay implementation. |
-| Fast strict gate | `PASS` | Normal development proof gate. |
-| Full CTest | `NOT_RUN_T4_DEBT` | Full release/trust proof remains visible debt. |
-
-Blocked until later reviewed phases explicitly open them:
-
-| Blocked area | Current state |
-|---|---|
-| Broad Workbench UI | `BLOCKED` |
-| Runtime module loader | `BLOCKED` |
-| Provider runtime | `BLOCKED` |
-| Package runtime | `BLOCKED` |
-| Gameplay | `BLOCKED` |
-| Renderer implementation | `BLOCKED` |
-| Native GUI | `BLOCKED` |
-| Release publication | `BLOCKED` |
-
 For the maintained status page, see `docs/STATUS.md`. For planned sequencing,
 see `docs/ROADMAP.md`.
 
@@ -74,7 +48,7 @@ Dominium has four related layers:
 | **Domino** | The reusable deterministic substrate: execution, ordering, storage, replay, ABI-facing boundaries, and engine mechanisms. |
 | **Dominium** | The official game, product, and domain layer on top of Domino. It defines rule meaning, process meaning, content use, and product composition. |
 | **Workbench** | The governed operator environment for validation, evidence, inspection, and later authoring workflows. It is not an authority layer. |
-| **AIDE / Codex** | Repo and control-plane harnesses for bounded patch execution. They help operate the repository; they do not replace canon, contracts, validation, or evidence. |
+| **AIDE / XStack** | Repo and control-plane harnesses for bounded patch execution. They help operate the repository; they do not replace canon, contracts, validation, or evidence. |
 
 Dominium is therefore both a game project and an engine/platform project. The
 long-lived rule is that product behavior should be expressed through commands,
@@ -134,20 +108,20 @@ should not invent separate product behavior.
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                  Command / result / refusal spine                │
-│ commands  capabilities  diagnostics  evidence  projections       │
+│                  Command / result / refusal spine               │
+│ commands  capabilities  diagnostics  evidence  projections      │
 └───────────────────────────────┬─────────────────────────────────┘
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Domino deterministic substrate                │
-│ execution  ordering  storage  replay  ABI boundaries             │
+│                    Domino deterministic substrate               │
+│ execution  ordering  storage  replay  ABI boundaries            │
 └───────────────────────────────┬─────────────────────────────────┘
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Contracts, content, tests, tools              │
-│ registries  packs  schemas  validators  audits  AIDE queue       │
+│                    Contracts, content, tests, tools             │
+│ registries  packs  schemas  validators  audits  AIDE queue      │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
